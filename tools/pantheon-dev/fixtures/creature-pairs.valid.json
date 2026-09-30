@@ -1,0 +1,247 @@
+{
+  "fixtureNotice": "Pair-topology adapter only. Not a complete game catalog or a balanced production data file.",
+  "families": [
+    {
+      "familyId": "hoplite",
+      "baseId": "hoplite",
+      "upgradeId": "veteran_hoplite",
+      "growthPerWeek": 14
+    },
+    {
+      "familyId": "peltast",
+      "baseId": "peltast",
+      "upgradeId": "veteran_peltast",
+      "growthPerWeek": 9
+    },
+    {
+      "familyId": "centaur",
+      "baseId": "centaur",
+      "upgradeId": "centaur_sentinel",
+      "growthPerWeek": 7
+    },
+    {
+      "familyId": "griffin",
+      "baseId": "griffin",
+      "upgradeId": "windcrest_griffin",
+      "growthPerWeek": 7
+    },
+    {
+      "familyId": "cavalry",
+      "baseId": "cavalry",
+      "upgradeId": "companion_cavalry",
+      "growthPerWeek": 4
+    },
+    {
+      "familyId": "temple_adept",
+      "baseId": "temple_adept",
+      "upgradeId": "temple_seer",
+      "growthPerWeek": 3
+    },
+    {
+      "familyId": "minotaur",
+      "baseId": "minotaur",
+      "upgradeId": "labyrinth_warden",
+      "growthPerWeek": 2
+    },
+    {
+      "familyId": "cyclops",
+      "baseId": "cyclops",
+      "upgradeId": "stormforged_cyclops",
+      "growthPerWeek": 1
+    }
+  ],
+  "creatures": [
+    {
+      "id": "hoplite",
+      "familyId": "hoplite",
+      "factionId": "greek",
+      "tier": 1,
+      "baseGrowth": 14,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 1
+      },
+      "upgradeId": "veteran_hoplite"
+    },
+    {
+      "id": "veteran_hoplite",
+      "familyId": "hoplite",
+      "factionId": "greek",
+      "tier": 1,
+      "baseGrowth": 14,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 1
+      },
+      "baseId": "hoplite"
+    },
+    {
+      "id": "peltast",
+      "familyId": "peltast",
+      "factionId": "greek",
+      "tier": 2,
+      "baseGrowth": 9,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 1
+      },
+      "upgradeId": "veteran_peltast"
+    },
+    {
+      "id": "veteran_peltast",
+      "familyId": "peltast",
+      "factionId": "greek",
+      "tier": 2,
+      "baseGrowth": 9,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 1
+      },
+      "baseId": "peltast"
+    },
+    {
+      "id": "centaur",
+      "familyId": "centaur",
+      "factionId": "greek",
+      "tier": 3,
+      "baseGrowth": 7,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "upgradeId": "centaur_sentinel"
+    },
+    {
+      "id": "centaur_sentinel",
+      "familyId": "centaur",
+      "factionId": "greek",
+      "tier": 3,
+      "baseGrowth": 7,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "baseId": "centaur"
+    },
+    {
+      "id": "griffin",
+      "familyId": "griffin",
+      "factionId": "greek",
+      "tier": 3,
+      "baseGrowth": 7,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "upgradeId": "windcrest_griffin"
+    },
+    {
+      "id": "windcrest_griffin",
+      "familyId": "griffin",
+      "factionId": "greek",
+      "tier": 3,
+      "baseGrowth": 7,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "baseId": "griffin"
+    },
+    {
+      "id": "cavalry",
+      "familyId": "cavalry",
+      "factionId": "greek",
+      "tier": 4,
+      "baseGrowth": 4,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "upgradeId": "companion_cavalry"
+    },
+    {
+      "id": "companion_cavalry",
+      "familyId": "cavalry",
+      "factionId": "greek",
+      "tier": 4,
+      "baseGrowth": 4,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "baseId": "cavalry"
+    },
+    {
+      "id": "temple_adept",
+      "familyId": "temple_adept",
+      "factionId": "greek",
+      "tier": 5,
+      "baseGrowth": 3,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 1
+      },
+      "upgradeId": "temple_seer"
+    },
+    {
+      "id": "temple_seer",
+      "familyId": "temple_adept",
+      "factionId": "greek",
+      "tier": 5,
+      "baseGrowth": 3,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 1
+      },
+      "baseId": "temple_adept"
+    },
+    {
+      "id": "minotaur",
+      "familyId": "minotaur",
+      "factionId": "greek",
+      "tier": 6,
+      "baseGrowth": 2,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "upgradeId": "labyrinth_warden"
+    },
+    {
+      "id": "labyrinth_warden",
+      "familyId": "minotaur",
+      "factionId": "greek",
+      "tier": 6,
+      "baseGrowth": 2,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "baseId": "minotaur"
+    },
+    {
+      "id": "cyclops",
+      "familyId": "cyclops",
+      "factionId": "greek",
+      "tier": 7,
+      "baseGrowth": 1,
+      "form": "base",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "upgradeId": "stormforged_cyclops"
+    },
+    {
+      "id": "stormforged_cyclops",
+      "familyId": "cyclops",
+      "factionId": "greek",
+      "tier": 7,
+      "baseGrowth": 1,
+      "form": "upgraded",
+      "stats": {
+        "footprintHexes": 2
+      },
+      "baseId": "cyclops"
+    }
+  ]
+}

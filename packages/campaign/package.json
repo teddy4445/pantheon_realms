@@ -1,0 +1,9 @@
+{
+  "name": "@pr/campaign",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Mission runtime factory, campaign state machine and carryover policy.",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@pr/rules": "*", "@pr/mapgen": "*" }
+}

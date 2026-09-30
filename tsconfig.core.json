@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": []
+  },
+  "include": [
+    "packages/rules/src/**/*.ts",
+    "packages/content/src/**/*.ts",
+    "packages/mapgen/src/**/*.ts",
+    "packages/campaign/src/**/*.ts",
+    "packages/ai/src/**/*.ts",
+    "packages/session/src/**/*.ts"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "pr-audit": {
+      "type": "stdio",
+      "command": "${PANTHEON_NODE}",
+      "args": [
+        "${PANTHEON_ROOT}/tools/pantheon-dev/server.mjs",
+        "--root",
+        "${PANTHEON_ROOT}"
+      ]
+    }
+  }
+}

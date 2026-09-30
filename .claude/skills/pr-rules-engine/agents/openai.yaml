@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon Rules Engine"
+  short_description: "Implement deterministic economy, combat and upgrade transactions."

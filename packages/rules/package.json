@@ -1,0 +1,8 @@
+{
+  "name": "@pr/rules",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Authoritative, DOM-free TypeScript rules core for Pantheon Realms.",
+  "exports": { ".": "./src/index.ts" }
+}

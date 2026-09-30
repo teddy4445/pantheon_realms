@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon Campaign Maps"
+  short_description: "Build seeded maps that preserve story gates and resources."

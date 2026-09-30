@@ -1,0 +1,8 @@
+{
+  "name": "@pr/platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser and Electron platform adapters (saves, preferences, window, quit). No game rules.",
+  "exports": { ".": "./src/index.ts" }
+}

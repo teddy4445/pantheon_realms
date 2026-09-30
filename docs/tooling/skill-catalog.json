@@ -1,0 +1,62 @@
+[
+  {
+    "name": "pr-project-lead",
+    "displayName": "Pantheon Project Lead",
+    "description": "Plan implementation and protect the approved game architecture.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-rules-engine",
+    "displayName": "Pantheon Rules Engine",
+    "description": "Implement deterministic economy, combat and upgrade transactions.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-campaign-mapgen",
+    "displayName": "Pantheon Campaign Maps",
+    "description": "Build seeded maps that preserve story gates and resources.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-local-ai",
+    "displayName": "Pantheon Local AI",
+    "description": "Plan legal turns without hidden information or online inference.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-babylon-scene",
+    "displayName": "Pantheon Babylon Scenes",
+    "description": "Build rich scenes without coupling rendering to gameplay.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-react-game-ui",
+    "displayName": "Pantheon Game Interface",
+    "description": "Implement real menus, settings and contextual creature information.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-creature-pipeline",
+    "displayName": "Pantheon Creature Pipeline",
+    "description": "Produce complete base-and-upgrade rigs, clips and GLB assets.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-audio-vfx",
+    "displayName": "Pantheon Audio and Effects",
+    "description": "Create event-driven atmosphere without affecting game outcomes.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-electron-offline",
+    "displayName": "Pantheon Desktop and Offline",
+    "description": "Package local assets and secure, versioned desktop saves.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  },
+  {
+    "name": "pr-qa-release",
+    "displayName": "Pantheon QA and Release",
+    "description": "Collect reproducible gameplay, asset and offline evidence.",
+    "origin": "Original project-specific skill; no third-party skill text copied."
+  }
+]

@@ -1,0 +1,572 @@
+[
+  {
+    "path": ".claude/skills/pr-audio-vfx/SKILL.md",
+    "bytes": 2499,
+    "sha256": "386974631664625f2536ad6ab3754cbffa91d93dc1d29961d51e528fbbee321b"
+  },
+  {
+    "path": ".claude/skills/pr-audio-vfx/agents/openai.yaml",
+    "bytes": 143,
+    "sha256": "906ad84cea613d08768afd07225fa3cd874f0079461090ccbb19094409ff7181"
+  },
+  {
+    "path": ".claude/skills/pr-audio-vfx/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-babylon-scene/SKILL.md",
+    "bytes": 2622,
+    "sha256": "1f615627bee4f45068a6e30cb89d77e03990dd0fda2bea6bb67aca05940f9165"
+  },
+  {
+    "path": ".claude/skills/pr-babylon-scene/agents/openai.yaml",
+    "bytes": 134,
+    "sha256": "54608d4ed0cccdefa09349447bc8a35e4770448ed8bbed8c052112ac758d8014"
+  },
+  {
+    "path": ".claude/skills/pr-babylon-scene/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-campaign-mapgen/SKILL.md",
+    "bytes": 2940,
+    "sha256": "aca2b74b0640cb628c05d984514dd9ebe50e351c234abd7678a1a3257ea69aee"
+  },
+  {
+    "path": ".claude/skills/pr-campaign-mapgen/agents/openai.yaml",
+    "bytes": 134,
+    "sha256": "33745b622b5eefaba69ba9fea8dce38300a349b25d83bdf3577d618c5946d07b"
+  },
+  {
+    "path": ".claude/skills/pr-campaign-mapgen/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-creature-pipeline/SKILL.md",
+    "bytes": 2916,
+    "sha256": "ce0c6c1fbc5401614a81417bc0c0f85c7463558f0f49dad6a7177d4dadd7b65d"
+  },
+  {
+    "path": ".claude/skills/pr-creature-pipeline/agents/openai.yaml",
+    "bytes": 141,
+    "sha256": "cc3bb1d26e4a1fdd45be56ba5c5f591e956a7419f00533bac07359f7bbe70aaf"
+  },
+  {
+    "path": ".claude/skills/pr-creature-pipeline/references/pair-checklist.md",
+    "bytes": 1729,
+    "sha256": "6acfe32e6859e8e88799eaaa554492b10b769943b47461140f350e8b549268c2"
+  },
+  {
+    "path": ".claude/skills/pr-creature-pipeline/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-electron-offline/SKILL.md",
+    "bytes": 2757,
+    "sha256": "6dabe5a6708a72063c8eb87ad7b02465aa262e51de1f71ea249a047ba418847f"
+  },
+  {
+    "path": ".claude/skills/pr-electron-offline/agents/openai.yaml",
+    "bytes": 139,
+    "sha256": "8aba0c9a7b4f3f1d8be89dec45617e92eb869463a08736ab312312172f7b97ac"
+  },
+  {
+    "path": ".claude/skills/pr-electron-offline/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-local-ai/SKILL.md",
+    "bytes": 2633,
+    "sha256": "a7fe9d8660ca561480192372d3adda007c34794a27d7e559844c05d398a2b283"
+  },
+  {
+    "path": ".claude/skills/pr-local-ai/agents/openai.yaml",
+    "bytes": 135,
+    "sha256": "2a13e2cc1bd6636cb0ec40d39d22c61687c3f48c8541315dabced5a71d9d82aa"
+  },
+  {
+    "path": ".claude/skills/pr-local-ai/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-project-lead/SKILL.md",
+    "bytes": 2805,
+    "sha256": "c9d12a1e7c7b8b6d0afc581430264023324ec6bc79dd12dda52d31eaf0cd7a94"
+  },
+  {
+    "path": ".claude/skills/pr-project-lead/agents/openai.yaml",
+    "bytes": 138,
+    "sha256": "1f864af48ed5960fa9bb215612878194f2079042aac704e180bac0e6abd37c0c"
+  },
+  {
+    "path": ".claude/skills/pr-project-lead/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-qa-release/SKILL.md",
+    "bytes": 2861,
+    "sha256": "1d1eb7ad2bcf21214348e5f98a6aac520527347a0188abd1cead352d5e2706d4"
+  },
+  {
+    "path": ".claude/skills/pr-qa-release/agents/openai.yaml",
+    "bytes": 135,
+    "sha256": "0c6cf68153d862062ede4c311d624a0b53989aa6ae20f58fa8a9ef9d4f380f24"
+  },
+  {
+    "path": ".claude/skills/pr-qa-release/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-react-game-ui/SKILL.md",
+    "bytes": 2758,
+    "sha256": "a07bb6d5f003bd36dac2a6275fbdcff2b24750e6a56a2adf0e4ddd0960eb659b"
+  },
+  {
+    "path": ".claude/skills/pr-react-game-ui/agents/openai.yaml",
+    "bytes": 144,
+    "sha256": "382ce76437459447c6b4b2c39c887bb955d44a697b934af52f3ef97aff6e8d33"
+  },
+  {
+    "path": ".claude/skills/pr-react-game-ui/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": ".claude/skills/pr-rules-engine/SKILL.md",
+    "bytes": 3064,
+    "sha256": "96e5c5f4fa84d625fdc727c0242c17ef951bb4ae655f7d07367c63fc143bcc92"
+  },
+  {
+    "path": ".claude/skills/pr-rules-engine/agents/openai.yaml",
+    "bytes": 140,
+    "sha256": "98e6bb17024a8c07ccc65a9de9d366c3fe14b6c0af59d0f8bbffa27f3316a020"
+  },
+  {
+    "path": ".claude/skills/pr-rules-engine/references/project-contract.md",
+    "bytes": 2612,
+    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+  },
+  {
+    "path": "CLAUDE_TOOLING.md",
+    "bytes": 2814,
+    "sha256": "7df76f1fb05e7918677cdfbd89c36040f0afec18dc6085dbd97fa32410d07217"
+  },
+  {
+    "path": "PANTHEON_TOOLKIT_README.md",
+    "bytes": 4097,
+    "sha256": "bc724dc3f3927488110ceac466c0a7aa1b9859fe5948d0f34e3b06a736691f68"
+  },
+  {
+    "path": "TOOLING_LICENSE.txt",
+    "bytes": 1384,
+    "sha256": "408e3a129756d624d52d0cf054049143b19d0b98006dc8bd9642a2fa3862ef2c"
+  },
+  {
+    "path": "docs/pantheon-v0.3/CHANGELOG_v0_2.md",
+    "bytes": 2044,
+    "sha256": "6da2510ba7f8b91e1615176b8a774428aaae2b6a4435ea15d70df4ed8f123da1"
+  },
+  {
+    "path": "docs/pantheon-v0.3/CHANGELOG_v0_3.md",
+    "bytes": 1742,
+    "sha256": "62245d369fb21963415c75a6d4608d32f6a5906828f29c97739f485fc70c9a56"
+  },
+  {
+    "path": "docs/pantheon-v0.3/CLAUDE.md",
+    "bytes": 4942,
+    "sha256": "16d0e9a1b61c74143920f3f7488f677efc7923ec3859e2d6b7880075e74393ad"
+  },
+  {
+    "path": "docs/pantheon-v0.3/DECISIONS_v0_3.md",
+    "bytes": 2737,
+    "sha256": "d0f56a9050769953ff2ac2ccff894ea90f1dbfc2b9fffca35e8e6d3045f6d989"
+  },
+  {
+    "path": "docs/pantheon-v0.3/README.md",
+    "bytes": 5198,
+    "sha256": "4144e307913dc6596779075ac6345b5b667040c22f772530680a8adced2460de"
+  },
+  {
+    "path": "docs/pantheon-v0.3/campaign/01_the_three_beacons.md",
+    "bytes": 23453,
+    "sha256": "1f03223f02c95c14453b097c10801491bfb78badd3949956462ae6e2c4088ae6"
+  },
+  {
+    "path": "docs/pantheon-v0.3/campaign/02_map_generation_specification.md",
+    "bytes": 19802,
+    "sha256": "6b23666897636b04eb151e86d1821c387d196b48f01ec79baac9acc5f2706844"
+  },
+  {
+    "path": "docs/pantheon-v0.3/content/01_unit_history_and_lore.md",
+    "bytes": 9573,
+    "sha256": "a351d699de5ec5d6ee4939fc607d90f4790f03550b4fe063cc1d6e024b6e7b37"
+  },
+  {
+    "path": "docs/pantheon-v0.3/content/02_animation_behavior_contract.md",
+    "bytes": 4708,
+    "sha256": "0e0a1236b51ecca5fa03c951f438107588a84fb4e5ef792f8dacf5c83c2ec48c"
+  },
+  {
+    "path": "docs/pantheon-v0.3/content/03_exactly_one_upgrade_contract.md",
+    "bytes": 5977,
+    "sha256": "38e3675df91dbbe4361fb024800684b9a13027f5f805656c4d234ada4ed96dfb"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/01_rule_adoption_matrix.md",
+    "bytes": 5073,
+    "sha256": "3f319f2e598e82b6c75265494a79ee2b81ae50d21eabad39940d44207c1fcd53"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/02_economy_calendar_and_recruitment.md",
+    "bytes": 9811,
+    "sha256": "757dc708cbc56b2c05fd79654d22fc8099fe14396ef95f8525ee982a2c319cff"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/03_town_tree_costs_and_growth.md",
+    "bytes": 7793,
+    "sha256": "e65cf00ac7556b432e0fe541348afebd3fb6137d3459a702d7d2f680c1ca38eb"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/04_combat_specification.md",
+    "bytes": 13733,
+    "sha256": "6b38abe0ca99150afe02a9609830074b905519394a3c6c5f6d2ea1191d6402cd"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/05_heroes_logistics_and_magic.md",
+    "bytes": 8867,
+    "sha256": "822c7882f5cc7e1b239749067f808a2704fee2f2ad117453fdbe6773c8df6788"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/06_greek_unit_catalog_values.md",
+    "bytes": 7669,
+    "sha256": "1165cb1f44acb6348c27d3d883f5ebb36ca1cc032eb9e7901c2990ce126f6a5c"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/01_data_contracts.md",
+    "bytes": 7088,
+    "sha256": "01881586e8cab12431e7522e14a3407fe570716d05a17bf8d7f92b4ffc9bbd20"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/02_acceptance_tests_and_examples.md",
+    "bytes": 9766,
+    "sha256": "6a343f3ca0dd3e134b2464e12a09e1ac9d2dcd299d3f5e9340608b88aaccd5be"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/03_demo_migration_and_open_decisions.md",
+    "bytes": 6273,
+    "sha256": "cf0907072fa22fa623f7118ce078b39226b675ce6eaf27077d81206f0e09fa00"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/04_document_validation.md",
+    "bytes": 2711,
+    "sha256": "1d67e668ba743b1cc62e470e5dd32a830d902e2814f3a5553fe147063f907652"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/05_production_campaign_acceptance.md",
+    "bytes": 7054,
+    "sha256": "6d009102cd958ea1f7ddffa97460fbed6cdc618b2084ed611349f225d3190f3e"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/06_documentation_validation_v0_3.md",
+    "bytes": 6104,
+    "sha256": "bac8d1f56f822964de4d3a82d71b4fa75b9e79b045649bc961f27265d22e68e3"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/01_approved_stack_and_architecture.md",
+    "bytes": 17518,
+    "sha256": "18fcf2c9d6c579f31472bc0b48576b87fba35b43a548cedb20f1e4322a090ef8"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/02_visual_and_animation_pipeline.md",
+    "bytes": 15162,
+    "sha256": "c9b5884effd8d90772feab57bb22f08ed393442fd314306d5bf433a0be1310db"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/03_creature_pairs_and_animation_bible.md",
+    "bytes": 15629,
+    "sha256": "27f5fb06f2b6326ef4f883cca46669f4a27b3d2f5aee81ccf50d2368a89f7b93"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/04_environment_towns_ui_and_audio.md",
+    "bytes": 16981,
+    "sha256": "95657f85296dd130186c2b199c602945bf05494f1d0881bfceb625fdf7da3358"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/01_sources_and_version_scope.md",
+    "bytes": 9756,
+    "sha256": "58a70f09148ef73d1bfd3c276993df4fcb4ef4369493e183f0b9219640acf9b2"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/02_heroes3_economy_and_values.md",
+    "bytes": 4496,
+    "sha256": "f56c573159a437fcb445621440e30f624e4d44fd01fbcd97ee5dc2a0d5fce629"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/03_heroes3_combat_and_army_rules.md",
+    "bytes": 4521,
+    "sha256": "c0f140506c5bfe294ff1389e8d2d1133190c628cc066dcada155a19a08eab2c2"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/04_heroes3_town_and_roster_benchmarks.md",
+    "bytes": 4474,
+    "sha256": "63a0a159743446e49c737b2598a2ba00c533084825aee83ca089332ae080b7c8"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/05_production_sources.md",
+    "bytes": 3615,
+    "sha256": "d56a56af878abf802be2370ee1095c4b47327e55756cfe38568cccf48c6fa279"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/01_main_menu_and_pause.md",
+    "bytes": 5494,
+    "sha256": "6c88a9dacf6bf35c5133bd6d0baf90bff212633a7b0c59caa1bb54b6458dcf40"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/02_settings_and_accessibility.md",
+    "bytes": 7797,
+    "sha256": "af9e6027ca76570584b907b07bed02ab95d0268c0aabac02d10a130a58e250f1"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/03_unit_codex_and_inspection.md",
+    "bytes": 8517,
+    "sha256": "5c4de2915dc88b5430a7be331dba7ef73c3337ba2e49976067e569e388b3572e"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/04_screen_inventory_and_navigation.md",
+    "bytes": 4739,
+    "sha256": "38c6ee9049cd04ce6a3452d7d11fec0d6a7ae5a969c20692223b77fabaa71102"
+  },
+  {
+    "path": "docs/tooling/CURATED_TOOLS.md",
+    "bytes": 5568,
+    "sha256": "473c74fab4985288515d5831380432a64701d7662fd1ac4614f6b47f85ef5af4"
+  },
+  {
+    "path": "docs/tooling/LOCAL_AUDIT.md",
+    "bytes": 4162,
+    "sha256": "c2baf4b93ab814fe2e11c455ac44b1274583126d6b11842fb5bc0ef1e70b51c1"
+  },
+  {
+    "path": "docs/tooling/MCP_SETUP.md",
+    "bytes": 9953,
+    "sha256": "24c12103350950c5da5389f48588853dc1facc3ab3ed18c873e6373fb661503a"
+  },
+  {
+    "path": "docs/tooling/QUICKSTART.md",
+    "bytes": 4459,
+    "sha256": "10ff16b46bdb5a1fdf20d3ef847df5d24a576f305c0956098833e8cc8398d110"
+  },
+  {
+    "path": "docs/tooling/SECURITY.md",
+    "bytes": 4351,
+    "sha256": "733db52a406a25cbcadd927fb1adec0def5b1102e01bd26115c8d84776951594"
+  },
+  {
+    "path": "docs/tooling/SOURCES.md",
+    "bytes": 5758,
+    "sha256": "f104b8529aa91ed3cc023c2dea855ddb40dd08b3e8b4e17f8eb6fd3d33693c55"
+  },
+  {
+    "path": "docs/tooling/THIRD_PARTY_NOTICES.md",
+    "bytes": 923,
+    "sha256": "6c37e587bca8d9e09c23422c5a1c633c37d9277f6d8cc22d3ab8825d9f0b949b"
+  },
+  {
+    "path": "docs/tooling/VALIDATION.md",
+    "bytes": 3634,
+    "sha256": "f250889108d98233272714e57e7aac290eaf62faccf8d892f8a9e303892fa460"
+  },
+  {
+    "path": "docs/tooling/WORKFLOWS.md",
+    "bytes": 3424,
+    "sha256": "e5295626f53f5b57a266d1cd14ccb466c74f0b5c01464e3bb2302fc5161652e7"
+  },
+  {
+    "path": "docs/tooling/gitignore.fragment",
+    "bytes": 506,
+    "sha256": "edf4c08dfc7c9bd2ef2b2f78774d3a24ae97f62d351873f1181b4a1f7b17a314"
+  },
+  {
+    "path": "docs/tooling/package-validation.json",
+    "bytes": 189,
+    "sha256": "bc126bffcb1c1a0eab1fc70984587cad52a293ebaf1288c0cea5c55ec695e486"
+  },
+  {
+    "path": "docs/tooling/skill-catalog.json",
+    "bytes": 2541,
+    "sha256": "3bbe56c4d2ed40c9e9715b78005e9917ffd46b45f8b33361dc3af53d9a37cc9a"
+  },
+  {
+    "path": "docs/tooling/skill-evaluation-prompts.json",
+    "bytes": 3384,
+    "sha256": "7297d4fae43a5103e5896f374e1d96c0b1a2bf389a59631fdc06f76ff3c9f156"
+  },
+  {
+    "path": "docs/tooling/source-document-checksums.json",
+    "bytes": 5708,
+    "sha256": "42429160a6a9c014a1141f58c86b7a6eee301638d41258c029f03dea745f6501"
+  },
+  {
+    "path": "docs/tooling/source-registry.json",
+    "bytes": 4110,
+    "sha256": "7ca9ff38759892b70d08e36c63eed7d1b4b16717dae9af9540cee54447489ea6"
+  },
+  {
+    "path": "docs/tooling/toolkit-test-results.tap",
+    "bytes": 6892,
+    "sha256": "fc13c2fcb15e9aaa96b2049e465dae8e91aa619b68109ff648de834a2c40d00d"
+  },
+  {
+    "path": "individual-skills/pr-audio-vfx/skill.zip",
+    "bytes": 3235,
+    "sha256": "d41a59fa7bbe0ae3c8d5e83dc706269d357469a3761898445ddfb0253d79d160"
+  },
+  {
+    "path": "individual-skills/pr-babylon-scene/skill.zip",
+    "bytes": 3303,
+    "sha256": "253af53b36b84b588e82b4ed10cd93632c6dd37650bf78fb7863dbcf012eed1a"
+  },
+  {
+    "path": "individual-skills/pr-campaign-mapgen/skill.zip",
+    "bytes": 3474,
+    "sha256": "4e4b95f577b706e6fa56211d8018243f48290a114cbf6256a93dd2df09d0b169"
+  },
+  {
+    "path": "individual-skills/pr-creature-pipeline/skill.zip",
+    "bytes": 4588,
+    "sha256": "fd4a0e31cc707bfc90d8d61fb2df7b2e6700b76bc50fdef2a0caf505821a8dce"
+  },
+  {
+    "path": "individual-skills/pr-electron-offline/skill.zip",
+    "bytes": 3362,
+    "sha256": "b5b1342d92a24f61e99aae995991152ddcada5627ed30d372de47956f181bc67"
+  },
+  {
+    "path": "individual-skills/pr-local-ai/skill.zip",
+    "bytes": 3254,
+    "sha256": "8d2558ed85fd01de3c972bd367329f995096fab89539cb17b6c5260f2e8df134"
+  },
+  {
+    "path": "individual-skills/pr-project-lead/skill.zip",
+    "bytes": 3360,
+    "sha256": "b47820c875d8993924605e42177f165acbe90f23612d3b6c06f70a2357cffb2c"
+  },
+  {
+    "path": "individual-skills/pr-qa-release/skill.zip",
+    "bytes": 3396,
+    "sha256": "20384460251ec95a8a3d672746b5615a0f043b5aafe0626b8cd3de03a9960407"
+  },
+  {
+    "path": "individual-skills/pr-react-game-ui/skill.zip",
+    "bytes": 3372,
+    "sha256": "300d091e5d8862293bab4e5064a2eb5195d9557c32f8658a3b7757bcd4596222"
+  },
+  {
+    "path": "individual-skills/pr-rules-engine/skill.zip",
+    "bytes": 3502,
+    "sha256": "eca5dc60617c65488538ef29c861ae6a15bcda9a1a8192e3a110936aecb18cd9"
+  },
+  {
+    "path": "tools/pantheon-dev/README.md",
+    "bytes": 1084,
+    "sha256": "2a4e6e7e97e6426c94508fe10e2f659ca07f7be7e24e20ebed4749fe082d6760"
+  },
+  {
+    "path": "tools/pantheon-dev/audit.mjs",
+    "bytes": 782,
+    "sha256": "52ed4fe682a620bb95896b2e522e41b999759abc718ac558f5bac6023f953e8d"
+  },
+  {
+    "path": "tools/pantheon-dev/fixtures/README.md",
+    "bytes": 673,
+    "sha256": "cd5bf8a05a8a7ba554a40b3fea6e384b5572baa437e0fd45d4bfa72f26b84be1"
+  },
+  {
+    "path": "tools/pantheon-dev/fixtures/creature-pairs.valid.json",
+    "bytes": 5215,
+    "sha256": "4e98d9e1015b4e22c88b9b9a86eaa16f3f6ac3ba423d5956745ef013fb4242d1"
+  },
+  {
+    "path": "tools/pantheon-dev/fixtures/metadata-only.gltf",
+    "bytes": 447,
+    "sha256": "c60c2e99c9ba1d2a630a7d6193d302d3218bf7ab9e9c281e27d0ae178141cfcc"
+  },
+  {
+    "path": "tools/pantheon-dev/lib/audit.mjs",
+    "bytes": 10676,
+    "sha256": "153553ee51b3128ba82da8e3bb2cf5a973762c8070d82f9103249889ab7ddafe"
+  },
+  {
+    "path": "tools/pantheon-dev/mcp-templates/README.md",
+    "bytes": 865,
+    "sha256": "2ee9ac2a72c9560440d893796108e85ae2f406fc5caeb03916d0bbaded07263a"
+  },
+  {
+    "path": "tools/pantheon-dev/mcp-templates/babylon-authoring.example.json",
+    "bytes": 466,
+    "sha256": "e46408d79176f42991a3503e9cd823d112f4e91f075710fcd58f9556c3b670a3"
+  },
+  {
+    "path": "tools/pantheon-dev/mcp-templates/blender.example.json",
+    "bytes": 438,
+    "sha256": "4d96aa5e086302a0e8ce48649d9bda2cf65073c74215907d53c0250f30e41b76"
+  },
+  {
+    "path": "tools/pantheon-dev/mcp-templates/context7.example.json",
+    "bytes": 119,
+    "sha256": "c2f66d1c7efbaf2f7b5d8e07676960973fbc7ec110330ca6e4786da7f7744882"
+  },
+  {
+    "path": "tools/pantheon-dev/mcp-templates/github-readonly.example.json",
+    "bytes": 227,
+    "sha256": "c8be8731225461b66188035c0a0a585731c61a7b162d116f140f921f442c0537"
+  },
+  {
+    "path": "tools/pantheon-dev/mcp-templates/local-audit.example.json",
+    "bytes": 237,
+    "sha256": "b4b28919e98b789856eb722186593c7fa6dbbd6d9ea3dd7d92339bb706debcd8"
+  },
+  {
+    "path": "tools/pantheon-dev/mcp-templates/playwright.example.json",
+    "bytes": 268,
+    "sha256": "999aa39d842ed5d7a7e2d59cc281aa96ed96d9f23cb188f351876e2ee9265ff2"
+  },
+  {
+    "path": "tools/pantheon-dev/playwright.config.json",
+    "bytes": 390,
+    "sha256": "95172213ed24a581e7d116e3565fb1177a72c8f9373c7093c05e71adf0fc4da7"
+  },
+  {
+    "path": "tools/pantheon-dev/server.mjs",
+    "bytes": 6047,
+    "sha256": "a1275c0a5a9eebb5f3f3a901f44aaa376ef7720762f537f699b610da05464435"
+  },
+  {
+    "path": "tools/pantheon-dev/setup.mjs",
+    "bytes": 11357,
+    "sha256": "aef0e6613c73a2e6e9b1d273f4ad8913f2e7aeb482e0e71f41ff3c108bc9cf70"
+  },
+  {
+    "path": "tools/pantheon-dev/tests/toolkit.test.mjs",
+    "bytes": 14937,
+    "sha256": "0bd3166a8505e222f3307037e8040e80dad4bb674b0396759d8217d850d37209"
+  },
+  {
+    "path": "tools/pantheon-dev/upstream-skills.mjs",
+    "bytes": 6569,
+    "sha256": "9cba1aeca9fede3cfe58750a08eb559d30b9cfaf7645b2406f1fa0666b59713e"
+  },
+  {
+    "path": "tools/pantheon-dev/validate-gltf.mjs",
+    "bytes": 1984,
+    "sha256": "fa5d29a072eb582168aad9a711eadd3f49c91b7671f641b5fa418cf5fe0201b5"
+  }
+]

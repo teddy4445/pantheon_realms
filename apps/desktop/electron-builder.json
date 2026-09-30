@@ -1,0 +1,32 @@
+{
+  "appId": "com.skanarobotics.pantheonrealms",
+  "productName": "Pantheon Realms",
+  "copyright": "Development build — placeholder art",
+  "directories": { "output": "release", "buildResources": "build-resources" },
+  "files": ["dist/**", "renderer/**", "package.json", "!**/*.map"],
+  "asar": true,
+  "compression": "maximum",
+  "publish": null,
+  "extraMetadata": { "main": "dist/main.cjs", "name": "pantheon-realms", "productName": "Pantheon Realms" },
+  "electronLanguages": ["en-US"],
+  "win": {
+    "target": [{ "target": "nsis", "arch": ["x64"] }],
+    "icon": "build-resources/icon.ico",
+    "artifactName": "Pantheon-Realms-Setup-${version}-x64.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowElevation": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Pantheon Realms",
+    "installerIcon": "build-resources/icon.ico",
+    "uninstallerIcon": "build-resources/icon.ico",
+    "deleteAppDataOnUninstall": false,
+    "runAfterFinish": true
+  },
+  "mac": { "target": ["dmg"], "category": "public.app-category.strategy-games", "icon": "build-resources/icon.png" },
+  "linux": { "target": ["AppImage"], "category": "Game", "icon": "build-resources/icon.png" }
+}

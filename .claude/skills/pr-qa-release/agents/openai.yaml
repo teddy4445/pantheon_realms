@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon QA and Release"
+  short_description: "Collect reproducible gameplay, asset and offline evidence."

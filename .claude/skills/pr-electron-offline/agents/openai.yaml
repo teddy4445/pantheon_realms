@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon Desktop and Offline"
+  short_description: "Package local assets and secure, versioned desktop saves."

@@ -1,0 +1,23 @@
+{
+  "name": "@pr/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "React interface: screens, dialogs, view models and the placeholder asset system.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@pr/ai": "*",
+    "@pr/content": "*",
+    "@pr/platform": "*",
+    "@pr/presentation": "*",
+    "@pr/rules": "*",
+    "@pr/session": "*",
+    "@fontsource/cinzel": "5.3.0",
+    "@fontsource/eb-garamond": "5.3.0",
+    "@fontsource/inter": "5.3.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
+}

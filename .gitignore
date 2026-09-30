@@ -1,0 +1,29 @@
+# Dependencies and build output
+node_modules/
+dist/
+apps/desktop/renderer/
+apps/desktop/release/
+test-results/
+playwright-report/
+*.tsbuildinfo
+
+# Balance tool output (npm run balance)
+balance-reports/
+
+# Local sync staging and OS noise
+.pr-sync/
+.DS_Store
+Thumbs.db
+
+# Local saves/preferences created by development runs
+*.prsave
+
+# Desktop smoke-test screenshots (tools/desktop-smoke.mjs, PR_SMOKE_OUT)
+/desktop-menu.png
+/desktop-save.png
+
+# Local deliverables (installers are built by `npm run desktop:dist`; not source)
+installer/
+*.exe
+*.exe.part*
+Claude outputs/

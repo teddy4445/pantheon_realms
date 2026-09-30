@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "pr-github-readonly": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/readonly",
+      "headers": {
+        "Authorization": "Bearer ${PANTHEON_GITHUB_TOKEN}"
+      }
+    }
+  }
+}

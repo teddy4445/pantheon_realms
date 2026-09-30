@@ -1,0 +1,142 @@
+[
+  {
+    "path": "docs/pantheon-v0.3/CHANGELOG_v0_2.md",
+    "sha256": "6da2510ba7f8b91e1615176b8a774428aaae2b6a4435ea15d70df4ed8f123da1"
+  },
+  {
+    "path": "docs/pantheon-v0.3/CHANGELOG_v0_3.md",
+    "sha256": "62245d369fb21963415c75a6d4608d32f6a5906828f29c97739f485fc70c9a56"
+  },
+  {
+    "path": "docs/pantheon-v0.3/CLAUDE.md",
+    "sha256": "16d0e9a1b61c74143920f3f7488f677efc7923ec3859e2d6b7880075e74393ad"
+  },
+  {
+    "path": "docs/pantheon-v0.3/DECISIONS_v0_3.md",
+    "sha256": "d0f56a9050769953ff2ac2ccff894ea90f1dbfc2b9fffca35e8e6d3045f6d989"
+  },
+  {
+    "path": "docs/pantheon-v0.3/README.md",
+    "sha256": "4144e307913dc6596779075ac6345b5b667040c22f772530680a8adced2460de"
+  },
+  {
+    "path": "docs/pantheon-v0.3/campaign/01_the_three_beacons.md",
+    "sha256": "1f03223f02c95c14453b097c10801491bfb78badd3949956462ae6e2c4088ae6"
+  },
+  {
+    "path": "docs/pantheon-v0.3/campaign/02_map_generation_specification.md",
+    "sha256": "6b23666897636b04eb151e86d1821c387d196b48f01ec79baac9acc5f2706844"
+  },
+  {
+    "path": "docs/pantheon-v0.3/content/01_unit_history_and_lore.md",
+    "sha256": "a351d699de5ec5d6ee4939fc607d90f4790f03550b4fe063cc1d6e024b6e7b37"
+  },
+  {
+    "path": "docs/pantheon-v0.3/content/02_animation_behavior_contract.md",
+    "sha256": "0e0a1236b51ecca5fa03c951f438107588a84fb4e5ef792f8dacf5c83c2ec48c"
+  },
+  {
+    "path": "docs/pantheon-v0.3/content/03_exactly_one_upgrade_contract.md",
+    "sha256": "38e3675df91dbbe4361fb024800684b9a13027f5f805656c4d234ada4ed96dfb"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/01_rule_adoption_matrix.md",
+    "sha256": "3f319f2e598e82b6c75265494a79ee2b81ae50d21eabad39940d44207c1fcd53"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/02_economy_calendar_and_recruitment.md",
+    "sha256": "757dc708cbc56b2c05fd79654d22fc8099fe14396ef95f8525ee982a2c319cff"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/03_town_tree_costs_and_growth.md",
+    "sha256": "e65cf00ac7556b432e0fe541348afebd3fb6137d3459a702d7d2f680c1ca38eb"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/04_combat_specification.md",
+    "sha256": "6b38abe0ca99150afe02a9609830074b905519394a3c6c5f6d2ea1191d6402cd"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/05_heroes_logistics_and_magic.md",
+    "sha256": "822c7882f5cc7e1b239749067f808a2704fee2f2ad117453fdbe6773c8df6788"
+  },
+  {
+    "path": "docs/pantheon-v0.3/design/06_greek_unit_catalog_values.md",
+    "sha256": "1165cb1f44acb6348c27d3d883f5ebb36ca1cc032eb9e7901c2990ce126f6a5c"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/01_data_contracts.md",
+    "sha256": "01881586e8cab12431e7522e14a3407fe570716d05a17bf8d7f92b4ffc9bbd20"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/02_acceptance_tests_and_examples.md",
+    "sha256": "6a343f3ca0dd3e134b2464e12a09e1ac9d2dcd299d3f5e9340608b88aaccd5be"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/03_demo_migration_and_open_decisions.md",
+    "sha256": "cf0907072fa22fa623f7118ce078b39226b675ce6eaf27077d81206f0e09fa00"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/04_document_validation.md",
+    "sha256": "1d67e668ba743b1cc62e470e5dd32a830d902e2814f3a5553fe147063f907652"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/05_production_campaign_acceptance.md",
+    "sha256": "6d009102cd958ea1f7ddffa97460fbed6cdc618b2084ed611349f225d3190f3e"
+  },
+  {
+    "path": "docs/pantheon-v0.3/implementation/06_documentation_validation_v0_3.md",
+    "sha256": "bac8d1f56f822964de4d3a82d71b4fa75b9e79b045649bc961f27265d22e68e3"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/01_approved_stack_and_architecture.md",
+    "sha256": "18fcf2c9d6c579f31472bc0b48576b87fba35b43a548cedb20f1e4322a090ef8"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/02_visual_and_animation_pipeline.md",
+    "sha256": "c9b5884effd8d90772feab57bb22f08ed393442fd314306d5bf433a0be1310db"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/03_creature_pairs_and_animation_bible.md",
+    "sha256": "27f5fb06f2b6326ef4f883cca46669f4a27b3d2f5aee81ccf50d2368a89f7b93"
+  },
+  {
+    "path": "docs/pantheon-v0.3/production/04_environment_towns_ui_and_audio.md",
+    "sha256": "95657f85296dd130186c2b199c602945bf05494f1d0881bfceb625fdf7da3358"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/01_sources_and_version_scope.md",
+    "sha256": "58a70f09148ef73d1bfd3c276993df4fcb4ef4369493e183f0b9219640acf9b2"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/02_heroes3_economy_and_values.md",
+    "sha256": "f56c573159a437fcb445621440e30f624e4d44fd01fbcd97ee5dc2a0d5fce629"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/03_heroes3_combat_and_army_rules.md",
+    "sha256": "c0f140506c5bfe294ff1389e8d2d1133190c628cc066dcada155a19a08eab2c2"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/04_heroes3_town_and_roster_benchmarks.md",
+    "sha256": "63a0a159743446e49c737b2598a2ba00c533084825aee83ca089332ae080b7c8"
+  },
+  {
+    "path": "docs/pantheon-v0.3/reference/05_production_sources.md",
+    "sha256": "d56a56af878abf802be2370ee1095c4b47327e55756cfe38568cccf48c6fa279"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/01_main_menu_and_pause.md",
+    "sha256": "6c88a9dacf6bf35c5133bd6d0baf90bff212633a7b0c59caa1bb54b6458dcf40"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/02_settings_and_accessibility.md",
+    "sha256": "af9e6027ca76570584b907b07bed02ab95d0268c0aabac02d10a130a58e250f1"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/03_unit_codex_and_inspection.md",
+    "sha256": "5c4de2915dc88b5430a7be331dba7ef73c3337ba2e49976067e569e388b3572e"
+  },
+  {
+    "path": "docs/pantheon-v0.3/screens/04_screen_inventory_and_navigation.md",
+    "sha256": "38c6ee9049cd04ce6a3452d7d11fec0d6a7ae5a969c20692223b77fabaa71102"
+  }
+]

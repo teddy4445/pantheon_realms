@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "pr-playwright": {
+      "type": "stdio",
+      "command": "${PANTHEON_NODE}",
+      "args": [
+        "${PANTHEON_PLAYWRIGHT_ENTRY}",
+        "--config",
+        "${PANTHEON_ROOT}/tools/pantheon-dev/playwright.config.json"
+      ]
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "status": "Authored evaluation cases; model-routing evaluations have NOT been run.",
+  "cases": [
+    {
+      "skill": "pr-project-lead",
+      "should_trigger": [
+        "Plan the first complete Hoplite/Veteran Hoplite implementation slice.",
+        "Review a proposal to move combat rules into Babylon animation callbacks."
+      ],
+      "should_not_trigger": "Write an unrelated wedding speech."
+    },
+    {
+      "skill": "pr-rules-engine",
+      "should_trigger": [
+        "Implement local upgrade transactions without duplicating growth.",
+        "Fix repeated battle-result XP after saving and loading."
+      ],
+      "should_not_trigger": "Create a marketing illustration without rule changes."
+    },
+    {
+      "skill": "pr-campaign-mapgen",
+      "should_trigger": [
+        "Implement M02 generation without a ridge-pass bypass.",
+        "Investigate a seed that puts an upgrade resource behind its own objective."
+      ],
+      "should_not_trigger": "Change only a town music volume slider."
+    },
+    {
+      "skill": "pr-local-ai",
+      "should_trigger": [
+        "Implement the finite M03 patrol using legal observation data.",
+        "Move tactical search off the UI thread and reject stale results."
+      ],
+      "should_not_trigger": "Write a sourced mythology biography without AI changes."
+    },
+    {
+      "skill": "pr-babylon-scene",
+      "should_trigger": [
+        "Build a reusable tactical GLB stack presenter with event-driven animation.",
+        "Create a local Babylon particle graph for beacon activation without changing quest state."
+      ],
+      "should_not_trigger": "Change creature recruitment prices only."
+    },
+    {
+      "skill": "pr-react-game-ui",
+      "should_trigger": [
+        "Implement the Griffin bestiary comparison and preserve recruitment quantity on Back.",
+        "Add settings Apply/Cancel and reduced-motion behavior."
+      ],
+      "should_not_trigger": "Replace the game with a SaaS pricing page."
+    },
+    {
+      "skill": "pr-creature-pipeline",
+      "should_trigger": [
+        "Produce the Hoplite and Veteran pair from the approved brief.",
+        "Audit Windcrest flight and unlimited-retaliation presentations without adding a wind spell."
+      ],
+      "should_not_trigger": "Create a third Griffin promotion as an automatic upgrade."
+    },
+    {
+      "skill": "pr-audio-vfx",
+      "should_trigger": [
+        "Design event-driven music transitions between town, map and battle.",
+        "Stop Griffin preview audio and particles when leaving the bestiary."
+      ],
+      "should_not_trigger": "Change the authoritative Lightning damage formula using a particle collision."
+    },
+    {
+      "skill": "pr-electron-offline",
+      "should_trigger": [
+        "Audit packaged Draco decoding for a cold offline Electron install.",
+        "Implement narrow save import IPC and reject path traversal."
+      ],
+      "should_not_trigger": "Enable unrestricted renderer shell execution for convenience."
+    },
+    {
+      "skill": "pr-qa-release",
+      "should_trigger": [
+        "Create a regression checklist for all three missions and paired creatures.",
+        "Review whether a web screenshot and GLB metadata check justify an offline release claim."
+      ],
+      "should_not_trigger": "Write a positive test report without running or observing any tests."
+    }
+  ]
+}

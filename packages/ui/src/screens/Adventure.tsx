@@ -1,0 +1,686 @@
+/**
+ * S06 Adventure Map. The Babylon view shows committed world state; every
+ * movement, path and legality question is answered by the rules (quoteMovement,
+ * reachableTiles, tileRole) and every change is a command.
+ *
+ * Click a tile once to preview the path, again to move. Encounters open the
+ * pre-battle dialog. Right-click pins tile information.
+ */
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  cellIndex,
+  hexEquals,
+  missionSite,
+  parseHexKey,
+  quoteMovement,
+  reachableTiles,
+  siteAt,
+  visibleCells,
+  movementBudget,
+  maxMana,
+  missionObjectiveDefs,
+  adventureSpellsOf,
+  quoteAdventureSpell,
+  type ContentCatalog,
+  type HeroState,
+  type HexCoord,
+  type MatchState,
+} from '@pr/rules';
+import { AdventureSceneController, TERRAIN_COLORS, type AdventureView } from '@pr/presentation';
+import { useStore } from '../app/context';
+import type { AppStore } from '../app/store';
+import { adventurePlaybackFactor } from '../app/preferences';
+import { SceneViewport, projectors, toPage } from '../scene/SceneHost';
+import { Button, Chip, Bar, Panel } from '../components/kit';
+import { HeroPortrait } from '../components/art';
+import { ArmyStrip, ResourceBar } from '../components/game';
+import { Icon } from '../assets/icons';
+import {
+  dailyIncome,
+  dayLabel,
+  guardStrength,
+  heroStrength,
+  humanPlayer,
+  playerHeroes,
+  siteArchetype,
+  siteKindLabel,
+  terrainLabel,
+  threatLabel,
+  townAtHero,
+} from '../app/view';
+
+// ---------------------------------------------------------------------------
+// View model
+// ---------------------------------------------------------------------------
+
+function buildView(
+  catalog: ContentCatalog,
+  state: MatchState,
+  playerId: string,
+  selected: HeroState | null,
+  target: HexCoord | null,
+  showReach: boolean,
+  grid: AdventureView['grid'],
+): AdventureView {
+  const explored = state.fog[playerId]?.explored ?? [];
+  const visible = visibleCells(catalog, state, playerId);
+  const map = state.world.map;
+  const mission = catalog.missions[state.mission.missionId];
+  const sites = (mission?.sites ?? []).map((def) => {
+    const st = state.world.sites[def.id];
+    const idx = cellIndex(map, def.coord);
+    const shown = explored[idx] === 1 || state.mission.revealedSiteIds.includes(def.id);
+    let owner = st?.owner ?? null;
+    if (def.kind.type === 'town') owner = state.towns[def.kind.townId]?.ownerId ?? null;
+    const guardArmy = st?.guard ?? def.guard?.army ?? [];
+    const guardCreature = def.guard && st && !st.cleared ? catalog.creatures[guardArmy[0]?.creatureId ?? ''] : undefined;
+    return {
+      id: def.id,
+      coord: def.coord,
+      archetype: siteArchetype(def),
+      name: def.name,
+      shown,
+      ownerColor: owner ? (state.players[owner]?.color ?? null) : null,
+      ownerShape: owner === playerId ? ('square' as const) : ('pennant' as const),
+      guardBody: guardCreature?.presentation.bodyProfile ?? null,
+      guardUpgraded: guardCreature?.form === 'upgraded',
+      lit: !!st?.activated,
+      open: !!st?.open,
+      claimed: !!st?.claimed,
+    };
+  });
+  const heroes = Object.values(state.heroes)
+    .filter((h) => h.status === 'active')
+    .map((h) => ({
+      id: h.id,
+      coord: h.position,
+      color: state.players[h.ownerId]?.color ?? '#999',
+      shown: h.ownerId === playerId || visible.has(cellIndex(map, h.position)),
+      selected: selected?.id === h.id,
+      inTown: !!townAtHero(state, h),
+    }));
+  let reachable: HexCoord[] | null = null;
+  if (selected && showReach) reachable = [...reachableTiles(catalog, state, selected.id).keys()].map(parseHexKey);
+  let path: AdventureView['path'] = null;
+  if (selected && target) {
+    const q = quoteMovement(catalog, state, selected.id, target);
+    if (q.reachable) path = { steps: q.path, stopIndex: q.stopIndex, encounter: q.endsInEncounter };
+  }
+  return {
+    map,
+    explored,
+    visible,
+    fogKey: `${state.revision}|${playerId}`,
+    sites,
+    heroes,
+    reachable,
+    reachKey: `${state.revision}|${selected?.id ?? ''}|${showReach}`,
+    path,
+    grid,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Minimap
+// ---------------------------------------------------------------------------
+
+function Minimap({ catalog, state, playerId, onPick }: { catalog: ContentCatalog; state: MatchState; playerId: string; onPick: (c: HexCoord) => void }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const map = state.world.map;
+  const cell = 7;
+  const w = Math.ceil((map.width + map.height / 2) * cell);
+  const h = Math.ceil(map.height * cell * 0.87 + cell);
+  useEffect(() => {
+    const cv = ref.current;
+    const ctx = cv?.getContext('2d');
+    if (!cv || !ctx) return;
+    ctx.fillStyle = '#081222';
+    ctx.fillRect(0, 0, w, h);
+    const explored = state.fog[playerId]?.explored ?? [];
+    for (let r = 0; r < map.height; r++) {
+      for (let q = 0; q < map.width; q++) {
+        const i = r * map.width + q;
+        if (explored[i] !== 1) continue;
+        const code = map.terrain[i] ?? 'p';
+        const terrain = ({ p: 'plains', f: 'forest', r: 'rough', s: 'marsh', m: 'mountain', w: 'water' } as const)[code as 'p'] ?? 'plains';
+        ctx.fillStyle = TERRAIN_COLORS[terrain];
+        const x = (q + r / 2) * cell;
+        const y = r * cell * 0.87;
+        ctx.fillRect(x, y, cell, cell);
+      }
+    }
+    for (const t of Object.values(state.towns)) {
+      if (explored[cellIndex(map, t.coord)] !== 1) continue;
+      ctx.fillStyle = t.ownerId ? (state.players[t.ownerId]?.color ?? '#aaa') : '#aaa';
+      const x = (t.coord.q + t.coord.r / 2) * cell;
+      const y = t.coord.r * cell * 0.87;
+      ctx.fillRect(x - 2, y - 2, cell + 4, cell + 4);
+      ctx.strokeStyle = '#f5e4b7';
+      ctx.strokeRect(x - 2, y - 2, cell + 4, cell + 4);
+    }
+    const vis = visibleCells(catalog, state, playerId);
+    for (const hero of Object.values(state.heroes)) {
+      if (hero.status !== 'active') continue;
+      if (hero.ownerId !== playerId && !vis.has(cellIndex(map, hero.position))) continue;
+      ctx.fillStyle = state.players[hero.ownerId]?.color ?? '#fff';
+      const x = (hero.position.q + hero.position.r / 2) * cell + cell / 2;
+      const y = hero.position.r * cell * 0.87 + cell / 2;
+      ctx.beginPath();
+      ctx.arc(x, y, cell * 0.7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+    }
+  }, [catalog, state, playerId, map, w, h]);
+  return (
+    <canvas
+      ref={ref}
+      width={w}
+      height={h}
+      className="minimap"
+      aria-label="Minimap — click to move the camera"
+      onClick={(e) => {
+        const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
+        const px = ((e.clientX - rect.left) / rect.width) * w;
+        const py = ((e.clientY - rect.top) / rect.height) * h;
+        const r = Math.round(py / (cell * 0.87) - 0.5);
+        const q = Math.round(px / cell - r / 2 - 0.5);
+        const c = { q: Math.max(0, Math.min(map.width - 1, q)), r: Math.max(0, Math.min(map.height - 1, r)) };
+        onPick(c);
+      }}
+    />
+  );
+}
+
+
+// ---------------------------------------------------------------------------
+// Tile information
+// ---------------------------------------------------------------------------
+
+function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchState; c: HexCoord; hero: HeroState | null }) {
+  const catalog = store.catalog;
+  const playerId = store.session!.humanPlayerId;
+  const site = siteAt(catalog, state, c);
+  const other = Object.values(state.heroes).find((h) => h.status === 'active' && hexEquals(h.position, c));
+  const vis = visibleCells(catalog, state, playerId).has(cellIndex(state.world.map, c));
+  const quote = hero && !hexEquals(hero.position, c) ? quoteMovement(catalog, state, hero.id, c) : null;
+  return (
+    <div className="tile-info">
+      <div className="tile-info__title">{site ? site.def.name : terrainLabel(state, c)}</div>
+      <div className="dim small">
+        {site ? `${siteKindLabel(site.def)} · ${terrainLabel(state, c)}` : `Tile ${c.q}, ${c.r}`}
+        {!vis ? ' · remembered' : ''}
+      </div>
+      {site ? <p className="small">{site.def.description}</p> : null}
+      {site?.def.kind.type === 'resource_site' || site?.def.kind.type === 'town' ? (
+        <div className="small">
+          Owner:{' '}
+          {(() => {
+            const o = site.def.kind.type === 'town' ? state.towns[site.def.kind.townId]?.ownerId : site.state.owner;
+            return o ? (o === playerId ? 'You' : (state.players[o]?.name ?? o)) : 'Unowned';
+          })()}
+        </div>
+      ) : null}
+      {site?.def.guard && !site.state.cleared ? (
+        <div className="tile-info__guard">
+          <div>
+            <Icon name="attack" className="inline-icon" /> <strong>{site.def.guard.label}</strong>
+          </div>
+          <div className="row gap wrap">
+            {(site.state.guard ?? site.def.guard.army).map((s, i) => (
+              <Chip key={i}>
+                {s.count} {s.count === 1 ? catalog.creatures[s.creatureId]?.name : catalog.creatures[s.creatureId]?.pluralName}
+              </Chip>
+            ))}
+          </div>
+          {hero ? (
+            (() => {
+              const t = threatLabel(catalog, heroStrength(catalog, hero), guardStrength(catalog, state, site.def.id));
+              return (
+                <div className="small">
+                  Estimate vs {hero.name}: <Chip tone={t.tone}>{t.text}</Chip> <span className="faint">(heuristic)</span>
+                </div>
+              );
+            })()
+          ) : null}
+        </div>
+      ) : site?.def.guard ? (
+        <div className="small success">Guards defeated</div>
+      ) : null}
+      {site?.def.kind.type === 'activation' ? <div className="small">{site.state.activated ? 'Restored' : 'Not yet restored'}</div> : null}
+      {site?.def.kind.type === 'pickup' ? <div className="small">{site.state.claimed ? 'Already collected' : 'Uncollected'}</div> : null}
+      {site?.def.kind.type === 'gate' ? <div className="small">{site.state.open ? 'Open' : 'Sealed'}</div> : null}
+      {other && (vis || other.ownerId === playerId) ? (
+        <div className="small">
+          <Icon name="hero" className="inline-icon" /> {other.name} ({other.ownerId === playerId ? 'yours' : (state.players[other.ownerId]?.name ?? 'hostile')})
+        </div>
+      ) : null}
+      {quote ? (
+        quote.reachable ? (
+          <div className="small">
+            Route: {quote.totalCost} movement {quote.reachesDestinationToday ? <Chip tone="ok">Today</Chip> : <Chip tone="warn">Beyond today</Chip>}
+            {quote.endsInEncounter ? <Chip tone="bad">Battle</Chip> : null}
+          </div>
+        ) : (
+          <div className="small danger">{quote.reason}</div>
+        )
+      ) : null}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Screen
+// ---------------------------------------------------------------------------
+
+export function AdventureScreen() {
+  const store = useStore();
+  const session = store.session!;
+  const state = session.state;
+  const catalog = store.catalog;
+  const player = humanPlayer(state);
+  const playerId = player.id;
+  const heroes = playerHeroes(state, playerId);
+  const selected = heroes.find((h) => h.id === store.selectedHeroId) ?? heroes[0] ?? null;
+  const [target, setTarget] = useState<HexCoord | null>(null);
+  const [hover, setHover] = useState<HexCoord | null>(null);
+  const [pinned, setPinned] = useState<HexCoord | null>(null);
+  const [dayBanner, setDayBanner] = useState<string | null>(null);
+  /** Adventure spell awaiting a target tile (Divine Sight). */
+  const [casting, setCasting] = useState<string | null>(null);
+  const ctrl = useRef<AdventureSceneController | null>(null);
+  const humanTurn = state.activePlayerId === playerId && !state.battle && state.outcome.status === 'running';
+  const pending = state.pendingDecisions.find((d) => state.heroes[d.heroId]?.ownerId === playerId);
+  const grid = store.prefs.hexOverlay;
+
+  useEffect(() => {
+    if (selected && store.selectedHeroId !== selected.id) store.selectedHeroId = selected.id;
+  }, [selected, store]);
+
+  const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? target : null, humanTurn, grid), [catalog, state, playerId, selected, target, humanTurn, grid]);
+
+  useEffect(() => {
+    ctrl.current?.update(view);
+  }, [view]);
+
+  // Presentation of committed events (movement playback, day banner). Never alters state.
+  useEffect(() => {
+    return store.registerPresenter(async (events, source) => {
+      const c = ctrl.current;
+      const moves = events.filter((e) => e.kind === 'HeroMoved');
+      const day = events.find((e) => e.kind === 'DayStarted');
+      if (day && day.kind === 'DayStarted') {
+        setDayBanner(`Week ${day.week} · Day ${day.dayOfWeek}${day.dayOfWeek === 1 ? ' — a new week: creatures grow' : ''}`);
+        setTimeout(() => setDayBanner(null), 2200);
+      }
+      if (!c) return;
+      for (const m of moves) {
+        if (m.kind !== 'HeroMoved') continue;
+        const hero = store.session?.state.heroes[m.heroId];
+        const mine = hero?.ownerId === store.session?.humanPlayerId;
+        const vis = store.session ? visibleCells(catalog, store.session.state, store.session.humanPlayerId) : new Set<number>();
+        const seen = mine || m.path.some((p) => vis.has(cellIndex(store.session!.state.world.map, p)));
+        if (!seen) continue;
+        await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true);
+      }
+    });
+  }, [store, catalog]);
+
+  const onController = useCallback(
+    (c: AdventureSceneController | null) => {
+      ctrl.current = c;
+      projectors.adventure = c ? (q, r) => toPage(c.projectHex({ q, r })) : undefined;
+      if (c) {
+        c.update(view);
+        const focus = store.focusRequest ?? selected?.position ?? null;
+        store.focusRequest = null;
+        if (focus) c.focus(focus, false);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  const selectHero = (h: HeroState) => {
+    store.selectedHeroId = h.id;
+    setTarget(null);
+    ctrl.current?.focus(h.position);
+    store.notify();
+  };
+
+  const tryMove = (dest: HexCoord) => {
+    if (!selected) return;
+    const q = quoteMovement(catalog, state, selected.id, dest);
+    if (!q.reachable) {
+      store.toast(q.reason ?? 'No route', 'error');
+      return;
+    }
+    if (q.endsInEncounter && q.stopIndex === q.path.length - 1) {
+      store.openOverlay({ kind: 'encounter', heroId: selected.id, dest });
+      return;
+    }
+    if (q.stopIndex < 0) {
+      store.toast(`${selected.name} has no movement left today`, 'error');
+      return;
+    }
+    const rej = store.dispatch({ kind: 'MoveHero', heroId: selected.id, destination: dest });
+    if (!rej && q.reachesDestinationToday) setTarget(null);
+  };
+
+  const onTileClick = (c: HexCoord, button: number) => {
+    const s = store.session?.state;
+    if (!s) return;
+    if (button === 2) {
+      setPinned((p) => (p && hexEquals(p, c) ? null : c));
+      setTarget(null);
+      return;
+    }
+    if (!humanTurn) return;
+    if (casting) {
+      const sel = playerHeroes(s, playerId).find((h) => h.id === store.selectedHeroId) ?? null;
+      if (!sel) return;
+      const q = quoteAdventureSpell(catalog, s, playerId, sel.id, casting, c);
+      if (!q.legal) {
+        store.toast(q.reason ?? 'Cannot cast there', 'error');
+        return;
+      }
+      if (!store.dispatch({ kind: 'CastAdventureSpell', heroId: sel.id, spellId: casting, target: c })) {
+        store.toast(`${q.spell?.name ?? 'Spell'}: the area is revealed until the next dawn`);
+        setCasting(null);
+      }
+      return;
+    }
+    const mine = playerHeroes(s, playerId).find((h) => hexEquals(h.position, c));
+    const sel = playerHeroes(s, playerId).find((h) => h.id === store.selectedHeroId) ?? null;
+    if (mine && (!sel || mine.id !== sel.id)) {
+      selectHero(mine);
+      return;
+    }
+    if (sel && hexEquals(sel.position, c)) {
+      const town = townAtHero(s, sel);
+      if (town && town.ownerId === playerId) {
+        store.goto('town', { townId: town.id });
+        return;
+      }
+      const site = siteAt(catalog, s, c);
+      if (site && site.def.kind.type === 'activation' && !site.state.activated) {
+        store.openOverlay({ kind: 'activate', heroId: sel.id, siteId: site.def.id });
+        return;
+      }
+      store.goto('hero', { heroId: sel.id });
+      return;
+    }
+    if (target && hexEquals(target, c)) tryMove(c);
+    else setTarget(c);
+  };
+
+  // Keep callbacks fresh for the controller (created once).
+  const clickRef = useRef(onTileClick);
+  clickRef.current = onTileClick;
+
+  const factory = useCallback(
+    (engine: ConstructorParameters<typeof AdventureSceneController>[0], canvas: HTMLCanvasElement) =>
+      new AdventureSceneController(engine, canvas, {
+        onTileClick: (c, b) => clickRef.current(c, b),
+        onTileHover: (c) => setHover(c),
+      }),
+    [],
+  );
+
+  const endDay = () => {
+    const s = store.session?.state;
+    if (!s) return;
+    const canStillMove = playerHeroes(s, playerId).some((h) => reachableTiles(catalog, s, h.id).size > 0);
+    const go = () => {
+      setTarget(null);
+      store.dispatch({ kind: 'EndTurn' });
+    };
+    if (canStillMove && store.prefs.confirmEndDayWithMovement) {
+      store.confirm('End the day?', 'Some heroes can still move today.', 'End Day', go);
+    } else go();
+  };
+
+  // Keyboard: camera pan/zoom, Space = continue along path, Enter = end day, Tab = next hero.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (store.overlays.length || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (casting && e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        setCasting(null);
+        return;
+      }
+      const t = e.target as HTMLElement;
+      if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') return;
+      const c = ctrl.current;
+      const k = e.key;
+      if (c && (k === 'ArrowLeft' || k === 'a')) c.pan(-1.2, 0);
+      else if (c && (k === 'ArrowRight' || k === 'd')) c.pan(1.2, 0);
+      else if (c && (k === 'ArrowUp' || k === 'w')) c.pan(0, 1.2);
+      else if (c && (k === 'ArrowDown' || k === 's')) c.pan(0, -1.2);
+      else if (c && (k === '+' || k === '=')) c.zoom(-2);
+      else if (c && (k === '-' || k === '_')) c.zoom(2);
+      else if (k === ' ' && target && humanTurn) {
+        e.preventDefault();
+        tryMove(target);
+      } else if (k === 'Enter' && humanTurn) {
+        e.preventDefault();
+        endDay();
+      } else if (k === 'Tab' && heroes.length > 1) {
+        e.preventDefault();
+        const i = heroes.findIndex((h) => h.id === selected?.id);
+        selectHero(heroes[(i + 1) % heroes.length]!);
+      } else if (k === 'Home' && selected && c) c.focus(selected.position);
+      else return;
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+
+  const income = dailyIncome(catalog, state, playerId);
+  const day = dayLabel(state);
+  const objectives = missionObjectiveDefs(catalog, state).filter((o) => o.category === 'primary');
+  const info = pinned ?? hover;
+  const activeName = state.players[state.activePlayerId]?.name ?? state.activePlayerId;
+  const mission = catalog.missions[state.mission.missionId];
+
+  return (
+    <div className="adventure">
+      <SceneViewport factory={factory} onController={onController} className="adventure__scene" label="Adventure map. Click a tile to preview a route, click again to move." />
+
+      <header className="adv-top">
+        <div className="adv-top__mission">
+          <div className="adv-top__name">{mission?.name ?? state.scenario.name}</div>
+          <div className="dim small">{state.scenario.campaignId ? catalog.campaigns[state.scenario.campaignId]?.name : 'Skirmish'}</div>
+        </div>
+        <ResourceBar wallet={player.wallet} income={income} />
+        <div className="daybox daybox--large" title={`Day ${day.day} of the mission`}>
+          <Icon name="hourglass" />
+          <div>
+            <div>{day.text}</div>
+            <div className="faint small">Day {day.day}</div>
+          </div>
+        </div>
+      </header>
+
+      {!humanTurn && state.outcome.status === 'running' && !state.battle ? (
+        <div className="turn-banner panel" role="status" data-testid="ai-turn">
+          <span className="spinner" /> {activeName} is taking their turn…
+        </div>
+      ) : null}
+      {dayBanner ? (
+        <div className="day-banner" role="status">
+          {dayBanner}
+        </div>
+      ) : null}
+
+      <aside className="adv-left">
+        <Panel title="Heroes" className="adv-list" headerIcon="hero">
+          {heroes.map((h) => {
+            const budget = movementBudget(catalog, state, h);
+            return (
+              <button key={h.id} type="button" className={`hero-tab ${selected?.id === h.id ? 'is-selected' : ''}`} onClick={() => selectHero(h)} onDoubleClick={() => store.goto('hero', { heroId: h.id })} data-testid={`hero-tab-${h.id}`}>
+                <HeroPortrait catalog={catalog} definitionId={h.definitionId} name={h.name} size="3rem" />
+                <span className="hero-tab__bars">
+                  <Bar value={h.movementPoints} max={Math.max(budget.total, h.movementPoints)} kind="move" label={`${h.name} movement`} />
+                  <Bar value={h.mana} max={Math.max(1, maxMana(catalog, state, h))} kind="mana" label={`${h.name} mana`} />
+                </span>
+              </button>
+            );
+          })}
+        </Panel>
+        <Panel title="Towns" className="adv-list" headerIcon="town">
+          {Object.values(state.towns)
+            .filter((t) => t.ownerId === playerId)
+            .map((t) => (
+              <button key={t.id} type="button" className="town-tab" onClick={() => store.goto('town', { townId: t.id })} onContextMenu={(e) => { e.preventDefault(); ctrl.current?.focus(t.coord); }} data-testid={`town-tab-${t.id}`}>
+                <Icon name="town" />
+                <span>{t.name}</span>
+                {t.buildUsedDay !== state.day ? <Chip tone="ok" title="A building can be constructed today">Build</Chip> : null}
+              </button>
+            ))}
+        </Panel>
+        {store.prefs.minimap ? (
+          <Panel className="adv-minimap">
+            <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} />
+          </Panel>
+        ) : null}
+      </aside>
+
+      <aside className="adv-right">
+        {selected ? (
+          <Panel title={selected.name} className="adv-hero" headerIcon="hero" actions={<Button size="small" onClick={() => store.goto('hero', { heroId: selected.id })}>Details</Button>}>
+            <div className="adv-hero__top">
+              <HeroPortrait catalog={catalog} definitionId={selected.definitionId} name={selected.name} size="4.4rem" />
+              <div className="adv-hero__stats">
+                <div>
+                  Level {selected.level} {catalog.heroClasses[selected.classId]?.name}
+                </div>
+                <div className="row gap small">
+                  <span title="Attack"><Icon name="attack" className="inline-icon" /> {selected.attributes.attack}</span>
+                  <span title="Defense"><Icon name="defense" className="inline-icon" /> {selected.attributes.defense}</span>
+                  <span title="Power"><Icon name="power" className="inline-icon" /> {selected.attributes.power}</span>
+                  <span title="Knowledge"><Icon name="knowledge" className="inline-icon" /> {selected.attributes.knowledge}</span>
+                </div>
+                <div className="small">
+                  <Icon name="movement" className="inline-icon" /> Movement <span className="num">{selected.movementPoints}</span> / {movementBudget(catalog, state, selected).total}
+                </div>
+                <div className="small">
+                  <Icon name="mana" className="inline-icon" /> Mana <span className="num">{selected.mana}</span> / {maxMana(catalog, state, selected)}
+                </div>
+              </div>
+            </div>
+            {adventureSpellsOf(catalog, state, selected.id).length > 0 ? (
+              <div className="adv-spells row gap">
+                {adventureSpellsOf(catalog, state, selected.id).map((sp) => {
+                  const q = quoteAdventureSpell(catalog, state, playerId, selected.id, sp.id, null);
+                  return (
+                    <Button
+                      key={sp.id}
+                      size="small"
+                      icon="eye"
+                      variant={casting === sp.id ? 'primary' : undefined}
+                      disabled={!humanTurn || !q.legal}
+                      disabledReason={!humanTurn ? 'Not your turn' : q.reason}
+                      onClick={() => setCasting((c) => (c === sp.id ? null : sp.id))}
+                      title={sp.summary}
+                      data-testid={`cast-${sp.id}`}
+                    >
+                      {sp.name} ({sp.manaCost})
+                    </Button>
+                  );
+                })}
+              </div>
+            ) : null}
+            <ArmyStrip catalog={catalog} army={selected.army} label={`${selected.name}'s army`} onSlot={(i) => { const s = selected.army.slots[i]; if (s) store.openOverlay({ kind: 'stack-info', creatureId: s.creatureId, count: s.count }); }} />
+          </Panel>
+        ) : (
+          <Panel title="No hero">
+            <p className="dim">You have no active hero.</p>
+          </Panel>
+        )}
+        {info ? (
+          <Panel title={pinned ? 'Tile (pinned)' : 'Tile'} className="adv-tile" actions={pinned ? <Button size="small" variant="ghost" icon="close" onClick={() => setPinned(null)} aria-label="Unpin" /> : undefined}>
+            <TileInfo store={store} state={state} c={info} hero={selected} />
+          </Panel>
+        ) : null}
+        <Panel title="Objectives" className="adv-objectives" headerIcon="journal" actions={<Button size="small" onClick={() => store.goto('journal')}>Journal</Button>}>
+          <ul className="objective-mini">
+            {objectives.map((o) => {
+              const st = state.mission.objectives[o.id]?.status ?? 'locked';
+              if (st === 'locked') return null;
+              return (
+                <li key={o.id} className={`is-${st}`}>
+                  <Icon name={st === 'completed' ? 'check' : st === 'failed' ? 'close' : 'flag'} className="inline-icon" />
+                  <span>{o.title}</span>
+                  {o.markerSiteId ? (
+                    <button type="button" className="link" onClick={() => { const def = missionSite(catalog, state, o.markerSiteId!); if (def && (state.fog[playerId]?.explored[cellIndex(state.world.map, def.coord)] === 1 || state.mission.revealedSiteIds.includes(def.id))) ctrl.current?.focus(def.coord); else store.toast('Location not yet discovered'); }} aria-label={`Show ${o.title} on map`}>
+                      <Icon name="eye" className="inline-icon" />
+                    </button>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ul>
+        </Panel>
+      </aside>
+
+      <footer className="adv-bottom panel">
+        <div className="adv-bottom__tools">
+          <Button icon="hero" onClick={() => selected && store.goto('hero', { heroId: selected.id })} disabled={!selected} title="Hero (H)">
+            Hero
+          </Button>
+          <Button icon="town" onClick={() => { const t = Object.values(state.towns).find((x) => x.ownerId === playerId); if (t) store.goto('town', { townId: t.id }); }} title="Town (T)">
+            Town
+          </Button>
+          <Button icon="pantheon" onClick={() => store.goto('pantheon')} title="Pantheon (P)">
+            Pantheon
+          </Button>
+          <Button icon="journal" onClick={() => store.goto('journal')} title="Journal (J)">
+            Journal
+          </Button>
+          <Button icon="overview" onClick={() => store.goto('overview')} title="Overview (O)">
+            Overview
+          </Button>
+          <Button icon="bestiary" onClick={() => store.goto('encyclopedia')} title="Encyclopedia (B)">
+            Bestiary
+          </Button>
+          <Button icon="pause" onClick={() => store.openOverlay({ kind: 'pause' })} title="Menu (Esc)">
+            Menu
+          </Button>
+        </div>
+        <div className="adv-bottom__status">
+          {casting ? (
+            <span className="small" data-testid="casting-hint">
+              {catalog.spells[casting]?.name}: click a tile you have already explored (radius {catalog.spells[casting]?.effect.type === 'reveal_radius' ? catalog.spells[casting]!.effect.radius : 0}) · Esc to cancel{' '}
+              <Button size="small" onClick={() => setCasting(null)}>
+                Cancel
+              </Button>
+            </span>
+          ) : pending ? (
+            <Button variant="primary" icon="star" onClick={() => store.goto('level-up')} data-testid="levelup-pending">
+              Level up: {state.heroes[pending.heroId]?.name}
+            </Button>
+          ) : target && selected ? (
+            <span className="small">
+              {(() => {
+                const q = quoteMovement(catalog, state, selected.id, target);
+                if (!q.reachable) return <span className="danger">{q.reason}</span>;
+                return (
+                  <>
+                    Route {q.totalCost} · {q.reachesDestinationToday ? 'arrives today' : `${q.stopIndex + 1}/${q.path.length} steps today`} {q.endsInEncounter ? '· ends in battle' : ''} — click again or press Space
+                  </>
+                );
+              })()}
+            </span>
+          ) : (
+            <span className="dim small">Click a tile to plan a route · right-click for details · drag to pan · wheel to zoom</span>
+          )}
+        </div>
+        <Button variant="primary" size="large" icon="hourglass" onClick={endDay} disabled={!humanTurn || !!pending} disabledReason={pending ? 'Resolve the pending level-up first' : 'Wait for the other side'} data-testid="end-day">
+          End Day
+        </Button>
+      </footer>
+    </div>
+  );
+}

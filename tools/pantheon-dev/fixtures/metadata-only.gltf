@@ -1,0 +1,21 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Pantheon audit test fixture - NOT a usable game model"
+  },
+  "animations": [
+    {
+      "name": "idle_a",
+      "channels": [],
+      "samplers": []
+    },
+    {
+      "name": "attack_melee_a",
+      "channels": [],
+      "samplers": []
+    }
+  ],
+  "extras": {
+    "notice": "Metadata inspection fixture. Empty animation data is intentionally not conformance or rendering evidence."
+  }
+}

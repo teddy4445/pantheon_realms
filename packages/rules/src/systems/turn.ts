@@ -1,0 +1,111 @@
+/**
+ * TurnManager / DayProcessor / WeekProcessor.
+ *
+ * A world day advances only after every active player ends their turn. The dawn
+ * transition is one atomic step (design/02 §3): income, weekly growth, build
+ * allowance reset, movement/mana refresh, then the next turn sequence begins.
+ * Each payout carries an idempotency key; reloading never repeats it.
+ */
+import { expireTemporaryVision } from './magic';
+import { hexEquals } from '../core/hex';
+import { addResources, resources, type ResourceBundle } from '../core/resources';
+import type { MatchState } from '../state/match';
+import { maxMana, movementBudget } from '../resolvers/heroes';
+import { playerTowns, townDailyIncome, townHasEffect, weeklyGrowthFor } from '../resolvers/town';
+import { missionSite } from '../resolvers/world';
+import type { Tx } from '../engine/tx';
+import { grant } from './economy';
+import { learnSpellsAtTown } from './heroes';
+import { refreshMerchantStock } from './services';
+import { playerEffects } from '../resolvers/effects';
+
+export function weekOf(day: number, daysPerWeek = 7): number {
+  return 1 + Math.floor((day - 1) / daysPerWeek);
+}
+
+export function dayOfWeek(day: number, daysPerWeek = 7): number {
+  return 1 + ((day - 1) % daysPerWeek);
+}
+
+export function commitEndTurn(tx: Tx): void {
+  const state = tx.state;
+  tx.emit({ kind: 'TurnEnded', playerId: state.activePlayerId });
+  const order = state.playerOrder.filter((p) => !state.players[p]?.eliminated);
+  let idx = order.indexOf(state.activePlayerId) + 1;
+  if (idx >= order.length) {
+    processDawn(tx);
+    idx = 0;
+  }
+  state.activePlayerId = order[idx] ?? state.activePlayerId;
+  tx.emit({ kind: 'TurnStarted', playerId: state.activePlayerId, day: state.day });
+}
+
+/** Income a player will receive at the next dawn (for the "next dawn" preview). */
+export function projectedIncome(tx: Pick<Tx, 'catalog' | 'state'>, playerId: string): ResourceBundle {
+  const { catalog, state } = tx;
+  let total = resources();
+  for (const town of playerTowns(state, playerId)) total = addResources(total, townDailyIncome(catalog, town));
+  // Player-wide income (gods, signatures): paid while the player still owns a town.
+  if (playerTowns(state, playerId).length > 0) {
+    for (const e of playerEffects(catalog, state, playerId)) if (e.type === 'daily_income') total = addResources(total, { [e.resource]: e.amount });
+  }
+  for (const [siteId, site] of Object.entries(state.world.sites)) {
+    if (site.owner !== playerId) continue;
+    const def = missionSite(catalog, state, siteId);
+    if (def?.kind.type === 'resource_site') total = addResources(total, { [def.kind.resource]: def.kind.dailyYield });
+  }
+  return total;
+}
+
+export function processDawn(tx: Tx): void {
+  const state = tx.state;
+  const { catalog } = tx;
+  const daysPerWeek = tx.profile.daysPerWeek;
+  state.day += 1;
+  const day = state.day;
+  expireTemporaryVision(state);
+  tx.emit({ kind: 'DayStarted', day, week: weekOf(day, daysPerWeek), dayOfWeek: dayOfWeek(day, daysPerWeek) });
+
+  // Step 2: recurring income from ownership and buildings already present.
+  for (const playerId of state.playerOrder) {
+    const player = state.players[playerId];
+    if (!player || player.eliminated || player.role === 'scripted_hostile') continue;
+    if (!tx.applyOnce(`dawn_income:${day}:${playerId}`)) continue;
+    const income = projectedIncome(tx, playerId);
+    if (Object.values(income).some((v) => v > 0)) {
+      grant(tx, playerId, income, 'Dawn income');
+      tx.emit({ kind: 'IncomeCollected', playerId, amount: income });
+    }
+  }
+
+  // Step 3: weekly growth on days 8, 15, 22, ...
+  if (day > 1 && (day - 1) % daysPerWeek === 0) {
+    for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) {
+      if (!tx.applyOnce(`weekly_growth:${day}:${town.id}`)) continue;
+      for (const familyId of Object.keys(town.population).sort()) {
+        const added = weeklyGrowthFor(catalog, town, familyId, state);
+        town.population[familyId] = (town.population[familyId] ?? 0) + added;
+        tx.emit({ kind: 'PopulationGrown', townId: town.id, familyId, added, total: town.population[familyId]! });
+      }
+      refreshMerchantStock(tx, town);
+    }
+  }
+
+  // Step 4: build allowance resets implicitly (buildUsedDay != day); refresh heroes.
+  for (const hero of Object.values(state.heroes).sort((a, b) => (a.id < b.id ? -1 : 1))) {
+    if (hero.status !== 'active') continue;
+    hero.movementPoints = movementBudget(catalog, state, hero).total;
+    const cap = maxMana(catalog, state, hero);
+    const town = Object.values(state.towns).find((t) => t.ownerId === hero.ownerId && hexEquals(t.coord, hero.position));
+    if (town && townHasEffect(catalog, town, 'spell_library')) {
+      hero.mana = cap;
+      learnSpellsAtTown(tx, hero, town);
+    } else {
+      hero.mana = Math.min(cap, hero.mana + tx.profile.dawnManaRegen);
+    }
+  }
+}
+
+export function isFirstDayOfWeek(state: MatchState, daysPerWeek = 7): boolean {
+  return state.day > 1 && (state.day - 1) % daysPerWeek === 0;
+}

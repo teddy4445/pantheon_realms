@@ -1,0 +1,9 @@
+{
+  "name": "@pr/session",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "GameSession host and versioned save snapshots. No rendering, no persistence I/O.",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@pr/rules": "*", "@pr/campaign": "*", "@pr/ai": "*" }
+}

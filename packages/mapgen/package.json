@@ -1,0 +1,9 @@
+{
+  "name": "@pr/mapgen",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic logical map generation and validation (no graphics).",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@pr/rules": "*" }
+}

@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "pr-babylon-nme": {
+      "type": "stdio",
+      "command": "${PANTHEON_NODE}",
+      "args": [
+        "${PANTHEON_NME_ENTRY}"
+      ]
+    },
+    "pr-babylon-npe": {
+      "type": "stdio",
+      "command": "${PANTHEON_NODE}",
+      "args": [
+        "${PANTHEON_NPE_ENTRY}"
+      ]
+    },
+    "pr-babylon-nge": {
+      "type": "stdio",
+      "command": "${PANTHEON_NODE}",
+      "args": [
+        "${PANTHEON_NGE_ENTRY}"
+      ]
+    }
+  }
+}

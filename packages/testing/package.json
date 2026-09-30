@@ -1,0 +1,9 @@
+{
+  "name": "@pr/testing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic fixtures, drivers and scenario scripts (development only).",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@pr/rules": "*", "@pr/content": "*", "@pr/campaign": "*", "@pr/ai": "*" }
+}

@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "pr-blender": {
+      "type": "stdio",
+      "command": "${PANTHEON_UVX}",
+      "args": [
+        "--python",
+        "3.11",
+        "--from",
+        "mcp-for-blender==${PANTHEON_BLENDER_VERSION}",
+        "mcp-for-blender"
+      ],
+      "env": {
+        "BLENDER_HOST": "127.0.0.1",
+        "BLENDER_PORT": "9876",
+        "BLENDER_MCP_SAFE_MODE": "1",
+        "DISABLE_TELEMETRY": "true"
+      }
+    }
+  }
+}

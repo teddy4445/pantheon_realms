@@ -1,0 +1,12 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "isolated": true,
+    "launchOptions": {"headless": true, "chromiumSandbox": true},
+    "contextOptions": {"viewport": {"width": 1440, "height": 900}}
+  },
+  "capabilities": ["core", "vision"],
+  "network": {
+    "allowedOrigins": ["http://127.0.0.1:5173", "http://localhost:5173", "http://127.0.0.1:4173", "http://localhost:4173"]
+  }
+}

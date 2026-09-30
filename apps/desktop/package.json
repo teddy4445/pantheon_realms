@@ -1,0 +1,19 @@
+{
+  "name": "@pr/desktop",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Pantheon Realms — turn-based mythological strategy (development build).",
+  "main": "dist/main.cjs",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "electron .",
+    "dist": "electron-builder --config electron-builder.json"
+  },
+  "devDependencies": {
+    "electron": "44.4.5",
+    "electron-builder": "26.16.1"
+  },
+  "author": {
+    "name": "Skanarobotics"
+  }
+}

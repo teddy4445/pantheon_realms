@@ -1,0 +1,9 @@
+# Merge deliberately with the repository policy; do not overwrite .gitignore.
+tools/pantheon-dev/vendor/node_modules/
+tools/pantheon-dev/optional-skills/
+*.pantheon-backup-*
+.mcp.json.tmp-*
+# Generated .mcp.json uses machine-specific absolute paths. Review your team's
+# existing policy before adding .mcp.json here; do not hide shared config blindly.
+# Keep reviewed vendor/plan.json and package-lock.json for reproducibility.
+# Keep real secrets/.env and personal browser profiles out of source control.

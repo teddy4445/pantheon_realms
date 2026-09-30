@@ -1,0 +1,96 @@
+/*
+ * Pantheon Realms design tokens.
+ * Direction: dark navy, stone and parchment surfaces, bronze-gold accents,
+ * faction accent colors, mythological ornament. Game-first readability.
+ */
+:root {
+  /* Surfaces */
+  --ink-0: #05090f;
+  --navy-950: #070e1a;
+  --navy-900: #0b1626;
+  --navy-850: #0e1c31;
+  --navy-800: #11223b;
+  --navy-700: #172d4b;
+  --navy-600: #1f3b5f;
+  --navy-500: #2a4b74;
+  --stone-700: #3a3f47;
+  --stone-500: #6b6f76;
+  --marble: #ddd8cc;
+  --parchment: #e8d9b5;
+  --parchment-deep: #cdb98c;
+
+  /* Metals */
+  --gold-700: #7a5a26;
+  --gold-600: #9c7534;
+  --gold-500: #c29a52;
+  --gold-400: #d8b56c;
+  --gold-300: #ead08f;
+  --gold-200: #f5e4b7;
+  --bronze-grad: linear-gradient(180deg, #f1d99a 0%, #c9a05a 45%, #8f6a2f 100%);
+
+  /* Text */
+  --text-strong: #f4e8c9;
+  --text: #dccfb0;
+  --text-dim: #a59a80;
+  --text-faint: #7c7462;
+  --text-ink: #2a2116;
+
+  /* Semantic */
+  --teal: #3ebcd0;
+  --teal-dim: #2a8697;
+  --ember: #e67a3c;
+  --danger: #d25a45;
+  --danger-dim: #8e3325;
+  --success: #7bb86a;
+  --warning: #e0b050;
+  --mana: #5aa7ff;
+  --favor: #f3c86b;
+  --xp: #b98cf0;
+
+  /* Faction accents (overridden per pantheon) */
+  --faction: #3b73d9;
+  --faction-soft: #1b2f57;
+
+  /* Typography */
+  --font-display: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --font-body: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-ui: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  /* Scale: 16px at 1920x1080, clamped; multiplied by the UI-scale preference. */
+  --ui-scale: 1;
+  --text-scale: 1;
+  --base-size: clamp(11px, calc(0.834vw), 20px);
+
+  /* Geometry */
+  --radius-s: 3px;
+  --radius-m: 6px;
+  --gutter: 1rem;
+  --topbar-h: 3.4rem;
+  --bottombar-h: 4.6rem;
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-med: 220ms;
+  --motion-slow: 420ms;
+
+  /* Shadows */
+  --shadow-panel: 0 0.6rem 2rem rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(234, 208, 143, 0.06);
+  --glow-gold: 0 0 0.9rem rgba(234, 208, 143, 0.35);
+}
+
+:root[data-motion='reduced'] {
+  --motion-fast: 0ms;
+  --motion-med: 0ms;
+  --motion-slow: 0ms;
+}
+
+:root[data-contrast='high'] {
+  --navy-900: #000;
+  --navy-850: #05080d;
+  --navy-800: #0a0f18;
+  --text: #fff4d6;
+  --text-dim: #e3d6b3;
+  --text-faint: #c8bb98;
+  --gold-500: #ffd36b;
+  --gold-400: #ffe08c;
+}

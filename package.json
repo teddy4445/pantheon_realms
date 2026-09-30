@@ -1,0 +1,39 @@
+{
+  "name": "pantheon-realms",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Pantheon Realms — turn-based mythological strategy (TypeScript rules, React UI, Babylon.js, Electron).",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm --workspace @pr/client run dev",
+    "build": "npm --workspace @pr/client run build",
+    "preview": "npm --workspace @pr/client run preview",
+    "typecheck": "tsc -p tsconfig.core.json && tsc -p apps/client/tsconfig.json && tsc -p apps/desktop/tsconfig.json",
+    "lint:boundaries": "node tools/check-boundaries.mjs",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "desktop:build": "npm --workspace @pr/desktop run build",
+    "desktop": "npm run build && npm --workspace @pr/desktop run start",
+    "desktop:dist": "npm run build && npm --workspace @pr/desktop run dist",
+    "check": "npm run lint:boundaries && npm run typecheck && npm test",
+    "assets:check": "node tools/assets/validate-units.mjs && vitest run packages/presentation",
+    "assets:calibration": "node tools/assets/make-calibration-glb.mjs",
+    "balance": "node tools/balance/run.mjs"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "4.5.1",
+    "@playwright/test": "1.56.0",
+    "@types/node": "26.6.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "gltf-validator": "2.0.0-dev.3.10",
+    "typescript": "7.0.2",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}

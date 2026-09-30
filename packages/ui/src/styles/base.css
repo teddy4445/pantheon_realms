@@ -1,0 +1,111 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(var(--base-size) * var(--ui-scale));
+  background: var(--ink-0);
+  color: var(--text);
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: calc(1.05rem * var(--text-scale));
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  overflow: hidden;
+}
+
+#root {
+  position: fixed;
+  inset: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--gold-300);
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+p {
+  margin: 0 0 0.6em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(234, 208, 143, 0.35);
+}
+
+.num {
+  font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.dim {
+  color: var(--text-dim);
+}
+
+.faint {
+  color: var(--text-faint);
+}
+
+.danger {
+  color: var(--danger);
+}
+
+.success {
+  color: var(--success);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Scrollbars in the game style */
+.scroll {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-600) transparent;
+}
+.scroll::-webkit-scrollbar {
+  width: 0.5rem;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--gold-500), var(--gold-700));
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-motion='system'] {
+    --motion-fast: 0ms;
+    --motion-med: 0ms;
+    --motion-slow: 0ms;
+  }
+}

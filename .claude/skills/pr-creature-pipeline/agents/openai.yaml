@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon Creature Pipeline"
+  short_description: "Produce complete base-and-upgrade rigs, clips and GLB assets."

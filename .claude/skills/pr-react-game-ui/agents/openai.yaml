@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon Game Interface"
+  short_description: "Implement real menus, settings and contextual creature information."

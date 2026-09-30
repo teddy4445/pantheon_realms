@@ -1,0 +1,98 @@
+[
+  {
+    "id": "SRC-01",
+    "title": "Claude Code project skills",
+    "url": "https://code.claude.com/docs/en/skills",
+    "publisher": "Official Anthropic documentation",
+    "usedFor": "Project .claude/skills layout, entrypoint frontmatter and direct slash invocation.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-02",
+    "title": "Claude Code MCP configuration",
+    "url": "https://code.claude.com/docs/en/mcp",
+    "publisher": "Official Anthropic documentation",
+    "usedFor": "Project .mcp.json, stdio/HTTP entries, environment substitutions and project approval.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-03",
+    "title": "Official Babylon MCP authoring servers",
+    "url": "https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/packages/public/@babylonjs/mcp-servers/readme.md",
+    "publisher": "Official BabylonJS repository",
+    "usedFor": "@babylonjs/mcp-servers; NME, NPE, NGE and other editors; local authoring/export.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-04",
+    "title": "Playwright MCP",
+    "url": "https://github.com/microsoft/playwright-mcp",
+    "publisher": "Official Microsoft repository",
+    "usedFor": "@playwright/mcp; browser configuration, isolated profile, vision, local tooling and security limitations.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-05",
+    "title": "Blender MCP",
+    "url": "https://github.com/ahujasid/mcp-for-blender",
+    "publisher": "Community maintainer repository, NOT official Blender",
+    "usedFor": "Renamed package mcp-for-blender, add-on requirement, localhost socket, arbitrary Python, safe-mode limitations and telemetry controls.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-06",
+    "title": "Context7 for Claude Code",
+    "url": "https://raw.githubusercontent.com/upstash/context7/master/docs/clients/claude-code.mdx",
+    "publisher": "Official Upstash repository",
+    "usedFor": "Hosted documentation MCP endpoint and optional authenticated configuration.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-07",
+    "title": "GitHub MCP remote configuration",
+    "url": "https://raw.githubusercontent.com/github/github-mcp-server/main/docs/remote-server.md",
+    "publisher": "Official GitHub repository",
+    "usedFor": "Remote endpoint and /readonly option; authentication and restricted toolsets.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-08",
+    "title": "Anthropic frontend-design skill",
+    "url": "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
+    "publisher": "Official Anthropic repository",
+    "usedFor": "Optional upstream visual-interface design workflow; inspect LICENSE.txt in the selected snapshot.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-09",
+    "title": "Anthropic webapp-testing skill",
+    "url": "https://github.com/anthropics/skills/tree/main/skills/webapp-testing",
+    "publisher": "Official Anthropic repository",
+    "usedFor": "Optional browser testing workflow; Python examples do not override this project TypeScript test architecture.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-10",
+    "title": "Khronos glTF Validator",
+    "url": "https://github.com/KhronosGroup/glTF-Validator",
+    "publisher": "Official Khronos repository",
+    "usedFor": "Full conformance validator, separate from the toolkit metadata audit.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-11",
+    "title": "MCP stdio transport",
+    "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/main/docs/specification/2025-11-25/basic/transports.mdx",
+    "publisher": "Official MCP specification repository",
+    "usedFor": "UTF-8 newline-delimited JSON-RPC and stderr/stdout separation.",
+    "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-12",
+    "title": "Context7 source and authentication",
+    "url": "https://github.com/upstash/context7",
+    "publisher": "Official Upstash repository",
+    "usedFor": "Remote documentation queries, library resolution and anonymous/authenticated access.",
+    "inspected": "2026-09-29"
+  }
+]

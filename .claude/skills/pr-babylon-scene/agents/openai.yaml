@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon Babylon Scenes"
+  short_description: "Build rich scenes without coupling rendering to gameplay."

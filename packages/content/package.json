@@ -1,0 +1,9 @@
+{
+  "name": "@pr/content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Immutable, validated content definitions for Pantheon Realms.",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@pr/rules": "*" }
+}

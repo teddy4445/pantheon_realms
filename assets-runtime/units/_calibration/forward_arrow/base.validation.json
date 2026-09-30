@@ -1,0 +1,49 @@
+{
+  "assetId": "unit._calibration.forward_arrow",
+  "model": "model.glb",
+  "validatedWith": {
+    "tool": "gltf-validator",
+    "version": "2.0.0-dev.3.10"
+  },
+  "generator": "pantheon-realms tools/assets/make-calibration-glb.mjs",
+  "issues": {
+    "numErrors": 0,
+    "numWarnings": 0,
+    "numInfos": 1,
+    "numHints": 0,
+    "messages": [
+      {
+        "code": "NODE_EMPTY",
+        "message": "Empty node encountered.",
+        "severity": 2,
+        "pointer": "/nodes/7"
+      }
+    ],
+    "truncated": false
+  },
+  "info": {
+    "version": "2.0",
+    "generator": "pantheon-realms tools/assets/make-calibration-glb.mjs",
+    "resources": [
+      {
+        "pointer": "/buffers/0",
+        "mimeType": "application/gltf-buffer",
+        "storage": "glb",
+        "byteLength": 3616
+      }
+    ],
+    "animationCount": 8,
+    "materialCount": 4,
+    "hasMorphTargets": false,
+    "hasSkins": false,
+    "hasTextures": false,
+    "hasDefaultScene": true,
+    "drawCallCount": 5,
+    "totalVertexCount": 112,
+    "totalTriangleCount": 70,
+    "maxUVs": 0,
+    "maxInfluences": 0,
+    "maxAttributes": 2
+  },
+  "gameChecks": []
+}
