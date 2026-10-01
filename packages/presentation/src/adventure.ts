@@ -7,23 +7,20 @@
  * Does not own: legality (movement/paths come from the rules via the view model),
  * selection state (UI), or anything persisted.
  */
-import {
-  ArcRotateCamera,
-  Color3,
-  DirectionalLight,
-  Engine,
-  HemisphericLight,
-  LinesMesh,
-  Mesh,
-  MeshBuilder,
-  PointerEventTypes,
-  Scene,
-  TransformNode,
-  Vector3,
-  VertexBuffer,
-  type Observer,
-  type PointerInfo,
-} from '@babylonjs/core';
+import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
+import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
+import { Engine } from '@babylonjs/core/Engines/engine';
+import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
+import { LinesMesh } from '@babylonjs/core/Meshes/linesMesh';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
+import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
+import { PointerEventTypes, type PointerInfo } from '@babylonjs/core/Events/pointerEvents';
+import { Scene } from '@babylonjs/core/scene';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { VertexBuffer } from '@babylonjs/core/Buffers/buffer';
+import type { Observer } from '@babylonjs/core/Misc/observable';
 import { TERRAIN_BY_CODE, type BodyProfile, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
 import type { SceneController } from './engineHost';

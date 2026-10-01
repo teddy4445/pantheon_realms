@@ -26,11 +26,12 @@ import {
   type HexCoord,
   type MatchState,
 } from '@pr/rules';
-import { AdventureSceneController, TERRAIN_COLORS, type AdventureView } from '@pr/presentation';
+import { TERRAIN_COLORS } from '@pr/presentation/core';
+import type { AdventureSceneController, AdventureView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import type { AppStore } from '../app/store';
 import { adventurePlaybackFactor } from '../app/preferences';
-import { SceneViewport, projectors, toPage } from '../scene/SceneHost';
+import { SceneViewport, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
 import { HeroPortrait } from '../components/art';
 import { ArmyStrip, ResourceBar } from '../components/game';
@@ -299,6 +300,13 @@ export function AdventureScreen() {
 
   const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? target : null, humanTurn, grid), [catalog, state, playerId, selected, target, humanTurn, grid]);
 
+  // The controller can arrive after the first render (the 3D layer loads on demand),
+  // so it reads the latest view and selection from refs when it does.
+  const viewRef = useRef(view);
+  viewRef.current = view;
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
+
   useEffect(() => {
     ctrl.current?.update(view);
   }, [view]);
@@ -321,7 +329,12 @@ export function AdventureScreen() {
         const vis = store.session ? visibleCells(catalog, store.session.state, store.session.humanPlayerId) : new Set<number>();
         const seen = mine || m.path.some((p) => vis.has(cellIndex(store.session!.state.world.map, p)));
         if (!seen) continue;
-        await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true);
+        if (mine) store.audio?.heroSteps(true);
+        try {
+          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true);
+        } finally {
+          if (mine) store.audio?.heroSteps(false);
+        }
       }
     });
   }, [store, catalog]);
@@ -331,8 +344,8 @@ export function AdventureScreen() {
       ctrl.current = c;
       projectors.adventure = c ? (q, r) => toPage(c.projectHex({ q, r })) : undefined;
       if (c) {
-        c.update(view);
-        const focus = store.focusRequest ?? selected?.position ?? null;
+        c.update(viewRef.current);
+        const focus = store.focusRequest ?? selectedRef.current?.position ?? null;
         store.focusRequest = null;
         if (focus) c.focus(focus, false);
       }
@@ -418,9 +431,9 @@ export function AdventureScreen() {
   const clickRef = useRef(onTileClick);
   clickRef.current = onTileClick;
 
-  const factory = useCallback(
-    (engine: ConstructorParameters<typeof AdventureSceneController>[0], canvas: HTMLCanvasElement) =>
-      new AdventureSceneController(engine, canvas, {
+  const factory = useCallback<SceneFactory<AdventureSceneController>>(
+    (lib, engine, canvas) =>
+      new lib.AdventureSceneController(engine, canvas, {
         onTileClick: (c, b) => clickRef.current(c, b),
         onTileHover: (c) => setHover(c),
       }),

@@ -190,6 +190,40 @@ function endangered(catalog: ContentCatalog, belief: MatchState, playerId: Playe
   return false;
 }
 
+/** A hero below this share of its empire's strongest hero is a secondary (a scout or mine-taker). */
+const SECONDARY_SHARE = 0.6;
+/** A secondary may stand on the enemy's half of the map only this close to its main army. */
+const ESCORT_RADIUS = 3;
+
+/**
+ * Fog caution for secondary heroes: enemy main armies are often out of sight, and
+ * whoever advances into the middle first is seen first and caught by an army it
+ * never saw. A secondary therefore ends its moves on our half of the map (nearer
+ * one of our towns than any enemy town) or next to our strongest hero. Uses only
+ * public knowledge (town positions); no hidden enemy is read.
+ */
+function exposedSecondary(belief: MatchState, playerId: PlayerId, hero: HeroState, stop: HexCoord, mine: number, strongest: { hero: HeroState; strength: number } | null): boolean {
+  if (!strongest || strongest.hero.id === hero.id || mine >= strongest.strength * SECONDARY_SHARE) return false;
+  const towns = Object.values(belief.towns);
+  const ours = towns.filter((t) => t.ownerId === playerId);
+  const theirs = towns.filter((t) => t.ownerId && t.ownerId !== playerId);
+  if (ours.length === 0 || theirs.length === 0) return false;
+  const nearOurs = Math.min(...ours.map((t) => axialDistance(t.coord, stop)));
+  const nearTheirs = Math.min(...theirs.map((t) => axialDistance(t.coord, stop)));
+  if (nearOurs <= nearTheirs) return false;
+  return axialDistance(strongest.hero.position, stop) > ESCORT_RADIUS;
+}
+
+function strongestHero(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): { hero: HeroState; strength: number } | null {
+  let best: { hero: HeroState; strength: number } | null = null;
+  for (const h of Object.values(belief.heroes)) {
+    if (h.ownerId !== playerId || h.status !== 'active') continue;
+    const st = heroStrength(catalog, belief, h);
+    if (!best || st > best.strength || (st === best.strength && h.id < best.hero.id)) best = { hero: h, strength: st };
+  }
+  return best;
+}
+
 /** Lanchester square-law estimate of the strength left after beating `enemy`. */
 function strengthAfter(mine: number, enemy: number): number {
   return Math.sqrt(Math.max(0, mine * mine - enemy * enemy));
@@ -199,6 +233,7 @@ function movementCandidates(catalog: ContentCatalog, belief: MatchState, playerI
   if (hero.movementPoints <= 0) return [];
   const scored: { score: number; key: string; payload: CommandPayload }[] = [];
   const mine = heroStrength(catalog, belief, hero);
+  const strongest = strongestHero(catalog, belief, playerId);
   for (const t of heroTargets(catalog, belief, playerId, hero)) {
     const q = quoteMovement(catalog, belief, hero.id, t.coord);
     if (!q.reachable || q.stopIndex < 0) continue;
@@ -208,28 +243,65 @@ function movementCandidates(catalog: ContentCatalog, belief: MatchState, playerI
       const after = arrives && t.fights ? strengthAfter(mine, t.fights) : mine;
       const stop = q.path[q.stopIndex]!;
       if (endangered(catalog, belief, playerId, stop, after, t.enemyHeroId)) continue;
+      if (exposedSecondary(belief, playerId, hero, stop, after, strongest)) continue;
     }
     const days = Math.max(1, Math.ceil(q.totalCost / Math.max(1, hero.movementPoints)));
     const score = t.value / (1 + q.totalCost / 800) / days;
     scored.push({ score, key: hexKey(t.coord), payload: { kind: 'MoveHero', heroId: hero.id, destination: t.coord, confirmEncounter: q.endsInEncounter } });
   }
-  // Return home to reinforce when the town has recruits waiting.
+  // Return home to reinforce when the town has recruits waiting (not by stopping
+  // short within reach of a stronger visible enemy).
   const home = playerTowns(belief, playerId)[0];
   if (home && !hexEquals(home.coord, hero.position)) {
     const waiting = home.garrison.slots.some((s) => s && s.count > 0) || Object.values(home.population).some((n) => n > 0);
     const q = quoteMovement(catalog, belief, hero.id, home.coord);
-    if (waiting && q.reachable && q.stopIndex >= 0) {
+    const arrives = q.stopIndex === q.path.length - 1;
+    if (waiting && q.reachable && q.stopIndex >= 0 && (arrives || !endangered(catalog, belief, playerId, q.path[q.stopIndex]!, mine))) {
       scored.push({ score: 400 / (1 + q.totalCost / 800), key: `home:${hexKey(home.coord)}`, payload: { kind: 'MoveHero', heroId: hero.id, destination: home.coord } });
     }
   }
+  // Standing within reach of a stronger visible enemy (often one that came into view
+  // during this very move): step back out of its reach while movement remains.
+  scored.push(...retreatCandidates(catalog, belief, playerId, hero, mine));
   // Explore: step to a reachable tile that borders the unknown (vision reveals more map).
   for (const e of explorationTargets(catalog, belief, playerId, hero)) {
     const dest = e.payload.kind === 'MoveHero' ? e.payload.destination : null;
     if (dest && endangered(catalog, belief, playerId, dest, mine)) continue;
+    if (dest && exposedSecondary(belief, playerId, hero, dest, mine, strongest)) continue;
     scored.push(e);
   }
   scored.sort((a, b) => b.score - a.score || (a.key < b.key ? -1 : 1));
   return scored.map((s) => s.payload);
+}
+
+/** How many retreat tiles are checked exactly (each check quotes every dangerous enemy's path). */
+const RETREAT_CHECKS = 8;
+
+function retreatCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState, mine: number): { score: number; key: string; payload: CommandPayload }[] {
+  const towns = playerTowns(belief, playerId);
+  if (towns.some((t) => hexEquals(t.coord, hero.position))) return [];
+  if (!endangered(catalog, belief, playerId, hero.position, mine)) return [];
+  const threats = Object.values(belief.heroes).filter((e) => e.ownerId !== playerId && e.status === 'active' && heroStrength(catalog, belief, e) >= mine * DANGER_MARGIN);
+  const out: { score: number; key: string; payload: CommandPayload }[] = [];
+  // Into one of our towns (walls; judged by the town threat logic) when it can be reached today.
+  for (const t of towns) {
+    const q = quoteMovement(catalog, belief, hero.id, t.coord);
+    if (q.reachable && q.stopIndex === q.path.length - 1) out.push({ score: 5000 / (1 + q.totalCost / 800), key: `retreat-town:${hexKey(t.coord)}`, payload: { kind: 'MoveHero', heroId: hero.id, destination: t.coord } });
+  }
+  // Otherwise the reachable tiles farthest from the threats that are verified out of their reach.
+  const tiles = [...reachableTiles(catalog, belief, hero.id).keys()]
+    .map((k) => {
+      const c = parseHexKey(k);
+      return { c, k, far: Math.min(...threats.map((e) => axialDistance(e.position, c))) };
+    })
+    .sort((a, b) => b.far - a.far || (a.k < b.k ? -1 : 1))
+    .slice(0, RETREAT_CHECKS);
+  for (const t of tiles) {
+    if (endangered(catalog, belief, playerId, t.c, mine)) continue;
+    out.push({ score: 1500 + t.far, key: `retreat:${t.k}`, payload: { kind: 'MoveHero', heroId: hero.id, destination: t.c } });
+    break;
+  }
+  return out;
 }
 
 function explorationTargets(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): { score: number; key: string; payload: CommandPayload }[] {

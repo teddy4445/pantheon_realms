@@ -7,6 +7,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { LoadAssetContainerAsync, NullEngine, Scene, Vector3 } from '@babylonjs/core';
+// The game fetches the glTF loader on demand (ModelCache); this direct Babylon load needs it registered.
+import '@babylonjs/loaders/glTF';
 import { loadCatalog } from '@pr/content';
 import { findAbility, hasFlight, isShooter } from '@pr/rules';
 import {

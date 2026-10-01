@@ -4,12 +4,13 @@
  * statistics, abilities with exact rules, sourced notes and original lore.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ANIMATION_STATES, UnitViewerController, type AnimationState, type ViewerModelStatus } from '@pr/presentation';
+import { ANIMATION_STATES, type AnimationState } from '@pr/presentation/core';
+import type { UnitViewerController, ViewerModelStatus } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle, Tabs, Toggle } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
 import { BalanceChip, CostList, CreatureStats, ScreenHeader, StatusChip } from '../components/game';
-import { SceneViewport } from '../scene/SceneHost';
+import { SceneViewport, type SceneFactory } from '../scene/SceneHost';
 import { resolveAsset } from '../assets/manifest';
 import { reducedMotion } from '../app/preferences';
 
@@ -64,17 +65,22 @@ export function UnitDetailScreen() {
     if (ctrl.current) ctrl.current.autoRotate = spin;
   }, [spin]);
 
-  const factory = useCallback((engine: ConstructorParameters<typeof UnitViewerController>[0], canvas: HTMLCanvasElement) => new UnitViewerController(engine, canvas), []);
+  const factory = useCallback<SceneFactory<UnitViewerController>>((lib, engine, canvas) => new lib.UnitViewerController(engine, canvas), []);
+  // The controller can arrive after the first render (the 3D layer loads on demand),
+  // so it reads the latest settings from a ref when it does.
+  const latest = useRef({ spin, reduced, rate, def, accent, anim });
+  latest.current = { spin, reduced, rate, def, accent, anim };
   const onController = useCallback(
     (c: UnitViewerController | null) => {
       ctrl.current = c;
       if (c) {
-        c.autoRotate = spin;
-        c.reducedMotion = reduced;
-        c.speed = rate;
+        const l = latest.current;
+        c.autoRotate = l.spin;
+        c.reducedMotion = l.reduced;
+        c.speed = l.rate;
         c.onStatus = setStatus;
-        c.setSubject({ key: def.id, creatureId: def.id, body: def.presentation.bodyProfile, upgraded: def.form === 'upgraded', accent, footprint: def.stats?.footprint ?? 1 });
-        c.setAnimation(anim);
+        c.setSubject({ key: l.def.id, creatureId: l.def.id, body: l.def.presentation.bodyProfile, upgraded: l.def.form === 'upgraded', accent: l.accent, footprint: l.def.stats?.footprint ?? 1 });
+        c.setAnimation(l.anim);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

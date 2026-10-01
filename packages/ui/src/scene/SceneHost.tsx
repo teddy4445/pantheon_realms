@@ -5,9 +5,50 @@
  * the host to show a new scene controller and disposes it on unmount. Screens
  * push view models into the controller from committed state; the controller
  * never writes back into game state.
+ *
+ * The 3D layer (`@pr/presentation`, which carries Babylon.js) is loaded on
+ * demand: the main menu starts without it, it is fetched in the background once
+ * the browser is idle, and the first 3D screen waits for it if it is not there
+ * yet. Screens therefore receive their controller asynchronously and must push
+ * their latest view when it arrives.
  */
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { EngineHost, type ControllerFactory, type SceneController } from '@pr/presentation';
+import type { ControllerFactory, EngineHost, SceneController } from '@pr/presentation';
+
+export type Presentation = typeof import('@pr/presentation');
+type EngineOf = Parameters<ControllerFactory<SceneController>>[0];
+/** Builds a scene controller once the 3D layer is loaded. */
+export type SceneFactory<T extends SceneController> = (lib: Presentation, engine: EngineOf, canvas: HTMLCanvasElement) => T;
+
+let lib: Presentation | null = null;
+let libLoad: Promise<Presentation> | null = null;
+
+/** Load the 3D layer once; every later call returns the same module. */
+export function loadPresentation(): Promise<Presentation> {
+  libLoad ??= import('@pr/presentation').then(
+    (m) => (lib = m),
+    (e: unknown) => {
+      libLoad = null; // allow a retry on the next 3D screen
+      throw e;
+    },
+  );
+  return libLoad;
+}
+
+/** The 3D layer if it is already loaded (never starts loading). */
+export function presentation(): Presentation | null {
+  return lib;
+}
+
+/** Fetch the 3D layer in the background when the browser is idle (called once the menu is up). */
+export function preloadPresentation(): void {
+  const start = () =>
+    void loadPresentation()
+      .then((p) => p.warmShaderImports())
+      .catch(() => undefined);
+  if (typeof requestIdleCallback === 'function') requestIdleCallback(start, { timeout: 2000 });
+  else setTimeout(start, 300);
+}
 
 let host: EngineHost | null = null;
 
@@ -31,10 +72,10 @@ export function toPage(p: { x: number; y: number } | null): { x: number; y: numb
 let hostError: string | null = null;
 
 /** Lazily create the one engine for this application session. */
-export function getEngineHost(): EngineHost | null {
+function getEngineHost(p: Presentation): EngineHost | null {
   if (host || hostError) return host;
   try {
-    host = EngineHost.create();
+    host = p.EngineHost.create();
   } catch (e) {
     hostError = e instanceof Error ? e.message : 'WebGL is unavailable';
   }
@@ -52,7 +93,7 @@ export function SceneViewport<T extends SceneController>({
   fallback,
   label,
 }: {
-  factory: ControllerFactory<T>;
+  factory: SceneFactory<T>;
   onController: (c: T | null) => void;
   className?: string;
   fallback?: ReactNode;
@@ -60,32 +101,51 @@ export function SceneViewport<T extends SceneController>({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(!lib);
   useEffect(() => {
     const el = ref.current;
-    const h = getEngineHost();
-    if (!el || !h) {
-      setError(engineError() ?? 'WebGL is unavailable');
-      return;
-    }
-    h.mount(el);
-    let ctrl: T;
-    try {
-      ctrl = h.show(factory);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-      return;
-    }
-    onController(ctrl);
+    if (!el) return;
+    let disposed = false;
+    let h: EngineHost | null = null;
+    let ctrl: T | null = null;
+    const start = (p: Presentation) => {
+      if (disposed) return;
+      setLoading(false);
+      h = getEngineHost(p);
+      if (!h) {
+        setError(engineError() ?? 'WebGL is unavailable');
+        return;
+      }
+      h.mount(el);
+      try {
+        ctrl = h.show((engine, canvas) => factory(p, engine, canvas));
+      } catch (e) {
+        setError(e instanceof Error ? e.message : String(e));
+        return;
+      }
+      onController(ctrl);
+    };
+    if (lib) start(lib);
+    else
+      loadPresentation().then(start, (e: unknown) => {
+        if (disposed) return;
+        setLoading(false);
+        setError(`The 3D view could not be loaded (${e instanceof Error ? e.message : String(e)}).`);
+      });
     return () => {
-      onController(null);
-      h.release(ctrl);
-      h.unmount(el);
+      disposed = true;
+      if (h && ctrl) {
+        onController(null);
+        h.release(ctrl);
+      }
+      if (h) h.unmount(el);
     };
     // The factory is created once per mount by design.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div ref={ref} className={`scene-viewport ${className}`} role="application" aria-label={label}>
+    <div ref={ref} className={`scene-viewport ${className}`} role="application" aria-label={label} aria-busy={loading || undefined}>
+      {loading && !error ? <div className="scene-loading">Loading the 3D view…</div> : null}
       {error ? (
         <div className="scene-error panel">
           <strong>3D view unavailable.</strong> {error}

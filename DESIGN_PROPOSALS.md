@@ -56,7 +56,7 @@ New requirement: `has_god_in_group`.
 | Greek — Glory & Champions | **Glory** | A winning hero gains **+25%** battle XP (floored). |
 | Norse — Fate & Battle | **Berserk Fury** | A stack with **at most half** of its starting creatures alive gains **+2 Attack**. |
 | Egyptian — Afterlife & Resurrection | **Afterlife** | After a battle you win, each stack regains **20%** of its losses in that battle (floored). |
-| Japanese — Spirits & Harmony | **Harmony** | Distinct families in the battle army: **3–4 → +0/+1**, **5+ → +1/+1** (Attack/Defense, every stack). A first +2/+2 step at 7 families was measured far too strong (full-roster armies won 0.78–0.92) and removed. |
+| Japanese — Spirits & Harmony | **Harmony** | With **3 or more** distinct creature families in the battle army, every stack gains **+1 Defense**. A +1/+1 step at 5 families let full-roster Japanese armies win 0.72–0.75 of duels and was removed (content 0.6.0: they now score 0.47–0.53 in the four army tables, 0.43 with starting escorts); an earlier +2/+2 step at 7 families was far stronger still. The effect type keeps several steps for any content that wants them. |
 | Celtic — Nature & Transformation | **Shapeshifting** | Shapeshift is **free** at the start of an activation, once per activation. |
 | Mesoamerican — Ritual & Sacrifice | **Offering** | Once per week per town with a Temple, offer creatures from the garrison or the visiting hero: **1 Favor per 150 Gold** of recruitment price (floored), **at most 10 Favor** per offering. |
 
@@ -74,6 +74,13 @@ this proposal does not change that.
 **Harmony** counts families, not stacks, so splitting one family into many
 stacks does not count. It does not touch the documented same-faction morale
 rule (design/04 §6).
+
+**Egypt's two-week duel weakness** (0.27–0.33) turned out not to be Egyptian
+values: swapping one tier at a time for the Greek unit showed the T6 Bennu
+(Speed 9–10, flying) as the weak link, and slowing it made Egypt too strong
+everywhere. The tactical AI flew fast stacks alone into the enemy line when
+they could not strike yet. That AI rule is fixed (no lone advance); Egyptian
+values are unchanged and now score 0.40–0.54 in every army table.
 
 **Shapeshifting** gives four Celtic families (both forms) an aspect:
 

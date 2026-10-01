@@ -11,6 +11,7 @@ import { GameSession, type SaveSnapshot } from '@pr/session';
 import type { PlatformServices } from '@pr/platform';
 import { SaveManager, type SlotInfo } from './saves';
 import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, savePreferences, type Preferences } from './preferences';
+import type { GameAudio } from '../audio/gameAudio';
 
 export type ScreenId =
   | 'main-menu'
@@ -112,6 +113,8 @@ export class AppStore {
   continueChecked = false;
   storageError: string | null = null;
   presentationBusy = false;
+  /** Sound (null until bootstrap attaches it, and in headless tests). Presentation only. */
+  audio: GameAudio | null = null;
   /** Adventure selection survives navigation to other screens (return context). */
   selectedHeroId: string | null = null;
   /** One-shot camera focus request consumed by the adventure screen (journal markers etc.). */
@@ -219,6 +222,7 @@ export class AppStore {
   setPrefs(p: Preferences, persist: boolean): Promise<string | null> {
     this.prefs = p;
     applyPreferences(p);
+    this.audio?.apply(p);
     this.notify();
     return persist ? savePreferences(this.platform.preferences, p) : Promise.resolve(null);
   }

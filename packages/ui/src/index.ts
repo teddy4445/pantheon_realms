@@ -5,7 +5,7 @@
  * the AppStore, then mounts <App/>. The same code runs in the browser build and
  * the Electron renderer.
  */
-import { registerUnitModels } from '@pr/presentation';
+import { registerUnitModels } from '@pr/presentation/core';
 import { fixtureUnitModels } from './assets/manifest';
 import '@fontsource/cinzel/500.css';
 import '@fontsource/cinzel/600.css';
@@ -28,7 +28,8 @@ import type { PlatformServices } from '@pr/platform';
 import { App } from './app/App';
 import { AppStore } from './app/store';
 import { applyPreferences, loadPreferences } from './app/preferences';
-import { projectors } from './scene/SceneHost';
+import { preloadPresentation, projectors } from './scene/SceneHost';
+import { GameAudio } from './audio/gameAudio';
 
 export { AppStore } from './app/store';
 
@@ -45,8 +46,18 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
   store.prefs = prefs;
   applyPreferences(prefs);
   if (error) store.toast(`Preferences could not be read: ${error}. Defaults are in use.`, 'error');
+  // Sound: silent (never blocking) when the browser has no audio device.
+  try {
+    store.audio = new GameAudio(store);
+    store.audio.attach(window);
+  } catch (e) {
+    store.audio = null;
+    console.warn('[audio] disabled:', e);
+  }
   root.render(createElement(App, { store }));
   void store.refreshContinue();
+  // The menu is up without the 3D engine; fetch it in the background for the first 3D screen.
+  preloadPresentation();
   // Automated UI tests may read (never write) a deep copy of the state and
   // project map coordinates to the page when explicitly requested. No command
   // or state mutation is exposed.
@@ -61,6 +72,7 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
           humanTurn: store.session?.isHumanTurn() ?? false,
           state: store.session?.state ?? null,
           campaign: store.session?.campaign ?? null,
+          audio: store.audio?.status() ?? null,
         }),
       );
     g.__prProject = (kind, a, b) => projectors[kind]?.(a, b) ?? null;

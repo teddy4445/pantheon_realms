@@ -1,13 +1,15 @@
 /**
- * S17 Settings. Edits a draft and applies/persists it explicitly. Controls for
- * features this build does not have (audio, graphics tiers, tutorials, camera
- * shake, key rebinding) are shown disabled with the honest reason.
+ * S17 Settings. Edits a draft and applies/persists it explicitly. Volume changes
+ * are heard live while editing; Cancel/leaving without applying restores them.
+ * Controls for features this build does not have (voice lines, graphics tiers,
+ * tutorials, camera shake, key rebinding) are shown disabled with the honest reason.
  */
 import { useEffect, useState, type ReactNode } from 'react';
 import { useStore } from '../app/context';
 import { DEFAULT_PREFERENCES, type Preferences } from '../app/preferences';
 import { Button, Chip, Panel, Tabs, Toggle } from '../components/kit';
 import { ScreenHeader } from '../components/game';
+import { soundsArePlaceholders } from '../audio/gameAudio';
 
 type Tab = 'gameplay' | 'interface' | 'display' | 'audio' | 'accessibility' | 'controls' | 'storage';
 
@@ -74,6 +76,13 @@ export function SettingsScreen() {
   const [saveInfo, setSaveInfo] = useState<string>('Checking…');
   const dirty = JSON.stringify(draft) !== JSON.stringify(store.prefs);
   const set = <K extends keyof Preferences>(k: K, v: Preferences[K]) => setDraft({ ...draft, [k]: v });
+
+  // Hear volume changes while editing; leaving restores the committed levels.
+  useEffect(() => {
+    store.audio?.preview(draft);
+  }, [draft, store]);
+  useEffect(() => () => store.audio?.apply(store.prefs), [store]);
+  const audio = store.audio?.status() ?? null;
 
   useEffect(() => {
     void (async () => {
@@ -205,12 +214,38 @@ export function SettingsScreen() {
           ) : null}
           {tab === 'audio' ? (
             <>
-              <p className="note">This build contains no music, sound effects or voice. The volume settings are kept for when audio arrives.</p>
-              {(['masterVolume', 'musicVolume', 'effectsVolume', 'ambienceVolume', 'voiceVolume'] as const).map((k) => (
-                <Field key={k} label={k.replace('Volume', '').replace(/^./, (c) => c.toUpperCase())} disabledReason="No audio in this build">
-                  <Slider label={k} value={draft[k]} min={0} max={100} step={5} onChange={(n) => set(k, n)} disabled />
+              {soundsArePlaceholders() ? <p className="note">The music and sounds in this build are temporary placeholders generated for testing. Final recordings will replace them without changing these settings.</p> : null}
+              {audio && !audio.available ? <p className="note warn">Audio is unavailable here ({audio.reason ?? 'no audio device'}). The game plays silently.</p> : null}
+              {(
+                [
+                  ['masterVolume', 'Master', undefined],
+                  ['musicVolume', 'Music', 'Menu, map and battle themes, and the victory, defeat, level-up and beacon fanfares'],
+                  ['ambienceVolume', 'Ambience', 'Sea, wind and storm on the map; the air of the battlefield'],
+                  ['interfaceVolume', 'Interface', 'Buttons, dialogs, building, recruiting, the new day'],
+                  ['combatVolume', 'Combat', 'Blows, shots, spells and sieges'],
+                ] as const
+              ).map(([k, label, hint]) => (
+                <Field key={k} label={label} hint={hint}>
+                  <Slider label={`${label} volume`} value={draft[k]} min={0} max={100} step={5} onChange={(n) => set(k, n)} format={(n) => `${n}%`} />
                 </Field>
               ))}
+              <Field label="Voice" disabledReason="This build has no voice lines.">
+                <Slider label="Voice volume" value={draft.voiceVolume} min={0} max={100} step={5} onChange={(n) => set('voiceVolume', n)} format={(n) => `${n}%`} disabled />
+              </Field>
+              <Field label="Mute all" hint="Silences everything; your volumes are kept">
+                <Toggle label="Mute all" checked={draft.muteAll} onChange={(v) => set('muteAll', v)} />
+              </Field>
+              <Field label="Mute in the background" hint="Fade out while the game window is not focused">
+                <Toggle label="Mute in the background" checked={draft.muteOnFocusLoss} onChange={(v) => set('muteOnFocusLoss', v)} />
+              </Field>
+              <Field label="Calmer sound" hint="Softer thunder, crashes and fanfares, quieter combat, fewer overlapping sounds">
+                <Toggle label="Calmer sound" checked={draft.calmerSound} onChange={(v) => set('calmerSound', v)} />
+              </Field>
+              <Field label="Test" hint="Plays one interface and one combat sound at the levels above">
+                <Button data-testid="audio-test" onClick={() => store.audio?.sample()} disabled={!audio?.available} disabledReason="Audio is unavailable here">
+                  Play a test sound
+                </Button>
+              </Field>
             </>
           ) : null}
           {tab === 'accessibility' ? (

@@ -125,6 +125,12 @@ export interface MissionDefinition {
   readonly subtitle: string;
   readonly summary: string;
   readonly mapTemplateId: MapTemplateId;
+  /**
+   * Presentation only: the music and ambience set that plays on this mission's
+   * map (sound manifest IDs `music.explore.<soundscape>` and `amb.<soundscape>`).
+   * Never read by the rules.
+   */
+  readonly soundscape?: string;
   readonly targetPlaytime: string;
   readonly newDecisions: readonly string[];
   /** Cumulative XP cap applied at the end of the mission (campaign/01 §4). */

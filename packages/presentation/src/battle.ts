@@ -7,22 +7,19 @@
  * before playback starts; this controller only visualizes GameEvents. Instant
  * playback (speed 0) completes synchronously and cannot change any result.
  */
-import {
-  ArcRotateCamera,
-  Color3,
-  DirectionalLight,
-  Engine,
-  HemisphericLight,
-  LinesMesh,
-  Mesh,
-  MeshBuilder,
-  PointerEventTypes,
-  Scene,
-  TransformNode,
-  Vector3,
-  type Observer,
-  type PointerInfo,
-} from '@babylonjs/core';
+import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
+import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
+import { Engine } from '@babylonjs/core/Engines/engine';
+import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
+import { LinesMesh } from '@babylonjs/core/Meshes/linesMesh';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
+import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
+import { PointerEventTypes, type PointerInfo } from '@babylonjs/core/Events/pointerEvents';
+import { Scene } from '@babylonjs/core/scene';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import type { Observer } from '@babylonjs/core/Misc/observable';
 import type { BattleCell, BodyProfile, GameEvent } from '@pr/rules';
 import type { SceneController } from './engineHost';
 import { MeshAccumulator, cellWorld, clearColor, createLabel, hexCorner, pickGround, projectPoint, worldCell, type Label } from './meshkit';
@@ -94,9 +91,45 @@ export interface BattleView {
   readonly zone: readonly BattleCell[];
 }
 
+/**
+ * Presentation cues: moments in battle playback that a sound (or any other
+ * cosmetic layer) can follow, timed with the animation. Cosmetic only; they
+ * carry no rules information that is not already shown.
+ */
+export type BattleCueKind =
+  | 'march'
+  | 'flight'
+  | 'swing'
+  | 'impact'
+  | 'shot'
+  | 'arrow-hit'
+  | 'death'
+  | 'spell'
+  | 'heal'
+  | 'bless'
+  | 'ward'
+  | 'defend'
+  | 'morale-up'
+  | 'morale-down'
+  | 'shapeshift'
+  | 'recovery'
+  | 'catapult'
+  | 'stone-hit'
+  | 'breach'
+  | 'turret'
+  | 'moat';
+
+export interface BattleCue {
+  readonly kind: BattleCueKind;
+  /** The blow killed creatures (a heavier sound). */
+  readonly heavy?: boolean;
+}
+
 export interface BattleCallbacks {
   onCellClick(c: BattleCell, button: number, offset: { x: number; z: number }): void;
   onCellHover(c: BattleCell | null, offset: { x: number; z: number }): void;
+  /** Optional: presentation cues timed with playback (sound). */
+  onCue?(cue: BattleCue): void;
 }
 
 interface StackEntry {
@@ -735,11 +768,20 @@ export class BattleSceneController implements SceneController {
     }
   }
 
+  private cue(kind: BattleCueKind, heavy?: boolean): void {
+    try {
+      this.cb.onCue?.(heavy === undefined ? { kind } : { kind, heavy });
+    } catch {
+      // A cosmetic listener must never break playback.
+    }
+  }
+
   private async playEvent(ev: GameEvent, speed: number): Promise<void> {
     switch (ev.kind) {
       case 'BattleStackMoved': {
         const e = this.stacks.get(ev.stackId);
         if (!e || ev.path.length === 0) return;
+        this.cue(ev.flying ? 'flight' : 'march');
         const v = e.view;
         const start = e.shownAnchor;
         let from = this.groupPosition(start, v.footprint, v.facing);
@@ -775,11 +817,21 @@ export class BattleSceneController implements SceneController {
         const t = this.stacks.get(ev.targetId);
         if (!a || !t) return;
         const retaliation = ev.mode === 'retaliation';
+        const heavy = ev.killed > 0;
         if (ev.mode === 'shot') {
-          await Promise.all([playState(this.tweens, a.figures, 'ranged'), this.tweens.wait(260).then(() => this.projectile(this.headOf(a), this.headOf(t).subtract(new Vector3(0, 0.4, 0)), '#d8c08a'))]);
+          await Promise.all([
+            playState(this.tweens, a.figures, 'ranged'),
+            this.tweens.wait(260).then(() => {
+              this.cue('shot');
+              return this.projectile(this.headOf(a), this.headOf(t).subtract(new Vector3(0, 0.4, 0)), '#d8c08a').then(() => this.cue('arrow-hit', heavy));
+            }),
+          ]);
         } else {
+          this.cue('swing');
           await playState(this.tweens, a.figures, 'melee', retaliation ? 0.85 : 1);
+          this.cue('impact', heavy);
         }
+        if (ev.targetRemaining <= 0) this.cue('death');
         const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
         const floats = this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed);
         await playState(this.tweens, t.figures, ev.targetRemaining > 0 ? 'hit' : 'defeat');
@@ -790,6 +842,7 @@ export class BattleSceneController implements SceneController {
         const t = this.stacks.get(ev.targetId);
         if (!t) return;
         const heal = ev.healed > 0;
+        this.cue(heal ? 'heal' : ev.damage > 0 ? 'spell' : 'bless');
         await this.spellColumn(t.group.position, heal ? '#9be58a' : ev.damage > 0 ? '#7fb2ff' : '#f5e4b7');
         const txt = heal ? `+${ev.healed} HP` : ev.damage > 0 ? `−${ev.damage}` : 'Blessed';
         void this.floatText(this.headOf(t), txt, heal ? '#9be58a' : ev.damage > 0 ? '#9cc4ff' : '#f5e4b7', speed);
@@ -799,6 +852,7 @@ export class BattleSceneController implements SceneController {
       case 'BattleAbilityUsed': {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
+        this.cue('ward');
         void this.floatText(this.headOf(e), 'Ward!', '#9fe8ff', speed);
         const clip = `ability_${ev.abilityId}` as const;
         const withClip = e.figures.filter((f) => f.rig?.has(clip));
@@ -814,6 +868,7 @@ export class BattleSceneController implements SceneController {
       case 'BattleStackDefended': {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
+        this.cue('defend');
         void this.floatText(this.headOf(e), 'Defend', '#cfe3ff', speed);
         await playState(this.tweens, e.figures, 'defend', 0.8);
         return;
@@ -827,6 +882,7 @@ export class BattleSceneController implements SceneController {
       case 'BattleMorale': {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
+        this.cue(ev.positive ? 'morale-up' : 'morale-down');
         await this.floatText(this.headOf(e), ev.positive ? 'Morale! Acts again' : 'Falters — skips turn', ev.positive ? '#f5e4b7' : '#ff9d8a', speed * 0.8);
         return;
       }
@@ -844,11 +900,20 @@ export class BattleSceneController implements SceneController {
         const to = this.structureTop(st).subtract(new Vector3(0, 0.4, 0));
         if (ev.source === 'catapult') {
           const from = new Vector3(cellWorld({ col: 0, row: 5 }, R).x - 3, 0.8, to.z);
+          this.cue('catapult');
           await this.projectile(from, to, '#8f8676');
         } else {
           const a = ev.attackerId ? this.stacks.get(ev.attackerId) : undefined;
-          if (a) await Promise.all([playState(this.tweens, a.figures, 'ranged'), this.tweens.wait(260).then(() => this.projectile(this.headOf(a), to, '#8f8676'))]);
+          if (a)
+            await Promise.all([
+              playState(this.tweens, a.figures, 'ranged'),
+              this.tweens.wait(260).then(() => {
+                this.cue('shot');
+                return this.projectile(this.headOf(a), to, '#8f8676');
+              }),
+            ]);
         }
+        this.cue('stone-hit');
         this.shownHp.set(st.id, ev.hp);
         this.drawStructures();
         void this.floatText(to.add(new Vector3(0, 0.6, 0)), ev.source === 'catapult' ? 'Catapult −1' : '−1', '#f0c27a', speed);
@@ -857,6 +922,7 @@ export class BattleSceneController implements SceneController {
       case 'SiegeStructureDestroyed': {
         const st = this.structureById(ev.structureId);
         if (!st) return;
+        this.cue('breach');
         await this.floatText(this.structureTop(st), st.kind === 'wall' || st.kind === 'gate' ? 'Breach!' : 'Destroyed', '#ffcf8a', speed * 0.8);
         return;
       }
@@ -864,7 +930,9 @@ export class BattleSceneController implements SceneController {
         const st = this.structureById(ev.structureId);
         const t = this.stacks.get(ev.targetId);
         if (!st || !t) return;
+        this.cue('turret');
         await this.projectile(this.structureTop(st), this.headOf(t).subtract(new Vector3(0, 0.4, 0)), '#d8c08a');
+        this.cue('arrow-hit', ev.killed > 0);
         void this.floatText(this.headOf(t), ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`, '#ff8a70', speed);
         await playState(this.tweens, t.figures, ev.targetRemaining > 0 ? 'hit' : 'defeat');
         return;
@@ -872,8 +940,17 @@ export class BattleSceneController implements SceneController {
       case 'SiegeMoatDamage': {
         const t = this.stacks.get(ev.stackId);
         if (!t) return;
+        this.cue('moat');
         void this.floatText(this.headOf(t), `Moat −${ev.damage}`, '#9cc4ff', speed);
         await playState(this.tweens, t.figures, ev.targetRemaining > 0 ? 'hit' : 'defeat');
+        return;
+      }
+      case 'BattleStackShapeshifted': {
+        this.cue('shapeshift');
+        return;
+      }
+      case 'BattleCasualtiesRecovered': {
+        this.cue('recovery');
         return;
       }
       case 'BattleEnded': {

@@ -108,6 +108,8 @@ function mainOptions(catalog: ContentCatalog, battle: BattleState, stack: Battle
 }
 
 const SHIFT_MARGIN = 5;
+/** Progress (in cells) a lone advance gives up per enemy melee stack that could strike it next. */
+const LONE_PENALTY = 2;
 
 function topScore(options: readonly Scored[]): number {
   return options.reduce((m, o) => Math.max(m, o.score), 0);
@@ -183,13 +185,24 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
       // No road in yet: wait by the gate (outside the moat) for the Catapult to open a breach.
       field = gateApproachField(battle);
     }
+    // Do not advance alone: a cell that more enemy melee stacks can reach next than
+    // allies stand beside costs LONE_PENALTY cells of progress per extra attacker
+    // (fast flyers used to land in the middle of the enemy line and be surrounded).
+    const allies = sideStacks(battle, stack.side).filter((a) => a.id !== stack.id);
+    const melee = enemies.filter((e) => (catalog.creatures[e.creatureId]?.stats?.shots ?? 0) === 0);
+    const enemyCells = new Map(melee.map((e) => [e.id, stackCells(catalog, e)] as const));
+    const allyCells = allies.map((a) => stackCells(catalog, a));
+    const reach = new Map(melee.map((e) => [e.id, effectiveSpeed(catalog, e, battle) + 1] as const));
     for (const to of actions.moves) {
       const cells = stackCells(catalog, stack, to);
       let nearest = Number.POSITIVE_INFINITY;
       if (field) for (const c of cells) nearest = Math.min(nearest, field.get(cellKey(c)) ?? 999);
       else for (const e of enemies) nearest = Math.min(nearest, footprintDistance(cells, stackCells(catalog, e)));
       const speed = effectiveSpeed(catalog, stack, battle);
-      moveChoices.push({ score: -nearest - cellDistance(stack.anchor, to) / (speed * 10), key: `move:${cellKey(to)}`, payload: { kind: 'BattleMove', stackId: stack.id, to } });
+      const threats = melee.filter((e) => footprintDistance(cells, enemyCells.get(e.id)!) <= reach.get(e.id)!).length;
+      const support = allyCells.filter((a) => footprintDistance(cells, a) <= 2).length;
+      const lonely = Math.max(0, threats - support);
+      moveChoices.push({ score: -nearest - cellDistance(stack.anchor, to) / (speed * 10) - lonely * LONE_PENALTY, key: `move:${cellKey(to)}`, payload: { kind: 'BattleMove', stackId: stack.id, to } });
     }
     const mv = best(moveChoices);
     if (mv) return mv;

@@ -237,3 +237,50 @@ gained or lost on upgrade, so only that form needs the clips.
 Suggested order (production/02 §10): finish the Hoplite pair end to end, then
 Peltast, Cavalry and Griffin to prove the humanoid, ranged, mounted and flying
 paths, then the rest.
+
+## 10. Sound and music (replacing the placeholders)
+
+Every sound the game plays is a **sound ID** in
+`assets-runtime/audio/manifest.json`; code never names a file. Today every
+entry is a placeholder synthesized by `tools/audio/make_placeholders.py`
+(status `placeholder`, shown as such in Settings → Audio).
+
+To deliver final audio for an ID, either overwrite the file at the same path
+(`assets-runtime/audio/placeholder/<name>.ogg`) or, better, add the file
+under a new folder (e.g. `assets-runtime/audio/final/`) and change that
+entry's `files`, `status: "final"` and `provenance`. No code changes.
+
+| Field | Meaning |
+|---|---|
+| `role` | `music` and `ambience` loop and crossfade when the scene changes; `stinger` is a short fanfare that dips the music while it plays; `effect` is a one-shot; `loop` is an effect loop (hero footsteps). |
+| `bus` | `music`, `ambience`, `interface`, `combat` or `voice` — the Settings volume that controls it. |
+| `files` | One or more bundled files; several are variants picked at random. |
+| `gain` | Level of this sound in the mix (1 = as delivered). |
+| `intensity: "strong"` | Thunder, crashes: softened by **Calmer sound**. |
+| `maxVoices`, `cooldownMs`, `pitchJitterCents` | Limits on overlapping copies and repeats; small random pitch variation. |
+
+Files: Ogg Vorbis (`.ogg`), 44.1 kHz; music and ambience stereo, effects
+mono. Loops must loop seamlessly (no silence at either end). Keep editable
+masters and source provenance outside the runtime folder. Test decoding in
+the desktop build and a Chromium browser — `npm run test:e2e` decodes every
+file in the manifest. Never reference a URL: files must be bundled.
+
+Sound IDs by use (the full list is `REQUIRED_SOUND_IDS` in
+`packages/ui/src/audio/sounds.ts`, and a unit test fails if one is missing):
+
+* Music: `music.menu`, `music.explore.<soundscape>` (`coast`, `high_pass`,
+  `storm_plateau` — each mission names its soundscape), `music.battle`,
+  `music.resolution`.
+* Stingers: `stinger.victory`, `stinger.defeat`, `stinger.levelup`,
+  `stinger.beacon`.
+* Ambience: `amb.<soundscape>`, `amb.battlefield`.
+* Interface: `ui.click`, `ui.open`, `ui.close`, `ui.confirm`, `ui.error`,
+  `ui.coins`, `ui.build`, `ui.recruit`, `ui.endday`, `ui.newday`,
+  `ui.newweek`, `ui.pickup`, `ui.capture`, `ui.divine`, `ui.objective`,
+  `sfx.steps` (loop).
+* Combat: `combat.start`, `combat.march`, `combat.flight`, `combat.swing`,
+  `combat.hit`, `combat.hit_heavy`, `combat.shot`, `combat.arrow_hit`,
+  `combat.death`, `combat.spell`, `combat.heal`, `combat.ward`,
+  `combat.defend`, `combat.morale_up`, `combat.morale_down`,
+  `combat.shapeshift`, `combat.recovery`, `combat.catapult`,
+  `combat.stone_hit`, `combat.breach`, `combat.turret`, `combat.moat`.

@@ -8,15 +8,16 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@fontsource/cinzel": "5.3.0",
+    "@fontsource/eb-garamond": "5.3.0",
+    "@fontsource/inter": "5.3.0",
     "@pr/ai": "*",
+    "@pr/audio": "*",
     "@pr/content": "*",
     "@pr/platform": "*",
     "@pr/presentation": "*",
     "@pr/rules": "*",
     "@pr/session": "*",
-    "@fontsource/cinzel": "5.3.0",
-    "@fontsource/eb-garamond": "5.3.0",
-    "@fontsource/inter": "5.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   }

@@ -31,5 +31,6 @@ test('settings persist across reloads', async ({ page }) => {
   await expect(page.getByLabel('Battle speed')).toHaveValue('instant');
   // Unsupported features are disabled with a reason, not faked.
   await page.getByRole('tab', { name: 'Audio' }).click();
-  await expect(page.getByText('No audio in this build').first()).toBeVisible();
+  await expect(page.getByText('This build has no voice lines.').first()).toBeVisible();
+  await expect(page.getByLabel('Voice volume')).toBeDisabled();
 });

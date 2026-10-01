@@ -6,16 +6,14 @@
  * Final GLB assets replace these per asset ID; controllers only need a root
  * TransformNode with the same logical anchor and facing conventions (+X forward).
  */
-import {
-  Color3,
-  Mesh,
-  MeshBuilder,
-  Scene,
-  StandardMaterial,
-  TransformNode,
-  Vector3,
-  type AbstractMesh,
-} from '@babylonjs/core';
+import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
+import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
+import { Scene } from '@babylonjs/core/scene';
+import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import type { BodyProfile } from '@pr/rules';
 
 export class MaterialCache {

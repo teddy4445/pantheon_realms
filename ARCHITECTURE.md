@@ -31,8 +31,9 @@ AI never mutates state directly — each of those paths goes through
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
 | `@pr/platform` | `SaveRepository` / `PreferencesStore` / window + quit contracts; browser (IndexedDB/localStorage), desktop (preload bridge) and memory adapters | contain rules |
-| `@pr/presentation` | One long-lived Babylon `EngineHost`; adventure, battle and unit-viewer scene controllers; GLB unit-model pipeline (manifests, loader, rigs, validation) with procedural proxies as fallback; animation states | decide legality or change state |
-| `@pr/ui` | React app shell, 18 screens, dialogs, view helpers, preferences, save-slot policy, asset manifest (placeholders + bundled unit models) | edit `MatchState` (it dispatches commands) |
+| `@pr/presentation` | One long-lived Babylon `EngineHost`; adventure, battle and unit-viewer scene controllers; GLB unit-model pipeline (manifests, loader, rigs, validation) with procedural proxies as fallback; animation states; battle playback cues for sound. `@pr/presentation/core` is its Babylon-free part (unit-model registry and validation, palette, animation state list) | decide legality or change state |
+| `@pr/audio` | Web Audio mixer: sound manifest types and validation, buses (music, ambience, interface, combat, voice), music/ambience crossfades, stinger ducking, voice limits and cooldowns, the "Calmer sound" policy | read or change game state; fetch anything that is not bundled |
+| `@pr/ui` | React app shell, 18 screens, dialogs, view helpers, preferences, save-slot policy, asset manifest (placeholders + bundled unit models), which sound plays when (`audio/`) | edit `MatchState` (it dispatches commands) |
 | `@pr/testing` | Headless `GameDriver` for scripted playthroughs | bypass validation |
 | `apps/client` | Vite entry for browser + Electron renderer | — |
 | `apps/desktop` | Electron main (custom `prgame://app` origin, CSP, sandbox, validated IPC, atomic saves) + preload bridge | expose Node/Electron to the renderer |
@@ -49,10 +50,16 @@ session    ← rules, campaign, ai
 testing    ← rules, content, campaign, ai, mapgen
 platform   ← (nothing)
 presentation ← rules, mapgen, @babylonjs/core, @babylonjs/loaders
-ui         ← rules, content, session, platform, presentation, ai, react, fonts
+audio      ← (nothing)
+ui         ← rules, content, session, platform, presentation, audio, ai, react, fonts
 client     ← ui, platform, react
 desktop    ← electron, node:*
 ```
+
+**Start-up size rule (also enforced by the lint):** `ui` may take *values*
+only from `@pr/presentation/core`. The 3D layer is reached through
+`import type` or the one on-demand loader in `ui/src/scene/SceneHost.tsx`,
+so Babylon.js is not part of the start-up bundle (see §6).
 
 The simulation core (`rules`, `content`, `mapgen`, `campaign`, `ai`,
 `session`) is also type-checked with a DOM-free `tsconfig.core.json`
@@ -202,6 +209,22 @@ hero when it has none. The tactical AI takes a free Shapeshift when the other
 aspect gives a clearly better best action (e.g. Hare Speed lets a Pooka reach
 an enemy); it does not use a Shapeshift that costs the activation.
 
+Turn-order fairness (measured with `npm run balance`): whoever moves first
+advances into the unseen middle first and is caught by armies it never saw.
+Three rules, all from public knowledge only, removed most of that edge:
+
+* **Retreat** — a hero standing within reach of a visible, stronger enemy
+  (often one revealed by its own move) steps back out of reach, into one of
+  its towns if it can arrive today, while movement remains. The "return
+  home" move no longer stops short in danger.
+* **Fog caution for secondaries** — a hero below 60% of its empire's
+  strongest hero ends its moves on its own half of the map (nearer one of
+  its towns than any enemy town) or within 3 hexes of that strongest hero.
+* **No lone advance (tactical)** — when a stack cannot strike this
+  activation, a cell that more enemy melee stacks could reach next than
+  allies stand beside costs 2 cells of progress per extra attacker, so fast
+  flyers no longer land alone in the enemy line.
+
 ## 4. Determinism
 
 * RNG: FNV-1a stream derivation + xorshift32 with unbiased bounded draws.
@@ -235,6 +258,17 @@ save-ID alphabet and size cap. The browser adapter uses IndexedDB for saves and
 localStorage for preferences. The browser build never offers Quit.
 
 ## 6. Presentation
+
+**Loading on demand.** Babylon.js is imported by module path (never through
+its package index, which pulls in the whole engine), and the 3D layer is a
+separate chunk: the main menu starts without it, `preloadPresentation()`
+fetches it when the browser is idle after the menu appears (with the two
+shader programs every scene compiles bundled in, and Babylon's own lazy
+shader imports warmed), and a 3D screen that opens before that waits for it
+behind "Loading the 3D view…". Controllers therefore reach their screen
+asynchronously; screens push their latest view from refs when one arrives.
+The glTF loader is fetched only when a scene first loads a model.
+`tools/perf/load-time.mjs` measures start-up and first-scene times.
 
 A single `EngineHost` owns one WebGL2 engine and canvas; screens mount it into
 their viewport and ask for a scene controller:
@@ -276,6 +310,21 @@ Assets are referenced only by stable IDs (`creature.greek.tier3.base.portrait`,
 final manifest → placeholder manifest (`assets-runtime/placeholders`) →
 procedural placeholder. Swapping in final art or GLB models requires manifest
 entries, not screen changes.
+
+**Sound.** `@pr/audio`'s `AudioDirector` is one Web Audio graph (source →
+sound gain → bus → [music: stinger duck] → master → focus → limiter).
+`ui/src/audio/gameAudio.ts` connects it to the app: music and ambience follow
+the screen and the mission's `soundscape` (presentation data on the mission
+definition, never read by the rules); a presenter plays the player's own
+committed actions, the calendar and stingers without delaying the
+presentation queue; the battle scene emits `BattleCue`s timed with its
+animation (one summary sound per action when playback is instant); buttons
+click, dialogs open and close, errors sound once. Every sound accompanies
+something already on screen, so no information is carried by sound alone,
+and a missing device or an undecodable file only means silence. Browsers
+start audio after the first click; the desktop app starts it at launch.
+Files are resolved by sound ID from `assets-runtime/audio/manifest.json`
+(see `ASSET_PIPELINE.md` §10).
 
 ## 7. UI
 

@@ -1,7 +1,7 @@
 // Desktop smoke test: launches the packaged-layout Electron app (apps/desktop
 // with dist/ + renderer/), checks the renderer loads from prgame://app/, the
 // desktop bridge is present, Quit is offered, a manual save round-trips to
-// disk, and no navigation escapes the app origin.
+// disk, sounds decode and may start without a click, and no navigation escapes the app origin.
 //
 // Usage: npm run build && npm run desktop:build && xvfb-run -a node tools/desktop-smoke.mjs
 // Packaged: PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs
@@ -47,6 +47,23 @@ try {
     }, g);
     if (magic !== 'glTF') fail(`GLB ${g} not served intact (magic "${magic}")`);
   }
+  // Sound: the app protocol serves the Ogg files intact, they decode, and audio may start
+  // without a click (the desktop app sets the autoplay policy; browsers wait for a click).
+  const audio = await win.evaluate(async () => {
+    const m = await (await fetch('./audio/manifest.json')).json();
+    const ctx = new AudioContext();
+    let decoded = 0;
+    for (const s of m.sounds.slice(0, 6)) {
+      const buf = await (await fetch(`./${s.files[0]}`)).arrayBuffer();
+      await ctx.decodeAudioData(buf);
+      decoded++;
+    }
+    const state = ctx.state;
+    await ctx.close();
+    return { sounds: m.sounds.length, decoded, state };
+  });
+  if (audio.decoded !== 6) fail('sound files did not decode');
+  if (audio.state !== 'running') fail(`audio did not start without a click (state ${audio.state})`);
   // Start a campaign and save into slot 1 through the UI.
   await win.click('[data-testid=menu-campaign]');
   await win.click('[data-testid=setup-next]');
@@ -81,7 +98,7 @@ try {
     if (packaged.devTools) fail('DevTools opened in the packaged build');
     if (packaged.name !== 'Pantheon Realms') fail(`unexpected app name ${packaged.name}`);
   }
-  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, glbs, ...(packaged ? { packaged } : {}) });
+  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, glbs, audio, ...(packaged ? { packaged } : {}) });
 } catch (e) {
   fail(e instanceof Error ? e.message : String(e));
 } finally {

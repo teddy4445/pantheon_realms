@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
-import { builtBuildingIds, canonicalStateHash, deepClone, legalActions, processCommand, type GameCommand } from '@pr/rules';
+import { axialDistance, builtBuildingIds, canonicalStateHash, deepClone, footprintDistance, legalActions, processCommand, stackCells, type GameCommand, type HexCoord } from '@pr/rules';
 import { buildObservation, chooseBattleAction, runAITurn, strategicCandidates } from '../src';
 
 const SKIRMISH = 'skirmish_twin_harbors';
@@ -105,6 +105,49 @@ describe('strategic AI', () => {
     expect(calm.some((c) => c.kind === 'MoveHero' && c.heroId === 'alexios' && c.destination.q === gold.q && c.destination.r === gold.r)).toBe(true);
   });
 
+  it('steps back out of reach when a much stronger enemy is in view', () => {
+    const d = GameDriver.mission(SKIRMISH);
+    const s = deepClone(d.state);
+    for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
+    const gold = d.catalog.missions[SKIRMISH]!.sites.find((x) => x.id === 'sk_gold')!.coord;
+    const enemy = s.heroes['rival_odysseus']!;
+    enemy.position = { q: gold.q + 1, r: gold.r };
+    enemy.army.slots = [{ creatureId: 'hoplite', count: 80 }, { creatureId: 'peltast', count: 30 }, null, null, null, null, null];
+    // Alexios already stands next to that army (it came into view during his move).
+    s.heroes['alexios']!.position = { q: gold.q - 2, r: gold.r };
+    s.heroes['alexios']!.movementPoints = 900;
+    const cands = strategicCandidates(d.catalog, buildObservation(d.catalog, s, 'player'));
+    const move = cands.find((c) => c.kind === 'MoveHero' && c.heroId === 'alexios');
+    expect(move).toBeDefined();
+    const dest = (move as { destination: HexCoord }).destination;
+    expect(axialDistance(dest, enemy.position)).toBeGreaterThan(axialDistance(s.heroes['alexios']!.position, enemy.position));
+  });
+
+  it('keeps a weak secondary hero on its own half of the map unless it walks beside the main army', () => {
+    const d = GameDriver.mission(SKIRMISH);
+    const s = deepClone(d.state);
+    for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
+    const west = s.towns['westharbor']!.coord;
+    const east = s.towns['eastharbor']!.coord;
+    const main = s.heroes['alexios']!;
+    main.army.slots = [{ creatureId: 'hoplite', count: 60 }, { creatureId: 'peltast', count: 20 }, null, null, null, null, null];
+    // A scout with a handful of Hoplites stands at the middle of the map.
+    const scout = deepClone(main);
+    scout.id = 'scout';
+    scout.name = 'Scout';
+    scout.army.slots = [{ creatureId: 'hoplite', count: 5 }, null, null, null, null, null, null];
+    scout.position = { q: Math.round((west.q + east.q) / 2), r: west.r };
+    scout.movementPoints = 2000;
+    s.heroes['scout'] = scout;
+    const cands = strategicCandidates(d.catalog, buildObservation(d.catalog, s, 'player'));
+    const scoutMoves = cands.filter((c) => c.kind === 'MoveHero' && c.heroId === 'scout') as { destination: HexCoord }[];
+    expect(scoutMoves.length).toBeGreaterThan(0); // it still has work on its own half
+    for (const m of scoutMoves) {
+      const enemyHalf = axialDistance(m.destination, east) < axialDistance(m.destination, west);
+      if (enemyHalf) expect(axialDistance(m.destination, main.position)).toBeLessThanOrEqual(3);
+    }
+  });
+
   it('besieges a visible, weakly garrisoned enemy town and holds a threatened town', () => {
     const d = GameDriver.mission(SKIRMISH);
     const rival = 'rival';
@@ -166,6 +209,46 @@ describe('tactical AI', () => {
     }
     expect(d.state.battle).toBeNull();
     expect(d.state.lastBattleResult?.winner).toBe('attacker');
+  });
+});
+
+describe('tactical AI: advancing', () => {
+  it('a fast flyer that cannot strike yet stops outside the enemy line’s reach instead of landing alone in it', () => {
+    const d = GameDriver.mission(SKIRMISH, { matchId: 'lone-flyer' });
+    const s = deepClone(d.state);
+    for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
+    const a = s.heroes['alexios']!;
+    const b = s.heroes['rival_odysseus']!;
+    a.army.slots = [{ creatureId: 'windcrest_griffin', count: 4 }, { creatureId: 'hoplite', count: 20 }, null, null, null, null, null];
+    b.army.slots = [{ creatureId: 'hoplite', count: 20 }, { creatureId: 'hoplite', count: 20 }, null, null, null, null, null];
+    const gold = d.catalog.missions[SKIRMISH]!.sites.find((x) => x.id === 'sk_gold')!.coord;
+    b.position = { q: gold.q - 4, r: gold.r };
+    a.position = { q: gold.q - 5, r: gold.r };
+    a.movementPoints = 5000;
+    d.state = s;
+    d.do({ kind: 'MoveHero', heroId: 'alexios', destination: b.position, confirmEncounter: true });
+    const battle = deepClone(d.state.battle!);
+    const stacks = Object.values(battle.stacks);
+    const griffin = stacks.find((x) => x.creatureId === 'windcrest_griffin')!;
+    const ally = stacks.find((x) => x.side === griffin.side && x.id !== griffin.id)!;
+    const foes = stacks.filter((x) => x.side !== griffin.side);
+    griffin.anchor = { col: 0, row: 5 };
+    ally.anchor = { col: 0, row: 0 };
+    foes[0]!.anchor = { col: 14, row: 4 };
+    foes[1]!.anchor = { col: 14, row: 6 };
+    battle.phase = 'normal';
+    battle.activeStackId = griffin.id;
+    const fixture = { ...d.state, battle };
+    const la = legalActions(d.catalog, fixture)!;
+    expect(la.melee.length).toBe(0); // out of striking range this activation
+    const choice = chooseBattleAction(d.catalog, fixture)!;
+    expect(choice.kind).toBe('BattleMove');
+    const to = (choice as { to: { col: number; row: number } }).to;
+    const cells = stackCells(d.catalog, griffin, to);
+    // Hoplites move 4 and strike from an adjacent cell: stay at least 6 cells away from each.
+    for (const f of foes) expect(footprintDistance(cells, stackCells(d.catalog, f))).toBeGreaterThan(5);
+    // …while still advancing.
+    expect(to.col).toBeGreaterThan(griffin.anchor.col);
   });
 });
 

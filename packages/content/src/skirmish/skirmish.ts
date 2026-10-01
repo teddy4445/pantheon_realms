@@ -276,6 +276,7 @@ function twinHarbors(id: string, playerPantheon: string, rivalPantheon: string):
     subtitle: `Skirmish — ${pk.adjective} vs. ${rk.adjective}`,
     summary: `Two harbor towns contest the gold mine between them. Defeat the rival’s heroes and take Eastharbor. Proposed test scenario; unbalanced${proposed.length ? `; ${proposed.join(' and ')} values are proposed and unplaytested` : ''}.`,
     mapTemplateId: 'skirmish_twin_harbors_v2',
+    soundscape: 'coast',
     targetPlaytime: '20–40 minutes (unmeasured)',
     newDecisions: ['Economy race', 'Local AI opponent', ...(mixed ? ['Mixed pantheons'] : [])],
     xpCap: null,

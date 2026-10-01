@@ -22,12 +22,22 @@ const ALLOWED = {
   'packages/testing': ['@pr/rules', '@pr/content', '@pr/campaign', '@pr/ai', '@pr/mapgen'],
   'packages/platform': [],
   'packages/presentation': ['@pr/rules', '@pr/mapgen', '@babylonjs/core', '@babylonjs/loaders'],
-  'packages/ui': ['@pr/rules', '@pr/content', '@pr/session', '@pr/platform', '@pr/presentation', '@pr/ai', 'react', 'react-dom', '@fontsource/cinzel', '@fontsource/eb-garamond', '@fontsource/inter'],
+  'packages/audio': [],
+  'packages/ui': ['@pr/rules', '@pr/content', '@pr/session', '@pr/platform', '@pr/presentation', '@pr/audio', '@pr/ai', 'react', 'react-dom', '@fontsource/cinzel', '@fontsource/eb-garamond', '@fontsource/inter'],
   'apps/client': ['@pr/ui', '@pr/platform', 'react', 'react-dom'],
   'apps/desktop': ['electron', 'node:*'],
 };
 
-const RELATIVE_EXCEPTIONS = [{ from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/placeholders/manifest.json' }];
+const RELATIVE_EXCEPTIONS = [
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/placeholders/manifest.json' },
+  { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
+];
+
+// Start-up size: the interface may take VALUES only from '@pr/presentation/core' (no
+// Babylon). The 3D layer '@pr/presentation' is reached through `import type` or the
+// on-demand loader in scene/SceneHost.tsx, so the main menu never waits for the engine.
+const LAZY_ONLY = { pkg: 'packages/ui', spec: '@pr/presentation', loader: 'packages/ui/src/scene/SceneHost.tsx' };
+const STATIC_VALUE_RE = /^\s*(?:import|export)\s+(?!type\b)[^'";]*?from\s+['"]([^'"]+)['"]/gm;
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -76,6 +86,18 @@ for (const [pkg, allowed] of Object.entries(ALLOWED)) {
       const name = packageName(spec);
       if (!allowed.includes(name)) {
         console.error(`${rel}: "${spec}" is not an allowed dependency of ${pkg} (allowed: ${allowed.join(', ') || 'none'})`);
+        problems++;
+      }
+    }
+    if (pkg === LAZY_ONLY.pkg) {
+      for (const m of text.matchAll(STATIC_VALUE_RE)) {
+        if (m[1] === LAZY_ONLY.spec) {
+          console.error(`${rel}: static value import of "${LAZY_ONLY.spec}" pulls Babylon into start-up — use "import type" or "@pr/presentation/core", and load scenes through ${LAZY_ONLY.loader}`);
+          problems++;
+        }
+      }
+      if (rel !== LAZY_ONLY.loader && text.includes(`import('${LAZY_ONLY.spec}')`) && !/typeof import\('@pr\/presentation'\)/.test(text)) {
+        console.error(`${rel}: load the 3D layer through ${LAZY_ONLY.loader} (loadPresentation), not a second dynamic import`);
         problems++;
       }
     }

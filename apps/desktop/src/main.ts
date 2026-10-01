@@ -21,6 +21,10 @@ const MAX_SAVE_BYTES = 20 * 1024 * 1024;
 // variable can point the installed game at another page or widen the IPC sender check.
 const DEV_URL = app.isPackaged ? undefined : process.env.PR_DEV_URL || undefined;
 
+// A desktop game may start its menu music without waiting for the first click
+// (browsers require a click first; the browser build waits for it).
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+
 protocol.registerSchemesAsPrivileged([
   { scheme: SCHEME, privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true, codeCache: true } },
 ]);

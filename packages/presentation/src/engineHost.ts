@@ -6,7 +6,35 @@
  * pointer input goes straight to the scene and only one render loop ever runs.
  * The host never decides game rules; controllers only present committed data.
  */
-import { Engine, Scene } from '@babylonjs/core';
+import { Engine } from '@babylonjs/core/Engines/engine';
+import { Scene } from '@babylonjs/core/scene';
+// Babylon features the scenes rely on that register themselves as side effects when
+// imported by path (the package is imported by module path, not through its index, so
+// only what the game uses is bundled).
+import '@babylonjs/core/Culling/ray'; // Scene.createPickingRay (ground picking)
+import '@babylonjs/core/Meshes/instancedMesh'; // Mesh.createInstance (tiles, decor)
+import '@babylonjs/core/Animations/animatable'; // AnimationGroup playback for GLB clips
+import '@babylonjs/core/Engines/Extensions/engine.dynamicTexture'; // label textures
+// The two shader programs every scene compiles (StandardMaterial and line colour).
+// Babylon would otherwise fetch them, and their ~25 include chunks, one after another
+// when the first scene opens; bundled here they arrive with the background preload.
+import '@babylonjs/core/Shaders/default.vertex';
+import '@babylonjs/core/Shaders/default.fragment';
+import '@babylonjs/core/Shaders/color.vertex';
+import '@babylonjs/core/Shaders/color.fragment';
+
+/**
+ * Resolve Babylon's own lazy shader imports ahead of the first scene (they are tiny
+ * re-export chunks once the shaders are bundled above). Called by the background preload.
+ */
+export function warmShaderImports(): Promise<unknown> {
+  return Promise.all([
+    import('@babylonjs/core/Shaders/default.vertex'),
+    import('@babylonjs/core/Shaders/default.fragment'),
+    import('@babylonjs/core/Shaders/color.vertex'),
+    import('@babylonjs/core/Shaders/color.fragment'),
+  ]);
+}
 
 export interface SceneController {
   readonly scene: Scene;

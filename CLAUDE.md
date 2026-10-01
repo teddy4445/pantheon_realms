@@ -25,6 +25,13 @@ do not reopen decisions they settle.
 * Never describe placeholder behavior as final. Keep `DEVELOPMENT_STATUS.md`
   honest: measured results vs targets, commands actually run.
 * The desktop game must work with networking disabled; no CDN assets.
+* Start-up size: `@pr/ui` takes values only from `@pr/presentation/core`;
+  Babylon is imported by module path and the 3D layer loads on demand through
+  `ui/src/scene/SceneHost.tsx` (the boundary lint enforces this). Measure with
+  `node tools/perf/load-time.mjs` after changes that touch start-up.
+* Sound is referenced by sound ID only (`assets-runtime/audio/manifest.json`);
+  every sound must accompany something shown on screen, and silence must
+  never block play.
 * Do not reset the repository, remove saves, publish assets, buy services or
   upload private content without explicit authorization. Development tools
   and MCP servers are never packaged into the game. No privileged action hooks
@@ -44,6 +51,8 @@ npm run desktop:dist # installers via electron-builder
 xvfb-run -a node tools/desktop-smoke.mjs   # headless desktop smoke (after desktop:build)
 PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs  # packaged-layout smoke
 npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run after any value change
+node tools/perf/load-time.mjs [dist]          # start-up + first-scene load times (after npm run build)
+python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg)
 npm run assets:check     # unit models: Khronos validator + manifest/GLB + game-binding tests
 npm run assets:calibration  # regenerate the axis/scale calibration GLB
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"

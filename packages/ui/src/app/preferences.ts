@@ -4,7 +4,7 @@
  */
 import type { PreferencesStore } from '@pr/platform';
 
-export const PREFERENCES_SCHEMA_VERSION = 1;
+export const PREFERENCES_SCHEMA_VERSION = 2;
 
 export type AnimSpeed = 'instant' | 'fast' | 'normal';
 export type BattleSpeed = '0.5' | '1' | '1.5' | '2' | 'instant';
@@ -35,13 +35,18 @@ export interface Preferences {
   // Display
   readonly windowMode: 'windowed' | 'fullscreen';
   readonly graphicsQuality: 'low' | 'medium' | 'high';
-  // Audio (no audio assets in this build)
+  // Audio (temporary generated sounds in this build; production/04 §7 buses)
   readonly masterVolume: number;
   readonly musicVolume: number;
-  readonly effectsVolume: number;
   readonly ambienceVolume: number;
+  readonly interfaceVolume: number;
+  readonly combatVolume: number;
   readonly voiceVolume: number;
+  /** Mute everything; the volumes above are kept (settings §4). */
+  readonly muteAll: boolean;
   readonly muteOnFocusLoss: boolean;
+  /** "Calmer sound": softer thunder, crashes and stingers; fewer overlapping copies. */
+  readonly calmerSound: boolean;
   // Accessibility
   readonly motion: 'system' | 'reduced' | 'full';
   readonly cameraShake: boolean;
@@ -75,10 +80,13 @@ export const DEFAULT_PREFERENCES: Preferences = {
   graphicsQuality: 'high',
   masterVolume: 80,
   musicVolume: 60,
-  effectsVolume: 80,
   ambienceVolume: 60,
+  interfaceVolume: 80,
+  combatVolume: 80,
   voiceVolume: 80,
+  muteAll: false,
   muteOnFocusLoss: true,
+  calmerSound: false,
   motion: 'system',
   cameraShake: false,
   screenFlashes: 'reduced',
@@ -100,6 +108,12 @@ export function sanitizePreferences(raw: unknown): Preferences {
     else if (typeof def === 'string' && typeof v === 'string') out[key] = v;
     else if (Array.isArray(def) && Array.isArray(v)) out[key] = v.filter((x) => typeof x === 'string');
   }
+  // Schema 1 had one "Effects" volume; it now feeds both the interface and combat buses.
+  if (typeof r.effectsVolume === 'number' && Number.isFinite(r.effectsVolume)) {
+    if (r.interfaceVolume === undefined) out.interfaceVolume = r.effectsVolume;
+    if (r.combatVolume === undefined) out.combatVolume = r.effectsVolume;
+  }
+  for (const k of ['masterVolume', 'musicVolume', 'ambienceVolume', 'interfaceVolume', 'combatVolume', 'voiceVolume'] as const) out[k] = Math.min(100, Math.max(0, out[k] as number));
   out.schemaVersion = PREFERENCES_SCHEMA_VERSION;
   out.uiScale = Math.min(1.6, Math.max(0.8, out.uiScale as number));
   return out as unknown as Preferences;

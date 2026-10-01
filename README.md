@@ -6,8 +6,9 @@ shell, and a browser build from the same core.
 
 > **Development build.** The architecture, screens and game logic are real;
 > all art, models, animation and portraits are temporary placeholders (the GLB
-> model pipeline is ready, but no production model exists yet). There is no
-> audio yet. See [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md).
+> model pipeline is ready, but no production model exists yet). Music and
+> sounds are temporary placeholders synthesized by a script; final recordings
+> replace them by file. See [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md).
 
 ## Playable now
 
@@ -26,6 +27,10 @@ shell, and a browser build from the same core.
 * **A second god choice** (three gods per pantheon with real blessings) and
   the **Training Academy, Watchtower and Artifact Merchant** in every town
   (proposed values).
+* **Sound**: menu, map (per region) and battle music, the victory, defeat,
+  level-up and beacon fanfares, sea/wind/storm ambience, interface and combat
+  sounds — all placeholders — with Master, Music, Ambience, Interface and
+  Combat volumes, Mute all, mute in the background and "Calmer sound".
 
 ## Installing on Windows
 
@@ -53,6 +58,8 @@ npm run check          # import boundaries + type-check + unit tests
 npm run test:e2e       # Playwright UI tests (Chromium)
 npm run assets:check   # validate unit models (Khronos validator + game checks)
 npm run balance        # AI-vs-AI balance report (tools/balance/README.md)
+node tools/perf/load-time.mjs          # start-up and first-scene load times (after npm run build)
+python3 tools/audio/make_placeholders.py   # regenerate the placeholder music and sounds
 ```
 
 ## Repository layout
@@ -67,12 +74,15 @@ packages/campaign  missions, carryover, campaign state machine
 packages/ai        AI observation, planners, controller
 packages/session   game session, checkpoints, save format
 packages/platform  storage/window adapters (browser, desktop, memory)
-packages/presentation  Babylon.js scene controllers and placeholder proxies
+packages/presentation  Babylon.js scene controllers and placeholder proxies (loaded on demand;
+                   presentation/core is the Babylon-free part the menu uses)
+packages/audio     Web Audio mixer: sound manifest, buses, music/ambience crossfades
 packages/ui        React screens, dialogs, preferences, asset manifest
 packages/testing   headless game driver for tests
-assets-runtime     committed runtime placeholders (+ provenance) and unit models (units/)
+assets-runtime     committed runtime placeholders (+ provenance), unit models (units/) and sounds (audio/)
 tests/e2e          Playwright UI tests
-tools              boundary lint, desktop smoke test, placeholder asset tooling
+tools              boundary lint, desktop smoke test, load-time measurement, balance tool,
+                   placeholder art and sound generators
 ```
 
 ## Documents
@@ -84,5 +94,6 @@ tools              boundary lint, desktop smoke test, placeholder asset tooling
 * [`DESIGN_PROPOSALS.md`](DESIGN_PROPOSALS.md) — proposed signatures, second
   god choice and the three support buildings, with exact numbers.
 * [`ASSET_PIPELINE.md`](ASSET_PIPELINE.md) — artist spec for creature GLBs:
-  orientation, scale, the eight clip names, manifests, validation.
+  orientation, scale, the eight clip names, manifests, validation; and how to
+  replace the placeholder sounds.
 * `docs/` — the owner's design, content, campaign and production documents.

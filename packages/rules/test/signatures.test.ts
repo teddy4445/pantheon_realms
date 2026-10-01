@@ -4,6 +4,7 @@ import {
   effectiveAttack,
   effectiveDefense,
   effectiveSpeed,
+  harmonyFor,
   legalActions,
   playerEffects,
   projectedIncome,
@@ -128,17 +129,27 @@ describe('Berserk Fury (wounded_fury)', () => {
 });
 
 describe('Harmony (army_harmony)', () => {
-  it('counts distinct families at battle start and uses the highest met threshold', () => {
-    const five = guardBattle('japanese', [['japanese_kitsune', 5], ['japanese_kappa', 5], ['japanese_tengu', 3], ['japanese_oni', 2], ['japanese_jorogumo', 1]], [['hoplite', 5]]);
-    expect(five.d.state.battle!.sides.attacker.effects?.harmony).toEqual({ families: 5, attack: 1, defense: 1 });
+  it('counts distinct families at battle start: 3 or more give +1 Defense to every stack', () => {
+    const three = guardBattle('japanese', [['japanese_kitsune', 5], ['japanese_kappa', 5], ['japanese_tengu', 3]], [['hoplite', 5]]);
+    expect(three.d.state.battle!.sides.attacker.effects?.harmony).toEqual({ families: 3, attack: 0, defense: 1 });
     const two = guardBattle('japanese', [['japanese_kitsune', 5], ['japanese_kappa', 5]], [['hoplite', 5]], { matchId: 'sig-jp2' });
     expect(two.d.state.battle!.sides.attacker.effects?.harmony).toBeNull();
     // Harmony changes the effective stats every screen and the AI read.
-    const b5 = five.d.state.battle!;
-    const k5 = stackOf(five.d, 'japanese_kitsune');
+    const b3 = three.d.state.battle!;
+    const k3 = stackOf(three.d, 'japanese_kitsune');
     const k2 = stackOf(two.d, 'japanese_kitsune');
-    expect(effectiveAttack(five.d.catalog, b5, k5) - effectiveAttack(two.d.catalog, two.d.state.battle!, k2)).toBe(1);
-    expect(effectiveDefense(five.d.catalog, b5, k5) - effectiveDefense(two.d.catalog, two.d.state.battle!, k2)).toBe(1);
+    expect(effectiveAttack(three.d.catalog, b3, k3) - effectiveAttack(two.d.catalog, two.d.state.battle!, k2)).toBe(0);
+    expect(effectiveDefense(three.d.catalog, b3, k3) - effectiveDefense(two.d.catalog, two.d.state.battle!, k2)).toBe(1);
+  });
+
+  it('with several thresholds, the highest one met applies (any content may define steps)', () => {
+    const steps = [
+      { families: 3, attack: 0, defense: 1 },
+      { families: 5, attack: 1, defense: 1 },
+    ];
+    expect(harmonyFor(steps, 2)).toBeNull();
+    expect(harmonyFor(steps, 4)).toEqual(steps[0]);
+    expect(harmonyFor(steps, 7)).toEqual(steps[1]);
   });
 
   it('splitting one family into many stacks does not count as harmony', () => {

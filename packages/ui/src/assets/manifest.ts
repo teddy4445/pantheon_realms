@@ -9,7 +9,7 @@
  * references) -> procedural placeholder generated at runtime.
  */
 import placeholderManifest from '../../../../assets-runtime/placeholders/manifest.json';
-import { registerUnitModels, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation';
+import { registerUnitModels, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
 

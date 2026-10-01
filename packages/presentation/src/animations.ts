@@ -8,7 +8,7 @@
  * AFTER the rules have committed a result and never reports back into game
  * state, so a skipped or instant playback leaves the outcome identical.
  */
-import type { TransformNode } from '@babylonjs/core';
+import type { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import type { CreatureProxy } from './proxies';
 import type { ModelRig } from './models';
 import { easeOut, linear, type TweenPlayer } from './tween';

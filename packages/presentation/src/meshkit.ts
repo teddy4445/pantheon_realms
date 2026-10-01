@@ -9,19 +9,16 @@
  * right-handed scene (production/02 §5: GLB models load natively), so its rows
  * advance toward world +Z and its camera looks down −Z.
  */
-import {
-  Color4,
-  DynamicTexture,
-  Matrix,
-  Mesh,
-  MeshBuilder,
-  Plane,
-  Scene,
-  StandardMaterial,
-  Vector3,
-  VertexData,
-  type Camera,
-} from '@babylonjs/core';
+import { Color4 } from '@babylonjs/core/Maths/math.color';
+import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture';
+import { Matrix, Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
+import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
+import { Plane } from '@babylonjs/core/Maths/math.plane';
+import { Scene } from '@babylonjs/core/scene';
+import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
+import { VertexData } from '@babylonjs/core/Meshes/mesh.vertexData';
+import type { Camera } from '@babylonjs/core/Cameras/camera';
 import type { BattleCell, HexCoord } from '@pr/rules';
 
 export const SQRT3 = Math.sqrt(3);

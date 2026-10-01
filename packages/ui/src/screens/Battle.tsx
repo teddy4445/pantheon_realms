@@ -37,10 +37,10 @@ import {
   type GameEvent,
   type MatchState,
 } from '@pr/rules';
-import { BattleSceneController, cellWorld, type BattleView } from '@pr/presentation';
+import type { BattleSceneController, BattleView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { battlePlaybackFactor } from '../app/preferences';
-import { SceneViewport, projectors, toPage } from '../scene/SceneHost';
+import { SceneViewport, presentation, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
 import { Icon } from '../assets/icons';
@@ -197,7 +197,9 @@ function buildView(
       const active = battle.stacks[la.stackId]!;
       if (mode.kind === 'normal' && occId && battle.stacks[occId]?.side !== la.side && !la.shootTargets.includes(occId)) {
         const m = la.melee.find((x) => x.targetId === occId);
-        if (m) {
+        // Hover comes from the 3D scene, so the 3D layer (and its board transform) is loaded here.
+        const cellWorld = presentation()?.cellWorld;
+        if (m && cellWorld) {
           const w = cellWorld(hover.cell, 1);
           const px = w.x + hover.offset.x;
           const pz = w.z + hover.offset.z;
@@ -283,6 +285,9 @@ export function BattleScreen() {
   useEffect(() => {
     if (built) ctrl.current?.update(built.view);
   }, [built]);
+  // The controller can arrive after the first render (the 3D layer loads on demand).
+  const builtRef = useRef(built);
+  builtRef.current = built;
 
   // Reset mode whenever the active stack changes.
   useEffect(() => {
@@ -394,18 +399,19 @@ export function BattleScreen() {
   const clickRef = useRef(onCellClick);
   clickRef.current = onCellClick;
 
-  const factory = useCallback(
-    (engine: ConstructorParameters<typeof BattleSceneController>[0], canvas: HTMLCanvasElement) =>
-      new BattleSceneController(engine, canvas, {
+  const factory = useCallback<SceneFactory<BattleSceneController>>(
+    (lib, engine, canvas) =>
+      new lib.BattleSceneController(engine, canvas, {
         onCellClick: (c, b, o) => clickRef.current(c, b, o),
         onCellHover: (c, o) => setHover(c ? { cell: c, offset: o } : null),
+        onCue: (cue) => store.audio?.battleCue(cue),
       }),
     [],
   );
   const onController = useCallback((c: BattleSceneController | null) => {
     ctrl.current = c;
     projectors.battle = c ? (col, row) => toPage(c.projectCell({ col, row })) : undefined;
-    if (c && built) c.update(built.view);
+    if (c && builtRef.current) c.update(builtRef.current.view);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

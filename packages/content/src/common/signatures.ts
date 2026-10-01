@@ -38,15 +38,8 @@ export const SIGNATURES: Readonly<Record<string, PantheonSignatureDefinition>> =
   japanese: {
     name: 'Harmony',
     summary: 'Many spirits, one purpose.',
-    rules: [
-      'Counted when a battle starts, by different creature families in your army:',
-      '3 or 4 families: +1 Defense for every stack.',
-      '5 or more families: +1 Attack and +1 Defense for every stack.',
-    ],
-    effects: [
-      { type: 'army_harmony', families: 3, attack: 0, defense: 1 },
-      { type: 'army_harmony', families: 5, attack: 1, defense: 1 },
-    ],
+    rules: ['Counted when a battle starts: with 3 or more different creature families in your army, every stack gains +1 Defense.'],
+    effects: [{ type: 'army_harmony', families: 3, attack: 0, defense: 1 }],
   },
   celtic: {
     name: 'Shapeshifting',

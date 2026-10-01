@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Babylon.js scene controllers. Presents committed state/events; never decides rules.",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./core": "./src/core.ts"
   },
   "dependencies": {
     "@babylonjs/core": "9.28.0",

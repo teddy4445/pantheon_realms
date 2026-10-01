@@ -24,7 +24,7 @@ import { validateCatalog } from './validation/validators';
 
 export const VERSIONS: VersionBundle = {
   rulesVersion: 'pr-0.2-candidate',
-  contentVersion: 'content-0.5.0',
+  contentVersion: 'content-0.6.0',
   campaignVersion: 'campaign-three-beacons-0.3',
   mapGeneratorVersion: 'pr-mapgen-0.3',
   saveSchemaVersion: 1,
