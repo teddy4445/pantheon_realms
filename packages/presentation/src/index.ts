@@ -15,3 +15,4 @@ export * from './adventure';
 export * from './battle';
 export * from './viewer';
 export * from './models';
+export * from './mountedHeroes';

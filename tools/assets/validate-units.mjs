@@ -12,6 +12,9 @@
  *   - the Khronos glTF Validator (format, references, buffers, animations)
  * and writes <form>.validation.json next to the manifest with the tool versions.
  *
+ * Also checks the six mounted adventure-map heroes in assets-runtime/heroes
+ * (checksums, clips, skin, validator) without writing anything there.
+ *
  * Game-side checks that need the content catalog (creature/form binding, ranged
  * and flight requirements) and a headless Babylon load run in
  * packages/presentation/test/models.test.ts.
@@ -116,6 +119,45 @@ for (const file of manifests) {
     console.error(`✗ ${rel}`);
     for (const i of issues) console.error(`    ${i}`);
   } else console.log(`✓ ${rel}`);
+}
+// Mounted adventure-map heroes (assets-runtime/heroes, ASSET_PIPELINE.md §12):
+// the copied animation manifest, checksums, exact clip names, loop policy and the
+// Khronos validator. Read only — nothing is written next to the copied files.
+const HEROES = join(ROOT, 'assets-runtime', 'heroes');
+const heroManifestFile = join(HEROES, 'animation_manifest.json');
+let heroManifest = null;
+try {
+  heroManifest = JSON.parse(readFileSync(heroManifestFile, 'utf8'));
+} catch {
+  console.log('No mounted-hero manifest under assets-runtime/heroes.');
+}
+if (heroManifest) {
+  const { createHash } = await import('node:crypto');
+  for (const a of heroManifest.assets ?? []) {
+    const rel = `assets-runtime/heroes/${a.runtime}`;
+    const issues = [];
+    try {
+      if (!/^[a-z]+\/hero_[a-z]+\.glb$/.test(a.runtime ?? '')) issues.push('runtime path must be <pantheon>/hero_<pantheon>.glb inside assets-runtime/heroes');
+      const bytes = new Uint8Array(readFileSync(join(HEROES, a.runtime)));
+      const sha = createHash('sha256').update(bytes).digest('hex');
+      if (a.runtime_sha256 && sha !== a.runtime_sha256) issues.push(`SHA-256 ${sha} does not match the manifest`);
+      const json = glbJson(bytes);
+      const used = new Set([...(json.extensionsUsed ?? []), ...(json.extensionsRequired ?? [])]);
+      for (const x of FORBIDDEN) if (used.has(x)) issues.push(`uses ${x} (decoder would come from a CDN)`);
+      const names = new Set((json.animations ?? []).map((x) => x.name));
+      for (const n of ['Idle_Standing', 'Walk', 'Prepare_War']) if (!names.has(n)) issues.push(`clip "${n}" not in GLB`);
+      if (!(json.skins ?? []).length) issues.push('no skin');
+      const result = await validator.validateBytes(bytes, { uri: a.runtime, maxIssues: 200 });
+      if (result.issues.numErrors > 0) issues.push(`Khronos validator: ${result.issues.numErrors} error(s)`);
+    } catch (e) {
+      issues.push(`cannot read model: ${e.message}`);
+    }
+    if (issues.length) {
+      failures++;
+      console.error(`✗ ${rel}`);
+      for (const i of issues) console.error(`    ${i}`);
+    } else console.log(`✓ ${rel}`);
+  }
 }
 if (failures) {
   console.error(`${failures} manifest(s) failed.`);

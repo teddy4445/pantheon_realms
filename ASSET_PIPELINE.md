@@ -323,3 +323,77 @@ To add or replace an opening background, drop `opening-<name>.png` into
 logo, add the file and register it under the same asset ID in the `FINAL`
 table of `packages/ui/src/assets/manifest.ts` (it takes precedence over the
 generated manifest); no screen changes.
+
+## 12. Mounted adventure-map heroes (six animated GLBs)
+
+The six mounted heroes — rider and mount in one skinned model per pantheon —
+come from the separate Blender asset project (on the owner's computer:
+`C:\Users\lazeb\Desktop\blannder_models`, release `MountedHero_Animations_v1`).
+They were **copied** into the game on 2026-10-01; the game never reads,
+links or imports anything from the Blender project, and the Blender
+sources (`.blend`) are not part of the game (they are only needed to edit
+the models).
+
+| Copied from the Blender project | Game copy |
+|---|---|
+| `runtime\models\heroes\animated\hero_<pantheon>.glb` (six files) | `assets-runtime/heroes/<pantheon>/hero_<pantheon>.glb` (byte-identical; SHA-256 as in the manifest) |
+| `animation_manifest.json` | `assets-runtime/heroes/animation_manifest.json` — paths rewritten for the game (`assets[].runtime`, `skeleton.contract`, `integration_guide`) plus a `game_copy` block naming the source; `assets[].source`, `assets[].validation` and `combined_source` still name files in the Blender project and are never read |
+| `assets\characters\heroes\shared\mounted_hero_animated_rig.json` | `assets-runtime/heroes/shared/mounted_hero_animated_rig.json` (identical; the 44-bone `MountedHero_v1` contract) |
+| `HERO_ANIMATION_REPORT.md` | `assets-source/heroes/HERO_ANIMATION_REPORT.md` (identical text under a short "game copy" note) |
+
+**Loading.** `packages/ui/src/assets/manifest.ts` imports the copied manifest
+and registers one entry per pantheon (`heroModelEntriesFromManifest`,
+`packages/presentation/src/modelRegistry.ts`) with the URL
+`./heroes/<pantheon>/hero_<pantheon>.glb`. Vite serves `assets-runtime/` as
+the public folder, so the same relative URL works in `npm run dev`, the
+browser build and the desktop package (no CDN, no hashed duplicate). Before a
+model is used, the GLB's JSON is checked: the three clips by exact name, a
+skin, no extension whose decoder would come from a CDN. A model that fails to
+load leaves the hero's earlier placeholder rider in place.
+
+**Placement.** `MountedHeroCache` (`packages/presentation/src/mountedHeroes.ts`)
+loads each GLB once per map scene and instantiates an independent copy per
+hero (own nodes, skeleton and animation groups). Orientation and scale are set
+on a container node only: the model's +Z front is turned to the map figure's
++X front (`rotation.y = π/2`), one uniform scale `MOUNTED_HERO_SCALE = 0.36`
+for all six (1 model metre = 0.36 map units; measured heights 1.28–1.43 map
+units, a hex is 1.73 wide), and the manifest's −0.02 m ground offset. The
+entity node (position, facing) belongs to the map; the hierarchy, skin
+weights, materials and vertex colours inside the model are untouched. Each
+hero keeps an owner-coloured banner and a translucent owner-coloured base disc
+so faction ownership stays visible; the selection ring is unchanged.
+
+**Animation policy** (configured in the game — glTF carries no loop flags or
+events):
+
+| Clip | Game use |
+|---|---|
+| `Idle_Standing` (4 s) | loops while the hero stands; each instance starts at a random phase |
+| `Walk` (1.6 s, in place) | loops while the map moves the entity; the entity faces each step; rate = speed ÷ (0.75 × 0.36), **capped at 3.5** (see below); 0.2 s crossfades in and out; back to idle when the move ends |
+| `Prepare_War` (2.4 s) | plays once (no loop) on the attacking hero after an accepted encounter, holds the last pose; the battle screen opens from the clip's own end event, once |
+
+Walk speed: the map moves a hero 1 hex (1.73 map units) per 210 ms at normal
+adventure speed, 8.25 map units/s. The formula then asks for a playback rate
+of about 30.5 (×2.2 at "fast"), which would be an unreadable blur, so the rate
+is capped at 3.5 and the hooves slide. Slowing the map pace to match the clip
+would make a 1-hex step take ~6 s at rate 1; that is a design decision for the
+owner, not taken here.
+
+**Battle flow.** Encounter dialog → **Attack** commits the move through the
+rules (unchanged). The presentation plays the approach move (Walk), stops the
+hero on its approach tile, turns it — and a defending mounted hero — to face
+the opponent, plays Prepare_War, and only then lets the battle screen open
+(`AppStore.routeAfterUpdate` waits for the presentation step). The hero
+holds the ready pose until the map is replaced by the battle screen (which
+then shows its own loading state while the battlefield builds). **Withdraw** cancels before
+anything is committed. If the encounter goes away while the gesture plays
+(another game loaded, Main Menu, Restart Mission) the completion is ignored
+and the hero blends back to idle. The gesture is skipped (battle opens at
+once, as before) when adventure animation is instant or reduced motion is on,
+when the attacker is a monster or out of sight, or when no human side takes
+part.
+
+**Replacing a model.** Copy the new GLB over the game copy, update its
+`runtime_sha256` (and `runtime_bytes`) in `assets-runtime/heroes/animation_manifest.json`,
+and run `npm run assets:check` (Khronos validator, checksums, clips, skin)
+and `npx playwright test tests/e2e/heroes.spec.ts`.

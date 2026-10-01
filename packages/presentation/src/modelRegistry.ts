@@ -149,3 +149,116 @@ export function validateGlbAgainstManifest(json: GltfJson, m: UnitFormManifest):
   if ((json.scenes ?? []).length === 0) issues.push(`${m.assetId}: GLB has no scene`);
   return issues;
 }
+
+// ---------------------------------------------------------------------------
+// Mounted adventure-map heroes (assets-runtime/heroes/animation_manifest.json)
+// ---------------------------------------------------------------------------
+
+/** The three gameplay clips every mounted hero GLB carries (exact glTF animation names). */
+export const MOUNTED_HERO_CLIPS = { idle: 'Idle_Standing', walk: 'Walk', prepare: 'Prepare_War' } as const;
+export type MountedHeroClipKey = keyof typeof MOUNTED_HERO_CLIPS;
+
+export interface MountedHeroClipSpec {
+  readonly name: string;
+  readonly durationSeconds: number;
+  /** glTF does not carry loop flags: these come from the manifest and are applied by the game. */
+  readonly loop: boolean;
+  /** Prepare_War: hold the final ready pose instead of returning to the first frame. */
+  readonly holdLastPose: boolean;
+}
+
+export interface MountedHeroModelEntry {
+  readonly pantheonId: string;
+  /** Runtime URL of the GLB inside this project (relative to the app; never the Blender project). */
+  readonly url: string;
+  readonly sha256: string;
+  readonly clips: Readonly<Record<MountedHeroClipKey, MountedHeroClipSpec>>;
+  /** Walk authored speed at playback rate 1 and original scale (metres per second). */
+  readonly walkReferenceSpeed: number;
+  /** Suggested idle↔walk crossfade (seconds). */
+  readonly crossfadeSeconds: number;
+  /** Optional vertical model offset in metres (hoof clearance). */
+  readonly groundOffset: number;
+}
+
+interface AnimationManifestFile {
+  readonly release?: string;
+  readonly suggested_crossfade_seconds?: number;
+  readonly ground_alignment?: { readonly optional_model_vertical_offset_m?: number };
+  readonly clips: readonly { readonly name: string; readonly duration_seconds: number; readonly loop: boolean; readonly completion_behavior?: string; readonly reference_speed_mps?: number }[];
+  readonly assets: readonly { readonly pantheon: string; readonly runtime: string; readonly runtime_sha256: string; readonly clip_names: readonly string[] }[];
+}
+
+/**
+ * Build hero model entries from the copied animation manifest. `urlFor` maps the
+ * manifest's runtime path (relative to assets-runtime/heroes/) to a loadable URL.
+ * Loop and hold flags are read from the manifest and applied by the game explicitly.
+ */
+export function heroModelEntriesFromManifest(file: unknown, urlFor: (runtimePath: string) => string): MountedHeroModelEntry[] {
+  const m = file as AnimationManifestFile;
+  const spec = (key: MountedHeroClipKey): MountedHeroClipSpec => {
+    const name = MOUNTED_HERO_CLIPS[key];
+    const c = m.clips.find((x) => x.name === name);
+    if (!c) throw new Error(`animation manifest has no "${name}" clip`);
+    return { name, durationSeconds: c.duration_seconds, loop: c.loop, holdLastPose: c.completion_behavior === 'hold_last_pose' };
+  };
+  const clips = { idle: spec('idle'), walk: spec('walk'), prepare: spec('prepare') };
+  const walk = m.clips.find((x) => x.name === MOUNTED_HERO_CLIPS.walk);
+  return m.assets.map((a) => ({
+    pantheonId: a.pantheon,
+    url: urlFor(a.runtime),
+    sha256: a.runtime_sha256,
+    clips,
+    walkReferenceSpeed: walk?.reference_speed_mps ?? 0.75,
+    crossfadeSeconds: m.suggested_crossfade_seconds ?? 0.2,
+    groundOffset: m.ground_alignment?.optional_model_vertical_offset_m ?? 0,
+  }));
+}
+
+const heroRegistry = new Map<string, MountedHeroModelEntry>();
+
+export function registerHeroModels(entries: readonly MountedHeroModelEntry[]): void {
+  for (const e of entries) heroRegistry.set(e.pantheonId, e);
+}
+
+export function heroModelFor(pantheonId: string | null | undefined): MountedHeroModelEntry | undefined {
+  return pantheonId ? heroRegistry.get(pantheonId) : undefined;
+}
+
+export function registeredHeroModels(): MountedHeroModelEntry[] {
+  return [...heroRegistry.values()];
+}
+
+/** Manifest-level checks (loop policy the game relies on). */
+export function validateHeroEntry(e: MountedHeroModelEntry): string[] {
+  const issues: string[] = [];
+  if (!e.clips.idle.loop) issues.push(`${e.pantheonId}: ${e.clips.idle.name} must loop`);
+  if (!e.clips.walk.loop) issues.push(`${e.pantheonId}: ${e.clips.walk.name} must loop`);
+  if (e.clips.prepare.loop) issues.push(`${e.pantheonId}: ${e.clips.prepare.name} plays once (loop must be false)`);
+  if (!e.clips.prepare.holdLastPose) issues.push(`${e.pantheonId}: ${e.clips.prepare.name} must hold its last pose`);
+  if (!(e.walkReferenceSpeed > 0)) issues.push(`${e.pantheonId}: walk reference speed must be positive`);
+  if (!/\.glb$/i.test(e.url.split('?')[0] ?? '')) issues.push(`${e.pantheonId}: runtime model must be a .glb`);
+  return issues;
+}
+
+/** File-level checks: the three clips by exact name, a skin, offline-safe extensions. */
+export function validateHeroGlb(json: GltfJson & { readonly skins?: readonly unknown[] }, e: MountedHeroModelEntry): string[] {
+  const issues: string[] = [];
+  if (json.asset?.version !== '2.0') issues.push(`${e.pantheonId}: glTF asset.version must be "2.0"`);
+  const used = new Set([...(json.extensionsUsed ?? []), ...(json.extensionsRequired ?? [])]);
+  for (const x of FORBIDDEN_EXTENSIONS) if (used.has(x)) issues.push(`${e.pantheonId}: uses ${x}, whose decoder would be fetched from a CDN`);
+  const names = new Set((json.animations ?? []).map((a) => a.name ?? ''));
+  for (const c of Object.values(e.clips)) if (!names.has(c.name)) issues.push(`${e.pantheonId}: clip "${c.name}" is not in the GLB`);
+  if (!(json.skins ?? []).length) issues.push(`${e.pantheonId}: GLB has no skin`);
+  if ((json.scenes ?? []).length === 0) issues.push(`${e.pantheonId}: GLB has no scene`);
+  return issues;
+}
+
+/**
+ * Walk playback rate for a world speed (world units per second) and the uniform
+ * model scale (world units per authored metre): speed / (reference × scale).
+ */
+export function walkPlaybackRate(worldSpeed: number, referenceSpeedMps: number, uniformScale: number): number {
+  if (!(worldSpeed > 0) || !(referenceSpeedMps > 0) || !(uniformScale > 0)) return 0;
+  return worldSpeed / (referenceSpeedMps * uniformScale);
+}

@@ -3,9 +3,15 @@
  * sites, heroes, reachable area and path preview) from a view model built by the
  * UI from committed MatchState.
  *
- * Owns: meshes, camera, pointer→hex picking, movement playback.
+ * Owns: meshes, camera, pointer→hex picking, movement playback, and the mounted
+ * hero models with their animation (Idle_Standing / Walk / Prepare_War,
+ * mountedHeroes.ts).
  * Does not own: legality (movement/paths come from the rules via the view model),
  * selection state (UI), or anything persisted.
+ *
+ * Camera: a fixed viewing angle. Alpha (yaw), beta (pitch) and roll never change
+ * during play; the mouse and keys only pan the target across the map plane
+ * (screen-relative, clamped to the map) and the wheel only zooms (radius).
  */
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
@@ -42,6 +48,14 @@ import {
 } from './palette';
 import { MaterialCache, buildBanner, buildCreatureProxy, buildHeroProxy, buildSiteProxy, disposeProxy, type CreatureProxy, type SiteArchetype, type SiteProxy } from './proxies';
 import { TweenPlayer, linear } from './tween';
+import { heroModelFor } from './modelRegistry';
+import { MountedHeroCache, type MountedHeroDebug, type MountedHeroRig, type PrepareOutcome } from './mountedHeroes';
+
+/** Nominal map time per hex step (ms, before the Adventure animation speed setting). */
+const STEP_MS = 210;
+/** Fixed adventure camera angle (yaw, pitch). The mouse never changes these. */
+const CAMERA_ALPHA = -Math.PI / 2;
+const CAMERA_BETA = 0.92;
 
 const R = 1;
 const FOG_TOP = 0.46;
@@ -75,6 +89,8 @@ export interface AdventureHeroView {
   /** Wandering monster: drawn as its creature body instead of a rider. */
   readonly monsterBody?: BodyProfile | null;
   readonly monsterUpgraded?: boolean;
+  /** Pantheon whose mounted hero model draws this hero (hero definition, else the owner's). */
+  readonly pantheonId?: string | null;
 }
 
 export interface AdventurePathView {
@@ -104,10 +120,20 @@ export interface AdventureCallbacks {
 }
 
 interface HeroEntry {
-  proxy: CreatureProxy;
+  /** The game entity: one node for position, facing and visibility (rider + mount + banner). */
+  root: TransformNode;
+  /** Placeholder rider / monster body (kept until the mounted model is ready, or if it fails). */
+  proxy: CreatureProxy | null;
+  /** Mounted hero model with its own skeleton and animation state. */
+  rig: MountedHeroRig | null;
+  /** Owner banner and base disc drawn with the model (faction ownership). */
+  marks: TransformNode | null;
   color: string;
-  /** Proxy identity (rider colour or monster body). */
+  /** Visual identity (pantheon + owner colour, or monster body). */
   look: string;
+  pantheonId: string | null;
+  modelState: 'none' | 'loading' | 'ready' | 'failed';
+  modelReason: string | null;
   coord: HexCoord;
   prevCoord: HexCoord;
   locked: number;
@@ -158,6 +184,15 @@ export class AdventureSceneController implements SceneController {
   private lastHover = '';
   private camGoal: Vector3 | null = null;
   private time = 0;
+  private readonly heroModels: MountedHeroCache;
+  private disposed = false;
+  /**
+   * Mounted hero models load only after the map has drawn its first frames (the
+   * placeholder riders show meanwhile), so fetching and parsing the GLBs never
+   * delays the first picture of the map.
+   */
+  private modelLoadsOpen = false;
+  private readonly pendingModelLoads: (() => void)[] = [];
 
   constructor(engine: Engine, canvas: HTMLCanvasElement, cb: AdventureCallbacks) {
     this.cb = cb;
@@ -166,11 +201,21 @@ export class AdventureSceneController implements SceneController {
     scene.clearColor = clearColor('#070e1a');
     scene.skipPointerMovePicking = true;
     this.mats = new MaterialCache(scene);
-    const cam = new ArcRotateCamera('adv-cam', -Math.PI / 2, 0.92, 24, Vector3.Zero(), scene);
+    const cam = new ArcRotateCamera('adv-cam', CAMERA_ALPHA, CAMERA_BETA, 24, Vector3.Zero(), scene);
     cam.lowerRadiusLimit = 8;
     cam.upperRadiusLimit = 36;
-    cam.lowerBetaLimit = 0.92;
-    cam.upperBetaLimit = 0.92;
+    // Fixed viewing angle: yaw and pitch are locked; there is no orbit, tilt or mouse-look
+    // input at all (only the wheel, which changes the distance). Panning moves the target.
+    cam.lowerAlphaLimit = CAMERA_ALPHA;
+    cam.upperAlphaLimit = CAMERA_ALPHA;
+    cam.lowerBetaLimit = CAMERA_BETA;
+    cam.upperBetaLimit = CAMERA_BETA;
+    // Moving the target translates the camera with it: alpha, beta and radius are kept
+    // as they are (Babylon would otherwise re-derive them from the old position, which
+    // drifts the zoom on every pan).
+    cam.overrideCloneAlphaBetaRadius = true;
+    cam.panningSensibility = 0;
+    cam.inertia = 0;
     cam.inputs.clear();
     cam.inputs.addMouseWheel();
     cam.wheelPrecision = 18;
@@ -194,6 +239,17 @@ export class AdventureSceneController implements SceneController {
     this.selectRing.isPickable = false;
     this.selectRing.isVisible = false;
     this.pointerObs = scene.onPointerObservable.add((p) => this.onPointer(p));
+    this.heroModels = new MountedHeroCache(scene);
+    let frames = 0;
+    const opener = scene.onAfterRenderObservable.add(() => {
+      if (++frames < 3) return;
+      scene.onAfterRenderObservable.remove(opener);
+      setTimeout(() => {
+        if (this.disposed) return;
+        this.modelLoadsOpen = true;
+        for (const load of this.pendingModelLoads.splice(0)) load();
+      }, 60);
+    });
   }
 
   // ------------------------------------------------------------------ view updates
@@ -537,7 +593,14 @@ export class AdventureSceneController implements SceneController {
   private placeHero(e: HeroEntry, c: HexCoord): void {
     const w = axialWorld(c, R);
     const off = e.inTown ? 0.42 : 0;
-    e.proxy.root.position.set(w.x + off, this.heightAt(c), w.z - off * 0.6);
+    e.root.position.set(w.x + off, this.heightAt(c), w.z - off * 0.6);
+  }
+
+  private disposeHero(e: HeroEntry): void {
+    if (e.proxy) disposeProxy(e.proxy);
+    e.rig?.dispose();
+    e.marks?.dispose(false, false);
+    e.root.dispose(false, false);
   }
 
   private syncHeroes(views: readonly AdventureHeroView[]): void {
@@ -546,17 +609,41 @@ export class AdventureSceneController implements SceneController {
     for (const v of views) {
       seen.add(v.id);
       let e = this.heroes.get(v.id);
-      const look = v.monsterBody ? `monster|${v.monsterBody}|${v.monsterUpgraded === true}` : `hero|${v.color}`;
+      const pantheonId = v.monsterBody ? null : (v.pantheonId ?? null);
+      const look = v.monsterBody ? `monster|${v.monsterBody}|${v.monsterUpgraded === true}` : `hero|${pantheonId ?? ''}|${v.color}`;
       if (!e || e.look !== look) {
-        if (e) disposeProxy(e.proxy);
+        const old = e;
+        const root = new TransformNode(`hero-entity-${v.id}`, this.scene);
         let proxy: CreatureProxy;
         if (v.monsterBody) {
           proxy = buildCreatureProxy(this.scene, this.mats, v.monsterBody, v.monsterUpgraded === true, v.color, `monster-${v.id}`);
           proxy.root.scaling.setAll(0.85);
         } else proxy = buildHeroProxy(this.scene, this.mats, v.color, `hero-${v.id}`);
-        e = { proxy, color: v.color, look, coord: v.coord, prevCoord: v.coord, locked: 0, snapIn: 0, inTown: v.inTown };
+        proxy.root.parent = root;
+        e = {
+          root,
+          proxy,
+          rig: null,
+          marks: null,
+          color: v.color,
+          look,
+          pantheonId,
+          modelState: 'none',
+          modelReason: null,
+          coord: v.coord,
+          prevCoord: old?.prevCoord ?? v.coord,
+          locked: 0,
+          snapIn: 0,
+          inTown: v.inTown,
+        };
+        if (old) {
+          root.position.copyFrom(old.root.position);
+          root.rotation.y = old.root.rotation.y;
+          this.disposeHero(old);
+        }
         this.heroes.set(v.id, e);
         this.placeHero(e, v.coord);
+        if (!v.monsterBody) this.loadHeroModel(v.id, e);
       }
       e.inTown = v.inTown;
       if (e.coord.q !== v.coord.q || e.coord.r !== v.coord.r) {
@@ -567,18 +654,68 @@ export class AdventureSceneController implements SceneController {
       } else if (e.locked === 0 && e.snapIn === 0) {
         this.placeHero(e, v.coord);
       }
-      e.proxy.root.setEnabled(v.shown);
+      e.root.setEnabled(v.shown);
       if (v.selected) this.selectedHero = v.id;
     }
     for (const [id, e] of this.heroes) {
       if (!seen.has(id)) {
-        disposeProxy(e.proxy);
+        this.disposeHero(e);
         this.heroes.delete(id);
       }
     }
   }
 
-  /** Movement playback for a committed HeroMoved event (never changes state). */
+  /** Swap the placeholder rider for the pantheon's mounted hero model once it has loaded. */
+  private loadHeroModel(heroId: string, e: HeroEntry): void {
+    const entry = heroModelFor(e.pantheonId);
+    if (!entry) return;
+    e.modelState = 'loading';
+    if (!this.modelLoadsOpen) {
+      this.pendingModelLoads.push(() => {
+        if (this.heroes.get(heroId) === e) this.loadHeroModel(heroId, e);
+      });
+      return;
+    }
+    void this.heroModels.instantiate(entry).then((res) => {
+      const live = this.heroes.get(heroId);
+      if (this.disposed || live !== e) {
+        if (res.ok) res.rig.dispose();
+        return;
+      }
+      if (!res.ok) {
+        e.modelState = 'failed';
+        e.modelReason = res.reason;
+        return;
+      }
+      const rig = res.rig;
+      rig.root.parent = e.root;
+      e.rig = rig;
+      e.modelState = 'ready';
+      if (e.proxy) disposeProxy(e.proxy);
+      e.proxy = null;
+      // Faction ownership stays visible on the model: owner banner behind the rider and a base disc.
+      const marks = new TransformNode(`hero-marks-${heroId}`, this.scene);
+      marks.parent = e.root;
+      const banner = buildBanner(this.scene, this.mats, marks, e.color, 'square');
+      banner.position.set(-0.5, 0.42, 0.3);
+      const disc = MeshBuilder.CreateDisc(`hero-base-${heroId}`, { radius: 0.56, tessellation: 28 }, this.scene);
+      disc.parent = marks;
+      disc.rotation.x = Math.PI / 2;
+      disc.position.y = 0.025;
+      disc.material = this.mats.get(e.color, { alpha: 0.55, emissive: 0.35 });
+      disc.isPickable = false;
+      e.marks = marks;
+      if (e.locked > 0) rig.setMoving(this.lastWalkSpeed);
+    });
+  }
+
+  private lastWalkSpeed = 0;
+
+  /**
+   * Movement playback for a committed HeroMoved event (never changes state). The
+   * entity moves through the world; a mounted model plays Walk in place at the
+   * matching rate, faces each step, and returns to Idle_Standing when it stops.
+   */
   async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean): Promise<void> {
     const e = this.heroes.get(heroId);
     if (!e || path.length === 0) return;
@@ -595,12 +732,19 @@ export class AdventureSceneController implements SceneController {
         const b = axialWorld(step, R);
         const ha = this.heightAt(from);
         const hb = this.heightAt(step);
-        e.proxy.root.rotation.y = Math.atan2(-(b.z - a.z), b.x - a.x);
+        e.root.rotation.y = Math.atan2(-(b.z - a.z), b.x - a.x);
+        const ms = STEP_MS * speed;
+        if (e.rig && ms > 0) {
+          this.lastWalkSpeed = Math.hypot(b.x - a.x, b.z - a.z) / (ms / 1000);
+          e.rig.setMoving(this.lastWalkSpeed);
+        }
+        // The placeholder rider hops; the mounted model walks (no hop).
+        const hop = e.rig ? 0 : 0.08;
         await this.tweens.tween(
-          210,
+          STEP_MS,
           (t) => {
-            e.proxy.root.position.set(a.x + (b.x - a.x) * t, ha + (hb - ha) * t + Math.sin(t * Math.PI) * 0.08, a.z + (b.z - a.z) * t);
-            if (follow) this.camGoal = new Vector3(e.proxy.root.position.x, 0, e.proxy.root.position.z);
+            e.root.position.set(a.x + (b.x - a.x) * t, ha + (hb - ha) * t + Math.sin(t * Math.PI) * hop, a.z + (b.z - a.z) * t);
+            if (follow) this.camGoal = new Vector3(e.root.position.x, 0, e.root.position.z);
           },
           linear,
         );
@@ -608,8 +752,69 @@ export class AdventureSceneController implements SceneController {
       }
     } finally {
       e.locked -= 1;
-      if (e.locked === 0) this.placeHero(e, e.coord);
+      if (e.locked === 0) {
+        this.placeHero(e, e.coord);
+        e.rig?.setMoving(0);
+      }
     }
+  }
+
+  /**
+   * Readiness before a battle: stop map movement, face the opponent and play
+   * Prepare_War once. Resolves 'finished' from the clip's own animation-finished
+   * event (exactly once) — the caller starts the battle transition then — or
+   * 'cancelled' when the encounter is abandoned first (cancelPreparations or
+   * `stillValid()` false at completion), after which the hero blends back to idle.
+   * 'skipped' when there is no mounted model to animate (placeholder, monster,
+   * hidden) or playback is instant.
+   */
+  async prepareForBattle(heroId: string, opponent: HexCoord, speed: number, stillValid: () => boolean = () => true): Promise<PrepareOutcome | 'skipped'> {
+    const e = this.heroes.get(heroId);
+    if (!e || this.disposed) return 'skipped';
+    if (!e.rig && e.modelState === 'loading') {
+      // The model may still be arriving (first sight of this hero): give it a moment.
+      for (let i = 0; i < 40 && !e.rig && e.modelState === 'loading' && !this.disposed; i++) await new Promise((r) => setTimeout(r, 50));
+    }
+    const rig = e.rig;
+    if (!rig || !e.root.isEnabled() || speed <= 0) return 'skipped';
+    // Stop on the approach tile, then face the opponent.
+    if (e.locked === 0) this.placeHero(e, e.coord);
+    const a = e.root.position;
+    const b = axialWorld(opponent, R);
+    if (Math.hypot(b.x - a.x, b.z - a.z) > 1e-3) e.root.rotation.y = Math.atan2(-(b.z - a.z), b.x - a.x);
+    rig.setMoving(0);
+    // A defending mounted hero turns to meet the attacker (no gesture of its own).
+    for (const [id, other] of this.heroes) {
+      if (id === heroId || other.coord.q !== opponent.q || other.coord.r !== opponent.r || !other.rig) continue;
+      other.root.rotation.y = Math.atan2(-(a.z - other.root.position.z), a.x - other.root.position.x);
+    }
+    const outcome = await rig.prepareWar(1 / speed);
+    if (outcome === 'finished' && (this.disposed || !stillValid())) {
+      // The encounter went away while the gesture played: ignore its completion.
+      rig.cancelPrepare();
+      return 'cancelled';
+    }
+    return outcome;
+  }
+
+  /** Abandon every pending Prepare_War (encounter cancelled): completions are ignored, heroes return to idle. */
+  cancelPreparations(): void {
+    for (const e of this.heroes.values()) e.rig?.cancelPrepare();
+  }
+
+  /** Read-only animation state of every mounted hero (tests and diagnostics). */
+  heroAnimationDebug(): Record<string, (MountedHeroDebug & { model: 'ready'; yaw: number }) | { model: 'none' | 'loading' | 'failed'; reason: string | null }> {
+    const out: Record<string, (MountedHeroDebug & { model: 'ready'; yaw: number }) | { model: 'none' | 'loading' | 'failed'; reason: string | null }> = {};
+    for (const [id, e] of this.heroes) {
+      out[id] = e.rig ? { model: 'ready', yaw: Math.round(e.root.rotation.y * 1000) / 1000, ...e.rig.debug() } : { model: e.modelState === 'ready' ? 'none' : e.modelState, reason: e.modelReason };
+    }
+    return out;
+  }
+
+  /** Read-only camera pose (tests: the angle must never change while panning). */
+  cameraPose(): { alpha: number; beta: number; radius: number; target: { x: number; y: number; z: number } } {
+    const c = this.camera;
+    return { alpha: c.alpha, beta: c.beta, radius: c.radius, target: { x: c.target.x, y: c.target.y, z: c.target.z } };
   }
 
   // ------------------------------------------------------------------ camera
@@ -621,10 +826,21 @@ export class AdventureSceneController implements SceneController {
     else this.camera.target = goal;
   }
 
+  /**
+   * Pan relative to the screen: +dx = right, +dz = toward the top of the screen,
+   * projected onto the map plane. Only the target moves (the camera follows at the
+   * same yaw, pitch and distance), so the viewing angle is preserved.
+   */
   pan(dx: number, dz: number): void {
-    const t = this.camera.target.clone();
-    t.x += dx;
-    t.z += dz;
+    const c = this.camera;
+    const fwd = c.target.subtract(c.position);
+    fwd.y = 0;
+    if (fwd.lengthSquared() < 1e-9) return;
+    fwd.normalize();
+    // Left-handed scene: screen-right = up × forward.
+    const right = Vector3.Cross(Vector3.Up(), fwd).normalize();
+    const t = c.target.add(right.scale(dx)).add(fwd.scale(dz));
+    t.y = 0;
     this.camera.target = this.clampTarget(t);
     this.camGoal = null;
   }
@@ -742,10 +958,11 @@ export class AdventureSceneController implements SceneController {
         e.snapIn -= 1;
         if (e.snapIn === 0) this.placeHero(e, e.coord);
       }
+      e.rig?.update(dt);
     }
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;
-    if (sel && sel.proxy.root.isEnabled()) {
-      const p = sel.proxy.root.position;
+    if (sel && sel.root.isEnabled()) {
+      const p = sel.root.position;
       this.selectRing.position.set(p.x, p.y + 0.05, p.z);
       this.selectRing.rotation.y = this.time / 900;
       this.selectRing.isVisible = true;
@@ -763,8 +980,14 @@ export class AdventureSceneController implements SceneController {
   }
 
   dispose(): void {
+    this.disposed = true;
+    // Leaving the map abandons any pending readiness gesture (its completion is ignored).
+    this.cancelPreparations();
     this.tweens.flush();
     if (this.pointerObs) this.scene.onPointerObservable.remove(this.pointerObs);
+    for (const e of this.heroes.values()) this.disposeHero(e);
+    this.heroes.clear();
+    this.heroModels.dispose();
     this.mats.dispose();
     this.scene.dispose();
   }

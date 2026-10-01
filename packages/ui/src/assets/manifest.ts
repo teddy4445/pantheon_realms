@@ -11,7 +11,9 @@
  */
 import placeholderManifest from '../../../../assets-runtime/placeholders/manifest.json';
 import uiArtManifest from '../../../../assets-runtime/ui/manifest.json';
-import { registerUnitModels, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
+// Named imports keep only the fields the game reads in the start-up bundle.
+import { assets as heroAssets, clips as heroClips, ground_alignment as heroGround, suggested_crossfade_seconds as heroCrossfade } from '../../../../assets-runtime/heroes/animation_manifest.json';
+import { heroModelEntriesFromManifest, registerHeroModels, registerUnitModels, type MountedHeroModelEntry, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
 
@@ -123,3 +125,16 @@ export function fixtureUnitModels(): UnitModelEntry[] {
 }
 
 registerUnitModels(bundledUnitModels());
+
+// ---------------------------------------------------------------------------
+// Mounted adventure-map heroes — assets-runtime/heroes/ (copied from the Blender
+// asset project; ASSET_PIPELINE.md §12). The GLBs are served from the app's own
+// runtime folder (./heroes/<pantheon>/hero_<pantheon>.glb) in development, the
+// browser build and the desktop package alike; nothing points outside the project.
+// ---------------------------------------------------------------------------
+
+export function bundledHeroModels(): MountedHeroModelEntry[] {
+  return heroModelEntriesFromManifest({ assets: heroAssets, clips: heroClips, ground_alignment: heroGround, suggested_crossfade_seconds: heroCrossfade }, (runtime) => `./heroes/${runtime}`);
+}
+
+registerHeroModels(bundledHeroModels());

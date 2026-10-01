@@ -1,9 +1,102 @@
 # Development Status
 
-_Last updated: 2026-10-01 · app 0.4.1 (0.4.0 + visual design) · rules `pr-0.2-candidate` + proposed effects · content `content-0.7.0` · campaign `campaign-three-beacons-0.4` · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.1` · save schema 1 · preferences schema 2_
+_Last updated: 2026-10-01 · app 0.4.1 (0.4.0 + visual design) + mounted adventure-map heroes (not yet in an installer) · rules `pr-0.2-candidate` + proposed effects · content `content-0.7.0` · campaign `campaign-three-beacons-0.4` · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.1` · save schema 1 · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
+
+## Mounted adventure-map heroes (owner request, after 0.4.1)
+
+The six animated mounted heroes (rider + mount, one skinned GLB per
+pantheon, release `MountedHero_Animations_v1`) were **copied** from the
+owner's separate Blender project (`C:\Users\lazeb\Desktop\blannder_models`)
+into the game; the game has no link, import or runtime path into that
+project. Details and the file table: `ASSET_PIPELINE.md` §12.
+
+* **Copied** (byte-identical, SHA-256 checked on both computers):
+  `runtime\models\heroes\animated\hero_<pantheon>.glb` →
+  `assets-runtime/heroes/<pantheon>/hero_<pantheon>.glb` (six);
+  `assets\characters\heroes\shared\mounted_hero_animated_rig.json` →
+  `assets-runtime/heroes/shared/`. **Copied with game paths**:
+  `animation_manifest.json` → `assets-runtime/heroes/animation_manifest.json`
+  (`assets[].runtime`, `skeleton.contract`, `integration_guide` rewritten; a
+  `game_copy` block names the source); `HERO_ANIMATION_REPORT.md` →
+  `assets-source/heroes/` under a short note. The Blender sources, the
+  delivery zip and the preview GIFs were not copied (editing only). The
+  Blender project was only read.
+* **Map heroes**: each hero entity on the adventure map shows its pantheon's
+  mounted model (hero definition's pantheon, else the owner's) with its own
+  skeleton and animation groups; one container node turns the model's +Z
+  front to the map's +X and scales it uniformly by 0.36 (measured heights
+  1.28–1.43 map units on a 1.73-unit hex); owner banner + translucent owner
+  disc keep faction ownership visible; selection, picking, movement, fog
+  visibility and town offsets are unchanged. Placeholder riders show until a
+  model has loaded (models load once the map has drawn its first frames) and
+  stay if a load fails.
+* **Animation**: Idle_Standing loops while standing (random phase per hero);
+  Walk loops while the map moves the entity, facing each step, with 0.2 s
+  crossfades, rate = speed ÷ (0.75 × 0.36) capped at 3.5; back to idle on
+  stop. Loop flags come from the manifest and are set explicitly.
+* **Prepare_War before battle**: after **Attack** in the encounter dialog
+  (the rules commit the move and the battle start exactly as before), the
+  hero walks to the approach tile, stops, faces the opponent (a defending
+  mounted hero turns to meet it), plays Prepare_War once and holds the last
+  pose; the battle screen opens from the animation group's end event, once.
+  If the encounter goes away meanwhile (load, Main Menu, Restart Mission)
+  the completion is ignored and the hero blends back to idle. Withdraw
+  cancels before anything is committed.
+* **Fixed map camera**: yaw and pitch limits locked, no orbit/tilt/rotate
+  input (only the wheel zoom), left/middle drag and the arrow/pan keys
+  translate the target screen-relatively, clamped to the map. **Bug fixed on
+  the way**: Babylon's `ArcRotateCamera.target` setter re-derived radius (and
+  alpha/beta, then clamped) from the old camera position, so every drag
+  changed the zoom slightly (measured 0.053 units per 220 px drag); the
+  camera now keeps alpha, beta and radius when the target moves
+  (`overrideCloneAlphaBetaRadius`).
+* Read-only `?e2e` additions: `__prHeroes()` (per-hero model state, clip,
+  rates, weights, Prepare_War counts, yaw), `__prCamera()` (alpha, beta,
+  radius, target), and `battleScreenOpens` / `prepareWar` outcome counters in
+  `__prInspect()`. No commands are exposed.
+
+### Tests and checks actually run (mounted heroes)
+
+| Command | Result |
+|---|---|
+| `npm run check` | **pass — 198 tests** (18 files). New `packages/presentation/test/heroes.test.ts` (6): copies and checksums match the manifest, paths stay inside the game; the three exact clips, skin and loop policy per GLB; the rate formula; all six load in a headless left-handed scene with their own skeleton, skin attributes, materials and vertex colours at one scale; instances independent; +Z front lands on +X; Walk crossfade at the matching rate, the cap, back to idle; Prepare_War not finished at 1 s, finished once after 2.6 s, holds the pose, never fires again; a cancelled gesture resolves "cancelled", ignores the end event and returns to idle |
+| `node tools/assets/validate-units.mjs --no-write` | six hero GLBs pass (checksum, clips, skin, no CDN-decoder extension, Khronos validator 0 errors); the script now checks `assets-runtime/heroes` too |
+| `npx playwright test` (Chromium + SwiftShader, production build) | **40 of 40 passed** twice (19.0 min; and 18.4 min on the final code, after the deferred model loading and a frame-time-tolerant wait in one test). New `tests/e2e/heroes.spec.ts` (6): six pantheons each show their own model, idling, every request same-origin and the six GLBs fetched from `/heroes/<pantheon>/`; a 4-step move plays Walk on that hero only (crossfade seen, rate 3.5 of a requested ~30.5), faces the last step, returns to idle, camera angle constant throughout; Withdraw → no battle, no gesture; Attack → Walk then Prepare_War once, attacker and defender face each other, the map stays ≥ 2.2 s until the clip ends, battle screen opened exactly once, outcome "finished"; Main Menu during the gesture → no battle screen, outcome "cancelled"; left/right/up/down drags, middle drag, right drag, arrow keys and wheel leave alpha and beta unchanged (drags keep the radius exactly), edge clamp holds |
+| `npm run build` | pass — start-up script 1,063 KB (299.7 KB gzip; 0.4.1: 1,055 / 295; the manifest fields the game reads), 701 files; the GLBs are served unhashed from `heroes/` |
+| `vite` dev server (`apps/client`) + a scratch browser script | Mission 1 through the menus: Alexios shows the Greek model (`ready`, `Idle_Standing`), fetched from `/heroes/greek/hero_greek.glb`; no request left the dev server |
+| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (development layout) and **pass with `PR_SMOKE_EXE`** on a fresh `--linux dir` build (`app.asar` 46.4 MB, 0.4.1: 36.6 MB; contains `renderer/heroes/`, no `assets-source/`, no `.blend`). New smoke check: the six hero GLBs are served intact by the app protocol (sizes match the manifest) |
+| Load time, 9 interleaved runs of the `load-time.mjs` measurement (scratch copy) on three builds: no hero models / models loaded at once / models after the first frames | first scene **local 805 / 1,397 / 1,461 ms**, web profile 1,245 / 1,835 / 1,548 ms (settled 1,245 / 1,835 / 2,092 ms). The models cost about 0.6 s of the first software-rendered scene locally: the measurement's Begin click closes the Mission 1 briefing while the hero model (1.6 MB GLB, three PBR materials) is already loading behind it, and fetching, parsing and compiling its shaders on the CPU renderer lands in those frames either way. Deferring the load helps the web profile only. Not measured on a real GPU. Menu time unchanged (157–166 ms) |
+| Visual check (screenshots in the UI test and a scratch test) | six distinct mounted heroes with their materials, banners and owner discs at one scale; attacker and defender facing each other during Prepare_War |
+
+### Limitations (mounted heroes)
+
+1. **Walk speed**: at normal adventure speed the map moves a hero 8.25 map
+   units/s; the formula asks for playback ×30.5 (×68 at "fast"), so the
+   rate is capped at 3.5 and the hooves slide. Matching the clip would mean
+   a much slower map pace — an owner decision.
+2. **Edge scrolling** was not added (the game had none); panning is mouse
+   drag (left or middle button) and the arrow / pan keys.
+3. **First-scene cost** as measured above (software renderer); the battle
+   screen and other scenes are unchanged.
+4. **When Prepare_War plays**: Attack commits the encounter atomically in the
+   rules (as before), so the gesture plays after the commitment; cancelling
+   *during* the gesture means leaving that game (load, Main Menu, restart).
+   Opening the pause menu during the gesture does not hold the battle: it
+   opens when the clip ends and closes the overlays, as it did after movement
+   playback before.
+5. **Skipped gesture** (battle opens at once, as before): instant or reduced
+   motion, a monster attacker, an attacker out of sight, battles with no
+   human side.
+6. The battlefield still has no commander model; one model per pantheon (two
+   Greek heroes look alike apart from banner colour); the 0.36 scale and the
+   banner/disc marks are not owner-reviewed.
+7. The copied manifest keeps the Blender delivery's own record
+   `validation.engine_runtime_tested: false` unchanged; the game-side results
+   are the ones in this section.
+8. Not committed or pushed; no new installer.
 
 ## Tests and checks actually run (0.4.1 visual update, this session)
 

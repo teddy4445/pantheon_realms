@@ -28,7 +28,7 @@ import type { PlatformServices } from '@pr/platform';
 import { App } from './app/App';
 import { AppStore } from './app/store';
 import { applyPreferences, loadPreferences } from './app/preferences';
-import { preloadPresentation, projectors } from './scene/SceneHost';
+import { inspectors, preloadPresentation, projectors } from './scene/SceneHost';
 import { GameAudio } from './audio/gameAudio';
 
 export { AppStore } from './app/store';
@@ -75,6 +75,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
           story: store.story.map((x) => x.key),
           hints: [...store.hints],
           busy: store.presentationBusy,
+          battleScreenOpens: store.battleScreenOpens,
+          prepareWar: store.prepareWar,
           humanTurn: store.session?.isHumanTurn() ?? false,
           state: store.session?.state ?? null,
           campaign: store.session?.campaign ?? null,
@@ -82,6 +84,9 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
         }),
       );
     g.__prProject = (kind, a, b) => projectors[kind]?.(a, b) ?? null;
+    // Read-only: mounted-hero animation state and the adventure camera pose.
+    (g as { __prHeroes?: () => unknown }).__prHeroes = () => inspectors.adventure?.heroes() ?? null;
+    (g as { __prCamera?: () => unknown }).__prCamera = () => inspectors.adventure?.camera() ?? null;
     // Presentation-only test fixture: show the axis/scale calibration GLB in place of the
     // Hoplite so the model pipeline can be checked in a real browser. No game state changes.
     if (new URLSearchParams(location.search).get('e2e') === 'calibration') {

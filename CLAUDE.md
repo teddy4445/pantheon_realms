@@ -60,7 +60,7 @@ npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run
 npm run balance -- random --matches 4   # random-map seat fairness only
 node tools/perf/load-time.mjs [dist]          # start-up + first-scene load times (after npm run build)
 python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg)
-npm run assets:check     # unit models: Khronos validator + manifest/GLB + game-binding tests
+npm run assets:check     # unit + mounted-hero models: Khronos validator + manifest/GLB + game-binding tests
 npm run assets:calibration  # regenerate the axis/scale calibration GLB
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
@@ -70,6 +70,12 @@ Interface art: sources in `assets-source/ui/`, generated runtime files and
 provenance in `assets-runtime/ui/` (ASSET_PIPELINE.md §11). The visual
 language lives in the shared kit and `styles/components.css`; style screens
 through those, not one by one.
+
+Mounted adventure-map heroes: six animated GLBs copied from the owner's
+separate Blender project into `assets-runtime/heroes/` with a path-updated
+`animation_manifest.json` (ASSET_PIPELINE.md §12). The Blender project is
+never a runtime dependency; to replace a model, copy the GLB, update its
+checksum in the manifest and run `npm run assets:check`.
 
 Battle and viewer scenes are right-handed (GLB models load natively); keep
 `cellWorld`/`worldCell` in `meshkit.ts` as the only battle board transform.

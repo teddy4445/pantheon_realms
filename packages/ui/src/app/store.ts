@@ -158,6 +158,10 @@ export class AppStore {
   continueChecked = false;
   storageError: string | null = null;
   presentationBusy = false;
+  /** Diagnostics: how many times a started battle opened the battlefield (read by UI tests). */
+  battleScreenOpens = 0;
+  /** Diagnostics: outcomes of the mounted heroes' Prepare_War gestures before battles (read by UI tests). */
+  readonly prepareWar = { finished: 0, cancelled: 0, skipped: 0 };
   /** Sound (null until bootstrap attaches it, and in headless tests). Presentation only. */
   audio: GameAudio | null = null;
   /** Adventure selection survives navigation to other screens (return context). */
@@ -548,7 +552,10 @@ export class AppStore {
         void this.whenIdle().then(() => {
           if (!session || this.session !== session || !session.state.battle) return;
           this.closeAllOverlays();
-          if (this.screen.id !== 'battle') this.goto('battle');
+          if (this.screen.id !== 'battle') {
+            this.battleScreenOpens += 1;
+            this.goto('battle');
+          }
         });
       }
       return;

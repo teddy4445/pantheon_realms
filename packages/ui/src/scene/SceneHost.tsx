@@ -62,6 +62,11 @@ export const projectors: {
   battle?: (col: number, row: number) => { x: number; y: number } | null;
 } = {};
 
+/** Read-only scene readouts for the ?e2e inspector (hero animation state, camera pose). Never mutate. */
+export const inspectors: {
+  adventure?: { heroes: () => unknown; camera: () => unknown };
+} = {};
+
 /** Convert a canvas-local point to page coordinates. */
 export function toPage(p: { x: number; y: number } | null): { x: number; y: number } | null {
   const canvas = host?.canvas;

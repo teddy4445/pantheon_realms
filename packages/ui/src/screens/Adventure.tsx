@@ -35,7 +35,7 @@ import { useStore } from '../app/context';
 import type { AppStore } from '../app/store';
 import { adventurePlaybackFactor } from '../app/preferences';
 import { matches } from '../app/keys';
-import { SceneViewport, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
+import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
 import { HeroPortrait, MarkerIcon, siteMarkerAsset } from '../components/art';
 import { ArmyStrip, ResourceBar } from '../components/game';
@@ -123,6 +123,8 @@ function buildView(
         inTown: !!townAtHero(state, h),
         monsterBody: lead?.presentation.bodyProfile ?? null,
         monsterUpgraded: lead?.form === 'upgraded',
+        // The mounted model follows the hero's own pantheon (else its owner's).
+        pantheonId: catalog.heroes[h.definitionId]?.pantheonId ?? state.players[h.ownerId]?.pantheonId ?? null,
       };
     });
   let reachable: HexCoord[] | null = null;
@@ -417,6 +419,10 @@ export function AdventureScreen() {
     ctrl.current?.update(view);
   }, [view]);
 
+  // A different game (load, restart) abandons any pending Prepare_War of the old one.
+  const sessionRef = store.session;
+  useEffect(() => () => ctrl.current?.cancelPreparations(), [sessionRef]);
+
   // Presentation of committed events (movement playback, day banner). Never alters state.
   useEffect(() => {
     return store.registerPresenter(async (events, source) => {
@@ -448,8 +454,31 @@ export function AdventureScreen() {
           if (mine) store.audio?.heroSteps(false);
         }
       }
+      const started = events.find((e) => e.kind === 'BattleStarted');
+      if (started && started.kind === 'BattleStarted') await prepareBeforeBattle(c, started.battleId, source);
       afterMoves(moves);
     });
+    /**
+     * Prepare_War: the attacking mounted hero has stopped on its approach tile; it
+     * faces the opponent and plays the readiness gesture once. The battlefield opens
+     * (store.routeAfterUpdate, after this presentation step) only once the clip's
+     * animation-finished event has fired. If the encounter is abandoned meanwhile
+     * (another game loaded, the battle gone), the completion is ignored and the hero
+     * blends back to idle.
+     */
+    async function prepareBeforeBattle(c: AdventureSceneController, battleId: string, source: string) {
+      const session = store.session;
+      const st = session?.state;
+      const b = st?.battle;
+      if (!session || !st || !b || b.battleId !== battleId) return;
+      if (!Object.values(b.sides).some((side) => side.controller === 'human')) return;
+      const attacker = st.heroes[b.encounter.attackerHeroId];
+      if (!attacker || attacker.monster) return;
+      const mine = attacker.ownerId === session.humanPlayerId;
+      if (!mine && !visibleCells(catalog, st, session.humanPlayerId).has(cellIndex(st.world.map, attacker.position))) return;
+      const outcome = await c.prepareForBattle(attacker.id, b.encounter.destination, adventurePlaybackFactor(store.prefs, source === 'ai'), () => store.session === session && session.state.battle?.battleId === battleId);
+      store.prepareWar[outcome] += 1;
+    }
     /** After the viewer's hero arrives at a camp or an unused event, open its dialog. */
     function afterMoves(moves: readonly { kind: string; heroId?: string }[]) {
       const session = store.session;
@@ -474,6 +503,7 @@ export function AdventureScreen() {
     (c: AdventureSceneController | null) => {
       ctrl.current = c;
       projectors.adventure = c ? (q, r) => toPage(c.projectHex({ q, r })) : undefined;
+      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose() } : undefined;
       if (c) {
         c.update(viewRef.current);
         const focus = store.focusRequest ?? selectedRef.current?.position ?? null;

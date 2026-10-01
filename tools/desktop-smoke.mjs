@@ -47,6 +47,18 @@ try {
     }, g);
     if (magic !== 'glTF') fail(`GLB ${g} not served intact (magic "${magic}")`);
   }
+  // Mounted adventure-map heroes: the six GLBs come from the app's own heroes/ folder.
+  const heroGlbs = await win.evaluate(async () => {
+    const m = await (await fetch('./heroes/animation_manifest.json')).json();
+    const out = [];
+    for (const a of m.assets) {
+      const res = await fetch(`./heroes/${a.runtime}`);
+      const b = new Uint8Array(await res.arrayBuffer());
+      out.push({ runtime: a.runtime, ok: res.ok && b.length === a.runtime_bytes, magic: String.fromCharCode(b[0], b[1], b[2], b[3]) });
+    }
+    return out;
+  });
+  if (heroGlbs.length !== 6 || heroGlbs.some((h) => !h.ok || h.magic !== 'glTF')) fail(`mounted hero GLBs not served intact: ${JSON.stringify(heroGlbs)}`);
   // Sound: the app protocol serves the Ogg files intact, they decode, and audio may start
   // without a click (the desktop app sets the autoplay policy; browsers wait for a click).
   const audio = await win.evaluate(async () => {
@@ -107,7 +119,7 @@ try {
     if (packaged.devTools) fail('DevTools opened in the packaged build');
     if (packaged.name !== 'Pantheon Realms') fail(`unexpected app name ${packaged.name}`);
   }
-  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', glbs, audio, ...(packaged ? { packaged } : {}) });
+  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', glbs, heroGlbs: heroGlbs.length, audio, ...(packaged ? { packaged } : {}) });
 } catch (e) {
   fail(e instanceof Error ? e.message : String(e));
 } finally {

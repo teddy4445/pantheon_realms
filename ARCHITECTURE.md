@@ -31,7 +31,7 @@ AI never mutates state directly — each of those paths goes through
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
 | `@pr/platform` | `SaveRepository` / `PreferencesStore` (preferences and the separate high-score `records` store) / window + quit contracts; browser (IndexedDB/localStorage), desktop (preload bridge) and memory adapters | contain rules |
-| `@pr/presentation` | One long-lived Babylon `EngineHost`; adventure, battle and unit-viewer scene controllers; GLB unit-model pipeline (manifests, loader, rigs, validation) with procedural proxies as fallback; animation states; battle playback cues for sound. `@pr/presentation/core` is its Babylon-free part (unit-model registry and validation, palette, animation state list) | decide legality or change state |
+| `@pr/presentation` | One long-lived Babylon `EngineHost`; adventure, battle and unit-viewer scene controllers; GLB unit-model pipeline (manifests, loader, rigs, validation) with procedural proxies as fallback; mounted adventure-map hero models and their animation controller; animation states; battle playback cues for sound. `@pr/presentation/core` is its Babylon-free part (unit-model registry and validation, palette, animation state list) | decide legality or change state |
 | `@pr/audio` | Web Audio mixer: sound manifest types and validation, buses (music, ambience, interface, combat, voice), music/ambience crossfades, stinger ducking, voice limits and cooldowns, the "Calmer sound" policy | read or change game state; fetch anything that is not bundled |
 | `@pr/ui` | React app shell, 21 screens, dialogs (incl. the story dialogue window, hot-seat hand-over, camps, map events, interventions), view helpers, preferences (incl. key bindings and tips), high-score records, save-slot policy, asset manifest (placeholders + bundled unit models), which sound plays when (`audio/`) | edit `MatchState` (it dispatches commands) |
 | `@pr/testing` | Headless `GameDriver` for scripted playthroughs | bypass validation |
@@ -333,10 +333,11 @@ A single `EngineHost` owns one WebGL2 engine and canvas; screens mount it into
 their viewport and ask for a scene controller:
 
 * `AdventureSceneController` — merged vertex-colored terrain mesh, fog caps
-  that hide unexplored geometry, roads, decor instances, site/hero proxies,
+  that hide unexplored geometry, roads, decor instances, site proxies,
+  mounted hero models (placeholder riders until loaded or if a load fails),
   reachable overlay, path preview (shape-coded: dots today, rings later, X for
   battle), pointer→hex picking via ground-plane intersection, movement
-  playback.
+  playback, the pre-battle Prepare_War gesture, fixed-angle camera panning.
 * `BattleSceneController` — 15×11 odd-r board, obstacles, siege walls/gate/
   towers/keep/moat, deployment-zone shading, stack groups (1–3 figures),
   count/health billboards, highlights, and playback of committed battle
@@ -348,8 +349,22 @@ their viewport and ask for a scene controller:
 
 **Handedness.** The battle and viewer scenes are right-handed
 (`useRightHandedSystem` before any load, production/02 §5) so glTF models
-import without a conversion root; the adventure map is still a left-handed
-scene (it loads no GLB yet). **Unit models** (`models.ts`): the UI bundles
+import without a conversion root. The adventure map stays a left-handed
+scene; its six mounted hero GLBs load through `MountedHeroCache`
+(`mountedHeroes.ts`), which accepts the loader's conversion root and turns
+and scales each model on a container node (+Z front → the map figure's +X,
+uniform 0.36). **Mounted heroes**: the copied
+`assets-runtime/heroes/animation_manifest.json` is registered per pantheon
+(`heroModelEntriesFromManifest`); every hero gets its own instance
+(skeleton + animation groups) with Idle_Standing / Walk (speed-matched,
+capped) / Prepare_War (once, held; resolves from the group's end event, once,
+or is cancelled by a token). The Adventure presenter awaits Prepare_War
+after a committed BattleStarted, so the battle screen (opened by
+`AppStore.routeAfterUpdate` when the presentation queue drains) follows the
+gesture; the rules are untouched. The map camera has a fixed yaw and pitch
+(limits locked, no orbit input, target moves keep alpha/beta/radius);
+dragging and the arrow keys translate its target screen-relatively, clamped
+to the map. See `ASSET_PIPELINE.md` §12. **Unit models** (`models.ts`): the UI bundles
 `assets-runtime/units/**/family.manifest.json` + GLBs and registers them by
 creature ID; `ModelCache` validates each GLB (clip names, sockets, no
 CDN-decoder extensions), loads it once per scene and instantiates independent

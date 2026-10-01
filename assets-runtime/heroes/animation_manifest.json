@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "release": "MountedHero_Animations_v1",
+  "created": "2026-10-01",
+  "game_copy": {
+    "copied": "2026-10-01",
+    "copied_from": "C:\\Users\\lazeb\\Desktop\\blannder_models\\animation_manifest.json",
+    "path_base": "Game paths (skeleton.contract, assets[].runtime, integration_guide) are relative to this file: assets-runtime/heroes/. The game loads assets[].runtime at ./heroes/<runtime>.",
+    "external_source_project": "C:\\Users\\lazeb\\Desktop\\blannder_models",
+    "external_paths": "assets[].source, assets[].validation and combined_source are relative to the external Blender project. They are only needed to edit the assets; the game never reads them."
+  },
+  "format": "glTF 2.0 GLB",
+  "units": "metres",
+  "source_fps": 30,
+  "axes": {
+    "blender": {
+      "up": "+Z",
+      "forward": "-Y"
+    },
+    "glb": {
+      "up": "+Y",
+      "forward": "+Z"
+    }
+  },
+  "skeleton": {
+    "version": "MountedHero_v1",
+    "bones": 44,
+    "contract": "shared/mounted_hero_animated_rig.json"
+  },
+  "root_motion": "in_place",
+  "movement_owner": "game_entity",
+  "default_clip": "Idle_Standing",
+  "suggested_crossfade_seconds": 0.2,
+  "walk_speed_formula": "playback_rate = world_speed_mps / (0.75 * uniform_asset_scale)",
+  "ground_alignment": {
+    "visual_hoof_clearance_m": 0.02,
+    "optional_model_vertical_offset_m": -0.02
+  },
+  "loop_and_event_metadata": "Configure these in the game; glTF tracks do not automatically create engine loop flags or callbacks.",
+  "prepare_war_policy": {
+    "stop_map_movement": true,
+    "face_opponent_before_playback": true,
+    "start_at_seconds": 0,
+    "loop": false,
+    "hold_last_pose": true,
+    "start_battle_on": "animation_finished",
+    "ignore_completion_if_encounter_cancelled": true
+  },
+  "clips": [
+    {
+      "name": "Idle_Standing",
+      "duration_seconds": 4.0,
+      "source_frames": [
+        0,
+        120
+      ],
+      "loop": true,
+      "completion_behavior": "repeat",
+      "events": []
+    },
+    {
+      "name": "Walk",
+      "duration_seconds": 1.6,
+      "source_frames": [
+        0,
+        48
+      ],
+      "loop": true,
+      "completion_behavior": "repeat",
+      "reference_speed_mps": 0.75,
+      "events": [
+        {
+          "time_seconds": 0.0,
+          "event": "hoof_contact",
+          "bone": "mount_hind_hoof_L"
+        },
+        {
+          "time_seconds": 0.4,
+          "event": "hoof_contact",
+          "bone": "mount_front_hoof_L"
+        },
+        {
+          "time_seconds": 0.8,
+          "event": "hoof_contact",
+          "bone": "mount_hind_hoof_R"
+        },
+        {
+          "time_seconds": 1.2,
+          "event": "hoof_contact",
+          "bone": "mount_front_hoof_R"
+        }
+      ]
+    },
+    {
+      "name": "Prepare_War",
+      "duration_seconds": 2.4,
+      "source_frames": [
+        0,
+        72
+      ],
+      "loop": false,
+      "completion_behavior": "hold_last_pose",
+      "events": [
+        {
+          "time_seconds": 2.4,
+          "event": "ready_for_battle",
+          "trigger": "animation_finished",
+          "dispatch_once": true
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "pantheon": "greek",
+      "runtime": "greek/hero_greek.glb",
+      "source": "source/blender/heroes/animated/hero_greek.blend",
+      "scene": "Hero_Greek",
+      "rig_object": "RIG_Hero_Greek",
+      "source_action_prefix": "Greek__",
+      "clip_names": [
+        "Idle_Standing",
+        "Walk",
+        "Prepare_War"
+      ],
+      "bones": 44,
+      "triangles": 20998,
+      "materials": 3,
+      "textures": [],
+      "material_color_attribute": "COLOR_0",
+      "runtime_bytes": 1614688,
+      "runtime_sha256": "2c59c59170f350ab4ac4d3359b9f36c85e1b8a54e1415bcb6fe83c643c759403",
+      "source_sha256": "e9a39b4dc67f1e306670599613cac590064cc202a3dd6fb1575ad2194a7707c2",
+      "validation": "assets/characters/heroes/greek/animation_validation.json",
+      "max_roundtrip_joint_error_m": 2.2839159045154957e-06
+    },
+    {
+      "pantheon": "norse",
+      "runtime": "norse/hero_norse.glb",
+      "source": "source/blender/heroes/animated/hero_norse.blend",
+      "scene": "Hero_Norse",
+      "rig_object": "RIG_Hero_Norse",
+      "source_action_prefix": "Norse__",
+      "clip_names": [
+        "Idle_Standing",
+        "Walk",
+        "Prepare_War"
+      ],
+      "bones": 44,
+      "triangles": 20850,
+      "materials": 3,
+      "textures": [],
+      "material_color_attribute": "COLOR_0",
+      "runtime_bytes": 1576696,
+      "runtime_sha256": "b995b512f4e5070bfbcee1bd04a4f284141754304e4bb52944e41ca52eaec68b",
+      "source_sha256": "6c1fcb515d191805be56aa8ed6ec6e42bf30375d2851a182846bc71ddf095935",
+      "validation": "assets/characters/heroes/norse/animation_validation.json",
+      "max_roundtrip_joint_error_m": 2.2839159045154957e-06
+    },
+    {
+      "pantheon": "egyptian",
+      "runtime": "egyptian/hero_egyptian.glb",
+      "source": "source/blender/heroes/animated/hero_egyptian.blend",
+      "scene": "Hero_Egyptian",
+      "rig_object": "RIG_Hero_Egyptian",
+      "source_action_prefix": "Egyptian__",
+      "clip_names": [
+        "Idle_Standing",
+        "Walk",
+        "Prepare_War"
+      ],
+      "bones": 44,
+      "triangles": 19822,
+      "materials": 3,
+      "textures": [],
+      "material_color_attribute": "COLOR_0",
+      "runtime_bytes": 1505240,
+      "runtime_sha256": "a527ab405a292ab93b8cf0284aff2481bbf76e5e2b37b8451ab71e8630bf21d3",
+      "source_sha256": "0046dcaa10b87334eb1eec4875c2db668b930ea55ed96a8a34645a73c57bb812",
+      "validation": "assets/characters/heroes/egyptian/animation_validation.json",
+      "max_roundtrip_joint_error_m": 2.2839159045154957e-06
+    },
+    {
+      "pantheon": "japanese",
+      "runtime": "japanese/hero_japanese.glb",
+      "source": "source/blender/heroes/animated/hero_japanese.blend",
+      "scene": "Hero_Japanese",
+      "rig_object": "RIG_Hero_Japanese",
+      "source_action_prefix": "Japanese__",
+      "clip_names": [
+        "Idle_Standing",
+        "Walk",
+        "Prepare_War"
+      ],
+      "bones": 44,
+      "triangles": 21714,
+      "materials": 3,
+      "textures": [],
+      "material_color_attribute": "COLOR_0",
+      "runtime_bytes": 1743888,
+      "runtime_sha256": "8505be78c28e64c2ac721fcd25beaeeb083e89d2bf72400568d5ae68b25d5b11",
+      "source_sha256": "e31ea281eb4bff7ce3db8c4bf019e19fd23d644b1bc4b9aa7b20dbab719fb9e7",
+      "validation": "assets/characters/heroes/japanese/animation_validation.json",
+      "max_roundtrip_joint_error_m": 2.227810810927243e-06
+    },
+    {
+      "pantheon": "celtic",
+      "runtime": "celtic/hero_celtic.glb",
+      "source": "source/blender/heroes/animated/hero_celtic.blend",
+      "scene": "Hero_Celtic",
+      "rig_object": "RIG_Hero_Celtic",
+      "source_action_prefix": "Celtic__",
+      "clip_names": [
+        "Idle_Standing",
+        "Walk",
+        "Prepare_War"
+      ],
+      "bones": 44,
+      "triangles": 20562,
+      "materials": 3,
+      "textures": [],
+      "material_color_attribute": "COLOR_0",
+      "runtime_bytes": 1536204,
+      "runtime_sha256": "f7ccdba32f5ff4815bde16c350818825701fda156c4e5238249aa73262da1d95",
+      "source_sha256": "7eb5f2c55b638ec7334ada4565a025a843fcfe24036d7d79a69ea9b574f17595",
+      "validation": "assets/characters/heroes/celtic/animation_validation.json",
+      "max_roundtrip_joint_error_m": 2.2839159045154957e-06
+    },
+    {
+      "pantheon": "mesoamerican",
+      "runtime": "mesoamerican/hero_mesoamerican.glb",
+      "source": "source/blender/heroes/animated/hero_mesoamerican.blend",
+      "scene": "Hero_Mesoamerican",
+      "rig_object": "RIG_Hero_Mesoamerican",
+      "source_action_prefix": "Mesoamerican__",
+      "clip_names": [
+        "Idle_Standing",
+        "Walk",
+        "Prepare_War"
+      ],
+      "bones": 44,
+      "triangles": 22110,
+      "materials": 3,
+      "textures": [],
+      "material_color_attribute": "COLOR_0",
+      "runtime_bytes": 1772544,
+      "runtime_sha256": "4da1f2b3d030158cceab4c6ca2a7325590fe5fa7b9e4faee63a6f4e131cae9c2",
+      "source_sha256": "5ce7364e69eaae064d5c8f98f4bd65d629e5d041a25d2287dafb99765326a3ca",
+      "validation": "assets/characters/heroes/mesoamerican/animation_validation.json",
+      "max_roundtrip_joint_error_m": 2.2839159045154957e-06
+    }
+  ],
+  "combined_source": "source/blender/heroes/animated/mounted_heroes_animated_library.blend",
+  "integration_guide": "../../assets-source/heroes/HERO_ANIMATION_REPORT.md",
+  "validation": {
+    "glb_reimport_passed": true,
+    "engine_runtime_tested": false,
+    "loop_endpoints_match": true,
+    "root_fixed": true,
+    "finite_pose_and_skin_checks_passed": true
+  }
+}
