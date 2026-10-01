@@ -1,12 +1,17 @@
 /**
- * S01 Main Menu. Continue shows the most recent compatible save with its
+ * S01 Main Menu (opening screen). One of the opening backgrounds is chosen at
+ * random each time the game starts; the title logo sits above the ornate frame
+ * that holds the menu. Continue shows the most recent compatible save with its
  * metadata and is disabled (with the reason) when none exists. Quit appears
  * only on desktop; the browser build never pretends to close its tab.
+ *
+ * All art is resolved by asset ID (assets-runtime/ui/manifest.json); without
+ * the files the screen still works with a text title and a plain panel.
  */
-import { useEffect } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { useStore } from '../app/context';
 import { MenuButton, Chip } from '../components/kit';
-import { resolveAsset } from '../assets/manifest';
+import { menuBackground, menuFrameInterior, resolveAsset } from '../assets/manifest';
 import { relativeTime } from '../app/view';
 
 export function MainMenuScreen() {
@@ -15,7 +20,12 @@ export function MainMenuScreen() {
   useEffect(() => {
     if (!store.continueChecked) void store.refreshContinue();
   }, [store, store.continueChecked]);
-  const bg = resolveAsset('menu.background');
+  const [preview, setPreview] = useState<string | null>(null);
+  const bg = menuBackground();
+  const logo = resolveAsset('brand.logo.full');
+  const frame = resolveAsset('menu.frame');
+  const emblem = resolveAsset('brand.emblem');
+  const win = menuFrameInterior();
   const meta = continueSlot?.metadata;
   const continueDisabledReason = !continueChecked
     ? 'Checking saves…'
@@ -35,86 +45,127 @@ export function MainMenuScreen() {
   };
 
   const three = catalog.campaigns['three_beacons'];
+  const describe = (text: string) => (on: boolean) => setPreview(on ? text : null);
+  const campaignText = three ? `${three.name} — ${three.tagline}` : 'Story campaign';
+  const skirmishText = 'An authored map against the AI or a second player (hot-seat)';
+  const randomText = 'A new symmetric map for two to four empires';
+
+  const frameStyle = {
+    '--win-left': `${win.left * 100}%`,
+    '--win-right': `${win.right * 100}%`,
+    '--win-top': `${win.top * 100}%`,
+    '--win-bottom': `${win.bottom * 100}%`,
+  } as CSSProperties;
+
   return (
-    <div className="main-menu" style={bg.url ? { backgroundImage: `url(${bg.url})` } : undefined}>
-      <div className="main-menu__shade" />
-      <div className="main-menu__brand">
-        <div className="main-menu__crest" aria-hidden="true">
-          <svg viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="54" fill="none" stroke="#d8b56c" strokeWidth="2" />
-            <circle cx="60" cy="60" r="46" fill="none" stroke="#9c7534" strokeWidth="1" />
-            <path d="M60 18l8 20h-16zM36 44h48l-6 8H42zM44 56h32v34H44zM38 92h44v6H38z" fill="#d8b56c" />
-            <path d="M52 60v26M60 60v26M68 60v26" stroke="#0b1626" strokeWidth="2.5" />
-          </svg>
-        </div>
-        <h1 className="main-menu__title">Pantheon Realms</h1>
+    <div className={`main-menu ${frame.url ? 'has-frame' : ''}`}>
+      <div className="main-menu__bg" style={bg.url ? { backgroundImage: `url(${bg.url})` } : undefined} data-background={bg.id} aria-hidden="true" />
+      <div className="main-menu__shade" aria-hidden="true" />
+      <header className="main-menu__brand">
+        <h1 className="main-menu__title">
+          {logo.url ? <img className="main-menu__logo" src={logo.url} alt="Pantheon Realms" draggable={false} /> : 'Pantheon Realms'}
+        </h1>
         <div className="main-menu__tagline">Gods, heroes and the armies of myth</div>
+      </header>
+      <div className="main-menu__stage">
+        <div className="menu-frame" style={frameStyle}>
+          {frame.url ? <img className="menu-frame__art" src={frame.url} alt="" draggable={false} /> : null}
+          <nav className="menu-frame__window" aria-label="Main menu">
+            <div className="menu-frame__list">
+              <MenuButton
+                variant="framed"
+                icon="continue"
+                label="Continue"
+                testId="menu-continue"
+                disabled={!continueSlot}
+                disabledReason={continueDisabledReason}
+                autoFocus={!!continueSlot}
+                meta={
+                  meta ? (
+                    <>
+                      {meta.missionName} · Day {meta.day} · {meta.heroName} (Lv {meta.heroLevel}) · {relativeTime(continueSlot?.savedAt ?? null)}
+                    </>
+                  ) : undefined
+                }
+                onClick={() => void onContinue()}
+              />
+              <MenuButton
+                variant="framed"
+                icon="newgame"
+                label="New Game"
+                testId="menu-new"
+                autoFocus={!continueSlot}
+                onPreview={describe('Campaign, skirmish or a random map')}
+                onClick={() => {
+                  store.resetSetup(null);
+                  store.goto('game-mode');
+                }}
+              />
+              <MenuButton variant="framed" icon="load" label="Load Game" testId="menu-load" onPreview={describe('Saves, autosaves and imported save files')} onClick={() => store.openOverlay({ kind: 'save-load', mode: 'load' })} />
+              <MenuButton
+                variant="framed"
+                icon="campaign"
+                label="Campaign"
+                testId="menu-campaign"
+                title={campaignText}
+                onPreview={describe(campaignText)}
+                onClick={() => {
+                  store.resetSetup('campaign');
+                  store.goto('scenario-select');
+                }}
+              />
+              <MenuButton
+                variant="framed"
+                icon="skirmish"
+                label="Skirmish"
+                testId="menu-skirmish"
+                title={skirmishText}
+                onPreview={describe(skirmishText)}
+                onClick={() => {
+                  store.resetSetup('skirmish');
+                  store.goto('scenario-select');
+                }}
+              />
+              <MenuButton variant="framed" icon="bestiary" label="Encyclopedia" testId="menu-encyclopedia" onPreview={describe('Pantheons, gods, creatures, buildings and rules')} onClick={() => store.goto('encyclopedia')} />
+              <MenuButton variant="framed" icon="settings" label="Settings" testId="menu-settings" onPreview={describe('Display, audio, gameplay, controls and accessibility')} onClick={() => store.goto('settings')} />
+              <MenuButton variant="framed" icon="credits" label="Credits" testId="menu-credits" onPreview={describe('Who made this build, and the state of its art')} onClick={() => store.openOverlay({ kind: 'credits' })} />
+              {platform.canQuit ? (
+                <MenuButton
+                  variant="framed"
+                  icon="quit"
+                  label="Quit"
+                  testId="menu-quit"
+                  onClick={() => store.confirm('Quit Pantheon Realms?', 'Unsaved progress since the last save or autosave will be lost.', 'Quit', () => void platform.quit(), { danger: true })}
+                />
+              ) : null}
+            </div>
+            <div className="menu-frame__extra">
+              <MenuButton
+                variant="compact"
+                icon="map"
+                label="Random Map"
+                testId="menu-random"
+                title={randomText}
+                onPreview={describe(randomText)}
+                onClick={() => {
+                  store.resetSetup('skirmish');
+                  store.goto('random-setup');
+                }}
+              />
+              <MenuButton variant="compact" icon="star" label="High Scores" testId="menu-highscores" onPreview={describe('Your best campaign and skirmish results')} onClick={() => store.goto('high-scores')} />
+            </div>
+          </nav>
+        </div>
+        <div className="main-menu__caption" aria-live="polite">
+          {preview ?? ' '}
+        </div>
       </div>
-      <nav className="main-menu__nav panel panel--glass" aria-label="Main menu">
-        <MenuButton
-          icon="continue"
-          label="Continue"
-          testId="menu-continue"
-          disabled={!continueSlot}
-          disabledReason={continueDisabledReason}
-          autoFocus={!!continueSlot}
-          meta={
-            meta ? (
-              <>
-                {meta.missionName} · Day {meta.day} · {meta.heroName} (Lv {meta.heroLevel}) · {relativeTime(continueSlot?.savedAt ?? null)}
-              </>
-            ) : undefined
-          }
-          onClick={() => void onContinue()}
-        />
-        <MenuButton
-          icon="newgame"
-          label="New Game"
-          testId="menu-new"
-          autoFocus={!continueSlot}
-          onClick={() => {
-            store.resetSetup(null);
-            store.goto('game-mode');
-          }}
-        />
-        <MenuButton icon="load" label="Load Game" testId="menu-load" onClick={() => store.openOverlay({ kind: 'save-load', mode: 'load' })} />
-        <MenuButton
-          icon="campaign"
-          label="Campaign"
-          testId="menu-campaign"
-          meta={three ? `${three.name} — ${three.tagline}` : undefined}
-          onClick={() => {
-            store.resetSetup('campaign');
-            store.goto('scenario-select');
-          }}
-        />
-        <MenuButton
-          icon="skirmish"
-          label="Skirmish"
-          testId="menu-skirmish"
-          meta="Play a scenario against a local AI rival"
-          onClick={() => {
-            store.resetSetup('skirmish');
-            store.goto('scenario-select');
-          }}
-        />
-        <MenuButton icon="bestiary" label="Encyclopedia" testId="menu-encyclopedia" onClick={() => store.goto('encyclopedia')} />
-        <MenuButton icon="settings" label="Settings" testId="menu-settings" onClick={() => store.goto('settings')} />
-        <MenuButton icon="credits" label="Credits" onClick={() => store.openOverlay({ kind: 'credits' })} />
-        {platform.canQuit ? (
-          <MenuButton
-            icon="quit"
-            label="Quit"
-            testId="menu-quit"
-            onClick={() => store.confirm('Quit Pantheon Realms?', 'Unsaved progress since the last save or autosave will be lost.', 'Quit', () => void platform.quit(), { danger: true })}
-          />
-        ) : null}
-      </nav>
       <footer className="main-menu__footer">
+        {emblem.url ? <img className="main-menu__emblem" src={emblem.url} alt="" draggable={false} /> : null}
         <span>
           v{platform.appVersion} · {platform.kind === 'desktop' ? 'Desktop' : 'Browser'} build · Rules {catalog.versions.rulesVersion} · Content {catalog.versions.contentVersion}
         </span>
-        <Chip tone="warn" title="Art, models and animation are development placeholders">
+        <Chip tone="warn" title="Unit models, town art and animation are development placeholders">
           Temporary art
         </Chip>
         {platform.kind === 'browser' ? <span className="dim">Saves are stored in this browser. Close the tab to quit.</span> : null}

@@ -101,7 +101,12 @@ export type EffectDefinition =
   /** Town adventure vision radius (the highest applies; the rules default otherwise). */
   | { readonly type: 'town_vision_radius'; readonly radius: number }
   /** Weekly artifact stock of `stockSize` items sold to a visiting hero. */
-  | { readonly type: 'enables_artifact_merchant'; readonly stockSize: number };
+  | { readonly type: 'enables_artifact_merchant'; readonly stockSize: number }
+  // --- Hero, artifact-set and world effects (proposed this build) ---
+  /** +amount mana restored to the hero at dawn (on top of the rules' regeneration). */
+  | { readonly type: 'mana_regen'; readonly amount: number }
+  /** Battle spell damage +percent (direct and area damage spells cast by this commander). */
+  | { readonly type: 'spell_damage_percent'; readonly percent: number };
 
 /** One-time reward package. Applied exactly once through an idempotency key. */
 export interface RewardDefinition {
@@ -110,4 +115,20 @@ export interface RewardDefinition {
   readonly entitlementIds?: readonly EntitlementId[];
   readonly flags?: readonly string[];
   readonly questXp?: number;
+  /** Creatures that join the receiving hero's army (only into a matching or free slot). */
+  readonly creatures?: readonly { readonly creatureId: CreatureId; readonly count: number }[];
+  /** Permanent primary-attribute gains for the receiving hero. */
+  readonly attributes?: Readonly<Partial<Record<HeroAttribute, number>>>;
+  /** Mana restored to the receiving hero (never above its maximum). */
+  readonly mana?: number;
+  /** Movement points added to the receiving hero today. */
+  readonly movement?: number;
 }
+
+/**
+ * Which content pool a definition belongs to. 'core' content is used everywhere;
+ * 'expanded' content (pantheon skills and spells, artifact sets, interventions,
+ * weekly events) appears only in scenarios that enable it, so authored scenarios
+ * such as The Three Beacons keep their documented content.
+ */
+export type ContentScope = 'core' | 'expanded';

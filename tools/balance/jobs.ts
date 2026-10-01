@@ -3,10 +3,10 @@
  * across processes (`--jobs`). Each job returns plain JSON.
  */
 import type { ContentCatalog } from '@pr/rules';
-import { playSkirmish, rosterArmy, startingArmy, symmetricScore, type Army, type SkirmishResult } from './lib';
+import { playRandom, playSkirmish, rosterArmy, startingArmy, symmetricScore, type Army, type RandomResult, type SkirmishResult } from './lib';
 
-export type Suite = 'skirmish' | 'armies' | 'starts' | 'tiers';
-export const ALL_SUITES: readonly Suite[] = ['skirmish', 'armies', 'starts', 'tiers'];
+export type Suite = 'skirmish' | 'armies' | 'starts' | 'tiers' | 'random';
+export const ALL_SUITES: readonly Suite[] = ['skirmish', 'armies', 'starts', 'tiers', 'random'];
 
 export interface BalanceOptions {
   readonly suites: readonly Suite[];
@@ -24,10 +24,12 @@ export type Job =
   | { readonly suite: 'skirmish'; readonly west: string; readonly east: string; readonly firstMover: 'west' | 'east'; readonly seed: number; readonly maxDay: number }
   | { readonly suite: 'armies'; readonly weeks: number; readonly form: 'base' | 'upgraded'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
   | { readonly suite: 'starts'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
-  | { readonly suite: 'tiers'; readonly tier: number; readonly form: 'base' | 'upgraded'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean };
+  | { readonly suite: 'tiers'; readonly tier: number; readonly form: 'base' | 'upgraded'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
+  | { readonly suite: 'random'; readonly pantheon: string; readonly empires: 2 | 3; readonly seed: number; readonly maxDay: number };
 
 export type JobResult =
   | { readonly job: Job; readonly skirmish: SkirmishResult }
+  | { readonly job: Job; readonly random: RandomResult }
   | { readonly job: Job; readonly score: number; readonly labels?: { readonly a: string; readonly b: string } };
 
 /** Gold budget per tier for the same-tier duels (multiples of the Greek unit's price). */
@@ -54,6 +56,10 @@ export function buildJobs(catalog: ContentCatalog, o: BalanceOptions): Job[] {
     for (let tier = 1; tier <= 7; tier++)
       for (const form of ['base', 'upgraded'] as const) for (const [a, b] of pairs) jobs.push({ suite: 'tiers', tier, form, a, b, seeds: o.seeds, signatures: o.signatures !== false });
   }
+  if (o.suites.includes('random')) {
+    // Mirror matches on generated maps: every seat the same pantheon, so only seat order and the map differ.
+    for (const pantheon of P) for (const empires of [2, 3] as const) for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'random', pantheon, empires, seed, maxDay: o.maxDay });
+  }
   void catalog;
   return jobs;
 }
@@ -77,6 +83,8 @@ export function runJob(catalog: ContentCatalog, job: Job): JobResult {
       return { job, score: symmetricScore(rosterArmy(catalog, job.a, job.form, job.weeks), rosterArmy(catalog, job.b, job.form, job.weeks), job.seeds, sidesOf(job)) };
     case 'starts':
       return { job, score: symmetricScore(startingArmy(catalog, job.a), startingArmy(catalog, job.b), job.seeds, sidesOf(job)) };
+    case 'random':
+      return { job, random: playRandom(catalog, { pantheon: job.pantheon, empires: job.empires, seed: job.seed, maxDay: job.maxDay }) };
     case 'tiers': {
       const a = tierArmy(catalog, job.a, job.tier, job.form);
       const b = tierArmy(catalog, job.b, job.tier, job.form);

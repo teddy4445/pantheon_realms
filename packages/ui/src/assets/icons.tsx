@@ -1,8 +1,13 @@
 /**
- * Original SVG UI icons (resources, stats, navigation). Simple, readable shapes
- * with shape/text cues — never color alone. Placeholders until final iconography.
+ * UI icons. Illustrative icons (resources, stats, battle actions, main-menu
+ * entries) draw the owner-supplied icon art from assets-runtime/ui (asset IDs
+ * in ICON_ART); interface glyphs (close, back, check, lock…) and anything
+ * without art stay simple original SVG shapes. Either way the element is an
+ * <svg> with a 24×24 view box, so sizing, layout and accessibility are the
+ * same, and final iconography replaces files by asset ID only.
  */
 import type { JSX, SVGProps } from 'react';
+import { resolveAsset } from './manifest';
 
 export type IconName =
   | 'gold'
@@ -61,7 +66,9 @@ export type IconName =
   | 'beacon'
   | 'star'
   | 'sword2'
-  | 'bow';
+  | 'bow'
+  | 'ability'
+  | 'surrender';
 
 const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
 
@@ -153,18 +160,77 @@ const PATHS: Record<IconName, JSX.Element> = {
   map: <path {...common} d="M9 4l-6 2v14l6-2 6 2 6-2V4l-6 2zm0 0v14m6-12v14" />,
   beacon: <path {...common} d="M9 21h6l-1-11h-4zM8 10h8M10 10V7h4v3M12 7c-2-2 0-4 0-4s2 2 0 4zM5 5l2 2m12-2l-2 2" />,
   star: <path {...common} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z" />,
+  ability: <path {...common} d="M12 2l2 7 7 3-7 3-2 7-2-7-7-3 7-3z" />,
+  surrender: <path {...common} d="M6 21V4m0 0h10l-1.5 3.5L16 11H6" />,
 };
+
+/** Illustrative icons drawn from the UI art manifest (asset IDs, never file paths). */
+const ICON_ART: Partial<Record<IconName, string>> = {
+  gold: 'icon.res.gold',
+  wood: 'icon.res.wood',
+  stone: 'icon.res.stone',
+  crystal: 'icon.res.crystal',
+  favor: 'icon.res.favor',
+  attack: 'icon.stat.attack',
+  defense: 'icon.stat.defense',
+  hp: 'icon.stat.hp',
+  damage: 'icon.stat.damage',
+  speed: 'icon.stat.speed',
+  shots: 'icon.stat.shots',
+  movement: 'icon.stat.movement',
+  mana: 'icon.stat.mana',
+  morale: 'icon.stat.morale',
+  luck: 'icon.stat.luck',
+  power: 'icon.stat.power',
+  knowledge: 'icon.stat.knowledge',
+  xp: 'icon.stat.xp',
+  hero: 'icon.world.hero',
+  town: 'icon.world.town',
+  hourglass: 'icon.time.day',
+  eye: 'icon.stat.vision',
+  defend: 'icon.action.defend',
+  wait: 'icon.action.wait',
+  spell: 'icon.action.spell',
+  retreat: 'icon.action.retreat',
+  ability: 'icon.action.ability',
+  surrender: 'icon.action.surrender',
+  continue: 'icon.menu.continue',
+  newgame: 'icon.menu.new-game',
+  load: 'icon.menu.load-game',
+  campaign: 'icon.menu.campaign',
+  skirmish: 'icon.menu.skirmish',
+  bestiary: 'icon.menu.encyclopedia',
+  settings: 'icon.menu.settings',
+  credits: 'icon.menu.credits',
+  quit: 'icon.menu.quit',
+};
+
+/** URL of the icon art for a name, or null when the icon is an SVG glyph. */
+export function iconArt(name: IconName): string | null {
+  const id = ICON_ART[name];
+  return id ? resolveAsset(id).url : null;
+}
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
   readonly name: IconName;
   readonly title?: string;
+  /** Force the SVG glyph even when icon art exists (e.g. tiny monochrome contexts). */
+  readonly glyph?: boolean;
 }
 
-export function Icon({ name, title, ...rest }: IconProps) {
+export function Icon({ name, title, glyph, className, ...rest }: IconProps) {
+  const art = glyph ? null : iconArt(name);
   return (
-    <svg viewBox="0 0 24 24" aria-hidden={title ? undefined : true} role={title ? 'img' : undefined} {...rest}>
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden={title ? undefined : true}
+      role={title ? 'img' : undefined}
+      className={art ? `icon-art ${className ?? ''}` : className}
+      data-icon={name}
+      {...rest}
+    >
       {title ? <title>{title}</title> : null}
-      {PATHS[name]}
+      {art ? <image href={art} x="0" y="0" width="24" height="24" preserveAspectRatio="xMidYMid meet" /> : PATHS[name]}
     </svg>
   );
 }

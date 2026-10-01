@@ -21,6 +21,10 @@ import {
   cellNeighbors,
   hasFlight,
   SIEGE_GATE_ROW,
+  adjacentEnemies,
+  interventionsFor,
+  interventionUsedThisWeek,
+  quoteIntervention,
   type BattleCell,
   type BattleState,
   type BattleStackState,
@@ -29,6 +33,7 @@ import {
   type MatchState,
 } from '@pr/rules';
 import { stackValue } from './evaluation';
+import { favorSpare } from './services';
 
 interface Scored {
   readonly score: number;
@@ -128,6 +133,10 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
   const enemies = sideStacks(battle, opposing(stack.side));
   if (enemies.length === 0) return { kind: 'BattleDefend', stackId: stack.id };
 
+  // 0. AI empires may call a battle intervention (Favor, once a week) in a fight that matters.
+  const miracle = interventionChoice(catalog, state, battle, stack);
+  if (miracle) return miracle;
+
   // 1. Commander spell at the start of the activation (does not consume the action).
   if (actions.castAvailable) {
     const spellChoices: Scored[] = [];
@@ -136,16 +145,37 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
       const def = catalog.spells[sp.spellId];
       if (!def) continue;
       const power = battle.sides[stack.side].commander?.power ?? 0;
-      if (def.effect.type === 'direct_damage') {
-        const dmg = def.effect.base + def.effect.perPower * power;
+      const pct = battle.sides[stack.side].effects?.spellDamagePercent ?? 0;
+      const e = def.effect;
+      const fresh = (a: BattleStackState) => !a.statuses.some((s) => s.sourceId === `spell:${sp.spellId}`);
+      const strikeValue = (t: BattleStackState, dmg: number) => {
+        const hp = catalog.creatures[t.creatureId]!.stats!.hp;
+        return killValue(catalog, t, dmg, Math.min(aliveCount(catalog, t), Math.floor(dmg / hp)));
+      };
+      if (e.type === 'direct_damage' || e.type === 'area_damage') {
+        const dmg = Math.floor(((e.base + e.perPower * power) * (100 + pct)) / 100);
         for (const tid of sp.targets) {
           const t = battle.stacks[tid]!;
-          const hp = catalog.creatures[t.creatureId]!.stats!.hp;
-          const kills = Math.min(aliveCount(catalog, t), Math.floor(dmg / hp));
-          spellChoices.push({ score: killValue(catalog, t, dmg, kills), key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
+          let score = strikeValue(t, dmg);
+          if (e.type === 'area_damage') for (const n of adjacentEnemies(catalog, battle, t)) score += strikeValue(n, dmg);
+          spellChoices.push({ score, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
         }
-      } else if (def.effect.type === 'attack_bonus' || def.effect.type === 'max_damage_roll' || def.effect.type === 'defense_bonus') {
-        const allies = sideStacks(battle, stack.side).filter((a) => !a.statuses.some((s) => s.sourceId === `spell:${sp.spellId}`));
+      } else if (e.type === 'mass_bonus') {
+        const allies = sideStacks(battle, stack.side);
+        if (allies.every((a) => fresh(a))) {
+          const v = allies.reduce((n, a) => n + stackValue(catalog, a.creatureId) * aliveCount(catalog, a), 0) * 0.08;
+          spellChoices.push({ score: v, key: `spell:${sp.spellId}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: allies[0]!.id } });
+        }
+      } else if (def.target === 'enemy_stack') {
+        // Debuffs (negative Attack, Defense or Speed) on the most valuable fresh enemy.
+        for (const tid of sp.targets) {
+          const t = battle.stacks[tid]!;
+          if (!fresh(t)) continue;
+          const v = stackValue(catalog, t.creatureId) * aliveCount(catalog, t) * 0.1;
+          spellChoices.push({ score: v, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
+        }
+      } else if (e.type === 'attack_bonus' || e.type === 'max_damage_roll' || e.type === 'defense_bonus' || e.type === 'speed_bonus') {
+        const allies = sideStacks(battle, stack.side).filter(fresh);
         for (const a of allies) {
           const v = stackValue(catalog, a.creatureId) * aliveCount(catalog, a) * 0.12;
           spellChoices.push({ score: v, key: `spell:${sp.spellId}:${a.id}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: a.id } });
@@ -266,4 +296,34 @@ function groundDistanceField(catalog: ContentCatalog, battle: BattleState, stack
 
 export function battleIsLive(state: MatchState): boolean {
   return !!state.battle && state.battle.status === 'active' && Object.values(state.battle.stacks).some(isAlive);
+}
+
+/** Battle interventions for AI-controlled empires (never for a human side on auto-combat). */
+function interventionChoice(catalog: ContentCatalog, state: MatchState, battle: BattleState, stack: BattleStackState): CommandPayload | null {
+  const side = battle.sides[stack.side];
+  const playerId = side.playerId;
+  if (!playerId || side.controller !== 'ai' || battle.round > 3) return null;
+  if (state.players[playerId]?.role === 'scripted_hostile') return null;
+  if (interventionUsedThisWeek(catalog, state, playerId)) return null;
+  const spare = favorSpare(catalog, state, playerId);
+  const armyValue = (sideId: BattleStackState['side']) => sideStacks(battle, sideId).reduce((n, s) => n + stackValue(catalog, s.creatureId) * aliveCount(catalog, s), 0);
+  const mine = armyValue(stack.side);
+  const theirs = armyValue(opposing(stack.side));
+  if (theirs < 3000) return null;
+  const options: Scored[] = [];
+  for (const d of interventionsFor(catalog, state, playerId)) {
+    if (d.context !== 'battle' || d.favorCost > spare) continue;
+    const e = d.effect;
+    if (e.type === 'battle_smite') {
+      for (const t of sideStacks(battle, opposing(stack.side))) {
+        const hp = catalog.creatures[t.creatureId]!.stats!.hp;
+        const v = killValue(catalog, t, e.damage, Math.min(aliveCount(catalog, t), Math.floor(e.damage / hp)));
+        if (v >= 600 && quoteIntervention(catalog, state, playerId, d.id, { stackId: t.id }).legal) options.push({ score: v, key: `miracle:${d.id}:${t.id}`, payload: { kind: 'BattleInvokeIntervention', interventionId: d.id, targetId: t.id } });
+      }
+    } else if (e.type === 'battle_status') {
+      const v = mine * 0.02 * e.amount * e.durationRounds;
+      if (mine >= 5000 && v >= 500 && quoteIntervention(catalog, state, playerId, d.id).legal) options.push({ score: v, key: `miracle:${d.id}`, payload: { kind: 'BattleInvokeIntervention', interventionId: d.id } });
+    }
+  }
+  return best(options);
 }

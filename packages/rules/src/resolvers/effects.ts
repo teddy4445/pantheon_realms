@@ -24,9 +24,18 @@ export function godEffects(catalog: ContentCatalog, state: MatchState, playerId:
   return gods.flatMap((g) => getGod(catalog, g).benefits);
 }
 
-/** Signature + god effects of a player (empty for ownerless forces). */
+/** Effects of the current weekly event, which reach every empire (not scripted forces or monsters). */
+export function weeklyEventEffects(catalog: ContentCatalog, state: MatchState, playerId: PlayerId | null): EffectDefinition[] {
+  const id = state.world.weeklyEventId;
+  if (!id || !playerId || !state.scenario.features?.weeklyEvents) return [];
+  const player = state.players[playerId];
+  if (!player || player.role === 'scripted_hostile') return [];
+  return [...(catalog.weeklyEvents?.[id]?.effects ?? [])];
+}
+
+/** Signature + god + weekly-event effects of a player (empty for ownerless forces). */
 export function playerEffects(catalog: ContentCatalog, state: MatchState, playerId: PlayerId | null): EffectDefinition[] {
-  return [...signatureEffects(catalog, state, playerId), ...godEffects(catalog, state, playerId)];
+  return [...signatureEffects(catalog, state, playerId), ...godEffects(catalog, state, playerId), ...weeklyEventEffects(catalog, state, playerId)];
 }
 
 export function sumEffect<T extends EffectDefinition['type']>(
@@ -51,10 +60,19 @@ export function offeringRule(catalog: ContentCatalog, state: MatchState, playerI
   return best;
 }
 
-/** Freeze the battle-relevant effects of a side's player at battle start. */
-export function battleSideEffects(catalog: ContentCatalog, state: MatchState, playerId: PlayerId | null): BattleSideEffects | null {
+/**
+ * Freeze the battle-relevant effects of a side at battle start: its player's
+ * effects plus `heroFx`, the commanding hero's own effects (skills, artifacts,
+ * set bonuses).
+ */
+export function battleSideEffects(
+  catalog: ContentCatalog,
+  state: MatchState,
+  playerId: PlayerId | null,
+  heroFx: readonly EffectDefinition[] = [],
+): BattleSideEffects | null {
   if (!playerId || !state.players[playerId]) return null;
-  const fx = playerEffects(catalog, state, playerId);
+  const fx = [...playerEffects(catalog, state, playerId), ...heroFx];
   let fury: BattleSideEffects['fury'] = null;
   for (const e of fx) {
     if (e.type !== 'wounded_fury') continue;
@@ -66,6 +84,7 @@ export function battleSideEffects(catalog: ContentCatalog, state: MatchState, pl
     fury,
     freeShapeshift: fx.some((e) => e.type === 'free_shapeshift'),
     harmony: null,
+    spellDamagePercent: sumEffect(fx, 'spell_damage_percent', (e) => e.percent),
     creatureStats: fx.flatMap((e) =>
       e.type === 'creature_stat'
         ? [

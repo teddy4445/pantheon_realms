@@ -6,10 +6,11 @@
  * presentation queue. Does NOT own game truth: all game data is read from
  * session.state, and all changes go through session.dispatch (commands).
  */
-import type { ContentCatalog, GameEvent, CommandPayload, HexCoord, Rejection } from '@pr/rules';
-import { GameSession, type SaveSnapshot } from '@pr/session';
+import { matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type Rejection } from '@pr/rules';
+import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
 import type { PlatformServices } from '@pr/platform';
 import { SaveManager, type SlotInfo } from './saves';
+import { recordHighScore } from './records';
 import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, savePreferences, type Preferences } from './preferences';
 import type { GameAudio } from '../audio/gameAudio';
 
@@ -31,7 +32,10 @@ export type ScreenId =
   | 'overview'
   | 'encyclopedia'
   | 'settings'
-  | 'unit-detail';
+  | 'unit-detail'
+  | 'random-setup'
+  | 'summary'
+  | 'high-scores';
 
 export const SCREEN_CODES: Record<ScreenId, string> = {
   'main-menu': 'S01',
@@ -52,6 +56,9 @@ export const SCREEN_CODES: Record<ScreenId, string> = {
   encyclopedia: 'S16',
   settings: 'S17',
   'unit-detail': 'S18',
+  'random-setup': 'S19',
+  summary: 'S20',
+  'high-scores': 'S21',
 };
 
 export interface ScreenEntry {
@@ -75,7 +82,28 @@ export type Overlay =
   | { kind: 'encounter'; heroId: string; dest: HexCoord }
   /** Beacon/relay activation confirmation. */
   | { kind: 'activate'; heroId: string; siteId: string }
-  | { kind: 'stack-info'; creatureId: string; count?: number };
+  | { kind: 'stack-info'; creatureId: string; count?: number }
+  /** Hot-seat: the map stays hidden until the next player takes the seat. */
+  | { kind: 'handoff'; playerId: string }
+  /** Recruit from a neutral creature camp. */
+  | { kind: 'camp'; heroId: string; siteId: string }
+  /** One-time map event choice. */
+  | { kind: 'map-event'; heroId: string; siteId: string }
+  /** Adventure-map divine interventions. */
+  | { kind: 'interventions' }
+  /** End of a skirmish (victory or defeat). */
+  | { kind: 'game-over' }
+  /** Keyboard shortcuts reference. */
+  | { kind: 'shortcuts' };
+
+/** One story scene (or the campaign epilogue) waiting in the dialogue window. */
+export interface StoryEntry {
+  readonly key: string;
+  readonly title: string | null;
+  readonly lines: readonly DialogueLine[];
+  /** Opened after the scene closes (the campaign epilogue leads to the summary). */
+  readonly then?: 'campaign-complete';
+}
 
 export interface Toast {
   readonly id: number;
@@ -93,6 +121,23 @@ export interface SetupDraft {
   /** Skirmish only: the AI rival's pantheon. */
   rivalPantheonId?: string | null;
   godId: string | null;
+  /** Skirmish only: difficulty (AI resources and aggression). */
+  difficultyId?: string | null;
+  /** Skirmish only: who plays the rival seat (human = hot-seat on this computer). */
+  rivalController?: 'ai' | 'human';
+  /** Hot-seat: the rival's patron god. */
+  rivalGodId?: string | null;
+  /** Hot-seat: seat names. */
+  playerName?: string;
+  rivalName?: string;
+}
+
+/** Options for a new skirmish (passed through to the session's mission factory). */
+export interface StartOptions {
+  readonly difficultyId?: string | null;
+  readonly controllers?: Readonly<Record<string, 'human' | 'ai'>>;
+  readonly playerNames?: Readonly<Record<string, string>>;
+  readonly patronGodIds?: Readonly<Record<string, string>>;
 }
 
 export type Presenter = (events: readonly GameEvent[], source: string) => Promise<void>;
@@ -119,6 +164,17 @@ export class AppStore {
   selectedHeroId: string | null = null;
   /** One-shot camera focus request consumed by the adventure screen (journal markers etc.). */
   focusRequest: HexCoord | null = null;
+  /** Story scenes waiting to be shown (the dialogue window shows the first). */
+  story: StoryEntry[] = [];
+  /** Lines shown in this session, for the dialogue backlog. */
+  storyLog: DialogueLine[] = [];
+  /** Tips waiting to be shown (contextual help; the panel shows the first). */
+  hints: string[] = [];
+  private hintsShown = new Set<string>();
+  /** Hot-seat: the human seat whose view was last handed over. */
+  private shownViewer: string | null = null;
+  /** Result of the last high-score recording (summary screen). */
+  lastRecord: { table: 'campaign' | 'skirmish'; rank: number | null; score: number } | null = null;
   private presenters = new Set<Presenter>();
   private unsubSession: (() => void) | null = null;
   private aiTimer: ReturnType<typeof setTimeout> | null = null;
@@ -234,10 +290,21 @@ export class AppStore {
     this.session = session;
     this.selectedHeroId = null;
     this.focusRequest = null;
+    this.story = [];
+    this.storyLog = [];
+    this.hints = [];
+    this.lastRecord = null;
+    this.shownViewer = session.state.players[session.state.activePlayerId]?.controller === 'human' ? session.state.activePlayerId : null;
     this.unsubSession = session.subscribe((u) => {
       this.notify();
       if (u.events.length > 0) this.present(u.events, u.source);
+      if (u.source === 'start' || u.source === 'load') {
+        this.story = [];
+        this.shownViewer = u.source === 'start' ? u.state.activePlayerId : null;
+      }
+      this.queueStory(u.events);
       this.routeAfterUpdate(u.events);
+      this.checkHandoff();
       this.scheduleAI();
     });
     session.onCheckpoint((kind, snapshot) => {
@@ -286,8 +353,16 @@ export class AppStore {
     this.setup = { mode, campaignId: null, scenarioId: null, missionId: null, pantheonId: null, rivalPantheonId: null, godId: null };
   }
 
-  startScenario(missionId: string, godId: string | null = null): void {
-    const session = GameSession.newScenario(this.catalog, missionId, `skirmish-${Date.now().toString(36)}`, godId);
+  startScenario(missionId: string, godId: string | null = null, opts: StartOptions = {}): void {
+    const session = GameSession.newScenario(this.catalog, missionId, `skirmish-${Date.now().toString(36)}`, godId, opts);
+    this.attach(session);
+    this.resetTo('adventure');
+    this.openOverlay({ kind: 'briefing' });
+  }
+
+  /** Start a generated (random-map) skirmish. */
+  startGenerated(generated: RandomSkirmish, godId: string | null, opts: StartOptions = {}): void {
+    const session = GameSession.newGenerated(this.catalog, generated, `random-${Date.now().toString(36)}`, { ...opts, startingGodId: godId });
     this.attach(session);
     this.resetTo('adventure');
     this.openOverlay({ kind: 'briefing' });
@@ -296,13 +371,153 @@ export class AppStore {
   loadSnapshot(snapshot: SaveSnapshot): void {
     const session = GameSession.fromSnapshot(this.catalog, snapshot);
     this.attach(session);
+    this.shownViewer = null;
     this.overlays = [];
     const s = session.state;
     if (s.battle) this.resetTo('battle');
     else this.resetTo('adventure');
     if (s.pendingDecisions.length > 0) this.goto('level-up');
     this.notify();
+    this.checkHandoff();
     this.scheduleAI();
+  }
+
+  // ------------------------------------------------------------ story scenes
+
+  private queueStory(events: readonly GameEvent[]): void {
+    const session = this.session;
+    if (!session) return;
+    const ids = events.flatMap((e) => (e.kind === 'StoryScene' ? [e.sceneId] : []));
+    if (ids.length === 0) return;
+    const mission = scenarioMission(this.catalog, session.state);
+    const entries = ids.flatMap((id): StoryEntry[] => {
+      const scene = mission?.storyScenes?.find((x) => x.id === id);
+      return scene ? [{ key: `${session.state.matchId}:${id}`, title: null, lines: scene.lines }] : [];
+    });
+    // Let the movement or blow that triggered the scene finish first.
+    void this.whenIdle().then(() => {
+      if (this.session !== session) return;
+      for (const e of entries) if (!this.story.some((x) => x.key === e.key)) this.story = [...this.story, e];
+      this.notify();
+    });
+  }
+
+  /** Show lines in the dialogue window (campaign epilogue). */
+  playStory(entry: StoryEntry): void {
+    if (this.story.some((x) => x.key === entry.key)) return;
+    this.story = [...this.story, entry];
+    this.notify();
+  }
+
+  /** The dialogue window finished its scene. */
+  closeStory(): void {
+    const done = this.story[0];
+    if (!done) return;
+    this.storyLog = [...this.storyLog, ...done.lines];
+    this.story = this.story.slice(1);
+    if (done.then === 'campaign-complete') this.openOverlay({ kind: 'campaign-complete' });
+    this.notify();
+    this.scheduleAI();
+  }
+
+  // ------------------------------------------------------------ contextual help
+
+  /** Show a tip the first time its moment comes (Settings → Tutorial hints). */
+  showHint(id: string): void {
+    if (!this.prefs.tutorialHints || this.prefs.dismissedHints.includes(id) || this.hintsShown.has(id)) return;
+    this.hintsShown.add(id);
+    this.hints = [...this.hints, id];
+    this.notify();
+  }
+
+  dismissHint(id: string): void {
+    this.hints = this.hints.filter((h) => h !== id);
+    const dismissed = this.prefs.dismissedHints.includes(id) ? this.prefs.dismissedHints : [...this.prefs.dismissedHints, id];
+    void this.setPrefs({ ...this.prefs, dismissedHints: dismissed }, true);
+  }
+
+  disableHints(): void {
+    this.hints = [];
+    void this.setPrefs({ ...this.prefs, tutorialHints: false }, true);
+  }
+
+  resetHints(): void {
+    this.hintsShown.clear();
+  }
+
+  // ------------------------------------------------------------ hot-seat hand-over
+
+  private checkHandoff(): void {
+    const session = this.session;
+    if (!session || session.humanSeats.length < 2) return;
+    const st = session.state;
+    if (st.battle || st.outcome.status !== 'running') return;
+    const active = st.players[st.activePlayerId];
+    if (!active || active.controller !== 'human' || active.eliminated) return;
+    if (this.shownViewer === active.id) return;
+    this.shownViewer = active.id;
+    void this.whenIdle().then(() => {
+      if (this.session !== session || session.state.activePlayerId !== active.id) return;
+      this.selectedHeroId = null;
+      this.overlays = this.overlays.filter((o) => o.kind !== 'handoff');
+      if (this.screen.id !== 'adventure') this.resetTo('adventure');
+      this.openOverlay({ kind: 'handoff', playerId: active.id });
+    });
+  }
+
+  // ------------------------------------------------------------ results & high scores
+
+  /** Record the finished match (and a finished campaign) in the high-score tables. */
+  private async recordResults(): Promise<void> {
+    const session = this.session;
+    if (!session) return;
+    const st = session.state;
+    if (st.outcome.status === 'running') return;
+    const mission = scenarioMission(this.catalog, st);
+    const at = new Date().toISOString();
+    try {
+      if (session.campaign) {
+        const camp = session.campaign;
+        if (camp.branch !== 'primary' || camp.status !== 'completed') return;
+        const player = st.players[mission?.player.playerId ?? st.playerOrder[0]!]!;
+        const score = campaignScore(camp);
+        const res = await recordHighScore(this.platform.records, {
+          key: `campaign:${camp.campaignRunId}`,
+          table: 'campaign',
+          score,
+          playerName: player.name,
+          pantheonId: player.pantheonId,
+          title: this.catalog.campaigns[camp.campaignId]?.name ?? camp.campaignId,
+          outcome: 'victory',
+          days: camp.completions.reduce((n, c) => n + c.summary.days, 0),
+          difficultyId: null,
+          recordedAt: at,
+        });
+        this.lastRecord = { table: 'campaign', rank: res.rank, score };
+      } else {
+        for (const id of session.humanSeats) {
+          const player = st.players[id]!;
+          const score = matchScore(this.catalog, st, id).total;
+          const won = st.outcome.winnerIds?.includes(id) ?? false;
+          const res = await recordHighScore(this.platform.records, {
+            key: `skirmish:${st.matchId}:${id}`,
+            table: 'skirmish',
+            score,
+            playerName: player.name,
+            pantheonId: player.pantheonId,
+            title: mission?.name ?? 'Skirmish',
+            outcome: won ? 'victory' : 'defeat',
+            days: st.outcome.day,
+            difficultyId: st.scenario.difficultyId ?? null,
+            recordedAt: at,
+          });
+          if (id === session.humanPlayerId) this.lastRecord = { table: 'skirmish', rank: res.rank, score };
+        }
+      }
+      this.notify();
+    } catch (e) {
+      this.toast(`Could not record the high score: ${e instanceof Error ? e.message : String(e)}`, 'error');
+    }
   }
 
   // ------------------------------------------------------------ commands
@@ -355,12 +570,32 @@ export class AppStore {
   }
 
   private routeMissionOutcome(events: readonly GameEvent[]): void {
+    const session = this.session;
+    for (const e of events) {
+      if (e.kind !== 'PlayerEliminated' || !session) continue;
+      const p = session.state.players[e.playerId];
+      if (p && session.state.outcome.status === 'running') this.toast(`${p.name} has been eliminated.`, 'info');
+    }
+    const ended = events.some((e) => e.kind === 'MissionFailed' || e.kind === 'MissionCompleted');
+    if (!ended || !session) return;
+    if (!session.campaign) {
+      // Skirmish (one or more human seats): one result dialog, then the summary.
+      this.openOverlay({ kind: 'game-over' });
+      void this.recordResults();
+      return;
+    }
     if (events.some((e) => e.kind === 'MissionFailed')) this.openOverlay({ kind: 'mission-failed' });
     if (events.some((e) => e.kind === 'MissionCompleted')) {
-      if (this.session?.campaign && this.session.campaign.branch === 'primary') {
-        this.session.completeMission();
-        const last = !this.session.hasNextMission();
-        this.openOverlay({ kind: last ? 'campaign-complete' : 'debrief' });
+      if (session.campaign.branch === 'primary') {
+        session.completeMission();
+        const last = !session.hasNextMission();
+        if (last) {
+          void this.recordResults();
+          const camp = this.catalog.campaigns[session.campaign.campaignId];
+          // The closing scene plays first; the campaign summary follows it.
+          if (camp?.epilogue?.length) this.playStory({ key: `epilogue:${camp.id}`, title: `${camp.name} — Epilogue`, lines: camp.epilogue, then: 'campaign-complete' });
+          else this.openOverlay({ kind: 'campaign-complete' });
+        } else this.openOverlay({ kind: 'debrief' });
       } else this.openOverlay({ kind: 'debrief' });
     }
   }
@@ -400,7 +635,8 @@ export class AppStore {
   scheduleAI(): void {
     const session = this.session;
     if (!session || this.aiTimer || !session.needsAI()) return;
-    if (this.overlays.some((o) => o.kind === 'mission-failed' || o.kind === 'debrief' || o.kind === 'campaign-complete')) return;
+    if (this.story.length > 0) return;
+    if (this.overlays.some((o) => o.kind === 'mission-failed' || o.kind === 'debrief' || o.kind === 'campaign-complete' || o.kind === 'game-over')) return;
     const enemyDelay = 180 * adventurePlaybackFactor(this.prefs, true);
     this.aiTimer = setTimeout(() => {
       this.aiTimer = null;

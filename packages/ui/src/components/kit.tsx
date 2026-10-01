@@ -71,6 +71,9 @@ export function MenuButton({
   disabledReason,
   autoFocus,
   testId,
+  variant,
+  onPreview,
+  title,
 }: {
   icon: IconName;
   label: string;
@@ -80,24 +83,35 @@ export function MenuButton({
   disabledReason?: string;
   autoFocus?: boolean;
   testId?: string;
+  /** 'framed': the ornate main-menu entry; 'compact': a small secondary entry. */
+  variant?: 'framed' | 'compact';
+  /** Called on hover/focus so a screen can show a longer description elsewhere. */
+  onPreview?: (on: boolean) => void;
+  title?: string;
 }) {
   return (
     <button
       type="button"
-      className="menu-btn"
+      className={`menu-btn ${variant ? `menu-btn--${variant}` : ''}`}
       onClick={onClick}
       disabled={disabled}
-      title={disabled ? disabledReason : undefined}
+      title={disabled ? disabledReason : title}
       autoFocus={autoFocus}
       data-testid={testId}
+      onMouseEnter={onPreview ? () => onPreview(true) : undefined}
+      onMouseLeave={onPreview ? () => onPreview(false) : undefined}
+      onFocus={onPreview ? () => onPreview(true) : undefined}
+      onBlur={onPreview ? () => onPreview(false) : undefined}
     >
-      <Icon name={icon} className="menu-btn__icon" />
-      <span className="menu-btn__text">
-        {label}
-        {meta ? <div className="menu-btn__meta">{meta}</div> : null}
-        {disabled && disabledReason ? <div className="menu-btn__meta">{disabledReason}</div> : null}
+      <span className="menu-btn__socket">
+        <Icon name={icon} className="menu-btn__icon" />
       </span>
-      {!disabled ? <span className="menu-btn__chev">›</span> : null}
+      <span className="menu-btn__text">
+        <span className="menu-btn__label">{label}</span>
+        {meta ? <span className="menu-btn__meta">{meta}</span> : null}
+        {disabled && disabledReason ? <span className="menu-btn__meta">{disabledReason}</span> : null}
+      </span>
+      {!disabled && variant !== 'compact' ? <span className="menu-btn__chev" aria-hidden="true">›</span> : null}
     </button>
   );
 }
@@ -227,4 +241,43 @@ export function Modal({ title, children, footer, onClose, width, testId }: { tit
 
 export function EmptyState({ children }: { children: ReactNode }) {
   return <div className="empty">{children}</div>;
+}
+
+/** A small radio group of buttons (difficulty, controller, map size…). */
+export function Segmented<T extends string>({
+  value,
+  options,
+  onChange,
+  label,
+  testId,
+}: {
+  value: T;
+  options: readonly { id: T; label: string; disabled?: boolean; title?: string }[];
+  onChange: (v: T) => void;
+  label: string;
+  testId?: string;
+}) {
+  return (
+    <div className="segmented" role="radiogroup" aria-label={label} data-testid={testId}>
+      {options.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          role="radio"
+          aria-checked={value === o.id}
+          className={`segmented__opt ${value === o.id ? 'is-selected' : ''}`}
+          disabled={o.disabled}
+          title={o.title}
+          onClick={() => onChange(o.id)}
+          data-testid={testId ? `${testId}-${o.id}` : undefined}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function TextInput({ value, onChange, label, maxLength = 24, placeholder, testId }: { value: string; onChange: (v: string) => void; label: string; maxLength?: number; placeholder?: string; testId?: string }) {
+  return <input type="text" className="text-input" value={value} maxLength={maxLength} placeholder={placeholder} aria-label={label} onChange={(e) => onChange(e.target.value)} data-testid={testId} />;
 }

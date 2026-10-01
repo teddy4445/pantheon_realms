@@ -3,7 +3,7 @@
  * were rolled once by the rules, so reopening never rerolls. Choosing submits
  * ChooseLevelUp; further pending levels are shown in order.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel } from '../components/kit';
 import { HeroPortrait } from '../components/art';
@@ -18,6 +18,7 @@ export function LevelUpScreen() {
   const playerId = store.session!.humanPlayerId;
   const decision = state.pendingDecisions.find((d) => state.heroes[d.heroId]?.ownerId === playerId);
   const [choice, setChoice] = useState<number | null>(null);
+  useEffect(() => store.showHint('level_up'), [store]);
   if (!decision) {
     return (
       <div className="screen levelup-screen">

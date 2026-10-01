@@ -5,13 +5,14 @@
  * explicit divine-choice confirmation. Covenants are assigned to towns here.
  */
 import { useState } from 'react';
-import { quoteCovenantAssignment, quoteGodSelection, type GodDefinition } from '@pr/rules';
+import { quoteCovenantAssignment, quoteGodSelection, type GodDefinition, interventionsFor } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle } from '../components/kit';
 import { Emblem, GodPortrait } from '../components/art';
 import { ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
 import { humanPlayer } from '../app/view';
+import { InterventionList } from '../dialogs/WorldDialogs';
 
 const STATE_CHIP: Record<string, { text: string; tone: 'ok' | 'warn' | 'bad' | 'info' | 'muted' }> = {
   selected: { text: 'Committed', tone: 'ok' },
@@ -144,6 +145,12 @@ export function PantheonScreen() {
             })}
           </div>
         </Panel>
+
+        {interventionsFor(catalog, state, player.id).length > 0 ? (
+          <Panel title="Divine interventions" className="pantheon-miracles" headerIcon="pantheon" bodyClassName="scroll">
+            <InterventionList adventure />
+          </Panel>
+        ) : null}
 
         <Panel title="Covenants" className="pantheon-covenants">
           <p className="dim small">A covenant lets one town build the dwelling of a creature family that requires it.</p>

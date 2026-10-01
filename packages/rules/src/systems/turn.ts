@@ -10,7 +10,7 @@ import { expireTemporaryVision } from './magic';
 import { hexEquals } from '../core/hex';
 import { addResources, resources, type ResourceBundle } from '../core/resources';
 import type { MatchState } from '../state/match';
-import { maxMana, movementBudget } from '../resolvers/heroes';
+import { dawnManaRegen, heroEffects, maxMana, movementBudget } from '../resolvers/heroes';
 import { playerTowns, townDailyIncome, townHasEffect, weeklyGrowthFor } from '../resolvers/town';
 import { missionSite } from '../resolvers/world';
 import type { Tx } from '../engine/tx';
@@ -18,6 +18,8 @@ import { grant } from './economy';
 import { learnSpellsAtTown } from './heroes';
 import { refreshMerchantStock } from './services';
 import { playerEffects } from '../resolvers/effects';
+import { advanceRelics, restockCamps, startWeeklyEvent } from './world';
+import { recordDayStats } from './stats';
 
 export function weekOf(day: number, daysPerWeek = 7): number {
   return 1 + Math.floor((day - 1) / daysPerWeek);
@@ -30,13 +32,21 @@ export function dayOfWeek(day: number, daysPerWeek = 7): number {
 export function commitEndTurn(tx: Tx): void {
   const state = tx.state;
   tx.emit({ kind: 'TurnEnded', playerId: state.activePlayerId });
-  const order = state.playerOrder.filter((p) => !state.players[p]?.eliminated);
-  let idx = order.indexOf(state.activePlayerId) + 1;
-  if (idx >= order.length) {
-    processDawn(tx);
-    idx = 0;
+  const order = state.playerOrder;
+  const start = Math.max(0, order.indexOf(state.activePlayerId));
+  // Walk the full order from the current seat (which may itself have just been
+  // eliminated), skipping eliminated players; passing the last seat is dawn.
+  let next = state.activePlayerId;
+  for (let step = 1; step <= order.length; step++) {
+    const i = start + step;
+    if (i === order.length) processDawn(tx);
+    const id = order[i % order.length]!;
+    if (!state.players[id]?.eliminated) {
+      next = id;
+      break;
+    }
   }
-  state.activePlayerId = order[idx] ?? state.activePlayerId;
+  state.activePlayerId = next;
   tx.emit({ kind: 'TurnStarted', playerId: state.activePlayerId, day: state.day });
 }
 
@@ -45,14 +55,30 @@ export function projectedIncome(tx: Pick<Tx, 'catalog' | 'state'>, playerId: str
   const { catalog, state } = tx;
   let total = resources();
   for (const town of playerTowns(state, playerId)) total = addResources(total, townDailyIncome(catalog, town));
-  // Player-wide income (gods, signatures): paid while the player still owns a town.
+  // Player-wide income (gods, signatures, weekly events): paid while the player still owns a town.
   if (playerTowns(state, playerId).length > 0) {
     for (const e of playerEffects(catalog, state, playerId)) if (e.type === 'daily_income') total = addResources(total, { [e.resource]: e.amount });
+  }
+  // Hero income (pantheon skills, artifacts): paid for every active hero.
+  for (const hero of Object.values(state.heroes)) {
+    if (hero.ownerId !== playerId || hero.status !== 'active' || hero.monster) continue;
+    for (const e of heroEffects(catalog, hero)) if (e.type === 'daily_income') total = addResources(total, { [e.resource]: e.amount });
   }
   for (const [siteId, site] of Object.entries(state.world.sites)) {
     if (site.owner !== playerId) continue;
     const def = missionSite(catalog, state, siteId);
     if (def?.kind.type === 'resource_site') total = addResources(total, { [def.kind.resource]: def.kind.dailyYield });
+  }
+  // Skirmish difficulty handicap (AI empires on Easy/Hard), each resource rounded down.
+  const pct = state.players[playerId]?.incomePercent ?? 100;
+  if (pct !== 100) {
+    total = resources({
+      gold: Math.floor((total.gold * pct) / 100),
+      wood: Math.floor((total.wood * pct) / 100),
+      stone: Math.floor((total.stone * pct) / 100),
+      crystal: Math.floor((total.crystal * pct) / 100),
+      favor: Math.floor((total.favor * pct) / 100),
+    });
   }
   return total;
 }
@@ -63,15 +89,22 @@ export function processDawn(tx: Tx): void {
   const daysPerWeek = tx.profile.daysPerWeek;
   state.day += 1;
   const day = state.day;
+  const week = weekOf(day, daysPerWeek);
+  const newWeek = day > 1 && (day - 1) % daysPerWeek === 0;
   expireTemporaryVision(state);
-  tx.emit({ kind: 'DayStarted', day, week: weekOf(day, daysPerWeek), dayOfWeek: dayOfWeek(day, daysPerWeek) });
+  tx.emit({ kind: 'DayStarted', day, week, dayOfWeek: dayOfWeek(day, daysPerWeek) });
+
+  // Step 1b: a new week's event is announced before it pays or grows anything.
+  if (newWeek) startWeeklyEvent(tx, week);
 
   // Step 2: recurring income from ownership and buildings already present.
+  const incomeToday: Record<string, ResourceBundle> = {};
   for (const playerId of state.playerOrder) {
     const player = state.players[playerId];
     if (!player || player.eliminated || player.role === 'scripted_hostile') continue;
     if (!tx.applyOnce(`dawn_income:${day}:${playerId}`)) continue;
     const income = projectedIncome(tx, playerId);
+    incomeToday[playerId] = income;
     if (Object.values(income).some((v) => v > 0)) {
       grant(tx, playerId, income, 'Dawn income');
       tx.emit({ kind: 'IncomeCollected', playerId, amount: income });
@@ -79,7 +112,7 @@ export function processDawn(tx: Tx): void {
   }
 
   // Step 3: weekly growth on days 8, 15, 22, ...
-  if (day > 1 && (day - 1) % daysPerWeek === 0) {
+  if (newWeek) {
     for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) {
       if (!tx.applyOnce(`weekly_growth:${day}:${town.id}`)) continue;
       for (const familyId of Object.keys(town.population).sort()) {
@@ -89,6 +122,7 @@ export function processDawn(tx: Tx): void {
       }
       refreshMerchantStock(tx, town);
     }
+    restockCamps(tx, week);
   }
 
   // Step 4: build allowance resets implicitly (buildUsedDay != day); refresh heroes.
@@ -101,9 +135,13 @@ export function processDawn(tx: Tx): void {
       hero.mana = cap;
       learnSpellsAtTown(tx, hero, town);
     } else {
-      hero.mana = Math.min(cap, hero.mana + tx.profile.dawnManaRegen);
+      hero.mana = Math.min(cap, hero.mana + dawnManaRegen(catalog, state, hero));
     }
   }
+
+  // Step 5: relics count another day held; the day's statistics are recorded.
+  advanceRelics(tx);
+  recordDayStats(catalog, state, (id) => incomeToday[id] ?? resources());
 }
 
 export function isFirstDayOfWeek(state: MatchState, daysPerWeek = 7): boolean {

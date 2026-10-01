@@ -8,7 +8,7 @@
  *   npm run balance -- --quick              # small smoke run (minutes)
  *
  * Options:
- *   <suite...>        skirmish | armies | starts | tiers (default: all)
+ *   <suite...>        skirmish | armies | starts | tiers | random (default: all)
  *   --seeds N         seeded duels per direction for armies/starts/tiers (default 12)
  *   --matches N       seeded matches per ordered pairing and first-mover order (default 3)
  *   --pantheons a,b   subset of pantheons (default: all six)
@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SUITES = ['skirmish', 'armies', 'starts', 'tiers'];
+const SUITES = ['skirmish', 'armies', 'starts', 'tiers', 'random'];
 const PANTHEONS = ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'];
 const NAMES = { greek: 'Greek', norse: 'Norse', egyptian: 'Egyptian', japanese: 'Japanese', celtic: 'Celtic', mesoamerican: 'Mesoamerican' };
 
@@ -154,6 +154,30 @@ function render(opts, results, seconds, contentVersion) {
       out.push(...mirrors);
       out.push('');
     }
+  }
+
+  const rnd = results.filter((r) => r.random).map((r) => r.random);
+  if (rnd.length) {
+    out.push('## Random maps (generated, every seat the same pantheon, both sides AI)');
+    out.push('');
+    out.push('Small symmetric maps, few wandering monsters, last empire standing. Mirror matches isolate seat order (seat 1 moves first each day) and the map; an even generator gives every seat 1/N of the wins.');
+    out.push('');
+    out.push('Undecided matches at the day cap count for a seat whose army strength is at least 25% above every other seat\'s (else a draw, split evenly).');
+    out.push('');
+    out.push('| Empires | Matches | Decided | Mean decisive day | Wins by seat (1, 2, …) | Points wins by seat | Seat scores |');
+    out.push('|---|---|---|---|---|---|---|');
+    for (const n of [2, 3]) {
+      const rs = rnd.filter((r) => r.empires === n);
+      if (!rs.length) continue;
+      const dec = rs.filter((r) => r.winnerSeat !== null);
+      const wins = Array.from({ length: n }, (_, i) => dec.filter((r) => r.winnerSeat === i).length);
+      const pts = Array.from({ length: n }, (_, i) => rs.filter((r) => r.winnerSeat === null && r.pointsSeat === i).length);
+      const draws = rs.filter((r) => r.winnerSeat === null && (r.pointsSeat ?? null) === null).length;
+      const score = Array.from({ length: n }, (_, i) => (wins[i] + pts[i] + draws / n) / rs.length);
+      const day = dec.reduce((a, r) => a + r.day, 0) / Math.max(1, dec.length);
+      out.push(`| ${n} | ${rs.length} | ${dec.length} | ${dec.length ? day.toFixed(1) : '—'} | ${wins.join(', ')} | ${pts.join(', ')} (${draws} draws) | ${score.map((x) => pct(x)).join(', ')} (even = ${pct(1 / n)}) |`);
+    }
+    out.push('');
   }
 
   const armies = results.filter((r) => r.job.suite === 'armies');

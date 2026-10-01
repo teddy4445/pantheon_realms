@@ -1,27 +1,38 @@
 # Development Status
 
-_Last updated: 2026-10-01 · app 0.3.0 · rules `pr-0.2-candidate` + proposed signature/service effects · content `content-0.6.0` · campaign `campaign-three-beacons-0.3` · mapgen `pr-mapgen-0.3` · save schema 1 · preferences schema 2_
+_Last updated: 2026-10-01 · app 0.4.1 (0.4.0 + visual design) · rules `pr-0.2-candidate` + proposed effects · content `content-0.7.0` · campaign `campaign-three-beacons-0.4` · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.1` · save schema 1 · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
-## Tests and checks actually run
+## Tests and checks actually run (0.4.1 visual update, this session)
 
 | Command | Result |
 |---|---|
-| `npx vitest run` (14 files) | **160 passed**, 0 failed (new: `packages/audio/test/audio.test.ts`, `packages/ui/test/audio.test.ts`, three AI tests, Harmony tests rewritten) |
-| `npx tsc -p tsconfig.core.json` / `apps/client` / `apps/desktop` | pass / pass / pass |
-| `node tools/check-boundaries.mjs` | pass (now also enforces the on-demand 3D rule and `@pr/audio`'s place) |
-| `npm run build` (Vite browser build) | pass — start-up script `index-*.js` 879 KB (253 KB gzip); 3D layer `src-*.js` 564 KB (146 KB gzip) plus Babylon modules, fetched after the menu; glTF 2.0 loader 745 KB (171 KB gzip), fetched only when a model loads. 571 files (250 JS) |
-| `node tools/perf/load-time.mjs <dist> --runs 7` | before/after table in "Start-up load time" below |
-| `python3 tools/audio/make_placeholders.py` | 60 Ogg Vorbis files for 52 sound IDs + `assets-runtime/audio/manifest.json`. Peak/RMS levels, DC offset, loop seams and spectrograms were checked by script; **no person has listened to them** |
-| `npx playwright test` (Chromium + SwiftShader) | **26 of 27 passed** (10.8 min), including 4 new sound tests (menu music after the first click and every file decodes; Settings preview, Mute all and restore; the campaign map's soundscape; battle music and combat sounds during playback). The one failure was an outdated assertion in `menu.spec.ts` (it expected the old "No audio in this build" note); the test now checks the disabled Voice slider, and `npx playwright test tests/e2e/menu.spec.ts` passed 2 of 2 |
-| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (development layout) and **pass with `PR_SMOKE_EXE`** on the electron-builder `--linux dir` build: `isPackaged` true, name "Pantheon Realms", DevTools refused, saves written; new sound check: manifest lists 52 sounds, 6 files decoded, the audio context runs without a click |
-| `npx electron-builder --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.3.0-x64.exe` (136,163,139 bytes, SHA-256 `11a25130…60de55`); its `app-64.7z` payload extracts byte-identical to `win-unpacked`, whose `app.asar` carries content 0.6.0, version 0.3.0, the 52-sound manifest and its 60 files, and no development tools. **Not run on Windows**; unsigned |
-| Wine 64-bit install test (0.2.0 build, same NSIS script; not repeated) | a test-only variant with the "app is running" check emptied installs the game files, creates the Desktop and Start-menu shortcuts and registers the uninstaller. The real installer's check falsely reports the app as running under Wine only, so the unmodified installer could not finish there. The installed game did not open a window under Wine; that says nothing about Windows |
-| `npm run balance -- --seeds 16 --matches 5 --jobs 2` | 645 jobs in 14.0 min; results below |
+| `python3 tools/assets/prepare_ui_art.py` | 120 UI assets (11 backgrounds, logo, emblem, frame, 9 menu icons, 96 pack icons, app icon), 6.2 MB of runtime files; contact sheet of the 96 crops checked by eye |
+| `npm run check` | **pass — 192 tests** (17 files; new `packages/ui/test/uiArt.test.ts`, 4: every listed file bundled and readable PNG/WebP with provenance, backgrounds listed, frame window measured, every asset ID the UI names exists, `icon.ico` carries 16–256 px) |
+| `npm run build` | pass — start-up script 1,055 KB (295 KB gzip; 0.4.0: 1,016 / 290), 693 files (UI art adds 122) |
+| `npx playwright test` | **34 of 34 passed** on the redesign (12.8 min), again after the spell sockets and version change (13.1 min), and on the final build after the performance fix below (13.0 min). `menu.spec.ts` now also checks that the opening background comes from the manifest list, that every image on the main menu loaded, and that all menu entries are visible |
+| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (development layout; opening screen checked in Electron: background, logo, frame, icons and Quit) and **pass with `PR_SMOKE_EXE`** on a fresh `--linux dir` build (`app.asar` 36.6 MB with `renderer/ui/`, no `assets-source/`, tools or source maps) |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 7` | menu **149 ms** local / **330 ms** web (0.4.0: 140 / 321); first 3D scene 743 ms local (samples 232–1,256 ms), 1,024 ms web. Same headless SwiftShader setup; the scene samples are too noisy for single medians, so 0.4.0 and 0.4.1 were also measured **interleaved** (12 + 12 local runs, a scratch copy of the tool): **741 ms vs 730 ms** median — no measurable difference locally. The web profile is slower (0.4.0: 721 ms) because the new icons and backgrounds also come over the throttled 20 Mbit/s link; the desktop game reads them from disk |
+| Windows installer | **not rebuilt** for 0.4.1 in this session (the 0.4.0 installer from earlier today does not have the new look); `npm run desktop:dist` on Windows builds it with the new icon |
+| Performance fix found on the way | the first redesign put CSS `filter: drop-shadow` on icons and a large inset blur on every panel; over the 3D canvas the compositor re-applies filters each frame (first scene 868 vs 681 ms in an interleaved run). Removed: icon shadows are in the art, panels use a gradient vignette; a comment in `components.css` records the rule |
 
-### Start-up load time (measured)
+## Tests and checks actually run (0.4.0, earlier on 2026-10-01)
+
+| Command | Result |
+|---|---|
+| `npm run check` (boundaries + 3 type-checks + `vitest run`, 16 files) | **pass — 188 tests passed**, 0 failed. New: `packages/rules/test/expanded.test.ts` (14: interventions incl. once-a-week and campaign refusal, pantheon interventions, town growth, camps and weekly restock, map events once, weekly events, sets, pantheon skills, Fleet Foot/Homecoming, difficulty wallets/income, statistics and score, the bridge scene once, the Athena scene) and `packages/campaign/test/random.test.ts` (14: fairness checks and validation for 2–4 empires on every size, determinism, equal distances, camps/events/monsters, relic victory condition, refusals, an all-AI 3-empire match to a winner, a relic hold win on day 4, hot-seat names/patrons) |
+| `npm run build` | pass — start-up script `index-*.js` 1,016 KB (290 KB gzip; 0.3.0: 879 KB / 253 KB), 3D layer `src-*.js` 565 KB (145 KB gzip), 571 files (250 JS) |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 7` | menu **140 ms** local / **321 ms** web profile (0.3.0: 144 / 311); first 3D scene 663 ms local / 808 ms web (0.3.0: 734 / 817); start-up JS 1 file, 1.02 MB (0.29 MB gzip). Same headless SwiftShader setup as below; no real GPU |
+| `npx playwright test` (Chromium + SwiftShader) | **34 of 34 passed** (11.4 min). New `features.spec.ts` (7): New Game has Campaign/Skirmish/Random Map and no Multiplayer or Custom Map; Twin Harbors on Hard; a two-person random map with hand-overs (Escape cannot lift them); F1 list and a rebound key; the route tip and "Got it" remembered after reload; the last rival falls → game over → summary → high-score table; End Day with tips on. `campaign.spec.ts` now reads the bridge scene through Continue and Backlog and checks the lighthouse scene; `journey.spec.ts` reads the bridge scene with Continue. Later UI edits (summary axis labels, tips only on play screens, set-bonus text, setup subtitle, Journal tips) were re-checked afterwards: `npx playwright test tests/e2e/features.spec.ts tests/e2e/menu.spec.ts` **9 of 9 passed** (2.0 min) |
+| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (development layout) and **pass with `PR_SMOKE_EXE`** on the `--linux dir` build (`isPackaged` true, DevTools refused, saves written). New check: the high-score store writes `records.json` beside the preferences and nothing appears in `saves/` |
+| `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.4.0-x64.exe` (136,194,820 bytes, SHA-256 `2018c14d98bc77640817364f64f970cdb276a0dee6cf83831902a47bee4d1640`). Its embedded `app-64.7z` payload extracts byte-identical to `win-unpacked`; `app.asar` carries version 0.4.0, content 0.7.0, the 60 sound files and no development tools or source maps. **Not run on Windows**; unsigned |
+| `npm run balance -- --seeds 16 --matches 5 --jobs 2` | 705 jobs in 24.6 min (all five suites). It exposed a **balance-tool bug**: with every seat AI, the match outcome's victory/defeat is written from a human seat's point of view, so the tool counted every all-AI result as an east win (west score 0.10). The tool now reads `outcome.winnerIds`; the game itself was not affected (its UI already uses `winnerIds`) |
+| Browser page (claude.ai artifact, `PR_FEW_CHUNKS=1` build) | a 0.4.0 copy was built and checked locally (276 files; campaign map renders, coast music and ambience play, no failed requests), but **not published**: publishing was not permitted in this session, so the hosted page still shows 0.3.0 |
+| `npm run balance -- skirmish random --matches 5 --jobs 2` (after the fix) | 420 jobs in 18.5 min; results below. The army, escort and tier tables below come from the first run (they do not read match outcomes) |
+
+### Start-up load time (measured on the 0.3.0 build; 0.4.0 figures are in the table above)
 
 `node tools/perf/load-time.mjs <dist> --runs 7` (median of 7, headless
 Chromium with SwiftShader software rendering, served with gzip; "web" adds
@@ -209,6 +220,47 @@ Warrior HP 32 → 34, shots 10 → 12; Cenote Crocodile HP 40 → 42; Camazotz H
 34 → 36; Xiuhcoatl HP 80 → 84; starting escort 23 → 24 Feathered Serpents.
 Japanese and Celtic unchanged.
 
+### Balance in 0.4.0 (measured, AI-vs-AI)
+
+Reports: `balance-reports/balance-2026-10-01T08-56-44.md` (skirmish +
+random, after the winner fix) and `balance-reports/balance-2026-10-01T08-29-58.md`
+(armies, escorts, tiers). Twin Harbors now includes weekly events,
+interventions and the expanded skills/spells/sets, so these numbers are not
+directly comparable with 0.3.0.
+
+**Twin Harbors** (360 matches, 297 decided by elimination, mean day 9.4; 63
+at the day-40 cap scored on strength): **west score 0.50, first-mover score
+0.50**. Pantheon averages:
+
+| Greek | Norse | Egyptian | Japanese | Celtic | Mesoamerican |
+|---|---|---|---|---|---|
+| 0.51 | 0.45 | 0.57 | 0.47 | 0.53 | 0.48 |
+
+Mirror matches (10 each) still swing by pantheon (west 0.30–0.70, first
+mover 0.50–0.80) — small samples.
+
+**Random maps** (small, few monsters, all seats the same pantheon, 30
+matches each):
+
+| Empires | Decided by elimination | Mean decisive day | Seat scores (incl. strength at the cap) |
+|---|---|---|---|
+| 2 | 14 of 30 | 5.6 | 0.43, 0.57 (even 0.50) |
+| 3 | 6 of 30 | 9.5 | 0.23, **0.60**, 0.17 (even 0.33) |
+
+The two-empire seats are close to even. **Three-empire maps favour seat 2**
+in AI-only games although every map passed the five fairness checks (equal
+town-to-center and town-to-site costs, same sites and monsters per empire).
+The likely cause is the AI, not the map: targets of equal value are broken
+by a fixed coordinate order, so in a three-way game the empires do not split
+their attention evenly (not yet fixed). The AI also rarely finishes a random
+map within 40 days (16 of 30 two-empire and 24 of 30 three-empire matches
+reached the cap).
+
+**Duels** (unchanged rules; same AI): full-roster armies — Celtic upgraded
+armies 0.68 ⚠ (1 and 2 weeks), Greek upgraded 0.36–0.38, everything else
+0.40–0.60; starting escorts 0.43–0.59; same-tier duels show the usual
+single-stack outliers (e.g. Norse Draugr 0.78, Japanese Jorogumo 0.17).
+
 ### Playtest pass (scripted, not human)
 
 Each non-Greek pantheon was played through the real screens: setup with a
@@ -222,6 +274,103 @@ the AI and map problems above. Human playtests have still not happened.
 Not run: the installer on a real Windows machine, macOS/Linux installers,
 code signing, real GPU performance measurement, long soak tests, human
 playtests.
+
+## New in 0.4.1 — visual design (owner GUI references, 2026-10-01)
+
+No rules, content, saves, AI or screen flow changed; content stays
+`content-0.7.0`, so 0.4.0 saves load unchanged.
+
+* **Opening screen.** One of the owner's opening backgrounds is chosen at
+  random each time the game starts (11 delivered: a landscape for each of the
+  six pantheons and battles for five; a slow drift, off with reduced motion).
+  The title is the owner's full logo; the menu sits inside the owner's ornate
+  frame, with the owner's nine menu icons mapped by meaning (Continue, New
+  Game, Load Game, Campaign, Skirmish, Encyclopedia, Settings, Credits, Quit).
+  Random Map and High Scores (added in 0.4.0, no art of their own) are a
+  smaller row at the foot of the frame. Hovering or focusing an entry shows its
+  description under the frame. Continue keeps its save details and its
+  "No compatible save" reason. Every test ID and the footer are unchanged.
+* **Branding.** The owner's emblem is the app/installer icon (`icon.ico`
+  16–256 px, `icon.png`), the favicon, the Electron window icon, and small
+  branding in the menu footer, the pause dialog and the credits.
+* **Shared visual language** (`styles/components.css`, `tokens.css`, the kit
+  components): navy/slate plates with double gold rims and chamfered corner
+  ornaments; title bars with a gold divider and centre diamond; Cinzel small
+  capitals; burnished-gold primary buttons and navy secondary buttons with
+  normal/hover/pressed/focus/disabled states; round icon buttons for close and
+  back; tabs with a gold top; framed resource counters; portrait frames with
+  corner studs; army slots with unit-count plates; sockets for artifacts and
+  spells; cards for lists, saves, recruitment, bestiary and seats; sunken
+  inputs, selects, sliders, checkboxes, radios and toggles; framed bars;
+  gold scrollbars; ornate dialogs and tooltips. The menu-style screens show
+  this run's background art, darkened, behind their panels.
+* **Icon art.** 96 icons cropped from the owner's resource & status icon pack
+  (`tools/assets/prepare_ui_art.py`): resources, hero stats, world status,
+  battle actions (Wait, Defend, Spell, Ability, Retreat, Surrender), status
+  effects and map markers. The shared `Icon` component draws them wherever
+  those names were used, so resource counters, cost lists, stat blocks and
+  the adventure and battle command bars all changed at once. Map-marker art
+  marks the site in the adventure tile panel and each Journal objective (by
+  status: active, completed, locked, failed); spellbook entries sit in round
+  sockets with the effect-family icon until spells get their own art.
+* **Command bars.** Adventure tools and battle actions are framed icon
+  buttons with a small label (same buttons, names, shortcuts and test IDs).
+
+What did not change: the 3D adventure map and battle board (terrain, sites,
+creatures, selection rings) — the map-marker sheet was used for the 2D
+panels only; unit models, portraits and town art are still the earlier
+placeholders.
+
+## New in 0.4.0 (proposed, unplaytested — `DESIGN_PROPOSALS.md` §4–12)
+
+Owner request: difficulty and help, more story, a second-campaign outline,
+pantheon spells/skills and artifact sets, Favor interventions, a livelier
+world map, random maps, hot-seat, summary/keys/high scores, and no
+Multiplayer panel. All of it works end to end in this build; every value is a
+first proposal checked only by unit tests, scripted UI tests and AI-vs-AI
+runs.
+
+* **New Game** shows Campaign, Skirmish and Random Map. The disabled
+  *Multiplayer* and *Custom Map* cards are gone (online play is not planned;
+  the map editor is later).
+* **Skirmish difficulty** Easy / Normal / Hard (Twin Harbors and random maps):
+  starting resources, AI income and AI attack margins, score multiplier.
+  Normal equals the previous behaviour. The campaign has no difficulty.
+* **Contextual tips**: 13 one-time tips in a non-blocking panel; Settings →
+  Gameplay → Tutorial hints (now enabled) and Reset tips.
+* **Story in The Three Beacons**: 12 scenes (Ione at the Griffin shrine, Ione
+  on Athena *or* Ares, Melas when the gate opens and before the final battle,
+  Thaleia on losses in every mission, and more) plus a four-line epilogue, in
+  a dialogue window with Continue, Backlog (L) and Skip; the AI waits while it
+  is open. Journal → Story lists played scenes with Replay. Scenes never
+  change play.
+* **Second campaign**: Norse outline only — `CAMPAIGN_2_NORSE_OUTLINE.md`
+  (*The Winter Oath*). It replaces the empty "The Fallen Titan" card as
+  "Outline — awaiting approval"; no mission is built.
+* **Pantheon skills and spells, artifact sets** (skirmish only): 8 skills
+  (Estates, Mysticism + one per pantheon), 16 spells (4 for every Sanctum + 2
+  per pantheon; mass, area, slow, haste, movement and recall effects), 4
+  three-piece sets with 2- and 3-piece bonuses shown on the Hero screen and in
+  the Encyclopedia.
+* **Divine interventions** (skirmish only): 8 for every pantheon + 1 each,
+  5–14 Favor, one per world week, on the map (Miracles button, Pantheon
+  screen, key I) or in battle (Miracle button). The AI uses them too.
+* **Livelier world map** (random maps; the effects are generic): creature
+  camps with weekly stock, one-time map events (10 templates), wandering
+  monsters that patrol their area, relic shrines; **weekly events** (8) from
+  week 2 in every skirmish, shown in the top bar.
+* **Random maps** (S19): 2–4 empires, small / medium / large, last empire
+  standing or hold the relic (5/7/10 days), monsters none/few/many, seed,
+  live preview with the five fairness checks. Saves of random maps are
+  self-contained (the generated scenario travels in the save).
+* **Hot-seat**: any Twin Harbors or random-map seat can be a person, each with
+  a name and patron; a hand-over screen hides the map between people;
+  battles between two people are played on one screen.
+* **Summary (S20)**: charts of army size, income, towns and treasury per day
+  for every empire, empire totals and the score breakdown; **High Scores
+  (S21)** for campaign and skirmish (best 20 each, on this computer).
+* **Keyboard**: F1 (and ? on the map) lists every shortcut; Settings →
+  Controls rebinds them (Esc, F1 and the arrows are fixed).
 
 ## Implemented (working end to end)
 
@@ -322,7 +471,9 @@ playtests.
   `ASSET_PIPELINE.md`. Calibration fixture generated by
   `tools/assets/make-calibration-glb.mjs`.
 * **Saves, desktop, UI, presentation**: as before (versioned envelopes,
-  atomic desktop saves, 18 screens, shared Babylon engine, event playback).
+  atomic desktop saves, shared Babylon engine, event playback), now 21
+  screens (S19 Random Map, S20 Summary, S21 High Scores) and a separate
+  high-score store.
 * **Sound** (`@pr/audio` + `ui/src/audio`, placeholder files): one Web Audio
   graph with music, ambience, interface, combat and voice buses, a safety
   limiter and mute on focus loss; music and ambience crossfade by screen and
@@ -370,15 +521,32 @@ playtests.
 * **AI use of the new mechanics** is heuristic: it never takes a Shapeshift
   that costs the activation, values gods by a fixed blessing score, and its
   army-strength estimate ignores signatures and blessings.
-* **Windows installer** (0.3.0, this build) is built and its contents checked,
+* **Windows installer** (0.4.0, this build) is built and its contents checked,
   but no version has been run on Windows yet, and it is unsigned (SmartScreen
   warns).
 * **Combat log** does not back-fill events published before the battle screen
   opened (e.g. the opening round's Catapult shot).
 * **Minimap** has no viewport frame.
-* **AI** remains heuristic (greedy scoring); it does not cast adventure spells,
-  and early battles still decide most AI-vs-AI skirmishes (mean decisive day
-  ≈ 9; about a quarter reach the day-40 cap).
+* **AI** remains heuristic (greedy scoring); it does not cast adventure spells
+  (Fleet Foot, Homecoming, Eye of Horus, Divine Sight), and early battles still
+  decide most AI-vs-AI skirmishes (see the balance report for this build).
+* **AI and the 0.4 features** is heuristic too: it recruits from camps it
+  stands on, picks the map-event option with the highest fixed value, invokes
+  interventions while keeping 25 Favor until both god choices are made, and
+  scores the new battle spells by their immediate value; it does not plan
+  around artifact sets or weekly events, and its strength estimate ignores
+  skills, sets and interventions.
+* **Hot-seat** has no per-player privacy for toasts that report events seen
+  by the previous player, and a battle between two people shows "Victory"
+  from the winner's side. Two people cannot play the campaign together.
+* **Random maps** are one land hexagon (no water crossings or underground);
+  roads link each town to its own sites but not to the contested center or to
+  other empires (by design of the first generator). The first week has no
+  weekly event. Camp, guard and monster creatures are drawn from every
+  pantheon's base forms, and the mercenary event always offers Centaurs, so
+  an empire meets other pantheons' creatures as neutrals.
+* **Story scenes** use the existing placeholder portraits; there is no voice.
+  The Norse campaign is an outline only.
 * **Siege presentation** uses primitive walls/towers/keep; structure damage is
   shown by height/colour and HP labels.
 
@@ -387,11 +555,14 @@ playtests.
 * Undesigned gods (4 per pantheon, 24 in all): listed, not selectable.
 * Favor has no use beyond god commitments, so the Offering rite loses value
   once both choices are made (open question in `DESIGN_PROPOSALS.md`).
-* Campaigns for the five non-Greek pantheons; more skirmish maps; more than
-  one AI rival.
-* Stack merging before a siege; manual ballistics; multiplayer; campaign
-  "The Fallen Titan"; custom/random maps; key rebinding; final audio and voice;
-  graphics quality tiers; tutorials.
+* Favor in the campaign: interventions are skirmish-only, so in The Three
+  Beacons Favor still only buys gods (documented economy unchanged).
+* Campaigns for the five non-Greek pantheons — the Norse one is outlined
+  (`CAMPAIGN_2_NORSE_OUTLINE.md`) and awaits the owner's approval; more
+  authored skirmish maps.
+* Stack merging before a siege; manual ballistics; the map editor (later, by
+  owner decision); final audio and voice; graphics quality tiers. Online
+  multiplayer is not planned at this stage.
 
 ## Blocked
 
@@ -425,8 +596,15 @@ Nothing is blocked. Open owner decisions are listed under deviations.
 * `assets-runtime/units/_calibration/forward_arrow/` — generated calibration
   GLB (development fixture, never bound to a creature; only loaded in the
   `?e2e=calibration` test mode).
-* `apps/desktop/build-resources/icon.ico` / `icon.png` — an original
-  placeholder icon (gold temple on navy), drawn for this build.
+* **Interface art (0.4.1)** — opening backgrounds, full logo, emblem, menu
+  frame, the nine menu icons and the resource & status icon pack are
+  owner-supplied AI-generated visual references (sources in
+  `assets-source/ui/`, runtime files and provenance in `assets-runtime/ui/`,
+  `assets-runtime/icons/`). Usable as delivered, replaceable by asset ID.
+* `apps/desktop/build-resources/icon.ico` / `icon.png` and the favicon — made
+  from the owner's emblem (`logo.png`) by `tools/assets/prepare_ui_art.py`.
+* `assets-runtime/placeholders/menu/background.jpg` — the earlier menu
+  background, now only a fallback when no opening background is present.
 * Fonts bundled locally (OFL).
 * `assets-runtime/audio/placeholder/*.ogg` (60 files, 5.1 MB: 6 music loops,
   4 stingers, 4 ambience beds, 46 effects incl. variants) and
@@ -576,3 +754,45 @@ Nothing is blocked. Open owner decisions are listed under deviations.
 36. **Loading**: Babylon is imported by module path and the 3D layer loads on
     demand (§ Tests). The UI may take values only from
     `@pr/presentation/core`, enforced by the boundary lint.
+37. **0.4 proposals** (`DESIGN_PROPOSALS.md` §4–12) are all skirmish
+    features or expanded content, switched off in The Three Beacons
+    (`features` all false), so the campaign's documented content and
+    economy are unchanged. The campaign gains only story scenes, an epilogue
+    and a mission score in its completion records
+    (`campaign-three-beacons-0.4`).
+38. **Story text** (campaign/01 §"Story": "No … cinematic dialogue system is
+    required"): the scenes use the "text-first dialogue overlay with
+    portraits, subtitles, Backlog and Continue" that section allows. All
+    scene lines are new text written for this build — owner review wanted.
+39. **Content version is now `content-0.7.0`**; 0.3.0 saves are listed as
+    incompatible and kept (as with every earlier content change).
+40. **Weekly events and interventions change Twin Harbors** compared with
+    0.3.0 (they are on in every skirmish), so the skirmish balance numbers are
+    not directly comparable with the 0.3.0 report.
+41. **"The Fallen Titan"** was an empty placeholder card from an earlier build
+    (not in the owner's documents); it is replaced by the Norse outline card.
+42. **High scores** are kept in a separate records store (`records.json` on
+    desktop) so they never show up as broken saves; the desktop bridge gained
+    `readRecords`/`writeRecords` (validated text only, same size cap).
+43. **Visual update is 0.4.1**, not a new content version: no rules or
+    content changed, so 0.4.0 saves stay compatible.
+44. **Eleven opening backgrounds, not twelve.** The request named
+    `opening_screen_background_1.png` … `_12.png`; eleven distinct images
+    reached this session (no Mesoamerican battle scene). The menu picks from
+    whatever `assets-source/ui/backgrounds/` holds, so a twelfth is one file
+    plus a re-run of `prepare_ui_art.py`. The files were renamed by content
+    (`opening-<pantheon>-<landscape|battle>`), since the original numbering
+    did not come with them.
+45. **GUI guide sheets.** `gui_guide.png` and the UI-kit sheet were seen in
+    the request but not available as files when this was built; the shared
+    style follows them as described (frames, button states, tabs, counters,
+    slots, controls) together with the frame, logo and the two icon sheets
+    that were available. Owner review of the details is wanted.
+46. **Menu icons.** The owner's nine `init_icon` files in
+    `assets-runtime/icons/` were renamed by meaning and moved, unchanged, to
+    `assets-source/ui/menu-icons/menu-<entry>.png`; `assets-runtime/icons/`
+    now holds the same names at 192 px (the 1254 px originals would have added
+    7 MB to the installer).
+47. **Random Map and High Scores** stay on the main menu as a compact row in
+    the frame (the nine framed entries match the owner's icon set); they use
+    the SVG glyphs until they get icons of their own.

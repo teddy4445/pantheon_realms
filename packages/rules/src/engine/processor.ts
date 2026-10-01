@@ -25,6 +25,9 @@ import { commitActivateSite, commitMoveHero, updateGates } from '../systems/adve
 import { commitBuySpellbook, commitEquip, commitHireHero, commitLevelUpChoice, commitUnequip } from '../systems/heroes';
 import { commitCastAdventureSpell } from '../systems/magic';
 import { commitArtifactPurchase, commitOffering, commitTraining, refreshMerchantStock } from '../systems/services';
+import { commitCampRecruitment, commitResolveMapEvent } from '../systems/world';
+import { commitBattleIntervention, commitIntervention } from '../systems/interventions';
+import { evaluateStory } from '../systems/story';
 import { commitAssignCovenant, commitSelectGod } from '../systems/divine';
 import { commitClaimObjective, evaluateMissionOutcome, evaluateObjectives } from '../systems/quests';
 import {
@@ -81,6 +84,7 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
     updateGates(tx);
     evaluateObjectives(tx);
     evaluateMissionOutcome(tx);
+    evaluateStory(tx);
     tx.finalize();
   } catch (err) {
     if (err instanceof RejectionError) return { ok: false, rejection: err.rejection };
@@ -117,6 +121,14 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitTraining(tx, c.townId, c.heroId);
     case 'BuyArtifact':
       return commitArtifactPurchase(tx, c.townId, c.heroId, c.index);
+    case 'RecruitFromCamp':
+      return commitCampRecruitment(tx, c.heroId, c.siteId, c.quantity);
+    case 'ResolveMapEvent':
+      return commitResolveMapEvent(tx, c.heroId, c.siteId, c.optionIndex);
+    case 'InvokeIntervention':
+      return commitIntervention(tx, c.interventionId, c.townId ?? null);
+    case 'BattleInvokeIntervention':
+      return commitBattleIntervention(tx, c.interventionId, c.targetId ?? null);
     case 'RecruitUnits':
       return commitRecruitment(tx, c.townId, c.creatureId, c.quantity, c.destination);
     case 'UpgradeStack':

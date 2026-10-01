@@ -57,6 +57,10 @@ export type CommandPayload =
   | { kind: 'MakeOffering'; townId: TownId; offerings: { army: ArmyRef; slot: number; quantity: number }[] }
   | { kind: 'TrainHero'; townId: TownId; heroId: HeroId }
   | { kind: 'BuyArtifact'; townId: TownId; heroId: HeroId; index: number }
+  // --- World map and divine interventions (proposed this build) ---
+  | { kind: 'RecruitFromCamp'; heroId: HeroId; siteId: SiteId; quantity: number }
+  | { kind: 'ResolveMapEvent'; heroId: HeroId; siteId: SiteId; optionIndex: number }
+  | { kind: 'InvokeIntervention'; interventionId: string; townId?: TownId }
   // --- Tactical battle ---
   | { kind: 'BattleMove'; stackId: BattleStackId; to: BattleCell }
   | { kind: 'BattleMelee'; stackId: BattleStackId; targetId: BattleStackId; from: BattleCell }
@@ -70,7 +74,8 @@ export type CommandPayload =
   | { kind: 'BattleDeploy'; stackId: BattleStackId; to: BattleCell }
   | { kind: 'BattleConfirmDeployment' }
   | { kind: 'BattleRetreat' }
-  | { kind: 'BattleSurrender' };
+  | { kind: 'BattleSurrender' }
+  | { kind: 'BattleInvokeIntervention'; interventionId: string; targetId?: BattleStackId };
 
 export type CommandKind = CommandPayload['kind'];
 
@@ -94,4 +99,5 @@ export const BATTLE_COMMAND_KINDS: ReadonlySet<CommandKind> = new Set<CommandKin
   'BattleConfirmDeployment',
   'BattleRetreat',
   'BattleSurrender',
+  'BattleInvokeIntervention',
 ]);

@@ -26,8 +26,10 @@ import type {
 } from '../ids';
 import type { CampaignDefinition, MissionDefinition, SkirmishScenarioDefinition } from './campaign';
 import type { AbilityDefinition, CreatureDefinition, CreatureFamilyDefinition, LoreDefinition } from './creatures';
+import type { DifficultyDefinition, InterventionDefinition, MapEventTemplateDefinition, SkirmishKitDefinition, WeeklyEventDefinition } from './skirmish';
 import type {
   ArtifactDefinition,
+  ArtifactSetDefinition,
   GodDefinition,
   HeroClassDefinition,
   HeroDefinition,
@@ -63,6 +65,15 @@ export interface ContentCatalog {
   readonly skills: Readonly<Record<SkillId, SkillDefinition>>;
   readonly spells: Readonly<Record<SpellId, SpellDefinition>>;
   readonly artifacts: Readonly<Record<ArtifactId, ArtifactDefinition>>;
+  readonly artifactSets: Readonly<Record<string, ArtifactSetDefinition>>;
+  /** Skirmish difficulty levels (in `order`). */
+  readonly difficulties: Readonly<Record<string, DifficultyDefinition>>;
+  readonly interventions: Readonly<Record<string, InterventionDefinition>>;
+  readonly weeklyEvents: Readonly<Record<string, WeeklyEventDefinition>>;
+  /** Per-pantheon skirmish starting kits (random maps). */
+  readonly skirmishKits: Readonly<Record<PantheonId, SkirmishKitDefinition>>;
+  /** Map events the random-map generator may place. */
+  readonly mapEventTemplates: Readonly<Record<string, MapEventTemplateDefinition>>;
   readonly entitlements: Readonly<Record<EntitlementId, EntitlementDefinition>>;
   readonly campaigns: Readonly<Record<CampaignId, CampaignDefinition>>;
   readonly missions: Readonly<Record<MissionId, MissionDefinition>>;

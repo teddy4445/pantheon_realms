@@ -333,7 +333,13 @@ export type SiteArchetype =
   | 'grove'
   | 'beacon'
   | 'relay'
-  | 'gate';
+  | 'gate'
+  /** Neutral creature camp (recruit from its weekly stock). */
+  | 'camp'
+  /** One-time map event (a wayside shrine / standing stones). */
+  | 'event_site'
+  /** Relic shrine (hold-the-relic victory). */
+  | 'relic';
 
 export interface SiteProxy {
   readonly root: TransformNode;
@@ -436,6 +442,33 @@ export function buildSiteProxy(scene: Scene, mats: MaterialCache, kind: SiteArch
       add(b, box(b, 'pillarR', 0.4, 1.6, 0.6), root, '#6b6f76', [0, 0.8, -0.7]);
       add(b, box(b, 'lintel', 0.5, 0.3, 2.0), root, '#7a7c80', [0, 1.7, 0]);
       seal = add(b, box(b, 'seal', 0.12, 1.4, 0.9), root, '#7fd0ff', [0, 0.7, 0], { emissive: 0.8 });
+      break;
+    case 'camp': {
+      plinth(1.4);
+      for (const [x, z, r] of [
+        [-0.35, -0.2, 0.3],
+        [0.35, -0.15, 0.6],
+        [0, 0.35, -0.4],
+      ] as const)
+        add(b, cyl(b, 'tent', 0.6, 0, 0.6, 4), root, '#a0784a', [x, 0.42, z], { rot: [0, r, 0] });
+      add(b, cyl(b, 'fire', 0.18, 0.02, 0.22, 6), root, '#ff8a3a', [0.05, 0.2, 0], { emissive: 0.9 });
+      break;
+    }
+    case 'event_site':
+      for (let i = 0; i < 3; i++) {
+        const a = (i / 3) * Math.PI * 2 + 0.4;
+        add(b, box(b, 'stone', 0.22, 0.8 - i * 0.1, 0.16), root, '#8d8a82', [Math.cos(a) * 0.45, 0.4 - i * 0.05, Math.sin(a) * 0.45], { rot: [0, a, 0] });
+      }
+      flame = add(b, sph(b, 'glow', 0.22), root, '#9fe3ff', [0, 0.45, 0], { emissive: 1 });
+      break;
+    case 'relic':
+      plinth(1.6);
+      add(b, cyl(b, 'dais', 0.3, 0.9, 1.1, 8), root, MARBLE, [0, 0.27, 0]);
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
+        add(b, cyl(b, 'column', 1.1, 0.12, 0.14, 8), root, MARBLE, [Math.cos(a) * 0.55, 0.95, Math.sin(a) * 0.55]);
+      }
+      flame = add(b, sph(b, 'relic', 0.3), root, '#ffd36a', [0, 0.85, 0], { emissive: 1 });
       break;
   }
   const flagPole = new TransformNode('flagPole', scene);

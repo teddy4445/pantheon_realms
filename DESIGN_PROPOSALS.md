@@ -1,4 +1,12 @@
-# Design proposals — signatures, gods, support buildings
+# Design proposals
+
+Two groups of proposals live here: the 0.3 group (signatures, second god
+choice, support buildings — sections 1–3) and the 0.4 group (difficulty,
+help, story, expanded skirmish content, random maps, hot-seat, results
+screens — sections 4–12). The second campaign is a separate outline:
+[`CAMPAIGN_2_NORSE_OUTLINE.md`](CAMPAIGN_2_NORSE_OUTLINE.md).
+
+## Group 0.3 — signatures, gods, support buildings
 
 _Status: **P — proposed this build, unplaytested.** Owner request (items 4–6):
 signature mechanics per pantheon as shared rules, two or three more minor gods
@@ -194,3 +202,244 @@ The Warding Token stays a unique campaign reward and is never sold.
    rule (design/04 §9) and was not added.
 3. Should Favor get more uses (e.g. divine powers)? Today it only buys gods,
    so Offering's value falls once both choices are made.
+
+
+---
+
+## Group 0.4 — proposals added in 0.4.0
+
+_Status: **P — proposed this build, unplaytested.** Owner request: difficulty
+levels and in-game help; more story in The Three Beacons; an outline for a
+second campaign; pantheon spells/skills and artifact sets; Favor-paid divine
+interventions; a livelier world map; random skirmish maps; hot-seat; an
+end-of-game summary, keyboard help with rebinding and high scores; remove the
+Multiplayer panel. Owner answers: difficulty is **skirmish only** (the
+campaign keeps its authored balance); the second campaign is **Norse**, outline
+only; the map editor comes **later**._
+
+**Scope rule.** Everything in this group that changes play is either
+*expanded* content (`scope: 'expanded'`) or a scenario feature
+(`ScenarioFeatures`: `expandedContent`, `weeklyEvents`, `interventions`).
+Twin Harbors and every random map switch all three on. **The Three Beacons
+switches them off**, so the campaign's documented content, economy and Favor
+use are unchanged. The only campaign changes are story scenes (text that never
+changes play), the epilogue, and a mission score in the completion record.
+
+### 4. Difficulty (skirmish only)
+
+| | Easy | Normal | Hard |
+|---|---|---|---|
+| Human starting resources | 125% | 100% | 100% |
+| AI starting resources | 75% | 100% | 130% |
+| AI dawn income | 75% | 100% | 125% |
+| AI attacks a hero at strength ratio ≥ | 1.5 | 1.2 | 1.05 |
+| AI attacks a neutral guard at ≥ | 1.6 | 1.3 | 1.15 |
+| AI besieges a town at ≥ | 1.6 | 1.25 | 1.1 |
+| Heroes the AI keeps | 2 | 3 | 4 |
+| Score multiplier | ×0.7 | ×1.0 | ×1.4 |
+
+Difficulty never changes creature statistics (campaign doc §"No difficulty
+modifier changes existing creature statistics"). It is stored in the match
+(`scenario.difficultyId`), not in preferences. Normal equals the previous
+skirmish behaviour (the AI margins are the old constants). Hot-seat games
+(no AI seat) are always Normal.
+
+### 5. Contextual help
+
+Thirteen one-time tips (`packages/ui/src/app/hints.ts`): route planning, out
+of movement, guarded paths, first battle, troop training, battle losses,
+level-up, creature camps, map events, interventions, weekly events, wandering
+monsters, hot-seat. Each shows once, in a non-blocking panel, with *Got it*
+(remembered) and *Turn off tips*. Settings → Gameplay → *Tutorial hints* and
+*Reset tips*. Presentation only.
+
+### 6. Story scenes in The Three Beacons
+
+Scenes are data on the mission (`storyScenes`), each with a trigger
+(`objective_completed`, `site_visited`, `site_cleared`, `battle_started`,
+`casualties`, `god_committed`, `flag`, `day_at_least`). The rules record a
+played scene in `MatchState.mission.scenesPlayed` and emit `StoryScene`, so a
+loaded game never repeats one. Scenes never change play.
+
+| Mission | Scene | Trigger |
+|---|---|---|
+| M01 | Alexios and Thaleia at the open bridge | bridge guard defeated |
+| M01 | Alexios before the lighthouse battle | battle at the Outer Lighthouse starts |
+| M01 | Thaleia on losses | a battle costing ≥ 4 creatures |
+| M02 | **Ione at the Griffin shrine** (covenant explained) | nesting ground freed |
+| M02 | Ione on Athena / on Ares (one plays) | the god is committed |
+| M02 | Thaleia's courier on losses | a battle costing ≥ 6 creatures |
+| M03 | Alexios and Ione at the open crossing | an approach opened |
+| M03 | Melas when the ward gate opens | ward gate objective |
+| M03 | **Melas's threat before the final battle** | battle at the Storm Beacon starts |
+| M03 | Melas defeated | Storm Beacon guard defeated |
+| M03 | Thaleia on losses | a battle costing ≥ 8 creatures |
+| End | **Epilogue** (Thaleia, Ione, Alexios — four lines) | campaign complete |
+
+The dialogue window (campaign doc: "a text-first dialogue overlay with
+portraits, subtitles, Backlog and Continue is sufficient") shows one line at
+a time: *Continue* (Enter/Space), *Backlog* (L — every line shown this session
+plus the current scene), *Skip* (Esc). The AI waits while it is open. The
+Journal's *Story* tab lists every scene played so far, with *Replay*. Both
+divine paths still lead to the same third mission; the god lines only
+acknowledge the choice (campaign doc, mission 2).
+
+### 7. Pantheon skills and spells
+
+Two new skills for every hero — **Estates** (+250/500/750 Gold per day) and
+**Mysticism** (+2/4/6 mana at dawn) — and one per pantheon, offered only to
+that pantheon's heroes:
+
+| Pantheon | Skill | Ranks |
+|---|---|---|
+| Greek | Phalanx Drill | tier 1–3 creatures +1/+2/+3 Defense |
+| Norse | Skaldic Lore | +15/30/45% battle XP |
+| Egyptian | Embalming Rites | 5/10/15% of losses return after a won battle |
+| Japanese | Bushidō | tier 5–7 creatures +1/+2/+3 Attack |
+| Celtic | Druidcraft | +15/30/50% spell damage and +1/2/3 mana at dawn |
+| Mesoamerican | Sun Calendar | +1/2/3 Favor per day |
+
+Sixteen spells (tier ≤ 3). Every Sanctum teaches **Swiftness** (ally +2
+Speed), **Weariness** (enemy −2 Speed), **Fleet Foot** (adventure: +400
+movement today) and **Homecoming** (adventure: return to the nearest own
+town; movement ends). Each pantheon's Sanctum adds two of its own: Greek
+Aegis (army +2 Defense) and Thunderclap (20 + 8×Power to a stack and its
+neighbours); Norse Berserkergang (army +2 Attack) and Frost Breath (enemy −3
+Speed); Egyptian Scarab Swarm (15 + 6×Power area) and Eye of Horus (adventure
+reveal radius 5); Japanese Divine Wind (army +2 Speed) and Blossom Veil (ally
++5 Defense); Celtic Glamour (enemy −3 Attack) and Wild Hunt (25 + 9×Power
+area); Mesoamerican Obsidian Rain (15 + 7×Power area) and Fifth Sun (army +3
+Attack this round). New spell effect types: `speed_bonus`, `mass_bonus`,
+`area_damage`, `movement_bonus`, `recall`. Durations run "through the current
+and next round" like the existing battle statuses.
+
+### 8. Artifact sets
+
+Four sets of three pieces (twelve new artifacts; merchant stock, ruin
+treasure and two map events in skirmish). Wearing 2 and 3 pieces adds a
+bonus on top of the pieces' own effects:
+
+| Set | 2 pieces | 3 pieces |
+|---|---|---|
+| Panoply of the Phalanx (spear, aspis, helm) | +1 morale | every creature +2 Defense |
+| Regalia of the Sun King (diadem, scepter, signet) | +3 mana at dawn | +25% spell damage |
+| Wayfarer's Kit (boots, cloak, compass) | +10% movement | +300 Gold per day |
+| Relics of the Fallen Champion (blade, torc, banner) | +20% battle XP | every creature +2 Attack |
+
+The Hero screen shows each worn set, its pieces and which bonuses are active.
+
+### 9. Divine interventions (Favor)
+
+A player may invoke **one intervention per world week**, on the map or in
+battle (at the start of one of their stacks' activations). Eight are offered
+to every pantheon and one more to each pantheon:
+
+| Intervention | Favor | Where | Effect |
+|---|---|---|---|
+| Inspiration | 5 | map | every hero +15 mana |
+| Tithe of the Faithful | 6 | map | +1,500 Gold |
+| Favorable Winds | 8 | map | every hero +50% of a day's movement |
+| Bountiful Harvest | 10 | map | chosen town: +4 recruits per tier 1–3 family |
+| Mending Light | 6 | battle | front creature of every stack heals up to 30 HP |
+| Rally the Faithful | 8 | battle | army +2 Attack, 2 rounds |
+| Shield of the Gods | 8 | battle | army +3 Defense, 2 rounds |
+| Wrath from Above | 10 | battle | one enemy stack takes 120 damage |
+| Thunderbolt of Zeus (Greek) | 14 | battle | 200 damage |
+| Ride of the Valkyries (Norse) | 8 | battle | army +2 Speed, 2 rounds |
+| Blessing of the Nile (Egyptian) | 12 | map | +3 recruits per tier 1–5 family |
+| Ward of the Kami (Japanese) | 12 | battle | army +4 Defense, 3 rounds |
+| Mists of the Sídhe (Celtic) | 12 | map | every hero a full day's movement |
+| Gift of the Feathered Serpent (Mesoamerican) | 10 | map | +1,000 Gold, +3 Crystal |
+
+This answers open question 3 of group 0.3 for skirmish. The AI also invokes
+interventions, keeping 25 Favor in reserve until it has made both god
+choices.
+Mending Light never resurrects (design/04 §5 unchanged).
+
+### 10. A livelier world map
+
+* **Creature camps** sell one neutral creature at its normal price to a
+  visiting hero. Stock grows every week (low camps: tier 1–2, 6 at start,
+  +4 per week; high lairs: tier 3–4, 3 at start, +2 per week). Guarded camps
+  must be cleared first.
+* **Map events** happen once: the first hero to arrive picks one of two
+  results, each shown exactly before choosing. Ten templates, split into
+  near and far bands: abandoned camp, wandering scholar, warrior's shrine,
+  mercenary band, old battlefield, spring of clarity, merchant caravan,
+  hermit's garden, forgotten armory and lost pilgrims.
+* **Wandering monsters** are creature bands with a home and a patrol radius
+  of 3. They attack heroes they out-match by 1.5×, never leave their area and
+  pay a Gold bounty (600 / 900) when defeated. *Few* = one per empire region,
+  *Many* = two.
+* **Weekly events** are drawn at every new week from week 2 (weights in
+  brackets): A Quiet Week (12), Plenty (+3 growth for tier 1–3, 4), Merchants
+  (+300 Gold/day, 4), Storms (−15% movement, 3), Valor (+1 morale, 3), Omens
+  (+1 luck, 3), the Muse (+3 mana at dawn, 3), Builders (+1 Wood and Stone per
+  day, 3). They affect every empire alike and show in the top bar.
+
+### 11. Random skirmish maps
+
+`packages/mapgen/src/skirmish.ts` (`pr-skirmishgen-0.1`): a hexagonal map
+(radius 14 / 17 / 21 for small / medium / large) for 2–4 empires. Towns sit
+at hex-symmetric points around the center. Terrain, roads, sites, guards,
+rewards and monsters are generated once for the first empire's region and
+copied to every other empire by the exact rotation or reflection that maps
+the first town onto theirs, so every empire has the same distances, costs and
+treasures. Every map is checked before it is offered: every site reachable,
+no site on impassable ground, one site per tile, equal town-to-center cost,
+and equal cost from each town to its own sites. The center holds either a
+guarded gold mine (*last empire standing*) or the **Shrine of the First
+Flame** (*hold the relic* for 5 / 7 / 10 dawns, or eliminate everyone). Four
+empires need a medium or large map. Same seed + settings → same map.
+
+### 12. Hot-seat, summary, high scores, keys
+
+* **Hot-seat:** any seat of Twin Harbors or a random map can be a person.
+  Players share the computer; at every hand-over the map is hidden until the
+  next player presses *Begin*. Battles between two people are played on the
+  same screen, each side by its owner. Each human seat chooses its own
+  patron; AI rivals still start without one (as before).
+* **Summary (S20):** day-by-day charts of army size (recruitment value),
+  income (Gold equivalent: Wood/Stone 250, Crystal/Favor 500 — for
+  statistics only, not a market rate), towns and treasury for every empire;
+  totals (battles, creatures defeated/lost/recruited, buildings, captures);
+  score breakdown. The rules record the statistics in `MatchState.stats` at
+  the start and at every dawn, so a loaded game shows the same history.
+* **Score:** victory 2,000; speed bonus max(0, 1,500 − 25 × day) on a win;
+  army value ÷ 100; 300 per town; 100 per site; 100 per battle won; 2 per
+  creature defeated; times the difficulty multiplier. A campaign's score is
+  the sum of its mission scores.
+* **High scores (S21):** the 20 best campaign runs and the 20 best skirmish
+  results on this computer (`records.json` on desktop, browser storage on the
+  web), separate from saves and preferences.
+* **Keys:** F1 opens the shortcut list on every screen (also ? on the map). Settings → Controls
+  rebinds every shortcut (a key moved onto another action in the same context
+  unbinds that action). Esc, F1 and the arrow keys are fixed.
+
+### Removed
+
+The disabled *Multiplayer* and *Custom Map* cards are gone from New Game.
+Online play is not planned at this stage; the map editor is later.
+
+### Touch points with the documents (group 0.4)
+
+* **campaign/01 §"Story"**: "No … cinematic dialogue system is required" —
+  the dialogue window is the "text-first dialogue overlay with portraits,
+  subtitles, Backlog and Continue" the same section allows.
+* **campaign/01 difficulty line**: honoured — no campaign difficulty, and
+  skirmish difficulty never touches creature statistics.
+* **design/02 §8 Favor**: unchanged in the campaign; interventions are a
+  skirmish feature.
+* **design/04 §5 resurrection**: Mending Light only heals living creatures.
+
+### Open questions for the owner (group 0.4)
+
+1. All values are first proposals checked only by AI-vs-AI runs and unit
+   tests. Human playtests are the next step.
+2. Should weekly events, interventions and the expanded skills/spells ever
+   appear in campaigns (e.g. the proposed Norse campaign)?
+3. Is one intervention per week the right limit, or should it be per day
+   with higher prices?
+4. Should map events and camps use pantheon-neutral creatures only? Today the
+   mercenary event offers Centaurs (a Greek family) on every map.
+5. Score formula weights.

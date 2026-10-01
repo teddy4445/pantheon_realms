@@ -36,16 +36,27 @@ import {
   type DamagePreview,
   type GameEvent,
   type MatchState,
+  interventionsFor,
+  quoteIntervention,
 } from '@pr/rules';
 import type { BattleSceneController, BattleView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { battlePlaybackFactor } from '../app/preferences';
+import { matches } from '../app/keys';
 import { SceneViewport, presentation, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
 import { Icon } from '../assets/icons';
 
-type Mode = { kind: 'normal' } | { kind: 'spell'; spellId: string } | { kind: 'ability'; abilityId: string } | { kind: 'structure' };
+type Mode =
+  | { kind: 'normal' }
+  | { kind: 'spell'; spellId: string }
+  | { kind: 'ability'; abilityId: string }
+  | { kind: 'structure' }
+  /** Choosing a divine intervention (battle miracles, paid in Favor). */
+  | { kind: 'miracles' }
+  /** A miracle that needs an enemy stack as its target. */
+  | { kind: 'intervention'; interventionId: string };
 
 const NEUTRAL_ACCENT = '#8a3b32';
 
@@ -188,6 +199,12 @@ function buildView(
     } else if (mode.kind === 'ability') {
       const ab = la.abilities.find((x) => x.abilityId === mode.abilityId);
       targets = (ab?.targets ?? []).flatMap(cellsOf);
+    } else if (mode.kind === 'intervention') {
+      targets = Object.values(battle.stacks)
+        .filter((x) => x.totalHp > 0 && x.side !== la.side)
+        .flatMap((x) => cellsOf(x.id));
+    } else if (mode.kind === 'miracles') {
+      targets = [];
     } else {
       targets = (battle.siege?.structures ?? []).filter((x) => la.structureTargets.includes(x.id)).flatMap((x) => x.cells);
     }
@@ -273,6 +290,7 @@ export function BattleScreen() {
   const log = LOGS.get(battleId) ?? [];
 
   const humanTurn = !!battle && battle.status === 'active' && session.isHumanTurn();
+  const humanSide = battle ? Object.values(battle.sides).find((s) => s.controller === 'human') : undefined;
   const la = humanTurn && !store.presentationBusy ? legalActions(catalog, state) : null;
   /** The human side still arranging its deployment zone (Tactics), if any. */
   const deploySide = battle?.phase === 'deployment' && humanTurn ? (battle.deployment?.pending.find((x) => battle.sides[x].controller === 'human') ?? null) : null;
@@ -288,6 +306,10 @@ export function BattleScreen() {
   // The controller can arrive after the first render (the 3D layer loads on demand).
   const builtRef = useRef(built);
   builtRef.current = built;
+
+  useEffect(() => {
+    if (humanTurn) store.showHint('first_battle');
+  }, [humanTurn, store]);
 
   // Reset mode whenever the active stack changes.
   useEffect(() => {
@@ -374,6 +396,11 @@ export function BattleScreen() {
       else store.toast('Choose a highlighted target', 'error');
       return;
     }
+    if (mode.kind === 'intervention') {
+      if (occ && occ.side !== legal.side) act({ kind: 'BattleInvokeIntervention', interventionId: mode.interventionId, targetId: occ.id });
+      else store.toast('Choose an enemy stack', 'error');
+      return;
+    }
     if (mode.kind === 'ability') {
       const ab = legal.abilities.find((x) => x.abilityId === mode.abilityId);
       if (occ && ab?.targets.includes(occ.id)) act({ kind: 'BattleUseAbility', stackId: legal.stackId, abilityId: mode.abilityId, targetId: occ.id });
@@ -418,17 +445,28 @@ export function BattleScreen() {
   // Keyboard shortcuts.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (store.overlays.length || e.ctrlKey || e.metaKey) return;
+      if (store.overlays.length || store.story.length || e.ctrlKey || e.metaKey) return;
+      const t = e.target as HTMLElement;
+      if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') return;
       const k = e.key.toLowerCase();
-      if (k === ' ') {
+      const is = (action: string) => matches(store.prefs, action, e.key);
+      if (is('battle_skip')) {
         e.preventDefault();
         ctrl.current?.skip();
         return;
       }
+      if (is('battle_log')) {
+        setShowLog((v) => !v);
+        return;
+      }
+      if (is('battle_auto') && humanSide) {
+        setAuto((a) => !a);
+        return;
+      }
       if (!la) return;
-      if (k === 'w' && la.canWait) act({ kind: 'BattleWait', stackId: la.stackId });
-      else if (k === 'd') act({ kind: 'BattleDefend', stackId: la.stackId });
-      else if (k === 's' && la.castAvailable && la.spells.some((x) => x.castable)) setMode({ kind: 'spell', spellId: la.spells.find((x) => x.castable)!.spellId });
+      if (is('battle_wait') && la.canWait) act({ kind: 'BattleWait', stackId: la.stackId });
+      else if (is('battle_defend')) act({ kind: 'BattleDefend', stackId: la.stackId });
+      else if (is('battle_spell') && la.castAvailable && la.spells.some((x) => x.castable)) setMode({ kind: 'spell', spellId: la.spells.find((x) => x.castable)!.spellId });
       else if (k === 'escape' && mode.kind !== 'normal') {
         e.stopPropagation();
         setMode({ kind: 'normal' });
@@ -464,7 +502,8 @@ export function BattleScreen() {
     else if (built?.attackFrom) preview = { main: previewMelee(catalog, state, la.stackId, hoverStack.id, built.attackFrom), ret: previewRetaliation(catalog, state, la.stackId, hoverStack.id), label: 'Melee' };
   }
   const castable = la ? la.spells.filter((s) => s.castable) : [];
-  const humanSide = Object.values(battle.sides).find((s) => s.controller === 'human');
+  const actingPlayer = la ? battle.sides[la.side].playerId : null;
+  const miracles = actingPlayer ? interventionsFor(catalog, state, actingPlayer).filter((d) => d.context === 'battle') : [];
 
   return (
     <div className="battle">
@@ -611,9 +650,51 @@ export function BattleScreen() {
                 Cancel
               </Button>
             </>
+          ) : mode.kind === 'miracles' && la && actingPlayer ? (
+            <>
+              <span className="small">Divine intervention ({state.players[actingPlayer]?.wallet.favor ?? 0} Favor):</span>
+              {miracles.map((d) => {
+                const q = quoteIntervention(catalog, state, actingPlayer, d.id, { stackId: d.target === 'enemy_stack' ? (Object.values(battle.stacks).find((x) => x.totalHp > 0 && x.side !== la.side)?.id ?? null) : null });
+                return (
+                  <Button
+                    key={d.id}
+                    size="small"
+                    icon="favor"
+                    disabled={!q.legal}
+                    disabledReason={q.reason}
+                    title={d.summary}
+                    onClick={() => {
+                      if (d.target === 'enemy_stack') setMode({ kind: 'intervention', interventionId: d.id });
+                      else store.confirm(`Invoke ${d.name}?`, `${d.summary} Costs ${d.favorCost} Favor; the gods answer once per week.`, 'Invoke', () => act({ kind: 'BattleInvokeIntervention', interventionId: d.id }));
+                    }}
+                    data-testid={`battle-miracle-${d.id}`}
+                  >
+                    {d.name} ({d.favorCost})
+                  </Button>
+                );
+              })}
+              <Button size="small" onClick={() => setMode({ kind: 'normal' })}>
+                Cancel
+              </Button>
+            </>
+          ) : mode.kind === 'intervention' ? (
+            <>
+              <span className="small">{catalog.interventions?.[mode.interventionId]?.name}: choose an enemy stack.</span>
+              <Button size="small" onClick={() => setMode({ kind: 'normal' })}>
+                Cancel
+              </Button>
+            </>
           ) : mode.kind !== 'normal' ? (
             <>
-              <span className="small">{mode.kind === 'spell' ? `Cast ${catalog.spells[mode.spellId]?.name}: choose a highlighted target.` : 'Choose a highlighted ally.'}</span>
+              <span className="small">
+                {mode.kind === 'spell'
+                  ? catalog.spells[mode.spellId]?.target === 'friendly_army'
+                    ? `Cast ${catalog.spells[mode.spellId]?.name}: click any of your stacks — it affects your whole army.`
+                    : catalog.spells[mode.spellId]?.effect.type === 'area_damage'
+                      ? `Cast ${catalog.spells[mode.spellId]?.name}: choose an enemy — the stacks beside it are hit too.`
+                      : `Cast ${catalog.spells[mode.spellId]?.name}: choose a highlighted target.`
+                  : 'Choose a highlighted ally.'}
+              </span>
               {mode.kind === 'spell' && castable.length > 1
                 ? castable.map((sp) => (
                     <Button key={sp.spellId} size="small" variant={mode.spellId === sp.spellId ? 'primary' : undefined} onClick={() => setMode({ kind: 'spell', spellId: sp.spellId })}>
@@ -642,6 +723,11 @@ export function BattleScreen() {
               >
                 Spell
               </Button>
+              {miracles.length > 0 ? (
+                <Button icon="favor" onClick={() => setMode({ kind: 'miracles' })} title="Divine interventions (Favor, once per week)" data-testid="battle-miracles">
+                  Miracle
+                </Button>
+              ) : null}
               {la.structureTargets.length > 0 || la.structureBlockedReason ? (
                 <Button icon="sword2" onClick={() => setMode({ kind: 'structure' })} disabled={la.structureTargets.length === 0} disabledReason={la.structureBlockedReason} title="Spend this activation and one shot to remove 1 structure point" data-testid="battle-structure">
                   Batter walls
@@ -652,7 +738,7 @@ export function BattleScreen() {
                   // Self-only abilities (Shapeshift) act at once; free ones keep the activation.
                   <Button
                     key={a.abilityId}
-                    icon="star"
+                    icon="ability"
                     onClick={() => act({ kind: 'BattleUseAbility', stackId: la.stackId, abilityId: a.abilityId, targetId: la.stackId })}
                     disabled={!!a.reason}
                     disabledReason={a.reason}
@@ -663,7 +749,7 @@ export function BattleScreen() {
                     {a.free ? ' (free)' : ''}
                   </Button>
                 ) : (
-                  <Button key={a.abilityId} icon="star" onClick={() => setMode({ kind: 'ability', abilityId: a.abilityId })} disabled={!!a.reason || a.targets.length === 0} disabledReason={a.reason} data-testid={`battle-ability-${a.abilityId}`}>
+                  <Button key={a.abilityId} icon="ability" onClick={() => setMode({ kind: 'ability', abilityId: a.abilityId })} disabled={!!a.reason || a.targets.length === 0} disabledReason={a.reason} data-testid={`battle-ability-${a.abilityId}`}>
                     {a.name}
                   </Button>
                 ),
@@ -672,7 +758,7 @@ export function BattleScreen() {
                 Retreat
               </Button>
               {la.canSurrender ? (
-                <Button icon="flag" variant="ghost" onClick={() => store.confirm('Surrender?', `Pay ${la.surrenderCost} Gold to keep your surviving army and leave the field.`, 'Surrender', () => act({ kind: 'BattleSurrender' }))}>
+                <Button icon="surrender" variant="ghost" onClick={() => store.confirm('Surrender?', `Pay ${la.surrenderCost} Gold to keep your surviving army and leave the field.`, 'Surrender', () => act({ kind: 'BattleSurrender' }))}>
                   Surrender ({la.surrenderCost})
                 </Button>
               ) : null}
@@ -680,7 +766,7 @@ export function BattleScreen() {
           ) : null}
         </div>
         <div className="battle-tools">
-          <Button icon="auto" variant={auto ? 'primary' : undefined} onClick={() => setAuto((a) => !a)} disabled={!humanSide} title="Auto-combat: the tactical AI plays your stacks" data-testid="battle-auto">
+          <Button icon="auto" variant={auto ? 'primary' : undefined} onClick={() => setAuto((a) => !a)} disabled={!humanSide} title="Auto-combat: the tactical AI plays your stacks (Q)" data-testid="battle-auto">
             {auto ? 'Auto: on' : 'Auto'}
           </Button>
           <Button icon="play" size="small" onClick={() => ctrl.current?.skip()} title="Skip animation (Space)">

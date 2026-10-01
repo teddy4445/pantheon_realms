@@ -9,6 +9,7 @@ import { getBuilding, getGod, getSkill, type ContentCatalog } from '../definitio
 import type { RequirementDefinition } from '../definitions/logic';
 import type { MatchState } from '../state/match';
 import { playerTowns, townHasBuilding } from './town';
+import { scenarioMission } from './scenario';
 
 export interface RequirementScope {
   readonly playerId: PlayerId;
@@ -79,7 +80,7 @@ export function evaluateRequirement(
       return state.mission.flags[req.flag] ? OK : { ok: false, reason: flagReason(req.flag) };
     case 'objective_completed': {
       const o = state.mission.objectives[req.objectiveId];
-      const def = catalog.missions[state.mission.missionId]?.objectives.find((x) => x.id === req.objectiveId);
+      const def = scenarioMission(catalog, state)?.objectives.find((x) => x.id === req.objectiveId);
       return o?.status === 'completed'
         ? OK
         : { ok: false, reason: `Requires objective: ${def?.title ?? req.objectiveId}` };

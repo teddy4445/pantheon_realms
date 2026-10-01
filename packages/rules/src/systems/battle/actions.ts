@@ -364,7 +364,7 @@ function commitShapeshift(tx: Tx, battle: BattleState, stack: BattleStackState, 
   finishActivation(tx, battle, stack, true);
 }
 
-function applyStatus(stack: BattleStackState, status: BattleStackState['statuses'][number]): void {
+export function applyStatus(stack: BattleStackState, status: BattleStackState['statuses'][number]): void {
   const existing = stack.statuses.findIndex((s) => s.sourceId === status.sourceId);
   if (existing >= 0) {
     const old = stack.statuses[existing]!;
@@ -396,18 +396,19 @@ export function commitBattleCast(tx: Tx, spellId: SpellId, targetId: BattleStack
   if (!target || !isAlive(target)) reject('illegal_target', 'Choose a living stack');
   const wantEnemy = spell.target === 'enemy_stack';
   if ((target.side !== active.side) !== wantEnemy) reject('illegal_target', wantEnemy ? 'Target an enemy stack' : 'Target a friendly stack');
+  if (spell.target === 'known_tile' || spell.target === 'self') reject('illegal_action', 'Not a battle spell');
   // Pay mana, then resolve.
   const heroId = commander.heroId;
   if (heroId && tx.state.heroes[heroId]) tx.state.heroes[heroId]!.mana -= spell.manaCost;
   else side.scriptedMana -= spell.manaCost;
   side.castThisRound = true;
-  const { damage, healed } = resolveSpell(tx, battle, spell, commander.power, target);
+  const { damage, healed } = resolveSpell(tx, battle, spell, commander.power, target, active.side);
   tx.emit({ kind: 'BattleSpellCast', side: active.side, spellId, targetId, damage, healed });
   // Casting does not consume the stack's action, but a kill may end the battle.
   battleEnded(tx, battle);
 }
 
-function battleEnded(tx: Tx, battle: BattleState): boolean {
+export function battleEnded(tx: Tx, battle: BattleState): boolean {
   const a = sideStacks(battle, 'attacker').length > 0;
   const d = sideStacks(battle, 'defender').length > 0;
   if (a && d) return false;
@@ -415,14 +416,22 @@ function battleEnded(tx: Tx, battle: BattleState): boolean {
   return true;
 }
 
-function resolveSpell(tx: Tx, battle: BattleState, spell: SpellDefinition, power: number, target: BattleStackState): { damage: number; healed: number } {
+function resolveSpell(tx: Tx, battle: BattleState, spell: SpellDefinition, power: number, target: BattleStackState, sideId: BattleSideId): { damage: number; healed: number } {
   const e = spell.effect;
-  const expires = battle.round + 2;
+  const source = `spell:${spell.id}`;
+  const bonusPct = battle.sides[sideId].effects?.spellDamagePercent ?? 0;
+  const boosted = (n: number) => Math.floor((n * (100 + bonusPct)) / 100);
   switch (e.type) {
     case 'direct_damage': {
-      const damage = e.base + e.perPower * power;
+      const damage = boosted(e.base + e.perPower * power);
       applyDamage(tx, battle, target, damage);
       return { damage, healed: 0 };
+    }
+    case 'area_damage': {
+      const damage = boosted(e.base + e.perPower * power);
+      const victims = [target, ...adjacentEnemies(tx.catalog, battle, target)];
+      for (const v of victims) if (isAlive(v)) applyDamage(tx, battle, v, damage);
+      return { damage: damage * victims.length, healed: 0 };
     }
     case 'heal_front': {
       const hp = statsOf(tx.catalog, target.creatureId).hp;
@@ -432,21 +441,35 @@ function resolveSpell(tx: Tx, battle: BattleState, spell: SpellDefinition, power
       return { damage: 0, healed };
     }
     case 'max_damage_roll':
-      applyStatus(target, { sourceId: `spell:${spell.id}`, label: spell.name, kind: 'max_damage_roll', amount: 0, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'max_damage_roll', amount: 0, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
       return { damage: 0, healed: 0 };
     case 'defense_bonus':
-      applyStatus(target, { sourceId: `spell:${spell.id}`, label: spell.name, kind: 'defense_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'defense_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
       return { damage: 0, healed: 0 };
     case 'attack_bonus':
-      applyStatus(target, { sourceId: `spell:${spell.id}`, label: spell.name, kind: 'attack_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'attack_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
       return { damage: 0, healed: 0 };
+    case 'speed_bonus':
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'speed_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      return { damage: 0, healed: 0 };
+    case 'mass_bonus': {
+      const kind = e.stat === 'attack' ? 'attack_bonus' : e.stat === 'defense' ? 'defense_bonus' : 'speed_bonus';
+      for (const s of sideStacks(battle, sideId)) applyStatus(s, { sourceId: source, label: spell.name, kind, amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      return { damage: 0, healed: 0 };
+    }
     case 'ranged_mitigation':
-      applyStatus(target, { sourceId: `spell:${spell.id}`, label: spell.name, kind: 'ranged_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'ranged_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds });
       return { damage: 0, healed: 0 };
     case 'reveal_radius':
-      void expires;
+    case 'movement_bonus':
+    case 'recall':
       reject('illegal_action', 'Adventure spell');
   }
+}
+
+/** Enemy stacks (of the target's side) whose footprint touches the target's footprint. */
+export function adjacentEnemies(catalog: ContentCatalog, battle: BattleState, target: BattleStackState): BattleStackState[] {
+  return sideStacks(battle, target.side).filter((s) => s.id !== target.id && footprintDistance(stackCells(catalog, s), stackCells(catalog, target)) === 1);
 }
 
 export function commitBattleRetreat(tx: Tx): void {

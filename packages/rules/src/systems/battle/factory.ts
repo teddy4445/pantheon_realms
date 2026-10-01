@@ -10,12 +10,13 @@ import { cellKey, cellNeighbors, footprintCells, type BattleCell, type HexCoord 
 import type { BattlefieldArchetype, CommanderSpec, StackSpec } from '../../definitions/world';
 import type { TownState } from '../../state/match';
 import type { BattleCommanderSnapshot, BattleSideId, BattleSideState, BattleState, DefenderSelectionState, HeroState } from '../../state/match';
-import { effectiveAttributes, heroLuckBonus, heroMoraleBonus } from '../../resolvers/heroes';
+import { effectiveAttributes, heroEffects, heroLuckBonus, heroMoraleBonus } from '../../resolvers/heroes';
 import { missionSite } from '../../resolvers/world';
 import { reject, type Tx } from '../../engine/tx';
 import { applyDefenderSelection, autoDefenderPicks, deploymentZone, finishSetup, placeStacks, type DeployEntry } from './deployment';
 import { buildSiege, townFortificationLevel } from './siege';
 import { battleSideEffects } from '../../resolvers/effects';
+import { scenarioMission } from '../../resolvers/scenario';
 
 export interface EncounterRequest {
   readonly attackerHeroId: HeroId;
@@ -28,7 +29,9 @@ export interface EncounterRequest {
   readonly destination: HexCoord;
 }
 
-function heroCommander(tx: Tx, hero: HeroState): BattleCommanderSnapshot {
+function heroCommander(tx: Tx, hero: HeroState): BattleCommanderSnapshot | null {
+  // Wandering monsters fight without a commander (no attributes, spells or morale bonus).
+  if (hero.monster) return null;
   const attrs = effectiveAttributes(tx.catalog, tx.state, hero);
   return {
     heroId: hero.id,
@@ -87,7 +90,9 @@ function makeSide(
   commander: BattleCommanderSnapshot | null,
   scriptedMana: number,
   morale: number,
+  hero?: HeroState | null,
 ): BattleSideState {
+  const heroFx = hero && !hero.monster ? heroEffects(tx.catalog, hero) : [];
   return {
     sideId,
     playerId,
@@ -99,7 +104,7 @@ function makeSide(
     factionMorale: morale,
     retreated: false,
     surrendered: false,
-    effects: battleSideEffects(tx.catalog, tx.state, playerId),
+    effects: battleSideEffects(tx.catalog, tx.state, playerId, heroFx),
   };
 }
 
@@ -178,7 +183,7 @@ export function startBattle(tx: Tx, req: EncounterRequest): BattleState {
     const specs = [...(st.guard ?? def.guard.army)];
     defenderEntries = specs.flatMap((sp, slot) => (sp && sp.count > 0 ? [{ spec: sp, slot, source: 'hero' as const }] : []));
     const commander = def.guard.commander ? scriptedCommander(tx, def.guard.commander) : null;
-    const hostile = tx.catalog.missions[tx.state.mission.missionId]?.hostilePlayer?.playerId ?? null;
+    const hostile = scenarioMission(tx.catalog, tx.state)?.hostilePlayer?.playerId ?? null;
     defenderSide = makeSide(
       tx,
       'defender',
@@ -205,11 +210,12 @@ export function startBattle(tx: Tx, req: EncounterRequest): BattleState {
       visitor ? heroCommander(tx, visitor) : null,
       0,
       0,
+      visitor ?? null,
     );
   } else {
     const defender = req.defenderHeroId ? tx.state.heroes[req.defenderHeroId] : undefined;
     if (!defender) reject('not_found', 'Unknown defending hero');
-    label = `${defender.name}'s army`;
+    label = defender.monster ? defender.name : `${defender.name}'s army`;
     defenderEntries = slotEntries(defender.army.slots, 'hero');
     defenderSide = makeSide(
       tx,
@@ -219,6 +225,7 @@ export function startBattle(tx: Tx, req: EncounterRequest): BattleState {
       heroCommander(tx, defender),
       0,
       factionMorale(tx, defenderEntries.map((e) => e.spec)),
+      defender,
     );
   }
   const attackerEntries = slotEntries(attacker.army.slots, 'hero');
@@ -246,6 +253,7 @@ export function startBattle(tx: Tx, req: EncounterRequest): BattleState {
         heroCommander(tx, attacker),
         0,
         factionMorale(tx, attackerEntries.map((e) => e.spec)),
+        attacker,
       ),
       defender: defenderSide,
     },

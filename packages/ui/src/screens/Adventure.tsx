@@ -21,19 +21,23 @@ import {
   missionObjectiveDefs,
   adventureSpellsOf,
   quoteAdventureSpell,
+  campStock,
+  interventionsFor,
+  interventionUsedThisWeek,
   type ContentCatalog,
   type HeroState,
   type HexCoord,
-  type MatchState,
+  type MatchState, scenarioMission,
 } from '@pr/rules';
 import { TERRAIN_COLORS } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import type { AppStore } from '../app/store';
 import { adventurePlaybackFactor } from '../app/preferences';
+import { matches } from '../app/keys';
 import { SceneViewport, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
-import { HeroPortrait } from '../components/art';
+import { HeroPortrait, MarkerIcon, siteMarkerAsset } from '../components/art';
 import { ArmyStrip, ResourceBar } from '../components/game';
 import { Icon } from '../assets/icons';
 import {
@@ -54,6 +58,20 @@ import {
 // View model
 // ---------------------------------------------------------------------------
 
+/** The creature that represents a wandering monster band (highest tier). */
+function monsterLead(catalog: ContentCatalog, hero: HeroState) {
+  let best: ReturnType<typeof getCreature> = undefined;
+  for (const slot of hero.army.slots) {
+    const c = slot ? getCreature(catalog, slot.creatureId) : undefined;
+    if (c && (!best || c.tier > best.tier)) best = c;
+  }
+  return best;
+}
+
+function getCreature(catalog: ContentCatalog, id: string) {
+  return catalog.creatures[id];
+}
+
 function buildView(
   catalog: ContentCatalog,
   state: MatchState,
@@ -66,7 +84,7 @@ function buildView(
   const explored = state.fog[playerId]?.explored ?? [];
   const visible = visibleCells(catalog, state, playerId);
   const map = state.world.map;
-  const mission = catalog.missions[state.mission.missionId];
+  const mission = scenarioMission(catalog, state);
   const sites = (mission?.sites ?? []).map((def) => {
     const st = state.world.sites[def.id];
     const idx = cellIndex(map, def.coord);
@@ -85,21 +103,28 @@ function buildView(
       ownerShape: owner === playerId ? ('square' as const) : ('pennant' as const),
       guardBody: guardCreature?.presentation.bodyProfile ?? null,
       guardUpgraded: guardCreature?.form === 'upgraded',
-      lit: !!st?.activated,
+      // Event shrines glow until used; a relic always glows.
+      lit: def.kind.type === 'map_event' ? !st?.claimed : def.kind.type === 'relic' ? true : !!st?.activated,
       open: !!st?.open,
       claimed: !!st?.claimed,
     };
   });
   const heroes = Object.values(state.heroes)
     .filter((h) => h.status === 'active')
-    .map((h) => ({
-      id: h.id,
-      coord: h.position,
-      color: state.players[h.ownerId]?.color ?? '#999',
-      shown: h.ownerId === playerId || visible.has(cellIndex(map, h.position)),
-      selected: selected?.id === h.id,
-      inTown: !!townAtHero(state, h),
-    }));
+    .map((h) => {
+      // Wandering monsters are drawn as the strongest creature of their band.
+      const lead = h.monster ? monsterLead(catalog, h) : undefined;
+      return {
+        id: h.id,
+        coord: h.position,
+        color: state.players[h.ownerId]?.color ?? '#999',
+        shown: h.ownerId === playerId || visible.has(cellIndex(map, h.position)),
+        selected: selected?.id === h.id,
+        inTown: !!townAtHero(state, h),
+        monsterBody: lead?.presentation.bodyProfile ?? null,
+        monsterUpgraded: lead?.form === 'upgraded',
+      };
+    });
   let reachable: HexCoord[] | null = null;
   if (selected && showReach) reachable = [...reachableTiles(catalog, state, selected.id).keys()].map(parseHexKey);
   let path: AdventureView['path'] = null;
@@ -198,6 +223,15 @@ function Minimap({ catalog, state, playerId, onPick }: { catalog: ContentCatalog
 // Tile information
 // ---------------------------------------------------------------------------
 
+/** Whether a site's one-time purpose is spent (for its map marker). */
+function siteDone(kind: string, st: { claimed: boolean; activated: boolean; open: boolean; cleared: boolean }): boolean {
+  if (kind === 'pickup' || kind === 'map_event') return st.claimed;
+  if (kind === 'activation') return st.activated;
+  if (kind === 'gate') return st.open;
+  if (kind === 'crossing' || kind === 'landmark') return st.cleared;
+  return false;
+}
+
 function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchState; c: HexCoord; hero: HeroState | null }) {
   const catalog = store.catalog;
   const playerId = store.session!.humanPlayerId;
@@ -207,7 +241,22 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
   const quote = hero && !hexEquals(hero.position, c) ? quoteMovement(catalog, state, hero.id, c) : null;
   return (
     <div className="tile-info">
-      <div className="tile-info__title">{site ? site.def.name : terrainLabel(state, c)}</div>
+      <div className="tile-info__head">
+        {site ? (
+          <MarkerIcon
+            assetId={siteMarkerAsset(site.def.kind, {
+              owner: (() => {
+                const o = site.def.kind.type === 'town' ? state.towns[site.def.kind.townId]?.ownerId : site.state.owner;
+                return o ? (o === playerId ? 'self' : 'other') : null;
+              })(),
+              done: siteDone(site.def.kind.type, site.state),
+            })}
+          />
+        ) : other ? (
+          <MarkerIcon assetId={other.ownerId === playerId ? 'icon.marker.hero' : 'icon.marker.enemy-hero'} />
+        ) : null}
+        <div className="tile-info__title">{site ? site.def.name : terrainLabel(state, c)}</div>
+      </div>
       <div className="dim small">
         {site ? `${siteKindLabel(site.def)} · ${terrainLabel(state, c)}` : `Tile ${c.q}, ${c.r}`}
         {!vis ? ' · remembered' : ''}
@@ -248,12 +297,55 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
       ) : site?.def.guard ? (
         <div className="small success">Guards defeated</div>
       ) : null}
+      {site?.def.kind.type === 'creature_camp' ? (
+        <div className="small">
+          {(() => {
+            const cr = catalog.creatures[site.def.kind.creatureId];
+            return (
+              <>
+                {campStock(catalog, state, site.def.id)} {cr?.pluralName} willing to join · +{site.def.kind.weeklyGrowth} each week
+              </>
+            );
+          })()}
+        </div>
+      ) : null}
+      {site?.def.kind.type === 'map_event' ? <div className="small">{site.state.claimed ? 'Already happened' : 'Something awaits the first hero to arrive'}</div> : null}
+      {site?.def.kind.type === 'relic' ? (
+        <div className="small">
+          {site.state.owner ? `Held by ${site.state.owner === playerId ? 'you' : (state.players[site.state.owner]?.name ?? site.state.owner)} for ${site.state.heldDays ?? 0} day(s)` : 'Unclaimed'}
+          {(() => {
+            const cond = scenarioMission(catalog, state)?.victoryCondition;
+            return cond?.type === 'hold_site' && cond.siteId === site.def.id ? ` · ${cond.days} needed to win` : '';
+          })()}
+        </div>
+      ) : null}
       {site?.def.kind.type === 'activation' ? <div className="small">{site.state.activated ? 'Restored' : 'Not yet restored'}</div> : null}
       {site?.def.kind.type === 'pickup' ? <div className="small">{site.state.claimed ? 'Already collected' : 'Uncollected'}</div> : null}
       {site?.def.kind.type === 'gate' ? <div className="small">{site.state.open ? 'Open' : 'Sealed'}</div> : null}
       {other && (vis || other.ownerId === playerId) ? (
         <div className="small">
           <Icon name="hero" className="inline-icon" /> {other.name} ({other.ownerId === playerId ? 'yours' : (state.players[other.ownerId]?.name ?? 'hostile')})
+          {other.monster ? (
+            <div className="row gap wrap">
+              {other.army.slots.map((s, i) =>
+                s ? (
+                  <Chip key={i}>
+                    {s.count} {s.count === 1 ? catalog.creatures[s.creatureId]?.name : catalog.creatures[s.creatureId]?.pluralName}
+                  </Chip>
+                ) : null,
+              )}
+            </div>
+          ) : null}
+          {other.ownerId !== playerId && hero ? (
+            (() => {
+              const t = threatLabel(catalog, heroStrength(catalog, hero), heroStrength(catalog, other));
+              return (
+                <div>
+                  Estimate vs {hero.name}: <Chip tone={t.tone}>{t.text}</Chip> <span className="faint">(heuristic)</span>
+                </div>
+              );
+            })()
+          ) : null}
         </div>
       ) : null}
       {quote ? (
@@ -298,6 +390,20 @@ export function AdventureScreen() {
     if (selected && store.selectedHeroId !== selected.id) store.selectedHeroId = selected.id;
   }, [selected, store]);
 
+  // Contextual tips (Settings → Tutorial hints); shown once each.
+  const outOfMoves = humanTurn && !!selected && selected.movementPoints === 0 && state.day > 1;
+  const canInvoke = humanTurn && state.day >= 3 && !interventionUsedThisWeek(catalog, state, playerId) && interventionsFor(catalog, state, playerId).some((d) => d.favorCost <= player.wallet.favor);
+  const seesMonster = Object.values(state.heroes).some((h) => h.monster && h.status === 'active' && visibleCells(catalog, state, playerId).has(cellIndex(state.world.map, h.position)));
+  useEffect(() => {
+    if (outOfMoves) store.showHint('out_of_movement');
+  }, [outOfMoves, store]);
+  useEffect(() => {
+    if (canInvoke) store.showHint('interventions');
+  }, [canInvoke, store]);
+  useEffect(() => {
+    if (seesMonster) store.showHint('wandering_monsters');
+  }, [seesMonster, store]);
+
   const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? target : null, humanTurn, grid), [catalog, state, playerId, selected, target, humanTurn, grid]);
 
   // The controller can arrive after the first render (the 3D layer loads on demand),
@@ -317,11 +423,17 @@ export function AdventureScreen() {
       const c = ctrl.current;
       const moves = events.filter((e) => e.kind === 'HeroMoved');
       const day = events.find((e) => e.kind === 'DayStarted');
+      const weekly = events.find((e) => e.kind === 'WeeklyEventStarted');
       if (day && day.kind === 'DayStarted') {
-        setDayBanner(`Week ${day.week} · Day ${day.dayOfWeek}${day.dayOfWeek === 1 ? ' — a new week: creatures grow' : ''}`);
-        setTimeout(() => setDayBanner(null), 2200);
+        const ev = weekly && weekly.kind === 'WeeklyEventStarted' && weekly.eventId ? catalog.weeklyEvents?.[weekly.eventId] : undefined;
+        setDayBanner(`Week ${day.week} · Day ${day.dayOfWeek}${day.dayOfWeek === 1 ? (ev ? ` — ${ev.name}: ${ev.summary}` : ' — a new week: creatures grow') : ''}`);
+        setTimeout(() => setDayBanner(null), ev ? 3600 : 2200);
+        if (ev) store.showHint('weekly_event');
       }
-      if (!c) return;
+      if (!c) {
+        afterMoves(moves);
+        return;
+      }
       for (const m of moves) {
         if (m.kind !== 'HeroMoved') continue;
         const hero = store.session?.state.heroes[m.heroId];
@@ -336,7 +448,26 @@ export function AdventureScreen() {
           if (mine) store.audio?.heroSteps(false);
         }
       }
+      afterMoves(moves);
     });
+    /** After the viewer's hero arrives at a camp or an unused event, open its dialog. */
+    function afterMoves(moves: readonly { kind: string; heroId?: string }[]) {
+      const session = store.session;
+      if (!session || moves.length === 0) return;
+      const last = moves[moves.length - 1] as { heroId: string };
+      const st = session.state;
+      const hero = st.heroes[last.heroId];
+      if (!hero || hero.ownerId !== session.humanPlayerId || hero.status !== 'active' || st.battle) return;
+      const site = siteAt(catalog, st, hero.position);
+      if (!site || store.overlays.length) return;
+      if (site.def.kind.type === 'creature_camp' && (!site.def.guard || site.state.cleared)) {
+        store.showHint('creature_camp');
+        store.openOverlay({ kind: 'camp', heroId: hero.id, siteId: site.def.id });
+      } else if (site.def.kind.type === 'map_event' && !site.state.claimed && (!site.def.guard || site.state.cleared)) {
+        store.showHint('map_event');
+        store.openOverlay({ kind: 'map-event', heroId: hero.id, siteId: site.def.id });
+      }
+    }
   }, [store, catalog]);
 
   const onController = useCallback(
@@ -420,11 +551,22 @@ export function AdventureScreen() {
         store.openOverlay({ kind: 'activate', heroId: sel.id, siteId: site.def.id });
         return;
       }
+      if (site && site.def.kind.type === 'creature_camp') {
+        store.openOverlay({ kind: 'camp', heroId: sel.id, siteId: site.def.id });
+        return;
+      }
+      if (site && site.def.kind.type === 'map_event' && !site.state.claimed) {
+        store.openOverlay({ kind: 'map-event', heroId: sel.id, siteId: site.def.id });
+        return;
+      }
       store.goto('hero', { heroId: sel.id });
       return;
     }
     if (target && hexEquals(target, c)) tryMove(c);
-    else setTarget(c);
+    else {
+      setTarget(c);
+      store.showHint('route_planning');
+    }
   };
 
   // Keep callbacks fresh for the controller (created once).
@@ -465,37 +607,46 @@ export function AdventureScreen() {
       }
       const t = e.target as HTMLElement;
       if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') return;
+      if (store.story.length > 0) return;
       const c = ctrl.current;
       const k = e.key;
-      if (c && (k === 'ArrowLeft' || k === 'a')) c.pan(-1.2, 0);
-      else if (c && (k === 'ArrowRight' || k === 'd')) c.pan(1.2, 0);
-      else if (c && (k === 'ArrowUp' || k === 'w')) c.pan(0, 1.2);
-      else if (c && (k === 'ArrowDown' || k === 's')) c.pan(0, -1.2);
-      else if (c && (k === '+' || k === '=')) c.zoom(-2);
-      else if (c && (k === '-' || k === '_')) c.zoom(2);
-      else if (k === ' ' && target && humanTurn) {
+      const is = (action: string) => matches(store.prefs, action, k);
+      if (c && (k === 'ArrowLeft' || is('pan_left'))) c.pan(-1.2, 0);
+      else if (c && (k === 'ArrowRight' || is('pan_right'))) c.pan(1.2, 0);
+      else if (c && (k === 'ArrowUp' || is('pan_up'))) c.pan(0, 1.2);
+      else if (c && (k === 'ArrowDown' || is('pan_down'))) c.pan(0, -1.2);
+      else if (c && is('zoom_in')) c.zoom(-2);
+      else if (c && is('zoom_out')) c.zoom(2);
+      else if (is('continue_move') && target && humanTurn) {
         e.preventDefault();
         tryMove(target);
-      } else if (k === 'Enter' && humanTurn) {
+      } else if (is('end_day') && humanTurn) {
         e.preventDefault();
         endDay();
-      } else if (k === 'Tab' && heroes.length > 1) {
+      } else if (is('next_hero') && heroes.length > 1) {
         e.preventDefault();
         const i = heroes.findIndex((h) => h.id === selected?.id);
         selectHero(heroes[(i + 1) % heroes.length]!);
-      } else if (k === 'Home' && selected && c) c.focus(selected.position);
-      else return;
+      } else if (is('center_hero') && selected && c) c.focus(selected.position);
+      else if (is('interventions') && interventionsOn) {
+        e.preventDefault();
+        store.openOverlay({ kind: 'interventions' });
+      } else return;
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   });
 
+  const interventionsOn = interventionsFor(catalog, state, playerId).length > 0;
+  const weeklyEvent = state.world.weeklyEventId ? catalog.weeklyEvents?.[state.world.weeklyEventId] : undefined;
+  const relicCond = scenarioMission(catalog, state)?.victoryCondition;
+  const relicState = relicCond?.type === 'hold_site' ? state.world.sites[relicCond.siteId] : undefined;
   const income = dailyIncome(catalog, state, playerId);
   const day = dayLabel(state);
   const objectives = missionObjectiveDefs(catalog, state).filter((o) => o.category === 'primary');
   const info = pinned ?? hover;
   const activeName = state.players[state.activePlayerId]?.name ?? state.activePlayerId;
-  const mission = catalog.missions[state.mission.missionId];
+  const mission = scenarioMission(catalog, state);
 
   return (
     <div className="adventure">
@@ -507,6 +658,18 @@ export function AdventureScreen() {
           <div className="dim small">{state.scenario.campaignId ? catalog.campaigns[state.scenario.campaignId]?.name : 'Skirmish'}</div>
         </div>
         <ResourceBar wallet={player.wallet} income={income} />
+        {weeklyEvent ? (
+          <span className="weekly-chip" title={`${weeklyEvent.name}: ${weeklyEvent.summary}`} data-testid="weekly-event">
+            <Chip tone="info">{weeklyEvent.name}</Chip>
+          </span>
+        ) : null}
+        {relicCond?.type === 'hold_site' ? (
+          <span title="Hold the relic shrine at enough dawns in a row to win" data-testid="relic-status">
+            <Chip tone={relicState?.owner === playerId ? 'ok' : relicState?.owner ? 'bad' : 'muted'}>
+              Relic: {relicState?.owner ? `${relicState.owner === playerId ? 'you' : (state.players[relicState.owner]?.name ?? '?')} ${relicState.heldDays ?? 0}/${relicCond.days}` : `unclaimed (0/${relicCond.days})`}
+            </Chip>
+          </span>
+        ) : null}
         <div className="daybox daybox--large" title={`Day ${day.day} of the mission`}>
           <Icon name="hourglass" />
           <div>
@@ -591,11 +754,22 @@ export function AdventureScreen() {
                     <Button
                       key={sp.id}
                       size="small"
-                      icon="eye"
+                      icon={sp.effect.type === 'reveal_radius' ? 'eye' : 'spell'}
                       variant={casting === sp.id ? 'primary' : undefined}
                       disabled={!humanTurn || !q.legal}
                       disabledReason={!humanTurn ? 'Not your turn' : q.reason}
-                      onClick={() => setCasting((c) => (c === sp.id ? null : sp.id))}
+                      onClick={() => {
+                        if (sp.effect.type !== 'reveal_radius') {
+                          // Self spells (Swiftness, Homecoming…) need no target tile.
+                          const run = () => {
+                            if (!store.dispatch({ kind: 'CastAdventureSpell', heroId: selected.id, spellId: sp.id, target: selected.position })) store.toast(`${sp.name}: ${sp.summary}`, 'success');
+                          };
+                          if (sp.effect.type === 'recall') store.confirm(`Cast ${sp.name}?`, `${selected.name} returns to the nearest town you own and ends the day's movement there.`, 'Cast', run);
+                          else run();
+                          return;
+                        }
+                        setCasting((c) => (c === sp.id ? null : sp.id));
+                      }}
                       title={sp.summary}
                       data-testid={`cast-${sp.id}`}
                     >
@@ -649,6 +823,11 @@ export function AdventureScreen() {
           <Button icon="pantheon" onClick={() => store.goto('pantheon')} title="Pantheon (P)">
             Pantheon
           </Button>
+          {interventionsOn ? (
+            <Button icon="favor" onClick={() => store.openOverlay({ kind: 'interventions' })} title="Divine interventions (I)" data-testid="open-interventions">
+              Miracles
+            </Button>
+          ) : null}
           <Button icon="journal" onClick={() => store.goto('journal')} title="Journal (J)">
             Journal
           </Button>

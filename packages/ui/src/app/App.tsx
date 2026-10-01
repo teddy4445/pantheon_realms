@@ -22,6 +22,10 @@ import { EncyclopediaScreen } from '../screens/Encyclopedia';
 import { SettingsScreen } from '../screens/Settings';
 import { UnitDetailScreen } from '../screens/UnitDetail';
 import { OverlayLayer } from '../dialogs/Overlays';
+import { HintPanel, StoryLayer } from '../dialogs/Story';
+import { RandomSetupScreen } from '../screens/RandomSetup';
+import { SummaryScreen, HighScoresScreen } from '../screens/Summary';
+import { matches } from './keys';
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   'main-menu': MainMenuScreen,
@@ -42,9 +46,15 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   encyclopedia: EncyclopediaScreen,
   settings: SettingsScreen,
   'unit-detail': UnitDetailScreen,
+  'random-setup': RandomSetupScreen,
+  summary: SummaryScreen,
+  'high-scores': HighScoresScreen,
 };
 
-const IN_GAME_BACKABLE: ScreenId[] = ['hero', 'town', 'recruitment', 'pantheon', 'journal', 'overview', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'divine-select'];
+const IN_GAME_BACKABLE: ScreenId[] = ['hero', 'town', 'recruitment', 'pantheon', 'journal', 'overview', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'divine-select', 'random-setup', 'high-scores'];
+
+/** Mandatory flow overlays: Escape does not dismiss them. */
+const STICKY_OVERLAYS = new Set(['mission-failed', 'debrief', 'campaign-complete', 'game-over', 'handoff']);
 
 function isTyping(target: EventTarget | null): boolean {
   const el = target as HTMLElement | null;
@@ -55,12 +65,18 @@ function useGlobalKeys(store: AppStore) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (isTyping(e.target)) return;
+      // The story window handles its own keys (Enter, Esc, L).
+      if (store.story.length > 0) return;
       const top = store.overlays[store.overlays.length - 1];
       const screen = store.screen.id;
+      if (e.key === 'F1') {
+        e.preventDefault();
+        if (top?.kind !== 'shortcuts' && top?.kind !== 'handoff') store.openOverlay({ kind: 'shortcuts' });
+        return;
+      }
       if (e.key === 'Escape') {
         if (top) {
-          // Mandatory flow overlays are not dismissed by Escape.
-          if (top.kind !== 'mission-failed' && top.kind !== 'debrief' && top.kind !== 'campaign-complete') store.closeOverlay();
+          if (!STICKY_OVERLAYS.has(top.kind)) store.closeOverlay();
           e.preventDefault();
           return;
         }
@@ -70,12 +86,24 @@ function useGlobalKeys(store: AppStore) {
         return;
       }
       if (top || !store.session || screen !== 'adventure' || e.ctrlKey || e.metaKey || e.altKey) return;
-      const k = e.key.toLowerCase();
-      const map: Partial<Record<string, ScreenId>> = { h: 'hero', t: 'town', j: 'journal', o: 'overview', b: 'encyclopedia', p: 'pantheon' };
-      const target = map[k];
-      if (target) {
+      const prefs = store.prefs;
+      if (matches(prefs, 'shortcuts', e.key)) {
         e.preventDefault();
-        store.goto(target);
+        store.openOverlay({ kind: 'shortcuts' });
+        return;
+      }
+      const map: [string, ScreenId][] = [
+        ['open_hero', 'hero'],
+        ['open_town', 'town'],
+        ['open_journal', 'journal'],
+        ['open_overview', 'overview'],
+        ['open_encyclopedia', 'encyclopedia'],
+        ['open_pantheon', 'pantheon'],
+      ];
+      const hit = map.find(([action]) => matches(prefs, action, e.key));
+      if (hit) {
+        e.preventDefault();
+        store.goto(hit[1]);
       }
     };
     window.addEventListener('keydown', onKey);
@@ -87,7 +115,7 @@ function Router() {
   const store = useStore();
   const entry = store.screen;
   const Screen = SCREENS[entry.id];
-  const needsSession = !['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'divine-select', 'encyclopedia', 'settings', 'unit-detail'].includes(entry.id);
+  const needsSession = !['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'divine-select', 'encyclopedia', 'settings', 'unit-detail', 'random-setup', 'high-scores'].includes(entry.id);
   if (needsSession && !store.session) {
     return <MainMenuScreen />;
   }
@@ -118,6 +146,8 @@ function Shell({ store }: { store: AppStore }) {
       <SceneHostLayer />
       <Router />
       <OverlayLayer />
+      <HintPanel />
+      <StoryLayer />
       <Toasts />
     </>
   );

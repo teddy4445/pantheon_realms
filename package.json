@@ -1,7 +1,7 @@
 {
   "name": "pantheon-realms",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "Pantheon Realms — turn-based mythological strategy (TypeScript rules, React UI, Babylon.js, Electron).",
   "type": "module",
   "workspaces": [
@@ -17,8 +17,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "desktop:build": "npm --workspace @pr/desktop run build",
-    "desktop": "npm run build && npm --workspace @pr/desktop run start",
-    "desktop:dist": "npm run build && npm --workspace @pr/desktop run dist",
+    "desktop": "npm run build && npm run desktop:build && npm --workspace @pr/desktop run start",
+    "desktop:dist": "npm run build && npm run desktop:build && npm --workspace @pr/desktop run dist",
     "check": "npm run lint:boundaries && npm run typecheck && npm test",
     "assets:check": "node tools/assets/validate-units.mjs && vitest run packages/presentation",
     "assets:calibration": "node tools/assets/make-calibration-glb.mjs",

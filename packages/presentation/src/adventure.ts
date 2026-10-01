@@ -72,6 +72,9 @@ export interface AdventureHeroView {
   readonly selected: boolean;
   /** Offset when sharing a tile with a town. */
   readonly inTown: boolean;
+  /** Wandering monster: drawn as its creature body instead of a rider. */
+  readonly monsterBody?: BodyProfile | null;
+  readonly monsterUpgraded?: boolean;
 }
 
 export interface AdventurePathView {
@@ -103,6 +106,8 @@ export interface AdventureCallbacks {
 interface HeroEntry {
   proxy: CreatureProxy;
   color: string;
+  /** Proxy identity (rider colour or monster body). */
+  look: string;
   coord: HexCoord;
   prevCoord: HexCoord;
   locked: number;
@@ -541,10 +546,15 @@ export class AdventureSceneController implements SceneController {
     for (const v of views) {
       seen.add(v.id);
       let e = this.heroes.get(v.id);
-      if (!e || e.color !== v.color) {
+      const look = v.monsterBody ? `monster|${v.monsterBody}|${v.monsterUpgraded === true}` : `hero|${v.color}`;
+      if (!e || e.look !== look) {
         if (e) disposeProxy(e.proxy);
-        const proxy = buildHeroProxy(this.scene, this.mats, v.color, `hero-${v.id}`);
-        e = { proxy, color: v.color, coord: v.coord, prevCoord: v.coord, locked: 0, snapIn: 0, inTown: v.inTown };
+        let proxy: CreatureProxy;
+        if (v.monsterBody) {
+          proxy = buildCreatureProxy(this.scene, this.mats, v.monsterBody, v.monsterUpgraded === true, v.color, `monster-${v.id}`);
+          proxy.root.scaling.setAll(0.85);
+        } else proxy = buildHeroProxy(this.scene, this.mats, v.color, `hero-${v.id}`);
+        e = { proxy, color: v.color, look, coord: v.coord, prevCoord: v.coord, locked: 0, snapIn: 0, inTown: v.inTown };
         this.heroes.set(v.id, e);
         this.placeHero(e, v.coord);
       }

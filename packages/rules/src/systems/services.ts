@@ -16,6 +16,7 @@ import type { ArmyRef, MatchState, TownState } from '../state/match';
 import { resolveArmy } from '../resolvers/army';
 import { offeringRule } from '../resolvers/effects';
 import { townMerchantStockSize, townRoleBuilding, townTraining } from '../resolvers/town';
+import { scopeAllowed } from '../resolvers/scenario';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { clampMovement, grant, spend } from './economy';
 import { grantExperience } from './heroes';
@@ -159,10 +160,10 @@ export function commitTraining(tx: Tx, townId: TownId, heroId: HeroId): void {
 // Artifact Merchant (`enables_artifact_merchant`)
 // ---------------------------------------------------------------------------
 
-/** Artifacts a merchant may stock: priced and not unique, in stable ID order. */
-export function merchantPool(catalog: ContentCatalog): ArtifactId[] {
+/** Artifacts a merchant may stock: priced, not unique and in the scenario's content scope, in stable ID order. */
+export function merchantPool(catalog: ContentCatalog, state?: Pick<MatchState, 'scenario'>): ArtifactId[] {
   return Object.values(catalog.artifacts)
-    .filter((a) => !!a.merchantPrice && !a.unique)
+    .filter((a) => !!a.merchantPrice && !a.unique && (!state || scopeAllowed(state, a.scope)))
     .map((a) => a.id)
     .sort();
 }
@@ -178,7 +179,7 @@ export function refreshMerchantStock(tx: Tx, town: TownState): void {
   if (size <= 0) return;
   const week = worldWeek(tx.state, tx.profile.daysPerWeek);
   if (town.merchant && town.merchant.week === week) return;
-  const pool = merchantPool(tx.catalog);
+  const pool = merchantPool(tx.catalog, tx.state);
   const rng = new RngCursor(seedFromLabel(`merchant|${tx.state.matchId}|${week}`));
   const stock: ArtifactId[] = [];
   while (stock.length < size && pool.length > 0) stock.push(pool.splice(rng.nextInt(pool.length), 1)[0]!);

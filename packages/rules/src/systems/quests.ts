@@ -7,22 +7,26 @@
 import type { HeroId, ObjectiveId, PlayerId } from '../ids';
 import { resources } from '../core/resources';
 import type { ObjectiveCondition, ObjectiveDefinition } from '../definitions/campaign';
-import type { RewardDefinition } from '../definitions/logic';
+import type { HeroAttribute, RewardDefinition } from '../definitions/logic';
+import { placementSlot } from '../resolvers/army';
+import { maxMana, movementBudget } from '../resolvers/heroes';
 import type { MatchState } from '../state/match';
 import type { ContentCatalog } from '../definitions/catalog';
 import { reject, type Tx } from '../engine/tx';
 import { grant } from './economy';
 import { grantArtifact, grantExperience } from './heroes';
 import { grantEntitlement } from './divine';
+import { commitEndTurn } from './turn';
+import { scenarioMission } from '../resolvers/scenario';
 
 export const MISSION_VICTORY_FLAG = 'mission_victory_pending';
 
 export function missionPlayerId(catalog: ContentCatalog, state: MatchState): PlayerId {
-  return catalog.missions[state.mission.missionId]?.player.playerId ?? state.playerOrder[0]!;
+  return scenarioMission(catalog, state)?.player.playerId ?? state.playerOrder[0]!;
 }
 
 export function missionObjectiveDefs(catalog: ContentCatalog, state: MatchState): readonly ObjectiveDefinition[] {
-  return catalog.missions[state.mission.missionId]?.objectives ?? [];
+  return scenarioMission(catalog, state)?.objectives ?? [];
 }
 
 export function grantReward(
@@ -39,9 +43,33 @@ export function grantReward(
   for (const ent of reward.entitlementIds ?? []) grantEntitlement(tx, playerId, ent);
   if (heroId) {
     for (const art of reward.artifactIds ?? []) grantArtifact(tx, heroId, art);
+    grantHeroReward(tx, heroId, reward);
     if (reward.questXp) grantExperience(tx, heroId, reward.questXp);
   }
   return true;
+}
+
+/** Creature, attribute, mana and movement parts of a reward (map events, proposed this build). */
+function grantHeroReward(tx: Tx, heroId: HeroId, reward: RewardDefinition): void {
+  const hero = tx.state.heroes[heroId];
+  if (!hero) return;
+  for (const c of reward.creatures ?? []) {
+    const slot = placementSlot(hero.army, c.creatureId);
+    if (slot === null || c.count <= 0) continue;
+    const existing = hero.army.slots[slot];
+    if (existing) existing.count += c.count;
+    else hero.army.slots[slot] = { stackId: tx.nextId('stack'), creatureId: c.creatureId, count: c.count };
+    tx.emit({ kind: 'CreaturesJoined', heroId, creatureId: c.creatureId, count: c.count });
+  }
+  for (const [attr, amount] of Object.entries(reward.attributes ?? {})) {
+    if (!amount) continue;
+    hero.attributes[attr as HeroAttribute] += amount;
+    tx.emit({ kind: 'AttributeGained', heroId, attribute: attr as HeroAttribute, amount });
+  }
+  // Army changes never refill movement (slower joiners can lower today's cap); a movement reward comes after.
+  if ((reward.creatures ?? []).length > 0) hero.movementPoints = Math.min(hero.movementPoints, movementBudget(tx.catalog, tx.state, hero).total);
+  if (reward.mana) hero.mana = Math.min(maxMana(tx.catalog, tx.state, hero), hero.mana + reward.mana);
+  if (reward.movement) hero.movementPoints += reward.movement;
 }
 
 export function setFlag(tx: Tx, flag: string): void {
@@ -104,7 +132,7 @@ function completeObjective(tx: Tx, def: ObjectiveDefinition): void {
   tx.emit({ kind: 'ObjectiveChanged', objectiveId: def.id, status: 'completed' });
   if (def.reward && !st.rewardGranted) {
     st.rewardGranted = true;
-    const mission = tx.catalog.missions[tx.state.mission.missionId];
+    const mission = scenarioMission(tx.catalog, tx.state);
     const heroId = mission?.player.hero.heroId ?? null;
     grantReward(tx, missionPlayerId(tx.catalog, tx.state), heroId, def.reward, `objective:${def.id}`, def.title);
   }
@@ -167,6 +195,10 @@ export function commitClaimObjective(tx: Tx, objectiveId: ObjectiveId): void {
 export function evaluateMissionOutcome(tx: Tx): void {
   const state = tx.state;
   if (state.outcome.status !== 'running') return;
+  if (state.mission.flags['skirmish']) {
+    evaluateSkirmishOutcome(tx);
+    return;
+  }
   const playerId = missionPlayerId(tx.catalog, state);
   for (const heroId of state.scenario.protectedHeroIds) {
     const hero = state.heroes[heroId];
@@ -190,22 +222,76 @@ export function evaluateMissionOutcome(tx: Tx): void {
     return;
   }
   if (state.mission.flags[MISSION_VICTORY_FLAG] && !state.pendingDecisions.some((d) => state.heroes[d.heroId]?.ownerId === playerId)) {
-    const mission = tx.catalog.missions[state.mission.missionId];
+    const mission = scenarioMission(tx.catalog, state);
     const reason = mission ? `${mission.name} complete` : 'Mission complete';
-    state.outcome = { status: 'victory', reason, day: state.day };
+    state.outcome = { status: 'victory', reason, day: state.day, winnerIds: [playerId] };
     tx.emit({ kind: 'MissionCompleted', reason });
   }
-  // Skirmish elimination victory: every rival player eliminated.
-  if (state.outcome.status === 'running' && state.mission.flags['skirmish']) {
-    const rivals = state.playerOrder.filter((p) => p !== playerId && state.players[p]?.role === 'rival');
-    const alive = rivals.filter((p) => {
-      const rh = Object.values(state.heroes).some((h) => h.ownerId === p && h.status === 'active');
-      const rt = Object.values(state.towns).some((t) => t.ownerId === p);
-      return rh || rt;
-    });
-    if (rivals.length > 0 && alive.length === 0) {
-      state.outcome = { status: 'victory', reason: 'All rivals defeated', day: state.day };
-      tx.emit({ kind: 'MissionCompleted', reason: 'All rivals defeated' });
+}
+
+/** Empires that compete for victory (not scripted forces or wandering monsters). */
+export function contenderIds(state: MatchState): PlayerId[] {
+  return state.playerOrder.filter((p) => {
+    const role = state.players[p]?.role;
+    return role === 'player' || role === 'rival';
+  });
+}
+
+function hasPresence(state: MatchState, playerId: PlayerId): boolean {
+  const hero = Object.values(state.heroes).some((h) => h.ownerId === playerId && h.status === 'active' && !h.monster);
+  return hero || Object.values(state.towns).some((t) => t.ownerId === playerId);
+}
+
+/**
+ * Skirmish outcome (any number of empires, any mix of humans and AI):
+ * an empire with no heroes and no towns is eliminated; the last empire
+ * standing wins, as does an empire that holds the relic long enough when the
+ * scenario's victory condition says so. The match ends for the humans when no
+ * human empire remains.
+ */
+function evaluateSkirmishOutcome(tx: Tx): void {
+  const state = tx.state;
+  const contenders = contenderIds(state);
+  for (const id of contenders) {
+    const p = state.players[id]!;
+    if (p.eliminated || hasPresence(state, id)) continue;
+    p.eliminated = true;
+    tx.emit({ kind: 'PlayerEliminated', playerId: id });
+  }
+  const alive = contenders.filter((id) => !state.players[id]!.eliminated);
+  const humansAlive = alive.filter((id) => state.players[id]!.controller === 'human');
+  const mission = scenarioMission(tx.catalog, state);
+  const cond = mission?.victoryCondition;
+  let winner: PlayerId | null = null;
+  let reason = '';
+  if (cond?.type === 'hold_site') {
+    const st = state.world.sites[cond.siteId];
+    if (st?.owner && alive.includes(st.owner) && (st.heldDays ?? 0) >= cond.days) {
+      winner = st.owner;
+      const site = mission?.sites.find((x) => x.id === cond.siteId);
+      reason = `${state.players[winner]!.name} held ${site?.name ?? 'the relic'} for ${cond.days} days`;
     }
   }
+  const soloHuman = contenders.filter((id) => state.players[id]!.controller === 'human').length === 1;
+  if (!winner && alive.length === 1 && contenders.length > 1) {
+    winner = alive[0]!;
+    const human = state.players[winner]!.controller === 'human';
+    reason = soloHuman ? (human ? 'All rivals defeated' : 'You have no towns and no heroes remaining.') : `${state.players[winner]!.name} is the last empire standing`;
+  }
+  if (winner) {
+    setFlag(tx, 'rivals_eliminated');
+    const human = state.players[winner]!.controller === 'human';
+    state.outcome = { status: human ? 'victory' : 'defeat', reason, day: state.day, winnerIds: [winner] };
+    tx.emit(human ? { kind: 'MissionCompleted', reason } : { kind: 'MissionFailed', reason });
+    return;
+  }
+  const humansTotal = contenders.filter((id) => state.players[id]!.controller === 'human').length;
+  if (humansTotal > 0 && humansAlive.length === 0) {
+    const r = alive.length === 0 ? 'Every empire has fallen.' : 'You have no towns and no heroes remaining.';
+    state.outcome = { status: 'defeat', reason: r, day: state.day };
+    tx.emit({ kind: 'MissionFailed', reason: r });
+    return;
+  }
+  // An empire eliminated during its own turn hands the turn on (hot-seat and AI alike).
+  if (state.players[state.activePlayerId]?.eliminated && !state.battle) commitEndTurn(tx);
 }

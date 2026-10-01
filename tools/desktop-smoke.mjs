@@ -79,6 +79,15 @@ try {
   const files = await readdir(path.join(userData, 'saves')).catch(() => []);
   if (!files.includes('manual-1.json')) fail(`save file not written (found: ${files.join(', ')})`);
   await win.screenshot({ path: path.join(process.env.PR_SMOKE_OUT ?? '.', 'desktop-save.png') });
+  // High scores live in their own records file next to the preferences, never in saves/.
+  const records = await win.evaluate(async () => {
+    await window.prDesktop.writeRecords(JSON.stringify({ schemaVersion: 1, entries: [] }));
+    return window.prDesktop.readRecords();
+  });
+  if (!records || !records.includes('schemaVersion')) fail('records store not written');
+  const recordFiles = await readdir(userData).catch(() => []);
+  if (!recordFiles.includes('records.json')) fail(`records.json not written (found: ${recordFiles.join(', ')})`);
+  if ((await readdir(path.join(userData, 'saves')).catch(() => [])).some((f) => f.startsWith('records'))) fail('records leaked into saves/');
   // Navigation away from the app origin is blocked.
   await win.evaluate(() => {
     window.location.href = 'https://example.com/';
@@ -98,7 +107,7 @@ try {
     if (packaged.devTools) fail('DevTools opened in the packaged build');
     if (packaged.name !== 'Pantheon Realms') fail(`unexpected app name ${packaged.name}`);
   }
-  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, glbs, audio, ...(packaged ? { packaged } : {}) });
+  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', glbs, audio, ...(packaged ? { packaged } : {}) });
 } catch (e) {
   fail(e instanceof Error ? e.message : String(e));
 } finally {

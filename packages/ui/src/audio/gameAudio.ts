@@ -1,3 +1,4 @@
+import { scenarioMission } from '@pr/rules';
 /**
  * GameAudio: connects the AudioDirector to the interface.
  *
@@ -137,7 +138,7 @@ export class GameAudio {
   private readonly sync = (): void => {
     const store = this.store;
     const session = store.session;
-    const mission = session ? store.catalog.missions[session.state.mission.missionId] : undefined;
+    const mission = session ? scenarioMission(store.catalog, session.state) : undefined;
     const scape = soundscapeFor({
       screen: store.screen.id,
       overlays: store.overlays.map((o) => o.kind),

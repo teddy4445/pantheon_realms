@@ -4,12 +4,23 @@
  * campaign progress. Markers focus the adventure camera only on known sites.
  */
 import { useState } from 'react';
-import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, type ObjectiveDefinition } from '@pr/rules';
+import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, type ObjectiveDefinition, requireScenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
+import { HINTS } from '../app/hints';
 import { Button, Chip, Panel, Tabs } from '../components/kit';
-import { StoryPortrait, HeroPortrait } from '../components/art';
+import { MarkerIcon, StoryPortrait, HeroPortrait } from '../components/art';
+import { resolveAsset } from '../assets/manifest';
 import { ScreenHeader } from '../components/game';
 import { Icon } from '../assets/icons';
+
+/** Quest-marker art per objective status (shape carries the status, not color alone). */
+const OBJECTIVE_MARKER: Record<string, string> = {
+  active: 'icon.marker.quest',
+  available: 'icon.marker.quest',
+  completed: 'icon.marker.check',
+  failed: 'icon.marker.encounter',
+  locked: 'icon.marker.locked',
+};
 
 const STATUS: Record<string, { text: string; tone: 'ok' | 'warn' | 'bad' | 'info' | 'muted' }> = {
   locked: { text: 'Locked', tone: 'muted' },
@@ -46,7 +57,7 @@ export function JournalScreen() {
   const catalog = store.catalog;
   const session = store.session!;
   const state = session.state;
-  const mission = catalog.missions[state.mission.missionId]!;
+  const mission = requireScenarioMission(catalog, state);
   const [tab, setTab] = useState<Tab>((store.screen.params.tab as Tab | undefined) ?? 'objectives');
   const defs = missionObjectiveDefs(catalog, state);
   const playerId = session.humanPlayerId;
@@ -61,7 +72,11 @@ export function JournalScreen() {
     const known = site ? explored[cellIndex(state.world.map, site.coord)] === 1 || state.mission.revealedSiteIds.includes(site.id) : false;
     return (
       <div key={o.id} className={`objective is-${status}`} data-testid={`objective-${o.id}`}>
-        <Icon name={status === 'completed' ? 'check' : status === 'failed' ? 'close' : status === 'locked' ? 'lock' : 'flag'} className="objective__icon" />
+        {resolveAsset(OBJECTIVE_MARKER[status] ?? '').url ? (
+          <MarkerIcon assetId={OBJECTIVE_MARKER[status]!} size="1.9rem" />
+        ) : (
+          <Icon name={status === 'completed' ? 'check' : status === 'failed' ? 'close' : status === 'locked' ? 'lock' : 'flag'} className="objective__icon" />
+        )}
         <div className="objective__body">
           <div className="objective__title">
             {o.title} <Chip tone={STATUS[status]!.tone}>{STATUS[status]!.text}</Chip> {prog ? <Chip>{prog}</Chip> : null}
@@ -126,9 +141,22 @@ export function JournalScreen() {
           </>
         ) : null}
         {tab === 'story' ? (
-          <Panel title="Briefing" bodyClassName="scroll" className="journal-wide">
+          <Panel title="Story so far" bodyClassName="scroll" className="journal-wide" >
             <p className="dim">{mission.summary}</p>
             <DialogueLines lines={mission.briefing} />
+            {(state.mission.scenesPlayed ?? []).map((id) => {
+              const scene = mission.storyScenes?.find((x) => x.id === id);
+              return scene ? (
+                <div key={id} data-testid={`journal-scene-${id}`}>
+                  <div className="ornament-rule" />
+                  <DialogueLines lines={scene.lines} />
+                  <Button size="small" variant="ghost" onClick={() => store.playStory({ key: `replay:${id}:${Date.now()}`, title: 'Replay', lines: scene.lines })}>
+                    Replay scene
+                  </Button>
+                </div>
+              ) : null;
+            })}
+            {(mission.storyScenes?.length ?? 0) > (state.mission.scenesPlayed?.length ?? 0) ? <p className="faint small">More of the story unfolds as you play.</p> : null}
           </Panel>
         ) : null}
         {tab === 'help' ? (
@@ -140,6 +168,16 @@ export function JournalScreen() {
                 <p>{h.text}</p>
               </div>
             ))}
+            <details className="help-topic" data-testid="journal-tips">
+              <summary>
+                <h3 style={{ display: 'inline' }}>All tips</h3>
+              </summary>
+              {Object.values(HINTS).map((h) => (
+                <p key={h.id}>
+                  <strong>{h.title}.</strong> {h.text}
+                </p>
+              ))}
+            </details>
             {mission.newDecisions.length ? (
               <>
                 <h3>New in this mission</h3>

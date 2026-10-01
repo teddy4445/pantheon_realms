@@ -31,7 +31,7 @@ const dist = path.resolve(positional[0] ?? 'apps/client/dist');
 const runs = Number(flag('--runs', '7'));
 const jsonOut = flag('--json', null);
 
-const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.woff': 'font/woff', '.glb': 'model/gltf-binary', '.ogg': 'audio/ogg', '.wav': 'audio/wav' };
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2', '.woff': 'font/woff', '.glb': 'model/gltf-binary', '.ogg': 'audio/ogg', '.wav': 'audio/wav' };
 const gzCache = new Map();
 const server = createServer(async (req, res) => {
   try {

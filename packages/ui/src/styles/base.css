@@ -88,18 +88,28 @@ button {
   white-space: nowrap;
 }
 
-/* Scrollbars in the game style */
+/* Scrollbars in the game style: sunken track, gold thumb (every scrolling area). */
 .scroll {
   overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gold-600) transparent;
 }
-.scroll::-webkit-scrollbar {
-  width: 0.5rem;
+::-webkit-scrollbar {
+  width: 0.6rem;
+  height: 0.6rem;
 }
-.scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--gold-500), var(--gold-700));
+::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #05090f, #0b1626);
+  border-left: 1px solid rgba(194, 154, 82, 0.25);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, var(--gold-400), var(--gold-600) 60%, var(--gold-700));
+  border: 1px solid #3d2c10;
   border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, var(--gold-300), var(--gold-500) 60%, var(--gold-600));
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -27,10 +27,13 @@ import {
   startCampaign,
   startNextMission,
   startPracticeReplay,
+  createGeneratedMatch,
   createMissionMatch,
   nextMissionId,
   type CampaignState,
   type CompletionRecord,
+  type GeneratedScenario,
+  type MissionStartOptions,
 } from '@pr/campaign';
 import { battleActor, chooseBattleAction, isAiControlledBattleTurn, stepBattleAI, stepStrategicAI } from '@pr/ai';
 import type { SaveSnapshot } from './save';
@@ -58,6 +61,8 @@ export class GameSession {
   private seq = 0;
   private readonly aiTried = new Set<string>();
   private aiTurnOwner: PlayerId | null = null;
+  /** The human seat that acted most recently (hot-seat: whose view to show between turns). */
+  private lastHumanId: PlayerId | null = null;
   readonly sessionId: string;
 
   private constructor(readonly catalog: ContentCatalog, state: MatchState, campaign: CampaignState | null) {
@@ -74,8 +79,25 @@ export class GameSession {
     return new GameSession(catalog, start.match, campaign);
   }
 
-  static newScenario(catalog: ContentCatalog, missionId: string, matchId: string, startingGodId: string | null = null): GameSession {
-    const { match } = createMissionMatch(catalog, missionId, { matchId, startingGodId });
+  static newScenario(
+    catalog: ContentCatalog,
+    missionId: string,
+    matchId: string,
+    startingGodId: string | null = null,
+    opts: Pick<MissionStartOptions, 'difficultyId' | 'controllers' | 'playerNames' | 'patronGodIds'> = {},
+  ): GameSession {
+    const { match } = createMissionMatch(catalog, missionId, { matchId, startingGodId, ...opts });
+    return new GameSession(catalog, match, null);
+  }
+
+  /** A generated skirmish (random map): its definition travels inside the match. */
+  static newGenerated(
+    catalog: ContentCatalog,
+    generated: GeneratedScenario,
+    matchId: string,
+    opts: Pick<MissionStartOptions, 'difficultyId' | 'controllers' | 'playerNames' | 'patronGodIds' | 'startingGodId'> = {},
+  ): GameSession {
+    const { match } = createGeneratedMatch(catalog, generated, { matchId, ...opts });
     return new GameSession(catalog, match, null);
   }
 
@@ -93,8 +115,18 @@ export class GameSession {
     return this._campaign;
   }
 
+  /**
+   * The human seat whose view is shown: the active player when it is a human
+   * (hot-seat games have several), otherwise the human who acted last, else the
+   * first human seat.
+   */
   get humanPlayerId(): PlayerId {
-    return this._state.playerOrder.find((p) => this._state.players[p]?.controller === 'human') ?? this._state.playerOrder[0]!;
+    return viewerPlayerId(this._state, this.lastHumanId);
+  }
+
+  /** Human seats in turn order (more than one in a hot-seat game). */
+  get humanSeats(): PlayerId[] {
+    return this._state.playerOrder.filter((p) => this._state.players[p]?.controller === 'human');
   }
 
   snapshot(): SaveSnapshot {
@@ -128,12 +160,18 @@ export class GameSession {
   }
 
   /** Submit a human command. Returns the rejection unchanged when invalid. */
-  dispatch(payload: CommandPayload, actor: PlayerId = this.humanPlayerId): DispatchResult {
+  dispatch(payload: CommandPayload, actor?: PlayerId): DispatchResult {
     const before = this._state;
+    if (!actor) {
+      // In a battle the side that acts now commands (two human sides in a hot-seat battle).
+      const battleSide = before.battle && payload.kind.startsWith('Battle') ? battleActor(before) : null;
+      actor = battleSide && before.players[battleSide]?.controller === 'human' ? battleSide : this.humanPlayerId;
+    }
     const command = { ...payload, commandId: this.nextCommandId(), expectedRevision: before.revision, actorPlayerId: actor } as GameCommand;
     const res = processCommand({ catalog: this.catalog }, before, command);
     if (!res.ok) return { ok: false, rejection: res.rejection };
     this._state = res.state;
+    if (before.players[actor]?.controller === 'human') this.lastHumanId = actor;
     if (res.events.some((e) => e.kind === 'BattleStarted')) this.checkpoint('pre_encounter', { match: before, campaign: this._campaign });
     this.afterCommit(res.events);
     this.publish(res.events, 'human');
@@ -225,9 +263,27 @@ export class GameSession {
       const start = restartCurrentMission(this.catalog, this._campaign);
       this._state = start.match;
     } else {
-      const { match } = createMissionMatch(this.catalog, this._state.mission.missionId, { matchId: this._state.matchId });
+      const s = this._state;
+      const opts = {
+        matchId: s.matchId,
+        difficultyId: s.scenario.difficultyId ?? null,
+        controllers: Object.fromEntries(s.playerOrder.filter((p) => s.players[p]!.role !== 'scripted_hostile').map((p) => [p, s.players[p]!.controller])),
+        playerNames: Object.fromEntries(s.playerOrder.map((p) => [p, s.players[p]!.name])),
+        // Keep every seat's patron (the player's and hot-seat rivals').
+        startingGodId: Object.values(s.players).find((p) => p.role === 'player')?.pantheon.patronGodId ?? null,
+        patronGodIds: Object.fromEntries(
+          s.playerOrder.flatMap((p) => {
+            const pl = s.players[p]!;
+            return pl.role === 'rival' && pl.pantheon.patronGodId ? [[p, pl.pantheon.patronGodId]] : [];
+          }),
+        ),
+      };
+      const { match } = s.customMission
+        ? createGeneratedMatch(this.catalog, { mission: s.customMission, map: s.world.map, decor: [] }, opts)
+        : createMissionMatch(this.catalog, s.mission.missionId, opts);
       this._state = match;
     }
+    this.lastHumanId = null;
     this.publish([], 'start');
   }
 
@@ -245,6 +301,22 @@ export class GameSession {
     this._campaign = snapshot.campaign;
     this.aiTried.clear();
     this.aiTurnOwner = null;
+    this.lastHumanId = null;
     this.publish([], 'load');
   }
+}
+
+/** Whose view to show: the active human, else the last human who acted, else the first human seat. */
+export function viewerPlayerId(state: MatchState, lastHumanId: PlayerId | null = null): PlayerId {
+  const active = state.players[state.activePlayerId];
+  if (active?.controller === 'human' && !active.eliminated) return state.activePlayerId;
+  if (lastHumanId && state.players[lastHumanId]?.controller === 'human') return lastHumanId;
+  // Between human turns: the human seat that played most recently in turn order.
+  const order = state.playerOrder;
+  const at = Math.max(0, order.indexOf(state.activePlayerId));
+  for (let k = 1; k <= order.length; k++) {
+    const id = order[(at - k + order.length) % order.length]!;
+    if (state.players[id]?.controller === 'human') return id;
+  }
+  return order.find((p) => state.players[p]?.controller === 'human') ?? order[0]!;
 }

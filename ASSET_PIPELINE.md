@@ -284,3 +284,42 @@ Sound IDs by use (the full list is `REQUIRED_SOUND_IDS` in
   `combat.defend`, `combat.morale_up`, `combat.morale_down`,
   `combat.shapeshift`, `combat.recovery`, `combat.catapult`,
   `combat.stone_hit`, `combat.breach`, `combat.turret`, `combat.moat`.
+
+## 11. Interface art (opening screen, branding, icons)
+
+The interface art is owner-supplied (AI-generated visual references delivered
+on 2026-10-01). Sources live in `assets-source/ui/`; the runtime files are
+**generated** by `python3 tools/assets/prepare_ui_art.py` (Pillow, numpy,
+scipy) and listed with provenance in `assets-runtime/ui/manifest.json`.
+Code refers to asset IDs only, so final art replaces a file without screen
+changes. Edit the sources and re-run the script; never edit the outputs.
+
+| Source (`assets-source/ui/`) | Runtime output | Asset ID(s) / use |
+|---|---|---|
+| `backgrounds/opening-<pantheon>-<landscape\|battle>.png` | `assets-runtime/ui/backgrounds/*.webp` (WebP q80, ≤1920 px wide) | `menu.background.<name>`; the main menu picks one **at random each time the game starts**; the same image, darkened, sits behind the menu-style screens |
+| `branding/full-logo.png` | `ui/branding/full-logo.webp` (navy background keyed out, cropped) | `brand.logo.full` — main-menu title |
+| `branding/logo.png` | `ui/branding/emblem-256.png`, `assets-runtime/favicon.png` (64 px), `apps/desktop/build-resources/icon.ico` (16–256 px) and `icon.png` (512 px), `ui/branding/app-icon-256.png` | `brand.emblem` (small branding: menu footer, pause, credits), app/installer icon, favicon, window icon |
+| `frames/intro-frame.png` | `ui/frames/intro-frame.webp` | `menu.frame`; the script also measures the transparent window (`interior`) the menu sits in |
+| `menu-icons/menu-*.png` (the owner's nine `init_icon` files, renamed by meaning) | `assets-runtime/icons/menu-*.png` (192 px) | `icon.menu.<continue\|new-game\|load-game\|campaign\|skirmish\|encyclopedia\|settings\|credits\|quit>` |
+| `sheets/resource-status-icon-pack.png` | `ui/icons/<group>.<name>.png` (96 px, 96 icons) | `icon.res.*`, `icon.stat.*`, `icon.world.*`, `icon.time.*`, `icon.status.*`, `icon.attr.*`, `icon.action.*` (battle actions), `icon.fx.*`, `icon.marker.*` (map markers) |
+| `sheets/map-markers-sheet.png` | — (reference only) | |
+
+Main-menu icon mapping (by meaning): double chevron → Continue, four-point
+star → New Game, tray with arrow → Load Game, map with route → Campaign,
+crossed swords → Skirmish, open book → Encyclopedia, gear → Settings, laurel
+with "i" → Credits, door with arrow → Quit. Random Map and High Scores have
+no art of their own yet and use the SVG glyphs.
+
+Where icon art is used: `Icon` (`packages/ui/src/assets/icons.tsx`) draws the
+art for the names listed in `ICON_ART` (resources, hero stats, battle actions,
+menu entries…) inside the same 24×24 `<svg>`, so every resource counter, cost
+list, stat block, battle control and menu entry picks it up; interface glyphs
+(close, back, check, lock…) stay SVG. Map-marker art appears beside site names
+in the adventure tile panel and on Journal objectives (`siteMarkerAsset`,
+`MarkerIcon` in `components/art.tsx`); the 3D map itself is unchanged.
+
+To add or replace an opening background, drop `opening-<name>.png` into
+`assets-source/ui/backgrounds/` and run the script. To deliver a final icon or
+logo, add the file and register it under the same asset ID in the `FINAL`
+table of `packages/ui/src/assets/manifest.ts` (it takes precedence over the
+generated manifest); no screen changes.

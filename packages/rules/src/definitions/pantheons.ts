@@ -19,7 +19,7 @@ import type {
 import type { ImplementationStatus, ProvenanceInfo } from './common';
 import type { ResourceCost } from '../core/resources';
 import type { CreatureTier } from './creatures';
-import type { EffectDefinition, HeroAttribute, RequirementDefinition } from './logic';
+import type { ContentScope, EffectDefinition, HeroAttribute, RequirementDefinition } from './logic';
 
 export interface PantheonThemeDefinition {
   /** Faction accent (UI trims, banners). Always paired with emblem/text for ownership. */
@@ -113,7 +113,9 @@ export type SkillRule =
   | { readonly type: 'fortune'; readonly luckByRank: readonly number[] }
   | { readonly type: 'wisdom'; readonly maxSpellTierByRank: readonly number[] }
   | { readonly type: 'scouting'; readonly radiusByRank: readonly number[] }
-  | { readonly type: 'tactics'; readonly columnsByRank: readonly number[] };
+  | { readonly type: 'tactics'; readonly columnsByRank: readonly number[] }
+  /** Generic skill: each rank grants these effects from the shared vocabulary (rank 1 = index 0). */
+  | { readonly type: 'effects'; readonly effectsByRank: readonly (readonly EffectDefinition[])[] };
 
 export interface SkillDefinition {
   readonly id: SkillId;
@@ -121,6 +123,12 @@ export interface SkillDefinition {
   readonly rankSummaries: readonly string[];
   readonly rule: SkillRule;
   readonly iconAssetId: AssetId;
+  /** Offered only to heroes of this pantheon (omitted: any hero). */
+  readonly pantheonId?: PantheonId;
+  /** Content pool (default 'core'). */
+  readonly scope?: ContentScope;
+  /** One-line description for the encyclopedia and level-up cards. */
+  readonly summary?: string;
 }
 
 export type SpellEffect =
@@ -135,7 +143,17 @@ export type SpellEffect =
       readonly denominator: number;
       readonly durationRounds: number;
     }
-  | { readonly type: 'reveal_radius'; readonly radius: number };
+  | { readonly type: 'reveal_radius'; readonly radius: number }
+  /** Speed change for a stack (negative slows), through the current and following rounds. */
+  | { readonly type: 'speed_bonus'; readonly amount: number; readonly durationRounds: number }
+  /** Damage to the target and to every enemy stack adjacent to it. */
+  | { readonly type: 'area_damage'; readonly base: number; readonly perPower: number }
+  /** Attack, Defense or Speed change for every stack of the caster's side. */
+  | { readonly type: 'mass_bonus'; readonly stat: 'attack' | 'defense' | 'speed'; readonly amount: number; readonly durationRounds: number }
+  /** Adventure: the caster gains movement points today. */
+  | { readonly type: 'movement_bonus'; readonly points: number }
+  /** Adventure: the caster returns to the nearest town its player owns (spends all remaining movement). */
+  | { readonly type: 'recall' };
 
 export interface SpellDefinition {
   readonly id: SpellId;
@@ -143,13 +161,18 @@ export interface SpellDefinition {
   readonly tier: number;
   readonly manaCost: number;
   readonly context: 'battle' | 'adventure';
-  readonly target: 'enemy_stack' | 'ally_stack' | 'known_tile';
+  /** 'friendly_army' affects every friendly stack (any friendly stack is the nominal target); 'self' is the casting hero. */
+  readonly target: 'enemy_stack' | 'ally_stack' | 'known_tile' | 'friendly_army' | 'self';
   readonly effect: SpellEffect;
   readonly summary: string;
   /** Library access: 'sanctum' spells are learnable up to the town library tier; 'god' spells need eligibility. */
   readonly access: 'sanctum' | 'god_eligibility';
   readonly iconAssetId: AssetId;
   readonly implementationStatus: ImplementationStatus;
+  /** Learnable only in towns of this pantheon (omitted: any Sanctum). */
+  readonly pantheonId?: PantheonId;
+  /** Content pool (default 'core'). */
+  readonly scope?: ContentScope;
 }
 
 export type ArtifactSlot = 'weapon' | 'armor' | 'head' | 'relic' | 'ring' | 'mount';
@@ -166,4 +189,17 @@ export interface ArtifactDefinition {
   /** Price at an Artifact Merchant; artifacts without one are never stocked. */
   readonly merchantPrice?: ResourceCost;
   readonly provenance: ProvenanceInfo;
+  /** Member of this artifact set (bonuses for wearing several pieces). */
+  readonly setId?: string;
+  /** Content pool (default 'core'): expanded items are stocked/placed only where expanded content is enabled. */
+  readonly scope?: ContentScope;
+}
+
+/** Bonuses for wearing several pieces of one set (the highest met thresholds all apply). */
+export interface ArtifactSetDefinition {
+  readonly id: string;
+  readonly name: string;
+  readonly summary: string;
+  readonly pieceIds: readonly ArtifactId[];
+  readonly bonuses: readonly { readonly pieces: number; readonly effects: readonly EffectDefinition[]; readonly summary: string }[];
 }

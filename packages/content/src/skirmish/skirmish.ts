@@ -7,7 +7,7 @@
  * rival hero defeated and every rival town taken. A garrisoned or defended town
  * is taken by siege (design/04 §8, temporary deterministic model).
  */
-import type { MapTemplateDefinition, MissionDefinition, SiteDefinition, SkirmishScenarioDefinition } from '@pr/rules';
+import type { MapTemplateDefinition, MissionDefinition, SiteDefinition, SkirmishKitDefinition, SkirmishScenarioDefinition } from '@pr/rules';
 import { GREEK_FAMILY_SPECS } from '../greek/creatures';
 import { NORSE_FAMILY_SPECS } from '../norse/creatures';
 import { kitBuildingId, slug, type PantheonKitSpec } from '../pantheonKit';
@@ -304,6 +304,7 @@ function twinHarbors(id: string, playerPantheon: string, rivalPantheon: string):
       },
     ],
     initialFlags: ['skirmish'],
+    features: SKIRMISH_FEATURES,
     purchasableBuildingIds: null,
     heroHiringEnabled: true,
     sites: SITES,
@@ -317,6 +318,9 @@ function twinHarbors(id: string, playerPantheon: string, rivalPantheon: string):
     thumbnailAssetId: 'mission.skirmish.twin_harbors.thumbnail',
   };
 }
+
+/** Skirmish scenarios enable the proposed expansions (pantheon skills and spells, sets, events, interventions). */
+export const SKIRMISH_FEATURES = { expandedContent: true, weeklyEvents: true, interventions: true } as const;
 
 /** Mission ID for a pantheon pairing (Greek vs. Greek keeps the original ID). */
 export function skirmishMissionId(playerPantheon: string, rivalPantheon: string): string {
@@ -337,3 +341,67 @@ export const SKIRMISH_SCENARIOS: readonly SkirmishScenarioDefinition[] = [
     variants: PAIRS.map(([p, r]) => ({ playerPantheonId: p, rivalPantheonId: r, missionId: skirmishMissionId(p, r) })),
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Skirmish kits for generated maps (same starting packages as Twin Harbors)
+// ---------------------------------------------------------------------------
+
+/** Extra leaders (beyond Twin Harbors' two) for three- and four-empire maps; all use the Strategos-type stats. */
+const EXTRA_LEADERS: Record<string, readonly { definitionId: string; portrait: string }[]> = {
+  greek: [
+    { definitionId: 'atalanta', portrait: 'hero.greek.atalanta.portrait' },
+    { definitionId: 'achilles', portrait: 'hero.greek.achilles.portrait' },
+  ],
+  norse: [
+    { definitionId: 'norse_brynhild', portrait: 'hero.norse.brynhild.portrait' },
+    { definitionId: 'norse_sigurd', portrait: 'hero.norse.sigurd.portrait' },
+  ],
+  egyptian: [
+    { definitionId: 'egyptian_nefertiti', portrait: 'hero.egyptian.nefertiti.portrait' },
+    { definitionId: 'egyptian_ramses', portrait: 'hero.egyptian.ramses.portrait' },
+  ],
+  japanese: [
+    { definitionId: 'japanese_tomoe_gozen', portrait: 'hero.japanese.tomoe_gozen.portrait' },
+    { definitionId: 'japanese_yamato_takeru', portrait: 'hero.japanese.yamato_takeru.portrait' },
+  ],
+  celtic: [
+    { definitionId: 'celtic_scathach', portrait: 'hero.celtic.scathach.portrait' },
+    { definitionId: 'celtic_cu_chulainn', portrait: 'hero.celtic.cu_chulainn.portrait' },
+  ],
+  mesoamerican: [
+    { definitionId: 'mesoamerican_hunahpu', portrait: 'hero.mesoamerican.hunahpu.portrait' },
+    { definitionId: 'mesoamerican_xbalanque', portrait: 'hero.mesoamerican.xbalanque.portrait' },
+  ],
+};
+
+const TOWN_NAMES: Record<string, readonly string[]> = {
+  greek: ['Myrtos', 'Kalliste', 'Thera', 'Aigina', 'Delos', 'Korinna'],
+  norse: ['Hrafnheim', 'Skjoldvik', 'Isafjord', 'Grimsby', 'Ulfsstad', 'Vargholm'],
+  egyptian: ['Per-Ankh', 'Nekheb', 'Wadj-Iset', 'Tjebu', 'Abedju', 'Henen'],
+  japanese: ['Kiyomizu', 'Aonami', 'Takamura', 'Shirakawa', 'Hanamori', 'Kurogane'],
+  celtic: ['Dun Brega', 'Caer Lir', 'Ardmor', 'Inis Fail', 'Rath Mor', 'Glenn Dá Loch'],
+  mesoamerican: ['Tollan', 'Xochitepec', 'Cuauhnahuac', 'Itzamal', 'Teotlalco', 'Mictlampa'],
+};
+
+export const SKIRMISH_KITS: readonly SkirmishKitDefinition[] = SKIRMISH_PANTHEONS.map((pid) => {
+  const kit = KITS[pid]!;
+  const lead = LEADERS[pid]!;
+  const classId = lead.player.classId;
+  return {
+    pantheonId: pid,
+    adjective: kit.adjective,
+    archetypeId: kit.archetypeId,
+    buildings: kit.buildings,
+    population: kit.population,
+    covenants: kit.covenants,
+    army: kit.army,
+    leaders: [
+      { definitionId: lead.player.definitionId, classId, portraitAssetId: lead.player.portrait },
+      { definitionId: lead.rival.definitionId, classId, portraitAssetId: lead.rival.portrait },
+      ...(EXTRA_LEADERS[pid] ?? []).map((x) => ({ definitionId: x.definitionId, classId, portraitAssetId: x.portrait })),
+    ],
+    leaderAttributes: STRATEGOS.attributes,
+    leaderSkills: STRATEGOS.skills,
+    townNames: TOWN_NAMES[pid] ?? [],
+  };
+});

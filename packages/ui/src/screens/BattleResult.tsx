@@ -4,7 +4,8 @@
  * advanced objectives and queued level-ups. Continue leads to pending
  * level-up decisions first, then back to the adventure map.
  */
-import { RESOURCE_KEYS } from '@pr/rules';
+import { useEffect } from 'react';
+import { RESOURCE_KEYS, scenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
@@ -15,6 +16,11 @@ export function BattleResultScreen() {
   const catalog = store.catalog;
   const state = store.session!.state;
   const r = state.lastBattleResult;
+  const mySide = r?.playerSide ? (r.playerSide === 'attacker' ? r.attacker : r.defender) : null;
+  const lost = mySide ? mySide.lines.reduce((n, l) => n + Math.max(0, l.before - l.after), 0) : 0;
+  useEffect(() => {
+    if (lost > 0) store.showHint('battle_losses');
+  }, [lost, store]);
   if (!r) {
     return (
       <div className="screen">
@@ -118,7 +124,7 @@ export function BattleResultScreen() {
               <SectionTitle>Objectives</SectionTitle>
               <ul className="bullets small">
                 {r.objectivesAdvanced.map((o) => (
-                  <li key={o}>{catalog.missions[state.mission.missionId]?.objectives.find((x) => x.id === o)?.title ?? o}</li>
+                  <li key={o}>{scenarioMission(catalog, state)?.objectives.find((x) => x.id === o)?.title ?? o}</li>
                 ))}
               </ul>
             </>

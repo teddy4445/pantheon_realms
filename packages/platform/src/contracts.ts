@@ -39,6 +39,8 @@ export interface PlatformServices {
   readonly appVersion: string;
   readonly saves: SaveRepository;
   readonly preferences: PreferencesStore;
+  /** Player records (high-score table), kept apart from saves and preferences. */
+  readonly records: PreferencesStore;
   /** Native Quit exists only on desktop; the browser never pretends to close a tab. */
   readonly canQuit: boolean;
   quit(): Promise<void>;
@@ -58,6 +60,8 @@ export interface DesktopBridge {
   importSave(): Promise<string | null>;
   readPreferences(): Promise<string | null>;
   writePreferences(text: string): Promise<void>;
+  readRecords(): Promise<string | null>;
+  writeRecords(text: string): Promise<void>;
   setWindowMode(mode: WindowMode): Promise<void>;
   getWindowMode(): Promise<WindowMode>;
   quit(): Promise<void>;

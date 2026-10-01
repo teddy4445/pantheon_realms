@@ -19,6 +19,8 @@ import { spend } from './economy';
 import { learnSpellsAtTown } from './heroes';
 import { grantReward, MISSION_VICTORY_FLAG, setFlag } from './quests';
 import { startBattle } from './battle/factory';
+import { bumpTotal } from './stats';
+import { scenarioMission } from '../resolvers/scenario';
 
 export interface MovementQuote extends PathResult {
   /** Index of the last step reachable today (-1 when none). */
@@ -154,6 +156,7 @@ export function arriveAt(tx: Tx, hero: HeroState, coord: HexCoord): void {
         town.ownerId = playerId;
         st.owner = playerId;
         tx.emit({ kind: 'SiteCaptured', siteId: def.id, playerId });
+        bumpTotal(tx.state, playerId, 'townsCaptured');
       }
       break;
     }
@@ -161,6 +164,15 @@ export function arriveAt(tx: Tx, hero: HeroState, coord: HexCoord): void {
       if (st.owner !== playerId) {
         st.owner = playerId;
         tx.emit({ kind: 'SiteCaptured', siteId: def.id, playerId });
+        bumpTotal(tx.state, playerId, 'sitesCaptured');
+      }
+      break;
+    case 'relic':
+      if (st.owner !== playerId) {
+        st.owner = playerId;
+        st.heldDays = 0;
+        tx.emit({ kind: 'SiteCaptured', siteId: def.id, playerId });
+        bumpTotal(tx.state, playerId, 'sitesCaptured');
       }
       break;
     case 'pickup':
@@ -241,7 +253,7 @@ export function commitActivateSite(tx: Tx, heroId: HeroId, siteId: SiteId): void
 
 /** Gates open exactly when all their flags are set. */
 export function updateGates(tx: Tx): void {
-  const mission = tx.catalog.missions[tx.state.mission.missionId];
+  const mission = scenarioMission(tx.catalog, tx.state);
   if (!mission) return;
   for (const def of mission.sites) {
     if (def.kind.type !== 'gate') continue;

@@ -31,6 +31,12 @@ import {
   type PlayerState,
   type SiteState,
   type TownState,
+  type WorldMapDefinition,
+  type DifficultyDefinition,
+  NO_SCENARIO_FEATURES,
+  recordDayStats,
+  projectedIncome,
+  ensureStats,
   resources,
   heroVisionRadius,
   townVisionRadius,
@@ -62,6 +68,21 @@ export interface MissionStartOptions {
   readonly carryover?: HeroCarryover | null;
   readonly startingGodId?: GodId | null;
   readonly playerName?: string;
+  /** Skirmish difficulty (ignored outside skirmish scenarios). Default: 'normal' when the catalog defines it. */
+  readonly difficultyId?: string | null;
+  /** Override who controls each seat (hot-seat: several 'human' seats). */
+  readonly controllers?: Readonly<Record<string, 'human' | 'ai'>>;
+  /** Override seat names (hot-seat player names). */
+  readonly playerNames?: Readonly<Record<string, string>>;
+  /** Patron gods for rival seats played by humans (hot-seat). AI rivals start without a patron, as before. */
+  readonly patronGodIds?: Readonly<Record<string, GodId>>;
+}
+
+/** A generated scenario: its definition and logical map (from @pr/mapgen's skirmish generator). */
+export interface GeneratedScenario {
+  readonly mission: MissionDefinition;
+  readonly map: WorldMapDefinition;
+  readonly decor: readonly DecorItem[];
 }
 
 export interface MissionStart {
@@ -155,7 +176,43 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
   const template = getMapTemplate(catalog, mission.mapTemplateId);
   const seed = opts.seed ?? template.goldenSeed;
   const gen = generateMap(template, seed, opts.mode ?? 'golden');
+  return buildMissionMatch(catalog, mission, gen.map, gen.decor, opts, false, seed);
+}
+
+/** Start a generated scenario; its definition travels inside the match (MatchState.customMission). */
+export function createGeneratedMatch(catalog: ContentCatalog, generated: GeneratedScenario, opts: MissionStartOptions): MissionStart {
+  return buildMissionMatch(catalog, generated.mission, generated.map, generated.decor, opts, true, generated.map.seed);
+}
+
+function scaleWallet(wallet: MissionDefinition['player']['wallet'], percent: number) {
+  const scaled = resources(wallet);
+  if (percent === 100) return scaled;
+  return resources({
+    gold: Math.floor((scaled.gold * percent) / 100),
+    wood: Math.floor((scaled.wood * percent) / 100),
+    stone: Math.floor((scaled.stone * percent) / 100),
+    crystal: Math.floor((scaled.crystal * percent) / 100),
+    favor: Math.floor((scaled.favor * percent) / 100),
+  });
+}
+
+function buildMissionMatch(
+  catalog: ContentCatalog,
+  mission: MissionDefinition,
+  map: WorldMapDefinition,
+  decor: readonly DecorItem[],
+  opts: MissionStartOptions,
+  custom: boolean,
+  seed: number,
+): MissionStart {
+  const gen = { map, decor };
   const carry = opts.carryover ?? null;
+  const skirmish = (mission.initialFlags ?? []).includes('skirmish');
+  const difficultyId = skirmish ? (opts.difficultyId === undefined ? (catalog.difficulties?.['normal'] ? 'normal' : null) : opts.difficultyId) : null;
+  const difficulty: DifficultyDefinition | undefined = difficultyId ? catalog.difficulties?.[difficultyId] : undefined;
+  const controllerOf = (id: string, fallback: 'human' | 'ai') => opts.controllers?.[id] ?? fallback;
+  const startPercent = (controller: 'human' | 'ai') => (difficulty ? (controller === 'human' ? difficulty.humanStartPercent : difficulty.aiStartPercent) : 100);
+  const incomePercent = (controller: 'human' | 'ai') => (difficulty && controller === 'ai' ? difficulty.aiIncomePercent : 100);
   const p = mission.player;
   const siteCoord = (siteId: string) => {
     const s = mission.sites.find((x) => x.id === siteId);
@@ -169,14 +226,17 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
     players[pl.id] = pl;
     playerOrder.push(pl.id);
   };
+  const playerController = controllerOf(p.playerId, p.controller ?? 'human');
   addPlayer({
     id: p.playerId,
-    name: opts.playerName ?? p.name,
-    controller: 'human',
+    name: opts.playerNames?.[p.playerId] ?? opts.playerName ?? p.name,
+    controller: playerController,
     role: 'player',
     pantheonId: p.pantheonId,
     color: PLAYER_COLORS.player,
-    wallet: resources(p.wallet),
+    wallet: scaleWallet(p.wallet, startPercent(playerController)),
+    incomePercent: incomePercent(playerController),
+    interventionWeek: 0,
     pantheon: {
       patronGodId: carry?.patronGodId ?? opts.startingGodId ?? null,
       minorGodIds: [...(carry?.minorGodIds ?? [])],
@@ -185,15 +245,18 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
     eliminated: false,
   });
   for (const rival of mission.rivals ?? []) {
+    const controller = controllerOf(rival.playerId, rival.controller ?? 'ai');
     addPlayer({
       id: rival.playerId,
-      name: rival.name,
-      controller: 'ai',
+      name: opts.playerNames?.[rival.playerId] ?? rival.name,
+      controller,
       role: 'rival',
       pantheonId: rival.pantheonId,
       color: rival.color,
-      wallet: resources(rival.wallet),
-      pantheon: { patronGodId: null, minorGodIds: [] },
+      wallet: scaleWallet(rival.wallet, startPercent(controller)),
+      incomePercent: incomePercent(controller),
+      interventionWeek: 0,
+      pantheon: { patronGodId: controller === 'human' ? (opts.patronGodIds?.[rival.playerId] ?? null) : null, minorGodIds: [] },
       entitlements: [],
       eliminated: false,
     });
@@ -235,8 +298,13 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
   heroes[playerHero.id] = playerHero;
   for (const rival of mission.rivals ?? []) {
     const h = heroFromSetup(catalog, rival.hero, rival.playerId, towns[rival.hero.startTownId]!.coord, null);
-    h.ai = { profile: 'strategic', waypoints: [], waypointIndex: 0, regionMinQ: 0, regionMaxQ: 999, attackThreshold: { numerator: 11, denominator: 10 } };
+    if (players[rival.playerId]?.controller === 'ai') {
+      h.ai = { profile: 'strategic', waypoints: [], waypointIndex: 0, regionMinQ: 0, regionMaxQ: 999, attackThreshold: { numerator: 11, denominator: 10 } };
+    }
     heroes[h.id] = h;
+  }
+  if (playerController === 'ai') {
+    playerHero.ai = { profile: 'strategic', waypoints: [], waypointIndex: 0, regionMinQ: 0, regionMaxQ: 999, attackThreshold: { numerator: 11, denominator: 10 } };
   }
   mission.hostileHeroes.forEach((hh, i) => {
     const id = `${hh.commander.heroDefinitionId}_${i}`;
@@ -263,7 +331,10 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
       regionMinQ: hh.ai.regionMinQ,
       regionMaxQ: hh.ai.regionMaxQ,
       attackThreshold: { ...hh.ai.attackThreshold },
+      ...(hh.ai.regionCenter ? { regionCenter: { ...hh.ai.regionCenter } } : {}),
+      ...(hh.ai.regionRadius !== undefined ? { regionRadius: hh.ai.regionRadius } : {}),
     };
+    if (hh.monster) h.monster = { bounty: resources(hh.monster.bounty), creatureId: hh.army[0]?.creatureId ?? '' };
     heroes[id] = h;
   });
 
@@ -279,6 +350,8 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
       visitedBy: [],
       open: false,
       guard: s.guard ? s.guard.army.map((a) => ({ ...a })) : null,
+      ...(s.kind.type === 'creature_camp' ? { stock: s.kind.initialStock } : {}),
+      ...(s.kind.type === 'relic' ? { heldDays: 0 } : {}),
     };
   }
 
@@ -303,9 +376,12 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
       purchasableBuildingIds: mission.purchasableBuildingIds ? [...mission.purchasableBuildingIds] : null,
       committableGodIds: mission.committableGodIds ? [...mission.committableGodIds] : null,
       signatureMechanics: mission.signatureMechanics ?? true,
+      difficultyId,
+      features: { ...NO_SCENARIO_FEATURES, ...(mission.features ?? {}) },
       xpCap: mission.xpCap,
       protectedHeroIds: mission.protectedHeroFailure ? [playerHero.id] : [],
     },
+    ...(custom ? { customMission: mission } : {}),
     day: 1,
     activePlayerId: p.playerId,
     playerOrder,
@@ -327,6 +403,7 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
     },
     serial: 0,
     outcome: { status: 'running' },
+    stats: { timeline: [], totals: {} },
   };
 
   // Mission transition refill: full movement and mana; starting in town counts as a visit.
@@ -342,5 +419,7 @@ export function createMissionMatch(catalog: ContentCatalog, missionId: string, o
   for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) refreshMerchantStock(tx, town);
   tx.finalize();
   revealInitial(catalog, state);
+  ensureStats(state);
+  recordDayStats(catalog, state, (id) => projectedIncome({ catalog, state }, id));
   return { match: state, decor: gen.decor, entryHash: hashValue(state) };
 }

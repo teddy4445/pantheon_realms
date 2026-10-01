@@ -2,9 +2,10 @@
  * S17 Settings. Edits a draft and applies/persists it explicitly. Volume changes
  * are heard live while editing; Cancel/leaving without applying restores them.
  * Controls for features this build does not have (voice lines, graphics tiers,
- * tutorials, camera shake, key rebinding) are shown disabled with the honest reason.
+ * camera shake) are shown disabled with the honest reason.
  */
 import { useEffect, useState, type ReactNode } from 'react';
+import { CONTEXT_LABEL, FIXED_KEYS, KEY_ACTIONS, bindingMap, isReservedKey, keyLabel, normalizeKey, rebind, type KeyContext } from '../app/keys';
 import { useStore } from '../app/context';
 import { DEFAULT_PREFERENCES, type Preferences } from '../app/preferences';
 import { Button, Chip, Panel, Tabs, Toggle } from '../components/kit';
@@ -55,18 +56,6 @@ const SPEEDS = [
   { id: 'normal', label: 'Normal' },
 ] as const;
 
-const KEYS: [string, string][] = [
-  ['Esc', 'Back / pause menu / close dialog'],
-  ['Click tile', 'Preview route; click again to move'],
-  ['Space', 'Continue along route (map) · skip animation (battle)'],
-  ['Enter', 'End day'],
-  ['Tab', 'Next hero'],
-  ['Arrows / WASD', 'Pan the map camera'],
-  ['+ / −, mouse wheel', 'Zoom'],
-  ['H, T, J, O, P, B', 'Hero, Town, Journal, Overview, Pantheon, Encyclopedia'],
-  ['W / D / S (battle)', 'Wait, Defend, Spell'],
-  ['Right-click', 'Details (tile or stack)'],
-];
 
 export function SettingsScreen() {
   const store = useStore();
@@ -169,8 +158,21 @@ export function SettingsScreen() {
               <Field label="Combat log detail">
                 <Select label="Combat log detail" value={draft.combatLogDetail} options={[{ id: 'compact', label: 'Compact' }, { id: 'standard', label: 'Standard' }, { id: 'detailed', label: 'Detailed' }]} onChange={(v) => set('combatLogDetail', v)} />
               </Field>
-              <Field label="Tutorial hints" disabledReason="No tutorial hints exist in this build.">
-                <Toggle label="Tutorial hints" checked={draft.tutorialHints} onChange={(v) => set('tutorialHints', v)} disabled />
+              <Field label="Tutorial hints" hint="Short tips the first time you plan a route, meet a guard, train troops, lose troops in battle and more">
+                <Toggle label="Tutorial hints" checked={draft.tutorialHints} onChange={(v) => set('tutorialHints', v)} />
+              </Field>
+              <Field label="Show all tips again" hint={draft.dismissedHints.length ? `${draft.dismissedHints.length} tip(s) dismissed` : 'No tips dismissed yet'}>
+                <Button
+                  size="small"
+                  disabled={draft.dismissedHints.length === 0}
+                  onClick={() => {
+                    setDraft({ ...draft, dismissedHints: [], tutorialHints: true });
+                    store.resetHints();
+                  }}
+                  data-testid="reset-hints"
+                >
+                  Reset tips
+                </Button>
               </Field>
             </>
           ) : null}
@@ -268,21 +270,7 @@ export function SettingsScreen() {
             </>
           ) : null}
           {tab === 'controls' ? (
-            <>
-              <p className="dim small">Key rebinding is not available yet. Current bindings:</p>
-              <table className="table">
-                <tbody>
-                  {KEYS.map(([k, v]) => (
-                    <tr key={k}>
-                      <th>
-                        <kbd>{k}</kbd>
-                      </th>
-                      <td>{v}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </>
+            <KeyBindings draft={draft} onChange={(keyBindings) => setDraft({ ...draft, keyBindings })} />
           ) : null}
           {tab === 'storage' ? (
             <>
@@ -312,4 +300,89 @@ export function SettingsScreen() {
       </div>
     </div>
   );
+}
+
+/** Controls tab: click a key, press the new one (Esc cancels). Conflicting actions in the same context lose the key. */
+function KeyBindings({ draft, onChange }: { draft: Preferences; onChange: (bindings: readonly string[]) => void }) {
+  const [capturing, setCapturing] = useState<string | null>(null);
+  const [note, setNote] = useState<string | null>(null);
+  const map = bindingMap(draft);
+  useEffect(() => {
+    if (!capturing) return;
+    const onKey = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.key === 'Escape') {
+        setCapturing(null);
+        return;
+      }
+      if (isReservedKey(e.key)) {
+        setNote(`${e.key} is reserved (Esc, F1 and the arrow keys are fixed). Choose another key.`);
+        return;
+      }
+      const key = normalizeKey(e.key);
+      const res = rebind(draft, capturing, key);
+      onChange(res.bindings);
+      setNote(res.displaced ? `${keyLabel(key)} was used for “${res.displaced.label}”, which is now unbound.` : null);
+      setCapturing(null);
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, [capturing, draft, onChange]);
+  const contexts: KeyContext[] = ['map', 'adventure', 'battle'];
+  return (
+    <div data-testid="key-bindings">
+      <p className="dim small">Click a key to change it, then press the new key (Esc cancels). Apply to save. Keys only trigger the same buttons you can click.</p>
+      {note ? <p className="warn small" role="status">{note}</p> : null}
+      {contexts.map((ctx) => (
+        <div key={ctx}>
+          <SectionTitleLite>{CONTEXT_LABEL[ctx]}</SectionTitleLite>
+          <table className="table shortcut-table">
+            <tbody>
+              {KEY_ACTIONS.filter((a) => a.context === ctx).map((a) => (
+                <tr key={a.id}>
+                  <th>{a.label}</th>
+                  <td>
+                    <button
+                      type="button"
+                      className={`kbd ${capturing === a.id ? 'is-capturing' : ''}`}
+                      onClick={() => {
+                        setNote(null);
+                        setCapturing(capturing === a.id ? null : a.id);
+                      }}
+                      aria-label={`${a.label}: ${keyLabel(map[a.id])}. Click to change.`}
+                      data-testid={`bind-${a.id}`}
+                    >
+                      {capturing === a.id ? 'Press a key…' : keyLabel(map[a.id])}
+                    </button>
+                    {map[a.id] !== a.defaultKey ? <span className="faint small"> (default {keyLabel(a.defaultKey)})</span> : null}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+      <SectionTitleLite>Fixed keys</SectionTitleLite>
+      <table className="table shortcut-table">
+        <tbody>
+          {FIXED_KEYS.map((k) => (
+            <tr key={k.keys}>
+              <th>{k.label}</th>
+              <td>
+                <span className="kbd">{k.keys}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Button size="small" onClick={() => onChange([])} disabled={(draft.keyBindings ?? []).length === 0} data-testid="reset-keys">
+        Reset all keys to defaults
+      </Button>
+    </div>
+  );
+}
+
+function SectionTitleLite({ children }: { children: ReactNode }) {
+  return <div className="section-title">{children}</div>;
 }

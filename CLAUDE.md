@@ -1,9 +1,12 @@
 # Working agreements for AI-assisted development
 
 Read `ARCHITECTURE.md`, `DEVELOPMENT_STATUS.md` and `IMPLEMENTATION_PLAN.md`
-before changing code. `DESIGN_PROPOSALS.md` holds this build's proposed
-designs (signatures, second god choice, support buildings) — proposals, not
-owner decisions. The design documents in `docs/` are the source of truth;
+before changing code. `DESIGN_PROPOSALS.md` holds the proposed
+designs (signatures, second god choice, support buildings; difficulty, story
+scenes, skills/spells/sets, interventions, world features, random maps,
+hot-seat, results screens) — proposals, not owner decisions.
+`CAMPAIGN_2_NORSE_OUTLINE.md` is an unapproved campaign outline: do not build
+it until the owner approves. The design documents in `docs/` are the source of truth;
 do not reopen decisions they settle.
 
 ## Non-negotiables
@@ -19,6 +22,9 @@ do not reopen decisions they settle.
   classes or `if (id === …)` branches. Pantheon signatures are effect bundles
   (`PantheonDefinition.signature`); a new mechanic is a new effect *type* any
   pantheon or god can use.
+* Skirmish-only features stay behind `ScenarioFeatures` / `scope: 'expanded'`;
+  The Three Beacons keeps them off. Story scenes are data on the mission and
+  never change play.
 * Six pantheons, seven tiers, one family per tier, exactly base + one upgrade;
   18 town locations (7 dwellings + 11 support). Gods per pantheon are
   content-driven.
@@ -51,12 +57,19 @@ npm run desktop:dist # installers via electron-builder
 xvfb-run -a node tools/desktop-smoke.mjs   # headless desktop smoke (after desktop:build)
 PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs  # packaged-layout smoke
 npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run after any value change
+npm run balance -- random --matches 4   # random-map seat fairness only
 node tools/perf/load-time.mjs [dist]          # start-up + first-scene load times (after npm run build)
 python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg)
 npm run assets:check     # unit models: Khronos validator + manifest/GLB + game-binding tests
 npm run assets:calibration  # regenerate the axis/scale calibration GLB
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
+python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
 ```
+
+Interface art: sources in `assets-source/ui/`, generated runtime files and
+provenance in `assets-runtime/ui/` (ASSET_PIPELINE.md §11). The visual
+language lives in the shared kit and `styles/components.css`; style screens
+through those, not one by one.
 
 Battle and viewer scenes are right-handed (GLB models load natively); keep
 `cellWorld`/`worldCell` in `meshkit.ts` as the only battle board transform.

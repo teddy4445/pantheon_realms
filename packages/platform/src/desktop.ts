@@ -58,6 +58,7 @@ export function createDesktopPlatform(bridge: DesktopBridge): PlatformServices {
     appVersion: bridge.appVersion,
     saves: new ElectronSaveRepository(bridge),
     preferences: { load: () => bridge.readPreferences(), save: (t) => bridge.writePreferences(t) },
+    records: { load: () => bridge.readRecords(), save: (t) => bridge.writeRecords(t) },
     canQuit: true,
     quit: () => bridge.quit(),
     supportsWindowMode: true,

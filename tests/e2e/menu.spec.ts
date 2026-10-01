@@ -8,6 +8,13 @@ test('main menu: honest Continue, no fake Quit, encyclopedia and bestiary viewer
   await expect(cont).toBeDisabled();
   await expect(cont).toContainText('No compatible save');
   await expect(page.getByTestId('menu-quit')).toHaveCount(0);
+  // Opening screen art: a background from the manifest list, the title logo, the frame and
+  // the menu icons all load from bundled files (nothing broken, nothing remote).
+  await expect(page.locator('.main-menu__bg')).toHaveAttribute('data-background', /^menu\.background\./);
+  const images = await page.locator('.main-menu img').evaluateAll((els) => els.map((e) => ({ src: (e as HTMLImageElement).src, ok: (e as HTMLImageElement).complete && (e as HTMLImageElement).naturalWidth > 0 })));
+  expect(images.length).toBeGreaterThanOrEqual(3);
+  for (const im of images) expect(im, im.src).toMatchObject({ ok: true });
+  for (const id of ['menu-new', 'menu-load', 'menu-campaign', 'menu-skirmish', 'menu-random', 'menu-highscores', 'menu-encyclopedia', 'menu-settings', 'menu-credits']) await expect(page.getByTestId(id)).toBeVisible();
   await page.getByTestId('menu-encyclopedia').click();
   await expect(page.getByTestId('codex-hoplite')).toBeVisible();
   // Every pantheon has a bestiary; proposed values are labeled as such.

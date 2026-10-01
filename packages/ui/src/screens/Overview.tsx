@@ -2,7 +2,7 @@
  * S15 World Overview: the player's towns, heroes, owned sites and projected
  * daily income. Display only; each row navigates to the relevant screen.
  */
-import { armyStacks, builtBuildingIds, cellIndex, maxMana, movementBudget, townDailyIncome, weeklyGrowthFor } from '@pr/rules';
+import { armyStacks, builtBuildingIds, cellIndex, maxMana, movementBudget, townDailyIncome, weeklyGrowthFor, scenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel } from '../components/kit';
 import { HeroPortrait, CreaturePortrait } from '../components/art';
@@ -16,7 +16,7 @@ export function OverviewScreen() {
   const player = humanPlayer(state);
   const towns = Object.values(state.towns).filter((t) => t.ownerId === player.id);
   const heroes = playerHeroes(state, player.id);
-  const mission = catalog.missions[state.mission.missionId];
+  const mission = scenarioMission(catalog, state);
   const owned = (mission?.sites ?? []).filter((s) => s.kind.type === 'resource_site' && state.world.sites[s.id]?.owner === player.id);
   const explored = state.fog[player.id]?.explored ?? [];
   const knownRivals = state.playerOrder.filter((p) => p !== player.id).map((p) => state.players[p]!);

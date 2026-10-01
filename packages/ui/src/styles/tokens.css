@@ -1,7 +1,8 @@
 /*
  * Pantheon Realms design tokens.
- * Direction: dark navy, stone and parchment surfaces, bronze-gold accents,
- * faction accent colors, mythological ornament. Game-first readability.
+ * Direction (owner GUI references, 2026-10-01): deep navy and slate plates,
+ * double gold rims with chamfered corner ornaments, Cinzel small capitals,
+ * burnished-gold primary actions, framed icon sockets. Game-first readability.
  */
 :root {
   /* Surfaces */
@@ -26,7 +27,30 @@
   --gold-400: #d8b56c;
   --gold-300: #ead08f;
   --gold-200: #f5e4b7;
+  --gold-100: #fff3d6;
   --bronze-grad: linear-gradient(180deg, #f1d99a 0%, #c9a05a 45%, #8f6a2f 100%);
+  --gold-bevel: linear-gradient(180deg, #f7e7b4 0%, #e2c27c 18%, #c39a52 50%, #9c7534 78%, #7a5a26 100%);
+  --gold-bevel-hover: linear-gradient(180deg, #fff2c8 0%, #ecd08e 18%, #d2aa62 50%, #ad8440 78%, #866329 100%);
+  --gold-bevel-down: linear-gradient(180deg, #8f6a2f 0%, #b08646 40%, #c9a05a 100%);
+
+  /* Plates (panel and control fills) */
+  --plate: linear-gradient(180deg, rgba(21, 38, 63, 0.97) 0%, rgba(12, 23, 40, 0.97) 48%, rgba(8, 15, 27, 0.98) 100%);
+  --plate-raised: linear-gradient(180deg, #1d3557 0%, #13253f 55%, #0d1a2e 100%);
+  --plate-raised-hover: linear-gradient(180deg, #25426a 0%, #182e4e 55%, #10203a 100%);
+  --plate-sunken: linear-gradient(180deg, #060c16 0%, #0a1424 100%);
+  --plate-disabled: linear-gradient(180deg, #232a33 0%, #181d24 100%);
+  --rim: rgba(194, 154, 82, 0.55);
+  --rim-strong: #c29a52;
+  --rim-faint: rgba(194, 154, 82, 0.22);
+  /* Double gold rim used by panels, slots and frames (outer line, dark gap, inner line). */
+  --rim-double: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 2px rgba(194, 154, 82, 0.42), inset 0 1px 0 2px rgba(255, 238, 190, 0.08);
+
+  /* Ornaments (inline SVG, offline) */
+  --orn-corner: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M1.5 31V9.5L9.5 1.5H31' fill='none' stroke='%23d8b56c' stroke-width='1.6'/%3E%3Cpath d='M5.5 31V11.2L11.2 5.5H31' fill='none' stroke='%237a5a26' stroke-width='1'/%3E%3Cpath d='M9.5 4.6L14.4 9.5 9.5 14.4 4.6 9.5z' fill='%23ead08f' stroke='%235a3f16' stroke-width='.7'/%3E%3Cpath d='M9.5 7.4L11.6 9.5 9.5 11.6 7.4 9.5z' fill='%239c7534'/%3E%3C/svg%3E");
+  --orn-divider: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 12'%3E%3Cpath d='M0 6h21M43 6h21' stroke='%23c29a52' stroke-width='1'/%3E%3Ccircle cx='23.5' cy='6' r='1.7' fill='%23d8b56c'/%3E%3Ccircle cx='40.5' cy='6' r='1.7' fill='%23d8b56c'/%3E%3Cpath d='M32 .8L37.2 6 32 11.2 26.8 6z' fill='%23ead08f' stroke='%237a5a26' stroke-width='.7'/%3E%3Cpath d='M32 3.6L34.4 6 32 8.4 29.6 6z' fill='%239c7534'/%3E%3C/svg%3E");
+  --orn-diamond: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 .6L11.4 6 6 11.4 .6 6z' fill='%23ead08f' stroke='%237a5a26' stroke-width='.7'/%3E%3C/svg%3E");
+  --orn-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 8.6l3 3 6.6-7' fill='none' stroke='%23fff3d6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --orn-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.2l5 5 5-5' fill='none' stroke='%23d8b56c' stroke-width='1.6'/%3E%3C/svg%3E");
 
   /* Text */
   --text-strong: #f4e8c9;
@@ -75,7 +99,13 @@
 
   /* Shadows */
   --shadow-panel: 0 0.6rem 2rem rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(234, 208, 143, 0.06);
+  --shadow-drop: 0 0.5rem 1.6rem rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.55);
   --glow-gold: 0 0 0.9rem rgba(234, 208, 143, 0.35);
+  --glow-gold-strong: 0 0 0.6rem rgba(255, 226, 150, 0.55), 0 0 1.4rem rgba(234, 208, 143, 0.3);
+  --glow-blue: 0 0 0.5rem rgba(90, 167, 255, 0.85), 0 0 1.2rem rgba(90, 167, 255, 0.45);
+
+  /* The opening background chosen this run; set on <html> at start-up and reused (dimmed) behind menu screens. */
+  --app-art: none;
 }
 
 :root[data-motion='reduced'] {

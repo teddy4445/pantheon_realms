@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld('prDesktop', {
   importSave: () => invoke('pr:importSave'),
   readPreferences: () => invoke('pr:readPreferences'),
   writePreferences: (text: string) => invoke('pr:writePreferences', text),
+  readRecords: () => invoke('pr:readRecords'),
+  writeRecords: (text: string) => invoke('pr:writeRecords', text),
   setWindowMode: (mode: string) => invoke('pr:setWindowMode', mode),
   getWindowMode: () => invoke('pr:getWindowMode'),
   quit: () => invoke('pr:quit'),

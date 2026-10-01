@@ -11,10 +11,13 @@ import type { HeroId, PlayerId, SpellId } from '../ids';
 import type { HexCoord } from '../core/hex';
 import type { ContentCatalog } from '../definitions/catalog';
 import type { SpellDefinition } from '../definitions/pantheons';
-import type { MatchState } from '../state/match';
-import { cellIndex, cellsWithin, inMap } from '../resolvers/world';
+import type { HeroState, MatchState, TownState } from '../state/match';
+import { axialDistance, hexEquals } from '../core/hex';
+import { cellIndex, cellsWithin, heroAt, inMap } from '../resolvers/world';
+import { heroVisionRadius } from '../resolvers/heroes';
 import { reject, type Tx } from '../engine/tx';
 import { revealAround } from './adventure';
+import { learnSpellsAtTown } from './heroes';
 
 export interface AdventureSpellQuote {
   readonly legal: boolean;
@@ -49,19 +52,41 @@ export function quoteAdventureSpell(
   if (!hero || hero.ownerId !== playerId) return fail('Not your hero');
   if (hero.status !== 'active') return fail(`${hero.name} is not on the map`);
   if (!spell) return fail('Unknown spell');
-  if (spell.context !== 'adventure' || spell.effect.type !== 'reveal_radius') return fail('Not an adventure spell');
+  const kind = spell.effect.type;
+  if (spell.context !== 'adventure' || (kind !== 'reveal_radius' && kind !== 'movement_bonus' && kind !== 'recall')) return fail('Not an adventure spell');
   if (spell.implementationStatus !== 'implemented') return fail('This spell is not available in this build');
   if (!hero.spellbook) return fail('Requires a spellbook');
   if (!hero.knownSpellIds.includes(spellId)) return fail(`${hero.name} has not learned ${spell.name}`);
   if (state.pendingDecisions.some((d) => d.heroId === heroId)) return fail('Resolve the pending level-up first');
   if (hero.mana < spell.manaCost) return fail(`Requires ${spell.manaCost} mana`);
-  if (target) {
+  if (kind === 'reveal_radius' && target) {
     const map = state.world.map;
     if (!inMap(map, target)) return fail('Choose a tile on the map');
     const fog = state.fog[playerId];
     if (fog && fog.explored[cellIndex(map, target)] !== 1) return fail('Choose a tile you have already explored');
   }
+  if (kind === 'recall') {
+    const town = recallTown(state, hero);
+    if (!town) return fail('No town of yours to return to');
+    if (hexEquals(town.coord, hero.position)) return fail(`${hero.name} is already in ${town.name}`);
+    if (heroAt(state, town.coord, hero.id)) return fail(`Another hero stands in ${town.name}`);
+  }
   return { legal: true, reason: null, spell, manaCost, radius };
+}
+
+/** The town a Recall spell returns to: the nearest town the hero's player owns (stable ID tie-break). */
+export function recallTown(state: MatchState, hero: HeroState): TownState | null {
+  let best: TownState | null = null;
+  let bestD = Number.POSITIVE_INFINITY;
+  for (const t of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) {
+    if (t.ownerId !== hero.ownerId) continue;
+    const d = axialDistance(t.coord, hero.position);
+    if (d < bestD) {
+      bestD = d;
+      best = t;
+    }
+  }
+  return best;
 }
 
 export function commitCastAdventureSpell(tx: Tx, heroId: HeroId, spellId: SpellId, target: HexCoord): void {
@@ -70,6 +95,23 @@ export function commitCastAdventureSpell(tx: Tx, heroId: HeroId, spellId: SpellI
   const hero = tx.state.heroes[heroId]!;
   hero.mana -= q.manaCost;
   const untilDay = tx.state.day + 1;
+  const effect = q.spell.effect;
+  if (effect.type === 'movement_bonus') {
+    hero.movementPoints += effect.points;
+    tx.emit({ kind: 'AdventureSpellCast', heroId, spellId, center: { ...hero.position }, radius: 0, untilDay });
+    return;
+  }
+  if (effect.type === 'recall') {
+    const town = recallTown(tx.state, hero)!;
+    const from = { ...hero.position };
+    hero.position = { ...town.coord };
+    hero.movementPoints = 0;
+    tx.emit({ kind: 'AdventureSpellCast', heroId, spellId, center: from, radius: 0, untilDay });
+    tx.emit({ kind: 'HeroTeleported', heroId, from, to: { ...town.coord } });
+    revealAround(tx, hero.ownerId, [town.coord], heroVisionRadius(tx.catalog, hero, tx.state));
+    learnSpellsAtTown(tx, hero, town);
+    return;
+  }
   const fog = tx.state.fog[hero.ownerId];
   if (fog) {
     fog.temporaryReveals = [...(fog.temporaryReveals ?? []), { center: { q: target.q, r: target.r }, radius: q.radius, untilDay }];

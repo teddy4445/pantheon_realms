@@ -163,7 +163,7 @@ export function effectiveDefense(catalog: ContentCatalog, battle: BattleState, s
 /** Battle Speed: base + aspect + matching creature_stat effects (never below 1; adventure travel uses base Speed). */
 export function effectiveSpeed(catalog: ContentCatalog, stack: BattleStackState, battle?: BattleState): number {
   const base = statsOf(catalog, stack.creatureId).speed;
-  return Math.max(1, base + aspectMod(catalog, stack, 'speed') + sideStatMod(catalog, battle, stack, 'speed'));
+  return Math.max(1, base + aspectMod(catalog, stack, 'speed') + sideStatMod(catalog, battle, stack, 'speed') + statusSum(stack, 'speed_bonus'));
 }
 
 export function effectiveMorale(catalog: ContentCatalog, battle: BattleState, stack: BattleStackState): number {

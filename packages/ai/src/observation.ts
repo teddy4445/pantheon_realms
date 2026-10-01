@@ -9,13 +9,12 @@
 import {
   cellIndex,
   deepClone,
-  getMission,
   hireOptions,
   visibleCells,
   type ContentCatalog,
   type HireCandidate,
   type MatchState,
-  type PlayerId,
+  type PlayerId, requireScenarioMission,
 } from '@pr/rules';
 
 export interface AIObservation {
@@ -46,7 +45,7 @@ export function buildObservation(catalog: ContentCatalog, state: MatchState, pla
     if (id !== playerId) p.wallet = { gold: 0, wood: 0, stone: 0, crystal: 0, favor: 0 };
   }
   for (const id of Object.keys(belief.fog)) if (id !== playerId) delete belief.fog[id];
-  const mission = getMission(catalog, belief.mission.missionId);
+  const mission = requireScenarioMission(catalog, belief);
   for (const def of mission.sites) {
     const known = explored(def.coord.q, def.coord.r) || belief.mission.revealedSiteIds.includes(def.id);
     if (!known) delete belief.world.sites[def.id];

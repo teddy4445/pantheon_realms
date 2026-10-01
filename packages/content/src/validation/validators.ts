@@ -11,7 +11,9 @@ import {
   SUPPORT_ROLES,
   type ContentCatalog,
   type EffectDefinition,
+  type MissionDefinition,
   type RequirementDefinition,
+  type RewardDefinition,
 } from '@pr/rules';
 
 export interface ValidationIssue {
@@ -284,40 +286,175 @@ function campaignValidator(c: ContentCatalog, push: Push): void {
     for (const g of camp.startingGodOptions) if (!c.gods[g]) push(`${camp.id}: unknown starting god ${g}`);
     for (const m of camp.missionIds) if (!c.missions[m]) push(`${camp.id}: unknown mission ${m}`);
   }
-  for (const m of Object.values(c.missions)) {
-    const where = m.id;
-    if (!c.mapTemplates[m.mapTemplateId]) push(`${where}: unknown map template`);
-    const template = c.mapTemplates[m.mapTemplateId];
-    const creatureOk = (id: string) => {
-      const cr = c.creatures[id];
-      if (!cr) push(`${where}: unknown creature ${id}`);
-      else if (cr.implementationStatus !== 'implemented') push(`${where}: creature ${id} is not implemented`);
-    };
-    m.player.hero.army.forEach((s) => creatureOk(s.creatureId));
-    for (const b of m.player.town.buildings) if (!c.buildings[b]) push(`${where}: unknown starting building ${b}`);
-    for (const b of m.purchasableBuildingIds ?? []) if (!c.buildings[b]) push(`${where}: unknown purchasable building ${b}`);
-    for (const g of m.committableGodIds ?? []) if (!c.gods[g]) push(`${where}: unknown committable god ${g}`);
-    const siteIds = new Set(m.sites.map((s) => s.id));
-    const objIds = new Set(m.objectives.map((o) => o.id));
-    for (const s of m.sites) {
-      if (template && !template.anchors.some((a) => a.id === s.anchorId && a.coord.q === s.coord.q && a.coord.r === s.coord.r)) {
-        push(`${where}: site ${s.id} does not match a template anchor`);
-      }
-      s.guard?.army.forEach((a) => creatureOk(a.creatureId));
-      for (const a of s.guard?.reward.artifactIds ?? []) if (!c.artifacts[a]) push(`${where}: unknown artifact ${a}`);
-      for (const e of s.guard?.reward.entitlementIds ?? []) if (!c.entitlements[e]) push(`${where}: unknown entitlement ${e}`);
-      if (s.kind.type === 'watchtower') for (const r of s.kind.revealSiteIds) if (!siteIds.has(r)) push(`${where}: watchtower reveals unknown site ${r}`);
-      if (s.kind.type === 'activation') for (const r of s.kind.requirements) {
-        checkRequirement(c, r, `${where}/${s.id}`, push);
-        if (r.type === 'objective_completed' && !objIds.has(r.objectiveId)) push(`${where}/${s.id}: unknown objective ${r.objectiveId}`);
-      }
+  for (const m of Object.values(c.missions)) validateMission(c, m, push, true);
+}
+
+/**
+ * Checks one mission definition. Authored missions must also match their
+ * template's anchors; generated missions (random maps) are checked the same way
+ * minus the anchors (`validateGeneratedMission`).
+ */
+function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, checkAnchors: boolean): void {
+  const where = m.id;
+  if (checkAnchors && !c.mapTemplates[m.mapTemplateId]) push(`${where}: unknown map template`);
+  const template = checkAnchors ? c.mapTemplates[m.mapTemplateId] : undefined;
+  const creatureOk = (id: string) => {
+    const cr = c.creatures[id];
+    if (!cr) push(`${where}: unknown creature ${id}`);
+    else if (cr.implementationStatus !== 'implemented') push(`${where}: creature ${id} is not implemented`);
+  };
+  const rewardOk = (r: RewardDefinition | undefined, at: string) => {
+    for (const a of r?.artifactIds ?? []) if (!c.artifacts[a]) push(`${at}: unknown artifact ${a}`);
+    for (const e of r?.entitlementIds ?? []) if (!c.entitlements[e]) push(`${at}: unknown entitlement ${e}`);
+    for (const cr of r?.creatures ?? []) creatureOk(cr.creatureId);
+  };
+  m.player.hero.army.forEach((s) => creatureOk(s.creatureId));
+  for (const b of m.player.town.buildings) if (!c.buildings[b]) push(`${where}: unknown starting building ${b}`);
+  for (const b of m.purchasableBuildingIds ?? []) if (!c.buildings[b]) push(`${where}: unknown purchasable building ${b}`);
+  for (const g of m.committableGodIds ?? []) if (!c.gods[g]) push(`${where}: unknown committable god ${g}`);
+  const siteIds = new Set(m.sites.map((s) => s.id));
+  const objIds = new Set(m.objectives.map((o) => o.id));
+  if (siteIds.size !== m.sites.length) push(`${where}: duplicate site IDs`);
+  const coords = new Set<string>();
+  for (const s of m.sites) {
+    const k = `${s.coord.q},${s.coord.r}`;
+    if (coords.has(k)) push(`${where}: two sites share ${k}`);
+    coords.add(k);
+    if (template && !template.anchors.some((a) => a.id === s.anchorId && a.coord.q === s.coord.q && a.coord.r === s.coord.r)) {
+      push(`${where}: site ${s.id} does not match a template anchor`);
     }
-    for (const o of m.objectives) {
-      for (const u of o.unlocks ?? []) if (!objIds.has(u)) push(`${where}/${o.id}: unlocks unknown objective ${u}`);
-      if (o.markerSiteId && !siteIds.has(o.markerSiteId)) push(`${where}/${o.id}: unknown marker site`);
-      for (const e of o.reward?.entitlementIds ?? []) if (!c.entitlements[e]) push(`${where}/${o.id}: unknown entitlement ${e}`);
+    s.guard?.army.forEach((a) => creatureOk(a.creatureId));
+    rewardOk(s.guard?.reward, `${where}/${s.id}`);
+    if (s.kind.type === 'watchtower') for (const r of s.kind.revealSiteIds) if (!siteIds.has(r)) push(`${where}: watchtower reveals unknown site ${r}`);
+    if (s.kind.type === 'activation') for (const r of s.kind.requirements) {
+      checkRequirement(c, r, `${where}/${s.id}`, push);
+      if (r.type === 'objective_completed' && !objIds.has(r.objectiveId)) push(`${where}/${s.id}: unknown objective ${r.objectiveId}`);
     }
-    m.hostileHeroes.forEach((h) => h.army.forEach((a) => creatureOk(a.creatureId)));
+    if (s.kind.type === 'pickup') rewardOk(s.kind.reward, `${where}/${s.id}`);
+    if (s.kind.type === 'creature_camp') {
+      creatureOk(s.kind.creatureId);
+      if (s.kind.initialStock < 0 || s.kind.weeklyGrowth < 0) push(`${where}/${s.id}: camp stock and growth must be non-negative`);
+    }
+    if (s.kind.type === 'map_event') {
+      if (s.kind.options.length === 0) push(`${where}/${s.id}: a map event needs at least one option`);
+      s.kind.options.forEach((o, i) => rewardOk(o.reward, `${where}/${s.id}#${i}`));
+    }
+  }
+  for (const o of m.objectives) {
+    for (const u of o.unlocks ?? []) if (!objIds.has(u)) push(`${where}/${o.id}: unlocks unknown objective ${u}`);
+    if (o.markerSiteId && !siteIds.has(o.markerSiteId)) push(`${where}/${o.id}: unknown marker site`);
+    for (const e of o.reward?.entitlementIds ?? []) if (!c.entitlements[e]) push(`${where}/${o.id}: unknown entitlement ${e}`);
+  }
+  m.hostileHeroes.forEach((h) => h.army.forEach((a) => creatureOk(a.creatureId)));
+  for (const r of m.rivals ?? []) {
+    r.hero.army.forEach((s) => creatureOk(s.creatureId));
+    for (const b of r.town.buildings) if (!c.buildings[b]) push(`${where}: unknown starting building ${b}`);
+    if (!siteIds.has(r.town.siteId)) push(`${where}: rival town site ${r.town.siteId} is missing`);
+  }
+  const cond = m.victoryCondition;
+  if (cond?.type === 'hold_site') {
+    const site = m.sites.find((x) => x.id === cond.siteId);
+    if (!site) push(`${where}: victory relic ${cond.siteId} is missing`);
+    else if (site.kind.type !== 'relic') push(`${where}: victory site ${cond.siteId} is not a relic`);
+    if (cond.days < 1) push(`${where}: hold-the-relic needs at least one day`);
+  }
+  // Story scenes: unique IDs, valid references, readable lines.
+  const sceneIds = new Set<string>();
+  for (const scene of m.storyScenes ?? []) {
+    if (sceneIds.has(scene.id)) push(`${where}: duplicate story scene ${scene.id}`);
+    sceneIds.add(scene.id);
+    if (scene.lines.length === 0) push(`${where}/${scene.id}: a story scene needs at least one line`);
+    for (const l of scene.lines) if (!l.text.trim() || !l.speaker.trim()) push(`${where}/${scene.id}: empty dialogue line`);
+    const t = scene.trigger;
+    if ((t.type === 'site_visited' || t.type === 'site_cleared') && !siteIds.has(t.siteId)) push(`${where}/${scene.id}: unknown site ${t.siteId}`);
+    if (t.type === 'battle_started' && t.siteId && !siteIds.has(t.siteId)) push(`${where}/${scene.id}: unknown site ${t.siteId}`);
+    if (t.type === 'objective_completed' && !objIds.has(t.objectiveId)) push(`${where}/${scene.id}: unknown objective ${t.objectiveId}`);
+    if (t.type === 'god_committed' && !c.gods[t.godId]) push(`${where}/${scene.id}: unknown god ${t.godId}`);
+    if (t.type === 'casualties' && (!Number.isInteger(t.minLost) || t.minLost < 1)) push(`${where}/${scene.id}: casualties trigger needs a positive whole number`);
+  }
+}
+
+/** Validate a generated scenario definition (random skirmish maps) with the catalog's rules. */
+export function validateGeneratedMission(c: ContentCatalog, m: MissionDefinition): ValidationReport {
+  const issues: ValidationIssue[] = [];
+  validateMission(c, m, (message) => issues.push({ validator: 'GeneratedMissionValidator', message }), false);
+  return { ok: issues.length === 0, issues };
+}
+
+/** Skills, spells, artifact sets, interventions, weekly events, difficulties and skirmish kits (proposed this build). */
+function expandedContentValidator(c: ContentCatalog, push: Push): void {
+  const maxRank = c.rulesProfile.maxSkillRank;
+  const pantheons = new Set(Object.keys(c.pantheons));
+  for (const sk of Object.values(c.skills)) {
+    if (sk.rankSummaries.length !== maxRank) push(`${sk.id}: needs ${maxRank} rank summaries`);
+    if (sk.rule.type === 'effects') {
+      if (sk.rule.effectsByRank.length !== maxRank) push(`${sk.id}: needs effects for ${maxRank} ranks`);
+      sk.rule.effectsByRank.forEach((rank, i) => rank.forEach((e) => checkEffect(c, e, `${sk.id} rank ${i + 1}`, push)));
+    }
+    if (sk.pantheonId && !pantheons.has(sk.pantheonId)) push(`${sk.id}: unknown pantheon ${sk.pantheonId}`);
+  }
+  let maxLibrary = 0;
+  for (const b of Object.values(c.buildings)) for (const e of b.effects) if (e.type === 'spell_library') maxLibrary = Math.max(maxLibrary, e.maxTier);
+  for (const sp of Object.values(c.spells)) {
+    if (sp.pantheonId && !pantheons.has(sp.pantheonId)) push(`${sp.id}: unknown pantheon ${sp.pantheonId}`);
+    if (sp.access === 'sanctum' && sp.tier > maxLibrary) push(`${sp.id}: tier ${sp.tier} exceeds every Sanctum library (max ${maxLibrary})`);
+    const needsAdventure = sp.effect.type === 'reveal_radius' || sp.effect.type === 'movement_bonus' || sp.effect.type === 'recall';
+    if (needsAdventure !== (sp.context === 'adventure')) push(`${sp.id}: effect ${sp.effect.type} does not match context ${sp.context}`);
+    if (sp.effect.type === 'mass_bonus' && sp.target !== 'friendly_army') push(`${sp.id}: mass spells target 'friendly_army'`);
+    if (sp.target === 'friendly_army' && sp.effect.type !== 'mass_bonus') push(`${sp.id}: 'friendly_army' needs a mass effect`);
+  }
+  for (const set of Object.values(c.artifactSets)) {
+    for (const id of set.pieceIds) {
+      const a = c.artifacts[id];
+      if (!a) push(`${set.id}: unknown piece ${id}`);
+      else if (a.setId !== set.id) push(`${set.id}: piece ${id} names set ${a.setId ?? '(none)'}`);
+    }
+    for (const b of set.bonuses) {
+      if (b.pieces < 2 || b.pieces > set.pieceIds.length) push(`${set.id}: bonus needs 2-${set.pieceIds.length} pieces`);
+      b.effects.forEach((e) => checkEffect(c, e, `${set.id} (${b.pieces})`, push));
+    }
+    const slots = set.pieceIds.map((id) => c.artifacts[id]?.slot);
+    if (new Set(slots).size !== slots.length) push(`${set.id}: two pieces share a slot, so the full set cannot be worn`);
+  }
+  for (const a of Object.values(c.artifacts)) if (a.setId && !c.artifactSets[a.setId]) push(`${a.id}: unknown set ${a.setId}`);
+  for (const iv of Object.values(c.interventions)) {
+    if (iv.favorCost <= 0) push(`${iv.id}: needs a positive Favor cost`);
+    for (const p of iv.pantheonIds ?? []) if (!pantheons.has(p)) push(`${iv.id}: unknown pantheon ${p}`);
+    const battle = iv.effect.type.startsWith('battle_');
+    if (battle !== (iv.context === 'battle')) push(`${iv.id}: effect ${iv.effect.type} does not match context ${iv.context}`);
+    if ((iv.target === 'enemy_stack') !== (iv.effect.type === 'battle_smite')) push(`${iv.id}: only a smite targets an enemy stack`);
+    if ((iv.target === 'own_town') !== (iv.effect.type === 'town_growth')) push(`${iv.id}: only town growth targets a town`);
+  }
+  for (const w of Object.values(c.weeklyEvents)) {
+    if (w.weight <= 0) push(`${w.id}: needs a positive weight`);
+    w.effects.forEach((e) => checkEffect(c, e, w.id, push));
+  }
+  const orders = Object.values(c.difficulties).map((d) => d.order);
+  if (new Set(orders).size !== orders.length) push('difficulties: duplicate order');
+  for (const d of Object.values(c.difficulties)) {
+    if (d.humanStartPercent <= 0 || d.aiStartPercent <= 0 || d.aiIncomePercent <= 0) push(`${d.id}: percentages must be positive`);
+    if (d.ai.heroAttackMargin < 1 || d.ai.guardMargin < 1 || d.ai.siegeMargin < 1) push(`${d.id}: AI margins below 1 would attack stronger armies`);
+  }
+  for (const [pid, kit] of Object.entries(c.skirmishKits)) {
+    if (!pantheons.has(pid) || kit.pantheonId !== pid) push(`skirmish kit ${pid}: pantheon mismatch`);
+    if (!c.townArchetypes[kit.archetypeId]) push(`skirmish kit ${pid}: unknown town ${kit.archetypeId}`);
+    for (const b of kit.buildings) if (c.buildings[b]?.pantheonId !== pid) push(`skirmish kit ${pid}: building ${b} is not ${pid}`);
+    for (const a of kit.army) if (!c.creatures[a.creatureId]) push(`skirmish kit ${pid}: unknown creature ${a.creatureId}`);
+    if (kit.leaders.length < 4) push(`skirmish kit ${pid}: needs 4 leaders for four-empire maps`);
+    const ids = kit.leaders.map((l) => l.definitionId);
+    if (new Set(ids).size !== ids.length) push(`skirmish kit ${pid}: duplicate leaders`);
+    for (const l of kit.leaders) {
+      if (!c.heroes[l.definitionId]) push(`skirmish kit ${pid}: unknown leader ${l.definitionId}`);
+      if (!c.heroClasses[l.classId]) push(`skirmish kit ${pid}: unknown class ${l.classId}`);
+    }
+    if (kit.townNames.length < 4) push(`skirmish kit ${pid}: needs at least 4 town names`);
+  }
+  for (const ev of Object.values(c.mapEventTemplates)) {
+    if (ev.options.length === 0) push(`${ev.id}: a map event needs options`);
+    for (const o of ev.options) {
+      for (const a of o.reward.artifactIds ?? []) if (!c.artifacts[a]) push(`${ev.id}: unknown artifact ${a}`);
+      for (const cr of o.reward.creatures ?? []) if (!c.creatures[cr.creatureId]?.stats) push(`${ev.id}: creature ${cr.creatureId} cannot join an army`);
+    }
   }
 }
 
@@ -342,6 +479,7 @@ export const VALIDATORS: Readonly<Record<string, (c: ContentCatalog, push: Push)
   HeroValidator: heroValidator,
   ArtifactValidator: artifactValidator,
   CampaignValidator: campaignValidator,
+  ExpandedContentValidator: expandedContentValidator,
   AssetReferenceValidator: assetReferenceValidator,
 };
 

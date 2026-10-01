@@ -100,24 +100,67 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
   no lone tactical advance (first-mover score 0.41 → about 0.5); Harmony
   trimmed to +1 Defense at 3 families.
 
+## Phase J — Replay value, story and help ✅ (values proposed)
+
+* ✅ Skirmish difficulty (Easy/Normal/Hard: resources, AI income and
+  aggression; never creature statistics); the campaign keeps its balance.
+* ✅ Contextual tips (13, once each, Settings toggle and reset).
+* ✅ Story scenes in The Three Beacons (12 scenes, of which one of the two god scenes plays, + epilogue) in a dialogue
+  window with Continue, Backlog and Skip; Journal *Story so far* with Replay.
+* ✅ Pantheon skills (8) and spells (16), four artifact sets, 14 divine
+  interventions (once per week), 8 weekly events — skirmish only.
+* ✅ World map: creature camps, one-time map events (10 templates), wandering
+  monsters, relic shrines.
+* ✅ Random skirmish maps for 2–4 empires (symmetric generator with five
+  fairness checks), last empire standing or hold the relic.
+* ✅ Hot-seat on one computer (Twin Harbors and random maps) with hand-over
+  screens and per-seat patrons.
+* ✅ End-of-game summary with charts and score; high scores for campaign and
+  skirmish; keyboard shortcut list (F1) and rebinding.
+* ✅ Multiplayer and Custom Map placeholder cards removed from New Game.
+* ⬜ Owner approval of the Norse campaign outline
+  (`CAMPAIGN_2_NORSE_OUTLINE.md`), then build its three missions.
+* ⬜ Map editor (later, by owner decision).
+
+## Phase K — Visual design from the owner's GUI references ✅ (0.4.1)
+
+- [x] Opening screen: random background per start, full logo, menu inside the
+  ornate frame, the nine menu icons mapped by meaning.
+- [x] Emblem as app/installer icon, favicon, window icon and small branding.
+- [x] Shared visual language in the kit and `components.css` (panels, buttons
+  and their states, tabs, counters, portrait frames, army/spell/artifact
+  slots, cards, inputs, bars, dialogs, scrollbars); icon art from the owner's
+  icon pack through the shared `Icon`; map-marker art in the 2D panels.
+- [x] Source-to-runtime art script with provenance (`tools/assets/prepare_ui_art.py`).
+- [ ] Owner review of the details against `gui_guide.png` and the UI-kit
+  sheet; a twelfth opening background; icons for Random Map and High Scores.
+
 ## Next steps (in order)
 
 1. Install the Windows build on a real PC and play; report anything that breaks.
 2. Owner review of `DESIGN_PROPOSALS.md` (signatures, second god choice,
-   support buildings) and of the proposed numbers for the five non-Greek pantheons, the
+   support buildings, and the 0.4 group: difficulty, story scenes,
+   skills/spells/sets, interventions, world features, random maps, score) and
+   of the proposed numbers for the five non-Greek pantheons, the
    skirmish covenant grant, the Strategos-type leaders and the siege
    simplifications (deviations in DEVELOPMENT_STATUS).
-3. Human playtests per pantheon (re-run `npm run balance` after any value
+3. Owner decision on the Norse campaign outline; if approved, build it.
+4. Human playtests per pantheon and of random maps and hot-seat (re-run `npm run balance` after any value
    change); replace the dwelling stand-in art noted in the placeholder manifest.
-4. First production model pair (Hoplite / Veteran Hoplite) through
+5. First production model pair (Hoplite / Veteran Hoplite) through
    `ASSET_PIPELINE.md`; play `takeoff`/`land` in battle when the first flyer lands.
-5. Listen to the placeholder sounds and music and say what to keep, change or
+6. Listen to the placeholder sounds and music and say what to keep, change or
    commission; final recordings replace files by sound ID (ASSET_PIPELINE §10).
-6. Remaining balance outliers after the AI fixes (see DEVELOPMENT_STATUS):
+7. AI on random maps: split attention evenly in three-way games (AI-only
+   three-empire maps favour seat 2) and press on to finish a map (most
+   random-map AI games reach day 40).
+   Remaining balance outliers after the AI fixes (see DEVELOPMENT_STATUS):
    Celtic upgraded armies high; Greek upgraded armies low against the
    proposed pantheons.
-7. Measure the first 3D scene on a real GPU; if it is still ~0.4 s slower than
+8. Measure the first 3D scene on a real GPU; if it is still ~0.4 s slower than
    before the split (DEVELOPMENT_STATUS, "Start-up load time"), find the cause.
    Minimap viewport frame; combat-log back-fill of the opening round.
-8. AI use of adventure spells; stack merging before sieges; code signing for
-   the installer (needs a certificate — owner decision).
+9. AI use of adventure spells; stack merging before sieges; code signing for
+   the installer (needs a certificate — owner decision); the map editor.
+10. Owner review of the 0.4.1 visual design (DEVELOPMENT_STATUS deviations
+   43–47); final icons for Random Map and High Scores; per-spell icon art.

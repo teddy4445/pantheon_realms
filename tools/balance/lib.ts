@@ -7,7 +7,7 @@
  */
 import { GameDriver } from '@pr/testing';
 import { armyStrength, runAITurn } from '@pr/ai';
-import { createMissionMatch } from '@pr/campaign';
+import { createGeneratedMatch, createMissionMatch, createRandomSkirmish } from '@pr/campaign';
 import type { ContentCatalog, MatchState } from '@pr/rules';
 
 export type Army = { creatureId: string; count: number }[];
@@ -198,10 +198,15 @@ export function playSkirmish(catalog: ContentCatalog, o: SkirmishOptions): Skirm
     if (d.state.battle) d.autoBattle(8000);
   }
   const out = d.state.outcome;
-  let winner: SkirmishResult['winner'] = 'none';
-  if (out.status === 'victory') winner = 'west';
-  else if (out.status === 'defeat') winner = 'east';
   const westId = s.playerOrder.find((p) => p !== eastId)!;
+  // Both seats are AI here, so read the winner from the outcome (its status is
+  // written from a human seat's point of view, and no seat is human).
+  let winner: SkirmishResult['winner'] = 'none';
+  if (out.status !== 'running') {
+    const w = out.winnerIds?.[0];
+    if (w === westId) winner = 'west';
+    else if (w === eastId) winner = 'east';
+  }
   const strengthOf = (playerId: string) => {
     let total = 0;
     for (const h of Object.values(d.state.heroes)) {
@@ -239,4 +244,64 @@ export function summarize(results: readonly SkirmishResult[]): SeriesSummary {
     firstMoverWins: results.filter((r) => r.winner !== 'none' && r.winner === r.firstMover).length,
     meanDay: decided.length ? decided.reduce((a, r) => a + r.day, 0) / decided.length : 0,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Random skirmish maps (proposed this build): seat fairness of the generator
+// ---------------------------------------------------------------------------
+
+export interface RandomOptions {
+  /** Pantheon for every seat (mirror matches isolate the map and turn order). */
+  readonly pantheon: string;
+  readonly empires: 2 | 3;
+  readonly seed: number;
+  readonly maxDay?: number;
+}
+
+export interface RandomResult {
+  readonly pantheon: string;
+  readonly empires: number;
+  readonly seed: number;
+  /** Seat index (0 = first to move) of the winner, or null at the day cap. */
+  readonly winnerSeat: number | null;
+  /** At the day cap: the seat with at least 25% more army strength than every other seat, else null (a draw). */
+  readonly pointsSeat: number | null;
+  readonly day: number;
+  readonly battles: number;
+}
+
+/** One all-AI match on a generated symmetric map (small, few monsters, last empire standing). */
+export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomResult {
+  const g = createRandomSkirmish(catalog, {
+    seed: 8000 + o.seed,
+    size: 'small',
+    seats: Array.from({ length: o.empires }, () => ({ pantheonId: o.pantheon, controller: 'ai' as const })),
+    victory: { type: 'elimination' },
+    monsters: 'few',
+  });
+  const { match } = createGeneratedMatch(catalog, g, { matchId: `rand-${o.pantheon}-${o.empires}-${o.seed}` });
+  const d = new GameDriver(match, catalog);
+  const maxDay = o.maxDay ?? 40;
+  let battles = 0;
+  const onEvents = (events: readonly { kind: string }[]) => {
+    for (const e of events) if (e.kind === 'BattleStarted') battles++;
+  };
+  for (let i = 0; i < 4000 && d.state.outcome.status === 'running' && d.state.day <= maxDay; i++) {
+    d.state = runAITurn(catalog, d.state, { onEvents });
+    if (d.state.battle) d.autoBattle(8000);
+  }
+  const seats = [g.mission.player.playerId, ...(g.mission.rivals ?? []).map((r) => r.playerId)];
+  const w = d.state.outcome.status !== 'running' ? (d.state.outcome.winnerIds?.[0] ?? null) : null;
+  let pointsSeat: number | null = null;
+  if (!w) {
+    const strength = seats.map((id) => {
+      let total = 0;
+      for (const h of Object.values(d.state.heroes)) if (h.ownerId === id && h.status === 'active') total += armyStrength(catalog, h.army.slots.map((x) => (x ? { creatureId: x.creatureId, count: x.count } : null)));
+      for (const t of Object.values(d.state.towns)) if (t.ownerId === id) total += armyStrength(catalog, t.garrison.slots.map((x) => (x ? { creatureId: x.creatureId, count: x.count } : null)));
+      return total;
+    });
+    const order = strength.map((v, i) => [v, i] as const).sort((a, b) => b[0] - a[0]);
+    if (order.length > 1 && order[0]![0] >= order[1]![0] * 1.25) pointsSeat = order[0]![1];
+  }
+  return { pantheon: o.pantheon, empires: o.empires, seed: o.seed, winnerSeat: w ? seats.indexOf(w) : null, pointsSeat, day: d.state.day, battles };
 }

@@ -136,3 +136,85 @@ export function MissionThumb({ catalog, missionId, style }: { catalog: ContentCa
     </span>
   );
 }
+
+/**
+ * Adventure-map marker art for a site (UI side panels, journal). Chosen by the
+ * site's kind and ownership — presentation only, from the shared marker set.
+ */
+export function siteMarkerAsset(
+  kind: { type: string; siteType?: string; reward?: { resources?: Partial<Record<string, number>>; artifactIds?: readonly string[] }; label?: string },
+  opts: { owner?: 'self' | 'other' | null; done?: boolean } = {},
+): string {
+  switch (kind.type) {
+    case 'town':
+      return opts.owner === 'self' ? 'icon.marker.town' : opts.owner === 'other' ? 'icon.marker.hostile-town' : 'icon.marker.neutral-town';
+    case 'resource_site':
+      return kind.siteType === 'sawmill' ? 'icon.marker.sawmill' : kind.siteType === 'quarry' ? 'icon.marker.quarry' : kind.siteType === 'crystal_deposit' ? 'icon.marker.crystal' : 'icon.marker.mine';
+    case 'pickup': {
+      if (opts.done) return 'icon.marker.check';
+      if (kind.reward?.artifactIds?.length) return 'icon.marker.artifact';
+      const res = Object.entries(kind.reward?.resources ?? {}).filter(([, v]) => (v ?? 0) > 0);
+      if (res.length === 1) {
+        const k = res[0]![0];
+        if (k === 'gold' || k === 'wood' || k === 'stone' || k === 'crystal') return `icon.marker.${k}`;
+      }
+      return 'icon.marker.chest';
+    }
+    case 'watchtower':
+      return 'icon.marker.watchtower';
+    case 'crossing':
+    case 'gate':
+      return opts.done ? 'icon.marker.check' : 'icon.marker.locked';
+    case 'landmark':
+      return opts.done ? 'icon.marker.check' : 'icon.marker.quest';
+    case 'activation':
+      return opts.done ? 'icon.marker.check' : 'icon.marker.story';
+    case 'creature_camp':
+      return 'icon.marker.creature';
+    case 'map_event':
+      return opts.done ? 'icon.marker.check' : 'icon.marker.question';
+    case 'relic':
+      return 'icon.marker.shrine';
+    default:
+      return 'icon.marker.unknown';
+  }
+}
+
+export function MarkerIcon({ assetId, label, size = '2rem' }: { assetId: string; label?: string; size?: string }) {
+  const rec = resolveAsset(assetId);
+  if (!rec.url) return null;
+  return <img className="marker-icon" src={rec.url} alt={label ?? ''} aria-hidden={label ? undefined : true} style={{ width: size, height: size }} draggable={false} />;
+}
+
+/** The Pantheon Realms emblem (small branding in dialogs); nothing when the file is missing. */
+export function BrandEmblem({ size }: { size?: string }) {
+  const rec = resolveAsset('brand.emblem');
+  if (!rec.url) return null;
+  return <img className="brand-emblem" src={rec.url} alt="" aria-hidden="true" draggable={false} style={size ? { width: size, height: size } : undefined} />;
+}
+
+/** Spell art in a round socket: the spell's own icon when delivered, else the effect-family icon. */
+const SPELL_EFFECT_ART: Record<string, string> = {
+  direct_damage: 'icon.fx.lightning',
+  area_damage: 'icon.fx.burning',
+  max_damage_roll: 'icon.fx.strike',
+  attack_bonus: 'icon.status.buff',
+  defense_bonus: 'icon.fx.shield',
+  ranged_mitigation: 'icon.fx.shield',
+  heal_front: 'icon.fx.healing',
+  speed_bonus: 'icon.stat.speed',
+  mass_bonus: 'icon.status.buff',
+  reveal_radius: 'icon.stat.vision',
+  movement_bonus: 'icon.stat.movement',
+  recall: 'icon.time.turn',
+};
+
+export function SpellIcon({ iconAssetId, effectType, size = '2.4rem' }: { iconAssetId: string; effectType: string; size?: string }) {
+  const own = resolveAsset(iconAssetId);
+  const rec = own.url ? own : resolveAsset(SPELL_EFFECT_ART[effectType] ?? 'icon.action.spell');
+  return (
+    <span className="spell-socket" style={{ width: size, height: size }} aria-hidden="true">
+      {rec.url ? <img src={rec.url} alt="" draggable={false} /> : null}
+    </span>
+  );
+}

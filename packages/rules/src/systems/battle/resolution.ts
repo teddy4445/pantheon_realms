@@ -5,7 +5,9 @@
  * Reopening the result screen is read-only; rewards apply exactly once.
  */
 import type { HeroId } from '../../ids';
-import { resources } from '../../core/resources';
+import { addResources, resources } from '../../core/resources';
+import { grant } from '../economy';
+import { bumpTotal } from '../stats';
 import type { BattleCasualtyLine, BattleResultRecord, BattleSideId, BattleState, HeroState } from '../../state/match';
 import type { Tx } from '../../engine/tx';
 import { aliveCount, sideStacks, statsOf } from './common';
@@ -150,6 +152,26 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
     }
   }
 
+  // Wandering monster: its bounty goes to whoever defeats it.
+  if (loserHero?.monster && loserHero.status === 'defeated' && winnerHero && winnerHero.status === 'active') {
+    const bounty = resources(loserHero.monster.bounty);
+    if (tx.applyOnce(`bounty:${loserHero.id}`) && Object.values(bounty).some((v) => v > 0)) {
+      grant(tx, winnerHero.ownerId, bounty, `Bounty for ${loserHero.name}`);
+      rewardsGranted = addResources(rewardsGranted, bounty);
+    }
+  }
+
+  // Statistics (end-of-game summary): battles, kills and losses per player.
+  const killedOn = (side: BattleSideId) => Object.values(battle.stacks).filter((s) => s.side === side).reduce((n, s) => n + (s.startingCount - survivors(s)), 0);
+  if (outcome !== 'stalemate') {
+    bumpTotal(state, winnerSide.playerId, 'battlesWon');
+    bumpTotal(state, loserSide.playerId, 'battlesLost');
+  }
+  bumpTotal(state, battle.sides.attacker.playerId, 'creaturesKilled', killedOn('defender'));
+  bumpTotal(state, battle.sides.defender.playerId, 'creaturesKilled', killedOn('attacker'));
+  bumpTotal(state, battle.sides.attacker.playerId, 'creaturesLost', killedOn('attacker'));
+  bumpTotal(state, battle.sides.defender.playerId, 'creaturesLost', killedOn('defender'));
+
   // Town siege: a captured town loses its garrison and reserves; a visiting defender is defeated above.
   if (siegeTown) {
     if (winner === 'attacker' && attackerHero && attackerHero.status === 'active') {
@@ -159,6 +181,7 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
       const site = state.world.sites[siegeTown.siteId];
       if (site) site.owner = attackerHero.ownerId;
       tx.emit({ kind: 'TownCaptured', townId: siegeTown.id, playerId: attackerHero.ownerId });
+      bumpTotal(state, attackerHero.ownerId, 'townsCaptured');
       tx.emit({ kind: 'SiteCaptured', siteId: siegeTown.siteId, playerId: attackerHero.ownerId });
       heroOutcome = `${siegeTown.name} was captured. ${heroOutcome}`.trim();
     } else if (winner === 'defender') {

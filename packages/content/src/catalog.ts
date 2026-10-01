@@ -19,13 +19,14 @@ import { NORSE_LORE } from './norse/lore';
 import { NORSE_BUILDINGS, NORSE_TOWN } from './norse/town';
 import { NORSE_GODS, NORSE_HERO_CLASSES, NORSE_HEROES, NORSE_PANTHEON } from './norse/pantheon';
 import { COMING_SOON_CAMPAIGNS, ENTITLEMENTS, TEMPLATES, THREE_BEACONS, THREE_BEACONS_MISSIONS } from './campaign/threeBeacons';
-import { SKIRMISH_MISSIONS, SKIRMISH_SCENARIOS, SKIRMISH_TEMPLATES } from './skirmish/skirmish';
+import { SKIRMISH_KITS, SKIRMISH_MISSIONS, SKIRMISH_SCENARIOS, SKIRMISH_TEMPLATES } from './skirmish/skirmish';
+import { ARTIFACT_SETS, DIFFICULTIES, EXPANDED_SKILLS, EXPANDED_SPELLS, INTERVENTIONS, MAP_EVENT_TEMPLATES, SET_ARTIFACTS, WEEKLY_EVENTS } from './common/expanded';
 import { validateCatalog } from './validation/validators';
 
 export const VERSIONS: VersionBundle = {
   rulesVersion: 'pr-0.2-candidate',
-  contentVersion: 'content-0.6.0',
-  campaignVersion: 'campaign-three-beacons-0.3',
+  contentVersion: 'content-0.7.0',
+  campaignVersion: 'campaign-three-beacons-0.4',
   mapGeneratorVersion: 'pr-mapgen-0.3',
   saveSchemaVersion: 1,
 };
@@ -60,9 +61,15 @@ export function buildCatalog(): ContentCatalog {
     gods: index([...GREEK_GODS, ...NORSE_GODS, ...kits.flatMap((k) => k.gods)], 'god'),
     heroes: index([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes)], 'hero'),
     heroClasses: index([...HERO_CLASSES, ...NORSE_HERO_CLASSES, ...kits.flatMap((k) => k.classes)], 'hero class'),
-    skills: index(SKILLS, 'skill'),
-    spells: index(SPELLS, 'spell'),
-    artifacts: index(ARTIFACTS, 'artifact'),
+    skills: index([...SKILLS, ...EXPANDED_SKILLS], 'skill'),
+    spells: index([...SPELLS, ...EXPANDED_SPELLS], 'spell'),
+    artifacts: index([...ARTIFACTS, ...SET_ARTIFACTS], 'artifact'),
+    artifactSets: index(ARTIFACT_SETS, 'artifact set'),
+    difficulties: index(DIFFICULTIES, 'difficulty'),
+    interventions: index(INTERVENTIONS, 'intervention'),
+    weeklyEvents: index(WEEKLY_EVENTS, 'weekly event'),
+    skirmishKits: Object.fromEntries(SKIRMISH_KITS.map((k) => [k.pantheonId, k])),
+    mapEventTemplates: index(MAP_EVENT_TEMPLATES, 'map event'),
     entitlements: index(ENTITLEMENTS, 'entitlement'),
     campaigns: index([THREE_BEACONS, ...COMING_SOON_CAMPAIGNS], 'campaign'),
     missions: index([...THREE_BEACONS_MISSIONS, ...SKIRMISH_MISSIONS], 'mission'),

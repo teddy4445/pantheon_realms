@@ -1,3 +1,4 @@
+import { scenarioMission } from '@pr/rules';
 /**
  * Which sound plays when. Pure mapping from screens, committed events and
  * battle presentation cues to sound IDs in the sound manifest
@@ -143,7 +144,7 @@ export function soundsForEvents(catalog: ContentCatalog, state: MatchState, me: 
   const add = (id: string) => {
     if (!out.includes(id)) out.push(id);
   };
-  const mission = catalog.missions[state.mission.missionId];
+  const mission = scenarioMission(catalog, state);
   for (const e of events) {
     switch (e.kind) {
       case 'DayStarted':

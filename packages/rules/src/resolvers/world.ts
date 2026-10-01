@@ -20,6 +20,7 @@ import { TERRAIN_BY_CODE, type SiteDefinition, type Terrain, type WorldMapDefini
 import type { HeroState, MatchState, SiteState } from '../state/match';
 import { heroVisionRadius } from './heroes';
 import { townVisionRadius } from './town';
+import { scenarioMission } from './scenario';
 
 export function inMap(map: WorldMapDefinition, c: HexCoord): boolean {
   return c.q >= 0 && c.q < map.width && c.r >= 0 && c.r < map.height;
@@ -58,7 +59,7 @@ export function edgeCost(catalog: ContentCatalog, map: WorldMapDefinition, from:
 }
 
 export function missionSite(catalog: ContentCatalog, state: MatchState, siteId: SiteId): SiteDefinition | undefined {
-  return catalog.missions[state.mission.missionId]?.sites.find((s) => s.id === siteId);
+  return scenarioMission(catalog, state)?.sites.find((s) => s.id === siteId);
 }
 
 export interface SiteAt {
@@ -68,7 +69,7 @@ export interface SiteAt {
 
 export function siteIndex(catalog: ContentCatalog, state: MatchState): Map<string, SiteAt> {
   const out = new Map<string, SiteAt>();
-  const mission = catalog.missions[state.mission.missionId];
+  const mission = scenarioMission(catalog, state);
   if (!mission) return out;
   for (const def of mission.sites) {
     const st = state.world.sites[def.id];

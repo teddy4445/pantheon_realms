@@ -18,10 +18,11 @@ import {
   xpForLevel,
   type ArmyRef,
   type HeroState,
+  artifactSetStatus,
 } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, QuantitySelector, SectionTitle, Bar } from '../components/kit';
-import { HeroPortrait } from '../components/art';
+import { HeroPortrait, SpellIcon } from '../components/art';
 import { ArmyStrip, ScreenHeader } from '../components/game';
 import { Icon, type IconName } from '../assets/icons';
 import { humanPlayer, playerHeroes, townAtHero } from '../app/view';
@@ -223,6 +224,7 @@ export function HeroScreen() {
                         ))}
                       </span>
                       <span className="dim small">{sd?.rankSummaries[s.rank - 1]}</span>
+                      {sd?.pantheonId ? <Chip tone="info">{catalog.pantheons[sd.pantheonId]?.name} skill</Chip> : null}
                     </li>
                   );
                 })}
@@ -238,9 +240,12 @@ export function HeroScreen() {
                   {hero.knownSpellIds.map((id) => {
                     const sp = catalog.spells[id];
                     return (
-                      <li key={id}>
-                        <strong>{sp?.name}</strong> <Chip>T{sp?.tier}</Chip> <Chip tone="info">{sp?.manaCost} mana</Chip>
-                        <div className="dim small">{sp?.summary}</div>
+                      <li key={id} className="spell-slot">
+                        {sp ? <SpellIcon iconAssetId={sp.iconAssetId} effectType={sp.effect.type} /> : null}
+                        <div>
+                          <strong>{sp?.name}</strong> <Chip>T{sp?.tier}</Chip> <Chip tone="info">{sp?.manaCost} mana</Chip>
+                          <div className="dim small">{sp?.summary}</div>
+                        </div>
                       </li>
                     );
                   })}
@@ -261,6 +266,7 @@ export function HeroScreen() {
                       <>
                         <div className="equip-slot__item">{art.name}</div>
                         <div className="faint small">{art.summary}</div>
+                        {art.setId ? <Chip tone="info">{catalog.artifactSets?.[art.setId]?.name ?? 'Set'}</Chip> : null}
                         {mine ? (
                           <Button size="small" variant="ghost" onClick={() => store.dispatch({ kind: 'UnequipArtifact', heroId: hero.id, slot })}>
                             Unequip
@@ -274,6 +280,27 @@ export function HeroScreen() {
                 );
               })}
             </div>
+            {artifactSetStatus(catalog, hero).map((st) => {
+              const set = catalog.artifactSets?.[st.setId];
+              return (
+                <div key={st.setId} className="set-status" data-testid={`set-${st.setId}`}>
+                  <div className="row gap">
+                    <strong>{st.name}</strong>
+                    <Chip tone={st.active.length ? 'ok' : 'muted'}>
+                      {st.equipped}/{st.total} pieces
+                    </Chip>
+                  </div>
+                  <ul className="bullets small">
+                    {(set?.bonuses ?? []).map((b) => (
+                      <li key={b.pieces} className={st.equipped >= b.pieces ? '' : 'faint'}>
+                        {b.summary} {st.equipped >= b.pieces ? '(active)' : ''}
+                      </li>
+                    ))}
+                  </ul>
+                  {set ? <div className="faint small">Pieces: {set.pieceIds.map((id) => catalog.artifacts[id]?.name ?? id).join(', ')}</div> : null}
+                </div>
+              );
+            })}
             <SectionTitle>
               Backpack ({hero.backpack.length}/{catalog.rulesProfile.backpackCapacity})
             </SectionTitle>
@@ -284,6 +311,7 @@ export function HeroScreen() {
                 return (
                   <div key={inst.instanceId} className="backpack-item">
                     <strong>{art?.name}</strong> <span className="faint small">({art?.slot})</span>
+                    {art?.setId ? <Chip tone="info">{catalog.artifactSets?.[art.setId]?.name ?? 'Set'}</Chip> : null}
                     <div className="dim small">{art?.summary}</div>
                     {mine ? (
                       <Button size="small" onClick={() => store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: inst.instanceId })}>

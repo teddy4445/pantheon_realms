@@ -44,6 +44,7 @@ import type { ObjectiveStatus } from '../definitions/campaign';
 import type { HeroAttribute } from '../definitions/logic';
 import type { ArtifactSlot } from '../definitions/pantheons';
 import type { BattlefieldArchetype, StackSpec, WorldMapDefinition } from '../definitions/world';
+import type { MissionDefinition, ScenarioFeatures } from '../definitions/campaign';
 
 // ---------------------------------------------------------------------------
 // Armies
@@ -93,6 +94,10 @@ export interface PlayerState {
   pantheon: PantheonProgressState;
   entitlements: EntitlementState[];
   eliminated: boolean;
+  /** Dawn income percent (skirmish difficulty handicap; 100 = normal). Absent = 100. */
+  incomePercent?: number;
+  /** World week of the player's last divine intervention (0 or absent = never). */
+  interventionWeek?: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -116,6 +121,9 @@ export interface HeroAiState {
   regionMinQ: number;
   regionMaxQ: number;
   attackThreshold: { numerator: number; denominator: number };
+  /** Circular region (wandering monsters). */
+  regionCenter?: HexCoord;
+  regionRadius?: number;
 }
 
 export interface HeroState {
@@ -144,6 +152,8 @@ export interface HeroState {
   /** World week of the last Training Academy session (0 = never). */
   lastTrainedWeek: number;
   ai?: HeroAiState;
+  /** A wandering monster: no commander in battle; the bounty goes to whoever defeats it. */
+  monster?: { bounty: ResourceBundle; creatureId: CreatureId };
 }
 
 // ---------------------------------------------------------------------------
@@ -191,11 +201,17 @@ export interface SiteState {
   open: boolean;
   /** Remaining guard army after partial outcomes (guards are reset on retreat, so usually full). */
   guard: StackSpec[] | null;
+  /** Creature camp: creatures available to recruit now. */
+  stock?: number;
+  /** Relic: consecutive dawns the current owner has held it. */
+  heldDays?: number;
 }
 
 export interface WorldState {
   map: WorldMapDefinition;
   sites: Record<SiteId, SiteState>;
+  /** The current weekly event (weekly-event scenarios); null on a quiet week or before the first. */
+  weeklyEventId?: string | null;
 }
 
 /** Per-player fog: 0 unknown, 1 explored (remembered). Current visibility is derived. */
@@ -230,12 +246,57 @@ export interface MissionState {
   counters: Record<string, number>;
   /** Sites whose coordinates the player knows through story reveals (remembered markers). */
   revealedSiteIds: SiteId[];
+  /** Story scenes already played, in order (each plays once). */
+  scenesPlayed?: string[];
 }
 
+/**
+ * Outcome from the human players' point of view. `winnerIds` names the
+ * winning player(s) when one is known (skirmish), so hot-seat games can show
+ * who won.
+ */
 export type MatchOutcome =
   | { status: 'running' }
-  | { status: 'victory'; reason: string; day: number }
-  | { status: 'defeat'; reason: string; day: number };
+  | { status: 'victory'; reason: string; day: number; winnerIds?: PlayerId[] }
+  | { status: 'defeat'; reason: string; day: number; winnerIds?: PlayerId[] };
+
+// ---------------------------------------------------------------------------
+// Statistics (end-of-game summary and score)
+// ---------------------------------------------------------------------------
+
+export interface PlayerDayStats {
+  /** Recruitment Gold value of every creature in the player's armies and garrisons. */
+  armyValue: number;
+  towns: number;
+  heroes: number;
+  /** Gold-equivalent income per day (Gold + 250 per Wood/Stone + 500 per Crystal/Favor). */
+  income: number;
+  gold: number;
+  /** Mines and other captured sites. */
+  sites: number;
+}
+
+export interface DayStatsRecord {
+  day: number;
+  players: Record<PlayerId, PlayerDayStats>;
+}
+
+export interface PlayerTotals {
+  battlesWon: number;
+  battlesLost: number;
+  creaturesKilled: number;
+  creaturesLost: number;
+  buildingsBuilt: number;
+  creaturesRecruited: number;
+  sitesCaptured: number;
+  townsCaptured: number;
+}
+
+export interface MatchStats {
+  /** One record per world day (taken at dawn, and at the start). */
+  timeline: DayStatsRecord[];
+  totals: Record<PlayerId, PlayerTotals>;
+}
 
 // ---------------------------------------------------------------------------
 // Decisions
@@ -305,11 +366,13 @@ export interface BattleSideEffects {
   freeShapeshift: boolean;
   /** Highest army_harmony threshold met by the deployed army (set when both sides are placed). */
   harmony: { families: number; attack: number; defense: number } | null;
+  /** Battle spell damage bonus percent (commander skills/artifacts). Absent = 0. */
+  spellDamagePercent?: number;
   /** creature_stat filters for this side's creatures. */
   creatureStats: { stat: 'attack' | 'defense' | 'speed'; amount: number; minTier?: number; maxTier?: number; ability?: string }[];
 }
 
-export type BattleStatusKind = 'defense_bonus' | 'attack_bonus' | 'max_damage_roll' | 'ranged_mitigation';
+export type BattleStatusKind = 'defense_bonus' | 'attack_bonus' | 'max_damage_roll' | 'ranged_mitigation' | 'speed_bonus';
 
 export interface BattleStatusState {
   sourceId: string;
@@ -459,6 +522,10 @@ export interface ScenarioRuntimeInfo {
   committableGodIds: string[] | null;
   /** Pantheon signature mechanics apply in this scenario. */
   signatureMechanics: boolean;
+  /** Skirmish difficulty (null or absent: authored balance, e.g. the campaign). */
+  difficultyId?: string | null;
+  /** Optional features enabled for this scenario (absent: none). */
+  features?: ScenarioFeatures;
   xpCap: number | null;
   protectedHeroIds: HeroId[];
 }
@@ -469,6 +536,11 @@ export interface MatchState {
   revision: number;
   versions: VersionBundle;
   scenario: ScenarioRuntimeInfo;
+  /**
+   * Generated scenarios (random skirmish maps) embed their full definition here;
+   * authored scenarios leave it absent and are read from the content catalog.
+   */
+  customMission?: MissionDefinition | null;
   day: number;
   activePlayerId: PlayerId;
   playerOrder: PlayerId[];
@@ -488,6 +560,8 @@ export interface MatchState {
   rng: { combat: number; progression: number; layout: number };
   serial: number;
   outcome: MatchOutcome;
+  /** Day-by-day statistics for the end-of-game summary (absent in older states). */
+  stats?: MatchStats;
 }
 
 export const ARMY_SLOT_COUNT = 7;

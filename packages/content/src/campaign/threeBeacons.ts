@@ -260,6 +260,29 @@ const M01: MissionDefinition = {
     P('Alexios', 'First we reach the shore. Then we make sure the road stays open.'),
   ],
   victory: [P('Thaleia', 'One light is enough to tell the coast we have not abandoned it. The next signal lies above the pass.')],
+  storyScenes: [
+    {
+      id: 'm01_bridge_open',
+      trigger: { type: 'site_cleared', siteId: 'm01_ford' },
+      lines: [
+        P('Alexios', 'The bridge is ours. Whoever held it wanted the shore cut off, not plundered.'),
+        P('Thaleia', 'Then they will be back. Keep the road watched when you march on.'),
+      ],
+    },
+    {
+      id: 'm01_lighthouse_battle',
+      trigger: { type: 'battle_started', siteId: 'm01_beacon' },
+      lines: [P('Alexios', 'They are holding the lighthouse itself. Whoever sent them knew what its light means to this coast.')],
+    },
+    {
+      id: 'm01_losses',
+      trigger: { type: 'casualties', minLost: 4 },
+      lines: [
+        P('Thaleia', 'Every shield that falls is a family in Asterion waiting at the door. Win if you must — but bring them home when you can.'),
+        P('Alexios', 'I hear you. We fight smarter, or we wait until we are stronger.'),
+      ],
+    },
+  ],
   debriefPolicy: DEBRIEF_POLICY,
   player: {
     playerId: 'player',
@@ -424,6 +447,35 @@ const M02: MissionDefinition = {
     P('Alexios', 'An alliance, not a trophy. Show us what they need.'),
   ],
   victory: [P('Ione', 'The lights can speak again. But the great beacon has no lens. Melas carried it to the storm plateau.')],
+  storyScenes: [
+    {
+      id: 'm02_griffin_shrine',
+      trigger: { type: 'site_cleared', siteId: 'm02_nest_guard' },
+      lines: [
+        P('Ione', 'This is the Griffins’ shrine — older than Passhaven, older than the road. The raiders camped on it as if it were only stone.'),
+        P('Ione', 'Griffins do not serve. They keep oaths. Claim their covenant in your journal, and Passhaven may raise an aerie where they will be welcome.'),
+        P('Alexios', 'Then we will keep our side of it.'),
+      ],
+    },
+    {
+      id: 'm02_athena',
+      trigger: { type: 'god_committed', godId: 'athena' },
+      lines: [P('Ione', 'Athena, then. She favours those who plan before they strike. The Griffins will understand that.')],
+    },
+    {
+      id: 'm02_ares',
+      trigger: { type: 'god_committed', godId: 'ares' },
+      lines: [P('Ione', 'Ares answers. Be careful — his gifts are paid for in courage, and courage can run out.')],
+    },
+    {
+      id: 'm02_losses',
+      trigger: { type: 'casualties', minLost: 6 },
+      lines: [
+        P('Thaleia', 'A courier from Asterion, Alexios: the names of the fallen reached us before your report did. We count every soldier who does not come back.'),
+        P('Alexios', 'Tell her I count them too.'),
+      ],
+    },
+  ],
   debriefPolicy: DEBRIEF_POLICY,
   player: {
     playerId: 'player',
@@ -624,6 +676,43 @@ const M03: MissionDefinition = {
     P('Alexios', 'Because it was built to guide people home, not make them kneel.'),
   ],
   victory: [P('Thaleia', 'Three lights. One coast. We can build the rest together.')],
+  storyScenes: [
+    {
+      id: 'm03_approach_open',
+      trigger: { type: 'objective_completed', objectiveId: 'm03_approach' },
+      lines: [
+        P('Alexios', 'The crossing is open. Both relays are within reach now.'),
+        P('Ione', 'Light them both. The ward gate answers only to the whole signal.'),
+      ],
+    },
+    {
+      id: 'm03_gate_open',
+      trigger: { type: 'objective_completed', objectiveId: 'm03_ward_gate' },
+      lines: [P('Melas', 'So the gate opens for you. Come up, then. The storm has been waiting.')],
+    },
+    {
+      id: 'm03_melas_threat',
+      trigger: { type: 'battle_started', siteId: 'm03_beacon' },
+      lines: [
+        P('Melas', 'You lit two little fires and think the coast is yours. I kept this beacon when the council fled.'),
+        P('Melas', 'Turn back now and you keep your soldiers. Take one more step and the storm takes them.'),
+        P('Alexios', 'The light was never yours to keep, Melas.'),
+      ],
+    },
+    {
+      id: 'm03_lens',
+      trigger: { type: 'site_cleared', siteId: 'm03_beacon' },
+      lines: [
+        P('Melas', 'Take the lens, then. See how long the coast remembers who lit it.'),
+        P('Alexios', 'Long enough to build something better.'),
+      ],
+    },
+    {
+      id: 'm03_losses',
+      trigger: { type: 'casualties', minLost: 8 },
+      lines: [P('Thaleia', 'Highwatch’s healers are full, Alexios. The beacon matters — but so do the people carrying it there.')],
+    },
+  ],
   debriefPolicy: ['The Three Beacons is complete. Replays run in a separate practice branch and cannot change this campaign record.'],
   player: {
     playerId: 'player',
@@ -734,21 +823,29 @@ export const THREE_BEACONS: CampaignDefinition = {
   ],
   status: 'playable',
   thumbnailAssetId: 'campaign.three_beacons.thumbnail',
+  epilogue: [
+    P('Thaleia', 'From the Outer Lighthouse to the storm plateau, the coast can see itself again. Tonight the first ships since the storm came into Asterion.'),
+    P('Ione', 'The Griffins circled the pass beacon at dusk. They have not done that in a generation.'),
+    P('Alexios', 'Then the work begins. A light only shows the way — people still have to walk it.'),
+    P('Thaleia', 'Then we walk it together.'),
+  ],
 };
 
 export const COMING_SOON_CAMPAIGNS: readonly CampaignDefinition[] = [
   {
-    id: 'fallen_titan',
-    name: 'The Fallen Titan',
-    tagline: 'Coming later',
-    summary: 'A future campaign. Not available in this build.',
-    pantheonId: 'greek',
+    // Proposed this build: an outline only (CAMPAIGN_2_NORSE_OUTLINE.md), awaiting the owner's approval.
+    id: 'winter_oath',
+    name: 'The Winter Oath',
+    tagline: 'Outline — awaiting approval',
+    summary:
+      'Proposed Norse campaign: the winter does not end, the barrows above Kaldvik have opened, and the seeress Hervor must bind an oath she once broke. Three missions are outlined; none are built. Not available in this build.',
+    pantheonId: 'norse',
     startingGodOptions: [],
     startingGodNote: '',
     missionIds: [],
-    heroDefinitionId: 'alexios',
+    heroDefinitionId: 'norse_hervor',
     carryoverPolicy: [],
     status: 'coming_soon',
-    thumbnailAssetId: 'campaign.fallen_titan.thumbnail',
+    thumbnailAssetId: 'campaign.winter_oath.thumbnail',
   },
 ];

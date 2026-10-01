@@ -33,6 +33,7 @@ import { placementSlot, resolveArmy, armyRefLabel } from '../resolvers/army';
 import { hexEquals } from '../core/hex';
 import { movementBudget } from '../resolvers/heroes';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
+import { bumpTotal } from './stats';
 
 // ---------------------------------------------------------------------------
 // Construction
@@ -111,6 +112,7 @@ export function commitConstruction(tx: Tx, townId: TownId, buildingId: BuildingI
   town.buildings[def.slotId] = def.level;
   town.buildUsedDay = tx.state.day;
   tx.emit({ kind: 'BuildingConstructed', townId, buildingId, level: def.level });
+  bumpTotal(tx.state, tx.actorId, 'buildingsBuilt');
   applyDwellingConstruction(tx, town, def);
 }
 
@@ -259,6 +261,7 @@ export function commitRecruitment(
   const counterKey = `recruited:${creature.familyId}`;
   tx.state.mission.counters[counterKey] = (tx.state.mission.counters[counterKey] ?? 0) + quantity;
   tx.emit({ kind: 'UnitsRecruited', townId, creatureId, quantity, destination: q.destinationLabel });
+  bumpTotal(tx.state, tx.actorId, 'creaturesRecruited', quantity);
   if (destination.kind === 'hero') clampMovement(tx, destination.heroId);
 }
 

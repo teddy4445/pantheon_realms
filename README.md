@@ -13,12 +13,24 @@ shell, and a browser build from the same core.
 ## Playable now
 
 * **The Three Beacons** — a three-mission Greek campaign with a persistent
-  hero (Alexios), covenants, a minor-god choice and a finale on the storm
-  plateau.
-* **Twin Harbors** — a skirmish against a local AI rival in which you choose
-  your pantheon and the rival's from all six: Greek, Norse, Egyptian,
-  Japanese, Celtic and Mesoamerican (36 pairings). Every non-Greek value is
-  proposed and unplaytested.
+  hero (Alexios), covenants, a minor-god choice, a finale on the storm
+  plateau, and story scenes along the way (Ione at the Griffin shrine,
+  Melas before the last battle, Thaleia on your losses) in a dialogue window
+  with Continue and Backlog, plus an epilogue.
+* **Twin Harbors** — a skirmish in which you choose your pantheon and the
+  rival's from all six: Greek, Norse, Egyptian, Japanese, Celtic and
+  Mesoamerican (36 pairings), on Easy, Normal or Hard — or against a second
+  player on the same computer (hot-seat). Every non-Greek value is proposed
+  and unplaytested.
+* **Random maps** — a new symmetric map every time for two to four empires
+  (any mix of AI and people), small/medium/large, *last empire standing* or
+  *hold the relic*, with creature camps, one-time map events and wandering
+  monsters.
+* **Skirmish extras** (proposed): pantheon skills and spells, four artifact
+  sets, divine interventions paid in Favor (once a week), and a weekly event.
+* **End of game**: a summary with day-by-day charts and a score, and high
+  scores for campaign and skirmish. Tips the first time you meet a mechanic,
+  F1 for the keyboard shortcuts, and every shortcut can be rebound.
 * **Town sieges**, Tactics deployment and Divine Sight on the adventure map.
 * **Pantheon signatures** (proposed, skirmish only): Greek Glory, Norse
   Berserk Fury, Egyptian Afterlife, Japanese Harmony, Celtic Shapeshifting,
@@ -69,7 +81,7 @@ apps/client        Vite entry (browser + Electron renderer)
 apps/desktop       Electron main + preload
 packages/rules     authoritative rules core (DOM-free)
 packages/content   validated content catalog and campaign data
-packages/mapgen    logical map generation
+packages/mapgen    logical map generation and the random skirmish generator
 packages/campaign  missions, carryover, campaign state machine
 packages/ai        AI observation, planners, controller
 packages/session   game session, checkpoints, save format
@@ -79,7 +91,10 @@ packages/presentation  Babylon.js scene controllers and placeholder proxies (loa
 packages/audio     Web Audio mixer: sound manifest, buses, music/ambience crossfades
 packages/ui        React screens, dialogs, preferences, asset manifest
 packages/testing   headless game driver for tests
-assets-runtime     committed runtime placeholders (+ provenance), unit models (units/) and sounds (audio/)
+assets-runtime     committed runtime placeholders (+ provenance), interface art (ui/, icons/),
+                   unit models (units/) and sounds (audio/)
+assets-source      owner-supplied interface art sources (opening backgrounds, logo, frame, icons);
+                   tools/assets/prepare_ui_art.py turns them into assets-runtime/ui
 tests/e2e          Playwright UI tests
 tools              boundary lint, desktop smoke test, load-time measurement, balance tool,
                    placeholder art and sound generators
@@ -92,7 +107,11 @@ tools              boundary lint, desktop smoke test, load-time measurement, bal
 * [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md) — what works, what is
   partial or planned, tests actually run, temporary assets, deviations.
 * [`DESIGN_PROPOSALS.md`](DESIGN_PROPOSALS.md) — proposed signatures, second
-  god choice and the three support buildings, with exact numbers.
+  god choice, support buildings, and this build's difficulty, story,
+  skills/spells, sets, interventions, world features, random maps, hot-seat
+  and results screens, with exact numbers.
+* [`CAMPAIGN_2_NORSE_OUTLINE.md`](CAMPAIGN_2_NORSE_OUTLINE.md) — the proposed
+  second campaign (*The Winter Oath*), an outline awaiting approval.
 * [`ASSET_PIPELINE.md`](ASSET_PIPELINE.md) — artist spec for creature GLBs:
   orientation, scale, the eight clip names, manifests, validation; and how to
   replace the placeholder sounds.

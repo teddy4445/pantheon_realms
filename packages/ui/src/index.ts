@@ -6,7 +6,7 @@
  * the Electron renderer.
  */
 import { registerUnitModels } from '@pr/presentation/core';
-import { fixtureUnitModels } from './assets/manifest';
+import { fixtureUnitModels, menuBackground } from './assets/manifest';
 import '@fontsource/cinzel/500.css';
 import '@fontsource/cinzel/600.css';
 import '@fontsource/cinzel/700.css';
@@ -45,6 +45,10 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
   const { prefs, error } = await loadPreferences(platform.preferences);
   store.prefs = prefs;
   applyPreferences(prefs);
+  // This run's opening background (random per start) also tints the menu screens behind their plates.
+  const art = menuBackground();
+  // Absolute URL: a relative one would resolve against the stylesheet that uses the variable.
+  if (art.url) document.documentElement.style.setProperty('--app-art', `url("${new URL(art.url, document.baseURI).href}")`);
   if (error) store.toast(`Preferences could not be read: ${error}. Defaults are in use.`, 'error');
   // Sound: silent (never blocking) when the browser has no audio device.
   try {
@@ -68,6 +72,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
         JSON.stringify({
           screen: store.screen.id,
           overlays: store.overlays.map((o) => o.kind),
+          story: store.story.map((x) => x.key),
+          hints: [...store.hints],
           busy: store.presentationBusy,
           humanTurn: store.session?.isHumanTurn() ?? false,
           state: store.session?.state ?? null,

@@ -5,7 +5,7 @@
  * Completing twice, reloading, or clicking Continue twice cannot create a second
  * reinforcement army: every transition is keyed by the record.
  */
-import { getCampaign, hashValue, type ContentCatalog, type GodId, type MatchState } from '@pr/rules';
+import { getCampaign, hashValue, matchScore, type ContentCatalog, type GodId, type MatchState, requireScenarioMission } from '@pr/rules';
 import { carryoverFromHero, createMissionMatch, type HeroCarryover, type MissionStart } from './missionFactory';
 
 export interface CompletionRecord {
@@ -31,6 +31,8 @@ export interface MissionSummary {
   readonly heroLevel: number;
   readonly heroXp: number;
   readonly xpCapped: boolean;
+  /** Mission score (proposed this build; absent in records made by older builds). */
+  readonly score?: number;
 }
 
 export interface CampaignState {
@@ -98,7 +100,7 @@ export function restartCurrentMission(catalog: ContentCatalog, campaign: Campaig
 }
 
 function summarize(catalog: ContentCatalog, match: MatchState, heroId: string, battlesWon: number): MissionSummary {
-  const mission = catalog.missions[match.mission.missionId]!;
+  const mission = requireScenarioMission(catalog, match);
   const hero = match.heroes[heroId]!;
   const objs = Object.values(match.mission.objectives);
   const trained = Object.entries(match.mission.counters)
@@ -116,7 +118,13 @@ function summarize(catalog: ContentCatalog, match: MatchState, heroId: string, b
     heroLevel: hero.level,
     heroXp: hero.xp,
     xpCapped: mission.xpCap !== null && hero.xp >= mission.xpCap,
+    score: matchScore(catalog, match, mission.player.playerId).total,
   };
+}
+
+/** Campaign score: the sum of the primary branch's mission scores. */
+export function campaignScore(campaign: CampaignState): number {
+  return campaign.completions.reduce((n, c) => n + (c.summary.score ?? 0), 0);
 }
 
 /** Commit the completion record exactly once. */
@@ -126,7 +134,7 @@ export function recordCompletion(catalog: ContentCatalog, campaign: CampaignStat
   if (existing) return campaign;
   if (match.outcome.status !== 'victory') throw new Error('The mission is not complete');
   if (match.pendingDecisions.length > 0) throw new Error('Resolve pending level-up choices first');
-  const mission = catalog.missions[match.mission.missionId]!;
+  const mission = requireScenarioMission(catalog, match);
   const hero = match.heroes[mission.player.hero.heroId];
   if (!hero) throw new Error('Campaign hero missing');
   const carryover = carryoverFromHero(match, hero);

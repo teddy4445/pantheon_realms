@@ -149,7 +149,25 @@ export type SiteKind =
       readonly completesMission: boolean;
       readonly confirmText: string;
     }
-  | { readonly type: 'gate'; readonly openWhenFlags: readonly string[] };
+  | { readonly type: 'gate'; readonly openWhenFlags: readonly string[] }
+  /**
+   * Neutral creature camp: a visiting hero may recruit its creatures at their
+   * normal price. Stock starts at `initialStock` and grows by `weeklyGrowth`
+   * each new week (proposed this build).
+   */
+  | { readonly type: 'creature_camp'; readonly creatureId: CreatureId; readonly weeklyGrowth: number; readonly initialStock: number }
+  /** One-time map event: the first hero to arrive chooses one option. */
+  | { readonly type: 'map_event'; readonly title: string; readonly text: string; readonly options: readonly MapEventOptionDefinition[] }
+  /** Capturable relic shrine (hold-the-relic victory). */
+  | { readonly type: 'relic' };
+
+export interface MapEventOptionDefinition {
+  readonly label: string;
+  /** Exact result shown to the player; must match `reward` and `cost`. */
+  readonly summary: string;
+  readonly reward: RewardDefinition;
+  readonly cost?: ResourceCost;
+}
 
 export interface SiteDefinition {
   readonly id: SiteId;
@@ -174,6 +192,11 @@ export interface EntitlementDefinition {
 
 export interface HostileHeroDefinition {
   readonly commander: CommanderSpec;
+  /**
+   * Wandering monster: an army without a commander (no attributes, skills or
+   * spells in battle). `bounty` goes to whoever defeats it.
+   */
+  readonly monster?: { readonly bounty: ResourceCost };
   readonly startCoord: HexCoord;
   readonly army: readonly StackSpec[];
   readonly ai: {
@@ -181,6 +204,9 @@ export interface HostileHeroDefinition {
     readonly waypoints: readonly HexCoord[];
     readonly regionMinQ: number;
     readonly regionMaxQ: number;
+    /** Optional circular region (wandering monsters stay within `radius` of `center`). */
+    readonly regionCenter?: HexCoord;
+    readonly regionRadius?: number;
     /** Attack when estimated own strength / target strength >= numerator/denominator. */
     readonly attackThreshold: { readonly numerator: number; readonly denominator: number };
   };

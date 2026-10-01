@@ -16,6 +16,7 @@ import { divineEffects } from '../resolvers/heroes';
 import { townHasEffect, townSpellLibraryTier } from '../resolvers/town';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { spend } from './economy';
+import { scenarioMission, scopeAllowed } from '../resolvers/scenario';
 
 // ---------------------------------------------------------------------------
 // Experience
@@ -65,9 +66,18 @@ export function ensureLevelUpDecision(tx: Tx, hero: HeroState): void {
   tx.state.pendingDecisions.push(decision);
 }
 
+/** Skills a hero may be offered: core skills, plus expanded ones of its own pantheon where the scenario allows. */
+export function offerableSkillIds(catalog: ContentCatalog, state: MatchState, hero: HeroState): string[] {
+  const pantheonId = catalog.heroes[hero.definitionId]?.pantheonId ?? state.players[hero.ownerId]?.pantheonId ?? null;
+  return Object.values(catalog.skills)
+    .filter((d) => scopeAllowed(state, d.scope) && (!d.pantheonId || d.pantheonId === pantheonId))
+    .map((d) => d.id)
+    .sort();
+}
+
 function rollSkillOffers(tx: Tx, hero: HeroState): SkillOffer[] {
   const profile = tx.profile;
-  const skillIds = Object.keys(tx.catalog.skills).sort();
+  const skillIds = offerableSkillIds(tx.catalog, tx.state, hero);
   const upgrades: SkillOffer[] = hero.skills
     .filter((s) => s.rank < profile.maxSkillRank)
     .map((s) => ({ kind: 'upgrade' as const, skillId: s.skillId, fromRank: s.rank, toRank: s.rank + 1 }))
@@ -177,6 +187,8 @@ export function learnSpellsAtTown(tx: Tx, hero: HeroState, town: TownState): voi
     if (hero.knownSpellIds.includes(spell.id)) continue;
     if (spell.tier > maxTier) continue;
     if (spell.access === 'god_eligibility' && !eligibility.has(spell.id)) continue;
+    if (!scopeAllowed(tx.state, spell.scope)) continue;
+    if (spell.pantheonId && spell.pantheonId !== town.pantheonId) continue;
     hero.knownSpellIds.push(spell.id);
     learned.push(spell.id);
   }
@@ -272,7 +284,7 @@ export function townTierOneBase(catalog: ContentCatalog, town: TownState): strin
 export function hireOptions(catalog: ContentCatalog, state: MatchState, playerId: string, townId: TownId): HireCandidate[] {
   const town = state.towns[townId];
   if (!town) return [];
-  const mission = catalog.missions[state.mission.missionId];
+  const mission = scenarioMission(catalog, state);
   const pool = mission?.hireableHeroIds ?? catalog.pantheons[town.pantheonId]?.heroIds.filter((id) => catalog.heroes[id]?.availability === 'hireable') ?? [];
   const inMatch = new Set(Object.values(state.heroes).map((h) => h.definitionId));
   const fresh = pool.filter((id) => catalog.heroes[id]?.pantheonId === town.pantheonId && !inMatch.has(id)).map((id) => ({ definitionId: id, returningHeroId: null }));

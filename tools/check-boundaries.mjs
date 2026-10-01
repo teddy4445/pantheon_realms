@@ -5,7 +5,7 @@
 // (rules, content, mapgen, campaign, ai, session) may never import React,
 // Babylon, Electron, DOM-only modules or Node built-ins. Relative imports must
 // stay inside their own package, with one documented exception (the UI reads
-// the committed placeholder asset manifest).
+// the committed placeholder and UI-art asset manifests).
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,6 +30,7 @@ const ALLOWED = {
 
 const RELATIVE_EXCEPTIONS = [
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/placeholders/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/manifest.json' },
   { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
 ];
 

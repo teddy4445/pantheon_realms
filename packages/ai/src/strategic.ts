@@ -19,7 +19,6 @@ import {
   reachableTiles,
   effectiveAttributes,
   movementBudget,
-  getMission,
   hexEquals,
   hexKey,
   quoteConstruction,
@@ -37,11 +36,11 @@ import {
   type MatchState,
   type PlayerId,
   type StackSpec,
-  type HexCoord,
+  type HexCoord, requireScenarioMission,
 } from '@pr/rules';
 import type { AIObservation } from './observation';
 import { armyStrength } from './evaluation';
-import { equipCandidates, godCandidates, merchantCandidates, offeringCandidates, trainingCandidates } from './services';
+import { campCandidates, equipCandidates, godCandidates, interventionCandidates, mapEventCandidates, merchantCandidates, offeringCandidates, trainingCandidates } from './services';
 
 /**
  * Data-driven build scoring (works for any pantheon's town tree): income first,
@@ -78,11 +77,27 @@ function buildScore(catalog: ContentCatalog, buildingId: string, heroCount: numb
 }
 
 const HIRE_RESERVE_GOLD = 3000;
-/** Required strength ratio (after the wall factor) before the AI besieges a town. */
-const SIEGE_MARGIN = 1.25;
+
+/**
+ * Strength margins and hero target by skirmish difficulty (catalog data). The
+ * defaults are the Normal values, used whenever no difficulty applies (campaign).
+ */
+export interface AIPersonality {
+  readonly heroAttackMargin: number;
+  readonly guardMargin: number;
+  readonly siegeMargin: number;
+  readonly targetHeroes: number;
+}
+
+const DEFAULT_PERSONALITY: AIPersonality = { heroAttackMargin: 1.2, guardMargin: 1.3, siegeMargin: 1.25, targetHeroes: 3 };
+
+export function aiPersonality(catalog: ContentCatalog, state: MatchState): AIPersonality {
+  const id = state.scenario.difficultyId;
+  return (id ? catalog.difficulties?.[id]?.ai : undefined) ?? DEFAULT_PERSONALITY;
+}
+
 /** An enemy hero within this many hexes of a town counts as a threat to it. */
 const THREAT_RADIUS = 8;
-const AI_TARGET_HEROES = 3;
 /** Strength ratio a hero needs before it attacks an enemy hero in the field. */
 const HERO_ATTACK_MARGIN = 1.2;
 /** A visible enemy at least this strong (relative) that can reach a tile next turn makes it dangerous. */
@@ -96,6 +111,7 @@ function heroStrength(catalog: ContentCatalog, state: MatchState, hero: HeroStat
 
 function withinRegion(hero: HeroState, c: HexCoord): boolean {
   if (!hero.ai) return true;
+  if (hero.ai.regionCenter && hero.ai.regionRadius !== undefined && axialDistance(hero.ai.regionCenter, c) > hero.ai.regionRadius) return false;
   return c.q >= hero.ai.regionMinQ && c.q <= hero.ai.regionMaxQ;
 }
 
@@ -114,7 +130,10 @@ interface Target {
 
 function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): Target[] {
   const out: Target[] = [];
-  const mission = getMission(catalog, belief.mission.missionId);
+  const mission = requireScenarioMission(catalog, belief);
+  const persona = aiPersonality(catalog, belief);
+  const holdRelic = mission.victoryCondition?.type === 'hold_site' ? mission.victoryCondition.siteId : null;
+  const wallet = belief.players[playerId]?.wallet;
   const myStrength = heroStrength(catalog, belief, hero);
   const visible = visibleCells(catalog, belief, playerId);
   for (const def of mission.sites) {
@@ -122,7 +141,7 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
     if (!st) continue; // unknown to this player
     if (def.guard && !st.cleared) {
       const guardStr = armyStrength(catalog, st.guard ?? def.guard.army, def.guard.commander ? { attack: def.guard.commander.attributes.attack, defense: def.guard.commander.attributes.defense } : undefined);
-      if (myStrength >= guardStr * 1.3) {
+      if (myStrength >= guardStr * persona.guardMargin) {
         const reward = def.guard.reward.resources?.gold ?? 0;
         out.push({ coord: def.coord, value: 600 + reward + guardStr * 0.2, encounter: true, label: def.name, fights: guardStr });
       }
@@ -152,11 +171,26 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
         // Siege: walls, keep and towers favour the defender; demand a clear margin.
         const defense = armyStrength(catalog, garrison) + (visitor ? heroStrength(catalog, belief, visitor) : 0);
         const walls = 1 + 0.25 * townFortificationLevel(catalog, town);
-        if (myStrength >= defense * walls * SIEGE_MARGIN) {
+        if (myStrength >= defense * walls * persona.siegeMargin) {
           out.push({ coord: def.coord, value: 8000 + defense * 0.3, encounter: true, label: `Siege of ${town.name}`, town: true });
         }
         break;
       }
+      case 'creature_camp': {
+        const creature = catalog.creatures[def.kind.creatureId];
+        const stock = st.stock ?? def.kind.initialStock;
+        const unit = creature?.cost?.gold ?? 0;
+        if (creature && stock > 0 && wallet && unit > 0 && wallet.gold >= unit * Math.min(stock, 3) + 1500 && hero.army.slots.some((x) => !x || x.creatureId === creature.id)) {
+          out.push({ coord: def.coord, value: 500 + Math.min(stock * unit, wallet.gold) * 0.25, encounter: false, label: def.name });
+        }
+        break;
+      }
+      case 'map_event':
+        if (!st.claimed) out.push({ coord: def.coord, value: 900, encounter: false, label: def.name });
+        break;
+      case 'relic':
+        if (st.owner !== playerId) out.push({ coord: def.coord, value: def.id === holdRelic ? 9000 : 1500, encounter: false, label: def.name });
+        break;
       default:
         break;
     }
@@ -166,7 +200,9 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
     if (enemy.ownerId === playerId || enemy.status !== 'active') continue;
     if (townCoords.has(hexKey(enemy.position))) continue; // visiting a town: evaluated as a siege above
     const theirs = heroStrength(catalog, belief, enemy);
-    if (myStrength >= theirs * HERO_ATTACK_MARGIN) out.push({ coord: enemy.position, value: 3000 + theirs * 0.5, encounter: true, label: enemy.name, fights: theirs, enemyHeroId: enemy.id });
+    const margin = enemy.monster ? Math.max(persona.guardMargin, HERO_ATTACK_MARGIN) : persona.heroAttackMargin;
+    const value = enemy.monster ? 900 + (enemy.monster.bounty.gold ?? 0) + theirs * 0.2 : 3000 + theirs * 0.5;
+    if (myStrength >= theirs * margin) out.push({ coord: enemy.position, value, encounter: true, label: enemy.name, fights: theirs, enemyHeroId: enemy.id });
   }
   return out;
 }
@@ -400,7 +436,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         const visitor = strategic.find((h) => hexEquals(h.position, t.coord));
         if (!visitor) return true;
         const mine = heroStrength(catalog, belief, visitor);
-        return near.some((e) => heroStrength(catalog, belief, e) * HERO_ATTACK_MARGIN > mine);
+        return near.some((e) => heroStrength(catalog, belief, e) * aiPersonality(catalog, belief).heroAttackMargin > mine);
       })
       .map((t) => t.id),
   );
@@ -419,6 +455,9 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
     out.push(...offeringCandidates(catalog, belief, playerId, threatened));
     out.push(...trainingCandidates(catalog, belief, playerId, strategic));
     out.push(...merchantCandidates(catalog, belief, playerId, strategic));
+    out.push(...mapEventCandidates(catalog, belief, playerId, strategic));
+    out.push(...campCandidates(catalog, belief, playerId, strategic));
+    out.push(...interventionCandidates(catalog, belief, playerId, strategic));
     for (const town of playerTowns(belief, playerId)) {
       const underThreat = threatened.has(town.id);
       // Build: best-scoring legal next level of any location, keeping a Gold reserve.
@@ -437,7 +476,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         }
       }
       // Hire: returning heroes first, then new candidates, while keeping a reserve.
-      if (myHeroes.length < AI_TARGET_HEROES && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : HIRE_RESERVE_GOLD)) {
+      if (myHeroes.length < aiPersonality(catalog, belief).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : HIRE_RESERVE_GOLD)) {
         for (const option of obs.hireRoster[town.id] ?? []) {
           if (quoteHireHero(catalog, belief, playerId, town.id, option.definitionId).legal) {
             out.push({ kind: 'HireHero', townId: town.id, heroDefinitionId: option.definitionId });

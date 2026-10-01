@@ -1,15 +1,18 @@
 /**
  * Setup flow: S02 Game Mode → S03 Scenario/Campaign → S04 Pantheon →
  * S05 Starting Divine Selection → Mission Briefing → Adventure Map.
+ * Random maps have their own setup screen (S19, RandomSetup.tsx).
  *
  * Future campaigns and undesigned content are shown honestly as not
  * playable; nothing here invents hidden mechanics. Skirmish scenarios with
- * pantheon variants let the player choose their own pantheon and the rival's.
+ * pantheon variants let the player choose their own pantheon and the rival's,
+ * the difficulty, and whether the rival seat is the AI or a second player on
+ * this computer (hot-seat).
  */
 import { useState } from 'react';
-import type { CampaignDefinition, GodDefinition, PantheonDefinition } from '@pr/rules';
+import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, GodDefinition, PantheonDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
-import { Button, Chip, Panel, SectionTitle, Rule } from '../components/kit';
+import { Button, Chip, Panel, SectionTitle, Rule, Segmented, TextInput } from '../components/kit';
 import { Emblem, GodPortrait, HeroPortrait, MissionThumb, CreaturePortrait } from '../components/art';
 import { ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
@@ -34,19 +37,25 @@ function SetupSteps({ step }: { step: number }) {
 
 export function GameModeScreen() {
   const store = useStore();
-  const pick = (mode: 'campaign' | 'skirmish') => {
+  const pick = (mode: 'campaign' | 'skirmish' | 'random') => {
+    if (mode === 'random') {
+      store.resetSetup('skirmish');
+      store.goto('random-setup');
+      return;
+    }
     store.resetSetup(mode);
     store.goto('scenario-select');
   };
   const modes = [
     { id: 'campaign' as const, icon: 'campaign' as const, title: 'Campaign', text: 'Story missions with a persistent hero. The Three Beacons is playable: three Greek missions.', status: 'Playable' },
-    { id: 'skirmish' as const, icon: 'skirmish' as const, title: 'Skirmish', text: 'A single scenario against a local AI rival using the same rules as the campaign. All six pantheons are playable.', status: 'Playable' },
+    { id: 'skirmish' as const, icon: 'skirmish' as const, title: 'Skirmish', text: 'An authored map against the AI or a second player on this computer (hot-seat). All six pantheons, three difficulties.', status: 'Playable' },
+    { id: 'random' as const, icon: 'map' as const, title: 'Random Map', text: 'A new fair map every time: two to four empires, AI or hot-seat seats, and a choice of victory condition.', status: 'Playable' },
   ];
   return (
     <div className="setup-screen">
       <ScreenHeader title="New Game" subtitle="Choose how you want to play" />
       <SetupSteps step={0} />
-      <div className="mode-grid">
+      <div className="mode-grid mode-grid--3">
         {modes.map((m) => (
           <button key={m.id} type="button" className="mode-card panel" onClick={() => pick(m.id)} data-testid={`mode-${m.id}`}>
             <Icon name={m.icon} className="mode-card__icon" />
@@ -55,19 +64,27 @@ export function GameModeScreen() {
             <Chip tone="ok">{m.status}</Chip>
           </button>
         ))}
-        <div className="mode-card panel is-disabled" aria-disabled="true">
-          <Icon name="flag" className="mode-card__icon" />
-          <h2>Multiplayer</h2>
-          <p>Hot-seat and online play are not part of this build.</p>
-          <Chip tone="muted">Not in this build</Chip>
-        </div>
-        <div className="mode-card panel is-disabled" aria-disabled="true">
-          <Icon name="map" className="mode-card__icon" />
-          <h2>Custom Map</h2>
-          <p>Random and editor maps are planned. Authored templates exist; the map generator is used for campaign variation only.</p>
-          <Chip tone="muted">Planned</Chip>
-        </div>
       </div>
+    </div>
+  );
+}
+
+/** Difficulty choice with its exact effects (skirmish only; the campaign keeps its authored balance). */
+export function DifficultyPicker({ catalog, value, onChange }: { catalog: ContentCatalog; value: string; onChange: (id: string) => void }) {
+  const list: DifficultyDefinition[] = Object.values(catalog.difficulties ?? {}).sort((a, b) => a.order - b.order);
+  const cur = list.find((d) => d.id === value);
+  if (list.length === 0) return null;
+  return (
+    <div className="setting-block">
+      <div className="setting-block__label">Difficulty</div>
+      <Segmented label="Difficulty" value={value} options={list.map((d) => ({ id: d.id, label: d.name, title: d.summary }))} onChange={onChange} testId="difficulty" />
+      {cur ? (
+        <ul className="bullets small dim setting-block__details">
+          {cur.details.map((d) => (
+            <li key={d}>{d}</li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }
@@ -201,7 +218,7 @@ export function ScenarioSelectScreen() {
             <div className="list-card__meta">
               {mode === 'campaign'
                 ? 'Campaigns for the other pantheons are not written yet; every pantheon can be played in skirmish.'
-                : 'More maps, random maps and more than one rival are planned.'}
+                : 'Random maps for two to four empires are under New Game → Random Map.'}
             </div>
             <Chip tone="muted">Not available</Chip>
           </div>
@@ -217,7 +234,7 @@ export function ScenarioSelectScreen() {
                 <div className="row gap wrap">
                   <Chip tone="ok">Playable</Chip>
                   <Chip>{catalog.mapTemplates[skMission.mapTemplateId]?.width}×{catalog.mapTemplates[skMission.mapTemplateId]?.height} map</Chip>
-                  <Chip>{(skMission.rivals ?? []).length} AI rival</Chip>
+                  <Chip>{(skMission.rivals ?? []).length} rival (AI or hot-seat)</Chip>
                   <Chip tone={skMission.heroHiringEnabled ? 'ok' : 'muted'}>{skMission.heroHiringEnabled ? 'Hero hiring' : 'No hiring'}</Chip>
                   {skirmish.variants?.length ? <Chip tone="info">Choose both pantheons</Chip> : null}
                 </div>
@@ -321,11 +338,11 @@ function PantheonDetail({ p }: { p: PantheonDefinition }) {
   );
 }
 
-function RivalPicker({ options, rival, onPick }: { options: readonly string[]; rival: string; onPick: (id: string) => void }) {
+function RivalPicker({ options, rival, onPick, human }: { options: readonly string[]; rival: string; onPick: (id: string) => void; human?: boolean }) {
   const catalog = useStore().catalog;
   return (
     <div className="rival-picker" role="radiogroup" aria-label="Rival pantheon">
-      <span className="rival-picker__label">AI rival</span>
+      <span className="rival-picker__label">{human ? 'Second player' : 'AI rival'}</span>
       {options.map((id) => {
         const pp = catalog.pantheons[id];
         if (!pp) return null;
@@ -357,6 +374,11 @@ export function PantheonSelectScreen() {
   const variants = scenario?.variants ?? [];
   const rivalOptions = catalog.pantheonOrder.filter((id) => variants.some((v) => v.rivalPantheonId === id));
   const [rival, setRival] = useState(store.setup.rivalPantheonId ?? rivalOptions[0] ?? 'greek');
+  const isSkirmish = store.setup.mode === 'skirmish';
+  const [difficulty, setDifficulty] = useState(store.setup.difficultyId ?? 'normal');
+  const [rivalCtl, setRivalCtl] = useState<'ai' | 'human'>(store.setup.rivalController ?? 'ai');
+  const [p1Name, setP1Name] = useState(store.setup.playerName ?? 'Player 1');
+  const [p2Name, setP2Name] = useState(store.setup.rivalName ?? 'Player 2');
   const variant = variants.find((v) => v.playerPantheonId === selected && v.rivalPantheonId === rival);
   const p = catalog.pantheons[selected];
   const campaign = store.setup.campaignId ? catalog.campaigns[store.setup.campaignId] : undefined;
@@ -379,7 +401,7 @@ export function PantheonSelectScreen() {
           campaign
             ? `${campaign.name} is a ${catalog.pantheons[campaign.pantheonId]?.name} campaign`
             : needsVariant
-              ? `Your pantheon and the AI rival’s · ${catalog.pantheons[selected]?.name ?? ''} vs. ${catalog.pantheons[rival]?.name ?? ''}`
+              ? `Your pantheon and the rival’s · ${catalog.pantheons[selected]?.name ?? ''} vs. ${catalog.pantheons[rival]?.name ?? ''}`
               : `${catalog.pantheonOrder.length} pantheons; ${catalog.pantheonOrder.filter((id) => catalog.pantheons[id]?.playability === 'playable').length} playable in this build`
         }
       />
@@ -407,7 +429,31 @@ export function PantheonSelectScreen() {
           );
         })}
       </div>
-      {rivalOptions.length ? <RivalPicker options={rivalOptions} rival={rival} onPick={setRival} /> : null}
+      {rivalOptions.length ? <RivalPicker options={rivalOptions} rival={rival} onPick={setRival} human={rivalCtl === 'human'} /> : null}
+      {isSkirmish ? (
+        <div className="match-settings" data-testid="match-settings">
+          <div className="setting-block">
+            <div className="setting-block__label">Rival seat</div>
+            <Segmented
+              label="Rival seat"
+              value={rivalCtl}
+              options={[
+                { id: 'ai', label: 'AI' },
+                { id: 'human', label: 'Second player (hot-seat)' },
+              ]}
+              onChange={setRivalCtl}
+              testId="rival-controller"
+            />
+            {rivalCtl === 'human' ? (
+              <div className="row gap wrap setting-block__details">
+                <TextInput label="First player's name" value={p1Name} onChange={setP1Name} testId="name-p1" />
+                <TextInput label="Second player's name" value={p2Name} onChange={setP2Name} testId="name-p2" />
+              </div>
+            ) : null}
+          </div>
+          {rivalCtl === 'ai' ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : <p className="dim small">Two players share this computer and take turns; the map is hidden at each hand-over. Difficulty does not apply.</p>}
+        </div>
+      ) : null}
       {p ? <PantheonDetail p={p} /> : null}
       <footer className="setup-footer">
         <Button onClick={() => store.back()} icon="back">
@@ -420,9 +466,12 @@ export function PantheonSelectScreen() {
           disabledReason={reason}
           data-testid="setup-next"
           onClick={() => {
+            const extra = isSkirmish
+              ? { difficultyId: rivalCtl === 'ai' ? difficulty : 'normal', rivalController: rivalCtl, playerName: p1Name.trim() || 'Player 1', rivalName: p2Name.trim() || 'Player 2' }
+              : {};
             store.setup = variant
-              ? { ...store.setup, pantheonId: selected, rivalPantheonId: rival, missionId: variant.missionId, godId: null }
-              : { ...store.setup, pantheonId: selected };
+              ? { ...store.setup, ...extra, pantheonId: selected, rivalPantheonId: rival, missionId: variant.missionId, godId: null }
+              : { ...store.setup, ...extra, pantheonId: selected };
             store.goto('divine-select');
           }}
         >
@@ -468,11 +517,32 @@ export function DivineSelectScreen() {
   const [godId, setGodId] = useState(setup.godId ?? options[0] ?? null);
   const later = pantheon.godIds.filter((g) => !options.includes(g));
   const fixed = options.length === 1;
+  // Hot-seat: the second player chooses a patron too.
+  const hotSeat = !campaign && setup.rivalController === 'human';
+  const rivalPantheon = hotSeat ? catalog.pantheons[setup.rivalPantheonId ?? ''] : undefined;
+  const rivalOptions = rivalPantheon ? rivalPantheon.godIds.filter((g) => catalog.gods[g]?.role === 'patron' && catalog.gods[g]?.implementationStatus === 'implemented') : [];
+  const [rivalGodId, setRivalGodId] = useState(setup.rivalGodId ?? rivalOptions[0] ?? null);
   const begin = () => {
     if (!godId) return;
-    store.setup = { ...store.setup, godId };
+    store.setup = { ...store.setup, godId, rivalGodId };
     if (campaign) store.startCampaign(campaign.id, godId);
-    else if (setup.missionId) store.startScenario(setup.missionId, godId);
+    else if (setup.missionId) {
+      const mission = catalog.missions[setup.missionId];
+      const rivalId = mission?.rivals?.[0]?.playerId;
+      const playerId = mission?.player.playerId ?? 'player';
+      store.startScenario(
+        setup.missionId,
+        godId,
+        hotSeat && rivalId
+          ? {
+              difficultyId: 'normal',
+              controllers: { [rivalId]: 'human' },
+              playerNames: { [playerId]: setup.playerName ?? 'Player 1', [rivalId]: setup.rivalName ?? 'Player 2' },
+              patronGodIds: rivalGodId ? { [rivalId]: rivalGodId } : {},
+            }
+          : { difficultyId: setup.difficultyId ?? 'normal' },
+      );
+    }
   };
   return (
     <div className="setup-screen">
@@ -488,6 +558,19 @@ export function DivineSelectScreen() {
           </div>
           {campaign?.startingGodNote ? <p className="note">{campaign.startingGodNote}</p> : null}
           {!fixed ? <p className="note">The patron choice is permanent for this playthrough.</p> : null}
+          {hotSeat && rivalPantheon ? (
+            <>
+              <SectionTitle>
+                {setup.rivalName ?? 'Player 2'}’s patron ({rivalPantheon.name})
+              </SectionTitle>
+              <div className="god-grid" data-testid="rival-patrons">
+                {rivalOptions.map((g) => {
+                  const god = catalog.gods[g];
+                  return god ? <GodCard key={g} god={god} selected={rivalGodId === g} onSelect={rivalOptions.length > 1 ? () => setRivalGodId(g) : undefined} /> : null;
+                })}
+              </div>
+            </>
+          ) : null}
         </Panel>
         <Panel title="Chosen later in play" className="divine-later" bodyClassName="scroll">
           <p className="dim small">Minor gods are committed from the Pantheon screen once their shrine requirements are met. Undesigned gods are listed for completeness only.</p>

@@ -4,6 +4,10 @@ import type { Page } from '@playwright/test';
 export interface Inspect {
   screen: string;
   overlays: string[];
+  /** Story scenes waiting in the dialogue window (keys). */
+  story: string[];
+  /** Contextual tips waiting to be shown. */
+  hints: string[];
   busy: boolean;
   humanTurn: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,12 +18,32 @@ export interface Inspect {
 
 export const inspect = (page: Page): Promise<Inspect> => page.evaluate(() => (globalThis as unknown as { __prInspect: () => Inspect }).__prInspect());
 
-export async function waitFor(page: Page, pred: (s: Inspect) => boolean, label: string, ms = 20_000): Promise<Inspect> {
+/** Read a story scene to its end through the dialogue window (Continue). Returns the lines' text. */
+export async function readStory(page: Page): Promise<string[]> {
+  const seen: string[] = [];
+  for (let i = 0; i < 20; i++) {
+    const box = page.getByTestId('story-dialogue');
+    if (!(await box.isVisible().catch(() => false))) break;
+    seen.push((await box.locator('.story-box__text p').textContent().catch(() => '')) ?? '');
+    await page.getByTestId('story-continue').click();
+    await page.waitForTimeout(120);
+  }
+  return seen;
+}
+
+/**
+ * Poll the read-only inspector until `pred` holds. Story scenes never change
+ * play, so unless `keepStory` is set, any scene that opens while waiting is
+ * read to its end with Continue (as a player would) so it does not cover the
+ * screen the test waits for.
+ */
+export async function waitFor(page: Page, pred: (s: Inspect) => boolean, label: string, ms = 20_000, keepStory = false): Promise<Inspect> {
   const t0 = Date.now();
   let last: Inspect | null = null;
   while (Date.now() - t0 < ms) {
     last = await inspect(page);
     if (pred(last)) return last;
+    if (!keepStory && last.story.length > 0) await readStory(page);
     await page.waitForTimeout(150);
   }
   throw new Error(`Timed out waiting for ${label} (screen=${last?.screen}, overlays=${last?.overlays.join(',')})`);

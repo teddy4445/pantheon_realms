@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { clickHex, endDay, inspect, startCampaign, waitFor } from './helpers';
+import { clickHex, endDay, inspect, readStory, startCampaign, waitFor } from './helpers';
 
 /**
  * App-level journey through Mission 1 using only the real UI input paths:
@@ -67,6 +67,9 @@ test('Three Beacons M01 journey through the UI', async ({ page }) => {
   expect(s.state.lastBattleResult.winner).toBe('attacker');
   expect(s.state.world.sites.m01_ford.cleared).toBe(true);
   const goldAfterBattle = s.state.players.player.wallet.gold;
+  // A story scene the battle triggered (the bridge) opens over the result: read it with Continue.
+  await page.waitForTimeout(600);
+  await readStory(page);
   await page.getByTestId('result-continue').click();
   s = await inspect(page);
   if (s.screen === 'level-up') {

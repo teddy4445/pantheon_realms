@@ -12,7 +12,7 @@ import { CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt } from
 import { BalanceChip, CostList, ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
 
-type Tab = 'creatures' | 'pantheons' | 'gods' | 'heroes' | 'town' | 'magic' | 'rules';
+type Tab = 'creatures' | 'pantheons' | 'gods' | 'heroes' | 'town' | 'magic' | 'world' | 'rules';
 
 export function EncyclopediaScreen() {
   const store = useStore();
@@ -41,6 +41,7 @@ export function EncyclopediaScreen() {
             { id: 'heroes', label: 'Heroes' },
             { id: 'town', label: 'Town' },
             { id: 'magic', label: 'Spells, Skills & Artifacts' },
+            { id: 'world', label: 'Skirmish & World' },
             { id: 'rules', label: 'Rules' },
           ]}
         />
@@ -215,6 +216,8 @@ export function EncyclopediaScreen() {
               {Object.values(catalog.spells).map((sp) => (
                 <div key={sp.id} className="codex-line">
                   <strong>{sp.name}</strong> <Chip>T{sp.tier}</Chip> <Chip tone="info">{sp.manaCost} mana</Chip> <Chip>{sp.context}</Chip> <StatusChip status={sp.implementationStatus} />
+                  {sp.pantheonId ? <Chip tone="info">{catalog.pantheons[sp.pantheonId]?.name}</Chip> : null}
+                  {sp.scope === 'expanded' ? <Chip tone="muted">Skirmish only</Chip> : null}
                   <div className="small dim">{sp.summary}</div>
                 </div>
               ))}
@@ -222,7 +225,8 @@ export function EncyclopediaScreen() {
             <Panel title="Skills">
               {Object.values(catalog.skills).map((sk) => (
                 <div key={sk.id} className="codex-line">
-                  <strong>{sk.name}</strong>
+                  <strong>{sk.name}</strong> {sk.pantheonId ? <Chip tone="info">{catalog.pantheons[sk.pantheonId]?.name}</Chip> : null}
+                  {sk.scope === 'expanded' ? <Chip tone="muted">Skirmish only</Chip> : null}
                   <div className="small dim">{sk.rankSummaries.map((r, i) => `${['Basic', 'Advanced', 'Expert'][i]}: ${r}`).join(' · ')}</div>
                 </div>
               ))}
@@ -231,6 +235,7 @@ export function EncyclopediaScreen() {
               {Object.values(catalog.artifacts).map((a) => (
                 <div key={a.id} className="codex-line">
                   <strong>{a.name}</strong> <Chip>{a.slot}</Chip>
+                  {a.setId ? <Chip tone="info">{catalog.artifactSets?.[a.setId]?.name ?? 'Set'}</Chip> : null}
                   <div className="small dim">{a.summary}</div>
                 </div>
               ))}
@@ -243,6 +248,67 @@ export function EncyclopediaScreen() {
                   {a.restriction ? <div className="faint small">{a.restriction}</div> : null}
                 </div>
               ))}
+            </Panel>
+          </div>
+        ) : null}
+        {tab === 'world' ? (
+          <div className="codex-grid">
+            <Panel title="Difficulty (skirmish)">
+              {Object.values(catalog.difficulties ?? {})
+                .sort((a, b) => a.order - b.order)
+                .map((d) => (
+                  <div key={d.id} className="codex-line">
+                    <strong>{d.name}</strong> <span className="small dim">— {d.summary}</span>
+                    <ul className="bullets small">
+                      {d.details.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              <p className="faint small">The campaign keeps its authored balance. Difficulty never changes creature statistics.</p>
+            </Panel>
+            <Panel title="Divine interventions">
+              {Object.values(catalog.interventions ?? {}).map((d) => (
+                <div key={d.id} className="codex-line">
+                  <strong>{d.name}</strong> <Chip tone="info">{d.favorCost} Favor</Chip> <Chip>{d.context === 'battle' ? 'Battle' : 'Map'}</Chip>
+                  {d.pantheonIds?.map((p) => (
+                    <Chip key={p}>{catalog.pantheons[p]?.name}</Chip>
+                  ))}
+                  <div className="small dim">{d.summary}</div>
+                </div>
+              ))}
+              <p className="faint small">One intervention per week. Skirmish and random maps only.</p>
+            </Panel>
+            <Panel title="Weekly events">
+              {Object.values(catalog.weeklyEvents ?? {}).map((w) => (
+                <div key={w.id} className="codex-line">
+                  <strong>{w.name}</strong>
+                  <div className="small dim">{w.summary}</div>
+                </div>
+              ))}
+            </Panel>
+            <Panel title="Artifact sets">
+              {Object.values(catalog.artifactSets ?? {}).map((set) => (
+                <div key={set.id} className="codex-line">
+                  <strong>{set.name}</strong>
+                  <div className="small dim">{set.summary}</div>
+                  <div className="small">Pieces: {set.pieceIds.map((id) => catalog.artifacts[id]?.name ?? id).join(', ')}</div>
+                  <ul className="bullets small">
+                    {set.bonuses.map((b) => (
+                      <li key={b.pieces}>{b.summary}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </Panel>
+            <Panel title="Creature camps, events and monsters">
+              <ul className="bullets small">
+                <li>Creature camps sell their creature to a visiting hero at the normal price; each camp gains volunteers every week.</li>
+                <li>Map events happen once: the first hero to arrive picks one of the offered results.</li>
+                <li>Wandering monsters roam near their lair, attack heroes they can beat and guard treasure.</li>
+                <li>Random maps are symmetric: every empire gets the same terrain, roads and sites around its town.</li>
+              </ul>
             </Panel>
           </div>
         ) : null}

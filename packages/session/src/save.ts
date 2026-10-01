@@ -7,7 +7,7 @@
  * They never contain Babylon meshes, React objects or native handles.
  * Loading never regenerates a map; the stored logical map is authoritative.
  */
-import { canonicalJson, hashString, type ContentCatalog, type MatchState, type VersionBundle } from '@pr/rules';
+import { canonicalJson, hashString, type ContentCatalog, type MatchState, type VersionBundle, scenarioMission } from '@pr/rules';
 import type { CampaignState } from '@pr/campaign';
 
 export const SAVE_SCHEMA = 'pantheon-realms-save';
@@ -55,7 +55,7 @@ export function snapshotChecksum(snapshot: SaveSnapshot): string {
 
 export function buildMetadata(catalog: ContentCatalog, snapshot: SaveSnapshot): SaveMetadata {
   const m = snapshot.match;
-  const mission = catalog.missions[m.mission.missionId];
+  const mission = scenarioMission(catalog, m);
   const humanId = m.playerOrder.find((p) => m.players[p]?.controller === 'human') ?? m.playerOrder[0]!;
   const player = m.players[humanId];
   const hero = Object.values(m.heroes).find((h) => h.ownerId === humanId);
@@ -117,7 +117,7 @@ export function checkEnvelope(catalog: ContentCatalog, raw: unknown): SaveCompat
   if (v.contentVersion !== catalog.versions.contentVersion) {
     return { status: 'incompatible', reason: `Saved with content ${v.contentVersion}; this build uses ${catalog.versions.contentVersion}` };
   }
-  if (!catalog.missions[e.snapshot.match.mission.missionId]) return { status: 'incompatible', reason: 'The saved scenario is not part of this build' };
+  if (!scenarioMission(catalog, e.snapshot.match)) return { status: 'incompatible', reason: 'The saved scenario is not part of this build' };
   return { status: 'ok' };
 }
 

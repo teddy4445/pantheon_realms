@@ -9,7 +9,7 @@
  *  - no network is required to launch or play
  */
 import { app, BrowserWindow, dialog, ipcMain, Menu, net, protocol, session, shell, type IpcMainInvokeEvent } from 'electron';
-import { promises as fs } from 'node:fs';
+import fsSync, { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -53,6 +53,10 @@ function savesDir(): string {
 
 function prefsFile(): string {
   return path.join(app.getPath('userData'), 'preferences.json');
+}
+
+function recordsFile(): string {
+  return path.join(app.getPath('userData'), 'records.json');
 }
 
 function resolveRendererPath(urlPath: string): string | null {
@@ -159,6 +163,14 @@ function registerIpc(): void {
     }
   });
   handle('pr:writePreferences', async (text) => atomicWrite(prefsFile(), requireText(text)));
+  handle('pr:readRecords', async () => {
+    try {
+      return await fs.readFile(recordsFile(), 'utf8');
+    } catch {
+      return null;
+    }
+  });
+  handle('pr:writeRecords', async (text) => atomicWrite(recordsFile(), requireText(text)));
   handle('pr:setWindowMode', async (mode) => {
     if (mode !== 'windowed' && mode !== 'fullscreen') throw new Error('Unsupported window mode');
     mainWindow?.setFullScreen(mode === 'fullscreen');
@@ -170,6 +182,8 @@ function registerIpc(): void {
 }
 
 function createWindow(): void {
+  // Window/taskbar icon (Linux and unpackaged runs; the Windows installer embeds icon.ico in the exe).
+  const iconFile = path.join(rendererRoot(), 'ui', 'branding', 'app-icon-256.png');
   mainWindow = new BrowserWindow({
     width: 1600,
     height: 900,
@@ -178,6 +192,7 @@ function createWindow(): void {
     backgroundColor: '#0b1322',
     show: false,
     title: 'Pantheon Realms',
+    ...(fsSync.existsSync(iconFile) ? { icon: iconFile } : {}),
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,

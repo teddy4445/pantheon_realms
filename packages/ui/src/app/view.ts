@@ -21,14 +21,18 @@ import {
   type PlayerState,
   type ResourceBundle,
   type SiteDefinition,
-  type TownState,
+  type TownState, scenarioMission,
 } from '@pr/rules';
 import { armyStrength } from '@pr/ai';
+import { viewerPlayerId } from '@pr/session';
 import type { SiteArchetype } from '@pr/presentation';
 
+/**
+ * The seat whose view is shown: the active human (hot-seat games have
+ * several), otherwise the human who played most recently in turn order.
+ */
 export function humanPlayer(state: MatchState): PlayerState {
-  const id = state.playerOrder.find((p) => state.players[p]?.controller === 'human') ?? state.playerOrder[0]!;
-  return state.players[id]!;
+  return state.players[viewerPlayerId(state)]!;
 }
 
 export function dayLabel(state: MatchState): { day: number; week: number; dow: number; text: string } {
@@ -68,6 +72,12 @@ export function siteArchetype(def: SiteDefinition): SiteArchetype {
       return k.label;
     case 'gate':
       return 'gate';
+    case 'creature_camp':
+      return 'camp';
+    case 'map_event':
+      return 'event_site';
+    case 'relic':
+      return 'relic';
   }
 }
 
@@ -90,6 +100,12 @@ export function siteKindLabel(def: SiteDefinition): string {
       return k.label === 'beacon' ? 'Beacon' : 'Signal relay';
     case 'gate':
       return 'Ward gate';
+    case 'creature_camp':
+      return 'Creature camp';
+    case 'map_event':
+      return k.title;
+    case 'relic':
+      return 'Relic shrine';
   }
 }
 
@@ -143,7 +159,7 @@ export function siegeStrength(catalog: ContentCatalog, town: TownState, visitor:
 export function dailyIncome(catalog: ContentCatalog, state: MatchState, playerId: string): ResourceBundle {
   let total = resources();
   for (const t of playerTowns(state, playerId)) total = addResources(total, townDailyIncome(catalog, t));
-  const mission = catalog.missions[state.mission.missionId];
+  const mission = scenarioMission(catalog, state);
   for (const def of mission?.sites ?? []) {
     if (def.kind.type !== 'resource_site') continue;
     if (state.world.sites[def.id]?.owner !== playerId) continue;

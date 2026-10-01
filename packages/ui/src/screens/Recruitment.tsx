@@ -3,7 +3,7 @@
  * form sharing one weekly population pool. Quantities, costs, destination
  * capacity and every disabled reason come from quoteRecruitment/quoteUpgrade.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   abilityRules,
   quoteRecruitment,
@@ -18,6 +18,12 @@ import { Button, Chip, Panel, QuantitySelector, SectionTitle } from '../componen
 import { CreaturePortrait } from '../components/art';
 import { CostList, CreatureStats, ScreenHeader } from '../components/game';
 import { heroesInTown, humanPlayer } from '../app/view';
+
+function TrainingHint() {
+  const store = useStore();
+  useEffect(() => store.showHint('troop_training'), [store]);
+  return null;
+}
 
 export function RecruitmentScreen() {
   const store = useStore();
@@ -190,7 +196,7 @@ export function RecruitmentScreen() {
 
         <Panel title="Train (upgrade) troops" className="recruit-upgrades" bodyClassName="scroll">
           <p className="dim small">Training pays the price difference and uses no population. It requires the upgraded dwelling in this town.</p>
-          {upgradeRows.length === 0 ? <p className="dim small">No base-form stacks here to train.</p> : null}
+          {upgradeRows.length === 0 ? <p className="dim small">No base-form stacks here to train.</p> : <TrainingHint />}
           {upgradeRows.map((row) => (
             <UpgradeRow key={`${row.army.label}-${row.slot}`} townId={town.id} armyRef={row.army.ref} armyLabel={row.army.label} slot={row.slot} />
           ))}

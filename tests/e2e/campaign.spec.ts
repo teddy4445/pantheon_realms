@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { clickHex, endDay, inspect, startCampaign, waitFor, type Inspect } from './helpers';
+import { clickHex, endDay, inspect, readStory, startCampaign, waitFor, type Inspect } from './helpers';
 
 /**
  * Plays Mission 1 of The Three Beacons to its debrief through the real UI and
@@ -8,9 +8,13 @@ import { clickHex, endDay, inspect, startCampaign, waitFor, type Inspect } from 
  * Mission 2 briefing. Checks the carryover the headless tests promise.
  */
 
-async function settleAfterBattle(page: Page): Promise<Inspect> {
+async function settleAfterBattle(page: Page, onResult?: () => Promise<void>): Promise<Inspect> {
   let s = await waitFor(page, (x) => x.screen === 'battle-result', 'battle result', 120_000);
   expect(s.state.lastBattleResult.winner).toBe('attacker');
+  // A story scene triggered by the battle opens over the result.
+  await page.waitForTimeout(600);
+  if (onResult) await onResult();
+  await readStory(page);
   await page.getByTestId('result-continue').click();
   for (let i = 0; i < 4; i++) {
     s = await inspect(page);
@@ -50,7 +54,7 @@ function waypoint(s: Inspect, dest: Hex): Hex {
 }
 
 /** Walk the selected hero to `dest` over several days and fight the guard there. */
-async function marchAndFight(page: Page, dest: Hex, label: string): Promise<void> {
+async function marchAndFight(page: Page, dest: Hex, label: string, onResult?: () => Promise<void>): Promise<void> {
   for (let i = 0; i < 16; i++) {
     const s = await inspect(page);
     if (s.overlays.includes('encounter') || s.screen === 'battle') break;
@@ -69,8 +73,11 @@ async function marchAndFight(page: Page, dest: Hex, label: string): Promise<void
   await waitFor(page, (x) => x.overlays.includes('encounter'), `pre-battle dialog (${label})`);
   await page.getByTestId('encounter-attack').click();
   await waitFor(page, (x) => x.screen === 'battle', `battle screen (${label})`, 15_000);
+  // A scene can open as the battle starts (the lighthouse); read it first.
+  await page.waitForTimeout(500);
+  await readStory(page);
   await page.getByTestId('battle-auto').click();
-  await settleAfterBattle(page);
+  await settleAfterBattle(page, onResult);
 }
 
 test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ page }) => {
@@ -102,14 +109,26 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   await page.keyboard.press('Escape');
   await waitFor(page, (x) => x.screen === 'adventure', 'back to map');
 
-  // The bridge, then the lighthouse garrison.
-  await marchAndFight(page, { q: 10, r: 7 }, 'ford');
+  // The bridge (its story scene: Continue and Backlog), then the lighthouse garrison.
+  await marchAndFight(page, { q: 10, r: 7 }, 'ford', async () => {
+    const box = page.getByTestId('story-dialogue');
+    await expect(box).toBeVisible();
+    await expect(box).toContainText('The bridge is ours');
+    await page.getByTestId('story-continue').click();
+    await expect(box).toContainText('Keep the road watched');
+    await page.getByTestId('story-backlog-toggle').click();
+    await expect(page.getByTestId('story-backlog')).toContainText('The bridge is ours');
+    await page.keyboard.press('l');
+    await expect(page.getByTestId('story-backlog')).toBeHidden();
+  });
   s = await inspect(page);
   expect(s.state.world.sites.m01_ford.cleared).toBe(true);
+  expect(s.state.mission.scenesPlayed).toContain('m01_bridge_open');
   await marchAndFight(page, { q: 16, r: 7 }, 'beacon');
   s = await inspect(page);
   expect(s.state.world.sites.m01_beacon.cleared).toBe(true);
   expect(s.state.heroes.alexios.position).toEqual({ q: 16, r: 7 });
+  expect(s.state.mission.scenesPlayed).toContain('m01_lighthouse_battle');
 
   // Relight the beacon: click the hero's own tile, confirm the activation.
   await clickHex(page, 16, 7);

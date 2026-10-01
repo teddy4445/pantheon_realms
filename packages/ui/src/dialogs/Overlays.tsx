@@ -20,16 +20,17 @@ import {
   townFortificationLevel,
   type ArmyRef,
   type ArmyState,
-  type HexCoord,
+  type HexCoord, requireScenarioMission, scenarioMission,
 } from '@pr/rules';
 import { useStore } from '../app/context';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle } from '../components/kit';
-import { CreaturePortrait, MissionThumb } from '../components/art';
+import { BrandEmblem, CreaturePortrait, MissionThumb } from '../components/art';
 import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { DialogueLines } from '../screens/Journal';
 import { guardStrength, heroStrength, relativeTime, siegeStrength, threatLabel } from '../app/view';
+import { CampDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, ShortcutsDialog } from './WorldDialogs';
 
 // ---------------------------------------------------------------------------
 
@@ -45,6 +46,7 @@ function PauseMenu() {
   const inBattle = !!session?.state.battle;
   return (
     <Modal title="Paused" onClose={() => store.closeOverlay()} width="26rem" testId="pause">
+      <BrandEmblem size="3rem" />
       <nav className="pause-menu">
         <MenuButton icon="play" label="Resume" autoFocus onClick={() => store.closeOverlay()} />
         <MenuButton icon="save" label="Save Game" onClick={() => store.openOverlay({ kind: 'save-load', mode: 'save' })} disabled={!session} />
@@ -102,7 +104,7 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
   const session = store.session;
   const canSave = !!session && mode === 'save';
   const byId = new Map((slots ?? []).map((s) => [s.id, s]));
-  const defaultName = session ? `${store.catalog.missions[session.state.mission.missionId]?.name ?? 'Game'} — Day ${session.state.day}` : '';
+  const defaultName = session ? `${scenarioMission(store.catalog, session.state)?.name ?? 'Game'} — Day ${session.state.day}` : '';
   const doSave = async (id: string) => {
     if (!session) return;
     const label = name.trim() || defaultName;
@@ -314,7 +316,7 @@ function BriefingDialog() {
   const store = useStore();
   const state = store.session!.state;
   const catalog = store.catalog;
-  const mission = catalog.missions[state.mission.missionId]!;
+  const mission = requireScenarioMission(catalog, state);
   const objectives = missionObjectiveDefs(catalog, state).filter((o) => state.mission.objectives[o.id]?.status !== 'locked');
   const campaign = mission.campaignId ? catalog.campaigns[mission.campaignId] : undefined;
   return (
@@ -367,7 +369,7 @@ function DebriefDialog({ final }: { final: boolean }) {
   const session = store.session!;
   const catalog = store.catalog;
   const state = session.state;
-  const mission = catalog.missions[state.mission.missionId]!;
+  const mission = requireScenarioMission(catalog, state);
   const campaign = session.campaign;
   const record = campaign?.completions.find((c) => c.missionId === mission.id);
   const next = session.hasNextMission();
@@ -380,6 +382,15 @@ function DebriefDialog({ final }: { final: boolean }) {
       footer={
         <>
           <Button onClick={() => toMainMenu(store)}>Main Menu</Button>
+          <Button
+            onClick={() => {
+              store.closeAllOverlays();
+              store.goto('summary', { returnTo: final ? 'campaign-complete' : 'debrief' });
+            }}
+            data-testid="debrief-summary"
+          >
+            {final ? 'Campaign summary' : 'Mission summary'}
+          </Button>
           <span className="grow" />
           {next ? (
             <Button
@@ -442,6 +453,12 @@ function DebriefDialog({ final }: { final: boolean }) {
               <li key={d}>{d}</li>
             ))}
           </ul>
+        </>
+      ) : null}
+      {final && campaign && catalog.campaigns[campaign.campaignId]?.epilogue?.length ? (
+        <>
+          <SectionTitle>Epilogue</SectionTitle>
+          <DialogueLines lines={catalog.campaigns[campaign.campaignId]!.epilogue!} />
         </>
       ) : null}
       {final ? (
@@ -508,18 +525,20 @@ function CreditsDialog() {
   const store = useStore();
   return (
     <Modal title="Credits" onClose={() => store.closeOverlay()} width="34rem">
-      <h3>Pantheon Realms</h3>
-      <p>Development build {store.platform.appVersion}.</p>
+      <BrandEmblem size="4.4rem" />
+      <h3 style={{ textAlign: 'center' }}>Pantheon Realms</h3>
+      <p style={{ textAlign: 'center' }}>Development build {store.platform.appVersion}.</p>
       <p className="small">Game design documents, campaign and content: project owner. Implementation: TypeScript rules core, React interface, Babylon.js scenes, Electron desktop shell.</p>
+      <p className="small">Opening backgrounds, logo, emblem, menu frame and interface icons: owner-supplied art (AI-generated visual references), replaceable by asset ID.</p>
       <p className="small">Fonts: Cinzel, EB Garamond, Inter (SIL Open Font License), bundled locally.</p>
-      <p className="note small">All art, models, animation and portraits are temporary development placeholders. Town art is derived from the owner’s concept references. There is no audio in this build.</p>
+      <p className="note small">Unit models, animation and portraits are temporary development placeholders. Town art is derived from the owner’s concept references. Music and sounds are generated placeholders.</p>
     </Modal>
   );
 }
 
 function HelpDialog({ topicId }: { topicId: string }) {
   const store = useStore();
-  const mission = store.session ? store.catalog.missions[store.session.state.mission.missionId] : undefined;
+  const mission = store.session ? scenarioMission(store.catalog, store.session.state) : undefined;
   const topic = mission?.helpTopics.find((t) => t.id === topicId);
   return (
     <Modal title={topic?.title ?? 'Help'} onClose={() => store.closeOverlay()} width="32rem">
@@ -614,10 +633,11 @@ const FORT_TEXT: Record<number, string> = {
 function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
   const store = useStore();
   const catalog = store.catalog;
+  useEffect(() => store.showHint('guarded_path'), [store]);
   const state = store.session!.state;
   const hero = state.heroes[heroId];
   const q = hero ? quoteMovement(catalog, state, heroId, dest) : null;
-  const site = (catalog.missions[state.mission.missionId]?.sites ?? []).find((s) => hexEquals(s.coord, dest));
+  const site = (scenarioMission(catalog, state)?.sites ?? []).find((s) => hexEquals(s.coord, dest));
   const enemyHero = Object.values(state.heroes).find((h) => h.status === 'active' && h.id !== heroId && hexEquals(h.position, dest));
   const at = siteAt(catalog, state, dest);
   const town = at && hero ? siegeTownAt(state, at, hero.ownerId) : null;
@@ -825,5 +845,17 @@ export function OverlayLayer() {
       return store.session ? <ActivateDialog heroId={top.heroId} siteId={top.siteId} /> : null;
     case 'stack-info':
       return <StackInfoDialog creatureId={top.creatureId} count={top.count} />;
+    case 'handoff':
+      return store.session ? <HandoffDialog playerId={top.playerId} /> : null;
+    case 'camp':
+      return store.session ? <CampDialog key={top.siteId} heroId={top.heroId} siteId={top.siteId} /> : null;
+    case 'map-event':
+      return store.session ? <MapEventDialog heroId={top.heroId} siteId={top.siteId} /> : null;
+    case 'interventions':
+      return store.session ? <InterventionsDialog /> : null;
+    case 'game-over':
+      return store.session ? <GameOverDialog /> : null;
+    case 'shortcuts':
+      return <ShortcutsDialog />;
   }
 }

@@ -5,10 +5,12 @@
  * "creature.greek.tier3.upgraded.portrait"). Final art replaces placeholders by
  * adding/overriding manifest entries — no screen changes.
  *
- * Resolution order: final manifest -> placeholder manifest (cropped concept
+ * Resolution order: final manifest -> UI art manifest (owner-supplied menu and
+ * interface art, assets-runtime/ui) -> placeholder manifest (cropped concept
  * references) -> procedural placeholder generated at runtime.
  */
 import placeholderManifest from '../../../../assets-runtime/placeholders/manifest.json';
+import uiArtManifest from '../../../../assets-runtime/ui/manifest.json';
 import { registerUnitModels, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
@@ -25,7 +27,7 @@ interface ManifestFile {
   readonly assets: Record<string, { file: string; status: string; provenance: string }>;
 }
 
-const PLACEHOLDERS = (placeholderManifest as ManifestFile).assets;
+const PLACEHOLDERS: ManifestFile['assets'] = { ...(placeholderManifest as ManifestFile).assets, ...(uiArtManifest as unknown as ManifestFile).assets };
 /** Final production assets are registered here as they are delivered. */
 const FINAL: Record<string, { file: string; provenance: string }> = {};
 
@@ -42,6 +44,36 @@ export function resolveAsset(id: string): AssetRecord {
   else rec = { id, status: 'procedural', url: null, provenance: 'Procedural development placeholder generated at runtime.' };
   cache.set(id, rec);
   return rec;
+}
+
+// ---------------------------------------------------------------------------
+// Opening-screen art (assets-runtime/ui/manifest.json, tools/assets/prepare_ui_art.py)
+// ---------------------------------------------------------------------------
+
+interface UiArtFile {
+  readonly backgrounds: readonly string[];
+  readonly assets: Record<string, { file: string; interior?: { left: number; right: number; top: number; bottom: number } }>;
+}
+const UI_ART = uiArtManifest as unknown as UiArtFile;
+
+let chosenBackground: AssetRecord | null = null;
+
+/**
+ * The opening-screen background for this run of the game: one of the listed
+ * backgrounds, picked at random once per start (presentation only — the
+ * simulation never sees this). Falls back to the older menu placeholder.
+ */
+export function menuBackground(): AssetRecord {
+  if (chosenBackground) return chosenBackground;
+  const ids = UI_ART.backgrounds.filter((id) => resolveAsset(id).url);
+  const id = ids.length ? ids[Math.floor(Math.random() * ids.length)]! : 'menu.background';
+  chosenBackground = resolveAsset(id);
+  return chosenBackground;
+}
+
+/** Transparent window of the main-menu frame, as fractions of the frame image. */
+export function menuFrameInterior(): { left: number; right: number; top: number; bottom: number } {
+  return UI_ART.assets['menu.frame']?.interior ?? { left: 0.25, right: 0.25, top: 0.22, bottom: 0.15 };
 }
 
 /** Building art: exact level asset first, then the location's generic placeholder. */

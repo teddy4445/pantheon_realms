@@ -47,6 +47,7 @@ export type GameEventPayload =
   | { kind: 'ResourcesTraded'; townId: TownId; sold: string; bought: string; amount: number }
   // Heroes & adventure
   | { kind: 'HeroMoved'; heroId: HeroId; path: HexCoord[]; cost: number; remaining: number }
+  | { kind: 'HeroTeleported'; heroId: HeroId; from: HexCoord; to: HexCoord }
   | { kind: 'TilesRevealed'; playerId: PlayerId; count: number }
   | { kind: 'SiteCaptured'; siteId: SiteId; playerId: PlayerId }
   | { kind: 'PickupCollected'; siteId: SiteId; heroId: HeroId }
@@ -111,6 +112,18 @@ export type GameEventPayload =
   | { kind: 'SiegeTurretShot'; structureId: string; targetId: BattleStackId; damage: number; killed: number; targetRemaining: number }
   | { kind: 'SiegeMoatDamage'; stackId: BattleStackId; damage: number; killed: number; targetRemaining: number }
   | { kind: 'TownCaptured'; townId: TownId; playerId: PlayerId }
+  // World map, interventions, story, outcome (proposed this build)
+  | { kind: 'CampRecruited'; siteId: SiteId; heroId: HeroId; creatureId: CreatureId; quantity: number }
+  | { kind: 'CampRestocked'; siteId: SiteId; stock: number }
+  | { kind: 'MapEventResolved'; siteId: SiteId; heroId: HeroId; optionIndex: number; label: string }
+  | { kind: 'CreaturesJoined'; heroId: HeroId; creatureId: CreatureId; count: number }
+  | { kind: 'AttributeGained'; heroId: HeroId; attribute: HeroAttribute; amount: number }
+  | { kind: 'WeeklyEventStarted'; week: number; eventId: string | null }
+  | { kind: 'InterventionInvoked'; playerId: PlayerId; interventionId: string; targetTownId: TownId | null; targetStackId: BattleStackId | null }
+  | { kind: 'BattleStacksHealed'; side: BattleSideId; healed: number }
+  | { kind: 'StoryScene'; sceneId: string }
+  | { kind: 'RelicHeld'; siteId: SiteId; playerId: PlayerId; days: number; needed: number }
+  | { kind: 'PlayerEliminated'; playerId: PlayerId }
   | { kind: 'AdventureSpellCast'; heroId: HeroId; spellId: SpellId; center: HexCoord; radius: number; untilDay: number };
 
 export type GameEventKind = GameEventPayload['kind'];

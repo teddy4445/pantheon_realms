@@ -9,6 +9,7 @@ import { assertSaveId, type PlatformServices, type PreferencesStore, type SaveRe
 const DB_NAME = 'pantheon-realms';
 const STORE = 'saves';
 const PREFS_KEY = 'pantheon-realms.preferences.v1';
+const RECORDS_KEY = 'pantheon-realms.records.v1';
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -124,15 +125,16 @@ export class BrowserSaveRepository implements SaveRepository {
 }
 
 export class LocalPreferencesStore implements PreferencesStore {
+  constructor(private readonly key: string = PREFS_KEY) {}
   async load(): Promise<string | null> {
     try {
-      return localStorage.getItem(PREFS_KEY);
+      return localStorage.getItem(this.key);
     } catch {
       return null;
     }
   }
   async save(text: string): Promise<void> {
-    localStorage.setItem(PREFS_KEY, text);
+    localStorage.setItem(this.key, text);
   }
 }
 
@@ -171,6 +173,7 @@ export function createBrowserPlatform(appVersion: string): PlatformServices {
     appVersion,
     saves: new BrowserSaveRepository(),
     preferences: new LocalPreferencesStore(),
+    records: new LocalPreferencesStore(RECORDS_KEY),
     canQuit: false,
     quit: async () => undefined,
     supportsWindowMode: typeof document !== 'undefined' && !!document.documentElement.requestFullscreen,

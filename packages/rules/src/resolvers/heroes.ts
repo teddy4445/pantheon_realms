@@ -14,15 +14,66 @@ import { playerEffects } from './effects';
 
 export interface AttributeBreakdown {
   readonly base: number;
+  /** Artifacts, including artifact-set bonuses. */
   readonly artifacts: number;
   readonly divine: number;
+  /** Secondary skills that grant attribute effects (pantheon skills). */
+  readonly skills: number;
   readonly total: number;
 }
 
 export type EffectiveAttributes = Readonly<Record<HeroAttribute, AttributeBreakdown>>;
 
-export function artifactEffects(catalog: ContentCatalog, hero: HeroState): EffectDefinition[] {
-  return Object.values(hero.equipment).flatMap((inst) => (inst ? getArtifact(catalog, inst.artifactId).effects : []));
+/** Equipped pieces per artifact set, with the bonuses currently active. */
+export function artifactSetStatus(
+  catalog: ContentCatalog,
+  hero: Pick<HeroState, 'equipment'>,
+): { setId: string; name: string; equipped: number; total: number; active: { pieces: number; summary: string }[] }[] {
+  const counts = new Map<string, number>();
+  for (const inst of Object.values(hero.equipment)) {
+    const setId = inst ? catalog.artifacts[inst.artifactId]?.setId : undefined;
+    if (setId) counts.set(setId, (counts.get(setId) ?? 0) + 1);
+  }
+  const out: { setId: string; name: string; equipped: number; total: number; active: { pieces: number; summary: string }[] }[] = [];
+  for (const [setId, equipped] of [...counts].sort((a, b) => (a[0] < b[0] ? -1 : 1))) {
+    const set = catalog.artifactSets?.[setId];
+    if (!set) continue;
+    out.push({
+      setId,
+      name: set.name,
+      equipped,
+      total: set.pieceIds.length,
+      active: set.bonuses.filter((b) => equipped >= b.pieces).map((b) => ({ pieces: b.pieces, summary: b.summary })),
+    });
+  }
+  return out;
+}
+
+/** Effects of equipped artifacts plus every met artifact-set bonus. */
+export function artifactEffects(catalog: ContentCatalog, hero: Pick<HeroState, 'equipment'>): EffectDefinition[] {
+  const pieces = Object.values(hero.equipment).flatMap((inst) => (inst ? getArtifact(catalog, inst.artifactId).effects : []));
+  const sets: EffectDefinition[] = [];
+  for (const st of artifactSetStatus(catalog, hero)) {
+    const set = catalog.artifactSets[st.setId]!;
+    for (const b of set.bonuses) if (st.equipped >= b.pieces) sets.push(...b.effects);
+  }
+  return [...pieces, ...sets];
+}
+
+/** Effects granted by 'effects'-rule secondary skills at the hero's current ranks. */
+export function skillEffects(catalog: ContentCatalog, hero: { skills: readonly { skillId: SkillId; rank: number }[] }): EffectDefinition[] {
+  const out: EffectDefinition[] = [];
+  for (const s of hero.skills) {
+    const def = catalog.skills[s.skillId];
+    if (!def || def.rule.type !== 'effects' || s.rank <= 0) continue;
+    out.push(...(def.rule.effectsByRank[s.rank - 1] ?? []));
+  }
+  return out;
+}
+
+/** Everything the hero itself carries: artifacts, set bonuses and skill effects. */
+export function heroEffects(catalog: ContentCatalog, hero: HeroState): EffectDefinition[] {
+  return [...artifactEffects(catalog, hero), ...skillEffects(catalog, hero)];
 }
 
 /** Player-wide effects reaching this hero: committed gods and the pantheon signature. */
@@ -33,13 +84,15 @@ export function divineEffects(catalog: ContentCatalog, state: MatchState, hero: 
 export function effectiveAttributes(catalog: ContentCatalog, state: MatchState, hero: HeroState): EffectiveAttributes {
   const art = artifactEffects(catalog, hero);
   const div = divineEffects(catalog, state, hero);
+  const sk = skillEffects(catalog, hero);
   const sum = (effects: EffectDefinition[], attr: HeroAttribute) =>
     effects.reduce((n, e) => (e.type === 'commander_attribute' && e.attribute === attr ? n + e.amount : n), 0);
   const make = (attr: HeroAttribute): AttributeBreakdown => {
     const base = hero.attributes[attr];
     const artifacts = sum(art, attr);
     const divine = sum(div, attr);
-    return { base, artifacts, divine, total: Math.max(0, base + artifacts + divine) };
+    const skills = sum(sk, attr);
+    return { base, artifacts, divine, skills, total: Math.max(0, base + artifacts + divine + skills) };
   };
   return { attack: make('attack'), defense: make('defense'), power: make('power'), knowledge: make('knowledge') };
 }
@@ -72,6 +125,8 @@ export function skillValue(catalog: ContentCatalog, hero: { skills: readonly { s
         return rule.radiusByRank[idx] ?? 0;
       case 'tactics':
         return rule.columnsByRank[idx] ?? 0;
+      case 'effects':
+        return 0;
     }
   }
   return 0;
@@ -82,12 +137,12 @@ export function maxMana(catalog: ContentCatalog, state: MatchState, hero: HeroSt
 }
 
 export function heroMoraleBonus(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
-  const fx = [...artifactEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
   return skillValue(catalog, hero, 'leadership') + fx.reduce((n, e) => (e.type === 'morale' ? n + e.amount : n), 0);
 }
 
 export function heroLuckBonus(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
-  const fx = [...artifactEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
   return skillValue(catalog, hero, 'fortune') + fx.reduce((n, e) => (e.type === 'luck' ? n + e.amount : n), 0);
 }
 
@@ -117,7 +172,7 @@ export function movementBudget(catalog: ContentCatalog, state: MatchState, hero:
   if (slowest !== null) {
     for (const row of profile.movementBySlowestSpeed) if (slowest >= row.speed) base = row.points;
   }
-  const fx = [...artifactEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
   const percent =
     skillValue(catalog, hero, 'logistics') + fx.reduce((n, e) => (e.type === 'movement_percent' ? n + e.percent : n), 0);
   const total = Math.floor((base * (100 + percent)) / 100);
@@ -125,9 +180,15 @@ export function movementBudget(catalog: ContentCatalog, state: MatchState, hero:
 }
 
 export function heroVisionRadius(catalog: ContentCatalog, hero: HeroState, state?: MatchState): number {
-  const fx = [...artifactEffects(catalog, hero), ...(state ? divineEffects(catalog, state, hero) : [])];
+  const fx = [...heroEffects(catalog, hero), ...(state ? divineEffects(catalog, state, hero) : [])];
   const bonus = fx.reduce((n, e) => (e.type === 'vision_radius' ? n + e.amount : n), 0);
   return catalog.rulesProfile.heroVisionRadius + skillValue(catalog, hero, 'scouting') + bonus;
+}
+
+/** Mana regained at dawn away from a Sanctum: the rules' rate plus mana_regen effects. */
+export function dawnManaRegen(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
+  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  return catalog.rulesProfile.dawnManaRegen + fx.reduce((n, e) => (e.type === 'mana_regen' ? n + e.amount : n), 0);
 }
 
 export function maxSpellTierLearnable(catalog: ContentCatalog, hero: HeroState): number {

@@ -21,6 +21,8 @@ export interface Preferences {
   readonly combatLogDetail: 'compact' | 'standard' | 'detailed';
   readonly tutorialHints: boolean;
   readonly dismissedHints: readonly string[];
+  /** Rebound keyboard shortcuts as "action=key" (only those that differ from the defaults; see app/keys.ts). */
+  readonly keyBindings: readonly string[];
   // Interface
   readonly uiScale: number;
   readonly textSize: 'standard' | 'large' | 'xlarge';
@@ -66,6 +68,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   combatLogDetail: 'standard',
   tutorialHints: true,
   dismissedHints: [],
+  keyBindings: [],
   uiScale: 1,
   textSize: 'standard',
   tooltips: true,

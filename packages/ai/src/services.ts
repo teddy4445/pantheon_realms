@@ -8,6 +8,14 @@
  */
 import {
   ARTIFACT_SLOTS,
+  goldEquivalent,
+  interventionsFor,
+  interventionUsedThisWeek,
+  quoteCampRecruitment,
+  quoteIntervention,
+  quoteMapEvent,
+  scenarioMission,
+  type MapEventOptionDefinition,
   hexEquals,
   offeringRule,
   playerTowns,
@@ -178,3 +186,89 @@ export function equipCandidates(catalog: ContentCatalog, heroes: readonly HeroSt
   }
   return out;
 }
+
+// ---------------------------------------------------------------------------
+// World map and divine interventions (proposed this build)
+// ---------------------------------------------------------------------------
+
+const CAMP_RESERVE_GOLD = 1500;
+
+/** A hero standing on a creature camp recruits as many as it can afford above a reserve. */
+export function campCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
+  const out: CommandPayload[] = [];
+  const mission = scenarioMission(catalog, belief);
+  const wallet = belief.players[playerId]?.wallet;
+  if (!mission || !wallet) return out;
+  for (const h of heroes) {
+    const def = mission.sites.find((s) => s.kind.type === 'creature_camp' && hexEquals(s.coord, h.position));
+    if (!def) continue;
+    const probe = quoteCampRecruitment(catalog, belief, playerId, h.id, def.id, 1);
+    const unit = probe.unitCost.gold;
+    const affordable = unit > 0 ? Math.floor((wallet.gold - CAMP_RESERVE_GOLD) / unit) : 0;
+    const qty = Math.min(probe.maxQuantity, affordable);
+    if (qty > 0 && quoteCampRecruitment(catalog, belief, playerId, h.id, def.id, qty).legal) out.push({ kind: 'RecruitFromCamp', heroId: h.id, siteId: def.id, quantity: qty });
+  }
+  return out;
+}
+
+/** Rough Gold-equivalent value of a map-event option for the AI. */
+export function eventOptionValue(catalog: ContentCatalog, o: MapEventOptionDefinition): number {
+  const r = o.reward;
+  let v = goldEquivalent(r.resources ?? {}) + (r.questXp ?? 0) * 1.2 + (r.mana ?? 0) * 15 + (r.movement ?? 0) * 0.8;
+  for (const amount of Object.values(r.attributes ?? {})) v += (amount ?? 0) * 900;
+  for (const a of r.artifactIds ?? []) v += catalog.artifacts[a]?.merchantPrice?.gold ?? 1500;
+  for (const c of r.creatures ?? []) v += c.count * (catalog.creatures[c.creatureId]?.cost?.gold ?? 0) * 1.1;
+  return v - goldEquivalent(o.cost ?? {});
+}
+
+/** A hero standing on an unresolved map event takes the best legal option. */
+export function mapEventCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
+  const out: CommandPayload[] = [];
+  const mission = scenarioMission(catalog, belief);
+  if (!mission) return out;
+  for (const h of heroes) {
+    const def = mission.sites.find((s) => s.kind.type === 'map_event' && hexEquals(s.coord, h.position));
+    if (!def || def.kind.type !== 'map_event' || belief.world.sites[def.id]?.claimed) continue;
+    const ranked = def.kind.options
+      .map((o, i) => ({ i, v: eventOptionValue(catalog, o), legal: quoteMapEvent(catalog, belief, playerId, h.id, def.id, i).legal }))
+      .filter((x) => x.legal)
+      .sort((a, b) => b.v - a.v || a.i - b.i);
+    if (ranked[0]) out.push({ kind: 'ResolveMapEvent', heroId: h.id, siteId: def.id, optionIndex: ranked[0].i });
+  }
+  return out;
+}
+
+/** Favor kept for god choices while the player could still commit to one. */
+const FAVOR_RESERVE_FOR_GODS = 25;
+
+function favorSpare(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): number {
+  const player = belief.players[playerId]!;
+  const committedAll = player.pantheon.minorGodIds.length >= 2;
+  return player.wallet.favor - (committedAll ? 0 : FAVOR_RESERVE_FOR_GODS);
+}
+
+/** Adventure interventions (at most one a week): extra recruits, then resources, then movement. */
+export function interventionCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
+  if (interventionUsedThisWeek(catalog, belief, playerId)) return [];
+  const spare = favorSpare(catalog, belief, playerId);
+  const options = interventionsFor(catalog, belief, playerId).filter((d) => d.context === 'adventure' && d.favorCost <= spare);
+  const scored: { score: number; payload: CommandPayload }[] = [];
+  for (const d of options) {
+    const e = d.effect;
+    if (e.type === 'town_growth') {
+      for (const town of playerTowns(belief, playerId)) {
+        const families = Object.keys(town.population).filter((f) => (catalog.families[f]?.tier ?? 99) <= e.maxTier).length;
+        if (families === 0) continue;
+        if (quoteIntervention(catalog, belief, playerId, d.id, { townId: town.id }).legal) scored.push({ score: families * e.amount * 120, payload: { kind: 'InvokeIntervention', interventionId: d.id, townId: town.id } });
+      }
+    } else if (e.type === 'grant_resources') {
+      if (quoteIntervention(catalog, belief, playerId, d.id).legal) scored.push({ score: goldEquivalent(e.resources) / 2, payload: { kind: 'InvokeIntervention', interventionId: d.id } });
+    } else if (e.type === 'restore_movement' && heroes.length >= 2) {
+      if (quoteIntervention(catalog, belief, playerId, d.id).legal) scored.push({ score: heroes.length * e.percent * 4, payload: { kind: 'InvokeIntervention', interventionId: d.id } });
+    }
+  }
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, 1).map((s) => s.payload);
+}
+
+export { favorSpare };

@@ -7,6 +7,7 @@ playtest verdict.
 ```
 npm run balance                              # all suites (≈ 15–25 min on 2 cores)
 npm run balance -- --quick                   # smoke run (a few minutes)
+npm run balance -- random --matches 4        # random-map seat fairness only
 npm run balance -- skirmish --matches 6      # one suite, more matches
 npm run balance -- armies tiers --seeds 20 --jobs 4
 npm run balance -- --pantheons greek,egyptian
@@ -25,6 +26,7 @@ Reports land in `balance-reports/balance-<timestamp>.md` (readable) and `.json`
 | `armies` | Full-roster armies (one stack per tier, weekly growth × 1 or 2 weeks), base and upgraded forms. | Each pairing fights in both directions (attacker/defender). |
 | `starts` | The Twin Harbors starting escorts. | Both directions. |
 | `tiers` | Same-tier single-stack duels at equal gold. | Both directions; use only to spot outliers (single stacks undervalue flyers and shooters). |
+| `random` | Whole matches on generated random maps (small, 2 and 3 empires, few monsters), every seat the same pantheon, all seats AI. Reports wins by seat. | Mirror matches: only seat order and the map differ, so an even generator gives each seat 1/N of the wins. |
 
 The duels are hero battles in the matching Twin Harbors pairing: both
 commanders have zeroed attributes, skills and equipment, so only the troops
