@@ -266,6 +266,8 @@ export interface RandomResult {
   readonly winnerSeat: number | null;
   /** At the day cap: the seat with at least 25% more army strength than every other seat, else null (a draw). */
   readonly pointsSeat: number | null;
+  /** Seats in the order they were knocked out (no town and no hero), with the day. */
+  readonly knockedOut: readonly { readonly seat: number; readonly day: number }[];
   readonly day: number;
   readonly battles: number;
 }
@@ -286,11 +288,16 @@ export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomRes
   const onEvents = (events: readonly { kind: string }[]) => {
     for (const e of events) if (e.kind === 'BattleStarted') battles++;
   };
+  const seats = [g.mission.player.playerId, ...(g.mission.rivals ?? []).map((r) => r.playerId)];
+  const knockedOut: { seat: number; day: number }[] = [];
+  const present = (id: string) => Object.values(d.state.towns).some((t) => t.ownerId === id) || Object.values(d.state.heroes).some((h) => h.ownerId === id && h.status === 'active');
   for (let i = 0; i < 4000 && d.state.outcome.status === 'running' && d.state.day <= maxDay; i++) {
     d.state = runAITurn(catalog, d.state, { onEvents });
     if (d.state.battle) d.autoBattle(8000);
+    seats.forEach((id, s) => {
+      if (!knockedOut.some((k) => k.seat === s) && !present(id)) knockedOut.push({ seat: s, day: d.state.day });
+    });
   }
-  const seats = [g.mission.player.playerId, ...(g.mission.rivals ?? []).map((r) => r.playerId)];
   const w = d.state.outcome.status !== 'running' ? (d.state.outcome.winnerIds?.[0] ?? null) : null;
   let pointsSeat: number | null = null;
   if (!w) {
@@ -303,5 +310,5 @@ export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomRes
     const order = strength.map((v, i) => [v, i] as const).sort((a, b) => b[0] - a[0]);
     if (order.length > 1 && order[0]![0] >= order[1]![0] * 1.25) pointsSeat = order[0]![1];
   }
-  return { pantheon: o.pantheon, empires: o.empires, seed: o.seed, winnerSeat: w ? seats.indexOf(w) : null, pointsSeat, day: d.state.day, battles };
+  return { pantheon: o.pantheon, empires: o.empires, seed: o.seed, winnerSeat: w ? seats.indexOf(w) : null, pointsSeat, knockedOut, day: d.state.day, battles };
 }

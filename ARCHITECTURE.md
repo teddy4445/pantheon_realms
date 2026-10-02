@@ -25,8 +25,8 @@ AI never mutates state directly — each of those paths goes through
 | Package | Owns | Must not |
 |---|---|---|
 | `@pr/rules` | IDs, resources, deterministic RNG, hex math, content *types*, `MatchState`, commands, events, `processCommand`, every quote/commit (economy, movement, sites, heroes, gods, quests, turn/dawn, adventure spells, tactical battle, sieges, deployment, damage) | import anything outside the TS standard library (no DOM, React, Babylon, Electron, Node) |
-| `@pr/content` | The authored, validated `ContentCatalog`: six playable pantheons (Greek design values; Norse, Egyptian, Japanese, Celtic and Mesoamerican values proposed) with rosters/towns/gods/heroes/classes/lore, spells, skills, artifacts (incl. the `arcana` spells, artifacts and sets with lore), *The Three Beacons*, *The Winter Oath* (seven Norse missions), the *Twin Harbors* skirmish in 36 pantheon pairings, validators | contain logic beyond building and validating data |
-| `@pr/mapgen` | Template-driven logical map generation (`pr-mapgen-0.3`), validation, logical hash, cosmetic decor stream; the symmetric random skirmish generator (`pr-skirmishgen-0.2`, `skirmish.ts`: six map types, zones, guarded passes and gates, size/guard/treasure/wealth/road/reveal settings) that outputs a full `MissionDefinition` | affect rules through cosmetic data |
+| `@pr/content` | The authored, validated `ContentCatalog`: six playable pantheons (Greek design values; Norse, Egyptian, Japanese, Celtic and Mesoamerican values proposed) with rosters/towns/gods/heroes/classes/lore, spells, skills, artifacts (incl. the `arcana` spells, artifacts and sets with lore), *The Three Beacons*, *The Winter Oath* (seven Norse missions), the four arc campaigns (`campaign/arc.ts` builds seven-mission campaigns from writing + layout; *The Twelfth Hour*, *The Lantern Road*, *The Silver Branch*, *The New Fire*), the neutral creature roster (`common/neutrals.ts`), the *Twin Harbors* skirmish in 36 pantheon pairings, validators | contain logic beyond building and validating data |
+| `@pr/mapgen` | Template-driven logical map generation (`pr-mapgen-0.3`), validation, logical hash, cosmetic decor stream; the symmetric random skirmish generator (`pr-skirmishgen-0.3`, `skirmish.ts`: six map types, zones, guarded passes and gates, two-way portals paired by the map's symmetry, roads to the centre, neutral + pantheon creatures half and half, size/guard/treasure/wealth/road/reveal/portal settings) that outputs a full `MissionDefinition` | affect rules through cosmetic data |
 | `@pr/campaign` | Mission factory (scenario manifest or generated scenario → `MatchState`; difficulty, seat controllers, names and patrons), hero carryover, campaign state machine, completion records with mission scores; `createRandomSkirmish` (re-exports the generator for the session and UI) | render or persist |
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
@@ -268,10 +268,16 @@ measures pantheons AI-vs-AI with sides and first movers swapped.
 
 The AI uses the new mechanics through the same quotes as the screens
 (`packages/ai/src/services.ts`): it commits to the best-scoring legal god,
-equips backpack items, makes Temple offerings only while Favor is still needed
-(lowest tiers first, never a hero's last creature), trains visiting heroes and
-buys artifacts for empty slots while keeping Gold reserves, and saves for a new
-hero when it has none. The tactical AI takes a free Shapeshift when the other
+makes Temple offerings only while Favor is still needed (lowest tiers first,
+never a hero's last creature), trains visiting heroes while keeping Gold
+reserves, and saves for a new hero when it has none. Hero development lives in
+`packages/ai/src/growth.ts` (2026-10-02): level-up offers scored for the hero's
+army and magic; artifact loadouts valued with set bonuses (equip, swap, buy by
+gain per Gold); adventure spells (movement when a move falls just short,
+scouting an unseen rival town, Recall to a threatened town). Map movement also
+uses portals the empire has used, reinforces from any owned town, and only
+approaches an unseen town with a hero strong enough for a public-information
+estimate of its garrison. The tactical AI takes a free Shapeshift when the other
 aspect gives a clearly better best action (e.g. Hare Speed lets a Pooka reach
 an enemy); it does not use a Shapeshift that costs the activation.
 
@@ -301,6 +307,10 @@ Three rules, all from public knowledge only, removed most of that edge:
   previews never draw randomness.
 * Pathfinding uses canonical neighbor order and deterministic tie-breaking;
   only explored tiles are used, so routes never leak hidden terrain.
+* The strategic AI breaks ties between equally scored moves with a hash of
+  the empire and the move (`tieHash` in `ai/src/strategic.ts`), not by
+  coordinates, so empires on opposite sides of a mirrored map are not steered
+  in different directions. Still deterministic per match.
 * The map generator produces a logical hash; decor comes from its own stream.
 * `canonicalStateHash` is used by tests to prove identical runs.
 

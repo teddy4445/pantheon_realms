@@ -17,6 +17,7 @@
  *   --out DIR         report folder (default: balance-reports/)
  *   --quick           seeds 4, matches 1
  *   --no-signatures   army/escort/tier duels without pantheon signatures (troops only)
+ *   --empires 2,3     empire counts for the random suite (default both)
  *
  * Writes <out>/balance-<timestamp>.md (readable report) and .json (raw results).
  * Every number is an AI-vs-AI measurement with the shipped AI, not a playtest.
@@ -46,6 +47,7 @@ function parseArgs(argv) {
     else if (a === '--jobs') o.jobs = Number(next());
     else if (a === '--out') o.out = resolve(next());
     else if (a === '--no-signatures') o.signatures = false;
+    else if (a === '--empires') o.empires = next().split(',').map(Number);
     else if (a === '--quick') {
       o.seeds = 4;
       o.matches = 1;
@@ -62,7 +64,7 @@ function parseArgs(argv) {
 function runShard(opts, shard, shards, outDir) {
   const require = createRequire(import.meta.url);
   const vitest = join(dirname(require.resolve('vitest/package.json')), 'vitest.mjs');
-  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, shard, shards, outDir }) };
+  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, empires: opts.empires, shard, shards, outDir }) };
   return new Promise((ok, fail) => {
     const child = spawn(process.execPath, [vitest, 'run', '--config', 'tools/balance/vitest.config.ts', 'tools/balance/balance.measure.ts'], { cwd: ROOT, env, stdio: ['ignore', 'pipe', 'pipe'] });
     let err = '';
@@ -160,7 +162,7 @@ function render(opts, results, seconds, contentVersion) {
   if (rnd.length) {
     out.push('## Random maps (generated, every seat the same pantheon, both sides AI)');
     out.push('');
-    out.push('Small symmetric maps, few wandering monsters, last empire standing. Mirror matches isolate seat order (seat 1 moves first each day) and the map; an even generator gives every seat 1/N of the wins.');
+    out.push('Small symmetric maps, few wandering monsters, last empire standing. Mirror matches isolate seat order (seat 1 moves first on day 1; with two empires every day, with three or more the order rotates each day — the generator’s default) and the map; an even generator gives every seat 1/N of the wins.');
     out.push('');
     out.push('Undecided matches at the day cap count for a seat whose army strength is at least 25% above every other seat\'s (else a draw, split evenly).');
     out.push('');
@@ -178,6 +180,13 @@ function render(opts, results, seconds, contentVersion) {
       out.push(`| ${n} | ${rs.length} | ${dec.length} | ${dec.length ? day.toFixed(1) : '—'} | ${wins.join(', ')} | ${pts.join(', ')} (${draws} draws) | ${score.map((x) => pct(x)).join(', ')} (even = ${pct(1 / n)}) |`);
     }
     out.push('');
+    // Who is knocked out first in three-empire matches (a turn-order or map bias shows here first).
+    const three = rnd.filter((r) => r.empires === 3 && (r.knockedOut ?? []).length > 0);
+    if (three.length) {
+      const first = [0, 1, 2].map((s) => three.filter((r) => r.knockedOut[0].seat === s).length);
+      out.push(`Three empires — first seat knocked out (seat 1, 2, 3): ${first.join(', ')} of ${three.length} matches with a knock-out.`);
+      out.push('');
+    }
   }
 
   const armies = results.filter((r) => r.job.suite === 'armies');

@@ -36,7 +36,9 @@ test('calibration GLB loads in the bestiary viewer with the playback controls', 
 });
 
 test('calibration GLB replaces the Hoplite figures on the battlefield', async ({ page }) => {
-  test.setTimeout(180_000);
+  // Shooters walk into range before they shoot (owner decision 2026-10-02), so the
+  // auto-battle plays more moves; on a busy software renderer it can pass 150 s.
+  test.setTimeout(300_000);
   const d = skirmishDriver();
   const alexios = d.state.heroes['alexios']!;
   alexios.army.slots = slots([['hoplite', 30], ['peltast', 10]]);
@@ -51,6 +53,6 @@ test('calibration GLB replaces the Hoplite figures on the battlefield', async ({
   await page.waitForTimeout(2500);
   await page.screenshot({ path: 'test-results/model-battle.png' });
   await page.getByTestId('battle-auto').click();
-  const s = await waitFor(page, (x) => x.screen === 'battle-result', 'battle result', 150_000);
+  const s = await waitFor(page, (x) => x.screen === 'battle-result', 'battle result', 270_000);
   expect(s.state.lastBattleResult).not.toBeNull();
 });

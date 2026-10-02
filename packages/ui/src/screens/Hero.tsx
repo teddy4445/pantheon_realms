@@ -7,6 +7,11 @@
  * Equipping, unequipping, reordering, splitting and merging are commands the
  * rules validate (EquipArtifact with a chosen position, UnequipArtifact,
  * TransferStack). The 3D figure is presentation only.
+ *
+ * 2026-10-02 (owner request): items can also be dragged — backpack to a slot,
+ * slot to slot of the same kind, slot back to the backpack; a picked backpack
+ * item is compared with what the hero wears (attribute and set changes); set
+ * pieces carry a set badge (final icon once delivered).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -16,7 +21,9 @@ import {
   EQUIP_SLOT_LABEL,
   HERO_ATTRIBUTES,
   armyStacks,
+  artifactEffects,
   artifactSetStatus,
+  equipSlotsFor,
   effectiveAttributes,
   heroLuckBonus,
   heroMoraleBonus,
@@ -28,9 +35,11 @@ import {
   type ArmyRef,
   type ArtifactDefinition,
   type ArtifactInstanceState,
+  type EffectDefinition,
   type EquipSlot,
   type HeroState,
 } from '@pr/rules';
+import { SetBadge } from '../components/badges';
 import type { HeroFigureController } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { reducedMotion } from '../app/preferences';
@@ -73,6 +82,132 @@ const DOLL: Record<EquipSlot, { x: number; y: number }> = {
 const BACKPACK_VISIBLE = 8;
 
 type Picked = { from: 'doll'; slot: EquipSlot } | { from: 'pack'; instanceId: string } | null;
+
+// ---------------------------------------------------------------------------
+// Item comparison (what changes if the picked item is worn in a slot)
+// ---------------------------------------------------------------------------
+
+const TIERS = (e: { minTier?: number; maxTier?: number }) =>
+  e.minTier !== undefined && e.maxTier !== undefined ? `Tier ${e.minTier}–${e.maxTier}` : e.maxTier !== undefined ? `Tier 1–${e.maxTier}` : e.minTier !== undefined ? `Tier ${e.minTier}+` : 'All';
+
+/** Numeric totals of a list of effects, keyed by a readable label (unit in the label). */
+function effectTotals(effects: readonly EffectDefinition[]): Map<string, number> {
+  const out = new Map<string, number>();
+  const add = (k: string, v: number) => out.set(k, (out.get(k) ?? 0) + v);
+  for (const e of effects) {
+    switch (e.type) {
+      case 'commander_attribute':
+        add(ATTR[e.attribute]?.label ?? e.attribute, e.amount);
+        break;
+      case 'morale':
+        add('Morale', e.amount);
+        break;
+      case 'luck':
+        add('Luck', e.amount);
+        break;
+      case 'movement_percent':
+        add('Movement %', e.percent);
+        break;
+      case 'vision_radius':
+        add('Vision (hexes)', e.amount);
+        break;
+      case 'mana_regen':
+        add('Mana at dawn', e.amount);
+        break;
+      case 'spell_damage_percent':
+        add('Spell damage %', e.percent);
+        break;
+      case 'battle_xp_percent':
+        add('Battle experience %', e.percent);
+        break;
+      case 'casualty_recovery':
+        add('Losses regained %', e.percent);
+        break;
+      case 'daily_income':
+        add(`${e.resource[0]!.toUpperCase()}${e.resource.slice(1)} per day`, e.amount);
+        break;
+      case 'creature_stat':
+        add(`${TIERS(e)}${e.ability ? ` ${e.ability === 'flight' ? 'flying' : e.ability}` : ''} creatures ${e.stat}`, e.amount);
+        break;
+      default:
+        break;
+    }
+  }
+  return out;
+}
+
+interface Comparison {
+  readonly slot: EquipSlot;
+  readonly worn: ArtifactDefinition | null;
+  readonly rows: readonly { label: string; delta: number }[];
+  readonly sets: readonly string[];
+}
+
+/** What changes for the hero if `inst` is worn in each slot it fits (attributes, set bonuses). */
+function compareInSlots(catalog: ReturnType<typeof useStore>['catalog'], hero: HeroState, inst: ArtifactInstanceState): Comparison[] {
+  const def = catalog.artifacts[inst.artifactId];
+  if (!def) return [];
+  const now = effectTotals(artifactEffects(catalog, hero));
+  const setsNow = new Map(artifactSetStatus(catalog, hero).map((s) => [s.setId, s]));
+  const slots = equipSlotsFor(def.slot);
+  const empty = slots.find((s) => !hero.equipment[s]);
+  return (empty ? [empty] : slots).map((slot) => {
+    const equipment = { ...hero.equipment, [slot]: inst };
+    const next = effectTotals(artifactEffects(catalog, { equipment }));
+    const labels = [...new Set([...now.keys(), ...next.keys()])];
+    const rows = labels.map((label) => ({ label, delta: (next.get(label) ?? 0) - (now.get(label) ?? 0) })).filter((r) => r.delta !== 0);
+    const sets: string[] = [];
+    const setsNext = new Map(artifactSetStatus(catalog, { equipment }).map((s) => [s.setId, s]));
+    for (const id of new Set([...setsNow.keys(), ...setsNext.keys()])) {
+      const a = setsNow.get(id);
+      const b = setsNext.get(id);
+      const before = a?.equipped ?? 0;
+      const after = b?.equipped ?? 0;
+      if (before === after) continue;
+      const name = b?.name ?? a?.name ?? id;
+      const total = b?.total ?? a?.total ?? 0;
+      const gained = (b?.active ?? []).filter((x) => !(a?.active ?? []).some((y) => y.pieces === x.pieces)).map((x) => x.summary);
+      const lost = (a?.active ?? []).filter((x) => !(b?.active ?? []).some((y) => y.pieces === x.pieces)).map((x) => x.summary);
+      sets.push(`${name}: ${before}/${total} → ${after}/${total}${gained.length ? ` — gains ${gained.join('; ')}` : ''}${lost.length ? ` — loses ${lost.join('; ')}` : ''}`);
+    }
+    const wornInst = hero.equipment[slot];
+    return { slot, worn: wornInst ? (catalog.artifacts[wornInst.artifactId] ?? null) : null, rows, sets };
+  });
+}
+
+function ArtifactCompare({ hero, inst }: { hero: HeroState; inst: ArtifactInstanceState }) {
+  const catalog = useStore().catalog;
+  const list = compareInSlots(catalog, hero, inst);
+  if (list.length === 0) return null;
+  return (
+    <div className="h3-compare" data-testid="artifact-compare">
+      <div className="h3-compare__title">Compared with what {hero.name} wears</div>
+      {list.map((c) => (
+        <div key={c.slot} className="h3-compare__slot" data-testid={`compare-${c.slot}`}>
+          <div className="small">
+            <strong>{EQUIP_SLOT_LABEL[c.slot]}:</strong> {c.worn ? `replaces ${c.worn.name}` : 'empty slot'}
+          </div>
+          {c.rows.length === 0 && c.sets.length === 0 ? <div className="faint small">No change to attributes or sets.</div> : null}
+          {c.rows.length ? (
+            <div className="row gap wrap">
+              {c.rows.map((r) => (
+                <Chip key={r.label} tone={r.delta > 0 ? 'ok' : 'bad'}>
+                  {r.label} {r.delta > 0 ? '+' : ''}
+                  {r.delta}
+                </Chip>
+              ))}
+            </div>
+          ) : null}
+          {c.sets.map((s) => (
+            <div key={s} className="small">
+              {s}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function ArmyEditor({ hero }: { hero: HeroState }) {
   const store = useStore();
@@ -177,7 +312,11 @@ function ArtifactCard({ def, onRemove, onEquip, where }: { def: ArtifactDefiniti
         <div className="row gap wrap">
           <Chip>{ARTIFACT_SLOT_LABEL[def.slot]}</Chip>
           {def.rarity ? <Chip tone={def.rarity === 'relic' ? 'warn' : def.rarity === 'major' ? 'info' : 'muted'}>{def.rarity[0]!.toUpperCase() + def.rarity.slice(1)}</Chip> : null}
-          {set ? <Chip tone="ok">{set.name}</Chip> : null}
+          {set ? (
+            <Chip tone="ok">
+              <SetBadge catalog={catalog} setId={set.id} size="0.9rem" /> {set.name}
+            </Chip>
+          ) : null}
           <span className="faint small">{where}</span>
         </div>
         <div className="small">{def.summary}</div>
@@ -208,6 +347,7 @@ export function HeroScreen() {
   const heroId = (store.screen.params.heroId as string | undefined) ?? store.selectedHeroId ?? heroes[0]?.id;
   const hero = heroId ? state.heroes[heroId] : undefined;
   const [picked, setPicked] = useState<Picked>(null);
+  const [dragging, setDragging] = useState<Picked>(null);
   const [packStart, setPackStart] = useState(0);
   useEffect(() => {
     setPicked(null);
@@ -243,6 +383,39 @@ export function HeroScreen() {
     picked?.from === 'doll' ? hero.equipment[picked.slot] : picked?.from === 'pack' ? hero.backpack.find((b) => b.instanceId === picked.instanceId) : undefined;
   const pickedDef = pickedInst ? catalog.artifacts[pickedInst.artifactId] : undefined;
   const fits = (slot: EquipSlot) => picked?.from === 'pack' && !!pickedDef && EQUIP_SLOT_KIND[slot] === pickedDef.slot;
+  // Drag and drop: backpack → slot, slot → slot of the same kind, slot → backpack.
+  const dragInst: ArtifactInstanceState | undefined =
+    dragging?.from === 'doll' ? hero.equipment[dragging.slot] : dragging?.from === 'pack' ? hero.backpack.find((b) => b.instanceId === dragging.instanceId) : undefined;
+  const dragDef = dragInst ? catalog.artifacts[dragInst.artifactId] : undefined;
+  const dropsOn = (slot: EquipSlot) => !!dragDef && EQUIP_SLOT_KIND[slot] === dragDef.slot && !(dragging?.from === 'doll' && dragging.slot === slot);
+  const dropOnSlot = (slot: EquipSlot) => {
+    const d = dragging;
+    setDragging(null);
+    if (!mine || !d || !dragInst || !dropsOn(slot)) return;
+    if (d.from === 'pack') {
+      store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: dragInst.instanceId, slot });
+    } else {
+      // Slot to slot (rings, misc): take it off, wear it in the new slot; what was there goes to the old slot.
+      const displaced = hero.equipment[slot];
+      if (store.dispatch({ kind: 'UnequipArtifact', heroId: hero.id, slot: d.slot })) return;
+      if (store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: dragInst.instanceId, slot })) return;
+      if (displaced) store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: displaced.instanceId, slot: d.slot });
+    }
+    setPicked(null);
+  };
+  const dropOnPack = () => {
+    const d = dragging;
+    setDragging(null);
+    if (mine && d?.from === 'doll' && hero.equipment[d.slot]) unequip(d.slot);
+  };
+  const startDrag = (e: React.DragEvent, what: NonNullable<Picked>) => {
+    if (!mine) return e.preventDefault();
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', what.from === 'pack' ? what.instanceId : what.slot);
+    // Only the drop targets light up: changing the picked item here would resize the
+    // panel under the pointer in the middle of the drag.
+    setDragging(what);
+  };
   const clickSlot = (slot: EquipSlot) => {
     if (!mine) {
       setPicked(hero.equipment[slot] ? { from: 'doll', slot } : null);
@@ -263,6 +436,7 @@ export function HeroScreen() {
   const pack = hero.backpack;
   const visible = pack.slice(packStart, packStart + BACKPACK_VISIBLE);
   const sets = artifactSetStatus(catalog, hero);
+  const activeSets = new Set(sets.filter((s) => s.active.length > 0).map((s) => s.setId));
 
   return (
     <div className="screen hero-screen h3">
@@ -395,8 +569,21 @@ export function HeroScreen() {
                 <button
                   key={slot}
                   type="button"
-                  className={`h3-slot ${art ? 'is-filled' : ''} ${isPicked ? 'is-picked' : ''} ${fits(slot) ? 'is-target' : ''}`}
+                  className={`h3-slot ${art ? 'is-filled' : ''} ${isPicked ? 'is-picked' : ''} ${fits(slot) || dropsOn(slot) ? 'is-target' : ''}`}
                   style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+                  draggable={mine && !!art}
+                  onDragStart={(e) => startDrag(e, { from: 'doll', slot })}
+                  onDragEnd={() => setDragging(null)}
+                  onDragOver={(e) => {
+                    if (dropsOn(slot)) {
+                      e.preventDefault();
+                      e.dataTransfer.dropEffect = 'move';
+                    }
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    dropOnSlot(slot);
+                  }}
                   onClick={() => clickSlot(slot)}
                   onDoubleClick={() => mine && art && unequip(slot)}
                   title={art ? `${art.name} — ${art.summary}` : `${EQUIP_SLOT_LABEL[slot]} (empty)`}
@@ -404,23 +591,41 @@ export function HeroScreen() {
                   data-testid={`slot-${slot}`}
                 >
                   {art ? <ArtifactIcon iconAssetId={art.iconAssetId} kind={art.slot} rarity={art.rarity} /> : <span className="h3-slot__empty">{EQUIP_SLOT_LABEL[slot]}</span>}
+                  {art?.setId ? <SetBadge catalog={catalog} setId={art.setId} active={activeSets.has(art.setId)} size="0.95rem" /> : null}
                 </button>
               );
             })}
           </div>
           <div className="h3-doll__info">
             {pickedDef && picked ? (
+              <>
               <ArtifactCard
                 def={pickedDef}
                 where={picked.from === 'doll' ? `Worn: ${EQUIP_SLOT_LABEL[picked.slot]}` : 'In the backpack — click a glowing slot to wear it'}
                 onRemove={mine && picked.from === 'doll' ? () => unequip(picked.slot) : undefined}
                 onEquip={mine && picked.from === 'pack' && pickedInst ? () => { store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: pickedInst.instanceId }); setPicked(null); } : undefined}
               />
+              {picked.from === 'pack' && pickedInst ? <ArtifactCompare hero={hero} inst={pickedInst} /> : null}
+              </>
             ) : (
-              <p className="faint small">Click an item to see it. Pick an item from the backpack, then click a glowing slot to wear it; double-click a worn item to take it off.</p>
+              <p className="faint small">Click an item to see it and compare it with what the hero wears. Drag an item onto a glowing slot (or pick it, then click the slot) to wear it; drag a worn item to the backpack, or double-click it, to take it off.</p>
             )}
           </div>
-          <div className="h3-backpack" aria-label="Backpack" data-testid="hero-backpack">
+          <div
+            className={`h3-backpack ${dragging?.from === 'doll' ? 'is-droptarget' : ''}`}
+            aria-label="Backpack"
+            data-testid="hero-backpack"
+            onDragOver={(e) => {
+              if (dragging?.from === 'doll') {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+              }
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              dropOnPack();
+            }}
+          >
             <Button size="small" icon="back" aria-label="Scroll backpack left" disabled={packStart === 0} onClick={() => setPackStart(Math.max(0, packStart - BACKPACK_VISIBLE))} />
             <div className="h3-backpack__slots">
               {Array.from({ length: BACKPACK_VISIBLE }, (_, i) => {
@@ -433,12 +638,16 @@ export function HeroScreen() {
                     type="button"
                     className={`h3-slot h3-slot--pack ${art ? 'is-filled' : ''} ${isPicked ? 'is-picked' : ''}`}
                     disabled={!inst}
+                    draggable={mine && !!inst}
+                    onDragStart={(e) => inst && startDrag(e, { from: 'pack', instanceId: inst.instanceId })}
+                    onDragEnd={() => setDragging(null)}
                     onClick={() => inst && setPicked(isPicked ? null : { from: 'pack', instanceId: inst.instanceId })}
                     onDoubleClick={() => mine && inst && store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: inst.instanceId })}
                     title={art ? `${art.name} — ${art.summary}` : 'Empty'}
                     data-testid={inst ? `pack-${inst.artifactId}` : undefined}
                   >
                     {art ? <ArtifactIcon iconAssetId={art.iconAssetId} kind={art.slot} rarity={art.rarity} /> : null}
+                    {art?.setId ? <SetBadge catalog={catalog} setId={art.setId} size="0.95rem" /> : null}
                   </button>
                 );
               })}
@@ -454,7 +663,7 @@ export function HeroScreen() {
                 const set = catalog.artifactSets?.[st.setId];
                 return (
                   <div key={st.setId} className="set-status" data-testid={`set-${st.setId}`}>
-                    <strong>{st.name}</strong>{' '}
+                    <SetBadge catalog={catalog} setId={st.setId} active={st.active.length > 0} size="1.2rem" /> <strong>{st.name}</strong>{' '}
                     <Chip tone={st.active.length ? 'ok' : 'muted'}>
                       {st.equipped}/{st.total} pieces
                     </Chip>

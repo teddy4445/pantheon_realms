@@ -187,7 +187,9 @@ const KITS: Record<string, SideKit> = {
     ],
     covenants: COVENANT_TIERS.map((tier) => familyAtTier(NORSE_FAMILY_SPECS, tier)),
   },
-  egyptian: kitSide(EGYPTIAN_SPEC, 'egyptian_city', [20, 8]),
+  // 21 + 8 (was 20 + 8): with shooting ranges (2026-10-02) the Jackal Guardians lost
+  // some long-range damage; one more Sacred Scarab brings the escort duels back to even.
+  egyptian: kitSide(EGYPTIAN_SPEC, 'egyptian_city', [21, 8]),
   japanese: kitSide(JAPANESE_SPEC, 'japanese_castle_town', [21, 8]),
   celtic: kitSide(CELTIC_SPEC, 'celtic_hillfort', [22, 7]),
   mesoamerican: kitSide(MESOAMERICAN_SPEC, 'mesoamerican_city', [24, 6]),

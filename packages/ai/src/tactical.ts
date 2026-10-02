@@ -20,6 +20,9 @@ import {
   autoDefenderPicks,
   cellNeighbors,
   hasFlight,
+  inShootingRange,
+  isShooter,
+  shootingRange,
   SIEGE_GATE_ROW,
   adjacentEnemies,
   interventionsFor,
@@ -114,6 +117,8 @@ function mainOptions(catalog: ContentCatalog, battle: BattleState, stack: Battle
 
 const SHIFT_MARGIN = 5;
 /** Progress (in cells) a lone advance gives up per enemy melee stack that could strike it next. */
+/** Base score of a shooter's move that brings an enemy into range (see step 5). */
+const IN_RANGE_MOVE = 100;
 const LONE_PENALTY = 2;
 
 function topScore(options: readonly Scored[]): number {
@@ -238,6 +243,10 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
     const enemyCells = new Map(melee.map((e) => [e.id, stackCells(catalog, e)] as const));
     const allyCells = allies.map((a) => stackCells(catalog, a));
     const reach = new Map(melee.map((e) => [e.id, effectiveSpeed(catalog, e, battle) + 1] as const));
+    // A shooter with ammunition but no enemy in range steps only as far as it must
+    // to bring one into range, away from enemy reach, never into contact; when no
+    // cell in range can be reached this turn it holds while enemy troops approach.
+    const range = isShooter(catalog, stack.creatureId) && stack.shotsRemaining > 0 ? shootingRange(catalog, stack.creatureId) : 0;
     for (const to of actions.moves) {
       const cells = stackCells(catalog, stack, to);
       let nearest = Number.POSITIVE_INFINITY;
@@ -247,9 +256,19 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
       const threats = melee.filter((e) => footprintDistance(cells, enemyCells.get(e.id)!) <= reach.get(e.id)!).length;
       const support = allyCells.filter((a) => footprintDistance(cells, a) <= 2).length;
       const lonely = Math.max(0, threats - support);
-      moveChoices.push({ score: -nearest - cellDistance(stack.anchor, to) / (speed * 10) - lonely * LONE_PENALTY, key: `move:${cellKey(to)}`, payload: { kind: 'BattleMove', stackId: stack.id, to } });
+      let score = -nearest - cellDistance(stack.anchor, to) / (speed * 10) - lonely * LONE_PENALTY;
+      if (range > 0) {
+        let gap = Number.POSITIVE_INFINITY;
+        for (const e of enemies) gap = Math.min(gap, footprintDistance(cells, stackCells(catalog, e)));
+        if (gap <= 1) score = -1000 - lonely * LONE_PENALTY;
+        else if (gap <= range) score = IN_RANGE_MOVE - (range - gap) * 0.5 - threats * 10 - lonely * LONE_PENALTY;
+      }
+      moveChoices.push({ score, key: `move:${cellKey(to)}`, payload: { kind: 'BattleMove', stackId: stack.id, to } });
     }
     const mv = best(moveChoices);
+    // Hold only while no enemy shooter can hit this stack where it stands.
+    const underFire = enemies.some((e) => isShooter(catalog, e.creatureId) && e.shotsRemaining > 0 && inShootingRange(catalog, e, stack));
+    if (mv && range > 0 && moveChoices[0]!.score < IN_RANGE_MOVE - 50 && melee.length > 0 && !field && !underFire) return { kind: 'BattleDefend', stackId: stack.id };
     if (mv) return mv;
   }
   if (attack) return attack;

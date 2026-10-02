@@ -18,6 +18,8 @@ export interface BalanceOptions {
   readonly maxDay: number;
   /** Army/escort/tier duels carry each side's pantheon signature (default true). */
   readonly signatures?: boolean;
+  /** Empire counts for the random suite (default 2 and 3). */
+  readonly empires?: readonly (2 | 3)[];
 }
 
 export type Job =
@@ -58,7 +60,9 @@ export function buildJobs(catalog: ContentCatalog, o: BalanceOptions): Job[] {
   }
   if (o.suites.includes('random')) {
     // Mirror matches on generated maps: every seat the same pantheon, so only seat order and the map differ.
-    for (const pantheon of P) for (const empires of [2, 3] as const) for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'random', pantheon, empires, seed, maxDay: o.maxDay });
+    // Every match gets its own map (a pantheon offset in the seed): five maps played by six
+    // pantheons used to measure five maps, not thirty (2026-10-02).
+    for (const pantheon of P) for (const empires of o.empires ?? ([2, 3] as const)) for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'random', pantheon, empires, seed: P.indexOf(pantheon) * 100 + seed, maxDay: o.maxDay });
   }
   void catalog;
   return jobs;

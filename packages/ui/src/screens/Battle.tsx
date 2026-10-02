@@ -14,6 +14,8 @@ import {
   previewMelee,
   previewRetaliation,
   previewShot,
+  shootingRange,
+  stackDistance,
   reachableAnchors,
   routeTo,
   stackCells,
@@ -277,7 +279,14 @@ export function BattleScreen() {
   const store = useStore();
   const catalog = store.catalog;
   const session = store.session!;
-  const state = session.state;
+  const live = session.state;
+  // When the final action ends the battle, the rules clear \`state.battle\`. Keep
+  // showing the last battlefield until the result screen replaces this one, so
+  // the final blow plays on the board instead of an empty screen.
+  const lastLive = useRef<typeof live | null>(null);
+  if (live.battle) lastLive.current = live;
+  const ended = !live.battle;
+  const state = live.battle ? live : (lastLive.current ?? live);
   const battle = state.battle;
   const ctrl = useRef<BattleSceneController | null>(null);
   const [mode, setMode] = useState<Mode>({ kind: 'normal' });
@@ -289,7 +298,7 @@ export function BattleScreen() {
   const battleId = battle?.battleId ?? '';
   const log = LOGS.get(battleId) ?? [];
 
-  const humanTurn = !!battle && battle.status === 'active' && session.isHumanTurn();
+  const humanTurn = !ended && !!battle && battle.status === 'active' && session.isHumanTurn();
   const humanSide = battle ? Object.values(battle.sides).find((s) => s.controller === 'human') : undefined;
   const la = humanTurn && !store.presentationBusy ? legalActions(catalog, state) : null;
   /** The human side still arranging its deployment zone (Tactics), if any. */
@@ -301,8 +310,9 @@ export function BattleScreen() {
   );
 
   useEffect(() => {
-    if (built) ctrl.current?.update(built.view);
-  }, [built]);
+    // After the battle ended the board keeps what the final playback showed.
+    if (built && !ended) ctrl.current?.update(built.view);
+  }, [built, ended]);
   // The controller can arrive after the first render (the 3D layer loads on demand).
   const builtRef = useRef(built);
   builtRef.current = built;
@@ -414,7 +424,12 @@ export function BattleScreen() {
       }
       const hb = buildView(catalog, s, legal, mode, { cell, offset }, 'count', true);
       if (hb.attackFrom) act({ kind: 'BattleMelee', stackId: legal.stackId, targetId: occ.id, from: hb.attackFrom });
-      else store.toast(legal.shootBlockedReason ?? 'That enemy cannot be reached this turn', 'error');
+      else {
+        const me = b?.stacks[legal.stackId];
+        const range = me ? shootingRange(catalog, me.creatureId) : 0;
+        const outOfRange = !!me && range > 0 && me.shotsRemaining > 0 && legal.shootBlockedReason === null;
+        store.toast(outOfRange ? `Out of range: ${stackDistance(catalog, me!, occ)} hexes away (range ${range})` : (legal.shootBlockedReason ?? 'That enemy cannot be reached this turn'), 'error');
+      }
       return;
     }
     if (occ) {
@@ -615,6 +630,11 @@ export function BattleScreen() {
                 {active.aspect ? <Chip tone="info">{shapeshiftRule(catalog, active.creatureId)?.aspect} aspect</Chip> : null}
                 {furyActive(catalog, battle, active) ? <Chip tone="warn">Fury</Chip> : null}
                 {activeDef.stats?.shots ? <span title="Shots"><Icon name="shots" className="inline-icon" /> {active.shotsRemaining}</span> : null}
+                {activeDef.stats?.shots && activeDef.stats.range ? (
+                  <span title={`Range ${activeDef.stats.range} hexes: full damage up to ${Math.floor(activeDef.stats.range / 2)}, half damage beyond`} data-testid="active-range">
+                    <Icon name="range" className="inline-icon" /> {activeDef.stats.range}
+                  </span>
+                ) : null}
               </div>
               <Bar value={frontHp(catalog, active)} max={activeDef.stats?.hp ?? 1} kind="hp" label="Front creature health" />
             </div>

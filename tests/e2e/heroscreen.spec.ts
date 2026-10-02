@@ -86,6 +86,48 @@ test('hero screen: equip by slot, refuse a wrong slot, unequip, read the spellbo
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
+test('hero screen: drag items between the backpack and the doll, compare before wearing, set badges', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+  await page.goto('/?e2e', { waitUntil: 'networkidle' });
+  await importAndLoad(page, heroFixture());
+  await waitFor(page, (s) => s.screen === 'adventure' && s.overlays.length === 0, 'adventure map');
+  await page.getByTitle('Hero (H)').click();
+  await waitFor(page, (s) => s.screen === 'hero', 'hero screen');
+
+  // Picking a backpack item compares it with what is worn (an empty weapon slot here).
+  await page.getByTestId('pack-rune_marked_sword').click();
+  await expect(page.getByTestId('artifact-compare')).toContainText('empty slot');
+  await expect(page.getByTestId('artifact-compare')).toContainText('Attack +2');
+  // The sword belongs to a set: its badge is shown in the backpack.
+  await expect(page.getByTestId('pack-rune_marked_sword').getByTestId('set-badge-arms_of_the_einherjar')).toBeVisible();
+
+  // Drag it onto the weapon slot.
+  await page.getByTestId('pack-rune_marked_sword').dragTo(page.getByTestId('slot-weapon'));
+  await expect.poll(() => equipment(page)).toMatchObject({ weapon: 'rune_marked_sword' });
+  await expect(page.getByTestId('slot-weapon').getByTestId('set-badge-arms_of_the_einherjar')).toBeVisible();
+
+  // Drag a ring onto the left ring slot, then move it to the right ring slot.
+  await page.getByTestId('pack-andvaris_ring').dragTo(page.getByTestId('slot-ring_left'));
+  await expect.poll(() => equipment(page)).toMatchObject({ ring_left: 'andvaris_ring' });
+  await page.getByTestId('slot-ring_left').dragTo(page.getByTestId('slot-ring_right'));
+  await expect.poll(async () => (await equipment(page)).ring_right).toBe('andvaris_ring');
+  expect((await equipment(page)).ring_left).toBeUndefined();
+
+  // A helm dragged onto the feet is refused; the comparison for the helm names the head slot.
+  await page.getByTestId('pack-boar_crest_helm').dragTo(page.getByTestId('slot-feet'));
+  expect((await equipment(page)).feet).toBeUndefined();
+  await page.getByTestId('pack-boar_crest_helm').click();
+  await expect(page.getByTestId('compare-head')).toBeVisible();
+
+  // Drag the sword from the doll back into the backpack.
+  await page.getByTestId('slot-weapon').dragTo(page.getByTestId('hero-backpack'));
+  await expect.poll(async () => (await equipment(page)).weapon).toBeUndefined();
+  expect(await backpack(page)).toContain('rune_marked_sword');
+  expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
+});
+
 test('The Winter Oath is playable from New Game: seven Norse missions, Odin fixed, Kaldvik first', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));

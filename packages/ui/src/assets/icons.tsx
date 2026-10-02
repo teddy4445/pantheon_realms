@@ -21,6 +21,7 @@ export type IconName =
   | 'damage'
   | 'speed'
   | 'shots'
+  | 'range'
   | 'growth'
   | 'movement'
   | 'mana'
@@ -116,6 +117,7 @@ const PATHS: Record<IconName, JSX.Element> = {
   damage: <path {...common} d="M12 3v6m0 6v6M3 12h6m6 0h6M6 6l3 3m6 6l3 3m0-12l-3 3m-6 6l-3 3" />,
   speed: <path {...common} d="M4 17h8l3-8h5M9 17l2-5m-7 7h16" />,
   shots: <path {...common} d="M4 20L20 4m0 0h-6m6 0v6M7 17l-3-1 1-3" />,
+  range: <path {...common} d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zm0 5a4 4 0 1 0 0 8a4 4 0 1 0 0-8zm0 3v2" />,
   growth: <path {...common} d="M12 21v-8m0 0c0-4 3-7 7-7 0 4-3 7-7 7zm0 2c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5z" />,
   movement: <path {...common} d="M7 20c2-1 2-4 2-6s-2-3-2-6a3 3 0 016 0M13 20c1.5 0 2.5-1 2.5-3s-1.5-3-1.5-5a2.5 2.5 0 015 0" />,
   mana: <path {...common} d="M12 3c3 4 6 7 6 10.5A6 6 0 016 13.5C6 10 9 7 12 3z" />,
@@ -178,6 +180,7 @@ export const ICON_ART: Partial<Record<IconName, string>> = {
   damage: 'icon.stat.damage',
   speed: 'icon.stat.speed',
   shots: 'icon.stat.shots',
+  range: 'icon.stat.range',
   movement: 'icon.stat.movement',
   mana: 'icon.stat.mana',
   morale: 'icon.stat.morale',

@@ -47,11 +47,13 @@ export type GameEventPayload =
   | { kind: 'ResourcesTraded'; townId: TownId; sold: string; bought: string; amount: number }
   // Heroes & adventure
   | { kind: 'HeroMoved'; heroId: HeroId; path: HexCoord[]; cost: number; remaining: number }
-  | { kind: 'HeroTeleported'; heroId: HeroId; from: HexCoord; to: HexCoord }
+  /** Recall spell or a portal (`viaSiteId`: the portal stepped into). */
+  | { kind: 'HeroTeleported'; heroId: HeroId; from: HexCoord; to: HexCoord; viaSiteId?: SiteId }
   | { kind: 'TilesRevealed'; playerId: PlayerId; count: number }
   | { kind: 'SiteCaptured'; siteId: SiteId; playerId: PlayerId }
   | { kind: 'PickupCollected'; siteId: SiteId; heroId: HeroId }
   | { kind: 'SiteVisited'; siteId: SiteId; heroId: HeroId }
+  | { kind: 'PortalBlocked'; heroId: HeroId; siteId: SiteId }
   | { kind: 'SiteRevealed'; siteId: SiteId }
   | { kind: 'SiteActivated'; siteId: SiteId; heroId: HeroId }
   | { kind: 'GateOpened'; siteId: SiteId }

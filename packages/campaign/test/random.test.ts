@@ -167,6 +167,141 @@ describe('random map types and settings (generator 0.2)', () => {
   });
 });
 
+describe('generator 0.3: portals, roads to the center, neutral creatures', () => {
+  const portalsOf = (g: ReturnType<typeof createRandomSkirmish>) => g.mission.sites.filter((s) => s.kind.type === 'portal');
+  const exitOf = (s: { kind: unknown }) => (s.kind as { exitSiteId: string }).exitSiteId;
+
+  it('two-way portals come in twin pairs, the same for every empire, each leading to another empire’s lands', () => {
+    for (const [n, size, perEmpire] of [
+      [2, 'small', 1],
+      [3, 'medium', 2],
+      [4, 'medium', 1],
+    ] as const) {
+      for (const seed of [3, 17, 404]) {
+        const g = createRandomSkirmish(catalog, opts(n, size, seed));
+        const portals = portalsOf(g);
+        expect(portals.length, `${n} empires seed ${seed}`).toBe(n * perEmpire);
+        for (const p of portals) {
+          const exit = portals.find((x) => x.id === exitOf(p))!;
+          expect(exit).toBeDefined();
+          expect(exitOf(exit)).toBe(p.id);
+          expect(exit.id.match(/_(\d+)$/)![1]).not.toBe(p.id.match(/_(\d+)$/)![1]);
+        }
+        // Symmetric: every empire's portal is the same distance from its town.
+        const towns = g.mission.sites.filter((s) => s.kind.type === 'town');
+        const d = towns.map((t, i) => portals.filter((p) => p.id.endsWith(`_${i + 1}`)).map((p) => axialDistance(p.coord, t.coord)).sort().join(','));
+        expect(new Set(d).size).toBe(1);
+        for (const c of g.checks) expect(c.pass, `${c.id}: ${c.detail}`).toBe(true);
+        expect(validateGeneratedMission(catalog, g.mission).issues).toEqual([]);
+      }
+    }
+    expect(portalsOf(createRandomSkirmish(catalog, opts(2, 'small', 3, { portals: false })))).toEqual([]);
+  });
+
+  it('full roads lead from every town to the contested center; sparse roads do not', () => {
+    for (const n of [2, 3]) {
+      const full = createRandomSkirmish(catalog, opts(n, 'medium', 52));
+      const center = full.mission.sites.find((s) => s.id === 'center_gold')!.coord;
+      const touches = (g: typeof full) => g.map.roads.filter((e) => e.split('|').some((k) => k === `${center.q},${center.r}`)).length;
+      expect(touches(full)).toBeGreaterThanOrEqual(n);
+      expect(touches(createRandomSkirmish(catalog, opts(n, 'medium', 52, { roads: 'sparse' })))).toBe(0);
+    }
+  });
+
+  it('guards, camps and wandering monsters mix neutral creatures with pantheon creatures', () => {
+    const ids = new Set<string>();
+    for (const seed of [1, 2, 3, 4, 5, 6]) {
+      const g = createRandomSkirmish(catalog, opts(2, 'medium', seed, { monsters: 'many' }));
+      for (const s of g.mission.sites) {
+        for (const a of s.guard?.army ?? []) ids.add(a.creatureId);
+        if (s.kind.type === 'creature_camp') ids.add(s.kind.creatureId);
+      }
+      for (const h of g.mission.hostileHeroes) for (const a of h.army) ids.add(a.creatureId);
+    }
+    const neutral = [...ids].filter((id) => catalog.creatures[id]!.pantheonId === null);
+    const roster = [...ids].filter((id) => catalog.creatures[id]!.pantheonId !== null);
+    expect(neutral.length).toBeGreaterThanOrEqual(4);
+    expect(roster.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('a hero who stops on a portal steps out of its twin; a hero on the twin blocks it', () => {
+    const g = createRandomSkirmish(catalog, opts(2, 'small', 3, { monsters: 'none' }));
+    const { match } = createGeneratedMatch(catalog, g, { matchId: 'test:portal' });
+    const entry = g.mission.sites.find((s) => s.id === 'portal_1')!;
+    const exit = g.mission.sites.find((s) => s.id === exitOf(entry))!;
+    let st = structuredClone(match);
+    const hero = Object.values(st.heroes).find((h) => h.ownerId === 'player' && h.status === 'active')!;
+    // Stand next to the portal with a full day of movement.
+    const next = [
+      { q: entry.coord.q + 1, r: entry.coord.r },
+      { q: entry.coord.q - 1, r: entry.coord.r },
+      { q: entry.coord.q, r: entry.coord.r + 1 },
+      { q: entry.coord.q, r: entry.coord.r - 1 },
+    ].find((c) => !g.mission.sites.some((s) => s.coord.q === c.q && s.coord.r === c.r) && 'mw'.indexOf(g.map.terrain[c.r * g.map.width + c.q]!) < 0)!;
+    hero.position = next;
+    hero.movementPoints = 1000;
+    const idx = (c: HexCoord) => c.r * g.map.width + c.q;
+    st.fog.player!.explored[idx(next)] = 1;
+    st.fog.player!.explored[idx(entry.coord)] = 1;
+    expect(st.fog.player!.explored[idx(exit.coord)]).toBe(0);
+    let n = 0;
+    const run = (cmd: Record<string, unknown>) => processCommand({ catalog }, st, { ...cmd, commandId: `p${(n += 1)}`, expectedRevision: st.revision, actorPlayerId: 'player' } as GameCommand);
+    let res = run({ kind: 'MoveHero', heroId: hero.id, destination: entry.coord });
+    expect(res.ok ? '' : res.rejection.message).toBe('');
+    if (!res.ok) return;
+    st = res.state;
+    expect(st.heroes[hero.id]!.position).toEqual(exit.coord);
+    expect(res.events.some((e) => e.kind === 'HeroTeleported' && e.viaSiteId === entry.id)).toBe(true);
+    expect(st.world.sites[exit.id]!.visitedBy).toContain('player');
+    expect(st.fog.player!.explored[idx(exit.coord)]).toBe(1);
+    // Back through: blocked while a rival hero stands on the far side.
+    const rival = Object.values(st.heroes).find((h) => h.ownerId === 'p2' && h.status === 'active')!;
+    rival.position = { ...entry.coord };
+    const off = [
+      { q: exit.coord.q + 1, r: exit.coord.r },
+      { q: exit.coord.q - 1, r: exit.coord.r },
+      { q: exit.coord.q, r: exit.coord.r + 1 },
+      { q: exit.coord.q, r: exit.coord.r - 1 },
+    ].find((c) => !g.mission.sites.some((s) => s.coord.q === c.q && s.coord.r === c.r) && 'mw'.indexOf(g.map.terrain[c.r * g.map.width + c.q]!) < 0)!;
+    st.heroes[hero.id]!.position = off;
+    st.heroes[hero.id]!.movementPoints = 1000;
+    res = run({ kind: 'MoveHero', heroId: hero.id, destination: exit.coord });
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    expect(res.state.heroes[hero.id]!.position).toEqual(exit.coord);
+    expect(res.events.some((e) => e.kind === 'PortalBlocked')).toBe(true);
+  });
+});
+
+describe('rotating turn order (three or more empires)', () => {
+  const firstOfEachDay = (turnOrder?: 'fixed' | 'rotating') => {
+    const g = createRandomSkirmish(catalog, opts(3, 'small', 77, { monsters: 'none', ...(turnOrder ? { turnOrder } : {}) }));
+    const { match } = createGeneratedMatch(catalog, g, { matchId: `test:order-${turnOrder ?? 'default'}` });
+    let st = match;
+    const firsts: string[] = [st.activePlayerId];
+    let n = 0;
+    while (firsts.length < 5) {
+      const day = st.day;
+      const res = processCommand({ catalog }, st, { kind: 'EndTurn', commandId: `o${(n += 1)}`, expectedRevision: st.revision, actorPlayerId: st.activePlayerId } as GameCommand);
+      if (!res.ok) throw new Error(res.rejection.message);
+      st = res.state;
+      if (st.day !== day) firsts.push(st.activePlayerId);
+    }
+    return { mission: g.mission, firsts };
+  };
+
+  it('is the default with three empires: the day’s first empire moves last the next day', () => {
+    const { mission, firsts } = firstOfEachDay();
+    expect(mission.turnOrder).toBe('rotating');
+    expect(firsts).toEqual(['player', 'p2', 'p3', 'player', 'p2']);
+  });
+
+  it('can be fixed; two empires keep a fixed order', () => {
+    expect(firstOfEachDay('fixed').firsts).toEqual(['player', 'player', 'player', 'player', 'player']);
+    expect(createRandomSkirmish(catalog, opts(2, 'small', 77)).mission.turnOrder).toBe('fixed');
+  });
+});
+
 describe('random skirmish matches', () => {
   it('an all-AI three-empire match is played to a single winner, with statistics every day', () => {
     const g = createRandomSkirmish(catalog, opts(3, 'small', 2024));

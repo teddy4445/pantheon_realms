@@ -1,9 +1,160 @@
 # Development Status
 
-_Last updated: 2026-10-02 · app 0.4.1 + mounted heroes + the owner requests of 2026-10-01 below (not yet in an installer) · rules `pr-0.2-candidate` + proposed effects · content `content-0.8.0` · campaigns `campaign-three-beacons-0.4` and *The Winter Oath* (proposed) · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.2` · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
+_Last updated: 2026-10-02 · app 0.4.1 + mounted heroes + the owner requests of 2026-10-01 and 2026-10-02 below (not yet in an installer) · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges) · content `content-0.8.0` (values changed this round without a version bump; its saves still load) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.3` · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
+
+## Owner requests of 2026-10-02 (AI, hero screen, random maps 0.3, four campaigns, three fixes)
+
+Designs and values: `DESIGN_PROPOSALS.md` §19–23 and
+`CAMPAIGNS_3_TO_6_OUTLINE.md`. Owner answers: about **8 hexes a day**;
+**maximum range + half damage in the far half**; **seven missions** per
+campaign; **a neutral roster mixed with pantheon creatures**. Everything else
+is **proposed, unplaytested**.
+
+* **The last attack is shown** — the battle screen keeps the board when the
+  rules end the battle, plays the final blow and the fall of the last stack,
+  then opens the result (700 ms at normal speed, none at instant speed).
+* **Shooting range per creature** — `range` (hexes) on all 22 shooters
+  (content validator 2–20): no shot beyond it, half damage in its far half
+  (replaces the old rule: half damage beyond 10 hexes, no limit). Proposed
+  ranges: most shooters 16/17, Greek Temple Adepts and Cyclopes 18/19, Eagle
+  Warriors 14/15, **short range** Banshees and Hill Slingers 9/10 (the field
+  is 15 × 11). A first set of 6–11 was measured and rejected (below). Shown
+  on the creature card, beside the active stack in battle and in an "Out of
+  range: N hexes away" refusal. The tactical AI holds a shooter with nothing
+  in range while enemy troops approach (unless it is under fire), and
+  otherwise steps only as far as it must to bring an enemy into range.
+* **Hero movement** is the rules-profile table `movementBySlowestSpeed`
+  (it already was a property): now 750–1,000 points, about 7.5–10 plains
+  hexes a day (was 1,500–2,000). Fleet Foot, Wings of Hermes and the
+  "directions" event were halved with it.
+* **Random maps 0.3** — eight **neutral families** (Brigands, Hill Slingers,
+  Wild Boars, Clay Golems, Wyverns, Ogres, Basilisks, Elder Drakes; with the
+  Centaurs 18 creatures) drawn half and half with pantheon creatures for
+  guards, camps and wandering monsters, and a **Neutral** filter in the
+  bestiary; **two-way portals** (setting, on by default; the existing
+  `icon.marker.portal`), paired by the map's symmetry so every empire gets the
+  same; **roads to the centre** with full roads; **rotating turn order**
+  (setting, the default with three or four empires: the day's first empire
+  moves last the next day).
+* **Three-empire fairness** — re-measured on 30 different maps instead of
+  five maps six times: the "second seat" lead was a sampling artifact; the
+  weak seat is the one that moves first. Rotating turn order spreads that
+  but does not remove it (table below).
+* **Rule change (proposed)**: defeated heroes return to the tavern pool as
+  new recruits (long games stalled when an empire's pool ran dry).
+* **AI** (`packages/ai/src/growth.ts`) — level-up choices by value to that
+  hero and army; artifacts valued as a whole loadout with set bonuses (equip,
+  swap, buy at the merchant by gain per Gold); adventure spells (movement,
+  scouting, Recall). Map fixes found on the way: reinforcing from any owned
+  town, approaching an unseen rival town only with enough strength, the last
+  town valued higher, portals used as shortcuts, and equally scored moves no
+  longer broken by coordinate order (the west and east empires used to prefer
+  different directions on a mirrored map).
+* **Hero screen** — drag and drop between the backpack and the doll; a
+  comparison of a picked item with what each slot wears (attributes and set
+  bonuses gained or lost); **set badges** and **ability badges** (army slots,
+  creature details, Encyclopedia) that show `icon.set.<id>` /
+  `icon.ability.<id>` as soon as they are delivered and a temporary stand-in
+  until then.
+* **Four campaigns, seven missions each** — *The Twelfth Hour* (Egyptian),
+  *The Lantern Road* (Japanese), *The Silver Branch* (Celtic), *The New Fire*
+  (Mesoamerican): 28 missions built on the Winter Oath's mission shapes
+  (`packages/content/src/campaign/arc.ts`), four new campaign heroes, twenty
+  enemy heroes, story scenes, two endings each, a pantheon artifact set
+  collected along the way; four presentation biomes (`desert`, `jungle`,
+  `autumn`, `moor`).
+* **Icon catalog** regenerated: 777 entries (was 695), 393 still without art of their own; set and ability sections now describe the badges.
+
+### Tests and checks actually run (2026-10-02)
+
+| Command | Result |
+|---|---|
+| `npm run check` | **pass — 246 tests** (21 files; rerun after the final values). New: `packages/ai/test/ai.test.ts` +1 (a shooter with nothing in range holds while enemy troops approach and otherwise steps only into range); `packages/ai/test/growth.test.ts` (6: Archery/Offense by army, Wisdom only with a spellbook, a set piece over a slightly stronger loose item, a swap that completes a set bonus, a movement spell with a battle reserve, Recall to a threatened town); `packages/campaign/test/arcCampaigns.test.ts` (16: per campaign data and order rules, every map generates and validates, both endings, and a **headless journey through all seven missions with carryover**, every battle fought by the tactical AI on both sides); `random.test.ts` +6 (portal pairs the same for every empire, roads to the centre, the neutral mix, a portal step and a blocked twin, rotating turn order on and off); `battle.test.ts` +1 (every shooter has a range; no shot beyond it, half damage in its far half — with the short-range Hill Slingers). The existing all-AI three-empire match test now ends with a single winner again after the defeated-hero and AI fixes (it had stalled to its day limit during this round) |
+| `npm run build` | pass — start-up script **1,413.92 KB (394.18 KB gzip)**; previous round 1,210 / 340. The four campaigns' text and the neutral roster are part of the start-up catalog |
+| `npx playwright test` (Chromium + SwiftShader, production build) | **50 tests, two full runs.** First run 49/50 (first range set): the calibration-model battle timed out waiting for the result (150 s) — its Peltasts had to walk into range, so the auto-battle played more moves, and the run shared the CPU with balance measurements; the test's limit is now 270 s. Final build: 49/50 in 35.9 min; the one failure was the Egyptian escort count written into `pantheons.spec.ts` (20 → 21, changed this round), passed on rerun. New `tests/e2e/round3.spec.ts` (7): the last blow is shown (the board stays up after the rules end the battle), random map with portals on by default and neutral guards, the Neutral bestiary, all four new campaigns from New Game to their first map; `heroscreen.spec.ts` +1: drag and drop, comparison, set badges |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 5` | menu **209 ms** local / **434 ms** web (previous round 180 / 378); first scene 1,495 ms local, 1,281 ms web (single 5-run medians on the noisy software renderer; previous round 1,199 / 1,689). The larger start-up script costs roughly 30–55 ms on the menu |
+| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (development layout: saves, records, unit GLB, the six hero GLBs, audio running). The packaged-layout smoke (`PR_SMOKE_EXE`) was **not** run |
+| `npm run icons:catalog` | pass — 777 entries, 60 glyph thumbnails rendered |
+| `node tools/balance/run.mjs random` (30 matches per empire count, a different generated map per match; four runs) | see the fairness table below |
+| `node tools/balance/run.mjs armies starts tiers skirmish` (several runs; see below) | final: Twin Harbors 216 matches, **west 0.52, first mover 0.42**, pantheon averages 0.40–0.60; full-roster armies 0.35–0.64 except Celtic upgraded 0.68 (as in 0.4.0); starting escorts 0.42–0.57 |
+
+**Shooting ranges, measured before they were chosen** (AI-vs-AI, 12 duels per
+direction and pairing; pantheon averages, 0.50 = even):
+
+| Ranges | Greek armies | Egyptian armies | Norse armies | Starting escorts |
+|---|---|---|---|---|
+| Old rule (no limit, half damage beyond 10) on this round's code | 0.38–0.47 | 0.41–0.52 | 0.44–0.56 | 0.42–0.59 |
+| First set, 6–11 (full damage only up to 3–5 hexes) | **0.31–0.33** | 0.32–0.37 | 0.59–0.69 | Greek 0.30, **Egyptian 0.18**, Norse 0.72 |
+| 9–15 + AI holds shooters out of range | 0.27–0.38 | 0.35–0.52 | 0.49–0.66 | Greek 0.29, Egyptian 0.32, Norse 0.68 |
+| **Shipped**: 16–19 (short 9/10, Eagle Warriors 14/15), Egyptian escort 21 + 8 | 0.35–0.44 | 0.37–0.51 | 0.39–0.63 | 0.42–0.57 |
+
+Why: with full damage only in the near half of the range, every hex of range
+counts twice; shooter-heavy rosters (Greek three shooters, Egyptian two) lost
+most. Single-stack duels still show the short-range Banshee at 0.01 (base).
+
+**Twin Harbors turn order.** The slower map (8 hexes a day) moved the
+first-mover score from 0.43 (the same code with the old 1,500–2,000 movement)
+to **0.34**: the empire that moves first walks into the middle on day 3 and
+is caught by a hero it cannot see (vision 5, reach 8). Fixing the AI's
+tie-breaks (equal moves were ordered by coordinates), measured together with
+the final ranges, brought it back to **0.42** with the west score at 0.52.
+Measured but **not shipped**: hero vision 8 instead of 5 gives first mover
+0.47 but west 0.56 (a rules change; an open question for the owner). 0.4.0 measured 0.52; the remaining gap is not yet
+explained.
+
+**Three-empire fairness** (small random maps, every seat the same pantheon,
+all AI, day cap 40; undecided matches scored on army strength):
+
+| Measurement | Matches | Decided | Seat scores 1, 2, 3 (even 0.33) | First knocked out (seat 1, 2, 3) |
+|---|---|---|---|---|
+| 0.4.0 (generator 0.2, five maps × six) | 30 | 6 | 0.23, **0.60**, 0.17 | — |
+| This round before rotation, five maps × six | 30 | — | 0.29, **0.49**, 0.22 | — |
+| This round before rotation, 30 different maps | 30 | 18 | **0.21**, 0.38, 0.41 | 13, 11, 6 |
+| With rotating turn order, 30 different maps | 30 | 15 (5, 5, 5 by seat) | 0.32, 0.29, 0.39 | 6, 10, 12 |
+| **Final code** (rotating, AI tie-break fix, final ranges), 30 different maps | 30 | 18 (6, 10, 2 by seat) | 0.41, 0.41, **0.18** | 5, 11, **12** |
+
+Two empires on 30 different maps: 0.48, 0.52 before and **0.47, 0.53** with
+the final code (24 decided, mean decisive day 20.4). The old "second seat
+wins" result came mostly from playing only five maps: on thirty different maps
+seat 2 was not ahead, and the empire that moves first each day was knocked out
+first most often (it moves into the others' reach before they move).
+**Rotating turn order** spreads that disadvantage but does **not** remove it:
+in both rotating runs the empire that moves first on day 3 (seat 3) was the one
+knocked out first most often (12 of 28 each time). The final seat scores
+disagree between the two runs (seat 3 best in one, worst in the other); with
+30 matches one seat's score has a sampling error of about ±0.09, so neither
+run shows the seats even or uneven with confidence. Next steps: more matches
+per run, and an AI that keeps the day's first mover out of unseen reach (see
+Twin Harbors above). Many three-empire matches still reach the day-40 cap
+(mean decisive day 26–28).
+
+### Limitations (2026-10-02)
+
+1. **All values are proposals** — ranges, movement, the neutral roster, the
+   portals and every campaign's guards, wallets and costs were checked by unit
+   tests and AI-vs-AI runs only. The headless journeys follow a direct route,
+   so they say the missions are winnable, not that they are well paced.
+2. The four campaigns reuse the Winter Oath's mission shapes and economy
+   closely; each has its own story, enemies, rewards and biome, not its own
+   mechanics. Celtic Mission 5 is the costliest step of the four journeys.
+3. With about 8 hexes a day, maps feel larger and AI-vs-AI games run longer
+   (Twin Harbors: mean decisive day 20 instead of 9–10); random-map sizes
+   were not reduced.
+4. **Turn-order fairness is not settled**: Twin Harbors first mover 0.42
+   (0.4.0: 0.52); with three empires the day-3 first mover is knocked out
+   first most often even with rotating turn order. Ranges keep the pantheons
+   inside 0.35–0.65 except Celtic upgraded armies (0.68, as before), but the
+   longest ranges rarely stop a shot on the 15-column field.
+5. New characters (4 heroes, 20 enemy heroes), the neutral creatures, the
+   badges and the portal model use **placeholders** (generated portraits,
+   proxy models, gem/glyph stand-ins). The campaigns reuse the three existing
+   soundscapes.
+6. The start-up script grew by about 200 KB (54 KB gzip) with the campaign
+   text; the catalog is not split by campaign yet.
+7. Not committed or pushed; no new installer.
 
 ## Owner requests of 2026-10-01 (icons, second campaign, M02 order, random maps, hero screen, spells and artifacts)
 
@@ -413,7 +564,9 @@ in AI-only games although every map passed the five fairness checks (equal
 town-to-center and town-to-site costs, same sites and monsters per empire).
 The likely cause is the AI, not the map: targets of equal value are broken
 by a fixed coordinate order, so in a three-way game the empires do not split
-their attention evenly (not yet fixed). The AI also rarely finishes a random
+their attention evenly (not yet fixed). *Re-measured on 2026-10-02 on thirty
+different maps: the seat-2 lead came mostly from the five-map sample; the
+first mover was the weak seat — see the top of this file.* The AI also rarely finishes a random
 map within 40 days (16 of 30 two-empire and 24 of 30 three-empire matches
 reached the cap).
 
@@ -688,24 +841,24 @@ runs.
 * **Combat log** does not back-fill events published before the battle screen
   opened (e.g. the opening round's Catapult shot).
 * **Minimap** has no viewport frame.
-* **AI** remains heuristic (greedy scoring); it does not cast adventure spells
-  (Fleet Foot, Homecoming, Eye of Horus, Divine Sight), and early battles still
-  decide most AI-vs-AI skirmishes (see the balance report for this build).
+* **AI** remains heuristic (greedy scoring). Since 2026-10-02 it casts
+  movement, scouting and Recall spells on the map, values artifact sets and
+  picks skills by their value to the hero (`ai/src/growth.ts`); early battles
+  still decide most AI-vs-AI skirmishes.
 * **AI and the 0.4 features** is heuristic too: it recruits from camps it
   stands on, picks the map-event option with the highest fixed value, invokes
   interventions while keeping 25 Favor until both god choices are made, and
   scores the new battle spells by their immediate value; it does not plan
-  around artifact sets or weekly events, and its strength estimate ignores
-  skills, sets and interventions.
+  around weekly events, and its strength estimate ignores skills, sets and
+  interventions.
 * **Hot-seat** has no per-player privacy for toasts that report events seen
   by the previous player, and a battle between two people shows "Victory"
   from the winner's side. Two people cannot play the campaign together.
-* **Random maps** are one land hexagon (no water crossings or underground);
-  roads link each town to its own sites but not to the contested center or to
-  other empires (by design of the first generator). The first week has no
-  weekly event. Camp, guard and monster creatures are drawn from every
-  pantheon's base forms, and the mercenary event always offers Centaurs, so
-  an empire meets other pantheons' creatures as neutrals.
+* **Random maps** (generator 0.3) are land maps with optional two-way
+  portals (no water crossings or underground); full roads now also lead to
+  the contested centre. The first week has no weekly event. Guards, camps and
+  monsters mix the neutral roster with every pantheon's creatures, and the
+  mercenary event always offers Centaurs.
 * **Story scenes** use the existing placeholder portraits; there is no voice.
   The Winter Oath's new characters have generated placeholder portraits.
 * **Siege presentation** uses primitive walls/towers/keep; structure damage is
@@ -718,8 +871,8 @@ runs.
   once both choices are made (open question in `DESIGN_PROPOSALS.md`).
 * Favor in the campaign: interventions are skirmish-only, so in The Three
   Beacons Favor still only buys gods (documented economy unchanged).
-* Campaigns for the four pantheons without one (Egyptian, Japanese, Celtic,
-  Mesoamerican); more authored skirmish maps.
+* More authored skirmish maps. (Campaigns for the Egyptian, Japanese,
+  Celtic and Mesoamerican pantheons were built on 2026-10-02.)
 * Stack merging before a siege; manual ballistics; the map editor (later, by
   owner decision); final audio and voice; graphics quality tiers. Online
   multiplayer is not planned at this stage.

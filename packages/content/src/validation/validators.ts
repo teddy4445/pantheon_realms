@@ -58,6 +58,13 @@ function creatureRosterValidator(c: ContentCatalog, push: Push): void {
 }
 
 function creatureUpgradeValidator(c: ContentCatalog, push: Push): void {
+  // Shooting range (owner decision 2026-10-02): every shooter has one, nobody else does.
+  for (const cr of Object.values(c.creatures)) {
+    const st = cr.stats;
+    if (!st) continue;
+    if (st.shots > 0 && (st.range === undefined || !Number.isInteger(st.range) || st.range < 2 || st.range > 20)) push(`${cr.id}: a shooter needs a whole-number range of 2–20 hexes`);
+    if (st.shots === 0 && st.range !== undefined) push(`${cr.id}: only shooters have a range`);
+  }
   const incoming = new Map<string, number>();
   for (const fam of Object.values(c.families)) {
     const base = c.creatures[fam.baseCreatureId];
@@ -330,6 +337,12 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
     s.guard?.army.forEach((a) => creatureOk(a.creatureId));
     rewardOk(s.guard?.reward, `${where}/${s.id}`);
     if (s.kind.type === 'watchtower') for (const r of s.kind.revealSiteIds) if (!siteIds.has(r)) push(`${where}: watchtower reveals unknown site ${r}`);
+    if (s.kind.type === 'portal') {
+      const exit = m.sites.find((x) => x.id === (s.kind as { exitSiteId: string }).exitSiteId);
+      if (!exit || exit.kind.type !== 'portal') push(`${where}: portal ${s.id} leads to ${s.kind.exitSiteId}, which is not a portal`);
+      else if (exit.kind.exitSiteId !== s.id) push(`${where}: portal ${s.id} and ${exit.id} are not twins (two-way)`);
+      else if (exit.id === s.id) push(`${where}: portal ${s.id} leads to itself`);
+    }
     if (s.kind.type === 'activation') for (const r of s.kind.requirements) {
       checkRequirement(c, r, `${where}/${s.id}`, push);
       if (r.type === 'objective_completed' && !objIds.has(r.objectiveId)) push(`${where}/${s.id}: unknown objective ${r.objectiveId}`);

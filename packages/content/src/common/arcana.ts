@@ -114,8 +114,8 @@ export const ARCANA_SPELLS: readonly SpellDefinition[] = [
   }),
   spell({
     id: 'wings_of_hermes', name: 'Wings of Hermes', tier: 2, manaCost: 7, context: 'adventure', target: 'self', pantheonId: 'greek',
-    effect: { type: 'movement_bonus', points: 300 },
-    summary: 'Adventure only: the caster gains 300 movement points today.',
+    effect: { type: 'movement_bonus', points: 150 },
+    summary: 'Adventure only: the caster gains 150 movement points today.',
     lore: 'The messenger of the gods never walked when he could run, and never ran when he could fly. Heralds who honour him find the road shorter.',
   }),
 

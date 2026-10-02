@@ -187,6 +187,19 @@
           "priority": "later"
         },
         {
+          "assetId": "icon.stat.range",
+          "name": "range",
+          "group": "Interface",
+          "where": "Battle",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.range.png",
+            "status": "placeholder"
+          },
+          "brief": "Shooting range — a drawn bow with a dotted arc ending in a small target.",
+          "priority": "later"
+        },
+        {
           "assetId": "icon.ui.growth",
           "name": "growth",
           "group": "Interface",
@@ -1059,6 +1072,20 @@
           "priority": "later"
         },
         {
+          "assetId": "icon.marker.portal",
+          "name": "Two-way portal",
+          "group": "Map marker",
+          "where": "Adventure map tile panel; Journal objectives",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/marker.portal.png",
+            "status": "placeholder"
+          },
+          "brief": "An arch of standing stones around a violet veil.",
+          "details": "A two-way portal (random maps; a hero who stops on it steps out of its twin)",
+          "priority": "later"
+        },
+        {
           "assetId": "icon.marker.check",
           "name": "Done",
           "group": "Map marker",
@@ -1282,7 +1309,7 @@
             "note": "effect-family icon icon.stat.movement"
           },
           "brief": "Fleet Foot: a road unrolling under winged feet. Couriers’ magic: the day stretches a little longer for whoever carries urgent news.",
-          "details": "Adventure · 6 mana · target self · Adventure only: the caster gains 400 movement points today. · expanded content",
+          "details": "Adventure · 6 mana · target self · Adventure only: the caster gains 200 movement points today. · expanded content",
           "lore": "Couriers’ magic: the day stretches a little longer for whoever carries urgent news.",
           "priority": "now"
         },
@@ -1682,7 +1709,7 @@
             "note": "effect-family icon icon.stat.movement"
           },
           "brief": "Wings of Hermes: a road unrolling under winged feet. The messenger of the gods never walked when he could run, and never ran when he could fly.",
-          "details": "Adventure · 7 mana · target self · Adventure only: the caster gains 300 movement points today. · expanded content",
+          "details": "Adventure · 7 mana · target self · Adventure only: the caster gains 150 movement points today. · expanded content",
           "lore": "The messenger of the gods never walked when he could run, and never ran when he could fly. Heralds who honour him find the road shorter.",
           "priority": "now"
         },
@@ -3235,14 +3262,14 @@
     {
       "id": "sets",
       "title": "Artifact sets",
-      "intro": "Set emblems (proposed IDs; the game shows the set name as text today).",
+      "intro": "Set emblems: the set badge on worn and packed set pieces, the set list and the artifact card (hero screen). Until delivered the badge is a coloured gem (temporary).",
       "size": "96 × 96 px PNG, transparent",
       "rows": [
         {
           "assetId": "icon.set.panoply_of_the_phalanx",
           "name": "Panoply of the Phalanx",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3255,7 +3282,7 @@
           "assetId": "icon.set.regalia_of_the_sun_king",
           "name": "Regalia of the Sun King",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3268,7 +3295,7 @@
           "assetId": "icon.set.wayfarers_kit",
           "name": "Wayfarer’s Kit",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3281,7 +3308,7 @@
           "assetId": "icon.set.relics_of_the_fallen_champion",
           "name": "Relics of the Fallen Champion",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3294,7 +3321,7 @@
           "assetId": "icon.set.gear_of_perseus",
           "name": "Gear of Perseus",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3307,7 +3334,7 @@
           "assetId": "icon.set.arms_of_the_einherjar",
           "name": "Arms of the Einherjar",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3320,7 +3347,7 @@
           "assetId": "icon.set.regalia_of_the_two_lands",
           "name": "Regalia of the Two Lands",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3333,7 +3360,7 @@
           "assetId": "icon.set.treasures_of_takamagahara",
           "name": "Treasures of Takamagahara",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3346,7 +3373,7 @@
           "assetId": "icon.set.treasures_of_the_tuatha",
           "name": "Treasures of the Tuatha Dé",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3359,7 +3386,7 @@
           "assetId": "icon.set.gifts_of_the_feathered_serpent",
           "name": "Gifts of the Feathered Serpent",
           "group": "Artifact set",
-          "where": "Hero screen (set status); Encyclopedia",
+          "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text only today"
@@ -3854,14 +3881,14 @@
     {
       "id": "abilities",
       "title": "Creature abilities",
-      "intro": "Abilities are shown as text chips today; these IDs are reserved for small badges.",
+      "intro": "Ability badges on army slots, creature details and the Encyclopedia, next to the ability name. Until delivered the badge is the nearest interface glyph (temporary).",
       "size": "64 × 64 px PNG, transparent",
       "rows": [
         {
           "assetId": "icon.ability.charge_guard",
           "name": "Charge Guard",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3874,7 +3901,7 @@
           "assetId": "icon.ability.shooter",
           "name": "Shooter",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3887,7 +3914,7 @@
           "assetId": "icon.ability.flight",
           "name": "Flight",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3900,7 +3927,7 @@
           "assetId": "icon.ability.retaliation_2",
           "name": "Double Retaliation",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3913,7 +3940,7 @@
           "assetId": "icon.ability.retaliation_unlimited",
           "name": "Unlimited Retaliation",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3926,7 +3953,7 @@
           "assetId": "icon.ability.charge",
           "name": "Charge",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3939,7 +3966,7 @@
           "assetId": "icon.ability.family_ward",
           "name": "Ward",
           "group": "Ability · active",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3952,7 +3979,7 @@
           "assetId": "icon.ability.unyielding",
           "name": "Unyielding",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3965,7 +3992,7 @@
           "assetId": "icon.ability.wall_breaker",
           "name": "Wall Breaker",
           "group": "Ability · active",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3978,7 +4005,7 @@
           "assetId": "icon.ability.shapeshift_hare",
           "name": "Shapeshift (Hare)",
           "group": "Ability · active",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -3991,7 +4018,7 @@
           "assetId": "icon.ability.shapeshift_waterhorse",
           "name": "Shapeshift (Water-horse)",
           "group": "Ability · active",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -4004,7 +4031,7 @@
           "assetId": "icon.ability.shapeshift_sealskin",
           "name": "Shapeshift (Seal-skin)",
           "group": "Ability · active",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -4017,7 +4044,7 @@
           "assetId": "icon.ability.shapeshift_rut",
           "name": "Shapeshift (Rut)",
           "group": "Ability · active",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -4030,7 +4057,7 @@
           "assetId": "icon.ability.no_melee_penalty",
           "name": "No Melee Penalty",
           "group": "Ability · passive",
-          "where": "Creature detail; Recruitment; Battle stack info; Encyclopedia",
+          "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
             "type": "procedural",
             "note": "text chip today"
@@ -4810,6 +4837,370 @@
           "priority": "now"
         },
         {
+          "assetId": "hero.egyptian.seshet.portrait",
+          "name": "Seshet",
+          "group": "Hero portrait · campaign",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Seshet, Lector of the House of Life (Lector Priest). A lector priestess of Abedju who reads the hymns that send the sun through the night.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.djedkhonsu.portrait",
+          "name": "Djedkhonsu",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Djedkhonsu, The Hollow Lector (Lector Priest). Once the highest reader of the House of Life, he learned the name of the coiled dark and bargained with it for an endless dusk to rule.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.paser.portrait",
+          "name": "Paser",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Paser, The Red Vizier (Vizier). A vizier who crowned himself in the dusk and calls Djedkhonsu his priest.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.ankhwen.portrait",
+          "name": "Ankhwen",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Ankhwen, Captain of the Drowned Barge (Medjay). A river captain who drowned in the first dark morning and came back hungry for orders.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.hekaib.portrait",
+          "name": "Hekaib",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Hekaib, Sword of the Hollow Lector (Medjay). Djedkhonsu’s champion, who holds the rookery gate.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.iti.portrait",
+          "name": "Iti",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Iti, Warden of the Horizon (Medjay). Keeper of the road between the two horizon-stones.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.akane.portrait",
+          "name": "Akane",
+          "group": "Hero portrait · campaign",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Akane, Diviner of the Western Shrine (Onmyōji). A shrine diviner who reads the lantern-smoke at the festival of the dead.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.yamikage.portrait",
+          "name": "Yamikage",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Yamikage, The Lantern-Eater (Onmyōji). A spirit of the borderlands who learned to swallow light, and swallowed the lanterns of seven provinces.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.kurogane.portrait",
+          "name": "Kurogane",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Kurogane, The Iron Daimyo (Daimyo). A lord who fences the wandering dead into his army and calls them loyal.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.gonryo.portrait",
+          "name": "Gonryō",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Gonryō, Captain of the Fog Fleet (Samurai). A sea captain whose ships sail out of the fog and never into port.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.oboro.portrait",
+          "name": "Oboro",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Oboro, General of the Hazy Moon (Samurai). Yamikage’s general, who holds the kirin meadow’s gate.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.kagero.portrait",
+          "name": "Kagerō",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Kagerō, Warden of the Last Torii (Samurai). A warden who walks the road between the sun stone and the moon stone.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.orla.portrait",
+          "name": "Orla",
+          "group": "Hero portrait · campaign",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Orla, Druid of the Hazel Grove (Druid). A druid of the hazel grove who keeps the calendar of fires.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.dubhghall.portrait",
+          "name": "Dubhghall",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Dubhghall, The Withered King (Chieftain). A king who swore himself to the dark half of the year and broke the silver branch so it would never end.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.fiachra.portrait",
+          "name": "Fiachra",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Fiachra, The Usurper of the Ford (Chieftain). A chieftain who took the high seat in the long winter and keeps it with the Withered King’s help.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.corc.portrait",
+          "name": "Corc",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Corc, Raider of the Grey Sea (Fian). A sea-raider who came with the mist and stayed for the plunder.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.tadhg.portrait",
+          "name": "Tadhg the Grey",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Tadhg the Grey, Champion of the Withered King (Fian). The Withered King’s champion, who holds the stags’ wood.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.ciar.portrait",
+          "name": "Ciar",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Ciar, Warden of the Mound (Fian). Keeper of the road between the summer stone and the winter stone.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.itzel.portrait",
+          "name": "Itzel",
+          "group": "Hero portrait · campaign",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Itzel, Day-Keeper of Xochitla (Day Keeper). A day-keeper who counts the calendar and knows which fire belongs to which day.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.itztli.portrait",
+          "name": "Itztli",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Itztli, The Night-Knife (Day Keeper). An obsidian priest who wants the age to end in darkness so that the next one will be his.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.tecuani.portrait",
+          "name": "Tecuani",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Tecuani, Lord of Itzcalli (Tlatoani). A city lord who swore to the Night-Knife in exchange for the next age’s throne.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.acatl.portrait",
+          "name": "Acatl",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Acatl, Captain of the Lake Canoes (Jaguar Knight). A canoe captain who raids the lake towns in the Night-Knife’s name.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.mazatl.portrait",
+          "name": "Mazatl",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Mazatl, Keeper of the Fire Mountain (Jaguar Knight). The Night-Knife’s champion, who holds the fire mountain.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.tlacatl.portrait",
+          "name": "Tlacatl",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Tlacatl, Warden of the Smoking Gate (Jaguar Knight). Keeper of the road between the morning-star stone and the evening-star stone.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.cathal.portrait",
+          "name": "Cathal",
+          "group": "Story portrait",
+          "pantheon": "Celtic",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Cathal — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.sadb.portrait",
+          "name": "Sadb",
+          "group": "Story portrait",
+          "pantheon": "Celtic",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Sadb — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.nebet.portrait",
+          "name": "Nebet",
+          "group": "Story portrait",
+          "pantheon": "Egyptian",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Nebet — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.pawah.portrait",
+          "name": "Pawah",
+          "group": "Story portrait",
+          "pantheon": "Egyptian",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Pawah — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
           "assetId": "hero.greek.ione.portrait",
           "name": "Ione",
           "group": "Story portrait",
@@ -4833,6 +5224,58 @@
             "note": "generated placeholder bust"
           },
           "brief": "Thaleia — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.genzo.portrait",
+          "name": "Genzo",
+          "group": "Story portrait",
+          "pantheon": "Japanese",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Genzo — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.shiro.portrait",
+          "name": "Shiro",
+          "group": "Story portrait",
+          "pantheon": "Japanese",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Shiro — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.chimal.portrait",
+          "name": "Chimal",
+          "group": "Story portrait",
+          "pantheon": "Mesoamerican",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Chimal — story character (see the campaign documents).",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.xoco.portrait",
+          "name": "Grandmother Xoco",
+          "group": "Story portrait",
+          "pantheon": "Mesoamerican",
+          "where": "Story scenes and briefings (dialogue window)",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Grandmother Xoco — story character (see the campaign documents).",
           "priority": "now"
         },
         {
@@ -5689,6 +6132,84 @@
       "size": "256 × 256 px PNG",
       "rows": [
         {
+          "assetId": "creature.neutral.brigand.base.portrait",
+          "name": "Brigand",
+          "group": "Creature · tier 1 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A ragged fighter with a hooded cloak, a short spear and a mismatched shield.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.brigand.upgraded.portrait",
+          "name": "Brigand Cutthroat",
+          "group": "Creature · tier 1 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A lean outlaw in a dark scarf with a notched spear and a dented round shield.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.hill_slinger.base.portrait",
+          "name": "Hill Slinger",
+          "group": "Creature · tier 2 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A shepherd in a wool cloak whirling a leather sling, a pouch of stones at the belt.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.wild_boar.base.portrait",
+          "name": "Wild Boar",
+          "group": "Creature · tier 2 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A bristling dark boar with curved tusks, head lowered to charge.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.hill_slinger.upgraded.portrait",
+          "name": "Sling Master",
+          "group": "Creature · tier 2 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A slinger with a braided double sling and a bag of lead shot.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.wild_boar.upgraded.portrait",
+          "name": "Great Tusked Boar",
+          "group": "Creature · tier 2 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A huge scarred boar with long ivory tusks and a ridge of grey bristles.",
+          "priority": "now"
+        },
+        {
           "assetId": "creature.neutral.centaur.base.portrait",
           "name": "Centaur",
           "group": "Creature · tier 3 base",
@@ -5702,6 +6223,19 @@
           "priority": "now"
         },
         {
+          "assetId": "creature.neutral.clay_golem.base.portrait",
+          "name": "Clay Golem",
+          "group": "Creature · tier 3 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A heavy figure of red fired clay with a blank face and a sigil pressed into its chest.",
+          "priority": "now"
+        },
+        {
           "assetId": "creature.neutral.centaur.upgraded.portrait",
           "name": "Centaur Sentinel",
           "group": "Creature · tier 3 upgraded",
@@ -5712,6 +6246,123 @@
             "note": "generated placeholder"
           },
           "brief": "A centaur with foreleg protection, a tied crest and a reinforced spearhead.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.clay_golem.upgraded.portrait",
+          "name": "Bronze Golem",
+          "group": "Creature · tier 3 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A clay golem plated in green-patinated bronze, with riveted shoulders.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.wyvern.base.portrait",
+          "name": "Wyvern",
+          "group": "Creature · tier 4 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A lean two-legged winged dragon with leathery wings and a barbed tail.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.wyvern.upgraded.portrait",
+          "name": "Wyvern Matriarch",
+          "group": "Creature · tier 4 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A larger wyvern with a frilled crest and torn, battle-scarred wings.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.ogre.base.portrait",
+          "name": "Ogre",
+          "group": "Creature · tier 5 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A towering brute in hides with a knotted club over one shoulder.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.ogre.upgraded.portrait",
+          "name": "Ogre Chieftain",
+          "group": "Creature · tier 5 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A scarred ogre wearing a crown of bent iron and a cloak of bear fur.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.basilisk.base.portrait",
+          "name": "Basilisk",
+          "group": "Creature · tier 6 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A great scaled serpent with a crest like a crown and pale, staring eyes.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.basilisk.upgraded.portrait",
+          "name": "Greater Basilisk",
+          "group": "Creature · tier 6 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A larger basilisk with stone-grey scales and a ring of horns around its crown.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.elder_drake.base.portrait",
+          "name": "Elder Drake",
+          "group": "Creature · tier 7 base",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "A massive four-legged dragon with bronze scales and folded wings over a heap of coins.",
+          "priority": "now"
+        },
+        {
+          "assetId": "creature.neutral.elder_drake.upgraded.portrait",
+          "name": "Ancient Drake",
+          "group": "Creature · tier 7 upgraded",
+          "pantheon": "Shared",
+          "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder"
+          },
+          "brief": "An immense dragon with horn-crowned head and scales dulled to dark gold by age.",
           "priority": "now"
         },
         {
@@ -9671,6 +10322,342 @@
           "priority": "later"
         },
         {
+          "assetId": "mission.twelfth_hour.m01.thumbnail",
+          "name": "The Ember Dawn",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "For nine mornings the sun has risen red and low and gone down again within the hour. Raise a temple guard in Abedju, clear the canal lock and sing the morning hymn at the Obelisk of the East.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.twelfth_hour.m02.thumbnail",
+          "name": "The Black Boar",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "A herd of black boars, fed and driven by the Hollow Lector’s men, roots up the west-bank fields of Nekheb. Raise jackals of your own, cross the river, hunt the herd down and reopen the Shrine of the Western Gate.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.twelfth_hour.m03.thumbnail",
+          "name": "The Sculptor’s Price",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "In the quarries above Edfu the tomb-servants have stopped working. Break the hired guard on the cliff road, free the sphinxes’ terrace, win the ushabti covenant — by the sculptor’s price or by force — and take a god for the long night ahead.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.twelfth_hour.m04.thumbnail",
+          "name": "The Drowned Library",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The House of Records at Per-Djehuty lies beyond the flooded marsh, behind a veil of grey mist. Raise river beasts, take the landing, light both pylon-fires to burn away the mist and read what the records say about the sun.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.twelfth_hour.m05.thumbnail",
+          "name": "The Red Vizier",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "Paser, a vizier who crowned himself in the dusk, holds Per-Wadjet and the stela of the throne. Cross the river, take a second god, besiege his town and break the stela that names him king.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.twelfth_hour.m06.thumbnail",
+          "name": "The Phoenix Rookery",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The bennu birds, whose rising is the sun’s own, are caged in their rookery under the cliffs of Iunu. Break the jailers, accept the bennu covenant, raise firebirds of your own and defeat Hekaib at the rookery gate.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.twelfth_hour.m07.thumbnail",
+          "name": "The Twelfth Hour",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The barque of the sun is held in the Hall of the Coil, at the bottom of the night. Cross into the hours, open the gate with both horizon-stones, defeat Djedkhonsu and decide what becomes of the coiled dark.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.lantern_road.m01.thumbnail",
+          "name": "The Unlit Lantern",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "On the night of the festival of the dead, not one lantern in Kagaribi would light. Raise a fox retinue, clear the bamboo bridge and relight the great stone lantern on the pass.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.lantern_road.m02.thumbnail",
+          "name": "The Boar Lord",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "A giant boar and its herd run the rice terraces of Mizuhara and keep the spirits from the river lantern. Raise kappa of your own, cross the river, hunt the Boar Lord and relight the lantern of the mountain road.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.lantern_road.m03.thumbnail",
+          "name": "The Crow Monastery",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The bell of the Crow Monastery on Kumoyama has stopped. Break the ronin on the mountain road, free the oni of the red hall from their clay jailers, win the tengu covenant — by the abbot’s price or by force — and take a kami for the road ahead.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.lantern_road.m04.thumbnail",
+          "name": "The Spirit Sea",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The Hall of Mirrors stands on an island in the Spirit Sea, behind a fog that eats boats. Raise spider-women of your own, take the landing, ring both shrine bells to clear the fog and look into the mirrors for the Lantern-Eater’s home.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.lantern_road.m05.thumbnail",
+          "name": "The Iron Daimyo",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "Lord Kurogane fences the wandering dead into his army and holds the Iron Castle and the Lantern of Oaths. Cross the river, take a second kami, besiege his castle and break the lantern that binds the dead to him.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.lantern_road.m06.thumbnail",
+          "name": "The Kirin Meadow",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The kirin, whose coming marks a just age, are penned in their high meadow by the Lantern-Eater’s jailers. Break the jailers, accept the kirin covenant, raise kirin of your own and defeat General Oboro at the meadow gate.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.lantern_road.m07.thumbnail",
+          "name": "The Last Torii",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The Lantern-Eater’s palace stands across the last stretch of the spirits’ road, behind the last torii. Cross the hills, light the sun stone and the moon stone, defeat Yamikage and decide what becomes of the road between the worlds.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silver_branch.m01.thumbnail",
+          "name": "The Cold Hearth",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "Beltane came and no fire would catch. Raise a war-band of pooka in Dún Caill, clear the ford of the alders and light the Beltane fire on the old stone.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silver_branch.m02.thumbnail",
+          "name": "The Iron-Bristled Boar",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "A boar with bristles like iron nails leads a herd through the fields of Dún Bera and keeps the folk from the ogham stone at the ford. Raise hounds of your own, cross the river, hunt the boar and cut the summer ogham again.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silver_branch.m03.thumbnail",
+          "name": "The Water-Horse Bargain",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The kelpies of Loch Eala have stopped coming to shore. Break the reavers on the hill road, free the banshees’ hill from the cairn-men, win the kelpie covenant — by the keeper’s bargain or by force — and take a god for the dark road ahead.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silver_branch.m04.thumbnail",
+          "name": "The Hall Beneath the Waves",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The hall of the sea-folk lies beyond the islands, behind a mist that came with the raiders. Raise selkies of your own, take the landing, light both headland fires to burn away the mist and ask the sea-folk where the Withered King keeps the broken branch.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silver_branch.m05.thumbnail",
+          "name": "The High Seat",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "Fiachra took the high seat at the ford in the long winter and holds it with the Withered King’s help. Cross the river, take a second god, besiege his fort and overturn the inauguration stone that names him king.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silver_branch.m06.thumbnail",
+          "name": "The Stags’ Wood",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The great horned stags of the deep wood are bound in iron by the Withered King’s jailers. Break the jailers, accept the stags’ covenant, raise stag spirits of your own and defeat Tadhg the Grey at the wood’s gate.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silver_branch.m07.thumbnail",
+          "name": "The Door of the Mound",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The Withered King holds the broken silver branch in his hall inside the great mound. Cross the barrow-hills, use the summer stone and the winter stone to open the door, defeat Dubhghall and decide what becomes of the silver branch.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.new_fire.m01.thumbnail",
+          "name": "The Cold Altar",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "On the night the years are bound, the new fire was never lit — someone put out the old one first. Raise a war-band of feathered serpents in Xochitla, clear the canoe ford and kindle the fire on the hill altar.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.new_fire.m02.thumbnail",
+          "name": "The Black Jaguars",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "A pack of black jaguar spirits, loosed by the Night-Knife, hunts the cacao groves of Tepeyolo and guards the altar of the morning star. Raise jaguars of your own, cross the river, hunt the pack down and relight the altar.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.new_fire.m03.thumbnail",
+          "name": "The House of Eagles",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The eagle warriors of Ocelotepec have stopped flying. Break the cultists on the mountain road, free the crocodiles’ cenote from the stone jailers, win the eagle covenant — by the elders’ price or by force — and take a god for the dark road ahead.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.new_fire.m04.thumbnail",
+          "name": "The House of Bats",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The House of Bats stands on an island in the great lake, behind a smoke that came with the raiders’ canoes. Raise camazotz of your own, take the landing, light both lake altars to clear the smoke and ask the bats where the Night-Knife keeps the stolen fire.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.new_fire.m05.thumbnail",
+          "name": "The Lord of Itzcalli",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "Tecuani, lord of Itzcalli, swore to the Night-Knife for the throne of the next age, and holds the road east. Cross the river, take a second god, besiege his city and break the stela of his oath.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.new_fire.m06.thumbnail",
+          "name": "The Fire Mountain",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The fire serpents, whose coils carry flame across the sky, are chained in the crater of the fire mountain. Break the jailers, accept the serpents’ covenant, raise fire serpents of your own and defeat Mazatl at the crater gate.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.new_fire.m07.thumbnail",
+          "name": "The Smoking Gate",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The Night-Knife keeps the old fire in his obsidian palace inside the smoking mountain. Cross the ash-hills, light the morning-star stone and the evening-star stone to open the gate, defeat Itztli and decide what fire the next years are bound with.",
+          "priority": "later"
+        },
+        {
           "assetId": "campaign.three_beacons.thumbnail",
           "name": "The Three Beacons",
           "group": "Campaign thumbnail",
@@ -9693,6 +10680,54 @@
           },
           "brief": "The winter did not end. Kaldvik’s barrow has opened, white wolves cut the roads and the Grey Jarl wants back the sword the seeress Hervor took from his mound. Lead Hervor through seven linked missions to bind the long winter — and decide what becomes of the oath.",
           "priority": "later"
+        },
+        {
+          "assetId": "campaign.twelfth_hour.thumbnail",
+          "name": "The Twelfth Hour",
+          "group": "Campaign thumbnail",
+          "where": "Campaign setup",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The sun has stopped below the horizon. Lead the lector priestess Seshet through seven linked missions — from the red dawns of Abedju down through the hours of the night — to free the barque of the sun from the Hollow Lector and the coiled dark.",
+          "priority": "later"
+        },
+        {
+          "assetId": "campaign.lantern_road.thumbnail",
+          "name": "The Lantern Road",
+          "group": "Campaign thumbnail",
+          "where": "Campaign setup",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The lanterns that guide the dead home have gone dark. Lead the shrine diviner Akane through seven linked missions — from the unlit festival of Kagaribi to the last torii — to relight the spirits’ road and face the Lantern-Eater.",
+          "priority": "later"
+        },
+        {
+          "assetId": "campaign.silver_branch.thumbnail",
+          "name": "The Silver Branch",
+          "group": "Campaign thumbnail",
+          "where": "Campaign setup",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The silver branch that opens the mounds has been broken, and the year has stuck in its dark half. Lead the druid Orla through seven linked missions — from the cold Beltane of Dún Caill to the door of the great mound — to turn the year and face the Withered King.",
+          "priority": "later"
+        },
+        {
+          "assetId": "campaign.new_fire.thumbnail",
+          "name": "The New Fire",
+          "group": "Campaign thumbnail",
+          "where": "Campaign setup",
+          "current": {
+            "type": "procedural",
+            "note": "generated landscape"
+          },
+          "brief": "The fire that binds the years was put out before it could be renewed, and the sun is fading. Lead the day-keeper Itzel through seven linked missions — from the cold altar of Xochitla to the smoking gate — to bind the years again and face the Night-Knife.",
+          "priority": "later"
         }
       ]
     }
@@ -9706,7 +10741,6 @@
     "icon.marker.encounter",
     "icon.marker.enemy-hero",
     "icon.marker.hero",
-    "icon.marker.portal",
     "icon.stat.accuracy",
     "icon.stat.crit",
     "icon.stat.evasion",
@@ -9715,7 +10749,6 @@
     "icon.stat.level",
     "icon.stat.magic-resist",
     "icon.stat.physical-resist",
-    "icon.stat.range",
     "icon.stat.retaliation",
     "icon.stat.stealth",
     "icon.time.end-turn",

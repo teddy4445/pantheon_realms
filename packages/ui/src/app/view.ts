@@ -78,6 +78,8 @@ export function siteArchetype(def: SiteDefinition): SiteArchetype {
       return 'event_site';
     case 'relic':
       return 'relic';
+    case 'portal':
+      return 'portal';
   }
 }
 
@@ -106,6 +108,8 @@ export function siteKindLabel(def: SiteDefinition): string {
       return k.title;
     case 'relic':
       return 'Relic shrine';
+    case 'portal':
+      return 'Two-way portal';
   }
 }
 

@@ -103,8 +103,8 @@ function buildView(
       ownerShape: owner === playerId ? ('square' as const) : ('pennant' as const),
       guardBody: guardCreature?.presentation.bodyProfile ?? null,
       guardUpgraded: guardCreature?.form === 'upgraded',
-      // Event shrines glow until used; a relic always glows.
-      lit: def.kind.type === 'map_event' ? !st?.claimed : def.kind.type === 'relic' ? true : !!st?.activated,
+      // Event shrines glow until used; a relic and a portal always glow.
+      lit: def.kind.type === 'map_event' ? !st?.claimed : def.kind.type === 'relic' || def.kind.type === 'portal' ? true : !!st?.activated,
       open: !!st?.open,
       claimed: !!st?.claimed,
     };
@@ -324,6 +324,11 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
       {site?.def.kind.type === 'activation' ? <div className="small">{site.state.activated ? 'Restored' : 'Not yet restored'}</div> : null}
       {site?.def.kind.type === 'pickup' ? <div className="small">{site.state.claimed ? 'Already collected' : 'Uncollected'}</div> : null}
       {site?.def.kind.type === 'gate' ? <div className="small">{site.state.open ? 'Open' : 'Sealed'}</div> : null}
+      {site?.def.kind.type === 'portal' ? (
+        <div className="small" data-testid="portal-info">
+          Stop on it to step out of its twin at once, at no movement cost. Blocked while a hero stands on the twin. {site.state.visitedBy.includes(playerId) ? 'You have used it.' : 'Its far side is unknown until you go through.'}
+        </div>
+      ) : null}
       {other && (vis || other.ownerId === playerId) ? (
         <div className="small">
           <Icon name="hero" className="inline-icon" /> {other.name} ({other.ownerId === playerId ? 'yours' : (state.players[other.ownerId]?.name ?? 'hostile')})
@@ -440,19 +445,37 @@ export function AdventureScreen() {
         afterMoves(moves);
         return;
       }
+      const teleports = events.filter((e) => e.kind === 'HeroTeleported');
+      const played = new Set<number>();
       for (const m of moves) {
         if (m.kind !== 'HeroMoved') continue;
         const hero = store.session?.state.heroes[m.heroId];
         const mine = hero?.ownerId === store.session?.humanPlayerId;
         const vis = store.session ? visibleCells(catalog, store.session.state, store.session.humanPlayerId) : new Set<number>();
+        // A portal at the end of this walk: the hero sinks into it and rises from its twin.
+        const tpIndex = teleports.findIndex((t, i) => !played.has(i) && t.kind === 'HeroTeleported' && t.heroId === m.heroId && !!t.viaSiteId);
+        const tp = tpIndex >= 0 ? teleports[tpIndex] : undefined;
+        if (tp) played.add(tpIndex);
+        const teleportTo = tp && tp.kind === 'HeroTeleported' ? tp.to : undefined;
         const seen = mine || m.path.some((p) => vis.has(cellIndex(store.session!.state.world.map, p)));
         if (!seen) continue;
         if (mine) store.audio?.heroSteps(true);
         try {
-          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true);
+          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine || (teleportTo && vis.has(cellIndex(store.session!.state.world.map, teleportTo))) ? teleportTo : undefined);
         } finally {
           if (mine) store.audio?.heroSteps(false);
         }
+      }
+      // Teleports without a walk before them (the Recall spell).
+      for (const [i, t] of teleports.entries()) {
+        if (played.has(i) || t.kind !== 'HeroTeleported') continue;
+        const hero = store.session?.state.heroes[t.heroId];
+        if (hero?.ownerId !== store.session?.humanPlayerId) continue;
+        await c.playHeroTeleport(t.heroId, t.to, adventurePlaybackFactor(store.prefs, source === 'ai'), true);
+      }
+      const blocked = events.find((e) => e.kind === 'PortalBlocked');
+      if (blocked && blocked.kind === 'PortalBlocked' && store.session?.state.heroes[blocked.heroId]?.ownerId === store.session?.humanPlayerId) {
+        store.toast('The far side of the portal is blocked: a hero stands on its twin.', 'info');
       }
       const started = events.find((e) => e.kind === 'BattleStarted');
       if (started && started.kind === 'BattleStarted') await prepareBeforeBattle(c, started.battleId, source);

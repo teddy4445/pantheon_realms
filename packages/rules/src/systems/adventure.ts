@@ -189,6 +189,29 @@ export function arriveAt(tx: Tx, hero: HeroState, coord: HexCoord): void {
       break;
   }
   if (firstVisit) tx.emit({ kind: 'SiteVisited', siteId: def.id, heroId: hero.id });
+  if (def.kind.type === 'portal') stepThroughPortal(tx, hero, def, def.kind.exitSiteId);
+}
+
+/**
+ * Two-way portal: the hero leaves from its twin at once (no movement cost) and
+ * sees around it. Blocked while any hero stands on the twin; the twin is not
+ * entered again (step off and on to travel back).
+ */
+function stepThroughPortal(tx: Tx, hero: HeroState, from: SiteDefinition, exitSiteId: SiteId): void {
+  const exit = missionSite(tx.catalog, tx.state, exitSiteId);
+  if (!exit || exit.kind.type !== 'portal') return;
+  if (heroAt(tx.state, exit.coord, hero.id)) {
+    tx.emit({ kind: 'PortalBlocked', heroId: hero.id, siteId: from.id });
+    return;
+  }
+  hero.position = { q: exit.coord.q, r: exit.coord.r };
+  tx.emit({ kind: 'HeroTeleported', heroId: hero.id, from: { ...from.coord }, to: { ...exit.coord }, viaSiteId: from.id });
+  revealAround(tx, hero.ownerId, [exit.coord], heroVisionRadius(tx.catalog, hero, tx.state));
+  const st = tx.state.world.sites[exit.id];
+  if (st && !st.visitedBy.includes(hero.ownerId)) {
+    st.visitedBy.push(hero.ownerId);
+    tx.emit({ kind: 'SiteVisited', siteId: exit.id, heroId: hero.id });
+  }
 }
 
 /** Story reveal: remembered coordinate + journal marker, not live vision of surroundings. */

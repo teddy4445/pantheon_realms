@@ -196,6 +196,9 @@ export function soundsForEvents(catalog: ContentCatalog, state: MatchState, me: 
       case 'OfferingMade':
         if (e.playerId === me) add('ui.divine');
         break;
+      case 'HeroTeleported':
+        if (e.viaSiteId && ownsHero(state, e.heroId, me)) add('ui.divine');
+        break;
       case 'SpellsLearned':
       case 'AdventureSpellCast':
         if (ownsHero(state, e.heroId, me)) add('ui.divine');

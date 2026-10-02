@@ -81,6 +81,13 @@ function MapPreview({ generated }: { generated: RandomSkirmish }) {
         ctx.fillRect(p.x - 3, p.y - 3, cell + 6, cell + 6);
         ctx.strokeStyle = '#f5e4b7';
         ctx.strokeRect(p.x - 3, p.y - 3, cell + 6, cell + 6);
+      } else if (site.kind.type === 'portal') {
+        ctx.strokeStyle = '#b48cff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(p.x + cell / 2, p.y + cell / 2, cell * 0.9, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.lineWidth = 1;
       } else if (site.kind.type === 'relic' || site.id === 'center_gold') {
         ctx.fillStyle = '#ffd36a';
         ctx.beginPath();
@@ -110,6 +117,8 @@ export function RandomSetupScreen() {
   const [startWealth, setStartWealth] = useState<StartWealth>('normal');
   const [roads, setRoads] = useState<RoadDensity>('full');
   const [revealMap, setRevealMap] = useState(false);
+  const [portals, setPortals] = useState(true);
+  const [rotating, setRotating] = useState(true);
   const [difficulty, setDifficulty] = useState('normal');
   const [seed, setSeed] = useState(newSeed);
   const [seedText, setSeedText] = useState(String(seed));
@@ -125,7 +134,8 @@ export function RandomSetupScreen() {
   const sizeOk = skirmishSizeAllows(size, count);
 
   const victory: SkirmishVictory = victoryType === 'hold_relic' ? { type: 'hold_relic', days: relicDays } : { type: 'elimination' };
-  const genKey = JSON.stringify({ seed, size, victory, monsters, mapType, guards, treasure, startWealth, roads, revealMap, seats: active.map((s) => [s.pantheonId, s.controller]) });
+  const turnOrder = count >= 3 ? (rotating ? ('rotating' as const) : ('fixed' as const)) : undefined;
+  const genKey = JSON.stringify({ seed, size, victory, monsters, mapType, guards, treasure, startWealth, roads, revealMap, portals, turnOrder, seats: active.map((s) => [s.pantheonId, s.controller]) });
   const result = useMemo((): { generated: RandomSkirmish | null; error: string | null } => {
     if (!sizeOk) return { generated: null, error: 'Four empires need a medium or larger map.' };
     try {
@@ -142,6 +152,8 @@ export function RandomSetupScreen() {
           startWealth,
           roads,
           revealMap,
+          portals,
+          ...(turnOrder ? { turnOrder } : {}),
         }),
         error: null,
       };
@@ -318,11 +330,28 @@ export function RandomSetupScreen() {
               onChange={setRoads}
               testId="random-roads"
             />
+            <p className="small faint setting-block__details">{roads === 'full' ? 'Roads from every town to its mines, camps and the contested center.' : 'Roads only to the sawmill and quarry; everything else across country.'}</p>
             <div className="row gap setting-block__details">
               <Toggle checked={revealMap} onChange={setRevealMap} label="Revealed map" />
               <span className="small">Revealed map — terrain and sites known from the start (heroes stay hidden)</span>
             </div>
           </div>
+          <div className="setting-block">
+            <div className="setting-block__label">Portals</div>
+            <div className="row gap">
+              <Toggle checked={portals} onChange={setPortals} label="Two-way portals" />
+              <span className="small">Two-way portals link the empires’ outer lands: a shortcut to a rival — and a back door for them.</span>
+            </div>
+          </div>
+          {count >= 3 ? (
+            <div className="setting-block">
+              <div className="setting-block__label">Turn order</div>
+              <div className="row gap">
+                <Toggle checked={rotating} onChange={setRotating} label="Rotating turn order" />
+                <span className="small">Rotating: the empire that moves first each day moves last the next day, so no seat always opens the day.</span>
+              </div>
+            </div>
+          ) : null}
           {anyAi ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : null}
           <div className="setting-block">
             <div className="setting-block__label">Seed</div>

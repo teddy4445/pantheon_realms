@@ -135,7 +135,7 @@ const spell = (s: Omit<SpellDefinition, 'iconAssetId' | 'implementationStatus' |
 export const EXPANDED_SPELLS: readonly SpellDefinition[] = [
   spell({ id: 'swiftness', name: 'Swiftness', tier: 1, manaCost: 4, context: 'battle', target: 'ally_stack', effect: { type: 'speed_bonus', amount: 2, durationRounds: 2 }, summary: 'Ally +2 Speed through the current and next round.' }),
   spell({ id: 'weariness', name: 'Weariness', tier: 2, manaCost: 5, context: 'battle', target: 'enemy_stack', effect: { type: 'speed_bonus', amount: -2, durationRounds: 2 }, summary: 'Enemy −2 Speed through the current and next round (never below 1).' }),
-  spell({ id: 'fleet_foot', name: 'Fleet Foot', tier: 2, manaCost: 6, context: 'adventure', target: 'self', effect: { type: 'movement_bonus', points: 400 }, summary: 'Adventure only: the caster gains 400 movement points today.' }),
+  spell({ id: 'fleet_foot', name: 'Fleet Foot', tier: 2, manaCost: 6, context: 'adventure', target: 'self', effect: { type: 'movement_bonus', points: 200 }, summary: 'Adventure only: the caster gains 200 movement points today.' }),
   spell({ id: 'homecoming', name: 'Homecoming', tier: 3, manaCost: 14, context: 'adventure', target: 'self', effect: { type: 'recall' }, summary: 'Adventure only: the caster returns to the nearest town you own; its movement ends for the day.' }),
   // Greek
   spell({ id: 'aegis', name: 'Aegis', tier: 3, manaCost: 9, context: 'battle', target: 'friendly_army', effect: { type: 'mass_bonus', stat: 'defense', amount: 2, durationRounds: 2 }, summary: 'Every friendly stack +2 Defense through the current and next round.', pantheonId: 'greek' }),
@@ -345,7 +345,7 @@ export const MAP_EVENT_TEMPLATES: readonly MapEventTemplateDefinition[] = [
     band: 'near',
     options: [
       { label: 'Pay for lessons', summary: 'Pay 1,000 Gold: +1 Knowledge', cost: { gold: 1000 }, reward: { attributes: { knowledge: 1 } } },
-      { label: 'Ask for directions', summary: '+500 movement today', reward: { movement: 500 } },
+      { label: 'Ask for directions', summary: '+250 movement today', reward: { movement: 250 } },
     ],
   },
   {

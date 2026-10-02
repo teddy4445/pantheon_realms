@@ -35,7 +35,8 @@ export interface FamilySpec {
   upgraded: FormSpec;
 }
 
-export const s = (attack: number, defense: number, hp: number, dmg: [number, number], speed: number, shots: number, footprint: 1 | 2): CreatureStats => ({
+/** Creature statistics; shooters also take their shooting range in hexes (proposed values, 2026-10-02). */
+export const s = (attack: number, defense: number, hp: number, dmg: [number, number], speed: number, shots: number, footprint: 1 | 2, range?: number): CreatureStats => ({
   attack,
   defense,
   hp,
@@ -44,6 +45,7 @@ export const s = (attack: number, defense: number, hp: number, dmg: [number, num
   speed,
   shots,
   footprint,
+  ...(range !== undefined ? { range } : {}),
 });
 
 export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
@@ -94,7 +96,7 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       id: 'peltast',
       name: 'Peltast',
       plural: 'Peltasts',
-      stats: s(6, 3, 10, [2, 3], 5, 12, 1),
+      stats: s(6, 3, 10, [2, 3], 5, 12, 1, 16),
       cost: { gold: 100 },
       abilities: ['shooter'],
       summary: 'Light javelin throwers who strike from range and need protection up close.',
@@ -104,7 +106,7 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       id: 'veteran_peltast',
       name: 'Veteran Peltast',
       plural: 'Veteran Peltasts',
-      stats: s(7, 4, 12, [3, 4], 6, 16, 1),
+      stats: s(7, 4, 12, [3, 4], 6, 16, 1, 17),
       cost: { gold: 150 },
       abilities: ['shooter'],
       summary: 'Experienced skirmishers who choose their own firing ground and carry more javelins.',
@@ -190,7 +192,7 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       id: 'temple_adept',
       name: 'Temple Adept',
       plural: 'Temple Adepts',
-      stats: s(11, 7, 30, [9, 12], 5, 12, 1),
+      stats: s(11, 7, 30, [9, 12], 5, 12, 1, 18),
       cost: { gold: 400 },
       abilities: ['shooter'],
       summary: 'Ritual scholars who hurl focused energy bolts from the back line.',
@@ -200,7 +202,7 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       id: 'temple_seer',
       name: 'Temple Seer',
       plural: 'Temple Seers',
-      stats: s(12, 10, 35, [10, 13], 6, 16, 1),
+      stats: s(12, 10, 35, [10, 13], 6, 16, 1, 19),
       cost: { gold: 500 },
       abilities: ['shooter', 'family_ward'],
       summary: 'Seers who can place one shared protective ward per battle.',
@@ -254,7 +256,7 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       id: 'cyclops',
       name: 'Cyclops',
       plural: 'Cyclopes',
-      stats: s(22, 22, 200, [40, 50], 7, 8, 2),
+      stats: s(22, 22, 200, [40, 50], 7, 8, 2, 18),
       cost: { gold: 3000, crystal: 1 },
       abilities: ['shooter', 'wall_breaker', 'no_melee_penalty'],
       summary: 'One-eyed giants who hurl shaped boulders and strike hard up close.',
@@ -264,7 +266,7 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       id: 'stormforged_cyclops',
       name: 'Stormforged Cyclops',
       plural: 'Stormforged Cyclopes',
-      stats: s(25, 25, 250, [45, 55], 8, 12, 2),
+      stats: s(25, 25, 250, [45, 55], 8, 12, 2, 19),
       cost: { gold: 4500, crystal: 2 },
       abilities: ['shooter', 'wall_breaker', 'no_melee_penalty'],
       summary: 'Cyclopes bearing forge-marked stones; the name adds no lightning damage.',

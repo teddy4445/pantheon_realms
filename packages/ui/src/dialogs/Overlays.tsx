@@ -33,6 +33,7 @@ import { DialogueLines } from '../screens/Journal';
 import { guardStrength, heroStrength, relativeTime, siegeStrength, threatLabel } from '../app/view';
 import { CampDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, ShortcutsDialog } from './WorldDialogs';
 import { SpellbookDialog } from './Spellbook';
+import { AbilityBadge } from '../components/badges';
 
 // ---------------------------------------------------------------------------
 
@@ -806,7 +807,7 @@ function StackInfoDialog({ creatureId, count }: { creatureId: string; count?: nu
           <SectionTitle>Abilities</SectionTitle>
           {def.abilityIds.map((a) => (
             <div key={a} className="small">
-              <strong>{catalog.abilities[a]?.name}:</strong> {catalog.abilities[a]?.exactRule}
+              <AbilityBadge catalog={catalog} abilityId={a} size="1.1rem" /> <strong>{catalog.abilities[a]?.name}:</strong> {catalog.abilities[a]?.exactRule}
             </div>
           ))}
         </>

@@ -892,6 +892,11 @@ export class BattleSceneController implements SceneController {
         // The defeat pose already played on the killing blow; finish hiding.
         await this.tweens.wait(120);
         e.group.setEnabled(false);
+        // Remember the death even if no newer view arrives (the battle's final
+        // blow: the rules have already cleared the battle), so unlocking the
+        // stack after playback does not show it again.
+        e.view = { ...e.view, alive: false };
+        e.label.mesh.isVisible = false;
         return;
       }
       case 'SiegeStructureDamaged': {

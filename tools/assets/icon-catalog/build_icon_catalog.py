@@ -91,7 +91,8 @@ def build_markdown():
         'The game shows it in place of the stand-in by asset ID — no screen changes (ASSET_PIPELINE.md §11).\n'
         '4. Run `npm run icons:catalog` again: the entry shows the new art and leaves the *now* list.\n'
         '\nInterface icons that have only a glyph today (asset IDs `icon.ui.<name>`) and spells, artifacts, skills, portraits and emblems are picked up the same way. '
-        'Two groups are reserved for later screens and are not drawn yet even when delivered: artifact-set emblems (`icon.set.*`) and creature-ability badges (`icon.ability.*`).\n'
+        'So are artifact-set emblems (`icon.set.*`, the set badges on the hero screen) and creature-ability badges (`icon.ability.*`, on army slots, creature details and the Encyclopedia): '
+        'until they are delivered the game shows a clearly temporary stand-in (a coloured gem; the nearest interface glyph).\n'
     )
     out.append('## Style guide\n')
     for k, v in style.items():

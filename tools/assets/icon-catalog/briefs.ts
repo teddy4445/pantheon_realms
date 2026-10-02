@@ -27,6 +27,7 @@ export const BRIEFS: Readonly<Record<string, string>> = {
   damage: 'Damage — a jagged impact burst on a blade edge.',
   speed: 'Speed — a winged boot.',
   shots: 'Shots — a quiver with arrows.',
+  range: 'Shooting range — a drawn bow with a dotted arc ending in a small target.',
   growth: 'Weekly growth — a sprouting seedling with an upward arrow.',
   movement: 'Movement — a boot print on a path.',
   mana: 'Mana — a blue droplet of light.',
@@ -138,6 +139,7 @@ export const MARKERS: readonly { readonly assetId: string; readonly name: string
   { assetId: 'icon.marker.creature', name: 'Creature camp', when: 'A camp that sells creatures', brief: 'A tent with a creature’s paw print.' },
   { assetId: 'icon.marker.question', name: 'Map event', when: 'A one-time choice not yet taken', brief: 'A question mark made of light over a road.' },
   { assetId: 'icon.marker.shrine', name: 'Relic shrine', when: 'The hold-the-relic shrine', brief: 'A small shrine with a flame.' },
+  { assetId: 'icon.marker.portal', name: 'Two-way portal', when: 'A two-way portal (random maps; a hero who stops on it steps out of its twin)', brief: 'An arch of standing stones around a violet veil.' },
   { assetId: 'icon.marker.check', name: 'Done', when: 'A site already cleared, visited or activated', brief: 'A check mark in a ring.' },
   { assetId: 'icon.marker.unknown', name: 'Unknown', when: 'Anything else', brief: 'A question mark.' },
 ];

@@ -69,7 +69,7 @@ export interface MapTemplateDefinition {
    * Presentation biome hint (materials/lighting), never a rule. Coast-like
    * biomes ('coast', 'fjord') use water for the map edge, the others mountain.
    */
-  readonly biome: 'coast' | 'high_pass' | 'storm_plateau' | 'temperate' | 'tundra' | 'fjord';
+  readonly biome: 'coast' | 'high_pass' | 'storm_plateau' | 'temperate' | 'tundra' | 'fjord' | 'desert' | 'jungle' | 'autumn' | 'moor';
   /**
    * 'point': the generated map is symmetric under a 180° rotation of the grid,
    * (q, r) -> (width-1-q, height-1-r), which preserves hex distance. Anchors,
@@ -162,7 +162,13 @@ export type SiteKind =
   /** One-time map event: the first hero to arrive chooses one option. */
   | { readonly type: 'map_event'; readonly title: string; readonly text: string; readonly options: readonly MapEventOptionDefinition[] }
   /** Capturable relic shrine (hold-the-relic victory). */
-  | { readonly type: 'relic' };
+  | { readonly type: 'relic' }
+  /**
+   * Two-way portal (proposed 2026-10-02): a hero who ends its move on it steps
+   * out of its twin `exitSiteId` at once, at no movement cost. Blocked while
+   * another hero stands on the twin. To travel back, step off and on again.
+   */
+  | { readonly type: 'portal'; readonly exitSiteId: SiteId };
 
 export interface MapEventOptionDefinition {
   readonly label: string;

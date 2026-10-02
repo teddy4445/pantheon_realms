@@ -108,6 +108,36 @@ describe('tactical battle', () => {
     }
   });
 
+  it('shooters have a range: no shot beyond it, half damage in its far half (owner decision 2026-10-02)', () => {
+    const d = startFordBattle();
+    const b = d.state.battle!;
+    const shooter = Object.values(b.stacks).find((s) => s.creatureId === 'peltast')!;
+    const enemy = Object.values(b.stacks).find((s) => s.side === 'defender')!;
+    // Every shooter has a range; the Hill Slingers' short one (9) fits the 15-column field.
+    for (const c of Object.values(d.catalog.creatures)) if ((c.stats?.shots ?? 0) > 0) expect(c.stats!.range, c.id).toBeGreaterThan(1);
+    expect(d.catalog.creatures.peltast!.stats!.range).toBe(16);
+    shooter.creatureId = 'hill_slinger';
+    expect(d.catalog.creatures.hill_slinger!.stats!.range).toBe(9);
+    for (const s of Object.values(b.stacks)) if (s.id !== shooter.id && s.id !== enemy.id) s.anchor = { col: 14, row: 10 - (Object.keys(b.stacks).indexOf(s.id) % 3) };
+    shooter.anchor = { col: 0, row: 0 };
+    b.activeStackId = shooter.id;
+    const far = (col: number) => {
+      enemy.anchor = { col, row: 0 };
+      return strikeFactors(d.catalog, b, shooter, enemy, { mode: 'shot', chargeHexes: 0 }).multipliers.some(([n, m]) => n === 1 && m === 2);
+    };
+    enemy.anchor = { col: 10, row: 0 };
+    const la = legalActions(d.catalog, d.state as MatchState)!;
+    expect(la.shootTargets).not.toContain(enemy.id);
+    expect(la.shootBlockedReason).toMatch(/range/);
+    expect(d.reject({ kind: 'BattleShoot', stackId: shooter.id, targetId: enemy.id }).code).toBe('illegal_target');
+    enemy.anchor = { col: 9, row: 0 };
+    expect(legalActions(d.catalog, d.state as MatchState)!.shootTargets).toContain(enemy.id);
+    expect(far(9)).toBe(true);
+    expect(far(5)).toBe(true);
+    expect(far(4)).toBe(false);
+    expect(far(2)).toBe(false);
+  });
+
   it('resolves to a result, clears the guard, grants its reward once and awards XP for kills', () => {
     const d = startFordBattle();
     const goldBefore = d.player.wallet.gold;

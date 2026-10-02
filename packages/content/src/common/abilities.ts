@@ -21,7 +21,7 @@ export const ABILITIES: readonly AbilityDefinition[] = [
     activation: 'passive',
     summary: 'Can make stationary ranged attacks.',
     exactRule: 'Enables the stationary Shoot action; one ammunition per shot.',
-    restriction: 'Cannot shoot while adjacent to an enemy; half damage beyond 10 hexes; half damage in melee unless No Melee Penalty.',
+    restriction: 'Cannot shoot while adjacent to an enemy or at a target beyond its range; half damage in the far half of its range; half damage in melee unless No Melee Penalty.',
     rule: { type: 'shooter' },
     implementationStatus: 'implemented',
   },

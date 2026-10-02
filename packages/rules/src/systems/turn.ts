@@ -13,6 +13,7 @@ import type { MatchState } from '../state/match';
 import { dawnManaRegen, heroEffects, maxMana, movementBudget } from '../resolvers/heroes';
 import { playerTowns, townDailyIncome, townHasEffect, weeklyGrowthFor } from '../resolvers/town';
 import { missionSite } from '../resolvers/world';
+import { scenarioMission } from '../resolvers/scenario';
 import type { Tx } from '../engine/tx';
 import { grant } from './economy';
 import { learnSpellsAtTown } from './heroes';
@@ -39,7 +40,15 @@ export function commitEndTurn(tx: Tx): void {
   let next = state.activePlayerId;
   for (let step = 1; step <= order.length; step++) {
     const i = start + step;
-    if (i === order.length) processDawn(tx);
+    if (i === order.length) {
+      processDawn(tx);
+      if (scenarioMission(tx.catalog, state)?.turnOrder === 'rotating') {
+        // The empire that opened the day moves last tomorrow (non-contenders keep their places).
+        rotateContenders(state);
+        next = state.playerOrder.find((id) => !state.players[id]?.eliminated) ?? next;
+        break;
+      }
+    }
     const id = order[i % order.length]!;
     if (!state.players[id]?.eliminated) {
       next = id;
@@ -48,6 +57,18 @@ export function commitEndTurn(tx: Tx): void {
   }
   state.activePlayerId = next;
   tx.emit({ kind: 'TurnStarted', playerId: state.activePlayerId, day: state.day });
+}
+
+/** Rotate the empires (role player/rival) one place within their positions in the turn order. */
+function rotateContenders(state: MatchState): void {
+  const isContender = (id: string) => state.players[id]?.role === 'player' || state.players[id]?.role === 'rival';
+  const slots = state.playerOrder.map((id, i) => (isContender(id) ? i : -1)).filter((i) => i >= 0);
+  if (slots.length < 2) return;
+  const ids = slots.map((i) => state.playerOrder[i]!);
+  const rotated = [...ids.slice(1), ids[0]!];
+  const order = [...state.playerOrder];
+  slots.forEach((slot, k) => (order[slot] = rotated[k]!));
+  state.playerOrder = order;
 }
 
 /** Income a player will receive at the next dawn (for the "next dawn" preview). */

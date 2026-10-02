@@ -203,6 +203,12 @@ export interface MissionDefinition {
   readonly features?: Partial<ScenarioFeatures>;
   /** Every player starts with the whole map explored (random-map "revealed" option); heroes stay hidden by vision. */
   readonly startExplored?: boolean;
+  /**
+   * 'rotating' (proposed 2026-10-02): at each dawn the empire that moved first
+   * moves last, so no seat always opens the day. Random maps with three or more
+   * empires use it by default. Default 'fixed'.
+   */
+  readonly turnOrder?: 'fixed' | 'rotating';
   readonly debriefPolicy: readonly string[];
   readonly player: {
     readonly playerId: PlayerId;

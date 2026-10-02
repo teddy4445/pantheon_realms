@@ -116,20 +116,22 @@ export class GameDriver {
           }
           continue;
         }
-        const reach = reachableTiles(this.catalog, this.state, heroId);
+        // Explore toward the destination: the reachable tile nearest to it that does not
+        // end in an encounter (a wandering hero on the way is walked around, not fought).
+        const here = axialDistance(hero.position, dest);
+        const options = [...reachableTiles(this.catalog, this.state, heroId)]
+          .map(([k, cost]) => ({ c: parseHexKey(k), sc: axialDistance(parseHexKey(k), dest) + cost / 100000 }))
+          .filter((o) => o.sc < here)
+          .sort((a, b) => a.sc - b.sc);
         let best: HexCoord | null = null;
-        let bestScore = axialDistance(hero.position, dest);
-        for (const [k, cost] of reach) {
-          const c = parseHexKey(k);
-          const sc = axialDistance(c, dest) + cost / 100000;
-          if (sc < bestScore) {
-            bestScore = sc;
-            best = c;
+        for (const o of options.slice(0, 12)) {
+          const mq = quoteMovement(this.catalog, this.state, heroId, o.c);
+          if (mq.reachable && !mq.endsInEncounter && mq.stopIndex === mq.path.length - 1) {
+            best = o.c;
+            break;
           }
         }
         if (!best) break;
-        const mq = quoteMovement(this.catalog, this.state, heroId, best);
-        if (!mq.reachable || mq.endsInEncounter) break;
         this.do({ kind: 'MoveHero', heroId, destination: best });
       }
       this.endDay();

@@ -1119,3 +1119,40 @@ input[type='radio']:disabled {
 .spell-socket { display: inline-grid; place-items: center; flex: none; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 50% 35%, #1d3557, #05090f 75%); border: 1px solid var(--gold-400); box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), inset 0 0 0 2px rgba(5, 9, 15, 0.7), 0 2px 5px rgba(0, 0, 0, 0.6); }
 .spell-socket img { width: 86%; height: 86%; object-fit: contain; border-radius: 50%; }
 .spell-slot { display: flex; align-items: center; gap: 0.6rem; padding: 0.3rem 0.35rem; border: 1px solid rgba(194, 154, 82, 0.28); border-radius: var(--radius-s); background: var(--plate-raised); box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.7); }
+
+/* ============================================================
+   Set and ability badges (2026-10-02): final icon by asset ID, else a stand-in
+   ============================================================ */
+.set-badge,
+.ability-badge {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  vertical-align: middle;
+}
+.set-badge svg,
+.set-badge img,
+.ability-badge img { width: 100%; height: 100%; object-fit: contain; }
+.set-badge.is-active { filter: drop-shadow(0 0 0.25rem rgba(245, 228, 183, 0.75)); }
+.ability-badge {
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, #1d3557, #05090f 80%);
+  border: 1px solid var(--gold-500);
+  color: var(--gold-200);
+}
+.ability-badge svg { width: 72%; height: 72%; }
+.ability-badge.is-final { background: none; border: none; }
+.ability-badges { display: inline-flex; gap: 2px; }
+.slot .ability-badges {
+  position: absolute;
+  right: 0.15rem;
+  top: 0.15rem;
+  z-index: 1;
+}
+.h3-slot .set-badge {
+  position: absolute;
+  right: 0.12rem;
+  top: 0.12rem;
+  z-index: 3;
+  pointer-events: none;
+}

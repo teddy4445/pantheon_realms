@@ -8,7 +8,6 @@
  * All factors are exact integers/rationals evaluated with BigInt, then floored once.
  * Preview evaluates the same pipeline at the B endpoints and never draws RNG.
  */
-import { cellDistance } from '../../core/hex';
 import type { RngCursor } from '../../core/rng';
 import type { ContentCatalog } from '../../definitions/catalog';
 import type { BattleStackState, BattleState } from '../../state/match';
@@ -20,10 +19,11 @@ import {
   effectiveLuck,
   findAbility,
   isShooter,
+  shootingRange,
   killsFrom,
-  stackCells,
   statsOf,
 } from './common';
+import { stackDistance } from './geometry';
 import { wallPenaltyApplies } from './siege';
 
 export { applyDamage, killsFrom } from './common';
@@ -100,10 +100,11 @@ export function strikeFactors(
     notes.push(`Target Armorer -${armorerPct}%`);
   }
   if (ctx.mode === 'shot') {
-    const dist = Math.min(...stackCells(catalog, attacker).flatMap((a) => stackCells(catalog, target).map((b) => cellDistance(a, b))));
-    if (dist > combat.longRangeDistance) {
+    const dist = stackDistance(catalog, attacker, target);
+    const range = shootingRange(catalog, attacker.creatureId);
+    if (dist * 2 > range) {
       multipliers.push([combat.longRangeFactor.numerator, combat.longRangeFactor.denominator]);
-      notes.push('Long range (x0.5)');
+      notes.push(`Far half of range ${range} (x${combat.longRangeFactor.numerator}/${combat.longRangeFactor.denominator})`);
     }
     if (wallPenaltyApplies(catalog, battle, attacker, target)) {
       multipliers.push([combat.wallFactor.numerator, combat.wallFactor.denominator]);

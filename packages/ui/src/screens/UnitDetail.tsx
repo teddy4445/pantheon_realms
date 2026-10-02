@@ -13,6 +13,7 @@ import { BalanceChip, CostList, CreatureStats, ScreenHeader, StatusChip } from '
 import { SceneViewport, type SceneFactory } from '../scene/SceneHost';
 import { resolveAsset } from '../assets/manifest';
 import { reducedMotion } from '../app/preferences';
+import { AbilityBadge } from '../components/badges';
 
 type Tab = 'stats' | 'abilities' | 'lore' | 'assets';
 
@@ -208,14 +209,15 @@ export function UnitDetailScreen() {
                         </tr>
                       </thead>
                       <tbody>
-                        {(['attack', 'defense', 'hp', 'speed', 'shots'] as const).map((k) => {
+                        {(['attack', 'defense', 'hp', 'speed', 'shots', 'range'] as const).map((k) => {
                           const b = def.form === 'base' ? def.stats! : other.stats!;
                           const u = def.form === 'base' ? other.stats! : def.stats!;
+                          if (k === 'range' && !b.range && !u.range) return null;
                           return (
                             <tr key={k}>
                               <th>{k}</th>
-                              <td className="num">{b[k]}</td>
-                              <td className={`num ${u[k] > b[k] ? 'success' : ''}`}>{u[k]}</td>
+                              <td className="num">{b[k] ?? '—'}</td>
+                              <td className={`num ${(u[k] ?? 0) > (b[k] ?? 0) ? 'success' : ''}`}>{u[k] ?? '—'}</td>
                             </tr>
                           );
                         })}
@@ -244,7 +246,7 @@ export function UnitDetailScreen() {
                   return (
                     <div key={a} className="ability">
                       <div className="ability__name">
-                        {ab.name} <Chip>{ab.activation}</Chip> <StatusChip status={ab.implementationStatus} />
+                        <AbilityBadge catalog={catalog} abilityId={a} size="1.3rem" /> {ab.name} <Chip>{ab.activation}</Chip> <StatusChip status={ab.implementationStatus} />
                       </div>
                       <div className="small">{ab.summary}</div>
                       <div className="small">

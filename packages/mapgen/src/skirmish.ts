@@ -23,7 +23,14 @@
  *   crossroads  — a ring of peaks around a rich center, entered only through
  *                 one strongly guarded gate per empire (HoMM3 "Jebus Cross").
  * Settings: size (up to huge), guard strength, treasure, starting wealth,
- * roads, wandering monsters, revealed map and the victory condition.
+ * roads, wandering monsters, portals, revealed map and the victory condition.
+ *
+ * 0.3 (owner request 2026-10-02): neutral creatures (no pantheon) are mixed
+ * half-and-half with pantheon creatures in guards, camps and wandering
+ * monsters; full roads also lead from every town to the contested center; and
+ * two-way portals link the empires' outer zones (HoMM3 "two-way monoliths"),
+ * placed on the side of each region away from the twin's region so a portal
+ * is a real shortcut.
  *
  * Output is DATA: a WorldMapDefinition and a full MissionDefinition (which the
  * match embeds), plus cosmetic decor and a validation report. Content (kits,
@@ -57,7 +64,7 @@ import {
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
 
-export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.2';
+export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.3';
 export const RANDOM_TEMPLATE_ID = 'random_skirmish';
 
 export type SkirmishMapSize = 'small' | 'medium' | 'large' | 'huge';
@@ -118,10 +125,14 @@ export interface SkirmishGenOptions {
   readonly treasure?: TreasureLevel;
   /** Starting resources of every empire (default normal). */
   readonly startWealth?: StartWealth;
-  /** Full: roads to every mine and camp; sparse: only to the sawmill and quarry (default full). */
+  /** Full: roads to every mine and camp and to the center; sparse: only to the sawmill and quarry (default full). */
   readonly roads?: RoadDensity;
   /** Every empire starts with the whole map explored (terrain and sites seen; heroes still hidden). */
   readonly revealMap?: boolean;
+  /** Two-way portals between the empires' outer zones (default on). */
+  readonly portals?: boolean;
+  /** Turn order: 'rotating' (the day's first empire moves last the next day) is the default with three or more empires. */
+  readonly turnOrder?: 'fixed' | 'rotating';
   /** Scenario features (default: all on, as in other skirmishes). */
   readonly features?: ScenarioFeatures;
 }
@@ -201,10 +212,18 @@ function candidateCreatures(catalog: ContentCatalog, minTier: number, maxTier: n
     .sort((a, b) => (a.id < b.id ? -1 : 1));
 }
 
+/**
+ * A creature of the tier band: neutral families (no pantheon) and pantheon
+ * creatures each half of the time when the band has both (owner answer
+ * 2026-10-02: "Neutral roster + keep pantheon mix").
+ */
 function pickCreature(ctx: BuildCtx, minTier: number, maxTier: number): CreatureDefinition {
   const pool = candidateCreatures(ctx.catalog, minTier, maxTier);
   if (pool.length === 0) throw new SkirmishGenerationError(`No creature of tier ${minTier}-${maxTier}`);
-  return pool[ctx.rng.nextInt(pool.length)]!;
+  const neutral = pool.filter((c) => c.pantheonId === null);
+  const roster = pool.filter((c) => c.pantheonId !== null);
+  const from = neutral.length > 0 && roster.length > 0 ? (ctx.rng.nextInt(2) === 0 ? neutral : roster) : pool;
+  return from[ctx.rng.nextInt(from.length)]!;
 }
 
 /** An army worth about `value` Gold of one creature (at least one creature). */
@@ -560,7 +579,58 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     });
     if (cands.length > 0) monsterHomes.push(cands[rng.nextInt(cands.length)]!);
   }
+  // Two-way portals (HoMM3 "two-way monoliths"). A portal `a` in the first region is
+  // paired with a cell of another region, and the pair is copied by the symmetry group,
+  // so every empire gets the same portals. With 2 or 4 empires the pairing map is an
+  // involution of the group (180° turn; the 4-empire reflection), one portal per
+  // region; with 3 (rotations only) each region gets two — `a`, leading to the next
+  // region, and its reflection `b` across the town's axis, leading to the previous one.
+  // `a` sits on the side of the region away from its twin's region (a real shortcut).
+  const portalPairs: { a: HexCoord; partner: HexCoord }[] = [];
+  const portalBase: HexCoord[] = [];
+  if (opts.portals !== false) {
+    const reflectA: Transform = (c) => ({ q: c.q + c.r, r: -c.r });
+    const okPortal = (c: HexCoord) => {
+      const d = axialDistance(c, A);
+      const z = zoneOf(c);
+      return (
+        inRegionA(c) &&
+        d >= homeR + 1 &&
+        d <= R + 2 &&
+        relDist(c) >= centerR + 3 &&
+        relDist(c) <= Rh - 2 &&
+        (mapType === 'highlands' ? z === 'outer' : z !== 'center') &&
+        !taken(c, 3) &&
+        !monsterHomes.some((h) => axialDistance(h, c) < 3) &&
+        !nearHard(c)
+      );
+    };
+    // The twin of `a` lies in the second region (group element 1).
+    const awayFrom = townsRel[1]!;
+    const toward = n >= 3 ? townsRel[n - 1]! : null;
+    const cands = regionA
+      .filter((c) => okPortal(c) && (n !== 3 || (okPortal(reflectA(c)) && axialDistance(c, reflectA(c)) >= 4)))
+      .map((c) => ({ c, key: toward ? axialDistance(c, awayFrom) - axialDistance(c, toward) : relDist(c) }))
+      .sort((x, y) => y.key - x.key || (hexKey(x.c) < hexKey(y.c) ? -1 : 1));
+    if (cands.length > 0) {
+      const top = cands.slice(0, Math.max(1, Math.ceil(cands.length / 4)));
+      const a = top[rng.nextInt(top.length)]!.c;
+      if (n === 3) {
+        const b = reflectA(a);
+        portalBase.push(a, b);
+        portalPairs.push({ a, partner: group[1]!(b) });
+      } else {
+        portalBase.push(a);
+        portalPairs.push({ a, partner: group[1]!(a) });
+      }
+    }
+  }
+
   // Clearings: every site stands on open ground with an open ring around it (the wild forest's glades).
+  for (const c of portalBase) {
+    clearOrbit(c);
+    for (const nb of axialNeighbors(c)) if (tAt(nb) === 'mountain' || tAt(nb) === 'water') clearOrbit(nb, 'rough');
+  }
   for (const s of chosen) {
     clearOrbit(s.pos, tAt(s.pos) === 'marsh' && mapType === 'marshlands' ? 'marsh' : 'plains');
     for (const c of axialNeighbors(s.pos)) {
@@ -617,7 +687,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       k = c ? hexKey(c) : '';
     }
   };
-  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...monsterHomes, ...gates.map((g) => g.pos)];
+  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...monsterHomes, ...gates.map((g) => g.pos), ...portalBase];
   for (let pass = 0; pass < 3; pass++) {
     const reach = reachFrom(A);
     const missing = targets.filter((t) => !reach.has(hexKey(t)));
@@ -671,11 +741,12 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     }
     for (const c of path) if (tAt(c) === 'mountain') setOrbit(c, 'rough');
   };
-  // No road to the contested center: it is reached across country (about a day's march),
-  // so rival towns are well over a day apart (Twin Harbors lesson: one-day reach decides games).
+  // Full roads also lead to the contested center (owner request 2026-10-02). With hero
+  // movement at about 8 hexes a day, rival towns stay two days or more apart.
   const toCenter = route(A, { q: 0, r: 0 });
   if (!toCenter) throw new SkirmishGenerationError('No route from a town to the center');
-  for (const c of toCenter) if (tAt(c) === 'mountain') setOrbit(c, 'rough');
+  if (roadsSetting === 'full') addRoad(toCenter);
+  else for (const c of toCenter) if (tAt(c) === 'mountain') setOrbit(c, 'rough');
   for (const s of chosen) {
     if (s.spec.road === 'none' || (roadsSetting === 'sparse' && s.spec.road !== 'essential')) continue;
     const p = route(A, s.pos);
@@ -723,6 +794,30 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       sites.push({ id, anchorId: id, coord: abs(g(gt.pos)), ...built });
     });
   });
+  // Two-way portals: place every copy, then name each one's twin (found by position).
+  if (portalPairs.length > 0) {
+    const placed: { id: string; coord: HexCoord }[] = [];
+    portalBase.forEach((base, bi) =>
+      group.forEach((g, i) => placed.push({ id: `${bi === 0 ? 'portal' : 'portal_b'}_${i + 1}`, coord: abs(g(base)) })),
+    );
+    const idAt = new Map(placed.map((p) => [hexKey(p.coord), p.id]));
+    const twin = new Map<string, string>();
+    for (const pair of portalPairs) {
+      for (const g of group) {
+        const x = idAt.get(hexKey(abs(g(pair.a))));
+        const y = idAt.get(hexKey(abs(g(pair.partner))));
+        if (!x || !y || x === y) throw new SkirmishGenerationError('Portal pairing failed');
+        if ((twin.get(x) ?? y) !== y || (twin.get(y) ?? x) !== x) throw new SkirmishGenerationError('A portal would lead to two places');
+        twin.set(x, y);
+        twin.set(y, x);
+      }
+    }
+    for (const p of placed) {
+      const exitSiteId = twin.get(p.id);
+      if (!exitSiteId) throw new SkirmishGenerationError(`Portal ${p.id} has no twin`);
+      sites.push({ id: p.id, anchorId: p.id, coord: p.coord, name: 'Twin Portal', description: 'An arch of standing stones around a violet veil. A hero who stops here steps out of its twin portal at once.', kind: { type: 'portal', exitSiteId } });
+    }
+  }
   // The Crossroads center's inner vaults (one major artifact each).
   if (inner.length) {
     const art = pickArtifact(ctx, ['major']);
@@ -838,7 +933,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   });
   const sizeLabel = SKIRMISH_SIZE_LABEL[opts.size];
   const typeInfo = SKIRMISH_MAP_TYPES.find((t) => t.id === mapType)!;
-  const settingsKey = [mapType, guards, treasure, wealth, roadsSetting, opts.revealMap ? 'revealed' : 'fog'].join('-');
+  const settingsKey = [mapType, guards, treasure, wealth, roadsSetting, opts.revealMap ? 'revealed' : 'fog', ...(opts.portals === false ? ['noportals'] : []), ...(opts.turnOrder && opts.turnOrder !== (n >= 3 ? 'rotating' : 'fixed') ? [opts.turnOrder] : [])].join('-');
   const id = `random_${opts.size}_${n}p_${seed}${settingsKey === 'continental-normal-normal-normal-full-fog' ? '' : `_${settingsKey}`}`;
   const relicSite = sites.find((s) => s.id === 'relic');
   const mission: MissionDefinition = {
@@ -872,6 +967,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     initialFlags: ['skirmish'],
     features,
     ...(opts.revealMap ? { startExplored: true } : {}),
+    turnOrder: opts.turnOrder ?? (n >= 3 ? 'rotating' : 'fixed'),
     victoryCondition: victory.type === 'hold_relic' && relicSite ? { type: 'hold_site', siteId: relicSite.id, days: victory.days } : { type: 'elimination' },
     purchasableBuildingIds: null,
     heroHiringEnabled: true,

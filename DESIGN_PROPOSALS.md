@@ -568,3 +568,144 @@ presentation biomes `tundra` and `fjord`.
 3. Random maps: are the six types the right set? Which should be the default?
 4. The Winter Oath: see its own open questions (difficulty, expanded content,
    order, portraits and music).
+
+## Group 0.6 — owner requests of 2026-10-02
+
+Owner request: the AI should use more of the game; hero-screen polish; random
+maps with portals, roads to the centre, neutral creatures and a fix for the
+three-player imbalance; campaigns for the four pantheons that had none; and
+three fixes (show the last attack, per-unit shooting range, fewer hero steps
+a day). Owner answers: about **8 hexes a day**; **maximum range + half damage
+in the far half**; **seven missions per campaign**; **a neutral roster mixed
+with pantheon creatures**. Everything below is **proposed, unplaytested**
+unless marked as an owner decision.
+
+### 19. Battle fixes (owner decisions)
+
+* **The last attack is shown.** The battle screen keeps the last board when
+  the rules end the battle, plays the final blow and the fall of the last
+  stack, and opens the result after a short beat (700 ms at normal speed,
+  none at instant speed).
+* **Shooting range per creature** (owner decision: maximum range + far-half
+  penalty). Every shooter has `range` (hexes, 2–20; content validator). No
+  shot beyond it; in the far half (distance × 2 > range) a shot does half
+  damage — this replaces the old fixed "long range" distance (half damage
+  beyond 10 hexes, no limit). Distance is the shortest distance between the
+  two stacks' cells; the field is 15 × 11, so the far corner is about 19 hexes
+  away. Proposed ranges (base / upgrade): most shooters 16/17 — Peltasts,
+  Jackal Guardians, Lindworms, Kirin, Xiuhcoatl, Desert Colossi; the Greek
+  Temple Adepts and Cyclopes 18/19; Eagle Warriors 14/15; **short range**
+  Banshees and Hill Slingers 9/10. A first set (6–11) was measured and
+  rejected: with full damage only up to half the range, shooter-heavy rosters
+  collapsed in AI-vs-AI duels (Greek armies 0.31–0.33, Egyptian escorts 0.18;
+  `DEVELOPMENT_STATUS.md`). The Egyptian starting escort gained one Sacred
+  Scarab (21 + 8) to stay even. The AI holds a shooter with nothing in range
+  while enemy troops approach (unless it is under fire) and otherwise steps
+  only as far as it must to bring an enemy into range, away from enemy reach.
+* **About 8 hexes a day** (owner decision): the movement table by the
+  army's slowest speed is now 750–1,000 points (speeds 3–11), i.e. about
+  7.5–10 plains hexes; roads cost 75 per hex. Two movement bonuses were halved
+  with it (Fleet Foot +200, Wings of Hermes +150; the "Ask for directions"
+  event +250).
+
+### 20. Random maps 0.3 (`pr-skirmishgen-0.3`)
+
+* **Neutral roster.** Eight new neutral families (base + upgrade, original
+  folklore notes): Brigands (T1), Hill Slingers (T2 shooters, range 9/10),
+  Wild Boars (T2, charge), Clay Golems (T3, unyielding), Wyverns (T4, flight),
+  Ogres (T5), Basilisks (T6) and Elder Drakes (T7, flight); with the old
+  Centaurs, nine. Guards, camps and wandering monsters draw **neutral and
+  pantheon creatures half and half** wherever a tier band has both. The
+  Encyclopedia's bestiary has a **Neutral** filter.
+* **Two-way portals** (setting, on by default; the existing `icon.marker.portal`
+  marks them). A hero who stops on a portal steps out of its twin at once, at
+  no movement cost; a hero on the twin blocks it. The pairing is copied by the
+  map's symmetry, so every empire gets the same portals: with 2 or 4 empires
+  one portal per empire, paired by the 180° turn or the 4-empire reflection;
+  with 3 empires two per empire (one leading to each neighbour). A portal sits
+  on the side of its region away from its twin's region, so it is a real
+  shortcut. The random-map preview draws them as violet rings.
+* **Roads to the centre** with full roads (sparse roads still stop at the
+  sawmill and quarry). With 8 hexes a day, rival towns stay two days or more
+  apart.
+* **Three-empire fairness.** The old measurement played five maps six times
+  each; it now plays a different map in every match and reports who is
+  knocked out first. On thirty maps the "second seat wins" result did not
+  hold: the empire that moves first each day was the weak seat. **Rotating
+  turn order** (setting, the default with three or four empires; the day's
+  first empire moves last the next day) spreads that disadvantage but does
+  not remove it — the seat that moves first on day 3 is now knocked out
+  first most often (measurements in `DEVELOPMENT_STATUS.md`). A real fix
+  needs the AI to keep the day's first mover out of unseen reach.
+
+### 21. The AI uses more of the game (`packages/ai/src/growth.ts`)
+
+* **Level-ups** take the offer worth most to that hero: Archery with
+  shooters, Offense with melee troops, Wisdom and mana skills only with a
+  spellbook, generic skills by their effects (one scale: about 10 points per
+  point of commander Attack).
+* **Artifacts and sets.** The AI values a whole loadout — every item, every
+  set bonus met and half of the next one in progress — and equips, swaps (a
+  set piece over a slightly stronger loose item) and buys at the merchant by
+  loadout gain per Gold, keeping a reserve.
+* **Adventure spells.** A movement spell when the chosen move falls just short
+  today (keeping half the mana for battle when the hero knows battle spells);
+  a scouting spell on an unseen rival town within two days' march; Recall to a
+  threatened town with no hero inside when walking would take longer than
+  today.
+* **Map fixes found on the way:** heroes reinforce from any owned town (not
+  only the first) and skip a trickle of daily recruits; an unseen rival town
+  is approached only by a hero strong enough for a typical garrison (half a
+  week of its tier 1–5 growth per week played, up to eight weeks), which ends
+  the walk-up-and-back loops; an empire's last town counts half again; portals
+  the empire has used are taken as shortcuts; equally scored moves are broken
+  by a hash of the empire and the move instead of by coordinates (on a
+  mirrored map the west and east empires used to prefer different
+  directions).
+* **Rule change (proposed): defeated heroes return to the tavern pool** as new
+  recruits. Long games used to stall when an empire's pool ran dry and it could
+  never field a hero again.
+
+### 22. Hero screen polish
+
+Drag and drop (backpack → a slot, ring to ring and misc to misc, a worn item
+→ the backpack) next to the click-to-pick flow; a **comparison** of a picked
+backpack item with what is worn in each slot it fits (attribute changes and
+set bonuses gained or lost); **set badges** on worn and packed set pieces and
+in the set list, and **ability badges** on army slots, creature details and
+the Encyclopedia. Badges show the delivered icon (`icon.set.<id>`,
+`icon.ability.<id>`) as soon as it exists; until then a clearly temporary
+stand-in (a coloured gem; the nearest interface glyph).
+
+### 23. Four more campaigns (owner decision: seven missions each)
+
+The Winter Oath's seven mission shapes (Restore, Hunt, Covenant, Seek, Rival,
+Refuge, Finale) are now a reusable builder (`packages/content/src/campaign/arc.ts`):
+a campaign supplies the writing, the creatures of each guard, the biome and
+the rewards; the objective order, the economy and the war-bands follow the
+Winter Oath. Each campaign has an original story, a new campaign hero, five
+opponents, two covenants (tiers 3 and 6), a set of its pantheon's artifacts
+collected along the way and two endings. Outlines:
+`CAMPAIGNS_3_TO_6_OUTLINE.md`. New presentation biomes: `desert`, `jungle`,
+`autumn`, `moor`.
+
+### Open questions for the owner (group 0.6)
+
+1. Ranges: long ranges (16–19) keep the pantheons close to their old balance
+   but rarely stop a shot on the 15-column field; only Banshees and Hill
+   Slingers (9/10) feel the limit. Shorter ranges need compensation elsewhere
+   (shooter damage, or full damage further out). Which do you prefer? Should
+   range also count in sieges (walls ignore it today)?
+2. Movement: 750–1,000 points makes maps feel larger — keep it, or move only
+   the random-map sizes down?
+3. Portals: on by default? Should a portal ever be guarded?
+4. Neutral roster: names and tiers fine? Should neutral creatures also appear
+   in campaign missions more widely (they guard many of the new campaigns' sites)?
+5. Defeated heroes back in the tavern pool: as level-1 recruits (proposed) or
+   with their old level, as in Heroes 3?
+6. The four new campaigns reuse the Winter Oath's mission shapes closely. Is
+   that what you want, or should later passes give each its own mechanics?
+7. Hero vision: with about 8 hexes a day a hero can be reached by an enemy it
+   cannot see (vision 5). Vision 8 measured fairer for turn order on Twin
+   Harbors (first mover 0.47 instead of 0.42) but less fair between the two
+   towns (0.56 instead of 0.52). Keep 5, or try 7–8?

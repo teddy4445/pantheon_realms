@@ -5,7 +5,7 @@
  * (design/04 §5), never stored independently.
  */
 import type { BattleStackId, CreatureId } from '../../ids';
-import { cellKey, footprintCells, inBattleBounds, type BattleCell } from '../../core/hex';
+import { cellDistance, cellKey, footprintCells, inBattleBounds, type BattleCell } from '../../core/hex';
 import { getAbility, requireStats, type ContentCatalog } from '../../definitions/catalog';
 import type { AbilityRule, CreatureStats } from '../../definitions/creatures';
 import type { BattleSideId, BattleStackState, BattleState, MatchState } from '../../state/match';
@@ -190,6 +190,17 @@ export function canRetaliate(catalog: ContentCatalog, stack: BattleStackState): 
   if (!isAlive(stack)) return false;
   const allowance = retaliationAllowance(catalog, stack.creatureId);
   return allowance === 'unlimited' || stack.retaliationsUsed < allowance;
+}
+
+/** Shooting range in hexes (0 for creatures that do not shoot). */
+export function shootingRange(catalog: ContentCatalog, creatureId: CreatureId): number {
+  return statsOf(catalog, creatureId).range ?? 0;
+}
+
+/** Whether a shooter's target lies within its range (nearest cells of the two stacks). */
+export function inShootingRange(catalog: ContentCatalog, shooter: BattleStackState, target: BattleStackState): boolean {
+  const dist = Math.min(...stackCells(catalog, shooter).flatMap((x) => stackCells(catalog, target).map((y) => cellDistance(x, y))));
+  return dist <= shootingRange(catalog, shooter.creatureId);
 }
 
 export function isShooter(catalog: ContentCatalog, creatureId: CreatureId): boolean {

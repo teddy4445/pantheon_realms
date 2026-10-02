@@ -250,6 +250,46 @@ describe('tactical AI: advancing', () => {
     // …while still advancing.
     expect(to.col).toBeGreaterThan(griffin.anchor.col);
   });
+
+  it('a shooter with no enemy in range holds while melee troops approach, and steps only into range when it can', () => {
+    const d = GameDriver.mission(SKIRMISH, { matchId: 'short-range' });
+    const s = deepClone(d.state);
+    for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
+    const a = s.heroes['alexios']!;
+    const b = s.heroes['rival_odysseus']!;
+    a.army.slots = [{ creatureId: 'hill_slinger', count: 20 }, { creatureId: 'hoplite', count: 20 }, null, null, null, null, null];
+    b.army.slots = [{ creatureId: 'hoplite', count: 20 }, null, null, null, null, null, null];
+    const gold = d.catalog.missions[SKIRMISH]!.sites.find((x) => x.id === 'sk_gold')!.coord;
+    b.position = { q: gold.q - 4, r: gold.r };
+    a.position = { q: gold.q - 5, r: gold.r };
+    a.movementPoints = 5000;
+    d.state = s;
+    d.do({ kind: 'MoveHero', heroId: 'alexios', destination: b.position, confirmEncounter: true });
+    const battle = deepClone(d.state.battle!);
+    const stacks = Object.values(battle.stacks);
+    const slinger = stacks.find((x) => x.creatureId === 'hill_slinger')!;
+    const ally = stacks.find((x) => x.side === slinger.side && x.id !== slinger.id)!;
+    const foe = stacks.find((x) => x.side !== slinger.side)!;
+    ally.anchor = { col: 0, row: 2 };
+    battle.phase = 'normal';
+    battle.activeStackId = slinger.id;
+    const decide = (slingerAt: { col: number; row: number }, foeAt: { col: number; row: number }) => {
+      slinger.anchor = slingerAt;
+      foe.anchor = foeAt;
+      const fixture = { ...d.state, battle };
+      expect(legalActions(d.catalog, fixture)!.shootTargets).toEqual([]);
+      return chooseBattleAction(d.catalog, fixture)!;
+    };
+    // Range 9, speed 5: an enemy across the field cannot be brought into range this turn — hold.
+    expect(decide({ col: 0, row: 0 }, { col: 14, row: 10 }).kind).toBe('BattleDefend');
+    // 11 hexes away: step forward just far enough to shoot, never next to the enemy.
+    const step = decide({ col: 3, row: 5 }, { col: 14, row: 5 });
+    expect(step.kind).toBe('BattleMove');
+    const cells = stackCells(d.catalog, slinger, (step as { to: { col: number; row: number } }).to);
+    const gap = footprintDistance(cells, stackCells(d.catalog, foe));
+    expect(gap).toBeLessThanOrEqual(9);
+    expect(gap).toBeGreaterThan(1);
+  });
 });
 
 const LEADER: Record<string, string> = { norse: 'ragnar', egyptian: 'hatshepsut', japanese: 'yoshitsune', celtic: 'fionn', mesoamerican: 'nezahualcoyotl' };

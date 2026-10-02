@@ -296,7 +296,7 @@ export function EmblemArt({ pantheonId, accent }: { pantheonId: string; accent: 
 
 /** Stylized map thumbnail for missions (placeholder for rendered mission art). */
 export function MissionThumbArt({ seed, biome, beacons }: { seed: string; biome: string; beacons: number }) {
-  const hue = biome === 'coast' ? 200 : biome === 'high_pass' ? 215 : biome === 'storm_plateau' ? 250 : biome === 'tundra' || biome === 'fjord' ? 195 : 120;
+  const hue = biome === 'coast' ? 200 : biome === 'high_pass' ? 215 : biome === 'storm_plateau' ? 250 : biome === 'tundra' || biome === 'fjord' ? 195 : biome === 'desert' ? 42 : biome === 'jungle' ? 135 : biome === 'autumn' ? 22 : biome === 'moor' ? 285 : 120;
   const h = hashHue(seed);
   return (
     <svg viewBox="0 0 160 90" role="img" aria-label="Mission map thumbnail (placeholder)" preserveAspectRatio="xMidYMid slice">

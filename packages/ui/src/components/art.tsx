@@ -176,6 +176,8 @@ export function siteMarkerAsset(
       return opts.done ? 'icon.marker.check' : 'icon.marker.question';
     case 'relic':
       return 'icon.marker.shrine';
+    case 'portal':
+      return 'icon.marker.portal';
     default:
       return 'icon.marker.unknown';
   }

@@ -653,3 +653,10 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
 .map-type.is-selected { border-color: var(--gold-300); box-shadow: 0 0 0 1px var(--gold-400), 0 0 0.6rem rgba(234, 208, 143, 0.3); }
 .map-type__name { font-family: var(--font-display); color: var(--gold-200); font-size: 0.9rem; }
 .map-type__text { font-size: 0.72rem; color: var(--text-dim); line-height: 1.25; }
+
+/* Hero screen: item comparison and drag-and-drop (2026-10-02) */
+.h3-compare { margin-top: 0.4rem; padding: 0.4rem 0.6rem; border: 1px dashed rgba(194, 154, 82, 0.45); border-radius: var(--radius-s); background: rgba(5, 9, 15, 0.45); display: flex; flex-direction: column; gap: 0.35rem; }
+.h3-compare__title { font-family: var(--font-display); color: var(--gold-200); font-size: 0.85rem; }
+.h3-compare__slot { display: flex; flex-direction: column; gap: 0.2rem; }
+.h3-backpack.is-droptarget .h3-backpack__slots { outline: 2px dashed var(--teal); outline-offset: 3px; border-radius: 6px; }
+.h3-slot[draggable='true'] { cursor: grab; }

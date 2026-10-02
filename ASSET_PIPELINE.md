@@ -228,8 +228,23 @@ art quality or frame rate are good. Those still need a review in the game.
 | Mesoamerican | 6 | `mesoamerican_xiuhcoatl` | `mesoamerican_xiuhcoatl` | `mesoamerican_divine_xiuhcoatl` | 2 hex | no | yes | — |
 | Mesoamerican | 7 | `mesoamerican_stone_colossus` | `mesoamerican_stone_colossus` | `mesoamerican_sun_colossus` | 2 hex | no | no | — |
 
-The neutral Centaur pair (`centaur`, `centaur_sentinel`, 2 hex, ground melee)
-uses the same rules. Every non-Greek number is proposed; final roles may
+Neutral creatures (no pantheon; random maps and campaign guards) use the same
+rules; their asset IDs are `creature.neutral.<familyId>.<base|upgraded>.*`:
+
+| Tier | Family ID | Base creature ID | Upgraded creature ID | Footprint | Flies | Shoots |
+|---|---|---|---|---|---|---|
+| 1 | `brigand` | `brigand` | `brigand_cutthroat` | 1 hex | no | no |
+| 2 | `hill_slinger` | `hill_slinger` | `sling_master` | 1 hex | no | yes |
+| 2 | `wild_boar` | `wild_boar` | `tusked_boar` | 1 hex | no | no |
+| 3 | `centaur` | `centaur` | `centaur_sentinel` | 2 hex | no | no |
+| 3 | `clay_golem` | `clay_golem` | `bronze_golem` | 1 hex | no | no |
+| 4 | `wyvern` | `wyvern` | `wyvern_matriarch` | 2 hex | yes | no |
+| 5 | `ogre` | `ogre` | `ogre_chieftain` | 2 hex | no | no |
+| 6 | `basilisk` | `basilisk` | `greater_basilisk` | 2 hex | no | no |
+| 7 | `elder_drake` | `elder_drake` | `ancient_drake` | 2 hex | yes | no |
+
+Shooters now have a shooting range in hexes (proposed values in each
+creature's statistics; Encyclopedia and creature details show it). Every non-Greek number is proposed; final roles may
 change their required clips (e.g. a shooter needs `attack_shoot`, a flyer
 `takeoff`/`fly`/`land`). "base only"/"upgraded only" means the ability is
 gained or lost on upgrade, so only that form needs the clips.
@@ -338,6 +353,15 @@ game, copied to `assets-runtime/ui/icons/final/` and registered in
 placeholder (`FINAL` in `packages/ui/src/assets/manifest.ts`). Interface icons
 without pack art take final art under `icon.ui.<name>` automatically. No screen
 changes are needed.
+
+Set and ability badges (2026-10-02) use the same path: `icon.set.<setId>`
+appears on worn and packed set pieces, the set list and item cards;
+`icon.ability.<abilityId>` on army slots, creature details and the
+Encyclopedia. Until a file is delivered they show a clearly temporary stand-in
+(a coloured gem for sets, the nearest interface glyph for abilities). The
+catalog now has 777 entries (neutral creatures, four campaign heroes and their
+opponents, story speakers, 28 mission and 4 campaign thumbnails, the range
+icon and the portal marker were added).
 
 ## 12. Mounted adventure-map heroes (six animated GLBs)
 

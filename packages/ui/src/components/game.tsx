@@ -3,6 +3,7 @@
  * strips, screen headers, status chips and creature stat blocks.
  * They render data; interaction callbacks are supplied by screens.
  */
+import { AbilityBadges } from './badges';
 import type { ReactNode } from 'react';
 import {
   RESOURCE_KEYS,
@@ -106,6 +107,7 @@ export function ArmyStrip({
                   <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="100%" style={{ border: 'none', boxShadow: 'none', width: '100%', height: '100%' }} />
                 </span>
                 <span className="slot__count num">{s.count}</span>
+                <AbilityBadges catalog={catalog} creatureId={s.creatureId} size="0.85rem" />
               </>
             ) : null}
           </button>
@@ -179,6 +181,7 @@ export function CreatureStats({ def, compare }: { def: CreatureDefinition; compa
       {row('hp', 'Health', s.hp, c?.hp, s.hp)}
       {row('speed', 'Speed', s.speed, c?.speed, s.speed)}
       {s.shots > 0 ? row('shots', 'Shots', s.shots, c?.shots, s.shots) : null}
+      {s.shots > 0 && s.range ? row('range', 'Range', `${s.range} hexes (full damage up to ${Math.floor(s.range / 2)})`, c?.range, s.range) : null}
       {row('info', 'Size', s.footprint === 2 ? 'Two hexes' : 'One hex')}
     </div>
   );

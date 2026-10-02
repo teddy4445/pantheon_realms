@@ -6,8 +6,11 @@ designs (signatures, second god choice, support buildings; difficulty, story
 scenes, skills/spells/sets, interventions, world features, random maps,
 hot-seat, results screens) — proposals, not owner decisions.
 `CAMPAIGN_2_NORSE_OUTLINE.md` describes The Winter Oath, the seven-mission
-Norse campaign the owner asked for (built with proposed, unplaytested values). The design documents in `docs/` are the source of truth;
-do not reopen decisions they settle.
+Norse campaign the owner asked for (built with proposed, unplaytested values);
+`CAMPAIGNS_3_TO_6_OUTLINE.md` the Egyptian, Japanese, Celtic and Mesoamerican
+campaigns built on its reusable arc (`packages/content/src/campaign/arc.ts`).
+The design documents in `docs/` are the source of truth; do not reopen
+decisions they settle.
 
 ## Non-negotiables
 
@@ -21,9 +24,10 @@ do not reopen decisions they settle.
   definitions using the shared requirement/effect vocabulary, not new
   classes or `if (id === …)` branches. Pantheon signatures are effect bundles
   (`PantheonDefinition.signature`); a new mechanic is a new effect *type* any
-  pantheon or god can use.
+  pantheon or god can use. Site kinds (e.g. the two-way `portal`) and
+  objective conditions are shared data too.
 * Skirmish-only features stay behind `ScenarioFeatures` / `scope: 'expanded'`;
-  The Three Beacons keeps them off (The Winter Oath turns expanded content on). Story scenes are data on the mission and
+  The Three Beacons keeps them off (The Winter Oath and the four arc campaigns turn expanded content on). Story scenes are data on the mission and
   never change play.
 * Six pantheons, seven tiers, one family per tier, exactly base + one upgrade;
   18 town locations (7 dwellings + 11 support). Gods per pantheon are

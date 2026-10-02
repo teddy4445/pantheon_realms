@@ -716,11 +716,13 @@ export class AdventureSceneController implements SceneController {
    * entity moves through the world; a mounted model plays Walk in place at the
    * matching rate, faces each step, and returns to Idle_Standing when it stops.
    */
-  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean): Promise<void> {
+  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord): Promise<void> {
     const e = this.heroes.get(heroId);
     if (!e || path.length === 0) return;
     const end = path[path.length - 1]!;
-    const start = e.coord.q === end.q && e.coord.r === end.r ? e.prevCoord : e.coord;
+    const same = (a: HexCoord | undefined, b: HexCoord) => !!a && a.q === b.q && a.r === b.r;
+    // The view may already show where the move ended (or, through a portal, the twin).
+    const start = same(end, e.coord) || same(teleportTo, e.coord) ? e.prevCoord : e.coord;
     e.locked += 1;
     e.snapIn = 0;
     this.tweens.speed = speed;
@@ -750,12 +752,38 @@ export class AdventureSceneController implements SceneController {
         );
         from = step;
       }
+      if (teleportTo) await this.playTeleport(e, teleportTo, speed, follow);
     } finally {
       e.locked -= 1;
       if (e.locked === 0) {
         this.placeHero(e, e.coord);
         e.rig?.setMoving(0);
       }
+    }
+  }
+
+  /** A hero steps into a portal (or is recalled): it sinks out of sight and rises at `to`. */
+  async playTeleport(e: HeroEntry, to: HexCoord, speed: number, follow: boolean): Promise<void> {
+    const ms = STEP_MS * 1.5;
+    e.rig?.setMoving(0);
+    if (speed > 0) await this.tweens.tween(ms, (t) => e.root.scaling.setAll(1 - 0.85 * t), linear);
+    this.placeHero(e, to);
+    if (follow) this.focus(to, speed > 0);
+    if (speed > 0) await this.tweens.tween(ms, (t) => e.root.scaling.setAll(0.15 + 0.85 * t), linear);
+    e.root.scaling.setAll(1);
+  }
+
+  /** Playback for a teleport that had no walk before it (the Recall spell). */
+  async playHeroTeleport(heroId: string, to: HexCoord, speed: number, follow: boolean): Promise<void> {
+    const e = this.heroes.get(heroId);
+    if (!e) return;
+    e.locked += 1;
+    this.tweens.speed = speed;
+    try {
+      await this.playTeleport(e, to, speed, follow);
+    } finally {
+      e.locked -= 1;
+      if (e.locked === 0) this.placeHero(e, e.coord);
     }
   }
 

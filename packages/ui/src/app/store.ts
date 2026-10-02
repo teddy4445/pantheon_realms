@@ -11,7 +11,10 @@ import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } fr
 import type { PlatformServices } from '@pr/platform';
 import { SaveManager, type SlotInfo } from './saves';
 import { recordHighScore } from './records';
-import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, savePreferences, type Preferences } from './preferences';
+import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, battlePlaybackFactor, savePreferences, type Preferences } from './preferences';
+
+/** How long the battlefield stays after the final blow before the result screen (normal playback). */
+const FINAL_BLOW_BEAT_MS = 700;
 import type { GameAudio } from '../audio/gameAudio';
 
 export type ScreenId =
@@ -567,12 +570,16 @@ export class AppStore {
       // and after the final blows have been shown.
       const result = s.lastBattleResult;
       const playerInvolved = result?.playerSide !== null;
-      void this.whenIdle().then(() => {
-        if (this.session !== session) return;
-        if (playerInvolved) this.replaceBattleWithResult();
-        else this.toast(`${result?.label ?? 'A battle'} was fought out of sight.`);
-        this.routeMissionOutcome(events);
-      });
+      // A short beat on the battlefield after the final blow has played.
+      const beat = playerInvolved && this.screen.id === 'battle' && battlePlaybackFactor(this.prefs) > 0 ? FINAL_BLOW_BEAT_MS : 0;
+      void this.whenIdle()
+        .then(() => (beat ? new Promise<void>((r) => setTimeout(r, beat)) : undefined))
+        .then(() => {
+          if (this.session !== session) return;
+          if (playerInvolved) this.replaceBattleWithResult();
+          else this.toast(`${result?.label ?? 'A battle'} was fought out of sight.`);
+          this.routeMissionOutcome(events);
+        });
       return;
     }
     this.routeMissionOutcome(events);

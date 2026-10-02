@@ -274,13 +274,13 @@ it('writes the icon inventory', () => {
     assetId: `icon.set.${set.id}`,
     name: set.name,
     group: 'Artifact set',
-    where: 'Hero screen (set status); Encyclopedia',
+    where: 'Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia',
     current: { type: 'procedural', note: 'text only today' },
     brief: `Emblem for the ${set.name}: the ${set.pieceIds.length} pieces (${set.pieceIds.map((p) => c.artifacts[p]?.name ?? p).join(', ')}) arranged as one badge.`,
     details: `${set.summary} ${set.bonuses.map((b) => b.summary).join('; ')}`,
     priority: 'later' as const,
   }));
-  sections.push({ id: 'sets', title: 'Artifact sets', intro: 'Set emblems (proposed IDs; the game shows the set name as text today).', size: '96 × 96 px PNG, transparent', rows: sets });
+  sections.push({ id: 'sets', title: 'Artifact sets', intro: 'Set emblems: the set badge on worn and packed set pieces, the set list and the artifact card (hero screen). Until delivered the badge is a coloured gem (temporary).', size: '96 × 96 px PNG, transparent', rows: sets });
 
   // --- 6. Skills
   const skills: Row[] = Object.values(c.skills).map((sk) => ({
@@ -317,13 +317,13 @@ it('writes the icon inventory', () => {
       assetId: `icon.ability.${ab.id}`,
       name: ab.name,
       group: `Ability · ${ab.activation}`,
-      where: 'Creature detail; Recruitment; Battle stack info; Encyclopedia',
+      where: 'Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia',
       current: { type: 'procedural', note: 'text chip today' },
       brief: `${ab.name}: ${ab.summary}`,
       details: ab.exactRule,
       priority: 'later' as const,
     }));
-  sections.push({ id: 'abilities', title: 'Creature abilities', intro: 'Abilities are shown as text chips today; these IDs are reserved for small badges.', size: '64 × 64 px PNG, transparent', rows: abilities });
+  sections.push({ id: 'abilities', title: 'Creature abilities', intro: 'Ability badges on army slots, creature details and the Encyclopedia, next to the ability name. Until delivered the badge is the nearest interface glyph (temporary).', size: '64 × 64 px PNG, transparent', rows: abilities });
 
   // --- 9. Effect and status art (fallbacks and battle feedback)
   const fx: Row[] = [...allIconFiles]

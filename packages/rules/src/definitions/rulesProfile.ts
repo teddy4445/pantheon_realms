@@ -60,7 +60,7 @@ export interface RulesProfile {
     readonly defenseReductionPerPoint: number;
     readonly defenseReductionCap: number;
     readonly defendMultiplier: Rational;
-    readonly longRangeDistance: number;
+    /** Damage factor for a shot in the far half of the shooter's range. */
     readonly longRangeFactor: Rational;
     readonly wallFactor: Rational;
     readonly meleePenaltyFactor: Rational;
@@ -100,19 +100,22 @@ export const PR_02_CANDIDATE: RulesProfile = {
   daysPerWeek: 7,
   armySlots: 7,
   xpThresholds: [0, 1000, 2000, 3200, 4600, 6200, 8000, 10000, 12200, 14700],
+  // Daily hero movement by the army's slowest Speed. Owner decision 2026-10-02:
+  // about 8 open-ground hexes a day (plains cost 100), half of the earlier
+  // 1,500–2,000 table. This is the one place to change the pace of the map.
   movementBySlowestSpeed: [
-    { speed: 3, points: 1500 },
-    { speed: 4, points: 1560 },
-    { speed: 5, points: 1630 },
-    { speed: 6, points: 1700 },
-    { speed: 7, points: 1760 },
-    { speed: 8, points: 1830 },
-    { speed: 9, points: 1900 },
-    { speed: 10, points: 1960 },
-    { speed: 11, points: 2000 },
+    { speed: 3, points: 750 },
+    { speed: 4, points: 780 },
+    { speed: 5, points: 815 },
+    { speed: 6, points: 850 },
+    { speed: 7, points: 880 },
+    { speed: 8, points: 915 },
+    { speed: 9, points: 950 },
+    { speed: 10, points: 980 },
+    { speed: 11, points: 1000 },
   ],
-  minimumMovement: 1500,
-  maximumMovement: 2000,
+  minimumMovement: 750,
+  maximumMovement: 1000,
   terrainCost: { plains: 100, forest: 125, rough: 125, marsh: 150, mountain: null, water: null },
   roadCost: 75,
   heroVisionRadius: 5,
@@ -142,7 +145,6 @@ export const PR_02_CANDIDATE: RulesProfile = {
     defenseReductionPerPoint: 25,
     defenseReductionCap: 700,
     defendMultiplier: { numerator: 6, denominator: 5 },
-    longRangeDistance: 10,
     longRangeFactor: { numerator: 1, denominator: 2 },
     wallFactor: { numerator: 1, denominator: 2 },
     meleePenaltyFactor: { numerator: 1, denominator: 2 },

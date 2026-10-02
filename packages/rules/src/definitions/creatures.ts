@@ -58,6 +58,12 @@ export interface CreatureStats {
   readonly speed: number;
   /** Ammunition per stack per battle; 0 means no ranged attack. */
   readonly shots: number;
+  /**
+   * Shooting range in hexes (required when \`shots\` > 0; owner decision
+   * 2026-10-02). A shooter cannot shoot a target farther away; in the far half
+   * of its range (distance × 2 > range) a shot deals half damage.
+   */
+  readonly range?: number;
   /** Occupied tactical cells. */
   readonly footprint: 1 | 2;
 }

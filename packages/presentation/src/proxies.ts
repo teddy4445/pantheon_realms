@@ -339,7 +339,9 @@ export type SiteArchetype =
   /** One-time map event (a wayside shrine / standing stones). */
   | 'event_site'
   /** Relic shrine (hold-the-relic victory). */
-  | 'relic';
+  | 'relic'
+  /** Two-way portal (an arch of standing stones around a glowing veil). */
+  | 'portal';
 
 export interface SiteProxy {
   readonly root: TransformNode;
@@ -469,6 +471,13 @@ export function buildSiteProxy(scene: Scene, mats: MaterialCache, kind: SiteArch
         add(b, cyl(b, 'column', 1.1, 0.12, 0.14, 8), root, MARBLE, [Math.cos(a) * 0.55, 0.95, Math.sin(a) * 0.55]);
       }
       flame = add(b, sph(b, 'relic', 0.3), root, '#ffd36a', [0, 0.85, 0], { emissive: 1 });
+      break;
+    case 'portal':
+      plinth(1.3);
+      add(b, box(b, 'stoneL', 0.3, 1.5, 0.3), root, '#6d6a74', [0, 0.75, 0.6]);
+      add(b, box(b, 'stoneR', 0.3, 1.5, 0.3), root, '#6d6a74', [0, 0.75, -0.6]);
+      add(b, box(b, 'capstone', 0.36, 0.26, 1.6), root, '#77737e', [0, 1.6, 0]);
+      flame = add(b, box(b, 'veil', 0.06, 1.25, 0.9), root, '#9f7bff', [0, 0.72, 0], { emissive: 0.9 });
       break;
   }
   const flagPole = new TransformNode('flagPole', scene);

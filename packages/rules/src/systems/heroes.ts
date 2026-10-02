@@ -296,7 +296,9 @@ export function hireOptions(catalog: ContentCatalog, state: MatchState, playerId
   if (!town) return [];
   const mission = scenarioMission(catalog, state);
   const pool = mission?.hireableHeroIds ?? catalog.pantheons[town.pantheonId]?.heroIds.filter((id) => catalog.heroes[id]?.availability === 'hireable') ?? [];
-  const inMatch = new Set(Object.values(state.heroes).map((h) => h.definitionId));
+  // A defeated hero's name returns to the tavern pool as a new recruit (proposed
+  // 2026-10-02; heroless empires used to stall long games once a pool ran dry).
+  const inMatch = new Set(Object.values(state.heroes).filter((h) => h.status !== 'defeated').map((h) => h.definitionId));
   const fresh = pool.filter((id) => catalog.heroes[id]?.pantheonId === town.pantheonId && !inMatch.has(id)).map((id) => ({ definitionId: id, returningHeroId: null }));
   const returning = Object.values(state.heroes)
     .filter((h) => h.ownerId === playerId && h.status === 'retreated')

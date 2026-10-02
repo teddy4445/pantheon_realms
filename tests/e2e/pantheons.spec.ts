@@ -8,7 +8,7 @@ import { inspect, waitFor } from './helpers';
  */
 const CASES = [
   { id: 'norse', rival: 'greek', patron: 'Odin', leader: 'ragnar', t1: 'norse_draugr', start: 24 },
-  { id: 'egyptian', rival: 'norse', patron: 'Ra', leader: 'hatshepsut', t1: 'egyptian_sacred_scarab', start: 20 },
+  { id: 'egyptian', rival: 'norse', patron: 'Ra', leader: 'hatshepsut', t1: 'egyptian_sacred_scarab', start: 21 },
   { id: 'japanese', rival: 'celtic', patron: 'Amaterasu', leader: 'yoshitsune', t1: 'japanese_kitsune', start: 21 },
   { id: 'celtic', rival: 'mesoamerican', patron: 'Dagda', leader: 'fionn', t1: 'celtic_pooka', start: 22 },
   { id: 'mesoamerican', rival: 'egyptian', patron: 'Quetzalcoatl', leader: 'nezahualcoyotl', t1: 'mesoamerican_feathered_serpent', start: 24 },

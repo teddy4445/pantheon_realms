@@ -7,9 +7,6 @@
  * values.
  */
 import {
-  EQUIP_SLOTS,
-  freeEquipSlot,
-  type EquipSlot,
   goldEquivalent,
   interventionsFor,
   interventionUsedThisWeek,
@@ -21,7 +18,6 @@ import {
   hexEquals,
   offeringRule,
   playerTowns,
-  quoteArtifactPurchase,
   quoteGodSelection,
   quoteOffering,
   quoteTraining,
@@ -137,7 +133,6 @@ export function offeringCandidates(catalog: ContentCatalog, belief: MatchState, 
 }
 
 const TRAINING_RESERVE_GOLD = 2500;
-const MERCHANT_RESERVE_GOLD = 4000;
 
 /** Train visiting heroes at a Training Academy while keeping a Gold reserve. */
 export function trainingCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
@@ -148,44 +143,6 @@ export function trainingCandidates(catalog: ContentCatalog, belief: MatchState, 
       if (!hexEquals(h.position, town.coord)) continue;
       const q = quoteTraining(catalog, belief, playerId, town.id, h.id);
       if (q.legal && wallet.gold - q.cost.gold >= TRAINING_RESERVE_GOLD) out.push({ kind: 'TrainHero', townId: town.id, heroId: h.id });
-    }
-  }
-  return out;
-}
-
-/** Buy an artifact for an empty equipment slot of a visiting hero, the most expensive affordable first. */
-export function merchantCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
-  const out: CommandPayload[] = [];
-  const wallet = belief.players[playerId]!.wallet;
-  for (const town of playerTowns(belief, playerId)) {
-    const stock = town.merchant?.stock ?? [];
-    for (const h of heroes) {
-      if (!hexEquals(h.position, town.coord)) continue;
-      const options = stock
-        .map((id, index) => ({ id, index }))
-        .filter((x): x is { id: string; index: number } => !!x.id && freeEquipSlot(h.equipment, catalog.artifacts[x.id]!.slot) !== null)
-        .map((x) => ({ ...x, q: quoteArtifactPurchase(catalog, belief, playerId, town.id, h.id, x.index) }))
-        .filter((x) => x.q.legal && wallet.gold - x.q.cost.gold >= MERCHANT_RESERVE_GOLD)
-        .sort((a, b) => b.q.cost.gold - a.q.cost.gold || a.index - b.index);
-      if (options[0]) out.push({ kind: 'BuyArtifact', townId: town.id, heroId: h.id, index: options[0].index });
-    }
-  }
-  return out;
-}
-
-/** Equip backpack items into empty slots (rewards and loot land in the backpack). */
-export function equipCandidates(catalog: ContentCatalog, heroes: readonly HeroState[]): CommandPayload[] {
-  const out: CommandPayload[] = [];
-  for (const h of heroes) {
-    const filled: Partial<Record<EquipSlot, true>> = {};
-    for (const s of EQUIP_SLOTS) if (h.equipment[s]) filled[s] = true;
-    for (const inst of h.backpack) {
-      const kind = catalog.artifacts[inst.artifactId]?.slot;
-      const free = kind ? freeEquipSlot(filled, kind) : null;
-      if (free) {
-        filled[free] = true;
-        out.push({ kind: 'EquipArtifact', heroId: h.id, instanceId: inst.instanceId, slot: free });
-      }
     }
   }
   return out;

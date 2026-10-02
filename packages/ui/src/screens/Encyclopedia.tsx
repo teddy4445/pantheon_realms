@@ -11,6 +11,7 @@ import { Chip, Panel, Tabs } from '../components/kit';
 import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt, SpellIcon } from '../components/art';
 import { BalanceChip, CostList, ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
+import { AbilityBadge, SetBadge } from '../components/badges';
 
 type Tab = 'creatures' | 'pantheons' | 'gods' | 'heroes' | 'town' | 'magic' | 'world' | 'rules';
 
@@ -20,6 +21,11 @@ export function EncyclopediaScreen() {
   const [tab, setTab] = useState<Tab>((store.screen.params.tab as Tab | undefined) ?? 'creatures');
   const [pantheonId, setPantheonId] = useState<string>((store.screen.params.pantheonId as string | undefined) ?? 'greek');
   const pantheon = catalog.pantheons[pantheonId]!;
+  // Neutral creatures (no pantheon) are a bestiary filter of their own.
+  const [neutral, setNeutral] = useState<boolean>(store.screen.params.neutral === true);
+  const neutralFamilies = Object.values(catalog.families)
+    .filter((f) => f.classification === 'neutral')
+    .sort((a, b) => a.tier - b.tier || (a.name < b.name ? -1 : 1));
   const set = (t: Tab) => {
     setTab(t);
     store.setParams({ tab: t });
@@ -51,27 +57,43 @@ export function EncyclopediaScreen() {
               <button
                 key={id}
                 type="button"
-                className={`filter-chip ${pantheonId === id ? 'is-on' : ''}`}
+                className={`filter-chip ${pantheonId === id && !(tab === 'creatures' && neutral) ? 'is-on' : ''}`}
                 onClick={() => {
                   setPantheonId(id);
-                  store.setParams({ pantheonId: id });
+                  setNeutral(false);
+                  store.setParams({ pantheonId: id, neutral: false });
                 }}
-                aria-pressed={pantheonId === id}
+                aria-pressed={pantheonId === id && !(tab === 'creatures' && neutral)}
               >
                 <Emblem catalog={catalog} pantheonId={id} size="1.4rem" /> {catalog.pantheons[id]?.name}
               </button>
             ))}
+            {tab === 'creatures' && neutralFamilies.length > 0 ? (
+              <button
+                type="button"
+                className={`filter-chip ${neutral ? 'is-on' : ''}`}
+                onClick={() => {
+                  setNeutral(true);
+                  store.setParams({ neutral: true });
+                }}
+                aria-pressed={neutral}
+                data-testid="codex-neutral"
+                title="Creatures of no pantheon: they guard sites, sell themselves at camps and roam the wilds of random maps"
+              >
+                Neutral
+              </button>
+            ) : null}
           </div>
         ) : null}
       </div>
       <div className="codex-body scroll">
         {tab === 'creatures' ? (
           <div className="bestiary">
-            {pantheon.roster.map((r) => {
+            {(neutral ? neutralFamilies.map((f) => ({ tier: f.tier, familyId: f.id })) : pantheon.roster).map((r) => {
               const fam = catalog.families[r.familyId];
               if (!fam) return null;
               return (
-                <div key={r.tier} className="bestiary-tier panel">
+                <div key={fam.id} className="bestiary-tier panel">
                   <div className="bestiary-tier__head">
                     <span className="tier-badge">T{r.tier as CreatureTier}</span> {fam.name} family <StatusChip status={fam.implementationStatus} />{' '}
                     <BalanceChip status={catalog.creatures[fam.baseCreatureId]?.balanceStatus ?? 'not_applicable'} />
@@ -242,7 +264,11 @@ export function EncyclopediaScreen() {
                   <div>
                     <strong>{a.name}</strong> <Chip>{ARTIFACT_SLOT_LABEL[a.slot]}</Chip>
                     {a.rarity ? <Chip tone="muted">{a.rarity}</Chip> : null}
-                    {a.setId ? <Chip tone="info">{catalog.artifactSets?.[a.setId]?.name ?? 'Set'}</Chip> : null}
+                    {a.setId ? (
+                      <Chip tone="info">
+                        <SetBadge catalog={catalog} setId={a.setId} size="0.9rem" /> {catalog.artifactSets?.[a.setId]?.name ?? 'Set'}
+                      </Chip>
+                    ) : null}
                     <div className="small dim">{a.summary}</div>
                     {a.lore ? <div className="faint small h3-lore">{a.lore}</div> : null}
                   </div>
@@ -252,7 +278,7 @@ export function EncyclopediaScreen() {
             <Panel title="Abilities">
               {Object.values(catalog.abilities).map((a) => (
                 <div key={a.id} className="codex-line">
-                  <strong>{a.name}</strong> <Chip>{a.activation}</Chip>
+                  <AbilityBadge catalog={catalog} abilityId={a.id} size="1.2rem" /> <strong>{a.name}</strong> <Chip>{a.activation}</Chip>
                   <div className="small">{a.exactRule}</div>
                   {a.restriction ? <div className="faint small">{a.restriction}</div> : null}
                 </div>
@@ -300,7 +326,7 @@ export function EncyclopediaScreen() {
             <Panel title="Artifact sets">
               {Object.values(catalog.artifactSets ?? {}).map((set) => (
                 <div key={set.id} className="codex-line">
-                  <strong>{set.name}</strong>
+                  <SetBadge catalog={catalog} setId={set.id} size="1.3rem" /> <strong>{set.name}</strong>
                   <div className="small dim">{set.summary}</div>
                   <div className="small">Pieces: {set.pieceIds.map((id) => catalog.artifacts[id]?.name ?? id).join(', ')}</div>
                   <ul className="bullets small">
@@ -356,7 +382,7 @@ export function EncyclopediaScreen() {
                 <li>15 × 11 hex battlefield; stacks act by Speed, sides alternate priority each round.</li>
                 <li>Attack advantage: +{rp.combat.attackBonusPerPoint / 10}% per point (cap {rp.combat.attackBonusCap / 10}%). Defense advantage: −{rp.combat.defenseReductionPerPoint / 10}% per point (cap {rp.combat.defenseReductionCap / 10}%).</li>
                 <li>Defending multiplies Defense by {rp.combat.defendMultiplier.numerator}/{rp.combat.defendMultiplier.denominator} until the stack acts again.</li>
-                <li>Shots beyond {rp.combat.longRangeDistance} hexes deal half damage. Shooters adjacent to an enemy cannot shoot.</li>
+                <li>Every shooter has its own range (shown in its statistics): it cannot shoot farther, and shots in the far half of its range deal half damage. Shooters adjacent to an enemy cannot shoot.</li>
                 <li>Damage is rounded down once and is at least 1. Previews never consume randomness.</li>
                 <li>Morale: negative morale can skip an activation (|m|/{rp.combat.negativeMoraleDenominator}); positive morale can grant an extra action (m/{rp.combat.positiveMoraleDenominator}).</li>
               </ul>

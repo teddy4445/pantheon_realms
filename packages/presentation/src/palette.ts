@@ -31,6 +31,10 @@ export const BIOME_TINT: Readonly<Record<string, [number, number, number]>> = {
   temperate: [1, 1, 1],
   tundra: [1, 1, 1],
   fjord: [1, 1, 1],
+  desert: [1.04, 1.0, 0.92],
+  jungle: [0.94, 1.02, 0.94],
+  autumn: [1.03, 0.98, 0.94],
+  moor: [0.97, 0.98, 1.0],
 };
 
 /**
@@ -43,14 +47,27 @@ export const BIOME_FROST: Readonly<Record<string, { readonly land: number; reado
 };
 export const SNOW_COLOR = '#e6edf4';
 
-/** A terrain's base color in a biome (winter biomes blend toward snow), as 0..1 RGB. */
+/**
+ * Other biomes blend land (and a little water) toward a ground colour: sand in the
+ * desert, deep green in the jungle, maple red-brown in autumn, heather on the
+ * moor (2026-10-02, for the new campaigns). Cosmetic only.
+ */
+export const BIOME_BLEND: Readonly<Record<string, { readonly color: string; readonly land: number; readonly water: number; readonly forest?: number }>> = {
+  desert: { color: '#d8c08a', land: 0.55, water: 0.08, forest: 0.25 },
+  jungle: { color: '#2f6a37', land: 0.32, water: 0.18, forest: 0.4 },
+  autumn: { color: '#b4693a', land: 0.18, water: 0, forest: 0.42 },
+  moor: { color: '#7d6f86', land: 0.22, water: 0.05, forest: 0.1 },
+};
+
+/** A terrain's base color in a biome (winter biomes blend toward snow, others toward their ground colour), as 0..1 RGB. */
 export function biomeTerrainRgb(t: Terrain, biome: string): [number, number, number] {
   const raw = hexToRgb(TERRAIN_COLORS[t]);
   const frost = BIOME_FROST[biome];
-  const k = frost ? (t === 'water' ? frost.water : frost.land) : 0;
+  const blend = BIOME_BLEND[biome];
+  const k = frost ? (t === 'water' ? frost.water : frost.land) : blend ? (t === 'water' ? blend.water : t === 'forest' ? (blend.forest ?? blend.land) : t === 'mountain' ? blend.land * 0.5 : blend.land) : 0;
   if (k <= 0) return raw;
-  const snow = hexToRgb(SNOW_COLOR);
-  return [raw[0] + (snow[0] - raw[0]) * k, raw[1] + (snow[1] - raw[1]) * k, raw[2] + (snow[2] - raw[2]) * k];
+  const to = hexToRgb(frost ? SNOW_COLOR : blend!.color);
+  return [raw[0] + (to[0] - raw[0]) * k, raw[1] + (to[1] - raw[1]) * k, raw[2] + (to[2] - raw[2]) * k];
 }
 
 /** CSS color of a terrain in a biome (minimaps). */
