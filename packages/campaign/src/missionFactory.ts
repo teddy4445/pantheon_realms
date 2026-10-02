@@ -41,6 +41,7 @@ import {
   heroVisionRadius,
   townVisionRadius,
   refreshMerchantStock,
+  grantSpecialtySpell,
 } from '@pr/rules';
 import { generateMap, type DecorItem, type GenerationMode } from '@pr/mapgen';
 
@@ -408,6 +409,8 @@ function buildMissionMatch(
     stats: { timeline: [], totals: {} },
   };
 
+  // Spell specialties: the hero knows its spell from the start (scenarios with specialties).
+  for (const h of Object.values(state.heroes)) grantSpecialtySpell(catalog, state, h);
   // Mission transition refill: full movement and mana; starting in town counts as a visit.
   for (const h of Object.values(state.heroes)) {
     h.movementPoints = movementBudget(catalog, state, h).total;

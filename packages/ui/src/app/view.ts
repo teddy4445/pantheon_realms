@@ -4,15 +4,12 @@
  * legality (legality always comes from the rules' quote functions).
  */
 import {
+  KEY_COLOR_LABEL,
   RESOURCE_KEYS,
-  addResources,
   dayOfWeek,
   heroAt,
   missionSite,
-  playerTowns,
-  resources,
   terrainAt,
-  townDailyIncome,
   weekOf,
   type ContentCatalog,
   type HeroState,
@@ -21,7 +18,8 @@ import {
   type PlayerState,
   type ResourceBundle,
   type SiteDefinition,
-  type TownState, scenarioMission,
+  type TownState,
+  projectedIncome,
 } from '@pr/rules';
 import { armyStrength } from '@pr/ai';
 import { viewerPlayerId } from '@pr/session';
@@ -80,6 +78,16 @@ export function siteArchetype(def: SiteDefinition): SiteArchetype {
       return 'relic';
     case 'portal':
       return 'portal';
+    case 'learning_stone':
+    case 'spell_shrine':
+    case 'skill_trainer':
+    case 'quest_hut':
+    case 'key_tent':
+    case 'key_gate':
+    case 'windmill':
+    case 'treasure_chest':
+    case 'prison':
+      return k.type;
   }
 }
 
@@ -110,6 +118,24 @@ export function siteKindLabel(def: SiteDefinition): string {
       return 'Relic shrine';
     case 'portal':
       return 'Two-way portal';
+    case 'learning_stone':
+      return `Learning stone · +${k.xp.toLocaleString('en-US')} experience once per hero`;
+    case 'spell_shrine':
+      return 'Spell shrine';
+    case 'skill_trainer':
+      return 'Skill trainer';
+    case 'quest_hut':
+      return 'Quest hut';
+    case 'key_tent':
+      return `Key tent · ${KEY_COLOR_LABEL[k.color]} key`;
+    case 'key_gate':
+      return `Key gate · needs the ${KEY_COLOR_LABEL[k.color].toLowerCase()} key`;
+    case 'windmill':
+      return 'Windmill · pays once a week';
+    case 'treasure_chest':
+      return 'Treasure chest';
+    case 'prison':
+      return 'Prison';
   }
 }
 
@@ -159,17 +185,12 @@ export function siegeStrength(catalog: ContentCatalog, town: TownState, visitor:
   return (garrison + (visitor ? heroStrength(catalog, visitor) : 0)) * (1 + 0.25 * level);
 }
 
-/** Income per day shown in the top bar (towns + owned resource sites). Display only. */
+/**
+ * Income per day shown in the top bar: the rules' own next-dawn projection (towns,
+ * owned sites, gods and weekly events, hero specialties and artifacts, difficulty).
+ */
 export function dailyIncome(catalog: ContentCatalog, state: MatchState, playerId: string): ResourceBundle {
-  let total = resources();
-  for (const t of playerTowns(state, playerId)) total = addResources(total, townDailyIncome(catalog, t));
-  const mission = scenarioMission(catalog, state);
-  for (const def of mission?.sites ?? []) {
-    if (def.kind.type !== 'resource_site') continue;
-    if (state.world.sites[def.id]?.owner !== playerId) continue;
-    total = addResources(total, { [def.kind.resource]: def.kind.dailyYield });
-  }
-  return total;
+  return projectedIncome({ catalog, state }, playerId);
 }
 
 export function hasAnyResources(b: ResourceBundle): boolean {

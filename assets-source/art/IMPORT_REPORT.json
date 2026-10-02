@@ -1,0 +1,2292 @@
+{
+ "imported": "2026-10-02",
+ "warnings": [],
+ "counts": {
+  "bust": 35,
+  "cover": 6,
+  "ending": 11,
+  "mission": 40
+ },
+ "assets": {
+  "campaign.lantern_road.cover": {
+   "file": "art/covers/campaign.lantern_road.cover.webp",
+   "kind": "cover",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/campaign.lantern_road.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "4bcb40da831fd8f0382bf0f009d89e7d409325b6b17e76e8b3c23a187818112d"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "campaign.lantern_road.thumbnail": {
+   "file": "art/cards/campaign.lantern_road.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/campaign.lantern_road.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "4bcb40da831fd8f0382bf0f009d89e7d409325b6b17e76e8b3c23a187818112d"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 campaign card from the cover (centred 16:9 crop)."
+  },
+  "campaign.new_fire.cover": {
+   "file": "art/covers/campaign.new_fire.cover.webp",
+   "kind": "cover",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/campaign.new_fire.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "ac4c5a57187f8266e165bea8bd7f341f31c6409be06bc95653cec75159384b4b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "campaign.new_fire.thumbnail": {
+   "file": "art/cards/campaign.new_fire.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/campaign.new_fire.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "ac4c5a57187f8266e165bea8bd7f341f31c6409be06bc95653cec75159384b4b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 campaign card from the cover (centred 16:9 crop)."
+  },
+  "campaign.silver_branch.cover": {
+   "file": "art/covers/campaign.silver_branch.cover.webp",
+   "kind": "cover",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/campaign.silver_branch.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0203c51977bc3b968b7ad0e268408b9ccfe3cf75a1d4e82d9b63decdb754d6bc"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "campaign.silver_branch.thumbnail": {
+   "file": "art/cards/campaign.silver_branch.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/campaign.silver_branch.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0203c51977bc3b968b7ad0e268408b9ccfe3cf75a1d4e82d9b63decdb754d6bc"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 campaign card from the cover (centred 16:9 crop)."
+  },
+  "campaign.three_beacons.cover": {
+   "file": "art/covers/campaign.three_beacons.cover.webp",
+   "kind": "cover",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/campaign.three_beacons.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "91744a6a12e81281a380b047d68438b7d0c331a3169af24754001071c2597105"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "campaign.three_beacons.thumbnail": {
+   "file": "art/cards/campaign.three_beacons.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/campaign.three_beacons.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "91744a6a12e81281a380b047d68438b7d0c331a3169af24754001071c2597105"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 campaign card from the cover (centred 16:9 crop)."
+  },
+  "campaign.twelfth_hour.cover": {
+   "file": "art/covers/campaign.twelfth_hour.cover.webp",
+   "kind": "cover",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/campaign.twelfth_hour.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "2490fea052f03a71f977a2e477ada6e059153503e3d207fff1a4694dfc7715e7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "campaign.twelfth_hour.thumbnail": {
+   "file": "art/cards/campaign.twelfth_hour.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/campaign.twelfth_hour.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "2490fea052f03a71f977a2e477ada6e059153503e3d207fff1a4694dfc7715e7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 campaign card from the cover (centred 16:9 crop)."
+  },
+  "campaign.winter_oath.cover": {
+   "file": "art/covers/campaign.winter_oath.cover.webp",
+   "kind": "cover",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/campaign.winter_oath.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a2444cf02a31c3720d17295dc8d3b82bf30c3164c4d1c790425ab5f51f761f0e"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "campaign.winter_oath.thumbnail": {
+   "file": "art/cards/campaign.winter_oath.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/campaign.winter_oath.cover.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a2444cf02a31c3720d17295dc8d3b82bf30c3164c4d1c790425ab5f51f761f0e"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 campaign card from the cover (centred 16:9 crop)."
+  },
+  "ending.lantern_road.lanterns_lit": {
+   "file": "art/endings/ending.lantern_road.lanterns_lit.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 940,
+   "source": {
+    "file": "assets-source/art/final/ending.lantern_road.lanterns_lit.png",
+    "width": 1672,
+    "height": 940,
+    "sha256": "258cc859077f8fcf11566b07e0110bceb9c73e358cd35149ef385fe0825cb8fc"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 940; native 1672 x 940 (not upscaled)."
+  },
+  "ending.lantern_road.road_open": {
+   "file": "art/endings/ending.lantern_road.road_open.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.lantern_road.road_open.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "7644f5303b777f66e92e1ea18bee2b01fee0f5373d25104035f4489d4842cf83"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.new_fire.new_sun": {
+   "file": "art/endings/ending.new_fire.new_sun.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.new_fire.new_sun.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "da4944dda56c14a2e13821ab17e74464e1091bbc8f39519ff7ffab9f6116d91f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.new_fire.old_sun": {
+   "file": "art/endings/ending.new_fire.old_sun.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.new_fire.old_sun.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "2135d46af3e32ba5fadca2a3e6c9dd31d2fbce9aae431f185b733421aee15592"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.silver_branch.branch_mended": {
+   "file": "art/endings/ending.silver_branch.branch_mended.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 940,
+   "source": {
+    "file": "assets-source/art/final/ending.silver_branch.branch_mended.png",
+    "width": 1672,
+    "height": 940,
+    "sha256": "f5ee3e39665d53db2efe26181b44c7d6ef0fb1c3432cf1d5a2ed5670a1717d2a"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 940; native 1672 x 940 (not upscaled)."
+  },
+  "ending.silver_branch.branch_planted": {
+   "file": "art/endings/ending.silver_branch.branch_planted.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.silver_branch.branch_planted.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a5bb497ca27d1b769fba9ba712b65f8ac629559da2503e3b2ccd41607e8b2e31"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.three_beacons.epilogue": {
+   "file": "art/endings/ending.three_beacons.epilogue.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.three_beacons.epilogue.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "18f48ee8d58db5f0540d115363154ecea626c6bde30f8c3b0f3cb3c1b2807fb1"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.twelfth_hour.coil_bound": {
+   "file": "art/endings/ending.twelfth_hour.coil_bound.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.twelfth_hour.coil_bound.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "81ecff0df8e08b816540db915d67cfb1ce68f5f979232cc756fda66518e53b43"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.twelfth_hour.coil_cut": {
+   "file": "art/endings/ending.twelfth_hour.coil_cut.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.twelfth_hour.coil_cut.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "6b098acf8dc91f9bde0c206e496b6573af03622778d96fb39193270068edf3c0"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.winter_oath.sword_broken": {
+   "file": "art/endings/ending.winter_oath.sword_broken.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/ending.winter_oath.sword_broken.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "250d3ca788cf5319df40bf0e8cb485c4eced9d0a61a31713f2f557b61fd7889c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; native 1672 x 941 (not upscaled)."
+  },
+  "ending.winter_oath.sword_returned": {
+   "file": "art/endings/ending.winter_oath.sword_returned.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 940,
+   "source": {
+    "file": "assets-source/art/final/ending.winter_oath.sword_returned.png",
+    "width": 1672,
+    "height": 940,
+    "sha256": "20b0a9539e0f04fbbaab9fd8ec9b8fc4ab23794e534549868b6cc2f4b1d73fe1"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 940; native 1672 x 940 (not upscaled)."
+  },
+  "hero.celtic.cathal.bust": {
+   "file": "art/busts/hero.celtic.cathal.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0202,
+    0.9971,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.celtic.cathal.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "f51605da4560035dcf8c1a18f73cd81963b6feee01058df00a7fbbe559c177b7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.celtic.dubhghall.bust": {
+   "file": "art/busts/hero.celtic.dubhghall.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0,
+    0.999,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.celtic.dubhghall.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "1e933aff4e2e332e39d5a8461dd19dd7e070bada076471da755c292cfd6b25e2"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.celtic.fiachra.bust": {
+   "file": "art/busts/hero.celtic.fiachra.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0469,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.celtic.fiachra.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "cb4e044cc153b5633de351919c0fbac24aacaf196de20aa69af362391cbdc398"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.celtic.orla.bust": {
+   "file": "art/busts/hero.celtic.orla.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0176,
+    0.0397,
+    0.9756,
+    0.9798
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.celtic.orla.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "50d361239da74844afaae5a47c4d84d789a24ee9de4b8b36661d6c085aee0cdd"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.celtic.sadb.bust": {
+   "file": "art/busts/hero.celtic.sadb.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0098,
+    0.0013,
+    0.9844,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.celtic.sadb.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "ecb65b7a3bc1fa805ee25e99c6ebe25767a5cfa5ff5d994ac22c84156ff30d1a"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.egyptian.djedkhonsu.bust": {
+   "file": "art/busts/hero.egyptian.djedkhonsu.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0195,
+    0.054,
+    0.9912,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.egyptian.djedkhonsu.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "7f2331deeeaf6a8e4593afd5f1281a0f42d1628ed8f2056bb30dfca5b05c60f9"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.egyptian.nebet.bust": {
+   "file": "art/busts/hero.egyptian.nebet.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0029,
+    0.026,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.egyptian.nebet.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "c56f5d9eeb5dfe564f63071172a29e725ba62c237da7f4dc476e78eda89be4f7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.egyptian.paser.bust": {
+   "file": "art/busts/hero.egyptian.paser.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.002,
+    0.0182,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.egyptian.paser.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "9cb7e799a5068b02a5afd2e6dca04c769c3895999f81d5408e2658e134462ac0"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.egyptian.pawah.bust": {
+   "file": "art/busts/hero.egyptian.pawah.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0195,
+    0.0332,
+    0.9844,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.egyptian.pawah.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "e1596920b4e67414bd62f30c99c7708cf5cf1aa8ebe96cbb77f0a8314e067c59"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.egyptian.seshet.bust": {
+   "file": "art/busts/hero.egyptian.seshet.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0303,
+    0.0632,
+    0.9873,
+    0.9831
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.egyptian.seshet.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "380c300b65f731366bdaf1e85eeb13aa696d8b2415d8bdcdd8472d4ae0e2bc43"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.greek.alexios.bust": {
+   "file": "art/busts/hero.greek.alexios.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0697,
+    0.9873,
+    0.9941
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.greek.alexios.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "a4e933fc9fcf379f246cc8d47716d10772021f9c7aa2e38e4c751880d75b4832"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.greek.ione.bust": {
+   "file": "art/busts/hero.greek.ione.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.002,
+    0.0117,
+    0.9922,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.greek.ione.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "bce9caeae56752b6521d2b19491d4a8a3a6121982428b422e366f6c4d3455144"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.greek.melas.bust": {
+   "file": "art/busts/hero.greek.melas.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0107,
+    0.0508,
+    0.998,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.greek.melas.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "5f1cf9ff1d095f82c0d6a186095bcdf2a5370141b3fffec76bfbda10b670ed7c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.greek.thaleia.bust": {
+   "file": "art/busts/hero.greek.thaleia.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0068,
+    0.0228,
+    0.9922,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.greek.thaleia.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "0f5b2b4cbb7c580ad9075d011dd80e2cbb88ad31fc207dee4992b50bed16716d"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.japanese.akane.bust": {
+   "file": "art/busts/hero.japanese.akane.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0039,
+    0.0924,
+    1.0,
+    0.9896
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.japanese.akane.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "6c30085df21a724af06e958c44bb310bd37736256aca472ac7b7f434a4059f56"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.japanese.genzo.bust": {
+   "file": "art/busts/hero.japanese.genzo.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0137,
+    0.0111,
+    0.9893,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.japanese.genzo.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "eb0ded68e8cd5ff432e206726074c2451c0b6ad359b22638c31fbf723f4f9947"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.japanese.kurogane.bust": {
+   "file": "art/busts/hero.japanese.kurogane.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0436,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.japanese.kurogane.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "688db0c76284c332f817df5343d4df10de360ab5dedbbfda973ab8b47b166efe"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.japanese.shiro.bust": {
+   "file": "art/busts/hero.japanese.shiro.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0104,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.japanese.shiro.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "7ef94217be4ad44119ad6d2c4af19c5bf550bd7ce12bf5cc6bdab3a2d3b5652a"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.japanese.yamikage.bust": {
+   "file": "art/busts/hero.japanese.yamikage.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0124,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.japanese.yamikage.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "a9932eda7faee040b8fdcf8a920cd65aedd51f3a1ce9b142d70ceb44db26aec8"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.mesoamerican.chimal.bust": {
+   "file": "art/busts/hero.mesoamerican.chimal.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0283,
+    0.0378,
+    0.999,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.mesoamerican.chimal.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "5f56e7232c6b7740c54f6fcfe6d3924d7e31f80eb7a4c3ef7cb3a18a15f1164a"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.mesoamerican.itzel.bust": {
+   "file": "art/busts/hero.mesoamerican.itzel.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0273,
+    0.0905,
+    0.9668,
+    0.9753
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.mesoamerican.itzel.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "19e259c3f9d2fe1c7981fc0c2f409029a347652f6bbbba817dda6b99fe64288c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.mesoamerican.itztli.bust": {
+   "file": "art/busts/hero.mesoamerican.itztli.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0,
+    0.999,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.mesoamerican.itztli.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "561e5a7029d2e7c14ffe7f461b6d6ec76bf207aaf5021bc9da9501e5f20f3df0"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.mesoamerican.tecuani.bust": {
+   "file": "art/busts/hero.mesoamerican.tecuani.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0176,
+    0.9785,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.mesoamerican.tecuani.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "ef87b0f80f59df69cde3456da5715d6f31ac0afaacc9768b51ca38d64d8a6b94"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.mesoamerican.xoco.bust": {
+   "file": "art/busts/hero.mesoamerican.xoco.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0146,
+    0.0085,
+    0.9961,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.mesoamerican.xoco.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "f1639a76e5f12f08f52485bc4fcf6ed6c2b9f2ac1e7a4f13644d48e20fab23a0"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.barrow_captain.bust": {
+   "file": "art/busts/hero.norse.barrow_captain.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0098,
+    0.0866,
+    1.0,
+    0.9642
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.barrow_captain.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "3d0dff5b63f44906aabd757923c5980888f0b88813b77660c05007dbde8de957"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.bone_helm.bust": {
+   "file": "art/busts/hero.norse.bone_helm.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0475,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.bone_helm.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "403ba681a4a7e7a10c4025a0be247e2ea8780d1cae5247bc73b05ab2015c38f0"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.eydis.bust": {
+   "file": "art/busts/hero.norse.eydis.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.042,
+    0.0104,
+    0.9766,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.eydis.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "506ab215956574480c4d7e7bded70b731c013fa89ea5edab06158af0c8d9c491"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.grey_jarl.bust": {
+   "file": "art/busts/hero.norse.grey_jarl.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.grey_jarl.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "9e51f16c7bc4afa02c73109b3be36e4b375d18218b6b8102e3503846d283f338"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.hervor.bust": {
+   "file": "art/busts/hero.norse.hervor.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0625,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.hervor.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "7e0b38ca653376ef369e91a9f056da67e10552bcfc18e05c20810d22dfa56969"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.hrafn.bust": {
+   "file": "art/busts/hero.norse.hrafn.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.001,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.hrafn.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "f983a078919a6cf609c1cca67d8b91d00f08b1ebe4c35ce931903ea17019cebc"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.jokul.bust": {
+   "file": "art/busts/hero.norse.jokul.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0156,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.jokul.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "da24f651700c6d836680bfe9de0895330751296786c49ba44ae0c7832e09ce91"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.skeggi.bust": {
+   "file": "art/busts/hero.norse.skeggi.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0146,
+    0.0768,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.skeggi.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "f62e1e09ed252447b8c38c3d99cbe0a9dde885efe1ff711509fba54c0757c4ac"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.svanhild.bust": {
+   "file": "art/busts/hero.norse.svanhild.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.svanhild.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "600ab164a850e6e328330504f452cf43f9cc1f184dd77bd25aeeb0c7501b24ee"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.troll_wife.bust": {
+   "file": "art/busts/hero.norse.troll_wife.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.112,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.troll_wife.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "b3d45c08f9294bebc8fa4f38b83de5416968efd50a9daf025de89bbb8967fb99"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "hero.norse.ulfhild.bust": {
+   "file": "art/busts/hero.norse.ulfhild.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0195,
+    1.0,
+    1.0
+   ],
+   "source": {
+    "file": "assets-source/art/final/hero.norse.ulfhild.bust.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "778492b30cdb1d900de469e959de4de72aec672a78a596d29369b1ccf4416d0a"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "mission.lantern_road.m01.briefing": {
+   "file": "art/missions/mission.lantern_road.m01.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "970041b948ba1b67c6b2f8a138daa957d96760085f7702f33ea1d23408af0456"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.lantern_road.m01.thumbnail": {
+   "file": "art/cards/mission.lantern_road.m01.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "970041b948ba1b67c6b2f8a138daa957d96760085f7702f33ea1d23408af0456"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.lantern_road.m02.briefing": {
+   "file": "art/missions/mission.lantern_road.m02.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "803a2171c61bc13593069ac05bdc0fceddd2926feda216c864ebcd069c913046"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.lantern_road.m02.thumbnail": {
+   "file": "art/cards/mission.lantern_road.m02.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "803a2171c61bc13593069ac05bdc0fceddd2926feda216c864ebcd069c913046"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.lantern_road.m03.briefing": {
+   "file": "art/missions/mission.lantern_road.m03.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "ce8583fab7e35d1bd996c7fec60b07248fa44a74c1f6c34cfe4f7abdf210637c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.lantern_road.m03.thumbnail": {
+   "file": "art/cards/mission.lantern_road.m03.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "ce8583fab7e35d1bd996c7fec60b07248fa44a74c1f6c34cfe4f7abdf210637c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.lantern_road.m04.briefing": {
+   "file": "art/missions/mission.lantern_road.m04.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "6992eacd662c503b35c4ec8bba90f91975ee8976b2f67d565eb34420f6edf317"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.lantern_road.m04.thumbnail": {
+   "file": "art/cards/mission.lantern_road.m04.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "6992eacd662c503b35c4ec8bba90f91975ee8976b2f67d565eb34420f6edf317"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.lantern_road.m05.briefing": {
+   "file": "art/missions/mission.lantern_road.m05.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "e789d1e00d1249f42df8328fbf01aa569fbbc5f4d692c64246cbd2786207abd6"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.lantern_road.m05.thumbnail": {
+   "file": "art/cards/mission.lantern_road.m05.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "e789d1e00d1249f42df8328fbf01aa569fbbc5f4d692c64246cbd2786207abd6"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.lantern_road.m06.briefing": {
+   "file": "art/missions/mission.lantern_road.m06.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "5084b4fb846506c5a85e02813f23b977d16b7aec9c88a044c95c8b07ae7d06b3"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.lantern_road.m06.thumbnail": {
+   "file": "art/cards/mission.lantern_road.m06.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "5084b4fb846506c5a85e02813f23b977d16b7aec9c88a044c95c8b07ae7d06b3"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.lantern_road.m07.briefing": {
+   "file": "art/missions/mission.lantern_road.m07.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "de8683ba7e2954e1440691b4138dd13a902cad53f30fd82185a8616fcfa11d3c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.lantern_road.m07.thumbnail": {
+   "file": "art/cards/mission.lantern_road.m07.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.lantern_road.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "de8683ba7e2954e1440691b4138dd13a902cad53f30fd82185a8616fcfa11d3c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.new_fire.m01.briefing": {
+   "file": "art/missions/mission.new_fire.m01.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "443a17ac300f38e2c876e79b26d5c24c267399fc1bb9b48f7492a3d3efab4f6f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.new_fire.m01.thumbnail": {
+   "file": "art/cards/mission.new_fire.m01.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "443a17ac300f38e2c876e79b26d5c24c267399fc1bb9b48f7492a3d3efab4f6f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.new_fire.m02.briefing": {
+   "file": "art/missions/mission.new_fire.m02.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "df7899f44ec8eb7f7223b824052bb37281762f45bcd37e6219e4a8ce7ebd17e8"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.new_fire.m02.thumbnail": {
+   "file": "art/cards/mission.new_fire.m02.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "df7899f44ec8eb7f7223b824052bb37281762f45bcd37e6219e4a8ce7ebd17e8"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.new_fire.m03.briefing": {
+   "file": "art/missions/mission.new_fire.m03.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "94024afca11feea275f713d47bd76de35fcc0388ba7dd6ca6d4be45c4cb3fd41"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.new_fire.m03.thumbnail": {
+   "file": "art/cards/mission.new_fire.m03.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "94024afca11feea275f713d47bd76de35fcc0388ba7dd6ca6d4be45c4cb3fd41"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.new_fire.m04.briefing": {
+   "file": "art/missions/mission.new_fire.m04.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "26001e9cab53ccd64b85f7a03f0b5f8eaecc988f388267f1772f428031d2646b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.new_fire.m04.thumbnail": {
+   "file": "art/cards/mission.new_fire.m04.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "26001e9cab53ccd64b85f7a03f0b5f8eaecc988f388267f1772f428031d2646b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.new_fire.m05.briefing": {
+   "file": "art/missions/mission.new_fire.m05.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "44f92045504ea3c2d058d8bd92471bc646dbbdb07451492d56de27fe3586f33c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.new_fire.m05.thumbnail": {
+   "file": "art/cards/mission.new_fire.m05.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "44f92045504ea3c2d058d8bd92471bc646dbbdb07451492d56de27fe3586f33c"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.new_fire.m06.briefing": {
+   "file": "art/missions/mission.new_fire.m06.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "943a54f1e37aa5bf46e68553432dbd187ef5b1e60edfaea20012aad4557ae42d"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.new_fire.m06.thumbnail": {
+   "file": "art/cards/mission.new_fire.m06.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "943a54f1e37aa5bf46e68553432dbd187ef5b1e60edfaea20012aad4557ae42d"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.new_fire.m07.briefing": {
+   "file": "art/missions/mission.new_fire.m07.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "b01c80b368706d9826b5701889eaa0bc602fa99f3ec17861bdf6862d455dbc3f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.new_fire.m07.thumbnail": {
+   "file": "art/cards/mission.new_fire.m07.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.new_fire.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "b01c80b368706d9826b5701889eaa0bc602fa99f3ec17861bdf6862d455dbc3f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.silver_branch.m01.briefing": {
+   "file": "art/missions/mission.silver_branch.m01.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "bc18e746318b4a30ae8b1c975990573c144ed5759d77a9eabb2f14cfdc39a3c7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.silver_branch.m01.thumbnail": {
+   "file": "art/cards/mission.silver_branch.m01.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "bc18e746318b4a30ae8b1c975990573c144ed5759d77a9eabb2f14cfdc39a3c7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.silver_branch.m02.briefing": {
+   "file": "art/missions/mission.silver_branch.m02.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "83fc90e86ceb1ef5820240b1821133be1dc5425e62d3b78fdd2f5db541ce00d4"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.silver_branch.m02.thumbnail": {
+   "file": "art/cards/mission.silver_branch.m02.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "83fc90e86ceb1ef5820240b1821133be1dc5425e62d3b78fdd2f5db541ce00d4"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.silver_branch.m03.briefing": {
+   "file": "art/missions/mission.silver_branch.m03.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "6280cbfc40477f69466eefeda9dea60758684ff8f009398ac5c2ff258ad0b253"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.silver_branch.m03.thumbnail": {
+   "file": "art/cards/mission.silver_branch.m03.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "6280cbfc40477f69466eefeda9dea60758684ff8f009398ac5c2ff258ad0b253"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.silver_branch.m04.briefing": {
+   "file": "art/missions/mission.silver_branch.m04.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "4dfc0d39064315105c75b65904fe62f3f10e0cb13a1f4fa820921a3d845f657e"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.silver_branch.m04.thumbnail": {
+   "file": "art/cards/mission.silver_branch.m04.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "4dfc0d39064315105c75b65904fe62f3f10e0cb13a1f4fa820921a3d845f657e"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.silver_branch.m05.briefing": {
+   "file": "art/missions/mission.silver_branch.m05.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "faed67b7f58b4331f73f963e2f81f231d1d1642bfd63d1bc2ffb5799b50582f8"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.silver_branch.m05.thumbnail": {
+   "file": "art/cards/mission.silver_branch.m05.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "faed67b7f58b4331f73f963e2f81f231d1d1642bfd63d1bc2ffb5799b50582f8"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.silver_branch.m06.briefing": {
+   "file": "art/missions/mission.silver_branch.m06.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "d52abc4a02f550d7fb99d7fee3c4bef42528cf9424b55b2926f8e20e4138cb2f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.silver_branch.m06.thumbnail": {
+   "file": "art/cards/mission.silver_branch.m06.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "d52abc4a02f550d7fb99d7fee3c4bef42528cf9424b55b2926f8e20e4138cb2f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.silver_branch.m07.briefing": {
+   "file": "art/missions/mission.silver_branch.m07.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "caeb1871f15bef89bb3d65923af7a25d1c2c0082be0785c3994ab49061df61cd"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.silver_branch.m07.thumbnail": {
+   "file": "art/cards/mission.silver_branch.m07.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.silver_branch.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "caeb1871f15bef89bb3d65923af7a25d1c2c0082be0785c3994ab49061df61cd"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.skirmish.random.briefing": {
+   "file": "art/missions/mission.skirmish.random.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.skirmish.random.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a1a9bfa482243d44e0855d7d2230219ebc11effcc4427117fa9c39a6facb29e5"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.skirmish.random.thumbnail": {
+   "file": "art/cards/mission.skirmish.random.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.skirmish.random.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a1a9bfa482243d44e0855d7d2230219ebc11effcc4427117fa9c39a6facb29e5"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.skirmish.twin_harbors.briefing": {
+   "file": "art/missions/mission.skirmish.twin_harbors.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.skirmish.twin_harbors.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "3709ff23c34fd61278bc763e0e5413db06532acdf92f34247762e7a3bbcbd5d4"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.skirmish.twin_harbors.thumbnail": {
+   "file": "art/cards/mission.skirmish.twin_harbors.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.skirmish.twin_harbors.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "3709ff23c34fd61278bc763e0e5413db06532acdf92f34247762e7a3bbcbd5d4"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.three_beacons.m01.briefing": {
+   "file": "art/missions/mission.three_beacons.m01.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.three_beacons.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "1a7e9fdc85e1496d8ceca530488a70184617a4e108c211d9b37b49574b8411d9"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.three_beacons.m01.thumbnail": {
+   "file": "art/cards/mission.three_beacons.m01.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.three_beacons.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "1a7e9fdc85e1496d8ceca530488a70184617a4e108c211d9b37b49574b8411d9"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.three_beacons.m02.briefing": {
+   "file": "art/missions/mission.three_beacons.m02.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.three_beacons.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "1d1872e8bb55e4061af55b63e83d9f42733b8b8942eca7fae0953238f1125f60"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.three_beacons.m02.thumbnail": {
+   "file": "art/cards/mission.three_beacons.m02.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.three_beacons.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "1d1872e8bb55e4061af55b63e83d9f42733b8b8942eca7fae0953238f1125f60"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.three_beacons.m03.briefing": {
+   "file": "art/missions/mission.three_beacons.m03.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.three_beacons.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "12f2a4230cb082030474bbb452380a98e59e073cb2bbf999304bcfa47963f3f7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.three_beacons.m03.thumbnail": {
+   "file": "art/cards/mission.three_beacons.m03.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.three_beacons.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "12f2a4230cb082030474bbb452380a98e59e073cb2bbf999304bcfa47963f3f7"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.twelfth_hour.m01.briefing": {
+   "file": "art/missions/mission.twelfth_hour.m01.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0cb8f27408262aa724125cd65af21e0a036ab5b8b28061ab2a8b9c972dee2f1f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.twelfth_hour.m01.thumbnail": {
+   "file": "art/cards/mission.twelfth_hour.m01.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0cb8f27408262aa724125cd65af21e0a036ab5b8b28061ab2a8b9c972dee2f1f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.twelfth_hour.m02.briefing": {
+   "file": "art/missions/mission.twelfth_hour.m02.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "421604d8730eaf92f0079dcfcc2f52dc534ca0aba408ecf8333c3bc4c903f492"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.twelfth_hour.m02.thumbnail": {
+   "file": "art/cards/mission.twelfth_hour.m02.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "421604d8730eaf92f0079dcfcc2f52dc534ca0aba408ecf8333c3bc4c903f492"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.twelfth_hour.m03.briefing": {
+   "file": "art/missions/mission.twelfth_hour.m03.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "54e6c498359f2c0bde46429757151cba3f1291222ee75768f4089e876d767cb5"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.twelfth_hour.m03.thumbnail": {
+   "file": "art/cards/mission.twelfth_hour.m03.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "54e6c498359f2c0bde46429757151cba3f1291222ee75768f4089e876d767cb5"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.twelfth_hour.m04.briefing": {
+   "file": "art/missions/mission.twelfth_hour.m04.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "9d5a2af65b9b9ff5d2fa9067735cd05f0ce0d60311f8bcc9e2f41ecaf40e2f8f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.twelfth_hour.m04.thumbnail": {
+   "file": "art/cards/mission.twelfth_hour.m04.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "9d5a2af65b9b9ff5d2fa9067735cd05f0ce0d60311f8bcc9e2f41ecaf40e2f8f"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.twelfth_hour.m05.briefing": {
+   "file": "art/missions/mission.twelfth_hour.m05.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "9fc4ceca1d477cd005f467174d0fb86fd88dbe2ff07af3bf708ad060457add85"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.twelfth_hour.m05.thumbnail": {
+   "file": "art/cards/mission.twelfth_hour.m05.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "9fc4ceca1d477cd005f467174d0fb86fd88dbe2ff07af3bf708ad060457add85"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.twelfth_hour.m06.briefing": {
+   "file": "art/missions/mission.twelfth_hour.m06.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "50adb395c5c075cfae3342d80b5063129c786a6de701d139dd72488fedece1bf"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.twelfth_hour.m06.thumbnail": {
+   "file": "art/cards/mission.twelfth_hour.m06.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "50adb395c5c075cfae3342d80b5063129c786a6de701d139dd72488fedece1bf"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.twelfth_hour.m07.briefing": {
+   "file": "art/missions/mission.twelfth_hour.m07.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "43144b88060635d0b66d6eef6056c2c6b7fe54d22d693f35ec27433646e46b15"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.twelfth_hour.m07.thumbnail": {
+   "file": "art/cards/mission.twelfth_hour.m07.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.twelfth_hour.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "43144b88060635d0b66d6eef6056c2c6b7fe54d22d693f35ec27433646e46b15"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.winter_oath.m01.briefing": {
+   "file": "art/missions/mission.winter_oath.m01.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "71388c0cfee9b3da1f8f9771178f3b5e58d33c358a77ff9cfcc91392a6d5e99b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.winter_oath.m01.thumbnail": {
+   "file": "art/cards/mission.winter_oath.m01.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m01.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "71388c0cfee9b3da1f8f9771178f3b5e58d33c358a77ff9cfcc91392a6d5e99b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.winter_oath.m02.briefing": {
+   "file": "art/missions/mission.winter_oath.m02.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "8068012653b4926935848e2e19787cf58e54928b480b3c0f31b2bd2bb39f6ecf"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.winter_oath.m02.thumbnail": {
+   "file": "art/cards/mission.winter_oath.m02.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m02.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "8068012653b4926935848e2e19787cf58e54928b480b3c0f31b2bd2bb39f6ecf"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.winter_oath.m03.briefing": {
+   "file": "art/missions/mission.winter_oath.m03.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "2c8b32cbb47f1689837071e44b21ba638b32203c6f0a41a0ece612f2006af673"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.winter_oath.m03.thumbnail": {
+   "file": "art/cards/mission.winter_oath.m03.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m03.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "2c8b32cbb47f1689837071e44b21ba638b32203c6f0a41a0ece612f2006af673"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.winter_oath.m04.briefing": {
+   "file": "art/missions/mission.winter_oath.m04.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a324c9331a195a7eabe3d503d0e3bd239fcdb817706e4dd67fe8f7e8e2e7ea7b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.winter_oath.m04.thumbnail": {
+   "file": "art/cards/mission.winter_oath.m04.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m04.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a324c9331a195a7eabe3d503d0e3bd239fcdb817706e4dd67fe8f7e8e2e7ea7b"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.winter_oath.m05.briefing": {
+   "file": "art/missions/mission.winter_oath.m05.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0bfa279605c0591288f27526e173273acdb440d9bc27717ef54549b80d44b410"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.winter_oath.m05.thumbnail": {
+   "file": "art/cards/mission.winter_oath.m05.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m05.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0bfa279605c0591288f27526e173273acdb440d9bc27717ef54549b80d44b410"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.winter_oath.m06.briefing": {
+   "file": "art/missions/mission.winter_oath.m06.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "7e65a6a26b16a0b262644efd8e81000194eb58d51cfc2058daa9c15da360bf3a"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.winter_oath.m06.thumbnail": {
+   "file": "art/cards/mission.winter_oath.m06.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m06.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "7e65a6a26b16a0b262644efd8e81000194eb58d51cfc2058daa9c15da360bf3a"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "mission.winter_oath.m07.briefing": {
+   "file": "art/missions/mission.winter_oath.m07.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "18f3b5b53af6e402e3747079b99e2e923408d8f199a968de0d9eef20748bee69"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; briefing art, native 1672 x 941 (not upscaled)."
+  },
+  "mission.winter_oath.m07.thumbnail": {
+   "file": "art/cards/mission.winter_oath.m07.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360,
+   "crop": [
+    0,
+    0,
+    1672,
+    940
+   ],
+   "source": {
+    "file": "assets-source/art/final/mission.winter_oath.m07.thumbnail.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "18f3b5b53af6e402e3747079b99e2e923408d8f199a968de0d9eef20748bee69"
+   },
+   "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  }
+ }
+}

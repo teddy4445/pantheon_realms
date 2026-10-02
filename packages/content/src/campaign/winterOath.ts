@@ -360,7 +360,7 @@ const DEBRIEF_POLICY = [
 const COMMON = {
   campaignId: 'winter_oath',
   signatureMechanics: true,
-  features: { expandedContent: true },
+  features: { expandedContent: true, heroSpecialties: true },
   heroHiringEnabled: false,
   heroHiringDisabledReason: 'Hervor carries the oath alone. Hero hiring is disabled in The Winter Oath.',
   protectedHeroFailure: true,

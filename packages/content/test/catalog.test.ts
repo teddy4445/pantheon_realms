@@ -65,11 +65,19 @@ describe.each(PROPOSED)('%s pantheon (proposed values)', (pid) => {
     const gods = p.godIds.map((id) => catalog.gods[id]!);
     expect(gods.filter((g) => g.role === 'patron' && g.implementationStatus === 'implemented')).toHaveLength(1);
     const minors = gods.filter((g) => g.role === 'minor' && g.exclusivityGroup === 'first_minor');
-    expect(minors).toHaveLength(2);
-    expect(minors.flatMap((g) => g.benefits.filter((b) => b.type === 'commander_attribute').map((b) => (b as { attribute: string }).attribute)).sort()).toEqual(['attack', 'defense']);
-    // Proposed second choice: three gods, each with a real blessing, after a first commitment.
+    // The Ares/Athena mirrors plus two gods added 2026-10-02 (owner answer "Split 2 + 2").
+    expect(minors).toHaveLength(4);
+    const mirrors = minors.filter((g) => g.benefits.some((b) => b.type === 'spell_eligibility'));
+    expect(mirrors.flatMap((g) => g.benefits.filter((b) => b.type === 'commander_attribute').map((b) => (b as { attribute: string }).attribute)).sort()).toEqual(['attack', 'defense']);
+    for (const g of minors) {
+      expect(g.favorCost).toBe(20);
+      expect(g.benefits.length).toBeGreaterThan(0);
+    }
+    // Proposed second choice: five gods (three + two), each with a real blessing, after a first commitment.
     const second = gods.filter((g) => g.exclusivityGroup === 'second_minor');
-    expect(second).toHaveLength(3);
+    expect(second).toHaveLength(5);
+    // Every god of the pantheon is designed now.
+    expect(gods.filter((g) => g.role === 'undesigned')).toHaveLength(0);
     for (const g of second) {
       expect(g.role).toBe('minor');
       expect(g.benefits.length).toBeGreaterThan(0);

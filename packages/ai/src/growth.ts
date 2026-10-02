@@ -70,12 +70,34 @@ export function effectValue(e: EffectDefinition, ctx: { spellbook: boolean } = {
       return 5;
     case 'spell_eligibility':
       return ctx.spellbook ? 4 : 1;
+    case 'spell_power_bonus':
+      return (ctx.spellbook ? 3 : 0) * e.amount;
+    case 'wounded_fury':
+      return 6 * e.attack;
     default:
       return 1;
   }
 }
 
 const sumEffects = (effects: readonly EffectDefinition[], ctx: { spellbook: boolean }) => effects.reduce((n, e) => n + effectValue(e, ctx), 0);
+
+/**
+ * How much the AI wants a Tavern candidate for its specialty (heuristic): a
+ * creature specialty for a family of its own roster by tier, a spell specialty,
+ * or a daily income. Equal values keep the roster order.
+ */
+export function specialtyHireValue(catalog: ContentCatalog, definitionId: string, pantheonId: string): number {
+  const sp = catalog.heroes[definitionId]?.specialty;
+  if (!sp) return 0;
+  if (sp.kind === 'creature') {
+    const fam = sp.familyId ? catalog.families[sp.familyId] : undefined;
+    return fam && fam.pantheonId === pantheonId ? 4 + fam.tier : 2;
+  }
+  if (sp.kind === 'spell') return 7;
+  const income = sp.effects.find((e) => e.type === 'daily_income');
+  if (!income || income.type !== 'daily_income') return 0;
+  return income.resource === 'gold' ? income.amount / 25 : income.resource === 'crystal' ? 9 * income.amount : 4 * income.amount;
+}
 
 // ---------------------------------------------------------------------------
 // Level-up skill choices

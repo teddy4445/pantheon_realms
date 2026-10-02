@@ -23,6 +23,16 @@ import {
 
 const twin = () => GameDriver.mission('skirmish_twin_harbors');
 
+/**
+ * An idle player's town needs defenders to see out a week: since 2026-10-02 the AI
+ * rival's leader marches with free joiners (neutral reactions) and reaches an
+ * undefended Westharbor by day 6.
+ */
+function holdWestharbor(d: GameDriver): GameDriver {
+  d.state.towns['westharbor']!.garrison.slots[0] = { stackId: 'test_guard', creatureId: 'cyclops', count: 40 };
+  return d;
+}
+
 function randomDriver(seed = 77): GameDriver {
   const d = twin();
   const g = createRandomSkirmish(d.catalog, { seed, size: 'small', seats: [{ pantheonId: 'greek', controller: 'human' }, { pantheonId: 'norse', controller: 'ai' }], victory: { type: 'elimination' }, monsters: 'none' });
@@ -35,7 +45,7 @@ function leader(state: MatchState, playerId = 'player') {
 
 describe('divine interventions', () => {
   it('cost Favor, work once per week and never in The Three Beacons', () => {
-    const d = twin();
+    const d = holdWestharbor(twin());
     d.player.wallet.favor = 30;
     const gold = d.player.wallet.gold;
     d.do({ kind: 'InvokeIntervention', interventionId: 'tithe_of_the_faithful' });
@@ -116,7 +126,7 @@ describe('creature camps and map events', () => {
 
 describe('weekly events', () => {
   it('a new week draws an event from the catalog in skirmish, never in the campaign', () => {
-    const d = twin();
+    const d = holdWestharbor(twin());
     expect(d.state.world.weeklyEventId ?? null).toBeNull();
     for (let i = 0; i < 7; i++) d.endDay();
     const id = d.state.world.weeklyEventId;

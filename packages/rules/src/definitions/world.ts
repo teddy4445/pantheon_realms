@@ -168,7 +168,39 @@ export type SiteKind =
    * out of its twin `exitSiteId` at once, at no movement cost. Blocked while
    * another hero stands on the twin. To travel back, step off and on again.
    */
-  | { readonly type: 'portal'; readonly exitSiteId: SiteId };
+  | { readonly type: 'portal'; readonly exitSiteId: SiteId }
+  // --- Adventure-map sites added 2026-10-02 (owner request; random maps; proposed values) ---
+  /** Learning stone: every hero that stops here once gains `xp` experience. */
+  | { readonly type: 'learning_stone'; readonly xp: number }
+  /** Spell shrine: every hero with a spellbook (and the Wisdom for its tier) learns the spell once. */
+  | { readonly type: 'spell_shrine'; readonly spellId: SpellId }
+  /** Skill trainer: every hero with a free skill slot that lacks the skill learns it at Basic, once. */
+  | { readonly type: 'skill_trainer'; readonly skillId: SkillId }
+  /** Quest hut: the first hero to fulfil the quest and stop here receives the reward (once). */
+  | { readonly type: 'quest_hut'; readonly quest: QuestHutQuest; readonly reward: RewardDefinition }
+  /** Key tent: a visiting hero's player receives the key of this colour (opens matching key gates). */
+  | { readonly type: 'key_tent'; readonly color: KeyColor }
+  /** Key gate: passable only for players holding the key of its colour; blocks everyone else. */
+  | { readonly type: 'key_gate'; readonly color: KeyColor }
+  /** Windmill: the first hero to stop here each world week collects `weekly` for its player. */
+  | { readonly type: 'windmill'; readonly weekly: ResourceCost }
+  /** Treasure chest: the first hero to open it chooses `gold` Gold or `xp` experience. */
+  | { readonly type: 'treasure_chest'; readonly gold: number; readonly xp: number }
+  /** Prison: the first hero to stop here frees a captive hero, who joins that player at `level`. */
+  | { readonly type: 'prison'; readonly heroDefinitionId: HeroDefinitionId; readonly level: number };
+
+/** What a quest hut asks for (proposed 2026-10-02). */
+export type QuestHutQuest =
+  /** Hand over these resources when you stop at the hut. */
+  | { readonly type: 'deliver'; readonly resources: ResourceCost }
+  /** Defeat the guard of this site yourself first (a battle won, or the guards fled or joined you). */
+  | { readonly type: 'defeat'; readonly siteId: SiteId; readonly label: string };
+
+/** Key colours of key tents and gates (HoMM3 border guards). */
+export type KeyColor = 'azure' | 'crimson' | 'emerald' | 'amber' | 'violet' | 'ivory';
+export const KEY_COLORS: readonly KeyColor[] = ['azure', 'crimson', 'emerald', 'amber', 'violet', 'ivory'];
+export const KEY_COLOR_LABEL: Readonly<Record<KeyColor, string>> = { azure: 'Azure', crimson: 'Crimson', emerald: 'Emerald', amber: 'Amber', violet: 'Violet', ivory: 'Ivory' };
+export const KEY_COLOR_HEX: Readonly<Record<KeyColor, string>> = { azure: '#3b8fe0', crimson: '#c0392b', emerald: '#2e9e5b', amber: '#d9a21b', violet: '#8e5bd6', ivory: '#e8e2cf' };
 
 export interface MapEventOptionDefinition {
   readonly label: string;

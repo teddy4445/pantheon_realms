@@ -94,11 +94,25 @@ export function battleSideEffects(
               ...(e.minTier !== undefined ? { minTier: e.minTier } : {}),
               ...(e.maxTier !== undefined ? { maxTier: e.maxTier } : {}),
               ...(e.ability !== undefined ? { ability: e.ability } : {}),
+              ...(e.familyId !== undefined ? { familyId: e.familyId } : {}),
             },
           ]
         : [],
     ),
+    ...spellPowerBonusOf(fx),
   };
+}
+
+/** spell_power_bonus effects summed per spell (omitted when there are none, as in older saves). */
+function spellPowerBonusOf(fx: readonly EffectDefinition[]): { spellPowerBonus?: Record<string, number> } {
+  const out: Record<string, number> = {};
+  for (const e of fx) if (e.type === 'spell_power_bonus') out[e.spellId] = (out[e.spellId] ?? 0) + e.amount;
+  return Object.keys(out).length > 0 ? { spellPowerBonus: out } : {};
+}
+
+/** Spell Power a side's commander casts `spellId` with: its Power plus specialty bonuses frozen at battle start. */
+export function castingPower(side: { effects: BattleSideEffects | null; commander: { power: number } | null }, spellId: string): number {
+  return (side.commander?.power ?? 0) + (side.effects?.spellPowerBonus?.[spellId] ?? 0);
 }
 
 /** Harmony thresholds a side's player has (for display and for the battle snapshot). */

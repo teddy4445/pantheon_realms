@@ -213,7 +213,7 @@ function missionBase(ctx: ArcCampaignContext, n: number, kind: string, w: Missio
     victory: w.victory,
     debriefPolicy: ctx.debriefPolicy,
     signatureMechanics: true,
-    features: { expandedContent: true },
+    features: { expandedContent: true, heroSpecialties: true },
     heroHiringEnabled: false,
     heroHiringDisabledReason: ctx.hiringReason,
     protectedHeroFailure: true,

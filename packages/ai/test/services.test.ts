@@ -27,7 +27,8 @@ describe('strategic AI: gods and town services', () => {
     const c = rivalCandidates(d);
     const pick = c.find((x) => x.kind === 'SelectGod');
     expect(pick).toBeDefined();
-    expect(['athena', 'ares']).toContain(pick!.kind === 'SelectGod' ? pick!.godId : '');
+    // Any first-choice god (four since 2026-10-02), never a second-choice one first.
+    expect(d.catalog.gods[pick!.kind === 'SelectGod' ? pick!.godId : '']?.exclusivityGroup).toBe('first_minor');
     d.do(pick!, 'rival');
     // Later the second choice is taken too once it is legal.
     d.state.towns['eastharbor']!.buildings['civic_hall'] = 3;

@@ -4,26 +4,13 @@
  * Zeus (fixed campaign patron, no documented mechanical bonus), Athena and
  * Ares (exclusive first minor-god choice, design/02 §8) follow the documents.
  * Hermes, Demeter and Hades form a PROPOSED second choice (common/gods.ts).
- * The other four gods from the concept board are listed as undesigned.
+ * Apollo and Artemis widen the first choice and Poseidon and Hera the second
+ * (proposed 2026-10-02; owner answer "Split 2 + 2").
  */
 import type { GodDefinition, HeroDefinition, PantheonDefinition } from '@pr/rules';
-import { BLESSINGS, blessing, secondMinorGod } from '../common/gods';
+import { BLESSINGS, blessing, firstMinorGod, secondMinorGod } from '../common/gods';
 import { SIGNATURES } from '../common/signatures';
 
-const undesigned = (id: string, name: string, domain: string): GodDefinition => ({
-  id,
-  pantheonId: 'greek',
-  name,
-  domain,
-  role: 'undesigned',
-  requirements: [],
-  favorCost: 0,
-  benefits: [],
-  benefitSummary: ['Blessing not yet designed for this build.'],
-  portraitAssetId: `god.greek.${id}.portrait`,
-  implementationStatus: 'preparation',
-  provenance: { source: 'concept-board' },
-});
 
 export const GREEK_GODS: readonly GodDefinition[] = [
   {
@@ -79,6 +66,14 @@ export const GREEK_GODS: readonly GodDefinition[] = [
     implementationStatus: 'implemented',
     provenance: { source: 'v0.2-candidate-rules' },
   },
+  // Added 2026-10-02 (owner answer "Split 2 + 2"): Apollo and Artemis join the first
+  // choice, Poseidon and Hera the second. Proposed; not available in The Three Beacons.
+  ...(
+    [
+      ['apollo', 'Apollo', 'Sun & Inspiration', 'Sing before the battle, and the battle sings back.', blessing(BLESSINGS.attribute('power', 1), BLESSINGS.morale(1))],
+      ['artemis', 'Artemis', 'Hunt & Wilderness', 'Wait for the wind. Then loose.', blessing(BLESSINGS.creatures('attack', 2, { ability: 'shooter', label: 'Your shooters' }), BLESSINGS.vision(1))],
+    ] as const
+  ).map(([id, name, domain, quote, b]) => firstMinorGod({ id, pantheonId: 'greek', name, domain, quote, ...b, portraitAssetId: `god.greek.${id}.portrait`, templeId: 'temple_2' })),
   // Second minor-god choice (proposed this build; not available in The Three Beacons).
   ...(
     [
@@ -89,10 +84,14 @@ export const GREEK_GODS: readonly GodDefinition[] = [
   ).map(([id, name, domain, quote, b]) =>
     secondMinorGod({ id, pantheonId: 'greek', name, domain, quote, ...b, portraitAssetId: `god.greek.${id}.portrait`, templeId: 'temple_2', civicHallId: 'city_hall' }),
   ),
-  undesigned('poseidon', 'Poseidon', 'Sea & Dominion'),
-  undesigned('apollo', 'Apollo', 'Sun & Inspiration'),
-  undesigned('artemis', 'Artemis', 'Hunt & Wilderness'),
-  undesigned('hera', 'Hera', 'Authority & Family'),
+  ...(
+    [
+      ['poseidon', 'Poseidon', 'Sea & Dominion', 'The tide does not ask the shore.', blessing(BLESSINGS.movement(10), BLESSINGS.creatures('attack', 1, { minTier: 4, label: 'Your tier 4–7 creatures' }))],
+      ['hera', 'Hera', 'Authority & Family', 'A city is a household. Keep it full.', blessing(BLESSINGS.growth(1, 4), BLESSINGS.morale(1))],
+    ] as const
+  ).map(([id, name, domain, quote, b]) =>
+    secondMinorGod({ id, pantheonId: 'greek', name, domain, quote, ...b, portraitAssetId: `god.greek.${id}.portrait`, templeId: 'temple_2', civicHallId: 'city_hall' }),
+  ),
 ];
 
 const hero = (

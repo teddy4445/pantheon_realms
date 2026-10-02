@@ -324,16 +324,16 @@ export const MESOAMERICAN_SPEC: PantheonKitSpec = {
     { name: 'Huitzilopochtli', domain: 'War & Power', mirrors: 'attack', quote: 'The sun must fight to rise. So must you.' },
     { name: 'Coatlicue', domain: 'Earth & Creation', mirrors: 'defense', quote: 'The earth holds everything, and lets nothing fall.' },
   ],
+  extraFirstMinors: [
+    { name: 'Mixcoatl', domain: 'Hunt & Survival', quote: 'Follow the deer; the deer knows the way.', blessing: blessing(BLESSINGS.creatures('attack', 2, { ability: 'shooter', label: 'Your shooters' }), BLESSINGS.vision(1)) },
+    { name: 'Xolotl', domain: 'Journey & Underworld Guidance', quote: 'I have walked every road below. This one is short.', blessing: blessing(BLESSINGS.attribute('knowledge', 1), BLESSINGS.movement(10)) },
+  ],
   secondMinors: [
     { name: 'Tlaloc', domain: 'Rain & Fertility', quote: 'The rain comes to those who remember it.', blessing: blessing(BLESSINGS.growth(2, 3)) },
     { name: 'Tezcatlipoca', domain: 'Shadow & Fate', quote: 'Look in the smoking mirror. See who wins.', blessing: blessing(BLESSINGS.luck(2)) },
     { name: 'Xiuhtecuhtli', domain: 'Fire & Renewal', quote: 'Feed the new fire, and it gives back more.', blessing: blessing(BLESSINGS.offering(100, 15)) },
-  ],
-  otherGods: [
-    ['Xolotl', 'Journey & Underworld Guidance'],
-    ['Mixcoatl', 'Hunt & Survival'],
-    ['Chalchiuhtlicue', 'Waters & Healing'],
-    ['Mictlantecuhtli', 'Death & Transformation'],
+    { name: 'Chalchiuhtlicue', domain: 'Waters & Healing', quote: 'The river washes the wound and fills the field.', blessing: blessing(BLESSINGS.recovery(10), BLESSINGS.growth(1, 4)) },
+    { name: 'Mictlantecuhtli', domain: 'Death & Transformation', quote: 'The nearer to me, the harder they fight.', blessing: blessing(BLESSINGS.fury(2), BLESSINGS.luck(1)) },
   ],
   classes: [
     { id: 'jaguar_knight', name: 'Jaguar Knight', mirrors: 'champion', summary: 'An elite warrior of the jaguar order who leads from the front' },

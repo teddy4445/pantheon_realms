@@ -29,8 +29,8 @@ Reports land in `balance-reports/balance-<timestamp>.md` (readable) and `.json`
 | `random` | Whole matches on generated random maps (small, 2 and 3 empires, few monsters), every seat the same pantheon, all seats AI. Reports wins by seat. | Mirror matches: only seat order and the map differ, so an even generator gives each seat 1/N of the wins. |
 
 The duels are hero battles in the matching Twin Harbors pairing: both
-commanders have zeroed attributes, skills and equipment, so only the troops
-and each side's **pantheon signature** count (Harmony, Berserk Fury, free
+commanders have zeroed attributes, skills and equipment and no hero specialty,
+so only the troops and each side's **pantheon signature** count (Harmony, Berserk Fury, free
 Shapeshift). Signatures that act after a battle (Afterlife, Glory) or on the
 economy (Offering) show up only in the `skirmish` suite. Add
 `--no-signatures` to measure troops alone (the neutral gold-mine guard is the

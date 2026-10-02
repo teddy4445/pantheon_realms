@@ -32,6 +32,14 @@
  * placed on the side of each region away from the twin's region so a portal
  * is a real shortcut.
  *
+ * 0.4 (owner request 2026-10-02): every region also gets a learning stone, a
+ * spell shrine, a skill trainer, a quest hut ("defeat or bring X"), a weekly
+ * windmill, two treasure chests (gold or experience), a prison holding a
+ * captive hero of that empire's pantheon, and a key tent whose colour opens a
+ * key gate sealing a locked treasury (a pocket walled by mountains, HoMM3
+ * border guards). Placement, rewards and colours are copied by the same
+ * symmetry, so every empire still gets the same map.
+ *
  * Output is DATA: a WorldMapDefinition and a full MissionDefinition (which the
  * match embeds), plus cosmetic decor and a validation report. Content (kits,
  * creatures, events, artifacts by rarity) comes from the catalog; nothing here
@@ -64,7 +72,7 @@ import {
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
 
-export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.3';
+export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.4';
 export const RANDOM_TEMPLATE_ID = 'random_skirmish';
 
 export type SkirmishMapSize = 'small' | 'medium' | 'large' | 'huge';
@@ -278,6 +286,39 @@ function eventSite(ctx: BuildCtx, band: 'near' | 'far'): Pick<SiteDefinition, 'n
   return { name: t.title, description: t.text, kind: { type: 'map_event', title: t.title, text: t.text, options: t.options } };
 }
 
+/** Sanctum spells of tiers 1–2 that belong to no pantheon (so every empire may learn the same one). */
+function shrineSpell(ctx: BuildCtx): string | null {
+  const pool = Object.values(ctx.catalog.spells)
+    .filter((sp) => sp.access === 'sanctum' && !sp.pantheonId && sp.tier <= 2 && sp.implementationStatus === 'implemented' && (sp.scope !== 'expanded' || ctx.scope.expandedContent))
+    .map((sp) => sp.id)
+    .sort();
+  return pool.length ? pool[ctx.rng.nextInt(pool.length)]! : null;
+}
+
+/** Secondary skills of no pantheon (Wisdom and Tactics included) for the skill trainer. */
+function trainerSkill(ctx: BuildCtx): string | null {
+  const pool = Object.values(ctx.catalog.skills)
+    .filter((sk) => !sk.pantheonId && (sk.scope !== 'expanded' || ctx.scope.expandedContent))
+    .map((sk) => sk.id)
+    .sort();
+  return pool.length ? pool[ctx.rng.nextInt(pool.length)]! : null;
+}
+
+const round50 = (n: number) => Math.max(50, Math.round(n / 50) * 50);
+
+function chestSite(ctx: BuildCtx, gold: number, xp: number): Pick<SiteDefinition, 'name' | 'description' | 'kind'> {
+  const g = round50((gold * ctx.treasurePct) / 100);
+  const x = round50((xp * ctx.treasurePct) / 100);
+  return {
+    name: 'Treasure Chest',
+    description: `An iron-bound chest. Take the ${g.toLocaleString('en-US')} Gold inside, or study the maps and journals in it for ${x.toLocaleString('en-US')} experience.`,
+    kind: { type: 'treasure_chest', gold: g, xp: x },
+  };
+}
+
+const KEY_COLOR_ORDER = ['azure', 'crimson', 'emerald', 'amber'] as const;
+const KEY_LABEL: Readonly<Record<(typeof KEY_COLOR_ORDER)[number], string>> = { azure: 'Azure', crimson: 'Crimson', emerald: 'Emerald', amber: 'Amber' };
+
 // ---------------------------------------------------------------------------
 // Region content (generated once for the first empire, copied to every other)
 // ---------------------------------------------------------------------------
@@ -292,6 +333,19 @@ interface SiteSpec {
   /** Gets a road from the town (full roads: every site with `road`; sparse: only the `essential` ones). */
   readonly road: 'essential' | 'full' | 'none';
   readonly build: (ctx: BuildCtx) => Omit<SiteDefinition, 'id' | 'anchorId' | 'coord'>;
+  /** Placed after the wandering monsters and portals (generator 0.4 sites), so those keep their room. */
+  readonly late?: boolean;
+  /** Per-region variant of the built site (key colour, the region's own quest target, the captive hero). */
+  readonly localize?: (built: Omit<SiteDefinition, 'id' | 'anchorId' | 'coord'>, region: number, rc: RegionCtx) => Omit<SiteDefinition, 'id' | 'anchorId' | 'coord'>;
+}
+
+/** What a per-region variant may depend on (region index i is the i-th seat's region). */
+interface RegionCtx {
+  readonly catalog: ContentCatalog;
+  /** The captive hero for region i (null when that pantheon has nobody left to imprison). */
+  readonly prisoners: readonly (string | null)[];
+  /** Keys of the region specs that were placed (a quest may only name a placed site). */
+  readonly placed: ReadonlySet<string>;
 }
 
 function regionSpecs(R: number, homeR: number, treasure: TreasureLevel): SiteSpec[] {
@@ -373,8 +427,121 @@ function regionSpecs(R: number, homeR: number, treasure: TreasureLevel): SiteSpe
         };
       },
     },
+    // --- Sites added in generator 0.4 (owner request 2026-10-02; proposed values) ---
+    {
+      key: 'learning_stone',
+      late: true,
+      zone: 'home',
+      band: [4, Math.max(4, homeR)],
+      road: 'none',
+      build: () => ({ name: 'Learning Stone', description: 'A standing stone carved with the deeds of old heroes. Every hero who stops to read it gains 1,000 experience, once.', kind: { type: 'learning_stone', xp: 1000 } }),
+    },
+    { key: 'chest_near',
+      late: true, zone: 'home', band: [3, Math.min(6, homeR)], road: 'none', build: (ctx) => chestSite(ctx, 1000, 750) },
+    {
+      key: 'windmill',
+      late: true,
+      zone: 'home',
+      band: [3, Math.max(3, homeR)],
+      road: 'full',
+      build: (ctx) => {
+        const options: ResourceCost[] = [{ wood: 3, stone: 3 }, { crystal: 2 }, { gold: 600, wood: 2 }, { stone: 2, crystal: 1 }];
+        const weekly = loot(ctx, options[ctx.rng.nextInt(options.length)]!);
+        const text = Object.entries(weekly)
+          .filter(([, v]) => (v ?? 0) > 0)
+          .map(([k, v]) => `${(v as number).toLocaleString('en-US')} ${k[0]!.toUpperCase() + k.slice(1)}`)
+          .join(' and ');
+        return { name: 'Windmill', description: `The millers pay the first hero who calls each week: ${text}.`, kind: { type: 'windmill', weekly } };
+      },
+    },
+    {
+      key: 'key_tent',
+      late: true,
+      zone: 'home',
+      band: [3, Math.max(3, homeR)],
+      road: 'none',
+      build: () => ({ name: 'Key Tent', description: 'A keymaster’s tent.', kind: { type: 'key_tent', color: KEY_COLOR_ORDER[0] } }),
+      localize: (b, i) => {
+        const color = KEY_COLOR_ORDER[i % KEY_COLOR_ORDER.length]!;
+        return { ...b, name: `${KEY_LABEL[color]} Key Tent`, description: `A keymaster’s tent. Visit it to receive the ${KEY_LABEL[color].toLowerCase()} key, which opens every ${KEY_LABEL[color].toLowerCase()} key gate.`, kind: { type: 'key_tent', color } };
+      },
+    },
+    {
+      key: 'spell_shrine',
+      late: true,
+      zone: 'outer',
+      band: [outerLo, outerLo + 3],
+      road: 'none',
+      build: (ctx) => {
+        const spellId = shrineSpell(ctx);
+        const sp = spellId ? ctx.catalog.spells[spellId] : undefined;
+        if (!sp) return { name: 'Supply Cache', description: 'Abandoned supplies.', kind: { type: 'pickup', reward: { resources: loot(ctx, { gold: 500 }) } } };
+        return { name: `Shrine of ${sp.name}`, description: `A wayside shrine. Every hero with a spellbook who prays here learns ${sp.name} (tier ${sp.tier}).`, kind: { type: 'spell_shrine', spellId: sp.id } };
+      },
+    },
+    {
+      key: 'skill_trainer',
+      late: true,
+      zone: 'outer',
+      band: [outerLo, outerLo + 3],
+      road: 'none',
+      build: (ctx) => {
+        const skillId = trainerSkill(ctx);
+        const sk = skillId ? ctx.catalog.skills[skillId] : undefined;
+        if (!sk) return { name: 'Supply Cache', description: 'Abandoned supplies.', kind: { type: 'pickup', reward: { resources: loot(ctx, { gold: 500 }) } } };
+        return { name: `${sk.name} Trainer`, description: `An old master teaches ${sk.name} (Basic) to every hero who has a free skill slot and does not know it yet.`, kind: { type: 'skill_trainer', skillId: sk.id } };
+      },
+    },
+    {
+      key: 'quest_hut',
+      late: true,
+      zone: 'outer',
+      band: [outerLo + 1, outerLo + 4],
+      road: 'none',
+      build: (ctx) => {
+        const art = pickArtifact(ctx, ['minor']);
+        // Half of the huts ask for a delivery, half for the defeat of the region's ruin guardians.
+        if (ctx.rng.nextInt(2) === 0) {
+          const asks: ResourceCost[] = [{ wood: 10, stone: 10 }, { crystal: 5 }, { wood: 6, stone: 6, crystal: 2 }];
+          const resources = asks[ctx.rng.nextInt(asks.length)]!;
+          return {
+            name: 'Quest Hut',
+            description: 'A hermit needs building supplies and pays well for them.',
+            kind: { type: 'quest_hut', quest: { type: 'deliver', resources }, reward: withArtifact({ resources: loot(ctx, { gold: 1500 }) }, art) },
+          };
+        }
+        return {
+          name: 'Quest Hut',
+          description: 'A hermit whose village the ruin guardians drove out promises a reward to whoever defeats them.',
+          kind: { type: 'quest_hut', quest: { type: 'defeat', siteId: 'treasure_1', label: 'Ruin guardians' }, reward: withArtifact({ questXp: 1500 }, art) },
+        };
+      },
+      localize: (b, i, rc) => {
+        if (b.kind.type !== 'quest_hut' || b.kind.quest.type !== 'defeat') return b;
+        if (!rc.placed.has('treasure')) {
+          return { ...b, description: 'A hermit needs building supplies and pays well for them.', kind: { ...b.kind, quest: { type: 'deliver', resources: { wood: 10, stone: 10 } } } };
+        }
+        return { ...b, kind: { ...b.kind, quest: { ...b.kind.quest, siteId: `treasure_${i + 1}` } } };
+      },
+    },
+    { key: 'chest_far',
+      late: true, zone: 'outer', band: [outerLo + 1, far], road: 'none', build: (ctx) => chestSite(ctx, 1500, 1250) },
+    {
+      key: 'prison',
+      late: true,
+      zone: 'outer',
+      band: [Math.max(outerLo, far - 3), far + 1],
+      road: 'none',
+      build: () => ({ name: 'Prison', description: 'A hero languishes here.', kind: { type: 'prison', heroDefinitionId: '', level: 4 } }),
+      localize: (b, i, rc) => {
+        const id = rc.prisoners[i];
+        const hero = id ? rc.catalog.heroes[id] : undefined;
+        if (!hero || b.kind.type !== 'prison') return { name: 'Abandoned Prison', description: 'Empty cells and rusted chains. Somebody left supplies behind.', kind: { type: 'pickup', reward: { resources: { gold: 500 } } } };
+        return { ...b, name: 'Prison', description: `${hero.name}, ${hero.title}, is held captive here. The first hero to stop here frees them; they join that empire at level ${b.kind.level}.`, kind: { ...b.kind, heroDefinitionId: hero.id } };
+      },
+    },
   ];
-  if (treasure === 'scarce') return specs.filter((s) => s.key !== 'event_near' && s.key !== 'trinket' && s.key !== 'crystal');
+  if (treasure === 'scarce') return specs.filter((s) => s.key !== 'event_near' && s.key !== 'trinket' && s.key !== 'crystal' && s.key !== 'chest_near');
   if (treasure === 'rich') {
     specs.push(
       { key: 'gold_small', zone: 'home', band: [3, Math.max(3, homeR)], road: 'essential', build: () => resourceSite('gold_mine', 250) },
@@ -413,7 +580,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const treasure: TreasureLevel = opts.treasure ?? 'normal';
   const wealth: StartWealth = opts.startWealth ?? 'normal';
   const roadsSetting: RoadDensity = opts.roads ?? 'full';
-  const features = opts.features ?? { expandedContent: true, weeklyEvents: true, interventions: true };
+  const features = opts.features ?? { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true };
   const seed = opts.seed >>> 0;
   const Rh = SKIRMISH_SIZE_RADIUS[opts.size];
   const W = 2 * Rh + 3;
@@ -544,22 +711,28 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const chosen: { spec: SiteSpec; pos: HexCoord }[] = [];
   const gateClear = (c: HexCoord) => gates.every((g) => axialDistance(g.pos, c) >= 2);
   const taken = (c: HexCoord, gap: number) => chosen.some((x) => axialDistance(x.pos, c) < gap) || axialDistance(c, A) < 3 || !gateClear(c);
-  for (const spec of regionSpecs(R, homeR, treasure)) {
-    let [lo, hi] = spec.band;
-    let picked: HexCoord | null = null;
-    for (let widen = 0; widen < 5 && !picked; widen++) {
-      const cands = regionA.filter((c) => {
-        const d = axialDistance(c, A);
-        const z = zoneOf(c);
-        const zoneOk = mapType === 'highlands' ? z === spec.zone : z !== 'center';
-        return d >= lo && d <= hi && zoneOk && !taken(c, 2) && relDist(c) <= Rh - 1 && !nearHard(c);
-      });
-      if (cands.length > 0) picked = cands[rng.nextInt(cands.length)]!;
-      lo = Math.max(2, lo - 1);
-      hi += 2;
+  const specs = regionSpecs(R, homeR, treasure);
+  /** Late specs keep clear of the monster homes and portals placed before them. */
+  const lateBlocked: HexCoord[] = [];
+  const placeSpecs = (list: readonly SiteSpec[]) => {
+    for (const spec of list) {
+      let [lo, hi] = spec.band;
+      let picked: HexCoord | null = null;
+      for (let widen = 0; widen < 5 && !picked; widen++) {
+        const cands = regionA.filter((c) => {
+          const d = axialDistance(c, A);
+          const z = zoneOf(c);
+          const zoneOk = mapType === 'highlands' ? z === spec.zone : z !== 'center';
+          return d >= lo && d <= hi && zoneOk && !taken(c, 2) && relDist(c) <= Rh - 1 && !nearHard(c) && lateBlocked.every((b) => axialDistance(b, c) >= 2);
+        });
+        if (cands.length > 0) picked = cands[rng.nextInt(cands.length)]!;
+        lo = Math.max(2, lo - 1);
+        hi += 2;
+      }
+      if (picked) chosen.push({ spec, pos: picked });
     }
-    if (picked) chosen.push({ spec, pos: picked });
-  }
+  };
+  placeSpecs(specs.filter((x) => !x.late));
   // Inner treasures of the Crossroads center: one vault per empire just inside its gate.
   const inner: HexCoord[] = [];
   if (mapType === 'crossroads' && gates[0]) {
@@ -626,6 +799,42 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     }
   }
 
+  // Generator 0.4 sites, placed after the monsters and portals so those keep their room.
+  lateBlocked.push(...monsterHomes, ...portalBase);
+  placeSpecs(specs.filter((x) => x.late));
+
+  // Locked treasury (generator 0.4): a pocket walled by structural mountains, entered only
+  // through a key gate on the side facing the town. Chosen in the first region (open ground
+  // two hexes around, away from every other site) and copied by symmetry like the rest.
+  let pocket: { treasury: HexCoord; gate: HexCoord } | null = null;
+  {
+    const busy = [...chosen.map((x) => x.pos), ...monsterHomes, ...portalBase, ...inner, ...gates.map((g) => g.pos)];
+    const cands = regionA.filter((c) => {
+      const d = axialDistance(c, A);
+      if (d < Math.min(homeR, 5) || d > R + 3 || relDist(c) < centerR + 3 || relDist(c) > Rh - 3) return false;
+      if (mapType === 'highlands' && zoneOf(c) !== 'outer') return false;
+      if (busy.some((b) => axialDistance(b, c) < 3)) return false;
+      if (busy.some((b) => axialNeighbors(c).some((nb) => axialDistance(b, nb) < 2))) return false;
+      for (let dq = -2; dq <= 2; dq++)
+        for (let dr = Math.max(-2, -dq - 2); dr <= Math.min(2, -dq + 2); dr++) {
+          const x = { q: c.q + dq, r: c.r + dr };
+          if (!inRegionA(x) || hard.has(hexKey(x))) return false;
+        }
+      return true;
+    });
+    if (cands.length > 0 && chosen.some((x) => x.spec.key === 'key_tent')) {
+      const treasury = cands[rng.nextInt(cands.length)]!;
+      const gate = axialNeighbors(treasury).sort((a, b) => axialDistance(a, A) - axialDistance(b, A) || (hexKey(a) < hexKey(b) ? -1 : 1))[0]!;
+      for (const nb of axialNeighbors(treasury)) if (hexKey(nb) !== hexKey(gate)) hardOrbit(nb, 'mountain');
+      setOrbit(treasury, 'plains');
+      setOrbit(gate, 'plains');
+      // Open ground around the walls so the gate is never the only way past them.
+      for (const nb of axialNeighbors(gate)) if (!hard.has(hexKey(nb)) && !passableT(tAt(nb))) setOrbit(nb, 'rough');
+      for (const x of cellsRel) if (axialDistance(x, treasury) === 2 && !hard.has(hexKey(x)) && !passableT(tAt(x))) setOrbit(x, 'rough');
+      pocket = { treasury, gate };
+    }
+  }
+
   // Clearings: every site stands on open ground with an open ring around it (the wild forest's glades).
   for (const c of portalBase) {
     clearOrbit(c);
@@ -687,7 +896,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       k = c ? hexKey(c) : '';
     }
   };
-  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...monsterHomes, ...gates.map((g) => g.pos), ...portalBase];
+  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...monsterHomes, ...gates.map((g) => g.pos), ...portalBase, ...(pocket ? [pocket.gate, pocket.treasury] : [])];
   for (let pass = 0; pass < 3; pass++) {
     const reach = reachFrom(A);
     const missing = targets.filter((t) => !reach.has(hexKey(t)));
@@ -699,9 +908,10 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const roadEdges = new Set<string>();
   const route = (from: HexCoord, to: HexCoord): HexCoord[] | null => {
     // Dijkstra over relative coords; soft mountains cost a lot (opened later), walls and water are closed.
+    const keyGates = new Set(pocket ? group.map((g) => hexKey(g(pocket!.gate))) : []);
     const cost = (c: HexCoord) => {
       const t = tAt(c);
-      if (!t || t === 'water' || !inside(c) || hard.has(hexKey(c))) return null;
+      if (!t || t === 'water' || !inside(c) || hard.has(hexKey(c)) || keyGates.has(hexKey(c))) return null;
       if (t === 'mountain') return 40;
       return t === 'plains' ? 4 : t === 'marsh' ? 7 : 5 + (noise(c, 'road') > 0.5 ? 1 : 0);
     };
@@ -770,12 +980,56 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   townsRel.forEach((t, i) => {
     sites.push({ id: `site_${townIds[i]}`, anchorId: `site_${townIds[i]}`, coord: abs(t), name: townNames[i]!, description: `${opts.seats[i]!.name ?? townNames[i]}’s home town.`, kind: { type: 'town', townId: townIds[i]! } });
   });
+  // Captive heroes (generator 0.4): one per region, of that seat's pantheon, never a starting
+  // leader and never twice. Drawn in seat order from the pantheon's hireable heroes.
+  const leaderIds = (() => {
+    const used = new Map<string, number>();
+    return kits.map((k) => {
+      const n = used.get(k.pantheonId) ?? 0;
+      used.set(k.pantheonId, n + 1);
+      return k.leaders[n % k.leaders.length]!.definitionId;
+    });
+  })();
+  const prisoners: (string | null)[] = [];
+  for (const seat of opts.seats) {
+    const pool = (catalog.pantheons[seat.pantheonId]?.heroIds ?? [])
+      .filter((id) => catalog.heroes[id]?.availability === 'hireable' && !leaderIds.includes(id) && !prisoners.includes(id))
+      .sort();
+    prisoners.push(pool.length ? pool[rng.nextInt(pool.length)]! : null);
+  }
+  const rc: RegionCtx = { catalog, prisoners, placed: new Set(chosen.map((c) => c.spec.key)) };
   // Region sites: build once (same creature, reward and text for every empire), place in every region.
   for (const s of chosen) {
+    if (s.spec.key === 'key_tent' && !pocket) continue; // no locked treasury on this map: no key tent either
     const built = s.spec.build(ctx);
     group.forEach((g, i) => {
       const id = `${s.spec.key}_${i + 1}`;
-      sites.push({ id, anchorId: id, coord: abs(g(s.pos)), ...built });
+      const local = s.spec.localize ? s.spec.localize(built, i, rc) : built;
+      sites.push({ id, anchorId: id, coord: abs(g(s.pos)), ...local });
+    });
+  }
+  // The locked treasury and its key gate (the colour of the region's own key tent).
+  if (pocket) {
+    const art = pickArtifact(ctx, treasure === 'rich' ? ['major'] : ['minor', 'major']);
+    const reward = withArtifact({ resources: loot(ctx, { gold: 1500, crystal: 3 }) }, art);
+    group.forEach((g, i) => {
+      const color = KEY_COLOR_ORDER[i % KEY_COLOR_ORDER.length]!;
+      sites.push({
+        id: `key_gate_${i + 1}`,
+        anchorId: `key_gate_${i + 1}`,
+        coord: abs(g(pocket!.gate)),
+        name: `${KEY_LABEL[color]} Key Gate`,
+        description: `A barred gate in the rock. It opens for any empire that holds the ${KEY_LABEL[color].toLowerCase()} key (from the ${KEY_LABEL[color].toLowerCase()} key tent).`,
+        kind: { type: 'key_gate', color },
+      });
+      sites.push({
+        id: `treasury_${i + 1}`,
+        anchorId: `treasury_${i + 1}`,
+        coord: abs(g(pocket!.treasury)),
+        name: 'Locked Treasury',
+        description: `A vault behind the ${KEY_LABEL[color].toLowerCase()} key gate.`,
+        kind: { type: 'pickup', reward },
+      });
     });
   }
   // Guarded passes and gates (the zone connections).
@@ -950,8 +1204,8 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     newDecisions: ['Random map', typeInfo.label, `${n} empires`, victory.type === 'hold_relic' ? 'Hold the relic' : 'Conquest'],
     xpCap: null,
     xpCapLevel: null,
-    briefing: [{ speaker: 'Herald', portraitAssetId: seat0.portrait, text: victory.type === 'hold_relic' ? `The Shrine of the First Flame burns at the heart of these lands. Whoever holds it for ${victory.days} days will rule them all.` : 'Rival empires wake across the land. Only one will remain.' }],
-    victory: [{ speaker: 'Herald', portraitAssetId: seat0.portrait, text: 'The realm is yours.' }],
+    briefing: [{ speaker: 'Herald', portraitAssetId: 'story.herald.portrait', text: victory.type === 'hold_relic' ? `The Shrine of the First Flame burns at the heart of these lands. Whoever holds it for ${victory.days} days will rule them all.` : 'Rival empires wake across the land. Only one will remain.' }],
+    victory: [{ speaker: 'Herald', portraitAssetId: 'story.herald.portrait', text: 'The realm is yours.' }],
     debriefPolicy: [],
     player: {
       playerId: 'player',
@@ -980,7 +1234,8 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     ],
     hostileHeroes,
     helpTopics: [
-      { id: 'random_maps', title: 'Random maps', text: `Random maps are symmetric: every empire has the same terrain, roads, mines, camps and treasures around its town, so no starting position is favored. ${typeInfo.label}: ${typeInfo.summary} Creature camps sell creatures to a visiting hero; map events happen once, to the first hero who arrives. Wandering monsters roam near their lair and attack heroes they can beat.` },
+      { id: 'random_maps', title: 'Random maps', text: `Random maps are symmetric: every empire has the same terrain, roads, mines, camps and treasures around its town, so no starting position is favored. ${typeInfo.label}: ${typeInfo.summary} Creature camps sell creatures to a visiting hero; map events happen once, to the first hero who arrives. Wandering monsters roam near their lair and attack heroes they can beat; much weaker neutrals join you or flee instead of fighting.` },
+      { id: 'map_sites', title: 'Map sites', text: 'Learning stones give every hero 1,000 experience once. Spell shrines teach their spell to heroes with a spellbook; skill trainers teach a skill to heroes with a free slot. Quest huts reward a delivery or a defeated guard. Windmills pay the first hero each week. Treasure chests hold Gold or experience — you choose. Prisons free a captive hero who joins you. A key tent gives your empire the key that opens the key gate of the same colour.' },
       { id: 'sieges', title: 'Sieges', text: 'Entering an enemy town that has a garrison or a visiting hero starts a siege. The Fort gives walls and a gate, the Citadel adds a keep and a moat, the Castle stronger walls and two towers. Temporary siege model; values are proposed.' },
     ],
     protectedHeroFailure: false,
@@ -1082,6 +1337,26 @@ export function validateSkirmishMap(map: WorldMapDefinition, mission: MissionDef
     const blocked = new Set(openings.map((s) => hexKey(s.coord)));
     const sealed = towns.every((t) => !travelCosts(map, t.coord, blocked).has(hexKey(centerSite.coord)));
     checks.push({ id: 'SKM-6', pass: openings.length >= towns.length && sealed, detail: `${openings.length} guarded openings; the center ${sealed ? 'is reached only through them' : 'can be reached around them'}` });
+  }
+  // Key gates (generator 0.4): each has a key tent of its colour reachable with every key gate
+  // closed, and seals its locked treasury (unreachable while the gates are closed).
+  const keyGates = mission.sites.filter((s) => s.kind.type === 'key_gate');
+  if (keyGates.length > 0) {
+    const closed = new Set(keyGates.map((s) => hexKey(s.coord)));
+    const fromTowns = towns.map((t) => travelCosts(map, t.coord, closed));
+    const problems: string[] = [];
+    for (const g of keyGates) {
+      const color = g.kind.type === 'key_gate' ? g.kind.color : '';
+      const tent = mission.sites.find((s) => s.kind.type === 'key_tent' && s.kind.color === color);
+      if (!tent || !fromTowns.some((d) => d.has(hexKey(tent.coord)))) problems.push(`${g.id}: no reachable ${color} key tent`);
+      const suffix = g.id.slice('key_gate_'.length);
+      const vault = mission.sites.find((s) => s.id === `treasury_${suffix}`);
+      if (vault && fromTowns.some((d) => d.has(hexKey(vault.coord)))) problems.push(`${vault.id} is reachable without the key`);
+    }
+    const others = mission.sites.filter((s) => s.kind.type !== 'key_gate' && !s.id.startsWith('treasury_'));
+    const cutOff = others.filter((s) => !fromTowns.some((d) => d.has(hexKey(s.coord))));
+    if (cutOff.length > 0) problems.push(`closed key gates cut off ${cutOff.map((s) => s.id).join(', ')}`);
+    checks.push({ id: 'SKM-7', pass: problems.length === 0, detail: problems.length ? problems.join('; ') : `${keyGates.length} key gates seal their treasuries; every other site is reachable without keys` });
   }
   return checks;
 }

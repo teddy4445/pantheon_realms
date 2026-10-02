@@ -24,10 +24,18 @@ import {
   campStock,
   interventionsFor,
   interventionUsedThisWeek,
+  quoteNeutralReaction,
+  questHutProgress,
+  worldWeek,
+  KEY_COLOR_HEX,
+  KEY_COLOR_LABEL,
   type ContentCatalog,
   type HeroState,
   type HexCoord,
-  type MatchState, scenarioMission,
+  type MatchState,
+  type SiteDefinition,
+  type SiteState,
+  scenarioMission,
 } from '@pr/rules';
 import { biomeTerrainCss } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
@@ -37,7 +45,7 @@ import { adventurePlaybackFactor } from '../app/preferences';
 import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
-import { HeroPortrait, MarkerIcon, siteMarkerAsset } from '../components/art';
+import { HeroPortrait, MarkerIcon, SpellIcon, siteMarkerAsset } from '../components/art';
 import { ArmyStrip, ResourceBar } from '../components/game';
 import { Icon } from '../assets/icons';
 import {
@@ -72,6 +80,27 @@ function getCreature(catalog: ContentCatalog, id: string) {
   return catalog.creatures[id];
 }
 
+/** Whether a site's glow (flame/rune/lantern) is on for the viewer. */
+function siteLit(catalog: ContentCatalog, state: MatchState, def: SiteDefinition, st: SiteState | undefined): boolean {
+  switch (def.kind.type) {
+    case 'map_event':
+    case 'quest_hut':
+    case 'prison':
+    case 'treasure_chest':
+      return !st?.claimed;
+    case 'windmill':
+      return (st?.lastCollectedWeek ?? 0) < worldWeek(state, catalog.rulesProfile.daysPerWeek);
+    case 'relic':
+    case 'portal':
+    case 'learning_stone':
+    case 'spell_shrine':
+    case 'key_tent':
+      return true;
+    default:
+      return !!st?.activated;
+  }
+}
+
 function buildView(
   catalog: ContentCatalog,
   state: MatchState,
@@ -104,9 +133,11 @@ function buildView(
       guardBody: guardCreature?.presentation.bodyProfile ?? null,
       guardUpgraded: guardCreature?.form === 'upgraded',
       // Event shrines glow until used; a relic and a portal always glow.
-      lit: def.kind.type === 'map_event' ? !st?.claimed : def.kind.type === 'relic' || def.kind.type === 'portal' ? true : !!st?.activated,
-      open: !!st?.open,
+      lit: siteLit(catalog, state, def, st),
+      // Key gates show their barrier only to empires without the key.
+      open: def.kind.type === 'key_gate' ? (state.players[playerId]?.keys ?? []).includes(def.kind.color) : !!st?.open,
       claimed: !!st?.claimed,
+      ...(def.kind.type === 'key_gate' || def.kind.type === 'key_tent' || def.kind.type === 'skill_trainer' ? { tint: def.kind.type === 'skill_trainer' ? '#b5423a' : KEY_COLOR_HEX[def.kind.color] } : {}),
     };
   });
   const heroes = Object.values(state.heroes)
@@ -227,7 +258,7 @@ function Minimap({ catalog, state, playerId, onPick }: { catalog: ContentCatalog
 
 /** Whether a site's one-time purpose is spent (for its map marker). */
 function siteDone(kind: string, st: { claimed: boolean; activated: boolean; open: boolean; cleared: boolean }): boolean {
-  if (kind === 'pickup' || kind === 'map_event') return st.claimed;
+  if (kind === 'pickup' || kind === 'map_event' || kind === 'treasure_chest' || kind === 'quest_hut' || kind === 'prison') return st.claimed;
   if (kind === 'activation') return st.activated;
   if (kind === 'gate') return st.open;
   if (kind === 'crossing' || kind === 'landmark') return st.cleared;
@@ -288,9 +319,11 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           {hero ? (
             (() => {
               const t = threatLabel(catalog, heroStrength(catalog, hero), guardStrength(catalog, state, site.def.id));
+              const r = quoteNeutralReaction(catalog, state, hero.id, site.def.coord);
               return (
                 <div className="small">
                   Estimate vs {hero.name}: <Chip tone={t.tone}>{t.text}</Chip> <span className="faint">(heuristic)</span>
+                  {r.kind ? <div data-testid="neutral-reaction">{r.kind === 'join' ? 'They would rather join your army than fight it.' : 'They will flee from your army rather than fight.'}</div> : null}
                 </div>
               );
             })()
@@ -324,6 +357,7 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
       {site?.def.kind.type === 'activation' ? <div className="small">{site.state.activated ? 'Restored' : 'Not yet restored'}</div> : null}
       {site?.def.kind.type === 'pickup' ? <div className="small">{site.state.claimed ? 'Already collected' : 'Uncollected'}</div> : null}
       {site?.def.kind.type === 'gate' ? <div className="small">{site.state.open ? 'Open' : 'Sealed'}</div> : null}
+      <NewSiteInfo site={site} hero={hero} />
       {site?.def.kind.type === 'portal' ? (
         <div className="small" data-testid="portal-info">
           Stop on it to step out of its twin at once, at no movement cost. Blocked while a hero stands on the twin. {site.state.visitedBy.includes(playerId) ? 'You have used it.' : 'Its far side is unknown until you go through.'}
@@ -346,9 +380,11 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           {other.ownerId !== playerId && hero ? (
             (() => {
               const t = threatLabel(catalog, heroStrength(catalog, hero), heroStrength(catalog, other));
+              const r = other.monster ? quoteNeutralReaction(catalog, state, hero.id, other.position) : null;
               return (
                 <div>
                   Estimate vs {hero.name}: <Chip tone={t.tone}>{t.text}</Chip> <span className="faint">(heuristic)</span>
+                  {r?.kind ? <div>{r.kind === 'join' ? 'They would rather join your army than fight it.' : 'They will flee from your army rather than fight.'}</div> : null}
                 </div>
               );
             })()
@@ -367,6 +403,75 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
       ) : null}
     </div>
   );
+}
+
+/** Tile-panel lines for the sites added 2026-10-02 (random maps). */
+function NewSiteInfo({ site, hero }: { site: ReturnType<typeof siteAt>; hero: HeroState | null }) {
+  const store = useStore();
+  const catalog = store.catalog;
+  const state = store.session!.state;
+  const playerId = store.session!.humanPlayerId;
+  if (!site) return null;
+  const k = site.def.kind;
+  const st = site.state;
+  const used = !!hero && (st.usedBy ?? []).includes(hero.id);
+  let text: string | null = null;
+  switch (k.type) {
+    case 'learning_stone':
+      text = hero ? (used ? `${hero.name} has already studied here.` : `${hero.name} gains ${k.xp.toLocaleString('en-US')} experience here (once per hero).`) : 'Every hero gains its experience once.';
+      break;
+    case 'spell_shrine': {
+      const sp = catalog.spells[k.spellId];
+      text = `Teaches ${sp?.name ?? k.spellId} (tier ${sp?.tier ?? '?'}) to heroes with a spellbook${sp && sp.tier > 2 ? ' and enough Wisdom' : ''}.${hero && sp ? (hero.knownSpellIds.includes(sp.id) ? ` ${hero.name} knows it.` : !hero.spellbook ? ` ${hero.name} has no spellbook.` : '') : ''}`;
+      break;
+    }
+    case 'skill_trainer': {
+      const sk = catalog.skills[k.skillId];
+      text = `Teaches ${sk?.name ?? k.skillId} (Basic) to heroes with a free skill slot.${hero && sk && hero.skills.some((x) => x.skillId === sk.id) ? ` ${hero.name} knows it.` : ''}`;
+      break;
+    }
+    case 'quest_hut': {
+      if (st.claimed) text = 'Quest fulfilled.';
+      else {
+        const p = questHutProgress(catalog, state, playerId, k.quest);
+        text = k.quest.type === 'deliver' ? `Wants ${costText(k.quest.resources)}.${p.met ? ' You can pay it.' : ''}` : `${p.text}.`;
+      }
+      break;
+    }
+    case 'key_tent':
+      text = (state.players[playerId]?.keys ?? []).includes(k.color) ? `You hold the ${KEY_COLOR_LABEL[k.color].toLowerCase()} key.` : `Visit to receive the ${KEY_COLOR_LABEL[k.color].toLowerCase()} key.`;
+      break;
+    case 'key_gate':
+      text = (state.players[playerId]?.keys ?? []).includes(k.color) ? 'Open for you (you hold the key).' : `Closed: find the ${KEY_COLOR_LABEL[k.color].toLowerCase()} key tent.`;
+      break;
+    case 'windmill': {
+      const week = worldWeek(state, catalog.rulesProfile.daysPerWeek);
+      text = `${costText(k.weekly)} for the first hero each week · ${(st.lastCollectedWeek ?? 0) >= week ? 'already emptied this week' : 'ready this week'}.`;
+      break;
+    }
+    case 'treasure_chest':
+      text = st.claimed ? 'Opened.' : `${k.gold.toLocaleString('en-US')} Gold or ${k.xp.toLocaleString('en-US')} experience — your choice.`;
+      break;
+    case 'prison': {
+      const h = catalog.heroes[k.heroDefinitionId];
+      text = st.claimed ? 'Empty: the captive was freed.' : `${h?.name ?? 'A hero'} waits here and joins the first empire to arrive (at level ${k.level}).`;
+      break;
+    }
+    default:
+      return null;
+  }
+  return (
+    <div className="small" data-testid="site-info">
+      {text}
+    </div>
+  );
+}
+
+function costText(c: Partial<Record<string, number | undefined>>): string {
+  return Object.entries(c)
+    .filter(([, v]) => (v ?? 0) > 0)
+    .map(([key, v]) => `${(v as number).toLocaleString('en-US')} ${key[0]!.toUpperCase() + key.slice(1)}`)
+    .join(', ');
 }
 
 // ---------------------------------------------------------------------------
@@ -518,6 +623,10 @@ export function AdventureScreen() {
       } else if (site.def.kind.type === 'map_event' && !site.state.claimed && (!site.def.guard || site.state.cleared)) {
         store.showHint('map_event');
         store.openOverlay({ kind: 'map-event', heroId: hero.id, siteId: site.def.id });
+      } else if (site.def.kind.type === 'treasure_chest' && !site.state.claimed && (!site.def.guard || site.state.cleared)) {
+        store.openOverlay({ kind: 'chest', heroId: hero.id, siteId: site.def.id });
+      } else if (site.def.kind.type === 'quest_hut' && !site.state.claimed && (!site.def.guard || site.state.cleared)) {
+        store.openOverlay({ kind: 'quest-hut', heroId: hero.id, siteId: site.def.id });
       }
     }
   }, [store, catalog]);
@@ -610,6 +719,14 @@ export function AdventureScreen() {
       }
       if (site && site.def.kind.type === 'map_event' && !site.state.claimed) {
         store.openOverlay({ kind: 'map-event', heroId: sel.id, siteId: site.def.id });
+        return;
+      }
+      if (site && site.def.kind.type === 'treasure_chest' && !site.state.claimed) {
+        store.openOverlay({ kind: 'chest', heroId: sel.id, siteId: site.def.id });
+        return;
+      }
+      if (site && site.def.kind.type === 'quest_hut') {
+        store.openOverlay({ kind: 'quest-hut', heroId: sel.id, siteId: site.def.id });
         return;
       }
       store.goto('hero', { heroId: sel.id });
@@ -807,7 +924,6 @@ export function AdventureScreen() {
                     <Button
                       key={sp.id}
                       size="small"
-                      icon={sp.effect.type === 'reveal_radius' ? 'eye' : 'spell'}
                       variant={casting === sp.id ? 'primary' : undefined}
                       disabled={!humanTurn || !q.legal}
                       disabledReason={!humanTurn ? 'Not your turn' : q.reason}
@@ -826,6 +942,7 @@ export function AdventureScreen() {
                       title={sp.summary}
                       data-testid={`cast-${sp.id}`}
                     >
+                      <SpellIcon iconAssetId={sp.iconAssetId} effectType={sp.effect.type} size="1.6rem" />
                       {sp.name} ({sp.manaCost})
                     </Button>
                   );

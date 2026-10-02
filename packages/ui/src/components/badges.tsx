@@ -15,8 +15,8 @@ function hue(seed: string): number {
   return h % 360;
 }
 
-/** Glyph per ability rule (stand-in until the ability's own icon exists). */
-const ABILITY_GLYPH: Readonly<Record<string, IconName>> = {
+/** Glyph per ability rule (stand-in until the ability's own icon exists). Exported for the icon catalog. */
+export const ABILITY_GLYPH: Readonly<Record<string, IconName>> = {
   shooter: 'bow',
   flight: 'speed',
   retaliations: 'swap',

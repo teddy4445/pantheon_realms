@@ -11,6 +11,7 @@ import {
   RESOURCE_LABELS,
   activeBuildingInSlot,
   hireOptions,
+  specialtiesEnabled,
   HIRE_STARTING_TROOPS,
   townTierOneBase,
   quoteConstruction,
@@ -42,7 +43,7 @@ import { resources } from '@pr/rules';
 import { useStore } from '../app/context';
 import type { AppStore } from '../app/store';
 import { Button, Chip, Modal, Panel, QuantitySelector, SectionTitle } from '../components/kit';
-import { BuildingArt, HeroPortrait } from '../components/art';
+import { ArtifactIcon, BuildingArt, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, CostList, ScreenHeader, StatusChip } from '../components/game';
 import { resolveAsset } from '../assets/manifest';
 import { Icon } from '../assets/icons';
@@ -148,6 +149,7 @@ function TavernModal({ town, onClose }: { town: TownState; onClose: () => void }
                   {def.name} <span className="dim">· {def.title}</span> {returning ? <Chip tone="info">Returning · level {returning.level}</Chip> : null}
                 </div>
                 <div className="small">{cls?.name} — {cls?.summary}</div>
+                <SpecialtyLine catalog={catalog} definitionId={id} active={specialtiesEnabled(state)} />
                 <p className="faint small">{def.biography}</p>
                 <div className="row gap">
                   <CostList cost={q.cost} wallet={state.players[playerId]!.wallet} />
@@ -275,6 +277,7 @@ function MerchantModal({ town, onClose }: { town: TownState; onClose: () => void
           const q = visitor ? quoteArtifactPurchase(catalog, state, playerId, town.id, visitor.id, index) : null;
           return (
             <div key={index} className="hire-card panel" data-testid={`merchant-item-${index}`}>
+              {art ? <ArtifactIcon iconAssetId={art.iconAssetId} kind={art.slot} size="3rem" rarity={art.rarity} /> : null}
               <div>
                 <div className="hire-card__name">{art ? art.name : <span className="faint">Sold</span>}</div>
                 {art ? (

@@ -324,16 +324,16 @@ export const CELTIC_SPEC: PantheonKitSpec = {
     { name: 'Morrigan', domain: 'War & Prophecy', mirrors: 'attack', quote: 'I have seen how this battle ends. Hurry.' },
     { name: 'Brigid', domain: 'Hearth & Healing', mirrors: 'defense', quote: 'Keep the fire lit and the door will hold.' },
   ],
+  extraFirstMinors: [
+    { name: 'Nuada', domain: 'Kingship & Justice', quote: 'A king stands in front. Stand with me.', blessing: blessing(BLESSINGS.morale(1), BLESSINGS.creatures('defense', 1, { minTier: 4, label: 'Your tier 4–7 creatures' })) },
+    { name: 'Danu', domain: 'Ancestry & the Land', quote: 'The land remembers every child it fed.', blessing: blessing(BLESSINGS.attribute('power', 1), BLESSINGS.growth(1, 2)) },
+  ],
   secondMinors: [
     { name: 'Cernunnos', domain: 'Wilds & Transformation', quote: 'The small ones of the wood are fiercer than they look.', blessing: blessing(BLESSINGS.creatures('attack', 1, { maxTier: 3, label: 'Your tier 1–3 creatures' }), BLESSINGS.creatures('defense', 1, { maxTier: 3, label: 'Your tier 1–3 creatures' })) },
     { name: 'Epona', domain: 'Horses & Journeys', quote: 'Saddle up. The long road is shorter with me.', blessing: blessing(BLESSINGS.movement(20)) },
     { name: 'Lugh', domain: 'Light & Skill', quote: 'Master one craft and I will teach you the rest.', blessing: blessing(BLESSINGS.luck(1), BLESSINGS.morale(1)) },
-  ],
-  otherGods: [
-    ['Danu', 'Ancestry & the Land'],
-    ['Nuada', 'Kingship & Justice'],
-    ['Arawn', 'Underworld & the Otherworld'],
-    ['Manannan', 'Seas & Mists'],
+    { name: 'Arawn', domain: 'Underworld & the Otherworld', quote: 'My hounds bring back what the field takes.', blessing: blessing(BLESSINGS.recovery(15), BLESSINGS.luck(1)) },
+    { name: 'Manannan', domain: 'Seas & Mists', quote: 'Step into the mist; step out where you meant to be.', blessing: blessing(BLESSINGS.vision(2), BLESSINGS.movement(15)) },
   ],
   classes: [
     { id: 'fian', name: 'Fian', mirrors: 'champion', summary: 'A warrior of the wandering war-bands who leads the charge' },

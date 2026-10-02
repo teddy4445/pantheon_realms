@@ -324,16 +324,16 @@ export const JAPANESE_SPEC: PantheonKitSpec = {
     { name: 'Hachiman', domain: 'War & Guardianship', mirrors: 'attack', quote: 'Draw the bow to its full length.' },
     { name: 'Susanoo', domain: 'Storms & Protection', mirrors: 'defense', quote: 'The storm that breaks the wave also shelters the bay.' },
   ],
+  extraFirstMinors: [
+    { name: 'Tsukuyomi', domain: 'Night & Insight', quote: 'What the sun hides, the moon shows.', blessing: blessing(BLESSINGS.attribute('power', 1), BLESSINGS.vision(1)) },
+    { name: 'Benzaiten', domain: 'Arts & Inspiration', quote: 'Play one true note and the river answers.', blessing: blessing(BLESSINGS.attribute('knowledge', 1), BLESSINGS.manaRegen(2)) },
+  ],
   secondMinors: [
     { name: 'Inari', domain: 'Prosperity & Bounty', quote: 'Leave rice at the shrine; find more in the storehouse.', blessing: blessing(BLESSINGS.income('gold', 300), BLESSINGS.income('wood', 1)) },
     { name: 'Fujin', domain: 'Wind & Movement', quote: 'Open the bag. Let the road come to you.', blessing: blessing(BLESSINGS.movement(20)) },
     { name: 'Raijin', domain: 'Thunder & Power', quote: 'Every arrow carries a little of the storm.', blessing: blessing(BLESSINGS.attribute('power', 1), BLESSINGS.creatures('attack', 2, { ability: 'shooter', label: 'Your shooters' })) },
-  ],
-  otherGods: [
-    ['Tsukuyomi', 'Night & Insight'],
-    ['Izanagi', 'Creation & Renewal'],
-    ['Izanami', 'Death & Rebirth'],
-    ['Benzaiten', 'Arts & Inspiration'],
+    { name: 'Izanagi', domain: 'Creation & Renewal', quote: 'Stir the sea again; new islands will rise.', blessing: blessing(BLESSINGS.growth(1, 4), BLESSINGS.manaRegen(2)) },
+    { name: 'Izanami', domain: 'Death & Rebirth', quote: 'Do not look back at me. Just come home.', blessing: blessing(BLESSINGS.recovery(20)) },
   ],
   classes: [
     { id: 'samurai', name: 'Samurai', mirrors: 'champion', summary: 'A sworn swordsman who leads from the front rank' },

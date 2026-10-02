@@ -32,6 +32,11 @@ export interface DuelSides {
   readonly b: string;
 }
 
+/** Duels measure troops (and signatures): hero specialties are switched off like the rest of the commander. */
+const troopsOnly = (s: MatchState) => {
+  (s.scenario as { features?: Record<string, unknown> }).features = { ...(s.scenario.features ?? {}), heroSpecialties: false };
+};
+
 const zeroed = (h: MatchState['heroes'][string], army: Army) => {
   h.army.slots = [...army.map((x) => ({ stackId: `${h.id}-${x.creatureId}`, ...x })), ...Array<null>(Math.max(0, 7 - army.length)).fill(null)];
   h.attributes = { attack: 0, defense: 0, power: 0, knowledge: 0 };
@@ -55,6 +60,7 @@ export function duel(a: Army, b: Army, seed: number, sides?: DuelSides): 'A' | '
   if (!sides) {
     const d = GameDriver.mission('skirmish_twin_harbors', { matchId: `duel-${seed}` });
     const s: MatchState = structuredClone(d.state);
+    troopsOnly(s);
     const h = s.heroes['alexios']!;
     zeroed(h, a);
     const gold = d.catalog.missions['skirmish_twin_harbors']!.sites.find((x) => x.id === 'sk_gold')!.coord;
@@ -75,6 +81,7 @@ export function duel(a: Army, b: Army, seed: number, sides?: DuelSides): 'A' | '
   const missionId = skirmishMission(sides.a, sides.b);
   const d = GameDriver.mission(missionId, { matchId: `duel-${sides.a}-${sides.b}-${seed}` });
   const s: MatchState = structuredClone(d.state);
+  troopsOnly(s);
   const m = d.catalog.missions[missionId]!;
   const ha = s.heroes[m.player.hero.heroId]!;
   const hb = s.heroes[m.rivals![0]!.hero.heroId]!;

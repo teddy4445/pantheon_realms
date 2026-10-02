@@ -6,7 +6,8 @@
  * design/03 tree: every one of the 18 locations keeps the Greek chain length,
  * costs, prerequisite structure and effects, with the pantheon's own names and
  * creatures substituted. Gods mirror the Greek structure (a patron with no
- * bonus, one exclusive first-minor pair unlocked by Temple II for 20 Favor).
+ * bonus, an exclusive first-minor choice unlocked by Temple II for 20 Favor —
+ * the Ares/Athena mirrors plus two gods added 2026-10-02).
  * Hero classes mirror the three existing classes' numbers under local names.
  *
  * Nothing here is rule code: the output is plain definitions that go through
@@ -29,7 +30,7 @@ import type {
 import { GREEK_FAMILY_SPECS, buildFamilies, type FamilySpec } from './greek/creatures';
 import { GREEK_BUILDINGS, GREEK_TOWN } from './greek/town';
 import { HERO_CLASSES } from './common/heroesMagic';
-import { secondMinorGod } from './common/gods';
+import { firstMinorGod, secondMinorGod } from './common/gods';
 import { SIGNATURES } from './common/signatures';
 
 export const slug = (name: string): string =>
@@ -114,9 +115,10 @@ export interface PantheonKitSpec {
   readonly families: readonly KitFamily[];
   readonly patron: KitGod;
   readonly minors: readonly [KitMinor, KitMinor];
-  /** The proposed second minor-god choice (three gods; common/gods.ts). */
-  readonly secondMinors: readonly [KitSecondMinor, KitSecondMinor, KitSecondMinor];
-  readonly otherGods: readonly (readonly [string, string])[];
+  /** Two more first-choice gods (added 2026-10-02, owner answer "Split 2 + 2"; common/gods.ts). */
+  readonly extraFirstMinors: readonly [KitSecondMinor, KitSecondMinor];
+  /** The proposed second minor-god choice (five gods since 2026-10-02; common/gods.ts). */
+  readonly secondMinors: readonly KitSecondMinor[];
   readonly classes: readonly [KitClass, KitClass, KitClass];
   readonly heroes: readonly KitHero[];
 }
@@ -370,6 +372,19 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
       implementationStatus: 'implemented',
       provenance: { source: 'proposed-this-build', note: m.mirrors === 'attack' ? 'Mirrors Ares (P).' : 'Mirrors Athena (P).' },
     })),
+    ...spec.extraFirstMinors.map((g) =>
+      firstMinorGod({
+        id: godId(g.name),
+        pantheonId: p,
+        name: g.name,
+        domain: g.domain,
+        ...(g.quote ? { quote: g.quote } : {}),
+        benefits: g.blessing.benefits,
+        benefitSummary: g.blessing.benefitSummary,
+        portraitAssetId: `god.${p}.${slug(g.name)}.portrait`,
+        templeId: idFor('pantheon_temple', 2),
+      }),
+    ),
     ...spec.secondMinors.map((g) =>
       secondMinorGod({
         id: godId(g.name),
@@ -384,20 +399,6 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
         civicHallId: idFor('civic_hall', 3),
       }),
     ),
-    ...spec.otherGods.map(([name, domain]): GodDefinition => ({
-      id: godId(name),
-      pantheonId: p,
-      name,
-      domain,
-      role: 'undesigned',
-      requirements: [],
-      favorCost: 0,
-      benefits: [],
-      benefitSummary: ['Blessing not yet designed for this build.'],
-      portraitAssetId: `god.${p}.${slug(name)}.portrait`,
-      implementationStatus: 'preparation',
-      provenance: { source: 'concept-board' },
-    })),
   ];
 
   // --- Classes (numbers mirror the shared classes) and heroes ---

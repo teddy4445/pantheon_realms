@@ -137,6 +137,10 @@ export interface ScenarioFeatures {
   readonly weeklyEvents: boolean;
   /** Players may spend Favor on divine interventions (once per week). */
   readonly interventions: boolean;
+  /** Hero specialties apply (proposed 2026-10-02; absent = off, so older saves keep their rules). */
+  readonly heroSpecialties?: boolean;
+  /** Much weaker neutral guards and wandering monsters join or flee instead of fighting (proposed 2026-10-02). */
+  readonly neutralReactions?: boolean;
 }
 
 export const NO_SCENARIO_FEATURES: ScenarioFeatures = { expandedContent: false, weeklyEvents: false, interventions: false };

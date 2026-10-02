@@ -31,6 +31,7 @@ import { applyDamage, previewStrike, rollStrike, type DamagePreview } from './da
 import { finishActivation, advanceActivation } from './flow';
 import { resolveBattle } from './resolution';
 import { applyMoatEntry, damageStructure, intactStructures } from './siege';
+import { castingPower } from '../../resolvers/effects';
 
 /** Actor ID used by the game when it commands neutral (ownerless) battle sides. */
 export const NEUTRAL_PLAYER_ID: PlayerId = '__neutral__';
@@ -408,7 +409,7 @@ export function commitBattleCast(tx: Tx, spellId: SpellId, targetId: BattleStack
   if (heroId && tx.state.heroes[heroId]) tx.state.heroes[heroId]!.mana -= spell.manaCost;
   else side.scriptedMana -= spell.manaCost;
   side.castThisRound = true;
-  const { damage, healed } = resolveSpell(tx, battle, spell, commander.power, target, active.side);
+  const { damage, healed } = resolveSpell(tx, battle, spell, castingPower(side, spell.id), target, active.side);
   tx.emit({ kind: 'BattleSpellCast', side: active.side, spellId, targetId, damage, healed });
   // Casting does not consume the stack's action, but a kill may end the battle.
   battleEnded(tx, battle);

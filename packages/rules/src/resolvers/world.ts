@@ -49,6 +49,52 @@ export function roadSet(map: WorldMapDefinition): Set<string> {
   return s;
 }
 
+/** Min-heap of (distance, key) pairs ordered by distance, then key (string order). */
+class KeyHeap {
+  private readonly d: number[] = [];
+  private readonly k: string[] = [];
+  private less(i: number, j: number): boolean {
+    return this.d[i]! < this.d[j]! || (this.d[i] === this.d[j] && this.k[i]! < this.k[j]!);
+  }
+  private swap(i: number, j: number): void {
+    [this.d[i], this.d[j]] = [this.d[j]!, this.d[i]!];
+    [this.k[i], this.k[j]] = [this.k[j]!, this.k[i]!];
+  }
+  push(dist: number, key: string): void {
+    this.d.push(dist);
+    this.k.push(key);
+    let i = this.d.length - 1;
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (!this.less(i, p)) break;
+      this.swap(i, p);
+      i = p;
+    }
+  }
+  pop(): [number, string] | null {
+    if (this.d.length === 0) return null;
+    const top: [number, string] = [this.d[0]!, this.k[0]!];
+    const lastD = this.d.pop()!;
+    const lastK = this.k.pop()!;
+    if (this.d.length > 0) {
+      this.d[0] = lastD;
+      this.k[0] = lastK;
+      let i = 0;
+      for (;;) {
+        const l = 2 * i + 1;
+        const r = l + 1;
+        let m = i;
+        if (l < this.d.length && this.less(l, m)) m = l;
+        if (r < this.d.length && this.less(r, m)) m = r;
+        if (m === i) break;
+        this.swap(i, m);
+        i = m;
+      }
+    }
+    return top;
+  }
+}
+
 /** Destination-edge cost rule: road edge 75, otherwise destination terrain cost; null = impassable. */
 export function edgeCost(catalog: ContentCatalog, map: WorldMapDefinition, from: HexCoord, to: HexCoord): number | null {
   const profile = catalog.rulesProfile;
@@ -67,19 +113,40 @@ export interface SiteAt {
   readonly state: SiteState;
 }
 
+/**
+ * Site lookup by tile, cached per site-state record: the set of sites never changes
+ * during a match and the cached entries hold the live SiteState objects, so a cached
+ * index stays correct while their fields change. (Pathfinding asks for every tile it
+ * expands; rebuilding the index each time dominated AI planning on random maps.)
+ */
+const siteIndexCache = new WeakMap<object, { catalog: ContentCatalog; mission: unknown; index: Map<string, SiteAt> }>();
+
 export function siteIndex(catalog: ContentCatalog, state: MatchState): Map<string, SiteAt> {
-  const out = new Map<string, SiteAt>();
   const mission = scenarioMission(catalog, state);
+  const sites = state.world.sites;
+  const hit = siteIndexCache.get(sites);
+  if (hit && hit.catalog === catalog && hit.mission === mission) return hit.index;
+  const out = new Map<string, SiteAt>();
   if (!mission) return out;
   for (const def of mission.sites) {
-    const st = state.world.sites[def.id];
+    const st = sites[def.id];
     if (st) out.set(hexKey(def.coord), { def, state: st });
   }
+  siteIndexCache.set(sites, { catalog, mission, index: out });
   return out;
 }
 
 export function siteAt(catalog: ContentCatalog, state: MatchState, c: HexCoord): SiteAt | undefined {
   return siteIndex(catalog, state).get(hexKey(c));
+}
+
+/** Hero definitions held in prisons not yet opened (random maps; kept out of every Tavern). */
+export function imprisonedHeroIds(catalog: ContentCatalog, state: MatchState): Set<string> {
+  const out = new Set<string>();
+  for (const def of scenarioMission(catalog, state)?.sites ?? []) {
+    if (def.kind.type === 'prison' && !state.world.sites[def.id]?.claimed) out.add(def.kind.heroDefinitionId);
+  }
+  return out;
 }
 
 export function heroAt(state: MatchState, c: HexCoord, exceptId?: HeroId): HeroState | undefined {
@@ -95,17 +162,30 @@ export type TileRole =
   | 'encounter'
   | 'blocked';
 
+/** Active heroes by tile (built once per path search; heroes do not move during one). */
+export function heroOccupancy(state: MatchState, exceptId?: HeroId): Map<string, HeroState> {
+  const out = new Map<string, HeroState>();
+  for (const h of Object.values(state.heroes)) {
+    if (h.status !== 'active' || h.id === exceptId) continue;
+    const k = hexKey(h.position);
+    if (!out.has(k)) out.set(k, h);
+  }
+  return out;
+}
+
 /** How a tile behaves for a moving hero of `playerId`. */
-export function tileRole(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, c: HexCoord, movingHeroId: HeroId): TileRole {
+export function tileRole(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, c: HexCoord, movingHeroId: HeroId, occupancy?: ReadonlyMap<string, HeroState>): TileRole {
   const map = state.world.map;
   if (!inMap(map, c)) return 'blocked';
   if (catalog.rulesProfile.terrainCost[terrainAt(map, c)] === null) return 'blocked';
-  const other = heroAt(state, c, movingHeroId);
+  const other = occupancy ? occupancy.get(hexKey(c)) : heroAt(state, c, movingHeroId);
   if (other) return other.ownerId === playerId ? 'blocked' : 'encounter';
   const site = siteAt(catalog, state, c);
   if (!site) return 'open';
   const { def, state: st } = site;
   if (def.kind.type === 'gate') return st.open ? 'open' : 'blocked';
+  // Key gates open only for players holding the key of their colour (from a key tent).
+  if (def.kind.type === 'key_gate') return state.players[playerId]?.keys?.includes(def.kind.color) ? 'open' : 'blocked';
   if (def.kind.type === 'town') {
     // Another player's (or an ownerless) garrisoned town must be besieged (design/04 §8).
     const town = state.towns[def.kind.townId];
@@ -148,7 +228,8 @@ export function findHeroPath(catalog: ContentCatalog, state: MatchState, heroId:
   const fog = state.fog[hero.ownerId];
   const explored = (c: HexCoord) => !fog || fog.explored[cellIndex(map, c)] === 1;
   if (!explored(dest)) return fail('Unexplored');
-  const destRole = tileRole(catalog, state, hero.ownerId, dest, heroId);
+  const occupancy = heroOccupancy(state, heroId);
+  const destRole = tileRole(catalog, state, hero.ownerId, dest, heroId, occupancy);
   if (destRole === 'blocked') return fail('That location cannot be entered');
 
   const startKey = hexKey(hero.position);
@@ -157,26 +238,24 @@ export function findHeroPath(catalog: ContentCatalog, state: MatchState, heroId:
   const prev = new Map<string, string>();
   const coords = new Map<string, HexCoord>([[startKey, hero.position]]);
   const done = new Set<string>();
-  // Small maps (<= 600 cells): a simple O(n^2) selection keeps ordering fully deterministic.
+  // Dijkstra settling the lowest (distance, key) first — the same order as the earlier
+  // full scan (ties broken by the smaller key), so routes are unchanged; a binary heap
+  // with lazy deletion makes it fast enough for the larger random maps.
+  const heap = new KeyHeap();
+  heap.push(0, startKey);
   for (;;) {
-    let bestKey: string | null = null;
-    let bestDist = Number.POSITIVE_INFINITY;
-    for (const [k, d] of dist) {
-      if (done.has(k)) continue;
-      if (d < bestDist || (d === bestDist && bestKey !== null && k < bestKey)) {
-        bestKey = k;
-        bestDist = d;
-      }
-    }
-    if (bestKey === null) break;
+    const top = heap.pop();
+    if (!top) break;
+    const [bestDist, bestKey] = top;
+    if (done.has(bestKey) || bestDist !== dist.get(bestKey)) continue;
     if (bestKey === destKey) break;
     done.add(bestKey);
     const cur = coords.get(bestKey)!;
     // Only the start tile and 'open' tiles may be passed through.
-    if (bestKey !== startKey && tileRole(catalog, state, hero.ownerId, cur, heroId) !== 'open') continue;
+    if (bestKey !== startKey && tileRole(catalog, state, hero.ownerId, cur, heroId, occupancy) !== 'open') continue;
     for (const n of axialNeighbors(cur)) {
       if (!inMap(map, n) || !explored(n)) continue;
-      const role = tileRole(catalog, state, hero.ownerId, n, heroId);
+      const role = tileRole(catalog, state, hero.ownerId, n, heroId, occupancy);
       if (role === 'blocked') continue;
       const nKey = hexKey(n);
       if (role !== 'open' && nKey !== destKey) continue;
@@ -188,6 +267,7 @@ export function findHeroPath(catalog: ContentCatalog, state: MatchState, heroId:
         dist.set(nKey, nd);
         prev.set(nKey, bestKey);
         coords.set(nKey, n);
+        heap.push(nd, nKey);
       }
     }
   }
@@ -225,6 +305,7 @@ export function reachableTiles(catalog: ContentCatalog, state: MatchState, heroI
   const map = state.world.map;
   const fog = state.fog[hero.ownerId];
   const budget = hero.movementPoints;
+  const occupancy = heroOccupancy(state, heroId);
   const startKey = hexKey(hero.position);
   const dist = new Map<string, number>([[startKey, 0]]);
   const coords = new Map<string, HexCoord>([[startKey, hero.position]]);
@@ -234,11 +315,11 @@ export function reachableTiles(catalog: ContentCatalog, state: MatchState, heroI
     const key = frontier.shift()!;
     const cur = coords.get(key)!;
     const d = dist.get(key)!;
-    if (key !== startKey && tileRole(catalog, state, hero.ownerId, cur, heroId) !== 'open') continue;
+    if (key !== startKey && tileRole(catalog, state, hero.ownerId, cur, heroId, occupancy) !== 'open') continue;
     for (const n of axialNeighbors(cur)) {
       if (!inMap(map, n)) continue;
       if (fog && fog.explored[cellIndex(map, n)] !== 1) continue;
-      const role = tileRole(catalog, state, hero.ownerId, n, heroId);
+      const role = tileRole(catalog, state, hero.ownerId, n, heroId, occupancy);
       if (role === 'blocked') continue;
       const c = edgeCost(catalog, map, cur, n);
       if (c === null) continue;

@@ -5,15 +5,27 @@
  * for playable content.
  */
 import { useState } from 'react';
-import { ARTIFACT_SLOT_LABEL, RESOURCE_LABELS, type CreatureTier } from '@pr/rules';
+import { ARTIFACT_SLOT_LABEL, NEUTRAL_FLEE_RATIO, NEUTRAL_JOIN_RATIO, RESOURCE_LABELS, type CreatureTier } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Chip, Panel, Tabs } from '../components/kit';
-import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt, SpellIcon } from '../components/art';
+import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt, SkillIcon, SpecialtyLine, SpellIcon } from '../components/art';
 import { BalanceChip, CostList, ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
 import { AbilityBadge, SetBadge } from '../components/badges';
 
 type Tab = 'creatures' | 'pantheons' | 'gods' | 'heroes' | 'town' | 'magic' | 'world' | 'rules';
+
+/** The map sites added 2026-10-02, as players read them (rules: rules/systems/sites.ts). */
+const MAP_SITE_HELP: readonly (readonly [string, string])[] = [
+  ['Learning stone', 'Every hero who stops here once gains 1,000 experience.'],
+  ['Spell shrine', 'Teaches its spell to every hero with a spellbook (and the Wisdom its tier needs).'],
+  ['Skill trainer', 'Teaches its skill at Basic to every hero with a free skill slot who lacks it.'],
+  ['Quest hut', 'Bring the resources it asks for, or defeat the named guards yourself, then stop here for the reward. First empire only.'],
+  ['Key tent and key gate', 'Visiting the tent gives your empire that colour’s key; key gates of the colour then open for all your heroes. Each locked treasury is sealed by one.'],
+  ['Windmill', 'The first hero to stop here each week collects its resources.'],
+  ['Treasure chest', 'Choose: the Gold for your treasury or the experience for the hero.'],
+  ['Prison', 'Frees a captive hero who joins your empire (with level-ups to choose) if you lead fewer than eight heroes.'],
+];
 
 export function EncyclopediaScreen() {
   const store = useStore();
@@ -199,6 +211,7 @@ export function EncyclopediaScreen() {
                       </div>
                     </div>
                   </div>
+                  <SpecialtyLine catalog={catalog} definitionId={h} />
                   <p className="small">{hero.biography}</p>
                 </Panel>
               );
@@ -250,10 +263,13 @@ export function EncyclopediaScreen() {
             </Panel>
             <Panel title="Skills">
               {Object.values(catalog.skills).map((sk) => (
-                <div key={sk.id} className="codex-line">
-                  <strong>{sk.name}</strong> {sk.pantheonId ? <Chip tone="info">{catalog.pantheons[sk.pantheonId]?.name}</Chip> : null}
-                  {sk.scope === 'expanded' ? <Chip tone="muted">Skirmish only</Chip> : null}
-                  <div className="small dim">{sk.rankSummaries.map((r, i) => `${['Basic', 'Advanced', 'Expert'][i]}: ${r}`).join(' · ')}</div>
+                <div key={sk.id} className="codex-line codex-line--icon">
+                  <SkillIcon iconAssetId={sk.iconAssetId} size="2.2rem" />
+                  <div>
+                    <strong>{sk.name}</strong> {sk.pantheonId ? <Chip tone="info">{catalog.pantheons[sk.pantheonId]?.name}</Chip> : null}
+                    {sk.scope === 'expanded' ? <Chip tone="muted">Skirmish only</Chip> : null}
+                    <div className="small dim">{sk.rankSummaries.map((r, i) => `${['Basic', 'Advanced', 'Expert'][i]}: ${r}`).join(' · ')}</div>
+                  </div>
                 </div>
               ))}
             </Panel>
@@ -288,6 +304,20 @@ export function EncyclopediaScreen() {
         ) : null}
         {tab === 'world' ? (
           <div className="codex-grid">
+            <Panel title="Map sites (random maps)">
+              {MAP_SITE_HELP.map(([name, text]) => (
+                <div key={name} className="codex-line">
+                  <strong>{name}</strong>
+                  <div className="small dim">{text}</div>
+                </div>
+              ))}
+              <p className="faint small">Added 2026-10-02. Every empire gets the same sites around its town. Proposed values, unplaytested.</p>
+            </Panel>
+            <Panel title="Neutral creatures">
+              <div className="codex-line small">
+                When a hero’s army is at least {NEUTRAL_FLEE_RATIO}× as strong as neutral guards or a wandering monster, they will not fight: they flee, and a hero at least {NEUTRAL_JOIN_RATIO}× as strong (with room in the army) is offered to take them into the army for free. You may also let them go or fight anyway. Either way the guard’s reward stays for you, but no experience is gained. Strength is the game’s estimate (army HP and damage adjusted by Attack and Defense). Skirmish and random maps only.
+              </div>
+            </Panel>
             <Panel title="Difficulty (skirmish)">
               {Object.values(catalog.difficulties ?? {})
                 .sort((a, b) => a.order - b.order)

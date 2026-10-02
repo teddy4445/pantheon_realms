@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { RESOURCE_KEYS, scenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle } from '../components/kit';
-import { CreaturePortrait } from '../components/art';
+import { ArtifactIcon, CreaturePortrait } from '../components/art';
 import { CostList } from '../components/game';
 
 export function BattleResultScreen() {
@@ -108,8 +108,11 @@ export function BattleResultScreen() {
               <SectionTitle>Rewards</SectionTitle>
               <CostList cost={r.rewards.resources} empty="—" />
               {r.rewards.artifactIds.map((a) => (
-                <div key={a} className="small">
-                  Artifact: <strong>{catalog.artifacts[a]?.name}</strong> — {catalog.artifacts[a]?.summary}
+                <div key={a} className="small row gap">
+                  {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="2rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
+                  <span>
+                    Artifact: <strong>{catalog.artifacts[a]?.name}</strong> — {catalog.artifacts[a]?.summary}
+                  </span>
                 </div>
               ))}
               {r.rewards.entitlementIds.map((e) => (

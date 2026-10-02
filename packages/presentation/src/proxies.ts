@@ -341,7 +341,26 @@ export type SiteArchetype =
   /** Relic shrine (hold-the-relic victory). */
   | 'relic'
   /** Two-way portal (an arch of standing stones around a glowing veil). */
-  | 'portal';
+  | 'portal'
+  // Sites added 2026-10-02 (random maps; placeholder primitives).
+  /** Learning stone: a tall carved menhir with a glowing rune. */
+  | 'learning_stone'
+  /** Spell shrine: a small domed altar with a floating orb. */
+  | 'spell_shrine'
+  /** Skill trainer: a training post and a weapon rack under an awning. */
+  | 'skill_trainer'
+  /** Quest hut: a thatched hut with a lantern. */
+  | 'quest_hut'
+  /** Key tent: a striped tent in its key colour. */
+  | 'key_tent'
+  /** Key gate: two posts and a barrier in its key colour (shown while the viewer lacks the key). */
+  | 'key_gate'
+  /** Windmill: a tower with four sails. */
+  | 'windmill'
+  /** Treasure chest: a large banded chest (hidden once opened). */
+  | 'treasure_chest'
+  /** Prison: a stone cell block with bars; the window glows while a captive waits. */
+  | 'prison';
 
 export interface SiteProxy {
   readonly root: TransformNode;
@@ -352,7 +371,7 @@ export interface SiteProxy {
   readonly flagPole: TransformNode;
 }
 
-export function buildSiteProxy(scene: Scene, mats: MaterialCache, kind: SiteArchetype, name: string): SiteProxy {
+export function buildSiteProxy(scene: Scene, mats: MaterialCache, kind: SiteArchetype, name: string, tint = '#c9a24a'): SiteProxy {
   const root = new TransformNode(name, scene);
   const b: Builder = { scene, mats, root, meshes: [] };
   let flame: Mesh | null = null;
@@ -478,6 +497,71 @@ export function buildSiteProxy(scene: Scene, mats: MaterialCache, kind: SiteArch
       add(b, box(b, 'stoneR', 0.3, 1.5, 0.3), root, '#6d6a74', [0, 0.75, -0.6]);
       add(b, box(b, 'capstone', 0.36, 0.26, 1.6), root, '#77737e', [0, 1.6, 0]);
       flame = add(b, box(b, 'veil', 0.06, 1.25, 0.9), root, '#9f7bff', [0, 0.72, 0], { emissive: 0.9 });
+      break;
+    case 'learning_stone':
+      plinth(1.1);
+      add(b, box(b, 'menhir', 0.42, 1.5, 0.3), root, '#8d8a82', [0, 0.82, 0], { rot: [0, 0.3, 0.04] });
+      flame = add(b, box(b, 'rune', 0.2, 0.42, 0.32), root, '#7fe3ff', [0, 0.95, 0], { emissive: 1, rot: [0, 0.3, 0.04] });
+      break;
+    case 'spell_shrine':
+      plinth(1.2);
+      add(b, cyl(b, 'altar', 0.45, 0.5, 0.6, 8), root, MARBLE, [0, 0.33, 0]);
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2;
+        add(b, cyl(b, 'pillar', 0.9, 0.08, 0.1, 6), root, MARBLE, [Math.cos(a) * 0.45, 0.55, Math.sin(a) * 0.45]);
+      }
+      add(b, cyl(b, 'dome', 0.25, 0.2, 1.1, 10), root, '#3b5f9a', [0, 1.05, 0]);
+      flame = add(b, sph(b, 'orb', 0.26), root, '#b48cff', [0, 0.72, 0], { emissive: 1 });
+      break;
+    case 'skill_trainer':
+      plinth(1.3);
+      add(b, cyl(b, 'post', 1.0, 0.14, 0.16, 8), root, '#7a5a38', [0.3, 0.55, 0]);
+      add(b, box(b, 'arm', 0.6, 0.08, 0.08), root, '#7a5a38', [0.3, 0.85, 0]);
+      add(b, box(b, 'rack', 0.08, 0.6, 0.7), root, '#6b4a2a', [-0.4, 0.4, 0]);
+      for (let i = 0; i < 3; i++) add(b, cyl(b, 'staff', 0.75, 0.03, 0.03, 5), root, '#c8c2b0', [-0.34, 0.5, -0.2 + i * 0.2], { rot: [0, 0, 0.12] });
+      add(b, box(b, 'awning', 1.1, 0.06, 0.9), root, tint, [0, 1.15, 0], { rot: [0, 0, 0.08] });
+      break;
+    case 'quest_hut':
+      plinth(1.3);
+      add(b, cyl(b, 'hut', 0.6, 0.8, 0.85, 10), root, '#9a7a52', [0, 0.36, 0]);
+      add(b, cyl(b, 'thatch', 0.55, 0.05, 1.1, 10), root, '#c7a35a', [0, 0.92, 0]);
+      add(b, box(b, 'door', 0.24, 0.36, 0.06), root, '#3a2a1a', [0, 0.24, 0.4]);
+      flame = add(b, sph(b, 'lantern', 0.14), root, '#ffcf6a', [0.3, 0.55, 0.42], { emissive: 1 });
+      break;
+    case 'key_tent':
+      plinth(1.2);
+      add(b, cyl(b, 'tent', 0.9, 0.04, 1.1, 8), root, tint, [0, 0.55, 0]);
+      add(b, cyl(b, 'band', 0.12, 0.62, 0.7, 8), root, MARBLE, [0, 0.42, 0]);
+      add(b, cyl(b, 'pole', 0.5, 0.03, 0.03, 5), root, '#4a321c', [0, 1.15, 0]);
+      flame = add(b, box(b, 'pennon', 0.04, 0.16, 0.28), root, tint, [0, 1.3, 0.14], { emissive: 0.5 });
+      break;
+    case 'key_gate':
+      add(b, box(b, 'postL', 0.32, 1.4, 0.32), root, '#6b6f76', [0, 0.7, 0.65]);
+      add(b, box(b, 'postR', 0.32, 1.4, 0.32), root, '#6b6f76', [0, 0.7, -0.65]);
+      add(b, box(b, 'capL', 0.38, 0.14, 0.38), root, tint, [0, 1.45, 0.65], { emissive: 0.4 });
+      add(b, box(b, 'capR', 0.38, 0.14, 0.38), root, tint, [0, 1.45, -0.65], { emissive: 0.4 });
+      seal = add(b, box(b, 'bar', 0.1, 0.9, 1.0), root, tint, [0, 0.6, 0], { emissive: 0.7 });
+      break;
+    case 'windmill':
+      plinth(1.2);
+      add(b, cyl(b, 'tower', 1.3, 0.42, 0.7, 8), root, '#d8cbb0', [0, 0.72, 0]);
+      add(b, cyl(b, 'cap', 0.3, 0.05, 0.5, 8), root, '#8a5a33', [0, 1.5, 0]);
+      add(b, box(b, 'hub', 0.12, 0.12, 0.12), root, '#5a3a24', [0.25, 1.25, 0]);
+      flame = add(b, sph(b, 'sack', 0.26), root, '#e8d49a', [0.45, 0.25, 0.35], { emissive: 0.5 });
+      for (let i = 0; i < 4; i++) add(b, box(b, 'sail', 0.04, 0.9, 0.18), root, '#efe6cf', [0.28, 1.25, 0], { rot: [(i * Math.PI) / 2, 0, 0] });
+      break;
+    case 'treasure_chest':
+      add(b, box(b, 'chest', 0.62, 0.38, 0.42), root, '#7a4a28', [0, 0.2, 0]);
+      add(b, cyl(b, 'lid', 0.62, 0.42, 0.42, 12), root, '#8a5a33', [0, 0.4, 0], { rot: [0, 0, Math.PI / 2] });
+      add(b, box(b, 'band', 0.64, 0.06, 0.44), root, GOLD, [0, 0.3, 0]);
+      flame = add(b, box(b, 'lock', 0.1, 0.12, 0.05), root, GOLD, [0, 0.3, 0.23], { emissive: 0.6 });
+      break;
+    case 'prison':
+      plinth(1.5);
+      add(b, box(b, 'block', 1.1, 0.8, 0.9), root, '#6d6a74', [0, 0.46, 0]);
+      add(b, box(b, 'roof', 1.2, 0.12, 1.0), root, '#4f4c56', [0, 0.92, 0]);
+      for (let i = 0; i < 4; i++) add(b, box(b, 'bar', 0.04, 0.42, 0.04), root, '#2a2a2e', [-0.15 + i * 0.1, 0.5, 0.47]);
+      flame = add(b, box(b, 'glow', 0.38, 0.36, 0.02), root, '#ffb347', [0, 0.5, 0.455], { emissive: 0.9 });
       break;
   }
   const flagPole = new TransformNode('flagPole', scene);

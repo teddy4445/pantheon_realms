@@ -745,6 +745,7 @@
 }
 .modal__footer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.6rem;
   padding: 0.7rem 0.95rem;
@@ -1096,6 +1097,71 @@ input[type='radio']:disabled {
 .story-backlog__title { font-family: var(--font-display); font-weight: 600; color: var(--gold-300); letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.9rem; }
 .story-backlog__list { display: flex; flex-direction: column; gap: 0.7rem; overflow: auto; padding-right: 0.4rem; }
 
+/* ============================================================
+   Story art (ASSET_PIPELINE.md §13): scene pictures and dialogue busts.
+   Pictures are presentation only; titles, buttons and frames are game UI.
+   ============================================================ */
+.scene-art { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: var(--navy-950); pointer-events: none; }
+.scene-art > img, .scene-art > .portrait { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; }
+.scene-art__scrim { position: absolute; inset: 0; }
+/* Light at the top for the title, clear through the middle, dark under the dialogue (bottom 25–30 %). */
+.scene-art__scrim--bottom { background: linear-gradient(180deg, rgba(5, 9, 15, 0.55) 0%, rgba(5, 9, 15, 0) 20%, rgba(5, 9, 15, 0) 62%, rgba(5, 9, 15, 0.82) 100%); }
+.scene-art__scrim--full { background: rgba(5, 9, 15, 0.6); }
+.story-layer--backdrop { background: none; }
+.story-layer > :not(.scene-art), .briefing-scene > :not(.scene-art) { position: relative; z-index: 1; }
+
+/* The dialogue box with the speaker's bust standing behind its edge; the bust's
+   visible lower edge sits on the box's lower edge. Contain fit, never cropped. */
+.story-stage { position: relative; width: min(58rem, 94vw); }
+.story-stage .story-box { position: relative; z-index: 1; width: 100%; }
+.story-bust {
+  position: absolute; bottom: 0; z-index: 0;
+  height: clamp(14rem, 56vh, 36rem); width: auto; max-width: none;
+  object-fit: contain; transform-origin: 50% 100%;
+  pointer-events: none; user-select: none;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6));
+  animation: fade-in var(--motion-med) ease-out;
+}
+.story-bust--left { left: -1rem; }
+.story-bust--right { right: -1rem; }
+/* Wide screens: the bust stands beside the box, only its shoulder behind the frame. */
+@media (min-width: 1500px) {
+  .story-bust--left { left: auto; right: calc(100% - 3.5rem); }
+  .story-bust--right { right: auto; left: calc(100% - 3.5rem); }
+}
+@media (max-height: 560px) {
+  .story-bust { height: clamp(10rem, 50vh, 20rem); }
+}
+
+/* A bust in a small 2:3 slot (dialogue lists, backlog). */
+.bust-slot { position: relative; display: block; flex: none; border: 1px solid rgba(194, 154, 82, 0.55); border-radius: var(--radius-s); overflow: hidden; background: radial-gradient(circle at 50% 30%, rgba(52, 88, 132, 0.55), var(--navy-950)); }
+.bust-slot img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+
+/* Mission briefing scene: painted art, title, objectives, dialogue (bottom 30 %). */
+.briefing-scene { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 0.7rem; padding: 0 1rem 1.6rem; animation: fade-in var(--motion-med) ease-out; }
+.briefing-scene__head { position: absolute !important; top: 1.3rem; left: 1.8rem; max-width: min(40rem, 58vw); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 0.95); }
+.briefing-scene__kicker { font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-300); }
+.briefing-scene__title { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 3vw, 2.6rem); line-height: 1.1; color: var(--gold-100); margin: 0.15rem 0 0.25rem; }
+.briefing-scene__subtitle { font-size: 1.05rem; font-style: italic; color: var(--text-strong); }
+.briefing-scene__side { position: absolute !important; top: 1.3rem; right: 1.6rem; width: min(25rem, 34vw); max-height: 50vh; display: flex; flex-direction: column; opacity: 0.97; }
+/* Over a painting (briefing, ending) the dialogue keeps to its band at the
+   bottom (30 % briefing, 25 % ending): the bust stands beside the box only where
+   there is room, otherwise it sits in the box. */
+.briefing-scene .story-bust { height: clamp(11rem, 30vh, 26rem); }
+.story-stage.is-backdrop .story-bust { height: clamp(10rem, 26vh, 22rem); }
+.story-box__mini { display: none; }
+@media (max-width: 1499px) {
+  .briefing-scene .story-bust, .story-stage.is-backdrop .story-bust { display: none; }
+  .briefing-scene .story-box__mini, .story-stage.is-backdrop .story-box__mini { display: block; }
+}
+.briefing-scene__side-body { flex: 1; min-height: 0; overflow: auto; padding: 0.8rem 1rem; }
+.briefing-scene__summary { margin-top: 0; }
+@media (max-width: 1100px), (max-height: 680px) {
+  .briefing-scene__head { max-width: calc(100vw - 3rem); }
+  .briefing-scene__side { position: relative !important; top: auto; right: auto; width: min(58rem, 94vw); max-height: 24vh; }
+}
+
+
 /* Contextual tips */
 /* Non-blocking: only its buttons take clicks, so the map underneath stays usable. */
 .hint-panel { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(var(--bottombar-h) + 0.8rem); width: min(30rem, 90vw); padding: 0.7rem 0.9rem; border-left: 3px solid var(--teal); animation: fade-in var(--motion-med) ease-out; pointer-events: none; opacity: 0.96; }
@@ -1117,7 +1183,9 @@ input[type='radio']:disabled {
 
 /* Spell slots: round gold-rimmed socket with the spell (or effect-family) art. */
 .spell-socket { display: inline-grid; place-items: center; flex: none; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 50% 35%, #1d3557, #05090f 75%); border: 1px solid var(--gold-400); box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), inset 0 0 0 2px rgba(5, 9, 15, 0.7), 0 2px 5px rgba(0, 0, 0, 0.6); }
-.spell-socket img { width: 86%; height: 86%; object-fit: contain; border-radius: 50%; }
+/* Delivered spell art reaches up to ~1.2× the image's inscribed circle at its diagonal tips (2026-10-02
+   functional icons): no image-level rounding, and 80 % keeps every tip inside the round socket. */
+.spell-socket img { width: 80%; height: 80%; object-fit: contain; border-radius: 0; }
 .spell-slot { display: flex; align-items: center; gap: 0.6rem; padding: 0.3rem 0.35rem; border: 1px solid rgba(194, 154, 82, 0.28); border-radius: var(--radius-s); background: var(--plate-raised); box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.7); }
 
 /* ============================================================

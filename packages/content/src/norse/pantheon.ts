@@ -4,28 +4,14 @@
  * PROPOSED for this build. The divine structure mirrors the Greek one so the
  * two pantheons stay comparable: a patron with no mechanical bonus (like Zeus)
  * and one exclusive first-minor pair unlocked by Hof II for 20 Favor (like
- * Athena/Ares), built only from the shared effect vocabulary. The other gods on
- * the owner's board are listed as undesigned. Hero classes mirror the three
+ * Athena/Ares), built only from the shared effect vocabulary; Frigg and Baldr
+ * widen that first choice and Loki and Njord the second (2026-10-02). Hero classes mirror the three
  * existing classes' numbers with Norse names.
  */
 import type { GodDefinition, HeroClassDefinition, HeroDefinition, PantheonDefinition } from '@pr/rules';
-import { BLESSINGS, blessing, secondMinorGod } from '../common/gods';
+import { BLESSINGS, blessing, firstMinorGod, secondMinorGod } from '../common/gods';
 import { SIGNATURES } from '../common/signatures';
 
-const undesigned = (id: string, name: string, domain: string): GodDefinition => ({
-  id,
-  pantheonId: 'norse',
-  name,
-  domain,
-  role: 'undesigned',
-  requirements: [],
-  favorCost: 0,
-  benefits: [],
-  benefitSummary: ['Blessing not yet designed for this build.'],
-  portraitAssetId: `god.norse.${id.replace(/^norse_/, '')}.portrait`,
-  implementationStatus: 'preparation',
-  provenance: { source: 'concept-board' },
-});
 
 export const NORSE_GODS: readonly GodDefinition[] = [
   {
@@ -81,6 +67,14 @@ export const NORSE_GODS: readonly GodDefinition[] = [
     implementationStatus: 'implemented',
     provenance: { source: 'proposed-this-build', note: 'Mirrors Athena (P).' },
   },
+  // Added 2026-10-02 (owner answer "Split 2 + 2"): Frigg and Baldr join the first choice,
+  // Loki and Njord the second. Proposed values.
+  ...(
+    [
+      ['norse_frigg', 'Frigg', 'Foresight & Protection', 'I know how this ends. Walk where I point.', blessing(BLESSINGS.attribute('knowledge', 1), BLESSINGS.vision(2))],
+      ['norse_baldr', 'Baldr', 'Light & Purity', 'Even the long night has a morning in it.', blessing(BLESSINGS.attribute('power', 1), BLESSINGS.manaRegen(2))],
+    ] as const
+  ).map(([id, name, domain, quote, b]) => firstMinorGod({ id, pantheonId: 'norse', name, domain, quote, ...b, portraitAssetId: `god.norse.${id.replace(/^norse_/, '')}.portrait`, templeId: 'norse_hof_2' })),
   // Second minor-god choice (proposed this build).
   ...(
     [
@@ -91,10 +85,14 @@ export const NORSE_GODS: readonly GodDefinition[] = [
   ).map(([id, name, domain, quote, b]) =>
     secondMinorGod({ id, pantheonId: 'norse', name, domain, quote, ...b, portraitAssetId: `god.norse.${id.replace(/^norse_/, '')}.portrait`, templeId: 'norse_hof_2', civicHallId: 'norse_high_hall' }),
   ),
-  undesigned('norse_loki', 'Loki', 'Trickery & Change'),
-  undesigned('norse_frigg', 'Frigg', 'Foresight & Protection'),
-  undesigned('norse_baldr', 'Baldr', 'Light & Purity'),
-  undesigned('norse_njord', 'Njord', 'Sea & Prosperity'),
+  ...(
+    [
+      ['norse_loki', 'Loki', 'Trickery & Change', 'Rules are for people who lose.', blessing(BLESSINGS.luck(2), BLESSINGS.movement(10))],
+      ['norse_njord', 'Njord', 'Sea & Prosperity', 'Fair wind, full nets, heavy purses.', blessing(BLESSINGS.income('gold', 200), BLESSINGS.income('crystal', 1))],
+    ] as const
+  ).map(([id, name, domain, quote, b]) =>
+    secondMinorGod({ id, pantheonId: 'norse', name, domain, quote, ...b, portraitAssetId: `god.norse.${id.replace(/^norse_/, '')}.portrait`, templeId: 'norse_hof_2', civicHallId: 'norse_high_hall' }),
+  ),
 ];
 
 /** Norse-named classes; numbers mirror Champion, Strategos and Oracle (proposed). */

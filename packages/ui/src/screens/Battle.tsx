@@ -47,7 +47,7 @@ import { battlePlaybackFactor } from '../app/preferences';
 import { matches } from '../app/keys';
 import { SceneViewport, presentation, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
-import { CreaturePortrait } from '../components/art';
+import { CreaturePortrait, SpellIcon } from '../components/art';
 import { Icon } from '../assets/icons';
 
 type Mode =
@@ -720,6 +720,7 @@ export function BattleScreen() {
               {mode.kind === 'spell' && castable.length > 1
                 ? castable.map((sp) => (
                     <Button key={sp.spellId} size="small" variant={mode.spellId === sp.spellId ? 'primary' : undefined} onClick={() => setMode({ kind: 'spell', spellId: sp.spellId })}>
+                      {catalog.spells[sp.spellId] ? <SpellIcon iconAssetId={catalog.spells[sp.spellId]!.iconAssetId} effectType={catalog.spells[sp.spellId]!.effect.type} size="1.6rem" /> : null}
                       {sp.name} ({sp.manaCost})
                     </Button>
                   ))

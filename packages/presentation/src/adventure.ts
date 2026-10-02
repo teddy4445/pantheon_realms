@@ -76,6 +76,8 @@ export interface AdventureSiteView {
   readonly lit: boolean;
   readonly open: boolean;
   readonly claimed: boolean;
+  /** Key colour of key tents and gates (hex). */
+  readonly tint?: string;
 }
 
 export interface AdventureHeroView {
@@ -546,12 +548,12 @@ export class AdventureSceneController implements SceneController {
     for (const v of views) {
       seen.add(v.id);
       let e = this.sites.get(v.id);
-      if (!v.shown || (v.archetype === 'pickup' && v.claimed)) {
+      if (!v.shown || ((v.archetype === 'pickup' || v.archetype === 'treasure_chest') && v.claimed)) {
         if (e) e.proxy.root.setEnabled(false);
         continue;
       }
       if (!e) {
-        const proxy = buildSiteProxy(this.scene, this.mats, v.archetype, `site-${v.id}`);
+        const proxy = buildSiteProxy(this.scene, this.mats, v.archetype, `site-${v.id}`, v.tint);
         const w = axialWorld(v.coord, R);
         proxy.root.position.set(w.x, this.heightAt(v.coord), w.z);
         proxy.root.scaling.setAll(v.archetype === 'town' ? 0.95 : 0.8);

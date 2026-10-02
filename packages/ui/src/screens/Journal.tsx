@@ -8,7 +8,7 @@ import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, object
 import { useStore } from '../app/context';
 import { HINTS } from '../app/hints';
 import { Button, Chip, Panel, Tabs } from '../components/kit';
-import { MarkerIcon, StoryPortrait, HeroPortrait } from '../components/art';
+import { MarkerIcon, SpeakerPortrait, HeroPortrait } from '../components/art';
 import { resolveAsset } from '../assets/manifest';
 import { ScreenHeader } from '../components/game';
 import { Icon } from '../assets/icons';
@@ -37,10 +37,9 @@ export function DialogueLines({ lines }: { lines: readonly { speaker: string; te
   return (
     <div className="dialogue">
       {lines.map((l, i) => {
-        const heroDef = Object.values(catalog.heroes).find((h) => h.name === l.speaker);
         return (
           <div key={i} className="dialogue__line">
-            {heroDef ? <HeroPortrait catalog={catalog} definitionId={heroDef.id} size="3.4rem" /> : <StoryPortrait name={l.speaker} size="3.4rem" />}
+            <SpeakerPortrait catalog={catalog} line={l} size="3.4rem" />
             <div>
               <div className="dialogue__speaker">{l.speaker}</div>
               <div className="dialogue__text">{l.text}</div>

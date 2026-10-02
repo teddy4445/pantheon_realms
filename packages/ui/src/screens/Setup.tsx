@@ -9,13 +9,24 @@
  * the difficulty, and whether the rival seat is the AI or a second player on
  * this computer (hot-seat).
  */
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, GodDefinition, PantheonDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle, Rule, Segmented, TextInput } from '../components/kit';
-import { Emblem, GodPortrait, HeroPortrait, MissionThumb, CreaturePortrait } from '../components/art';
+import { CampaignThumb, Emblem, GodPortrait, HeroPortrait, MissionThumb, CreaturePortrait, SpeakerPortrait } from '../components/art';
+import { resolveArt } from '../assets/manifest';
 import { ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
+
+/**
+ * A chosen campaign's painted cover behind the setup screens (campaign
+ * selection and its intro steps), under a scrim; the game UI draws every title,
+ * badge and button on top.
+ */
+function campaignBackdrop(campaignId: string | null | undefined): { className: string; style?: CSSProperties } {
+  const art = campaignId ? resolveArt(`campaign.${campaignId}.cover`) : null;
+  return art ? { className: 'setup-screen setup-screen--cover', style: { ['--app-art' as string]: `url("${art.url}")` } } : { className: 'setup-screen' };
+}
 
 function SetupSteps({ step }: { step: number }) {
   const store = useStore();
@@ -100,7 +111,11 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
   return (
     <Panel title={c.name} className="setup-detail" bodyClassName="scroll" headerIcon="campaign">
       <div className="setup-detail__lead">
-        <HeroPortrait catalog={catalog} definitionId={c.heroDefinitionId} size="6rem" />
+        {catalog.heroes[c.heroDefinitionId] ? (
+          <SpeakerPortrait catalog={catalog} line={{ speaker: catalog.heroes[c.heroDefinitionId]!.name, portraitAssetId: catalog.heroes[c.heroDefinitionId]!.portraitAssetId }} size="6rem" />
+        ) : (
+          <HeroPortrait catalog={catalog} definitionId={c.heroDefinitionId} size="6rem" />
+        )}
         <div>
           <div className="tagline">{c.tagline}</div>
           <p>{c.summary}</p>
@@ -117,7 +132,7 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
           <div className="mission-list">
             {missions.map((m) => (
               <div key={m.id} className="mission-row">
-                <MissionThumb catalog={catalog} missionId={m.id} style={{ width: '7.5rem', height: '4.6rem' }} />
+                <MissionThumb catalog={catalog} missionId={m.id} style={{ width: '8.4rem', height: '4.725rem' }} />
                 <div>
                   <div className="mission-row__title">
                     {m.order}. {m.name} <span className="dim">— {m.subtitle}</span>
@@ -188,7 +203,7 @@ export function ScenarioSelectScreen() {
   };
   const skMission = skirmish ? catalog.missions[skirmish.missionId] : undefined;
   return (
-    <div className="setup-screen">
+    <div {...campaignBackdrop(mode === 'campaign' ? selected : null)}>
       <ScreenHeader
         title={mode === 'campaign' ? 'Choose a Campaign' : 'Choose a Scenario'}
         subtitle={mode === 'campaign' ? 'Story campaigns' : 'Skirmish scenarios against the local AI'}
@@ -208,6 +223,11 @@ export function ScenarioSelectScreen() {
         <Panel title={mode === 'campaign' ? 'Campaigns' : 'Scenarios'} className="setup-list" bodyClassName="scroll">
           {(mode === 'campaign' ? campaigns : skirmishes).map((c) => (
             <button key={c.id} type="button" className={`list-card ${selected === c.id ? 'is-selected' : ''}`} onClick={() => setSelected(c.id)} data-testid={`scenario-${c.id}`}>
+              {mode === 'campaign' ? (
+                <CampaignThumb catalog={catalog} campaignId={c.id} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
+              ) : 'missionId' in c ? (
+                <MissionThumb catalog={catalog} missionId={c.missionId} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
+              ) : null}
               <div className="list-card__title">{c.name}</div>
               <div className="list-card__meta">{'tagline' in c ? c.tagline : c.summary}</div>
               <Chip tone={c.status === 'playable' ? 'ok' : 'muted'}>{c.status === 'playable' ? 'Playable' : 'Coming later'}</Chip>
@@ -227,7 +247,7 @@ export function ScenarioSelectScreen() {
         {skirmish && skMission ? (
           <Panel title={skirmish.name} className="setup-detail" headerIcon="skirmish" bodyClassName="scroll">
             <div className="setup-detail__lead">
-              <MissionThumb catalog={catalog} missionId={skMission.id} style={{ width: '12rem', height: '7rem' }} />
+              <MissionThumb catalog={catalog} missionId={skMission.id} style={{ width: '12.8rem', height: '7.2rem' }} />
               <div>
                 <p>{skirmish.summary}</p>
                 <p className="dim">{skMission.summary}</p>
@@ -394,7 +414,7 @@ export function PantheonSelectScreen() {
           ? `${scenario?.name ?? 'This scenario'} has no ${p.name} vs. ${catalog.pantheons[rival]?.name} version`
           : '';
   return (
-    <div className="setup-screen">
+    <div {...campaignBackdrop(store.setup.mode === 'campaign' ? store.setup.campaignId : null)}>
       <ScreenHeader
         title="Choose a Pantheon"
         subtitle={
@@ -545,7 +565,7 @@ export function DivineSelectScreen() {
     }
   };
   return (
-    <div className="setup-screen">
+    <div {...campaignBackdrop(setup.mode === 'campaign' ? setup.campaignId : null)}>
       <ScreenHeader title="Starting Patron" subtitle={fixed ? 'This scenario fixes its patron god' : 'Choose the god who sponsors your expedition'} />
       <SetupSteps step={3} />
       <div className="divine-layout">

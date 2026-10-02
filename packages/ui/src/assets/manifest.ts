@@ -12,6 +12,7 @@
 import placeholderManifest from '../../../../assets-runtime/placeholders/manifest.json';
 import uiArtManifest from '../../../../assets-runtime/ui/manifest.json';
 import finalArtManifest from '../../../../assets-runtime/ui/final-manifest.json';
+import storyArtManifest from '../../../../assets-runtime/art/manifest.json';
 // Named imports keep only the fields the game reads in the start-up bundle.
 import { assets as heroAssets, clips as heroClips, ground_alignment as heroGround, suggested_crossfade_seconds as heroCrossfade } from '../../../../assets-runtime/heroes/animation_manifest.json';
 import { heroModelEntriesFromManifest, registerHeroModels, registerUnitModels, type MountedHeroModelEntry, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
@@ -38,6 +39,33 @@ const PLACEHOLDERS: ManifestFile['assets'] = { ...(placeholderManifest as Manife
  */
 const FINAL: Record<string, { file: string; provenance: string }> = { ...(finalArtManifest as unknown as { assets: Record<string, { file: string; provenance: string }> }).assets };
 
+/**
+ * Painted story art (ASSET_PIPELINE.md §13): dialogue busts, campaign covers and
+ * cards, ending pictures, mission briefing art and cards. Written by
+ * `npm run art:import` (tools/assets/import_story_art.py) from
+ * assets-source/art/final/; the game only reads the runtime derivatives.
+ */
+export interface StoryArtRecord {
+  readonly id: string;
+  readonly url: string;
+  readonly kind: 'bust' | 'cover' | 'ending' | 'briefing' | 'card';
+  readonly width: number;
+  readonly height: number;
+  /** Busts: visible (non-transparent) bounds as fractions [left, top, right, bottom]. */
+  readonly alphaBox?: readonly [number, number, number, number];
+}
+interface StoryArtFile {
+  readonly provenance: string;
+  readonly assets: Record<string, { file: string; kind: StoryArtRecord['kind']; width: number; height: number; alphaBox?: [number, number, number, number] }>;
+}
+const STORY = storyArtManifest as unknown as StoryArtFile;
+
+/** Story art by asset ID, with its size (null when not delivered). */
+export function resolveArt(id: string): StoryArtRecord | null {
+  const a = STORY.assets[id];
+  return a ? { id, url: `./${a.file}`, kind: a.kind, width: a.width, height: a.height, alphaBox: a.alphaBox } : null;
+}
+
 const cache = new Map<string, AssetRecord>();
 
 export function resolveAsset(id: string): AssetRecord {
@@ -45,8 +73,10 @@ export function resolveAsset(id: string): AssetRecord {
   if (hit) return hit;
   let rec: AssetRecord;
   const fin = FINAL[id];
+  const art = STORY.assets[id];
   const ph = PLACEHOLDERS[id];
   if (fin) rec = { id, status: 'final', url: `./${fin.file}`, provenance: fin.provenance };
+  else if (art) rec = { id, status: 'final', url: `./${art.file}`, provenance: STORY.provenance };
   else if (ph) rec = { id, status: 'placeholder', url: `./${ph.file}`, provenance: ph.provenance };
   else rec = { id, status: 'procedural', url: null, provenance: 'Procedural development placeholder generated at runtime.' };
   cache.set(id, rec);

@@ -354,6 +354,22 @@ placeholder (`FINAL` in `packages/ui/src/assets/manifest.ts`). Interface icons
 without pack art take final art under `icon.ui.<name>` automatically. No screen
 changes are needed.
 
+First delivery (2026-10-02): **172 functional icons** — 22 interface
+(`icon.ui.*`), 54 spells, 79 artifacts, 17 skills — copied from the owner's
+Blender-project handoff folder into `assets-source/icons/final/` (unmodified
+1254 × 1254 RGBA masters; the originals stay where they were) and imported to
+128 px (spells, artifacts) and 96 px (interface, skills) runtime PNGs, 3.7 MB
+in all. The game never reads the handoff folder or its
+`delivery-manifest.json`; `final-manifest.json` is written by the importer.
+Each item shows its own icon through the shared widgets — `SpellIcon`,
+`ArtifactIcon` and `SkillIcon` (`components/art.tsx`) — which fall back to the
+old glyph when an ID has no file. Spell art sits at 80 % of its round socket
+without a circular clip, because several delivered spell silhouettes reach
+past the inscribed circle. An interface icon also replaces its glyph wherever
+the game already draws that glyph, including the ability-badge stand-ins
+(`bow` for Shooter, `upgrade` for Shapeshift) and completed objectives
+(`check`).
+
 Set and ability badges (2026-10-02) use the same path: `icon.set.<setId>`
 appears on worn and packed set pieces, the set list and item cards;
 `icon.ability.<abilityId>` on army slots, creature details and the
@@ -445,8 +461,11 @@ Three production briefs for an image generator live in
 a style bible built on the owner's references, a description of every image,
 its size and its file name. Delivered files go into
 **`assets-source/art/final/`**, named by asset ID plus `.png` (the same rule as
-the icons in §11). Not wired into the game yet — an import step and the screen
-slots come when the art arrives.
+the icons in §11), and are imported with **`npm run art:import`**
+(`tools/assets/import_story_art.py`, a development tool; see "Story art in the
+game" below). A fourth brief, `GPT6_BRIEF_4_GOD_PORTRAITS.md`, covers the 60
+god portraits (1024 × 1024, round crop); those are icons-catalog portraits and
+go into `assets-source/icons/final/` with `npm run icons:import`.
 
 | Group | Files | Size | Asset ID pattern |
 |---|---|---|---|
@@ -461,3 +480,63 @@ slots come when the art arrives.
 | Victory / defeat splashes | 12 | 1920 × 1080 | `splash.<pantheon>.victory`, `splash.<pantheon>.defeat` |
 | Level-up banners (transparent) | 6 | 1536 × 512 | `banner.level_up.<pantheon>` |
 | New-week banners (transparent) | 9 | 1536 × 512 | `banner.new_week`, `banner.week.<weeklyEventId>` |
+
+### Story art in the game (first delivery, 2026-10-02)
+
+The owner's delivery `blannder_models\story_art_delivery_2026-10-02\` (92 PNGs
+for Brief 1: 35 busts, 6 covers, 11 endings, 40 mission pictures) was **copied**
+into `assets-source/art/final/` with the exact names (the folder held only its
+README; SHA-256 of all 92 match the delivery manifest). The originals stay
+where they were; the game never reads the delivery folder, its manifest or any
+generator cache.
+
+**Sizes.** Busts are 1024 × 1536 RGBA as requested. The 57 landscape pictures
+are **native 1672 × 940/941** — below the brief's 2560 × 1440 (covers, endings)
+and 1920 × 1080 (missions). The owner's resize-only export decision is pending,
+so nothing was upscaled: the runtime copies are the native size.
+
+**Import** (`npm run art:import`): sources are never modified; derivatives are
+never larger than their source and keep the aspect ratio.
+
+| Source | Runtime file (`assets-runtime/art/`) | Asset ID |
+|---|---|---|
+| `hero.<p>.<c>.bust.png` | `busts/<id>.webp`, 768 × 1152, transparency kept | `hero.<p>.<c>.bust` |
+| `campaign.<c>.cover.png` | `covers/<id>.webp`, native size | `campaign.<c>.cover` |
+|  | `cards/campaign.<c>.thumbnail.webp`, 640 × 360 | `campaign.<c>.thumbnail` (the campaign's `thumbnailAssetId`) |
+| `ending.<c>.<e>.png` | `endings/<id>.webp`, native size | `ending.<c>.<e>` |
+| `mission.<…>.thumbnail.png` | `missions/mission.<…>.briefing.webp`, native size | `mission.<…>.briefing` |
+|  | `cards/<id>.webp`, 640 × 360 | `mission.<…>.thumbnail` (the mission's `thumbnailAssetId`) |
+
+Cards are a centred 16:9 crop (at most one pixel row from the 1672 × 941
+paintings), then reduced. WebP quality 78–82; 138 runtime files, 33.4 MB.
+`assets-runtime/art/manifest.json` (24 KB, read by `resolveAsset` and
+`resolveArt` in `packages/ui/src/assets/manifest.ts`) lists file, kind, size and
+— for busts — the visible (non-transparent) bounds. Sources, SHA-256, crops
+and notes are in `assets-source/art/IMPORT_REPORT.json` (not packaged).
+
+**Where they appear** (all presentation; the map camera and movement are
+unchanged):
+
+* **Busts** — the story dialogue window, the briefing scene and the epilogue:
+  the current speaker's bust stands beside the dialogue box (wide windows) or
+  behind its edge, contain fit, its visible lower edge on the box's lower
+  edge. The campaign hero speaks from the left; other speakers take the sides
+  in order of first appearance; a bust on the right is mirrored. No frame.
+  Dialogue lists (Journal, debrief, backlog) and the campaign detail show the
+  bust in a small 2:3 slot. Lines without a bust keep the square portrait.
+* **Covers** — behind campaign selection and the campaign's Pantheon and
+  Patron steps (under a scrim; the UI draws every title and button). The cards
+  head each campaign's list entry.
+* **Mission pictures** — the full-screen briefing scene (the bottom 30 % holds
+  the dialogue), and the 640 × 360 cards in the campaign's mission list, the
+  skirmish list and detail (one Twin Harbors picture for every pairing) and the
+  Random Map screen.
+* **Endings** — only the finished campaign's chosen ending, behind its
+  epilogue (`campaignEndingArtId`: the same variant `campaignEpilogueLines`
+  plays; The Three Beacons' single epilogue picture otherwise; a campaign with
+  two endings and no choice shows none). The dialogue keeps to the bottom
+  quarter.
+
+To replace a picture, drop the new PNG under the same name into
+`assets-source/art/final/` and run `npm run art:import`.
+

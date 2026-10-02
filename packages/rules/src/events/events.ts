@@ -126,7 +126,20 @@ export type GameEventPayload =
   | { kind: 'StoryScene'; sceneId: string }
   | { kind: 'RelicHeld'; siteId: SiteId; playerId: PlayerId; days: number; needed: number }
   | { kind: 'PlayerEliminated'; playerId: PlayerId }
-  | { kind: 'AdventureSpellCast'; heroId: HeroId; spellId: SpellId; center: HexCoord; radius: number; untilDay: number };
+  | { kind: 'AdventureSpellCast'; heroId: HeroId; spellId: SpellId; center: HexCoord; radius: number; untilDay: number }
+  // Adventure-map sites added 2026-10-02 (random maps) and neutral reactions
+  | { kind: 'LearningStoneUsed'; siteId: SiteId; heroId: HeroId; xp: number }
+  | { kind: 'ShrineSpellLearned'; siteId: SiteId; heroId: HeroId; spellId: SpellId }
+  | { kind: 'SkillTrained'; siteId: SiteId; heroId: HeroId; skillId: SkillId }
+  | { kind: 'KeyObtained'; siteId: SiteId; playerId: PlayerId; color: string }
+  | { kind: 'WindmillCollected'; siteId: SiteId; heroId: HeroId; amount: ResourceBundle; week: number }
+  | { kind: 'ChestOpened'; siteId: SiteId; heroId: HeroId; choice: 'gold' | 'xp'; amount: number }
+  | { kind: 'QuestHutCompleted'; siteId: SiteId; heroId: HeroId }
+  | { kind: 'PrisonerFreed'; siteId: SiteId; heroId: HeroId; byHeroId: HeroId }
+  /** A site did nothing for this hero; `reason` says why (no spellbook, already used, no free slot...). */
+  | { kind: 'SiteRefused'; siteId: SiteId; heroId: HeroId; reason: string }
+  | { kind: 'NeutralsJoined'; heroId: HeroId; siteId: SiteId | null; monsterHeroId: HeroId | null; stacks: { creatureId: CreatureId; count: number }[] }
+  | { kind: 'NeutralsFled'; heroId: HeroId; siteId: SiteId | null; monsterHeroId: HeroId | null };
 
 export type GameEventKind = GameEventPayload['kind'];
 

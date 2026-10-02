@@ -7,6 +7,8 @@
 import type { CreatureId } from '../ids';
 import type { ArmyRef, ArmyState, CreatureStackState, MatchState } from '../state/match';
 import { ARMY_SLOT_COUNT } from '../state/match';
+import { requireStats, type ContentCatalog } from '../definitions/catalog';
+import type { StackSpec } from '../definitions/world';
 
 export function emptyArmy(): ArmyState {
   return { slots: Array.from({ length: ARMY_SLOT_COUNT }, () => null) };
@@ -49,4 +51,47 @@ export function normalizeArmy(army: ArmyState): void {
     const s = army.slots[i];
     if (s && s.count <= 0) army.slots[i] = null;
   }
+}
+
+/**
+ * Placement of several stacks into an army, in order, without changing it: the
+ * slot each stack would merge into or occupy (null for a stack that does not fit).
+ */
+export function placementPlan(army: ArmyState, stacks: readonly StackSpec[]): (number | null)[] {
+  const sim = army.slots.map((s) => (s ? s.creatureId : null));
+  return stacks.map((st) => {
+    const merge = sim.findIndex((c) => c === st.creatureId);
+    if (merge >= 0) return merge;
+    const empty = sim.findIndex((c) => c === null);
+    if (empty < 0) return null;
+    sim[empty] = st.creatureId;
+    return empty;
+  });
+}
+
+export interface CommanderBonus {
+  readonly attack: number;
+  readonly defense: number;
+}
+
+/**
+ * Strength heuristic shared by the AI, the encounter estimate and the neutral
+ * reactions (campaign/01 §7: "aggregate army HP adjusted by effective
+ * Attack/Defense"): per stack count × 2·sqrt(offense × durability), with
+ * offense = mean damage × (1 + 5% per Attack above 5) and durability = HP ×
+ * (1 + 5% per Defense above 5). A documented heuristic, not a combat prediction.
+ */
+export function armyStrength(catalog: ContentCatalog, stacks: readonly (StackSpec | null)[], commander: CommanderBonus = { attack: 0, defense: 0 }): number {
+  let total = 0;
+  for (const s of stacks) {
+    if (!s || s.count <= 0) continue;
+    const { stats } = requireStats(catalog, s.creatureId);
+    const atk = stats.attack + commander.attack;
+    const def = stats.defense + commander.defense;
+    const dmg = (stats.damageMin + stats.damageMax) / 2;
+    const offense = dmg * (1 + 0.05 * (atk - 5));
+    const durability = stats.hp * (1 + 0.05 * (def - 5));
+    total += s.count * Math.sqrt(Math.max(0.1, offense) * Math.max(0.1, durability)) * 2;
+  }
+  return total;
 }

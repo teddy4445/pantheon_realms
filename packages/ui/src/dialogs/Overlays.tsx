@@ -5,9 +5,10 @@
  *
  * Dialogs submit commands or session transitions; they never edit state.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   abilityRules,
+  quoteNeutralReaction,
   armyStacks,
   campaignEpilogueLines,
   hexEquals,
@@ -27,11 +28,12 @@ import { useStore } from '../app/context';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle } from '../components/kit';
-import { BrandEmblem, CreaturePortrait, MissionThumb } from '../components/art';
+import { ArtifactIcon, BrandEmblem, CreaturePortrait, MissionThumb, SceneArt, briefingArt, speakerSides } from '../components/art';
+import { DialogueStage, useProtagonist } from './Story';
 import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { DialogueLines } from '../screens/Journal';
 import { guardStrength, heroStrength, relativeTime, siegeStrength, threatLabel } from '../app/view';
-import { CampDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, ShortcutsDialog } from './WorldDialogs';
+import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog } from './WorldDialogs';
 import { SpellbookDialog } from './Spellbook';
 import { AbilityBadge } from '../components/badges';
 
@@ -315,6 +317,12 @@ function ConfirmDialog({ o }: { o: Extract<Overlay, { kind: 'confirm' }> }) {
 
 // ---------------------------------------------------------------------------
 
+/**
+ * Mission briefing as a full-screen scene: the mission's painted briefing art
+ * behind (its bottom 30 % is kept for the dialogue), the title at the top left,
+ * the objectives at the right and the briefing lines in the dialogue box with the
+ * speaker's bust. Begin is always available.
+ */
 function BriefingDialog() {
   const store = useStore();
   const state = store.session!.state;
@@ -322,48 +330,95 @@ function BriefingDialog() {
   const mission = requireScenarioMission(catalog, state);
   const objectives = missionObjectiveDefs(catalog, state).filter((o) => state.mission.objectives[o.id]?.status !== 'locked');
   const campaign = mission.campaignId ? catalog.campaigns[mission.campaignId] : undefined;
+  const protagonist = useProtagonist();
+  const lines = mission.briefing;
+  const [index, setIndex] = useState(0);
+  const line = lines[Math.min(index, Math.max(0, lines.length - 1))];
+  const sides = useMemo(() => speakerSides(lines, protagonist), [lines, protagonist]);
+  const art = briefingArt(mission.thumbnailAssetId);
+  const template = catalog.mapTemplates[mission.mapTemplateId];
+  const kicker = campaign ? `${campaign.name} · Mission ${mission.order}` : state.customMission ? 'Random map' : 'Skirmish';
+  const last = index >= lines.length - 1;
   return (
-    <Modal
-      title={`${campaign ? `${campaign.name} · Mission ${mission.order}: ` : ''}${mission.name}`}
-      width="56rem"
-      testId="briefing"
-      footer={
-        <>
-          <span className="faint small">{mission.targetPlaytime}</span>
-          <span className="grow" />
-          <Button variant="primary" size="large" onClick={() => store.closeOverlay()} autoFocus data-testid="briefing-begin">
-            Begin
-          </Button>
-        </>
-      }
-    >
-      <div className="briefing">
-        <MissionThumb catalog={catalog} missionId={mission.id} style={{ width: '100%', height: '9rem' }} />
-        <div className="tagline">{mission.subtitle}</div>
-        <p>{mission.summary}</p>
-        <DialogueLines lines={mission.briefing} />
-        <SectionTitle>Objectives</SectionTitle>
-        <ul className="bullets">
-          {objectives.map((o) => (
-            <li key={o.id}>
-              <strong>{o.title}</strong> {o.category === 'optional' ? <Chip>optional</Chip> : null} <span className="dim small">— {o.description}</span>
-            </li>
-          ))}
-        </ul>
-        {mission.newDecisions.length ? (
-          <>
-            <SectionTitle>New in this mission</SectionTitle>
-            <div className="row gap wrap">
-              {mission.newDecisions.map((d) => (
-                <Chip key={d} tone="info">
-                  {d}
-                </Chip>
-              ))}
+    <div className="briefing-scene" role="dialog" aria-modal="true" aria-label={`${kicker}: ${mission.name}`} data-testid="briefing">
+      <SceneArt
+        art={art}
+        scrim="bottom"
+        fallback={<MissionThumb catalog={catalog} missionId={mission.id} assetId={mission.thumbnailAssetId} style={{ width: '100%', height: '100%', border: 0, borderRadius: 0 }} />}
+      />
+      <header className="briefing-scene__head">
+        <div className="briefing-scene__kicker">{kicker}</div>
+        <h1 className="briefing-scene__title">{mission.name}</h1>
+        <div className="briefing-scene__subtitle">{mission.subtitle}</div>
+      </header>
+      <aside className="briefing-scene__side panel" aria-label="Mission objectives">
+        <div className="briefing-scene__side-body scroll">
+          <p className="briefing-scene__summary">{mission.summary}</p>
+          <SectionTitle>Objectives</SectionTitle>
+          <ul className="bullets">
+            {objectives.map((o) => (
+              <li key={o.id}>
+                <strong>{o.title}</strong> {o.category === 'optional' ? <Chip>optional</Chip> : null} <span className="dim small">— {o.description}</span>
+              </li>
+            ))}
+          </ul>
+          {mission.newDecisions.length ? (
+            <>
+              <SectionTitle>New in this mission</SectionTitle>
+              <div className="row gap wrap">
+                {mission.newDecisions.map((d) => (
+                  <Chip key={d} tone="info">
+                    {d}
+                  </Chip>
+                ))}
+              </div>
+            </>
+          ) : null}
+          <p className="faint small">
+            {mission.targetPlaytime}
+            {template ? ` · ${template.width}×${template.height} map` : ''}
+          </p>
+        </div>
+      </aside>
+      {line ? (
+        <DialogueStage
+          line={line}
+          side={sides.get(line.speaker) ?? 'left'}
+          footer={
+            <>
+              <span className="faint small">
+                {index + 1} / {lines.length}
+              </span>
+              <span className="grow" />
+              {index > 0 ? (
+                <Button size="small" variant="ghost" onClick={() => setIndex((i) => i - 1)} data-testid="briefing-prev">
+                  Back
+                </Button>
+              ) : null}
+              {!last ? (
+                <Button size="small" onClick={() => setIndex((i) => i + 1)} data-testid="briefing-next">
+                  Next
+                </Button>
+              ) : null}
+              <Button variant="primary" size="large" onClick={() => store.closeOverlay()} autoFocus data-testid="briefing-begin">
+                Begin
+              </Button>
+            </>
+          }
+        />
+      ) : (
+        <div className="story-stage">
+          <div className="story-box panel">
+            <div className="story-box__footer">
+              <span className="grow" />
+              <Button variant="primary" size="large" onClick={() => store.closeOverlay()} autoFocus data-testid="briefing-begin">
+                Begin
+              </Button>
             </div>
-          </>
-        ) : null}
-      </div>
-    </Modal>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -658,27 +713,54 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
   const t = hero ? threatLabel(catalog, heroStrength(catalog, hero), theirs) : null;
   const label = q?.encounterLabel ?? site?.guard?.label ?? 'Encounter';
   const reward = site?.guard?.reward;
+  // Much weaker neutrals join for free or flee (scenario feature; proposed 2026-10-02).
+  const reaction = hero ? quoteNeutralReaction(catalog, state, heroId, dest) : null;
   const attack = () => {
     store.closeOverlay();
     store.dispatch({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true });
   };
+  const react = (choice: 'join' | 'release') => {
+    store.closeOverlay();
+    const names = (reaction?.stacks ?? []).map((s) => `${s.count} ${s.count === 1 ? catalog.creatures[s.creatureId]?.name : catalog.creatures[s.creatureId]?.pluralName}`).join(', ');
+    if (!store.dispatch({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true, encounterChoice: choice })) {
+      store.toast(choice === 'join' ? `${names} joined ${hero?.name}.` : `The ${label.toLowerCase()} fled from ${hero?.name}. The way is clear.`, 'success');
+    }
+  };
   return (
     <Modal
-      title={town ? `Besiege ${town.name}?` : `Attack ${label}?`}
+      title={reaction?.kind === 'join' ? `${label} — they offer to join you` : reaction?.kind === 'flee' ? `${label} — they flee from you` : town ? `Besiege ${town.name}?` : `Attack ${label}?`}
       onClose={() => store.closeOverlay()}
-      width="40rem"
+      width={reaction?.kind ? '58rem' : '40rem'}
       testId="encounter"
       footer={
         <>
           <Button onClick={() => store.closeOverlay()}>Withdraw</Button>
           <span className="grow" />
-          <Button variant="danger" size="large" icon="attack" onClick={attack} autoFocus data-testid="encounter-attack">
-            Attack
+          {reaction?.kind === 'join' ? (
+            <Button variant="primary" size="large" icon="check" onClick={() => react('join')} autoFocus data-testid="encounter-join">
+              Accept them
+            </Button>
+          ) : null}
+          {reaction?.kind ? (
+            <Button size="large" onClick={() => react('release')} autoFocus={reaction.kind === 'flee'} data-testid="encounter-release">
+              Let them go
+            </Button>
+          ) : null}
+          <Button variant="danger" size="large" icon="attack" onClick={attack} autoFocus={!reaction?.kind} data-testid="encounter-attack">
+            {reaction?.kind ? 'Fight anyway' : 'Attack'}
           </Button>
         </>
       }
     >
+      {reaction?.kind ? (
+        <p className="success" data-testid="neutral-offer">
+          {reaction.kind === 'join'
+            ? `Your army is far stronger. These creatures would rather join ${hero?.name} — for free — than fight. Accepting adds them to the army; letting them go leaves the way clear. Either way you keep the reward, but no experience is gained.`
+            : `Your army is far stronger. These creatures will flee rather than fight. Letting them go leaves the way clear and keeps the reward, but gains no experience.`}
+        </p>
+      ) : null}
       <p>
+        {reaction?.kind ? 'If you fight anyway, ' : ''}
         {hero?.name} will engage {enemyHero ? `${enemyHero.name}’s army` : `the ${label.toLowerCase()}`}
         {site ? ` at ${site.name}` : ''}. A checkpoint is saved before the battle begins.
       </p>
@@ -709,6 +791,7 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
           Reward on victory: <CostList cost={reward.resources ?? {}} empty="" />
           {(reward.artifactIds ?? []).map((a) => (
             <Chip key={a} tone="info">
+              {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="1.25rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
               {catalog.artifacts[a]?.name}
             </Chip>
           ))}
@@ -858,6 +941,10 @@ export function OverlayLayer() {
       return store.session ? <CampDialog key={top.siteId} heroId={top.heroId} siteId={top.siteId} /> : null;
     case 'map-event':
       return store.session ? <MapEventDialog heroId={top.heroId} siteId={top.siteId} /> : null;
+    case 'chest':
+      return store.session ? <ChestDialog heroId={top.heroId} siteId={top.siteId} /> : null;
+    case 'quest-hut':
+      return store.session ? <QuestHutDialog heroId={top.heroId} siteId={top.siteId} /> : null;
     case 'interventions':
       return store.session ? <InterventionsDialog /> : null;
     case 'game-over':

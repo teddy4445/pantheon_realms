@@ -44,7 +44,7 @@ test('random map, two people on one computer: the map is hidden at every hand-ov
   await page.getByTestId('seat-1-name').fill('Brynja');
   await page.getByTestId('seat-1-pantheon').selectOption('norse');
   await expect(page.getByTestId('random-preview')).toBeVisible();
-  await expect(page.getByText('Fairness checks 5/5')).toBeVisible();
+  await expect(page.getByText('Fairness checks 6/6')).toBeVisible();
   await page.getByTestId('random-seed').fill('4242');
   await page.getByTestId('random-start').click();
   await page.getByTestId('briefing-begin').click();

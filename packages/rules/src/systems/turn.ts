@@ -83,7 +83,7 @@ export function projectedIncome(tx: Pick<Tx, 'catalog' | 'state'>, playerId: str
   // Hero income (pantheon skills, artifacts): paid for every active hero.
   for (const hero of Object.values(state.heroes)) {
     if (hero.ownerId !== playerId || hero.status !== 'active' || hero.monster) continue;
-    for (const e of heroEffects(catalog, hero)) if (e.type === 'daily_income') total = addResources(total, { [e.resource]: e.amount });
+    for (const e of heroEffects(catalog, hero, state)) if (e.type === 'daily_income') total = addResources(total, { [e.resource]: e.amount });
   }
   for (const [siteId, site] of Object.entries(state.world.sites)) {
     if (site.owner !== playerId) continue;

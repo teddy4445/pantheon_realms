@@ -11,6 +11,8 @@
  */
 import type { EffectDefinition, GodDefinition } from '@pr/rules';
 
+export const FIRST_MINOR_GROUP = 'first_minor';
+export const FIRST_MINOR_FAVOR_COST = 20;
 export const SECOND_MINOR_GROUP = 'second_minor';
 export const SECOND_MINOR_FAVOR_COST = 25;
 
@@ -51,6 +53,44 @@ export function secondMinorGod(s: SecondMinorSpec): GodDefinition {
   };
 }
 
+export interface FirstMinorSpec {
+  readonly id: string;
+  readonly pantheonId: string;
+  readonly name: string;
+  readonly domain: string;
+  readonly quote?: string;
+  readonly benefits: readonly EffectDefinition[];
+  readonly benefitSummary: readonly string[];
+  readonly portraitAssetId: string;
+  /** The pantheon's Temple II building ID. */
+  readonly templeId: string;
+}
+
+/**
+ * Two more options for the FIRST minor-god choice (owner answer 2026-10-02:
+ * "Split 2 + 2" — of the four undesigned gods per pantheon, two join the first
+ * choice and two the second). Same terms as Athena/Ares: Temple II, 20 Favor,
+ * exclusive with the other first-choice gods. Blessings are proposals.
+ */
+export function firstMinorGod(s: FirstMinorSpec): GodDefinition {
+  return {
+    id: s.id,
+    pantheonId: s.pantheonId,
+    name: s.name,
+    domain: s.domain,
+    role: 'minor',
+    exclusivityGroup: FIRST_MINOR_GROUP,
+    requirements: [{ type: 'has_building', buildingId: s.templeId }],
+    favorCost: FIRST_MINOR_FAVOR_COST,
+    benefits: s.benefits,
+    benefitSummary: s.benefitSummary,
+    ...(s.quote ? { quote: s.quote } : {}),
+    portraitAssetId: s.portraitAssetId,
+    implementationStatus: 'implemented',
+    provenance: { source: 'proposed-this-build', note: 'First minor-god choice, added 2026-10-02 (P, unplaytested).' },
+  };
+}
+
 /** Blessing building blocks shared by several pantheons' gods (same effect, same text). */
 export const BLESSINGS = {
   movement: (percent: number) => ({ fx: { type: 'movement_percent', percent } as EffectDefinition, text: `+${percent}% land movement for your heroes.` }),
@@ -72,7 +112,7 @@ export const BLESSINGS = {
   }),
   luck: (amount: number) => ({ fx: { type: 'luck', amount } as EffectDefinition, text: `+${amount} Luck for your armies.` }),
   morale: (amount: number) => ({ fx: { type: 'morale', amount } as EffectDefinition, text: `+${amount} morale for your armies.` }),
-  vision: (amount: number) => ({ fx: { type: 'vision_radius', amount } as EffectDefinition, text: `+${amount} hexes of adventure vision for your heroes.` }),
+  vision: (amount: number) => ({ fx: { type: 'vision_radius', amount } as EffectDefinition, text: `+${amount} ${amount === 1 ? 'hex' : 'hexes'} of adventure vision for your heroes.` }),
   creatures: (stat: 'attack' | 'defense' | 'speed', amount: number, filter: { minTier?: number; maxTier?: number; ability?: string; label: string }) => ({
     fx: {
       type: 'creature_stat',
@@ -83,6 +123,11 @@ export const BLESSINGS = {
       ...(filter.ability !== undefined ? { ability: filter.ability } : {}),
     } as EffectDefinition,
     text: `${filter.label}: +${amount} ${stat[0]!.toUpperCase() + stat.slice(1)} in battle.`,
+  }),
+  manaRegen: (amount: number) => ({ fx: { type: 'mana_regen', amount } as EffectDefinition, text: `+${amount} mana for your heroes at every dawn.` }),
+  fury: (attack: number) => ({
+    fx: { type: 'wounded_fury', attack, numerator: 1, denominator: 2 } as EffectDefinition,
+    text: `Your stacks at half strength or less: +${attack} Attack in battle (does not add to other fury).`,
   }),
   offering: (goldPerFavor: number, maxFavorPerWeek: number) => ({
     fx: { type: 'offering', goldPerFavor, maxFavorPerWeek } as EffectDefinition,

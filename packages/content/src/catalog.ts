@@ -5,6 +5,7 @@
 import { PR_02_CANDIDATE, deepFreeze, type ContentCatalog, type VersionBundle } from '@pr/rules';
 import { ABILITIES } from './common/abilities';
 import { ARTIFACTS, HERO_CLASSES, SKILLS, SPELLS } from './common/heroesMagic';
+import { withSpecialties } from './common/specialties';
 import { GREEK_FAMILY_SPECS, buildFamilies } from './greek/creatures';
 import { GREEK_LORE } from './greek/lore';
 import { NEUTRAL_FAMILY_SPECS, NEUTRAL_LORE } from './common/neutrals';
@@ -62,21 +63,24 @@ export function buildCatalog(): ContentCatalog {
   const creatureIndex = index(creatureList, 'creature');
   // The four arc campaigns name troops in their objectives (names come from the creatures above).
   const arc = buildArcCampaigns((id) => creatureIndex[id], (id) => creatureIndex[id]?.familyId ?? id);
+  const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families], 'family');
+  const spellIndex = index(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS]), 'spell');
+  const heroList = withSpecialties([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes), ...ARC_CAMPAIGN_HEROES], { families: familyIndex, creatures: creatureIndex, spells: spellIndex });
   const catalog: ContentCatalog = {
     versions: VERSIONS,
     rulesProfile: PR_02_CANDIDATE,
     pantheons: index(pantheons, 'pantheon'),
-    families: index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families], 'family'),
+    families: familyIndex,
     creatures: creatureIndex,
     abilities: index(ABILITIES, 'ability'),
     lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE], 'lore'),
     buildings: index([...GREEK_BUILDINGS, ...NORSE_BUILDINGS, ...kits.flatMap((k) => k.buildings)], 'building'),
     townArchetypes: index([GREEK_TOWN, NORSE_TOWN, ...kits.map((k) => k.town)], 'town archetype'),
     gods: index([...GREEK_GODS, ...NORSE_GODS, ...kits.flatMap((k) => k.gods)], 'god'),
-    heroes: index([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes), ...ARC_CAMPAIGN_HEROES], 'hero'),
+    heroes: index(heroList, 'hero'),
     heroClasses: index([...HERO_CLASSES, ...NORSE_HERO_CLASSES, ...kits.flatMap((k) => k.classes)], 'hero class'),
     skills: index([...SKILLS, ...EXPANDED_SKILLS], 'skill'),
-    spells: index(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS]), 'spell'),
+    spells: spellIndex,
     artifacts: index(withLore([...ARTIFACTS, ...SET_ARTIFACTS, ...ARCANA_ARTIFACTS]), 'artifact'),
     artifactSets: index([...ARTIFACT_SETS, ...ARCANA_SETS], 'artifact set'),
     difficulties: index(DIFFICULTIES, 'difficulty'),

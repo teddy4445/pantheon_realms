@@ -116,6 +116,7 @@ function sideStatMod(catalog: ContentCatalog, battle: BattleState | undefined, s
     if (e.minTier !== undefined && def.tier < e.minTier) continue;
     if (e.maxTier !== undefined && def.tier > e.maxTier) continue;
     if (e.ability !== undefined && !abilityRules(catalog, stack.creatureId).some((r) => r.type === e.ability)) continue;
+    if (e.familyId !== undefined && def.familyId !== e.familyId) continue;
     n += e.amount;
   }
   return n;

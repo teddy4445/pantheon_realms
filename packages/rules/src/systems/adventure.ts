@@ -20,6 +20,7 @@ import { learnSpellsAtTown } from './heroes';
 import { grantReward, MISSION_VICTORY_FLAG, setFlag } from './quests';
 import { startBattle } from './battle/factory';
 import { bumpTotal } from './stats';
+import { quoteNeutralReaction, resolveNeutralReaction, visitWorldSite } from './sites';
 import { scenarioMission } from '../resolvers/scenario';
 
 export interface MovementQuote extends PathResult {
@@ -71,7 +72,7 @@ export function revealAround(tx: Tx, playerId: PlayerId, positions: readonly Hex
   return revealed;
 }
 
-export function commitMoveHero(tx: Tx, heroId: HeroId, dest: HexCoord, confirmEncounter: boolean): void {
+export function commitMoveHero(tx: Tx, heroId: HeroId, dest: HexCoord, confirmEncounter: boolean, encounterChoice: 'fight' | 'join' | 'release' = 'fight'): void {
   const hero = tx.state.heroes[heroId];
   if (!hero || hero.ownerId !== tx.actorId) reject('not_owner', 'Not your hero');
   if (hero.status !== 'active') reject('illegal_action', `${hero.name} cannot move`);
@@ -80,11 +81,23 @@ export function commitMoveHero(tx: Tx, heroId: HeroId, dest: HexCoord, confirmEn
   const last = q.path.length - 1;
   if (q.endsInEncounter && q.stopIndex === last) {
     if (!confirmEncounter) reject('encounter_requires_confirmation', `Attack ${q.encounterLabel}?`);
+    // Much weaker neutrals may join or flee instead of fighting (scenario feature).
+    const reaction = encounterChoice === 'fight' ? null : quoteNeutralReaction(tx.catalog, tx.state, heroId, dest);
+    if (reaction && !reaction.kind) reject('illegal_action', reaction.reason ?? 'These creatures will fight');
+    if (reaction && encounterChoice === 'join' && reaction.kind !== 'join') reject('illegal_action', 'They will not join you — you can only let them go');
     const approach = last - 1;
     if (approach >= 0) moveAlong(tx, hero, q.path.slice(0, approach + 1), q.stepCosts[approach] ?? 0);
     // Pay the final edge as combat begins.
     const finalEdge = (q.stepCosts[last] ?? 0) - (approach >= 0 ? (q.stepCosts[approach] ?? 0) : 0);
     hero.movementPoints = Math.max(0, hero.movementPoints - finalEdge);
+    if (reaction) {
+      resolveNeutralReaction(tx, hero, dest, reaction, encounterChoice === 'join');
+      hero.position = { q: dest.q, r: dest.r };
+      tx.emit({ kind: 'HeroMoved', heroId: hero.id, path: [{ q: dest.q, r: dest.r }], cost: finalEdge, remaining: hero.movementPoints });
+      revealAround(tx, hero.ownerId, [dest], heroVisionRadius(tx.catalog, hero, tx.state));
+      arriveAt(tx, hero, dest);
+      return;
+    }
     beginEncounter(tx, hero, dest);
     return;
   }
@@ -186,6 +199,8 @@ export function arriveAt(tx: Tx, hero: HeroState, coord: HexCoord): void {
       if (firstVisit) revealSites(tx, playerId, def.kind.revealSiteIds);
       break;
     default:
+      // Learning stones, shrines, trainers, key tents, windmills, prisons (2026-10-02).
+      visitWorldSite(tx, hero, def, st);
       break;
   }
   if (firstVisit) tx.emit({ kind: 'SiteVisited', siteId: def.id, heroId: hero.id });

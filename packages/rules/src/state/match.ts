@@ -98,6 +98,8 @@ export interface PlayerState {
   incomePercent?: number;
   /** World week of the player's last divine intervention (0 or absent = never). */
   interventionWeek?: number;
+  /** Key colours this player holds from key tents (random maps; absent = none). */
+  keys?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -205,6 +207,12 @@ export interface SiteState {
   stock?: number;
   /** Relic: consecutive dawns the current owner has held it. */
   heldDays?: number;
+  /** Heroes that already used a once-per-hero site (learning stone, spell shrine, skill trainer). */
+  usedBy?: HeroId[];
+  /** Windmill: world week of the last collection (0 or absent = never). */
+  lastCollectedWeek?: number;
+  /** Player whose hero cleared the guard (battle, or neutrals that joined or fled). */
+  clearedBy?: PlayerId;
 }
 
 export interface WorldState {
@@ -369,7 +377,9 @@ export interface BattleSideEffects {
   /** Battle spell damage bonus percent (commander skills/artifacts). Absent = 0. */
   spellDamagePercent?: number;
   /** creature_stat filters for this side's creatures. */
-  creatureStats: { stat: 'attack' | 'defense' | 'speed'; amount: number; minTier?: number; maxTier?: number; ability?: string }[];
+  creatureStats: { stat: 'attack' | 'defense' | 'speed'; amount: number; minTier?: number; maxTier?: number; ability?: string; familyId?: string }[];
+  /** Extra Spell Power per spell for this side's commander (hero spell specialties). Absent = none. */
+  spellPowerBonus?: Record<string, number>;
 }
 
 export type BattleStatusKind = 'defense_bonus' | 'attack_bonus' | 'max_damage_roll' | 'ranged_mitigation' | 'speed_bonus' | 'melee_mitigation' | 'min_damage_roll';

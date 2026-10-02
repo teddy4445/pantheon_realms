@@ -203,6 +203,29 @@ export function soundsForEvents(catalog: ContentCatalog, state: MatchState, me: 
       case 'AdventureSpellCast':
         if (ownsHero(state, e.heroId, me)) add('ui.divine');
         break;
+      // --- Map sites and neutral reactions (proposed 2026-10-02) ---
+      case 'LearningStoneUsed':
+      case 'ShrineSpellLearned':
+      case 'SkillTrained':
+        if (ownsHero(state, e.heroId, me)) add('ui.divine');
+        break;
+      case 'KeyObtained':
+        if (e.playerId === me) add('ui.capture');
+        break;
+      case 'WindmillCollected':
+      case 'ChestOpened':
+        if (ownsHero(state, e.heroId, me)) add(e.kind === 'ChestOpened' && e.choice === 'xp' ? 'ui.divine' : 'ui.coins');
+        break;
+      case 'QuestHutCompleted':
+        if (ownsHero(state, e.heroId, me)) add('ui.objective');
+        break;
+      case 'PrisonerFreed':
+      case 'NeutralsJoined':
+        if (ownsHero(state, e.kind === 'PrisonerFreed' ? e.byHeroId : e.heroId, me)) add('ui.recruit');
+        break;
+      case 'NeutralsFled':
+        if (ownsHero(state, e.heroId, me)) add('ui.capture');
+        break;
       case 'LevelUpPending':
         if (ownsHero(state, e.heroId, me)) add(STINGERS.levelUp);
         break;

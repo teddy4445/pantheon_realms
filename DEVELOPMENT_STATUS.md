@@ -1,9 +1,224 @@
 # Development Status
 
-_Last updated: 2026-10-02 · app 0.4.1 + mounted heroes + the owner requests of 2026-10-01 and 2026-10-02 below (not yet in an installer) · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges) · content `content-0.8.0` (values changed this round without a version bump; its saves still load) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.3` · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
+_Last updated: 2026-10-02 · **app 0.5.0** (mounted heroes + the owner requests of 2026-10-01 and 2026-10-02 below; Windows installer built, see below) · after the installer: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions** and the **92 story pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
+
+## 0.5.0 Windows installer (2026-10-02)
+
+Version bumped from 0.4.1 to **0.5.0** (`package.json`, `apps/desktop/package.json`,
+`package-lock.json`) — the first installer with the mounted heroes and both
+2026-10-01 and 2026-10-02 rounds. Content, rules and saves are unchanged by the
+bump (content `content-0.8.0`).
+
+| Command | Result |
+|---|---|
+| `npm run build` + `npm run desktop:build` | pass (start-up script 1,413.92 KB / 394.18 KB gzip) |
+| `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.5.0-x64.exe` (145,218,092 bytes, SHA-256 `a96f1cffdd53bcba917310c541fdae7e1f176f79b0943000cd0368e3916f4c1f`) |
+| Payload check (7-Zip) | the installer's `app-64.7z` extracts byte-identical to `win-unpacked`; `app.asar` (45 MB) says version 0.5.0, holds `renderer/heroes/`, no `assets-source/`, tools, source maps or `.blend` |
+| `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (packaged: `isPackaged` true, DevTools refused; saves, records, unit GLB, six hero GLBs, audio running); the menu footer reads "v0.5.0 · Desktop build" |
+| Copied to the owner's `installer\` folder | in 8 parts, joined on the computer, SHA-256 matches |
+
+**Not run on Windows; unsigned** (SmartScreen warns). Per-user install, saves in
+`%APPDATA%\Pantheon Realms\saves`; saves from content 0.7.0 are listed as
+incompatible and kept.
+
+## Owner requests of 2026-10-02, afternoon (specialties, gods, map sites, neutrals) and the story art
+
+Two rounds delivered together: the owner's gameplay request (hero specialties,
+the last 24 gods, new map sites, neutral reactions; `DESIGN_PROPOSALS.md` §24–28)
+and the **story art** (92 pictures from the owner's art project). All values are
+**proposed, unplaytested**. The Three Beacons keeps its documented rules.
+**Not in the 0.5.0 installer**; a rebuilt installer is needed to see either
+round in the installed game.
+
+### What changed
+
+* **Hero specialties** — all 62 heroes (41 creature, 12 spell, 9 resource),
+  shown in the tavern (Heroes' Lodge) before hiring, on the hero screen and in
+  the Encyclopedia; scenario feature `heroSpecialties` (skirmish, random maps,
+  The Winter Oath, the four arc campaigns). New effects: `creature_stat` may
+  name a family; `spell_power_bonus`. Spell specialists start knowing their
+  spell (also when hired or freed). The AI orders the tavern by specialty value.
+* **Gods** — the 24 undesigned gods now have blessings (two per pantheon join
+  the first choice, two the second); new effects `mana_regen`, `wounded_fury`.
+  60 gods: 6 patrons, 24 first-choice, 30 second-choice; none undesigned. The
+  campaigns' god lists are unchanged, so the new gods appear in skirmish and
+  random maps. GPT brief for all 60 portraits:
+  `assets-source/art/briefs/GPT6_BRIEF_4_GOD_PORTRAITS.md`.
+* **Map sites** — nine new site kinds (learning stone, spell shrine, skill
+  trainer, quest hut, key tent, key gate, windmill, treasure chest, prison),
+  new commands `OpenChest` and `CompleteQuestHut`, events and sounds, tile-panel
+  details, chest and quest-hut dialogs, Encyclopedia "Map sites" and "Neutral
+  creatures" panels, marker IDs (`icon.marker.learning-stone` …, the nearest
+  existing marker until delivered). Random maps `pr-skirmishgen-0.4` place them
+  for every empire alike; new check SKM-7. Tavern lists skip imprisoned heroes.
+* **Neutral reactions** — much weaker neutral guards and wandering bands offer
+  to join for free (≥ 3× strength, all stacks fit) or flee (≥ 2×); the encounter
+  dialog offers Accept them / Let them go / Fight anyway. No experience; reward
+  and bounty kept; `clearedBy` recorded for quest huts. Feature
+  `neutralReactions` (skirmish and random maps only). The AI uses it.
+* **Path-finding speed-up** (needed by the 3-empire AI test): site index cached
+  per sites object, hero occupancy built once per search, a binary heap in
+  `findHeroPath`. Same routes; the 3-empire all-AI test went from 215 s to 17 s
+  with the identical result.
+* **Story art** (`ASSET_PIPELINE.md` §13): copied into `assets-source/art/final/`
+  (92 of 92 SHA-256 match the delivery manifest), imported by the new
+  `npm run art:import` into 138 runtime WebP files (33.4 MB) without upscaling;
+  busts beside the dialogue box (mirrored on the right), campaign covers behind
+  campaign selection and its setup steps with 640 × 360 cards, a new
+  full-screen briefing scene on the mission picture, mission and skirmish
+  cards, and the chosen ending behind the campaign epilogue. The skirmish and
+  random-map herald now has its own portrait ID (`story.herald.portrait`)
+  instead of the leader's.
+* Smaller: modal footers wrap on narrow windows; "+1 hex" (not "hexes") in
+  vision blessings; the balance tool switches specialties off in its troop
+  duels (whole matches keep them).
+
+### Tests and checks actually run
+
+| Command | Result |
+|---|---|
+| SHA-256 of the 92 copies (on the owner's computer and here) vs the delivery's `delivery-manifest.json` | 92 / 92 match; destination held only `README.md`; no name conflicts |
+| `npm run art:import` | 35 busts, 6 covers, 11 endings, 40 mission pictures → 138 runtime files, 33.4 MB (busts 768 × 1152 RGBA; landscapes native 1672 × 940/941; cards 640 × 360) |
+| `npm run check` | pass — boundaries, type-check, **272** unit tests in 23 files. New: `packages/rules/test/mapSites.test.ts` (17: specialties scaling/spell/income/off in The Three Beacons; each new site; key gates per player; prisons and the tavern; join/flee/fight, no XP, thresholds, feature off), `packages/ui/test/storyArt.test.ts` (7: files and sizes, no paths outside `assets-runtime`, never upscaled, 35 busts ↔ speakers, 6 covers, 11 ending routes, 38 + 2 mission pictures, speaker sides) |
+| `npm run build` | pass — start-up script 1,522 KB / 415 KB gzip (before this round 1,450 / 398 KB); `dist/` 83 MB of which story art 33 MB |
+| `npx playwright test` (production build, Chromium + SwiftShader) | **57 tests in 26.0 min: 56 passed**; the one failure expected "Fairness checks 5/5" on the random-map screen — generator 0.4 adds SKM-7, so it now reads 6/6; the test was updated and passed on rerun. New: `mapSites.spec.ts` (4: tavern specialties, neutrals offer to join and join without a battle, treasure chest, quest hut) and `storyArt.spec.ts` (3: covers and cards + briefing art + busts and mirroring at 1600 × 900 and 1024 × 640; the Three Beacons ending behind its epilogue, reached from a save on the last beacon, at both sizes; every `<img>` decoded). After the last CSS changes the 7 new tests were rerun: 7 / 7 |
+| `npm run balance` (all suites, 2 workers) | 537 jobs in 9.9 min (`balance-reports/balance-2026-10-02T14-34-52.md`). **Twin Harbors: 216 matches, mean decisive day 14.9 (20.0 before), west 0.54, first mover 0.68 (0.42 before)**; pantheon averages 0.37 (Greek) – 0.60 (Norse). Random maps: 2 empires 0.50 / 0.50 (18 matches, mean day 20.3); 3 empires 0.56 / 0.39 / 0.06 (18 matches; noisy, earlier runs 0.41 / 0.41 / 0.18). Army, escort and tier duels unchanged from the last report (they play troops only; specialties are off in duels) — see the attribution runs below |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 5` | menu **221 ms** local / **446 ms** web (before 211 / 431); first scene 1,311 / 1,255 ms (single 5-run medians on the software renderer) |
+| `npm run icons:catalog` | 786 entries (+8 map markers, +`story.herald.portrait`); mission and campaign cards now count as delivered art |
+| Random-map probe (990 maps: every size, type, 2–4 empires) | all valid (SKM-1…7); key pockets on 818 (83 %) |
+
+### Neutral reactions and turn order (attribution runs, Twin Harbors skirmish suite only, 216 matches each; the source was restored after each run)
+
+| Variant | Mean decisive day | West | First mover |
+|---|---|---|---|
+| Shipped: flee at 2×, join free at 3× | 14.9 | 0.54 | **0.68** |
+| Reactions off (specialties on) | 20.0 | 0.55 | 0.45 |
+| Flee at 3×, join at 4× | 19.9 | 0.55 | 0.46 |
+| Flee at 2×, never join | 19.6 | 0.51 | 0.48 |
+
+Free joiners are what shortens the game — and on this small two-town map
+they give the empire that moves first each day a clear edge (0.68): its leader
+collects the free troops on the way first. Specialties alone leave turn order
+as it was (0.45). This is the owner's chosen rule; options are in
+`DESIGN_PROPOSALS.md` group 0.7, question 3.
+
+### Story art — measured notes and per-image adjustments
+
+* **Resolution:** the 57 landscapes are native 1672 × 940/941, not the brief's
+  1920 × 1080 / 2560 × 1440. Shown at their native size; on screens wider than
+  1672 px they are scaled up by the browser (soft, not sharpened). The owner's
+  resize-only export decision is still open.
+* **Framing on screen:** pictures fill the window (`cover`). At 16:9 nothing is
+  cut; at 16:10 about 5 % of each side; at 4:3 about 12.5 % of each side.
+  Endings with their characters at the left edge would lose part of a figure at
+  4:3: The Three Beacons epilogue (Ione), New Fire "old sun" (Xoco), Lantern
+  Road "lanterns lit" (Akane) and Winter Oath "sword broken" (Hervor). A
+  per-image focal point (`object-position`) would fix it; not added, since no
+  4:3 layout is supported today.
+* **Busts:** clean transparent cut-outs (checked on a contact sheet). Five reach
+  the top edge in the painting itself (Dubhghall's antlers, Itztli's headdress,
+  the Grey Jarl's crown, Hrafn's axe, Svanhild's helmet wing), so their tops are
+  flat; many cloaks touch the side edges, which shows as a straight vertical
+  edge where the bust stands beside the box. Only a repaint or outpaint fixes
+  either; the game does not crop busts.
+* **Dialogue over paintings:** in the briefing scene and the epilogue the bust
+  keeps to the dialogue band (30 % / 26 % of the window height) and stands beside
+  the box only on windows at least 1,500 px wide; narrower windows show it in a
+  2:3 slot inside the box. The story window (no painting behind) keeps the tall
+  bust.
+
+### Limitations
+
+* Headless Chromium (SwiftShader) only; not in the desktop app, not on Windows.
+* Balance of specialties, the new gods, sites and reactions is AI-vs-AI only.
+  The faster AI middle game shortened the idle-player Twin Harbors tests (the
+  rival reaches an undefended Westharbor on day 6, was day 11–12); two tests now
+  garrison Westharbor.
+* Not committed.
+
+## Functional icons delivered 2026-10-02 (172: interface, spells, artifacts, skills)
+
+An art integration, not a redesign: layouts, labels, tooltips and
+accessibility are unchanged. **Not in the 0.5.0 installer** (built before the
+icons); a rebuilt installer is needed to see them in the installed game.
+
+* **Copied, not moved:** the 172 PNGs (`<asset ID>.png`, 1254 × 1254 RGBA, 247 MB)
+  from the owner's handoff folder
+  `blannder_models\icon_delivery_2026-10-02\assets-source\icons\final\` into
+  `assets-source/icons/final/` (merged; the folder held only `.gitkeep`; no ID
+  conflicts). All 172 SHA-256 match the handoff's `delivery-manifest.json`. The
+  originals were not touched; nothing links to or loads from the Blender
+  workspace. No separate `masters/` copy was made: `final/` already keeps the
+  unmodified masters (the importer only reads them).
+* **Imported** with `npm run icons:import` — "imported 172 final icon(s); 172
+  registered": 54 spell + 79 artifact icons at 128 px, 22 interface + 17 skill
+  icons at 96 px, RGBA, 3.73 MB in `assets-runtime/ui/icons/final/`, registered
+  in the game's own `assets-runtime/ui/final-manifest.json` (empty before; the
+  handoff's manifest was not used). `npm run icons:catalog` regenerated
+  `ICON_CATALOG.md`/`.xlsx`/`.csv`: 777 entries, **221** still without their own
+  art (393 before).
+* **Where each icon now shows** (existing components where they already existed):
+  spells — spellbook, Encyclopedia, adventure cast buttons, the battle spell
+  choice (shown when two or more spells can be cast); artifacts — paper doll,
+  backpack, item cards, Encyclopedia, Artifact Merchant, battle-result loot,
+  encounter reward preview; skills — hero skill slots, level-up offers,
+  Encyclopedia; interface — every place the game draws that glyph
+  (`iconArt` → `icon.ui.<name>`; explicit `glyph` uses keep the SVG). The menu's
+  own owner icons (Campaign etc.) are unchanged.
+
+Code changes: `SkillIcon` added beside `SpellIcon`/`ArtifactIcon`
+(`components/art.tsx`; generic star glyph when a skill has no file); icons added
+to `LevelUp.tsx`, `Encyclopedia.tsx` (skills), `Town.tsx` (merchant),
+`BattleResult.tsx` (loot), `Overlays.tsx` (encounter reward chips), `Battle.tsx`
+(spell choice) and `Adventure.tsx` (cast buttons; the eye/spell glyph is
+replaced by the spell's icon). `.spell-socket img` now shows the art at 80 %
+without the circular clip — 29 delivered spell silhouettes reach past the
+inscribed circle (up to 1.20 × its radius), so 86 % with `border-radius: 50%`
+cut their tips; the socket keeps its round frame. `.skill-socket` styles added.
+The catalog tool now counts glyphs chosen in expressions and the ability-badge
+stand-ins (`ABILITY_GLYPH`, now exported from `components/badges.tsx`), and
+reads interface art under `icon.ui.<name>`.
+
+**Reserved icons.** The handoff lists `bow`, `upgrade` and `check` as "not
+shown on any screen yet" — copied from the old catalog, which missed three
+existing uses: `bow` and `upgrade` are the stand-in glyphs of the Shooter and
+Shapeshift ability badges, `check` marks completed objectives (adventure panel,
+journal). They are registered and now show there; no button or feature was
+added. The corrected catalog lists these uses.
+
+### Tests and checks actually run (icons)
+
+| Command | Result |
+|---|---|
+| SHA-256 of the 172 copies vs `delivery-manifest.json` (on the owner's computer and here) | 172 / 172 match |
+| Delivery `icon-placement.csv` vs the game's catalog and manifest | 172 rows: names, runtime URLs and target sizes all agree. `shown_on` differs for spells and artifacts because the game lists the screens that really show them (no town spell-library list or map-event loot icons exist) |
+| `npm run check` | pass — boundaries, type-check, **248** unit tests (new: every final-manifest entry is a catalog ID with a bundled RGBA PNG of its section size, and every delivered source file is registered) |
+| `npm run build` | pass — start-up script 1,450 KB / 398 KB gzip (+36 / +3.4 KB: the manifest with 172 provenance lines is part of the start-up catalog) |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 5` | menu **211 ms** local / **431 ms** web (before: 209 / 434 — no measurable change); first scene 1,542 ms local, 1,247 ms web (noisy single 5-run medians on the software renderer; before 1,495 / 1,281) |
+| HTTP fetch of all 172 manifest URLs from `npm run preview` | 172 × 200, all PNG |
+| Contact sheets of the runtime files at 24 / 48 / 64 px on dark and light | viewed: clean alpha edges, no halos; interface icons readable at 24 px |
+| Playwright inspection of the production build (temporary script, not kept): main menu, Encyclopedia (spells/skills/artifacts, creature viewer), adventure map with cast buttons, hero screen (doll, backpack, skills), spellbook, town, Artifact Merchant, encounter dialog with artifact reward, battle with spell choice, battle result with loot, level-up | pass; **167** distinct final icons requested (all 150 spell/skill/artifact icons on the Encyclopedia page; 17 interface icons), 0 non-200 responses, 0 failed requests, 0 console errors; every final-icon `<img>` decoded. Screenshots reviewed: no cropped spell sockets (image 0.75 of socket, no clip), rarity frames and set badges intact |
+| `npx playwright test` on the specs that cover the changed screens: `menu`, `heroscreen`, `services`, `round3`, `journey`, `features`, `heroes` | **31 of 31 passed** (12.4 min). The full suite (50 tests) was not rerun |
+| Old art | the 111 other files in `assets-runtime/ui/` are byte-identical to the owner's copy; `manifest.json` unchanged |
+
+### Limitations (icons)
+
+* Inspected in headless Chromium (SwiftShader) only — not in the desktop app,
+  not on Windows, not on a real GPU. Headless screenshots drop dialogs drawn
+  over the WebGL map, so the spellbook and encounter dialogs were captured with
+  the canvas hidden (a capture workaround; the same happened before this change).
+* Five interface icons were not seen during the inspection (`beacon`,
+  `check`, `growth`, `lock`, `save`); they resolve through the same path.
+* Not every listed surface exists: the town Library shows its tier only (no
+  spell list), and map events name their loot in text — no icons were added
+  there, since that would be new UI.
+* The battle spell choice appears only when two or more spells can be cast (as
+  before); the single Spell button keeps its glyph. Encounter reward chips show
+  the artifact at 20 px — small but legible.
+* Not committed.
 
 ## Owner requests of 2026-10-02 (AI, hero screen, random maps 0.3, four campaigns, three fixes)
 
@@ -154,7 +369,7 @@ Twin Harbors above). Many three-empire matches still reach the day-40 cap
    soundscapes.
 6. The start-up script grew by about 200 KB (54 KB gzip) with the campaign
    text; the catalog is not split by campaign yet.
-7. Not committed or pushed; no new installer.
+7. Not committed or pushed when written; the owner has since committed it, and the 0.5.0 installer (above) contains it.
 
 ## Owner requests of 2026-10-01 (icons, second campaign, M02 order, random maps, hero screen, spells and artifacts)
 
@@ -902,7 +1117,15 @@ Nothing is blocked. Open owner decisions are listed under deviations.
   Riders", tier 4 Banshee ← "Bear Circle", tier 5 Selkie ← "Eagle Aerie", tier 7
   Fomorian ← "Ancient Entwives"; Mesoamerican tier 5 Camazotz ← "Stag Grove",
   tier 7 Stone Colossus ← "Warrior Altar". The other dwellings match by name.
-* Creature/hero/god portraits, emblems, mission thumbnails: procedural SVG.
+* Creature/hero/god portraits and emblems: procedural SVG. Mission and
+  campaign cards now come from the delivered story art (below).
+* **Story art (2026-10-02)** — 35 dialogue busts, 6 campaign covers, 11 ending
+  pictures and 40 mission pictures delivered by the owner (masters in
+  `assets-source/art/final/`, runtime WebP in `assets-runtime/art/`). Final art,
+  not stand-ins; the landscapes are native 1672 × 940/941 (below the brief's
+  sizes, not upscaled). Square portraits of the story characters (for lists) are
+  still procedural where no hero portrait exists; lists show the bust in a 2:3
+  slot instead.
 * 3D creatures, heroes, sites, siege structures and props: procedural
   primitives; animations are procedural transforms mapped to the final
   state names.
@@ -914,6 +1137,10 @@ Nothing is blocked. Open owner decisions are listed under deviations.
   owner-supplied AI-generated visual references (sources in
   `assets-source/ui/`, runtime files and provenance in `assets-runtime/ui/`,
   `assets-runtime/icons/`). Usable as delivered, replaceable by asset ID.
+* **Final functional icons (2026-10-02)** — 22 interface, 54 spell, 79
+  artifact and 17 skill icons delivered by the owner (masters in
+  `assets-source/icons/final/`, runtime files in `assets-runtime/ui/icons/final/`).
+  Final art, not stand-ins; 221 catalog entries still use glyphs or procedural art.
 * `apps/desktop/build-resources/icon.ico` / `icon.png` and the favicon — made
   from the owner's emblem (`logo.png`) by `tools/assets/prepare_ui_art.py`.
 * `assets-runtime/placeholders/menu/background.jpg` — the earlier menu

@@ -6,17 +6,68 @@
  * their trigger fires; this window shows their lines one at a time. The AI
  * waits while a scene is open. All lines stay readable without audio.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { DialogueLine } from '@pr/rules';
 import { useStore } from '../app/context';
 import { HINTS } from '../app/hints';
 import { Button } from '../components/kit';
-import { HeroPortrait, StoryPortrait } from '../components/art';
+import { HeroPortrait, SceneArt, SpeakerPortrait, StoryBust, StoryPortrait, speakerBust, speakerSides } from '../components/art';
+import { resolveArt } from '../assets/manifest';
 
 function Portrait({ line, size }: { line: DialogueLine; size: string }) {
   const catalog = useStore().catalog;
   const heroDef = Object.values(catalog.heroes).find((h) => h.name === line.speaker);
   return heroDef ? <HeroPortrait catalog={catalog} definitionId={heroDef.id} size={size} /> : <StoryPortrait name={line.speaker} size={size} />;
+}
+
+/** The campaign hero's name (speaks from the left in every scene), when a campaign is running. */
+export function useProtagonist(): string | null {
+  const store = useStore();
+  const camp = store.session?.campaign ? store.catalog.campaigns[store.session.campaign.campaignId] : undefined;
+  return camp ? (store.catalog.heroes[camp.heroDefinitionId]?.name ?? null) : null;
+}
+
+/**
+ * The dialogue box with the speaker's bust standing beside it (presentation
+ * only). Lines without a delivered bust show the small portrait inside the box.
+ */
+export function DialogueStage({
+  line,
+  side,
+  title,
+  footer,
+  backdrop,
+}: {
+  line: DialogueLine;
+  side: 'left' | 'right';
+  title?: string | null;
+  footer: ReactNode;
+  backdrop?: boolean;
+}) {
+  const bust = speakerBust(line);
+  const catalog = useStore().catalog;
+  return (
+    <div className={`story-stage ${bust ? `has-bust has-bust--${side}` : ''} ${backdrop ? 'is-backdrop' : ''}`}>
+      {bust ? <StoryBust key={`${line.speaker}:${side}`} art={bust} side={side} name={line.speaker} /> : null}
+      <div className="story-box panel">
+        {title ? <div className="story-box__title">{title}</div> : null}
+        <div className="story-box__body">
+          {bust ? (
+            <span className="story-box__mini">
+              <SpeakerPortrait catalog={catalog} line={line} size="4.6rem" />
+            </span>
+          ) : (
+            <Portrait line={line} size="7rem" />
+          )}
+          <div className="story-box__text">
+            <div className="story-box__speaker">{line.speaker}</div>
+            <p aria-live="polite">{line.text}</p>
+          </div>
+        </div>
+        <div className="story-box__footer">{footer}</div>
+      </div>
+    </div>
+  );
 }
 
 export function StoryLayer() {
@@ -35,6 +86,9 @@ export function StoryLayer() {
   }, [backlog]);
   const lines = entry?.lines ?? [];
   const line = lines[Math.min(index, lines.length - 1)];
+  const protagonist = useProtagonist();
+  const sides = useMemo(() => speakerSides(lines, protagonist), [lines, protagonist]);
+  const backdrop = entry?.backdropAssetId ? resolveArt(entry.backdropAssetId) : null;
   const last = index >= lines.length - 1;
   const advance = () => {
     if (!entry) return;
@@ -66,7 +120,8 @@ export function StoryLayer() {
   if (!entry || !line) return null;
   const history = [...store.storyLog, ...lines.slice(0, index + 1)];
   return (
-    <div className="story-layer" role="dialog" aria-modal="true" aria-label={entry.title ?? 'Story'} data-testid="story-dialogue">
+    <div className={`story-layer ${backdrop ? 'story-layer--backdrop' : ''}`} role="dialog" aria-modal="true" aria-label={entry.title ?? 'Story'} data-testid="story-dialogue">
+      {backdrop ? <SceneArt art={backdrop} scrim="bottom" /> : null}
       {backlog ? (
         <div className="story-backlog panel" data-testid="story-backlog">
           <div className="story-backlog__head">
@@ -79,7 +134,7 @@ export function StoryLayer() {
           <div className="story-backlog__list scroll" ref={logRef}>
             {history.map((l, i) => (
               <div key={i} className="dialogue__line">
-                <Portrait line={l} size="2.6rem" />
+                <SpeakerPortrait catalog={store.catalog} line={l} size="2.6rem" />
                 <div>
                   <div className="dialogue__speaker">{l.speaker}</div>
                   <div className="dialogue__text">{l.text}</div>
@@ -89,33 +144,31 @@ export function StoryLayer() {
           </div>
         </div>
       ) : null}
-      <div className="story-box panel">
-        {entry.title ? <div className="story-box__title">{entry.title}</div> : null}
-        <div className="story-box__body">
-          <Portrait line={line} size="7rem" />
-          <div className="story-box__text">
-            <div className="story-box__speaker">{line.speaker}</div>
-            <p aria-live="polite">{line.text}</p>
-          </div>
-        </div>
-        <div className="story-box__footer">
-          <span className="faint small">
-            {index + 1} / {lines.length}
-          </span>
-          <span className="grow" />
-          <Button size="small" variant="ghost" onClick={() => setBacklog((b) => !b)} data-testid="story-backlog-toggle" title="Backlog (L)">
-            Backlog
-          </Button>
-          {!last ? (
-            <Button size="small" variant="ghost" onClick={() => store.closeStory()} title="Skip the rest of this scene (Esc)">
-              Skip
+      <DialogueStage
+        line={line}
+        side={sides.get(line.speaker) ?? 'left'}
+        title={entry.title}
+        backdrop={!!backdrop}
+        footer={
+          <>
+            <span className="faint small">
+              {index + 1} / {lines.length}
+            </span>
+            <span className="grow" />
+            <Button size="small" variant="ghost" onClick={() => setBacklog((b) => !b)} data-testid="story-backlog-toggle" title="Backlog (L)">
+              Backlog
             </Button>
-          ) : null}
-          <Button variant="primary" onClick={advance} autoFocus data-testid="story-continue" title="Continue (Enter)">
-            {last ? 'Close' : 'Continue'}
-          </Button>
-        </div>
-      </div>
+            {!last ? (
+              <Button size="small" variant="ghost" onClick={() => store.closeStory()} title="Skip the rest of this scene (Esc)">
+                Skip
+              </Button>
+            ) : null}
+            <Button variant="primary" onClick={advance} autoFocus data-testid="story-continue" title="Continue (Enter)">
+              {last ? 'Close' : 'Continue'}
+            </Button>
+          </>
+        }
+      />
     </div>
   );
 }

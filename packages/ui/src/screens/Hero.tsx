@@ -16,6 +16,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ARTIFACT_SLOT_LABEL,
+  specialtiesEnabled,
   EQUIP_SLOTS,
   EQUIP_SLOT_KIND,
   EQUIP_SLOT_LABEL,
@@ -44,7 +45,7 @@ import type { HeroFigureController } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { reducedMotion } from '../app/preferences';
 import { Bar, Button, Chip, QuantitySelector } from '../components/kit';
-import { ArtifactIcon, Emblem, HeroPortrait } from '../components/art';
+import { ArtifactIcon, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, ScreenHeader } from '../components/game';
 import { Icon, type IconName } from '../assets/icons';
 import { resolveAsset } from '../assets/manifest';
@@ -458,6 +459,7 @@ export function HeroScreen() {
               {def?.title ? <div className="faint small">{def.title}</div> : null}
             </div>
           </div>
+          {specialtiesEnabled(state) ? <SpecialtyLine catalog={catalog} definitionId={hero.definitionId} size="1.9rem" /> : null}
           <div className="h3-primary" data-testid="hero-primary">
             {HERO_ATTRIBUTES.map((a) => {
               const b = attrs[a];

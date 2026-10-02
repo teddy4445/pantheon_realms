@@ -26,6 +26,7 @@ import { commitBuySpellbook, commitEquip, commitHireHero, commitLevelUpChoice, c
 import { commitCastAdventureSpell } from '../systems/magic';
 import { commitArtifactPurchase, commitOffering, commitTraining, refreshMerchantStock } from '../systems/services';
 import { commitCampRecruitment, commitResolveMapEvent } from '../systems/world';
+import { commitCompleteQuestHut, commitOpenChest } from '../systems/sites';
 import { commitBattleIntervention, commitIntervention } from '../systems/interventions';
 import { evaluateStory } from '../systems/story';
 import { commitAssignCovenant, commitSelectGod } from '../systems/divine';
@@ -108,7 +109,7 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'EndTurn':
       return commitEndTurn(tx);
     case 'MoveHero':
-      return commitMoveHero(tx, c.heroId, c.destination, c.confirmEncounter === true);
+      return commitMoveHero(tx, c.heroId, c.destination, c.confirmEncounter === true, c.encounterChoice ?? 'fight');
     case 'BuildStructure': {
       commitConstruction(tx, c.townId, c.buildingId);
       const town = tx.state.towns[c.townId];
@@ -125,6 +126,10 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitCampRecruitment(tx, c.heroId, c.siteId, c.quantity);
     case 'ResolveMapEvent':
       return commitResolveMapEvent(tx, c.heroId, c.siteId, c.optionIndex);
+    case 'OpenChest':
+      return commitOpenChest(tx, c.heroId, c.siteId, c.choice);
+    case 'CompleteQuestHut':
+      return commitCompleteQuestHut(tx, c.heroId, c.siteId);
     case 'InvokeIntervention':
       return commitIntervention(tx, c.interventionId, c.townId ?? null);
     case 'BattleInvokeIntervention':

@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel } from '../components/kit';
-import { HeroPortrait } from '../components/art';
+import { HeroPortrait, SkillIcon } from '../components/art';
 import { Icon, type IconName } from '../assets/icons';
 
 const ATTR_ICON: Record<string, IconName> = { attack: 'attack', defense: 'defense', power: 'power', knowledge: 'knowledge' };
@@ -65,6 +65,7 @@ export function LevelUpScreen() {
             return (
               <button key={i} type="button" className={`offer-card panel ${choice === i ? 'is-selected' : ''}`} onClick={() => setChoice(i)} aria-pressed={choice === i} data-testid={`offer-${i}`}>
                 <div className="offer-card__kind">{o.kind === 'new' ? 'New skill' : `Rank ${o.fromRank} → ${o.toRank}`}</div>
+                {sd ? <SkillIcon iconAssetId={sd.iconAssetId} size="3rem" /> : null}
                 <div className="offer-card__name">{sd?.name}</div>
                 <div className="rank">
                   {[1, 2, 3].map((r) => (

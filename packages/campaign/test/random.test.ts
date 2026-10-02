@@ -307,7 +307,7 @@ describe('random skirmish matches', () => {
     const g = createRandomSkirmish(catalog, opts(3, 'small', 2024));
     const { match } = createGeneratedMatch(catalog, g, { matchId: 'test:random3' });
     expect(match.customMission?.id).toBe(g.mission.id);
-    expect(match.scenario.features).toEqual({ expandedContent: true, weeklyEvents: true, interventions: true });
+    expect(match.scenario.features).toEqual({ expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true });
     const end = playOut(match);
     expect(end.outcome.status).not.toBe('running');
     expect(end.outcome.winnerIds?.length).toBe(1);

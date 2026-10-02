@@ -31,7 +31,17 @@ export type RecruitDestination = { kind: 'garrison' } | { kind: 'hero'; heroId: 
 
 export type CommandPayload =
   | { kind: 'EndTurn' }
-  | { kind: 'MoveHero'; heroId: HeroId; destination: HexCoord; confirmEncounter?: boolean }
+  | {
+      kind: 'MoveHero';
+      heroId: HeroId;
+      destination: HexCoord;
+      confirmEncounter?: boolean;
+      /**
+       * Much weaker neutrals (scenario feature `neutralReactions`): 'join' accepts the
+       * creatures that offer to join, 'release' lets them run away, 'fight' (default) battles.
+       */
+      encounterChoice?: 'fight' | 'join' | 'release';
+    }
   | { kind: 'BuildStructure'; townId: TownId; buildingId: BuildingId }
   | {
       kind: 'RecruitUnits';
@@ -60,6 +70,8 @@ export type CommandPayload =
   // --- World map and divine interventions (proposed this build) ---
   | { kind: 'RecruitFromCamp'; heroId: HeroId; siteId: SiteId; quantity: number }
   | { kind: 'ResolveMapEvent'; heroId: HeroId; siteId: SiteId; optionIndex: number }
+  | { kind: 'OpenChest'; heroId: HeroId; siteId: SiteId; choice: 'gold' | 'xp' }
+  | { kind: 'CompleteQuestHut'; heroId: HeroId; siteId: SiteId }
   | { kind: 'InvokeIntervention'; interventionId: string; townId?: TownId }
   // --- Tactical battle ---
   | { kind: 'BattleMove'; stackId: BattleStackId; to: BattleCell }

@@ -709,3 +709,139 @@ collected along the way and two endings. Outlines:
    cannot see (vision 5). Vision 8 measured fairer for turn order on Twin
    Harbors (first mover 0.47 instead of 0.42) but less fair between the two
    towns (0.56 instead of 0.52). Keep 5, or try 7–8?
+
+## Group 0.7 — owner requests of 2026-10-02 (afternoon)
+
+Owner request: hero specialties listed in the tavern; finish the 24 gods that
+were listed but not designed (plus a list for GPT to paint all 60 gods); new
+map sites; neutral creatures that join or flee when the army is much stronger.
+Owner answers: the four new gods of each pantheon are **split 2 + 2** (two join
+the first choice, two the second); the new sites appear on **random maps**;
+neutrals **join for free or flee**; the GPT list covers **all 60 gods**.
+Everything below is **proposed, unplaytested** unless marked as an owner
+decision. The Three Beacons keeps its documented rules (no specialties, no new
+gods offered, no reactions, no new sites).
+
+### 24. Hero specialties
+
+Every one of the 62 heroes has one specialty (`packages/content/src/common/specialties.ts`),
+built only from shared effects (no rule names a hero). The tavern (Heroes'
+Lodge), the hero screen and the Encyclopedia show it with its exact rule text
+before hiring.
+
+* **Creature** (41 heroes): the family, base and upgrade, gets +1 Attack and
+  +1 Defense in this hero's battles, one more of each at hero levels 4 and 8.
+* **Spell** (12): the hero knows the spell from the start (given a spellbook
+  class) and casts it with +1 Spell Power, one more at levels 3, 6 and 9 —
+  only damage and healing spells, whose effect grows with Power.
+* **Resource** (9): a flat daily income while the hero is in play — +250 Gold,
+  +2 Wood or Stone, +1 Crystal or Favor.
+
+Active in every skirmish and random map, The Winter Oath and the four arc
+campaigns (scenario feature `heroSpecialties`); a save from before keeps its
+rules. The AI hires by specialty value (after returning heroes).
+
+| Pantheon | Tavern heroes | Campaign heroes |
+|---|---|---|
+| Greek | Alexios: Hoplites; Melas: Peltasts; Scout Captain: Griffins; Heracles: Minotaurs; Achilles: Cavalry; Odysseus: +250 Gold a day; Atalanta: +2 Wood a day; Perseus: Lightning (spell) | — |
+| Norse | Sigurd: Lindworms; Brynhild: Valkyries; Ragnar: +250 Gold a day; Lagertha: Frost Wolves; Hervor: Spark (spell); The Grey Jarl: Draugar; Ulfhild: Frost Trolls; Hrafn the Hollow: Jotnar; Bone-Helm: Nidhogg Wyrms; Barrow Captain: Draugar | — |
+| Egyptian | Imhotep: +2 Stone a day; Hatshepsut: +250 Gold a day; Ramses: Sphinxes; Cleopatra: +1 Crystal a day; Nefertiti: Ankh of Renewal (spell) | Seshet: Wrath of Sekhmet (spell); Djedkhonsu: Scarab Swarm (spell); Paser: Ushabti; Ankhwen: Crocodile Beasts; Hekaib: Jackal Guardians; Iti: Bennu |
+| Japanese | Momotaro: Kitsune; Yamato Takeru: +250 Gold a day; Tomoe Gozen: Kirin; Benkei: Oni; Yoshitsune: Tengu | Akane: Kitsune-bi (spell); Yamikage: Raijin’s Drums (spell); Kurogane: Jorogumo; Gonryō: Kappa; Oboro: Orochi; Kagerō: Tengu |
+| Celtic | Cu Chulainn: Cu Sith; Fionn mac Cumhaill: Horned Stag Spirits; Scathach: Kelpies; Deirdre: Cauldron of the Dagda (spell); Boudicca: +1 Favor a day | Orla: Wild Hunt (spell); Dubhghall: Banshees; Fiachra: Fomorian Giants; Corc: Selkies; Tadhg the Grey: Pooka; Ciar: Banshees |
+| Mesoamerican | Hunahpu: Camazotz; Xbalanque: Jaguar Spirits; Nezahualcoyotl: +250 Gold a day; Topiltzin Quetzalcoatl: Rain of Tlaloc (spell); Eight Deer Jaguar Claw: Eagle Warrior Spirits | Itzel: Obsidian Rain (spell); Itztli: Ember Burst (spell); Tecuani: Xiuhcoatl; Acatl: Cenote Crocodiles; Mazatl: Stone Colossi; Tlacatl: Feathered Serpents |
+
+### 25. The last 24 gods (owner decision: split 2 + 2)
+
+No god is "not designed" any more: each pantheon has its patron, **four
+first-choice gods** (Temple I, 20 Favor; the two documented ones plus two new)
+and **five second-choice gods** (three from group 0.3 plus two new). New
+effect types: `mana_regen` (mana at every dawn) and `wounded_fury` (Attack for
+stacks at half strength or less).
+
+| Pantheon | New first choice | New second choice |
+|---|---|---|
+| Greek | Apollo: +1 Power, +1 morale · Artemis: shooters +2 Attack, +1 vision | Poseidon: +10% movement, tier 4–7 +1 Attack · Hera: +1 growth tiers 1–4, +1 morale |
+| Norse | Frigg: +1 Knowledge, +2 vision · Baldr: +1 Power, +2 mana a dawn | Loki: +2 Luck, +10% movement · Njord: +200 Gold, +1 Crystal a day |
+| Egyptian | Anubis: +1 Knowledge, 10% recovery · Bastet: +1 Luck, tiers 1–3 +1 Defense | Hathor: +250 Gold a day, +1 morale · Sobek: +2 growth tiers 1–3, +1 Stone a day |
+| Japanese | Tsukuyomi: +1 Power, +1 vision · Benzaiten: +1 Knowledge, +2 mana a dawn | Izanagi: +1 growth tiers 1–4, +2 mana a dawn · Izanami: 20% recovery |
+| Celtic | Nuada: +1 morale, tiers 4–7 +1 Defense · Danu: +1 Power, +1 growth tiers 1–2 | Arawn: 15% recovery, +1 Luck · Manannan: +2 vision, +15% movement |
+| Mesoamerican | Mixcoatl: shooters +2 Attack, +1 vision · Xolotl: +1 Knowledge, +10% movement | Chalchiuhtlicue: 10% recovery, +1 growth tiers 1–4 · Mictlantecuhtli: +2 Attack at half strength, +1 Luck |
+
+The campaigns name the gods each mission may offer (`committableGodIds`), so
+the new gods appear only in skirmish and random maps; The Three Beacons still
+offers Athena or Ares. The portraits of all 60 gods are briefed for GPT in
+`assets-source/art/briefs/GPT6_BRIEF_4_GOD_PORTRAITS.md` (1024 × 1024, round
+crop, delivered through `npm run icons:import`).
+
+### 26. New map sites (random maps, `pr-skirmishgen-0.4`)
+
+Nine new site kinds, every one shared data (`SiteDefinition.kind`), placed by
+the random-map generator for every empire alike (copied by the map's
+symmetry, after monsters and portals):
+
+| Site | Rule | Placed per empire |
+|---|---|---|
+| Learning stone | +1,000 experience, once per hero | 1, home region |
+| Spell shrine | teaches a tier 1–2 Sanctum spell to a hero with a spellbook and the Wisdom for it | 1 |
+| Skill trainer | teaches a non-pantheon skill at Basic to a hero with a free slot | 1 |
+| Quest hut | half ask for a delivery (10 Wood + 10 Stone, or 5 Crystal, or 6 + 6 + 2 Crystal) for 1,500 Gold and a minor artifact; half for the defeat of the region's ruin guardians (cleared by **that** empire) for 1,500 experience and a minor artifact | 1 |
+| Key tent + key gate | the tent gives the empire a key of its colour; the matching gate opens only for empires holding it. The gate closes a mountain pocket with a treasury (1,500 Gold, 3 Crystal, an artifact) | 1 pair where a pocket fits (about 83 % of maps; otherwise neither) |
+| Windmill | pays the first hero each week (one of: 3 Wood + 3 Stone, 2 Crystal, 600 Gold + 2 Wood, 2 Stone + 1 Crystal) | 1, home region, on a road |
+| Treasure chest | choose 1,000 Gold or 750 experience (far chest 1,500 / 1,250); scarce treasure removes the near one | 2 |
+| Prison | frees a level-4 hero of the empire's pantheon (not its leader) with 10 tier-1 troops, who joins at once; the captive is not offered in any tavern until freed | 1 (an empty prison with 500 Gold when the pantheon has nobody left) |
+
+New check **SKM-7**: every key gate has a tent of its colour, every prisoner
+is a real hero, every quest names a real site. Measured on 990 maps (all
+sizes, types and 2–4 empires): all valid.
+
+### 27. Neutral reactions (owner decision: join free or flee)
+
+When a hero attacks neutral creatures (a site guard without a commander, or a
+wandering monster band) and its army is much stronger — strength ratio by the
+same heuristic as the threat estimate, with the hero's Attack and Defense —
+the creatures do not fight unless the player insists:
+
+* ratio **≥ 3** and every stack fits the army: they **offer to join for free**
+  (Accept them / Let them go / Fight anyway);
+* ratio **≥ 2**: they **flee** (Let them go / Fight anyway).
+
+Either way the guard is gone and its reward (or the band's bounty) is kept, but
+no experience is gained and quest "defeat" conditions count it as cleared by
+that empire. Skirmish and random maps only (scenario feature
+`neutralReactions`); the campaigns keep every battle. The AI accepts joiners
+when that is legal. Measured effect (AI vs AI, `DEVELOPMENT_STATUS.md`): Twin
+Harbors matches end on day 14.9 instead of 20.0 and the AI rival reaches an
+undefended Westharbor on day 6 (11–12 before), so the middle game is faster as
+intended — but the empire that moves first each day now wins 0.68 of the
+matches (0.42–0.48 without free joiners): its leader collects the joiners first.
+
+### 28. Story art in the game (delivery 2026-10-02)
+
+Presentation only. The 92 delivered pictures are wired by documented asset-ID
+conventions (`ASSET_PIPELINE.md` §13): dialogue busts beside the dialogue box
+(speaker's `portraitAssetId` with `.bust`), campaign covers behind campaign
+selection and its setup steps (cards made from them), mission pictures behind a
+new full-screen **briefing scene** (title top left, objectives top right, the
+briefing lines in the dialogue box one at a time with Next/Back; Begin is always
+available), and the chosen ending behind the campaign epilogue. The campaign
+hero speaks from the left, other speakers alternate by first appearance;
+right-hand busts are mirrored. The skirmish herald now has a portrait ID of its
+own (`story.herald.portrait`) instead of borrowing the leader's face.
+
+### Open questions for the owner (group 0.7)
+
+1. Specialty sizes: +1/+1 per family (and more at levels 4 and 8), +1 Power
+   per three levels, +250 Gold a day. Too strong, too weak?
+2. Should specialties also be active in The Three Beacons (documented rules
+   say no specialties today)?
+3. Neutral reactions: free joiners favour the first mover on Twin Harbors
+   (0.68). Options measured: flee only, or flee at 3× / join at 4× — both bring
+   turn order back to 0.46–0.48 but also the game length back to about 20 days.
+   Not yet measured: joiners for Gold (Heroes 3 style), only part of the guard
+   joining, or no joining in the first week. Which do you prefer? Should the
+   campaigns use reactions too?
+4. Prisons free a level-4 hero; should the level grow with map size?
+5. Key pockets appear on about 83 % of maps (only where the terrain allows a
+   closed pocket). Acceptable, or should the generator carve one every time?
+6. Briefing: one line at a time (like story scenes) or all lines listed as
+   before?

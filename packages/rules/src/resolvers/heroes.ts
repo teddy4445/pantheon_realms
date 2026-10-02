@@ -71,9 +71,36 @@ export function skillEffects(catalog: ContentCatalog, hero: { skills: readonly {
   return out;
 }
 
-/** Everything the hero itself carries: artifacts, set bonuses and skill effects. */
-export function heroEffects(catalog: ContentCatalog, hero: HeroState): EffectDefinition[] {
-  return [...artifactEffects(catalog, hero), ...skillEffects(catalog, hero)];
+/** True when hero specialties apply in this match (scenario feature; off in older saves). */
+export function specialtiesEnabled(state: Pick<MatchState, 'scenario'>): boolean {
+  return state.scenario.features?.heroSpecialties === true;
+}
+
+/** How many times a specialty's growth effects apply at this level (0 below the first step). */
+export function specialtyGrowthSteps(everyLevels: number, level: number): number {
+  return everyLevels > 0 ? Math.floor(Math.max(1, level) / everyLevels) : 0;
+}
+
+/**
+ * The hero's specialty effects at its current level (empty when the scenario has
+ * no specialties or the hero has none). Growth effects are repeated once per
+ * `everyLevels` levels reached; amounts of identical effects simply add up.
+ */
+export function specialtyEffects(catalog: ContentCatalog, state: Pick<MatchState, 'scenario'>, hero: Pick<HeroState, 'definitionId' | 'level'>): EffectDefinition[] {
+  if (!specialtiesEnabled(state)) return [];
+  const sp = catalog.heroes[hero.definitionId]?.specialty;
+  if (!sp) return [];
+  const out: EffectDefinition[] = [...sp.effects];
+  if (sp.growth) {
+    const steps = specialtyGrowthSteps(sp.growth.everyLevels, hero.level);
+    for (let i = 0; i < steps; i++) out.push(...sp.growth.effects);
+  }
+  return out;
+}
+
+/** Everything the hero itself carries: artifacts, set bonuses, skill effects and (with `state`) its specialty. */
+export function heroEffects(catalog: ContentCatalog, hero: HeroState, state?: Pick<MatchState, 'scenario'>): EffectDefinition[] {
+  return [...artifactEffects(catalog, hero), ...skillEffects(catalog, hero), ...(state ? specialtyEffects(catalog, state, hero) : [])];
 }
 
 /** Player-wide effects reaching this hero: committed gods and the pantheon signature. */
@@ -137,12 +164,12 @@ export function maxMana(catalog: ContentCatalog, state: MatchState, hero: HeroSt
 }
 
 export function heroMoraleBonus(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
-  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  const fx = [...heroEffects(catalog, hero, state), ...divineEffects(catalog, state, hero)];
   return skillValue(catalog, hero, 'leadership') + fx.reduce((n, e) => (e.type === 'morale' ? n + e.amount : n), 0);
 }
 
 export function heroLuckBonus(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
-  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  const fx = [...heroEffects(catalog, hero, state), ...divineEffects(catalog, state, hero)];
   return skillValue(catalog, hero, 'fortune') + fx.reduce((n, e) => (e.type === 'luck' ? n + e.amount : n), 0);
 }
 
@@ -172,7 +199,7 @@ export function movementBudget(catalog: ContentCatalog, state: MatchState, hero:
   if (slowest !== null) {
     for (const row of profile.movementBySlowestSpeed) if (slowest >= row.speed) base = row.points;
   }
-  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  const fx = [...heroEffects(catalog, hero, state), ...divineEffects(catalog, state, hero)];
   const percent =
     skillValue(catalog, hero, 'logistics') + fx.reduce((n, e) => (e.type === 'movement_percent' ? n + e.percent : n), 0);
   const total = Math.floor((base * (100 + percent)) / 100);
@@ -180,14 +207,14 @@ export function movementBudget(catalog: ContentCatalog, state: MatchState, hero:
 }
 
 export function heroVisionRadius(catalog: ContentCatalog, hero: HeroState, state?: MatchState): number {
-  const fx = [...heroEffects(catalog, hero), ...(state ? divineEffects(catalog, state, hero) : [])];
+  const fx = [...heroEffects(catalog, hero, state), ...(state ? divineEffects(catalog, state, hero) : [])];
   const bonus = fx.reduce((n, e) => (e.type === 'vision_radius' ? n + e.amount : n), 0);
   return catalog.rulesProfile.heroVisionRadius + skillValue(catalog, hero, 'scouting') + bonus;
 }
 
 /** Mana regained at dawn away from a Sanctum: the rules' rate plus mana_regen effects. */
 export function dawnManaRegen(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
-  const fx = [...heroEffects(catalog, hero), ...divineEffects(catalog, state, hero)];
+  const fx = [...heroEffects(catalog, hero, state), ...divineEffects(catalog, state, hero)];
   return catalog.rulesProfile.dawnManaRegen + fx.reduce((n, e) => (e.type === 'mana_regen' ? n + e.amount : n), 0);
 }
 

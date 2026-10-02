@@ -29,7 +29,7 @@ import {
 import type { ContentCatalog } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, Segmented, TextInput, Toggle } from '../components/kit';
-import { Emblem } from '../components/art';
+import { Emblem, MissionThumb } from '../components/art';
 import { ScreenHeader } from '../components/game';
 import { DifficultyPicker } from './Setup';
 
@@ -203,6 +203,7 @@ export function RandomSetupScreen() {
       <ScreenHeader title="Random Map" subtitle="A symmetric map generated for two to four empires" />
       <div className="random-setup">
         <Panel title="Map" className="random-setup__map" bodyClassName="scroll">
+          <MissionThumb catalog={catalog} missionId="" assetId="mission.skirmish.random.thumbnail" style={{ width: '100%', maxWidth: '24rem', aspectRatio: '16 / 9', height: 'auto', marginBottom: '0.6rem' }} />
           <div className="setting-block">
             <div className="setting-block__label">Map type</div>
             <div className="map-type-grid" role="radiogroup" aria-label="Map type" data-testid="random-type">

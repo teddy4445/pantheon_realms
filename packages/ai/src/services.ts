@@ -13,6 +13,8 @@ import {
   quoteCampRecruitment,
   quoteIntervention,
   quoteMapEvent,
+  quoteOpenChest,
+  quoteCompleteQuestHut,
   scenarioMission,
   type MapEventOptionDefinition,
   hexEquals,
@@ -54,6 +56,10 @@ export function effectScore(e: EffectDefinition): number {
       return 5;
     case 'spell_eligibility':
       return 2;
+    case 'mana_regen':
+      return 2 * e.amount;
+    case 'wounded_fury':
+      return 6 * e.attack;
     default:
       return 1;
   }
@@ -195,6 +201,29 @@ export function mapEventCandidates(catalog: ContentCatalog, belief: MatchState, 
       .filter((x) => x.legal)
       .sort((a, b) => b.v - a.v || a.i - b.i);
     if (ranked[0]) out.push({ kind: 'ResolveMapEvent', heroId: h.id, siteId: def.id, optionIndex: ranked[0].i });
+  }
+  return out;
+}
+
+/**
+ * A hero standing on a treasure chest opens it (experience while the hero is
+ * young, Gold later); one standing on a quest hut whose quest it has fulfilled
+ * turns it in (sites added 2026-10-02).
+ */
+export function siteCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
+  const out: CommandPayload[] = [];
+  const mission = scenarioMission(catalog, belief);
+  if (!mission) return out;
+  for (const h of heroes) {
+    const def = mission.sites.find((s) => hexEquals(s.coord, h.position));
+    if (!def || belief.world.sites[def.id]?.claimed) continue;
+    if (def.kind.type === 'treasure_chest' && quoteOpenChest(catalog, belief, playerId, h.id, def.id).legal) {
+      out.push({ kind: 'OpenChest', heroId: h.id, siteId: def.id, choice: h.level <= 5 && def.kind.xp * 2 >= def.kind.gold ? 'xp' : 'gold' });
+    } else if (def.kind.type === 'quest_hut' && quoteCompleteQuestHut(catalog, belief, playerId, h.id, def.id).legal) {
+      // A delivery is worth it only with a comfortable treasury left (resources still buy armies).
+      const deliver = def.kind.quest.type === 'deliver' ? goldEquivalent(def.kind.quest.resources) : 0;
+      if (deliver === 0 || (belief.players[playerId]?.wallet.gold ?? 0) >= 4000) out.push({ kind: 'CompleteQuestHut', heroId: h.id, siteId: def.id });
+    }
   }
   return out;
 }

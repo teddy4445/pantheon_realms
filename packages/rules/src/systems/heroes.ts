@@ -5,18 +5,19 @@
  * from the saved progression stream and persisted, so reopening never rerolls.
  */
 import type { ArtifactId, ArtifactInstanceId, DecisionId, HeroId, SkillId, TownId } from '../ids';
-import { hexEquals } from '../core/hex';
+import { hexEquals, type HexCoord } from '../core/hex';
 import { resources } from '../core/resources';
 import { getArtifact, getHeroClass, getSpell, type ContentCatalog } from '../definitions/catalog';
 import { levelForXp } from '../definitions/rulesProfile';
 import { EQUIP_SLOT_KIND, equipSlotsFor, freeEquipSlot, type EquipSlot } from '../definitions/pantheons';
 import type { HeroState, LevelUpDecision, MatchState, SkillOffer, TownState } from '../state/match';
-import { maxMana, maxSpellTierLearnable, movementBudget } from '../resolvers/heroes';
+import { maxMana, maxSpellTierLearnable, movementBudget, specialtiesEnabled } from '../resolvers/heroes';
 import { divineEffects } from '../resolvers/heroes';
 import { townHasEffect, townLibrarySpells, townSpellLibraryTier } from '../resolvers/town';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { spend } from './economy';
 import { scenarioMission, scopeAllowed } from '../resolvers/scenario';
+import { imprisonedHeroIds } from '../resolvers/world';
 
 // ---------------------------------------------------------------------------
 // Experience
@@ -299,6 +300,8 @@ export function hireOptions(catalog: ContentCatalog, state: MatchState, playerId
   // A defeated hero's name returns to the tavern pool as a new recruit (proposed
   // 2026-10-02; heroless empires used to stall long games once a pool ran dry).
   const inMatch = new Set(Object.values(state.heroes).filter((h) => h.status !== 'defeated').map((h) => h.definitionId));
+  // Heroes waiting in a prison on the map are not for hire (random maps).
+  for (const id of imprisonedHeroIds(catalog, state)) inMatch.add(id);
   const fresh = pool.filter((id) => catalog.heroes[id]?.pantheonId === town.pantheonId && !inMatch.has(id)).map((id) => ({ definitionId: id, returningHeroId: null }));
   const returning = Object.values(state.heroes)
     .filter((h) => h.ownerId === playerId && h.status === 'retreated')
@@ -357,13 +360,24 @@ export function commitHireHero(tx: Tx, townId: TownId, definitionId: string): vo
     return;
   }
 
+  const hero = createRecruitedHero(tx, definitionId, tx.actorId, town.coord, slots(HIRE_STARTING_TROOPS));
+  tx.emit({ kind: 'HeroHired', heroId: hero.id, definitionId, townId });
+  learnSpellsAtTown(tx, hero, town);
+}
+
+/**
+ * A new level-1 hero of a definition (Tavern hire, freed prisoner): class
+ * attributes, skills and spellbook, its specialty spell, full mana and movement.
+ */
+export function createRecruitedHero(tx: Tx, definitionId: string, ownerId: string, position: HexCoord, army: HeroState['army']['slots']): HeroState {
+  const def = tx.catalog.heroes[definitionId]!;
   const cls = getHeroClass(tx.catalog, def.classId);
   const heroId = tx.nextId('hero');
   const hero: HeroState = {
     id: heroId,
     definitionId,
     name: def.name,
-    ownerId: tx.actorId,
+    ownerId,
     classId: def.classId,
     portraitAssetId: def.portraitAssetId,
     level: 1,
@@ -374,8 +388,8 @@ export function commitHireHero(tx: Tx, townId: TownId, definitionId: string): vo
     knownSpellIds: [],
     mana: 0,
     movementPoints: 0,
-    position: town.coord,
-    army: { slots: slots(HIRE_STARTING_TROOPS) },
+    position: { q: position.q, r: position.r },
+    army: { slots: army },
     equipment: {},
     backpack: [],
     status: 'active',
@@ -383,8 +397,16 @@ export function commitHireHero(tx: Tx, townId: TownId, definitionId: string): vo
     lastTrainedWeek: 0,
   };
   tx.state.heroes[heroId] = hero;
+  grantSpecialtySpell(tx.catalog, tx.state, hero);
   hero.mana = maxMana(tx.catalog, tx.state, hero);
   hero.movementPoints = movementBudget(tx.catalog, tx.state, hero).total;
-  tx.emit({ kind: 'HeroHired', heroId, definitionId, townId });
-  learnSpellsAtTown(tx, hero, town);
+  return hero;
+}
+
+/** A spell-specialty hero knows its spell from the start when it has a spellbook (idempotent). */
+export function grantSpecialtySpell(catalog: ContentCatalog, state: Pick<MatchState, 'scenario'>, hero: HeroState): void {
+  if (!specialtiesEnabled(state)) return;
+  const spellId = catalog.heroes[hero.definitionId]?.specialty?.spellId;
+  if (!spellId || !hero.spellbook || hero.knownSpellIds.includes(spellId) || !catalog.spells[spellId]) return;
+  hero.knownSpellIds.push(spellId);
 }

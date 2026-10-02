@@ -2,9 +2,12 @@
  * Art components resolve stable asset IDs through the manifest. When no file
  * exists they render the coherent procedural placeholder for that asset family.
  */
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { ContentCatalog } from '@pr/rules';
-import { resolveAsset, resolveBuildingArt } from '../assets/manifest';
+import { resolveAsset, resolveBuildingArt, type StoryArtRecord } from '../assets/manifest';
+import { speakerBust, type SpeakerSide } from '../assets/storyArt';
+
+export { briefingArt, campaignEndingArtId, speakerBust, speakerSides, type SpeakerSide } from '../assets/storyArt';
 import { CreaturePortraitArt, EmblemArt, GodPortraitArt, HeroPortraitArt, MissionThumbArt } from '../assets/placeholders';
 import { Icon, type IconName } from '../assets/icons';
 
@@ -85,6 +88,55 @@ export function HeroPortrait({
   );
 }
 
+// ---------------------------------------------------------------------------
+// Story art (ASSET_PIPELINE.md §13): dialogue busts, covers, endings, briefing art
+// ---------------------------------------------------------------------------
+
+/**
+ * A dialogue bust standing beside (behind) the dialogue box: contain fit,
+ * transparency kept, its visible lower edge at the box's lower edge; mirrored
+ * only on the right side. No frame.
+ */
+export function StoryBust({ art, side, name }: { art: StoryArtRecord; side: SpeakerSide; name: string }) {
+  const gap = art.alphaBox ? Math.max(0, 1 - art.alphaBox[3]) : 0;
+  const flip = side === 'right' ? ' scaleX(-1)' : '';
+  return (
+    <img
+      className={`story-bust story-bust--${side}`}
+      src={art.url}
+      alt={`${name}`}
+      draggable={false}
+      data-testid="story-bust"
+      data-side={side}
+      style={{ aspectRatio: `${art.width} / ${art.height}`, transform: `translateY(${(gap * 100).toFixed(2)}%)${flip}` }}
+    />
+  );
+}
+
+/** A bust in a small 2:3 slot for dialogue lists (contain fit), else the square portrait. */
+export function SpeakerPortrait({ catalog, line, size = '3.4rem' }: { catalog: ContentCatalog; line: { readonly speaker: string; readonly portraitAssetId: string }; size?: string }) {
+  const bust = speakerBust(line);
+  if (bust) {
+    return (
+      <span className="bust-slot" style={{ width: size, height: `calc(${size} * 1.5)` }} title={line.speaker}>
+        <img src={bust.url} alt={`${line.speaker} portrait`} draggable={false} />
+      </span>
+    );
+  }
+  const heroDef = Object.values(catalog.heroes).find((h) => h.name === line.speaker);
+  return heroDef ? <HeroPortrait catalog={catalog} definitionId={heroDef.id} size={size} /> : <StoryPortrait name={line.speaker} size={size} />;
+}
+
+/** Full-screen story picture (cover, ending, briefing art) behind a scene, with a scrim. */
+export function SceneArt({ art, fallback, scrim = 'bottom' }: { art: StoryArtRecord | null; fallback?: ReactNode; scrim?: 'bottom' | 'full' }) {
+  return (
+    <div className="scene-art" aria-hidden="true">
+      {art ? <img src={art.url} alt="" draggable={false} data-testid="scene-art" /> : fallback ?? null}
+      <div className={`scene-art__scrim scene-art__scrim--${scrim}`} />
+    </div>
+  );
+}
+
 /** Story characters without hero definitions (Thaleia, Ione). */
 export function StoryPortrait({ name, size = '4rem' }: { name: string; size?: string }) {
   const rec = resolveAsset(`hero.greek.${name.toLowerCase()}.portrait`);
@@ -127,13 +179,27 @@ export function BuildingArt({ artAssetId, alt, style, className }: { artAssetId:
   );
 }
 
-export function MissionThumb({ catalog, missionId, style }: { catalog: ContentCatalog; missionId: string; style?: CSSProperties }) {
+/** A mission's 640 × 360 card (`thumbnailAssetId`); `assetId` serves generated missions not in the catalog. */
+export function MissionThumb({ catalog, missionId, assetId, style }: { catalog: ContentCatalog; missionId: string; assetId?: string; style?: CSSProperties }) {
   const m = catalog.missions[missionId];
-  const rec = resolveAsset(m?.thumbnailAssetId ?? '');
+  const rec = resolveAsset(assetId ?? m?.thumbnailAssetId ?? '');
   const template = m ? catalog.mapTemplates[m.mapTemplateId] : undefined;
   return (
     <span className="portrait" style={{ display: 'block', ...style }}>
       {rec.url ? <img src={rec.url} alt={`${m?.name} thumbnail`} /> : <MissionThumbArt seed={missionId} biome={template?.biome ?? 'coast'} beacons={m?.order ?? 1} />}
+    </span>
+  );
+}
+
+/** A campaign's 640 × 360 card (made from its cover), else a procedural stand-in. */
+export function CampaignThumb({ catalog, campaignId, style }: { catalog: ContentCatalog; campaignId: string; style?: CSSProperties }) {
+  const c = catalog.campaigns[campaignId];
+  const rec = resolveAsset(c?.thumbnailAssetId ?? `campaign.${campaignId}.thumbnail`);
+  const first = c ? catalog.missions[c.missionIds[0] ?? ''] : undefined;
+  const template = first ? catalog.mapTemplates[first.mapTemplateId] : undefined;
+  return (
+    <span className="portrait" style={{ display: 'block', ...style }}>
+      {rec.url ? <img src={rec.url} alt={`${c?.name} cover`} /> : <MissionThumbArt seed={campaignId} biome={template?.biome ?? 'coast'} beacons={1} />}
     </span>
   );
 }
@@ -178,9 +244,33 @@ export function siteMarkerAsset(
       return 'icon.marker.shrine';
     case 'portal':
       return 'icon.marker.portal';
+    // Sites added 2026-10-02: their own marker once delivered (ICON_CATALOG.md), else the nearest existing one.
+    case 'learning_stone':
+      return ownMarker('icon.marker.learning-stone', 'icon.marker.story');
+    case 'spell_shrine':
+      return ownMarker('icon.marker.spell-shrine', 'icon.marker.shrine');
+    case 'skill_trainer':
+      return ownMarker('icon.marker.skill-trainer', 'icon.marker.quest');
+    case 'quest_hut':
+      return opts.done ? 'icon.marker.check' : ownMarker('icon.marker.quest-hut', 'icon.marker.quest');
+    case 'key_tent':
+      return ownMarker('icon.marker.key-tent', 'icon.marker.locked');
+    case 'key_gate':
+      return opts.done ? 'icon.marker.check' : ownMarker('icon.marker.key-gate', 'icon.marker.locked');
+    case 'windmill':
+      return ownMarker('icon.marker.windmill', 'icon.marker.mine');
+    case 'treasure_chest':
+      return opts.done ? 'icon.marker.check' : 'icon.marker.chest';
+    case 'prison':
+      return opts.done ? 'icon.marker.check' : ownMarker('icon.marker.prison', 'icon.marker.hero');
     default:
       return 'icon.marker.unknown';
   }
+}
+
+/** A marker's own art when delivered, else the stand-in marker. */
+function ownMarker(assetId: string, fallback: string): string {
+  return resolveAsset(assetId).url ? assetId : fallback;
 }
 
 export function MarkerIcon({ assetId, label, size = '2rem' }: { assetId: string; label?: string; size?: string }) {
@@ -239,6 +329,54 @@ export const ARTIFACT_KIND_GLYPH: Record<string, IconName> = {
   mount: 'speed',
   misc: 'star',
 };
+
+/**
+ * A hero's specialty (proposed 2026-10-02): its kind's picture — the family's
+ * portrait, the spell's icon or the resource — the name and the exact rule. Shown
+ * in the Tavern before hiring, on the hero screen and in the Encyclopedia;
+ * `active: false` notes that the scenario does not use specialties.
+ */
+export function SpecialtyLine({ catalog, definitionId, active = true, size = '2.4rem' }: { catalog: ContentCatalog; definitionId: string; active?: boolean; size?: string }) {
+  const sp = catalog.heroes[definitionId]?.specialty;
+  if (!sp) return null;
+  const fam = sp.familyId ? catalog.families[sp.familyId] : undefined;
+  const spell = sp.spellId ? catalog.spells[sp.spellId] : undefined;
+  const income = sp.effects.find((e) => e.type === 'daily_income');
+  const icon =
+    sp.kind === 'creature' && fam ? (
+      <CreaturePortrait catalog={catalog} creatureId={fam.baseCreatureId} size={size} />
+    ) : sp.kind === 'spell' && spell ? (
+      <SpellIcon iconAssetId={spell.iconAssetId} effectType={spell.effect.type} size={size} />
+    ) : income && income.type === 'daily_income' ? (
+      <span className="specialty__res" style={{ width: size, height: size }}>
+        <Icon name={income.resource} />
+      </span>
+    ) : null;
+  return (
+    <div className={`specialty ${active ? '' : 'is-inactive'}`} data-testid={`specialty-${definitionId}`}>
+      {icon}
+      <div>
+        <div className="specialty__name">
+          <span className="specialty__tag">Specialty</span> {sp.name}
+        </div>
+        <div className="small">
+          {sp.summary}
+          {active ? '' : ' Not used in this scenario.'}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** A hero skill's own icon when delivered (icon.skill.<id>), else the generic star glyph in the same socket. */
+export function SkillIcon({ iconAssetId, size = '2.2rem' }: { iconAssetId: string; size?: string }) {
+  const own = resolveAsset(iconAssetId);
+  return (
+    <span className="skill-socket" style={{ width: size, height: size }} aria-hidden="true">
+      {own.url ? <img src={own.url} alt="" draggable={false} /> : <Icon name="star" className="skill-socket__glyph" />}
+    </span>
+  );
+}
 
 /** An artifact's own icon when delivered, else its kind's glyph in the same socket. */
 export function ArtifactIcon({ iconAssetId, kind, size = '2.6rem', rarity }: { iconAssetId: string; kind: string; size?: string; rarity?: string }) {

@@ -131,6 +131,7 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
       if (winner === 'attacker') {
         site.cleared = true;
         site.guard = null;
+        if (attackerHero) site.clearedBy = attackerHero.ownerId;
         const reward = def.guard?.reward;
         if (reward && attackerHero) {
           const before = { ...state.players[attackerHero.ownerId]!.wallet };

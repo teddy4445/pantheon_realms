@@ -37,11 +37,16 @@ import {
   type PlayerId,
   type StackSpec,
   type HexCoord, requireScenarioMission,
+  goldEquivalent,
+  maxSpellTierLearnable,
+  questHutProgress,
+  quoteNeutralReaction,
+  worldWeek,
 } from '@pr/rules';
 import type { AIObservation } from './observation';
 import { armyStrength } from './evaluation';
-import { campCandidates, godCandidates, interventionCandidates, mapEventCandidates, offeringCandidates, trainingCandidates } from './services';
-import { equipCandidates, levelUpCandidates, merchantCandidates, movementSpellCandidate, recallSpellCandidate, scoutingSpellCandidate } from './growth';
+import { campCandidates, godCandidates, interventionCandidates, mapEventCandidates, offeringCandidates, siteCandidates, trainingCandidates } from './services';
+import { equipCandidates, levelUpCandidates, merchantCandidates, movementSpellCandidate, recallSpellCandidate, scoutingSpellCandidate, specialtyHireValue } from './growth';
 
 /**
  * Data-driven build scoring (works for any pantheon's town tree): income first,
@@ -235,6 +240,37 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
       case 'relic':
         if (st.owner !== playerId) out.push({ coord: def.coord, value: def.id === holdRelic ? 9000 : 1500, encounter: false, label: def.name });
         break;
+      // --- Sites added 2026-10-02 (random maps) ---
+      case 'learning_stone':
+        if (!(st.usedBy ?? []).includes(hero.id)) out.push({ coord: def.coord, value: 400 + def.kind.xp, encounter: false, label: def.name });
+        break;
+      case 'spell_shrine': {
+        const sp = catalog.spells[def.kind.spellId];
+        if (sp && hero.spellbook && !hero.knownSpellIds.includes(sp.id) && sp.tier <= maxSpellTierLearnable(catalog, hero)) out.push({ coord: def.coord, value: 800, encounter: false, label: def.name });
+        break;
+      }
+      case 'skill_trainer': {
+        const skillId = def.kind.skillId;
+        if (!hero.skills.some((x) => x.skillId === skillId) && hero.skills.length < catalog.rulesProfile.maxSecondarySkills) out.push({ coord: def.coord, value: 900, encounter: false, label: def.name });
+        break;
+      }
+      case 'quest_hut':
+        if (!st.claimed && questHutProgress(catalog, belief, playerId, def.kind.quest).met) out.push({ coord: def.coord, value: 1600, encounter: false, label: def.name });
+        break;
+      case 'key_tent':
+        if (!(belief.players[playerId]?.keys ?? []).includes(def.kind.color)) out.push({ coord: def.coord, value: 1000, encounter: false, label: def.name });
+        break;
+      case 'windmill':
+        if ((st.lastCollectedWeek ?? 0) < worldWeek(belief, catalog.rulesProfile.daysPerWeek)) out.push({ coord: def.coord, value: 300 + goldEquivalent(def.kind.weekly), encounter: false, label: def.name });
+        break;
+      case 'treasure_chest':
+        if (!st.claimed) out.push({ coord: def.coord, value: 700 + def.kind.gold, encounter: false, label: def.name });
+        break;
+      case 'prison': {
+        const mine = Object.values(belief.heroes).filter((h) => h.ownerId === playerId && h.status === 'active').length;
+        if (!st.claimed && mine < catalog.rulesProfile.maxHeroesPerPlayer) out.push({ coord: def.coord, value: 3000, encounter: false, label: def.name });
+        break;
+      }
       default:
         break;
     }
@@ -331,6 +367,16 @@ function nearestKnownPortal(catalog: ContentCatalog, belief: MatchState, playerI
   return best;
 }
 
+/**
+ * Much weaker neutrals (scenario feature): accept those that offer to join and let
+ * the others flee — no losses either way; the guard's reward is kept.
+ */
+function encounterChoiceFor(catalog: ContentCatalog, belief: MatchState, hero: HeroState, dest: HexCoord, arrivesInEncounter: boolean): { encounterChoice?: 'join' | 'release' } {
+  if (!arrivesInEncounter) return {};
+  const r = quoteNeutralReaction(catalog, belief, hero.id, dest);
+  return r.kind === 'join' ? { encounterChoice: 'join' } : r.kind === 'flee' ? { encounterChoice: 'release' } : {};
+}
+
 function movementCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): CommandPayload[] {
   if (hero.movementPoints <= 0) return [];
   const scored: { score: number; key: string; payload: CommandPayload }[] = [];
@@ -361,7 +407,7 @@ function movementCandidates(catalog: ContentCatalog, belief: MatchState, playerI
     }
     const days = Math.max(1, Math.ceil(q.totalCost / Math.max(1, hero.movementPoints)));
     const score = t.value / (1 + q.totalCost / 800) / days;
-    scored.push({ score, key: hexKey(t.coord), payload: { kind: 'MoveHero', heroId: hero.id, destination: t.coord, confirmEncounter: q.endsInEncounter } });
+    scored.push({ score, key: hexKey(t.coord), payload: { kind: 'MoveHero', heroId: hero.id, destination: t.coord, confirmEncounter: q.endsInEncounter, ...encounterChoiceFor(catalog, belief, hero, t.coord, q.endsInEncounter && q.stopIndex === q.path.length - 1) } });
   }
   // Return to a town to reinforce when it has recruits waiting (not by stopping short
   // within reach of a stronger visible enemy). Every owned town counts, worth more the
@@ -573,6 +619,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
     out.push(...trainingCandidates(catalog, belief, playerId, strategic));
     out.push(...merchantCandidates(catalog, belief, playerId, strategic));
     out.push(...mapEventCandidates(catalog, belief, playerId, strategic));
+    out.push(...siteCandidates(catalog, belief, playerId, strategic));
     out.push(...campCandidates(catalog, belief, playerId, strategic));
     out.push(...interventionCandidates(catalog, belief, playerId, strategic));
     for (const town of playerTowns(belief, playerId)) {
@@ -594,7 +641,14 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
       }
       // Hire: returning heroes first, then new candidates, while keeping a reserve.
       if (myHeroes.length < aiPersonality(catalog, belief).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : HIRE_RESERVE_GOLD)) {
-        for (const option of obs.hireRoster[town.id] ?? []) {
+        // Returning heroes first (they keep their levels), then new recruits by specialty value.
+        const roster = [...(obs.hireRoster[town.id] ?? [])].sort(
+          (a, b) =>
+            Number(!!b.returningHeroId) - Number(!!a.returningHeroId) ||
+            specialtyHireValue(catalog, b.definitionId, player.pantheonId) - specialtyHireValue(catalog, a.definitionId, player.pantheonId) ||
+            (a.definitionId < b.definitionId ? -1 : 1),
+        );
+        for (const option of roster) {
           if (quoteHireHero(catalog, belief, playerId, town.id, option.definitionId).legal) {
             out.push({ kind: 'HireHero', townId: town.id, heroDefinitionId: option.definitionId });
             break;

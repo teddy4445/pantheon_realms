@@ -90,6 +90,8 @@ export type EffectDefinition =
       readonly maxTier?: number;
       /** Only creatures with an ability of this rule type (e.g. 'shooter', 'flight'). */
       readonly ability?: string;
+      /** Only creatures of this family, both forms (hero specialties). */
+      readonly familyId?: CreatureFamilyId;
     }
   /** +amount weekly growth for every family of tier <= maxTier in this player's towns. */
   | { readonly type: 'weekly_growth_bonus'; readonly maxTier: number; readonly amount: number }
@@ -106,7 +108,9 @@ export type EffectDefinition =
   /** +amount mana restored to the hero at dawn (on top of the rules' regeneration). */
   | { readonly type: 'mana_regen'; readonly amount: number }
   /** Battle spell damage +percent (direct and area damage spells cast by this commander). */
-  | { readonly type: 'spell_damage_percent'; readonly percent: number };
+  | { readonly type: 'spell_damage_percent'; readonly percent: number }
+  /** +amount Spell Power when this commander casts `spellId` (hero spell specialties). */
+  | { readonly type: 'spell_power_bonus'; readonly spellId: SpellId; readonly amount: number };
 
 /** One-time reward package. Applied exactly once through an idempotency key. */
 export interface RewardDefinition {

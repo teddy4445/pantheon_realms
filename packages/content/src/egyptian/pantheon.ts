@@ -325,16 +325,16 @@ export const EGYPTIAN_SPEC: PantheonKitSpec = {
     { name: 'Set', domain: 'Chaos & Strength', mirrors: 'attack', quote: 'Storms clear the ground for the strong.' },
     { name: 'Isis', domain: 'Magic & Healing', mirrors: 'defense', quote: 'What is loved is put back together.' },
   ],
+  extraFirstMinors: [
+    { name: 'Anubis', domain: 'Funerary Protection', quote: 'I weigh every heart. Yours may stay a while.', blessing: blessing(BLESSINGS.attribute('knowledge', 1), BLESSINGS.recovery(10)) },
+    { name: 'Bastet', domain: 'Grace & Protection', quote: 'Soft paws, sharp claws, a home well kept.', blessing: blessing(BLESSINGS.luck(1), BLESSINGS.creatures('defense', 1, { maxTier: 3, label: 'Your tier 1–3 creatures' })) },
+  ],
   secondMinors: [
     { name: 'Osiris', domain: 'Rebirth & Eternity', quote: 'I was scattered once. I know the way back.', blessing: blessing(BLESSINGS.recovery(15)) },
     { name: 'Thoth', domain: 'Knowledge & Wisdom', quote: 'Write it down, and it is yours forever.', blessing: blessing(BLESSINGS.attribute('power', 1), BLESSINGS.attribute('knowledge', 1)) },
     { name: 'Horus', domain: 'Kingship & Dominion', quote: 'Whatever flies, flies for the throne.', blessing: blessing(BLESSINGS.creatures('attack', 1, { ability: 'flight', label: 'Your flying creatures' }), BLESSINGS.creatures('speed', 1, { ability: 'flight', label: 'Your flying creatures' })) },
-  ],
-  otherGods: [
-    ['Anubis', 'Funerary Protection'],
-    ['Hathor', 'Joy & Prosperity'],
-    ['Bastet', 'Grace & Protection'],
-    ['Sobek', 'River Power & Fertility'],
+    { name: 'Hathor', domain: 'Joy & Prosperity', quote: 'Music in the hall, gold in the treasury.', blessing: blessing(BLESSINGS.income('gold', 250), BLESSINGS.morale(1)) },
+    { name: 'Sobek', domain: 'River Power & Fertility', quote: 'The flood takes, and the flood gives more.', blessing: blessing(BLESSINGS.growth(2, 3), BLESSINGS.income('stone', 1)) },
   ],
   classes: [
     { id: 'medjay', name: 'Medjay', mirrors: 'champion', summary: 'A desert scout-warrior of the royal guard who leads from the front' },

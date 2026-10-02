@@ -6,7 +6,7 @@
  * presentation queue. Does NOT own game truth: all game data is read from
  * session.state, and all changes go through session.dispatch (commands).
  */
-import { campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type Rejection } from '@pr/rules';
+import { KEY_COLOR_LABEL, campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type Rejection } from '@pr/rules';
 import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
 import type { PlatformServices } from '@pr/platform';
 import { SaveManager, type SlotInfo } from './saves';
@@ -16,6 +16,7 @@ import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, battleP
 /** How long the battlefield stays after the final blow before the result screen (normal playback). */
 const FINAL_BLOW_BEAT_MS = 700;
 import type { GameAudio } from '../audio/gameAudio';
+import { campaignEndingArtId } from '../assets/storyArt';
 
 export type ScreenId =
   | 'main-menu'
@@ -94,6 +95,10 @@ export type Overlay =
   | { kind: 'camp'; heroId: string; siteId: string }
   /** One-time map event choice. */
   | { kind: 'map-event'; heroId: string; siteId: string }
+  /** Treasure chest: Gold or experience (random maps). */
+  | { kind: 'chest'; heroId: string; siteId: string }
+  /** Quest hut: the quest and its reward (random maps). */
+  | { kind: 'quest-hut'; heroId: string; siteId: string }
   /** Adventure-map divine interventions. */
   | { kind: 'interventions' }
   /** End of a skirmish (victory or defeat). */
@@ -108,6 +113,8 @@ export interface StoryEntry {
   readonly lines: readonly DialogueLine[];
   /** Opened after the scene closes (the campaign epilogue leads to the summary). */
   readonly then?: 'campaign-complete';
+  /** Full-screen story picture behind the scene (the chosen ending of a campaign). */
+  readonly backdropAssetId?: string | null;
 }
 
 export interface Toast {
@@ -550,6 +557,7 @@ export class AppStore {
     const s = this.session?.state;
     if (!s) return;
     const session = this.session;
+    this.announceSiteEvents(events);
     if (events.some((e) => e.kind === 'BattleStarted')) {
       const humanInvolved = !!s.battle && Object.values(s.battle.sides).some((side) => side.controller === 'human');
       if (humanInvolved) {
@@ -585,6 +593,54 @@ export class AppStore {
     this.routeMissionOutcome(events);
   }
 
+  /**
+   * Toasts for the viewer's own heroes at the sites added 2026-10-02 (learning
+   * stones, shrines, trainers, key tents, windmills, prisons; refusals say why).
+   * The chest, quest hut and neutral-reaction dialogs report their own results.
+   */
+  private announceSiteEvents(events: readonly GameEvent[]): void {
+    const session = this.session;
+    if (!session) return;
+    const st = session.state;
+    const me = session.humanPlayerId;
+    const mine = (heroId: string) => st.heroes[heroId]?.ownerId === me;
+    const heroName = (heroId: string) => st.heroes[heroId]?.name ?? 'Your hero';
+    for (const e of events) {
+      switch (e.kind) {
+        case 'LearningStoneUsed':
+          if (mine(e.heroId)) this.toast(`${heroName(e.heroId)} studies the learning stone: +${e.xp.toLocaleString('en-US')} experience`, 'success');
+          break;
+        case 'ShrineSpellLearned':
+          if (mine(e.heroId)) this.toast(`${heroName(e.heroId)} learns ${this.catalog.spells[e.spellId]?.name ?? e.spellId}`, 'success');
+          break;
+        case 'SkillTrained':
+          if (mine(e.heroId)) this.toast(`${heroName(e.heroId)} learns ${this.catalog.skills[e.skillId]?.name ?? e.skillId} (Basic)`, 'success');
+          break;
+        case 'KeyObtained':
+          if (e.playerId === me) this.toast(`You receive the ${KEY_COLOR_LABEL[e.color as KeyColor]?.toLowerCase() ?? e.color} key: matching key gates now open for your heroes`, 'success');
+          break;
+        case 'WindmillCollected':
+          if (mine(e.heroId))
+            this.toast(
+              `Windmill: ${Object.entries(e.amount)
+                .filter(([, v]) => v > 0)
+                .map(([k, v]) => `+${v.toLocaleString('en-US')} ${k}`)
+                .join(', ')}`,
+              'success',
+            );
+          break;
+        case 'PrisonerFreed':
+          if (mine(e.byHeroId)) this.toast(`${heroName(e.heroId)} is free and joins you`, 'success');
+          break;
+        case 'SiteRefused':
+          if (mine(e.heroId)) this.toast(e.reason, 'info');
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
   private routeMissionOutcome(events: readonly GameEvent[]): void {
     const session = this.session;
     for (const e of events) {
@@ -610,7 +666,7 @@ export class AppStore {
           const camp = this.catalog.campaigns[session.campaign.campaignId];
           // The closing scene plays first; the campaign summary follows it.
           const lines = camp ? campaignEpilogueLines(camp, session.state.mission.flags) : [];
-          if (camp && lines.length) this.playStory({ key: `epilogue:${camp.id}`, title: `${camp.name} — Epilogue`, lines, then: 'campaign-complete' });
+          if (camp && lines.length) this.playStory({ key: `epilogue:${camp.id}`, title: `${camp.name} — Epilogue`, lines, then: 'campaign-complete', backdropAssetId: campaignEndingArtId(camp, session.state.mission.flags) });
           else this.openOverlay({ kind: 'campaign-complete' });
         } else this.openOverlay({ kind: 'debrief' });
       } else this.openOverlay({ kind: 'debrief' });

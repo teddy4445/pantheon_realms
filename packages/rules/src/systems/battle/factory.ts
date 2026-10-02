@@ -92,7 +92,7 @@ function makeSide(
   morale: number,
   hero?: HeroState | null,
 ): BattleSideState {
-  const heroFx = hero && !hero.monster ? heroEffects(tx.catalog, hero) : [];
+  const heroFx = hero && !hero.monster ? heroEffects(tx.catalog, hero, tx.state) : [];
   return {
     sideId,
     playerId,

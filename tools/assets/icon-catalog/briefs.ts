@@ -140,6 +140,15 @@ export const MARKERS: readonly { readonly assetId: string; readonly name: string
   { assetId: 'icon.marker.question', name: 'Map event', when: 'A one-time choice not yet taken', brief: 'A question mark made of light over a road.' },
   { assetId: 'icon.marker.shrine', name: 'Relic shrine', when: 'The hold-the-relic shrine', brief: 'A small shrine with a flame.' },
   { assetId: 'icon.marker.portal', name: 'Two-way portal', when: 'A two-way portal (random maps; a hero who stops on it steps out of its twin)', brief: 'An arch of standing stones around a violet veil.' },
+  // Random-map sites added 2026-10-02 (until delivered, the nearest existing marker stands in).
+  { assetId: 'icon.marker.learning-stone', name: 'Learning stone', when: 'A standing stone that grants experience once per hero (random maps)', brief: 'A carved standing stone with a glowing rune.' },
+  { assetId: 'icon.marker.spell-shrine', name: 'Spell shrine', when: 'A shrine that teaches one spell to heroes with a spellbook (random maps)', brief: 'A small open shrine with a floating spell scroll.' },
+  { assetId: 'icon.marker.skill-trainer', name: 'Skill trainer', when: 'A mentor who teaches or improves one skill (random maps)', brief: 'A training post with crossed practice staves.' },
+  { assetId: 'icon.marker.quest-hut', name: 'Quest hut', when: 'A hut that rewards bringing resources or defeating a guard (random maps)', brief: 'A thatched hut with a hanging notice scroll.' },
+  { assetId: 'icon.marker.key-tent', name: 'Key tent', when: 'A coloured tent that gives its colour’s key (the marker is tinted by key colour)', brief: 'A small pointed tent with a key on its flap; light neutral colours so it can be tinted.' },
+  { assetId: 'icon.marker.key-gate', name: 'Key gate', when: 'A coloured gate that opens for players holding the matching key (tinted by key colour)', brief: 'A barred gate with a keyhole seal; light neutral colours so it can be tinted.' },
+  { assetId: 'icon.marker.windmill', name: 'Windmill', when: 'A windmill whose stores refill each week (random maps)', brief: 'A small windmill with a sack at its door.' },
+  { assetId: 'icon.marker.prison', name: 'Prison', when: 'A prison holding a captive hero (random maps)', brief: 'A stone cell door with iron bars.' },
   { assetId: 'icon.marker.check', name: 'Done', when: 'A site already cleared, visited or activated', brief: 'A check mark in a ring.' },
   { assetId: 'icon.marker.unknown', name: 'Unknown', when: 'Anything else', brief: 'A question mark.' },
 ];

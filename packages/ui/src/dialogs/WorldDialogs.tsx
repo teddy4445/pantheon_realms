@@ -16,6 +16,9 @@ import {
   quoteCampRecruitment,
   quoteIntervention,
   quoteMapEvent,
+  quoteOpenChest,
+  quoteCompleteQuestHut,
+  questHutProgress,
   resources,
   type InterventionDefinition,
   type RewardDefinition,
@@ -205,6 +208,123 @@ export function MapEventDialog({ heroId, siteId }: { heroId: string; siteId: str
             );
           })}
         </div>
+      )}
+    </Modal>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Treasure chest and quest hut (random-map sites, 2026-10-02)
+// ---------------------------------------------------------------------------
+
+export function ChestDialog({ heroId, siteId }: { heroId: string; siteId: string }) {
+  const store = useStore();
+  const catalog = store.catalog;
+  const session = store.session!;
+  const state = session.state;
+  const playerId = session.humanPlayerId;
+  const def = missionSite(catalog, state, siteId);
+  const kind = def?.kind.type === 'treasure_chest' ? def.kind : null;
+  const hero = state.heroes[heroId];
+  if (!def || !kind || !hero) return null;
+  const q = quoteOpenChest(catalog, state, playerId, heroId, siteId);
+  const claimed = !!state.world.sites[siteId]?.claimed;
+  const open = (choice: 'gold' | 'xp') => {
+    if (!store.dispatch({ kind: 'OpenChest', heroId, siteId, choice })) {
+      store.toast(choice === 'gold' ? `+${kind.gold.toLocaleString('en-US')} Gold` : `${hero.name} studies the journals: +${kind.xp.toLocaleString('en-US')} experience`, 'success');
+      store.closeOverlay();
+    }
+  };
+  return (
+    <Modal title={def.name} onClose={() => store.closeOverlay()} width="34rem" testId="chest" footer={<Button onClick={() => store.closeOverlay()}>{claimed ? 'Close' : 'Decide later'}</Button>}>
+      <p className="story-text">{def.description}</p>
+      {claimed ? (
+        <p className="dim">The chest is empty.</p>
+      ) : (
+        <div className="event-options">
+          <div className="event-option panel">
+            <div className="event-option__label">Take the Gold</div>
+            <div className="small">+{kind.gold.toLocaleString('en-US')} Gold for your treasury.</div>
+            <div className="row">
+              <span className="grow" />
+              <Button size="small" variant="primary" disabled={!q.legal} disabledReason={q.reason} onClick={() => open('gold')} data-testid="chest-gold">
+                Take Gold
+              </Button>
+            </div>
+          </div>
+          <div className="event-option panel">
+            <div className="event-option__label">Study the journals</div>
+            <div className="small">
+              +{kind.xp.toLocaleString('en-US')} experience for {hero.name}.
+            </div>
+            <div className="row">
+              <span className="grow" />
+              <Button size="small" variant="primary" disabled={!q.legal} disabledReason={q.reason} onClick={() => open('xp')} data-testid="chest-xp">
+                Take experience
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </Modal>
+  );
+}
+
+export function QuestHutDialog({ heroId, siteId }: { heroId: string; siteId: string }) {
+  const store = useStore();
+  const catalog = store.catalog;
+  const session = store.session!;
+  const state = session.state;
+  const playerId = session.humanPlayerId;
+  const def = missionSite(catalog, state, siteId);
+  const kind = def?.kind.type === 'quest_hut' ? def.kind : null;
+  if (!def || !kind) return null;
+  const claimed = !!state.world.sites[siteId]?.claimed;
+  const q = quoteCompleteQuestHut(catalog, state, playerId, heroId, siteId);
+  const progress = questHutProgress(catalog, state, playerId, kind.quest);
+  const target = kind.quest.type === 'defeat' ? missionSite(catalog, state, kind.quest.siteId) : undefined;
+  return (
+    <Modal title={def.name} onClose={() => store.closeOverlay()} width="36rem" testId="quest-hut" footer={<Button onClick={() => store.closeOverlay()}>Close</Button>}>
+      <p className="story-text">{def.description}</p>
+      {claimed ? (
+        <p className="dim">You have fulfilled this quest.</p>
+      ) : (
+        <>
+          <div className="small">
+            <strong>Quest: </strong>
+            {kind.quest.type === 'deliver' ? (
+              <>
+                bring <CostList cost={kind.quest.resources} wallet={state.players[playerId]?.wallet} />
+              </>
+            ) : (
+              <>
+                defeat the {kind.quest.label}
+                {target ? ` at ${target.name}` : ''} with one of your heroes. {progress.met ? <Chip tone="ok">Done</Chip> : <Chip tone="warn">Not yet</Chip>}
+              </>
+            )}
+          </div>
+          <div className="small">
+            <strong>Reward: </strong>
+            {rewardText(catalog, kind.reward).join(', ')}
+          </div>
+          <div className="row">
+            <span className="grow" />
+            <Button
+              variant="primary"
+              disabled={!q.legal}
+              disabledReason={q.reason}
+              onClick={() => {
+                if (!store.dispatch({ kind: 'CompleteQuestHut', heroId, siteId })) {
+                  store.toast(`Quest fulfilled: ${rewardText(catalog, kind.reward).join(', ')}`, 'success');
+                  store.closeOverlay();
+                }
+              }}
+              data-testid="quest-complete"
+            >
+              {kind.quest.type === 'deliver' ? 'Hand over' : 'Claim the reward'}
+            </Button>
+          </div>
+        </>
       )}
     </Modal>
   );

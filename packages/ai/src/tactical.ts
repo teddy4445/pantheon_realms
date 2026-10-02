@@ -7,6 +7,7 @@
  */
 import {
   aliveCount,
+  castingPower,
   cellDistance,
   cellKey,
   effectiveSpeed,
@@ -149,7 +150,7 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
       if (!sp.castable) continue;
       const def = catalog.spells[sp.spellId];
       if (!def) continue;
-      const power = battle.sides[stack.side].commander?.power ?? 0;
+      const power = castingPower(battle.sides[stack.side], sp.spellId);
       const pct = battle.sides[stack.side].effects?.spellDamagePercent ?? 0;
       const e = def.effect;
       const fresh = (a: BattleStackState) => !a.statuses.some((s) => s.sourceId === `spell:${sp.spellId}`);

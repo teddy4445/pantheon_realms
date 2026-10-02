@@ -23,6 +23,7 @@ import { ARTIFACT_SLOT_LABEL, type ContentCatalog } from '@pr/rules';
 import { ICON_ART, ICON_NAMES, Icon, type IconName } from '../../../packages/ui/src/assets/icons';
 import { ARTIFACT_KIND_GLYPH, SPELL_EFFECT_ART } from '../../../packages/ui/src/components/art';
 import { resolveAsset } from '../../../packages/ui/src/assets/manifest';
+import { ABILITY_GLYPH } from '../../../packages/ui/src/components/badges';
 import { BRIEFS, EFFECT_VISUAL, MARKERS, STYLE } from './briefs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -111,6 +112,15 @@ function iconUsage(): Map<IconName, Set<string>> {
       if (!used.has(n as IconName)) used.set(n as IconName, new Set());
       used.get(n as IconName)!.add(page);
     }
+    // Names chosen in an expression, e.g. name={done ? 'check' : 'flag'}.
+    for (const m of text.matchAll(/\b(?:name|icon|headerIcon|glyph)\s*=\s*\{([^{}]*\?[^{}]*)\}/g)) {
+      for (const q of m[1]!.matchAll(/['"]([a-z0-9]+)['"]/g)) {
+        const n = q[1]!;
+        if (!names.has(n)) continue;
+        if (!used.has(n as IconName)) used.set(n as IconName, new Set());
+        used.get(n as IconName)!.add(page);
+      }
+    }
   }
   // Data-driven uses the scan cannot see.
   const add = (n: IconName, page: string) => {
@@ -122,6 +132,7 @@ function iconUsage(): Map<IconName, Set<string>> {
     add(r, 'Costs and rewards (every screen)');
   }
   for (const k of Object.values(ARTIFACT_KIND_GLYPH)) add(k, 'Artifact fallback glyph (hero screen, merchant, encyclopedia)');
+  for (const k of Object.values(ABILITY_GLYPH)) add(k, 'Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists');
   return used;
 }
 
@@ -141,8 +152,8 @@ function glyphSvg(name: IconName): string {
 
 /** What `<Icon name>` draws today: its art when mapped, else its SVG glyph. */
 function iconCurrent(name: IconName): Current {
-  const id = ICON_ART[name];
-  const art = id ? artFile(id) : null;
+  // Same lookup as iconArt(): the mapped art, else delivered final art under `icon.ui.<name>`.
+  const art = artFile(ICON_ART[name] ?? `icon.ui.${name}`);
   return art ?? { type: 'glyph', file: `assets-source/icons/current/glyph.${name}.svg`, glyph: name };
 }
 
@@ -166,7 +177,8 @@ it('writes the icon inventory', () => {
   const ui: Row[] = [];
   for (const name of ICON_NAMES) {
     const artId = ICON_ART[name];
-    const art = artId ? artFile(artId) : null;
+    // Same lookup as iconArt(): delivered final art under `icon.ui.<name>` replaces the glyph.
+    const art = artFile(artId ?? `icon.ui.${name}`);
     if (artId) referenced.add(artId);
     const svgFile = `assets-source/icons/current/glyph.${name}.svg`;
     writeFileSync(join(ROOT, svgFile), glyphSvg(name));
@@ -225,7 +237,7 @@ it('writes the icon inventory', () => {
         name: sp.name,
         group: `Spell · tier ${sp.tier}`,
         pantheon: pantheonName(c, sp.pantheonId),
-        where: sp.context === 'battle' ? 'Spellbook; Battle spell bar; Town spell library; Encyclopedia' : 'Spellbook; Adventure map (cast button); Town spell library; Encyclopedia',
+        where: sp.context === 'battle' ? 'Spellbook; Battle spell choice (when several can be cast); Encyclopedia' : 'Spellbook; Adventure map cast buttons; Encyclopedia',
         current: own ?? (fbFile ? { type: 'fallback', file: fbFile.file, note: `effect-family icon ${fb}` } : { type: 'procedural', note: 'none' }),
         brief: `${sp.name}: ${EFFECT_VISUAL[sp.effect.type] ?? 'a glowing rune'}. ${first(sp.lore)}`.trim(),
         details: `${sp.context === 'battle' ? 'Battle' : 'Adventure'} · ${sp.manaCost} mana · target ${sp.target.replace(/_/g, ' ')} · ${sp.summary}${sp.scope === 'expanded' ? ' · expanded content' : ''}`,
@@ -253,7 +265,7 @@ it('writes the icon inventory', () => {
         name: ar.name,
         group: `Artifact · ${ARTIFACT_SLOT_LABEL[ar.slot] ?? ar.slot}`,
         pantheon: ar.originPantheonId ? pantheonName(c, ar.originPantheonId) : 'Shared',
-        where: 'Hero screen (paper doll, backpack); Artifact merchant; Battle loot; Map rewards; Encyclopedia',
+        where: 'Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia',
         current: own ?? iconCurrent(glyph),
         brief: `${ar.name} — draw the object alone, three-quarter view. ${first(ar.lore)}`.trim(),
         details: `${ar.rarity ?? (ar.unique ? 'relic' : 'minor')} · ${ar.summary}${set ? ` · set: ${set}` : ''}${ar.scope === 'expanded' ? ' · expanded content' : ''}`,

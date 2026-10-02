@@ -139,8 +139,13 @@ function checkEffect(c: ContentCatalog, e: EffectDefinition, where: string, push
       const ruleTypes = new Set(Object.values(c.abilities).map((a) => a.rule.type as string));
       if (e.ability !== undefined && !ruleTypes.has(e.ability)) push(`${where}: creature_stat filters on unknown ability type ${e.ability}`);
       if (e.minTier !== undefined && e.maxTier !== undefined && e.minTier > e.maxTier) push(`${where}: creature_stat tier range is empty`);
+      if (e.familyId !== undefined && !c.families[e.familyId]) push(`${where}: creature_stat filters on unknown family ${e.familyId}`);
       break;
     }
+    case 'spell_power_bonus':
+      if (!c.spells[e.spellId]) push(`${where}: unknown spell ${e.spellId}`);
+      if (e.amount <= 0) push(`${where}: spell_power_bonus needs a positive amount`);
+      break;
     case 'wounded_fury':
       if (e.denominator <= 0 || e.numerator <= 0 || e.numerator > e.denominator) push(`${where}: wounded_fury threshold must be in (0, 1]`);
       break;
@@ -283,6 +288,20 @@ function artifactValidator(c: ContentCatalog, push: Push): void {
 function heroValidator(c: ContentCatalog, push: Push): void {
   for (const h of Object.values(c.heroes)) {
     if (!c.heroClasses[h.classId]) push(`${h.id}: unknown class ${h.classId}`);
+    const sp = h.specialty;
+    if (!sp) continue;
+    const where = `${h.id}/specialty`;
+    if (!sp.name || !sp.summary) push(`${where}: needs a name and exact rule text`);
+    if (sp.effects.length === 0) push(`${where}: needs at least one effect`);
+    for (const e of [...sp.effects, ...(sp.growth?.effects ?? [])]) checkEffect(c, e, where, push);
+    if (sp.growth && sp.growth.everyLevels < 1) push(`${where}: growth step must be at least one level`);
+    if (sp.kind === 'spell') {
+      const spell = sp.spellId ? c.spells[sp.spellId] : undefined;
+      if (!spell) push(`${where}: spell specialty needs a known spell`);
+      else if (!('perPower' in spell.effect)) push(`${where}: ${spell.id} does not grow with Spell Power`);
+      if (!c.heroClasses[h.classId]?.startsWithSpellbook) push(`${where}: spell specialties need a spellbook class`);
+    }
+    if (sp.kind === 'creature' && (!sp.familyId || !c.families[sp.familyId])) push(`${where}: creature specialty needs a known family`);
   }
   for (const cl of Object.values(c.heroClasses)) {
     for (const s of cl.startingSkills) if (!c.skills[s.skillId]) push(`${cl.id}: unknown skill ${s.skillId}`);
@@ -356,6 +375,25 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
       if (s.kind.options.length === 0) push(`${where}/${s.id}: a map event needs at least one option`);
       s.kind.options.forEach((o, i) => rewardOk(o.reward, `${where}/${s.id}#${i}`));
     }
+    // Sites added 2026-10-02 (random maps).
+    const sk = s.kind;
+    if (sk.type === 'learning_stone' && sk.xp <= 0) push(`${where}/${s.id}: a learning stone needs positive experience`);
+    if (sk.type === 'spell_shrine' && !c.spells[sk.spellId]) push(`${where}/${s.id}: unknown spell ${sk.spellId}`);
+    if (sk.type === 'skill_trainer' && !c.skills[sk.skillId]) push(`${where}/${s.id}: unknown skill ${sk.skillId}`);
+    if (sk.type === 'treasure_chest' && (sk.gold <= 0 || sk.xp <= 0)) push(`${where}/${s.id}: a chest needs a gold and an experience choice`);
+    if (sk.type === 'windmill' && !Object.values(sk.weekly).some((v) => (v ?? 0) > 0)) push(`${where}/${s.id}: a windmill needs a weekly yield`);
+    if (sk.type === 'prison') {
+      if (!c.heroes[sk.heroDefinitionId]) push(`${where}/${s.id}: unknown captive hero ${sk.heroDefinitionId}`);
+      if (sk.level < 1 || sk.level > c.rulesProfile.xpThresholds.length) push(`${where}/${s.id}: captive level out of range`);
+    }
+    if (sk.type === 'quest_hut') {
+      rewardOk(sk.reward, `${where}/${s.id}`);
+      if (sk.quest.type === 'defeat') {
+        const target = m.sites.find((x) => x.id === (sk.quest as { siteId: string }).siteId);
+        if (!target || !target.guard) push(`${where}/${s.id}: quest target ${sk.quest.siteId} is not a guarded site`);
+      } else if (!Object.values(sk.quest.resources).some((v) => (v ?? 0) > 0)) push(`${where}/${s.id}: a delivery quest needs resources`);
+    }
+    if (sk.type === 'key_gate' && !m.sites.some((x) => x.kind.type === 'key_tent' && x.kind.color === sk.color)) push(`${where}/${s.id}: no key tent of colour ${sk.color}`);
   }
   const objById = new Map(m.objectives.map((o) => [o.id, o] as const));
   const townIds = new Set([m.player.town.townId, ...(m.rivals ?? []).map((r) => r.town.townId)]);

@@ -16,6 +16,9 @@ import { JAPANESE_SPEC } from '../japanese/pantheon';
 import { CELTIC_SPEC } from '../celtic/pantheon';
 import { MESOAMERICAN_SPEC } from '../mesoamerican/pantheon';
 
+/** The skirmish herald is a speaker of its own (not the leader whose portrait it once borrowed); no bust is delivered for it. */
+const HERALD_PORTRAIT = 'story.herald.portrait';
+
 /*
  * Twin Harbors v2 is POINT-SYMMETRIC: every site, road and terrain cell on the
  * west half has a partner at (34 - q, 16 - r), which preserves hex distance, so
@@ -283,8 +286,8 @@ function twinHarbors(id: string, playerPantheon: string, rivalPantheon: string):
     newDecisions: ['Economy race', 'Local AI opponent', ...(mixed ? ['Mixed pantheons'] : [])],
     xpCap: null,
     xpCapLevel: null,
-    briefing: [{ speaker: 'Herald', portraitAssetId: pl.portrait, text: 'Eastharbor’s war-leader marches for the gold mine. Hold the coast.' }],
-    victory: [{ speaker: 'Herald', portraitAssetId: pl.portrait, text: 'Both harbors now answer to you.' }],
+    briefing: [{ speaker: 'Herald', portraitAssetId: HERALD_PORTRAIT, text: 'Eastharbor’s war-leader marches for the gold mine. Hold the coast.' }],
+    victory: [{ speaker: 'Herald', portraitAssetId: HERALD_PORTRAIT, text: 'Both harbors now answer to you.' }],
     debriefPolicy: [],
     player: {
       playerId: 'player',
@@ -322,7 +325,7 @@ function twinHarbors(id: string, playerPantheon: string, rivalPantheon: string):
 }
 
 /** Skirmish scenarios enable the proposed expansions (pantheon skills and spells, sets, events, interventions). */
-export const SKIRMISH_FEATURES = { expandedContent: true, weeklyEvents: true, interventions: true } as const;
+export const SKIRMISH_FEATURES = { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true } as const;
 
 /** Mission ID for a pantheon pairing (Greek vs. Greek keeps the original ID). */
 export function skirmishMissionId(playerPantheon: string, rivalPantheon: string): string {

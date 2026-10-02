@@ -91,6 +91,27 @@ export interface HeroClassDefinition {
   readonly summary: string;
 }
 
+/**
+ * A hero's specialty (proposed 2026-10-02, owner request: "a special unit, spell
+ * or resource ... list them in the tavern"). Plain effects from the shared
+ * vocabulary; `growth` repeats its effects once for every `everyLevels` hero
+ * levels reached (level scaling). Applies only in scenarios with the
+ * `heroSpecialties` feature (The Three Beacons keeps its documented rules).
+ */
+export interface HeroSpecialtyDefinition {
+  readonly kind: 'creature' | 'spell' | 'resource';
+  /** Short label for the Tavern card (e.g. "Hoplites", "Lightning", "Gold"). */
+  readonly name: string;
+  /** Exact rule text shown to players; must match `effects` and `growth`. */
+  readonly summary: string;
+  readonly effects: readonly EffectDefinition[];
+  readonly growth?: { readonly everyLevels: number; readonly effects: readonly EffectDefinition[] };
+  /** Spell specialty: the hero knows this spell from the start (it needs a spellbook class). */
+  readonly spellId?: SpellId;
+  /** Creature specialty: the family it improves (for icons and the AI). */
+  readonly familyId?: CreatureFamilyId;
+}
+
 export interface HeroDefinition {
   readonly id: HeroDefinitionId;
   readonly pantheonId: PantheonId;
@@ -101,6 +122,8 @@ export interface HeroDefinition {
   readonly portraitAssetId: AssetId;
   /** campaign: scripted campaign hero; enemy: scenario opponent; preview: listed but not playable yet. */
   readonly availability: 'campaign' | 'hireable' | 'enemy' | 'preview';
+  /** Proposed specialty (see HeroSpecialtyDefinition). */
+  readonly specialty?: HeroSpecialtyDefinition;
   readonly provenance: ProvenanceInfo;
 }
 

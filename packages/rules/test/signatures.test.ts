@@ -307,7 +307,8 @@ describe('Artifact Merchant', () => {
     e.buildings['civic_hall'] = 2;
     b.do({ kind: 'BuildStructure', townId: 'eastharbor', buildingId: 'artifact_merchant' });
     expect(b.town('eastharbor').merchant).toEqual(stock);
-    // A new week brings a new draw.
+    // A new week brings a new draw (defenders keep the idle player's town through the week).
+    a.state.towns['westharbor']!.garrison.slots[0] = { stackId: 'test_guard', creatureId: 'cyclops', count: 40 };
     for (let i = 0; i < 7; i++) a.endDay();
     expect(a.town('westharbor').merchant!.week).toBe(2);
   });
