@@ -436,3 +436,28 @@ part.
 `runtime_sha256` (and `runtime_bytes`) in `assets-runtime/heroes/animation_manifest.json`,
 and run `npm run assets:check` (Khronos validator, checksums, clips, skin)
 and `npx playwright test tests/e2e/heroes.spec.ts`.
+
+## 13. Large painted art (story, ground and sky, big moments)
+
+Three production briefs for an image generator live in
+`assets-source/art/briefs/` (`GPT6_BRIEF_1_STORY_ART.md`,
+`GPT6_BRIEF_2_GROUND_AND_SKY.md`, `GPT6_BRIEF_3_BIG_MOMENTS.md`, 2026-10-02):
+a style bible built on the owner's references, a description of every image,
+its size and its file name. Delivered files go into
+**`assets-source/art/final/`**, named by asset ID plus `.png` (the same rule as
+the icons in §11). Not wired into the game yet — an import step and the screen
+slots come when the art arrives.
+
+| Group | Files | Size | Asset ID pattern |
+|---|---|---|---|
+| Dialogue portraits (half-body, transparent) | 35 | 1024 × 1536 | `hero.<pantheon>.<character>.bust` (the speaker's `portraitAssetId` with `.portrait` → `.bust`) |
+| Campaign covers | 6 | 2560 × 1440 | `campaign.<campaign>.cover` |
+| Ending pictures | 11 | 2560 × 1440 | `ending.<campaign>.<epilogue flag>` (`ending.three_beacons.epilogue`) |
+| Mission pictures | 40 | 1920 × 1080 | `mission.<campaign>.mNN.thumbnail`, `mission.skirmish.twin_harbors.thumbnail`, `mission.skirmish.random.thumbnail` — the existing thumbnail IDs; the 640 × 360 card is made from them |
+| Ground textures (seamless) | 60 | 1024 × 1024 | `terrain.<biome>.<terrain>` (10 biomes × 6 terrains) |
+| Battlefield grounds | 6 (+18 optional) | 4096 × 3200 | `battlefield.<archetype>.ground` (`.desert` / `.tundra` / `.jungle` variants) |
+| Sky backdrops | 10 | 4096 × 1536 | `sky.<biome>` |
+| Miracle cards | 14 | 1024 × 1536 | `intervention.<interventionId>.card` |
+| Victory / defeat splashes | 12 | 1920 × 1080 | `splash.<pantheon>.victory`, `splash.<pantheon>.defeat` |
+| Level-up banners (transparent) | 6 | 1536 × 512 | `banner.level_up.<pantheon>` |
+| New-week banners (transparent) | 9 | 1536 × 512 | `banner.new_week`, `banner.week.<weeklyEventId>` |
