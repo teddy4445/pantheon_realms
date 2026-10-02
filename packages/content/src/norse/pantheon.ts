@@ -140,12 +140,24 @@ const hero = (id: string, name: string, title: string, classId: string, biograph
   provenance: { source: 'concept-board', note: 'Name and title from the owner Norse board; class assignment proposed.' },
 });
 
+/** The Winter Oath's opponents (proposed this build; never hireable). */
+const foe = (id: string, name: string, title: string, classId: string, biography: string): HeroDefinition => ({
+  ...hero(id, name, title, classId, biography),
+  availability: 'enemy',
+  provenance: { source: 'proposed-this-build', note: 'The Winter Oath campaign character (owner decision 2026-10-01: build the campaign).' },
+});
+
 export const NORSE_HEROES: readonly HeroDefinition[] = [
   hero('norse_sigurd', 'Sigurd', 'Dragonslayer & Destiny', 'huscarl', 'Concept-board hero. A wanderer who once stood against a wyrm and now leads others against worse. Hireable in skirmish.'),
   hero('norse_brynhild', 'Brynhild', 'Valkyrie & Devotion', 'huscarl', 'Concept-board hero. A shieldmaiden bound by an oath she chose herself. Hireable in skirmish.'),
   hero('norse_ragnar', 'Ragnar', 'Conquest & Glory', 'jarl', 'Concept-board hero. A raider-king who measures a season by the harbors that answer to him. Hireable in skirmish.'),
   hero('norse_lagertha', 'Lagertha', 'Leadership & Resilience', 'jarl', 'Concept-board hero. A war-leader who has never lost a retreat she ordered. Hireable in skirmish.'),
-  hero('norse_hervor', 'Hervor', 'Ancestral Power & Vengeance', 'volva', 'Concept-board hero. She woke a grave to claim a sword; the runes have answered her since. Hireable in skirmish.'),
+  hero('norse_hervor', 'Hervor', 'Ancestral Power & Vengeance', 'volva', 'Concept-board hero. She woke a grave to claim a sword; the runes have answered her since. The hero of The Winter Oath; hireable in skirmish.'),
+  foe('norse_grey_jarl', 'The Grey Jarl', 'Barrow-king of the Long Winter', 'huscarl', 'Hrolf, a king of a thousand winters ago, swore to hold the winter under his mound in exchange for a kingdom when it ended. The winter never ended. Final opponent of The Winter Oath.'),
+  foe('norse_ulfhild', 'Ulfhild', 'Jarl of Hvitstrand', 'jarl', 'A living jarl who swore to keep the Grey Jarl’s winter for a frozen sea that keeps her rivals’ ships in harbour. Rival empire in The Winter Oath, mission 5.'),
+  foe('norse_hrafn', 'Hrafn the Hollow', 'Oathless Einherjar', 'huscarl', 'Chosen by the Valkyries once, he walked out of their hall for the Grey Jarl’s promise of a war that never ends. Holds the Glacier Gate in The Winter Oath, mission 6.'),
+  foe('norse_bone_helm', 'Bone-Helm', 'Captain of the Nail-ship', 'huscarl', 'Draugr captain of the ship of nails, who walks the frozen sound with his crew. Patrol in The Winter Oath, mission 4.'),
+  foe('norse_barrow_captain', 'Barrow Captain', 'Warden of the Glacier Plateau', 'huscarl', 'The Grey Jarl’s oldest captain, who sweeps the plateau before the barrow-gate. Patrol in The Winter Oath, mission 7.'),
 ];
 
 export const NORSE_PANTHEON: PantheonDefinition = {

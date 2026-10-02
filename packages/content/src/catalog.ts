@@ -19,13 +19,20 @@ import { NORSE_LORE } from './norse/lore';
 import { NORSE_BUILDINGS, NORSE_TOWN } from './norse/town';
 import { NORSE_GODS, NORSE_HERO_CLASSES, NORSE_HEROES, NORSE_PANTHEON } from './norse/pantheon';
 import { COMING_SOON_CAMPAIGNS, ENTITLEMENTS, TEMPLATES, THREE_BEACONS, THREE_BEACONS_MISSIONS } from './campaign/threeBeacons';
+import { WINTER_OATH, WINTER_OATH_ENTITLEMENTS, WINTER_OATH_MISSIONS, WINTER_OATH_TEMPLATES } from './campaign/winterOath';
 import { SKIRMISH_KITS, SKIRMISH_MISSIONS, SKIRMISH_SCENARIOS, SKIRMISH_TEMPLATES } from './skirmish/skirmish';
 import { ARTIFACT_SETS, DIFFICULTIES, EXPANDED_SKILLS, EXPANDED_SPELLS, INTERVENTIONS, MAP_EVENT_TEMPLATES, SET_ARTIFACTS, WEEKLY_EVENTS } from './common/expanded';
+import { ARCANA_ARTIFACTS, ARCANA_SETS, ARCANA_SPELLS, EXISTING_LORE } from './common/arcana';
 import { validateCatalog } from './validation/validators';
+
+/** Merge the stories written for spells and artifacts that predate the Arcana library. */
+function withLore<T extends { readonly id: string; readonly lore?: string }>(defs: readonly T[]): T[] {
+  return defs.map((d) => (d.lore || !EXISTING_LORE[d.id] ? d : { ...d, lore: EXISTING_LORE[d.id] }));
+}
 
 export const VERSIONS: VersionBundle = {
   rulesVersion: 'pr-0.2-candidate',
-  contentVersion: 'content-0.7.0',
+  contentVersion: 'content-0.8.0',
   campaignVersion: 'campaign-three-beacons-0.4',
   mapGeneratorVersion: 'pr-mapgen-0.3',
   saveSchemaVersion: 1,
@@ -62,19 +69,19 @@ export function buildCatalog(): ContentCatalog {
     heroes: index([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes)], 'hero'),
     heroClasses: index([...HERO_CLASSES, ...NORSE_HERO_CLASSES, ...kits.flatMap((k) => k.classes)], 'hero class'),
     skills: index([...SKILLS, ...EXPANDED_SKILLS], 'skill'),
-    spells: index([...SPELLS, ...EXPANDED_SPELLS], 'spell'),
-    artifacts: index([...ARTIFACTS, ...SET_ARTIFACTS], 'artifact'),
-    artifactSets: index(ARTIFACT_SETS, 'artifact set'),
+    spells: index(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS]), 'spell'),
+    artifacts: index(withLore([...ARTIFACTS, ...SET_ARTIFACTS, ...ARCANA_ARTIFACTS]), 'artifact'),
+    artifactSets: index([...ARTIFACT_SETS, ...ARCANA_SETS], 'artifact set'),
     difficulties: index(DIFFICULTIES, 'difficulty'),
     interventions: index(INTERVENTIONS, 'intervention'),
     weeklyEvents: index(WEEKLY_EVENTS, 'weekly event'),
     skirmishKits: Object.fromEntries(SKIRMISH_KITS.map((k) => [k.pantheonId, k])),
     mapEventTemplates: index(MAP_EVENT_TEMPLATES, 'map event'),
-    entitlements: index(ENTITLEMENTS, 'entitlement'),
-    campaigns: index([THREE_BEACONS, ...COMING_SOON_CAMPAIGNS], 'campaign'),
-    missions: index([...THREE_BEACONS_MISSIONS, ...SKIRMISH_MISSIONS], 'mission'),
+    entitlements: index([...ENTITLEMENTS, ...WINTER_OATH_ENTITLEMENTS], 'entitlement'),
+    campaigns: index([THREE_BEACONS, WINTER_OATH, ...COMING_SOON_CAMPAIGNS], 'campaign'),
+    missions: index([...THREE_BEACONS_MISSIONS, ...WINTER_OATH_MISSIONS, ...SKIRMISH_MISSIONS], 'mission'),
     skirmishes: index(SKIRMISH_SCENARIOS, 'skirmish'),
-    mapTemplates: index([...TEMPLATES, ...SKIRMISH_TEMPLATES], 'map template'),
+    mapTemplates: index([...TEMPLATES, ...WINTER_OATH_TEMPLATES, ...SKIRMISH_TEMPLATES], 'map template'),
     pantheonOrder: ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'],
   };
   return deepFreeze(catalog);

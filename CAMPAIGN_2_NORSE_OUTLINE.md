@@ -1,161 +1,142 @@
-# Campaign 2 (proposal): The Winter Oath — Norse story outline
+# Campaign 2: The Winter Oath — Norse campaign
 
-**Status: outline for the owner's approval. Nothing below is built.** No
-missions, maps, portraits or dialogue for this campaign exist in the game yet;
-the main menu lists it as "Outline — awaiting approval". Every value named
-here (sizes, guard armies, costs, timings) is a proposal for discussion, not a
-design decision. It follows the shape of *The Three Beacons* (three short
-linked missions, one persistent hero, the same carryover rules) and uses only
-mechanics that already exist in this build.
+**Status: built in this build with proposed, unplaytested values.** The owner
+asked for the second campaign with seven missions (decision 2026-10-01: "Norse –
+The Winter Oath", missions played in order, early work still counts). Content
+lives in `packages/content/src/campaign/winterOath.ts`; the headless journey is
+`packages/campaign/test/winterOath.test.ts`. Every map, guard army, wallet, cost,
+reward and line of dialogue is a first proposal for the owner to playtest and
+change. Target playtimes are targets, unmeasured.
 
 This is original game fiction in a Norse-inspired setting, not a retelling of
 any saga. Names of gods, the pantheon roster and the hero Hervor come from the
-owner's Norse concept board.
+owner's Norse concept board; the other characters are new.
 
 ---
 
 ## 1. Premise
 
 The winter did not end. Spring should have reached the fjord-hold of
-**Kaldvik** two months ago; instead the ice thickens, the sea lanes close and
-the barrow-mounds above the hold have cracked open. The barrow-dead walk —
-some answering the runes of the hold's seeress **Hervor**, others the voice of
-the **Grey Jarl**, an ancient king whose oath once bound the long winter under
-his mound.
+**Kaldvik** two months ago; instead the ice thickens and the barrow above the
+hold has cracked open. Nine winters ago the seeress **Hervor** took a sword from
+a mound in the north and hid it under Kaldvik's rune-stone. She did not know the
+blade was the keystone of an oath: **Hrolf, the Grey Jarl**, a king of a
+thousand winters ago, swore to hold the winter under his mound in exchange for a
+kingdom when it ended — and the winter never ended. Now he wants his sword back,
+and the north with it.
 
-Years ago, Hervor opened that mound to claim a sword. She did not know the
-blade was the oath's keystone. Now the winter is spreading south, and the
-Grey Jarl wants his sword back — and the north with it.
-
-**Theme:** Wake. Bind. Endure. A campaign about oaths: the ones we inherit, the
-ones we break, and the ones we choose.
+**Theme:** Wake. Bind. Endure. Oaths inherited, oaths broken, oaths chosen.
 
 ## 2. Characters
 
-| Character | Role | Presentation |
+| Character | Role | In the game |
 |---|---|---|
-| **Hervor** (Völva) | Persistent campaign hero. A seeress who reads and casts the runes; the first spell-led campaign hero (Alexios was a Strategos). | Existing Norse hero definition (`norse_hervor`). Starts with a spellbook. |
-| **Eydis** | Kaldvik's steward. Counts the living and the dead; reacts to losses, the way Thaleia does. | Story portrait only (new placeholder). Not a unit or hero. |
-| **Skeggi** | An old skald who knows which runes bind and which wake. Explains Rune Circles, the Thor/Tyr choice and covenants (Ione's role). | Story portrait only. |
-| **The Grey Jarl** | Antagonist. A barrow-king who kept the winter for a thousand years in exchange for a kingdom that never came. Speaks from afar in missions 1–2; final commander in mission 3. | Distinct portrait; a scenario-defined Huscarl-class commander, like Melas — no special stat table. |
+| **Hervor** (Völva) | Persistent campaign hero, spell-led (starts with a spellbook). | `norse_hervor` (concept-board hero; still hireable in skirmish). |
+| **Eydis** | Steward of Kaldvik; counts the living and the dead and reacts to losses. | Dialogue portrait only (placeholder). |
+| **Skeggi** | Old skald; explains runes, gods and covenants. | Dialogue portrait only (placeholder). |
+| **The Grey Jarl (Hrolf)** | Antagonist; speaks from afar in M1–M2, final commander in M7. | `norse_grey_jarl`, enemy hero (huscarl class). |
+| **Svanhild** | Valkyrie captain of the aerie (M3). | Dialogue portrait only. |
+| **The troll-wife** | Speaks for the frost trolls; offers the covenant for a price (M3). | Dialogue portrait only. |
+| **Bone-Helm** | Draugr captain of the ship of nails; patrols the frozen sound (M4). | `norse_bone_helm`, enemy hero. |
+| **The grey wanderer** | One eye, two ravens, a grey cloak — never named (M4 map event). | Map event only. |
+| **Ulfhild** | Living Jarl of Hvitstrand, sworn to keep the winter (M5). | `norse_ulfhild`, enemy hero leading a full AI rival empire. |
+| **Jökul** | Elder of the frozen giants of Hrimgard (M6). | Dialogue portrait only. |
+| **Hrafn the Hollow** | An einherjar who left Valhalla for the Jarl's endless war (M6). | `norse_hrafn`, guard commander. |
+| **Barrow Captain** | Patrols the glacier plateau (M7). | `norse_barrow_captain`, enemy hero. |
 
-The barrow-dead question: the Norse player's own tier 1 are Draugar. The
-fiction frames this directly — *the dead answer whoever holds a rune-oath* —
-so Hervor's Draugar and the Grey Jarl's are the same kind of creature on
-opposite oaths. (Open question 6.)
+The barrow-dead question: the Norse tier 1 are Draugar. The fiction says *the
+dead answer whoever holds a rune-oath*, so Hervor's Draugar and the Jarl's are
+the same creature on opposite oaths.
 
-## 3. Mission outline
+## 3. Campaign rules (proposed)
 
-Target playtimes are targets, unmeasured, like the Three Beacons figures.
+* Patron **Odin** is fixed. Thor or Tyr in **M3**; a second god (Freyja,
+  Heimdall or Hel, 25 Favor, needs the High Hall) in **M5**.
+* The Norse signature **Berserk Fury** is on; so is the **expanded content**
+  (Norse spells and skills, artifact sets, the arcana artifacts). Weekly events
+  and divine interventions stay off. *(The Three Beacons keeps all of them off.)*
+* Hero hiring is off; losing Hervor fails the attempt (as Alexios in Three Beacons).
+* Carryover is the Three Beacons policy: Hervor's level, XP (capped per
+  mission), skills, spellbook, spells, equipment and gods carry; army, wallet
+  and towns are replaced by each mission's war-band manifest.
+* Steps are played in order (each primary step `requires` the one before);
+  work done early completes the moment its step opens.
 
-### Mission 1 — *Barrow Light* (Restore) · target 15–20 min
+XP caps: M1 3,199 (L3) · M2 4,599 (L4) · M3 6,199 (L5) · M4 7,999 (L6) · M5
+9,999 (L7) · M6 12,199 (L8) · M7 none.
 
-* **Map:** Kaldvik on the fjord's west shore; a frozen ford; the hold's own
-  barrow; the **Rune Stone** on the headland (east).
-* **Goals:** raise Draugar from the hold's barrow (recruit 10), raise a
-  trusted guard (train 8 into Deathless Draugar), clear the frost wolves from
-  the ford, defeat the Rune Stone's barrow-guard and **re-cut the rune**
-  (activation: Gold + Stone + 1 Crystal).
-* **Optional:** a **creature camp** of Frost Wolves in the birch wood (recruit
-  at the normal price); a **map event** at a frozen longship (salvage Gold or
-  free its captive crew of 3 Draugar).
-* **Teaches:** recruiting and training (as M01), the Norse signature
-  *Berserk Fury* (a scripted early fight where a half-strength stack visibly
-  strikes harder), buying and learning a first spell at the Rune Circle.
-* **Story scenes:** Skeggi at the Rune Stone; the Grey Jarl's first voice when
-  the barrow-guard battle starts ("You carry what is mine"); Eydis on losses.
-* **Victory line (Eydis):** "The rune holds. For tonight, the dead in our hill
-  sleep. The others are walking north."
+## 4. Missions
 
-### Mission 2 — *The Valkyrie's Price* (Ally) · target 20–30 min
+| # | Mission | Map (template) | Primary steps, in order | New for the player |
+|---|---|---|---|---|
+| 1 | **Barrow Light** (Restore) · 15–20 min | Kaldvik's fjord shore, frozen river with one ford (20×14, `fjord`) | Recruit 10 Draugar → train 8 into Deathless → clear the frozen ford (8 Frost Wolves) → break the barrow-guard (14 Draugar, 4 Deathless) → re-cut the rune (300 Gold, 3 Stone, 1 Crystal) | Recruit/train, Berserk Fury, Rune Circle spells, first one-time choice (frozen longship) |
+| 2 | **The White Pack** (Hunt) · 20–25 min | Birkaby and the Varg-wood across a river (24×16, `tundra`) | Recruit 8 Frost Wolves → climb the Watch-hill → take the ice bridge (16 Draugar, 6 Deathless) → hunt the White Pack (wandering band: 6 Fenrir, 12 Frost Wolves) → re-cut the Varg-wood rune | Hunting a wandering band, lookouts, creature camp, a buy-or-learn event |
+| 3 | **The Valkyrie's Price** (Ally) · 25–30 min | Fjallhof, the fell-wall pass, the aerie and an ice bridge (26×18, `tundra`) | Break the ice-pass → free the Valkyrie aerie (5 Frost Trolls; it becomes a Valkyrie camp) → win the troll-oath (pay the troll-wife **or** beat Troll-Home) → Thor or Tyr → 2 Battle Valkyries → cut the high rune | God choice, covenant by bargain or force, guarded camp |
+| 4 | **Ice on the Sound** (Seek) · 25–30 min | Skarvik and the frozen sound with a fog-wall (28×18, `fjord`) | Recruit 3 Lindworms → take the ice-landing (20 Draugar, 8 Deathless) → light both way-cairns → the fog-wall parts → defeat the wyrm brood and read the Norns' Well | Patrol (Bone-Helm), two-relay gate, Norse shooters |
+| 5 | **The Jarl of Hvitstrand** (Contest) · 30–40 min | Ravnholt vs. Hvitstrand across the frozen Hvita (30×20, `tundra`) | Cross either ford → second god → take Hvitstrand (a full AI rival empire with a garrison) → break Ulfhild's oath-stone | A living rival empire, sieges, second god |
+| 6 | **The Giants' Refuge** (Bind) · 30–35 min | Jokulsby, the glacier wall, Hrimgard and the Glacier Gate (30×20, `tundra`) | Climb onto the glacier (either crossing) → break the ice-wardens → claim the Jotunn covenant → 2 Jotnar in the army → defeat Hrafn the Hollow → sound the giants' horn | Claimed covenant, giants, guard commander, wandering trolls |
+| 7 | **Oathbreaker's Hall** (Endure) · 35–45 min | Isafold, the plateau, the barrow-gate and the Jarl's mound (32×20, `tundra`) | Onto the plateau (either stair) → cut both stones → the barrow-gate opens → defeat the Grey Jarl → decide the sword's fate → seal the oath | Final battle, patrol, the last choice |
 
-* **Map:** the high valleys; a Valkyrie aerie held by frost trolls; an ice
-  bridge to the second Rune Stone.
-* **Goals:** build Hof II and **commit to Thor or Tyr** (20 Favor,
-  irreversible — mirrors Athena/Ares); free the aerie; earn the **Frost Troll
-  covenant**; cross the ice bridge with at least 2 Battle Valkyries in
-  Hervor's army; cut the second rune.
-* **The troll bargain (map event):** the troll chieftain offers the covenant
-  for a price (Gold + Wood) instead of a fight. Both routes give the same
-  covenant; the fight gives XP, the bargain saves troops. Neither route gets
-  an exclusive required resource (the Three Beacons rule).
-* **Optional:** wandering monster band (wolves) in the north valley; a
-  creature camp of Valkyries that refills weekly.
-* **Story scenes:** Skeggi on the god choice (two lines per god, acknowledging
-  it, as Ione does for Athena/Ares); the troll chieftain at the bargain;
-  Hervor at the aerie; Eydis on losses.
-* **Victory line (Skeggi):** "Two runes cut. The third is the Jarl's own. He
-  will not let you near it while he still has the dead to spend."
+Optional sites in every mission: one-time choices (frozen longship, hunter's
+lodge, troll-wife's hearth, grey wanderer, ship of nails, Andvari's pool, the
+ice-bound child), guarded caches and crags, creature camps and wandering bands.
 
-### Mission 3 — *Oathbreaker's Hall* (Endure) · target 25–35 min
+### The last choice and the epilogue
 
-* **Map:** the glacier plateau; two **rune-stones** (relays) north and south;
-  a sealed barrow-gate (opens when both are cut); the Grey Jarl's hall.
-* **Goals:** cut both rune-stones (either glacier crossing reaches both, as in
-  M03), open the barrow-gate, defeat the Grey Jarl, and **seal the oath** at
-  his mound (Gold + Crystal + Favor; completes the campaign).
-* **Hostile patrol:** a draugr patrol on the plateau (the existing
-  scenario-hostile patrol rules: one ordinary turn after the player's, no
-  sight through fog, stays in its region).
-* **Optional:** a Jotunn refuge for the **Jotunn covenant**; a Lindworm nest
-  for Crystal.
-* **Final battle:** Grey Jarl (level-5 Huscarl, scenario-defined build) with
-  1 Ancient Frost Troll, 2 Deathless Draugr stacks and Fenrir Wolves.
-  Existing creature statistics only.
-* **The last choice (map event at the mound, after the battle):**
-  *Return the sword* (the oath is renewed under a new keeper: winter ends, the
-  dead sleep) or *Break the sword* (the oath ends forever: winter ends, the
-  barrow-dead are free). Same reward either way; the choice selects the
-  epilogue lines. (Open question 3 — needs one small data addition: epilogue
-  lines conditioned on a mission flag.)
-* **Story scenes:** the Grey Jarl's threat before the final battle; his last
-  words after it; Eydis on losses; Skeggi at the gate.
+At the barrow-door (M7) Hervor **returns the sword** (the oath is renewed with
+her as its keeper) or **breaks it** (the oath ends forever; the barrow-dead are
+free). Both give the same reward and complete the campaign; the choice sets a
+mission flag that selects one of two epilogue endings
+(`CampaignDefinition.epilogueVariants`, played after the shared epilogue lines).
 
-### Epilogue
+### The artifacts tell the story
 
-Four to six lines in the dialogue window, two variants by the last choice.
-Example (*Return the sword*): Eydis — "The ice on the fjord broke this
-morning. The boats are already arguing about who goes first." Hervor — "Then
-the oath is mine now. Someone has to keep it."
+| Mission | Artifact | Why |
+|---|---|---|
+| M1 | Rune-marked Sword (Arms of the Einherjar) | The Grey Jarl's sword, recovered from under the rune-stone. |
+| M2 | Boar-crested Helm (optional lair) · Skis of Ullr (buy at the hunter's lodge) | The wolf-mother's hoard; the hunter's own skis. |
+| M3 | Shieldmaiden's Round Shield (Arms of the Einherjar) | The Valkyries' thanks for their aerie. |
+| M4 | Wanderer's Grey Cloak (optional) · Link of Brísingamen | Odin's cloak, if Hervor gives him her seat; the Norns' gift at the Well. |
+| M5 | Valkyrie's Horn (Arms of the Einherjar) · Andvari's Ring (optional, cursed) | Ulfhild's hall horn; the dwarf's ring in the warm pool. |
+| M6 | Mail of the Einherjar (Arms of the Einherjar) | Taken from Hrafn, who left the hall of the chosen. |
 
-## 4. Mechanics used (all exist in this build)
+By M7 Hervor can wear all four pieces of the **Arms of the Einherjar** (the
+headless journey reaches M7 with all four worn).
 
-| Mechanic | Where |
-|---|---|
-| Recruiting, training, one building per day | M1 |
-| Berserk Fury (Norse signature), Rune Circle spells, adventure spells | M1–M3 |
-| Thor / Tyr commitment (Hof II, 20 Favor) | M2 |
-| Covenants (Frost Troll, Jotunn) | M2–M3 |
-| Creature camps, one-time map events, wandering monsters | M1–M3 |
-| Relays + sealed gate, scenario-hostile patrol, commander battle | M3 |
-| Story scenes, dialogue window with Backlog, campaign epilogue | M1–M3 |
-| Carryover (hero XP/skills/spells/artifacts/gods; caps per mission) | as Three Beacons |
+## 5. Data features added for this campaign
 
-Not used unless approved: divine interventions, weekly events and the
-skirmish-only Norse skill/spells (Skaldic Lore, Berserkergang, Frost Breath)
-— campaigns keep their authored balance (open question 4).
+All generic vocabulary (no `if (id === …)` branches):
 
-## 5. Work needed once approved
+* Objective conditions `hero_defeated` (a hostile commander, wandering band or
+  rival hero of a definition) and `town_owned`; `player_has_minor_god` takes an
+  optional `count` (second god).
+* `MissionTownSetup.garrison` (a town's starting garrison; Hvitstrand's hall-guard).
+* `CampaignDefinition.epilogueVariants` + `campaignEpilogueLines()` (ending by flag).
+* Presentation biomes `tundra` and `fjord` (frosted terrain colors; `fjord` uses
+  water at the map edge). Existing soundscapes are reused (no new audio).
+* Five Norse enemy hero definitions (never hireable).
 
-* Three map templates (authored anchors + the existing generator), three
-  mission definitions, guard armies, objectives, help topics.
-* Story text: briefings, ~15 scenes, victory lines, two epilogue variants.
-* Portraits: Eydis, Skeggi, the Grey Jarl (placeholders first).
-* One small data feature: conditional epilogue lines (flag → lines).
-* Tests: campaign simulation to completion on both last choices; UI test
-  through mission 1.
+## 6. Verified (commands run)
 
-## 6. Open questions for the owner
+* `npx vitest run packages/campaign/test/winterOath.test.ts` — data checks, an
+  early-completion check, M5 rival set-up, M7 played directly to the
+  "sword returned" ending, and one headless journey through all seven missions
+  with carryover to the "sword broken" ending (auto-combat on both sides).
+* All seven templates generate valid maps on the golden seed (MAP-01..03 and
+  every GATE check pass).
 
-1. **Hero:** Hervor (Völva, spell-led) as proposed, or Brynhild (Huscarl,
-   melee-led)?
-2. **Title:** *The Winter Oath* — or another name?
-3. **Ending choice:** keep the two-epilogue last choice, or one fixed ending?
-4. **Skirmish-only content:** should the campaign use the Norse skill and
-   spells added for skirmish, or stay with core content only?
-5. **Length:** three missions (as proposed) or four (a separate Jotunn
-   mission between M2 and M3)?
-6. **Barrow-dead framing:** is the "dead answer whoever holds the oath" idea
-   acceptable for a pantheon whose tier 1 is the Draugr?
-7. **Campaign order:** playable after The Three Beacons only, or from the
-   start?
+Not verified: human playtime, difficulty for a human player, AI rival
+behaviour over a long M5 (the headless journey takes Hvitstrand on day 4, while
+Ulfhild's army is in the field).
+
+## 7. Open questions for the owner
+
+1. **Difficulty:** the headless journey wins every mission with moderate losses;
+   are the guard armies right for a human player?
+2. **Expanded content in a campaign:** keep the Norse spells/skills/sets on
+   (proposed), or keep the campaign on core content like The Three Beacons?
+3. **Campaign order:** playable from the start (as built) or only after The
+   Three Beacons?
+4. **Portraits and music:** Eydis, Skeggi, Svanhild, the troll-wife, Jökul and
+   the five enemy heroes use placeholder portraits; the missions reuse the
+   coast / high-pass / storm-plateau soundscapes.

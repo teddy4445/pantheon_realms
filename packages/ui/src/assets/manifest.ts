@@ -5,12 +5,13 @@
  * "creature.greek.tier3.upgraded.portrait"). Final art replaces placeholders by
  * adding/overriding manifest entries — no screen changes.
  *
- * Resolution order: final manifest -> UI art manifest (owner-supplied menu and
+ * Resolution order: final manifest (assets-runtime/ui/final-manifest.json) -> UI art manifest (owner-supplied menu and
  * interface art, assets-runtime/ui) -> placeholder manifest (cropped concept
  * references) -> procedural placeholder generated at runtime.
  */
 import placeholderManifest from '../../../../assets-runtime/placeholders/manifest.json';
 import uiArtManifest from '../../../../assets-runtime/ui/manifest.json';
+import finalArtManifest from '../../../../assets-runtime/ui/final-manifest.json';
 // Named imports keep only the fields the game reads in the start-up bundle.
 import { assets as heroAssets, clips as heroClips, ground_alignment as heroGround, suggested_crossfade_seconds as heroCrossfade } from '../../../../assets-runtime/heroes/animation_manifest.json';
 import { heroModelEntriesFromManifest, registerHeroModels, registerUnitModels, type MountedHeroModelEntry, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
@@ -30,8 +31,12 @@ interface ManifestFile {
 }
 
 const PLACEHOLDERS: ManifestFile['assets'] = { ...(placeholderManifest as ManifestFile).assets, ...(uiArtManifest as unknown as ManifestFile).assets };
-/** Final production assets are registered here as they are delivered. */
-const FINAL: Record<string, { file: string; provenance: string }> = {};
+/**
+ * Final production assets, registered as they are delivered: drop a PNG named by
+ * its asset ID into assets-source/icons/final/ and run `npm run icons:import`
+ * (writes assets-runtime/ui/final-manifest.json). See ICON_CATALOG.md.
+ */
+const FINAL: Record<string, { file: string; provenance: string }> = { ...(finalArtManifest as unknown as { assets: Record<string, { file: string; provenance: string }> }).assets };
 
 const cache = new Map<string, AssetRecord>();
 

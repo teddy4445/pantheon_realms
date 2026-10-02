@@ -29,7 +29,7 @@ import {
   type HexCoord,
   type MatchState, scenarioMission,
 } from '@pr/rules';
-import { TERRAIN_COLORS } from '@pr/presentation/core';
+import { biomeTerrainCss } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import type { AppStore } from '../app/store';
@@ -171,7 +171,7 @@ function Minimap({ catalog, state, playerId, onPick }: { catalog: ContentCatalog
         if (explored[i] !== 1) continue;
         const code = map.terrain[i] ?? 'p';
         const terrain = ({ p: 'plains', f: 'forest', r: 'rough', s: 'marsh', m: 'mountain', w: 'water' } as const)[code as 'p'] ?? 'plains';
-        ctx.fillStyle = TERRAIN_COLORS[terrain];
+        ctx.fillStyle = biomeTerrainCss(terrain, map.biome);
         const x = (q + r / 2) * cell;
         const y = r * cell * 0.87;
         ctx.fillRect(x, y, cell, cell);

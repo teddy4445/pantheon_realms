@@ -5,7 +5,9 @@
  * "Town Hall replaces Village Hall income" and "only the highest fortification
  * applies" are expressed as data instead of special cases.
  */
-import type { BuildingId, BuildingSlotId, CreatureFamilyId, CreatureId, PlayerId } from '../ids';
+import type { BuildingId, BuildingSlotId, CreatureFamilyId, CreatureId, PlayerId, SpellId } from '../ids';
+import { RngCursor, seedFromLabel } from '../core/rng';
+import { scopeAllowed } from './scenario';
 import { EMPTY_RESOURCES, addResources, type ResourceBundle } from '../core/resources';
 import { getBuilding, getFamily, getTownArchetype, type ContentCatalog } from '../definitions/catalog';
 import type { EffectDefinition } from '../definitions/logic';
@@ -127,6 +129,37 @@ export function townSpellLibraryTier(catalog: ContentCatalog, town: TownState): 
   let tier = 0;
   for (const e of townEffects(catalog, town)) if (e.type === 'spell_library') tier = Math.max(tier, e.maxTier);
   return tier;
+}
+
+/**
+ * The spells this town's Sanctum teaches (sanctum-access spells only; god spells come
+ * from eligibility): every spell of the town's own pantheon up to the library tier,
+ * plus, per tier, a fixed draw of the shared spells filling the tier's library size.
+ * The draw is a pure function of match, town and tier, so it never changes in a game.
+ */
+export function townLibrarySpells(catalog: ContentCatalog, state: Pick<MatchState, 'matchId' | 'scenario'>, town: TownState): SpellId[] {
+  const maxTier = townSpellLibraryTier(catalog, town);
+  const out: SpellId[] = [];
+  const sizes = catalog.rulesProfile.librarySpellsPerTier;
+  for (let tier = 1; tier <= maxTier; tier++) {
+    const candidates = Object.values(catalog.spells)
+      .filter((sp) => sp.tier === tier && sp.access === 'sanctum' && sp.implementationStatus === 'implemented' && scopeAllowed(state, sp.scope))
+      .sort((a, b) => (a.id < b.id ? -1 : 1));
+    const own = candidates.filter((sp) => sp.pantheonId === town.pantheonId).map((sp) => sp.id);
+    const shared = candidates.filter((sp) => !sp.pantheonId).map((sp) => sp.id);
+    const size = sizes[tier - 1] ?? sizes[sizes.length - 1] ?? 0;
+    const room = Math.max(0, size - own.length);
+    const picked: SpellId[] = [];
+    if (shared.length <= room) picked.push(...shared);
+    else {
+      const rng = new RngCursor(seedFromLabel(`library|${state.matchId}|${town.id}|${tier}`));
+      const pool = [...shared];
+      while (picked.length < room && pool.length > 0) picked.push(pool.splice(rng.nextInt(pool.length), 1)[0]!);
+      picked.sort();
+    }
+    out.push(...own, ...picked);
+  }
+  return out;
 }
 
 export function townHasEffect(catalog: ContentCatalog, town: TownState, type: EffectDefinition['type']): boolean {

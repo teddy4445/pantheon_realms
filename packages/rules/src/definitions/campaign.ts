@@ -42,13 +42,21 @@ export type ObjectiveCondition =
   | { readonly type: 'site_activated'; readonly siteId: SiteId }
   | { readonly type: 'site_visited'; readonly siteId: SiteId }
   | { readonly type: 'flag'; readonly flag: string }
-  | { readonly type: 'player_has_minor_god' }
+  /** The mission player is committed to at least `count` minor gods (default 1). */
+  | { readonly type: 'player_has_minor_god'; readonly count?: number }
   | {
       readonly type: 'hero_army_contains';
       readonly heroId: HeroId;
       readonly creatureId: CreatureId;
       readonly count: number;
     }
+  /**
+   * A non-player hero of this definition (a hostile commander, a wandering
+   * monster band or a rival hero) has been defeated or driven off.
+   */
+  | { readonly type: 'hero_defeated'; readonly heroDefinitionId: HeroDefinitionId }
+  /** The mission player owns this town (e.g. a rival's town taken by siege). */
+  | { readonly type: 'town_owned'; readonly townId: TownId }
   /** Completes only through an explicit ClaimObjective command once its prerequisites complete. */
   | { readonly type: 'claim'; readonly after: readonly ObjectiveId[] }
   | { readonly type: 'all'; readonly conditions: readonly ObjectiveCondition[] }
@@ -65,6 +73,13 @@ export interface ObjectiveDefinition {
   readonly condition: ObjectiveCondition;
   /** Objectives becoming active when this one completes. */
   readonly unlocks?: readonly ObjectiveId[];
+  /**
+   * Steps that must all be completed before this one opens (it starts locked).
+   * Work done early still counts: when the step opens and its condition already
+   * holds, it completes at once (owner decision 2026-10-01: missions are played
+   * in order, but nothing the player achieved ahead of time is lost).
+   */
+  readonly requires?: readonly ObjectiveId[];
   /** Granted once on completion (e.g. claimed covenant). */
   readonly reward?: RewardDefinition;
   readonly markerSiteId?: SiteId;
@@ -82,6 +97,8 @@ export interface MissionTownSetup {
   readonly buildings: readonly BuildingId[];
   readonly population: Readonly<Record<CreatureFamilyId, number>>;
   readonly covenants: readonly CreatureFamilyId[];
+  /** Starting garrison (default none), e.g. a rival's hall guard. */
+  readonly garrison?: readonly StackSpec[];
 }
 
 export interface MissionHeroSetup {
@@ -184,6 +201,8 @@ export interface MissionDefinition {
   readonly victoryCondition?: VictoryConditionDefinition;
   /** Optional features (default: all off). */
   readonly features?: Partial<ScenarioFeatures>;
+  /** Every player starts with the whole map explored (random-map "revealed" option); heroes stay hidden by vision. */
+  readonly startExplored?: boolean;
   readonly debriefPolicy: readonly string[];
   readonly player: {
     readonly playerId: PlayerId;
@@ -234,6 +253,18 @@ export interface CampaignDefinition {
   readonly thumbnailAssetId: AssetId;
   /** Closing scene after the final mission's debrief. */
   readonly epilogue?: readonly DialogueLine[];
+  /**
+   * Extra closing lines chosen by a flag of the final mission (e.g. the last
+   * choice in The Winter Oath). The first variant whose flag is set is played
+   * after `epilogue`; story only, never a rule.
+   */
+  readonly epilogueVariants?: readonly { readonly flag: string; readonly lines: readonly DialogueLine[] }[];
+}
+
+/** The campaign's closing lines for the final mission's flags (common lines, then the matching variant). */
+export function campaignEpilogueLines(camp: CampaignDefinition, flags: Readonly<Record<string, boolean | undefined>>): readonly DialogueLine[] {
+  const variant = camp.epilogueVariants?.find((v) => flags[v.flag]);
+  return [...(camp.epilogue ?? []), ...(variant?.lines ?? [])];
 }
 
 /** Non-campaign scenario (skirmish). */

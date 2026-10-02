@@ -14,5 +14,6 @@ export * from './animations';
 export * from './adventure';
 export * from './battle';
 export * from './viewer';
+export * from './heroFigure';
 export * from './models';
 export * from './mountedHeroes';

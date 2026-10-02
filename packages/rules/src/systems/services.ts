@@ -12,6 +12,7 @@ import { hexEquals } from '../core/hex';
 import { canAfford, resources, type ResourceBundle } from '../core/resources';
 import { RngCursor, seedFromLabel } from '../core/rng';
 import { getArtifact, getCreature, type ContentCatalog } from '../definitions/catalog';
+import { freeEquipSlot } from '../definitions/pantheons';
 import type { ArmyRef, MatchState, TownState } from '../state/match';
 import { resolveArmy } from '../resolvers/army';
 import { offeringRule } from '../resolvers/effects';
@@ -209,7 +210,7 @@ export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState
   const hero = state.heroes[heroId];
   if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return fail('not_owner', 'Not your hero');
   if (!hexEquals(hero.position, town.coord)) return fail('not_present', `${hero.name} must be in ${town.name}`);
-  if (hero.equipment[def.slot] && hero.backpack.length >= catalog.rulesProfile.backpackCapacity) return fail('no_capacity', `${hero.name}'s backpack is full`);
+  if (!freeEquipSlot(hero.equipment, def.slot) && hero.backpack.length >= catalog.rulesProfile.backpackCapacity) return fail('no_capacity', `${hero.name}'s backpack is full`);
   const wallet = state.players[playerId]?.wallet ?? resources();
   if (!canAfford(wallet, cost)) return fail('insufficient_resources', 'Not enough resources');
   return { legal: true, code: null, reason: null, artifactId, cost };
@@ -224,8 +225,9 @@ export function commitArtifactPurchase(tx: Tx, townId: TownId, heroId: HeroId, i
   spend(tx, tx.actorId, q.cost, `Bought ${def.name}`);
   town.merchant!.stock[index] = null;
   const instance = { instanceId: tx.nextId('artifact'), artifactId: q.artifactId };
-  if (!hero.equipment[def.slot]) {
-    hero.equipment[def.slot] = instance;
+  const free = freeEquipSlot(hero.equipment, def.slot);
+  if (free) {
+    hero.equipment[free] = instance;
     tx.emit({ kind: 'ArtifactGranted', heroId, artifactId: q.artifactId, location: 'equipped' });
   } else {
     hero.backpack.push(instance);

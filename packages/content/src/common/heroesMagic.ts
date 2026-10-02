@@ -173,7 +173,7 @@ export const ARTIFACTS: readonly ArtifactDefinition[] = [
   {
     id: 'bronze_standard',
     name: 'Bronze Standard',
-    slot: 'relic',
+    slot: 'misc',
     effects: [{ type: 'morale', amount: 1 }],
     summary: '+1 morale for the army.',
     iconAssetId: 'icon.artifact.bronze_standard',
@@ -184,7 +184,7 @@ export const ARTIFACTS: readonly ArtifactDefinition[] = [
   {
     id: 'winged_sandals',
     name: 'Winged Sandals',
-    slot: 'mount',
+    slot: 'feet',
     effects: [{ type: 'movement_percent', percent: 10 }],
     summary: '+10% daily land movement.',
     iconAssetId: 'icon.artifact.winged_sandals',
@@ -201,7 +201,7 @@ export const ARTIFACTS: readonly ArtifactDefinition[] = [
       ['scale_hauberk', 'Scale Hauberk', 'armor', [{ type: 'commander_attribute', attribute: 'defense', amount: 2 }], '+2 commander Defense.', { gold: 3500, crystal: 1 }],
       ['seers_circlet', 'Seer’s Circlet', 'head', [{ type: 'commander_attribute', attribute: 'power', amount: 1 }], '+1 commander Spell Power.', { gold: 1500 }],
       ['crown_of_counsel', 'Crown of Counsel', 'head', [{ type: 'commander_attribute', attribute: 'power', amount: 1 }, { type: 'commander_attribute', attribute: 'knowledge', amount: 1 }], '+1 commander Spell Power and +1 Knowledge.', { gold: 3000, crystal: 1 }],
-      ['knucklebone_charm', 'Knucklebone Charm', 'relic', [{ type: 'luck', amount: 1 }], '+1 Luck for the army.', { gold: 2000 }],
+      ['knucklebone_charm', 'Knucklebone Charm', 'misc', [{ type: 'luck', amount: 1 }], '+1 Luck for the army.', { gold: 2000 }],
       ['band_of_insight', 'Band of Insight', 'ring', [{ type: 'commander_attribute', attribute: 'knowledge', amount: 1 }], '+1 commander Knowledge.', { gold: 1500 }],
       ['watchers_ring', 'Watcher’s Ring', 'ring', [{ type: 'vision_radius', amount: 2 }], '+2 hexes of adventure vision.', { gold: 1200 }],
       ['swift_saddle', 'Swift Saddle', 'mount', [{ type: 'movement_percent', percent: 15 }], '+15% daily land movement.', { gold: 3000, crystal: 1 }],

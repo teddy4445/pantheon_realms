@@ -165,7 +165,8 @@ const PATHS: Record<IconName, JSX.Element> = {
 };
 
 /** Illustrative icons drawn from the UI art manifest (asset IDs, never file paths). */
-const ICON_ART: Partial<Record<IconName, string>> = {
+/** Icon art by name (asset IDs); names not listed draw their SVG glyph. Read by the icon catalog tool. */
+export const ICON_ART: Partial<Record<IconName, string>> = {
   gold: 'icon.res.gold',
   wood: 'icon.res.wood',
   stone: 'icon.res.stone',
@@ -205,10 +206,13 @@ const ICON_ART: Partial<Record<IconName, string>> = {
   quit: 'icon.menu.quit',
 };
 
+/** Every icon name, in declaration order (the icon catalog tool lists them). */
+export const ICON_NAMES = Object.keys(PATHS) as IconName[];
+
 /** URL of the icon art for a name, or null when the icon is an SVG glyph. */
 export function iconArt(name: IconName): string | null {
-  const id = ICON_ART[name];
-  return id ? resolveAsset(id).url : null;
+  // Names without art in the pack take delivered final art under `icon.ui.<name>` (ICON_CATALOG.md).
+  return resolveAsset(ICON_ART[name] ?? `icon.ui.${name}`).url;
 }
 
 export interface IconProps extends SVGProps<SVGSVGElement> {

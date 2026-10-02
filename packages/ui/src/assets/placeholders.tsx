@@ -296,14 +296,14 @@ export function EmblemArt({ pantheonId, accent }: { pantheonId: string; accent: 
 
 /** Stylized map thumbnail for missions (placeholder for rendered mission art). */
 export function MissionThumbArt({ seed, biome, beacons }: { seed: string; biome: string; beacons: number }) {
-  const hue = biome === 'coast' ? 200 : biome === 'high_pass' ? 215 : biome === 'storm_plateau' ? 250 : 120;
+  const hue = biome === 'coast' ? 200 : biome === 'high_pass' ? 215 : biome === 'storm_plateau' ? 250 : biome === 'tundra' || biome === 'fjord' ? 195 : 120;
   const h = hashHue(seed);
   return (
     <svg viewBox="0 0 160 90" role="img" aria-label="Mission map thumbnail (placeholder)" preserveAspectRatio="xMidYMid slice">
       <rect width="160" height="90" fill={`hsl(${hue} 45% 18%)`} />
       <path d={`M0 ${50 + (h % 10)} C40 ${30 + (h % 15)} 80 ${70 - (h % 12)} 160 ${40 + (h % 20)} V90 H0z`} fill={`hsl(${hue - 90} 30% 30%)`} />
       <path d="M0 70 C50 60 90 80 160 64 V90 H0z" fill={`hsl(${hue - 80} 25% 24%)`} />
-      {biome !== 'coast' ? <path d="M70 0 L80 90 L90 0z" fill="#3b3f47" opacity="0.8" /> : <path d="M78 0 L82 90 L88 0z" fill={`hsl(${hue} 60% 40%)`} opacity="0.9" />}
+      {biome !== 'coast' && biome !== 'fjord' ? <path d="M70 0 L80 90 L90 0z" fill="#3b3f47" opacity="0.8" /> : <path d="M78 0 L82 90 L88 0z" fill={`hsl(${hue} 60% 40%)`} opacity="0.9" />}
       <path d="M20 60 Q60 50 80 55 T140 40" stroke="#d8b56c" strokeWidth="2" fill="none" strokeDasharray="4 3" />
       {Array.from({ length: beacons }, (_, i) => (
         <g key={i} transform={`translate(${130 - i * 12} ${30 + i * 4})`}>

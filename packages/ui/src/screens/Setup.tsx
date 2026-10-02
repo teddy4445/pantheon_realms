@@ -47,7 +47,7 @@ export function GameModeScreen() {
     store.goto('scenario-select');
   };
   const modes = [
-    { id: 'campaign' as const, icon: 'campaign' as const, title: 'Campaign', text: 'Story missions with a persistent hero. The Three Beacons is playable: three Greek missions.', status: 'Playable' },
+    { id: 'campaign' as const, icon: 'campaign' as const, title: 'Campaign', text: 'Story missions with a persistent hero: The Three Beacons (three Greek missions) and The Winter Oath (seven Norse missions).', status: 'Playable' },
     { id: 'skirmish' as const, icon: 'skirmish' as const, title: 'Skirmish', text: 'An authored map against the AI or a second player on this computer (hot-seat). All six pantheons, three difficulties.', status: 'Playable' },
     { id: 'random' as const, icon: 'map' as const, title: 'Random Map', text: 'A new fair map every time: two to four empires, AI or hot-seat seats, and a choice of victory condition.', status: 'Playable' },
   ];

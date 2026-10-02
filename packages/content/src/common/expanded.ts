@@ -185,17 +185,17 @@ const piece = (
 
 export const SET_ARTIFACTS: readonly ArtifactDefinition[] = [
   piece('phalanx_spear', 'Phalanx Spear', 'weapon', [{ type: 'commander_attribute', attribute: 'attack', amount: 2 }], '+2 commander Attack. Panoply of the Phalanx.', 'panoply_of_the_phalanx', { gold: 2500 }),
-  piece('phalanx_aspis', 'Phalanx Aspis', 'armor', [{ type: 'commander_attribute', attribute: 'defense', amount: 2 }], '+2 commander Defense. Panoply of the Phalanx.', 'panoply_of_the_phalanx', { gold: 2500 }),
+  piece('phalanx_aspis', 'Phalanx Aspis', 'shield', [{ type: 'commander_attribute', attribute: 'defense', amount: 2 }], '+2 commander Defense. Panoply of the Phalanx.', 'panoply_of_the_phalanx', { gold: 2500 }),
   piece('phalanx_helm', 'Crested Helm', 'head', [{ type: 'commander_attribute', attribute: 'defense', amount: 1 }], '+1 commander Defense. Panoply of the Phalanx.', 'panoply_of_the_phalanx', { gold: 1800 }),
   piece('sun_diadem', 'Sun Diadem', 'head', [{ type: 'commander_attribute', attribute: 'power', amount: 2 }], '+2 commander Spell Power. Regalia of the Sun King.', 'regalia_of_the_sun_king', { gold: 3000, crystal: 1 }),
   piece('sun_scepter', 'Sun Scepter', 'weapon', [{ type: 'commander_attribute', attribute: 'power', amount: 1 }, { type: 'commander_attribute', attribute: 'knowledge', amount: 1 }], '+1 commander Spell Power and +1 Knowledge. Regalia of the Sun King.', 'regalia_of_the_sun_king', { gold: 3000, crystal: 1 }),
   piece('sun_signet', 'Sun Signet', 'ring', [{ type: 'commander_attribute', attribute: 'knowledge', amount: 2 }], '+2 commander Knowledge. Regalia of the Sun King.', 'regalia_of_the_sun_king', { gold: 2500 }),
-  piece('wayfarer_boots', 'Wayfarer’s Boots', 'mount', [{ type: 'movement_percent', percent: 10 }], '+10% daily land movement. Wayfarer’s Kit.', 'wayfarers_kit', { gold: 2000 }),
-  piece('wayfarer_cloak', 'Wayfarer’s Cloak', 'armor', [{ type: 'commander_attribute', attribute: 'defense', amount: 1 }, { type: 'vision_radius', amount: 1 }], '+1 commander Defense and +1 hex of vision. Wayfarer’s Kit.', 'wayfarers_kit', { gold: 2000 }),
-  piece('wayfarer_compass', 'Star Compass', 'relic', [{ type: 'vision_radius', amount: 2 }], '+2 hexes of adventure vision. Wayfarer’s Kit.', 'wayfarers_kit', { gold: 1800 }),
+  piece('wayfarer_boots', 'Wayfarer’s Boots', 'feet', [{ type: 'movement_percent', percent: 10 }], '+10% daily land movement. Wayfarer’s Kit.', 'wayfarers_kit', { gold: 2000 }),
+  piece('wayfarer_cloak', 'Wayfarer’s Cloak', 'cape', [{ type: 'commander_attribute', attribute: 'defense', amount: 1 }, { type: 'vision_radius', amount: 1 }], '+1 commander Defense and +1 hex of vision. Wayfarer’s Kit.', 'wayfarers_kit', { gold: 2000 }),
+  piece('wayfarer_compass', 'Star Compass', 'misc', [{ type: 'vision_radius', amount: 2 }], '+2 hexes of adventure vision. Wayfarer’s Kit.', 'wayfarers_kit', { gold: 1800 }),
   piece('champion_blade', 'Champion’s Blade', 'weapon', [{ type: 'commander_attribute', attribute: 'attack', amount: 2 }], '+2 commander Attack. Relics of the Fallen Champion.', 'relics_of_the_fallen_champion', { gold: 3000 }),
-  piece('champion_torc', 'Champion’s Torc', 'ring', [{ type: 'luck', amount: 1 }], '+1 Luck for the army. Relics of the Fallen Champion.', 'relics_of_the_fallen_champion', { gold: 2500 }),
-  piece('champion_banner', 'Champion’s Banner', 'relic', [{ type: 'morale', amount: 1 }], '+1 morale for the army. Relics of the Fallen Champion.', 'relics_of_the_fallen_champion', { gold: 2500 }),
+  piece('champion_torc', 'Champion’s Torc', 'neck', [{ type: 'luck', amount: 1 }], '+1 Luck for the army. Relics of the Fallen Champion.', 'relics_of_the_fallen_champion', { gold: 2500 }),
+  piece('champion_banner', 'Champion’s Banner', 'misc', [{ type: 'morale', amount: 1 }], '+1 morale for the army. Relics of the Fallen Champion.', 'relics_of_the_fallen_champion', { gold: 2500 }),
 ];
 
 export const ARTIFACT_SETS: readonly ArtifactSetDefinition[] = [

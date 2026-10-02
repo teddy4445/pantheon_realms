@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import {
   abilityRules,
   armyStacks,
+  campaignEpilogueLines,
   hexEquals,
   missionObjectiveDefs,
   missionSite,
@@ -31,6 +32,7 @@ import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { DialogueLines } from '../screens/Journal';
 import { guardStrength, heroStrength, relativeTime, siegeStrength, threatLabel } from '../app/view';
 import { CampDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, ShortcutsDialog } from './WorldDialogs';
+import { SpellbookDialog } from './Spellbook';
 
 // ---------------------------------------------------------------------------
 
@@ -374,6 +376,8 @@ function DebriefDialog({ final }: { final: boolean }) {
   const record = campaign?.completions.find((c) => c.missionId === mission.id);
   const next = session.hasNextMission();
   const nextMission = next && campaign ? catalog.missions[catalog.campaigns[campaign.campaignId]!.missionIds[mission.order] ?? ''] : undefined;
+  const campDef = campaign ? catalog.campaigns[campaign.campaignId] : undefined;
+  const epilogue = campDef ? campaignEpilogueLines(campDef, state.mission.flags) : [];
   return (
     <Modal
       title={final ? 'Campaign complete' : state.outcome.status === 'victory' ? `Victory — ${mission.name}` : mission.name}
@@ -455,10 +459,10 @@ function DebriefDialog({ final }: { final: boolean }) {
           </ul>
         </>
       ) : null}
-      {final && campaign && catalog.campaigns[campaign.campaignId]?.epilogue?.length ? (
+      {final && epilogue.length ? (
         <>
           <SectionTitle>Epilogue</SectionTitle>
-          <DialogueLines lines={catalog.campaigns[campaign.campaignId]!.epilogue!} />
+          <DialogueLines lines={epilogue} />
         </>
       ) : null}
       {final ? (
@@ -845,6 +849,8 @@ export function OverlayLayer() {
       return store.session ? <ActivateDialog heroId={top.heroId} siteId={top.siteId} /> : null;
     case 'stack-info':
       return <StackInfoDialog creatureId={top.creatureId} count={top.count} />;
+    case 'spellbook':
+      return store.session ? <SpellbookDialog heroId={top.heroId} /> : null;
     case 'handoff':
       return store.session ? <HandoffDialog playerId={top.playerId} /> : null;
     case 'camp':

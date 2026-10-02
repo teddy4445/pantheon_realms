@@ -288,6 +288,7 @@ function buildMissionMatch(
       buildings: setup.buildings,
       population: setup.population,
       covenants: setup.covenants,
+      ...(setup.garrison ? { garrison: setup.garrison } : {}),
     });
   };
   addTown(p.town, p.playerId);
@@ -389,7 +390,8 @@ function buildMissionMatch(
     heroes,
     towns,
     world: { map: gen.map, sites },
-    fog: Object.fromEntries(playerOrder.map((id) => [id, { explored: new Array(gen.map.width * gen.map.height).fill(0) }])),
+    // Revealed-map option (random maps): terrain and sites start explored; heroes stay hidden by vision.
+    fog: Object.fromEntries(playerOrder.map((id) => [id, { explored: new Array(gen.map.width * gen.map.height).fill(mission.startExplored ? 1 : 0) }])),
     mission: { missionId: mission.id, campaignId: mission.campaignId, objectives, flags, counters: {}, revealedSiteIds: [] },
     battle: null,
     pendingDecisions: [],

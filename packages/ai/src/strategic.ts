@@ -435,7 +435,14 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         if (near.length === 0) return false;
         const visitor = strategic.find((h) => hexEquals(h.position, t.coord));
         if (!visitor) return true;
-        const mine = heroStrength(catalog, belief, visitor);
+        // Judge the sally with the garrison folded into the visitor (it is moved into the
+        // hero below when the town is not held). Two empires used to freeze for the rest
+        // of a random map: each hero camped beside the other's town, each defender stayed
+        // inside, and the garrisons grew while neither side attacked.
+        const garrison: StackSpec[] = t.garrison.slots.filter((x): x is NonNullable<typeof x> => !!x && x.count > 0).map((x) => ({ creatureId: x.creatureId, count: x.count }));
+        const eff = effectiveAttributes(catalog, belief, visitor);
+        const own: StackSpec[] = visitor.army.slots.filter((x): x is NonNullable<typeof x> => !!x).map((x) => ({ creatureId: x.creatureId, count: x.count }));
+        const mine = armyStrength(catalog, [...own, ...garrison], { attack: eff.attack.total, defense: eff.defense.total });
         return near.some((e) => heroStrength(catalog, belief, e) * aiPersonality(catalog, belief).heroAttackMargin > mine);
       })
       .map((t) => t.id),

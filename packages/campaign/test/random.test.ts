@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { buildCatalog, validateGeneratedMission } from '@pr/content';
 import { runAITurn } from '@pr/ai';
 import { axialDistance, contenderIds, ensureStats, matchScore, processCommand, type GameCommand, type HexCoord, type MatchState } from '@pr/rules';
-import { createGeneratedMatch, createRandomSkirmish, type SkirmishGenOptions, type SkirmishMapSize } from '../src';
+import { createGeneratedMatch, createRandomSkirmish, SKIRMISH_MAP_TYPES, type SkirmishGenOptions, type SkirmishMapSize } from '../src';
 
 const catalog = buildCatalog();
 
@@ -91,6 +91,79 @@ describe('random skirmish generator', () => {
   it('refuses four empires on a small map and fewer than two empires', () => {
     expect(() => createRandomSkirmish(catalog, opts(4, 'small', 1))).toThrow(/medium or large/);
     expect(() => createRandomSkirmish(catalog, { ...opts(2, 'small', 1), seats: seats(['greek']) })).toThrow(/2 to 4/);
+  });
+});
+
+describe('random map types and settings (generator 0.2)', () => {
+  const armyTotal = (g: ReturnType<typeof createRandomSkirmish>) =>
+    g.mission.sites.reduce((n, site) => n + (site.guard?.army.reduce((m, a) => m + a.count, 0) ?? 0), 0);
+
+  for (const t of SKIRMISH_MAP_TYPES) {
+    it(`${t.label}: fair, valid maps for two, three and four empires`, () => {
+      for (const [n, size, seed] of [
+        [2, 'small', 3],
+        [3, 'medium', 11],
+        [4, 'large', 29],
+      ] as const) {
+        const g = createRandomSkirmish(catalog, opts(n, size, seed, { mapType: t.id }));
+        for (const c of g.checks) expect(c.pass, `${t.id} ${n}/${size}: ${c.id}: ${c.detail}`).toBe(true);
+        expect(validateGeneratedMission(catalog, g.mission).issues).toEqual([]);
+        expect(g.mission.sites.filter((s) => s.kind.type === 'town')).toHaveLength(n);
+      }
+    });
+  }
+
+  it('highlands and crossroads keep the center behind guarded openings (SKM-6)', () => {
+    for (const mapType of ['highlands', 'crossroads'] as const) {
+      const g = createRandomSkirmish(catalog, opts(2, 'medium', 8, { mapType }));
+      const skm6 = g.checks.find((c) => c.id === 'SKM-6');
+      expect(skm6?.pass, skm6?.detail).toBe(true);
+      expect(g.mission.sites.some((s) => s.kind.type === 'crossing' && !!s.guard)).toBe(true);
+    }
+  });
+
+  it('guard strength scales every guard; treasure changes the sites; wealth scales the wallets', () => {
+    const base = { mapType: 'continental' as const };
+    const weak = armyTotal(createRandomSkirmish(catalog, opts(2, 'medium', 77, { ...base, guards: 'weak' })));
+    const normal = armyTotal(createRandomSkirmish(catalog, opts(2, 'medium', 77, base)));
+    const strong = armyTotal(createRandomSkirmish(catalog, opts(2, 'medium', 77, { ...base, guards: 'strong' })));
+    expect(weak).toBeLessThan(normal);
+    expect(strong).toBeGreaterThan(normal);
+
+    const keys = (o: Partial<SkirmishGenOptions>) => new Set(createRandomSkirmish(catalog, opts(2, 'medium', 77, o)).mission.sites.map((s) => s.id.replace(/_\d+$/, '')));
+    const scarce = keys({ treasure: 'scarce' });
+    const rich = keys({ treasure: 'rich' });
+    expect(scarce.has('trinket')).toBe(false);
+    expect(keys({}).has('trinket')).toBe(true);
+    expect(rich.has('vault')).toBe(true);
+    expect(rich.has('gold_small')).toBe(true);
+
+    const gold = (w: 'low' | 'normal' | 'high') => createRandomSkirmish(catalog, opts(2, 'small', 5, { startWealth: w })).mission.player.wallet.gold ?? 0;
+    expect(gold('low')).toBe(gold('normal') / 2);
+    expect(gold('high')).toBe(gold('normal') * 2);
+  });
+
+  it('sparse roads carve fewer roads; a revealed map starts explored; settings change the map id', () => {
+    const full = createRandomSkirmish(catalog, opts(2, 'medium', 61));
+    const sparse = createRandomSkirmish(catalog, opts(2, 'medium', 61, { roads: 'sparse' }));
+    expect(sparse.map.roads.length).toBeLessThan(full.map.roads.length);
+    expect(sparse.mission.id).not.toBe(full.mission.id);
+
+    const shown = createRandomSkirmish(catalog, opts(2, 'small', 61, { revealMap: true }));
+    expect(shown.mission.startExplored).toBe(true);
+    const { match } = createGeneratedMatch(catalog, shown, { matchId: 'test:revealed' });
+    expect(match.fog.player!.explored.every((x) => x === 1)).toBe(true);
+    const hidden = createGeneratedMatch(catalog, full, { matchId: 'test:hidden' }).match;
+    expect(hidden.fog.player!.explored.some((x) => x === 0)).toBe(true);
+  });
+
+  it('huge maps take four empires and stay deterministic per setting', () => {
+    const o = opts(4, 'huge', 123, { mapType: 'wild_forest', guards: 'strong', treasure: 'rich' });
+    const a = createRandomSkirmish(catalog, o);
+    const b = createRandomSkirmish(catalog, o);
+    expect(JSON.stringify(a.map)).toBe(JSON.stringify(b.map));
+    expect(JSON.stringify(a.mission)).toBe(JSON.stringify(b.mission));
+    for (const c of a.checks) expect(c.pass, `${c.id}: ${c.detail}`).toBe(true);
   });
 });
 

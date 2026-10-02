@@ -25,7 +25,7 @@ import type {
 import type { BattleCell, HexCoord } from '../core/hex';
 import type { ResourceKey } from '../core/resources';
 import type { ArmyRef } from '../state/match';
-import type { ArtifactSlot } from '../definitions/pantheons';
+import type { EquipSlot } from '../definitions/pantheons';
 
 export type RecruitDestination = { kind: 'garrison' } | { kind: 'hero'; heroId: HeroId };
 
@@ -49,8 +49,8 @@ export type CommandPayload =
   | { kind: 'HireHero'; townId: TownId; heroDefinitionId: HeroDefinitionId }
   | { kind: 'TradeResources'; townId: TownId; sell: ResourceKey; buy: ResourceKey; amount: number }
   | { kind: 'ActivateSite'; heroId: HeroId; siteId: SiteId }
-  | { kind: 'EquipArtifact'; heroId: HeroId; instanceId: ArtifactInstanceId }
-  | { kind: 'UnequipArtifact'; heroId: HeroId; slot: ArtifactSlot }
+  | { kind: 'EquipArtifact'; heroId: HeroId; instanceId: ArtifactInstanceId; slot?: EquipSlot }
+  | { kind: 'UnequipArtifact'; heroId: HeroId; slot: EquipSlot }
   | { kind: 'ChooseLevelUp'; decisionId: DecisionId; offerIndex: number | null }
   | { kind: 'CastAdventureSpell'; heroId: HeroId; spellId: SpellId; target: HexCoord }
   // --- Town services (proposed this build) ---

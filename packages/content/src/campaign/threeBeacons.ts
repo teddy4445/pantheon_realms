@@ -341,14 +341,20 @@ const M01: MissionDefinition = {
 // M02 — Wings over the Pass
 // ---------------------------------------------------------------------------
 
+/**
+ * Played in order (owner decision 2026-10-01): pass → nest → covenant → god →
+ * Windcrest Griffins → beacon. The ridge (mountain column q = 13) is solid except
+ * the guarded pass, so the far side cannot be reached first; a god chosen or
+ * Griffins raised ahead of their step count as soon as that step opens.
+ */
 const M02_OBJECTIVES: ObjectiveDefinition[] = [
   { id: 'm02_watchtower', title: 'The Old Watchtower (optional)', description: 'Visit the Old Watchtower to learn where the Griffin nesting ground lies.', category: 'optional', initialStatus: 'active', condition: { type: 'site_visited', siteId: 'm02_watchtower' }, markerSiteId: 'm02_watchtower' },
   { id: 'm02_pass_guard', title: 'Break the pass', description: 'Defeat the 10 Hoplites and 6 Peltasts holding the ridge pass.', category: 'primary', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm02_pass_guard' }, markerSiteId: 'm02_pass_guard' },
-  { id: 'm02_nest_guard', title: 'Free the nesting ground', description: 'Defeat the raiders (4 Peltasts, 2 Cavalry) occupying the Griffin nesting ground.', category: 'primary', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm02_nest_guard' }, markerSiteId: 'm02_nest_guard' },
+  { id: 'm02_nest_guard', title: 'Free the nesting ground', description: 'Defeat the raiders (4 Peltasts, 2 Cavalry) occupying the Griffin nesting ground.', category: 'primary', initialStatus: 'locked', requires: ['m02_pass_guard'], condition: { type: 'site_cleared', siteId: 'm02_nest_guard' }, markerSiteId: 'm02_nest_guard' },
   { id: 'm02_claim_covenant', title: 'Claim the Griffin covenant', description: 'Claim the freed nest’s covenant in the journal. It can then be assigned to Passhaven.', category: 'primary', initialStatus: 'locked', condition: { type: 'claim', after: ['m02_nest_guard'] }, reward: { entitlementIds: ['covenant.griffin.m02'] } },
-  { id: 'm02_pantheon', title: 'Choose a patron’s ally', description: 'Build Temple II and commit to Athena or Ares (20 Favor, irreversible).', category: 'primary', initialStatus: 'active', condition: { type: 'player_has_minor_god' }, hint: 'Open the Pantheon screen once Temple II stands in Passhaven.' },
-  { id: 'm02_windcrest', title: 'Wings for the road', description: 'Assign the Griffin covenant, build the Aerie and Windcrest Aerie, and have at least 2 Windcrest Griffins in Alexios’s army.', category: 'primary', initialStatus: 'active', condition: { type: 'hero_army_contains', heroId: 'alexios', creatureId: 'windcrest_griffin', count: 2 }, live: true, hint: 'Windcrest Griffins must be recruited or trained in Passhaven with Alexios present.' },
-  { id: 'm02_restore', title: 'Light the second beacon', description: 'At the second beacon, with a god chosen and Windcrest Griffins in the army, pay 250 Gold and 1 Crystal.', category: 'primary', initialStatus: 'active', condition: { type: 'site_activated', siteId: 'm02_beacon' }, markerSiteId: 'm02_beacon' },
+  { id: 'm02_pantheon', title: 'Choose a patron’s ally', description: 'Build Temple II and commit to Athena or Ares (20 Favor, irreversible).', category: 'primary', initialStatus: 'locked', requires: ['m02_claim_covenant'], condition: { type: 'player_has_minor_god' }, hint: 'Open the Pantheon screen once Temple II stands in Passhaven. A god chosen earlier counts as soon as this step opens.' },
+  { id: 'm02_windcrest', title: 'Wings for the road', description: 'Assign the Griffin covenant, build the Aerie and Windcrest Aerie, and have at least 2 Windcrest Griffins in Alexios’s army.', category: 'primary', initialStatus: 'locked', requires: ['m02_pantheon'], condition: { type: 'hero_army_contains', heroId: 'alexios', creatureId: 'windcrest_griffin', count: 2 }, live: true, hint: 'Windcrest Griffins must be recruited or trained in Passhaven with Alexios present.' },
+  { id: 'm02_restore', title: 'Light the second beacon', description: 'At the second beacon, with a god chosen and Windcrest Griffins in the army, pay 250 Gold and 1 Crystal.', category: 'primary', initialStatus: 'locked', requires: ['m02_windcrest'], condition: { type: 'site_activated', siteId: 'm02_beacon' }, markerSiteId: 'm02_beacon' },
   { id: 'm02_sentinel_cache', title: 'Sentinel cache (optional)', description: 'Defeat the 3 Centaur Sentinels for 750 Gold and 5 Wood.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm02_sentinel_cache' }, markerSiteId: 'm02_sentinel_cache' },
 ];
 
@@ -831,21 +837,5 @@ export const THREE_BEACONS: CampaignDefinition = {
   ],
 };
 
-export const COMING_SOON_CAMPAIGNS: readonly CampaignDefinition[] = [
-  {
-    // Proposed this build: an outline only (CAMPAIGN_2_NORSE_OUTLINE.md), awaiting the owner's approval.
-    id: 'winter_oath',
-    name: 'The Winter Oath',
-    tagline: 'Outline — awaiting approval',
-    summary:
-      'Proposed Norse campaign: the winter does not end, the barrows above Kaldvik have opened, and the seeress Hervor must bind an oath she once broke. Three missions are outlined; none are built. Not available in this build.',
-    pantheonId: 'norse',
-    startingGodOptions: [],
-    startingGodNote: '',
-    missionIds: [],
-    heroDefinitionId: 'norse_hervor',
-    carryoverPolicy: [],
-    status: 'coming_soon',
-    thumbnailAssetId: 'campaign.winter_oath.thumbnail',
-  },
-];
+/** No unbuilt campaign is listed in this build (The Winter Oath is playable). */
+export const COMING_SOON_CAMPAIGNS: readonly CampaignDefinition[] = [];

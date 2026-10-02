@@ -29,7 +29,35 @@ export const BIOME_TINT: Readonly<Record<string, [number, number, number]>> = {
   high_pass: [0.94, 0.97, 1.02],
   storm_plateau: [0.86, 0.9, 1.0],
   temperate: [1, 1, 1],
+  tundra: [1, 1, 1],
+  fjord: [1, 1, 1],
 };
+
+/**
+ * Winter biomes: how far each tile color is blended toward snow (0 = none).
+ * Water blends less so frozen sea still reads as water. Cosmetic only.
+ */
+export const BIOME_FROST: Readonly<Record<string, { readonly land: number; readonly water: number }>> = {
+  tundra: { land: 0.5, water: 0.3 },
+  fjord: { land: 0.42, water: 0.22 },
+};
+export const SNOW_COLOR = '#e6edf4';
+
+/** A terrain's base color in a biome (winter biomes blend toward snow), as 0..1 RGB. */
+export function biomeTerrainRgb(t: Terrain, biome: string): [number, number, number] {
+  const raw = hexToRgb(TERRAIN_COLORS[t]);
+  const frost = BIOME_FROST[biome];
+  const k = frost ? (t === 'water' ? frost.water : frost.land) : 0;
+  if (k <= 0) return raw;
+  const snow = hexToRgb(SNOW_COLOR);
+  return [raw[0] + (snow[0] - raw[0]) * k, raw[1] + (snow[1] - raw[1]) * k, raw[2] + (snow[2] - raw[2]) * k];
+}
+
+/** CSS color of a terrain in a biome (minimaps). */
+export function biomeTerrainCss(t: Terrain, biome: string): string {
+  const [r, g, b] = biomeTerrainRgb(t, biome);
+  return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+}
 
 export const UNKNOWN_COLOR = '#0a1322';
 export const ROAD_COLOR = '#cdb57c';

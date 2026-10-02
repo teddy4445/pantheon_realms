@@ -1,9 +1,77 @@
 # Development Status
 
-_Last updated: 2026-10-01 · app 0.4.1 (0.4.0 + visual design) + mounted adventure-map heroes (not yet in an installer) · rules `pr-0.2-candidate` + proposed effects · content `content-0.7.0` · campaign `campaign-three-beacons-0.4` · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.1` · save schema 1 · preferences schema 2_
+_Last updated: 2026-10-02 · app 0.4.1 + mounted heroes + the owner requests of 2026-10-01 below (not yet in an installer) · rules `pr-0.2-candidate` + proposed effects · content `content-0.8.0` · campaigns `campaign-three-beacons-0.4` and *The Winter Oath* (proposed) · mapgen `pr-mapgen-0.3` + random maps `pr-skirmishgen-0.2` · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
+
+## Owner requests of 2026-10-01 (icons, second campaign, M02 order, random maps, hero screen, spells and artifacts)
+
+Designs and values: `DESIGN_PROPOSALS.md` §13–18 and
+`CAMPAIGN_2_NORSE_OUTLINE.md`. Owner answers: Norse — *The Winter Oath*; M02
+blocked on the map **and** early completion (every campaign); Heroes-3-style
+slots (content version bump, old saves refused); about 30 spells and 45
+artifacts. Everything else is **proposed, unplaytested**.
+
+* **Icon catalog** — `ICON_CATALOG.md` (repo root) and
+  `assets-source/icons/ICON_CATALOG.xlsx` / `icon_catalog.csv`: 695 entries in
+  12 sections (interface icons, map markers, spells, artifacts, sets, skills,
+  interventions, abilities, effect art, portraits, creatures, emblems /
+  buildings / thumbnails) with asset ID, screens, what is shown today
+  (thumbnail in the spreadsheet), a drawing brief, details and lore; 345 have
+  no art of their own yet. Generated from the game by `npm run icons:catalog`
+  (development tool in `tools/assets/icon-catalog/`). New drop-in path for
+  final art: PNGs named by asset ID in `assets-source/icons/final/` +
+  `npm run icons:import` → `assets-runtime/ui/final-manifest.json` (takes
+  precedence over every placeholder; interface glyphs pick up `icon.ui.<name>`).
+* **The Winter Oath** — seven Norse missions with Hervor, carryover, story
+  scenes, two endings; new generic data: objective conditions `hero_defeated`
+  and `town_owned`, minor-god `count`, starting garrisons, epilogue variants,
+  winter biomes `tundra` / `fjord` (frosted map colours; `fjord` has a water
+  edge). Five Norse enemy heroes. Mission 5 seats a full AI rival empire.
+* **Three Beacons M02 in order** — `requires` on objectives + early
+  completion; journal "Opens after" and "Done early".
+* **Random maps 0.2** — six map types, zones, guarded passes and gates, huge
+  size, guard / treasure / wealth / road / revealed-map settings, SKM-6; AI fix
+  (garrison counted when judging a threatened town).
+* **Hero screen** in the Heroes-3 layout with the 3D mounted model, a 19-slot
+  paper doll and backpack, and a spellbook dialog.
+* **Spells and artifacts** — 30 new spells (54), 54 new artifacts (79), 6 new
+  sets (10), four new spell effects and the `enemy_army` target, town spell
+  libraries with a per-match draw; lore on every spell and artifact.
+
+### Tests and checks actually run (this round)
+
+| Command | Result |
+|---|---|
+| `npm run check` | **pass — 216 tests** (19 files). New: `packages/campaign/test/winterOath.test.ts` (6: data and order rules, both epilogues, an early-completed step, M5 rival set-up, M7 played directly to "sword returned", and one headless journey through **all seven missions with carryover** to "sword broken", every battle fought by the tactical AI on both sides); `random.test.ts` +10 (every map type fair and valid for 2/3/4 empires, SKM-6, guard/treasure/wealth scaling, sparse roads, revealed map, huge maps deterministic); M02 order tests in `threeBeacons.test.ts`. Two older tests adjusted: the Norse hero list now includes the campaign's enemy heroes; the camp-restock test keeps its passive player safe from the AI rival for the week (with the new maps the AI took the idle player's town by day 7) |
+| Journey numbers (headless, auto-combat) | missions end on days 1–4 of a direct scripted route; Hervor reaches level 9; she wears all four Arms of the Einherjar at the final battle; losses are moderate (the final stretch to the Grey Jarl costs her all 18 Fenrir Wolves and 8 Ancient Frost Trolls) |
+| AI-vs-AI game length, 2 empires, small, 12 seeds each (old 0.1 generator from the owner's copy vs 0.2) | days to a winner: 0.1 — median 9 (3–21); 0.2 continental — median 12.5 (3–40). Per map type (6 seeds): highlands 2–17, lake isle 3–30, wild forest 4–28, marshlands 7–25, crossroads 3–8 and **one stall to the day cap** (seed 43: both empires keep losing their heroes and piling troops into garrisons) |
+| `npm run icons:catalog` / `npm run icons:import` | catalog written (695 entries); import checked with a test icon (resized to 128 px, registered, then removed again) |
+| `npm run build` | pass — start-up script 1,210 KB (340 KB gzip; before this round 1,063 / 300): the new content (spells, artifacts, lore, the campaign text) is part of the start-up catalog |
+| `npx playwright test` (Chromium + SwiftShader, production build) | **42 of 42 passed** (20.1 min). New `tests/e2e/heroscreen.spec.ts` (2): hero screen — doll slots, equip from the backpack into the weapon and both ring slots, a helm refused by the feet slot, unequip from the artifact card, the spellbook lists Rune of Tyr, the 3D figure reaches `ready`, no console errors; The Winter Oath from New Game → briefing → Kaldvik (Odin, Hervor, fjord biome) |
+| Visual check (screenshots) | Winter Oath M1 and M5 maps in the frosted palette; the icon spreadsheet's thumbnails (rendered to PDF) |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 5` | menu **180 ms** local / **378 ms** web (mounted-hero build: 157–166 / ~330 ms); first scene 1,199 ms local, 1,689 ms web (single 5-run medians on the noisy software renderer; the mounted-hero build measured 1,397–1,461 ms local). The larger start-up script costs roughly 15–50 ms on the menu |
+| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (development layout: saves, records, unit GLB, the six hero GLBs, audio running). The packaged-layout smoke (`PR_SMOKE_EXE`) was **not** run this round |
+
+### Limitations (this round)
+
+1. **All values are proposals**: the campaign's guards, wallets and costs, the
+   new spells and artifacts and the random-map settings were tested by unit
+   tests and AI-vs-AI runs only. The headless journey follows a direct route,
+   so it says the missions are winnable, not that they are well paced.
+2. The **AI rival in M5** strips Hvitstrand's garrison into Ulfhild's field
+   army (existing AI behaviour); the journey took the town on day 4 while she
+   was near Ravnholt.
+3. **Short AI-vs-AI games** on small 2-empire maps (both generators): a leader
+   lost early leaves an empty town. One crossroads stall in 30 runs.
+4. New characters, the five enemy heroes, every new spell and artifact use
+   placeholders (generated portraits; effect-family or kind icons). Campaign
+   missions reuse the three existing soundscapes.
+5. **Saves from content 0.7.0 are refused** (equipment layout changed).
+6. Abilities and artifact sets have reserved icon IDs only; the screens still
+   show text for them.
+7. Not committed or pushed; no new installer.
 
 ## Mounted adventure-map heroes (owner request, after 0.4.1)
 
@@ -437,9 +505,9 @@ runs.
   a dialogue window with Continue, Backlog (L) and Skip; the AI waits while it
   is open. Journal → Story lists played scenes with Replay. Scenes never
   change play.
-* **Second campaign**: Norse outline only — `CAMPAIGN_2_NORSE_OUTLINE.md`
-  (*The Winter Oath*). It replaces the empty "The Fallen Titan" card as
-  "Outline — awaiting approval"; no mission is built.
+* **Second campaign**: (0.4.0) Norse outline only — `CAMPAIGN_2_NORSE_OUTLINE.md`
+  (*The Winter Oath*). *Since then built as seven missions — see the top of
+  this file.*
 * **Pantheon skills and spells, artifact sets** (skirmish only): 8 skills
   (Estates, Mysticism + one per pantheon), 16 spells (4 for every Sanctum + 2
   per pantheon; mass, area, slow, haste, movement and recall effects), 4
@@ -639,7 +707,7 @@ runs.
   pantheon's base forms, and the mercenary event always offers Centaurs, so
   an empire meets other pantheons' creatures as neutrals.
 * **Story scenes** use the existing placeholder portraits; there is no voice.
-  The Norse campaign is an outline only.
+  The Winter Oath's new characters have generated placeholder portraits.
 * **Siege presentation** uses primitive walls/towers/keep; structure damage is
   shown by height/colour and HP labels.
 
@@ -650,9 +718,8 @@ runs.
   once both choices are made (open question in `DESIGN_PROPOSALS.md`).
 * Favor in the campaign: interventions are skirmish-only, so in The Three
   Beacons Favor still only buys gods (documented economy unchanged).
-* Campaigns for the five non-Greek pantheons — the Norse one is outlined
-  (`CAMPAIGN_2_NORSE_OUTLINE.md`) and awaits the owner's approval; more
-  authored skirmish maps.
+* Campaigns for the four pantheons without one (Egyptian, Japanese, Celtic,
+  Mesoamerican); more authored skirmish maps.
 * Stack merging before a siege; manual ballistics; the map editor (later, by
   owner decision); final audio and voice; graphics quality tiers. Online
   multiplayer is not planned at this stage.

@@ -6,6 +6,7 @@ import type { CSSProperties } from 'react';
 import type { ContentCatalog } from '@pr/rules';
 import { resolveAsset, resolveBuildingArt } from '../assets/manifest';
 import { CreaturePortraitArt, EmblemArt, GodPortraitArt, HeroPortraitArt, MissionThumbArt } from '../assets/placeholders';
+import { Icon, type IconName } from '../assets/icons';
 
 function pantheonAccent(catalog: ContentCatalog, pantheonId: string | null | undefined): string {
   if (!pantheonId) return '#6b5a3a';
@@ -194,7 +195,7 @@ export function BrandEmblem({ size }: { size?: string }) {
 }
 
 /** Spell art in a round socket: the spell's own icon when delivered, else the effect-family icon. */
-const SPELL_EFFECT_ART: Record<string, string> = {
+export const SPELL_EFFECT_ART: Record<string, string> = {
   direct_damage: 'icon.fx.lightning',
   area_damage: 'icon.fx.burning',
   max_damage_roll: 'icon.fx.strike',
@@ -207,6 +208,10 @@ const SPELL_EFFECT_ART: Record<string, string> = {
   reveal_radius: 'icon.stat.vision',
   movement_bonus: 'icon.stat.movement',
   recall: 'icon.time.turn',
+  melee_mitigation: 'icon.fx.shield',
+  min_damage_roll: 'icon.status.debuff',
+  mass_heal: 'icon.fx.healing',
+  mass_damage: 'icon.fx.burning',
 };
 
 export function SpellIcon({ iconAssetId, effectType, size = '2.4rem' }: { iconAssetId: string; effectType: string; size?: string }) {
@@ -215,6 +220,30 @@ export function SpellIcon({ iconAssetId, effectType, size = '2.4rem' }: { iconAs
   return (
     <span className="spell-socket" style={{ width: size, height: size }} aria-hidden="true">
       {rec.url ? <img src={rec.url} alt="" draggable={false} /> : null}
+    </span>
+  );
+}
+
+/** Fallback glyph per artifact kind until the item's own icon is delivered (ICON_CATALOG.md). */
+export const ARTIFACT_KIND_GLYPH: Record<string, IconName> = {
+  head: 'power',
+  neck: 'luck',
+  cape: 'movement',
+  weapon: 'attack',
+  shield: 'defense',
+  armor: 'defense',
+  ring: 'knowledge',
+  feet: 'movement',
+  mount: 'speed',
+  misc: 'star',
+};
+
+/** An artifact's own icon when delivered, else its kind's glyph in the same socket. */
+export function ArtifactIcon({ iconAssetId, kind, size = '2.6rem', rarity }: { iconAssetId: string; kind: string; size?: string; rarity?: string }) {
+  const own = resolveAsset(iconAssetId);
+  return (
+    <span className={`artifact-socket ${rarity ? `is-${rarity}` : ''}`} style={{ width: size, height: size }} aria-hidden="true">
+      {own.url ? <img src={own.url} alt="" draggable={false} /> : <Icon name={ARTIFACT_KIND_GLYPH[kind] ?? 'star'} className="artifact-socket__glyph" />}
     </span>
   );
 }

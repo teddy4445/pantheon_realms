@@ -91,7 +91,11 @@ describe('creature camps and map events', () => {
     expect(campStock(d.catalog, d.state, camp.id)).toBe(stock - 2);
     expect(leader(d.state).army.slots.some((s) => s?.creatureId === camp.kind.creatureId && s.count >= 2)).toBe(true);
     expect(d.reject({ kind: 'RecruitFromCamp', heroId: hero.id, siteId: camp.id, quantity: stock }).code).toBe('no_population');
-    // A new week restocks the camp.
+    // A new week restocks the camp. (The hero waits at home with an army no rival will attack,
+    // so the passive test player is not conquered during the week.)
+    const home = leader(d.state);
+    home.position = { ...Object.values(d.state.towns).find((t) => t.ownerId === 'player')!.coord };
+    home.army.slots[6] = { stackId: 'test_guard', creatureId: 'hoplite', count: 400 };
     for (let i = 0; i < 7; i++) d.endDay();
     expect(campStock(d.catalog, d.state, camp.id)).toBe(stock - 2 + camp.kind.weeklyGrowth);
   });
@@ -139,7 +143,7 @@ describe('artifact sets, skills and spells', () => {
     const hero = { equipment: {} as Record<string, { instanceId: string; artifactId: string }> };
     hero.equipment.weapon = { instanceId: 'a', artifactId: 'phalanx_spear' };
     expect(artifactSetStatus(d.catalog, hero)[0]).toMatchObject({ equipped: 1, total: 3, active: [] });
-    hero.equipment.armor = { instanceId: 'b', artifactId: 'phalanx_aspis' };
+    hero.equipment.shield = { instanceId: 'b', artifactId: 'phalanx_aspis' };
     expect(artifactEffects(d.catalog, hero)).toContainEqual({ type: 'morale', amount: 1 });
     hero.equipment.head = { instanceId: 'c', artifactId: 'phalanx_helm' };
     expect(artifactEffects(d.catalog, hero)).toContainEqual({ type: 'creature_stat', stat: 'defense', amount: 2 });

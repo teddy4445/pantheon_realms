@@ -93,7 +93,11 @@ export function evaluateCondition(catalog: ContentCatalog, state: MatchState, co
     case 'flag':
       return mission.flags[cond.flag] === true;
     case 'player_has_minor_god':
-      return (state.players[playerId]?.pantheon.minorGodIds.length ?? 0) > 0;
+      return (state.players[playerId]?.pantheon.minorGodIds.length ?? 0) >= (cond.count ?? 1);
+    case 'hero_defeated':
+      return Object.values(state.heroes).some((h) => h.definitionId === cond.heroDefinitionId && h.ownerId !== playerId && h.status !== 'active');
+    case 'town_owned':
+      return state.towns[cond.townId]?.ownerId === playerId;
     case 'hero_army_contains': {
       const hero = state.heroes[cond.heroId];
       if (!hero) return false;
@@ -116,6 +120,10 @@ export function conditionProgress(catalog: ContentCatalog, state: MatchState, co
     const hero = state.heroes[cond.heroId];
     const n = hero?.army.slots.reduce((acc, s) => acc + (s?.creatureId === cond.creatureId ? s.count : 0), 0) ?? 0;
     return `${Math.min(n, cond.count)} / ${cond.count}`;
+  }
+  if (cond.type === 'player_has_minor_god' && (cond.count ?? 1) > 1) {
+    const n = state.players[missionPlayerId(catalog, state)]?.pantheon.minorGodIds.length ?? 0;
+    return `${Math.min(n, cond.count!)} / ${cond.count}`;
   }
   if (cond.type === 'all') {
     const done = cond.conditions.filter((c) => evaluateCondition(catalog, state, c)).length;
@@ -145,6 +153,22 @@ function completeObjective(tx: Tx, def: ObjectiveDefinition): void {
   }
 }
 
+/** The steps an objective waits for (its `requires`, or a claim's `after`). */
+export function objectivePrerequisites(def: ObjectiveDefinition): readonly ObjectiveId[] {
+  if (def.requires?.length) return def.requires;
+  if (def.condition.type === 'claim') return def.condition.after;
+  return [];
+}
+
+/**
+ * A locked step whose condition is already met (done ahead of order): it completes
+ * as soon as its prerequisites do. Read-only, for the journal.
+ */
+export function objectiveDoneEarly(catalog: ContentCatalog, state: MatchState, def: ObjectiveDefinition): boolean {
+  if (state.mission.objectives[def.id]?.status !== 'locked' || def.condition.type === 'claim') return false;
+  return evaluateCondition(catalog, state, def.condition);
+}
+
 /** Advance the objective state machine to a fixed point. */
 export function evaluateObjectives(tx: Tx): void {
   const defs = missionObjectiveDefs(tx.catalog, tx.state);
@@ -153,6 +177,13 @@ export function evaluateObjectives(tx: Tx): void {
     for (const def of defs) {
       const st = tx.state.mission.objectives[def.id];
       if (!st) continue;
+      if (st.status === 'locked' && def.requires?.length) {
+        if (!def.requires.every((id) => tx.state.mission.objectives[id]?.status === 'completed')) continue;
+        st.status = 'active';
+        tx.emit({ kind: 'ObjectiveChanged', objectiveId: def.id, status: 'active' });
+        changed = true;
+        // Falls through: a step whose condition already holds completes in this pass.
+      }
       if (def.condition.type === 'claim') {
         if (st.status === 'locked' || st.status === 'active') {
           const ready = def.condition.after.every((id) => tx.state.mission.objectives[id]?.status === 'completed');

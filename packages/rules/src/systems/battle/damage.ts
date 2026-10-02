@@ -119,12 +119,25 @@ export function strikeFactors(
     multipliers.push([combat.meleePenaltyFactor.numerator, combat.meleePenaltyFactor.denominator]);
     notes.push('Shooter in melee (x0.5)');
   }
+  if (ctx.mode !== 'shot') {
+    for (const s of target.statuses) {
+      if (s.kind === 'melee_mitigation') {
+        multipliers.push([s.numerator, s.denominator]);
+        notes.push(`${s.label} (x${s.numerator}/${s.denominator} vs melee)`);
+      }
+    }
+  }
   const luck = effectiveLuck(catalog, battle, attacker);
-  const guaranteedMax = attacker.statuses.some((s) => s.kind === 'max_damage_roll');
+  const blessed = attacker.statuses.some((s) => s.kind === 'max_damage_roll');
+  const cursed = attacker.statuses.some((s) => s.kind === 'min_damage_roll');
+  // A blessing and a curse cancel out (normal range).
+  const guaranteedMax = blessed && !cursed;
+  const guaranteedMin = cursed && !blessed;
+  if (guaranteedMin) notes.push('Cursed (minimum damage)');
   return {
     attackerCount: count,
     bMin: guaranteedMax ? count * aStats.damageMax : count * aStats.damageMin,
-    bMax: count * aStats.damageMax,
+    bMax: guaranteedMin ? count * aStats.damageMin : count * aStats.damageMax,
     guaranteedMax,
     bracket,
     luckBonus: combat.luckBonus,

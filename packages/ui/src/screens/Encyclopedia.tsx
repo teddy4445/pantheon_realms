@@ -5,10 +5,10 @@
  * for playable content.
  */
 import { useState } from 'react';
-import { RESOURCE_LABELS, type CreatureTier } from '@pr/rules';
+import { ARTIFACT_SLOT_LABEL, RESOURCE_LABELS, type CreatureTier } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Chip, Panel, Tabs } from '../components/kit';
-import { CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt } from '../components/art';
+import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt, SpellIcon } from '../components/art';
 import { BalanceChip, CostList, ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
 
@@ -214,11 +214,15 @@ export function EncyclopediaScreen() {
           <div className="codex-grid">
             <Panel title="Spells">
               {Object.values(catalog.spells).map((sp) => (
-                <div key={sp.id} className="codex-line">
-                  <strong>{sp.name}</strong> <Chip>T{sp.tier}</Chip> <Chip tone="info">{sp.manaCost} mana</Chip> <Chip>{sp.context}</Chip> <StatusChip status={sp.implementationStatus} />
-                  {sp.pantheonId ? <Chip tone="info">{catalog.pantheons[sp.pantheonId]?.name}</Chip> : null}
-                  {sp.scope === 'expanded' ? <Chip tone="muted">Skirmish only</Chip> : null}
-                  <div className="small dim">{sp.summary}</div>
+                <div key={sp.id} className="codex-line codex-line--icon">
+                  <SpellIcon iconAssetId={sp.iconAssetId} effectType={sp.effect.type} size="2.2rem" />
+                  <div>
+                    <strong>{sp.name}</strong> <Chip>T{sp.tier}</Chip> <Chip tone="info">{sp.manaCost} mana</Chip> <Chip>{sp.context}</Chip> <StatusChip status={sp.implementationStatus} />
+                    {sp.pantheonId ? <Chip tone="info">{catalog.pantheons[sp.pantheonId]?.name}</Chip> : null}
+                    {sp.scope === 'expanded' ? <Chip tone="muted">Skirmish &amp; Winter Oath</Chip> : null}
+                    <div className="small dim">{sp.summary}</div>
+                    {sp.lore ? <div className="faint small h3-lore">{sp.lore}</div> : null}
+                  </div>
                 </div>
               ))}
             </Panel>
@@ -233,10 +237,15 @@ export function EncyclopediaScreen() {
             </Panel>
             <Panel title="Artifacts">
               {Object.values(catalog.artifacts).map((a) => (
-                <div key={a.id} className="codex-line">
-                  <strong>{a.name}</strong> <Chip>{a.slot}</Chip>
-                  {a.setId ? <Chip tone="info">{catalog.artifactSets?.[a.setId]?.name ?? 'Set'}</Chip> : null}
-                  <div className="small dim">{a.summary}</div>
+                <div key={a.id} className="codex-line codex-line--icon">
+                  <ArtifactIcon iconAssetId={a.iconAssetId} kind={a.slot} size="2.2rem" rarity={a.rarity} />
+                  <div>
+                    <strong>{a.name}</strong> <Chip>{ARTIFACT_SLOT_LABEL[a.slot]}</Chip>
+                    {a.rarity ? <Chip tone="muted">{a.rarity}</Chip> : null}
+                    {a.setId ? <Chip tone="info">{catalog.artifactSets?.[a.setId]?.name ?? 'Set'}</Chip> : null}
+                    <div className="small dim">{a.summary}</div>
+                    {a.lore ? <div className="faint small h3-lore">{a.lore}</div> : null}
+                  </div>
                 </div>
               ))}
             </Panel>

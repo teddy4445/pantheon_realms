@@ -4,7 +4,7 @@
  * campaign progress. Markers focus the adventure camera only on known sites.
  */
 import { useState } from 'react';
-import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, type ObjectiveDefinition, requireScenarioMission } from '@pr/rules';
+import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, objectiveDoneEarly, objectivePrerequisites, type ObjectiveDefinition, requireScenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
 import { HINTS } from '../app/hints';
 import { Button, Chip, Panel, Tabs } from '../components/kit';
@@ -64,6 +64,12 @@ export function JournalScreen() {
   const explored = state.fog[playerId]?.explored ?? [];
   const campaign = session.campaign ? catalog.campaigns[session.campaign.campaignId] : undefined;
 
+  const titleOf = (id: string) => defs.find((d) => d.id === id)?.title ?? id;
+  const lockedText = (o: ObjectiveDefinition) => {
+    const pre = objectivePrerequisites(o).filter((id) => state.mission.objectives[id]?.status !== 'completed');
+    return pre.length ? `Opens after: ${pre.map(titleOf).join(', ')}.` : 'Complete earlier objectives to reveal this one.';
+  };
+
   const row = (o: ObjectiveDefinition) => {
     const st = state.mission.objectives[o.id];
     const status = st?.status ?? 'locked';
@@ -82,7 +88,12 @@ export function JournalScreen() {
             {o.title} <Chip tone={STATUS[status]!.tone}>{STATUS[status]!.text}</Chip> {prog ? <Chip>{prog}</Chip> : null}
             {st?.completedOnDay ? <span className="faint small"> · day {st.completedOnDay}</span> : null}
           </div>
-          <div className="small">{status === 'locked' ? 'Complete earlier objectives to reveal this one.' : o.description}</div>
+          <div className="small">{status === 'locked' ? lockedText(o) : o.description}</div>
+          {objectiveDoneEarly(catalog, state, o) ? (
+            <div className="small">
+              <Chip tone="ok">Done early</Chip> <span className="faint">Already achieved — it counts as soon as this step opens.</span>
+            </div>
+          ) : null}
           {o.hint && status !== 'completed' && status !== 'locked' ? <div className="faint small">Hint: {o.hint}</div> : null}
           <div className="row gap">
             {site && status !== 'locked' ? (

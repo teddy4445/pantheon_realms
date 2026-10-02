@@ -9,9 +9,12 @@
 import {
   CREATURE_TIERS,
   SUPPORT_ROLES,
+  equipSlotsFor,
+  type ArtifactSlot,
   type ContentCatalog,
   type EffectDefinition,
   type MissionDefinition,
+  type ObjectiveCondition,
   type RequirementDefinition,
   type RewardDefinition,
 } from '@pr/rules';
@@ -310,6 +313,7 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
   };
   m.player.hero.army.forEach((s) => creatureOk(s.creatureId));
   for (const b of m.player.town.buildings) if (!c.buildings[b]) push(`${where}: unknown starting building ${b}`);
+  m.player.town.garrison?.forEach((g) => creatureOk(g.creatureId));
   for (const b of m.purchasableBuildingIds ?? []) if (!c.buildings[b]) push(`${where}: unknown purchasable building ${b}`);
   for (const g of m.committableGodIds ?? []) if (!c.gods[g]) push(`${where}: unknown committable god ${g}`);
   const siteIds = new Set(m.sites.map((s) => s.id));
@@ -340,15 +344,44 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
       s.kind.options.forEach((o, i) => rewardOk(o.reward, `${where}/${s.id}#${i}`));
     }
   }
+  const objById = new Map(m.objectives.map((o) => [o.id, o] as const));
+  const townIds = new Set([m.player.town.townId, ...(m.rivals ?? []).map((r) => r.town.townId)]);
+  const foeIds = new Set([...m.hostileHeroes.map((h) => h.commander.heroDefinitionId), ...(m.rivals ?? []).map((r) => r.hero.definitionId)]);
   for (const o of m.objectives) {
     for (const u of o.unlocks ?? []) if (!objIds.has(u)) push(`${where}/${o.id}: unlocks unknown objective ${u}`);
+    for (const r of o.requires ?? []) if (!objIds.has(r)) push(`${where}/${o.id}: requires unknown objective ${r}`);
+    if (o.requires?.length && o.initialStatus !== 'locked') push(`${where}/${o.id}: a step with requires must start locked`);
+    // No step may (transitively) wait for itself.
+    const seen = new Set<string>();
+    const stack = [...(o.requires ?? []), ...(o.condition.type === 'claim' ? o.condition.after : [])];
+    while (stack.length) {
+      const id = stack.pop()!;
+      if (id === o.id) {
+        push(`${where}/${o.id}: objective prerequisites form a cycle`);
+        break;
+      }
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const d = objById.get(id);
+      if (d) stack.push(...(d.requires ?? []), ...(d.condition.type === 'claim' ? d.condition.after : []));
+    }
     if (o.markerSiteId && !siteIds.has(o.markerSiteId)) push(`${where}/${o.id}: unknown marker site`);
+    // Condition references: sites, towns and non-player heroes of this mission.
+    const walk = (cond: ObjectiveCondition): void => {
+      if ((cond.type === 'site_cleared' || cond.type === 'site_activated' || cond.type === 'site_visited') && !siteIds.has(cond.siteId)) push(`${where}/${o.id}: unknown site ${cond.siteId}`);
+      if (cond.type === 'town_owned' && !townIds.has(cond.townId)) push(`${where}/${o.id}: unknown town ${cond.townId}`);
+      if (cond.type === 'hero_defeated' && !foeIds.has(cond.heroDefinitionId)) push(`${where}/${o.id}: no hostile or rival hero ${cond.heroDefinitionId} in this mission`);
+      if (cond.type === 'player_has_minor_god' && cond.count !== undefined && (!Number.isInteger(cond.count) || cond.count < 1)) push(`${where}/${o.id}: minor-god count must be a positive whole number`);
+      if (cond.type === 'all' || cond.type === 'any') cond.conditions.forEach(walk);
+    };
+    walk(o.condition);
     for (const e of o.reward?.entitlementIds ?? []) if (!c.entitlements[e]) push(`${where}/${o.id}: unknown entitlement ${e}`);
   }
   m.hostileHeroes.forEach((h) => h.army.forEach((a) => creatureOk(a.creatureId)));
   for (const r of m.rivals ?? []) {
     r.hero.army.forEach((s) => creatureOk(s.creatureId));
     for (const b of r.town.buildings) if (!c.buildings[b]) push(`${where}: unknown starting building ${b}`);
+    r.town.garrison?.forEach((g) => creatureOk(g.creatureId));
     if (!siteIds.has(r.town.siteId)) push(`${where}: rival town site ${r.town.siteId} is missing`);
   }
   const cond = m.victoryCondition;
@@ -400,8 +433,14 @@ function expandedContentValidator(c: ContentCatalog, push: Push): void {
     if (sp.access === 'sanctum' && sp.tier > maxLibrary) push(`${sp.id}: tier ${sp.tier} exceeds every Sanctum library (max ${maxLibrary})`);
     const needsAdventure = sp.effect.type === 'reveal_radius' || sp.effect.type === 'movement_bonus' || sp.effect.type === 'recall';
     if (needsAdventure !== (sp.context === 'adventure')) push(`${sp.id}: effect ${sp.effect.type} does not match context ${sp.context}`);
-    if (sp.effect.type === 'mass_bonus' && sp.target !== 'friendly_army') push(`${sp.id}: mass spells target 'friendly_army'`);
-    if (sp.target === 'friendly_army' && sp.effect.type !== 'mass_bonus') push(`${sp.id}: 'friendly_army' needs a mass effect`);
+    const army = sp.target === 'friendly_army' || sp.target === 'enemy_army';
+    const mass = sp.effect.type === 'mass_bonus' || sp.effect.type === 'mass_heal' || sp.effect.type === 'mass_damage';
+    if (mass !== army) push(`${sp.id}: mass effects (and only they) target a whole army`);
+    if (sp.effect.type === 'mass_heal' && sp.target !== 'friendly_army') push(`${sp.id}: a mass heal targets 'friendly_army'`);
+    if (sp.effect.type === 'mass_damage' && sp.target !== 'enemy_army') push(`${sp.id}: mass damage targets 'enemy_army'`);
+    if (sp.effect.type === 'mass_bonus' && (sp.target === 'enemy_army') !== sp.effect.amount < 0) push(`${sp.id}: an army-wide bonus helps friends, a penalty hurts enemies`);
+    if ((sp.effect.type === 'min_damage_roll' || sp.effect.type === 'direct_damage' || sp.effect.type === 'area_damage') && sp.target !== 'enemy_stack') push(`${sp.id}: ${sp.effect.type} targets an enemy stack`);
+    if ((sp.effect.type === 'melee_mitigation' || sp.effect.type === 'ranged_mitigation' || sp.effect.type === 'heal_front' || sp.effect.type === 'max_damage_roll') && sp.target !== 'ally_stack') push(`${sp.id}: ${sp.effect.type} targets a friendly stack`);
   }
   for (const set of Object.values(c.artifactSets)) {
     for (const id of set.pieceIds) {
@@ -413,8 +452,12 @@ function expandedContentValidator(c: ContentCatalog, push: Push): void {
       if (b.pieces < 2 || b.pieces > set.pieceIds.length) push(`${set.id}: bonus needs 2-${set.pieceIds.length} pieces`);
       b.effects.forEach((e) => checkEffect(c, e, `${set.id} (${b.pieces})`, push));
     }
-    const slots = set.pieceIds.map((id) => c.artifacts[id]?.slot);
-    if (new Set(slots).size !== slots.length) push(`${set.id}: two pieces share a slot, so the full set cannot be worn`);
+    const perKind = new Map<string, number>();
+    for (const id of set.pieceIds) {
+      const k = c.artifacts[id]?.slot;
+      if (k) perKind.set(k, (perKind.get(k) ?? 0) + 1);
+    }
+    for (const [k, n] of perKind) if (n > equipSlotsFor(k as ArtifactSlot).length) push(`${set.id}: ${n} pieces need the ${k} slot, so the full set cannot be worn`);
   }
   for (const a of Object.values(c.artifacts)) if (a.setId && !c.artifactSets[a.setId]) push(`${a.id}: unknown set ${a.setId}`);
   for (const iv of Object.values(c.interventions)) {

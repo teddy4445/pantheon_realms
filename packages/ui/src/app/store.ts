@@ -6,7 +6,7 @@
  * presentation queue. Does NOT own game truth: all game data is read from
  * session.state, and all changes go through session.dispatch (commands).
  */
-import { matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type Rejection } from '@pr/rules';
+import { campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type Rejection } from '@pr/rules';
 import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
 import type { PlatformServices } from '@pr/platform';
 import { SaveManager, type SlotInfo } from './saves';
@@ -83,6 +83,8 @@ export type Overlay =
   /** Beacon/relay activation confirmation. */
   | { kind: 'activate'; heroId: string; siteId: string }
   | { kind: 'stack-info'; creatureId: string; count?: number }
+  /** The hero's spellbook (read-only list, Heroes-3 style pages by school of use). */
+  | { kind: 'spellbook'; heroId: string }
   /** Hot-seat: the map stays hidden until the next player takes the seat. */
   | { kind: 'handoff'; playerId: string }
   /** Recruit from a neutral creature camp. */
@@ -600,7 +602,8 @@ export class AppStore {
           void this.recordResults();
           const camp = this.catalog.campaigns[session.campaign.campaignId];
           // The closing scene plays first; the campaign summary follows it.
-          if (camp?.epilogue?.length) this.playStory({ key: `epilogue:${camp.id}`, title: `${camp.name} — Epilogue`, lines: camp.epilogue, then: 'campaign-complete' });
+          const lines = camp ? campaignEpilogueLines(camp, session.state.mission.flags) : [];
+          if (camp && lines.length) this.playStory({ key: `epilogue:${camp.id}`, title: `${camp.name} — Epilogue`, lines, then: 'campaign-complete' });
           else this.openOverlay({ kind: 'campaign-complete' });
         } else this.openOverlay({ kind: 'debrief' });
       } else this.openOverlay({ kind: 'debrief' });

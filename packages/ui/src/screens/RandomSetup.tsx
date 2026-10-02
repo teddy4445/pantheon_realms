@@ -1,18 +1,34 @@
 /**
- * S19 Random Map setup (proposed this build): map size, two to four seats
- * (each AI or human — several humans play hot-seat on this computer), victory
- * condition, wandering monsters, difficulty and seed, with a live preview of
- * the generated map and its fairness checks.
+ * S19 Random Map setup (proposed): map type (Continental, Highlands, Lake Isle,
+ * Wild Forest, Marshlands, Crossroads — after Age of Mythology's map scripts
+ * and Heroes 3's zone templates), size up to Huge, two to four seats (each AI
+ * or human — several humans play hot-seat on this computer), victory condition,
+ * guard strength, treasure, starting wealth, roads, wandering monsters, a
+ * revealed-map option, difficulty and seed, with a live preview of the
+ * generated map and its fairness checks.
  *
  * The map comes from the rules-side generator (deterministic for the same
  * options); this screen only collects choices and shows the result.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TERRAIN_COLORS } from '@pr/presentation/core';
-import { createRandomSkirmish, skirmishSizeAllows, SKIRMISH_SIZE_LABEL, type RandomSkirmish, type SkirmishMapSize, type SkirmishVictory } from '@pr/session';
+import {
+  createRandomSkirmish,
+  skirmishSizeAllows,
+  SKIRMISH_MAP_TYPES,
+  SKIRMISH_SIZE_LABEL,
+  type GuardStrength,
+  type RandomSkirmish,
+  type RoadDensity,
+  type SkirmishMapSize,
+  type SkirmishMapType,
+  type SkirmishVictory,
+  type StartWealth,
+  type TreasureLevel,
+} from '@pr/session';
 import type { ContentCatalog } from '@pr/rules';
 import { useStore } from '../app/context';
-import { Button, Chip, Panel, Segmented, TextInput } from '../components/kit';
+import { Button, Chip, Panel, Segmented, TextInput, Toggle } from '../components/kit';
 import { Emblem } from '../components/art';
 import { ScreenHeader } from '../components/game';
 import { DifficultyPicker } from './Setup';
@@ -88,6 +104,12 @@ export function RandomSetupScreen() {
   const [victoryType, setVictoryType] = useState<'elimination' | 'hold_relic'>('elimination');
   const [relicDays, setRelicDays] = useState(7);
   const [monsters, setMonsters] = useState<'none' | 'few' | 'many'>('few');
+  const [mapType, setMapType] = useState<SkirmishMapType>('continental');
+  const [guards, setGuards] = useState<GuardStrength>('normal');
+  const [treasure, setTreasure] = useState<TreasureLevel>('normal');
+  const [startWealth, setStartWealth] = useState<StartWealth>('normal');
+  const [roads, setRoads] = useState<RoadDensity>('full');
+  const [revealMap, setRevealMap] = useState(false);
   const [difficulty, setDifficulty] = useState('normal');
   const [seed, setSeed] = useState(newSeed);
   const [seedText, setSeedText] = useState(String(seed));
@@ -103,9 +125,9 @@ export function RandomSetupScreen() {
   const sizeOk = skirmishSizeAllows(size, count);
 
   const victory: SkirmishVictory = victoryType === 'hold_relic' ? { type: 'hold_relic', days: relicDays } : { type: 'elimination' };
-  const genKey = JSON.stringify({ seed, size, victory, monsters, seats: active.map((s) => [s.pantheonId, s.controller]) });
+  const genKey = JSON.stringify({ seed, size, victory, monsters, mapType, guards, treasure, startWealth, roads, revealMap, seats: active.map((s) => [s.pantheonId, s.controller]) });
   const result = useMemo((): { generated: RandomSkirmish | null; error: string | null } => {
-    if (!sizeOk) return { generated: null, error: 'Four empires need a medium or large map.' };
+    if (!sizeOk) return { generated: null, error: 'Four empires need a medium or larger map.' };
     try {
       return {
         generated: createRandomSkirmish(catalog, {
@@ -114,6 +136,12 @@ export function RandomSetupScreen() {
           seats: active.map((s) => ({ pantheonId: s.pantheonId, controller: s.controller })),
           victory,
           monsters,
+          mapType,
+          guards,
+          treasure,
+          startWealth,
+          roads,
+          revealMap,
         }),
         error: null,
       };
@@ -136,7 +164,7 @@ export function RandomSetupScreen() {
     );
 
   const reason = !sizeOk
-    ? 'Four empires need a medium or large map'
+    ? 'Four empires need a medium or larger map'
     : humans === 0
       ? 'At least one seat must be played by a person'
       : !generated
@@ -164,11 +192,22 @@ export function RandomSetupScreen() {
       <div className="random-setup">
         <Panel title="Map" className="random-setup__map" bodyClassName="scroll">
           <div className="setting-block">
+            <div className="setting-block__label">Map type</div>
+            <div className="map-type-grid" role="radiogroup" aria-label="Map type" data-testid="random-type">
+              {SKIRMISH_MAP_TYPES.map((t) => (
+                <button key={t.id} type="button" role="radio" aria-checked={mapType === t.id} className={`map-type ${mapType === t.id ? 'is-selected' : ''}`} onClick={() => setMapType(t.id)} data-testid={`random-type-${t.id}`} title={`Learns from ${t.inspiredBy}`}>
+                  <span className="map-type__name">{t.label}</span>
+                  <span className="map-type__text">{t.summary}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="setting-block">
             <div className="setting-block__label">Size</div>
             <Segmented
               label="Map size"
               value={size}
-              options={(['small', 'medium', 'large'] as const).map((id) => ({ id, label: SKIRMISH_SIZE_LABEL[id], disabled: !skirmishSizeAllows(id, count), title: !skirmishSizeAllows(id, count) ? 'Too small for four empires' : undefined }))}
+              options={(['small', 'medium', 'large', 'huge'] as const).map((id) => ({ id, label: SKIRMISH_SIZE_LABEL[id], disabled: !skirmishSizeAllows(id, count), title: !skirmishSizeAllows(id, count) ? 'Too small for four empires' : undefined }))}
               onChange={setSize}
               testId="random-size"
             />
@@ -222,6 +261,67 @@ export function RandomSetupScreen() {
               onChange={setMonsters}
               testId="random-monsters"
             />
+          </div>
+          <div className="setting-block">
+            <div className="setting-block__label">Guards</div>
+            <Segmented
+              label="Guard strength"
+              value={guards}
+              options={[
+                { id: 'weak', label: 'Weak' },
+                { id: 'normal', label: 'Normal' },
+                { id: 'strong', label: 'Strong' },
+              ]}
+              onChange={setGuards}
+              testId="random-guards"
+            />
+            <p className="small faint setting-block__details">Armies guarding mines, camps, treasures, passes and the center ({guards === 'weak' ? '×0.6' : guards === 'strong' ? '×1.6' : '×1'}); wandering monsters too.</p>
+          </div>
+          <div className="setting-block">
+            <div className="setting-block__label">Treasure</div>
+            <Segmented
+              label="Treasure"
+              value={treasure}
+              options={[
+                { id: 'scarce', label: 'Scarce' },
+                { id: 'normal', label: 'Normal' },
+                { id: 'rich', label: 'Rich' },
+              ]}
+              onChange={setTreasure}
+              testId="random-treasure"
+            />
+            <p className="small faint setting-block__details">{treasure === 'scarce' ? 'Fewer sites, smaller rewards (×0.6).' : treasure === 'rich' ? 'A small gold mine at home, a sealed vault with a major artifact, a second crystal deposit, a relic at the center; rewards ×1.5.' : 'Mines, camps, one ruin with a minor artifact and a wayside shrine per empire.'}</p>
+          </div>
+          <div className="setting-block">
+            <div className="setting-block__label">Starting wealth</div>
+            <Segmented
+              label="Starting wealth"
+              value={startWealth}
+              options={[
+                { id: 'low', label: 'Low' },
+                { id: 'normal', label: 'Normal' },
+                { id: 'high', label: 'High' },
+              ]}
+              onChange={setStartWealth}
+              testId="random-wealth"
+            />
+          </div>
+          <div className="setting-block">
+            <div className="setting-block__label">Roads</div>
+            <Segmented
+              label="Roads"
+              value={roads}
+              options={[
+                { id: 'full', label: 'Full' },
+                { id: 'sparse', label: 'Sparse' },
+              ]}
+              onChange={setRoads}
+              testId="random-roads"
+            />
+            <div className="row gap setting-block__details">
+              <Toggle checked={revealMap} onChange={setRevealMap} label="Revealed map" />
+              <span className="small">Revealed map — terrain and sites known from the start (heroes stay hidden)</span>
+            </div>
           </div>
           {anyAi ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : null}
           <div className="setting-block">

@@ -10,13 +10,23 @@ import type { GeneratedScenario } from './missionFactory';
 export {
   RANDOM_TEMPLATE_ID,
   SKIRMISH_GENERATOR_VERSION,
+  SKIRMISH_MAP_TYPES,
   SKIRMISH_SIZE_LABEL,
   SKIRMISH_SIZE_RADIUS,
+  GUARD_PERCENT,
+  TREASURE_PERCENT,
+  WEALTH_PERCENT,
   skirmishSizeAllows,
+  type GuardStrength,
+  type RoadDensity,
   type SkirmishGenOptions,
   type SkirmishMapSize,
+  type SkirmishMapType,
+  type SkirmishMapTypeInfo,
   type SkirmishSeat,
   type SkirmishVictory,
+  type StartWealth,
+  type TreasureLevel,
 } from '@pr/mapgen';
 
 export interface RandomSkirmish extends GeneratedScenario {

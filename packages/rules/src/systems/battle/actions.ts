@@ -169,7 +169,7 @@ function spellOptions(catalog: ContentCatalog, state: MatchState, battle: Battle
     const spell = catalog.spells[spellId];
     if (!spell || spell.context !== 'battle') continue;
     const targets =
-      spell.target === 'enemy_stack'
+      spell.target === 'enemy_stack' || spell.target === 'enemy_army'
         ? sideStacks(battle, opposing(sideId)).map((s) => s.id)
         : sideStacks(battle, sideId).map((s) => s.id);
     let reason: string | null = null;
@@ -394,7 +394,7 @@ export function commitBattleCast(tx: Tx, spellId: SpellId, targetId: BattleStack
   if (mana < spell.manaCost) reject('insufficient_resources', `Requires ${spell.manaCost} mana`);
   const target = battle.stacks[targetId];
   if (!target || !isAlive(target)) reject('illegal_target', 'Choose a living stack');
-  const wantEnemy = spell.target === 'enemy_stack';
+  const wantEnemy = spell.target === 'enemy_stack' || spell.target === 'enemy_army';
   if ((target.side !== active.side) !== wantEnemy) reject('illegal_target', wantEnemy ? 'Target an enemy stack' : 'Target a friendly stack');
   if (spell.target === 'known_tile' || spell.target === 'self') reject('illegal_action', 'Not a battle spell');
   // Pay mana, then resolve.
@@ -454,12 +454,35 @@ function resolveSpell(tx: Tx, battle: BattleState, spell: SpellDefinition, power
       return { damage: 0, healed: 0 };
     case 'mass_bonus': {
       const kind = e.stat === 'attack' ? 'attack_bonus' : e.stat === 'defense' ? 'defense_bonus' : 'speed_bonus';
-      for (const s of sideStacks(battle, sideId)) applyStatus(s, { sourceId: source, label: spell.name, kind, amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      const side = spell.target === 'enemy_army' ? opposing(sideId) : sideId;
+      for (const s of sideStacks(battle, side)) applyStatus(s, { sourceId: source, label: spell.name, kind, amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
       return { damage: 0, healed: 0 };
     }
     case 'ranged_mitigation':
       applyStatus(target, { sourceId: source, label: spell.name, kind: 'ranged_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds });
       return { damage: 0, healed: 0 };
+    case 'melee_mitigation':
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'melee_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds });
+      return { damage: 0, healed: 0 };
+    case 'min_damage_roll':
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'min_damage_roll', amount: 0, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      return { damage: 0, healed: 0 };
+    case 'mass_heal': {
+      let healed = 0;
+      for (const s of sideStacks(battle, sideId)) {
+        const hp = statsOf(tx.catalog, s.creatureId).hp;
+        const h = Math.max(0, Math.min(hp - frontHp(tx.catalog, s), e.base + e.perPower * power));
+        s.totalHp += h;
+        healed += h;
+      }
+      return { damage: 0, healed };
+    }
+    case 'mass_damage': {
+      const damage = boosted(e.base + e.perPower * power);
+      const victims = sideStacks(battle, opposing(sideId));
+      for (const v of victims) if (isAlive(v)) applyDamage(tx, battle, v, damage);
+      return { damage: damage * victims.length, healed: 0 };
+    }
     case 'reveal_radius':
     case 'movement_bonus':
     case 'recall':

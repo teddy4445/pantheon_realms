@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '@pr/content';
 import { GameDriver } from '@pr/testing';
-import { canonicalStateHash, findHeroPath, deepClone, type MatchState } from '@pr/rules';
+import { canonicalStateHash, findHeroPath, deepClone, objectiveDoneEarly, quoteMovement, type MatchState } from '@pr/rules';
 import { recordCompletion, startCampaign, startNextMission, restartCurrentMission, startPracticeReplay } from '../src';
 
 const catalog = loadCatalog();
@@ -126,6 +126,42 @@ describe('The Three Beacons — headless campaign journey', () => {
     d.resolveLevelUps();
     expect(d.state.outcome.status).toBe('victory');
     expect(d.player.pantheon.minorGodIds).toEqual(['athena']);
+  });
+
+  it('M02 is played in order: the ridge blocks the far side until the pass falls, and steps open one after another', () => {
+    const d = GameDriver.mission('three_beacons_m02');
+    for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
+    d.hero().movementPoints = 99999;
+    const status = (id: string) => d.state.mission.objectives[id]!.status;
+    // Beyond the ridge nothing can be reached before the pass is broken.
+    for (const c of [{ q: 20, r: 6 }, { q: 22, r: 10 }, { q: 19, r: 13 }]) expect(quoteMovement(d.catalog, d.state, 'alexios', c).reachable).toBe(false);
+    expect(status('m02_pass_guard')).toBe('active');
+    for (const id of ['m02_nest_guard', 'm02_claim_covenant', 'm02_pantheon', 'm02_windcrest', 'm02_restore']) expect(status(id)).toBe('locked');
+    d.hero().movementPoints = 1560;
+    d.marchTo({ q: 13, r: 8 });
+    expect(status('m02_pass_guard')).toBe('completed');
+    expect(status('m02_nest_guard')).toBe('active');
+    expect(status('m02_pantheon')).toBe('locked');
+    d.hero().movementPoints = 99999;
+    for (const c of [{ q: 20, r: 6 }, { q: 22, r: 10 }]) expect(quoteMovement(d.catalog, d.state, 'alexios', c).reachable).toBe(true);
+  });
+
+  it('M02: a god chosen ahead of its step counts the moment the step opens', () => {
+    const d = GameDriver.mission('three_beacons_m02');
+    d.player.wallet.favor = 40;
+    d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'temple_2' });
+    d.do({ kind: 'SelectGod', godId: 'ares' });
+    const def = d.catalog.missions.three_beacons_m02!.objectives.find((o) => o.id === 'm02_pantheon')!;
+    expect(d.state.mission.objectives.m02_pantheon!.status).toBe('locked');
+    expect(objectiveDoneEarly(d.catalog, d.state, def)).toBe(true);
+    d.marchTo({ q: 13, r: 8 });
+    d.marchTo({ q: 20, r: 6 });
+    const events = d.do({ kind: 'ClaimObjective', objectiveId: 'm02_claim_covenant' });
+    // Claiming opens the god step, which is already satisfied: completed in the same command.
+    expect(d.state.mission.objectives.m02_pantheon!.status).toBe('completed');
+    expect(d.state.mission.objectives.m02_windcrest!.status).toBe('active');
+    expect(events.filter((e) => e.kind === 'ObjectiveChanged' && e.objectiveId === 'm02_pantheon').map((e) => (e as { status: string }).status)).toEqual(['active', 'completed']);
+    expect(objectiveDoneEarly(d.catalog, d.state, def)).toBe(false);
   });
 
   it('M03: either crossing reaches both relays; both relays open the ward gate; the patrol stays in its region', () => {

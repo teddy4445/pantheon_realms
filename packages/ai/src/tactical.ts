@@ -160,11 +160,26 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
           if (e.type === 'area_damage') for (const n of adjacentEnemies(catalog, battle, t)) score += strikeValue(n, dmg);
           spellChoices.push({ score, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
         }
-      } else if (e.type === 'mass_bonus') {
+      } else if (e.type === 'mass_damage') {
+        const dmg = Math.floor(((e.base + e.perPower * power) * (100 + pct)) / 100);
+        const enemies = sp.targets.map((tid) => battle.stacks[tid]!);
+        const score = enemies.reduce((n, t) => n + strikeValue(t, dmg), 0);
+        if (enemies[0]) spellChoices.push({ score, key: `spell:${sp.spellId}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: enemies[0].id } });
+      } else if (e.type === 'mass_heal') {
         const allies = sideStacks(battle, stack.side);
-        if (allies.every((a) => fresh(a))) {
-          const v = allies.reduce((n, a) => n + stackValue(catalog, a.creatureId) * aliveCount(catalog, a), 0) * 0.08;
-          spellChoices.push({ score: v, key: `spell:${sp.spellId}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: allies[0]!.id } });
+        const amount = e.base + e.perPower * power;
+        let v = 0;
+        for (const a of allies) {
+          const hp = catalog.creatures[a.creatureId]!.stats!.hp;
+          const missing = hp - (a.totalHp - (aliveCount(catalog, a) - 1) * hp);
+          v += (Math.min(Math.max(0, missing), amount) / hp) * stackValue(catalog, a.creatureId);
+        }
+        if (v > 0 && allies[0]) spellChoices.push({ score: v, key: `spell:${sp.spellId}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: allies[0].id } });
+      } else if (e.type === 'mass_bonus') {
+        const group = def.target === 'enemy_army' ? sp.targets.map((tid) => battle.stacks[tid]!) : sideStacks(battle, stack.side);
+        if (group.length > 0 && group.every((a) => fresh(a))) {
+          const v = group.reduce((n, a) => n + stackValue(catalog, a.creatureId) * aliveCount(catalog, a), 0) * 0.08;
+          spellChoices.push({ score: v, key: `spell:${sp.spellId}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: group[0]!.id } });
         }
       } else if (def.target === 'enemy_stack') {
         // Debuffs (negative Attack, Defense or Speed) on the most valuable fresh enemy.
@@ -174,7 +189,7 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
           const v = stackValue(catalog, t.creatureId) * aliveCount(catalog, t) * 0.1;
           spellChoices.push({ score: v, key: `spell:${sp.spellId}:${tid}`, payload: { kind: 'BattleCastSpell', spellId: sp.spellId, targetId: tid } });
         }
-      } else if (e.type === 'attack_bonus' || e.type === 'max_damage_roll' || e.type === 'defense_bonus' || e.type === 'speed_bonus') {
+      } else if (e.type === 'attack_bonus' || e.type === 'max_damage_roll' || e.type === 'defense_bonus' || e.type === 'speed_bonus' || e.type === 'melee_mitigation' || e.type === 'ranged_mitigation') {
         const allies = sideStacks(battle, stack.side).filter(fresh);
         for (const a of allies) {
           const v = stackValue(catalog, a.creatureId) * aliveCount(catalog, a) * 0.12;

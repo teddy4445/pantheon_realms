@@ -42,7 +42,7 @@ import type { ResourceBundle } from '../core/resources';
 import type { VersionBundle } from '../definitions/catalog';
 import type { ObjectiveStatus } from '../definitions/campaign';
 import type { HeroAttribute } from '../definitions/logic';
-import type { ArtifactSlot } from '../definitions/pantheons';
+import type { EquipSlot } from '../definitions/pantheons';
 import type { BattlefieldArchetype, StackSpec, WorldMapDefinition } from '../definitions/world';
 import type { MissionDefinition, ScenarioFeatures } from '../definitions/campaign';
 
@@ -144,7 +144,7 @@ export interface HeroState {
   movementPoints: number;
   position: HexCoord;
   army: ArmyState;
-  equipment: Partial<Record<ArtifactSlot, ArtifactInstanceState>>;
+  equipment: Partial<Record<EquipSlot, ArtifactInstanceState>>;
   backpack: ArtifactInstanceState[];
   status: 'active' | 'defeated' | 'retreated';
   /** Levels earned but not yet resolved through a level-up decision. */
@@ -372,7 +372,7 @@ export interface BattleSideEffects {
   creatureStats: { stat: 'attack' | 'defense' | 'speed'; amount: number; minTier?: number; maxTier?: number; ability?: string }[];
 }
 
-export type BattleStatusKind = 'defense_bonus' | 'attack_bonus' | 'max_damage_roll' | 'ranged_mitigation' | 'speed_bonus';
+export type BattleStatusKind = 'defense_bonus' | 'attack_bonus' | 'max_damage_roll' | 'ranged_mitigation' | 'speed_bonus' | 'melee_mitigation' | 'min_damage_roll';
 
 export interface BattleStatusState {
   sourceId: string;

@@ -150,7 +150,7 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'ActivateSite':
       return commitActivateSite(tx, c.heroId, c.siteId);
     case 'EquipArtifact':
-      return commitEquip(tx, c.heroId, c.instanceId);
+      return commitEquip(tx, c.heroId, c.instanceId, c.slot);
     case 'UnequipArtifact':
       return commitUnequip(tx, c.heroId, c.slot);
     case 'ChooseLevelUp':

@@ -9,11 +9,11 @@ import { hexEquals } from '../core/hex';
 import { resources } from '../core/resources';
 import { getArtifact, getHeroClass, getSpell, type ContentCatalog } from '../definitions/catalog';
 import { levelForXp } from '../definitions/rulesProfile';
-import type { ArtifactSlot } from '../definitions/pantheons';
+import { EQUIP_SLOT_KIND, equipSlotsFor, freeEquipSlot, type EquipSlot } from '../definitions/pantheons';
 import type { HeroState, LevelUpDecision, MatchState, SkillOffer, TownState } from '../state/match';
 import { maxMana, maxSpellTierLearnable, movementBudget } from '../resolvers/heroes';
 import { divineEffects } from '../resolvers/heroes';
-import { townHasEffect, townSpellLibraryTier } from '../resolvers/town';
+import { townHasEffect, townLibrarySpells, townSpellLibraryTier } from '../resolvers/town';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { spend } from './economy';
 import { scenarioMission, scopeAllowed } from '../resolvers/scenario';
@@ -182,11 +182,12 @@ export function learnSpellsAtTown(tx: Tx, hero: HeroState, town: TownState): voi
       .map((e) => (e.type === 'spell_eligibility' ? e.spellId : '')),
   );
   const learned: string[] = [];
+  const library = new Set(townLibrarySpells(tx.catalog, tx.state, town));
   for (const spell of Object.values(tx.catalog.spells).sort((a, b) => (a.id < b.id ? -1 : 1))) {
     if (spell.implementationStatus !== 'implemented') continue;
     if (hero.knownSpellIds.includes(spell.id)) continue;
     if (spell.tier > maxTier) continue;
-    if (spell.access === 'god_eligibility' && !eligibility.has(spell.id)) continue;
+    if (spell.access === 'god_eligibility' ? !eligibility.has(spell.id) : !library.has(spell.id)) continue;
     if (!scopeAllowed(tx.state, spell.scope)) continue;
     if (spell.pantheonId && spell.pantheonId !== town.pantheonId) continue;
     hero.knownSpellIds.push(spell.id);
@@ -209,8 +210,9 @@ export function grantArtifact(tx: Tx, heroId: HeroId, artifactId: ArtifactId): v
   if (!hero) return;
   const def = getArtifact(tx.catalog, artifactId);
   const instance = { instanceId: tx.nextId('artifact') as ArtifactInstanceId, artifactId };
-  if (!hero.equipment[def.slot]) {
-    hero.equipment[def.slot] = instance;
+  const free = freeEquipSlot(hero.equipment, def.slot);
+  if (free) {
+    hero.equipment[free] = instance;
     tx.emit({ kind: 'ArtifactGranted', heroId, artifactId, location: 'equipped' });
   } else if (hero.backpack.length < tx.profile.backpackCapacity) {
     hero.backpack.push(instance);
@@ -221,23 +223,31 @@ export function grantArtifact(tx: Tx, heroId: HeroId, artifactId: ArtifactId): v
   }
 }
 
-export function commitEquip(tx: Tx, heroId: HeroId, instanceId: ArtifactInstanceId): void {
+/**
+ * Equip from the backpack. `slot` picks the paper-doll position (it must hold this
+ * kind of artifact); without one the first empty position is used, else the first
+ * position of that kind, whose item goes to the backpack (a swap).
+ */
+export function commitEquip(tx: Tx, heroId: HeroId, instanceId: ArtifactInstanceId, slot?: EquipSlot): void {
   const hero = tx.state.heroes[heroId];
   if (!hero || hero.ownerId !== tx.actorId) reject('not_owner', 'Not your hero');
   const idx = hero.backpack.findIndex((a) => a.instanceId === instanceId);
   const inst = hero.backpack[idx];
   if (!inst) reject('not_found', 'That item is not in the backpack');
   const def = getArtifact(tx.catalog, inst.artifactId);
-  const current = hero.equipment[def.slot];
+  if (slot !== undefined && EQUIP_SLOT_KIND[slot] !== def.slot) reject('illegal_action', `${def.name} cannot be worn there`);
+  const target = slot ?? freeEquipSlot(hero.equipment, def.slot) ?? equipSlotsFor(def.slot)[0]!;
+  const current = hero.equipment[target];
   hero.backpack.splice(idx, 1);
   if (current) hero.backpack.push(current);
-  hero.equipment[def.slot] = inst;
+  hero.equipment[target] = inst;
   tx.emit({ kind: 'ArtifactEquipped', heroId, artifactId: inst.artifactId });
 }
 
-export function commitUnequip(tx: Tx, heroId: HeroId, slot: ArtifactSlot): void {
+export function commitUnequip(tx: Tx, heroId: HeroId, slot: EquipSlot): void {
   const hero = tx.state.heroes[heroId];
   if (!hero || hero.ownerId !== tx.actorId) reject('not_owner', 'Not your hero');
+  if (!(slot in EQUIP_SLOT_KIND)) reject('illegal_action', 'Unknown equipment slot');
   const inst = hero.equipment[slot];
   if (!inst) reject('not_found', 'Nothing equipped in that slot');
   if (hero.backpack.length >= tx.profile.backpackCapacity) reject('no_capacity', 'The backpack is full');

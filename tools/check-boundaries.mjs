@@ -31,6 +31,7 @@ const ALLOWED = {
 const RELATIVE_EXCEPTIONS = [
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/placeholders/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/final-manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/heroes/animation_manifest.json' },
   { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
 ];

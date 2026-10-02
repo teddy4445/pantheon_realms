@@ -153,7 +153,15 @@ export type SpellEffect =
   /** Adventure: the caster gains movement points today. */
   | { readonly type: 'movement_bonus'; readonly points: number }
   /** Adventure: the caster returns to the nearest town its player owns (spends all remaining movement). */
-  | { readonly type: 'recall' };
+  | { readonly type: 'recall' }
+  /** Melee strikes against the target are multiplied by numerator/denominator. */
+  | { readonly type: 'melee_mitigation'; readonly numerator: number; readonly denominator: number; readonly durationRounds: number }
+  /** The target rolls its minimum damage (a curse; cancels a max-damage blessing). */
+  | { readonly type: 'min_damage_roll'; readonly durationRounds: number }
+  /** Heal the front creature of every friendly stack (no resurrection). */
+  | { readonly type: 'mass_heal'; readonly base: number; readonly perPower: number }
+  /** Damage to every enemy stack. */
+  | { readonly type: 'mass_damage'; readonly base: number; readonly perPower: number };
 
 export interface SpellDefinition {
   readonly id: SpellId;
@@ -161,8 +169,11 @@ export interface SpellDefinition {
   readonly tier: number;
   readonly manaCost: number;
   readonly context: 'battle' | 'adventure';
-  /** 'friendly_army' affects every friendly stack (any friendly stack is the nominal target); 'self' is the casting hero. */
-  readonly target: 'enemy_stack' | 'ally_stack' | 'known_tile' | 'friendly_army' | 'self';
+  /**
+   * 'friendly_army' / 'enemy_army' affect every stack of that side (any stack of it is the
+   * nominal target); 'self' is the casting hero.
+   */
+  readonly target: 'enemy_stack' | 'ally_stack' | 'known_tile' | 'friendly_army' | 'enemy_army' | 'self';
   readonly effect: SpellEffect;
   readonly summary: string;
   /** Library access: 'sanctum' spells are learnable up to the town library tier; 'god' spells need eligibility. */
@@ -171,12 +182,84 @@ export interface SpellDefinition {
   readonly implementationStatus: ImplementationStatus;
   /** Learnable only in towns of this pantheon (omitted: any Sanctum). */
   readonly pantheonId?: PantheonId;
+  /** In-world story of the spell (encyclopedia and icon brief; never read by the rules). */
+  readonly lore?: string;
   /** Content pool (default 'core'). */
   readonly scope?: ContentScope;
 }
 
-export type ArtifactSlot = 'weapon' | 'armor' | 'head' | 'relic' | 'ring' | 'mount';
-export const ARTIFACT_SLOTS: readonly ArtifactSlot[] = ['weapon', 'armor', 'head', 'relic', 'ring', 'mount'];
+/**
+ * Artifact kinds, Heroes-3 style (owner decision 2026-10-01), plus a mount slot
+ * for the mounted heroes. Rings and miscellaneous items have several positions.
+ */
+export type ArtifactSlot = 'head' | 'neck' | 'cape' | 'weapon' | 'shield' | 'armor' | 'ring' | 'feet' | 'mount' | 'misc';
+export const ARTIFACT_SLOTS: readonly ArtifactSlot[] = ['head', 'neck', 'cape', 'weapon', 'shield', 'armor', 'ring', 'feet', 'mount', 'misc'];
+
+export type ArtifactRarity = 'treasure' | 'minor' | 'major' | 'relic';
+
+/** Paper-doll positions on a hero. */
+export type EquipSlot = 'head' | 'neck' | 'cape' | 'weapon' | 'shield' | 'armor' | 'ring_left' | 'ring_right' | 'feet' | 'mount' | 'misc_1' | 'misc_2' | 'misc_3' | 'misc_4' | 'misc_5';
+export const EQUIP_SLOTS: readonly EquipSlot[] = ['head', 'neck', 'cape', 'weapon', 'shield', 'armor', 'ring_left', 'ring_right', 'feet', 'mount', 'misc_1', 'misc_2', 'misc_3', 'misc_4', 'misc_5'];
+
+/** Which artifact kind each position holds. */
+export const EQUIP_SLOT_KIND: Readonly<Record<EquipSlot, ArtifactSlot>> = {
+  head: 'head',
+  neck: 'neck',
+  cape: 'cape',
+  weapon: 'weapon',
+  shield: 'shield',
+  armor: 'armor',
+  ring_left: 'ring',
+  ring_right: 'ring',
+  feet: 'feet',
+  mount: 'mount',
+  misc_1: 'misc',
+  misc_2: 'misc',
+  misc_3: 'misc',
+  misc_4: 'misc',
+  misc_5: 'misc',
+};
+
+export const ARTIFACT_SLOT_LABEL: Readonly<Record<ArtifactSlot, string>> = {
+  head: 'Head',
+  neck: 'Neck',
+  cape: 'Shoulders',
+  weapon: 'Weapon',
+  shield: 'Shield',
+  armor: 'Armor',
+  ring: 'Ring',
+  feet: 'Feet',
+  mount: 'Mount',
+  misc: 'Miscellaneous',
+};
+
+export const EQUIP_SLOT_LABEL: Readonly<Record<EquipSlot, string>> = {
+  head: 'Head',
+  neck: 'Neck',
+  cape: 'Shoulders',
+  weapon: 'Weapon',
+  shield: 'Shield',
+  armor: 'Armor',
+  ring_left: 'Left ring',
+  ring_right: 'Right ring',
+  feet: 'Feet',
+  mount: 'Mount',
+  misc_1: 'Misc 1',
+  misc_2: 'Misc 2',
+  misc_3: 'Misc 3',
+  misc_4: 'Misc 4',
+  misc_5: 'Misc 5',
+};
+
+/** The positions an artifact of this kind may occupy, in fill order. */
+export function equipSlotsFor(kind: ArtifactSlot): EquipSlot[] {
+  return EQUIP_SLOTS.filter((s) => EQUIP_SLOT_KIND[s] === kind);
+}
+
+/** First empty position for this kind, or null when every one is taken. */
+export function freeEquipSlot(equipment: Partial<Record<EquipSlot, unknown>>, kind: ArtifactSlot): EquipSlot | null {
+  return equipSlotsFor(kind).find((s) => !equipment[s]) ?? null;
+}
 
 export interface ArtifactDefinition {
   readonly id: ArtifactId;
@@ -191,6 +274,12 @@ export interface ArtifactDefinition {
   readonly provenance: ProvenanceInfo;
   /** Member of this artifact set (bonuses for wearing several pieces). */
   readonly setId?: string;
+  /** In-world story of the item (encyclopedia and icon brief; never read by the rules). */
+  readonly lore?: string;
+  /** Pantheon whose lands the item comes from (presentation and icon brief only). */
+  readonly originPantheonId?: PantheonId;
+  /** Heroes-3 style class: treasure < minor < major < relic (map treasure value; relics are unique finds). */
+  readonly rarity?: ArtifactRarity;
   /** Content pool (default 'core'): expanded items are stocked/placed only where expanded content is enabled. */
   readonly scope?: ContentScope;
 }

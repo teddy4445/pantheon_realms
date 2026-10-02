@@ -81,11 +81,13 @@ describe.each(PROPOSED)('%s pantheon (proposed values)', (pid) => {
 
   it('has hireable heroes whose classes exist', () => {
     expect(p.heroIds.length).toBeGreaterThanOrEqual(5);
+    // Hireable heroes plus The Winter Oath's opponents (never hireable).
     for (const id of p.heroIds) {
       const h = catalog.heroes[id]!;
-      expect(h.availability).toBe('hireable');
+      expect(['hireable', 'enemy']).toContain(h.availability);
       expect(catalog.heroClasses[h.classId]).toBeDefined();
     }
+    expect(p.heroIds.filter((id) => catalog.heroes[id]!.availability === 'hireable')).toHaveLength(5);
   });
 });
 

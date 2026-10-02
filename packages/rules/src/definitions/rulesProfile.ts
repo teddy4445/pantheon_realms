@@ -40,6 +40,12 @@ export interface RulesProfile {
   readonly heroHireCost: number;
   readonly maxHeroesPerPlayer: number;
   readonly backpackCapacity: number;
+  /**
+   * Sanctum library size per spell tier (index 0 = tier 1), Heroes-3 style: a town's
+   * library offers its own pantheon's spells plus a fixed draw of the shared ones,
+   * so different towns teach different spells.
+   */
+  readonly librarySpellsPerTier: readonly number[];
   readonly market: readonly MarketTier[];
   readonly minorGodFavorCost: number;
   readonly combat: {
@@ -119,6 +125,7 @@ export const PR_02_CANDIDATE: RulesProfile = {
   heroHireCost: 2500,
   maxHeroesPerPlayer: 8,
   backpackCapacity: 30,
+  librarySpellsPerTier: [6, 5, 4],
   market: [
     { minMarkets: 1, buyCommon: 500, sellCommon: 50, buyCrystal: 1000, sellCrystal: 100 },
     { minMarkets: 2, buyCommon: 450, sellCommon: 60, buyCrystal: 900, sellCrystal: 120 },

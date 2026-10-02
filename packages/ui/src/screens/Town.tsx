@@ -6,6 +6,7 @@
  */
 import { useMemo, useState } from 'react';
 import {
+  ARTIFACT_SLOT_LABEL,
   RESOURCE_KEYS,
   RESOURCE_LABELS,
   activeBuildingInSlot,
@@ -279,7 +280,7 @@ function MerchantModal({ town, onClose }: { town: TownState; onClose: () => void
                 {art ? (
                   <>
                     <div className="small">
-                      {art.slot} · {art.summary}
+                      {ARTIFACT_SLOT_LABEL[art.slot]} · {art.summary}
                     </div>
                     <div className="row gap">
                       <CostList cost={q?.cost ?? resources(art.merchantPrice ?? {})} wallet={state.players[playerId]!.wallet} />

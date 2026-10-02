@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
 import {
+  equipSlotsFor,
   effectiveAttack,
   effectiveDefense,
   effectiveSpeed,
@@ -318,7 +319,7 @@ describe('Artifact Merchant', () => {
     const gold = d.player.wallet.gold;
     d.do({ kind: 'BuyArtifact', townId: 'westharbor', heroId: 'alexios', index: 0 });
     expect(d.player.wallet.gold).toBe(gold - (def.merchantPrice!.gold ?? 0));
-    expect(d.hero().equipment[def.slot]?.artifactId).toBe(id);
+    expect(d.hero().equipment[equipSlotsFor(def.slot)[0]!]?.artifactId).toBe(id);
     expect(d.town('westharbor').merchant!.stock[0]).toBeNull();
     expect(d.reject({ kind: 'BuyArtifact', townId: 'westharbor', heroId: 'alexios', index: 0 }).code).toBe('not_found');
   });

@@ -690,6 +690,8 @@ export function BattleScreen() {
                 {mode.kind === 'spell'
                   ? catalog.spells[mode.spellId]?.target === 'friendly_army'
                     ? `Cast ${catalog.spells[mode.spellId]?.name}: click any of your stacks — it affects your whole army.`
+                    : catalog.spells[mode.spellId]?.target === 'enemy_army'
+                      ? `Cast ${catalog.spells[mode.spellId]?.name}: click any enemy stack — it affects their whole army.`
                     : catalog.spells[mode.spellId]?.effect.type === 'area_damage'
                       ? `Cast ${catalog.spells[mode.spellId]?.name}: choose an enemy — the stacks beside it are hit too.`
                       : `Cast ${catalog.spells[mode.spellId]?.name}: choose a highlighted target.`

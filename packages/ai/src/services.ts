@@ -7,7 +7,9 @@
  * values.
  */
 import {
-  ARTIFACT_SLOTS,
+  EQUIP_SLOTS,
+  freeEquipSlot,
+  type EquipSlot,
   goldEquivalent,
   interventionsFor,
   interventionUsedThisWeek,
@@ -161,7 +163,7 @@ export function merchantCandidates(catalog: ContentCatalog, belief: MatchState, 
       if (!hexEquals(h.position, town.coord)) continue;
       const options = stock
         .map((id, index) => ({ id, index }))
-        .filter((x): x is { id: string; index: number } => !!x.id && !h.equipment[catalog.artifacts[x.id]!.slot])
+        .filter((x): x is { id: string; index: number } => !!x.id && freeEquipSlot(h.equipment, catalog.artifacts[x.id]!.slot) !== null)
         .map((x) => ({ ...x, q: quoteArtifactPurchase(catalog, belief, playerId, town.id, h.id, x.index) }))
         .filter((x) => x.q.legal && wallet.gold - x.q.cost.gold >= MERCHANT_RESERVE_GOLD)
         .sort((a, b) => b.q.cost.gold - a.q.cost.gold || a.index - b.index);
@@ -175,12 +177,14 @@ export function merchantCandidates(catalog: ContentCatalog, belief: MatchState, 
 export function equipCandidates(catalog: ContentCatalog, heroes: readonly HeroState[]): CommandPayload[] {
   const out: CommandPayload[] = [];
   for (const h of heroes) {
-    const filled = new Set(ARTIFACT_SLOTS.filter((s) => !!h.equipment[s]));
+    const filled: Partial<Record<EquipSlot, true>> = {};
+    for (const s of EQUIP_SLOTS) if (h.equipment[s]) filled[s] = true;
     for (const inst of h.backpack) {
-      const slot = catalog.artifacts[inst.artifactId]?.slot;
-      if (slot && !filled.has(slot)) {
-        filled.add(slot);
-        out.push({ kind: 'EquipArtifact', heroId: h.id, instanceId: inst.instanceId });
+      const kind = catalog.artifacts[inst.artifactId]?.slot;
+      const free = kind ? freeEquipSlot(filled, kind) : null;
+      if (free) {
+        filled[free] = true;
+        out.push({ kind: 'EquipArtifact', heroId: h.id, instanceId: inst.instanceId, slot: free });
       }
     }
   }

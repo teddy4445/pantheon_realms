@@ -44,9 +44,9 @@ export function MainMenuScreen() {
     store.loadSnapshot(envelope.snapshot);
   };
 
-  const three = catalog.campaigns['three_beacons'];
+  const playableCampaigns = Object.values(catalog.campaigns).filter((c) => c.status === 'playable');
   const describe = (text: string) => (on: boolean) => setPreview(on ? text : null);
-  const campaignText = three ? `${three.name} — ${three.tagline}` : 'Story campaign';
+  const campaignText = playableCampaigns.length ? playableCampaigns.map((c) => `${c.name} — ${c.tagline}`).join(' · ') : 'Story campaign';
   const skirmishText = 'An authored map against the AI or a second player (hot-seat)';
   const randomText = 'A new symmetric map for two to four empires';
 

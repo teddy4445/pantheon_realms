@@ -276,6 +276,8 @@ export class MountedHeroCache {
   constructor(
     private readonly scene: Scene,
     private readonly scale = MOUNTED_HERO_SCALE,
+    /** Container yaw: π/2 turns the GLB's +Z front to the map figure's +X (other scenes pass their own). */
+    private readonly yaw = Math.PI / 2,
   ) {}
 
   failureFor(entry: MountedHeroModelEntry): string | null {
@@ -314,7 +316,7 @@ export class MountedHeroCache {
       const inst = c.instantiateModelsToScene((n) => `hero-${entry.pantheonId}#${id}:${n}`, false, { doNotInstantiate: true });
       const container = new TransformNode(`mounted-hero-${entry.pantheonId}#${id}`, this.scene);
       // GLB +Z front → figure convention (local +X forward); uniform scale; hoof offset.
-      container.rotation.y = Math.PI / 2;
+      container.rotation.y = this.yaw;
       container.scaling.setAll(this.scale);
       container.position.y = entry.groundOffset * this.scale;
       for (const n of inst.rootNodes) n.parent = container;

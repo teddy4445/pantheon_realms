@@ -76,6 +76,8 @@ export interface TownSetup {
   readonly buildings: readonly string[];
   readonly population: Readonly<Record<CreatureFamilyId, number>>;
   readonly covenants: readonly CreatureFamilyId[];
+  /** Starting garrison (default none). */
+  readonly garrison?: readonly StackSpec[];
 }
 
 export function createTownState(catalog: ContentCatalog, setup: TownSetup): TownState {
@@ -99,7 +101,7 @@ export function createTownState(catalog: ContentCatalog, setup: TownSetup): Town
     buildUsedDay: 0,
     population: { ...setup.population },
     covenants: [...setup.covenants],
-    garrison: armyFromSpecs([], `${setup.id}_garrison`),
+    garrison: armyFromSpecs(setup.garrison ?? [], `${setup.id}_garrison`),
     lastOfferingWeek: 0,
     merchant: null,
   };

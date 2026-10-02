@@ -207,7 +207,7 @@ function carve(grid: Grid, path: HexCoord[]): void {
 function buildAttempt(t: MapTemplateDefinition, streams: Streams, mode: GenerationMode): Grid | null {
   const grid = new Grid(t.width, t.height);
   // Stage B: boundary, barriers, anchors.
-  const boundaryTerrain: Terrain = t.biome === 'coast' ? 'water' : 'mountain';
+  const boundaryTerrain: Terrain = t.biome === 'coast' || t.biome === 'fjord' ? 'water' : 'mountain';
   for (let r = 0; r < t.height; r++) {
     for (let q = 0; q < t.width; q++) {
       const c = { q, r };

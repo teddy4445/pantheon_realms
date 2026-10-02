@@ -40,9 +40,9 @@ import {
   ROAD_COLOR,
   SEA_COLOR,
   SELECT_RING,
-  TERRAIN_COLORS,
   TERRAIN_HEIGHT,
   UNKNOWN_COLOR,
+  biomeTerrainRgb,
   hexToRgb,
   tileNoise,
 } from './palette';
@@ -307,7 +307,7 @@ export class AdventureSceneController implements SceneController {
       for (let q = 0; q < map.width; q++) {
         const i = r * map.width + q;
         const t = this.terrainOf(map, i);
-        const base = hexToRgb(TERRAIN_COLORS[t]);
+        const base = biomeTerrainRgb(t, map.biome);
         const n = tileNoise(q, r) * 0.06;
         const rgb: [number, number, number] = [
           Math.min(1, base[0] * tint[0] + n),

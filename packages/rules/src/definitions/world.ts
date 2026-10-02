@@ -65,8 +65,11 @@ export interface MapTemplateDefinition {
   readonly roadEdges: readonly (readonly [string, string])[];
   /** Additional coordinate waypoints connected in order (and closed) with internal roads. */
   readonly patrolLoop?: readonly HexCoord[];
-  /** Presentation biome hint (materials/lighting), never a rule. */
-  readonly biome: 'coast' | 'high_pass' | 'storm_plateau' | 'temperate';
+  /**
+   * Presentation biome hint (materials/lighting), never a rule. Coast-like
+   * biomes ('coast', 'fjord') use water for the map edge, the others mountain.
+   */
+  readonly biome: 'coast' | 'high_pass' | 'storm_plateau' | 'temperate' | 'tundra' | 'fjord';
   /**
    * 'point': the generated map is symmetric under a 180° rotation of the grid,
    * (q, r) -> (width-1-q, height-1-r), which preserves hex distance. Anchors,

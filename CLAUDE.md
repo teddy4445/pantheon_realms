@@ -5,8 +5,8 @@ before changing code. `DESIGN_PROPOSALS.md` holds the proposed
 designs (signatures, second god choice, support buildings; difficulty, story
 scenes, skills/spells/sets, interventions, world features, random maps,
 hot-seat, results screens) — proposals, not owner decisions.
-`CAMPAIGN_2_NORSE_OUTLINE.md` is an unapproved campaign outline: do not build
-it until the owner approves. The design documents in `docs/` are the source of truth;
+`CAMPAIGN_2_NORSE_OUTLINE.md` describes The Winter Oath, the seven-mission
+Norse campaign the owner asked for (built with proposed, unplaytested values). The design documents in `docs/` are the source of truth;
 do not reopen decisions they settle.
 
 ## Non-negotiables
@@ -23,7 +23,7 @@ do not reopen decisions they settle.
   (`PantheonDefinition.signature`); a new mechanic is a new effect *type* any
   pantheon or god can use.
 * Skirmish-only features stay behind `ScenarioFeatures` / `scope: 'expanded'`;
-  The Three Beacons keeps them off. Story scenes are data on the mission and
+  The Three Beacons keeps them off (The Winter Oath turns expanded content on). Story scenes are data on the mission and
   never change play.
 * Six pantheons, seven tiers, one family per tier, exactly base + one upgrade;
   18 town locations (7 dwellings + 11 support). Gods per pantheon are
@@ -64,6 +64,8 @@ npm run assets:check     # unit + mounted-hero models: Khronos validator + manif
 npm run assets:calibration  # regenerate the axis/scale calibration GLB
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
+npm run icons:catalog    # regenerate ICON_CATALOG.md + assets-source/icons/ICON_CATALOG.xlsx/.csv from the game
+npm run icons:import     # register final icons dropped into assets-source/icons/final/ (named by asset ID)
 ```
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and

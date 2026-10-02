@@ -319,10 +319,25 @@ in the adventure tile panel and on Journal objectives (`siteMarkerAsset`,
 `MarkerIcon` in `components/art.tsx`); the 3D map itself is unchanged.
 
 To add or replace an opening background, drop `opening-<name>.png` into
-`assets-source/ui/backgrounds/` and run the script. To deliver a final icon or
-logo, add the file and register it under the same asset ID in the `FINAL`
-table of `packages/ui/src/assets/manifest.ts` (it takes precedence over the
-generated manifest); no screen changes.
+`assets-source/ui/backgrounds/` and run the script.
+
+**Icon catalog and final icons.** `ICON_CATALOG.md` (repo root) lists every
+icon and small illustration the game shows — interface icons, map markers,
+spells, artifacts, artifact sets, skills, interventions, creature abilities,
+effect art, portraits, emblems, buildings and thumbnails — with the asset ID to
+deliver, the screens it appears on, what is shown today and a brief. The same
+list with thumbnails and a Status column is `assets-source/icons/ICON_CATALOG.xlsx`
+(and `icon_catalog.csv`). Both are generated from the game by
+`npm run icons:catalog` (`tools/assets/icon-catalog/`: a Vitest inventory step,
+a Playwright step that renders today's SVG glyphs, and a Python step that
+writes the files; development tools, never packaged). To deliver a final icon,
+name the PNG by its asset ID, put it in `assets-source/icons/final/` and run
+`npm run icons:import`: the file is checked against the catalog, sized for the
+game, copied to `assets-runtime/ui/icons/final/` and registered in
+`assets-runtime/ui/final-manifest.json`, which takes precedence over every
+placeholder (`FINAL` in `packages/ui/src/assets/manifest.ts`). Interface icons
+without pack art take final art under `icon.ui.<name>` automatically. No screen
+changes are needed.
 
 ## 12. Mounted adventure-map heroes (six animated GLBs)
 

@@ -443,3 +443,128 @@ Online play is not planned at this stage; the map editor is later.
 4. Should map events and camps use pantheon-neutral creatures only? Today the
    mercenary event offers Centaurs (a Greek family) on every map.
 5. Score formula weights.
+
+---
+
+## Group 0.5 — owner requests of 2026-10-01 (after the mounted heroes)
+
+_Status: the **requests and four answers are owner decisions**; every value
+below is **P — proposed this build, unplaytested**. Owner request: a central
+catalog of every icon; a second campaign with seven missions; Three Beacons
+Mission 2 played in order; more complex random maps with more settings
+(learning from Age of Mythology and Heroes 3); a hero screen much closer to
+Heroes 3; more spells and artifacts with stories, documented for icon
+production. Owner answers: the campaign is **Norse — The Winter Oath**; M02
+gets **both** a map block and an early-completion rule, applied to every
+campaign; the hero screen gets **Heroes-3-style slots** (content version bump,
+old saves incompatible); about **30 spells and 45 artifacts**._
+
+### 13. Steps in order, with early work counted (owner decision)
+
+An objective may list `requires` (steps that must be completed first; it then
+starts *locked*). A locked step opens when its prerequisites complete, and if
+its own goal is already met at that moment it completes at once — so a player
+who chose a god or raised Griffins ahead of time loses nothing. The journal
+shows "Opens after: …" on locked steps and a **Done early** chip when a locked
+step's goal already holds. Three Beacons M02 now runs pass → nest → covenant →
+god → Windcrest Griffins → beacon; the map already enforces the first part
+(the ridge is solid except the guarded pass). The validator rejects unknown
+prerequisites, cycles and a `requires` step that does not start locked. The
+Winter Oath uses the same rule in all seven missions.
+
+### 14. The hero screen in the style of Heroes 3
+
+* **Layout:** left — portrait, the four primary skills as tiles, experience and
+  mana bars, morale, luck, movement and vision, eight secondary-skill slots
+  (Basic / Advanced / Expert); centre — a paper doll around the hero's own 3D
+  mounted model (click it for a salute) with the spellbook button; right — the
+  player's heroes; bottom — army, exchange and quest buttons.
+* **Equipment:** 19 slots — head, neck, cape, weapon, shield, armor, two rings,
+  feet, mount and five miscellaneous — plus the backpack. An artifact has a
+  *kind* and fits every slot of that kind; equipping with no free slot of the
+  kind swaps with the first one. Pick an item in the backpack, then click a
+  matching slot (non-matching slots refuse); pick an equipped item to read it
+  and take it off. Rarity classes: treasure, minor, major, relic (the socket
+  frame shows it). A set whose pieces could not all be worn at once is
+  rejected by the validator.
+* Content version **0.8.0**: the equipment layout changed, so older saves are
+  refused as incompatible (as for every content-version change).
+
+### 15. More spells and artifacts, with stories
+
+* **30 new spells** (54 in all): 12 shared and 3 per pantheon, each with a
+  short lore text. Four new spell effects any content may use —
+  `melee_mitigation` (a fraction of melee damage taken), `min_damage_roll`
+  (a cursed stack rolls minimum damage), `mass_heal`, `mass_damage` — and the
+  target `enemy_army` (army-wide penalties).
+* **Town spell libraries (Heroes-3 style):** a Rune Circle / Sanctum offers the
+  town's own pantheon spells of each tier it has, plus a draw of shared spells
+  fixed per match and town (`librarySpellsPerTier` 6 / 5 / 4 for tiers 1–3), so
+  two towns of the same pantheon need not teach the same spells.
+* **54 new artifacts** (79 in all) across every slot kind, each with lore,
+  rarity, origin pantheon and price, and **6 new sets** — one per pantheon:
+  Gear of Perseus, Arms of the Einherjar, Regalia of the Two Lands, Treasures
+  of Takamagahara, Treasures of the Tuatha, Gifts of the Feathered Serpent.
+  Existing spells and artifacts received lore too.
+* All new spells, artifacts and sets are *expanded* content (skirmish, random
+  maps, The Winter Oath); The Three Beacons keeps its documented items.
+* Every spell and artifact, with its lore and a drawing brief, is listed in
+  `ICON_CATALOG.md` (§17).
+
+### 16. Random maps 0.2 (`pr-skirmishgen-0.2`)
+
+* **Six map types**, each a different structure on the same symmetric
+  construction: *Continental* (open land; Age of Mythology land maps),
+  *Highlands* (a mountain ring around every home valley with two guarded
+  passes; HoMM3 templates with guarded zone links), *Lake Isle* (a lake in the
+  middle, the contested site on an island, one causeway per empire; AoM
+  Ghost Lake), *Wild Forest* (deep forest and glades, roads are lifelines; AoM
+  Alfheim), *Marshlands* (fens and pools split the land; AoM Marsh),
+  *Crossroads* (peaks around a rich centre entered only through one strongly
+  guarded gate per empire; HoMM3 Jebus Cross).
+* **Zones:** every empire has a home zone (mines, cache, a shrine with a
+  treasure-class artifact, a near event) and an outer zone (camps, ruins with
+  minor artifacts, far events, the guarded gold mine, a high-tier lair); the
+  centre holds the gold mine or the relic shrine (a relic-class artifact on
+  rich and Crossroads maps).
+* **Settings:** size small / medium / large / **huge** (radius 14 / 17 / 21 /
+  25; four empires need medium or larger); guard strength weak / normal /
+  strong (60 / 100 / 160 % of every guard and wandering band); treasure scarce
+  / normal / rich (60 / 100 / 150 % of rewards; scarce drops the near event,
+  the home shrine and the crystal mine, rich adds a home gold mine, a sealed
+  vault with a major artifact and a second crystal mine); starting wealth low
+  / normal / high (50 / 100 / 200 %); roads full / sparse (sparse: roads only
+  to the sawmill and quarry); revealed map (terrain and sites start explored,
+  heroes stay hidden). Every setting is part of the map's identity, so the same
+  seed and settings always give the same map.
+* **Checks** (all must pass before a map is offered): SKM-1…5 as before, plus
+  **SKM-6** on Highlands and Crossroads — the centre is reachable only through
+  the guarded openings, one or more per empire.
+* **AI fix found on the way:** two AI empires could each sit in their own town
+  because each judged the other's visiting hero alone too strong; the AI now
+  counts its garrison when deciding whether its town is threatened.
+
+### 17. Icon catalog (owner request)
+
+`ICON_CATALOG.md` and `assets-source/icons/ICON_CATALOG.xlsx` / `.csv` list
+every icon and small illustration (695 entries in 12 sections) with its asset
+ID, the screens that show it, what is shown today and a brief; they are
+generated from the game (`npm run icons:catalog`). Delivered icons dropped into
+`assets-source/icons/final/` are registered by `npm run icons:import`.
+
+### 18. The Winter Oath (owner decision: build it)
+
+Seven Norse missions; see `CAMPAIGN_2_NORSE_OUTLINE.md`. New generic data:
+objective conditions `hero_defeated` and `town_owned`, a minor-god `count`,
+starting town garrisons, epilogue variants by flag, and the winter
+presentation biomes `tundra` and `fjord`.
+
+### Open questions for the owner (group 0.5)
+
+1. Hero screen: is the 19-slot doll (five miscellaneous slots, Heroes 3) right,
+   or should it be smaller for this game's item count?
+2. Spell libraries: should every town of a pantheon teach the same spells
+   (predictable), or keep the per-match draw (proposed)?
+3. Random maps: are the six types the right set? Which should be the default?
+4. The Winter Oath: see its own open questions (difficulty, expanded content,
+   order, portraits and music).
