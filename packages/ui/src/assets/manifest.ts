@@ -15,7 +15,7 @@ import finalArtManifest from '../../../../assets-runtime/ui/final-manifest.json'
 import storyArtManifest from '../../../../assets-runtime/art/manifest.json';
 // Named imports keep only the fields the game reads in the start-up bundle.
 import { assets as heroAssets, clips as heroClips, ground_alignment as heroGround, suggested_crossfade_seconds as heroCrossfade } from '../../../../assets-runtime/heroes/animation_manifest.json';
-import { heroModelEntriesFromManifest, registerHeroModels, registerUnitModels, type MountedHeroModelEntry, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
+import { heroModelEntriesFromManifest, registerEnvironmentArt, registerHeroModels, registerUnitModels, type EnvironmentArt, type MountedHeroModelEntry, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
 
@@ -41,30 +41,63 @@ const FINAL: Record<string, { file: string; provenance: string }> = { ...(finalA
 
 /**
  * Painted story art (ASSET_PIPELINE.md §13): dialogue busts, campaign covers and
- * cards, ending pictures, mission briefing art and cards. Written by
+ * cards, ending pictures, mission briefing art and cards; and the big-moment
+ * art (miracle cards, victory/defeat splashes, level-up and new-week banners;
+ * see assets/momentArt.ts). Written by
  * `npm run art:import` (tools/assets/import_story_art.py) from
  * assets-source/art/final/; the game only reads the runtime derivatives.
  */
 export interface StoryArtRecord {
   readonly id: string;
   readonly url: string;
-  readonly kind: 'bust' | 'cover' | 'ending' | 'briefing' | 'card';
+  readonly kind: 'bust' | 'cover' | 'ending' | 'briefing' | 'card' | 'miracle' | 'splash' | 'banner';
   readonly width: number;
   readonly height: number;
-  /** Busts: visible (non-transparent) bounds as fractions [left, top, right, bottom]. */
+  /** Busts and banners: visible (non-transparent) bounds as fractions [left, top, right, bottom]. */
   readonly alphaBox?: readonly [number, number, number, number];
+  /** Banners: the blank plaque the game writes on, measured per file, as fractions [left, top, right, bottom]. */
+  readonly plaque?: readonly [number, number, number, number];
 }
 interface StoryArtFile {
   readonly provenance: string;
-  readonly assets: Record<string, { file: string; kind: StoryArtRecord['kind']; width: number; height: number; alphaBox?: [number, number, number, number] }>;
+  readonly assets: Record<
+    string,
+    {
+      file: string;
+      kind: StoryArtRecord['kind'] | 'terrain' | 'battlefield' | 'sky';
+      width: number;
+      height: number;
+      alphaBox?: [number, number, number, number];
+      plaque?: [number, number, number, number];
+      wrap?: 'repeat' | 'mirror';
+      average?: string;
+      edge?: string;
+      haze?: string;
+      horizon?: number;
+    }
+  >;
 }
 const STORY = storyArtManifest as unknown as StoryArtFile;
 
 /** Story art by asset ID, with its size (null when not delivered). */
 export function resolveArt(id: string): StoryArtRecord | null {
   const a = STORY.assets[id];
-  return a ? { id, url: `./${a.file}`, kind: a.kind, width: a.width, height: a.height, alphaBox: a.alphaBox } : null;
+  if (!a || a.kind === 'terrain' || a.kind === 'battlefield' || a.kind === 'sky') return null;
+  return { id, url: `./${a.file}`, kind: a.kind, width: a.width, height: a.height, alphaBox: a.alphaBox, plaque: a.plaque };
 }
+
+/**
+ * Ground and sky art (Brief 2) for the 3D scenes: terrain textures, battlefield
+ * paintings and sky panoramas, from the same manifest. The scenes keep their
+ * procedural colours for anything not delivered.
+ */
+export function resolveEnvironmentArt(id: string): EnvironmentArt | null {
+  const a = STORY.assets[id];
+  if (!a || (a.kind !== 'terrain' && a.kind !== 'battlefield' && a.kind !== 'sky')) return null;
+  return { url: `./${a.file}`, width: a.width, height: a.height, wrap: a.wrap, average: a.average, edge: a.edge, haze: a.haze, horizon: a.horizon };
+}
+
+registerEnvironmentArt(resolveEnvironmentArt);
 
 const cache = new Map<string, AssetRecord>();
 

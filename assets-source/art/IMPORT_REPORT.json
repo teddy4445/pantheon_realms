@@ -5,9 +5,495 @@
   "bust": 35,
   "cover": 6,
   "ending": 11,
-  "mission": 40
+  "mission": 40,
+  "terrain": 60,
+  "battlefield": 6,
+  "sky": 10,
+  "miracle": 14,
+  "splash": 12,
+  "banner": 15
  },
  "assets": {
+  "banner.level_up.celtic": {
+   "file": "art/banners/banner.level_up.celtic.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0023,
+    0.0055,
+    0.9982,
+    0.9986
+   ],
+   "plaque": [
+    0.2021,
+    0.5525,
+    0.7974,
+    0.8011
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.level_up.celtic.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "79af9e45f4a11732e2e4868c39abc441e40b2884d41fd30391527458da9897ad"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.level_up.egyptian": {
+   "file": "art/banners/banner.level_up.egyptian.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0037,
+    0.0055,
+    0.9968,
+    0.9931
+   ],
+   "plaque": [
+    0.2353,
+    0.5387,
+    0.7657,
+    0.7583
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.level_up.egyptian.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "a9b97750f35f0fd84a26df19706d8b63c695d636ccdb6d20d5113a3304b6b04e"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.level_up.greek": {
+   "file": "art/banners/banner.level_up.greek.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0074,
+    0.0166,
+    0.9931,
+    0.9807
+   ],
+   "plaque": [
+    0.1865,
+    0.4917,
+    0.8145,
+    0.7541
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.level_up.greek.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "7519f8ac253754f9f585f9a9e3cc39458dc98cceecc00d04e0b7da5594cdba95"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.level_up.japanese": {
+   "file": "art/banners/banner.level_up.japanese.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0055,
+    0.0069,
+    0.9949,
+    0.9724
+   ],
+   "plaque": [
+    0.2182,
+    0.5483,
+    0.7901,
+    0.7983
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.level_up.japanese.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "932f30d89d63346d4c1e895a5fde11ba7cc72c3733512d0d0172d3ad99206c36"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.level_up.mesoamerican": {
+   "file": "art/banners/banner.level_up.mesoamerican.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0014,
+    0.0,
+    0.9991,
+    0.9972
+   ],
+   "plaque": [
+    0.1892,
+    0.5207,
+    0.8108,
+    0.7721
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.level_up.mesoamerican.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "5965fdf7a3b4201e94915865a562875a51fb8aac3b4a196318c26dd4074dcb42"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.level_up.norse": {
+   "file": "art/banners/banner.level_up.norse.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0101,
+    0.0041,
+    0.9908,
+    0.9931
+   ],
+   "plaque": [
+    0.2192,
+    0.5221,
+    0.7822,
+    0.7887
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.level_up.norse.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "928c03e29ad2eef19b7b2003ebf2586300bd34c429f34356caffaf8c73bf3819"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.new_week": {
+   "file": "art/banners/banner.new_week.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0143,
+    0.0014,
+    0.9862,
+    0.9807
+   ],
+   "plaque": [
+    0.1865,
+    0.5138,
+    0.814,
+    0.7569
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.new_week.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "c3d99615c290f3af733f2e77a33e1e0f7e3cb15ed0f163508204a2b81095f8db"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.quiet_week": {
+   "file": "art/banners/banner.week.quiet_week.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0134,
+    0.0,
+    0.9871,
+    0.9917
+   ],
+   "plaque": [
+    0.1865,
+    0.5138,
+    0.814,
+    0.7569
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.quiet_week.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "cd9db91c1c1b8fe65f012891634591fc4ad8c1a5374446fe087c9e18b7df3789"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.week_of_builders": {
+   "file": "art/banners/banner.week.week_of_builders.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0138,
+    0.0,
+    0.9862,
+    0.9807
+   ],
+   "plaque": [
+    0.1865,
+    0.511,
+    0.814,
+    0.7555
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.week_of_builders.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "53082d2aff9acba5af70962f5b79b57316e85bff8ee666f1662b65ee83b4323e"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.week_of_merchants": {
+   "file": "art/banners/banner.week.week_of_merchants.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0138,
+    0.0124,
+    0.9866,
+    0.971
+   ],
+   "plaque": [
+    0.1865,
+    0.5055,
+    0.8145,
+    0.7486
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.week_of_merchants.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "5b61e7f9ebf8dd612021dd61d3f78492ea1aeee6f221fa2277a3159eedd5f95a"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.week_of_omens": {
+   "file": "art/banners/banner.week.week_of_omens.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.012,
+    0.0028,
+    0.988,
+    0.9848
+   ],
+   "plaque": [
+    0.1865,
+    0.5138,
+    0.814,
+    0.7569
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.week_of_omens.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "bf0311cdae11de8ce89a6e6e56f7789c5e778455b6188a9aad861cc9a9f1d66e"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.week_of_plenty": {
+   "file": "art/banners/banner.week.week_of_plenty.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0069,
+    0.0,
+    0.9936,
+    0.9834
+   ],
+   "plaque": [
+    0.186,
+    0.5138,
+    0.814,
+    0.7569
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.week_of_plenty.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "efe2c778cd7750208f5429d2d94714444584da27ad91a3a0a6d546e2b2e28d2c"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.week_of_storms": {
+   "file": "art/banners/banner.week.week_of_storms.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0124,
+    0.0055,
+    0.9885,
+    0.9876
+   ],
+   "plaque": [
+    0.186,
+    0.5152,
+    0.8145,
+    0.7569
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.week_of_storms.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "ead62a6d2522eb125a64d628fb612248ee9df03103d94ff3b70b6b68130fd823"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.week_of_the_muse": {
+   "file": "art/banners/banner.week.week_of_the_muse.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0129,
+    0.018,
+    0.9871,
+    0.9724
+   ],
+   "plaque": [
+    0.1855,
+    0.5041,
+    0.8149,
+    0.7486
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.week_of_the_muse.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "118d8e48c40d8345cb64825c1462fa6dd048b1ab7715d29f5136180dbead0949"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "banner.week.week_of_valor": {
+   "file": "art/banners/banner.week.week_of_valor.webp",
+   "kind": "banner",
+   "width": 1536,
+   "height": 512,
+   "alphaBox": [
+    0.0138,
+    0.011,
+    0.9866,
+    0.9834
+   ],
+   "plaque": [
+    0.1865,
+    0.5152,
+    0.814,
+    0.7569
+   ],
+   "plaqueMeasured": true,
+   "source": {
+    "file": "assets-source/art/final/banner.week.week_of_valor.png",
+    "width": 2172,
+    "height": 724,
+    "sha256": "b6bfdb6bf4f10d9018556a9395c30ef2dd424ffbe67cb342c3d92e57884bdfaf"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 2172 x 724; reduced to 1536 x 512 for display, transparency and padding kept; plaque measured."
+  },
+  "battlefield.beacon_clearing.ground": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6E613D",
+   "edge": "#5D533F",
+   "source": {
+    "file": "assets-source/art/final/battlefield.beacon_clearing.ground.png",
+    "width": 1419,
+    "height": 1108,
+    "sha256": "0235a46212e4d2c44f8744d3939b68134946fdab004b034fdf4ba46f528b6c9f"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1419 x 1108; native 1419 x 1108 (not upscaled), drawn once and clamped."
+  },
+  "battlefield.coast_road.ground": {
+   "file": "art/battle/battlefield.coast_road.ground.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#8B7F55",
+   "edge": "#4D777E",
+   "source": {
+    "file": "assets-source/art/final/battlefield.coast_road.ground.png",
+    "width": 1419,
+    "height": 1108,
+    "sha256": "1bea4f305d62c25fda12baf4486e711931e64dff542f9f8bb226fb0004b24f96"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1419 x 1108; native 1419 x 1108 (not upscaled), drawn once and clamped."
+  },
+  "battlefield.grove.ground": {
+   "file": "art/battle/battlefield.grove.ground.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#5E682A",
+   "edge": "#3A5022",
+   "source": {
+    "file": "assets-source/art/final/battlefield.grove.ground.png",
+    "width": 1419,
+    "height": 1108,
+    "sha256": "e1e19a0b52d16f3d8f4dd1dbae7f8f29d57a03bbce0787413ea142b9989ab97e"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1419 x 1108; native 1419 x 1108 (not upscaled), drawn once and clamped."
+  },
+  "battlefield.open_field.ground": {
+   "file": "art/battle/battlefield.open_field.ground.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#7C7B37",
+   "edge": "#726F37",
+   "source": {
+    "file": "assets-source/art/final/battlefield.open_field.ground.png",
+    "width": 1419,
+    "height": 1108,
+    "sha256": "f8beff9251abc9d099890e21a5242b4a6f22eb7db6637f52de9beb68fc07a896"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1419 x 1108; native 1419 x 1108 (not upscaled), drawn once and clamped."
+  },
+  "battlefield.plateau.ground": {
+   "file": "art/battle/battlefield.plateau.ground.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6A6441",
+   "edge": "#33383A",
+   "source": {
+    "file": "assets-source/art/final/battlefield.plateau.ground.png",
+    "width": 1419,
+    "height": 1108,
+    "sha256": "9b0bfa0812fc6f352a3c52b942642b38342584bd8d5bceacc63e084baf720aae"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1419 x 1108; native 1419 x 1108 (not upscaled), drawn once and clamped."
+  },
+  "battlefield.ridge_pass.ground": {
+   "file": "art/battle/battlefield.ridge_pass.ground.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#676554",
+   "edge": "#5F5F50",
+   "source": {
+    "file": "assets-source/art/final/battlefield.ridge_pass.ground.png",
+    "width": 1419,
+    "height": 1108,
+    "sha256": "66482a6f84b2ecb788631adf6117a80ac5949f1397ff1573845a5237ce559c2d"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1419 x 1108; native 1419 x 1108 (not upscaled), drawn once and clamped."
+  },
   "campaign.lantern_road.cover": {
    "file": "art/covers/campaign.lantern_road.cover.webp",
    "kind": "cover",
@@ -1007,6 +1493,188 @@
     "sha256": "778492b30cdb1d900de469e959de4de72aec672a78a596d29369b1ccf4416d0a"
    },
    "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152, transparency kept."
+  },
+  "intervention.blessing_of_the_nile.card": {
+   "file": "art/miracles/intervention.blessing_of_the_nile.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.blessing_of_the_nile.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "fdf197659ebf043b758d458ad7407d8b0b87b76acaf084f801607871526fbcd3"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.bountiful_harvest.card": {
+   "file": "art/miracles/intervention.bountiful_harvest.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.bountiful_harvest.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "a8e6161dfbabad3d9ab42dd1a0cf7e86e96ceb8a53b97870c033ccf8d57aefe9"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.favorable_winds.card": {
+   "file": "art/miracles/intervention.favorable_winds.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.favorable_winds.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "fec499ae4ef57a9d60a45e699fcc0b9c2ee17593d810edc5aafd44cfc5837988"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.gift_of_the_feathered_serpent.card": {
+   "file": "art/miracles/intervention.gift_of_the_feathered_serpent.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.gift_of_the_feathered_serpent.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "5489264742be519d1300cc8368d16902c131fc5989b7d06415e3932ee77858cc"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.inspiration.card": {
+   "file": "art/miracles/intervention.inspiration.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.inspiration.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "08c0ad43918c8016776b14603f6061e96c2cc94c455e768cc7edfc731b9c1c9b"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.mending_light.card": {
+   "file": "art/miracles/intervention.mending_light.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.mending_light.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "48dc8ecd94f032c564f73461e584c291b0db3d4af6f5abe5d1541190ce96fcbf"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.mists_of_the_sidhe.card": {
+   "file": "art/miracles/intervention.mists_of_the_sidhe.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.mists_of_the_sidhe.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "c145fb8c4f0d8aad70bca751e2daf9c4d998d8b250e898a4f99088d3351c8cdf"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.rally_the_faithful.card": {
+   "file": "art/miracles/intervention.rally_the_faithful.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.rally_the_faithful.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "7f7e1c9738dd2aa929afcd2d1ffe04f5bce358fc9b5593823fc177354cafc855"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.ride_of_the_valkyries.card": {
+   "file": "art/miracles/intervention.ride_of_the_valkyries.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.ride_of_the_valkyries.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "cf2091170794c2f05eba6a58043b5ebc268e05dd6190ebc9d2382892caf90b64"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.shield_of_the_gods.card": {
+   "file": "art/miracles/intervention.shield_of_the_gods.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.shield_of_the_gods.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "fc90b0485441c1360ba35df97183f14a7c9ec3c3188411f8bcf2581496978def"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.thunderbolt_of_zeus.card": {
+   "file": "art/miracles/intervention.thunderbolt_of_zeus.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.thunderbolt_of_zeus.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "02f824670f26bc10c6e0e7c3aef5dc425762a95cc94ac605d3fe73046804df88"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.tithe_of_the_faithful.card": {
+   "file": "art/miracles/intervention.tithe_of_the_faithful.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.tithe_of_the_faithful.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "1931ccfadc31a2ea9946188697d19871a1d9d6e00861226c3f1f96aebc92604b"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.ward_of_the_kami.card": {
+   "file": "art/miracles/intervention.ward_of_the_kami.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.ward_of_the_kami.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "d54899d55dc8a8c42e4190cdf0ab40ea9056a26c88438f021a08f6e914b87e2b"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
+  },
+  "intervention.wrath_from_above.card": {
+   "file": "art/miracles/intervention.wrath_from_above.card.webp",
+   "kind": "miracle",
+   "width": 768,
+   "height": 1152,
+   "source": {
+    "file": "assets-source/art/final/intervention.wrath_from_above.card.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "4b936144baab49a5f0a40550aaccbb6b94b7f3713c2db7359bcebc03de431858"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1024 x 1536; reduced to 768 x 1152 for display."
   },
   "mission.lantern_road.m01.briefing": {
    "file": "art/missions/mission.lantern_road.m01.briefing.webp",
@@ -2287,6 +2955,1232 @@
     "sha256": "18f3b5b53af6e402e3747079b99e2e923408d8f199a968de0d9eef20748bee69"
    },
    "provenance": "Owner-delivered story art (GPT6_BRIEF_1), imported 2026-10-02; source 1672 x 941; 640 x 360 card (centred 16:9 crop)."
+  },
+  "sky.autumn": {
+   "file": "art/sky/sky.autumn.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#B6939B",
+   "haze": "#EAA287",
+   "source": {
+    "file": "assets-source/art/final/sky.autumn.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "7652c55f6cac22d94e52a7eea45081dd9c7618c2a88c92b517e6ebb93a2056bb"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.coast": {
+   "file": "art/sky/sky.coast.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#AD9F9C",
+   "haze": "#E5B381",
+   "source": {
+    "file": "assets-source/art/final/sky.coast.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "9369ddcc5f4c8286c7efa8f3f6ebe90aef661220d3d6d7c6f1d0a937cba67044"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.desert": {
+   "file": "art/sky/sky.desert.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#C5BEAD",
+   "haze": "#FDCF79",
+   "source": {
+    "file": "assets-source/art/final/sky.desert.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "ee87ec2976ef3d0638f1379f290cfe736de5f9b50709424335b1922b57b85a95"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.fjord": {
+   "file": "art/sky/sky.fjord.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#054B6D",
+   "haze": "#205B87",
+   "source": {
+    "file": "assets-source/art/final/sky.fjord.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "688cfacf63e2975eb0a01eadc178fea1c79019be26be9e83e772d901462dbd08"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.high_pass": {
+   "file": "art/sky/sky.high_pass.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#3E89DE",
+   "haze": "#9DCCF2",
+   "source": {
+    "file": "assets-source/art/final/sky.high_pass.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "d6728ccea99535441937007eb3f3ab668181d2bc961a6d5c051f0f0874b5948f"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.jungle": {
+   "file": "art/sky/sky.jungle.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#8E9FB4",
+   "haze": "#C0A08E",
+   "source": {
+    "file": "assets-source/art/final/sky.jungle.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "ac28e76d7933ae1efccc6c9db98e48b0ec1175ce8e6028dd31ee02904d4016d6"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.moor": {
+   "file": "art/sky/sky.moor.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#A89791",
+   "haze": "#CBA38B",
+   "source": {
+    "file": "assets-source/art/final/sky.moor.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "429c6530a667f3bafd92205ed6ba2df018e3935335fc102e4d15a8c45facd58d"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.storm_plateau": {
+   "file": "art/sky/sky.storm_plateau.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#71768C",
+   "haze": "#AC9A91",
+   "source": {
+    "file": "assets-source/art/final/sky.storm_plateau.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "9b0527091e215d1a80375f3c1b1a81b5cbab46be58d39a0ded773d3b54a9ae42"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.temperate": {
+   "file": "art/sky/sky.temperate.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#83B4E6",
+   "haze": "#BED7E9",
+   "source": {
+    "file": "assets-source/art/final/sky.temperate.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "7357fb5e7ea44ddfe6d032d88d3ea0efa543d35089a57834216c4a939c65d167"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "sky.tundra": {
+   "file": "art/sky/sky.tundra.webp",
+   "kind": "sky",
+   "width": 2048,
+   "height": 768,
+   "wrap": "mirror",
+   "horizon": 0.62,
+   "average": "#19375F",
+   "haze": "#405280",
+   "source": {
+    "file": "assets-source/art/final/sky.tundra.png",
+    "width": 2048,
+    "height": 768,
+    "sha256": "59c613af1ec8fbd991b918d8335b37ee7f6ece4a9527b8833083308d24074357"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 2048 x 768; native 2048 x 768 (not upscaled); left/right seam NOT verified."
+  },
+  "splash.celtic.defeat": {
+   "file": "art/splashes/splash.celtic.defeat.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.celtic.defeat.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "a1ccffc61db3f573e3c03b56d7e060451f3751ac88736b6f10caee19d34be418"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.celtic.victory": {
+   "file": "art/splashes/splash.celtic.victory.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 940,
+   "source": {
+    "file": "assets-source/art/final/splash.celtic.victory.png",
+    "width": 1672,
+    "height": 940,
+    "sha256": "bacc3ffc92fa1bcc1433d49c29f3aaacb95cd4fd372bb161e201cf690c2ccf21"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 940; native (not upscaled) 1672 x 940 for display."
+  },
+  "splash.egyptian.defeat": {
+   "file": "art/splashes/splash.egyptian.defeat.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.egyptian.defeat.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "dd3bc35b83a878901edaafc2b7ad4256ec05082346991855b023ad4684ab43b7"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.egyptian.victory": {
+   "file": "art/splashes/splash.egyptian.victory.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.egyptian.victory.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "f26cfd6bd70bde4fa6e0f5ac5f953fa9163fb7e1f5dbe0a8886c917bb4164d35"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.greek.defeat": {
+   "file": "art/splashes/splash.greek.defeat.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.greek.defeat.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "f8da6de0c1147a6c2a19070958543049eafe31cdb9efc369eb274a79ed118f60"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.greek.victory": {
+   "file": "art/splashes/splash.greek.victory.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.greek.victory.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "900e2c7d487b4b26911c9eacdecda00dbcc792c48d45a7cde109c018e1bb16df"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.japanese.defeat": {
+   "file": "art/splashes/splash.japanese.defeat.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.japanese.defeat.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "ff1b54118ce546834d3b9799d5a23c11d1aa6904c7e0566f72d3d2c686e3a0a0"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.japanese.victory": {
+   "file": "art/splashes/splash.japanese.victory.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.japanese.victory.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "adf0817738188bf45c18f482b02ef3227716c7c9a283218f28aec724603fc0e5"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.mesoamerican.defeat": {
+   "file": "art/splashes/splash.mesoamerican.defeat.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.mesoamerican.defeat.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "f4bf3269b1be6a1bd37a46bfcdcf19ea00ebce192576115be2ac58c2bded9858"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.mesoamerican.victory": {
+   "file": "art/splashes/splash.mesoamerican.victory.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.mesoamerican.victory.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "505ff1029dbb08e2a96bac15870778288fb57ac3148cf187cc2ed27f875bac1d"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.norse.defeat": {
+   "file": "art/splashes/splash.norse.defeat.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.norse.defeat.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "05872e4a219b272fda80c673f1b4d0e9cd30b1aaec055f1009fd990a5f097922"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "splash.norse.victory": {
+   "file": "art/splashes/splash.norse.victory.webp",
+   "kind": "splash",
+   "width": 1672,
+   "height": 941,
+   "source": {
+    "file": "assets-source/art/final/splash.norse.victory.png",
+    "width": 1672,
+    "height": 941,
+    "sha256": "b41a31ebe9ead6eec270ac7e4ef941c36d0bb12af6a8a1bc533ac1aac0a1878b"
+   },
+   "provenance": "Owner-delivered big-moment art (GPT6_BRIEF_3), imported 2026-10-02; source 1672 x 941; native (not upscaled) 1672 x 941 for display."
+  },
+  "terrain.autumn.forest": {
+   "file": "art/terrain/terrain.autumn.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#6E471D",
+   "source": {
+    "file": "assets-source/art/final/terrain.autumn.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "63c6ed4a2afd8996b3a85279be8f09c3c9c97e04fc2cb7f2220667fb7094f64a"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.autumn.marsh": {
+   "file": "art/terrain/terrain.autumn.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#60542D",
+   "source": {
+    "file": "assets-source/art/final/terrain.autumn.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "d2fa4978b1a8f07bc0221804fd609a7f846f8e1c17049e056a503b048f81b997"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.autumn.mountain": {
+   "file": "art/terrain/terrain.autumn.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#5C4935",
+   "source": {
+    "file": "assets-source/art/final/terrain.autumn.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "7e8fe940854e2acea7acfb6b4f985199841bfbb74e1b3af35ed77d2db0fa0ceb"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.autumn.plains": {
+   "file": "art/terrain/terrain.autumn.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#976B2B",
+   "source": {
+    "file": "assets-source/art/final/terrain.autumn.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "c4b14fc1ab2529f3603da80c0da8f0827668eecd64fc45dc30c4c253781ecef2"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.autumn.rough": {
+   "file": "art/terrain/terrain.autumn.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#6E502F",
+   "source": {
+    "file": "assets-source/art/final/terrain.autumn.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "1fc99412f7e8d9c82690a588e412360b4c391993cde844bc34373956aa98f72b"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.autumn.water": {
+   "file": "art/terrain/terrain.autumn.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#3E666B",
+   "source": {
+    "file": "assets-source/art/final/terrain.autumn.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "ac161b80e7f6046bdccb517e9206b5557ed626a19773633731e81bae2cb530a2"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.coast.forest": {
+   "file": "art/terrain/terrain.coast.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#6D623A",
+   "source": {
+    "file": "assets-source/art/final/terrain.coast.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "92ea9fa9d6f35a27289d1b1e4d74e3a86a426d28944af7776214939aae0c14e8"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.coast.marsh": {
+   "file": "art/terrain/terrain.coast.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#645D45",
+   "source": {
+    "file": "assets-source/art/final/terrain.coast.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "e67a584956c54fc0327c54887a2d2be5b0cd2a67d296a36eb96566d4d43c8aa8"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.coast.mountain": {
+   "file": "art/terrain/terrain.coast.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#8C7D65",
+   "source": {
+    "file": "assets-source/art/final/terrain.coast.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "634e048615a8c674c7e2aaa5708309c404e7e7650f2e3bec8d0187bf0614b975"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.coast.plains": {
+   "file": "art/terrain/terrain.coast.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#94874A",
+   "source": {
+    "file": "assets-source/art/final/terrain.coast.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "3e5a8eabe1776cbb1af8e07d7cedff2dee09a9c55bf1daf845b023125196fe44"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.coast.rough": {
+   "file": "art/terrain/terrain.coast.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#937A56",
+   "source": {
+    "file": "assets-source/art/final/terrain.coast.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "64ca2360399e3d1c4db5e266bf83279a4a9b994060de348cd9ac24af0b24e983"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.coast.water": {
+   "file": "art/terrain/terrain.coast.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#196688",
+   "source": {
+    "file": "assets-source/art/final/terrain.coast.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "1d369489dd5342be42c6df98e8b3fd21639a22c0cea1887676a0456b990a6a8f"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.desert.forest": {
+   "file": "art/terrain/terrain.desert.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#726631",
+   "source": {
+    "file": "assets-source/art/final/terrain.desert.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "ccb23b6a308563ee2eb156ee71964f6a900107d1a390a147bd2e2c5a34258cf0"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.desert.marsh": {
+   "file": "art/terrain/terrain.desert.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#7F784C",
+   "source": {
+    "file": "assets-source/art/final/terrain.desert.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "474b3755f4ad3598bf818cdf64032a8858981cfeb18de245d6fa5620749e2873"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.desert.mountain": {
+   "file": "art/terrain/terrain.desert.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#AA784C",
+   "source": {
+    "file": "assets-source/art/final/terrain.desert.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "51ff6675f1623affffbb013754bc88352c99a7ac21082fccab61d46778248c67"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.desert.plains": {
+   "file": "art/terrain/terrain.desert.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#C59E5B",
+   "source": {
+    "file": "assets-source/art/final/terrain.desert.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "213784e3c1922bfd3464731927b69cfcac20d865048f1d6515f9d7f3a706413e"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.desert.rough": {
+   "file": "art/terrain/terrain.desert.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#B97F4D",
+   "source": {
+    "file": "assets-source/art/final/terrain.desert.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "8ee7cb5eddf89f2656fb99bd9e7846f2fa4b84d20243b00ccf2de81d6e60b26d"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.desert.water": {
+   "file": "art/terrain/terrain.desert.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#3F6B75",
+   "source": {
+    "file": "assets-source/art/final/terrain.desert.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "bc51947e24ad2d194be8fef41a231131af53c9a40c5705166b91da925f429bee"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.fjord.forest": {
+   "file": "art/terrain/terrain.fjord.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#7A8480",
+   "source": {
+    "file": "assets-source/art/final/terrain.fjord.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "a7af85e6e66567127634dc2a8753cc014cff225331f92eb1bb8c4b760908df0d"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.fjord.marsh": {
+   "file": "art/terrain/terrain.fjord.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#767975",
+   "source": {
+    "file": "assets-source/art/final/terrain.fjord.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "73985086b142dee3ca11606ffe846cd7f960be6d3b4d32fcc9f6ec8d455bc764"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.fjord.mountain": {
+   "file": "art/terrain/terrain.fjord.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#79818C",
+   "source": {
+    "file": "assets-source/art/final/terrain.fjord.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "e5620a76f8bc588b80c92432b71f5f5191e48f8431002e6f1958bd9210a9e6ab"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.fjord.plains": {
+   "file": "art/terrain/terrain.fjord.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#8E8E81",
+   "source": {
+    "file": "assets-source/art/final/terrain.fjord.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "51ce5c7c9adec227bfa9fc5d80348eeb78610edc001b77babb3caafad74b8304"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.fjord.rough": {
+   "file": "art/terrain/terrain.fjord.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#95908A",
+   "source": {
+    "file": "assets-source/art/final/terrain.fjord.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "f0587f58b800e87de1a24a320ef9d2abc5b3dac9342b6d02698afc00ce1b7d39"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.fjord.water": {
+   "file": "art/terrain/terrain.fjord.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#29607B",
+   "source": {
+    "file": "assets-source/art/final/terrain.fjord.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "47ce9dbb230355bdc32c1f808767af695a0555048586dea66a308f6edd644ca8"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.high_pass.forest": {
+   "file": "art/terrain/terrain.high_pass.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#564C23",
+   "source": {
+    "file": "assets-source/art/final/terrain.high_pass.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "930892afd172c39f211bc25499a4cdb1b568b7ba155aba61a5de6e4d58227c65"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.high_pass.marsh": {
+   "file": "art/terrain/terrain.high_pass.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#5E5328",
+   "source": {
+    "file": "assets-source/art/final/terrain.high_pass.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "2ca3fb6ed46acce30f85a2da183624e2f140b298b4a3536d66010fcf52838b2f"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.high_pass.mountain": {
+   "file": "art/terrain/terrain.high_pass.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#848486",
+   "source": {
+    "file": "assets-source/art/final/terrain.high_pass.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "488afad798e32101a552c5db683064fc8ae687503e85933573c56b36dc41c049"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.high_pass.plains": {
+   "file": "art/terrain/terrain.high_pass.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#6A6E39",
+   "source": {
+    "file": "assets-source/art/final/terrain.high_pass.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "43e3217576e4c9c1f71862bef2013d43d0aed3abb4fcb52fb854ca485a04d1be"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.high_pass.rough": {
+   "file": "art/terrain/terrain.high_pass.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#7C6C55",
+   "source": {
+    "file": "assets-source/art/final/terrain.high_pass.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "ff41889268478d18d8ee183f9b225befc3f253d3e7d71ad13d7c8356c27e2396"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.high_pass.water": {
+   "file": "art/terrain/terrain.high_pass.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#357D97",
+   "source": {
+    "file": "assets-source/art/final/terrain.high_pass.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "21b0cf73bb4c5c0c6c25a5cbf1dd3f5b26f341080555b1186a14fcf6313cf333"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.jungle.forest": {
+   "file": "art/terrain/terrain.jungle.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#504C27",
+   "source": {
+    "file": "assets-source/art/final/terrain.jungle.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "1387be0b34d37d5e1b19e164ab181225b3ccc1433feabc415c423c0b582704a7"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.jungle.marsh": {
+   "file": "art/terrain/terrain.jungle.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#434625",
+   "source": {
+    "file": "assets-source/art/final/terrain.jungle.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "fed5ec6dcee68d5d3e53dde6b1e2b418f45d7be69e1f0556e088b17fc0aae106"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.jungle.mountain": {
+   "file": "art/terrain/terrain.jungle.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#4C4F2F",
+   "source": {
+    "file": "assets-source/art/final/terrain.jungle.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "39cbb3e4d91313f7ec14aab7efd934d48701c89c4aa870a9bcfde5ee809492bd"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.jungle.plains": {
+   "file": "art/terrain/terrain.jungle.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#565224",
+   "source": {
+    "file": "assets-source/art/final/terrain.jungle.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "2ac1a83b09d425ed2b060beadc9043baaea2f0b58debe3b6b27eba1283b62f59"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.jungle.rough": {
+   "file": "art/terrain/terrain.jungle.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#6D5B34",
+   "source": {
+    "file": "assets-source/art/final/terrain.jungle.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "76319aaaef2123c181d4d3a263dc3324e5f4001732e63c1576a9a8fed322c1ac"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.jungle.water": {
+   "file": "art/terrain/terrain.jungle.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#368680",
+   "source": {
+    "file": "assets-source/art/final/terrain.jungle.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "9feafcc3b3709d31cf63eb1609e5f768b24e7cb55b26c2db8aae1218315888da"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.moor.forest": {
+   "file": "art/terrain/terrain.moor.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#585626",
+   "source": {
+    "file": "assets-source/art/final/terrain.moor.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "f3c6af98649810104dc157eb7e6e3004df3b41bb605de4d9eee065c7a3e62a36"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.moor.marsh": {
+   "file": "art/terrain/terrain.moor.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#4F5A50",
+   "source": {
+    "file": "assets-source/art/final/terrain.moor.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "c3db2d606ba2e867b132022e855f8ba5d7aeb01f2a2c086f602bba87a08f0de3"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.moor.mountain": {
+   "file": "art/terrain/terrain.moor.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#6B5E4C",
+   "source": {
+    "file": "assets-source/art/final/terrain.moor.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "5e2d6b51ff091f34b8a3840e6a92162cbfb2792f2a8b9b5d04d95e6890fe2236"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.moor.plains": {
+   "file": "art/terrain/terrain.moor.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#675933",
+   "source": {
+    "file": "assets-source/art/final/terrain.moor.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "1c73ff32dd8a271f339c50e70df0fad2d4f70523e2c44ed6a75fd5c5e35a95be"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.moor.rough": {
+   "file": "art/terrain/terrain.moor.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#67553B",
+   "source": {
+    "file": "assets-source/art/final/terrain.moor.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "11bdba64e02ad8c860e8836be63f829935d98701292f88f6c74ed1af6f28024b"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.moor.water": {
+   "file": "art/terrain/terrain.moor.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#335061",
+   "source": {
+    "file": "assets-source/art/final/terrain.moor.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "692d3f7bce2ae3ab70026efd86654a0d034088ddb10634e00127abd90ad8bc3b"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.storm_plateau.forest": {
+   "file": "art/terrain/terrain.storm_plateau.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#444126",
+   "source": {
+    "file": "assets-source/art/final/terrain.storm_plateau.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "b3a0ef86a571d6f53b22552cdf3b2c8056beb9ea23c8968d29a29c94e3d90a13"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.storm_plateau.marsh": {
+   "file": "art/terrain/terrain.storm_plateau.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#40412E",
+   "source": {
+    "file": "assets-source/art/final/terrain.storm_plateau.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "b509aa8aa77fd2b6c230c51923f3157f2d2402e53c39f718938b6df4d24fa891"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.storm_plateau.mountain": {
+   "file": "art/terrain/terrain.storm_plateau.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#4B4C4F",
+   "source": {
+    "file": "assets-source/art/final/terrain.storm_plateau.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "cb4835e2fe0c08fd1f5f7a6fdea5e28bc35d21984e5364951dd1356c7767b0b3"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.storm_plateau.plains": {
+   "file": "art/terrain/terrain.storm_plateau.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#67673B",
+   "source": {
+    "file": "assets-source/art/final/terrain.storm_plateau.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "f754b599467cd93c8a62aaf7b2a97284cebed21561c015c94a3aa788f385d50b"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.storm_plateau.rough": {
+   "file": "art/terrain/terrain.storm_plateau.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#675E4E",
+   "source": {
+    "file": "assets-source/art/final/terrain.storm_plateau.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "bee687694a02b4c3c12b928b421b5332348370c11321fbb65e50ffd136c8e75a"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.storm_plateau.water": {
+   "file": "art/terrain/terrain.storm_plateau.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#154973",
+   "source": {
+    "file": "assets-source/art/final/terrain.storm_plateau.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "00dd21d327233310a7a69601e65351deac010586b41c03c8b2a7d57b6d6f4038"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.temperate.forest": {
+   "file": "art/terrain/terrain.temperate.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#564D25",
+   "source": {
+    "file": "assets-source/art/final/terrain.temperate.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "8268cd2a3c2e12a4ad9364542fe98f7797290a84c2d504092fcb532d32170f05"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.temperate.marsh": {
+   "file": "art/terrain/terrain.temperate.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#585934",
+   "source": {
+    "file": "assets-source/art/final/terrain.temperate.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "8cdd58a65190a0c1c43bf28c4a4aa15d41635063fe8869c071189fbb68f6f5b6"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.temperate.mountain": {
+   "file": "art/terrain/terrain.temperate.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#827462",
+   "source": {
+    "file": "assets-source/art/final/terrain.temperate.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "a078d1b2837408b2488a9e66176a138071d73900e6ca35d2c77d2329c280680f"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.temperate.plains": {
+   "file": "art/terrain/terrain.temperate.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#767B2D",
+   "source": {
+    "file": "assets-source/art/final/terrain.temperate.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "9a58c1a5fcfd1990e0a303370113b5c09dd0f802a6831e6f323d78739345cc82"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.temperate.rough": {
+   "file": "art/terrain/terrain.temperate.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#8D704B",
+   "source": {
+    "file": "assets-source/art/final/terrain.temperate.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "392ea3eb7a4d96dc55c15d4f2ce478b973cc2e30a5ada68f7b52c9ce9b101ca5"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.temperate.water": {
+   "file": "art/terrain/terrain.temperate.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#116594",
+   "source": {
+    "file": "assets-source/art/final/terrain.temperate.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "c638254cae3f0e5a47230c60a9c908cd190bcd37326221f32ed5594f59df0603"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.tundra.forest": {
+   "file": "art/terrain/terrain.tundra.forest.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#797A72",
+   "source": {
+    "file": "assets-source/art/final/terrain.tundra.forest.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "824c7d2bb764094a900a6105c737bbdbf2ca7b8e0ea18aa5fec84db621e1cdc2"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.tundra.marsh": {
+   "file": "art/terrain/terrain.tundra.marsh.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#7E8381",
+   "source": {
+    "file": "assets-source/art/final/terrain.tundra.marsh.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "18db7edacea528894cf9e584154dc387903c1c8224b0687f5ef3593b0cbb0f73"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.tundra.mountain": {
+   "file": "art/terrain/terrain.tundra.mountain.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#A0A6B0",
+   "source": {
+    "file": "assets-source/art/final/terrain.tundra.mountain.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "7b2cb66d08fb1bee453af75c56dc0481d007de4ffd21b73d4cea5eea3c91df9f"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.tundra.plains": {
+   "file": "art/terrain/terrain.tundra.plains.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#B7B6B9",
+   "source": {
+    "file": "assets-source/art/final/terrain.tundra.plains.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "d2081db3a5f8e731530c41b298251de2d48639b76a9def79560dc9d25d435634"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.tundra.rough": {
+   "file": "art/terrain/terrain.tundra.rough.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#959596",
+   "source": {
+    "file": "assets-source/art/final/terrain.tundra.rough.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "9c099755b5d8b3fe8367504d64a35b434685d285c3ea0a9a58df9eea574e57ce"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "terrain.tundra.water": {
+   "file": "art/terrain/terrain.tundra.water.webp",
+   "kind": "terrain",
+   "width": 1024,
+   "height": 1024,
+   "wrap": "mirror",
+   "average": "#6A879E",
+   "source": {
+    "file": "assets-source/art/final/terrain.tundra.water.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "0ef48eb3f824463c5cbf48e67a1e5c9d8d11837cf2bde54e7c0333433b0932fd"
+   },
+   "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
   }
  }
 }

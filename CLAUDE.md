@@ -70,7 +70,7 @@ python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
 npm run icons:catalog    # regenerate ICON_CATALOG.md + assets-source/icons/ICON_CATALOG.xlsx/.csv from the game
 npm run icons:import     # register final icons dropped into assets-source/icons/final/ (named by asset ID)
-npm run art:import       # story art from assets-source/art/final/ → assets-runtime/art/ (busts, covers, endings, mission art; never upscales)
+npm run art:import       # painted art from assets-source/art/final/ → assets-runtime/art/ (story art, terrain, battlefields, skies, miracle cards, splashes, banners; never upscales)
 ```
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and

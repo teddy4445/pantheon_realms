@@ -1,7 +1,7 @@
 {
   "name": "pantheon-realms",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Pantheon Realms \u2014 turn-based mythological strategy (TypeScript rules, React UI, Babylon.js, Electron).",
   "type": "module",
   "workspaces": [

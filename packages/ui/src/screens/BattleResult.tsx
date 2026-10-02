@@ -10,6 +10,8 @@ import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle } from '../components/kit';
 import { ArtifactIcon, CreaturePortrait } from '../components/art';
 import { CostList } from '../components/game';
+import { ResultSplash } from '../components/moments';
+import { resultSplashArt } from '../assets/momentArt';
 
 export function BattleResultScreen() {
   const store = useStore();
@@ -31,6 +33,9 @@ export function BattleResultScreen() {
   }
   const playerWon = r.playerSide !== null && r.winner === r.playerSide;
   const title = r.outcome === 'retreat' ? (playerWon ? 'The enemy fled' : 'Retreat') : r.outcome === 'surrender' ? (playerWon ? 'The enemy surrendered' : 'Surrendered') : r.outcome === 'stalemate' ? 'Stalemate' : playerWon ? 'Victory' : 'Defeat';
+  // The player's own pantheon painting behind the result (a win or a loss; a stalemate keeps the plain screen).
+  const playerRecord = r.playerSide === 'attacker' ? r.attacker : r.playerSide === 'defender' ? r.defender : null;
+  const splash = playerRecord?.playerId && r.outcome !== 'stalemate' ? resultSplashArt(state.players[playerRecord.playerId]?.pantheonId, playerWon) : null;
   const hasRewards = RESOURCE_KEYS.some((k) => r.rewards.resources[k] > 0) || r.rewards.artifactIds.length > 0 || r.rewards.entitlementIds.length > 0;
   const pending = state.pendingDecisions.some((d) => state.heroes[d.heroId]?.ownerId === store.session!.humanPlayerId);
   const onContinue = () => {
@@ -62,7 +67,8 @@ export function BattleResultScreen() {
       </tr>
     ));
   return (
-    <div className="screen result-screen" data-testid="battle-result">
+    <div className={`screen result-screen ${splash ? 'result-screen--splash' : ''}`} data-testid="battle-result">
+      {splash ? <ResultSplash art={splash} /> : null}
       <div className={`result-banner ${playerWon ? 'is-victory' : 'is-defeat'}`}>
         <div className="result-banner__title">{title}</div>
         <div className="result-banner__sub">

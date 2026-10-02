@@ -1119,7 +1119,7 @@ input[type='radio']:disabled {
   height: clamp(14rem, 56vh, 36rem); width: auto; max-width: none;
   object-fit: contain; transform-origin: 50% 100%;
   pointer-events: none; user-select: none;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6));
+  /* No CSS filter: story scenes can sit over the 3D map (performance rule above). */
   animation: fade-in var(--motion-med) ease-out;
 }
 .story-bust--left { left: -1rem; }
@@ -1224,3 +1224,80 @@ input[type='radio']:disabled {
   z-index: 3;
   pointer-events: none;
 }
+
+/* ============================================================
+   Big moments (GPT6_BRIEF_3): miracle cards, new-week and level-up
+   banners, victory/defeat splashes. The paintings carry no words: titles,
+   names and effects are live text; frames and plates are the kit's own.
+   UI artwork is shown at its own aspect ratio, never tiled or mirrored.
+   ============================================================ */
+.result-splash { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: var(--navy-950); pointer-events: none; }
+.screen > .result-splash, .modal-layer > .result-splash { position: absolute; }
+.result-splash > img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+
+/* The live title in the paintings' calm upper-centre area (x 30–70 %, y 8–30 %).
+   Shadows are text-shadows: end-of-game dialogs can sit over the 3D map (no CSS filters there). */
+.splash-title { position: absolute; z-index: 1; left: 30%; right: 30%; top: 8%; height: 22%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; pointer-events: none;
+  /* A soft contrast pool behind the live title, for bright skies. */
+  background: radial-gradient(50% 50% at 50% 50%, rgba(5, 9, 15, 0.5), rgba(5, 9, 15, 0.22) 60%, rgba(5, 9, 15, 0) 100%); }
+.splash-title__text {
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 4.4vw, 4.2rem); line-height: 1.08; letter-spacing: 0.08em;
+  color: var(--gold-200); text-shadow: 0 2px 0 rgba(90, 63, 22, 0.9), 0 4px 10px rgba(0, 0, 0, 0.9), 0 0 26px rgba(0, 0, 0, 0.65);
+  text-wrap: balance; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-width: 100%;
+}
+.splash-title.is-long .splash-title__text { font-size: clamp(1.5rem, 2.9vw, 2.9rem); letter-spacing: 0.05em; }
+.splash-title.is-very-long .splash-title__text { font-size: clamp(1.25rem, 2.2vw, 2.2rem); letter-spacing: 0.03em; }
+.splash-title.is-defeat .splash-title__text { color: #efa597; text-shadow: 0 2px 0 rgba(107, 32, 24, 0.9), 0 4px 10px rgba(0, 0, 0, 0.9), 0 0 26px rgba(0, 0, 0, 0.65); }
+.splash-title::after { content: ''; order: 1; width: 4.2rem; height: 12px; margin-top: 0.45rem; background: var(--orn-divider) center / contain no-repeat; }
+.splash-title__sub { order: 2; max-width: 100%; margin-top: 0.4rem; padding: 0.18rem 0.9rem; border-radius: 1rem; background: rgba(5, 9, 15, 0.62); box-shadow: inset 0 0 0 1px rgba(194, 154, 82, 0.35); color: var(--text-strong); font-family: var(--font-display); font-size: clamp(0.85rem, 1.15vw, 1.05rem); letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* End-of-game dialogs over a splash: the dialog in the lower half, the painting's title area clear. */
+.modal-layer--splash { place-items: end center; padding: 0 1rem 4vh; background: none; }
+.modal-layer--splash > .modal { position: relative; z-index: 2; max-height: 58vh; }
+.modal-layer--splash .modal__panel { min-height: 0; max-height: none !important; }
+
+/* Banners: the painting at its own aspect (alpha and transparent padding kept); text on its plaque. */
+.banner-art { position: relative; width: 100%; container-type: inline-size; }
+.banner-art__img { display: block; width: 100%; height: 100%; pointer-events: none; user-select: none; }
+.banner-art__plaque { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35cqw; padding: 0 5%; text-align: center; overflow: hidden; }
+.plaque-text__title { max-width: 100%; font-family: var(--font-display); font-weight: 700; font-size: 3.2cqw; line-height: 1.1; letter-spacing: 0.04em; color: var(--gold-200); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.plaque-text__level { font-family: var(--font-display); font-weight: 600; font-size: 1.5cqw; line-height: 1.15; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-strong); text-shadow: 0 1px 3px #000; }
+.plaque-text__sep { color: var(--gold-500); }
+.plaque-text__body { max-width: 100%; font-size: 1.45cqw; line-height: 1.25; color: var(--text-strong); text-shadow: 0 1px 3px #000; text-wrap: balance; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.plaque-text__title.is-long { font-size: 2.5cqw; }
+.banner-art--week .plaque-text__title { font-size: 2.4cqw; }
+
+/* The moment layer: above the screen and dialogs, below story scenes and toasts; never blocks play. */
+.moment-layer { position: fixed; inset: 0; z-index: 58; display: grid; pointer-events: none; }
+.moment-layer > * { pointer-events: auto; }
+.moment-layer--miracle { place-items: center; }
+.moment-layer--new-week { place-items: start center; padding-top: 12vh; }
+@keyframes moment-rise { from { opacity: 0; transform: translateY(2.6rem) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes moment-drop { from { opacity: 0; transform: translateY(-1.6rem); } to { opacity: 1; transform: none; } }
+
+/* Miracle card: the painting in the kit's gold frame, its name on a live plate over the bottom 18 %. */
+.miracle-card {
+  --card-h: min(68vh, 44rem);
+  height: var(--card-h); aspect-ratio: 2 / 3; padding: 0.42rem; display: block; cursor: pointer;
+  font: inherit; color: inherit; text-align: center;
+  border: 1px solid var(--gold-500);
+  box-shadow: 0 1.6rem 3.2rem rgba(0, 0, 0, 0.72), 0 0 2.6rem rgba(234, 208, 143, 0.22), var(--rim-double);
+  animation: moment-rise calc(var(--motion-slow) * 1.6) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.miracle-card:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 3px; }
+.miracle-card__art { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 2px; box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0 0 2px rgba(194, 154, 82, 0.55); }
+.miracle-card__art > img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
+.miracle-card__plate {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 18%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; padding: 0 8%;
+  background: linear-gradient(180deg, rgba(7, 14, 26, 0.5), rgba(7, 14, 26, 0.86) 38%, rgba(5, 9, 15, 0.94));
+  border-top: 1px solid var(--gold-500); box-shadow: 0 -1px 0 rgba(5, 9, 15, 0.9), inset 0 1px 0 rgba(255, 238, 190, 0.12);
+}
+.miracle-card__plate::before { content: ''; position: absolute; top: -6px; left: 50%; width: 4.2rem; height: 12px; transform: translateX(-50%); background: var(--orn-divider) center / contain no-repeat; }
+.miracle-card__name { font-family: var(--font-display); font-weight: 700; font-size: calc(var(--card-h) * 0.036); line-height: 1.1; letter-spacing: 0.05em; color: var(--gold-200); text-shadow: 0 2px 6px #000; text-wrap: balance; }
+.miracle-card__by { font-size: calc(var(--card-h) * 0.018); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); }
+
+/* New-week banner: drops in under the top bar; a click closes it. It sits over the 3D map, so its
+   glow is the painting's own (no CSS filter, see the performance rule at the top). */
+.week-banner { width: min(60rem, 86vw); padding: 0; border: 0; background: none; cursor: pointer; font: inherit; color: inherit; animation: moment-drop calc(var(--motion-slow) * 1.4) ease-out both; }
+.week-banner:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 2px; }

@@ -15,6 +15,9 @@ import { Button, Chip, Panel, SectionTitle, Tabs, EmptyState } from '../componen
 import { Emblem } from '../components/art';
 import { ScreenHeader } from '../components/game';
 import { formatNumber, relativeTime } from '../app/view';
+import { viewerWon } from '../app/moments';
+import { resultSplashArt } from '../assets/momentArt';
+import { ResultSplash } from '../components/moments';
 
 type Metric = 'armyValue' | 'income' | 'towns' | 'gold';
 
@@ -133,6 +136,9 @@ export function SummaryScreen() {
   const outcome = state.outcome;
   const winners = outcome.status !== 'running' ? (outcome.winnerIds ?? []).map((id) => state.players[id]?.name).filter(Boolean) : [];
   const campaign = session.campaign;
+  // The finished match's painting for the viewer's pantheon, behind the summary.
+  const won = viewerWon(state, session.humanPlayerId);
+  const splash = won === null ? null : resultSplashArt(state.players[session.humanPlayerId]?.pantheonId, won);
   const returnTo = (store.screen.params.returnTo as 'debrief' | 'campaign-complete' | 'game-over' | undefined) ?? (campaign ? undefined : 'game-over');
   const toMenu = () => {
     store.endSession();
@@ -150,7 +156,8 @@ export function SummaryScreen() {
     { label: 'Towns captured', key: 'townsCaptured' },
   ];
   return (
-    <div className="screen summary-screen" data-testid="summary">
+    <div className={`screen summary-screen ${splash ? 'summary-screen--splash' : ''}`} data-testid="summary">
+      {splash ? <ResultSplash art={splash} /> : null}
       <ScreenHeader
         title={`Summary — ${mission?.name ?? state.scenario.name}`}
         subtitle={outcome.status === 'running' ? `Day ${state.day} (in progress)` : `${outcome.reason} · day ${outcome.day}${winners.length ? ` · winner: ${winners.join(', ')}` : ''}`}

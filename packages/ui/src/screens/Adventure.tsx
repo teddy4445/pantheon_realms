@@ -40,6 +40,8 @@ import {
 import { biomeTerrainCss } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
 import { useStore } from '../app/context';
+import { newWeekBannerArt } from '../assets/momentArt';
+import { weeklyEventOf } from '../app/moments';
 import type { AppStore } from '../app/store';
 import { adventurePlaybackFactor } from '../app/preferences';
 import { matches } from '../app/keys';
@@ -539,11 +541,15 @@ export function AdventureScreen() {
       const c = ctrl.current;
       const moves = events.filter((e) => e.kind === 'HeroMoved');
       const day = events.find((e) => e.kind === 'DayStarted');
-      const weekly = events.find((e) => e.kind === 'WeeklyEventStarted');
       if (day && day.kind === 'DayStarted') {
-        const ev = weekly && weekly.kind === 'WeeklyEventStarted' && weekly.eventId ? catalog.weeklyEvents?.[weekly.eventId] : undefined;
-        setDayBanner(`Week ${day.week} · Day ${day.dayOfWeek}${day.dayOfWeek === 1 ? (ev ? ` — ${ev.name}: ${ev.summary}` : ' — a new week: creatures grow') : ''}`);
-        setTimeout(() => setDayBanner(null), ev ? 3600 : 2200);
+        const weeklyId = store.session ? weeklyEventOf(store.session.state, events, day.week) : null;
+        const ev = weeklyId ? catalog.weeklyEvents?.[weeklyId] : undefined;
+        // A new week shows its painted banner (the moment layer) when the art is there; otherwise this text.
+        const painted = day.dayOfWeek === 1 && day.day > 1 && !!newWeekBannerArt(ev?.id ?? null);
+        if (!painted) {
+          setDayBanner(`Week ${day.week} · Day ${day.dayOfWeek}${day.dayOfWeek === 1 ? (ev ? ` — ${ev.name}: ${ev.summary}` : ' — a new week: creatures grow') : ''}`);
+          setTimeout(() => setDayBanner(null), ev ? 3600 : 2200);
+        }
         if (ev) store.showHint('weekly_event');
       }
       if (!c) {

@@ -1,26 +1,47 @@
 #!/usr/bin/env python3
 """
-Import delivered story art (development tool; never packaged in the game).
+Import delivered painted art (development tool; never packaged in the game).
 
-Painted art from GPT6_BRIEF_1_STORY_ART.md is delivered as PNG files named by
-asset ID into assets-source/art/final/ (ASSET_PIPELINE.md §13). This script
-checks each file, writes optimized runtime derivatives to assets-runtime/art/
-and registers them in assets-runtime/art/manifest.json, which the game reads
-by asset ID (`resolveAsset` / `resolveArt` in packages/ui/src/assets/manifest.ts).
+Painted art from the GPT-6 briefs (assets-source/art/briefs/) is delivered as PNG
+files named by asset ID into assets-source/art/final/ (ASSET_PIPELINE.md §13).
+This script checks each file, writes optimized runtime derivatives to
+assets-runtime/art/ and registers them in assets-runtime/art/manifest.json, which
+the game reads by asset ID (`resolveAsset` / `resolveArt` in
+packages/ui/src/assets/manifest.ts).
 
+Story art (Brief 1):
   hero.<pantheon>.<character>.bust.png   -> art/busts/<id>.webp        (alpha kept)
   campaign.<campaign>.cover.png          -> art/covers/<id>.webp
                                           + art/cards/campaign.<campaign>.thumbnail.webp (640 x 360 card)
   ending.<campaign>.<ending>.png         -> art/endings/<id>.webp
   mission.<campaign>.<mNN>.thumbnail.png -> art/missions/mission.<campaign>.<mNN>.briefing.webp (briefing art)
                                           + art/cards/<id>.webp (640 x 360 card)
+Ground and sky (Brief 2):
+  terrain.<climate>.<ground>.png         -> art/terrain/<id>.webp, at most 1024 x 1024 (a power of two
+                                            for mipmaps), with its average colour and wrap mode
+  battlefield.<battlefield>.ground[.<climate>].png -> art/battle/<id>.webp, native size
+  sky.<climate>.png                      -> art/sky/<id>.webp, native size, with its average colours
+Big moments (Brief 3):
+  intervention.<miracle>.card.png        -> art/miracles/<id>.webp, at most 768 x 1152 (opaque)
+  splash.<pantheon>.(victory|defeat).png -> art/splashes/<id>.webp, native size up to 1920 wide (opaque)
+  banner.level_up.<pantheon>.png, banner.new_week.png, banner.week.<event>.png
+                                         -> art/banners/<id>.webp, at most 1536 wide, transparency and
+                                            transparent padding kept (never cropped), with the measured
+                                            box of its blank plaque (where the game writes its text)
 
 Rules: the sources are never modified; nothing is ever upscaled (derivatives
 are the native size or smaller, aspect ratio kept); dialogue portraits keep
 their transparency; landscape art is stored at its native size (the 2026-10-02
-delivery is 1672 x 940/941, below the brief's 1920 x 1080 / 2560 x 1440 — the
-resize-only export decision is the owner's and is not taken here). Cards are a
-centred 16:9 crop of at most one pixel row, then reduced to 640 x 360.
+deliveries are below the briefs' sizes — the resize-only export decision is the
+owner's and is not taken here). Cards are a centred 16:9 crop of at most one
+pixel row, then reduced to 640 x 360.
+
+Runtime derivatives are reductions for display only: they do not change the
+delivered masters and do not settle the briefs' exact-size exports.
+
+Terrain and sky are drawn with a mirrored repeat until their seams are verified:
+list verified asset IDs (one per line) in assets-source/art/seamless-verified.txt
+and re-run to switch them to a plain repeat.
 
 Needs: Pillow with WebP support.
 """
@@ -39,17 +60,89 @@ RUNTIME = os.path.join(ROOT, 'assets-runtime')
 OUT = os.path.join(RUNTIME, 'art')
 MANIFEST = os.path.join(OUT, 'manifest.json')
 REPORT = os.path.join(ROOT, 'assets-source', 'art', 'IMPORT_REPORT.json')
+SEAMLESS = os.path.join(ROOT, 'assets-source', 'art', 'seamless-verified.txt')
 
 BUST_MAX_H = 1152          # 768 x 1152 from the 1024 x 1536 masters (dialogue busts are shown up to ~60 % of the screen height)
 LANDSCAPE_MAX_W = 1920     # covers, endings and briefing art: native size up to 1920 wide
 CARD = (640, 360)          # campaign and mission cards
+TERRAIN_MAX = 1024         # ground textures: 1024 x 1024 runtime (the brief's size), never enlarged
+WIDE_MAX_W = 4096          # battlefield grounds and skies: native size up to the briefs' 4096 px
+MIRACLE_MAX_H = 1152       # miracle cards: 768 x 1152 from 1024 x 1536 (shown up to ~70 % of the screen height)
+SPLASH_MAX_W = 1920        # victory/defeat splashes: native size up to 1920 wide
+BANNER_MAX_W = 1536        # level-up and new-week banners: at most 1536 wide (the brief's design width)
 
 PATTERNS = [
     ('bust', re.compile(r'^hero\.[a-z]+\.[a-z_]+\.bust$')),
     ('cover', re.compile(r'^campaign\.[a-z_]+\.cover$')),
     ('ending', re.compile(r'^ending\.[a-z_]+\.[a-z_]+$')),
     ('mission', re.compile(r'^mission\.[a-z_]+\.(m\d\d|twin_harbors|random)\.thumbnail$')),
+    ('terrain', re.compile(r'^terrain\.[a-z_]+\.(plains|forest|rough|marsh|mountain|water)$')),
+    ('battlefield', re.compile(r'^battlefield\.[a-z_]+\.ground(\.[a-z_]+)?$')),
+    ('sky', re.compile(r'^sky\.[a-z_]+$')),
+    ('miracle', re.compile(r'^intervention\.[a-z_]+\.card$')),
+    ('splash', re.compile(r'^splash\.[a-z]+\.(victory|defeat)$')),
+    ('banner', re.compile(r'^banner\.(level_up\.[a-z]+|new_week|week\.[a-z_]+)$')),
 ]
+
+# The brief's nominal plaque (about 60 % x 45 %, centred) when it cannot be measured.
+NOMINAL_PLAQUE = [0.2, 0.275, 0.8, 0.725]
+
+
+def plaque_box(img):
+    """
+    The blank navy plaque of a banner, as fractions [left, top, right, bottom]:
+    the largest opaque, dark, blue-dominant region crossing the centre line in the
+    middle band, its height trimmed to the rows that are clear plaque across the
+    middle. Generated variants differ slightly, so each file is measured.
+    """
+    import numpy as np
+    from scipy import ndimage
+    a = np.asarray(img.convert('RGBA')).astype(np.int32)
+    h, w = a.shape[:2]
+    r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
+    lum = (r * 299 + g * 587 + b * 114) // 1000
+    mask = ndimage.binary_opening((al > 250) & (b > r + 8) & (lum < 90), iterations=3)
+    lab, n = ndimage.label(mask)
+    if n == 0:
+        return None
+    col = lab[int(h * 0.35):int(h * 0.9), w // 2 - w // 50:w // 2 + w // 50]
+    ids = [i for i in np.unique(col) if i]
+    if not ids:
+        return None
+    sizes = ndimage.sum(mask, lab, ids)
+    best = ids[int(np.argmax(sizes))]
+    ys, xs = np.where(lab == best)
+    x0, x1, y0, y1 = xs.min(), xs.max() + 1, ys.min(), ys.max() + 1
+    # Keep only the rows that are clear plaque across its middle 60 %: an
+    # ornament hanging into the plaque (a lotus, a jewel) is left free of text.
+    mx0, mx1 = int(x0 + (x1 - x0) * 0.2), int(x1 - (x1 - x0) * 0.2)
+    navy = (al > 250) & (b > r + 8) & (lum < 90)
+    clear = np.where(navy[y0:y1, mx0:mx1].mean(axis=1) >= 0.9)[0]
+    if len(clear):
+        y0, y1 = y0 + clear.min(), y0 + clear.max() + 1
+    box = [x0 / w, y0 / h, x1 / w, y1 / h]
+    # Sanity: a plaque is wide, centred and not the whole image.
+    if box[2] - box[0] < 0.35 or box[2] - box[0] > 0.9 or box[3] - box[1] < 0.12 or box[3] - box[1] > 0.7:
+        return None
+    return [round(float(v), 4) for v in box]
+
+
+def average_hex(img, box=None):
+    """Average sRGB colour of an RGB image (or of a box of it) as #RRGGBB."""
+    im = img.crop(box) if box else img
+    r, g, b = im.resize((1, 1), Image.BOX).getpixel((0, 0))[:3]
+    return f'#{r:02X}{g:02X}{b:02X}'
+
+
+def seamless_verified():
+    if not os.path.exists(SEAMLESS):
+        return set()
+    out = set()
+    for line in open(SEAMLESS, encoding='utf-8'):
+        line = line.split('#', 1)[0].strip()
+        if line:
+            out.add(line)
+    return out
 
 
 def kind_of(asset_id):
@@ -111,20 +204,95 @@ def main():
     files = sorted(f for f in os.listdir(SRC) if f.lower().endswith('.png'))
     assets = {}
     warnings = []
-    counts = {'bust': 0, 'cover': 0, 'ending': 0, 'mission': 0}
+    counts = {'bust': 0, 'cover': 0, 'ending': 0, 'mission': 0, 'terrain': 0, 'battlefield': 0, 'sky': 0, 'miracle': 0, 'splash': 0, 'banner': 0}
     today = date.today().isoformat()
+    verified = seamless_verified()
     for f in files:
         asset_id = f[:-4]
         kind = kind_of(asset_id)
         if kind is None:
-            warnings.append(f'{f}: not a story-art name (ASSET_PIPELINE.md §13) — skipped')
+            warnings.append(f'{f}: not a painted-art name (ASSET_PIPELINE.md §13) — skipped')
             continue
         path = os.path.join(SRC, f)
         src = Image.open(path)
         src.load()
         sw, sh = src.size
         source = {'file': f'assets-source/art/final/{f}', 'width': sw, 'height': sh, 'sha256': sha256(path)}
-        note = f'Owner-delivered story art (GPT6_BRIEF_1), imported {today}; source {sw} x {sh}'
+        brief = 'ground and sky art (GPT6_BRIEF_2)' if kind in ('terrain', 'battlefield', 'sky') else 'big-moment art (GPT6_BRIEF_3)' if kind in ('miracle', 'splash', 'banner') else 'story art (GPT6_BRIEF_1)'
+        note = f'Owner-delivered {brief}, imported {today}; source {sw} x {sh}'
+        if kind in ('miracle', 'splash', 'banner'):
+            if kind == 'banner':
+                if src.mode != 'RGBA' or src.getchannel('A').getextrema()[0] == 255:
+                    warnings.append(f'{f}: banner without transparent pixels')
+                rgba = src.convert('RGBA')
+                im = shrink(rgba, max_w=BANNER_MAX_W)
+                out = os.path.join(OUT, 'banners', f'{asset_id}.webp')
+                save_webp(im, out, 84, alpha_quality=92)
+                plaque = plaque_box(rgba)
+                if plaque is None:
+                    warnings.append(f'{f}: blank plaque not found; using the brief\'s nominal box')
+                mask = rgba.getchannel('A').point(lambda v: 255 if v >= 16 else 0)
+                bbox = mask.getbbox() or (0, 0, sw, sh)
+                assets[asset_id] = {
+                    'file': rel(out), 'kind': 'banner', 'width': im.width, 'height': im.height,
+                    'alphaBox': [round(bbox[0] / sw, 4), round(bbox[1] / sh, 4), round(bbox[2] / sw, 4), round(bbox[3] / sh, 4)],
+                    'plaque': plaque or NOMINAL_PLAQUE, 'plaqueMeasured': plaque is not None,
+                    'source': source, 'provenance': f'{note}; {"reduced to" if im.size != rgba.size else "native"} {im.width} x {im.height} for display, transparency and padding kept; plaque {"measured" if plaque else "nominal"}.',
+                }
+            else:
+                if src.mode == 'RGBA' and src.getchannel('A').getextrema()[0] < 255:
+                    warnings.append(f'{f}: full painting has transparent pixels (flattened onto black)')
+                rgb = src.convert('RGB')
+                if kind == 'miracle':
+                    im = shrink(rgb, max_h=MIRACLE_MAX_H)
+                    out = os.path.join(OUT, 'miracles', f'{asset_id}.webp')
+                    save_webp(im, out, 82)
+                else:
+                    im = shrink(rgb, max_w=SPLASH_MAX_W)
+                    out = os.path.join(OUT, 'splashes', f'{asset_id}.webp')
+                    save_webp(im, out, 80)
+                assets[asset_id] = {
+                    'file': rel(out), 'kind': kind, 'width': im.width, 'height': im.height,
+                    'source': source, 'provenance': f'{note}; {"reduced to" if im.size != rgb.size else "native (not upscaled)"} {im.width} x {im.height} for display.',
+                }
+            counts[kind] += 1
+            continue
+        if kind in ('terrain', 'battlefield', 'sky'):
+            if src.mode == 'RGBA' and src.getchannel('A').getextrema()[0] < 255:
+                warnings.append(f'{f}: ground/sky art has transparent pixels (flattened onto black)')
+            rgb = src.convert('RGB')
+            wrap = 'repeat' if asset_id in verified else 'mirror'
+            if kind == 'terrain':
+                im = shrink(rgb, max_w=TERRAIN_MAX, max_h=TERRAIN_MAX)
+                out = os.path.join(OUT, 'terrain', f'{asset_id}.webp')
+                save_webp(im, out, 84)
+                assets[asset_id] = {
+                    'file': rel(out), 'kind': 'terrain', 'width': im.width, 'height': im.height, 'wrap': wrap, 'average': average_hex(rgb),
+                    'source': source, 'provenance': f'{note}; {"reduced to" if im.size != rgb.size else "native"} {im.width} x {im.height}; seams {"verified" if wrap == "repeat" else "NOT verified (mirrored repeat)"}.',
+                }
+            elif kind == 'battlefield':
+                im = shrink(rgb, max_w=WIDE_MAX_W)
+                out = os.path.join(OUT, 'battle', f'{asset_id}.webp')
+                save_webp(im, out, 84)
+                assets[asset_id] = {
+                    'file': rel(out), 'kind': 'battlefield', 'width': im.width, 'height': im.height,
+                    'average': average_hex(rgb), 'edge': average_hex(rgb, (0, 0, sw, max(1, sh // 12))),
+                    'source': source, 'provenance': f'{note}; native {im.width} x {im.height} (not upscaled), drawn once and clamped.',
+                }
+            else:
+                im = shrink(rgb, max_w=WIDE_MAX_W)
+                out = os.path.join(OUT, 'sky', f'{asset_id}.webp')
+                save_webp(im, out, 82)
+                hz = round(sh * 0.62)
+                assets[asset_id] = {
+                    'file': rel(out), 'kind': 'sky', 'width': im.width, 'height': im.height, 'wrap': wrap,
+                    # The brief's horizon (62 % from the top, approximate in this delivery) and the colours
+                    # above (sky) and just below it (haze).
+                    'horizon': 0.62, 'average': average_hex(rgb, (0, 0, sw, hz)), 'haze': average_hex(rgb, (0, hz, sw, min(sh, hz + max(1, sh // 10)))),
+                    'source': source, 'provenance': f'{note}; native {im.width} x {im.height} (not upscaled); left/right seam {"verified" if wrap == "repeat" else "NOT verified"}.',
+                }
+            counts[kind] += 1
+            continue
         if kind == 'bust':
             if src.mode != 'RGBA':
                 warnings.append(f'{f}: dialogue portrait without transparency ({src.mode})')
@@ -173,7 +341,7 @@ def main():
         counts[kind] += 1
     # Remove runtime files no longer produced (a source was removed or renamed).
     produced = {os.path.normpath(os.path.join(RUNTIME, a['file'])) for a in assets.values()}
-    for folder in ('busts', 'covers', 'endings', 'missions', 'cards'):
+    for folder in ('busts', 'covers', 'endings', 'missions', 'cards', 'terrain', 'battle', 'sky', 'miracles', 'splashes', 'banners'):
         d = os.path.join(OUT, folder)
         if not os.path.isdir(d):
             continue
@@ -185,12 +353,12 @@ def main():
     # The game reads the compact manifest (it is part of the start-up bundle); sources,
     # hashes, crops and notes go to the import report next to the sources.
     runtime = {
-        k: {key: v[key] for key in ('file', 'kind', 'width', 'height', 'alphaBox') if key in v}
+        k: {key: v[key] for key in ('file', 'kind', 'width', 'height', 'alphaBox', 'wrap', 'average', 'edge', 'haze', 'horizon', 'plaque') if key in v}
         for k, v in sorted(assets.items())
     }
     manifest = {
         'note': 'Generated by tools/assets/import_story_art.py from assets-source/art/final/ (ASSET_PIPELINE.md §13). Do not edit by hand. Sources and hashes: assets-source/art/IMPORT_REPORT.json.',
-        'provenance': 'Owner-delivered story art (GPT6_BRIEF_1_STORY_ART.md, delivery 2026-10-02). Landscape art at its native size (not upscaled).',
+        'provenance': 'Owner-delivered painted art (GPT6_BRIEF_1 story art, GPT6_BRIEF_2 ground and sky, GPT6_BRIEF_3 big moments; deliveries of 2026-10-02). Nothing upscaled; terrain and sky seams not verified (mirrored repeat).',
         'assets': runtime,
     }
     with open(MANIFEST, 'w', encoding='utf-8', newline='\n') as fh:
@@ -202,7 +370,9 @@ def main():
     for w in warnings:
         print('warning:', w)
     total = sum(os.path.getsize(os.path.join(RUNTIME, a['file'])) for a in assets.values())
-    print(f"story art: {counts['bust']} busts, {counts['cover']} covers, {counts['ending']} endings, {counts['mission']} mission pictures -> {len(assets)} runtime files, {total / 1e6:.1f} MB")
+    print(f"painted art: {counts['bust']} busts, {counts['cover']} covers, {counts['ending']} endings, {counts['mission']} mission pictures, "
+          f"{counts['terrain']} terrain, {counts['battlefield']} battlefields, {counts['sky']} skies, "
+          f"{counts['miracle']} miracle cards, {counts['splash']} splashes, {counts['banner']} banners -> {len(assets)} runtime files, {total / 1e6:.1f} MB")
     return 0
 
 

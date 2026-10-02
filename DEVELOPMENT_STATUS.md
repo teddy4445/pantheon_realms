@@ -1,6 +1,6 @@
 # Development Status
 
-_Last updated: 2026-10-02 · **app 0.5.0** (mounted heroes + the owner requests of 2026-10-01 and 2026-10-02 below; Windows installer built, see below) · after the installer: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions** and the **92 story pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
+_Last updated: 2026-10-02 · **app 0.6.0** (Windows installer built for play-testing, see below; 0.5.0 before it) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
@@ -23,6 +23,134 @@ bump (content `content-0.8.0`).
 **Not run on Windows; unsigned** (SmartScreen warns). Per-user install, saves in
 `%APPDATA%\Pantheon Realms\saves`; saves from content 0.7.0 are listed as
 incompatible and kept.
+
+## 0.6.0 Windows installer (2026-10-02, for play-testing)
+
+Version bumped from 0.5.0 to **0.6.0** (`package.json`, `apps/desktop/package.json`,
+`package-lock.json`): the first installer with the 172 functional icons, hero
+specialties, all 60 gods, the nine map sites, neutral reactions and the three
+painted-art deliveries (story, ground and sky, big moments). Content
+`content-0.8.0`, so 0.5.0 saves load (their new features stay off).
+
+| Command | Result |
+|---|---|
+| `npm run build` + `npm run desktop:build` | pass (start-up script 1,549 KB / 420 KB gzip; renderer 120 MB, of which painted art 69 MB) |
+| `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.6.0-x64.exe` (220,640,503 bytes, SHA-256 `e063aff998e2ca0b6329d951e6eae2b3b5db6bce40d35d86d840188f7535f7a5`); 0.5.0 was 145 MB — the difference is the painted art |
+| Payload check (7-Zip) | the installer's `app-64.7z` extracts byte-identical to `win-unpacked`; `app.asar` (122.5 MB, 1,177 files) says version 0.6.0, holds the 117 ground/sky/big-moment WebP files and the six hero GLBs, and no `assets-source/`, tests, source maps or `.blend` |
+| `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (packaged: `isPackaged` true, DevTools refused; saves, records, unit GLB, six hero GLBs, audio running). New check in the smoke tool: **all 255 painted-art files** are served by the app protocol and decode at their registered sizes |
+| Copied to the owner's `installer\` folder | in 10 parts, joined on the computer, SHA-256 matches |
+
+**Not run on Windows; unsigned** (SmartScreen warns: More info → Run anyway).
+Per-user install. Saves live in `%APPDATA%\Pantheon Realms\saves`, which the
+installer and uninstaller leave alone (`deleteAppDataOnUninstall: false`; by
+configuration — not tried on Windows).
+
+## Big-moment art (Brief 3, delivery 2026-10-02)
+
+The owner's 41 big-moment pictures (14 miracle cards, 12 victory/defeat
+splashes, 6 level-up and 9 new-week banners) are in the game, imported by
+`npm run art:import` and shown at the matching game events (`ASSET_PIPELINE.md`
+§13, "Big moments in the game"). Presentation only: rules, balance, combat
+flow, camera angle and the 96 px miracle icons are unchanged; every word on the
+pictures is live interface text. **Not in the 0.5.0 installer.**
+
+**Not production-finished (as delivered):** 27 of the 41 masters differ from
+the brief's sizes — splashes 1672 × 941 (one 1672 × 940; brief 1920 × 1080),
+banners 2172 × 724 (brief 1536 × 512); the miracle cards are 1024 × 1536 as
+asked. The exact-size export of the masters is the owner's open decision and
+was **not** done; the masters are untouched. The game shows display copies:
+cards reduced to 768 × 1152, splashes at their native size (not enlarged),
+banners reduced to 1536 × 512 (same 3:1 shape), transparency and padding kept.
+
+**Where.** Miracle card: rises in the kit's gold frame with a live nameplate
+over its bottom 18 % when an intervention is invoked (after the rules accept
+it) — the player's own on the map or in battle, and an opponent's battle
+miracle in the player's battle. Splash: the player's own pantheon painting
+behind the battle result (win or loss), the skirmish result, mission failed,
+debrief, campaign complete and the summary; live title in the painting's calm
+upper centre (x 30–70 %, y 8–30 %), panels in the lower half, existing bottom
+scrim plus a soft contrast pool behind the title. Level-up: the hero's own
+pantheon banner above the choices, name and "Level up · Level N" on its
+measured plaque. New week: at the dawn of day 8, 15, … the weekly event's own
+banner (or the default), "Week N", event name and effect on its plaque,
+replacing the text day banner; once per dawn, never on load. Timing reuses the
+day banner's 2.2 s / 3.6 s (cards 3.6 s), shortened by the chosen animation
+speed, counted as time on screen; a click or Esc closes it; reduced motion
+removes the rise and fade.
+
+**Found and fixed on the way:** the published `WeeklyEventStarted` event's own
+`eventId` field is overwritten by the event envelope's ID (rules processor), so
+the text day banner never named the weekly event and the weekly-event tip never
+appeared. The interface now reads the drawn event from the committed state
+(`weeklyEventOf`); the rules event is unchanged (renaming its field is a rules
+change left for the owner). The story-scene busts lost their CSS drop shadow
+(the performance rule: no CSS filters over the 3D map).
+
+| Command | Result |
+|---|---|
+| SHA-256 of the 41 copies in the owner's folder and here vs the delivery `manifest.json` | 41 / 41 match |
+| `npm run art:import` | 255 runtime files (214 before + 41), 71.6 MB; the 41 new ones 10.1 MB (cards 2.7, splashes 3.7, banners 3.7); every banner's plaque measured (15 / 15); no warnings |
+| `npm run check` | pass — **288** unit tests in 25 files (new `packages/ui/test/bigMoments.test.ts`: 41 files at registered sizes inside `assets-runtime`, banners with alpha and the paintings opaque, never upscaled, aspect kept; every intervention, pantheon and weekly event resolves, unknown ones fall back; moments only from committed events — own miracles, an opponent's battle miracle in your battle, one banner per dawn with the drawn event; hold times) |
+| `npm run build` | pass — start-up script 1,549 KB / 420 KB gzip (manifest +7 KB); `dist/` 120 MB, painted art 69 MB |
+| `npx playwright test tests/e2e/bigMoments.spec.ts` | **10 / 10** (each trigger once: map miracle with frame, nameplate over the bottom 18 %, Esc without the pause menu, effect applied once, nothing on load; reduced motion without the rise; full motion with the rise and the 3.6 s hold; battle miracle on an enemy stack; won and lost battle results; lost match over the defeat painting; hot-seat long title inside x 30–70 % / y 8–30 % on two lines; level-up banner; week 2 with the Week of the Muse banner once, none on load; the default banner) |
+| `npx playwright test` (full suite, production build, after both art rounds) | **70 / 70 passed** in 37.6 min (the 42 opt-in review tests skipped) |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 5` | menu **219 ms** local / **452 ms** web (217 / 442 before this round); settled 2,640 / 3,446 ms (ground and sky round: 2,654 / 3,027; noisy single 5-run medians on the software renderer) |
+| Review sweep `PR_REVIEW=1 npx playwright test zz-moments-review` (opt-in, screenshots not kept in the repo) | 42 / 42: all 14 cards invoked in play, all 12 paintings under the real battle-result panels (7-stack tables; Greek also at 1024 × 640), all 6 level-up banners with each pantheon's longest hero name, all 9 week banners over a temperate and a snowy (light) map, all banners and cards on a dark and a light sheet — no halos or hard edges seen |
+
+**Seen in the review.** The paintings keep their calm upper centre except the
+Japanese victory (the goddess's arm reaches into the title area); the soft
+contrast pool keeps the title readable there. Titles and panels never cover the
+banner emblems; text stays inside every plaque (an ornament that hangs into a
+plaque, like the Egyptian lotus, is measured out). Splashes are 1672 px wide, so
+on a 1920 × 1080 window the browser stretches them about 1.15 × (softer, no new
+detail); cards are shown from the 768 × 1152 copy (up to ~700 px tall, so on a
+high-density display the browser enlarges them slightly). The game has no
+laurel title frame (R7 in the brief); titles use the kit's ornament divider.
+
+**Limitations.** Software renderer only (SwiftShader), not a real GPU, the
+desktop app or Windows. In this test browser the first composited frames can be
+held back for seconds, so the rise is not seen smoothly there; the hold counts
+time on screen, so the picture is still shown for its full time. A new-week
+banner shows over whatever screen is open at dawn (in hot-seat, over the
+hand-over screen). The weekly event's rules event still carries the envelope ID
+in its `eventId` field (see above).
+
+## Ground and sky art (Brief 2, delivery 2026-10-02)
+
+The owner's 76 ground and sky pictures (60 terrain textures, 6 battlefield
+paintings, 10 skies) are in the game: imported by `npm run art:import` and drawn
+on the adventure map, around it and in battles (`ASSET_PIPELINE.md` §13, "Ground
+and sky in the game"). Presentation only — rules, camera angle, panning and zoom
+unchanged. Owner decisions: **mirrored repeat** for the terrain until finished,
+seamless versions arrive; the **sky past the north edge of the map** (the fixed
+cameras never look up to the horizon; battles show no sky). **Not in the 0.5.0
+installer.**
+
+**Not production-finished (as delivered):** terrain 1254² (brief 1024²; the
+runtime copy is reduced to 1024², a power of two), battlefields 1419 × 1108
+(brief 4096 × 3200, shown at native size), skies 2048 × 768 (brief 4096 × 1536,
+native). Terrain and sky seams are **not** seamless: the delivery measures terrain
+edge differences 1.2–2.7 × the inside difference (median 1.44; all ten water
+textures ≥ 1.9) and sky left/right edges 5–14 ×. Several terrain averages differ
+from the brief's colours (median distance 38, up to 64 of 441); the minimap keeps
+the brief's colours. Sky horizons are the brief's 62 % target, not measured.
+
+| Command | Result |
+|---|---|
+| SHA-256 of the 76 copies in the owner's folder and here vs the delivery `manifest.json` | 76 / 76 match |
+| `npm run art:import` | 214 runtime files (138 story + 76 ground/sky), 61.5 MB; the 138 story files byte-identical to before |
+| `npm run check` | pass — **276** unit tests in 24 files (new `packages/ui/test/groundArt.test.ts`: all 60 terrain IDs for the ten map climates, 6 battlefields, 10 skies and the temperate fallback resolve; files at the registered sizes inside `assets-runtime`; never upscaled; `wrap` = mirror; minimap colours unchanged) |
+| `npm run build` | pass — start-up script 1,535 KB / 417 KB gzip (manifest +13 KB); `dist/` 110 MB, of which painted art 60 MB |
+| `npx playwright test` | **60 / 60 passed** in 32.5 min (new `groundArt.spec.ts`: temperate and tundra maps fetch only their climate's textures and sky, all 200; the camera's angle is unchanged by panning; a battle fetches its painting) |
+| Temporary inspection (not kept): every climate at map centre, north edge and close zoom; every battlefield | screenshots reviewed: climate switching, textures under fog and decor, sea in the climate's water, sky beyond the north edge; battle paintings oriented as the brief says (coast sea, plateau chasm and beacon base at the top, ridge walls left and right), board in the quiet centre, units and grid readable |
+| 3 × 3 repeat review of four textures (plain and mirrored) | plain repeat shows only faint seams on these four; **mirrored repeat shows kaleidoscope symmetry** ("butterfly" shapes on the mirror axes), most visible on tundra plains and desert rough |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 5` | menu 217 / 442 ms (unchanged); **settled 2,654 ms local / 3,027 ms web (was 1,456 / 1,860)**: decoding and uploading seven 1024² textures with mipmaps on the software renderer. "First scene" now reads 24 ms local / 1,932 ms web because the map is built behind the full-screen briefing before Begin; the measure no longer isolates scene building |
+
+**Limitations.** Software renderer only (SwiftShader); not on a real GPU, not in
+the desktop app, not on Windows. With mirrored repeat a second, mirrored sun can
+come into view when panning far along the north edge. Sides of the hex tiles keep
+their flat colours. Forest and mountain tiles keep the 3D trees and peaks on top
+of the painted floor/rock, as the brief asks.
 
 ## Owner requests of 2026-10-02, afternoon (specialties, gods, map sites, neutrals) and the story art
 

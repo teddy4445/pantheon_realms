@@ -59,6 +59,26 @@ try {
     return out;
   });
   if (heroGlbs.length !== 6 || heroGlbs.some((h) => !h.ok || h.magic !== 'glTF')) fail(`mounted hero GLBs not served intact: ${JSON.stringify(heroGlbs)}`);
+  // Painted art (story, ground and sky, big moments): every file in the art manifest is
+  // served by the app protocol and decodes at its registered size.
+  const art = await win.evaluate(async () => {
+    const m = await (await fetch('./art/manifest.json')).json();
+    const bad = [];
+    let n = 0;
+    for (const a of Object.values(m.assets)) {
+      n += 1;
+      try {
+        const res = await fetch(`./${a.file}`);
+        const bmp = await createImageBitmap(await res.blob());
+        if (!res.ok || bmp.width !== a.width || bmp.height !== a.height) bad.push(a.file);
+        bmp.close();
+      } catch {
+        bad.push(a.file);
+      }
+    }
+    return { files: n, bad };
+  });
+  if (art.files < 1 || art.bad.length) fail(`painted art not served or not decodable: ${JSON.stringify(art.bad.slice(0, 5))}`);
   // Sound: the app protocol serves the Ogg files intact, they decode, and audio may start
   // without a click (the desktop app sets the autoplay policy; browsers wait for a click).
   const audio = await win.evaluate(async () => {
@@ -119,7 +139,7 @@ try {
     if (packaged.devTools) fail('DevTools opened in the packaged build');
     if (packaged.name !== 'Pantheon Realms') fail(`unexpected app name ${packaged.name}`);
   }
-  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', glbs, heroGlbs: heroGlbs.length, audio, ...(packaged ? { packaged } : {}) });
+  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', glbs, heroGlbs: heroGlbs.length, art: art.files, audio, ...(packaged ? { packaged } : {}) });
 } catch (e) {
   fail(e instanceof Error ? e.message : String(e));
 } finally {

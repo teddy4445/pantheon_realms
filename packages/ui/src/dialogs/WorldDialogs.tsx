@@ -24,6 +24,7 @@ import {
   type RewardDefinition,
 } from '@pr/rules';
 import { useStore } from '../app/context';
+import { endOfGameSplash } from '../components/moments';
 import { CONTEXT_LABEL, FIXED_KEYS, KEY_ACTIONS, bindingMap, keyLabel, type KeyContext } from '../app/keys';
 import { Button, Chip, Modal, QuantitySelector, SectionTitle } from '../components/kit';
 import { CreaturePortrait, Emblem } from '../components/art';
@@ -435,6 +436,7 @@ export function GameOverDialog() {
       title={title}
       width="36rem"
       testId="game-over"
+      splash={endOfGameSplash(state, viewer, title, `Day ${outcome.day}`)}
       footer={
         <>
           <Button

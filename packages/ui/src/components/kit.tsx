@@ -215,14 +215,20 @@ export function useTooltip(delay = 450) {
   return { bind, node };
 }
 
-export function Modal({ title, children, footer, onClose, width, testId }: { title: ReactNode; children: ReactNode; footer?: ReactNode; onClose?: () => void; width?: string; testId?: string }) {
+/**
+ * A dialog. `splash` (a result painting with its live title) fills the window
+ * behind it; the dialog then sits in the lower half, under the painting's title
+ * area.
+ */
+export function Modal({ title, children, footer, onClose, width, testId, splash }: { title: ReactNode; children: ReactNode; footer?: ReactNode; onClose?: () => void; width?: string; testId?: string; splash?: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current?.querySelector<HTMLElement>('button, [href], input, select, [tabindex]:not([tabindex="-1"])');
     el?.focus();
   }, []);
   return (
-    <div className="modal-layer" role="dialog" aria-modal="true" aria-label={typeof title === 'string' ? title : undefined} data-testid={testId}>
+    <div className={`modal-layer ${splash ? 'modal-layer--splash' : ''}`} role="dialog" aria-modal="true" aria-label={typeof title === 'string' ? title : undefined} data-testid={testId}>
+      {splash}
       <div ref={ref} className="modal" style={width ? { width } : undefined}>
         <Panel
           title={title}

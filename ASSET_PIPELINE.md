@@ -465,7 +465,13 @@ the icons in §11), and are imported with **`npm run art:import`**
 (`tools/assets/import_story_art.py`, a development tool; see "Story art in the
 game" below). A fourth brief, `GPT6_BRIEF_4_GOD_PORTRAITS.md`, covers the 60
 god portraits (1024 × 1024, round crop); those are icons-catalog portraits and
-go into `assets-source/icons/final/` with `npm run icons:import`.
+go into `assets-source/icons/final/` with `npm run icons:import`. A fifth,
+`GPT6_BRIEF_5_CREATURES.md`, asks for every creature form (102): four
+**model-reference views** (three-quarter, front, side, top; 1024 × 1024,
+transparent, neutral pose and light) for the later 3D step, kept in
+`assets-source/creatures/reference/` and never read by the game, and the
+**painted portrait** shown in the panels (`creature.….portrait`, into
+`assets-source/icons/final/`, imported at 256 × 256 by `npm run icons:import`).
 
 | Group | Files | Size | Asset ID pattern |
 |---|---|---|---|
@@ -540,3 +546,117 @@ unchanged):
 To replace a picture, drop the new PNG under the same name into
 `assets-source/art/final/` and run `npm run art:import`.
 
+
+### Ground and sky in the game (Brief 2, first delivery, 2026-10-02)
+
+The owner's art project copied the 76 PNGs (60 terrain, 6 battlefields, 10
+skies) straight into `assets-source/art/final/` of this game; SHA-256 of all 76
+match the delivery's `manifest.json`. Nothing reads the art project's folders.
+
+**Sizes and seams (measured, not production-ready).** Terrain 1254 × 1254
+(brief 1024²), battlefields 1419 × 1108 (brief 4096 × 3200), skies 2048 × 768
+(brief 4096 × 1536). The delivery reports terrain edge discontinuities
+(edge/inside difference 1.2–2.7 ×, worst on the ten water textures) and sky
+left/right seams; no seam finishing has been done, and the game does **not**
+claim them seamless. The exact-size export is the owner's open decision; the
+importer never enlarges.
+
+**Import** (`npm run art:import`, the same tool as the story art):
+
+| Source | Runtime file (`assets-runtime/art/`) | Notes |
+|---|---|---|
+| `terrain.<climate>.<ground>.png` | `terrain/<id>.webp`, 1024 × 1024 (reduced from 1254, a power of two for mipmaps) | average colour, `wrap` |
+| `battlefield.<b>.ground[.<climate>].png` | `battle/<id>.webp`, native 1419 × 1108 | average and far-margin colours |
+| `sky.<climate>.png` | `sky/<id>.webp`, native 2048 × 768 | horizon 0.62 (the brief's target, approximate in this delivery), sky and haze colours |
+
+76 runtime files, 28.1 MB. `wrap` is `mirror` for every terrain and sky until
+its seams are checked: list verified IDs in `assets-source/art/seamless-verified.txt`
+and re-import to switch them to a plain repeat (owner decision 2026-10-02:
+mirrored repeat until finished art arrives).
+
+**Where they appear** (presentation only; `@pr/presentation/core`
+`registerEnvironmentArt`, filled by the interface's manifest; the map camera's
+fixed angle, panning and zoom are unchanged):
+
+* **Adventure map** — each ground type of the map's climate (`map.biome`) is
+  its own mesh with **world-space UVs**: one texture spans two tiles
+  (2√3 world units) and continues across neighbouring tiles; mipmaps,
+  trilinear and 8× anisotropic filtering. Fog of war dims the texture through
+  the vertex colours. Hex sides, roads, rivers, sites, trees (on forest floor)
+  and peaks (on mountain rock) stay separate. The sea around the map shows the
+  climate's water, darkened. Until a texture has loaded — or if one is
+  missing — the tile keeps its old flat colour. The minimap keeps the brief's
+  colours.
+* **Sky** — the fixed camera never looks up to the horizon, so the climate's
+  sky stands as a backdrop 4 units past the **north edge of the map** (owner
+  decision 2026-10-02): unlit, proportions kept (150 world units per panorama),
+  horizon 1.2 units above the sea, clamped vertically and repeated sideways
+  (mirrored). Seen whenever the view reaches the north edge. Temperate is the
+  fallback. Battles show no sky (the painting fills the view to its top edge).
+* **Battles** — the archetype's painting is drawn once (clamped) across the
+  ground, straight down, the 15 × 11 board fitted inside its quiet centre
+  (1500 × 1000 of 4096 × 3200); the board's cell tops show the same painting,
+  deployment columns 10 % darker, moat and town cells keep their colours.
+  Image top = far side (coast sea, plateau chasm and beacon base at the top;
+  ridge walls left and right). Beyond the painting, the ground takes the
+  colour of its far margin. Climate variants (`battlefield.<b>.ground.<climate>`)
+  are used automatically if they are ever delivered.
+
+### Big moments in the game (Brief 3, first delivery, 2026-10-02)
+
+The owner's art project copied the 41 PNGs (14 miracle cards, 12 splashes, 6
+level-up and 9 new-week banners) into `assets-source/art/final/`; SHA-256 of
+all 41 match the delivery's `manifest.json`. Nothing reads the art project's
+folders.
+
+**Sizes (measured).** Miracle cards 1024 × 1536 (as the brief). Splashes
+1672 × 941 (one 1672 × 940; brief 1920 × 1080). Banners 2172 × 724 (brief
+1536 × 512, same 3:1 shape). 27 files differ from the brief's sizes; the
+exact-size export of the masters is the owner's open decision and has **not**
+been done here. Banners have real transparency; cards and splashes are opaque.
+
+**Import** (`npm run art:import`; display derivatives only — the masters are
+untouched, nothing is enlarged, aspect ratios kept):
+
+| Source | Runtime file (`assets-runtime/art/`) | Notes |
+|---|---|---|
+| `intervention.<id>.card.png` | `miracles/<id>.webp`, 768 × 1152 (reduced) | opaque |
+| `splash.<pantheon>.<victory\|defeat>.png` | `splashes/<id>.webp`, native 1672 × 941/940 | opaque, not enlarged to 1920 × 1080 |
+| `banner.level_up.<pantheon>.png`, `banner.new_week.png`, `banner.week.<event>.png` | `banners/<id>.webp`, 1536 × 512 (reduced from 2172 × 724) | transparency and transparent padding kept (never cropped); the blank plaque is **measured per file** (`plaque`, fractions) because the generated variants differ slightly |
+
+41 runtime files, 10.1 MB.
+
+**Where they appear** (presentation only; built from committed events, so an
+effect is never applied twice and nothing replays on load; asset IDs follow
+the brief from content IDs — `packages/ui/src/assets/momentArt.ts`):
+
+* **Miracle card** — when a divine intervention is invoked (after the rules
+  accepted it: Favor, once per week, target): the viewer's own, on the map or
+  in battle, and an opponent's battle miracle in the viewer's battle (map
+  miracles of other empires stay hidden). The painting rises into the kit's
+  gold panel frame (corner ornaments, double rim) with the miracle's name on a
+  live plate over the bottom 18 %. The 96 px icons stay in the lists and buttons.
+* **Victory / defeat splash** — the player's own pantheon (never the
+  opponent's), full window behind the battle result (win or loss; a stalemate
+  keeps the plain screen), the end-of-game dialogs (skirmish result, mission
+  failed, mission debrief, campaign complete) and the summary. Titles are live
+  text in the painting's calm upper centre (x 30–70 %, y 8–30 %; long titles
+  shrink and wrap to two lines), panels and dialogs in the lower half, over the
+  existing bottom scrim. Never tiled or mirrored.
+* **Level-up banner** — the hero's own pantheon, at the top of the level-up
+  screen: "Level up", the hero's name and the new level written on the plaque;
+  the emblem above it is left clear. Choices and progression are unchanged.
+* **New-week banner** — at the dawn of a new week (day 8, 15, …; the rules'
+  `DayStarted`): the weekly event's own banner, or `banner.new_week` when there
+  is no event (The Three Beacons) or no picture for it; "Week N", the event's
+  name and effect written on the plaque. It replaces the text day banner for
+  that day. Once per dawn; never on load or restart.
+
+Timing and dismissal reuse the game's settings: banner times as the existing
+day banner (2.2 s; 3.6 s with an event; miracle cards 3.6 s), shortened by the
+Adventure animation / Battle speed choices, and counted as time on screen
+(frames drawn; a stalled or hidden window does not use it up); a click or Esc
+closes a card or banner at once without blocking play.
+Reduced motion removes the rise and fade (the motion tokens), not the reading
+time. A missing picture leaves the earlier presentation (toast, text banner,
+plain result screen, panel title).

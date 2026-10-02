@@ -17,6 +17,7 @@ import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, battleP
 const FINAL_BLOW_BEAT_MS = 700;
 import type { GameAudio } from '../audio/gameAudio';
 import { campaignEndingArtId } from '../assets/storyArt';
+import { momentsFromEvents, type Moment } from './moments';
 
 export type ScreenId =
   | 'main-menu'
@@ -184,6 +185,9 @@ export class AppStore {
   story: StoryEntry[] = [];
   /** Lines shown in this session, for the dialogue backlog. */
   storyLog: DialogueLine[] = [];
+  /** Big moments waiting to be shown (miracle cards, new-week banners; the moment layer shows the first). */
+  moments: Moment[] = [];
+  private momentSeq = 1;
   /** Tips waiting to be shown (contextual help; the panel shows the first). */
   hints: string[] = [];
   private hintsShown = new Set<string>();
@@ -308,6 +312,7 @@ export class AppStore {
     this.focusRequest = null;
     this.story = [];
     this.storyLog = [];
+    this.moments = [];
     this.hints = [];
     this.lastRecord = null;
     this.shownViewer = session.state.players[session.state.activePlayerId]?.controller === 'human' ? session.state.activePlayerId : null;
@@ -316,8 +321,9 @@ export class AppStore {
       if (u.events.length > 0) this.present(u.events, u.source);
       if (u.source === 'start' || u.source === 'load') {
         this.story = [];
+        this.moments = [];
         this.shownViewer = u.source === 'start' ? u.state.activePlayerId : null;
-      }
+      } else this.queueMoments(u.events);
       this.queueStory(u.events);
       this.routeAfterUpdate(u.events);
       this.checkHandoff();
@@ -349,6 +355,7 @@ export class AppStore {
     this.unsubSession?.();
     this.unsubSession = null;
     this.session = null;
+    this.moments = [];
     if (this.aiTimer) clearTimeout(this.aiTimer);
     this.aiTimer = null;
     this.overlays = [];
@@ -396,6 +403,34 @@ export class AppStore {
     this.notify();
     this.checkHandoff();
     this.scheduleAI();
+  }
+
+  // ------------------------------------------------------------ big moments
+
+  /**
+   * Miracle cards and new-week banners for one committed update (human or AI
+   * command). A miracle card rises at once, with its effect; a new-week banner
+   * waits until the day's movement has played out.
+   */
+  private queueMoments(events: readonly GameEvent[]): void {
+    const session = this.session;
+    if (!session) return;
+    const drafts = momentsFromEvents(this.catalog, session.state, session.humanPlayerId, events);
+    if (drafts.length === 0) return;
+    const add = (list: typeof drafts) => {
+      if (this.session !== session || list.length === 0) return;
+      this.moments = [...this.moments, ...list.map((d) => ({ ...d, key: `moment-${this.momentSeq++}` }))];
+      this.notify();
+    };
+    add(drafts.filter((d) => d.kind === 'miracle'));
+    const weeks = drafts.filter((d) => d.kind === 'new-week');
+    if (weeks.length) void this.whenIdle().then(() => add(weeks));
+  }
+
+  dismissMoment(key: string): void {
+    if (!this.moments.some((m) => m.key === key)) return;
+    this.moments = this.moments.filter((m) => m.key !== key);
+    this.notify();
   }
 
   // ------------------------------------------------------------ story scenes

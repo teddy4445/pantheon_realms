@@ -25,6 +25,7 @@ import {
   type HexCoord, requireScenarioMission, scenarioMission,
 } from '@pr/rules';
 import { useStore } from '../app/context';
+import { endOfGameSplash } from '../components/moments';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle } from '../components/kit';
@@ -439,6 +440,7 @@ function DebriefDialog({ final }: { final: boolean }) {
       title={final ? 'Campaign complete' : state.outcome.status === 'victory' ? `Victory — ${mission.name}` : mission.name}
       width="52rem"
       testId={final ? 'campaign-complete' : 'debrief'}
+      splash={endOfGameSplash(state, session.humanPlayerId, final ? 'Campaign complete' : state.outcome.status === 'victory' ? 'Victory' : 'Mission complete', final ? (campDef?.name ?? mission.name) : mission.name)}
       footer={
         <>
           <Button onClick={() => toMainMenu(store)}>Main Menu</Button>
@@ -543,6 +545,7 @@ function MissionFailedDialog() {
       title="Mission failed"
       width="34rem"
       testId="mission-failed"
+      splash={endOfGameSplash(state, session.humanPlayerId, 'Defeat', requireScenarioMission(store.catalog, state).name)}
       footer={
         <>
           <Button onClick={() => toMainMenu(store)}>Main Menu</Button>

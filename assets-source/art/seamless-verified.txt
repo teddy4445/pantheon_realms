@@ -1,0 +1,3 @@
+# Terrain and sky asset IDs whose wrap seams were checked in a 3 x 3 repeat (one per line).
+# Listed IDs are drawn with a plain repeat; all others use a mirrored repeat.
+# None yet (delivery of 2026-10-02: seams not finished).

@@ -27,6 +27,8 @@ import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { VertexBuffer } from '@babylonjs/core/Buffers/buffer';
 import type { Observer } from '@babylonjs/core/Misc/observable';
+import type { Texture } from '@babylonjs/core/Materials/Textures/texture';
+import type { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { TERRAIN_BY_CODE, type BodyProfile, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
 import type { SceneController } from './engineHost';
@@ -50,6 +52,8 @@ import { MaterialCache, buildBanner, buildCreatureProxy, buildHeroProxy, buildSi
 import { TweenPlayer, linear } from './tween';
 import { heroModelFor } from './modelRegistry';
 import { MountedHeroCache, type MountedHeroDebug, type MountedHeroRig, type PrepareOutcome } from './mountedHeroes';
+import { TERRAIN_TEXTURE_WORLD, skyArt, terrainArt, type EnvironmentArt } from './environmentArt';
+import { backdropMaterial, groundMaterial, loadArtTexture } from './artTextures';
 
 /** Nominal map time per hex step (ms, before the Adventure animation speed setting). */
 const STEP_MS = 210;
@@ -61,6 +65,7 @@ const R = 1;
 const FOG_TOP = 0.46;
 const FOG_BOTTOM = -0.4;
 const SKIRT_BOTTOM = -0.42;
+const WHITE: readonly [number, number, number] = [1, 1, 1];
 
 export interface AdventureSiteView {
   readonly id: string;
@@ -151,6 +156,30 @@ interface SiteEntry {
   bannerKey: string;
 }
 
+interface TerrainPart {
+  readonly mesh: Mesh;
+  readonly colors: Float32Array;
+  /** The painted texture is showing: vertex colours carry only fog dimming. */
+  textured: boolean;
+}
+
+interface TileSpan {
+  readonly part: number;
+  readonly start: number;
+  readonly count: number;
+  /** Vertices from this index on are hex sides (drawn darker). */
+  readonly sideFrom: number;
+}
+
+/** Ground types in a fixed order (one terrain part each when painted). */
+const GROUND_TYPES: readonly Terrain[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
+
+/** Sky backdrop past the north edge of the map (owner decision 2026-10-02): world size of one panorama and distance beyond the edge. */
+const SKY_IMAGE_WORLD_WIDTH = 150;
+const SKY_DISTANCE = 4;
+/** Height of the panorama's horizon above the sea (the distant land rises out of the sea). */
+const SKY_HORIZON_Y = 1.2;
+
 export class AdventureSceneController implements SceneController {
   readonly scene: Scene;
   readonly tweens = new TweenPlayer();
@@ -159,11 +188,16 @@ export class AdventureSceneController implements SceneController {
   private readonly cb: AdventureCallbacks;
   private map: WorldMapDefinition | null = null;
   private mapKey = '';
-  private terrain: Mesh | null = null;
-  private terrainColors: Float32Array | null = null;
-  private tileVertexStart: number[] = [];
-  private tileVertexCount: number[] = [];
+  /** Terrain meshes: one per painted ground type plus one for sides and unpainted tops. */
+  private terrainParts: TerrainPart[] = [];
+  /** Per tile: the vertex spans it owns in the terrain parts. */
+  private tileSpans: TileSpan[][] = [];
   private tileBase: [number, number, number][] = [];
+  /** Painted ground and sky of the current map (textures and materials to dispose on rebuild). */
+  private artDisposables: { dispose(): void }[] = [];
+  private seaMesh: Mesh;
+  private seaDefault: StandardMaterial | null = null;
+  private sky: Mesh | null = null;
   private roads: Mesh | null = null;
   private fog: Mesh | null = null;
   private grid: LinesMesh | null = null;
@@ -178,6 +212,7 @@ export class AdventureSceneController implements SceneController {
   private pathKey = '';
   private gridMode: AdventureView['grid'] = 'always';
   private explored: readonly number[] = [];
+  private visibleSet: ReadonlySet<number> = new Set();
   private heroes = new Map<string, HeroEntry>();
   private sites = new Map<string, SiteEntry>();
   private selectedHero: string | null = null;
@@ -234,6 +269,8 @@ export class AdventureSceneController implements SceneController {
     sea.position.y = -0.34;
     sea.material = this.mats.get(SEA_COLOR, { specular: 0.2 });
     sea.isPickable = false;
+    this.seaMesh = sea;
+    this.seaDefault = sea.material as StandardMaterial;
     this.hover = this.hexOutline('hover', '#f5e4b7');
     this.hover.isVisible = false;
     this.selectRing = MeshBuilder.CreateTorus('select', { diameter: 1.25, thickness: 0.07, tessellation: 32 }, scene);
@@ -292,18 +329,38 @@ export class AdventureSceneController implements SceneController {
     return TERRAIN_BY_CODE[map.terrain[i] ?? 'p'] ?? 'plains';
   }
 
-  private buildMap(map: WorldMapDefinition): void {
-    this.terrain?.dispose();
-    this.roads?.dispose();
-    this.decorRoot?.dispose();
-    this.decorByTile.clear();
-    for (const s of this.sites.values()) this.disposeSite(s);
-    this.sites.clear();
-    this.map = map;
+  private disposeTerrain(): void {
+    for (const p of this.terrainParts) {
+      p.mesh.material?.dispose();
+      p.mesh.dispose();
+    }
+    this.terrainParts = [];
+    this.tileSpans = [];
+    for (const d of this.artDisposables) d.dispose();
+    this.artDisposables = [];
+    this.sky?.dispose();
+    this.sky = null;
+    if (this.seaDefault) this.seaMesh.material = this.seaDefault;
+  }
+
+  /**
+   * Terrain tiles. Each ground type of the map's climate that has a painted
+   * texture (Brief 2) gets its own mesh with world-space UVs — one texture spans
+   * about two tiles and continues across neighbouring tiles — shown once the
+   * texture has loaded. Sides and unpainted types keep the procedural colours.
+   */
+  private buildTerrain(map: WorldMapDefinition): void {
     const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
-    const acc = new MeshAccumulator();
-    this.tileVertexStart = [];
-    this.tileVertexCount = [];
+    const arts = new Map<Terrain, EnvironmentArt>();
+    for (const t of GROUND_TYPES) {
+      const a = terrainArt(map.biome, t);
+      if (a) arts.set(t, a);
+    }
+    const uv = (x: number, z: number) => [x / TERRAIN_TEXTURE_WORLD, z / TERRAIN_TEXTURE_WORLD] as const;
+    const tops = new Map<Terrain, MeshAccumulator>();
+    for (const t of arts.keys()) tops.set(t, new MeshAccumulator(uv));
+    const rest = new MeshAccumulator();
+    const spans: { acc: MeshAccumulator; key: Terrain | 'rest'; start: number; count: number; sideFrom: number }[][] = [];
     this.tileBase = [];
     for (let r = 0; r < map.height; r++) {
       for (let q = 0; q < map.width; q++) {
@@ -318,16 +375,130 @@ export class AdventureSceneController implements SceneController {
         ];
         const { x, z } = axialWorld({ q, r }, R);
         const h = TERRAIN_HEIGHT[t];
-        const start = acc.vertexCount;
-        acc.hexTop(x, z, R * 0.985, h, rgb);
-        acc.hexSides(x, z, R * 0.985, h, SKIRT_BOTTOM, rgb.map((c) => c * 0.55));
-        this.tileVertexStart.push(start);
-        this.tileVertexCount.push(acc.vertexCount - start);
+        const top = tops.get(t);
+        const tile: (typeof spans)[number] = [];
+        if (top) {
+          const start = top.vertexCount;
+          top.hexTop(x, z, R * 0.985, h, rgb);
+          tile.push({ acc: top, key: t, start, count: top.vertexCount - start, sideFrom: top.vertexCount - start });
+          const s0 = rest.vertexCount;
+          rest.hexSides(x, z, R * 0.985, h, SKIRT_BOTTOM, rgb.map((c) => c * 0.55));
+          tile.push({ acc: rest, key: 'rest', start: s0, count: rest.vertexCount - s0, sideFrom: 0 });
+        } else {
+          const start = rest.vertexCount;
+          rest.hexTop(x, z, R * 0.985, h, rgb);
+          rest.hexSides(x, z, R * 0.985, h, SKIRT_BOTTOM, rgb.map((c) => c * 0.55));
+          tile.push({ acc: rest, key: 'rest', start, count: rest.vertexCount - start, sideFrom: 7 });
+        }
+        spans.push(tile);
         this.tileBase.push(rgb);
       }
     }
-    this.terrain = acc.build('terrain', this.scene, { updatableColors: true });
-    this.terrainColors = new Float32Array(acc.colors);
+    const partIndex = new Map<Terrain | 'rest', number>();
+    const addPart = (key: Terrain | 'rest', acc: MeshAccumulator) => {
+      if (!acc.positions.length) return;
+      const mesh = acc.build(key === 'rest' ? 'terrain' : `terrain-${key}`, this.scene, { updatableColors: true });
+      partIndex.set(key, this.terrainParts.length);
+      this.terrainParts.push({ mesh, colors: new Float32Array(acc.colors), textured: false });
+    };
+    addPart('rest', rest);
+    for (const [t, acc] of tops) addPart(t, acc);
+    this.tileSpans = spans.map((tile) => tile.map((sp) => ({ part: partIndex.get(sp.key)!, start: sp.start, count: sp.count, sideFrom: sp.sideFrom })));
+    // Painted textures replace the flat colours as they arrive (mirrored repeat until the seams are verified).
+    for (const [t, art] of arts) {
+      const pi = partIndex.get(t);
+      if (pi === undefined) continue;
+      const wrap = art.wrap ?? 'mirror';
+      const tex = loadArtTexture(this.scene, art, wrap, wrap, (loaded) => {
+        const part = this.terrainParts[pi];
+        if (!part || this.map !== map) return;
+        const old = part.mesh.material;
+        part.mesh.material = groundMaterial(`terrain-${t}-art`, this.scene, loaded);
+        old?.dispose();
+        part.textured = true;
+        this.refreshTerrainColors();
+      });
+      this.artDisposables.push(tex);
+    }
+    // The sea around the map shows the climate's water (also on maps without water tiles).
+    const water = arts.get('water');
+    if (water) {
+      const wrap = water.wrap ?? 'mirror';
+      const tex = loadArtTexture(this.scene, water, wrap, wrap, (loaded) => {
+        if (this.map === map) this.paintSea(loaded, wrap);
+      });
+      this.artDisposables.push(tex);
+    }
+    this.buildSky(map);
+  }
+
+  /** The sea around the map takes the climate's painted water (same world scale, darker). */
+  private paintSea(tex: Texture, wrap: 'repeat' | 'mirror'): void {
+    tex.uScale = 400 / TERRAIN_TEXTURE_WORLD;
+    tex.vScale = 400 / TERRAIN_TEXTURE_WORLD;
+    const mat = groundMaterial(`sea-art-${wrap}`, this.scene, tex);
+    mat.diffuseColor.set(0.6, 0.64, 0.7);
+    this.seaMesh.material = mat;
+    this.artDisposables.push(mat);
+  }
+
+  /**
+   * The climate's sky panorama as a backdrop standing past the north edge of the
+   * map (owner decision 2026-10-02: the fixed camera never looks up to the
+   * horizon, so the sky shows when the view reaches the map's far edge). The
+   * panorama keeps its proportions; its horizon (about 62 % from the top) sits
+   * just above the sea so the distant land rises out of it. Clamped vertically;
+   * repeated sideways (mirrored until its left/right seam is verified).
+   */
+  private buildSky(map: WorldMapDefinition): void {
+    const art = skyArt(map.biome);
+    if (!art) return;
+    let minX = Infinity;
+    let maxX = -Infinity;
+    for (const [q, r] of [[0, 0], [map.width - 1, 0], [0, map.height - 1], [map.width - 1, map.height - 1]] as const) {
+      const p = axialWorld({ q, r }, R);
+      minX = Math.min(minX, p.x);
+      maxX = Math.max(maxX, p.x);
+    }
+    const imageW = SKY_IMAGE_WORLD_WIDTH;
+    const imageH = (imageW * art.height) / art.width;
+    const planeW = maxX - minX + 160;
+    const horizon = art.horizon ?? 0.62;
+    const centerX = (minX + maxX) / 2;
+    const plane = MeshBuilder.CreatePlane('sky', { width: planeW, height: imageH }, this.scene);
+    // Horizon line (horizon × height below the top edge) at SKY_HORIZON_Y.
+    plane.position.set(centerX, SKY_HORIZON_Y + imageH * (horizon - 0.5), R + SKY_DISTANCE);
+    plane.isPickable = false;
+    plane.isVisible = false;
+    this.sky = plane;
+    const wrap = art.wrap ?? 'mirror';
+    const tex = loadArtTexture(this.scene, art, wrap, 'clamp', (loaded) => {
+      if (this.sky !== plane) return;
+      loaded.uScale = planeW / imageW;
+      // Centre one copy of the panorama on the map (the sun keeps to the left of the centre).
+      loaded.uOffset = 0.5 - planeW / imageW / 2;
+      const mat = backdropMaterial('sky-art', this.scene, loaded);
+      plane.material = mat;
+      plane.isVisible = true;
+      this.artDisposables.push(mat);
+    });
+    this.artDisposables.push(tex);
+  }
+
+  /** Re-apply the fog-of-war colours (after a painted texture arrives). */
+  private refreshTerrainColors(): void {
+    if (this.map) this.applyFog(this.explored, this.visibleSet);
+  }
+
+  private buildMap(map: WorldMapDefinition): void {
+    this.disposeTerrain();
+    this.roads?.dispose();
+    this.decorRoot?.dispose();
+    this.decorByTile.clear();
+    for (const s of this.sites.values()) this.disposeSite(s);
+    this.sites.clear();
+    this.map = map;
+    this.buildTerrain(map);
     // Roads
     const roads = new MeshAccumulator();
     const road = hexToRgb(ROAD_COLOR);
@@ -409,9 +580,9 @@ export class AdventureSceneController implements SceneController {
 
   private applyFog(explored: readonly number[], visible: ReadonlySet<number>): void {
     const map = this.map;
-    if (!map || !this.terrain || !this.terrainColors) return;
+    if (!map || !this.terrainParts.length) return;
     this.explored = explored;
-    const colors = this.terrainColors;
+    this.visibleSet = visible;
     const fog = new MeshAccumulator();
     const unknown = hexToRgb(UNKNOWN_COLOR);
     const gridPts: Vector3[][] = [];
@@ -420,16 +591,19 @@ export class AdventureSceneController implements SceneController {
       const r = Math.floor(i / map.width);
       const known = explored[i] === 1;
       const vis = visible.has(i);
-      const base = this.tileBase[i]!;
       const f = known ? (vis ? 1 : 0.58) : 0;
-      const start = this.tileVertexStart[i]!;
-      const count = this.tileVertexCount[i]!;
-      for (let v = 0; v < count; v++) {
-        const side = v >= 7 ? 0.55 : 1;
-        const o = (start + v) * 4;
-        colors[o] = base[0] * f * side;
-        colors[o + 1] = base[1] * f * side;
-        colors[o + 2] = base[2] * f * side;
+      for (const span of this.tileSpans[i] ?? []) {
+        const part = this.terrainParts[span.part]!;
+        // A painted tile shows its texture; the vertex colour only dims it under fog.
+        const base = part.textured ? WHITE : this.tileBase[i]!;
+        const colors = part.colors;
+        for (let v = 0; v < span.count; v++) {
+          const side = v >= span.sideFrom ? 0.55 : 1;
+          const o = (span.start + v) * 4;
+          colors[o] = base[0] * f * side;
+          colors[o + 1] = base[1] * f * side;
+          colors[o + 2] = base[2] * f * side;
+        }
       }
       for (const m of this.decorByTile.get(i) ?? []) m.isVisible = known;
       const { x, z } = axialWorld({ q, r }, R);
@@ -448,7 +622,7 @@ export class AdventureSceneController implements SceneController {
         gridPts.push(ring);
       }
     }
-    this.terrain.updateVerticesData(VertexBuffer.ColorKind, colors);
+    for (const part of this.terrainParts) part.mesh.updateVerticesData(VertexBuffer.ColorKind, part.colors);
     this.fog?.dispose();
     this.fog = fog.positions.length ? fog.build('fog', this.scene) : null;
     this.grid?.dispose();

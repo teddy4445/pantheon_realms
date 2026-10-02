@@ -9,4 +9,5 @@
  */
 export * from './modelRegistry';
 export * from './palette';
+export * from './environmentArt';
 export { ANIMATION_STATES, type AnimationState } from './animations';

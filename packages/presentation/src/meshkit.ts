@@ -74,6 +74,17 @@ export class MeshAccumulator {
   indices: number[] = [];
   colors: number[] = [];
   normals: number[] = [];
+  uvs: number[] = [];
+  /**
+   * Texture coordinates from the world position (ground textures: world-space
+   * UVs, so adjacent tiles continue the same painting). Without it the mesh has
+   * no UVs and shows vertex colours only.
+   */
+  private readonly uvOf: ((x: number, z: number) => readonly [number, number]) | null;
+
+  constructor(uvOf: ((x: number, z: number) => readonly [number, number]) | null = null) {
+    this.uvOf = uvOf;
+  }
 
   get vertexCount(): number {
     return this.positions.length / 3;
@@ -83,6 +94,10 @@ export class MeshAccumulator {
     this.positions.push(x, y, z);
     this.colors.push(rgb[0]!, rgb[1]!, rgb[2]!, alpha);
     this.normals.push(n[0]!, n[1]!, n[2]!);
+    if (this.uvOf) {
+      const [u, v] = this.uvOf(x, z);
+      this.uvs.push(u, v);
+    }
     return this.vertexCount - 1;
   }
 
@@ -137,6 +152,7 @@ export class MeshAccumulator {
     vd.indices = this.indices;
     vd.colors = this.colors;
     vd.normals = this.normals;
+    if (this.uvs.length) vd.uvs = this.uvs;
     vd.applyToMesh(mesh, opts.updatableColors === true);
     const mat = new StandardMaterial(`${name}-mat`, scene);
     mat.specularColor.set(0.05, 0.05, 0.05);

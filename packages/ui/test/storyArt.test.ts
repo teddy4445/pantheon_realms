@@ -20,6 +20,8 @@ type Entry = { file: string; kind: string; width: number; height: number; alphaB
 const manifest = JSON.parse(readFileSync(path.join(runtime, 'art/manifest.json'), 'utf8')) as { assets: Record<string, Entry> };
 const report = JSON.parse(readFileSync(path.join(root, 'assets-source/art/IMPORT_REPORT.json'), 'utf8')) as { assets: Record<string, Entry & { source: { file: string; width: number; height: number } }> };
 const catalog = buildCatalog();
+/** Brief 1 kinds (ground and sky: groundArt.test.ts; big moments: bigMoments.test.ts). */
+const STORY_KINDS = ['bust', 'cover', 'ending', 'briefing', 'card'];
 
 /** Width, height and alpha flag from a WebP header (VP8X, VP8 or VP8L). */
 function webpInfo(file: string): { w: number; h: number; alpha: boolean } {
@@ -48,7 +50,7 @@ const allLines = (): DialogueLine[] => {
 
 describe('story art runtime files', () => {
   it('every registered file exists with its registered size; paths stay inside assets-runtime', () => {
-    const entries = Object.entries(manifest.assets);
+    const entries = Object.entries(manifest.assets).filter(([, a]) => STORY_KINDS.includes(a.kind));
     expect(entries.length).toBe(35 + 6 + 6 + 11 + 40 + 40);
     for (const [id, a] of entries) {
       expect(a.file.startsWith('art/'), `${id}: ${a.file}`).toBe(true);
@@ -64,6 +66,7 @@ describe('story art runtime files', () => {
 
   it('never upscales and keeps every aspect ratio (busts 2:3, landscapes as painted)', () => {
     for (const [id, a] of Object.entries(report.assets)) {
+      if (!STORY_KINDS.includes(a.kind)) continue; // groundArt.test.ts, bigMoments.test.ts
       const s = a.source;
       expect(s.file.startsWith('assets-source/art/final/'), id).toBe(true);
       if (a.kind === 'card') continue;

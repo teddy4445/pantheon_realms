@@ -23,6 +23,7 @@ import { SettingsScreen } from '../screens/Settings';
 import { UnitDetailScreen } from '../screens/UnitDetail';
 import { OverlayLayer } from '../dialogs/Overlays';
 import { HintPanel, StoryLayer } from '../dialogs/Story';
+import { MomentLayer } from '../components/moments';
 import { RandomSetupScreen } from '../screens/RandomSetup';
 import { SummaryScreen, HighScoresScreen } from '../screens/Summary';
 import { matches } from './keys';
@@ -146,6 +147,7 @@ function Shell({ store }: { store: AppStore }) {
       <SceneHostLayer />
       <Router />
       <OverlayLayer />
+      <MomentLayer />
       <HintPanel />
       <StoryLayer />
       <Toasts />

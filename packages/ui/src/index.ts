@@ -73,6 +73,7 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
           screen: store.screen.id,
           overlays: store.overlays.map((o) => o.kind),
           story: store.story.map((x) => x.key),
+          moments: store.moments.map((m) => ({ ...m })),
           hints: [...store.hints],
           busy: store.presentationBusy,
           battleScreenOpens: store.battleScreenOpens,

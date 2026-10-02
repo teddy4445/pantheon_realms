@@ -28,8 +28,13 @@ import { MaterialCache, buildCreatureProxy, disposeProxy } from './proxies';
 import { TweenPlayer, easeInOut, linear } from './tween';
 import { applyIdle, faceGroup, playState, restFigure, type Figure } from './animations';
 import { ModelCache, unitModelFor, type ModelRig } from './models';
+import { BATTLEFIELD_LAYOUT, battlefieldArt } from './environmentArt';
+import { groundMaterial, loadArtTexture } from './artTextures';
+import type { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
+import { VertexBuffer } from '@babylonjs/core/Buffers/buffer';
 
 const R = 1;
+const WHITE: readonly [number, number, number] = [1, 1, 1];
 /**
  * Battlefield presentation scale for GLB figures: models are authored in true
  * meters (a 1.8 m human); the board uses 1-unit hex radii, so figures are drawn
@@ -76,6 +81,8 @@ export interface BattleView {
   readonly rows: number;
   readonly obstacles: readonly BattleCell[];
   readonly archetype: string;
+  /** Map climate (picks a battlefield painting variant when one exists; presentation only). */
+  readonly climate?: string;
   readonly stacks: readonly BattleStackView[];
   /** Reachable anchors for the active human stack. */
   readonly moves: readonly BattleCell[];
@@ -165,6 +172,13 @@ export class BattleSceneController implements SceneController {
   private readonly cb: BattleCallbacks;
   private boardKey = '';
   private board: Mesh | null = null;
+  /** Painted battlefield (Brief 2): the ground plane and the board's cell tops show one painting. */
+  private boardArt: Mesh | null = null;
+  private boardArtColors: Float32Array | null = null;
+  private artGround: Mesh | null = null;
+  private artDisposables: { dispose(): void }[] = [];
+  private surround: Mesh;
+  private surroundDefault: StandardMaterial | null = null;
   private obstacleRoot: TransformNode | null = null;
   private grid: LinesMesh | null = null;
   private highlight: Mesh | null = null;
@@ -218,6 +232,8 @@ export class BattleSceneController implements SceneController {
     ground.position.set(center.x, -0.12, center.z);
     ground.material = this.mats.get('#2b3524');
     ground.isPickable = false;
+    this.surround = ground;
+    this.surroundDefault = ground.material as StandardMaterial;
     this.hover = this.outline('hover', '#f5e4b7');
     this.hover.isVisible = false;
     this.activeRing = MeshBuilder.CreateTorus('active', { diameter: 1.45, thickness: 0.08, tessellation: 36 }, scene);
@@ -241,15 +257,65 @@ export class BattleSceneController implements SceneController {
     return l;
   }
 
+  private disposeBoardArt(): void {
+    const mats = new Set([this.boardArt?.material, this.artGround?.material].filter((m) => !!m));
+    for (const m of mats) m!.dispose();
+    this.boardArt?.dispose();
+    this.boardArt = null;
+    this.boardArtColors = null;
+    this.artGround?.dispose();
+    this.artGround = null;
+    for (const d of this.artDisposables) d.dispose();
+    this.artDisposables = [];
+    if (this.surroundDefault) this.surround.material = this.surroundDefault;
+  }
+
+  /**
+   * The painted battlefield (Brief 2, §6.0): one painting drawn once (clamped)
+   * across the ground, seen straight down, with the 15 × 11 board fitted inside
+   * its quiet centre (about 1500 × 1000 of 4096 × 3200 px). Image top = the far
+   * side of the field. Returns the world → UV mapping, or null without art.
+   */
+  private battlefieldMapping(view: BattleView): { uv: (x: number, z: number) => readonly [number, number]; x0: number; z0: number; w: number; h: number } | null {
+    const art = battlefieldArt(view.archetype, view.climate);
+    if (!art) return null;
+    let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+    for (const [col, row] of [[0, 0], [view.cols - 1, 0], [0, view.rows - 1], [view.cols - 1, view.rows - 1], [0, 1], [view.cols - 1, 1]] as const) {
+      const p = cellWorld({ col, row }, R);
+      minX = Math.min(minX, p.x - R);
+      maxX = Math.max(maxX, p.x + R);
+      minZ = Math.min(minZ, p.z - R);
+      maxZ = Math.max(maxZ, p.z + R);
+    }
+    const L = BATTLEFIELD_LAYOUT;
+    // World units per layout pixel: the board fits the quiet centre in both directions.
+    const unit = Math.max((maxX - minX) / L.centreWidth, (maxZ - minZ) / L.centreHeight);
+    const w = L.width * unit;
+    const h = L.height * unit;
+    const cx = (minX + maxX) / 2;
+    const cz = (minZ + maxZ) / 2;
+    const x0 = cx - w / 2;
+    const z0 = cz - h / 2;
+    // Rows advance toward +Z (the camera side), so the image top (v = 1) is the far edge (−Z).
+    const uv = (x: number, z: number) => [(x - x0) / w, 1 - (z - z0) / h] as const;
+    return { uv, x0, z0, w, h };
+  }
+
   private buildBoard(view: BattleView): void {
     this.board?.dispose();
     this.grid?.dispose();
     this.obstacleRoot?.dispose();
+    this.disposeBoardArt();
     this.cols = view.cols;
     this.rows = view.rows;
     this.obstacleSet = new Set(view.obstacles.map((c) => `${c.col}:${c.row}`));
     const moat = new Set((view.siege?.moat ?? []).map((c) => `${c.col}:${c.row}`));
     const acc = new MeshAccumulator();
+    const mapping = this.battlefieldMapping(view);
+    const art = mapping ? battlefieldArt(view.archetype, view.climate) : null;
+    const tops = mapping ? new MeshAccumulator(mapping.uv) : null;
+    /** Per painted cell top: the tint it keeps once the painting shows (deployment columns slightly darker). */
+    const paintedTint: number[] = [];
     const baseRgb = hexToRgb(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
     const water = hexToRgb('#2e5871');
     const paved = hexToRgb('#8c8474');
@@ -264,7 +330,13 @@ export class BattleSceneController implements SceneController {
         const src = inMoat ? water : inTown ? paved : baseRgb;
         const rgb = src.map((c) => Math.max(0, Math.min(1, c + n + (inMoat ? 0 : deploy))));
         const top = inMoat ? -0.08 : 0;
-        acc.hexTop(x, z, R * 0.975, top, rgb);
+        if (tops && !inMoat && !inTown) {
+          // Painted cell: the battlefield painting continues across the board.
+          tops.hexTop(x, z, R * 0.975, top, rgb);
+          for (let k = 0; k < 7; k++) paintedTint.push(deploy < 0 ? 0.9 : 1);
+        } else {
+          acc.hexTop(x, z, R * 0.975, top, rgb);
+        }
         acc.hexSides(x, z, R * 0.975, top, -0.12, rgb.map((c) => c * 0.5));
         const ring: Vector3[] = [];
         for (let k = 0; k <= 6; k++) {
@@ -275,6 +347,42 @@ export class BattleSceneController implements SceneController {
       }
     }
     this.board = acc.build('board', this.scene);
+    if (tops && mapping && art && tops.positions.length) {
+      const painted = tops.build('board-art', this.scene, { updatableColors: true });
+      this.boardArt = painted;
+      this.boardArtColors = new Float32Array(tops.colors);
+      // The ground plane under and around the board shows the same painting (clamped at its edges).
+      const g = new MeshAccumulator(mapping.uv);
+      const y = -0.115;
+      const a = g.vertex(mapping.x0, y, mapping.z0, WHITE);
+      const b = g.vertex(mapping.x0 + mapping.w, y, mapping.z0, WHITE);
+      const c = g.vertex(mapping.x0 + mapping.w, y, mapping.z0 + mapping.h, WHITE);
+      const d = g.vertex(mapping.x0, y, mapping.z0 + mapping.h, WHITE);
+      g.indices.push(a, b, c, a, c, d);
+      const plane = g.build('battlefield-art', this.scene);
+      plane.isVisible = false;
+      this.artGround = plane;
+      const colors = this.boardArtColors;
+      const tint = paintedTint;
+      const tex = loadArtTexture(this.scene, art, 'clamp', 'clamp', (loaded) => {
+        if (this.boardArt !== painted) return;
+        const mat = groundMaterial('battlefield-art', this.scene, loaded);
+        plane.material = mat;
+        plane.isVisible = true;
+        const old = painted.material;
+        painted.material = mat;
+        old?.dispose();
+        for (let v = 0; v < tint.length; v++) {
+          colors[v * 4] = tint[v]!;
+          colors[v * 4 + 1] = tint[v]!;
+          colors[v * 4 + 2] = tint[v]!;
+        }
+        painted.updateVerticesData(VertexBuffer.ColorKind, colors);
+        // Beyond the painting, the old surround takes the colour of the painting's far margin.
+        if (art.edge) this.surround.material = this.mats.get(art.edge);
+      });
+      this.artDisposables.push(tex);
+    }
     this.grid = MeshBuilder.CreateLineSystem('bgrid', { lines }, this.scene);
     this.grid.color = new Color3(0.08, 0.1, 0.08);
     this.grid.alpha = 0.5;

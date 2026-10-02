@@ -250,7 +250,7 @@ function buildView(
   const siege = battle.siege && battle.siege.level > 0 ? { structures: battle.siege.structures, moat: battle.siege.moat, wallCol: battle.siege.wallCol } : null;
   const highlightKey = `${deploySel ?? ''}|${zone.length}|${state.revision}|${mode.kind}|${'spellId' in mode ? mode.spellId : 'abilityId' in mode ? mode.abilityId : ''}|${path?.map(cellKey).join(';') ?? ''}|${attackFrom ? cellKey(attackFrom) : ''}|${la?.stackId ?? ''}`;
   return {
-    view: { battleId: battle.battleId, cols: battle.cols, rows: battle.rows, obstacles: battle.obstacles, archetype: battle.archetype, stacks, moves, targets, path, attackFrom, highlightKey, grid, siege, zone },
+    view: { battleId: battle.battleId, cols: battle.cols, rows: battle.rows, obstacles: battle.obstacles, archetype: battle.archetype, climate: state.world.map.biome, stacks, moves, targets, path, attackFrom, highlightKey, grid, siege, zone },
     attackFrom,
     hoverTarget,
   };

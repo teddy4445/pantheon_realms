@@ -8,6 +8,8 @@ import { useStore } from '../app/context';
 import { Button, Chip, Panel } from '../components/kit';
 import { HeroPortrait, SkillIcon } from '../components/art';
 import { Icon, type IconName } from '../assets/icons';
+import { levelUpBannerArt } from '../assets/momentArt';
+import { BannerPlaque } from '../components/moments';
 
 const ATTR_ICON: Record<string, IconName> = { attack: 'attack', defense: 'defense', power: 'power', knowledge: 'knowledge' };
 
@@ -31,6 +33,8 @@ export function LevelUpScreen() {
     );
   }
   const hero = state.heroes[decision.heroId]!;
+  // The hero's own pantheon (not the town's): its painted banner, with the words written live on its plaque.
+  const banner = levelUpBannerArt(catalog.heroes[hero.definitionId]?.pantheonId);
   const remaining = state.pendingDecisions.filter((d) => d.heroId === hero.id).length;
   const confirm = () => {
     const idx = decision.offers.length === 0 ? null : choice;
@@ -42,8 +46,18 @@ export function LevelUpScreen() {
     if (!next) store.toAdventure();
   };
   return (
-    <div className="screen levelup-screen" data-testid="level-up">
-      <Panel title={`${hero.name} reaches level ${decision.newLevel}`} className="levelup-card">
+    <div className={`screen levelup-screen ${banner ? 'has-banner' : ''}`} data-testid="level-up">
+      {banner ? (
+        <div className="levelup-banner" data-testid="levelup-banner">
+          <BannerPlaque art={banner}>
+            <span className={`plaque-text__title ${hero.name.length > 16 ? 'is-long' : ''}`}>{hero.name}</span>
+            <span className="plaque-text__level">
+              Level up<span className="plaque-text__sep"> · </span>Level {decision.newLevel}
+            </span>
+          </BannerPlaque>
+        </div>
+      ) : null}
+      <Panel title={banner ? 'Choose your advancement' : `${hero.name} reaches level ${decision.newLevel}`} className="levelup-card">
         <div className="levelup-hero">
           <HeroPortrait catalog={catalog} definitionId={hero.definitionId} name={hero.name} size="8rem" />
           <div>

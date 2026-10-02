@@ -8,6 +8,9 @@ export interface Inspect {
   story: string[];
   /** Contextual tips waiting to be shown. */
   hints: string[];
+  /** Big moments waiting or shown (miracle cards, new-week banners). */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  moments: any[];
   busy: boolean;
   humanTurn: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
