@@ -118,3 +118,28 @@ export interface MapEventTemplateDefinition {
   /** 'near' events sit close to a town, 'far' ones out in the wilds (richer). */
   readonly band: 'near' | 'far';
 }
+
+/** What a divine gift gives (proposed 2026-10-03). */
+export type DivineGiftGrant =
+  /** Resources at once. */
+  | { readonly type: 'resources'; readonly resources: ResourceCost }
+  /** Every creature family of tier <= maxTier housed in the town gains `percentOfWeek`% of its weekly growth (at least 1). */
+  | { readonly type: 'recruits'; readonly maxTier: number; readonly percentOfWeek: number }
+  /** The hero visiting the town gains experience. */
+  | { readonly type: 'experience'; readonly amount: number }
+  /** The hero visiting the town receives a random artifact of this rarity (drawn deterministically for the match, town and week). */
+  | { readonly type: 'artifact'; readonly rarity: 'treasure' | 'minor' | 'major' };
+
+/**
+ * A divine gift: something a Temple grants for Favor, so Favor keeps a use once
+ * both gods are chosen (owner request 2026-10-03). One gift per town with a
+ * Temple per world week; scenarios with divine interventions only.
+ */
+export interface DivineGiftDefinition {
+  readonly id: string;
+  readonly name: string;
+  readonly summary: string;
+  readonly favorCost: number;
+  readonly grant: DivineGiftGrant;
+  readonly iconAssetId: AssetId;
+}

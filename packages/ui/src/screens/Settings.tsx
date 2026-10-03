@@ -1,8 +1,8 @@
 /**
  * S17 Settings. Edits a draft and applies/persists it explicitly. Volume changes
  * are heard live while editing; Cancel/leaving without applying restores them.
- * Controls for features this build does not have (voice lines, graphics tiers,
- * camera shake) are shown disabled with the honest reason.
+ * Controls for features this build does not have (voice lines, camera shake)
+ * are shown disabled with the honest reason.
  */
 import { useEffect, useState, type ReactNode } from 'react';
 import { CONTEXT_LABEL, FIXED_KEYS, KEY_ACTIONS, bindingMap, isReservedKey, keyLabel, normalizeKey, rebind, type KeyContext } from '../app/keys';
@@ -11,6 +11,15 @@ import { DEFAULT_PREFERENCES, type Preferences } from '../app/preferences';
 import { Button, Chip, Panel, Tabs, Toggle } from '../components/kit';
 import { ScreenHeader } from '../components/game';
 import { soundsArePlaceholders } from '../audio/gameAudio';
+import { classifyGraphics } from '@pr/presentation/core';
+import { probeGraphics } from '../app/graphicsProbe';
+
+/** What each preset changes (values in `@pr/presentation/core` graphics.ts). */
+const GRAPHICS_HINT: Record<Preferences['graphicsQuality'], string> = {
+  high: 'Full resolution on sharp screens, soft shadows under troops, three figures per troop, all map detail, painted ground and sky, no frame cap.',
+  medium: 'Standard resolution, soft shadows under troops, two figures per troop at most, no grass tufts, 60 frames per second at most.',
+  low: 'Reduced resolution, no shadows or anti-aliasing, one figure per troop, sparse map detail, plain ground colours, 30 frames per second at most.',
+};
 
 type Tab = 'gameplay' | 'interface' | 'display' | 'audio' | 'accessibility' | 'controls' | 'storage';
 
@@ -63,6 +72,7 @@ export function SettingsScreen() {
   const [tab, setTab] = useState<Tab>((store.screen.params.tab as Tab | undefined) ?? 'gameplay');
   const [draft, setDraft] = useState<Preferences>(store.prefs);
   const [saveInfo, setSaveInfo] = useState<string>('Checking…');
+  const [probe, setProbe] = useState<string | null>(null);
   const dirty = JSON.stringify(draft) !== JSON.stringify(store.prefs);
   const set = <K extends keyof Preferences>(k: K, v: Preferences[K]) => setDraft({ ...draft, [k]: v });
 
@@ -209,9 +219,28 @@ export function SettingsScreen() {
               <Field label="Window mode" disabledReason={platform.supportsWindowMode ? undefined : 'Browser build: use your browser’s own fullscreen (F11).'}>
                 <Select label="Window mode" value={draft.windowMode} options={[{ id: 'windowed', label: 'Windowed' }, { id: 'fullscreen', label: 'Fullscreen' }]} onChange={(v) => set('windowMode', v)} disabled={!platform.supportsWindowMode} />
               </Field>
-              <Field label="Graphics quality" disabledReason="This build has a single placeholder quality level.">
-                <Select label="Graphics quality" value={draft.graphicsQuality} options={[{ id: 'low', label: 'Low' }, { id: 'medium', label: 'Medium' }, { id: 'high', label: 'High' }]} onChange={(v) => set('graphicsQuality', v)} disabled />
+              <Field label="Game cursors">
+                <Toggle label="Game cursors" checked={draft.gameCursors} onChange={(v) => set('gameCursors', v)} />
               </Field>
+              <Field label="Graphics quality" hint={GRAPHICS_HINT[draft.graphicsQuality]}>
+                <div className="row" style={{ gap: '0.5rem' }}>
+                  <Select label="Graphics quality" value={draft.graphicsQuality} options={[{ id: 'low', label: 'Low' }, { id: 'medium', label: 'Medium' }, { id: 'high', label: 'High' }]} onChange={(v) => set('graphicsQuality', v)} />
+                  <Button
+                    data-testid="graphics-test"
+                    onClick={() => {
+                      const r = probeGraphics();
+                      const q = classifyGraphics(r);
+                      setProbe(`Quick test: ${q === 'high' ? 'High' : q === 'medium' ? 'Medium' : 'Low'}${Number.isFinite(r.msPerPass) ? ` (${r.msPerPass.toFixed(1)} ms per test pass)` : r.webgl2 ? ' (software renderer)' : ' (no WebGL 2)'}`);
+                      set('graphicsQuality', q);
+                    }}
+                  >
+                    Test again
+                  </Button>
+                </div>
+              </Field>
+              <p className="note" data-testid="graphics-note">
+                {probe ? `${probe}. ` : ''}Resolution and frame rate change at once; shadows, detail and painted ground from the next map or battle view; anti-aliasing at the next start.
+              </p>
             </>
           ) : null}
           {tab === 'audio' ? (

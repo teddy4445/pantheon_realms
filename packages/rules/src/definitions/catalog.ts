@@ -26,7 +26,7 @@ import type {
 } from '../ids';
 import type { CampaignDefinition, MissionDefinition, SkirmishScenarioDefinition } from './campaign';
 import type { AbilityDefinition, CreatureDefinition, CreatureFamilyDefinition, LoreDefinition } from './creatures';
-import type { DifficultyDefinition, InterventionDefinition, MapEventTemplateDefinition, SkirmishKitDefinition, WeeklyEventDefinition } from './skirmish';
+import type { DifficultyDefinition, DivineGiftDefinition, InterventionDefinition, MapEventTemplateDefinition, SkirmishKitDefinition, WeeklyEventDefinition } from './skirmish';
 import type {
   ArtifactDefinition,
   ArtifactSetDefinition,
@@ -69,6 +69,8 @@ export interface ContentCatalog {
   /** Skirmish difficulty levels (in `order`). */
   readonly difficulties: Readonly<Record<string, DifficultyDefinition>>;
   readonly interventions: Readonly<Record<string, InterventionDefinition>>;
+  /** Temple gifts bought with Favor (absent in older catalogs). */
+  readonly divineGifts?: Readonly<Record<string, DivineGiftDefinition>>;
   readonly weeklyEvents: Readonly<Record<string, WeeklyEventDefinition>>;
   /** Per-pantheon skirmish starting kits (random maps). */
   readonly skirmishKits: Readonly<Record<PantheonId, SkirmishKitDefinition>>;

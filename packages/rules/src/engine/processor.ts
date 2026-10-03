@@ -25,6 +25,7 @@ import { commitActivateSite, commitMoveHero, updateGates } from '../systems/adve
 import { commitBuySpellbook, commitEquip, commitHireHero, commitLevelUpChoice, commitUnequip } from '../systems/heroes';
 import { commitCastAdventureSpell } from '../systems/magic';
 import { commitArtifactPurchase, commitOffering, commitTraining, refreshMerchantStock } from '../systems/services';
+import { commitDivineGift } from '../systems/gifts';
 import { commitCampRecruitment, commitResolveMapEvent } from '../systems/world';
 import { commitCompleteQuestHut, commitOpenChest } from '../systems/sites';
 import { commitBattleIntervention, commitIntervention } from '../systems/interventions';
@@ -132,6 +133,8 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitCompleteQuestHut(tx, c.heroId, c.siteId);
     case 'InvokeIntervention':
       return commitIntervention(tx, c.interventionId, c.townId ?? null);
+    case 'ReceiveDivineGift':
+      return commitDivineGift(tx, c.townId, c.giftId, c.heroId ?? null);
     case 'BattleInvokeIntervention':
       return commitBattleIntervention(tx, c.interventionId, c.targetId ?? null);
     case 'RecruitUnits':

@@ -1,9 +1,209 @@
 # Development Status
 
-_Last updated: 2026-10-03 · **app 0.6.0** (Windows installer built for play-testing, see below; 0.5.0 before it) · after 0.6.0: the **owner's interface pass** (below; not in the 0.6.0 installer) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
+_Last updated: 2026-10-03 · **app 0.7.0** (Windows installer built for play-testing, see below; 0.6.0 before it) · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
+
+## Owner fixes of 2026-10-03, second round (town gates, the fallen, victory, town armies), the delivered cursors and pantheon emblems
+
+**Not in the 0.7.0 installer.** Owner decisions (rules changes, unplaytested):
+
+1. **Victory:** when a battle is won, every surviving creature of the winning side
+   plays its victory animation, then keeps cheering until the result opens (the
+   beat on the board after the last blow is now 1.2 s; it was 0.7 s).
+2. **The fallen stay on the battlefield:** a destroyed stack plays its dying
+   animation and stays lying where it fell (no base disc or count label). **Rules
+   change:** its cells stay taken for the rest of the battle (`occupancy` marks them
+   `corpse:<id>`): ground stacks cannot end there or walk through; flyers still pass
+   over; corpses in a wall or gate opening do not block (so a breach can never be
+   sealed). A battle loaded from a save shows its dead lying down.
+3. **Town gates:** a hero never stands on a town's own tile. **Rules change:** each
+   town has a gate — the neighbouring tile joined to it by a road (several: the one
+   nearest the map centre, so point-symmetric maps get mirrored gates; Twin Harbors
+   (4, 8) and (30, 8)) — and the town site is used from there: visiting, recruiting
+   to the hero, the Tavern placing a new hero, training, the merchant, divine gifts,
+   garrison exchange, Recall/Homecoming, capture and sieges (the defending visitor
+   stands at the gate). The town tile is a building nobody enters; moving "to" a
+   town goes to its gate. Missions that placed heroes in a town start them at its
+   gate, and older saves are settled the same way when loaded. Effects: routes from
+   a town start one road step out (implementation/06 reference costs are 75 MP
+   shorter from the gate: Three Beacons M01 900, M02 1,200, M03 2,325 / 2,950);
+   a town's other road exits are reached around it. Clicking the town while the
+   hero stands at its gate opens it.
+4. **Town armies:** the Exchange troops button is gone. Stacks are dragged between
+   the garrison and the visiting hero (and within either): matching stacks merge,
+   different stacks swap; Shift- or Ctrl-drag splits (choose how many in a small
+   dialog); clicking a stack and choosing a quantity, then clicking a slot, also
+   splits. Rules unchanged (`TransferStack`). On the map, clicking an own hero next
+   to the selected one opens the troop exchange (the *meet* cursor).
+5. **Mouse cursors delivered:** the 24 cursor masters (128 px, owner's art project,
+   2026-10-03) are in `assets-source/ui/cursors/` (all 24 SHA-256 match the
+   delivery manifest; the manifest is kept beside them). `npm run cursors:import`
+   now writes 32 px (1x) and 64 px (2x) rasters with the delivery's hotspots
+   (arrow and gauntlet 2,2; sword 30,16; magnifier and the rest 16,16) and the sword
+   turned to the six hex sides on a grown canvas (44 × 44 / 88 × 88 for the slanted
+   ones) with its point as the hotspot; the game uses
+   `image-set(1x, 2x) x y, <system cursor>` (absolute URLs, preloaded), so the
+   system cursor shows while they load. Settings → Display → Game cursors (on by
+   default) keeps the system cursors.
+
+6. **Pantheon emblems delivered:** the six crests (1024 × 1024 RGBA, owner's art
+   project, 2026-10-03; all six SHA-256 match the delivery manifest) are in
+   `assets-source/icons/final/`; `npm run icons:import` wrote them at 256 px to
+   `assets-runtime/ui/icons/final/` and registered them (`emblem.<pantheon>`; 221
+   final icons now). The shared `Emblem` component shows them everywhere a pantheon
+   is marked (setup cards and rival chips, random-map seats, Encyclopedia dividers,
+   Pantheon, Town, Kingdom Overview and hero screens, world dialogs, summary and high
+   scores), contained in its box (no cropping of the different silhouettes).
+
+**Checks run (cloud):**
+
+| Command | Result |
+|---|---|
+| `npm run check` | pass (final run after the emblems) — **315 unit tests in 32 files**. New: `rules/test/townGate.test.ts` (4: gates on the road and mirrored on Twin Harbors; heroes start at the gate, the town tile is blocked, moving to the town stops at the gate; capture from the gate; older saves settled), `rules/test/corpses.test.ts` (a destroyed stack's cells stay taken, ground stacks cannot reach them); `ui/test/cursors.test.ts` rewritten for the delivered art (every ID resolves to its 1x/2x files with the delivery's hotspot; the six turned swords keep their point on the side they face). Tests updated for gates: reference routes, hiring, Homecoming, siege capture, divine gifts, a skirmish AI test (walks two tiles out so the Tavern can place a hero), and `GameDriver.marchTo` (a town destination means its gate) |
+| `npm run cursors:import` | 24 cursor files → 29 images (24 + 5 extra sword angles), 1x and 2x, hotspots equal to the delivery's `hotspot32` for all 24 |
+| `npm run build` | pass |
+| `npx playwright test tests/e2e/round10.spec.ts` | **5 / 5**: hero at the gate, clicking the town opens it, walking back stops at the gate; drag a stack hero → garrison, Shift-drag split (dialog), click-select split of 3; corpses lie on the board and the winners celebrate before the result; all 29 cursor images served at 1x and 2x, the map picks attack / hero / move cursors with the 16,16 hotspot and the system fallback; the battle board on screen has odd rows shifted right and y downward, as the sword angles assume |
+| Town-related specs (siege, services, round9, journey, campaign, features, mapSites, bigMoments, pantheons) | **37 passed, 2 failed** (19.3 min); both failures expected the old behaviour — `round9` the drawn stand-in attack cursor, `siege` the hero standing on the captured town's tile. Updated (delivered cursor; the town's gate) and rerun: pass |
+| `npm run icons:import` + `npm run icons:catalog` | 221 final icons registered (215 + the 6 emblems at 256 px); catalog 786 entries. `uiArt.test.ts` read the illustrations section's size the way the importer does not ("emblems 256 px; thumbnails 640 × 360 px" → it expected 640); it now reads it like the importer (256) |
+| `menu.spec.ts` (4) | pass — every registered final icon, the emblems included, is served and decodes at its size |
+| Emblem review (temporary script, not kept) | 13 emblem images on the pantheon setup screen (cards 48 px, rival chips 21 px, detail 67 px), the Encyclopedia dividers (medallion), the Town title (30 px): all 256 px sources decode, shapes contained in their boxes, no clipping |
+| Screenshots reviewed | hero at the gate beside Westharbor, town armies after the moves, a battle with two fallen stacks lying on their hexes, the delivered cursor and emblem contact sheets, emblems on setup, Encyclopedia and Town |
+
+Not run: the full Playwright suite (owner request), the balance tool, the desktop
+build and an installer. The cursors were checked by style and file tests; how each
+looks and clicks at real size in the desktop app, with every melee side and on a
+high-density screen, still needs a person.
+
+## 0.7.0 Windows installer (2026-10-03, for play-testing)
+
+Version bumped from 0.6.0 to **0.7.0** (`package.json`, `apps/desktop/package.json`,
+`package-lock.json`): the first installer with the owner's interface pass, the
+first 43 creature portraits and the 2026-10-03 requests (below). Content
+`content-0.8.0`, so 0.6.0 and 0.5.0 saves load. Preferences gain
+`graphicsTested`: on the first start of 0.7.0 the quick graphics test picks a
+preset once, also for people who had 0.6.0.
+
+| Command | Result |
+|---|---|
+| `npm run build` + `npm run desktop:build` | pass (start-up script 1,576.36 KB / 426.17 KB gzip) |
+| `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.7.0-x64.exe` (221,808,939 bytes, SHA-256 `f3be34eeccf4f6012179c0a7e004b2b458a23f70d25bd6a621bb9d5de67d12de`) |
+| Payload check (7-Zip) | the installer's `app-64.7z` extracts byte-identical to `win-unpacked`; `app.asar` (123.7 MB) says version 0.7.0, holds `renderer/ui/cursors/manifest.json`, and no `assets-source/` or source maps |
+| `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (packaged: `isPackaged` true, DevTools refused; saves, records, unit GLB, six hero GLBs, all 255 painted-art files, audio running) |
+| Copied to the owner's `installer\` folder | in 9 parts, joined on the computer, SHA-256 matches |
+
+**Not run on Windows; unsigned** (SmartScreen warns: More info → Run anyway).
+The automatic graphics pick and the presets have only been run on the
+software renderer here; on a real Windows GPU they are untested.
+
+## Owner requests of 2026-10-03 (cursors, divine gifts, smarter AI, three fixes, graphics quality)
+
+**In the 0.7.0 installer.** Designs and proposed values:
+`DESIGN_PROPOSALS.md` group 0.8 (§29–32). Owner answers: Favor buys **divine
+gifts at the Temple**; graphics use **presets + an automatic pick**.
+
+1. **Context cursors (stand-ins):** the 24 IDs of Brief 7 switch by what a
+   click would do — on the map (move, move later, attack, siege, visit, portal,
+   own hero or town, blocked; busy on another empire's turn; grabbing while
+   the map is dragged) and in battle (move, fly, melee — the sword turned to
+   the side of the hex the strike comes from — shoot, weak shot, structure,
+   spell, ability, info, blocked). Until the art is delivered: system cursors
+   where the meaning is the same, otherwise drawn 32 px stand-ins.
+   `npm run cursors:import` brings the delivered art in with no code change
+   (ASSET_PIPELINE.md §11, *Mouse cursors*). Settings → Display → *Game
+   cursors* (on by default) switches back to the system pointer. The battle
+   sword's six angles were checked in unit tests, not yet looked at by a person
+   on every side.
+2. **Divine gifts at the Temple:** six gifts (5–20 Favor: Gold, Wood and Stone,
+   Crystal, +1,000 experience, half a week of tier 1–4 recruits, a minor
+   artifact), one per town with a Temple per week; skirmish, random maps and
+   the later campaigns (The Three Beacons: off). The AI buys them with Favor
+   it does not need for gods or the week's intervention.
+3. **AI:** judges heroes by army, commander, matching battle stat bonuses
+   (pantheon, gods, specialties, sets, the week), Offense/Archery/Armorer,
+   morale, luck and magic (`packages/ai/src/assessment.ts`), and reads the
+   week's event: lower Gold reserves in a week of extra income, going home to
+   recruit early in a week of extra growth. Proposed weights; measured effect
+   below.
+4. **Minimap view frame:** the minimap draws the part of the map on screen (the
+   camera's ground footprint, updated about 7 times a second while the minimap
+   is shown).
+5. **Combat log:** events are recorded as the store receives them (last six
+   battles), so the first round — published before the battle screen mounts —
+   is in the log.
+6. **Hot-seat messages:** at the hand-over, notices meant for the previous
+   player (toasts, hints, big moments) are cleared; only public ones (an empire
+   eliminated) and the new-week banner stay.
+7. **Graphics quality:** Low / Medium / High (resolution, anti-aliasing at the
+   next start, soft contact shadows, figures per troop, map detail, painted
+   ground, small animations, frame cap). On the first start a quick WebGL test
+   (at most 0.6 s, when the menu is idle) picks one; Settings → Display shows
+   what each preset changes and can run the test again. Resolution and frame
+   cap change at once, the rest from the next map or battle view. UI-test mode
+   (`?e2e`) skips the automatic pick (High stays, as before) so runs are
+   reproducible. Babylon shadow maps were tried and dropped (on the test
+   renderer they shaded the casters, not the ground). The test's thresholds are
+   proposed and were **not calibrated on real PCs** — this cloud has only a
+   software renderer, which always picks Low.
+
+**Checks run (cloud, 2026-10-03):**
+
+| Command | Result |
+|---|---|
+| `npm run check` | pass — boundaries, type-check, **310 unit tests in 30 files** (new: `ui/test/cursors.test.ts` 5, `rules/test/gifts.test.ts` 4, `ai/test/assessment.test.ts` 3, `presentation/test/graphics.test.ts` 5, `ai/test/services.test.ts` +1). The first run failed one test: *The Silver Branch* headless journey lost its M05 assault — the rival AI, now judging Orla's upgraded war-band stronger, stayed behind its walls instead of meeting her in the field (with the old heuristic it attacked and lost). The four arc journeys now recruit the town's troops before marching (66 → 102 creatures); all pass |
+| `npm run balance -- skirmish random --jobs 2` | 252 jobs in 4.5 min (`balance-reports/balance-2026-10-03T04-14-51.md`). Twin Harbors: 216 matches, 206 decided (mean day **15.3**; 14.9 before), 10 at the day cap (6 before); west **0.54** (0.54), first mover **0.71** (0.68); pantheon averages **0.42–0.63** (0.37–0.60). Random maps (18 matches each, noisy): 2 empires 0.33 / 0.67 (0.50 / 0.50 before; 3 undecided, 0 before); 3 empires 0.33 / 0.33 / 0.33 (0.56 / 0.39 / 0.06 before) |
+| `npm run build` | pass — start-up script 1,576.36 KB / 426.17 KB gzip (the cursor stand-ins, presets and quick test; 1,542.83 / 417.49 at the interface pass), dist 121 MB |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 5` | menu **209 ms** local / **422 ms** web (219 / 452 before); settled 994 / 1,407 ms (2,640 / 3,446 before) — **not comparable**: the tool opens the build without `?e2e`, so the automatic pick chose Low on the software renderer (no painted ground) |
+| `npx playwright test tests/e2e/round9.spec.ts` | 4/4 pass: map cursor (a drawn stand-in over the guarded mine, another over the hero) and the minimap frame; a Temple gift through the town screen (Favor 30 → 25, Gold +2,000, the Temple then waits); a battle started from the map has "— Round 1 —" in its log; Settings shows three presets and the quick test, and Low fetches no ground or sky textures |
+| Full `npx playwright test` (production build) | first run: tests 1–49 of 118 passed, then the calibration-model battle (`models.spec.ts`, a known slow test) stalled — the browser stayed at full CPU for about 15 minutes past its limit and the run was stopped. That test then passed alone (2.1 min), and the remaining eight files were rerun together: **28 passed, 0 failed** (13.5 min; the 42 opt-in review tests skipped). Every test passed at least once on this build; the stall was not reproduced |
+| Screenshots reviewed | map cursor, Low map (plain ground, no sky), town Temple panel with *Divine gifts*, Settings → Display, battle on High (contact shadows) and Low (one figure per troop, plain board) |
+
+Not run: the desktop build and smoke, an installer, a hot-seat UI test of the
+hand-over (the change is two lines in the store's hand-over; the existing
+hot-seat tests pass), real-GPU checks of the presets and the quick test.
+
+## Creature art, first part (Brief 5, delivery 2026-10-03)
+
+The owner's art project delivered **forms 001–043** of the 102 (all Greek,
+Norse and Egyptian forms and the Kitsune): 172 model-reference views and 43
+painted portraits, already copied into the folder. All 215 files match the
+delivery's SHA-256 manifest; the Nine-Tailed Kitsune (form 044, an unfinished
+draft) and forms 045–102 are not delivered and are not registered.
+
+* **Portraits in the game:** `npm run icons:import` registered the 43
+  (`creature.<pantheon>.tier<N>.<base|upgraded>.portrait`). The importer now
+  writes fully opaque pictures as 256 px **WebP** (1.2 MB for the 43; 6.6 MB as
+  PNG) and keeps PNG for icons with transparency (the 172 earlier icons were
+  re-imported byte-identical). Shown through `CreaturePortrait` in its gold
+  frame: army slots, recruitment and training, battle turn order and stack
+  panel, Bestiary, encounters, results; the creature detail screen's portrait
+  is larger (8 rem). Each portrait was checked against its creature's name on a
+  labelled contact sheet (43/43 correct).
+* **Reference views** stay in `assets-source/creatures/reference/` for the
+  later 3D step (the game never reads them), with the delivery's notes copied to
+  `delivery-notes/`. Painted, not orthographic; 1254 × 1254 instead of 1024
+  (not resized). **Open owner decision:** the Egyptian board gives tier 2 and
+  tier 5 different body plans for base and upgrade (four-legged Jackal Guardian
+  → upright Anubian Warden; four-legged Crocodile Beast → upright Sobek
+  Warbeast), so those families need two skeletons each; the brief asked one.
+  The art follows the board.
+* `ICON_CATALOG.md` / `.xlsx` / `.csv` regenerated (`npm run icons:catalog`): the
+  43 rows read "Final art".
+
+Checks run:
+
+| Command | Result |
+|---|---|
+| SHA-256 of the 215 delivered files in the folder against `DELIVERY_MANIFEST.csv` | 215/215 match; no other creature files in the two folders |
+| `npm run icons:import` | 215 registered (172 earlier icons unchanged byte for byte, 43 new WebP) |
+| `npm run icons:catalog` | 786 entries; the 43 portraits listed as final art |
+| `npm run check` | pass — 292 unit tests in 26 files (`uiArt.test.ts` now accepts opaque WebP portraits at their catalog size) |
+| `npm run build` | pass — start-up script 1,553.36 KB / 418.01 KB gzip (+10.5 KB: the larger final-art manifest is bundled), dist 121 MB |
+| Playwright: `menu.spec` (4, incl. a new test: every registered final icon and portrait is served and decodes at its size; Hoplite and Kitsune show the painting, the Nine-Tailed Kitsune keeps the stand-in), `models.spec` bestiary viewer, `round3.spec` bestiary, `pantheons.spec` Norse and Egyptian setup/town/recruit | 8/8 pass |
+| Screenshots reviewed | contact sheets of all 43; Bestiary (Greek, Egyptian, Japanese), creature detail, hero army, recruitment and training, battle turn order and stack panel |
+
+Not run: the full Playwright suite, the desktop build and smoke, an installer.
 
 ## Owner interface pass (2026-10-03, after the 0.6.0 installer)
 
@@ -44,7 +244,7 @@ Twelve changes the owner asked for after play-testing 0.6.0. **Not in the
    on the adventure map, **without a briefing** (objectives stay in the Journal).
 7. **Pantheon icons:** every pantheon icon goes through one component
    (`Emblem`), now also in the Town and Kingdom Overview titles. The emblems are
-   still the generated stand-ins: **GPT-6 Brief 6** (`GPT6_BRIEF_6_PANTHEON_EMBLEMS.md`)
+   (stand-ins until the six crests arrived on 2026-10-03, see above): **GPT-6 Brief 6** (`GPT6_BRIEF_6_PANTHEON_EMBLEMS.md`)
    asks for the six crests; `npm run icons:import` brings them in with no code
    change.
 8. **Battle result (victory and defeat):** no line under the title; the two
@@ -72,8 +272,8 @@ Twelve changes the owner asked for after play-testing 0.6.0. **Not in the
     right. After the last choice the screen underneath returns.
 12. **Mouse cursors:** **GPT-6 Brief 7** (`GPT6_BRIEF_7_CURSORS.md`): 24 context
     cursors (interface, adventure map, battle; one sword turned to the six
-    sides of a hex) with hotspot rules. Not wired into the game yet (importer
-    and context switching described in the brief).
+    sides of a hex) with hotspot rules. (Wired into the game with stand-ins on
+    2026-10-03, see above.)
 
 **Checks run for the interface pass (cloud, 2026-10-03):**
 
@@ -1195,7 +1395,7 @@ runs.
   build; it is loaded only in the `?e2e=calibration` test mode, which the
   installed app cannot navigate to.)
 * **Skirmish AI**: builds from data, hires heroes (and returning heroes) from
-  its true Tavern roster, explores, **besieges visible towns** when it is
+  its true Tavern roster, explores, buys divine gifts with spare Favor, **besieges visible towns** when it is
   clearly stronger after a wall factor, **defends threatened towns** against
   enemies it cannot beat in the field (and hunts weaker raiders), avoids
   ending a move within reach of a stronger visible enemy, and plays sieges
@@ -1266,9 +1466,9 @@ runs.
 * **Windows installer** (0.4.0, this build) is built and its contents checked,
   but no version has been run on Windows yet, and it is unsigned (SmartScreen
   warns).
-* **Combat log** does not back-fill events published before the battle screen
-  opened (e.g. the opening round's Catapult shot).
-* **Minimap** has no viewport frame.
+* **Combat log** and **minimap frame**: fixed on 2026-10-03 (the log is
+  recorded by the store from the battle's first event; the minimap frames the
+  view).
 * **AI** remains heuristic (greedy scoring). Since 2026-10-02 it casts
   movement, scouting and Recall spells on the map, values artifact sets and
   picks skills by their value to the hero (`ai/src/growth.ts`); early battles
@@ -1276,11 +1476,14 @@ runs.
 * **AI and the 0.4 features** is heuristic too: it recruits from camps it
   stands on, picks the map-event option with the highest fixed value, invokes
   interventions while keeping 25 Favor until both god choices are made, and
-  scores the new battle spells by their immediate value; it does not plan
-  around weekly events, and its strength estimate ignores skills, sets and
-  interventions.
-* **Hot-seat** has no per-player privacy for toasts that report events seen
-  by the previous player, and a battle between two people shows "Victory"
+  scores the new battle spells by their immediate value. Since 2026-10-03 its
+  strength estimate counts skills, morale, luck, magic and matching battle
+  bonuses (sets, gods, signatures, the week) and it adjusts reserves to the
+  weekly event (`ai/src/assessment.ts`); it still does not weigh the
+  interventions an opponent could invoke in battle.
+* **Hot-seat**: since 2026-10-03 the hand-over clears the previous player's
+  notices (public ones, like an eliminated empire, and the new-week banner
+  stay). A battle between two people shows "Victory"
   from the winner's side. Two people cannot play the campaign together.
 * **Random maps** (generator 0.3) are land maps with optional two-way
   portals (no water crossings or underground); full roads now also lead to
@@ -1295,14 +1498,15 @@ runs.
 ## Planned (present in data/UI, not playable)
 
 * Undesigned gods (4 per pantheon, 24 in all): listed, not selectable.
-* Favor has no use beyond god commitments, so the Offering rite loses value
-  once both choices are made (open question in `DESIGN_PROPOSALS.md`).
+* (Favor's late-game use: divine gifts at the Temple since 2026-10-03, in
+  every scenario with interventions.)
 * Favor in the campaign: interventions are skirmish-only, so in The Three
   Beacons Favor still only buys gods (documented economy unchanged).
 * More authored skirmish maps. (Campaigns for the Egyptian, Japanese,
   Celtic and Mesoamerican pantheons were built on 2026-10-02.)
 * Stack merging before a siege; manual ballistics; the map editor (later, by
-  owner decision); final audio and voice; graphics quality tiers. Online
+  owner decision); final audio and voice. (Graphics quality presets: built
+  2026-10-03, see above.) Online
   multiplayer is not planned at this stage.
 
 ## Blocked
@@ -1330,7 +1534,9 @@ Nothing is blocked. Open owner decisions are listed under deviations.
   Riders", tier 4 Banshee ← "Bear Circle", tier 5 Selkie ← "Eagle Aerie", tier 7
   Fomorian ← "Ancient Entwives"; Mesoamerican tier 5 Camazotz ← "Stag Grove",
   tier 7 Stone Colossus ← "Warrior Altar". The other dwellings match by name.
-* Creature/hero/god portraits and emblems: procedural SVG. Mission and
+* Creature portraits: 43 of the 102 forms have final paintings (Brief 5, first
+  part, 2026-10-03); the other 59, hero portraits without a story bust, all god
+  portraits are still procedural SVG (the six pantheon emblems are final art since 2026-10-03). Mission and
   campaign cards now come from the delivered story art (below).
 * **Story art (2026-10-02)** — 35 dialogue busts, 6 campaign covers, 11 ending
   pictures and 40 mission pictures delivered by the owner (masters in

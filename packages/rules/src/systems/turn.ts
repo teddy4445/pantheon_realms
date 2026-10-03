@@ -12,7 +12,7 @@ import { addResources, resources, type ResourceBundle } from '../core/resources'
 import type { MatchState } from '../state/match';
 import { dawnManaRegen, heroEffects, maxMana, movementBudget } from '../resolvers/heroes';
 import { playerTowns, townDailyIncome, townHasEffect, weeklyGrowthFor } from '../resolvers/town';
-import { missionSite } from '../resolvers/world';
+import { missionSite, heroInTown } from '../resolvers/world';
 import { scenarioMission } from '../resolvers/scenario';
 import type { Tx } from '../engine/tx';
 import { grant } from './economy';
@@ -151,7 +151,7 @@ export function processDawn(tx: Tx): void {
     if (hero.status !== 'active') continue;
     hero.movementPoints = movementBudget(catalog, state, hero).total;
     const cap = maxMana(catalog, state, hero);
-    const town = Object.values(state.towns).find((t) => t.ownerId === hero.ownerId && hexEquals(t.coord, hero.position));
+    const town = Object.values(state.towns).find((t) => t.ownerId === hero.ownerId && heroInTown(catalog, state, hero, t.id));
     if (town && townHasEffect(catalog, town, 'spell_library')) {
       hero.mana = cap;
       learnSpellsAtTown(tx, hero, town);

@@ -19,6 +19,7 @@ import {
   quoteAdventureSpell,
   quoteIntervention,
   type MatchState,
+  townGate,
 } from '../src';
 
 const twin = () => GameDriver.mission('skirmish_twin_harbors');
@@ -183,7 +184,7 @@ describe('artifact sets, skills and spells', () => {
     d.hero().position = { q: d.hero().position.q + 3, r: d.hero().position.r };
     d.do({ kind: 'CastAdventureSpell', heroId: hero.id, spellId: 'homecoming', target: d.hero().position });
     const town = d.state.towns['westharbor']!;
-    expect(d.hero().position).toEqual(town.coord);
+    expect(d.hero().position).toEqual(townGate(d.catalog, d.state, town.id));
     expect(d.hero().movementPoints).toBe(0);
   });
 });

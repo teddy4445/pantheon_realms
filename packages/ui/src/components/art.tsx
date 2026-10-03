@@ -167,7 +167,7 @@ export function Emblem({ catalog, pantheonId, size = '3rem' }: { catalog: Conten
   const rec = resolveAsset(`emblem.${pantheonId}`);
   return (
     <span style={{ display: 'inline-block', width: size, height: size, flex: 'none' }}>
-      {rec.url ? <img src={rec.url} alt={`${pantheonId} emblem`} style={{ width: '100%' }} /> : <EmblemArt pantheonId={pantheonId} accent={pantheonAccent(catalog, pantheonId)} />}
+      {rec.url ? <img src={rec.url} alt={`${pantheonId} emblem`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} draggable={false} /> : <EmblemArt pantheonId={pantheonId} accent={pantheonAccent(catalog, pantheonId)} />}
     </span>
   );
 }

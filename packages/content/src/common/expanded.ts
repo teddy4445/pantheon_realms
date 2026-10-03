@@ -14,6 +14,7 @@ import type {
   ArtifactSetDefinition,
   DifficultyDefinition,
   EffectDefinition,
+  DivineGiftDefinition,
   InterventionDefinition,
   MapEventTemplateDefinition,
   SkillDefinition,
@@ -428,4 +429,18 @@ export const MAP_EVENT_TEMPLATES: readonly MapEventTemplateDefinition[] = [
       { label: 'Ask for alms in return', summary: '+2 Favor and +300 Gold', reward: { resources: { favor: 2, gold: 300 } } },
     ],
   },
+];
+
+/**
+ * Divine gifts (proposed 2026-10-03, unplaytested): a Temple's gift for Favor,
+ * one per town with a Temple per week, so Favor keeps a use once both gods are
+ * chosen. Priced a little below the Favor's usual worth (about 500 Gold).
+ */
+export const DIVINE_GIFTS: readonly DivineGiftDefinition[] = [
+  { id: 'temple_treasury', name: 'Temple Treasury', summary: 'The priests open the temple coffers: 2,000 Gold.', favorCost: 5, grant: { type: 'resources', resources: { gold: 2000 } }, iconAssetId: 'icon.gift.temple_treasury' },
+  { id: 'timber_and_stone', name: 'Timber and Stone', summary: 'Pilgrims haul offerings of building stuff: 5 Wood and 5 Stone.', favorCost: 5, grant: { type: 'resources', resources: { wood: 5, stone: 5 } }, iconAssetId: 'icon.gift.timber_and_stone' },
+  { id: 'tears_of_the_gods', name: 'Tears of the Gods', summary: 'Crystal forms where the god wept: 4 Crystal.', favorCost: 6, grant: { type: 'resources', resources: { crystal: 4 } }, iconAssetId: 'icon.gift.tears_of_the_gods' },
+  { id: 'anointing', name: 'Anointing', summary: 'The hero visiting the town is anointed by the high priest: +1,000 experience.', favorCost: 8, grant: { type: 'experience', amount: 1000 }, iconAssetId: 'icon.gift.anointing' },
+  { id: 'blessed_brood', name: 'Blessed Brood', summary: 'Every dwelling of tiers 1 to 4 in this town gains half a week of growth at once (at least 1).', favorCost: 10, grant: { type: 'recruits', maxTier: 4, percentOfWeek: 50 }, iconAssetId: 'icon.gift.blessed_brood' },
+  { id: 'temple_relic', name: 'Temple Relic', summary: 'The temple lends a relic from its vault to the hero visiting the town: a minor artifact.', favorCost: 20, grant: { type: 'artifact', rarity: 'minor' }, iconAssetId: 'icon.gift.temple_relic' },
 ];

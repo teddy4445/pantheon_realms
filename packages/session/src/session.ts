@@ -12,6 +12,7 @@
 import {
   NEUTRAL_PLAYER_ID,
   processCommand,
+  settleHeroesAtTownGates,
   type CommandPayload,
   type ContentCatalog,
   type GameCommand,
@@ -102,6 +103,8 @@ export class GameSession {
   }
 
   static fromSnapshot(catalog: ContentCatalog, snapshot: SaveSnapshot): GameSession {
+    // Saves from before 2026-10-03 may have heroes on a town's own tile: move them to its gate.
+    settleHeroesAtTownGates(catalog, snapshot.match);
     return new GameSession(catalog, snapshot.match, snapshot.campaign);
   }
 

@@ -180,6 +180,8 @@ export interface TownState {
   garrison: ArmyState;
   /** World week of the last Temple offering here (0 = never). */
   lastOfferingWeek: number;
+  /** World week of the last divine gift received here (absent or 0 = never). */
+  lastGiftWeek?: number;
   /** Artifact Merchant stock for `week`; a sold item leaves a null. Absent until a merchant exists. */
   merchant: { week: number; stock: (ArtifactId | null)[] } | null;
 }

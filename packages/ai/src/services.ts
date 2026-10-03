@@ -7,6 +7,9 @@
  * values.
  */
 import {
+  divineGifts,
+  giftNeedsHero,
+  quoteDivineGift,
   goldEquivalent,
   interventionsFor,
   interventionUsedThisWeek,
@@ -29,7 +32,7 @@ import {
   type HeroState,
   type MatchState,
   type OfferingLine,
-  type PlayerId,
+  type PlayerId, heroInTown,
 } from '@pr/rules';
 
 /** Rough value of a blessing for an AI empire (higher is better). */
@@ -112,7 +115,7 @@ export function offeringCandidates(catalog: ContentCatalog, belief: MatchState, 
       const c = catalog.creatures[s.creatureId]!;
       if (c.tier <= 3) pool.push({ line: { army: { kind: 'garrison', townId: town.id }, slot }, count: s.count, unit: c.cost?.gold ?? 0, tier: c.tier, keep: 0 });
     });
-    const visitor = Object.values(belief.heroes).find((h) => h.ownerId === playerId && h.status === 'active' && hexEquals(h.position, town.coord));
+    const visitor = Object.values(belief.heroes).find((h) => h.ownerId === playerId && h.status === 'active' && heroInTown(catalog, belief, h, town.id));
     if (visitor) {
       visitor.army.slots.forEach((s, slot) => {
         if (!s) return;
@@ -146,7 +149,7 @@ export function trainingCandidates(catalog: ContentCatalog, belief: MatchState, 
   const wallet = belief.players[playerId]!.wallet;
   for (const town of playerTowns(belief, playerId)) {
     for (const h of heroes) {
-      if (!hexEquals(h.position, town.coord)) continue;
+      if (!heroInTown(catalog, belief, h, town.id)) continue;
       const q = quoteTraining(catalog, belief, playerId, town.id, h.id);
       if (q.legal && wallet.gold - q.cost.gold >= TRAINING_RESERVE_GOLD) out.push({ kind: 'TrainHero', townId: town.id, heroId: h.id });
     }
@@ -259,6 +262,53 @@ export function interventionCandidates(catalog: ContentCatalog, belief: MatchSta
   }
   scored.sort((a, b) => b.score - a.score);
   return scored.slice(0, 1).map((s) => s.payload);
+}
+
+/** Favor kept back for the week's intervention while it is still unused. */
+const INTERVENTION_RESERVE = 10;
+
+/**
+ * Divine gifts (proposed 2026-10-03): with Favor to spare (both gods chosen, or
+ * above the reserve for them, and the week's miracle paid or reserved), each
+ * town with a Temple takes its best gift by value per Favor: recruits are worth
+ * their price, experience and artifacts only with a hero in the town.
+ */
+export function giftCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, threatened: ReadonlySet<string>): CommandPayload[] {
+  let spare = favorSpare(catalog, belief, playerId) - (interventionsFor(catalog, belief, playerId).length && !interventionUsedThisWeek(catalog, belief, playerId) ? INTERVENTION_RESERVE : 0);
+  const gifts = divineGifts(catalog, belief);
+  if (gifts.length === 0 || spare <= 0) return [];
+  const wallet = belief.players[playerId]!.wallet;
+  const out: CommandPayload[] = [];
+  for (const town of playerTowns(belief, playerId)) {
+    if (threatened.has(town.id)) continue;
+    const visitor = Object.values(belief.heroes).find((h) => h.ownerId === playerId && h.status === 'active' && heroInTown(catalog, belief, h, town.id));
+    let best: { score: number; payload: CommandPayload; cost: number } | null = null;
+    for (const g of gifts) {
+      if (g.favorCost > spare) continue;
+      const needsHero = giftNeedsHero(g);
+      if (needsHero && !visitor) continue;
+      const q = quoteDivineGift(catalog, belief, playerId, town.id, g.id, needsHero ? visitor!.id : null);
+      if (!q.legal) continue;
+      let value = 0;
+      const gr = g.grant;
+      if (gr.type === 'resources') {
+        value = goldEquivalent(gr.resources);
+        // Building materials matter more when short of them.
+        if ((gr.resources.wood ?? 0) > 0 && wallet.wood < 10) value *= 1.3;
+        if ((gr.resources.crystal ?? 0) > 0 && wallet.crystal < 5) value *= 1.2;
+      } else if (gr.type === 'recruits') {
+        for (const [f, n] of Object.entries(q.recruits)) value += n * (catalog.creatures[catalog.families[f]?.baseCreatureId ?? '']?.cost?.gold ?? 0);
+      } else if (gr.type === 'experience') value = 1.5 * gr.amount;
+      else if (gr.type === 'artifact') value = 2500;
+      const score = value / g.favorCost;
+      if (!best || score > best.score) best = { score, cost: g.favorCost, payload: { kind: 'ReceiveDivineGift', townId: town.id, giftId: g.id, ...(needsHero ? { heroId: visitor!.id } : {}) } };
+    }
+    if (best) {
+      out.push(best.payload);
+      spare -= best.cost;
+    }
+  }
+  return out;
 }
 
 export { favorSpare };

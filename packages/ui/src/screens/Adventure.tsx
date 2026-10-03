@@ -36,10 +36,15 @@ import {
   type SiteDefinition,
   type SiteState,
   scenarioMission,
+  heroInTown,
+  isTownTile,
+  axialDistance,
 } from '@pr/rules';
 import { biomeTerrainCss } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
 import { useStore } from '../app/context';
+import { adventureCursor } from '../app/cursorContext';
+import { cursorCss } from '../assets/cursors';
 import { newWeekBannerArt } from '../assets/momentArt';
 import { weeklyEventOf } from '../app/moments';
 import type { AppStore } from '../app/store';
@@ -153,7 +158,8 @@ function buildView(
         color: state.players[h.ownerId]?.color ?? '#999',
         shown: h.ownerId === playerId || visible.has(cellIndex(map, h.position)),
         selected: selected?.id === h.id,
-        inTown: !!townAtHero(state, h),
+        // Heroes visit a town from its gate tile (2026-10-03), so no offset off the town model.
+        inTown: false,
         monsterBody: lead?.presentation.bodyProfile ?? null,
         monsterUpgraded: lead?.form === 'upgraded',
         // The mounted model follows the hero's own pantheon (else its owner's).
@@ -185,7 +191,7 @@ function buildView(
 // Minimap
 // ---------------------------------------------------------------------------
 
-function Minimap({ catalog, state, playerId, onPick }: { catalog: ContentCatalog; state: MatchState; playerId: string; onPick: (c: HexCoord) => void }) {
+function Minimap({ catalog, state, playerId, onPick, frame }: { catalog: ContentCatalog; state: MatchState; playerId: string; onPick: (c: HexCoord) => void; frame?: readonly { q: number; r: number }[] | null }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const map = state.world.map;
   const cell = 7;
@@ -233,7 +239,10 @@ function Minimap({ catalog, state, playerId, onPick }: { catalog: ContentCatalog
       ctx.stroke();
     }
   }, [catalog, state, playerId, map, w, h]);
+  // The part of the map the camera shows (a trapezoid: the view is tilted).
+  const framePoints = frame?.map((p) => `${((p.q + p.r / 2) * cell + cell / 2).toFixed(1)},${(p.r * cell * 0.87 + cell / 2).toFixed(1)}`).join(' ');
   return (
+    <div className="minimap-wrap">
     <canvas
       ref={ref}
       width={w}
@@ -250,6 +259,12 @@ function Minimap({ catalog, state, playerId, onPick }: { catalog: ContentCatalog
         onPick(c);
       }}
     />
+      {framePoints ? (
+        <svg className="minimap__frame" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden="true" data-testid="minimap-frame">
+          <polygon points={framePoints} />
+        </svg>
+      ) : null}
+    </div>
   );
 }
 
@@ -491,6 +506,22 @@ export function AdventureScreen() {
   const selected = heroes.find((h) => h.id === store.selectedHeroId) ?? heroes[0] ?? null;
   const [target, setTarget] = useState<HexCoord | null>(null);
   const [hover, setHover] = useState<HexCoord | null>(null);
+  const [dragging, setDragging] = useState(false);
+  /** The camera's ground footprint for the minimap frame (polled; the camera moves in the render loop). */
+  const [viewFrame, setViewFrame] = useState<{ q: number; r: number }[] | null>(null);
+  useEffect(() => {
+    if (!store.prefs.minimap) return;
+    let last = '';
+    const t = setInterval(() => {
+      const f = ctrl.current?.viewFootprint() ?? null;
+      const key = f ? f.map((p) => `${p.q.toFixed(2)},${p.r.toFixed(2)}`).join(';') : '';
+      if (key !== last) {
+        last = key;
+        setViewFrame(f);
+      }
+    }, 150);
+    return () => clearInterval(t);
+  }, [store.prefs.minimap]);
   const [pinned, setPinned] = useState<HexCoord | null>(null);
   const [dayBanner, setDayBanner] = useState<string | null>(null);
   /** Adventure spell awaiting a target tile (Divine Sight). */
@@ -704,12 +735,26 @@ export function AdventureScreen() {
     }
     const mine = playerHeroes(s, playerId).find((h) => hexEquals(h.position, c));
     const sel = playerHeroes(s, playerId).find((h) => h.id === store.selectedHeroId) ?? null;
+    // Next to the selected hero: meet and trade troops (the exchange dialog).
+    if (mine && sel && mine.id !== sel.id && axialDistance(mine.position, sel.position) === 1) {
+      store.openOverlay({ kind: 'transfer', townId: null, heroId: sel.id, otherHeroId: mine.id });
+      return;
+    }
     if (mine && (!sel || mine.id !== sel.id)) {
       selectHero(mine);
       return;
     }
+    // The town's own tile while the hero stands at its gate: open the town.
+    if (sel && isTownTile(catalog, s, c)) {
+      const at = siteAt(catalog, s, c);
+      const townId = at?.def.kind.type === 'town' ? at.def.kind.townId : null;
+      if (townId && heroInTown(catalog, s, sel, townId) && s.towns[townId]?.ownerId === playerId) {
+        store.goto('town', { townId });
+        return;
+      }
+    }
     if (sel && hexEquals(sel.position, c)) {
-      const town = townAtHero(s, sel);
+      const town = townAtHero(catalog, s, sel);
       if (town && town.ownerId === playerId) {
         store.goto('town', { townId: town.id });
         return;
@@ -754,6 +799,7 @@ export function AdventureScreen() {
       new lib.AdventureSceneController(engine, canvas, {
         onTileClick: (c, b) => clickRef.current(c, b),
         onTileHover: (c) => setHover(c),
+        onDrag: (d) => setDragging(d),
       }),
     [],
   );
@@ -821,12 +867,17 @@ export function AdventureScreen() {
   const day = dayLabel(state);
   const objectives = missionObjectiveDefs(catalog, state).filter((o) => o.category === 'primary');
   const info = pinned ?? hover;
+  const cursorChoice = useMemo(
+    () => adventureCursor(catalog, state, playerId, selected, hover, { humanTurn, casting, dragging }),
+    [catalog, state, playerId, selected, hover, humanTurn, casting, dragging],
+  );
+  const sceneCursor = cursorCss(cursorChoice.id, { enabled: store.prefs.gameCursors });
   const activeName = state.players[state.activePlayerId]?.name ?? state.activePlayerId;
   const mission = scenarioMission(catalog, state);
 
   return (
     <div className="adventure">
-      <SceneViewport factory={factory} onController={onController} className="adventure__scene" label="Adventure map. Click a tile to preview a route, click again to move." />
+      <SceneViewport factory={factory} onController={onController} className="adventure__scene" label="Adventure map. Click a tile to preview a route, click again to move." cursor={sceneCursor} />
 
       <header className="adv-top">
         <div className="adv-top__mission">
@@ -894,7 +945,7 @@ export function AdventureScreen() {
         </Panel>
         {store.prefs.minimap ? (
           <Panel className="adv-minimap">
-            <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} />
+            <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} frame={viewFrame} />
           </Panel>
         ) : null}
       </aside>

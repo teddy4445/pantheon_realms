@@ -7,6 +7,7 @@
  * session.state, and all changes go through session.dispatch (commands).
  */
 import { KEY_COLOR_LABEL, campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type Rejection } from '@pr/rules';
+import { clearBattleLogs, recordBattleEvents } from './battleLog';
 import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
 import type { PlatformServices } from '@pr/platform';
 import { SaveManager, type SlotInfo } from './saves';
@@ -14,7 +15,8 @@ import { recordHighScore } from './records';
 import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, battlePlaybackFactor, savePreferences, type Preferences } from './preferences';
 
 /** How long the battlefield stays after the final blow before the result screen (normal playback). */
-const FINAL_BLOW_BEAT_MS = 700;
+// Long enough to see the winners celebrate (owner request 2026-10-03).
+const FINAL_BLOW_BEAT_MS = 1200;
 /** Screens a pending level-up opens over by itself (not the battle, its result or the menus). */
 const LEVEL_UP_FROM: readonly ScreenId[] = ['adventure', 'town', 'hero', 'recruitment', 'pantheon', 'journal', 'overview'];
 import type { GameAudio } from '../audio/gameAudio';
@@ -124,6 +126,8 @@ export interface Toast {
   readonly id: number;
   readonly text: string;
   readonly tone: 'info' | 'error' | 'success';
+  /** Seen by every player (e.g. an empire eliminated). Others are cleared at a hot-seat hand-over. */
+  readonly public?: boolean;
 }
 
 export interface SetupDraft {
@@ -288,8 +292,8 @@ export class AppStore {
     this.openOverlay({ kind: 'confirm', title, body, confirmLabel, onConfirm, ...opts });
   }
 
-  toast(text: string, tone: Toast['tone'] = 'info'): void {
-    const t = { id: this.toastSeq++, text, tone };
+  toast(text: string, tone: Toast['tone'] = 'info', opts: { public?: boolean } = {}): void {
+    const t = { id: this.toastSeq++, text, tone, ...(opts.public ? { public: true } : {}) };
     this.toasts = [...this.toasts.slice(-3), t];
     this.notify();
     setTimeout(() => {
@@ -321,7 +325,9 @@ export class AppStore {
     this.hints = [];
     this.lastRecord = null;
     this.shownViewer = session.state.players[session.state.activePlayerId]?.controller === 'human' ? session.state.activePlayerId : null;
+    clearBattleLogs();
     this.unsubSession = session.subscribe((u) => {
+      if (u.events.length > 0) recordBattleEvents(this.catalog, u.state, u.events, this.prefs.combatLogDetail);
       this.notify();
       if (u.events.length > 0) this.present(u.events, u.source);
       if (u.source === 'start' || u.source === 'load') {
@@ -545,6 +551,12 @@ export class AppStore {
     void this.whenIdle().then(() => {
       if (this.session !== session || session.state.activePlayerId !== active.id) return;
       this.selectedHeroId = null;
+      // Hot-seat privacy: what the previous player saw (their toasts, their waiting
+      // miracle cards, their tips) does not carry over to the next one; a new
+      // week's banner is for everyone.
+      this.toasts = this.toasts.filter((t) => t.public);
+      this.moments = this.moments.filter((m) => m.kind === 'new-week');
+      this.hints = [];
       this.overlays = this.overlays.filter((o) => o.kind !== 'handoff');
       if (this.screen.id !== 'adventure') this.resetTo('adventure');
       this.openOverlay({ kind: 'handoff', playerId: active.id });
@@ -716,7 +728,7 @@ export class AppStore {
     for (const e of events) {
       if (e.kind !== 'PlayerEliminated' || !session) continue;
       const p = session.state.players[e.playerId];
-      if (p && session.state.outcome.status === 'running') this.toast(`${p.name} has been eliminated.`, 'info');
+      if (p && session.state.outcome.status === 'running') this.toast(`${p.name} has been eliminated.`, 'info', { public: true });
     }
     const ended = events.some((e) => e.kind === 'MissionFailed' || e.kind === 'MissionCompleted');
     if (!ended || !session) return;

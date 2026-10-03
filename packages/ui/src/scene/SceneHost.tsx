@@ -97,12 +97,15 @@ export function SceneViewport<T extends SceneController>({
   className = '',
   fallback,
   label,
+  cursor,
 }: {
   factory: SceneFactory<T>;
   onController: (c: T | null) => void;
   className?: string;
   fallback?: ReactNode;
   label: string;
+  /** CSS cursor over the 3D view (context cursors, assets/cursors.ts); the canvas inherits it. */
+  cursor?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -149,7 +152,7 @@ export function SceneViewport<T extends SceneController>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div ref={ref} className={`scene-viewport ${className}`} role="application" aria-label={label} aria-busy={loading || undefined}>
+    <div ref={ref} className={`scene-viewport ${className}`} role="application" aria-label={label} aria-busy={loading || undefined} style={cursor ? { cursor } : undefined} data-cursor={cursor ? 'context' : undefined}>
       {loading && !error ? <div className="scene-loading">Loading the 3D view…</div> : null}
       {error ? (
         <div className="scene-error panel">

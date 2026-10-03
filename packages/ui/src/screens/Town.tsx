@@ -4,7 +4,7 @@
  * prerequisite comes from quoteConstruction; building is a BuildStructure
  * command after a confirmation. Market, Tavern and Sanctum services are here.
  */
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState, type DragEvent } from 'react';
 import {
   ARTIFACT_SLOT_LABEL,
   RESOURCE_KEYS,
@@ -27,13 +27,19 @@ import {
   weeklyGrowthFor,
   familyForSlot,
   quoteOffering,
+  divineGifts,
+  giftNeedsHero,
+  quoteDivineGift,
   quoteTraining,
   quoteArtifactPurchase,
   townTraining,
   townVisionRadius,
   townMerchantStockSize,
   worldWeek,
+  quoteTransfer,
   type ArmyRef,
+  type ArmyState,
+  type HeroState,
   type OfferingLine,
   type BuildingSlotDefinition,
   type ResourceKey,
@@ -192,7 +198,7 @@ function OfferingModal({ town, onClose }: { town: TownState; onClose: () => void
   const catalog = store.catalog;
   const state = store.session!.state;
   const playerId = store.session!.humanPlayerId;
-  const visitor = heroesInTown(state, town).find((h) => h.ownerId === playerId);
+  const visitor = heroesInTown(catalog, state, town).find((h) => h.ownerId === playerId);
   const sources: { ref: ArmyRef; label: string; slots: TownState['garrison']['slots'] }[] = [
     { ref: { kind: 'garrison', townId: town.id }, label: 'Garrison', slots: town.garrison.slots },
     ...(visitor ? [{ ref: { kind: 'hero' as const, heroId: visitor.id }, label: visitor.name, slots: visitor.army.slots }] : []),
@@ -251,6 +257,239 @@ function OfferingModal({ town, onClose }: { town: TownState; onClose: () => void
   );
 }
 
+/** Divine gifts (proposed 2026-10-03): one gift per Temple per week, paid in Favor. */
+function GiftsModal({ town, onClose }: { town: TownState; onClose: () => void }) {
+  const store = useStore();
+  const catalog = store.catalog;
+  const state = store.session!.state;
+  const playerId = store.session!.humanPlayerId;
+  const favor = state.players[playerId]?.wallet.favor ?? 0;
+  const visitors = heroesInTown(catalog, state, town).filter((h) => h.ownerId === playerId);
+  const [heroId, setHeroId] = useState<string | null>(visitors[0]?.id ?? null);
+  const gifts = divineGifts(catalog, state);
+  const receive = (giftId: string, needsHero: boolean) => {
+    const def = catalog.divineGifts?.[giftId];
+    const q = quoteDivineGift(catalog, state, playerId, town.id, giftId, needsHero ? heroId : null);
+    if (!def || !q.legal) return;
+    const extra = q.artifactId ? ` (${catalog.artifacts[q.artifactId]?.name})` : '';
+    store.confirm(`${def.name}?`, `${def.summary}${extra} Costs ${def.favorCost} Favor; this Temple then rests until next week.`, `Receive for ${def.favorCost} Favor`, () => {
+      if (!store.dispatch({ kind: 'ReceiveDivineGift', townId: town.id, giftId, ...(needsHero && heroId ? { heroId } : {}) })) {
+        store.toast(`${def.name}: the gods give${extra}`, 'success');
+        onClose();
+      }
+    });
+  };
+  return (
+    <Modal title={`Divine gifts — ${town.name}`} onClose={onClose} width="46rem" testId="gifts">
+      <p className="dim small">
+        The Temple grants one gift a week for Favor. You have <strong>{favor}</strong> Favor.
+      </p>
+      {visitors.length > 1 ? (
+        <div className="row gap" style={{ marginBottom: '0.5rem' }}>
+          <span className="small">Gifts for a hero go to</span>
+          <select className="select" value={heroId ?? ''} onChange={(e) => setHeroId(e.target.value || null)} aria-label="Hero who receives the gift">
+            {visitors.map((h) => (
+              <option key={h.id} value={h.id}>
+                {h.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : null}
+      <div className="gift-list">
+        {gifts.map((g) => {
+          const needsHero = giftNeedsHero(g);
+          const q = quoteDivineGift(catalog, state, playerId, town.id, g.id, needsHero ? heroId : null);
+          const recruits = Object.entries(q.recruits);
+          return (
+            <div key={g.id} className="gift-row" data-testid={`gift-${g.id}`}>
+              <div className="gift-row__text">
+                <div className="gift-row__name">{g.name}</div>
+                <div className="small dim">{g.summary}</div>
+                {recruits.length ? <div className="small">{recruits.map(([f, n]) => `+${n} ${catalog.families[f]?.name ?? f}`).join(', ')}</div> : null}
+                {needsHero && !visitors.length ? <div className="faint small">A hero must be visiting the town.</div> : null}
+              </div>
+              <Button variant="primary" icon="favor" disabled={!q.legal} disabledReason={q.reason} onClick={() => receive(g.id, needsHero)} data-testid={`gift-${g.id}-receive`}>
+                {g.favorCost} Favor
+              </Button>
+            </div>
+          );
+        })}
+      </div>
+      <div className="modal__actions">
+        <Button onClick={onClose}>Close</Button>
+      </div>
+    </Modal>
+  );
+}
+
+/**
+ * Garrison and visiting hero (owner request 2026-10-03): drag a stack onto any slot
+ * of either army — matching stacks merge, different stacks swap. Hold Shift (or Ctrl)
+ * while dropping to split: you choose how many move. Without dragging: click a stack,
+ * choose how many below, then click the destination slot.
+ */
+function TownArmies({ town, visitor }: { town: TownState; visitor: HeroState | null }) {
+  const store = useStore();
+  const catalog = store.catalog;
+  const state = store.session!.state;
+  const playerId = store.session!.humanPlayerId;
+  const mine = town.ownerId === playerId;
+  type Side = 'g' | 'h';
+  const refs: Record<Side, ArmyRef | null> = {
+    g: { kind: 'garrison', townId: town.id },
+    h: visitor && visitor.ownerId === playerId ? { kind: 'hero', heroId: visitor.id } : null,
+  };
+  const armies: Record<Side, ArmyState | null> = { g: town.garrison, h: visitor?.army ?? null };
+  const [sel, setSel] = useState<{ side: Side; slot: number } | null>(null);
+  const [qty, setQty] = useState<number | null>(null);
+  const [split, setSplit] = useState<{ from: Side; fromSlot: number; to: Side; toSlot: number; n: number } | null>(null);
+  const dragging = useRef<{ side: Side; slot: number } | null>(null);
+  const move = (from: Side, fromSlot: number, to: Side, toSlot: number, n: number | null) => {
+    const a = refs[from];
+    const b = refs[to];
+    const stack = armies[from]?.slots[fromSlot];
+    if (!a || !b || !stack || (from === to && fromSlot === toSlot)) return false;
+    const count = n ?? stack.count;
+    const q = quoteTransfer(catalog, state, playerId, a, fromSlot, b, toSlot, count);
+    if (!q.legal) {
+      store.toast(q.reason ?? 'Cannot move these troops', 'error');
+      return false;
+    }
+    store.dispatch({ kind: 'TransferStack', from: a, fromSlot, to: b, toSlot, quantity: count });
+    return true;
+  };
+  const drag = (side: Side) =>
+    mine && refs[side]
+      ? {
+          onStart: (slot: number, e: DragEvent<HTMLElement>) => {
+            dragging.current = { side, slot };
+            setSel(null);
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', `${side}:${slot}`);
+          },
+          onDrop: (slot: number, e: DragEvent<HTMLElement>) => {
+            const from = dragging.current;
+            dragging.current = null;
+            if (!from) return;
+            const stack = armies[from.side]?.slots[from.slot];
+            if (!stack || (from.side === side && from.slot === slot)) return;
+            const target = armies[side]?.slots[slot];
+            // Shift or Ctrl splits — into an empty slot or onto the same creature.
+            if ((e.shiftKey || e.ctrlKey) && stack.count > 1 && (!target || target.creatureId === stack.creatureId)) {
+              setSplit({ from: from.side, fromSlot: from.slot, to: side, toSlot: slot, n: Math.ceil(stack.count / 2) });
+              return;
+            }
+            move(from.side, from.slot, side, slot, null);
+          },
+          onEnd: () => {
+            dragging.current = null;
+          },
+        }
+      : undefined;
+  const click = (side: Side, slot: number) => {
+    if (!mine || !refs[side]) return;
+    if (!sel) {
+      if (armies[side]?.slots[slot]) {
+        setSel({ side, slot });
+        setQty(null);
+      }
+      return;
+    }
+    if (sel.side === side && sel.slot === slot) {
+      setSel(null);
+      return;
+    }
+    if (move(sel.side, sel.slot, side, slot, qty)) {
+      setSel(null);
+      setQty(null);
+    }
+  };
+  const selStack = sel ? armies[sel.side]?.slots[sel.slot] : null;
+  const targets = (side: Side) => (sel && armies[side] ? armies[side]!.slots.map((_, i) => i).filter((i) => !(sel.side === side && sel.slot === i)) : []);
+  const splitStack = split ? armies[split.from]?.slots[split.fromSlot] : null;
+  return (
+    <footer className="town-armies panel" data-testid="town-armies">
+      <div className="town-army">
+        <div className="section-title">Garrison</div>
+        <ArmyStrip
+          catalog={catalog}
+          army={town.garrison}
+          label={`${town.name} garrison`}
+          testId="town-garrison"
+          selected={sel?.side === 'g' ? sel.slot : null}
+          dropTargets={targets('g')}
+          onSlot={mine ? (i) => click('g', i) : undefined}
+          onInfo={(id) => store.openOverlay({ kind: 'stack-info', creatureId: id })}
+          drag={drag('g')}
+        />
+      </div>
+      <div className="town-army">
+        <div className="section-title">{visitor ? `Visiting: ${visitor.name}` : 'No visiting hero'}</div>
+        {visitor ? (
+          <ArmyStrip
+            catalog={catalog}
+            army={visitor.army}
+            label={`${visitor.name}'s army`}
+            testId="town-visitor"
+            selected={sel?.side === 'h' ? sel.slot : null}
+            dropTargets={targets('h')}
+            onSlot={refs.h ? (i) => click('h', i) : undefined}
+            onInfo={(id) => store.openOverlay({ kind: 'stack-info', creatureId: id })}
+            drag={drag('h')}
+          />
+        ) : (
+          <div className="army army--empty dim small">A hero standing at the town gate can exchange troops here.</div>
+        )}
+      </div>
+      <div className="town-armies__bar small" data-testid="town-armies-bar">
+        {selStack && sel ? (
+          <>
+            <span>
+              Moving {qty ?? selStack.count} of {selStack.count} {catalog.creatures[selStack.creatureId]?.pluralName} — click a slot.
+            </span>
+            {selStack.count > 1 ? <QuantitySelector label="How many to move" value={qty ?? selStack.count} min={1} max={selStack.count} onChange={setQty} /> : null}
+            <Button size="small" variant="ghost" onClick={() => setSel(null)}>
+              Cancel
+            </Button>
+          </>
+        ) : mine ? (
+          <span className="dim">Drag stacks between the garrison and the hero (Shift-drag to split), or click a stack to choose how many to move.</span>
+        ) : null}
+      </div>
+      {split && splitStack ? (
+        <Modal
+          title={`Split ${catalog.creatures[splitStack.creatureId]?.pluralName ?? 'stack'}`}
+          onClose={() => setSplit(null)}
+          width="26rem"
+          testId="split"
+          footer={
+            <>
+              <Button onClick={() => setSplit(null)}>Cancel</Button>
+              <span className="grow" />
+              <Button
+                variant="primary"
+                data-testid="split-ok"
+                onClick={() => {
+                  move(split.from, split.fromSlot, split.to, split.toSlot, split.n);
+                  setSplit(null);
+                }}
+              >
+                Move {split.n}
+              </Button>
+            </>
+          }
+        >
+          <p className="small">
+            {split.n} move, {splitStack.count - split.n} stay.
+          </p>
+          <QuantitySelector label="How many to move" value={split.n} min={1} max={splitStack.count - (split.from === split.to ? 1 : 0) || 1} onChange={(n) => setSplit({ ...split, n })} />
+        </Modal>
+      ) : null}
+    </footer>
+  );
+}
+
 function CreatureCount({ catalog, creatureId, count }: { catalog: AppStore['catalog']; creatureId: string; count: number }) {
   const c = catalog.creatures[creatureId];
   return (
@@ -266,7 +505,7 @@ function MerchantModal({ town, onClose }: { town: TownState; onClose: () => void
   const catalog = store.catalog;
   const state = store.session!.state;
   const playerId = store.session!.humanPlayerId;
-  const visitor = heroesInTown(state, town).find((h) => h.ownerId === playerId);
+  const visitor = heroesInTown(catalog, state, town).find((h) => h.ownerId === playerId);
   const stock = town.merchant?.week === worldWeek(state, catalog.rulesProfile.daysPerWeek) ? town.merchant.stock : [];
   return (
     <Modal title={`Artifact Merchant — ${town.name}`} onClose={onClose} width="42rem" testId="merchant">
@@ -323,7 +562,7 @@ export function TownScreen() {
   const townId = (store.screen.params.townId as string | undefined) ?? owned[0]?.id;
   const town = townId ? state.towns[townId] : undefined;
   const [selected, setSelected] = useState<string | null>((store.screen.params.slot as string | undefined) ?? null);
-  const [modal, setModal] = useState<'market' | 'tavern' | 'offering' | 'merchant' | null>(null);
+  const [modal, setModal] = useState<'market' | 'tavern' | 'offering' | 'merchant' | 'gifts' | null>(null);
   const archetype = town ? catalog.townArchetypes[town.archetypeId] : undefined;
   const slots = useMemo(() => [...(archetype?.slots ?? [])].sort((a, b) => a.placement.layer - b.placement.layer || a.placement.y - b.placement.y), [archetype]);
   if (!town || !archetype) {
@@ -336,7 +575,7 @@ export function TownScreen() {
   }
   const bg = resolveAsset(archetype.backgroundAssetId);
   const mine = town.ownerId === player.id;
-  const visiting = heroesInTown(state, town).filter((h) => h.ownerId === player.id);
+  const visiting = heroesInTown(catalog, state, town).filter((h) => h.ownerId === player.id);
   const slot = selected ? archetype.slots.find((s) => s.id === selected) : undefined;
   const level = slot ? (town.buildings[slot.id] ?? 0) : 0;
   const current = slot ? activeBuildingInSlot(catalog, town, slot.id) : null;
@@ -509,6 +748,11 @@ export function TownScreen() {
                         Make an offering
                       </Button>
                     ) : null}
+                    {current && divineGifts(catalog, state).length > 0 ? (
+                      <Button icon="favor" onClick={() => setModal('gifts')} data-testid="gifts-open">
+                        Divine gifts
+                      </Button>
+                    ) : null}
                   </div>
                 ) : null}
                 {slot.role === 'training_academy' && current && training ? (
@@ -580,23 +824,12 @@ export function TownScreen() {
           </Panel>
         </aside>
       </div>
-      <footer className="town-armies panel">
-        <div className="town-army">
-          <div className="section-title">Garrison</div>
-          <ArmyStrip catalog={catalog} army={town.garrison} label={`${town.name} garrison`} onInfo={(id) => store.openOverlay({ kind: 'stack-info', creatureId: id })} />
-        </div>
-        <div className="town-army">
-          <div className="section-title">{visiting[0] ? `Visiting: ${visiting[0].name}` : 'No visiting hero'}</div>
-          {visiting[0] ? <ArmyStrip catalog={catalog} army={visiting[0].army} label={`${visiting[0].name}'s army`} onInfo={(id) => store.openOverlay({ kind: 'stack-info', creatureId: id })} /> : <div className="army army--empty dim small">Move a hero into the town to exchange troops.</div>}
-        </div>
-        <Button icon="swap" disabled={!visiting[0]} disabledReason="A hero must be in the town" onClick={() => visiting[0] && store.openOverlay({ kind: 'transfer', townId: town.id, heroId: visiting[0].id })} data-testid="exchange">
-          Exchange troops
-        </Button>
-      </footer>
+      <TownArmies town={town} visitor={visiting[0] ?? null} />
       {modal === 'market' ? <MarketModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'tavern' ? <TavernModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'offering' ? <OfferingModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'merchant' ? <MerchantModal town={town} onClose={() => setModal(null)} /> : null}
+      {modal === 'gifts' ? <GiftsModal town={town} onClose={() => setModal(null)} /> : null}
     </div>
   );
 }

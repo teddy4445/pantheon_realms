@@ -42,6 +42,8 @@ import {
   townVisionRadius,
   refreshMerchantStock,
   grantSpecialtySpell,
+  settleHeroesAtTownGates,
+  heroInTown,
 } from '@pr/rules';
 import { generateMap, type DecorItem, type GenerationMode } from '@pr/mapgen';
 
@@ -411,6 +413,8 @@ function buildMissionMatch(
 
   // Spell specialties: the hero knows its spell from the start (scenarios with specialties).
   for (const h of Object.values(state.heroes)) grantSpecialtySpell(catalog, state, h);
+  // Heroes never stand on a town's own tile: those placed in a town start at its gate.
+  settleHeroesAtTownGates(catalog, state);
   // Mission transition refill: full movement and mana; starting in town counts as a visit.
   for (const h of Object.values(state.heroes)) {
     h.movementPoints = movementBudget(catalog, state, h).total;
@@ -418,7 +422,7 @@ function buildMissionMatch(
   }
   const tx = new Tx({ catalog }, state, p.playerId);
   for (const h of Object.values(state.heroes)) {
-    const town = Object.values(state.towns).find((t) => t.ownerId === h.ownerId && t.coord.q === h.position.q && t.coord.r === h.position.r);
+    const town = Object.values(state.towns).find((t) => t.ownerId === h.ownerId && heroInTown(catalog, state, h, t.id));
     if (town) learnSpellsAtTown(tx, h, town);
   }
   for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) refreshMerchantStock(tx, town);

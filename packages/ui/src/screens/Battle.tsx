@@ -43,6 +43,9 @@ import {
 } from '@pr/rules';
 import type { BattleSceneController, BattleView } from '@pr/presentation';
 import { useStore } from '../app/context';
+import { battleCursor } from '../app/cursorContext';
+import { battleLogLines } from '../app/battleLog';
+import { cursorCss } from '../assets/cursors';
 import { battlePlaybackFactor } from '../app/preferences';
 import { matches } from '../app/keys';
 import { SceneViewport, presentation, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
@@ -61,64 +64,6 @@ type Mode =
   | { kind: 'intervention'; interventionId: string };
 
 const NEUTRAL_ACCENT = '#8a3b32';
-
-/** Combat log kept per battle (presentation only). */
-const LOGS = new Map<string, string[]>();
-
-function stackName(catalog: ContentCatalog, battle: BattleState, id: string, count?: number): string {
-  const s = battle.stacks[id];
-  const def = s ? catalog.creatures[s.creatureId] : undefined;
-  if (!def) return id;
-  const n = count ?? (s ? aliveCount(catalog, s) : 0);
-  return n === 1 ? def.name : def.pluralName;
-}
-
-function describe(catalog: ContentCatalog, battle: BattleState, e: GameEvent, detail: string): string | null {
-  switch (e.kind) {
-    case 'BattleRoundStarted':
-      return `— Round ${e.round} —`;
-    case 'BattleStackMoved':
-      return detail === 'compact' ? null : `${stackName(catalog, battle, e.stackId)} ${e.flying ? 'fly' : 'move'} ${e.path.length} hex${e.path.length === 1 ? '' : 'es'}.`;
-    case 'BattleAttack': {
-      const verb = e.mode === 'shot' ? 'shoot' : e.mode === 'retaliation' ? 'retaliate against' : 'attack';
-      return `${stackName(catalog, battle, e.attackerId)} ${verb} ${stackName(catalog, battle, e.targetId)}: ${e.damage} damage, ${e.killed} slain${e.luck ? ' (lucky strike)' : ''}.`;
-    }
-    case 'BattleSpellCast':
-      return `${catalog.spells[e.spellId]?.name ?? e.spellId} on ${stackName(catalog, battle, e.targetId)}${e.damage ? `: ${e.damage} damage` : ''}${e.healed ? `: ${e.healed} healed` : ''}.`;
-    case 'BattleAbilityUsed':
-      return `${stackName(catalog, battle, e.stackId)} use ${catalog.abilities[e.abilityId]?.name ?? e.abilityId} on ${stackName(catalog, battle, e.targetId)}.`;
-    case 'BattleStackShapeshifted':
-      return `${stackName(catalog, battle, e.stackId)} ${e.aspect ? `take the ${e.aspect} aspect` : 'return to their normal aspect'}${e.free ? ' (free)' : ''}.`;
-    case 'BattleCasualtiesRecovered':
-      return `${e.count} ${e.count === 1 ? catalog.creatures[e.creatureId]?.name : catalog.creatures[e.creatureId]?.pluralName} return after the battle.`;
-    case 'BattleStackDefended':
-      return `${stackName(catalog, battle, e.stackId)} defend.`;
-    case 'BattleStackWaited':
-      return `${stackName(catalog, battle, e.stackId)} wait.`;
-    case 'BattleMorale':
-      return `${stackName(catalog, battle, e.stackId)}: ${e.positive ? 'high morale — act again!' : 'low morale — they falter.'}`;
-    case 'BattleStackDestroyed':
-      return `${catalog.creatures[battle.stacks[e.stackId]?.creatureId ?? '']?.pluralName ?? 'A stack'} destroyed.`;
-    case 'BattleEnded':
-      return `Battle over: ${e.outcome} (${e.winner} wins).`;
-    case 'BattleDefendersSelected':
-      return `${e.count} stack${e.count === 1 ? '' : 's'} defend the town${e.reserves ? `; ${e.reserves} in reserve` : ''}.`;
-    case 'BattleDeploymentStarted':
-      return 'Deployment: arrange your army (Tactics).';
-    case 'BattleDeploymentConfirmed':
-      return `${e.side === 'attacker' ? 'Attacker' : 'Defender'} deployment confirmed.`;
-    case 'SiegeStructureDamaged':
-      return `${e.source === 'catapult' ? 'Catapult' : stackName(catalog, battle, e.attackerId ?? '')} strikes the ${structureLabel(e.structureId).toLowerCase()} (${e.hp} left).`;
-    case 'SiegeStructureDestroyed':
-      return `${structureLabel(e.structureId)} destroyed${e.structureId.startsWith('wall') || e.structureId === 'gate' ? ' — breach!' : '.'}`;
-    case 'SiegeTurretShot':
-      return `${structureLabel(e.structureId)} fires on ${stackName(catalog, battle, e.targetId)}: ${e.damage} damage, ${e.killed} slain.`;
-    case 'SiegeMoatDamage':
-      return `${stackName(catalog, battle, e.stackId)} wade into the moat: ${e.damage} damage, ${e.killed} slain.`;
-    default:
-      return null;
-  }
-}
 
 function breakdownTitle(label: string, b: { base: number; commander: number; statuses: number; aspect: number; effects: number; fury?: number; total: number }): string {
   const parts = [`base ${b.base}`];
@@ -296,7 +241,7 @@ export function BattleScreen() {
   const [deploySel, setDeploySel] = useState<string | null>(null);
   const [, force] = useState(0);
   const battleId = battle?.battleId ?? '';
-  const log = LOGS.get(battleId) ?? [];
+  const log = battleLogLines(battleId);
 
   const humanTurn = !ended && !!battle && battle.status === 'active' && session.isHumanTurn();
   const humanSide = battle ? Object.values(battle.sides).find((s) => s.controller === 'human') : undefined;
@@ -332,18 +277,8 @@ export function BattleScreen() {
   // Playback + combat log from committed events.
   useEffect(() => {
     return store.registerPresenter(async (events) => {
-      const s = store.session?.state;
-      const b = s?.battle ?? null;
-      const ref = b ?? null;
-      const id = ref?.battleId ?? battleId;
-      const lines = LOGS.get(id) ?? [];
-      for (const e of events) {
-        const snapshotBattle = ref ?? state.battle;
-        if (!snapshotBattle) continue;
-        const text = describe(catalog, snapshotBattle, e, store.prefs.combatLogDetail);
-        if (text) lines.push(text);
-      }
-      LOGS.set(id, lines.slice(-200));
+      // The combat log itself is recorded by the store for every update (app/battleLog.ts),
+      // so events published before this screen opened (the first round) are in it too.
       force((n) => n + 1);
       const c = ctrl.current;
       if (c && events.some((e) => e.kind.startsWith('Battle'))) await c.play(events, battlePlaybackFactor(store.prefs));
@@ -516,13 +451,15 @@ export function BattleScreen() {
     if (la.shootTargets.includes(hoverStack.id)) preview = { main: previewShot(catalog, state, la.stackId, hoverStack.id), ret: null, label: 'Shot' };
     else if (built?.attackFrom) preview = { main: previewMelee(catalog, state, la.stackId, hoverStack.id, built.attackFrom), ret: previewRetaliation(catalog, state, la.stackId, hoverStack.id), label: 'Melee' };
   }
+  const cursorChoice = battleCursor(catalog, state, la, mode, hover?.cell ?? null, built?.attackFrom ?? null, { battleActive: !ended && battle.status === 'active', deploying: !!deploySide || !!selecting });
+  const sceneCursor = cursorCss(cursorChoice.id, { angle: cursorChoice.angle, enabled: store.prefs.gameCursors });
   const castable = la ? la.spells.filter((s) => s.castable) : [];
   const actingPlayer = la ? battle.sides[la.side].playerId : null;
   const miracles = actingPlayer ? interventionsFor(catalog, state, actingPlayer).filter((d) => d.context === 'battle') : [];
 
   return (
     <div className="battle">
-      <SceneViewport factory={factory} onController={onController} className="battle__scene" label="Tactical battlefield" />
+      <SceneViewport factory={factory} onController={onController} className="battle__scene" label="Tactical battlefield" cursor={sceneCursor} />
       <header className="battle-top">
         <div className="battle-side battle-side--att" style={{ ['--side' as string]: att.color }}>
           <div className="battle-side__name">{att.name}</div>

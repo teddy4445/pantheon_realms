@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
-import { HIRE_STARTING_TROOPS, hireCandidates, hireOptions, quoteHireHero, type MatchState } from '../src';
+import { HIRE_STARTING_TROOPS, hireCandidates, hireOptions, quoteHireHero, townGate, type MatchState } from '../src';
 
 const aiTurn = (s: MatchState) => !!s.battle?.activeStackId && s.battle.sides[s.battle.stacks[s.battle.activeStackId]!.side].controller === 'ai';
 
@@ -25,7 +25,7 @@ describe('hero hiring (Tavern)', () => {
     const blocked = quoteHireHero(d.catalog, d.state, playerId, town.id, candidates[0]!);
     expect(blocked.code).toBe('not_present');
     const hero = Object.values(d.state.heroes).find((h) => h.ownerId === playerId)!;
-    d.marchTo({ q: town.coord.q + 1, r: town.coord.r }, hero.id);
+    d.marchTo({ q: town.coord.q + 2, r: town.coord.r }, hero.id);
     const gold = d.player.wallet.gold;
     const events = d.do({ kind: 'HireHero', townId: town.id, heroDefinitionId: candidates[0]! });
     expect(events.some((e) => e.kind === 'HeroHired')).toBe(true);
@@ -57,7 +57,7 @@ describe('hero hiring (Tavern)', () => {
     d.do({ kind: 'HireHero', townId: town.id, heroDefinitionId: hero.definitionId });
     const back = d.state.heroes[hero.id]!;
     expect(back.status).toBe('active');
-    expect(back.position).toEqual(town.coord);
+    expect(back.position).toEqual(townGate(d.catalog, d.state, town.id));
     expect(back.movementPoints).toBe(0);
     expect(back.army.slots[0]).toMatchObject({ creatureId: 'hoplite', count: 1 });
     expect(d.player.wallet.gold).toBe(gold - d.catalog.rulesProfile.heroHireCost);

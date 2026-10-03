@@ -106,3 +106,20 @@ describe('tactical AI: Shapeshift', () => {
     expect(chooseBattleAction(d.catalog, d.state)?.kind).toBe('BattleMelee');
   });
 });
+
+describe('strategic AI: divine gifts', () => {
+  it('spends Favor it does not need for gods or an intervention on a Temple gift', () => {
+    const d = asRival('skirmish_twin_harbors');
+    const t = d.state.towns['eastharbor']!;
+    t.buildings['pantheon_temple'] = 1;
+    const p = d.state.players['rival']!;
+    // Both gods chosen: Favor has nothing else to buy but interventions.
+    const gods = Object.values(d.catalog.gods).filter((g) => g.pantheonId === p.pantheonId).map((g) => g.id);
+    p.pantheon.minorGodIds = gods.slice(0, 2);
+    p.wallet.favor = 4;
+    expect(rivalCandidates(d).some((x) => x.kind === 'ReceiveDivineGift')).toBe(false);
+    p.wallet.favor = 40;
+    const gift = rivalCandidates(d).find((x) => x.kind === 'ReceiveDivineGift');
+    expect(gift).toMatchObject({ kind: 'ReceiveDivineGift', townId: 'eastharbor' });
+  });
+});

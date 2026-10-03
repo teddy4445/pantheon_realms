@@ -194,6 +194,7 @@ export function soundsForEvents(catalog: ContentCatalog, state: MatchState, me: 
       }
       case 'GodSelected':
       case 'OfferingMade':
+      case 'DivineGiftReceived':
         if (e.playerId === me) add('ui.divine');
         break;
       case 'HeroTeleported':

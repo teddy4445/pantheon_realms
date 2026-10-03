@@ -41,6 +41,31 @@ function resetFigure(f: Figure): void {
   setVisibility(f, 1);
 }
 
+/** The fallen: lying on their side, a little dimmed (corpses stay on the battlefield). */
+export function deadPose(f: Figure): void {
+  if (f.rig?.has('defeat')) return; // the defeat clip holds its last frame
+  const r = f.proxy.root;
+  // Lying on its side around the feet: lifted by half the body's thickness so it rests on the ground.
+  r.position.set(f.base.x, f.base.y + DEAD_LIFT, f.base.z);
+  r.rotation.x = 0;
+  r.rotation.z = Math.PI / 2.1;
+  r.scaling.set(1, 1, 1);
+  f.proxy.strike.rotation.set(0, 0, 0);
+  setVisibility(f, DEAD_VISIBILITY);
+}
+
+/** Corpses stay readable but recede a little. */
+const DEAD_VISIBILITY = 0.85;
+const DEAD_LIFT = 0.12;
+
+/** Winners' celebration after a won battle, applied every frame until the screen closes (proxies; rigs loop their clip). */
+export function applyCheer(f: Figure, timeMs: number): void {
+  if (f.rig?.has('victory')) return;
+  const t = timeMs / 1000 + f.seed * 0.37;
+  f.proxy.root.position.y = f.base.y + Math.abs(Math.sin(t * Math.PI * 1.6)) * 0.2;
+  f.proxy.strike.rotation.z = 0.8 + Math.sin(t * Math.PI * 1.6) * 0.8;
+}
+
 /** Continuous idle breathing, applied every frame by the owning controller. */
 export function applyIdle(f: Figure, timeMs: number): void {
   if (f.rig?.has('idle')) return; // the idle clip loops on its own
@@ -165,8 +190,8 @@ async function proceduralState(tw: TweenPlayer, figures: readonly Figure[], stat
       await tw.tween(620 * k, (t) => {
         for (const f of figures) {
           f.proxy.root.rotation.z = t * (Math.PI / 2.1);
-          f.proxy.root.position.y = f.base.y - t * 0.25;
-          setVisibility(f, 1 - t * 0.85);
+          f.proxy.root.position.y = f.base.y + t * DEAD_LIFT;
+          setVisibility(f, 1 - t * (1 - DEAD_VISIBILITY));
         }
       });
       return;

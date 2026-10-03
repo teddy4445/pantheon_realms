@@ -21,27 +21,32 @@ function routeCost(state: MatchState, from: { q: number; r: number }, to: { q: n
   return p.totalCost;
 }
 
-describe('reference route costs (implementation/06)', () => {
-  it('M01 town -> ford -> beacon is 975 MP', () => {
+// Since 2026-10-03 (owner request) heroes stand at a town's gate — the road tile in
+// front of it — not on the town's own tile, so routes start one road step out of town:
+// each reference cost from implementation/06 (measured from the town tile) is one road
+// edge (ROAD) shorter from the gate. Routes back to a town end at its gate.
+const ROAD = 75;
+describe('reference route costs (implementation/06, from the town gate)', () => {
+  it('M01 town -> ford -> beacon: 975 MP from the town tile, 900 from its gate', () => {
     const d = GameDriver.mission('three_beacons_m01');
-    expect(routeCost(d.state, { q: 3, r: 7 }, { q: 10, r: 7 }) + routeCost(d.state, { q: 10, r: 7 }, { q: 16, r: 7 })).toBe(975);
+    expect(routeCost(d.state, { q: 4, r: 7 }, { q: 10, r: 7 }) + routeCost(d.state, { q: 10, r: 7 }, { q: 16, r: 7 })).toBe(975 - ROAD);
   });
   it('M02 town -> pass -> nest is 1,275 MP and the return is 1,275 MP', () => {
     const d = GameDriver.mission('three_beacons_m02');
-    const out = routeCost(d.state, { q: 3, r: 8 }, { q: 13, r: 8 }) + routeCost(d.state, { q: 13, r: 8 }, { q: 20, r: 6 });
-    expect(out).toBe(1275);
-    expect(routeCost(d.state, { q: 20, r: 6 }, { q: 3, r: 8 })).toBe(1275);
+    const out = routeCost(d.state, { q: 4, r: 8 }, { q: 13, r: 8 }) + routeCost(d.state, { q: 13, r: 8 }, { q: 20, r: 6 });
+    expect(out).toBe(1275 - ROAD);
+    expect(routeCost(d.state, { q: 20, r: 6 }, { q: 3, r: 8 })).toBe(1275 - ROAD);
   });
   it('M03 via the north crossing and both relays is 2,400 MP; via the south 3,025 MP', () => {
     const d = GameDriver.mission('three_beacons_m03');
     const legs = (pts: { q: number; r: number }[]) => pts.slice(1).reduce((n, p, i) => n + routeCost(d.state, pts[i]!, p), 0);
-    const town = { q: 3, r: 10 };
+    const town = { q: 4, r: 10 };
     const rn = { q: 16, r: 5 };
     const rs = { q: 16, r: 14 };
     const gate = { q: 21, r: 10 };
     const beacon = { q: 26, r: 10 };
-    expect(legs([town, { q: 12, r: 6 }, rn, rs, gate, beacon])).toBe(2400);
-    expect(legs([town, { q: 12, r: 13 }, rn, rs, gate, beacon])).toBe(3025);
+    expect(legs([town, { q: 12, r: 6 }, rn, rs, gate, beacon])).toBe(2400 - ROAD);
+    expect(legs([town, { q: 12, r: 13 }, rn, rs, gate, beacon])).toBe(3025 - ROAD);
   });
 });
 

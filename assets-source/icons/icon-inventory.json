@@ -320,7 +320,7 @@
           "assetId": "icon.world.town",
           "name": "town",
           "group": "Interface",
-          "where": "Adventure map; Kingdom overview",
+          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Kingdom overview",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/world.town.png",
@@ -359,7 +359,7 @@
           "assetId": "icon.menu.encyclopedia",
           "name": "bestiary",
           "group": "Interface",
-          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Main menu; Recruitment",
+          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Encyclopedia; Main menu; Recruitment",
           "current": {
             "type": "art",
             "file": "assets-runtime/icons/menu-encyclopedia.png",
@@ -437,7 +437,7 @@
           "assetId": "icon.ui.back",
           "name": "back",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Hero screen; New game / setup; Random map setup; Results / high scores; Shared game widgets (resource bar, costs, stat blocks)",
+          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Hero screen; New game / setup; Results / high scores; Shared game widgets (resource bar, costs, stat blocks)",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.back.png",
@@ -463,7 +463,7 @@
           "assetId": "icon.ui.play",
           "name": "play",
           "group": "Interface",
-          "where": "Battle; Creature detail; Dialogs (briefing, debrief, pause, save/load, encounters)",
+          "where": "Battle; Creature detail; Dialogs (briefing, debrief, pause, save/load, encounters); Random map setup",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.play.png",
@@ -606,7 +606,7 @@
           "assetId": "icon.action.retreat",
           "name": "retreat",
           "group": "Interface",
-          "where": "Battle",
+          "where": "Battle; Dialogs (briefing, debrief, pause, save/load, encounters)",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/action.retreat.png",
@@ -697,7 +697,7 @@
           "assetId": "icon.ui.swap",
           "name": "swap",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Hero screen; Town",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Hero screen",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.swap.png",
@@ -736,7 +736,7 @@
           "assetId": "icon.ui.map",
           "name": "map",
           "group": "Interface",
-          "where": "Main menu; New game / setup",
+          "where": "New game / setup",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.map.png",
@@ -762,7 +762,7 @@
           "assetId": "icon.ui.star",
           "name": "star",
           "group": "Interface",
-          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Main menu; Results / high scores; Shared art widgets",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Results / high scores; Shared art widgets",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
@@ -6671,8 +6671,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A large dark-green scarab beetle with a gleaming carapace and forelegs raised.",
           "priority": "now"
@@ -6684,8 +6685,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A golden scarab holding a glowing sun-disc between its forelegs.",
           "priority": "now"
@@ -6697,8 +6699,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier2.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A jackal-headed warrior in a striped headdress with a bundle of javelins.",
           "priority": "now"
@@ -6710,8 +6713,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A black-furred jackal warrior in gold-banded armor with a javelin raised to throw.",
           "priority": "now"
@@ -6723,8 +6727,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier3.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A mummiform blue-glazed figure holding a hoe and a basket, eyes painted wide.",
           "priority": "now"
@@ -6736,8 +6741,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A tall gilded ushabti with a royal headdress and rows of hieroglyphs on its body.",
           "priority": "now"
@@ -6749,8 +6755,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A lion with a human face and a striped royal headdress, crouched to spring.",
           "priority": "now"
@@ -6762,8 +6769,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A great sphinx with falcon wings spread, sandstone-coloured fur and a golden beard.",
           "priority": "now"
@@ -6775,8 +6783,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier5.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A huge Nile crocodile with bronze rings on its forelegs, jaws half open.",
           "priority": "now"
@@ -6788,8 +6797,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A crocodile in a bronze-scale harness with a sun-disc crest between its eyes.",
           "priority": "now"
@@ -6801,8 +6811,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A huge grey-gold heron-like bird with a two-feathered crest and ember-lit wings.",
           "priority": "now"
@@ -6814,8 +6825,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A blazing golden bird with sun-rays in its crest and wings trailing light.",
           "priority": "now"
@@ -6827,8 +6839,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier7.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A towering seated-king statue of red granite, now standing, with sand pouring from its joints.",
           "priority": "now"
@@ -6840,8 +6853,9 @@
           "pantheon": "Egyptian",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A colossal statue with a gold-inlaid headdress and eyes of lapis, a stone block in each hand.",
           "priority": "now"
@@ -6853,8 +6867,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier1.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A spear-and-shield soldier in a bronze helmet and pale linen tunic.",
           "priority": "now"
@@ -6866,8 +6881,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A crested-helmet spear soldier with reinforced shoulder armor and a command sash.",
           "priority": "now"
@@ -6879,8 +6895,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier2.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A lightly armored skirmisher with a crescent shield and a bundle of javelins.",
           "priority": "now"
@@ -6892,8 +6909,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier2.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A skirmisher with a reinforced helmet, braced throwing arm and a tidy javelin harness.",
           "priority": "now"
@@ -6905,8 +6923,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier3.base.portrait.webp",
+            "status": "final"
           },
           "brief": "An eagle-headed, winged lion-bodied creature with tawny fur and pale head feathers.",
           "priority": "now"
@@ -6918,8 +6937,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A griffin with a swept feather crest, long primary feathers and pale-blue accents.",
           "priority": "now"
@@ -6931,8 +6951,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier4.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A lance-bearing rider with a shield on a compact warhorse with a saddle blanket.",
           "priority": "now"
@@ -6944,8 +6965,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A crested rider on a horse with layered neck and chest protection.",
           "priority": "now"
@@ -6957,8 +6979,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier5.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A robed scholar with a staff topped by a geometric bronze focus.",
           "priority": "now"
@@ -6970,8 +6993,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier5.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A robed seer with a sculpted headpiece, layered mantle and a larger staff focus.",
           "priority": "now"
@@ -6983,8 +7007,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier6.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A bull-headed biped with powerful shoulders, chest straps and a heavy axe.",
           "priority": "now"
@@ -6996,8 +7021,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier6.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A minotaur in patterned chest armor with horn fittings and a heavier axe.",
           "priority": "now"
@@ -7009,8 +7035,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier7.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A one-eyed giant with a stone satchel and simple bracers.",
           "priority": "now"
@@ -7022,8 +7049,9 @@
           "pantheon": "Greek",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.greek.tier7.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A cyclops with forged bronze bracers, engraved seams and a faintly luminous boulder.",
           "priority": "now"
@@ -7035,8 +7063,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A russet fox with two tails and a faint blue flame floating beside it.",
           "priority": "now"
@@ -7399,8 +7428,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier1.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A gaunt warrior in corroded mail and a frost-rimed helmet, holding an axe and round shield.",
           "priority": "now"
@@ -7412,8 +7442,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A draugr with rune-etched armor plates, glowing blue eyes and a notched longaxe.",
           "priority": "now"
@@ -7425,8 +7456,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier2.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A large white-grey wolf with frost on its muzzle and pale blue eyes.",
           "priority": "now"
@@ -7438,8 +7470,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier2.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A massive dark-grey wolf with a broken chain collar and a scarred muzzle.",
           "priority": "now"
@@ -7451,8 +7484,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier3.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A hulking blue-grey troll with icicles in its beard and a stone club.",
           "priority": "now"
@@ -7464,8 +7498,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier3.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A towering troll with a crust of blue ice across its back and a boulder-headed club.",
           "priority": "now"
@@ -7477,8 +7512,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier4.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A winged warrior woman in a silver helm with a spear and round shield.",
           "priority": "now"
@@ -7490,8 +7526,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A valkyrie in blue-enamelled scale armor with broad white wings and a long spear.",
           "priority": "now"
@@ -7503,8 +7540,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier5.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A long wingless serpent-dragon with two clawed forelegs and frost on its scales.",
           "priority": "now"
@@ -7516,8 +7554,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A slate-blue lindworm with crackling pale markings and a raised crest.",
           "priority": "now"
@@ -7529,8 +7568,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier6.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A towering giant in furs and iron bands with a frost-covered greataxe.",
           "priority": "now"
@@ -7542,8 +7582,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier6.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A giant with glowing blue runes cut into stone bracers and a rune-marked hammer.",
           "priority": "now"
@@ -7555,8 +7596,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier7.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A huge dark serpent-dragon coiled around ice-covered roots, jaws open.",
           "priority": "now"
@@ -7568,8 +7610,9 @@
           "pantheon": "Norse",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.norse.tier7.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A vast sea-green serpent with barnacled scales and glowing rune-like markings.",
           "priority": "now"
@@ -7589,8 +7632,9 @@
           "pantheon": "Greek",
           "where": "Setup; Pantheon screen; town banners; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/emblem.greek.png",
+            "status": "final"
           },
           "brief": "Greek — Glory & Champions. A single heraldic emblem in the pantheon accent #3b73d9.",
           "priority": "now"
@@ -7602,8 +7646,9 @@
           "pantheon": "Norse",
           "where": "Setup; Pantheon screen; town banners; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/emblem.norse.png",
+            "status": "final"
           },
           "brief": "Norse — Fate & Battle. A single heraldic emblem in the pantheon accent #7fb3d9.",
           "priority": "now"
@@ -7615,8 +7660,9 @@
           "pantheon": "Egyptian",
           "where": "Setup; Pantheon screen; town banners; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/emblem.egyptian.png",
+            "status": "final"
           },
           "brief": "Egyptian — Afterlife & Resurrection. A single heraldic emblem in the pantheon accent #2aa3a8.",
           "priority": "now"
@@ -7628,8 +7674,9 @@
           "pantheon": "Japanese",
           "where": "Setup; Pantheon screen; town banners; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/emblem.japanese.png",
+            "status": "final"
           },
           "brief": "Japanese — Spirits & Harmony. A single heraldic emblem in the pantheon accent #d0453f.",
           "priority": "now"
@@ -7641,8 +7688,9 @@
           "pantheon": "Celtic",
           "where": "Setup; Pantheon screen; town banners; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/emblem.celtic.png",
+            "status": "final"
           },
           "brief": "Celtic — Nature & Transformation. A single heraldic emblem in the pantheon accent #4f9f5c.",
           "priority": "now"
@@ -7654,8 +7702,9 @@
           "pantheon": "Mesoamerican",
           "where": "Setup; Pantheon screen; town banners; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/emblem.mesoamerican.png",
+            "status": "final"
           },
           "brief": "Mesoamerican — Ritual & Sacrifice. A single heraldic emblem in the pantheon accent #d9772f.",
           "priority": "now"

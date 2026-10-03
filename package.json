@@ -1,7 +1,7 @@
 {
   "name": "pantheon-realms",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Pantheon Realms \u2014 turn-based mythological strategy (TypeScript rules, React UI, Babylon.js, Electron).",
   "type": "module",
   "workspaces": [
@@ -25,6 +25,7 @@
     "balance": "node tools/balance/run.mjs",
     "icons:catalog": "vitest run --config tools/assets/icon-catalog/vitest.config.ts && node tools/assets/icon-catalog/render-glyphs.mjs && python3 tools/assets/icon-catalog/build_icon_catalog.py",
     "icons:import": "python3 tools/assets/icon-catalog/import_icons.py",
+    "cursors:import": "python3 tools/assets/import_cursors.py",
     "art:import": "python3 tools/assets/import_story_art.py"
   },
   "devDependencies": {

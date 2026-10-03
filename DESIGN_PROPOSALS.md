@@ -845,3 +845,126 @@ own (`story.herald.portrait`) instead of borrowing the leader's face.
    closed pocket). Acceptable, or should the generator carve one every time?
 6. Briefing: one line at a time (like story scenes) or all lines listed as
    before?
+
+## Group 0.8 — owner requests of 2026-10-03
+
+Owner request: context cursors now (with stand-ins, so the Brief 7 art drops
+in without code changes); a late-game use for Favor; a smarter mid-game AI
+(weekly events; army strength with skills, sets and pantheon bonuses); three
+small fixes (minimap view frame, the combat log's first round, hot-seat
+messages); graphics quality settings for weaker PCs. Owner answers: Favor buys
+**divine gifts at the Temple**; graphics are **presets + an automatic pick**.
+Everything below is **proposed, unplaytested** unless marked as an owner
+decision. The Three Beacons keeps divine gifts off (as it keeps interventions
+off).
+
+### 29. Divine gifts at the Temple (owner decision: this use of Favor)
+
+A town with a Temple grants **one gift per world week** for Favor (Town →
+Temple → *Divine gifts*). Gifts are data (`DIVINE_GIFTS`,
+`packages/content/src/common/expanded.ts`); the rules are a quote/commit
+service (`packages/rules/src/systems/gifts.ts`, command `ReceiveDivineGift`).
+Proposed values:
+
+| Gift | Favor | Gives |
+|---|---|---|
+| Temple Treasury | 5 | 2,000 Gold |
+| Timber and Stone | 5 | 5 Wood + 5 Stone |
+| Tears of the Gods | 6 | 4 Crystal |
+| Anointing | 8 | +1,000 experience for a hero in the town |
+| Blessed Brood | 10 | recruits for every built dwelling of tier 1–4: half a week's growth each (at least 1) |
+| Temple Relic | 20 | a minor artifact for a hero in the town, the same pick for the whole week (drawn from match, town and week — no gameplay random stream) |
+
+Only in scenarios with divine interventions (skirmish, random maps, The Winter
+Oath and the four arc campaigns). The AI uses them too: with Favor it does not
+need for gods, and keeping 10 back while the week's intervention is unused, it
+takes the best value per Favor at each Temple town that is not threatened.
+
+### 30. The AI judges strength more fully and plans around the week (`packages/ai/src/assessment.ts`)
+
+* **Strength:** the shared heuristic (army hit points and damage with the
+  commander's Attack and Defense, which already count artifacts, set
+  attributes, skills and gods) now also counts what it ignored: battle stat
+  bonuses that match each creature (pantheon signatures, gods, specialties,
+  set bonuses, the weekly event), Offense/Archery (√(1 + bonus)), Armorer
+  (√(100 / (100 − cut))), morale and luck (±4 % and ±3 % per point, at most
+  ±3 points) and spell casting (up to +25 % with Power, halved below 10 mana).
+  Used everywhere the strategic AI compares heroes (targets, danger, patrols,
+  retreats). The weights are proposed, like every AI margin.
+* **The week:** the weekly event is read from its effects (no event is
+  named): a week of extra Gold income lowers the Gold kept back for building
+  (1,500 − 3 × daily bonus, at least 500) and for hiring (3,000 − 4 × daily
+  bonus, at least 1,500); a week of extra growth makes walking home to recruit
+  worth 1.5 × in its first three days.
+* **Measured effect** (AI vs AI, `npm run balance -- skirmish random`): see
+  DEVELOPMENT_STATUS.md. One side effect: rival heroes facing a stronger
+  war-band now stay behind their walls instead of meeting it in the field —
+  the headless arc-campaign journeys now recruit the town's troops before the
+  M05 assault (as a player would).
+
+### 31. Graphics quality (owner decision: presets + automatic pick)
+
+Low / Medium / High (`packages/presentation/src/graphics.ts`), picked on the
+first start by a quick test and changeable in Settings → Display (with *Test
+again*). Proposed values:
+
+| | High | Medium | Low |
+|---|---|---|---|
+| Render resolution | up to 2 × on sharp screens | CSS pixels (1 ×) | 70 % of CSS pixels |
+| Anti-aliasing (next start) | on | on | off |
+| Soft contact shadows under troops and obstacles | on | on | off |
+| Figures per troop | up to 3 | up to 2 | 1 |
+| Map decoration | all | no grass tufts or shrubs | trees and rocks thinned by half |
+| Painted ground, sea, sky, battlefield | yes (anisotropic 8) | yes (anisotropic 4) | no (procedural colours) |
+| Small animations (beacon flames, idle sway) | on | on | off |
+| Frame-rate cap | display rate | 60 | 30 |
+
+The quick test: a hidden 1280 × 720 WebGL 2 canvas, a fixed-cost shader drawn
+three passes at a time (median of up to five samples, at most 0.6 s), plus the
+renderer name. Proposed thresholds: under 4 ms a pass → High, under 12 ms →
+Medium, slower → Low; software renderers (SwiftShader, llvmpipe, Microsoft
+Basic Render) → Low; fewer than four cores or under 4 GB memory cap the pick at
+Medium. Not calibrated on a range of real PCs. Babylon shadow maps were tried
+first and dropped: on the test renderer they shaded only the casters, not the
+ground; the contact shadows are cheaper and render the same everywhere.
+
+### 32. Context cursors (stand-ins until Brief 7)
+
+The 24 cursor IDs of `GPT6_BRIEF_7_CURSORS.md` are in the game now
+(`packages/ui/src/assets/cursors.ts`, picked by `app/cursorContext.ts`). Where
+the system has a cursor with the same meaning (arrow, hand, grab, busy,
+not-allowed) it is used; the others are drawn 32 px stand-ins (helmet, gate,
+horseshoe, crossed swords, tower, banner, portal ring, spell star, boot,
+wing, bow, broken arrow, wall, star medallion, magnifier; the sword turns to
+the hex side the strike comes from). `npm run cursors:import` registers
+delivered art (§11 of ASSET_PIPELINE.md); no code changes. Settings → Display
+→ *Game cursors* switches back to the system pointer. `cursor.map.meet` has no
+trigger yet (meeting a friendly hero is not a map action).
+
+### 33. Town gates, the fallen, town armies (owner decisions, second round)
+
+* **Town gates:** heroes use a town from its gate — the road tile in front of it —
+  and never stand on the town's own tile. Proposed details: the gate is the
+  road-connected neighbour (nearest the map centre when there are several; a town
+  without a road uses its walkable neighbour nearest the centre); the gate holds
+  the town site for movement, so passing a town means walking around its gate.
+* **The fallen** block their cells for the rest of the battle, except in wall or
+  gate openings (proposed, so a corpse never seals a town); flyers pass over them.
+  Not measured AI-vs-AI yet.
+* **Town armies** by drag and drop (Shift/Ctrl-drag or click-and-choose to split);
+  an adjacent own hero is met (troop exchange) by clicking it on the map.
+
+### Open questions for the owner (group 0.8)
+
+1. Divine gifts: are the prices right (5–20 Favor), and should a Temple give
+   more than one gift a week at Temple level 2?
+2. Should the Relic draw be visible a week ahead (it is fixed for the week
+   already, so the player can see it before paying)?
+3. Graphics: should Low keep the painted ground (it is most of the look; its
+   cost is texture memory, not frame time)?
+4. The automatic pick's thresholds come from no real-PC measurements: may we
+   log the test result (locally, in Settings) during play-testing?
+5. Corpses: should healing or resurrection ever clear a corpse's cell, and should
+   corpses block shots (they do not today)?
+6. Town gates: which tile should be the gate when a town has several roads (today:
+   the one nearest the map centre)?

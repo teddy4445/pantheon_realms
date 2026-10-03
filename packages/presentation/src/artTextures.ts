@@ -8,6 +8,7 @@ import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { Texture } from '@babylonjs/core/Materials/Textures/texture';
 import type { Scene } from '@babylonjs/core/scene';
 import type { EnvironmentArt } from './environmentArt';
+import { graphicsProfile } from './graphics';
 
 export type ArtWrap = 'repeat' | 'mirror' | 'clamp';
 
@@ -38,7 +39,7 @@ export function loadArtTexture(scene: Scene, art: EnvironmentArt, wrapU: ArtWrap
   );
   tex.wrapU = ADDRESS[wrapU];
   tex.wrapV = ADDRESS[wrapV];
-  tex.anisotropicFilteringLevel = 8;
+  tex.anisotropicFilteringLevel = graphicsProfile().anisotropy;
   return tex;
 }
 

@@ -371,6 +371,20 @@ the game already draws that glyph, including the ability-badge stand-ins
 (`bow` for Shooter, `upgrade` for Shapeshift) and completed objectives
 (`check`).
 
+Creature portraits (Brief 5, first part delivered 2026-10-03): **43 painted
+portraits** — every Greek, Norse and Egyptian form and the Kitsune — imported
+from 1254 × 1254 opaque masters to 256 × 256. Pictures without transparency
+(painted portraits with their own background) are written as **WebP** (quality
+88; 1.2 MB for the 43, against 6.6 MB as PNG); icons with transparency stay
+PNG. They show wherever a creature is drawn through `CreaturePortrait` —
+army slots, recruitment and training, the battle turn order and stack panel,
+the Bestiary, the creature detail screen (now 8 rem), encounters and results —
+inside the game's own square gold frame (no second frame). The other 59 forms
+(the Nine-Tailed Kitsune and forms 045–102) keep the generated stand-in until
+delivered. The 172 matching model-reference views are in
+`assets-source/creatures/reference/` with the delivery's modelling notes
+(`delivery-notes/`); the game does not read them.
+
 Set and ability badges (2026-10-02) use the same path: `icon.set.<setId>`
 appears on worn and packed set pieces, the set list and item cards;
 `icon.ability.<abilityId>` on army slots, creature details and the
@@ -379,6 +393,34 @@ Encyclopedia. Until a file is delivered they show a clearly temporary stand-in
 catalog now has 777 entries (neutral creatures, four campaign heroes and their
 opponents, story speakers, 28 mission and 4 campaign thumbnails, the range
 icon and the portal marker were added).
+
+### Mouse cursors (Brief 7; all 24 delivered 2026-10-03)
+
+1. Drop the delivered 128 × 128 transparent PNGs, named by cursor ID
+   (`cursor.map.attack.png`, …; the 24 IDs of the brief), into
+   `assets-source/ui/cursors/`.
+2. Run `npm run cursors:import` (`tools/assets/import_cursors.py`, Pillow). Each
+   file is written to `assets-runtime/ui/cursors/` at 32 px (1x) and 64 px
+   (2x, `@2x.png`) with its hotspot — taken from the delivery's
+   `delivery-manifest.json` (`hotspot128`) kept beside the PNGs, else measured
+   (arrow and gauntlet at their tip, the sword at its point, others at the
+   centre). The sword is also written turned to the six hex sides
+   (`cursor.battle.melee@<0–300>`, clockwise on screen) on a canvas grown so the
+   blade is never clipped, with the point as the turned hotspot. `manifest.json`
+   lists `{ file, file2x, size, hotspot }` per image, the hotspot in 1x CSS
+   pixels. Files no longer in the source folder are removed.
+3. Rebuild. `packages/ui/src/assets/cursors.ts` writes
+   `image-set(url(1x) 1x, url(2x) 2x) x y, <system cursor>` with absolute URLs
+   and preloads the images; a cursor without art falls back to its drawn
+   stand-in or system cursor. Delivered 2026-10-03: all 24 (hashes checked
+   against the delivery manifest). Which
+   cursor shows where is decided in `packages/ui/src/app/cursorContext.ts` (map:
+   move, move later, attack, siege, visit, portal, own hero or town, blocked,
+   busy on another empire's turn, grabbing while dragging; battle: move, fly,
+   melee from the side of the chosen hex, shoot, weak shot, structure, spell,
+   ability, info, blocked) and in the interface stylesheets (`--cur-*`
+   variables for the arrow, hand, grab, busy and blocked). Settings → Display →
+   *Game cursors* turns them off.
 
 ## 12. Mounted adventure-map heroes (six animated GLBs)
 
@@ -473,6 +515,8 @@ transparent, neutral pose and light) for the later 3D step, kept in
 `assets-source/creatures/reference/` and never read by the game, and the
 **painted portrait** shown in the panels (`creature.….portrait`, into
 `assets-source/icons/final/`, imported at 256 × 256 by `npm run icons:import`).
+First part delivered 2026-10-03: forms 001–043 (215 of the 510 images; see
+"Creature portraits" in §11 and `assets-source/creatures/reference/README.md`).
 A sixth, `GPT6_BRIEF_6_PANTHEON_EMBLEMS.md`, covers the six pantheon emblems
 (`emblem.<pantheon>`, 1024 × 1024 transparent crests with six different
 silhouettes, readable at 18 px; into `assets-source/icons/final/`, imported at
@@ -481,10 +525,9 @@ through one component (`Emblem`, `components/art.tsx`: setup cards and rival
 chips, random-map seats, the Encyclopedia's pantheon dividers, the Pantheon,
 Town, Kingdom Overview and hero screens, world dialogs, the summary and high
 scores), so the delivered files replace the generated stand-in everywhere at
-once. A seventh, `GPT6_BRIEF_7_CURSORS.md`, covers 24 context mouse cursors
-(128 × 128 masters with hotspot rules, into `assets-source/ui/cursors/`); the
-game does not use custom cursors yet — the importer and the context switching
-are described in the brief and not built.
+once. Delivered 2026-10-03: all six (1024 × 1024, imported at 256 px). A seventh, `GPT6_BRIEF_7_CURSORS.md`, covers 24 context mouse cursors
+(128 × 128 masters with hotspot rules, into `assets-source/ui/cursors/`). All 24
+were delivered on 2026-10-03 and are in the game — see *Mouse cursors* below.
 
 Hero portraits: a hero without a portrait of its own (`hero.….portrait`, none
 delivered yet) shows its painted dialogue bust when one exists, framed on the

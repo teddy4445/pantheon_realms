@@ -67,7 +67,8 @@ describe('UI art manifest', () => {
 /**
  * Final art delivered by asset ID (ICON_CATALOG.md, `npm run icons:import`): every
  * source PNG in assets-source/icons/final/ is registered, every registration points
- * at a bundled RGBA PNG of its section's size, and every ID is a catalog asset ID.
+ * at a bundled file of its section's size — an RGBA PNG for icons with transparency,
+ * a WebP for opaque paintings (creature portraits) — and every ID is a catalog asset ID.
  */
 describe('final art manifest', () => {
   const finalManifest = JSON.parse(readFileSync(path.join(runtime, 'ui/final-manifest.json'), 'utf8')) as {
@@ -78,7 +79,9 @@ describe('final art manifest', () => {
   };
   const sizeOf = new Map<string, number>();
   for (const s of inventory.sections) {
-    const m = /(\d+)\s*[×x]\s*(\d+)/.exec(s.size);
+    // As the importer reads it: a size at the start of the section's text, else 256 px
+    // (the illustrations section says "emblems 256 px; thumbnails 640 × 360 px").
+    const m = /^\s*(\d+)\s*[×x]\s*(\d+)/.exec(s.size);
     for (const r of s.rows) sizeOf.set(r.assetId, m ? Number(m[1]) : 256);
   }
   const sourceDir = path.join(root, 'assets-source/icons/final');
@@ -88,15 +91,32 @@ describe('final art manifest', () => {
     expect(Object.keys(finalManifest.assets).sort()).toEqual([...sources].sort());
   });
 
-  it('points every registration at a bundled RGBA PNG of its catalog size', () => {
+  it('points every registration at a bundled RGBA PNG or opaque WebP of its catalog size', () => {
     for (const [id, a] of Object.entries(finalManifest.assets)) {
       expect(sizeOf.has(id), `${id} is a catalog asset ID`).toBe(true);
       const file = path.join(runtime, a.file);
       expect(existsSync(file), `${id} → ${a.file}`).toBe(true);
-      const png = readFileSync(file);
-      expect(png.subarray(1, 4).toString('latin1'), `${a.file} is a PNG`).toBe('PNG');
-      const [w, h, colorType] = [png.readUInt32BE(16), png.readUInt32BE(20), png[25]];
-      expect(colorType, `${a.file} keeps its alpha channel`).toBe(6);
+      const data = readFileSync(file);
+      let w: number;
+      let h: number;
+      if (a.file.endsWith('.webp')) {
+        expect(data.subarray(0, 4).toString('latin1') + data.subarray(8, 12).toString('latin1'), `${a.file} is a WebP`).toBe('RIFFWEBP');
+        const chunk = data.subarray(12, 16).toString('latin1');
+        if (chunk === 'VP8X') {
+          w = 1 + data.readUIntLE(24, 3);
+          h = 1 + data.readUIntLE(27, 3);
+        } else {
+          expect(chunk, `${a.file} is a lossy WebP`).toBe('VP8 ');
+          w = data.readUInt16LE(26) & 0x3fff;
+          h = data.readUInt16LE(28) & 0x3fff;
+        }
+        // Only paintings with their own backgrounds are written as WebP.
+        expect(id, `${a.file}: WebP is for painted portraits`).toMatch(/\.portrait$/);
+      } else {
+        expect(data.subarray(1, 4).toString('latin1'), `${a.file} is a PNG`).toBe('PNG');
+        [w, h] = [data.readUInt32BE(16), data.readUInt32BE(20)];
+        expect(data[25], `${a.file} keeps its alpha channel`).toBe(6);
+      }
       expect(Math.max(w, h), `${a.file} size`).toBe(sizeOf.get(id));
       expect(a.provenance).toMatch(/assets-source\/icons\/final\//);
     }

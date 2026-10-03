@@ -309,7 +309,8 @@ describe.each(Object.keys(LEADER))('%s skirmish (content, not code)', (pid) => {
     d.do({ kind: 'BuildStructure', townId: town.id, buildingId: market });
     d.do({ kind: 'RecruitUnits', townId: town.id, creatureId: t1.baseCreatureId, quantity: 5, destination: { kind: 'hero', heroId: leader } });
     expect(d.state.heroes[leader]!.army.slots[0]).toMatchObject({ creatureId: t1.baseCreatureId, count: start + 5 });
-    d.marchTo({ q: town.coord.q + 1, r: town.coord.r }, leader);
+    // Out of the town's gate (one step past it), so the Tavern can place a new hero there.
+    d.marchTo({ q: town.coord.q + 2, r: town.coord.r }, leader);
     const other = p.heroIds.find((h) => h !== d.state.heroes[leader]!.definitionId)!;
     d.do({ kind: 'HireHero', townId: town.id, heroDefinitionId: other });
     const hired = Object.values(d.state.heroes).find((h) => h.definitionId === other)!;

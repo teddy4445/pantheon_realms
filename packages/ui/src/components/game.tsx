@@ -4,7 +4,7 @@
  * They render data; interaction callbacks are supplied by screens.
  */
 import { AbilityBadges } from './badges';
-import type { ReactNode } from 'react';
+import type { DragEvent, ReactNode } from 'react';
 import {
   RESOURCE_KEYS,
   RESOURCE_LABELS,
@@ -69,6 +69,7 @@ export function ArmyStrip({
   dropTargets,
   label,
   testId,
+  drag,
 }: {
   catalog: ContentCatalog;
   army: ArmyState;
@@ -78,6 +79,12 @@ export function ArmyStrip({
   dropTargets?: readonly number[];
   label: string;
   testId?: string;
+  /** Drag and drop between armies (town screen): stacks can be picked up, every slot accepts a drop. */
+  drag?: {
+    onStart: (slot: number, e: DragEvent<HTMLElement>) => void;
+    onDrop: (slot: number, e: DragEvent<HTMLElement>) => void;
+    onEnd?: () => void;
+  };
 }) {
   return (
     <div className="army" role="list" aria-label={label} data-testid={testId}>
@@ -98,7 +105,27 @@ export function ArmyStrip({
               }
             }}
             aria-label={s && def ? `Slot ${i + 1}: ${s.count} ${s.count === 1 ? def.name : def.pluralName}` : `Slot ${i + 1}: empty`}
-            disabled={!onSlot}
+            disabled={!onSlot && !drag}
+            data-testid={testId ? `${testId}-slot-${i}` : undefined}
+            draggable={!!drag && !!s}
+            onDragStart={drag && s ? (e) => drag.onStart(i, e) : undefined}
+            onDragOver={
+              drag
+                ? (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                  }
+                : undefined
+            }
+            onDrop={
+              drag
+                ? (e) => {
+                    e.preventDefault();
+                    drag.onDrop(i, e);
+                  }
+                : undefined
+            }
+            onDragEnd={drag?.onEnd}
           >
             <span className="slot__index">{i + 1}</span>
             {s ? (

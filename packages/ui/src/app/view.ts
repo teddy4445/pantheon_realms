@@ -20,6 +20,7 @@ import {
   type SiteDefinition,
   type TownState,
   projectedIncome,
+  heroInTown,
 } from '@pr/rules';
 import { armyStrength } from '@pr/ai';
 import { viewerPlayerId } from '@pr/session';
@@ -43,12 +44,14 @@ export function playerHeroes(state: MatchState, playerId: string): HeroState[] {
   return Object.values(state.heroes).filter((h) => h.ownerId === playerId && h.status === 'active');
 }
 
-export function townAtHero(state: MatchState, hero: HeroState): TownState | null {
-  return Object.values(state.towns).find((t) => t.coord.q === hero.position.q && t.coord.r === hero.position.r) ?? null;
+/** The town a hero is visiting (standing at its gate). */
+export function townAtHero(catalog: ContentCatalog, state: MatchState, hero: HeroState): TownState | null {
+  return Object.values(state.towns).find((t) => heroInTown(catalog, state, hero, t.id)) ?? null;
 }
 
-export function heroesInTown(state: MatchState, town: TownState): HeroState[] {
-  return Object.values(state.heroes).filter((h) => h.status === 'active' && h.position.q === town.coord.q && h.position.r === town.coord.r);
+/** Heroes visiting a town (at its gate). */
+export function heroesInTown(catalog: ContentCatalog, state: MatchState, town: TownState): HeroState[] {
+  return Object.values(state.heroes).filter((h) => h.status === 'active' && heroInTown(catalog, state, h, town.id));
 }
 
 export function siteArchetype(def: SiteDefinition): SiteArchetype {

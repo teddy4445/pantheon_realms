@@ -121,6 +121,7 @@ export type GameEventPayload =
   | { kind: 'CreaturesJoined'; heroId: HeroId; creatureId: CreatureId; count: number }
   | { kind: 'AttributeGained'; heroId: HeroId; attribute: HeroAttribute; amount: number }
   | { kind: 'WeeklyEventStarted'; week: number; eventId: string | null }
+  | { kind: 'DivineGiftReceived'; playerId: PlayerId; townId: TownId; giftId: string; heroId: HeroId | null; favor: number; artifactId: ArtifactId | null; xp: number; recruits: number }
   | { kind: 'InterventionInvoked'; playerId: PlayerId; interventionId: string; targetTownId: TownId | null; targetStackId: BattleStackId | null }
   | { kind: 'BattleStacksHealed'; side: BattleSideId; healed: number }
   | { kind: 'StoryScene'; sceneId: string }

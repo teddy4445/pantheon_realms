@@ -128,12 +128,122 @@ export function siteIndex(catalog: ContentCatalog, state: MatchState): Map<strin
   if (hit && hit.catalog === catalog && hit.mission === mission) return hit.index;
   const out = new Map<string, SiteAt>();
   if (!mission) return out;
+  const gates = townGates(catalog, state);
   for (const def of mission.sites) {
     const st = sites[def.id];
-    if (st) out.set(hexKey(def.coord), { def, state: st });
+    if (!st) continue;
+    out.set(hexKey(def.coord), { def, state: st });
+    // A town is entered from its gate tile: the gate holds the town site too.
+    const gate = gates.get(def.id);
+    if (gate) out.set(hexKey(gate), { def, state: st });
   }
   siteIndexCache.set(sites, { catalog, mission, index: out });
   return out;
+}
+
+// ---------------------------------------------------------------------------
+// Town gates (owner request 2026-10-03): a hero never stands on a town's own
+// tile. It stands on the tile in front of the town — the neighbour joined to the
+// town by a road — and visits, defends, captures or besieges the town from there.
+// ---------------------------------------------------------------------------
+
+const gateCache = new WeakMap<object, { mission: unknown; gates: Map<string, HexCoord> }>();
+
+/**
+ * The gate tile of every town site (by site ID): the walkable neighbour joined to
+ * the town by a road and holding no other site; with several, the one nearest the
+ * map centre (point-symmetric maps give mirrored gates), then canonical order; a
+ * town without a road gets its walkable neighbour nearest the centre. A pure
+ * function of the mission and its generated map.
+ */
+export function townGates(catalog: ContentCatalog, state: MatchState): Map<string, HexCoord> {
+  const mission = scenarioMission(catalog, state);
+  const map = state.world.map;
+  const hit = gateCache.get(map);
+  if (hit && hit.mission === mission) return hit.gates;
+  const gates = new Map<string, HexCoord>();
+  if (mission) {
+    const taken = new Set(mission.sites.map((d) => hexKey(d.coord)));
+    const centre = { q: (map.width - 1) / 2, r: (map.height - 1) / 2 };
+    const dc = (c: HexCoord) => {
+      // Fractional axial distance to the centre (cube metric).
+      const dq = c.q - centre.q;
+      const dr = c.r - centre.r;
+      return (Math.abs(dq) + Math.abs(dr) + Math.abs(dq + dr)) / 2;
+    };
+    const roads = roadSet(map);
+    for (const def of mission.sites) {
+      if (def.kind.type !== 'town') continue;
+      const options = axialNeighbors(def.coord).filter(
+        (n) => inMap(map, n) && catalog.rulesProfile.terrainCost[terrainAt(map, n)] !== null && !taken.has(hexKey(n)),
+      );
+      const road = options.filter((n) => roads.has(edgeKey(def.coord, n)));
+      const pool = road.length > 0 ? road : options;
+      const best = [...pool].sort((a, b) => dc(a) - dc(b))[0];
+      if (best) {
+        gates.set(def.id, best);
+        taken.add(hexKey(best));
+      }
+    }
+  }
+  gateCache.set(map, { mission, gates });
+  return gates;
+}
+
+/** The tile from which heroes use this town (its own tile when no neighbour is walkable). */
+export function townGate(catalog: ContentCatalog, state: MatchState, townId: string): HexCoord {
+  const town = state.towns[townId];
+  const def = scenarioMission(catalog, state)?.sites.find((d) => d.kind.type === 'town' && d.kind.townId === townId);
+  const gate = def ? townGates(catalog, state).get(def.id) : undefined;
+  return gate ?? town?.coord ?? def?.coord ?? { q: 0, r: 0 };
+}
+
+/** Is this hero in (visiting) the town — standing at its gate? */
+export function heroInTown(catalog: ContentCatalog, state: MatchState, hero: { position: HexCoord }, townId: string): boolean {
+  return hexEquals(hero.position, townGate(catalog, state, townId));
+}
+
+/** The active hero visiting a town (at its gate), if any. */
+export function townVisitor(catalog: ContentCatalog, state: MatchState, townId: string, exceptId?: HeroId): HeroState | undefined {
+  return heroAt(state, townGate(catalog, state, townId), exceptId);
+}
+
+/** Is `c` a town's own (building) tile, which no hero enters? */
+export function isTownTile(catalog: ContentCatalog, state: MatchState, c: HexCoord): boolean {
+  const site = siteAt(catalog, state, c);
+  return !!site && site.def.kind.type === 'town' && hexEquals(site.def.coord, c) && townGates(catalog, state).has(site.def.id);
+}
+
+/** Where a move toward `dest` really goes: a town's tile means its gate. */
+export function movementTarget(catalog: ContentCatalog, state: MatchState, dest: HexCoord): HexCoord {
+  const site = siteAt(catalog, state, dest);
+  if (site && site.def.kind.type === 'town' && hexEquals(site.def.coord, dest)) {
+    const gate = townGates(catalog, state).get(site.def.id);
+    if (gate) return gate;
+  }
+  return dest;
+}
+
+/**
+ * Move heroes that stand on a town's own tile (missions placed them there before
+ * 2026-10-03, and older saves) to the town's gate, or the nearest free walkable
+ * tile. Called when a match is created or a save is loaded, before play.
+ */
+export function settleHeroesAtTownGates(catalog: ContentCatalog, state: MatchState): void {
+  for (const hero of Object.values(state.heroes)) {
+    if (hero.status !== 'active' || !isTownTile(catalog, state, hero.position)) continue;
+    const site = siteAt(catalog, state, hero.position)!;
+    const gate = townGates(catalog, state).get(site.def.id)!;
+    let spot: HexCoord | null = heroAt(state, gate, hero.id) ? null : gate;
+    if (!spot) {
+      const map = state.world.map;
+      spot =
+        axialNeighbors(hero.position).find(
+          (n) => inMap(map, n) && catalog.rulesProfile.terrainCost[terrainAt(map, n)] !== null && !siteAt(catalog, state, n) && !heroAt(state, n, hero.id),
+        ) ?? null;
+    }
+    if (spot) hero.position = { q: spot.q, r: spot.r };
+  }
 }
 
 export function siteAt(catalog: ContentCatalog, state: MatchState, c: HexCoord): SiteAt | undefined {
@@ -178,6 +288,8 @@ export function tileRole(catalog: ContentCatalog, state: MatchState, playerId: P
   const map = state.world.map;
   if (!inMap(map, c)) return 'blocked';
   if (catalog.rulesProfile.terrainCost[terrainAt(map, c)] === null) return 'blocked';
+  // A town's own tile is a building: heroes use the town from its gate.
+  if (isTownTile(catalog, state, c)) return 'blocked';
   const other = occupancy ? occupancy.get(hexKey(c)) : heroAt(state, c, movingHeroId);
   if (other) return other.ownerId === playerId ? 'blocked' : 'encounter';
   const site = siteAt(catalog, state, c);
@@ -224,6 +336,7 @@ export function findHeroPath(catalog: ContentCatalog, state: MatchState, heroId:
   if (!hero) return fail('Unknown hero');
   const map = state.world.map;
   if (!inMap(map, dest)) return fail('Outside the map');
+  dest = movementTarget(catalog, state, dest);
   if (hexEquals(hero.position, dest)) return fail('Already here');
   const fog = state.fog[hero.ownerId];
   const explored = (c: HexCoord) => !fog || fog.explored[cellIndex(map, c)] === 1;

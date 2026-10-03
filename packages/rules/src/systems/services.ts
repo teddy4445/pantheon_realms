@@ -7,6 +7,7 @@
  * terms themselves come from effect data (offering rules on the player,
  * training/merchant effects on buildings); no code path names a pantheon.
  */
+import { heroInTown } from '../resolvers/world';
 import type { ArtifactId, HeroId, PlayerId, TownId } from '../ids';
 import { hexEquals } from '../core/hex';
 import { canAfford, resources, type ResourceBundle } from '../core/resources';
@@ -51,11 +52,11 @@ export interface OfferingQuote {
   readonly available: boolean;
 }
 
-function armyAtTown(state: MatchState, playerId: PlayerId, town: TownState, ref: ArmyRef): string | null {
+function armyAtTown(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, town: TownState, ref: ArmyRef): string | null {
   if (ref.kind === 'garrison') return ref.townId === town.id ? null : 'Troops must be in this town';
   const hero = state.heroes[ref.heroId];
   if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return 'Not your hero';
-  if (!hexEquals(hero.position, town.coord)) return `${hero.name} must be in ${town.name}`;
+  if (!heroInTown(catalog, state, hero, town.id)) return `${hero.name} must be in ${town.name}`;
   return null;
 }
 
@@ -77,7 +78,7 @@ export function quoteOffering(catalog: ContentCatalog, state: MatchState, player
     const key = `${l.army.kind === 'hero' ? `h:${l.army.heroId}` : `g:${l.army.townId}`}:${l.slot}`;
     if (seen.has(key)) return fail('invalid_command', 'Each stack may appear once');
     seen.add(key);
-    const where = armyAtTown(state, playerId, town, l.army);
+    const where = armyAtTown(catalog, state, playerId, town, l.army);
     if (where) return fail('not_present', where);
     const army = resolveArmy(state, l.army);
     const stack = army?.slots[l.slot] ?? null;
@@ -138,7 +139,7 @@ export function quoteTraining(catalog: ContentCatalog, state: MatchState, player
   if (!terms) return fail('missing_requirement', 'Requires a Training Academy');
   const hero = state.heroes[heroId];
   if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return fail('not_owner', 'Not your hero');
-  if (!hexEquals(hero.position, town.coord)) return fail('not_present', `${hero.name} must be in ${town.name}`);
+  if (!heroInTown(catalog, state, hero, town.id)) return fail('not_present', `${hero.name} must be in ${town.name}`);
   if (hero.lastTrainedWeek === worldWeek(state, catalog.rulesProfile.daysPerWeek)) return fail('already_done', `${hero.name} already trained this week`);
   const cap = state.scenario.xpCap;
   if (cap !== null && hero.xp >= cap) return fail('illegal_action', `${hero.name} is at this mission's experience cap`);
@@ -209,7 +210,7 @@ export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState
   if (!artifactId || !def) return fail('not_found', 'Already sold');
   const hero = state.heroes[heroId];
   if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return fail('not_owner', 'Not your hero');
-  if (!hexEquals(hero.position, town.coord)) return fail('not_present', `${hero.name} must be in ${town.name}`);
+  if (!heroInTown(catalog, state, hero, town.id)) return fail('not_present', `${hero.name} must be in ${town.name}`);
   if (!freeEquipSlot(hero.equipment, def.slot) && hero.backpack.length >= catalog.rulesProfile.backpackCapacity) return fail('no_capacity', `${hero.name}'s backpack is full`);
   const wallet = state.players[playerId]?.wallet ?? resources();
   if (!canAfford(wallet, cost)) return fail('insufficient_resources', 'Not enough resources');

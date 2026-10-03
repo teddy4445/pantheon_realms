@@ -73,6 +73,8 @@ export type CommandPayload =
   | { kind: 'OpenChest'; heroId: HeroId; siteId: SiteId; choice: 'gold' | 'xp' }
   | { kind: 'CompleteQuestHut'; heroId: HeroId; siteId: SiteId }
   | { kind: 'InvokeIntervention'; interventionId: string; townId?: TownId }
+  /** Receive a divine gift at a town's Temple for Favor (the visiting hero receives hero gifts). */
+  | { kind: 'ReceiveDivineGift'; townId: TownId; giftId: string; heroId?: HeroId }
   // --- Tactical battle ---
   | { kind: 'BattleMove'; stackId: BattleStackId; to: BattleCell }
   | { kind: 'BattleMelee'; stackId: BattleStackId; targetId: BattleStackId; from: BattleCell }

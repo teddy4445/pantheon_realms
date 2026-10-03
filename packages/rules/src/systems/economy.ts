@@ -4,6 +4,7 @@
  * Each action has a read-only quote (used by screens) and a commit that calls
  * the same quote, so displayed prices and legality always match execution.
  */
+import { heroInTown, townGate } from '../resolvers/world';
 import type { BuildingId, CreatureId, PlayerId, TownId } from '../ids';
 import {
   RESOURCE_KEYS,
@@ -214,7 +215,7 @@ export function quoteRecruitment(
     const hero = state.heroes[destination.heroId];
     if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return fail('not_found', 'Unknown hero');
     destinationLabel = hero.name;
-    if (!hexEquals(hero.position, town.coord)) {
+    if (!heroInTown(catalog, state, hero, town.id)) {
       return fail('not_present', `${hero.name} must be in ${town.name} to receive recruits`);
     }
     army = hero.army;
@@ -326,7 +327,7 @@ export function quoteUpgrade(
   if (armyRef.kind === 'hero') {
     const hero = state.heroes[armyRef.heroId];
     if (!hero || hero.ownerId !== playerId) return fail('not_owner', 'Not your hero');
-    if (!hexEquals(hero.position, town.coord)) return fail('not_present', `${hero.name} must be in ${town.name} to train troops`);
+    if (!heroInTown(catalog, state, hero, town.id)) return fail('not_present', `${hero.name} must be in ${town.name} to train troops`);
   } else if (armyRef.townId !== townId) {
     return fail('not_present', 'Troops must be in this town');
   }
@@ -451,7 +452,7 @@ export interface TransferQuote {
   readonly code: RejectionCode | null;
 }
 
-function armiesColocated(state: MatchState, playerId: PlayerId, a: ArmyRef, b: ArmyRef): string | null {
+function armiesColocated(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, a: ArmyRef, b: ArmyRef): string | null {
   const pos = (ref: ArmyRef) => {
     if (ref.kind === 'hero') {
       const h = state.heroes[ref.heroId];
@@ -460,7 +461,8 @@ function armiesColocated(state: MatchState, playerId: PlayerId, a: ArmyRef, b: A
     }
     const t = state.towns[ref.townId];
     if (!t || t.ownerId !== playerId) return null;
-    return t.coord;
+    // A garrison meets heroes at the town's gate.
+    return townGate(catalog, state, t.id);
   };
   const pa = pos(a);
   const pb = pos(b);
@@ -485,12 +487,11 @@ export function quoteTransfer(
   toSlot: number,
   quantity: number,
 ): TransferQuote {
-  void catalog;
   const fail = (code: RejectionCode, reason: string): TransferQuote => ({ legal: false, reason, code });
   const src = resolveArmy(state, from);
   const dst = resolveArmy(state, to);
   if (!src || !dst) return fail('not_found', 'Unknown army');
-  const colocated = armiesColocated(state, playerId, from, to);
+  const colocated = armiesColocated(catalog, state, playerId, from, to);
   if (colocated) return fail('not_present', colocated);
   const stack = src.slots[fromSlot];
   if (!stack) return fail('not_found', 'No stack in that slot');

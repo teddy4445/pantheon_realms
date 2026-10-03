@@ -13,7 +13,7 @@ import type { ContentCatalog } from '../definitions/catalog';
 import type { SpellDefinition } from '../definitions/pantheons';
 import type { HeroState, MatchState, TownState } from '../state/match';
 import { axialDistance, hexEquals } from '../core/hex';
-import { cellIndex, cellsWithin, heroAt, inMap } from '../resolvers/world';
+import { cellIndex, cellsWithin, heroAt, inMap, heroInTown, townVisitor, townGate } from '../resolvers/world';
 import { heroVisionRadius } from '../resolvers/heroes';
 import { reject, type Tx } from '../engine/tx';
 import { revealAround } from './adventure';
@@ -68,8 +68,8 @@ export function quoteAdventureSpell(
   if (kind === 'recall') {
     const town = recallTown(state, hero);
     if (!town) return fail('No town of yours to return to');
-    if (hexEquals(town.coord, hero.position)) return fail(`${hero.name} is already in ${town.name}`);
-    if (heroAt(state, town.coord, hero.id)) return fail(`Another hero stands in ${town.name}`);
+    if (heroInTown(catalog, state, hero, town.id)) return fail(`${hero.name} is already in ${town.name}`);
+    if (townVisitor(catalog, state, town.id, hero.id)) return fail(`Another hero stands in ${town.name}`);
   }
   return { legal: true, reason: null, spell, manaCost, radius };
 }
@@ -104,11 +104,12 @@ export function commitCastAdventureSpell(tx: Tx, heroId: HeroId, spellId: SpellI
   if (effect.type === 'recall') {
     const town = recallTown(tx.state, hero)!;
     const from = { ...hero.position };
-    hero.position = { ...town.coord };
+    const gate = townGate(tx.catalog, tx.state, town.id);
+    hero.position = { ...gate };
     hero.movementPoints = 0;
     tx.emit({ kind: 'AdventureSpellCast', heroId, spellId, center: from, radius: 0, untilDay });
-    tx.emit({ kind: 'HeroTeleported', heroId, from, to: { ...town.coord } });
-    revealAround(tx, hero.ownerId, [town.coord], heroVisionRadius(tx.catalog, hero, tx.state));
+    tx.emit({ kind: 'HeroTeleported', heroId, from, to: { ...gate } });
+    revealAround(tx, hero.ownerId, [gate], heroVisionRadius(tx.catalog, hero, tx.state));
     learnSpellsAtTown(tx, hero, town);
     return;
   }

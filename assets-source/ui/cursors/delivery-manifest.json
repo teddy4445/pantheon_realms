@@ -1,0 +1,967 @@
+{
+  "count": 24,
+  "format": "PNG RGBA sRGB",
+  "generation": "Built-in image_gen; mechanical resampling and positioning with Sharp per brief.",
+  "assets": [
+    {
+      "number": 1,
+      "id": "cursor.ui.default",
+      "filename": "cursor.ui.default.png",
+      "hotspot": "tip",
+      "design": "Default arrow",
+      "usage": "Menus, panels, empty map",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.ui.default.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        8,
+        8
+      ],
+      "hotspot64": [
+        4,
+        4
+      ],
+      "hotspot32": [
+        2,
+        2
+      ],
+      "placement": {
+        "left": 8,
+        "top": 8,
+        "width": 951,
+        "height": 1081,
+        "renderWidth": 99,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "4cc3d38997d51696f78a9db3a4becc24828b421e57f12443bc5442c80b650166"
+    },
+    {
+      "number": 2,
+      "id": "cursor.ui.pointer",
+      "filename": "cursor.ui.pointer.png",
+      "hotspot": "tip",
+      "design": "Gold-armoured gauntlet HAND pointing with index finger UP-LEFT, other fingers curled. Fingertip is the unique clicking point near upper-left. No arrow in image.",
+      "usage": "Clickable buttons, cards and rows",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.ui.pointer.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        9,
+        8
+      ],
+      "hotspot64": [
+        5,
+        4
+      ],
+      "hotspot32": [
+        2,
+        2
+      ],
+      "placement": {
+        "left": 8,
+        "top": 8,
+        "width": 1006,
+        "height": 1087,
+        "renderWidth": 104,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "13a83c65085e3fff2941f8172d6212ac197ccd07057430bad652379e5673c10a"
+    },
+    {
+      "number": 3,
+      "id": "cursor.ui.grab",
+      "filename": "cursor.ui.grab.png",
+      "hotspot": "center",
+      "design": "Gold-armoured gauntlet OPEN, palm facing viewer, five fingers slightly spread. Same design as pointing gauntlet, cuff navy enamel. Palm centered.",
+      "usage": "Draggable items and map panning",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.ui.grab.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 16,
+        "top": 8,
+        "width": 961,
+        "height": 1121,
+        "renderWidth": 96,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "c09020ba46b99b17f457cdaa51268475cf5b2c46fca0dd64106695eb1a397374"
+    },
+    {
+      "number": 4,
+      "id": "cursor.ui.grabbing",
+      "filename": "cursor.ui.grabbing.png",
+      "hotspot": "center",
+      "design": "Gold-armoured gauntlet CLOSED gripping fist, thumb wrapped over curled fingers, cuff navy enamel. Same gauntlet design as open hand.",
+      "usage": "While dragging or panning",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.ui.grabbing.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 13,
+        "top": 8,
+        "width": 972,
+        "height": 1063,
+        "renderWidth": 102,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "8079410fc3efee01523296aedb5c8071a794e9d94a4d7ea379dcf203b95cfc0d"
+    },
+    {
+      "number": 5,
+      "id": "cursor.ui.busy",
+      "filename": "cursor.ui.busy.png",
+      "hotspot": "center",
+      "design": "One compact ornate HOURGLASS, thick gold frame, navy top/bottom caps, clear glass, golden sand half run through. Symmetric clear waist and two bulbs, no clock hands.",
+      "usage": "Other empire turns and loading",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.ui.busy.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 26,
+        "top": 8,
+        "width": 771,
+        "height": 1124,
+        "renderWidth": 77,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "07d7569d062b962f69d6a03d4ae777193d68a9f2bdc3a7b383708eb9b22553fc"
+    },
+    {
+      "number": 6,
+      "id": "cursor.blocked",
+      "filename": "cursor.blocked.png",
+      "hotspot": "center",
+      "design": "Crimson-enamel PROHIBITION RING with bold diagonal slash from TOP LEFT to BOTTOM RIGHT, slim gold ring rim, open transparent holes. Thick simple readable circle/slash.",
+      "usage": "Impossible actions",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.blocked.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 8,
+        "width": 1046,
+        "height": 1049,
+        "renderWidth": 112,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "4d984822ec8e058618c8367e7d8f32b876f3c0d327b98258c315f20c4c15026f"
+    },
+    {
+      "number": 7,
+      "id": "cursor.map.hero",
+      "filename": "cursor.map.hero.png",
+      "hotspot": "center",
+      "design": "One classical gold CRESTED HELMET in side profile facing RIGHT, navy eye opening, broad gold crest, clean single silhouette.",
+      "usage": "Own hero select/details",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.hero.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 16,
+        "top": 8,
+        "width": 902,
+        "height": 1041,
+        "renderWidth": 97,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "73516c17354ff084f339713a378607c152aa3202c956e6fbe11da35145d2051c"
+    },
+    {
+      "number": 8,
+      "id": "cursor.map.town",
+      "filename": "cursor.map.town.png",
+      "hotspot": "center",
+      "design": "Small gold FORTIFIED GATE, exactly two squat towers, navy open doorway, one small pennant. Bold simplified crenellations, no scenery.",
+      "usage": "Own town entry",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.town.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 14,
+        "width": 1073,
+        "height": 969,
+        "renderWidth": 112,
+        "renderHeight": 101
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "298cea9511a400079580335b6de2d5262641bd3575b4ec6b52ec6c9520e49672"
+    },
+    {
+      "number": 9,
+      "id": "cursor.map.move",
+      "filename": "cursor.map.move.png",
+      "hotspot": "center",
+      "design": "Single gold GALLOPING HORSE silhouette facing RIGHT, mid-stride, four legs clearly separated, flowing short mane/tail, no rider, no tack, no ground. Broad solid gold shape with sculpted highlight.",
+      "usage": "Hero destination reachable today",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.move.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 21,
+        "width": 1181,
+        "height": 905,
+        "renderWidth": 112,
+        "renderHeight": 86
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "fe3465b5b37732da016bc00f1040bcd4d3367f4970e3a00a35d92d03d4f34092"
+    },
+    {
+      "number": 10,
+      "id": "cursor.map.move_later",
+      "filename": "cursor.map.move_later.png",
+      "hotspot": "center",
+      "design": "The identical galloping horse from extra reference, in silver-grey #9AA3AD instead of gold, with small bold GOLD HOURGLASS badge lower right. Badge recognizable but secondary, no enclosing badge circle.",
+      "usage": "Hero destination on later day",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.move_later.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 18,
+        "width": 1178,
+        "height": 968,
+        "renderWidth": 112,
+        "renderHeight": 92
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "1a237921ad2df1e0a3a13ba75d173c9948ccecec43f60e025cfedb92248378c2"
+    },
+    {
+      "number": 11,
+      "id": "cursor.map.attack",
+      "filename": "cursor.map.attack.png",
+      "hotspot": "center",
+      "design": "Exactly TWO gold CROSSED SWORDS in X, blades up-left/up-right, crimson enamel grips at bottom. Symmetric simple strong silhouette.",
+      "usage": "Route ending in fight",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.attack.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 10,
+        "top": 8,
+        "width": 1036,
+        "height": 1078,
+        "renderWidth": 108,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "9918eed6d2f2c26a38703e8045f89e1d680405a66d5edec1671e7b21a1c6c751"
+    },
+    {
+      "number": 12,
+      "id": "cursor.map.siege",
+      "filename": "cursor.map.siege.png",
+      "hotspot": "center",
+      "design": "One small grey STONE TOWER with navy gate, one bold gold SWORD diagonally across gate. Simple crenellations, crimson grip, clear battle meaning.",
+      "usage": "Enemy town siege",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.siege.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 12,
+        "top": 8,
+        "width": 912,
+        "height": 979,
+        "renderWidth": 104,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d9292659b1d12c57f059aee73b37c685cb30801e0336b9fbbd533e3d112fc3c9"
+    },
+    {
+      "number": 13,
+      "id": "cursor.map.visit",
+      "filename": "cursor.map.visit.png",
+      "hotspot": "center",
+      "design": "One gold PENNANT FLAG on short pole planted in tiny gold mound, navy inset flag, one tiny FOUR-POINT sparkle upper right. Simple flag silhouette dominant.",
+      "usage": "Visitable or claimable map site",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.visit.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 16,
+        "top": 8,
+        "width": 920,
+        "height": 1057,
+        "renderWidth": 97,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "c2b0caa9da0960355fb0645684c583410d5b4158a67e6fd887895f63867d5eaf"
+    },
+    {
+      "number": 14,
+      "id": "cursor.map.meet",
+      "filename": "cursor.map.meet.png",
+      "hotspot": "center",
+      "design": "Exactly TWO gold CURVED ARROWS circling each other clockwise to indicate exchange. Thick arcs, broad triangular heads at opposing positions, transparent middle, no additional arrows.",
+      "usage": "Meet another own hero to trade",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.meet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 15,
+        "top": 8,
+        "width": 934,
+        "height": 1072,
+        "renderWidth": 98,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "9816100e73571e9a8a6fd43542b03dcfc7a13a3b47919a255f5c2d9da17f5465"
+    },
+    {
+      "number": 15,
+      "id": "cursor.map.portal",
+      "filename": "cursor.map.portal.png",
+      "hotspot": "center",
+      "design": "Swirling VIOLET portal ring with thick polished gold rim, transparent central opening, navy dark outer outline. One simple violet spiral within ring, tightly confined glow <=4px at128, no sparks.",
+      "usage": "Two-way portal",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.map.portal.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 9,
+        "width": 1153,
+        "height": 1144,
+        "renderWidth": 112,
+        "renderHeight": 111
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "933bb683a06f3cb9b98acad802e30312be7aaa2f63b361df4e8300c8414c6179"
+    },
+    {
+      "number": 16,
+      "id": "cursor.battle.move",
+      "filename": "cursor.battle.move.png",
+      "hotspot": "center",
+      "design": "Pair of brown LEATHER BOOTS with a few broad gold studs and gold cuff trim, one boot stepping forward. Exactly two boots, no legs above cuffs, clear chunky silhouette.",
+      "usage": "Active stack walk hex",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.move.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 10,
+        "top": 8,
+        "width": 939,
+        "height": 975,
+        "renderWidth": 108,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "361e05d72b22dc392f15ae272b64e216042008aeff3a729732062f2632d7dbd9"
+    },
+    {
+      "number": 17,
+      "id": "cursor.battle.fly",
+      "filename": "cursor.battle.fly.png",
+      "hotspot": "center",
+      "design": "ONE white FEATHERED WING with polished gold leading edge, spread diagonally upward-right, about five broad feather groups, dark outline defining every outer edge. No bird body or second wing.",
+      "usage": "Active flying stack destination",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.fly.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 16,
+        "top": 8,
+        "width": 962,
+        "height": 1113,
+        "renderWidth": 97,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d566573278030512a52f120074191d7c1941b4a50d05c96c6a8d93960ac02e0e"
+    },
+    {
+      "number": 18,
+      "id": "cursor.battle.melee",
+      "filename": "cursor.battle.melee.png",
+      "hotspot": "sword",
+      "design": "Short gold SWORD perfectly HORIZONTAL pointing RIGHT, grip left, blade right, point exactly (120,64), pommel near(8,64). Total length112px, guard height30px, visually symmetric above/below y64. Navy grip, simple diamond blade, no shadow whatsoever. Light directly from top.",
+      "usage": "Reachable melee target; game rotates by hex side",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.melee-refined.png",
+      "sourceSize": [
+        1402,
+        1122
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        120,
+        64
+      ],
+      "hotspot64": [
+        60,
+        32
+      ],
+      "hotspot32": [
+        30,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 51,
+        "width": 1297,
+        "height": 314,
+        "renderWidth": 113,
+        "renderHeight": 27
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "38a6c8b963f6e5323c7c936a91a30234fe76f035282832c6f9c44feb31b0f96b"
+    },
+    {
+      "number": 19,
+      "id": "cursor.battle.shoot",
+      "filename": "cursor.battle.shoot.png",
+      "hotspot": "center",
+      "design": "Gold BOW drawn with one ARROW pointing diagonally UP-RIGHT. Bow belly left, taut simple string, gold arrowhead upper-right, navy grip. Broad readable bow arc and shaft, no hands.",
+      "usage": "Full damage ranged attack",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.shoot.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 12,
+        "top": 8,
+        "width": 1068,
+        "height": 1148,
+        "renderWidth": 104,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "13894db5c7d9fa90a25e468eada2de45a10da202151fcc20e07c0d06caa59271"
+    },
+    {
+      "number": 20,
+      "id": "cursor.battle.shoot_weak",
+      "filename": "cursor.battle.shoot_weak.png",
+      "hotspot": "center",
+      "design": "ONE BROKEN ARROW pointing diagonally up-right, shaft snapped cleanly at center with visible gap and slightly offset two halves, gold arrowhead, brown shaft/navy fletching. No bow, no damage numbers.",
+      "usage": "Half damage ranged attack",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.shoot_weak.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 9,
+        "top": 8,
+        "width": 983,
+        "height": 990,
+        "renderWidth": 111,
+        "renderHeight": 112
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "15c6a5e4bfec4e98911fa4083b247e9ff61c37ec8abdbed34a093b25b1aa09e1"
+    },
+    {
+      "number": 21,
+      "id": "cursor.battle.structure",
+      "filename": "cursor.battle.structure.png",
+      "hotspot": "center",
+      "design": "Small grey STONE WALL SEGMENT with bold dark crack, one gold HAMMER angled onto wall from upper-right. Two or three broad masonry blocks only, no flying rubble.",
+      "usage": "Attackable wall, gate, tower or keep",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.structure.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 11,
+        "width": 1023,
+        "height": 978,
+        "renderWidth": 112,
+        "renderHeight": 107
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "698a49083c6e7d2ea38e20babb7eb403ff9ae7df9d7dfeb42eb087510092642a"
+    },
+    {
+      "number": 22,
+      "id": "cursor.battle.ability",
+      "filename": "cursor.battle.ability.png",
+      "hotspot": "center",
+      "design": "Polished gold EIGHT-POINT STAR medallion with solid navy enamel centre. Exactly eight large tapered points, four cardinal and four diagonal, no tiny points or lettering.",
+      "usage": "Creature active ability target",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.ability.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 9,
+        "width": 1156,
+        "height": 1133,
+        "renderWidth": 112,
+        "renderHeight": 110
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "f35e61beae2de40c7682c5e5f7585bd48ad5660dd8100910831148416e6ba819"
+    },
+    {
+      "number": 23,
+      "id": "cursor.battle.info",
+      "filename": "cursor.battle.info.png",
+      "hotspot": "lens",
+      "design": "One gold-rimmed MAGNIFYING GLASS, navy handle running diagonally down-right. Circular LENS CENTER exactly (64,64) on128 canvas is hotspot, not overall bounding-box center. Ring radius28px, handle reaches(111,111), transparent clear lens with tiny pale highlight.",
+      "usage": "Stack details when no action applies",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.battle.info.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 36,
+        "top": 36,
+        "width": 1005,
+        "height": 1048,
+        "renderWidth": 83,
+        "renderHeight": 86
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "695b1527432a205b49098a0dc44fd92a8b7ce54311a5e36a9341196f242c1597"
+    },
+    {
+      "number": 24,
+      "id": "cursor.spell",
+      "filename": "cursor.spell.png",
+      "hotspot": "center",
+      "design": "Violet-blue magic circle of light enclosing one bold FOUR-POINT STAR, no readable runes. Crisp bright violet #8F7BFF core, modest gold edging, dark navy outline to preserve silhouette. Exactly four long points, transparent gaps, glow no wider than4px.",
+      "usage": "Legal spell or miracle target",
+      "sourceOriginal": "C:\\Users\\lazeb\\Desktop\\blannder_models\\cursor_art_delivery_2026-10-03\\originals\\cursor.spell.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "exportSize": [
+        128,
+        128
+      ],
+      "hotspot128": [
+        64,
+        64
+      ],
+      "hotspot64": [
+        32,
+        32
+      ],
+      "hotspot32": [
+        16,
+        16
+      ],
+      "placement": {
+        "left": 8,
+        "top": 9,
+        "width": 1140,
+        "height": 1117,
+        "renderWidth": 112,
+        "renderHeight": 110
+      },
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "77a08efa8ea434535f71dfc082fee2fb6d78357eb6b62745d05f81392ad8ea3c"
+    }
+  ]
+}

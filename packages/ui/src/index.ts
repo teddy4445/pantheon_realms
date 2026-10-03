@@ -5,7 +5,7 @@
  * the AppStore, then mounts <App/>. The same code runs in the browser build and
  * the Electron renderer.
  */
-import { registerUnitModels } from '@pr/presentation/core';
+import { classifyGraphics, registerUnitModels } from '@pr/presentation/core';
 import { fixtureUnitModels, menuBackground } from './assets/manifest';
 import '@fontsource/cinzel/500.css';
 import '@fontsource/cinzel/600.css';
@@ -28,6 +28,7 @@ import type { PlatformServices } from '@pr/platform';
 import { App } from './app/App';
 import { AppStore } from './app/store';
 import { applyPreferences, loadPreferences } from './app/preferences';
+import { probeGraphics } from './app/graphicsProbe';
 import { inspectors, preloadPresentation, projectors } from './scene/SceneHost';
 import { GameAudio } from './audio/gameAudio';
 
@@ -60,6 +61,19 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
   }
   root.render(createElement(App, { store }));
   void store.refreshContinue();
+  // First start of this version: a quick graphics test picks Low, Medium or High
+  // (changeable in Settings). Skipped in UI-test mode so test runs stay reproducible.
+  const e2e = typeof location !== 'undefined' && new URLSearchParams(location.search).has('e2e');
+  if (!prefs.graphicsTested && !e2e) {
+    // When the menu is idle (the test takes up to ~0.6 s), before any 3D screen creates the engine.
+    const test = () => {
+      if (store.prefs.graphicsTested) return;
+      const q = classifyGraphics(probeGraphics());
+      void store.setPrefs({ ...store.prefs, graphicsQuality: q, graphicsTested: true }, true);
+    };
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(test, { timeout: 1500 });
+    else setTimeout(test, 200);
+  }
   // The menu is up without the 3D engine; fetch it in the background for the first 3D screen.
   preloadPresentation();
   // Automated UI tests may read (never write) a deep copy of the state and

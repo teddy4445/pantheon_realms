@@ -10,6 +10,7 @@ import {
   hexEquals,
   parseHexKey,
   quoteMovement,
+  movementTarget,
   reachableTiles,
   processCommand,
   type HexCoord,
@@ -101,6 +102,8 @@ export class GameDriver {
    * (auto-combat) any confirmed encounter at the destination.
    */
   marchTo(dest: HexCoord, heroId = 'alexios', maxDays = 12): void {
+    // A town's own tile means its gate (heroes never stand on a town).
+    dest = movementTarget(this.catalog, this.state, dest);
     for (let day = 0; day < maxDays; day++) {
       for (let step = 0; step < 30; step++) {
         const hero = this.state.heroes[heroId];

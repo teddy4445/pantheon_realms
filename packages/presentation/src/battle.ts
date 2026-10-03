@@ -26,10 +26,12 @@ import { MeshAccumulator, cellWorld, clearColor, createLabel, hexCorner, pickGro
 import { hexToRgb, tileNoise } from './palette';
 import { MaterialCache, buildCreatureProxy, disposeProxy } from './proxies';
 import { TweenPlayer, easeInOut, linear } from './tween';
-import { applyIdle, faceGroup, playState, restFigure, type Figure } from './animations';
+import { applyCheer, applyIdle, deadPose, faceGroup, playState, restFigure, type Figure } from './animations';
 import { ModelCache, unitModelFor, type ModelRig } from './models';
 import { BATTLEFIELD_LAYOUT, battlefieldArt } from './environmentArt';
 import { groundMaterial, loadArtTexture } from './artTextures';
+import { graphicsProfile } from './graphics';
+import { contactShadowSource } from './contactShadow';
 import type { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { VertexBuffer } from '@babylonjs/core/Buffers/buffer';
 
@@ -195,6 +197,8 @@ export class BattleSceneController implements SceneController {
   private obstacleSet = new Set<string>();
   private siegeView: SiegeView | null = null;
   private structureRoot: TransformNode | null = null;
+  /** Soft contact shadows under figures and obstacles (graphics quality Medium and High). */
+  private shadowSrc: Mesh | null = null;
   private structureLabels: Label[] = [];
   /** Structure HP as currently drawn (playback advances it event by event). */
   private shownHp = new Map<string, number>();
@@ -228,6 +232,7 @@ export class BattleSceneController implements SceneController {
     hemi.groundColor = new Color3(0.2, 0.2, 0.28);
     const sun = new DirectionalLight('sun', new Vector3(-0.5, -1, -0.4), scene);
     sun.intensity = 0.7;
+    if (graphicsProfile().contactShadows) this.shadowSrc = contactShadowSource(scene);
     const ground = MeshBuilder.CreateGround('surround', { width: 90, height: 70 }, scene);
     ground.position.set(center.x, -0.12, center.z);
     ground.material = this.mats.get('#2b3524');
@@ -311,7 +316,8 @@ export class BattleSceneController implements SceneController {
     this.obstacleSet = new Set(view.obstacles.map((c) => `${c.col}:${c.row}`));
     const moat = new Set((view.siege?.moat ?? []).map((c) => `${c.col}:${c.row}`));
     const acc = new MeshAccumulator();
-    const mapping = this.battlefieldMapping(view);
+    // Low quality keeps the procedural board colours (no battlefield painting).
+    const mapping = graphicsProfile().paintedGround ? this.battlefieldMapping(view) : null;
     const art = mapping ? battlefieldArt(view.archetype, view.climate) : null;
     const tops = mapping ? new MeshAccumulator(mapping.uv) : null;
     /** Per painted cell top: the tint it keeps once the painting shows (deployment columns slightly darker). */
@@ -403,7 +409,18 @@ export class BattleSceneController implements SceneController {
       m.rotation.y = i * 1.3;
       m.parent = root;
       m.isPickable = false;
+      this.contactShadow(root, `ob-shadow-${i}`, kind === 1 ? 1.35 : 1.6, x, z);
     });
+  }
+
+  /** A soft shadow disc of `size` world units under `parent` (no-op without contact shadows). */
+  private contactShadow(parent: TransformNode, name: string, size: number, x = 0, z = 0): void {
+    if (!this.shadowSrc) return;
+    const s = this.shadowSrc.createInstance(name);
+    s.parent = parent;
+    s.isPickable = false;
+    s.scaling.set(size, 1, size);
+    s.position.set(x, 0.045, z);
   }
 
   private buildHighlights(view: BattleView): void {
@@ -451,8 +468,9 @@ export class BattleSceneController implements SceneController {
   }
 
   private figureCount(v: BattleStackView): number {
-    if (v.footprint === 2) return v.count >= 5 ? 2 : 1;
-    return v.count >= 10 ? 3 : v.count >= 2 ? 2 : 1;
+    const most = graphicsProfile().maxFigures;
+    if (v.footprint === 2) return Math.min(most, v.count >= 5 ? 2 : 1);
+    return Math.min(most, v.count >= 10 ? 3 : v.count >= 2 ? 2 : 1);
   }
 
   private createStack(v: BattleStackView): StackEntry {
@@ -516,8 +534,23 @@ export class BattleSceneController implements SceneController {
       pendingRigs: null,
     };
     group.position.copyFrom(this.groupPosition(v.anchor, v.footprint, v.facing));
-    this.requestModels(e);
+    // Each figure stands on a soft shadow (it follows the figure's wrapper, not its lunges).
+    figures.forEach((f, i) => this.contactShadow(f.proxy.root.parent as TransformNode, `shadow-${v.id}-${i}`, v.footprint === 2 ? 1.2 : 0.8));
+    // A stack already dead (a battle loaded from a save) lies where it fell.
+    if (v.alive) this.requestModels(e);
+    else this.layDown(e);
     return e;
+  }
+
+  /**
+   * The fallen stay on the battlefield (owner request 2026-10-03): lying down,
+   * without their side's base disc or count label; the rules keep their cells taken.
+   */
+  private layDown(e: StackEntry): void {
+    e.group.setEnabled(true);
+    e.base.isVisible = false;
+    e.label.mesh.isVisible = false;
+    for (const f of e.figures) deadPose(f);
   }
 
   /** Replace the stack's proxies with GLB rigs when a model is registered (async; proxies stay on failure). */
@@ -541,6 +574,11 @@ export class BattleSceneController implements SceneController {
     const rigs = e.pendingRigs;
     if (!rigs) return;
     e.pendingRigs = null;
+    // Models that arrive after the stack fell are not swapped in: the body stays as it fell.
+    if (!e.view.alive) {
+      for (const r of rigs) r.dispose();
+      return;
+    }
     e.figures = e.figures.map((f, i) => {
       const rig = rigs[i]!;
       const wrap = f.proxy.root.parent as TransformNode;
@@ -582,18 +620,19 @@ export class BattleSceneController implements SceneController {
       if (!e) {
         e = this.createStack(v);
         this.stacks.set(v.id, e);
-        e.group.setEnabled(v.alive);
       }
       const moved = e.view.anchor.col !== v.anchor.col || e.view.anchor.row !== v.anchor.row;
       if (moved) {
         e.prevAnchor = e.view.anchor;
         if (e.locked === 0) e.snapIn = 3;
       }
-      if (!v.alive && e.view.alive && e.locked === 0) e.hideIn = 3;
+      const died = !v.alive && e.view.alive;
       if (v.alive) e.group.setEnabled(true);
       e.view = v;
       e.label.set(v.label, v.labelColor);
       e.label.mesh.isVisible = v.alive;
+      // Died without playback (instant speed): lie down now; otherwise the death playback does it.
+      if (died && e.locked === 0) this.layDown(e);
       if (v.active && v.alive) active = e;
     }
     for (const [id, e] of this.stacks) {
@@ -606,6 +645,8 @@ export class BattleSceneController implements SceneController {
   }
 
   private activeStack: StackEntry | null = null;
+  /** Winners cheering after the battle was won (until the screen closes). */
+  private celebrating = new Set<StackEntry>();
 
   update(view: BattleView): void {
     const bk = `${view.battleId}|${view.obstacles.length}|${view.siege?.moat.length ?? -1}|${view.siege?.structures.length ?? -1}`;
@@ -828,7 +869,12 @@ export class BattleSceneController implements SceneController {
     e.group.position.copyFrom(this.groupPosition(e.view.anchor, e.view.footprint, e.view.facing));
     faceGroup(e.group, e.view.facing);
     e.shownAnchor = e.view.anchor;
-    e.group.setEnabled(e.view.alive);
+    if (!e.view.alive) {
+      this.layDown(e);
+      return;
+    }
+    e.group.setEnabled(true);
+    e.base.isVisible = true;
     for (const f of e.figures) restFigure(f);
   }
 
@@ -997,14 +1043,13 @@ export class BattleSceneController implements SceneController {
       case 'BattleStackDestroyed': {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
-        // The defeat pose already played on the killing blow; finish hiding.
+        // The dying animation played on the killing blow; the body stays where it fell.
         await this.tweens.wait(120);
-        e.group.setEnabled(false);
         // Remember the death even if no newer view arrives (the battle's final
         // blow: the rules have already cleared the battle), so unlocking the
-        // stack after playback does not show it again.
+        // stack after playback keeps it lying down.
         e.view = { ...e.view, alive: false };
-        e.label.mesh.isVisible = false;
+        this.layDown(e);
         return;
       }
       case 'SiegeStructureDamaged': {
@@ -1067,8 +1112,19 @@ export class BattleSceneController implements SceneController {
         return;
       }
       case 'BattleEnded': {
+        // Every surviving creature of the winning side celebrates — once in full, then it
+        // keeps cheering until the result screen opens (owner request 2026-10-03).
         const winners = [...this.stacks.values()].filter((e) => e.view.side === ev.winner && e.view.alive);
+        for (const e of winners) {
+          e.group.setEnabled(true);
+          e.group.position.copyFrom(this.groupPosition(e.view.anchor, e.view.footprint, e.view.facing));
+          for (const f of e.figures) restFigure(f);
+        }
         await Promise.all(winners.map((e) => playState(this.tweens, e.figures, 'victory')));
+        for (const e of winners) {
+          this.celebrating.add(e);
+          for (const f of e.figures) if (f.rig?.has('victory')) f.rig.loop('victory');
+        }
         return;
       }
       default:
@@ -1121,11 +1177,13 @@ export class BattleSceneController implements SceneController {
     this.tweens.tick(dt);
     if (this.structureSnapIn > 0 && --this.structureSnapIn === 0 && this.structuresLocked === 0) this.syncStructures();
     for (const tw of this.extraTweens) tw.tick(dt);
+    const motion = graphicsProfile().ambientMotion;
     for (const e of this.stacks.values()) {
       if (e.locked === 0) {
         if (e.snapIn > 0 && --e.snapIn === 0) this.snap(e);
-        if (e.hideIn > 0 && --e.hideIn === 0) e.group.setEnabled(e.view.alive);
-        if (e.view.alive) for (const f of e.figures) applyIdle(f, this.time);
+        if (e.hideIn > 0 && --e.hideIn === 0 && !e.view.alive) this.layDown(e);
+        if (e.view.alive && this.celebrating.has(e)) for (const f of e.figures) applyCheer(f, this.time);
+        else if (e.view.alive && motion) for (const f of e.figures) applyIdle(f, this.time);
       }
     }
     const a = this.activeStack;

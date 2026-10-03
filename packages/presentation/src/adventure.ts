@@ -54,6 +54,7 @@ import { heroModelFor } from './modelRegistry';
 import { MountedHeroCache, type MountedHeroDebug, type MountedHeroRig, type PrepareOutcome } from './mountedHeroes';
 import { TERRAIN_TEXTURE_WORLD, skyArt, terrainArt, type EnvironmentArt } from './environmentArt';
 import { backdropMaterial, groundMaterial, loadArtTexture } from './artTextures';
+import { graphicsProfile } from './graphics';
 
 /** Nominal map time per hex step (ms, before the Adventure animation speed setting). */
 const STEP_MS = 210;
@@ -124,6 +125,8 @@ export interface AdventureView {
 export interface AdventureCallbacks {
   onTileClick(c: HexCoord, button: number): void;
   onTileHover(c: HexCoord | null): void;
+  /** The map started or stopped being dragged (for the grabbing cursor). */
+  onDrag?(dragging: boolean): void;
 }
 
 interface HeroEntry {
@@ -352,8 +355,10 @@ export class AdventureSceneController implements SceneController {
   private buildTerrain(map: WorldMapDefinition): void {
     const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
     const arts = new Map<Terrain, EnvironmentArt>();
+    // Low quality keeps the procedural colours (no painted ground, sea or sky).
+    const painted = graphicsProfile().paintedGround;
     for (const t of GROUND_TYPES) {
-      const a = terrainArt(map.biome, t);
+      const a = painted ? terrainArt(map.biome, t) : null;
       if (a) arts.set(t, a);
     }
     const uv = (x: number, z: number) => [x / TERRAIN_TEXTURE_WORLD, z / TERRAIN_TEXTURE_WORLD] as const;
@@ -451,7 +456,7 @@ export class AdventureSceneController implements SceneController {
    * repeated sideways (mirrored until its left/right seam is verified).
    */
   private buildSky(map: WorldMapDefinition): void {
-    const art = skyArt(map.biome);
+    const art = graphicsProfile().paintedGround ? skyArt(map.biome) : null;
     if (!art) return;
     let minX = Infinity;
     let maxX = -Infinity;
@@ -564,7 +569,11 @@ export class AdventureSceneController implements SceneController {
         push(i, s as unknown as Mesh);
       }
     }
-    for (const d of items) {
+    // Graphics quality: Medium drops grass tufts and shrubs, Low also every other tree and rock.
+    const decor = graphicsProfile().decor;
+    for (const [n, d] of items.entries()) {
+      if (decor !== 'all' && (d.kind === 'grass' || d.kind === 'shrub')) continue;
+      if (decor === 'sparse' && n % 2 === 1) continue;
       const src = d.kind === 'pine' ? pine : d.kind === 'tree' ? tree : d.kind === 'rock' ? rock : d.kind === 'shrub' ? shrub : d.kind === 'grass' ? shrub : rock;
       if (d.kind === 'rock' && this.terrainOf(map, d.r * map.width + d.q) === 'mountain') continue;
       const { x, z } = axialWorld({ q: d.q, r: d.r }, R);
@@ -1021,6 +1030,26 @@ export class AdventureSceneController implements SceneController {
     return { alpha: c.alpha, beta: c.beta, radius: c.radius, target: { x: c.target.x, y: c.target.y, z: c.target.z } };
   }
 
+  /**
+   * The ground the camera shows: the four corners of the view on the map plane,
+   * as fractional axial coordinates (top-left, top-right, bottom-right,
+   * bottom-left), for the minimap's frame. Null when a corner sees no ground.
+   */
+  viewFootprint(): { q: number; r: number }[] | null {
+    const engine = this.scene.getEngine();
+    const k = engine.getHardwareScalingLevel();
+    const w = engine.getRenderWidth() * k;
+    const h = engine.getRenderHeight() * k;
+    const out: { q: number; r: number }[] = [];
+    for (const [x, y] of [[0, 0], [w, 0], [w, h], [0, h]] as const) {
+      const g = pickGround(this.scene, this.camera, x, y, 0);
+      if (!g) return null;
+      const rf = -g.z / (1.5 * R);
+      out.push({ q: g.x / (Math.sqrt(3) * R) - rf / 2, r: rf });
+    }
+    return out;
+  }
+
   // ------------------------------------------------------------------ camera
 
   focus(c: HexCoord, animate = true): void {
@@ -1097,6 +1126,7 @@ export class AdventureSceneController implements SceneController {
     } else if (p.type === PointerEventTypes.POINTERMOVE) {
       const d = this.down;
       if (d && (d.button === 0 || d.button === 1) && (d.dragging || Math.hypot(x - d.x, y - d.y) > 7)) {
+        if (!d.dragging) this.cb.onDrag?.(true);
         d.dragging = true;
         const g = pickGround(this.scene, this.camera, x, y, 0);
         if (g && d.ground) {
@@ -1118,6 +1148,7 @@ export class AdventureSceneController implements SceneController {
     } else if (p.type === PointerEventTypes.POINTERUP) {
       const d = this.down;
       this.down = null;
+      if (d?.dragging) this.cb.onDrag?.(false);
       if (!d || d.dragging) return;
       const c = this.tileAtPointer(x, y);
       if (c && this.isExplored(c)) this.cb.onTileClick(c, d.button);
@@ -1171,8 +1202,9 @@ export class AdventureSceneController implements SceneController {
       this.selectRing.rotation.y = this.time / 900;
       this.selectRing.isVisible = true;
     } else this.selectRing.isVisible = false;
+    const motion = graphicsProfile().ambientMotion;
     for (const s of this.sites.values()) {
-      if (s.proxy.flame && s.proxy.flame.isVisible) {
+      if (motion && s.proxy.flame && s.proxy.flame.isVisible) {
         const k = 1 + Math.sin(this.time / 120) * 0.08;
         s.proxy.flame.scaling.set(k, 1 + Math.sin(this.time / 90) * 0.12, k);
       }

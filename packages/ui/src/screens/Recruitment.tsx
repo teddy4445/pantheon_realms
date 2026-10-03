@@ -44,7 +44,7 @@ export function RecruitmentScreen() {
     return recruitable[0] ?? null;
   })();
   const [creatureId, setCreatureId] = useState<string | null>((store.screen.params.creatureId as string | undefined) ?? firstId);
-  const visiting = town ? heroesInTown(state, town).filter((h) => h.ownerId === player.id) : [];
+  const visiting = town ? heroesInTown(catalog, state, town).filter((h) => h.ownerId === player.id) : [];
   const [dest, setDest] = useState<RecruitDestination>(visiting[0] ? { kind: 'hero', heroId: visiting[0].id } : { kind: 'garrison' });
   const [qty, setQty] = useState(1);
   if (!town || !archetype) {

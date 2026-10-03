@@ -8,6 +8,7 @@
  */
 import { Engine } from '@babylonjs/core/Engines/engine';
 import { Scene } from '@babylonjs/core/scene';
+import { graphicsProfile, hardwareScalingLevel, onGraphicsChange, type GraphicsProfile } from './graphics';
 // Babylon features the scenes rely on that register themselves as side effects when
 // imported by path (the package is imported by module path, not through its index, so
 // only what the game uses is bundled).
@@ -52,11 +53,18 @@ export class EngineHost {
   private running = false;
   private resizeObserver: ResizeObserver | null = null;
   private lastFrame = performance.now();
+  /** Time of the last frame actually drawn (frame-rate cap). */
+  private lastDrawn = 0;
   contextLost = false;
+  /** Anti-aliasing the context was created with (it cannot change until the next start). */
+  readonly antialias: boolean;
 
-  private constructor(canvas: HTMLCanvasElement, engine: Engine) {
+  private constructor(canvas: HTMLCanvasElement, engine: Engine, antialias: boolean) {
     this.canvas = canvas;
     this.engine = engine;
+    this.antialias = antialias;
+    this.applyGraphics(graphicsProfile());
+    onGraphicsChange((p) => this.applyGraphics(p));
     engine.onContextLostObservable.add(() => {
       this.contextLost = true;
     });
@@ -71,9 +79,17 @@ export class EngineHost {
     canvas.setAttribute('aria-hidden', 'true');
     canvas.tabIndex = -1;
     // WebGL2 is the required first backend (production/01 §11). No CDN fetches are configured.
-    const engine = new Engine(canvas, true, { preserveDrawingBuffer: false, stencil: true, antialias: true, disableWebGL2Support: false }, true);
+    const antialias = graphicsProfile().antialias;
+    const engine = new Engine(canvas, antialias, { preserveDrawingBuffer: false, stencil: true, antialias, disableWebGL2Support: false }, true);
     engine.disableManifestCheck = true;
-    return new EngineHost(canvas, engine);
+    return new EngineHost(canvas, engine, antialias);
+  }
+
+  /** Resolution follows the preset at once (Settings → Display → Graphics quality). */
+  private applyGraphics(p: GraphicsProfile): void {
+    const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+    this.engine.setHardwareScalingLevel(hardwareScalingLevel(p, dpr));
+    this.engine.resize();
   }
 
   /** Place the canvas inside a viewport element and keep it sized to it. */
@@ -123,6 +139,11 @@ export class EngineHost {
       const c = this.active;
       if (!c || this.contextLost) return;
       const now = performance.now();
+      // Frame-rate cap: skip this display frame when the last drawn one is too recent
+      // (the canvas keeps showing it). 1 ms of slack so a 60 Hz display meets a 60 cap.
+      const cap = graphicsProfile().frameCap;
+      if (cap > 0 && now - this.lastDrawn < 1000 / cap - 1) return;
+      this.lastDrawn = now;
       const dt = Math.min(100, now - this.lastFrame);
       this.lastFrame = now;
       c.tick?.(dt);

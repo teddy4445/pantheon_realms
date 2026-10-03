@@ -42,10 +42,13 @@ import {
   questHutProgress,
   quoteNeutralReaction,
   worldWeek,
+  dayOfWeek, heroInTown, townGate,
 } from '@pr/rules';
 import type { AIObservation } from './observation';
 import { armyStrength } from './evaluation';
-import { campCandidates, godCandidates, interventionCandidates, mapEventCandidates, offeringCandidates, siteCandidates, trainingCandidates } from './services';
+import { buildReserve, heroPower, hireReserve, weekPlan } from './assessment';
+import { campCandidates, godCandidates, interventionCandidates,
+  giftCandidates, mapEventCandidates, offeringCandidates, siteCandidates, trainingCandidates } from './services';
 import { equipCandidates, levelUpCandidates, merchantCandidates, movementSpellCandidate, recallSpellCandidate, scoutingSpellCandidate, specialtyHireValue } from './growth';
 
 /**
@@ -130,10 +133,9 @@ function byScoreThenTie(playerId: PlayerId) {
     b.score - a.score || tieHash(playerId, a.key) - tieHash(playerId, b.key) || (a.key < b.key ? -1 : 1);
 }
 
+/** A hero's fighting power as the AI judges it: army, commander, skills, set and pantheon bonuses, morale, luck, magic (assessment.ts). */
 function heroStrength(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
-  const eff = effectiveAttributes(catalog, state, hero);
-  const specs: StackSpec[] = hero.army.slots.filter((s): s is NonNullable<typeof s> => !!s).map((s) => ({ creatureId: s.creatureId, count: s.count }));
-  return armyStrength(catalog, specs, { attack: eff.attack.total, defense: eff.defense.total });
+  return heroPower(catalog, state, hero);
 }
 
 /** Expected strength of an unseen town's garrison (see heroTargets): a public-information prior. */
@@ -208,7 +210,7 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
           break;
         }
         const garrison: StackSpec[] = town.garrison.slots.filter((x): x is NonNullable<typeof x> => !!x && x.count > 0).map((x) => ({ creatureId: x.creatureId, count: x.count }));
-        const visitor = Object.values(belief.heroes).find((h) => h.status === 'active' && h.ownerId !== playerId && hexEquals(h.position, town.coord));
+        const visitor = Object.values(belief.heroes).find((h) => h.status === 'active' && h.ownerId !== playerId && heroInTown(catalog, belief, h, town.id));
         if (garrison.length === 0 && !visitor) {
           out.push({ coord: def.coord, value: 6000 * last, encounter: false, label: town.name, town: true });
           break;
@@ -275,7 +277,8 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
         break;
     }
   }
-  const townCoords = new Set(Object.values(belief.towns).map((t) => hexKey(t.coord)));
+  // Heroes visiting a town stand at its gate.
+  const townCoords = new Set(Object.values(belief.towns).map((t) => hexKey(townGate(catalog, belief, t.id))));
   for (const enemy of Object.values(belief.heroes)) {
     if (enemy.ownerId === playerId || enemy.status !== 'active') continue;
     if (townCoords.has(hexKey(enemy.position))) continue; // visiting a town: evaluated as a siege above
@@ -294,7 +297,8 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
  * judged by the town threat logic instead.
  */
 function endangered(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, stop: HexCoord, strength: number, ignoreHeroId?: string): boolean {
-  const townCoords = new Set(Object.values(belief.towns).map((t) => hexKey(t.coord)));
+  // Heroes visiting a town stand at its gate.
+  const townCoords = new Set(Object.values(belief.towns).map((t) => hexKey(townGate(catalog, belief, t.id))));
   for (const e of Object.values(belief.heroes)) {
     if (e.ownerId === playerId || e.status !== 'active' || e.id === ignoreHeroId) continue;
     const theirs = heroStrength(catalog, belief, e);
@@ -417,16 +421,21 @@ function movementCandidates(catalog: ContentCatalog, belief: MatchState, playerI
   // the town gate and the field every day); recruits the treasury cannot pay for are
   // not waiting at all.
   const gold = belief.players[playerId]?.wallet.gold ?? 0;
+  const plan = weekPlan(catalog, belief, playerId);
+  const reserve = buildReserve(plan, 1500);
+  const earlyGrowthWeek = plan.growthBonus > 0 && dayOfWeek(belief.day, catalog.rulesProfile.daysPerWeek) <= 3;
   for (const home of playerTowns(belief, playerId)) {
-    if (hexEquals(home.coord, hero.position)) continue;
+    if (heroInTown(catalog, belief, hero, home.id)) continue;
     const garrison = armyStrength(catalog, home.garrison.slots.map((s) => (s && s.count > 0 ? { creatureId: s.creatureId, count: s.count } : null)));
-    const recruits = gold >= 1500 && Object.values(home.population).some((n) => n > 0);
+    const recruits = gold >= reserve && Object.values(home.population).some((n) => n > 0);
     if (garrison < Math.max(150, mine * 0.2) && !recruits) continue;
     const q = quoteMovement(catalog, belief, hero.id, home.coord);
     if (!q.reachable || q.stopIndex < 0) continue;
     const arrives = q.stopIndex === q.path.length - 1;
     if (arrives || !endangered(catalog, belief, playerId, q.path[q.stopIndex]!, mine)) {
-      const value = 400 + Math.min(4000, garrison * (mine > 0 ? Math.min(2, garrison / mine) : 1));
+      let value = 400 + Math.min(4000, garrison * (mine > 0 ? Math.min(2, garrison / mine) : 1));
+      // A week of extra growth: the dwellings are full early in the week, worth the walk.
+      if (recruits && earlyGrowthWeek) value *= 1.5;
       const days = Math.max(1, Math.ceil(q.totalCost / Math.max(1, hero.movementPoints)));
       scored.push({ score: value / (1 + q.totalCost / 800) / days, key: `home:${hexKey(home.coord)}`, payload: { kind: 'MoveHero', heroId: hero.id, destination: home.coord } });
     }
@@ -450,7 +459,7 @@ const RETREAT_CHECKS = 8;
 
 function retreatCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState, mine: number): { score: number; key: string; payload: CommandPayload }[] {
   const towns = playerTowns(belief, playerId);
-  if (towns.some((t) => hexEquals(t.coord, hero.position))) return [];
+  if (towns.some((t) => heroInTown(catalog, belief, hero, t.id))) return [];
   if (!endangered(catalog, belief, playerId, hero.position, mine)) return [];
   const threats = Object.values(belief.heroes).filter((e) => e.ownerId !== playerId && e.status === 'active' && heroStrength(catalog, belief, e) >= mine * DANGER_MARGIN);
   const out: { score: number; key: string; payload: CommandPayload }[] = [];
@@ -589,7 +598,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
       .filter((t) => {
         const near = enemies.filter((e) => axialDistance(e.position, t.coord) <= THREAT_RADIUS);
         if (near.length === 0) return false;
-        const visitor = strategic.find((h) => hexEquals(h.position, t.coord));
+        const visitor = strategic.find((h) => heroInTown(catalog, belief, h, t.id));
         if (!visitor) return true;
         // Judge the sally with the garrison folded into the visitor (it is moved into the
         // hero below when the town is not held). Two empires used to freeze for the rest
@@ -622,6 +631,8 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
     out.push(...siteCandidates(catalog, belief, playerId, strategic));
     out.push(...campCandidates(catalog, belief, playerId, strategic));
     out.push(...interventionCandidates(catalog, belief, playerId, strategic));
+    out.push(...giftCandidates(catalog, belief, playerId, threatened));
+    const plan = weekPlan(catalog, belief, playerId);
     for (const town of playerTowns(belief, playerId)) {
       const underThreat = threatened.has(town.id);
       // Build: best-scoring legal next level of any location, keeping a Gold reserve.
@@ -633,14 +644,14 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
           .sort((x, y) => y.score - x.score || (x.b < y.b ? -1 : 1));
         for (const { b } of options) {
           const q = quoteConstruction(catalog, belief, playerId, town.id, b);
-          if (q.legal && q.balanceAfter.gold >= 1500) {
+          if (q.legal && q.balanceAfter.gold >= buildReserve(plan, 1500)) {
             out.push({ kind: 'BuildStructure', townId: town.id, buildingId: b });
             break;
           }
         }
       }
       // Hire: returning heroes first, then new candidates, while keeping a reserve.
-      if (myHeroes.length < aiPersonality(catalog, belief).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : HIRE_RESERVE_GOLD)) {
+      if (myHeroes.length < aiPersonality(catalog, belief).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : hireReserve(plan, HIRE_RESERVE_GOLD))) {
         // Returning heroes first (they keep their levels), then new recruits by specialty value.
         const roster = [...(obs.hireRoster[town.id] ?? [])].sort(
           (a, b) =>
@@ -656,7 +667,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         }
       }
       // Recruit (highest tier first) to a visiting hero, else the garrison.
-      const visitor = strategic.find((h) => hexEquals(h.position, town.coord));
+      const visitor = strategic.find((h) => heroInTown(catalog, belief, h, town.id));
       if (visitor && underThreat) holding.add(visitor.id);
       const forms = recruitableCreatureIds(catalog, town)
         .map((id) => catalog.creatures[id]!)

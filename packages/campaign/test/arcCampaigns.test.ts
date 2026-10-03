@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '@pr/content';
 import { generateMap } from '@pr/mapgen';
 import { GameDriver } from '@pr/testing';
-import { campaignEpilogueLines, hexEquals, quoteMovement, type HexCoord } from '@pr/rules';
+import { campaignEpilogueLines, hexEquals, quoteMovement, quoteRecruitment, recruitableCreatureIds, type HexCoord } from '@pr/rules';
 import { recordCompletion, startCampaign, startNextMission, type CampaignState } from '../src';
 
 const catalog = loadCatalog();
@@ -52,6 +52,17 @@ for (const c of CASES) {
     d.resolveLevelUps();
     d.marchTo(to, HERO, maxDays);
     d.resolveLevelUps();
+  };
+  /** Recruit what the town has and the treasury pays for into the hero (highest tier first), when the hero is there. */
+  const muster = (d: GameDriver, townId: string) => {
+    const town = d.state.towns[townId]!;
+    if (!hexEquals(d.hero(HERO).position, town.coord)) return;
+    const ids = recruitableCreatureIds(d.catalog, town).sort((a, b) => d.catalog.creatures[b]!.tier - d.catalog.creatures[a]!.tier);
+    for (const id of ids) {
+      const q = quoteRecruitment(d.catalog, d.state, 'player', townId, id, 1, { kind: 'hero', heroId: HERO });
+      if (!q.legal || q.maxQuantity <= 0) continue;
+      d.do({ kind: 'RecruitUnits', townId, creatureId: id, quantity: q.maxQuantity, destination: { kind: 'hero', heroId: HERO } });
+    }
   };
   const hunt = (d: GameDriver, heroDefinitionId: string, maxDays = 12) => {
     for (let day = 0; day < maxDays; day++) {
@@ -213,6 +224,9 @@ for (const c of CASES) {
       ({ campaign, d } = next(campaign, d));
       const t5 = c.towns[4]!;
       d.do({ kind: 'BuildStructure', townId: t5, buildingId: b('civic_hall', 3) });
+      // The rival AI weighs skills and upgrades since 2026-10-03 and stays behind its
+      // walls against a stronger war-band: bring every recruit the town offers.
+      muster(d, t5);
       march(d, { q: 15, r: 6 });
       expect(status(d, 'm05_crossing')).toBe('completed');
       for (let i = 0; i < 8 && d.player.wallet.favor < 25; i++) d.endDay();

@@ -704,7 +704,7 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
   const site = (scenarioMission(catalog, state)?.sites ?? []).find((s) => hexEquals(s.coord, dest));
   const enemyHero = Object.values(state.heroes).find((h) => h.status === 'active' && h.id !== heroId && hexEquals(h.position, dest));
   const at = siteAt(catalog, state, dest);
-  const town = at && hero ? siegeTownAt(state, at, hero.ownerId) : null;
+  const town = at && hero ? siegeTownAt(catalog, state, at, hero.ownerId) : null;
   const level = town ? townFortificationLevel(catalog, town) : 0;
   const army = town
     ? [...(enemyHero ? armyStacks(enemyHero.army) : []), ...armyStacks(town.garrison)].map((s) => ({ creatureId: s.creatureId, count: s.count }))

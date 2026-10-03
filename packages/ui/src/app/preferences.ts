@@ -3,6 +3,8 @@
  * separately from match saves. Never changes match rules.
  */
 import type { PreferencesStore } from '@pr/platform';
+import { setGraphicsQuality } from '@pr/presentation/core';
+import { applyInterfaceCursors } from '../assets/cursors';
 
 export const PREFERENCES_SCHEMA_VERSION = 2;
 
@@ -36,7 +38,12 @@ export interface Preferences {
   readonly codexAutoplay: boolean;
   // Display
   readonly windowMode: 'windowed' | 'fullscreen';
+  /** Low / Medium / High preset (`@pr/presentation/core` graphics.ts). */
   readonly graphicsQuality: 'low' | 'medium' | 'high';
+  /** The quick graphics test has picked the preset once (first start); Settings can run it again. */
+  readonly graphicsTested: boolean;
+  /** Context mouse cursors (the game's own; off: the system pointer). */
+  readonly gameCursors: boolean;
   // Audio (temporary generated sounds in this build; production/04 §7 buses)
   readonly masterVolume: number;
   readonly musicVolume: number;
@@ -81,6 +88,8 @@ export const DEFAULT_PREFERENCES: Preferences = {
   codexAutoplay: true,
   windowMode: 'windowed',
   graphicsQuality: 'high',
+  graphicsTested: false,
+  gameCursors: true,
   masterVolume: 80,
   musicVolume: 60,
   ambienceVolume: 60,
@@ -119,6 +128,7 @@ export function sanitizePreferences(raw: unknown): Preferences {
   for (const k of ['masterVolume', 'musicVolume', 'ambienceVolume', 'interfaceVolume', 'combatVolume', 'voiceVolume'] as const) out[k] = Math.min(100, Math.max(0, out[k] as number));
   out.schemaVersion = PREFERENCES_SCHEMA_VERSION;
   out.uiScale = Math.min(1.6, Math.max(0.8, out.uiScale as number));
+  if (!['low', 'medium', 'high'].includes(out.graphicsQuality as string)) out.graphicsQuality = DEFAULT_PREFERENCES.graphicsQuality;
   return out as unknown as Preferences;
 }
 
@@ -135,6 +145,8 @@ export function applyPreferences(p: Preferences): void {
   root.style.setProperty('--text-scale', p.textSize === 'xlarge' ? '1.3' : p.textSize === 'large' ? '1.15' : '1');
   root.dataset.motion = p.motion;
   root.dataset.contrast = p.highContrast ? 'high' : 'normal';
+  applyInterfaceCursors(p.gameCursors);
+  setGraphicsQuality(p.graphicsQuality);
 }
 
 export async function loadPreferences(store: PreferencesStore): Promise<{ prefs: Preferences; error: string | null }> {

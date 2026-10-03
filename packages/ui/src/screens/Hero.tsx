@@ -369,7 +369,7 @@ export function HeroScreen() {
   const budget = movementBudget(catalog, state, hero);
   const nextXp = xpForLevel(catalog.rulesProfile, hero.level + 1);
   const curXp = xpForLevel(catalog.rulesProfile, hero.level);
-  const town = townAtHero(state, hero);
+  const town = townAtHero(catalog, state, hero);
   const mine = hero.ownerId === player.id;
   const neighbors = heroes.filter((h) => h.id !== hero.id && Math.max(Math.abs(h.position.q - hero.position.q), Math.abs(h.position.r - hero.position.r), Math.abs(h.position.q + h.position.r - hero.position.q - hero.position.r)) <= 1);
   const totalCreatures = armyStacks(hero.army).reduce((n, s) => n + s.count, 0);

@@ -6,8 +6,13 @@ Drop PNG files named exactly by their asset ID (for example
 icon.spell.rune_of_tyr.png — see ICON_CATALOG.md) into assets-source/icons/final/
 and run `npm run icons:import`. Each file is checked against the icon inventory,
 resized to its section's size (never upscaled) and written to
-assets-runtime/ui/icons/final/<asset id>.png; assets-runtime/ui/final-manifest.json
-registers it, so the game shows it in place of the stand-in by asset ID.
+assets-runtime/ui/icons/final/<asset id>.png (or .webp — see below);
+assets-runtime/ui/final-manifest.json registers it, so the game shows it in place
+of the stand-in by asset ID.
+
+Icons with transparency stay PNG. Fully opaque pictures — the painted creature,
+god and hero portraits, which have their own backgrounds — are written as WebP
+(quality 88): about a sixth of the PNG size at the same 256 px.
 
 Needs: Pillow.
 """
@@ -51,20 +56,30 @@ def main():
         if im.width < w // 2 or im.height < h // 2:
             warnings.append(f'{f}: {im.width}×{im.height} is small for {w}×{h}')
         im.thumbnail((w, h), Image.LANCZOS)
-        out = os.path.join(OUT_DIR, f'{asset_id}.png')
-        im.save(out, optimize=True)
+        opaque = im.getchannel('A').getextrema()[0] == 255
+        ext = 'webp' if opaque else 'png'
+        out = os.path.join(OUT_DIR, f'{asset_id}.{ext}')
+        if opaque:
+            im.convert('RGB').save(out, 'WEBP', quality=88, method=6)
+        else:
+            im.save(out, optimize=True)
+        # A picture that changed format leaves no stale file behind.
+        stale = os.path.join(OUT_DIR, f'{asset_id}.{"png" if opaque else "webp"}')
+        if os.path.exists(stale):
+            os.remove(stale)
         assets[asset_id] = {
-            'file': f'ui/icons/final/{asset_id}.png',
+            'file': f'ui/icons/final/{asset_id}.{ext}',
             'provenance': f'Owner-delivered final art, imported {date.today().isoformat()} from assets-source/icons/final/{f}.',
         }
         imported += 1
     # Drop entries whose source file was removed.
     for asset_id in [k for k in assets if not os.path.exists(os.path.join(SRC, f'{k}.png'))]:
         del assets[asset_id]
-        try:
-            os.remove(os.path.join(OUT_DIR, f'{asset_id}.png'))
-        except FileNotFoundError:
-            pass
+        for ext in ('png', 'webp'):
+            try:
+                os.remove(os.path.join(OUT_DIR, f'{asset_id}.{ext}'))
+            except FileNotFoundError:
+                pass
     manifest['assets'] = dict(sorted(assets.items()))
     with open(MANIFEST, 'w', encoding='utf-8', newline='\n') as fh:
         json.dump(manifest, fh, indent=2)

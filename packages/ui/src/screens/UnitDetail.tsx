@@ -170,7 +170,7 @@ export function UnitDetailScreen() {
         </div>
         <div className="unit-info">
           <div className="row gap">
-            <CreaturePortrait catalog={catalog} creatureId={def.id} size="5rem" showPlaceholderTag />
+            <CreaturePortrait catalog={catalog} creatureId={def.id} size="8rem" showPlaceholderTag />
             <div>
               <div className="row gap wrap">
                 <StatusChip status={def.implementationStatus} />

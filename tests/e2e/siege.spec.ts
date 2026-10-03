@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { townGate } from '@pr/rules';
 import { clickHex, inspect, waitFor } from './helpers';
 import { approachTile, importAndLoad, skirmishDriver, slots, writeSave } from './fixtures';
 
@@ -120,6 +121,7 @@ test('siege with Tactics: deploy, batter the walls with a Cyclops, take the town
   s = await waitFor(page, (x) => x.screen === 'battle-result', 'battle result', 180_000);
   expect(s.state.lastBattleResult.winner).toBe('attacker');
   expect(s.state.towns.eastharbor.ownerId).toBe('player');
-  expect(s.state.heroes.alexios.position).toEqual(east.coord);
+  // Heroes stand at a town's gate, not on its tile (2026-10-03).
+  expect(s.state.heroes.alexios.position).toEqual(townGate(d.catalog, d.state, 'eastharbor'));
   expect((await inspect(page)).state.towns.eastharbor.garrison.slots.every((x: unknown) => x === null)).toBe(true);
 });

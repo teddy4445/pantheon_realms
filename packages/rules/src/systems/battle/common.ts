@@ -74,9 +74,20 @@ export function occupancy(catalog: ContentCatalog, battle: BattleState, exceptId
     if (s.hp <= 0 || (s.kind === 'gate' && forSide === 'defender')) continue;
     for (const c of s.cells) occ.set(cellKey(c), `structure:${s.id}`);
   }
+  const structureCells = new Set((battle.siege?.structures ?? []).flatMap((st) => st.cells.map(cellKey)));
   for (const s of Object.values(battle.stacks)) {
-    if (!isAlive(s) || s.id === exceptId) continue;
-    for (const c of stackCells(catalog, s)) occ.set(cellKey(c), s.id);
+    if (s.id === exceptId) continue;
+    if (isAlive(s)) {
+      for (const c of stackCells(catalog, s)) occ.set(cellKey(c), s.id);
+    } else if (s.anchor) {
+      // The fallen stay where they fell (owner request 2026-10-03): their cells are taken
+      // for the rest of the battle — except in a wall or gate opening, so a corpse in a
+      // breach can never seal a town. Flyers still pass over them.
+      for (const c of stackCells(catalog, s)) {
+        const k = cellKey(c);
+        if (!occ.has(k) && !structureCells.has(k)) occ.set(k, `corpse:${s.id}`);
+      }
+    }
   }
   return occ;
 }

@@ -13,7 +13,7 @@ import type { SiteDefinition } from '../definitions/world';
 import type { HeroState, MatchState, TownState } from '../state/match';
 import { evaluateAll } from '../resolvers/requirements';
 import { heroVisionRadius } from '../resolvers/heroes';
-import { cellIndex, cellsWithin, findHeroPath, heroAt, missionSite, siteAt, type PathResult } from '../resolvers/world';
+import { cellIndex, cellsWithin, findHeroPath, heroAt, missionSite, movementTarget, siteAt, townGate, type PathResult } from '../resolvers/world';
 import { reject, type Tx } from '../engine/tx';
 import { spend } from './economy';
 import { learnSpellsAtTown } from './heroes';
@@ -32,6 +32,8 @@ export interface MovementQuote extends PathResult {
 }
 
 export function quoteMovement(catalog: ContentCatalog, state: MatchState, heroId: HeroId, dest: HexCoord): MovementQuote {
+  // A town's own tile means its gate (heroes never stand on a town).
+  dest = movementTarget(catalog, state, dest);
   const path = findHeroPath(catalog, state, heroId, dest);
   const hero = state.heroes[heroId];
   const points = hero?.movementPoints ?? 0;
@@ -41,7 +43,7 @@ export function quoteMovement(catalog: ContentCatalog, state: MatchState, heroId
   if (path.endsInEncounter) {
     const site = siteAt(catalog, state, dest);
     const enemy = heroAt(state, dest, heroId);
-    const town = site ? siegeTownAt(state, site, hero?.ownerId ?? null) : null;
+    const town = site ? siegeTownAt(catalog, state, site, hero?.ownerId ?? null) : null;
     encounterLabel = town ? `Siege of ${town.name}` : (site?.def.guard?.label ?? (enemy ? `${enemy.name}'s army` : 'Encounter'));
   }
   return {
@@ -76,6 +78,7 @@ export function commitMoveHero(tx: Tx, heroId: HeroId, dest: HexCoord, confirmEn
   const hero = tx.state.heroes[heroId];
   if (!hero || hero.ownerId !== tx.actorId) reject('not_owner', 'Not your hero');
   if (hero.status !== 'active') reject('illegal_action', `${hero.name} cannot move`);
+  dest = movementTarget(tx.catalog, tx.state, dest);
   const q = quoteMovement(tx.catalog, tx.state, heroId, dest);
   if (!q.reachable) reject('illegal_move', q.reason ?? 'No route');
   const last = q.path.length - 1;
@@ -117,12 +120,12 @@ function moveAlong(tx: Tx, hero: HeroState, path: HexCoord[], cost: number): voi
 }
 
 /** The town at a site when entering it means a siege for `playerId` (enemy-held and defended). */
-export function siegeTownAt(state: MatchState, site: NonNullable<ReturnType<typeof siteAt>>, playerId: PlayerId | null): TownState | null {
+export function siegeTownAt(catalog: ContentCatalog, state: MatchState, site: NonNullable<ReturnType<typeof siteAt>>, playerId: PlayerId | null): TownState | null {
   if (site.def.kind.type !== 'town') return null;
   const town = state.towns[site.def.kind.townId];
   if (!town || town.ownerId === playerId) return null;
   const garrisoned = town.garrison.slots.some((s) => s && s.count > 0);
-  const visitor = heroAt(state, town.coord);
+  const visitor = heroAt(state, townGate(catalog, state, town.id));
   const defended = garrisoned || (!!visitor && visitor.ownerId !== playerId);
   return defended ? town : null;
 }
@@ -130,7 +133,7 @@ export function siegeTownAt(state: MatchState, site: NonNullable<ReturnType<type
 function beginEncounter(tx: Tx, hero: HeroState, dest: HexCoord): void {
   const site = siteAt(tx.catalog, tx.state, dest);
   const enemy = heroAt(tx.state, dest, hero.id);
-  const town = site ? siegeTownAt(tx.state, site, hero.ownerId) : null;
+  const town = site ? siegeTownAt(tx.catalog, tx.state, site, hero.ownerId) : null;
   if (town) {
     startBattle(tx, {
       attackerHeroId: hero.id,

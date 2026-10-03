@@ -71,3 +71,32 @@ test('credits name the creator in large type; the Settings header has no subtitl
   await expect(page.locator('.screen-header__title')).toHaveText('Settings');
   await expect(page.locator('.screen-header__subtitle')).toHaveCount(0);
 });
+
+test('every delivered final icon and creature portrait is served and decodes; undelivered forms keep the stand-in', async ({ page }) => {
+  await page.goto('/?e2e', { waitUntil: 'networkidle' });
+  const manifest = (await (await page.request.get('/ui/final-manifest.json')).json()) as { assets: Record<string, { file: string }> };
+  const entries = Object.entries(manifest.assets);
+  expect(entries.filter(([id]) => /^creature\..*\.portrait$/.test(id)).length).toBeGreaterThanOrEqual(43);
+  const bad = await page.evaluate(async (list) => {
+    const out: string[] = [];
+    for (const [id, file] of list) {
+      const img = new Image();
+      img.src = `./${file}`;
+      try {
+        await img.decode();
+        if (img.naturalWidth === 0) out.push(id);
+        else if (id.startsWith('creature.') && (img.naturalWidth !== 256 || img.naturalHeight !== 256)) out.push(`${id} ${img.naturalWidth}x${img.naturalHeight}`);
+      } catch {
+        out.push(id);
+      }
+    }
+    return out;
+  }, entries.map(([id, a]) => [id, a.file] as [string, string]));
+  expect(bad).toEqual([]);
+  await page.getByTestId('menu-encyclopedia').click();
+  await expect(page.getByTestId('codex-hoplite').locator('.portrait img')).toHaveAttribute('src', /creature\.greek\.tier1\.base\.portrait\.webp$/);
+  await expect(page.getByTestId('codex-japanese_kitsune').locator('.portrait img')).toHaveAttribute('src', /creature\.japanese\.tier1\.base\.portrait\.webp$/);
+  // Not delivered (the Nine-Tailed Kitsune is an unfinished draft): the generated stand-in stays.
+  await expect(page.getByTestId('codex-japanese_nine_tailed_kitsune').locator('.portrait img')).toHaveCount(0);
+  await expect(page.getByTestId('codex-japanese_nine_tailed_kitsune').locator('.portrait svg')).toHaveCount(1);
+});

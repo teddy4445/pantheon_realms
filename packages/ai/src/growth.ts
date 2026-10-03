@@ -32,7 +32,7 @@ import {
   type PlayerId,
   type SkillOffer,
   type SpellDefinition,
-  type HexCoord,
+  type HexCoord, heroInTown, townGate,
 } from '@pr/rules';
 import { armyStrength } from './evaluation';
 
@@ -280,7 +280,7 @@ export function merchantCandidates(catalog: ContentCatalog, belief: MatchState, 
   for (const town of playerTowns(belief, playerId)) {
     const stock = town.merchant?.stock ?? [];
     for (const h of heroes) {
-      if (!hexEquals(h.position, town.coord)) continue;
+      if (!heroInTown(catalog, belief, h, town.id)) continue;
       const base = loadoutValue(catalog, equippedIds(h.equipment), h.spellbook);
       let pick: { index: number; perGold: number; cost: number } | null = null;
       stock.forEach((id, index) => {
@@ -390,8 +390,8 @@ export function recallSpellCandidate(
   if (!spell) return null;
   const town = recallTown(belief, hero);
   if (!town || !threatenedTownIds.has(town.id)) return null;
-  if (Object.values(belief.heroes).some((h) => h.status === 'active' && h.ownerId === playerId && hexEquals(h.position, town.coord))) return null;
-  if (walkReachesToday(town.coord)) return null;
+  if (Object.values(belief.heroes).some((h) => h.status === 'active' && h.ownerId === playerId && heroInTown(catalog, belief, h, town.id))) return null;
+  if (walkReachesToday(townGate(catalog, belief, town.id))) return null;
   if (!quoteAdventureSpell(catalog, belief, playerId, hero.id, spell.id, hero.position).legal) return null;
   return { kind: 'CastAdventureSpell', heroId: hero.id, spellId: spell.id, target: hero.position };
 }

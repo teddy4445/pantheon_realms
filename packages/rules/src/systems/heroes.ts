@@ -17,7 +17,7 @@ import { townHasEffect, townLibrarySpells, townSpellLibraryTier } from '../resol
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { spend } from './economy';
 import { scenarioMission, scopeAllowed } from '../resolvers/scenario';
-import { imprisonedHeroIds } from '../resolvers/world';
+import { imprisonedHeroIds, heroInTown, townVisitor, townGate } from '../resolvers/world';
 
 // ---------------------------------------------------------------------------
 // Experience
@@ -153,7 +153,7 @@ export function quoteSpellbook(catalog: ContentCatalog, state: MatchState, heroI
   if (!hero || !town) return { legal: false, reason: 'Unknown hero or town', cost };
   if (hero.spellbook) return { legal: false, reason: `${hero.name} already carries a spellbook`, cost };
   if (town.ownerId !== hero.ownerId) return { legal: false, reason: 'Not your town', cost };
-  if (!hexEquals(hero.position, town.coord)) return { legal: false, reason: `${hero.name} must be in ${town.name}`, cost };
+  if (!heroInTown(catalog, state, hero, town.id)) return { legal: false, reason: `${hero.name} must be in ${town.name}`, cost };
   if (!townHasEffect(catalog, town, 'enables_spellbook_purchase')) return { legal: false, reason: 'Requires a Sanctum', cost };
   const wallet = state.players[hero.ownerId]?.wallet;
   if (!wallet || wallet.gold < cost.gold) return { legal: false, reason: 'Not enough Gold', cost };
@@ -329,7 +329,7 @@ export function quoteHireHero(catalog: ContentCatalog, state: MatchState, player
   if (!hireOptions(catalog, state, playerId, townId).some((c) => c.definitionId === definitionId)) return fail('illegal_action', `${def.name} is not available for hire`);
   const owned = Object.values(state.heroes).filter((h) => h.ownerId === playerId && h.status === 'active').length;
   if (owned >= catalog.rulesProfile.maxHeroesPerPlayer) return fail('no_capacity', `At most ${catalog.rulesProfile.maxHeroesPerPlayer} heroes`);
-  if (Object.values(state.heroes).some((h) => h.status === 'active' && hexEquals(h.position, town.coord))) {
+  if (townVisitor(catalog, state, town.id)) {
     return fail('not_present', 'The visitor position is occupied — move that hero out first');
   }
   if (player.wallet.gold < cost.gold) return fail('insufficient_resources', 'Not enough Gold');
@@ -351,7 +351,7 @@ export function commitHireHero(tx: Tx, townId: TownId, definitionId: string): vo
     // Return roster: no fresh starting army; the hero starts with zero movement (design/04 §9).
     const hero = tx.state.heroes[option.returningHeroId]!;
     hero.status = 'active';
-    hero.position = town.coord;
+    hero.position = { ...townGate(tx.catalog, tx.state, town.id) };
     if (!hero.army.slots.some((s) => s && s.count > 0)) hero.army = { slots: slots(REHIRE_RETREAT_TROOPS) };
     hero.movementPoints = 0;
     hero.mana = Math.min(hero.mana, maxMana(tx.catalog, tx.state, hero));
@@ -360,7 +360,7 @@ export function commitHireHero(tx: Tx, townId: TownId, definitionId: string): vo
     return;
   }
 
-  const hero = createRecruitedHero(tx, definitionId, tx.actorId, town.coord, slots(HIRE_STARTING_TROOPS));
+  const hero = createRecruitedHero(tx, definitionId, tx.actorId, { ...townGate(tx.catalog, tx.state, town.id) }, slots(HIRE_STARTING_TROOPS));
   tx.emit({ kind: 'HeroHired', heroId: hero.id, definitionId, townId });
   learnSpellsAtTown(tx, hero, town);
 }

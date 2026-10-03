@@ -18,6 +18,7 @@ import {
   type BattleStackId,
   type CreatureStackState,
   type HexCoord,
+  townGate,
 } from '../src';
 
 const SKIRMISH = 'skirmish_twin_harbors';
@@ -187,7 +188,7 @@ describe('town sieges (design/04 §8)', () => {
     expect(east.ownerId).toBe('player');
     expect(east.garrison.slots.every((s) => !s)).toBe(true);
     expect(d.events.some((e) => e.kind === 'TownCaptured' && e.townId === 'eastharbor')).toBe(true);
-    expect(d.state.heroes['alexios']!.position).toEqual(east.coord);
+    expect(d.state.heroes['alexios']!.position).toEqual(townGate(d.catalog, d.state, east.id));
   });
 });
 
