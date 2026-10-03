@@ -18,7 +18,7 @@ import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, battleP
 // Long enough to see the winners celebrate (owner request 2026-10-03).
 const FINAL_BLOW_BEAT_MS = 1200;
 /** Screens a pending level-up opens over by itself (not the battle, its result or the menus). */
-const LEVEL_UP_FROM: readonly ScreenId[] = ['adventure', 'town', 'hero', 'recruitment', 'pantheon', 'journal', 'overview'];
+const LEVEL_UP_FROM: readonly ScreenId[] = ['adventure', 'town', 'hero', 'recruitment', 'pantheon', 'journal'];
 import type { GameAudio } from '../audio/gameAudio';
 import { campaignEndingArtId } from '../assets/storyArt';
 import { momentsFromEvents, type Moment } from './moments';
@@ -28,7 +28,6 @@ export type ScreenId =
   | 'game-mode'
   | 'scenario-select'
   | 'pantheon-select'
-  | 'divine-select'
   | 'adventure'
   | 'hero'
   | 'town'
@@ -38,7 +37,6 @@ export type ScreenId =
   | 'battle-result'
   | 'level-up'
   | 'journal'
-  | 'overview'
   | 'encyclopedia'
   | 'settings'
   | 'unit-detail'
@@ -51,7 +49,6 @@ export const SCREEN_CODES: Record<ScreenId, string> = {
   'game-mode': 'S02',
   'scenario-select': 'S03',
   'pantheon-select': 'S04',
-  'divine-select': 'S05',
   adventure: 'S06',
   hero: 'S07',
   town: 'S08',
@@ -61,7 +58,6 @@ export const SCREEN_CODES: Record<ScreenId, string> = {
   'battle-result': 'S12',
   'level-up': 'S13',
   journal: 'S14',
-  overview: 'S15',
   encyclopedia: 'S16',
   settings: 'S17',
   'unit-detail': 'S18',
@@ -76,6 +72,22 @@ export interface ScreenEntry {
   params: Record<string, unknown>;
 }
 
+/** Who the spellbook belongs to (a hero, or a scripted battle commander). */
+export interface SpellCaster {
+  readonly name: string;
+  readonly mana: number;
+  readonly knownSpellIds: readonly string[];
+  readonly spellbook: boolean;
+}
+
+/** A spellbook opened to cast: each known spell's state where it was opened, and what picking one does. */
+export interface SpellCastRequest {
+  readonly context: 'battle' | 'adventure';
+  readonly options: Readonly<Record<string, { readonly castable: boolean; readonly reason?: string | null }>>;
+  readonly onCast: (spellId: string) => void;
+  readonly note?: string;
+}
+
 export type Overlay =
   | { kind: 'pause' }
   | { kind: 'save-load'; mode: 'save' | 'load' }
@@ -84,7 +96,6 @@ export type Overlay =
   | { kind: 'debrief' }
   | { kind: 'mission-failed' }
   | { kind: 'campaign-complete' }
-  | { kind: 'credits' }
   | { kind: 'help'; topicId: string }
   | { kind: 'transfer'; townId: string | null; heroId: string; otherHeroId?: string }
   /** Pre-battle dialog: shown before a MoveHero that would start an encounter. */
@@ -92,8 +103,12 @@ export type Overlay =
   /** Beacon/relay activation confirmation. */
   | { kind: 'activate'; heroId: string; siteId: string }
   | { kind: 'stack-info'; creatureId: string; count?: number }
-  /** The hero's spellbook (read-only list, Heroes-3 style pages by school of use). */
-  | { kind: 'spellbook'; heroId: string }
+  /**
+   * The spellbook pop-up (components/spellbook.tsx): read-only from the hero screen,
+   * or a casting book from the map's and the battle's Spells buttons. `caster` stands
+   * in for a battle commander without a hero; `cast.onCast` runs after the book closes.
+   */
+  | { kind: 'spellbook'; heroId: string; caster?: SpellCaster; cast?: SpellCastRequest }
   /** Hot-seat: the map stays hidden until the next player takes the seat. */
   | { kind: 'handoff'; playerId: string }
   /** Recruit from a neutral creature camp. */
@@ -189,8 +204,6 @@ export class AppStore {
   focusRequest: HexCoord | null = null;
   /** Story scenes waiting to be shown (the dialogue window shows the first). */
   story: StoryEntry[] = [];
-  /** Lines shown in this session, for the dialogue backlog. */
-  storyLog: DialogueLine[] = [];
   /** Big moments waiting to be shown (miracle cards, new-week banners; the moment layer shows the first). */
   moments: Moment[] = [];
   private momentSeq = 1;
@@ -320,7 +333,6 @@ export class AppStore {
     this.selectedHeroId = null;
     this.focusRequest = null;
     this.story = [];
-    this.storyLog = [];
     this.moments = [];
     this.hints = [];
     this.lastRecord = null;
@@ -479,7 +491,6 @@ export class AppStore {
   closeStory(): void {
     const done = this.story[0];
     if (!done) return;
-    this.storyLog = [...this.storyLog, ...done.lines];
     this.story = this.story.slice(1);
     if (done.then === 'campaign-complete') this.openOverlay({ kind: 'campaign-complete' });
     this.notify();

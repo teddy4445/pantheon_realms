@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 4,
+ "loop": true,
+ "anchor": [
+  0.5,
+  0.8666
+ ],
+ "pixelsPerHex": 93.555,
+ "cutFrom": "sheet.creature.japanese.tier4.base.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 72.372,
+  "guideIdleFraction": 0.74,
+  "observedIdleFraction": 0.9566,
+  "worldScaleMultiplier": 0.7736
+ }
+}

@@ -551,7 +551,7 @@ export function ShortcutsDialog() {
                 <td>
                   <span className="kbd">Enter</span>
                 </td>
-                <th>Continue a story scene (L: backlog)</th>
+                <th>Continue a story scene (Esc: skip it)</th>
               </tr>
             </tbody>
           </table>

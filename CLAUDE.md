@@ -73,6 +73,7 @@ npm run sprites:placeholders  # regenerate labelled placeholder sprites + assets
 npm run sprites:cut           # cut GPT-6 sheets from assets-source/sprites/sheets/ into single files (layouts: sheet-layouts.json; previews in sheets/_preview/); --self-test checks the cutter
 npm run sprites:import        # final sprites from assets-source/sprites/final/ (cut files or single files) → manifest status "final"
 npm run sprites:queue         # regenerate GPT6_2D_CONTENT_GENERATION.md + sheet-layouts.json from the manifest's actual gaps
+npm run vfx:list              # regenerate VFX_MAGIC_AND_FAVORS.md (spell, miracle, gift VFX still to make; looks in tools/assets/vfx/briefs.ts)
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
 npm run icons:catalog    # regenerate ICON_CATALOG.md + assets-source/icons/ICON_CATALOG.xlsx/.csv from the game

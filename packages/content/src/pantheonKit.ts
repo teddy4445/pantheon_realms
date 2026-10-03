@@ -111,6 +111,8 @@ export interface PantheonKitSpec {
     /** Slot labels shown when empty (defaults to generic role labels). */
     readonly labels?: Partial<Readonly<Record<SupportSlot, string>>>;
     readonly placements: Readonly<Record<SupportSlot | `dwelling_t${1 | 2 | 3 | 4 | 5 | 6 | 7}`, Placement>>;
+    /** Where the town screen's economy bar sits on the painting's top edge (TownArchetypeDefinition.hudAnchor). */
+    readonly hudAnchor?: 'left' | 'center' | 'right' | number;
   };
   readonly families: readonly KitFamily[];
   readonly patron: KitGod;
@@ -297,6 +299,7 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
     pantheonId: p,
     name: spec.town.name,
     backgroundAssetId: `town.${p}.background`,
+    ...(spec.town.hudAnchor ? { hudAnchor: spec.town.hudAnchor } : {}),
     slots,
   };
 

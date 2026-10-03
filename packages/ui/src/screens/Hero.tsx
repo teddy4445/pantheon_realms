@@ -1,13 +1,14 @@
 /**
- * S07 Hero screen, laid out after Heroes of Might and Magic III (owner request
- * 2026-10-01): portrait, name, level and class; the four primary skills as large
- * tiles; experience, mana, morale and luck; eight secondary-skill slots; a paper
- * doll with every equipment slot around the hero's mounted figure; the backpack
- * strip; the hero list on the right; and the seven army slots along the bottom.
+ * S07 Hero screen ("Hero's State"), laid out after Heroes of Might and Magic III
+ * (owner requests 2026-10-01 and 2026-10-03): portrait, name, level and class;
+ * the four primary skills as large tiles; experience, mana, morale and luck;
+ * eight secondary-skill slots; in the middle a schematic body with a box on each
+ * body part for the item worn there (accessories and the mount beside it, the
+ * spellbook in the corner); the inventory as a grid of boxes on the right; the
+ * hero list at the edge; and the seven army slots centred along the bottom.
  * Equipping, unequipping, reordering, splitting and merging are commands the
  * rules validate (EquipArtifact with a chosen position, UnequipArtifact,
- * TransferStack). The mounted figure (the pantheon's 2D map-avatar art) is
- * presentation only.
+ * TransferStack).
  *
  * 2026-10-02 (owner request): items can also be dragged — backpack to a slot,
  * slot to slot of the same kind, slot back to the backpack; a picked backpack
@@ -47,7 +48,7 @@ import { Bar, Button, Chip, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, ScreenHeader } from '../components/game';
 import { Icon, type IconName } from '../assets/icons';
-import { heroFigureArt, resolveAsset } from '../assets/manifest';
+import { resolveAsset } from '../assets/manifest';
 import { humanPlayer, playerHeroes, townAtHero } from '../app/view';
 
 const ATTR: Record<string, { label: string; icon: IconName; hint: string }> = {
@@ -59,26 +60,29 @@ const ATTR: Record<string, { label: string; icon: IconName; hint: string }> = {
 
 const RANK = ['', 'Basic', 'Advanced', 'Expert'];
 
-/** Paper-doll positions (percent of the stage), Heroes-3 style: two columns beside the figure, misc along the foot. */
+/**
+ * Slot boxes on the schematic body (percent of the 4:5 stage, which matches the
+ * drawing's 400 × 500 view box): each worn slot sits on its body part; the five
+ * accessories stand in the two side columns; the mount bottom left, the
+ * spellbook bottom right.
+ */
 const DOLL: Record<EquipSlot, { x: number; y: number }> = {
-  head: { x: 10, y: 9 },
-  cape: { x: 10, y: 27 },
-  weapon: { x: 10, y: 45 },
-  ring_left: { x: 10, y: 63 },
-  feet: { x: 10, y: 81 },
-  neck: { x: 90, y: 9 },
-  armor: { x: 90, y: 27 },
-  shield: { x: 90, y: 45 },
-  ring_right: { x: 90, y: 63 },
-  mount: { x: 90, y: 81 },
-  misc_1: { x: 26, y: 95 },
-  misc_2: { x: 38, y: 95 },
-  misc_3: { x: 50, y: 95 },
-  misc_4: { x: 62, y: 95 },
-  misc_5: { x: 74, y: 95 },
+  head: { x: 50, y: 8 },
+  neck: { x: 50, y: 20 },
+  cape: { x: 32, y: 25 },
+  armor: { x: 50, y: 36 },
+  weapon: { x: 28, y: 49 },
+  shield: { x: 72, y: 49 },
+  ring_left: { x: 26, y: 63 },
+  ring_right: { x: 74, y: 63 },
+  feet: { x: 50, y: 91 },
+  mount: { x: 9, y: 91 },
+  misc_1: { x: 9, y: 20 },
+  misc_2: { x: 9, y: 37 },
+  misc_3: { x: 9, y: 54 },
+  misc_4: { x: 91, y: 20 },
+  misc_5: { x: 91, y: 37 },
 };
-
-const BACKPACK_VISIBLE = 8;
 
 type Picked = { from: 'doll'; slot: EquipSlot } | { from: 'pack'; instanceId: string } | null;
 
@@ -245,9 +249,6 @@ export function ArmyEditor({ hero }: { hero: HeroState }) {
       <div className="army-editor__bar">
         {selStack ? (
           <>
-            <span className="small">
-              Selected: {selStack.count} {catalog.creatures[selStack.creatureId]?.pluralName}. Click another slot to move, merge or swap.
-            </span>
             {selStack.count > 1 && empties.length > 0 ? (
               split ? (
                 <QuantitySelector label="Split quantity" value={split.qty} min={1} max={selStack.count - 1} onChange={(n) => setSplit({ from: sel!, qty: n })} />
@@ -264,24 +265,68 @@ export function ArmyEditor({ hero }: { hero: HeroState }) {
               Details
             </Button>
           </>
-        ) : (
-          <span className="dim small">Select a stack to reorder, split or merge it. Right-click a stack for details.</span>
-        )}
+        ) : null}
       </div>
     </div>
   );
 }
 
-/** The hero's mounted figure in the middle of the paper doll: the pantheon's 2D figure (the portrait while it loads or without one). */
-function HeroFigure({ pantheonId, fallback }: { pantheonId: string | null; fallback: React.ReactNode }) {
-  const art = heroFigureArt(pantheonId);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'none'>(art ? 'loading' : 'none');
-  useEffect(() => setStatus(art ? 'loading' : 'none'), [art?.url]);
+/** The schematic body behind the slot boxes (a drawing, not the hero's art). */
+function BodySchematic() {
   return (
-    <div className={`h3-figure is-${status}`} data-testid="hero-figure" data-status={status} data-art={art?.status ?? 'none'}>
-      {art ? <img className="h3-figure__art" src={art.url} alt="" draggable={false} onLoad={() => setStatus('ready')} onError={() => setStatus('none')} /> : null}
-      {status !== 'ready' ? <div className="h3-figure__fallback">{fallback}</div> : null}
-    </div>
+    <svg className="h3-body" viewBox="0 0 400 500" aria-hidden="true" data-testid="hero-body">
+      <defs>
+        <radialGradient id="h3-body-glow" cx="50%" cy="46%" r="52%">
+          <stop offset="0" stopColor="rgba(62, 120, 190, 0.32)" />
+          <stop offset="1" stopColor="rgba(5, 9, 15, 0)" />
+        </radialGradient>
+        <linearGradient id="h3-body-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#21416a" />
+          <stop offset="0.55" stopColor="#15294a" />
+          <stop offset="1" stopColor="#0c1830" />
+        </linearGradient>
+        <filter id="h3-body-outline" x="-10%" y="-10%" width="120%" height="120%">
+          <feMorphology in="SourceAlpha" operator="dilate" radius="1.6" result="grown" />
+          <feFlood floodColor="#d8b56c" result="gold" />
+          <feComposite in="gold" in2="grown" operator="in" result="rim" />
+          <feGaussianBlur in="rim" stdDeviation="3.5" result="glow" />
+          <feMerge>
+            <feMergeNode in="glow" />
+            <feMergeNode in="rim" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <rect x="0" y="0" width="400" height="500" fill="url(#h3-body-glow)" />
+      <g className="h3-body__guides">
+        <circle cx="200" cy="250" r="196" />
+        <circle cx="200" cy="250" r="150" />
+        <line x1="200" y1="4" x2="200" y2="496" />
+        <line x1="4" y1="250" x2="396" y2="250" />
+        {[60, 120, 180, 320, 380, 440].map((y) => (
+          <line key={y} x1="192" y1={y} x2="208" y2={y} />
+        ))}
+      </g>
+      <g className="h3-body__figure" filter="url(#h3-body-outline)">
+        <ellipse cx="200" cy="42" rx="24" ry="29" />
+        <path d="M188 64 L212 64 L215 94 L185 94 Z" />
+        <path d="M142 96 Q200 82 258 96 Q272 104 270 130 L262 196 Q258 226 250 248 L150 248 Q142 226 138 196 L130 130 Q128 104 142 96 Z" />
+        <path d="M142 98 Q124 104 120 128 L106 232 Q104 246 112 250 Q122 252 124 240 L144 150 Z" />
+        <path d="M258 98 Q276 104 280 128 L294 232 Q296 246 288 250 Q278 252 276 240 L256 150 Z" />
+        <circle cx="114" cy="248" r="11" />
+        <circle cx="286" cy="248" r="11" />
+        <path d="M150 244 L250 244 L246 300 L236 450 Q236 460 226 460 L214 460 L204 300 L196 300 L186 460 L174 460 Q164 460 164 450 L154 300 Z" />
+        <path d="M168 456 L188 456 Q194 472 186 476 L156 476 Q150 468 168 456 Z" />
+        <path d="M232 456 L212 456 Q206 472 214 476 L244 476 Q250 468 232 456 Z" />
+      </g>
+      <g className="h3-body__lines">
+        <path d="M176 100 Q200 116 224 100" />
+        <line x1="200" y1="112" x2="200" y2="238" strokeDasharray="4 6" />
+        <path d="M146 222 Q200 232 254 222" />
+        <path d="M160 168 Q178 176 196 168 M204 168 Q222 176 240 168" />
+        <path d="M172 360 Q180 364 188 360 M212 360 Q220 364 228 360" />
+      </g>
+    </svg>
   );
 }
 
@@ -332,10 +377,8 @@ export function HeroScreen() {
   const hero = heroId ? state.heroes[heroId] : undefined;
   const [picked, setPicked] = useState<Picked>(null);
   const [dragging, setDragging] = useState<Picked>(null);
-  const [packStart, setPackStart] = useState(0);
   useEffect(() => {
     setPicked(null);
-    setPackStart(0);
   }, [heroId]);
   if (!hero) {
     return (
@@ -417,13 +460,13 @@ export function HeroScreen() {
     setPicked(null);
   };
   const pack = hero.backpack;
-  const visible = pack.slice(packStart, packStart + BACKPACK_VISIBLE);
+  const capacity = Math.max(catalog.rulesProfile.backpackCapacity, pack.length);
   const sets = artifactSetStatus(catalog, hero);
   const activeSets = new Set(sets.filter((s) => s.active.length > 0).map((s) => s.setId));
 
   return (
     <div className="screen hero-screen h3">
-      <ScreenHeader title={hero.name} subtitle={`${def?.title ?? ''} · Level ${hero.level} ${cls?.name ?? ''}`} />
+      <ScreenHeader title="Hero’s State" />
       <div className="h3-layout">
         {/* ---------------- left: identity, primary skills, statistics, secondary skills ---------------- */}
         <section className="h3-left plate" aria-label="Hero statistics">
@@ -531,14 +574,10 @@ export function HeroScreen() {
           </div>
         </section>
 
-        {/* ---------------- centre: paper doll ---------------- */}
+        {/* ---------------- centre: the schematic body with its slot boxes ---------------- */}
         <section className="h3-doll plate" aria-label="Equipment">
           <div className="h3-doll__stage">
-            <HeroFigure pantheonId={pantheonId} fallback={<HeroPortrait catalog={catalog} definitionId={hero.definitionId} name={hero.name} size="12rem" />} />
-            <button type="button" className={`h3-book ${hero.spellbook ? '' : 'is-missing'}`} onClick={() => store.openOverlay({ kind: 'spellbook', heroId: hero.id })} title={hero.spellbook ? 'Open the spellbook' : 'No spellbook'} data-testid="hero-spellbook">
-              <Icon name="spell" />
-              <span>Spellbook</span>
-            </button>
+            <BodySchematic />
             {EQUIP_SLOTS.map((slot) => {
               const inst = hero.equipment[slot];
               const art = inst ? catalog.artifacts[inst.artifactId] : undefined;
@@ -574,21 +613,28 @@ export function HeroScreen() {
                 </button>
               );
             })}
+            <button
+              type="button"
+              className={`h3-slot h3-book ${hero.spellbook ? 'is-filled' : 'is-missing'}`}
+              style={{ left: '91%', top: '91%' }}
+              onClick={() => store.openOverlay({ kind: 'spellbook', heroId: hero.id })}
+              title={hero.spellbook ? 'Open the spellbook' : 'No spellbook (buy one at a Sanctum)'}
+              aria-label="Spellbook"
+              data-testid="hero-spellbook"
+            >
+              <Icon name="spell" />
+              <span className="h3-slot__empty">Spells</span>
+            </button>
           </div>
-          <div className="h3-doll__info">
-            {pickedDef && picked ? (
-              <>
-              <ArtifactCard
-                def={pickedDef}
-                where={picked.from === 'doll' ? `Worn: ${EQUIP_SLOT_LABEL[picked.slot]}` : 'In the backpack — click a glowing slot to wear it'}
-                onRemove={mine && picked.from === 'doll' ? () => unequip(picked.slot) : undefined}
-                onEquip={mine && picked.from === 'pack' && pickedInst ? () => { store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: pickedInst.instanceId }); setPicked(null); } : undefined}
-              />
-              {picked.from === 'pack' && pickedInst ? <ArtifactCompare hero={hero} inst={pickedInst} /> : null}
-              </>
-            ) : (
-              <p className="faint small">Click an item to see it and compare it with what the hero wears. Drag an item onto a glowing slot (or pick it, then click the slot) to wear it; drag a worn item to the backpack, or double-click it, to take it off.</p>
-            )}
+        </section>
+
+        {/* ---------------- right: the inventory (every backpack box), the picked item, sets ---------------- */}
+        <section className="h3-inv plate" aria-label="Inventory">
+          <div className="h3-inv__head">
+            <span className="h3-inv__title">Inventory</span>
+            <span className="num faint small">
+              {pack.length}/{catalog.rulesProfile.backpackCapacity}
+            </span>
           </div>
           <div
             className={`h3-backpack ${dragging?.from === 'doll' ? 'is-droptarget' : ''}`}
@@ -605,36 +651,45 @@ export function HeroScreen() {
               dropOnPack();
             }}
           >
-            <Button size="small" icon="back" aria-label="Scroll backpack left" disabled={packStart === 0} onClick={() => setPackStart(Math.max(0, packStart - BACKPACK_VISIBLE))} />
-            <div className="h3-backpack__slots">
-              {Array.from({ length: BACKPACK_VISIBLE }, (_, i) => {
-                const inst = visible[i];
-                const art = inst ? catalog.artifacts[inst.artifactId] : undefined;
-                const isPicked = !!inst && picked?.from === 'pack' && picked.instanceId === inst.instanceId;
-                return (
-                  <button
-                    key={inst?.instanceId ?? `empty-${i}`}
-                    type="button"
-                    className={`h3-slot h3-slot--pack ${art ? 'is-filled' : ''} ${isPicked ? 'is-picked' : ''}`}
-                    disabled={!inst}
-                    draggable={mine && !!inst}
-                    onDragStart={(e) => inst && startDrag(e, { from: 'pack', instanceId: inst.instanceId })}
-                    onDragEnd={() => setDragging(null)}
-                    onClick={() => inst && setPicked(isPicked ? null : { from: 'pack', instanceId: inst.instanceId })}
-                    onDoubleClick={() => mine && inst && store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: inst.instanceId })}
-                    title={art ? `${art.name} — ${art.summary}` : 'Empty'}
-                    data-testid={inst ? `pack-${inst.artifactId}` : undefined}
-                  >
-                    {art ? <ArtifactIcon iconAssetId={art.iconAssetId} kind={art.slot} rarity={art.rarity} /> : null}
-                    {art?.setId ? <SetBadge catalog={catalog} setId={art.setId} size="0.95rem" /> : null}
-                  </button>
-                );
-              })}
-            </div>
-            <Button size="small" icon="continue" aria-label="Scroll backpack right" disabled={packStart + BACKPACK_VISIBLE >= pack.length} onClick={() => setPackStart(packStart + BACKPACK_VISIBLE)} />
-            <span className="faint small">
-              {pack.length}/{catalog.rulesProfile.backpackCapacity}
-            </span>
+            {Array.from({ length: capacity }, (_, i) => {
+              const inst = pack[i];
+              const art = inst ? catalog.artifacts[inst.artifactId] : undefined;
+              const isPicked = !!inst && picked?.from === 'pack' && picked.instanceId === inst.instanceId;
+              return (
+                <button
+                  key={inst?.instanceId ?? `empty-${i}`}
+                  type="button"
+                  className={`h3-slot h3-slot--pack ${art ? 'is-filled' : ''} ${isPicked ? 'is-picked' : ''}`}
+                  disabled={!inst}
+                  draggable={mine && !!inst}
+                  onDragStart={(e) => inst && startDrag(e, { from: 'pack', instanceId: inst.instanceId })}
+                  onDragEnd={() => setDragging(null)}
+                  onClick={() => inst && setPicked(isPicked ? null : { from: 'pack', instanceId: inst.instanceId })}
+                  onDoubleClick={() => mine && inst && store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: inst.instanceId })}
+                  title={art ? `${art.name} — ${art.summary}` : 'Empty'}
+                  aria-label={art ? art.name : 'Empty'}
+                  data-testid={inst ? `pack-${inst.artifactId}` : undefined}
+                >
+                  {art ? <ArtifactIcon iconAssetId={art.iconAssetId} kind={art.slot} rarity={art.rarity} /> : null}
+                  {art?.setId ? <SetBadge catalog={catalog} setId={art.setId} size="0.95rem" /> : null}
+                </button>
+              );
+            })}
+          </div>
+          <div className="h3-doll__info">
+            {pickedDef && picked ? (
+              <>
+                <ArtifactCard
+                  def={pickedDef}
+                  where={picked.from === 'doll' ? `Worn: ${EQUIP_SLOT_LABEL[picked.slot]}` : 'In the inventory — click a glowing box to wear it'}
+                  onRemove={mine && picked.from === 'doll' ? () => unequip(picked.slot) : undefined}
+                  onEquip={mine && picked.from === 'pack' && pickedInst ? () => { store.dispatch({ kind: 'EquipArtifact', heroId: hero.id, instanceId: pickedInst.instanceId }); setPicked(null); } : undefined}
+                />
+                {picked.from === 'pack' && pickedInst ? <ArtifactCompare hero={hero} inst={pickedInst} /> : null}
+              </>
+            ) : (
+              <p className="faint small">Click an item to inspect it. Drag it onto a glowing box to wear it; drag a worn item here, or double-click it, to take it off.</p>
+            )}
           </div>
           {sets.length > 0 ? (
             <div className="h3-sets">
@@ -674,18 +729,17 @@ export function HeroScreen() {
         </aside>
       </div>
 
-      {/* ---------------- bottom: army ---------------- */}
+      {/* ---------------- bottom: army (centred, no caption) ---------------- */}
       <section className="h3-army plate" aria-label={`Army, ${totalCreatures} creatures`}>
-        <div className="h3-army__head">
-          <span className="h3-army__title">Army · {totalCreatures} creatures</span>
-          <span className="grow" />
+        <div className="h3-army__strip">{mine ? <ArmyEditor hero={hero} /> : <ArmyStrip catalog={catalog} army={hero.army} label="Army" />}</div>
+        <div className="h3-army__actions">
           {town && town.ownerId === player.id ? (
-            <Button size="small" icon="swap" onClick={() => store.openOverlay({ kind: 'transfer', townId: town.id, heroId: hero.id })}>
+            <Button size="small" icon="swap" onClick={() => store.openOverlay({ kind: 'transfer', townId: town.id, heroId: hero.id })} title={`Exchange troops and items with ${town.name}`}>
               Exchange with {town.name}
             </Button>
           ) : null}
           {neighbors.map((n) => (
-            <Button key={n.id} size="small" icon="swap" onClick={() => store.openOverlay({ kind: 'transfer', townId: null, heroId: hero.id, otherHeroId: n.id })}>
+            <Button key={n.id} size="small" icon="swap" onClick={() => store.openOverlay({ kind: 'transfer', townId: null, heroId: hero.id, otherHeroId: n.id })} title={`Exchange troops and items with ${n.name}`}>
               Exchange with {n.name}
             </Button>
           ))}
@@ -693,7 +747,6 @@ export function HeroScreen() {
             Quests
           </Button>
         </div>
-        {mine ? <ArmyEditor hero={hero} /> : <ArmyStrip catalog={catalog} army={hero.army} label="Army" />}
       </section>
     </div>
   );

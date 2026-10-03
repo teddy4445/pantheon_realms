@@ -52,7 +52,7 @@ import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { cellPoint } from '@pr/presentation/core';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
-import { CreaturePortrait, SpellIcon } from '../components/art';
+import { CreaturePortrait } from '../components/art';
 import { Icon } from '../assets/icons';
 
 type Mode =
@@ -396,6 +396,8 @@ export function BattleScreen() {
   };
   const clickRef = useRef(onCellClick);
   clickRef.current = onCellClick;
+  /** The Spell button's action, for the S key (set once the battle is known, below). */
+  const openSpellsRef = useRef<() => void>(() => {});
 
   const factory = useCallback<SceneFactory<BattleSceneController>>(
     (lib, engine, canvas) =>
@@ -439,7 +441,7 @@ export function BattleScreen() {
       if (!la) return;
       if (is('battle_wait') && la.canWait) act({ kind: 'BattleWait', stackId: la.stackId });
       else if (is('battle_defend')) act({ kind: 'BattleDefend', stackId: la.stackId });
-      else if (is('battle_spell') && la.castAvailable && la.spells.some((x) => x.castable)) setMode({ kind: 'spell', spellId: la.spells.find((x) => x.castable)!.spellId });
+      else if (is('battle_spell') && la.castAvailable && la.spells.some((x) => x.castable)) openSpellsRef.current();
       else if (k === 'escape' && mode.kind !== 'normal') {
         e.stopPropagation();
         setMode({ kind: 'normal' });
@@ -477,6 +479,22 @@ export function BattleScreen() {
   const cursorChoice = battleCursor(catalog, state, la, mode, hover?.cell ?? null, built?.attackFrom ?? null, { battleActive: !ended && battle.status === 'active', deploying: !!deploySide || !!selecting });
   const sceneCursor = cursorCss(cursorChoice.id, { angle: cursorChoice.angle, enabled: store.prefs.gameCursors });
   const castable = la ? la.spells.filter((s) => s.castable) : [];
+  /** The Spell button: the commander's book opened to cast; picking a spell asks for its target next. */
+  const openSpells = () => {
+    if (!la) return;
+    const side = battle.sides[la.side];
+    const heroId = side.commander?.heroId ?? null;
+    const hero = heroId ? state.heroes[heroId] : undefined;
+    const options: Record<string, { castable: boolean; reason: string | null }> = {};
+    for (const sp of la.spells) options[sp.spellId] = { castable: la.castAvailable && sp.castable, reason: !la.castAvailable ? 'One spell per round' : sp.castable ? null : (sp.reason ?? 'Not enough mana') };
+    store.openOverlay({
+      kind: 'spellbook',
+      heroId: heroId ?? '',
+      caster: hero ? undefined : { name: side.commander?.name ?? 'Commander', mana: commanderMana(state, side), knownSpellIds: la.spells.map((x) => x.spellId), spellbook: true },
+      cast: { context: 'battle', options, onCast: (spellId) => setMode({ kind: 'spell', spellId }) },
+    });
+  };
+  openSpellsRef.current = openSpells;
   const actingPlayer = la ? battle.sides[la.side].playerId : null;
   const miracles = actingPlayer ? interventionsFor(catalog, state, actingPlayer).filter((d) => d.context === 'battle') : [];
 
@@ -677,14 +695,11 @@ export function BattleScreen() {
                       : `Cast ${catalog.spells[mode.spellId]?.name}: choose a highlighted target.`
                   : 'Choose a highlighted ally.'}
               </span>
-              {mode.kind === 'spell' && castable.length > 1
-                ? castable.map((sp) => (
-                    <Button key={sp.spellId} size="small" variant={mode.spellId === sp.spellId ? 'primary' : undefined} onClick={() => setMode({ kind: 'spell', spellId: sp.spellId })}>
-                      {catalog.spells[sp.spellId] ? <SpellIcon iconAssetId={catalog.spells[sp.spellId]!.iconAssetId} effectType={catalog.spells[sp.spellId]!.effect.type} size="1.6rem" /> : null}
-                      {sp.name} ({sp.manaCost})
-                    </Button>
-                  ))
-                : null}
+              {mode.kind === 'spell' && castable.length > 1 ? (
+                <Button size="small" icon="spell" onClick={openSpells} data-testid="battle-spell-other">
+                  Another spell
+                </Button>
+              ) : null}
               <Button size="small" onClick={() => setMode({ kind: 'normal' })}>
                 Cancel
               </Button>
@@ -699,7 +714,8 @@ export function BattleScreen() {
               </Button>
               <Button
                 icon="spell"
-                onClick={() => castable[0] && setMode({ kind: 'spell', spellId: castable[0].spellId })}
+                onClick={openSpells}
+                data-testid="battle-spell"
                 disabled={!la.castAvailable || castable.length === 0}
                 disabledReason={!la.spells.length ? 'Your commander knows no battle spells' : !la.castAvailable ? 'One spell per round' : (la.spells[0]?.reason ?? 'Not enough mana')}
                 title="Cast spell (S)"

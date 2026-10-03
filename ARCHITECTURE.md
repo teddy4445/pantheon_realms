@@ -451,15 +451,19 @@ presentation queue. Components read state through `useSyncExternalStore`
 bindings and change it only by `store.dispatch(command)`.
 
 Screens: S01 Main Menu · S02 Game Mode · S03 Scenario/Campaign · S04 Pantheon ·
-S05 Starting Patron · S06 Adventure Map · S07 Hero/Army · S08 Town · S09
-Recruitment · S10 Pantheon/Gods · S11 Tactical Battle · S12 Battle Result ·
-S13 Level-Up · S14 Journal · S15 World Overview · S16 Encyclopedia · S17
-Settings · S18 Unit Detail · S19 Random Map setup · S20 Summary · S21 High
-Scores. Dialogs: pause, save/load, confirmation, briefing, debrief, mission
-failed, campaign complete, game over, credits, help, army exchange,
-pre-battle encounter, beacon/relay activation, stack details, market,
-tavern, hot-seat hand-over, creature camp, map event, interventions,
-keyboard shortcuts.
+S06 Adventure Map · S07 Hero/Army · S08 Town · S09 Recruitment · S10
+Pantheon/Gods · S11 Tactical Battle · S12 Battle Result · S13 Level-Up · S14
+Journal · S16 Encyclopedia · S17 Settings · S18 Unit Detail · S19 Random Map
+setup · S20 Summary · S21 High Scores (S05 Starting Patron and S15 World
+Overview were removed on 2026-10-03; the single patron is preselected).
+Dialogs: pause, save/load, confirmation, briefing, debrief, mission failed,
+campaign complete, game over, help, army exchange, pre-battle encounter,
+beacon/relay activation, stack details, the spellbook (read on the hero
+screen, cast from the map's and the battle's Spells buttons:
+`components/spellbook.tsx`), market, tavern, hot-seat hand-over, creature
+camp, map event, interventions, keyboard shortcuts. The town's building
+pop-up and economy panel sit on the painting (`TownArchetypeDefinition.hudAnchor`
+names the stretch of sky each painting keeps free).
 
 Visual language (0.4.1): the shared kit (`components/kit.tsx`,
 `components/game.tsx`, `components/art.tsx`) and `styles/components.css`

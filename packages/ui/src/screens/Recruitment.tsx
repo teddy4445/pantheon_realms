@@ -65,17 +65,13 @@ export function RecruitmentScreen() {
     setQty(1);
     store.setParams({ creatureId: id });
   };
+  // Recruiting and upgrading never ask for approval (owner request 2026-10-03).
   const recruit = () => {
     if (!def || !quote?.legal) return;
-    const go = () => {
-      if (!store.dispatch({ kind: 'RecruitUnits', townId: town.id, creatureId: def.id, quantity: q, destination: dest })) {
-        store.toast(`Recruited ${q} ${q === 1 ? def.name : def.pluralName} → ${quote.destinationLabel}`, 'success');
-        setQty(1);
-      }
-    };
-    if (store.prefs.confirmLargePurchases && quote.totalCost.gold >= store.prefs.largePurchaseThreshold) {
-      store.confirm(`Recruit ${q} ${def.pluralName}?`, `They will join ${quote.destinationLabel}.`, 'Recruit', go, { detail: [`Total: ${quote.totalCost.gold} Gold`] });
-    } else go();
+    if (!store.dispatch({ kind: 'RecruitUnits', townId: town.id, creatureId: def.id, quantity: q, destination: dest })) {
+      store.toast(`Recruited ${q} ${q === 1 ? def.name : def.pluralName} → ${quote.destinationLabel}`, 'success');
+      setQty(1);
+    }
   };
   // Upgrade candidates in this town (garrison + visiting heroes).
   const armies: { ref: ArmyRef; label: string; slots: typeof town.garrison.slots }[] = [

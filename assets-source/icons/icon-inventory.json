@@ -21,7 +21,7 @@
           "assetId": "icon.res.gold",
           "name": "gold",
           "group": "Interface",
-          "where": "Costs and rewards (every screen); Kingdom overview; Resource bar (adventure, town); Town",
+          "where": "Costs and rewards (every screen); Resource bar (adventure, town)",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/res.gold.png",
@@ -125,7 +125,7 @@
           "assetId": "icon.stat.defense",
           "name": "defense",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Encyclopedia; Hero screen",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Encyclopedia; Hero screen",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.defense.png",
@@ -203,7 +203,7 @@
           "assetId": "icon.ui.growth",
           "name": "growth",
           "group": "Interface",
-          "where": "Map dialogs (camps, events, sites)",
+          "where": "Map dialogs (camps, events, sites); Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.growth.png",
@@ -216,7 +216,7 @@
           "assetId": "icon.stat.movement",
           "name": "movement",
           "group": "Interface",
-          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.movement.png",
@@ -229,7 +229,7 @@
           "assetId": "icon.stat.mana",
           "name": "mana",
           "group": "Interface",
-          "where": "Adventure map; Hero screen",
+          "where": "Hero screen",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.mana.png",
@@ -268,7 +268,7 @@
           "assetId": "icon.stat.power",
           "name": "power",
           "group": "Interface",
-          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.power.png",
@@ -281,7 +281,7 @@
           "assetId": "icon.stat.knowledge",
           "name": "knowledge",
           "group": "Interface",
-          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.knowledge.png",
@@ -294,7 +294,7 @@
           "assetId": "icon.stat.xp",
           "name": "xp",
           "group": "Interface",
-          "where": "Hero screen",
+          "where": "Hero screen; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.xp.png",
@@ -307,7 +307,7 @@
           "assetId": "icon.world.hero",
           "name": "hero",
           "group": "Interface",
-          "where": "Adventure map; Kingdom overview; Town",
+          "where": "Adventure map",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/world.hero.png",
@@ -320,7 +320,7 @@
           "assetId": "icon.world.town",
           "name": "town",
           "group": "Interface",
-          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Kingdom overview",
+          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/world.town.png",
@@ -346,7 +346,7 @@
           "assetId": "icon.ui.overview",
           "name": "overview",
           "group": "Interface",
-          "where": "Adventure map",
+          "where": "(not shown on any screen yet)",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.overview.png",
@@ -372,7 +372,7 @@
           "assetId": "icon.ui.pantheon",
           "name": "pantheon",
           "group": "Interface",
-          "where": "Adventure map; Kingdom overview; Pantheon; Town",
+          "where": "Adventure map; Pantheon; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.pantheon.png",
@@ -437,7 +437,7 @@
           "assetId": "icon.ui.back",
           "name": "back",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Hero screen; New game / setup; Results / high scores; Shared game widgets (resource bar, costs, stat blocks)",
+          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); New game / setup; Results / high scores; Shared game widgets (resource bar, costs, stat blocks)",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.back.png",
@@ -450,7 +450,7 @@
           "assetId": "icon.ui.close",
           "name": "close",
           "group": "Interface",
-          "where": "Adventure map; Battle; Journal; Shared controls (every screen)",
+          "where": "Adventure map; Battle; Journal; Shared controls (every screen); Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.close.png",
@@ -502,7 +502,7 @@
           "assetId": "icon.menu.continue",
           "name": "continue",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Hero screen; Main menu",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Main menu",
           "current": {
             "type": "art",
             "file": "assets-runtime/icons/menu-continue.png",
@@ -528,7 +528,7 @@
           "assetId": "icon.menu.campaign",
           "name": "campaign",
           "group": "Interface",
-          "where": "Main menu; New game / setup",
+          "where": "New game / setup",
           "current": {
             "type": "art",
             "file": "assets-runtime/icons/menu-campaign.png",
@@ -541,7 +541,7 @@
           "assetId": "icon.menu.skirmish",
           "name": "skirmish",
           "group": "Interface",
-          "where": "Main menu; New game / setup",
+          "where": "New game / setup",
           "current": {
             "type": "art",
             "file": "assets-runtime/icons/menu-skirmish.png",
@@ -554,7 +554,7 @@
           "assetId": "icon.menu.quit",
           "name": "quit",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Main menu",
+          "where": "Main menu",
           "current": {
             "type": "art",
             "file": "assets-runtime/icons/menu-quit.png",
@@ -567,7 +567,7 @@
           "assetId": "icon.menu.credits",
           "name": "credits",
           "group": "Interface",
-          "where": "Main menu",
+          "where": "(not shown on any screen yet)",
           "current": {
             "type": "art",
             "file": "assets-runtime/icons/menu-credits.png",
@@ -619,7 +619,7 @@
           "assetId": "icon.action.spell",
           "name": "spell",
           "group": "Interface",
-          "where": "Battle; Hero screen",
+          "where": "Adventure map; Battle; Hero screen; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/action.spell.png",
@@ -645,7 +645,7 @@
           "assetId": "icon.ui.upgrade",
           "name": "upgrade",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.upgrade.png",
@@ -697,7 +697,7 @@
           "assetId": "icon.ui.swap",
           "name": "swap",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Hero screen",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Hero screen; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.swap.png",
@@ -710,7 +710,7 @@
           "assetId": "icon.ui.flag",
           "name": "flag",
           "group": "Interface",
-          "where": "Adventure map; Journal; Kingdom overview",
+          "where": "Adventure map; Journal",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.flag.png",
@@ -723,7 +723,7 @@
           "assetId": "icon.stat.vision",
           "name": "eye",
           "group": "Interface",
-          "where": "Adventure map; Hero screen; Journal; Kingdom overview",
+          "where": "Adventure map; Hero screen; Journal",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.vision.png",
@@ -762,7 +762,7 @@
           "assetId": "icon.ui.star",
           "name": "star",
           "group": "Interface",
-          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Results / high scores; Shared art widgets",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Journal; Results / high scores; Shared art widgets",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
@@ -796,6 +796,84 @@
           },
           "brief": "Surrender — a white flag.",
           "priority": "later"
+        },
+        {
+          "assetId": "icon.ui.build",
+          "name": "build",
+          "group": "Interface",
+          "where": "Town",
+          "current": {
+            "type": "glyph",
+            "file": "assets-source/icons/current/glyph.build.svg",
+            "glyph": "build"
+          },
+          "brief": "Build (town pop-up and build-today mark) — a builder’s hammer.",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.ui.recruit",
+          "name": "recruit",
+          "group": "Interface",
+          "where": "Town",
+          "current": {
+            "type": "glyph",
+            "file": "assets-source/icons/current/glyph.recruit.svg",
+            "glyph": "recruit"
+          },
+          "brief": "Recruit troops — a crested helmet over a small banner.",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.ui.market",
+          "name": "market",
+          "group": "Interface",
+          "where": "Town",
+          "current": {
+            "type": "glyph",
+            "file": "assets-source/icons/current/glyph.market.svg",
+            "glyph": "market"
+          },
+          "brief": "Marketplace / trade resources — a balance scale.",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.ui.tavern",
+          "name": "tavern",
+          "group": "Interface",
+          "where": "Town",
+          "current": {
+            "type": "glyph",
+            "file": "assets-source/icons/current/glyph.tavern.svg",
+            "glyph": "tavern"
+          },
+          "brief": "Tavern / hire heroes — a foaming tankard.",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.ui.merchant",
+          "name": "merchant",
+          "group": "Interface",
+          "where": "Town",
+          "current": {
+            "type": "glyph",
+            "file": "assets-source/icons/current/glyph.merchant.svg",
+            "glyph": "merchant"
+          },
+          "brief": "Artifact Merchant — a coin pouch with a gem.",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.ui.gift",
+          "name": "gift",
+          "group": "Interface",
+          "where": "Town",
+          "current": {
+            "type": "glyph",
+            "file": "assets-source/icons/current/glyph.gift.svg",
+            "glyph": "gift"
+          },
+          "brief": "Divine gifts — a wrapped offering box with a ribbon.",
+          "priority": "now"
         }
       ]
     },

@@ -22,6 +22,8 @@ export const JAPANESE_SPEC: PantheonKitSpec = {
   accentSoft: '#4f1d1f',
   town: {
     archetypeId: 'japanese_castle_town',
+    // Hills under the evening sky between the left torii gate and Mount Fuji.
+    hudAnchor: 45,
     name: 'Japanese Castle Town',
     names: {
       civic_hall: ["Headman's House", "Magistrate's Hall", "Daimyo's Hall", "Shogun's Palace"],

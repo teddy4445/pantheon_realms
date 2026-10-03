@@ -3,8 +3,14 @@
  * locations (11 support + 7 dwellings). Every build state, cost and missing
  * prerequisite comes from quoteConstruction; building is a BuildStructure
  * command after a confirmation. Market, Tavern and Sanctum services are here.
+ *
+ * Layout (owner request 2026-10-03): the painting fills the screen; the town
+ * economy is a slim bar on the painting's top edge (where each archetype's sky
+ * is free: TownArchetypeDefinition.hudAnchor); clicking a location opens a
+ * pop-up beside that building with icon actions; the garrison and the visiting
+ * hero's army are centred below with a divider between them.
  */
-import { useMemo, useRef, useState, type DragEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
 import {
   ARTIFACT_SLOT_LABEL,
   RESOURCE_KEYS,
@@ -48,22 +54,12 @@ import {
 import { resources } from '@pr/rules';
 import { useStore } from '../app/context';
 import type { AppStore } from '../app/store';
-import { Button, Chip, Modal, Panel, QuantitySelector, SectionTitle } from '../components/kit';
+import { Button, Chip, Modal, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, BuildingArt, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
-import { ArmyStrip, CostList, ScreenHeader, StatusChip } from '../components/game';
+import { ArmyStrip, CostList, ScreenHeader } from '../components/game';
 import { resolveAsset } from '../assets/manifest';
-import { Icon } from '../assets/icons';
-import { heroesInTown, humanPlayer } from '../app/view';
-
-const STATE_LABEL: Record<string, { text: string; tone: 'ok' | 'warn' | 'bad' | 'info' | 'muted' }> = {
-  built: { text: 'Built', tone: 'ok' },
-  available: { text: 'Can build', tone: 'ok' },
-  unaffordable: { text: 'Not enough resources', tone: 'bad' },
-  locked: { text: 'Requirements missing', tone: 'warn' },
-  not_in_scope: { text: 'Not in this mission', tone: 'muted' },
-  planned: { text: 'Planned', tone: 'muted' },
-  used_today: { text: 'Built today', tone: 'info' },
-};
+import { Icon, type IconName } from '../assets/icons';
+import { heroStory, heroesInTown, humanPlayer } from '../app/view';
 
 function slotArtId(catalog: AppStore['catalog'], town: TownState, slot: BuildingSlotDefinition): { id: string; built: boolean } {
   const active = activeBuildingInSlot(catalog, town, slot.id);
@@ -156,7 +152,7 @@ function TavernModal({ town, onClose }: { town: TownState; onClose: () => void }
                 </div>
                 <div className="small">{cls?.name} — {cls?.summary}</div>
                 <SpecialtyLine catalog={catalog} definitionId={id} active={specialtiesEnabled(state)} />
-                <p className="faint small">{def.biography}</p>
+                <p className="faint small">{heroStory(def.biography)}</p>
                 <div className="row gap">
                   <CostList cost={q.cost} wallet={state.players[playerId]!.wallet} />
                   <Button
@@ -410,53 +406,70 @@ function TownArmies({ town, visitor }: { town: TownState; visitor: HeroState | n
   const splitStack = split ? armies[split.from]?.slots[split.fromSlot] : null;
   return (
     <footer className="town-armies panel" data-testid="town-armies">
-      <div className="town-army">
-        <div className="section-title">Garrison</div>
-        <ArmyStrip
-          catalog={catalog}
-          army={town.garrison}
-          label={`${town.name} garrison`}
-          testId="town-garrison"
-          selected={sel?.side === 'g' ? sel.slot : null}
-          dropTargets={targets('g')}
-          onSlot={mine ? (i) => click('g', i) : undefined}
-          onInfo={(id) => store.openOverlay({ kind: 'stack-info', creatureId: id })}
-          drag={drag('g')}
-        />
-      </div>
-      <div className="town-army">
-        <div className="section-title">{visitor ? `Visiting: ${visitor.name}` : 'No visiting hero'}</div>
-        {visitor ? (
+      <div className="town-armies__row">
+        <section className="town-army town-army--garrison" aria-label="Garrison">
+          <div className="town-army__label">
+            <Icon name="town" /> Garrison
+          </div>
           <ArmyStrip
             catalog={catalog}
-            army={visitor.army}
-            label={`${visitor.name}'s army`}
-            testId="town-visitor"
-            selected={sel?.side === 'h' ? sel.slot : null}
-            dropTargets={targets('h')}
-            onSlot={refs.h ? (i) => click('h', i) : undefined}
+            army={town.garrison}
+            label={`${town.name} garrison`}
+            testId="town-garrison"
+            selected={sel?.side === 'g' ? sel.slot : null}
+            dropTargets={targets('g')}
+            onSlot={mine ? (i) => click('g', i) : undefined}
             onInfo={(id) => store.openOverlay({ kind: 'stack-info', creatureId: id })}
-            drag={drag('h')}
+            drag={drag('g')}
           />
-        ) : (
-          <div className="army army--empty dim small">A hero standing at the town gate can exchange troops here.</div>
-        )}
+        </section>
+        <div className="town-armies__divider" aria-hidden="true">
+          <span className="town-armies__gem">
+            <Icon name="swap" />
+          </span>
+        </div>
+        <section className="town-army town-army--visitor" aria-label={visitor ? `Visiting hero: ${visitor.name}` : 'No visiting hero'}>
+          <div className="town-army__label">
+            {visitor ? (
+              <>
+                <HeroPortrait catalog={catalog} definitionId={visitor.definitionId} name={visitor.name} size="1.5rem" /> {visitor.name}
+              </>
+            ) : (
+              <span className="faint">No visiting hero</span>
+            )}
+          </div>
+          {visitor ? (
+            <ArmyStrip
+              catalog={catalog}
+              army={visitor.army}
+              label={`${visitor.name}'s army`}
+              testId="town-visitor"
+              selected={sel?.side === 'h' ? sel.slot : null}
+              dropTargets={targets('h')}
+              onSlot={refs.h ? (i) => click('h', i) : undefined}
+              onInfo={(id) => store.openOverlay({ kind: 'stack-info', creatureId: id })}
+              drag={drag('h')}
+            />
+          ) : (
+            <div className="army army--vacant" title="A hero standing at the town gate can exchange troops here">
+              {Array.from({ length: 7 }, (_, i) => (
+                <span key={i} className="slot slot--empty" />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
-      <div className="town-armies__bar small" data-testid="town-armies-bar">
-        {selStack && sel ? (
-          <>
-            <span>
-              Moving {qty ?? selStack.count} of {selStack.count} {catalog.creatures[selStack.creatureId]?.pluralName} — click a slot.
-            </span>
-            {selStack.count > 1 ? <QuantitySelector label="How many to move" value={qty ?? selStack.count} min={1} max={selStack.count} onChange={setQty} /> : null}
-            <Button size="small" variant="ghost" onClick={() => setSel(null)}>
-              Cancel
-            </Button>
-          </>
-        ) : mine ? (
-          <span className="dim">Drag stacks between the garrison and the hero (Shift-drag to split), or click a stack to choose how many to move.</span>
-        ) : null}
-      </div>
+      {selStack && sel ? (
+        <div className="town-armies__bar small" data-testid="town-armies-bar">
+          <span>
+            Moving {qty ?? selStack.count} of {selStack.count} {catalog.creatures[selStack.creatureId]?.pluralName} — click a slot.
+          </span>
+          {selStack.count > 1 ? <QuantitySelector label="How many to move" value={qty ?? selStack.count} min={1} max={selStack.count} onChange={setQty} /> : null}
+          <Button size="small" variant="ghost" onClick={() => setSel(null)}>
+            Cancel
+          </Button>
+        </div>
+      ) : null}
       {split && splitStack ? (
         <Modal
           title={`Split ${catalog.creatures[splitStack.creatureId]?.pluralName ?? 'stack'}`}
@@ -553,6 +566,23 @@ function MerchantModal({ town, onClose }: { town: TownState; onClose: () => void
   );
 }
 
+/** An icon-only action in the town's pop-up and economy bar (label as tooltip and accessible name). */
+function IconAction({ icon, label, onClick, disabled, reason, testId, primary }: { icon: IconName; label: string; onClick: () => void; disabled?: boolean; reason?: string | null; testId?: string; primary?: boolean }) {
+  return (
+    <Button
+      icon={icon}
+      variant={primary ? 'primary' : undefined}
+      className="town-action"
+      onClick={onClick}
+      disabled={disabled}
+      disabledReason={reason ?? undefined}
+      title={label}
+      aria-label={label}
+      data-testid={testId}
+    />
+  );
+}
+
 export function TownScreen() {
   const store = useStore();
   const catalog = store.catalog;
@@ -561,10 +591,24 @@ export function TownScreen() {
   const owned = Object.values(state.towns).filter((t) => t.ownerId === player.id);
   const townId = (store.screen.params.townId as string | undefined) ?? owned[0]?.id;
   const town = townId ? state.towns[townId] : undefined;
-  const [selected, setSelected] = useState<string | null>((store.screen.params.slot as string | undefined) ?? null);
+  // The building pop-up is not restored on return (from recruitment, say): the town opens clean.
+  const [selected, setSelected] = useState<string | null>(null);
   const [modal, setModal] = useState<'market' | 'tavern' | 'offering' | 'merchant' | 'gifts' | null>(null);
   const archetype = town ? catalog.townArchetypes[town.archetypeId] : undefined;
   const slots = useMemo(() => [...(archetype?.slots ?? [])].sort((a, b) => a.placement.layer - b.placement.layer || a.placement.y - b.placement.y), [archetype]);
+  // Esc closes the building pop-up before it leaves the town.
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || !selectedRef.current || store.overlays.length || store.story.length) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setSelected(null);
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, [store]);
   if (!town || !archetype) {
     return (
       <div className="screen">
@@ -585,10 +629,7 @@ export function TownScreen() {
   const income = townDailyIncome(catalog, town);
   const growth = townGrowthMultiplier(catalog, town);
   const usedToday = town.buildUsedDay === state.day;
-  const setSlot = (id: string) => {
-    setSelected(id);
-    store.setParams({ slot: id });
-  };
+  const setSlot = (id: string | null) => setSelected(id);
   const build = () => {
     if (!next || !quote?.legal) return;
     store.confirm(`Build ${next.name}?`, next.summary, 'Build', () => {
@@ -600,6 +641,23 @@ export function TownScreen() {
   const offering = quoteOffering(catalog, state, player.id, town.id, []);
   const training = townTraining(catalog, town);
   const sbQuote = spellbookHero ? quoteSpellbook(catalog, state, spellbookHero.id, town.id) : null;
+  const anchor = archetype.hudAnchor ?? 'center';
+  const covenants = town.covenants.map((f) => catalog.families[f]?.name ?? f);
+  const hasMarket = townHasEffect(catalog, town, 'enables_market');
+  const hasTavern = townHasEffect(catalog, town, 'enables_hero_hiring');
+
+  // Pop-up beside the selected building: right of it in the left half of the town, left of it in the right half;
+  // its top level with the building's top (never under the economy bar), or its bottom level with the building's foot low in the scene.
+  const popStyle = (() => {
+    if (!slot) return undefined;
+    const p = slot.placement;
+    const x0 = p.x - p.width / 2;
+    const x1 = p.x + p.width / 2;
+    const top = Math.max(9, p.y - p.width * 1.2);
+    const side = p.x < 50 ? { left: `min(${x1 + 1}%, calc(99% - var(--bld-pop-w)))` } : { right: `min(${100 - x0 + 1}%, calc(99% - var(--bld-pop-w)))` };
+    const vert = p.y > 70 ? { bottom: `${Math.max(1.5, 100 - p.y)}%` } : { top: `${top}%` };
+    return { ...side, ...vert };
+  })();
 
   return (
     <div className="screen town-screen">
@@ -609,7 +667,6 @@ export function TownScreen() {
             <Emblem catalog={catalog} pantheonId={town.pantheonId} size="1.9rem" /> {town.name}
           </span>
         }
-        subtitle={`${catalog.pantheons[town.pantheonId]?.name} town · ${usedToday ? 'Built today — next build tomorrow' : 'One building can be built today'}`}
         right={
           owned.length > 1 ? (
             <div className="row gap">
@@ -622,81 +679,116 @@ export function TownScreen() {
           ) : undefined
         }
       />
-      <div className="town-layout">
-        <div className="town-stage">
-          <div className="town-scene" style={bg.url ? { backgroundImage: `url(${bg.url})` } : undefined} data-testid="town-scene">
-            {slots.map((s) => {
-              const art = slotArtId(catalog, town, s);
-              const lvl = town.buildings[s.id] ?? 0;
-              const nb = catalog.buildings[s.chain[lvl] ?? ''];
-              const q = nb ? quoteConstruction(catalog, state, player.id, town.id, nb.id) : null;
-              const planned = catalog.buildings[s.chain[0] ?? '']?.implementationStatus === 'planned';
-              const p = s.placement;
-              // Empty plots are small UI markers: keep them above built art so every location stays clickable.
-              const style = { left: `${p.x - p.width / 2}%`, bottom: `${100 - p.y}%`, width: `${p.width}%`, zIndex: art.built ? p.layer : 20 + p.layer };
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  className={`town-slot ${art.built ? 'is-built' : 'is-empty'} ${selected === s.id ? 'is-selected' : ''} ${planned ? 'is-planned' : ''}`}
-                  style={style}
-                  onClick={() => setSlot(s.id)}
-                  aria-label={`${s.label}: ${art.built ? (activeBuildingInSlot(catalog, town, s.id)?.name ?? '') : planned ? 'planned' : 'empty'}`}
-                  data-testid={`slot-${s.id}`}
-                >
-                  {art.built ? (
-                    <BuildingArt artAssetId={art.id} alt={activeBuildingInSlot(catalog, town, s.id)?.name ?? s.label} className="town-slot__art" />
-                  ) : (
-                    <span className="town-slot__plot">
-                      <span className="town-slot__plot-mark">{planned ? <Icon name="lock" /> : q?.legal ? <span className="plus">+</span> : <Icon name="hourglass" />}</span>
-                    </span>
-                  )}
-                  <span className="town-slot__label">
-                    {art.built ? activeBuildingInSlot(catalog, town, s.id)?.name : s.label}
-                    {q?.legal ? <span className="town-slot__can" title="Can build now"> ●</span> : null}
-                  </span>
-                </button>
-              );
-            })}
-            <span className="placeholder-tag town-scene__tag">Placeholder town art · owner concept reference</span>
-          </div>
-        </div>
-
-        <aside className="town-side">
-          <Panel title={slot ? slot.label : 'Select a location'} className="town-detail" bodyClassName="scroll">
-            {!slot ? (
-              <p className="dim">Click any of the 18 locations in the town to see what is built there and what can be built next.</p>
-            ) : (
-              <>
-                {current ? (
-                  <div className="bld-current">
-                    <BuildingArt artAssetId={current.artAssetId} alt={current.name} className="bld-current__art" />
-                    <div>
-                      <div className="bld-name">{current.name}</div>
-                      <div className="small">{current.summary}</div>
-                      <div className="faint small">
-                        Level {level} of {slot.chain.length}
-                      </div>
-                    </div>
-                  </div>
+      <div className="town-stage">
+        <div
+          className="town-scene"
+          style={bg.url ? { backgroundImage: `url(${bg.url})` } : undefined}
+          data-testid="town-scene"
+          onClick={(e) => {
+            // A click on the painting itself (not a building or the pop-up) closes the pop-up.
+            if (e.target === e.currentTarget) setSlot(null);
+          }}
+        >
+          {slots.map((s) => {
+            const art = slotArtId(catalog, town, s);
+            const lvl = town.buildings[s.id] ?? 0;
+            const nb = catalog.buildings[s.chain[lvl] ?? ''];
+            const q = nb ? quoteConstruction(catalog, state, player.id, town.id, nb.id) : null;
+            const planned = catalog.buildings[s.chain[0] ?? '']?.implementationStatus === 'planned';
+            const p = s.placement;
+            // Empty plots are small UI markers: keep them above built art so every location stays clickable.
+            const style = { left: `${p.x - p.width / 2}%`, bottom: `${100 - p.y}%`, width: `${p.width}%`, zIndex: art.built ? p.layer : 20 + p.layer };
+            return (
+              <button
+                key={s.id}
+                type="button"
+                className={`town-slot ${art.built ? 'is-built' : 'is-empty'} ${selected === s.id ? 'is-selected' : ''} ${planned ? 'is-planned' : ''}`}
+                style={style}
+                onClick={() => setSlot(selected === s.id ? null : s.id)}
+                aria-label={`${s.label}: ${art.built ? (activeBuildingInSlot(catalog, town, s.id)?.name ?? '') : planned ? 'planned' : 'empty'}`}
+                aria-expanded={selected === s.id}
+                data-testid={`slot-${s.id}`}
+              >
+                {art.built ? (
+                  <BuildingArt artAssetId={art.id} alt={activeBuildingInSlot(catalog, town, s.id)?.name ?? s.label} className="town-slot__art" />
                 ) : (
-                  <p className="dim small">Nothing built here yet.</p>
+                  <span className="town-slot__plot">
+                    <span className="town-slot__plot-mark">{planned ? <Icon name="lock" /> : q?.legal ? <span className="plus">+</span> : <Icon name="hourglass" />}</span>
+                  </span>
+                )}
+                <span className="town-slot__label">
+                  {art.built ? activeBuildingInSlot(catalog, town, s.id)?.name : s.label}
+                  {q?.legal ? <span className="town-slot__can" title="Can build now"> ●</span> : null}
+                </span>
+              </button>
+            );
+          })}
+
+          {/* Town economy: a compact panel on the painting's top edge, over open sky. */}
+          <div
+            className={`town-hud town-hud--${typeof anchor === 'number' ? 'at' : anchor}`}
+            style={typeof anchor === 'number' ? { left: `${anchor}%` } : undefined}
+            data-testid="town-economy"
+            aria-label="Town economy"
+          >
+            <div className="town-hud__row">
+              <span className="town-hud__item" title="Income per day">
+                <CostList cost={income} empty="none" />
+                <span className="town-hud__unit">/day</span>
+              </span>
+            </div>
+            <div className="town-hud__row">
+              <span className="town-hud__item" title={`Weekly growth multiplier ×${growth.numerator / growth.denominator}`}>
+                <Icon name="growth" className="town-hud__icon" />×{growth.numerator / growth.denominator}
+              </span>
+              {covenants.length ? (
+                <span className="town-hud__item" title={`Covenants: ${covenants.join(', ')}`} aria-label={`Covenants: ${covenants.join(', ')}`}>
+                  <Icon name="pantheon" className="town-hud__icon" />
+                  {covenants.length}
+                </span>
+              ) : null}
+              <span className={`town-hud__item town-hud__build ${usedToday ? 'is-used' : 'is-ready'}`} title={usedToday ? 'Built today — the next building tomorrow' : 'One building can be built today'} data-testid="town-build-today">
+                <Icon name="build" className="town-hud__icon" />
+              </span>
+              <span className="town-hud__sep" aria-hidden="true" />
+              <IconAction icon="recruit" label="Recruit" onClick={() => store.goto('recruitment', { townId: town.id })} testId="town-recruit" />
+              <IconAction icon="market" label="Market" onClick={() => setModal('market')} disabled={!hasMarket} reason="Requires a Marketplace" testId="town-market" />
+              <IconAction icon="tavern" label="Tavern" onClick={() => setModal('tavern')} disabled={!hasTavern} reason="Requires a Tavern" testId="town-tavern" />
+              <IconAction icon="pantheon" label="Pantheon & gods" onClick={() => store.goto('pantheon', { townId: town.id })} testId="town-gods" />
+              {townMerchantStockSize(catalog, town) > 0 ? <IconAction icon="merchant" label="Artifact Merchant" onClick={() => setModal('merchant')} testId="town-merchant" /> : null}
+            </div>
+          </div>
+
+          {slot && popStyle ? (
+            <div className="bld-pop panel" style={popStyle} role="dialog" aria-label={slot.label} data-testid="building-popup" onClick={(e) => e.stopPropagation()}>
+              <header className="bld-pop__head">
+                <span className="bld-pop__title">{current?.name ?? slot.label}</span>
+                <button type="button" className="bld-pop__close" onClick={() => setSlot(null)} aria-label="Close" title="Close (Esc)">
+                  <Icon name="close" />
+                </button>
+              </header>
+              <div className="bld-pop__body">
+                {current ? (
+                  <>
+                    <p className="bld-pop__text">{current.summary}</p>
+                    <div className="bld-pop__level">
+                      {Array.from({ length: slot.chain.length }, (_, i) => (
+                        <span key={i} className={`bld-pop__pip ${i < level ? 'is-on' : ''}`} />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <p className="bld-pop__text dim">Nothing built here yet.</p>
                 )}
                 {next && quote ? (
-                  <div className="bld-next">
-                    <SectionTitle>{current ? 'Next level' : 'Can be built here'}</SectionTitle>
-                    <div className="bld-name">
-                      {next.name} <StatusChip status={next.implementationStatus} />
+                  <div className="bld-pop__next">
+                    <div className="bld-pop__sub">
+                      <Icon name={current ? 'upgrade' : 'build'} className="inline-icon" /> {next.name}
                     </div>
-                    <p className="small">{next.summary}</p>
+                    <p className="bld-pop__text">{next.summary}</p>
                     {next.implementationStatus !== 'planned' ? (
                       <>
-                        <div className="row gap">
-                          <span className="small">Cost</span> <CostList cost={quote.cost} wallet={player.wallet} />
-                        </div>
-                        <div style={{ margin: '0.5rem 0' }}>
-                          <Chip tone={STATE_LABEL[quote.state]?.tone}>{STATE_LABEL[quote.state]?.text}</Chip>
-                        </div>
+                        <CostList cost={quote.cost} wallet={player.wallet} />
                         {quote.missing.length ? (
                           <ul className="bullets small danger-list">
                             {quote.missing.map((m) => (
@@ -706,123 +798,65 @@ export function TownScreen() {
                         ) : quote.reason && !quote.legal ? (
                           <p className="small warn">{quote.reason}</p>
                         ) : null}
-                        <Button variant="primary" block disabled={!quote.legal || !mine} disabledReason={quote.reason} onClick={build} data-testid="build">
-                          Build {next.name}
-                        </Button>
                       </>
                     ) : (
-                      <p className="note small">This location exists in the town layout, but its mechanics are not designed yet, so it cannot be built.</p>
+                      <p className="small faint">Its mechanics are not designed yet, so it cannot be built.</p>
                     )}
                   </div>
-                ) : slot && level >= slot.chain.length ? (
-                  <p className="success small">Fully built.</p>
+                ) : level >= slot.chain.length ? (
+                  <p className="small success">Fully built.</p>
                 ) : null}
                 {family ? (
-                  <div className="bld-services">
-                    <SectionTitle>Creatures</SectionTitle>
-                    <div className="small">
-                      {catalog.families[family]?.name} pool: <strong className="num">{town.population[family] ?? 0}</strong> available · +{weeklyGrowthFor(catalog, town, family, state)} per week
-                    </div>
-                    <Button icon="hero" onClick={() => store.goto('recruitment', { townId: town.id, familyId: family })} disabled={!current} disabledReason="Build the dwelling first">
-                      Recruit
-                    </Button>
+                  <div className="bld-pop__line">
+                    <Icon name="growth" className="inline-icon" /> {catalog.families[family]?.name}: <strong className="num">{town.population[family] ?? 0}</strong> available · +{weeklyGrowthFor(catalog, town, family, state)} per week
                   </div>
                 ) : null}
-                {slot.role === 'marketplace' && current ? (
-                  <Button icon="gold" onClick={() => setModal('market')}>
-                    Trade resources
-                  </Button>
+                {slot.role === 'training_academy' && current && training ? <div className="bld-pop__line">Once per week per hero: {training.gold} Gold for {training.xp} experience.</div> : null}
+                {slot.role === 'watchtower' ? <div className="bld-pop__line">Town vision: {townVisionRadius(catalog, town)} hexes.</div> : null}
+                {slot.role === 'mage_guild' && current ? <div className="bld-pop__line">Spell library: tier {townSpellLibraryTier(catalog, town)}. Visiting heroes with a spellbook learn its spells.</div> : null}
+                {slot.role === 'fortifications' ? <div className="bld-pop__line">Weekly growth ×{growth.numerator / growth.denominator}. The fortifications defend the town in a siege.</div> : null}
+              </div>
+              <div className="bld-pop__actions">
+                {next && quote && next.implementationStatus !== 'planned' ? (
+                  <IconAction icon="build" primary label={`Build ${next.name}`} onClick={build} disabled={!quote.legal || !mine} reason={quote.reason} testId="build" />
                 ) : null}
-                {slot.role === 'tavern' && current ? (
-                  <Button icon="hero" onClick={() => setModal('tavern')}>
-                    Hire heroes
-                  </Button>
-                ) : null}
+                {family ? <IconAction icon="recruit" label="Recruit" onClick={() => store.goto('recruitment', { townId: town.id, familyId: family })} disabled={!current} reason="Build the dwelling first" testId="popup-recruit" /> : null}
+                {slot.role === 'marketplace' && current ? <IconAction icon="market" label="Trade resources" onClick={() => setModal('market')} /> : null}
+                {slot.role === 'tavern' && current ? <IconAction icon="tavern" label="Hire heroes" onClick={() => setModal('tavern')} /> : null}
                 {slot.role === 'pantheon_temple' ? (
-                  <div className="row gap wrap">
-                    <Button icon="pantheon" onClick={() => store.goto('pantheon', { townId: town.id })}>
-                      Pantheon &amp; gods
-                    </Button>
-                    {offering.available && current ? (
-                      <Button icon="favor" onClick={() => setModal('offering')} disabled={offering.code === 'already_done'} disabledReason={offering.reason} data-testid="offering-open">
-                        Make an offering
-                      </Button>
-                    ) : null}
-                    {current && divineGifts(catalog, state).length > 0 ? (
-                      <Button icon="favor" onClick={() => setModal('gifts')} data-testid="gifts-open">
-                        Divine gifts
-                      </Button>
-                    ) : null}
-                  </div>
+                  <>
+                    <IconAction icon="pantheon" label="Pantheon & gods" onClick={() => store.goto('pantheon', { townId: town.id })} />
+                    {offering.available && current ? <IconAction icon="favor" label="Make an offering" onClick={() => setModal('offering')} disabled={offering.code === 'already_done'} reason={offering.reason} testId="offering-open" /> : null}
+                    {current && divineGifts(catalog, state).length > 0 ? <IconAction icon="gift" label="Divine gifts" onClick={() => setModal('gifts')} testId="gifts-open" /> : null}
+                  </>
                 ) : null}
-                {slot.role === 'training_academy' && current && training ? (
-                  <div className="bld-services">
-                    <SectionTitle>Training</SectionTitle>
-                    <div className="small">Once per week per hero: {training.gold} Gold for {training.xp} experience.</div>
-                    {visiting.length === 0 ? <div className="faint small">No hero is visiting.</div> : null}
-                    {visiting.map((h) => {
+                {slot.role === 'training_academy' && current && training
+                  ? visiting.map((h) => {
                       const tq = quoteTraining(catalog, state, player.id, town.id, h.id);
                       return (
-                        <Button key={h.id} disabled={!tq.legal} disabledReason={tq.reason} onClick={() => { if (!store.dispatch({ kind: 'TrainHero', townId: town.id, heroId: h.id })) store.toast(`${h.name} trained (+${tq.xp} XP)`, 'success'); }} data-testid={`train-${h.id}`}>
-                          Train {h.name} ({tq.cost.gold} Gold)
-                        </Button>
+                        <IconAction
+                          key={h.id}
+                          icon="xp"
+                          label={`Train ${h.name} (${tq.cost.gold} Gold)`}
+                          disabled={!tq.legal}
+                          reason={tq.reason}
+                          onClick={() => {
+                            if (!store.dispatch({ kind: 'TrainHero', townId: town.id, heroId: h.id })) store.toast(`${h.name} trained (+${tq.xp} XP)`, 'success');
+                          }}
+                          testId={`train-${h.id}`}
+                        />
                       );
-                    })}
-                  </div>
+                    })
+                  : null}
+                {slot.role === 'artifact_merchant' && current ? <IconAction icon="merchant" label={`Browse artifacts (${town.merchant?.stock.filter(Boolean).length ?? 0} for sale)`} onClick={() => setModal('merchant')} testId="merchant-open" /> : null}
+                {slot.role === 'mage_guild' && current && spellbookHero && sbQuote ? (
+                  <IconAction icon="spell" label={`Buy a spellbook for ${spellbookHero.name} (${sbQuote.cost.gold} Gold)`} disabled={!sbQuote.legal} reason={sbQuote.reason} onClick={() => store.dispatch({ kind: 'BuySpellbook', heroId: spellbookHero.id, townId: town.id })} testId="buy-spellbook" />
                 ) : null}
-                {slot.role === 'watchtower' ? <div className="small">Town vision: {townVisionRadius(catalog, town)} hexes.</div> : null}
-                {slot.role === 'artifact_merchant' && current ? (
-                  <Button icon="gold" onClick={() => setModal('merchant')} data-testid="merchant-open">
-                    Browse artifacts ({town.merchant?.stock.filter(Boolean).length ?? 0} for sale)
-                  </Button>
-                ) : null}
-                {slot.role === 'mage_guild' && current ? (
-                  <div className="bld-services">
-                    <SectionTitle>Sanctum</SectionTitle>
-                    <div className="small">Spell library: tier {townSpellLibraryTier(catalog, town)}. Visiting heroes with a spellbook learn eligible spells here.</div>
-                    {spellbookHero && sbQuote ? (
-                      <Button disabled={!sbQuote.legal} disabledReason={sbQuote.reason} onClick={() => store.dispatch({ kind: 'BuySpellbook', heroId: spellbookHero.id, townId: town.id })}>
-                        Buy spellbook for {spellbookHero.name} ({sbQuote.cost.gold} Gold)
-                      </Button>
-                    ) : visiting.length ? (
-                      <div className="faint small">Visiting heroes already carry spellbooks.</div>
-                    ) : (
-                      <div className="faint small">No hero is visiting.</div>
-                    )}
-                  </div>
-                ) : null}
-                {slot.role === 'fortifications' ? <div className="small">Weekly growth multiplier: ×{growth.numerator / growth.denominator}. The fortifications defend the town in a siege.</div> : null}
-              </>
-            )}
-          </Panel>
-          <Panel title="Town economy" className="town-economy">
-            <div className="row gap wrap small">
-              <span>Income per day:</span> <CostList cost={income} empty="none" />
+              </div>
             </div>
-            <div className="small">
-              Growth multiplier ×{growth.numerator / growth.denominator} · Covenants: {town.covenants.length ? town.covenants.map((f) => catalog.families[f]?.name).join(', ') : 'none'}
-            </div>
-            <div className="row gap wrap" style={{ marginTop: '0.5rem' }}>
-              <Button icon="hero" onClick={() => store.goto('recruitment', { townId: town.id })}>
-                Recruit
-              </Button>
-              <Button icon="gold" onClick={() => setModal('market')} disabled={!townHasEffect(catalog, town, 'enables_market')} disabledReason="Requires a Marketplace">
-                Market
-              </Button>
-              <Button icon="hero" onClick={() => setModal('tavern')} disabled={!townHasEffect(catalog, town, 'enables_hero_hiring')} disabledReason="Requires a Tavern">
-                Tavern
-              </Button>
-              <Button icon="pantheon" onClick={() => store.goto('pantheon', { townId: town.id })}>
-                Gods
-              </Button>
-              {townMerchantStockSize(catalog, town) > 0 ? (
-                <Button icon="gold" onClick={() => setModal('merchant')}>
-                  Merchant
-                </Button>
-              ) : null}
-            </div>
-          </Panel>
-        </aside>
+          ) : null}
+          <span className="placeholder-tag town-scene__tag">Placeholder town art · owner concept reference</span>
+        </div>
       </div>
       <TownArmies town={town} visitor={visiting[0] ?? null} />
       {modal === 'market' ? <MarketModal town={town} onClose={() => setModal(null)} /> : null}

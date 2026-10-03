@@ -1,14 +1,13 @@
 /**
- * Setup flow: S02 Game Mode → S03 Scenario/Campaign → S04 Pantheon →
- * S05 Starting Divine Selection → Mission Briefing → Adventure Map.
- * Random maps have their own setup screen (S19, RandomSetup.tsx) and start
- * without a briefing.
+ * Setup flow. Campaign: S02 Game Mode → S03 Campaign → Mission Briefing →
+ * Adventure Map (a campaign is played with its own pantheon). Skirmish: S02 →
+ * S03 Scenario → S04 Pantheon (own and rival pantheon, rival seat, difficulty)
+ * → Mission Briefing. Random maps have their own setup screen (S19,
+ * RandomSetup.tsx) and start without a briefing.
  *
- * Future campaigns and undesigned content are shown honestly as not
- * playable; nothing here invents hidden mechanics. Skirmish scenarios with
- * pantheon variants let the player choose their own pantheon and the rival's,
- * the difficulty, and whether the rival seat is the AI or a second player on
- * this computer (hot-seat).
+ * There is no patron screen (owner decision 2026-10-03): every pantheon has
+ * one patron god, so it is taken from the content (`defaultPatron`).
+ * Content not yet playable is shown honestly as unavailable.
  */
 import { useState, type CSSProperties } from 'react';
 import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, GodDefinition, PantheonDefinition } from '@pr/rules';
@@ -27,6 +26,12 @@ import { Icon } from '../assets/icons';
 function campaignBackdrop(campaignId: string | null | undefined): { className: string; style?: CSSProperties } {
   const art = campaignId ? resolveArt(`campaign.${campaignId}.cover`) : null;
   return art ? { className: 'setup-screen setup-screen--cover', style: { ['--app-art' as string]: `url("${art.url}")` } } : { className: 'setup-screen' };
+}
+
+/** The patron god a game starts with: the campaign's starting option, else the pantheon's implemented patron. */
+export function defaultPatron(catalog: ContentCatalog, pantheonId: string | null | undefined, campaign?: CampaignDefinition): string | null {
+  if (campaign) return campaign.startingGodOptions[0] ?? null;
+  return (catalog.pantheons[pantheonId ?? '']?.godIds ?? []).find((g) => catalog.gods[g]?.role === 'patron' && catalog.gods[g]?.implementationStatus === 'implemented') ?? null;
 }
 
 // ---------------------------------------------------------------------------
@@ -51,7 +56,7 @@ export function GameModeScreen() {
   ];
   return (
     <div className="setup-screen">
-      <ScreenHeader title="New Game" subtitle="Choose how you want to play" />
+      <ScreenHeader title="New Game" />
       <div className="mode-grid mode-grid--3 mode-grid--large">
         {modes.map((m) => (
           <button key={m.id} type="button" className="mode-card panel" onClick={() => pick(m.id)} data-testid={`mode-${m.id}`}>
@@ -104,11 +109,6 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
         <div>
           <div className="tagline">{c.tagline}</div>
           <p>{c.summary}</p>
-          <div className="row gap">
-            <Chip tone={c.status === 'playable' ? 'ok' : 'muted'}>{c.status === 'playable' ? 'Playable' : 'Coming later'}</Chip>
-            <Chip>{catalog.pantheons[c.pantheonId]?.name} campaign</Chip>
-            <Chip>{missions.length} missions</Chip>
-          </div>
         </div>
       </div>
       {missions.length ? (
@@ -123,33 +123,10 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
                     {m.order}. {m.name} <span className="dim">— {m.subtitle}</span>
                   </div>
                   <p className="dim">{m.summary}</p>
-                  <div className="row gap wrap">
-                    <Chip>{m.targetPlaytime}</Chip>
-                    {m.newDecisions.slice(0, 3).map((d) => (
-                      <Chip key={d} tone="info">
-                        {d}
-                      </Chip>
-                    ))}
-                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </>
-      ) : null}
-      {c.carryoverPolicy.length ? (
-        <>
-          <SectionTitle>What carries between missions</SectionTitle>
-          <table className="table">
-            <tbody>
-              {c.carryoverPolicy.map((p) => (
-                <tr key={p.category}>
-                  <th>{p.category}</th>
-                  <td>{p.policy}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </>
       ) : null}
     </Panel>
@@ -168,7 +145,11 @@ export function ScenarioSelectScreen() {
   const playable = campaign ? campaign.status === 'playable' : skirmish ? skirmish.status === 'playable' : false;
   const next = () => {
     if (campaign) {
-      store.setup = { ...store.setup, mode: 'campaign', campaignId: campaign.id, missionId: campaign.missionIds[0] ?? null, pantheonId: campaign.pantheonId, godId: null };
+      // A campaign is played with its own pantheon and patron: straight to the briefing.
+      const godId = defaultPatron(catalog, campaign.pantheonId, campaign);
+      store.setup = { ...store.setup, mode: 'campaign', campaignId: campaign.id, missionId: campaign.missionIds[0] ?? null, pantheonId: campaign.pantheonId, godId };
+      store.startCampaign(campaign.id, godId);
+      return;
     } else if (skirmish) {
       const m = catalog.missions[skirmish.missionId];
       // Scenarios with pantheon variants leave both pantheons to the next step.
@@ -189,20 +170,7 @@ export function ScenarioSelectScreen() {
   const skMission = skirmish ? catalog.missions[skirmish.missionId] : undefined;
   return (
     <div {...campaignBackdrop(mode === 'campaign' ? selected : null)}>
-      <ScreenHeader
-        title={mode === 'campaign' ? 'Choose a Campaign' : 'Choose a Scenario'}
-        subtitle={mode === 'campaign' ? 'Story campaigns' : 'Skirmish scenarios against the local AI'}
-        right={
-          <div className="tabs">
-            <button type="button" role="tab" className="tab" aria-selected={mode === 'campaign'} onClick={() => { store.resetSetup('campaign'); store.replace('scenario-select'); }}>
-              Campaigns
-            </button>
-            <button type="button" role="tab" className="tab" aria-selected={mode === 'skirmish'} onClick={() => { store.resetSetup('skirmish'); store.replace('scenario-select'); }}>
-              Skirmish
-            </button>
-          </div>
-        }
-      />
+      <ScreenHeader title={mode === 'campaign' ? 'Choose a Campaign' : 'Choose a Scenario'} />
       <div className="setup-split">
         <Panel title={mode === 'campaign' ? 'Campaigns' : 'Scenarios'} className="setup-list" bodyClassName="scroll">
           {(mode === 'campaign' ? campaigns : skirmishes).map((c) => (
@@ -214,18 +182,9 @@ export function ScenarioSelectScreen() {
               ) : null}
               <div className="list-card__title">{c.name}</div>
               <div className="list-card__meta">{'tagline' in c ? c.tagline : c.summary}</div>
-              <Chip tone={c.status === 'playable' ? 'ok' : 'muted'}>{c.status === 'playable' ? 'Playable' : 'Coming later'}</Chip>
+              {c.status !== 'playable' ? <div className="list-card__meta dim">Not available yet</div> : null}
             </button>
           ))}
-          <div className="list-card is-disabled">
-            <div className="list-card__title">{mode === 'campaign' ? 'Other pantheon campaigns' : 'More scenarios'}</div>
-            <div className="list-card__meta">
-              {mode === 'campaign'
-                ? 'Campaigns for the other pantheons are not written yet; every pantheon can be played in skirmish.'
-                : 'Random maps for two to four empires are under New Game → Random Map.'}
-            </div>
-            <Chip tone="muted">Not available</Chip>
-          </div>
         </Panel>
         {campaign ? <CampaignDetail c={campaign} /> : null}
         {skirmish && skMission ? (
@@ -235,13 +194,6 @@ export function ScenarioSelectScreen() {
               <div>
                 <p>{skirmish.summary}</p>
                 <p className="dim">{skMission.summary}</p>
-                <div className="row gap wrap">
-                  <Chip tone="ok">Playable</Chip>
-                  <Chip>{catalog.mapTemplates[skMission.mapTemplateId]?.width}×{catalog.mapTemplates[skMission.mapTemplateId]?.height} map</Chip>
-                  <Chip>{(skMission.rivals ?? []).length} rival (AI or hot-seat)</Chip>
-                  <Chip tone={skMission.heroHiringEnabled ? 'ok' : 'muted'}>{skMission.heroHiringEnabled ? 'Hero hiring' : 'No hiring'}</Chip>
-                  {skirmish.variants?.length ? <Chip tone="info">Choose both pantheons</Chip> : null}
-                </div>
               </div>
             </div>
             <SectionTitle>Objectives</SectionTitle>
@@ -264,9 +216,15 @@ export function ScenarioSelectScreen() {
         <Button onClick={() => store.back()} icon="back">
           Back
         </Button>
-        <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-next">
-          Choose Pantheon
-        </Button>
+        {campaign ? (
+          <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-begin">
+            Begin — Mission Briefing
+          </Button>
+        ) : (
+          <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-next">
+            Choose Pantheon
+          </Button>
+        )}
       </footer>
     </div>
   );
@@ -286,11 +244,6 @@ function PantheonDetail({ p }: { p: PantheonDefinition }) {
         <div>
           <div className="tagline">{p.epithet}</div>
           <p>{p.summary}</p>
-          <div className="row gap">
-            <Chip tone={p.playability === 'playable' ? 'ok' : 'info'}>{p.playability === 'playable' ? 'Playable' : 'Preparation content'}</Chip>
-            <Chip>{p.godIds.length} gods</Chip>
-            <Chip>{p.heroIds.length} heroes</Chip>
-          </div>
         </div>
       </div>
       {p.signature ? (
@@ -399,16 +352,7 @@ export function PantheonSelectScreen() {
           : '';
   return (
     <div {...campaignBackdrop(store.setup.mode === 'campaign' ? store.setup.campaignId : null)}>
-      <ScreenHeader
-        title="Choose a Pantheon"
-        subtitle={
-          campaign
-            ? `${campaign.name} is a ${catalog.pantheons[campaign.pantheonId]?.name} campaign`
-            : needsVariant
-              ? `Your pantheon and the rival’s · ${catalog.pantheons[selected]?.name ?? ''} vs. ${catalog.pantheons[rival]?.name ?? ''}`
-              : `${catalog.pantheonOrder.length} pantheons; ${catalog.pantheonOrder.filter((id) => catalog.pantheons[id]?.playability === 'playable').length} playable in this build`
-        }
-      />
+      <ScreenHeader title="Choose a Pantheon" />
       <div className="pantheon-row" role="listbox" aria-label="Pantheons">
         {catalog.pantheonOrder.map((id) => {
           const pp = catalog.pantheons[id];
@@ -424,10 +368,12 @@ export function PantheonSelectScreen() {
               onClick={() => setSelected(id)}
               data-testid={`pantheon-${id}`}
             >
-              <Emblem catalog={catalog} pantheonId={id} size="3.6rem" />
-              <div className="pantheon-card__name">{pp.name}</div>
-              <div className="pantheon-card__epithet">{pp.epithet}</div>
-              <Chip tone={pp.playability === 'playable' ? 'ok' : 'muted'}>{pp.playability === 'playable' ? 'Playable' : 'Preview'}</Chip>
+              <span className="pantheon-card__emblem">
+                <Emblem catalog={catalog} pantheonId={id} size="5.2rem" />
+              </span>
+              <span className="pantheon-card__name">{pp.name}</span>
+              <span className="pantheon-card__epithet">{pp.epithet}</span>
+              {pp.playability !== 'playable' ? <span className="pantheon-card__note">Not playable yet</span> : null}
             </button>
           );
         })}
@@ -467,146 +413,52 @@ export function PantheonSelectScreen() {
           size="large"
           disabled={!canPick}
           disabledReason={reason}
-          data-testid="setup-next"
+          data-testid="setup-begin"
           onClick={() => {
             const extra = isSkirmish
               ? { difficultyId: rivalCtl === 'ai' ? difficulty : 'normal', rivalController: rivalCtl, playerName: p1Name.trim() || 'Player 1', rivalName: p2Name.trim() || 'Player 2' }
               : {};
+            const godId = defaultPatron(catalog, selected, campaign);
+            const rivalGodId = rivalCtl === 'human' ? defaultPatron(catalog, rival) : null;
             store.setup = variant
-              ? { ...store.setup, ...extra, pantheonId: selected, rivalPantheonId: rival, missionId: variant.missionId, godId: null }
-              : { ...store.setup, ...extra, pantheonId: selected };
-            store.goto('divine-select');
+              ? { ...store.setup, ...extra, pantheonId: selected, rivalPantheonId: rival, missionId: variant.missionId, godId, rivalGodId }
+              : { ...store.setup, ...extra, pantheonId: selected, godId, rivalGodId };
+            begin(store);
           }}
         >
-          Choose Patron
-        </Button>
-      </footer>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// S05 Starting divine selection
-// ---------------------------------------------------------------------------
-
-function GodCard({ god, selected, onSelect, disabled, note }: { god: GodDefinition; selected: boolean; onSelect?: () => void; disabled?: boolean; note?: string }) {
-  const catalog = useStore().catalog;
-  return (
-    <button type="button" className={`god-card panel ${selected ? 'is-selected' : ''} ${disabled ? 'is-disabled' : ''}`} onClick={onSelect} disabled={disabled || !onSelect} aria-pressed={selected}>
-      <GodPortrait catalog={catalog} godId={god.id} size="6.5rem" locked={god.implementationStatus !== 'implemented'} />
-      <div className="god-card__name">{god.name}</div>
-      <div className="god-card__domain">{god.domain}</div>
-      {god.benefitSummary.length ? (
-        <ul className="bullets small">
-          {god.benefitSummary.map((b) => (
-            <li key={b}>{b}</li>
-          ))}
-        </ul>
-      ) : (
-        <p className="dim small">Blessing not yet designed.</p>
-      )}
-      {note ? <div className="god-card__note">{note}</div> : null}
-    </button>
-  );
-}
-
-export function DivineSelectScreen() {
-  const store = useStore();
-  const catalog = store.catalog;
-  const setup = store.setup;
-  const pantheon = catalog.pantheons[setup.pantheonId ?? 'greek']!;
-  const campaign = setup.campaignId ? catalog.campaigns[setup.campaignId] : undefined;
-  const options = campaign ? campaign.startingGodOptions : pantheon.godIds.filter((g) => catalog.gods[g]?.role === 'patron' && catalog.gods[g]?.implementationStatus === 'implemented');
-  const [godId, setGodId] = useState(setup.godId ?? options[0] ?? null);
-  const later = pantheon.godIds.filter((g) => !options.includes(g));
-  const fixed = options.length === 1;
-  // Hot-seat: the second player chooses a patron too.
-  const hotSeat = !campaign && setup.rivalController === 'human';
-  const rivalPantheon = hotSeat ? catalog.pantheons[setup.rivalPantheonId ?? ''] : undefined;
-  const rivalOptions = rivalPantheon ? rivalPantheon.godIds.filter((g) => catalog.gods[g]?.role === 'patron' && catalog.gods[g]?.implementationStatus === 'implemented') : [];
-  const [rivalGodId, setRivalGodId] = useState(setup.rivalGodId ?? rivalOptions[0] ?? null);
-  const begin = () => {
-    if (!godId) return;
-    store.setup = { ...store.setup, godId, rivalGodId };
-    if (campaign) store.startCampaign(campaign.id, godId);
-    else if (setup.missionId) {
-      const mission = catalog.missions[setup.missionId];
-      const rivalId = mission?.rivals?.[0]?.playerId;
-      const playerId = mission?.player.playerId ?? 'player';
-      store.startScenario(
-        setup.missionId,
-        godId,
-        hotSeat && rivalId
-          ? {
-              difficultyId: 'normal',
-              controllers: { [rivalId]: 'human' },
-              playerNames: { [playerId]: setup.playerName ?? 'Player 1', [rivalId]: setup.rivalName ?? 'Player 2' },
-              patronGodIds: rivalGodId ? { [rivalId]: rivalGodId } : {},
-            }
-          : { difficultyId: setup.difficultyId ?? 'normal' },
-      );
-    }
-  };
-  return (
-    <div {...campaignBackdrop(setup.mode === 'campaign' ? setup.campaignId : null)}>
-      <ScreenHeader title="Starting Patron" subtitle={fixed ? 'This scenario fixes its patron god' : 'Choose the god who sponsors your expedition'} />
-      <div className="divine-layout">
-        <Panel title={fixed ? 'Fixed patron' : 'Patron options'} className="divine-options">
-          <div className="god-grid">
-            {options.map((g) => {
-              const god = catalog.gods[g];
-              return god ? <GodCard key={g} god={god} selected={godId === g} onSelect={fixed ? undefined : () => setGodId(g)} note={fixed ? 'Fixed by the campaign' : undefined} /> : null;
-            })}
-          </div>
-          {campaign?.startingGodNote ? <p className="note">{campaign.startingGodNote}</p> : null}
-          {!fixed ? <p className="note">The patron choice is permanent for this playthrough.</p> : null}
-          {hotSeat && rivalPantheon ? (
-            <>
-              <SectionTitle>
-                {setup.rivalName ?? 'Player 2'}’s patron ({rivalPantheon.name})
-              </SectionTitle>
-              <div className="god-grid" data-testid="rival-patrons">
-                {rivalOptions.map((g) => {
-                  const god = catalog.gods[g];
-                  return god ? <GodCard key={g} god={god} selected={rivalGodId === g} onSelect={rivalOptions.length > 1 ? () => setRivalGodId(g) : undefined} /> : null;
-                })}
-              </div>
-            </>
-          ) : null}
-        </Panel>
-        <Panel title="Chosen later in play" className="divine-later" bodyClassName="scroll">
-          <p className="dim small">Minor gods are committed from the Pantheon screen once their shrine requirements are met. Undesigned gods are listed for completeness only.</p>
-          <div className="god-mini-list">
-            {later.map((g) => {
-              const god = catalog.gods[g];
-              if (!god) return null;
-              return (
-                <div key={g} className="god-mini">
-                  <GodPortrait catalog={catalog} godId={g} size="2.6rem" locked={god.implementationStatus !== 'implemented'} />
-                  <div>
-                    <div>
-                      {god.name} <span className="dim">· {god.domain}</span>
-                    </div>
-                    <div className="row gap">
-                      <StatusChip status={god.implementationStatus} />
-                      {god.role === 'minor' ? <Chip tone="info">Minor · {god.favorCost} Favor</Chip> : null}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Panel>
-      </div>
-      <Rule />
-      <footer className="setup-footer">
-        <Button onClick={() => store.back()} icon="back">
-          Back
-        </Button>
-        <Button variant="primary" size="large" disabled={!godId} disabledReason="Choose a patron" onClick={begin} data-testid="setup-begin">
           Begin — Mission Briefing
         </Button>
       </footer>
     </div>
+  );
+}
+
+/** Start the game the setup draft describes (campaign or skirmish scenario), with its default patrons. */
+function begin(store: ReturnType<typeof useStore>): void {
+  const catalog = store.catalog;
+  const setup = store.setup;
+  const campaign = setup.campaignId ? catalog.campaigns[setup.campaignId] : undefined;
+  const godId = setup.godId ?? defaultPatron(catalog, setup.pantheonId, campaign);
+  if (campaign) {
+    store.startCampaign(campaign.id, godId);
+    return;
+  }
+  if (!setup.missionId) return;
+  const mission = catalog.missions[setup.missionId];
+  const rivalId = mission?.rivals?.[0]?.playerId;
+  const playerId = mission?.player.playerId ?? 'player';
+  const hotSeat = setup.rivalController === 'human';
+  const rivalGodId = hotSeat ? (setup.rivalGodId ?? defaultPatron(catalog, setup.rivalPantheonId ?? mission?.rivals?.[0]?.pantheonId)) : null;
+  store.startScenario(
+    setup.missionId,
+    godId,
+    hotSeat && rivalId
+      ? {
+          difficultyId: 'normal',
+          controllers: { [rivalId]: 'human' },
+          playerNames: { [playerId]: setup.playerName ?? 'Player 1', [rivalId]: setup.rivalName ?? 'Player 2' },
+          patronGodIds: rivalGodId ? { [rivalId]: rivalGodId } : {},
+        }
+      : { difficultyId: setup.difficultyId ?? 'normal' },
   );
 }

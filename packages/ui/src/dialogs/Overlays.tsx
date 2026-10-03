@@ -1,6 +1,6 @@
 /**
  * Modal flows: pause, save/load, confirmation, mission briefing/debrief,
- * mission failed, campaign complete, credits, help, army exchange, pre-battle
+ * mission failed, campaign complete, help, army exchange, pre-battle
  * encounter, beacon activation and stack details.
  *
  * Dialogs submit commands or session transitions; they never edit state.
@@ -29,7 +29,7 @@ import { endOfGameSplash } from '../components/moments';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle } from '../components/kit';
-import { ArtifactIcon, BrandEmblem, CreaturePortrait, HeroPortrait, MissionThumb, SceneArt, briefingArt, speakerSides } from '../components/art';
+import { ArtifactIcon, CreaturePortrait, HeroPortrait, MissionThumb, SceneArt, briefingArt, speakerSides } from '../components/art';
 import { DialogueStage, useProtagonist } from './Story';
 import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { Icon } from '../assets/icons';
@@ -37,7 +37,7 @@ import { DialogueLines } from '../screens/Journal';
 import { resolveAsset } from '../assets/manifest';
 import { relativeTime } from '../app/view';
 import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog } from './WorldDialogs';
-import { SpellbookDialog } from './Spellbook';
+import { SpellBook } from '../components/spellbook';
 import { AbilityBadge } from '../components/badges';
 
 // ---------------------------------------------------------------------------
@@ -53,8 +53,8 @@ function PauseMenu() {
   const session = store.session;
   const inBattle = !!session?.state.battle;
   return (
-    <Modal title="Paused" onClose={() => store.closeOverlay()} width="26rem" testId="pause">
-      <BrandEmblem size="3rem" />
+    // No close button: Resume (or Esc) returns to the game; quitting goes through the main menu.
+    <Modal title="Paused" width="26rem" testId="pause">
       <nav className="pause-menu">
         <MenuButton icon="play" label="Resume" autoFocus onClick={() => store.closeOverlay()} />
         <MenuButton icon="save" label="Save Game" onClick={() => store.openOverlay({ kind: 'save-load', mode: 'save' })} disabled={!session} />
@@ -75,7 +75,6 @@ function PauseMenu() {
           }
         />
         <MenuButton icon="back" label="Main Menu" onClick={() => store.confirm('Return to the main menu?', 'Unsaved progress since the last save or autosave will be lost.', 'Main Menu', () => toMainMenu(store), { danger: true })} />
-        {store.platform.canQuit ? <MenuButton icon="quit" label="Quit to Desktop" onClick={() => store.confirm('Quit Pantheon Realms?', 'Unsaved progress will be lost.', 'Quit', () => void store.platform.quit(), { danger: true })} /> : null}
       </nav>
     </Modal>
   );
@@ -586,20 +585,6 @@ function MissionFailedDialog() {
   );
 }
 
-function CreditsDialog() {
-  const store = useStore();
-  const logo = resolveAsset('brand.logo.text');
-  return (
-    <Modal title="Credits" onClose={() => store.closeOverlay()} width="34rem" testId="credits">
-      <div className="credits">
-        {logo.url ? <img className="credits__logo" src={logo.url} alt="Pantheon Realms" draggable={false} /> : <div className="credits__game">Pantheon Realms</div>}
-        <div className="credits__role">Created by</div>
-        <div className="credits__name">Teddy Lazebnik</div>
-      </div>
-    </Modal>
-  );
-}
-
 function HelpDialog({ topicId }: { topicId: string }) {
   const store = useStore();
   const mission = store.session ? scenarioMission(store.catalog, store.session.state) : undefined;
@@ -953,8 +938,6 @@ export function OverlayLayer() {
       return store.session ? <DebriefDialog final /> : null;
     case 'mission-failed':
       return store.session ? <MissionFailedDialog /> : null;
-    case 'credits':
-      return <CreditsDialog />;
     case 'help':
       return <HelpDialog topicId={top.topicId} />;
     case 'transfer':
@@ -965,8 +948,28 @@ export function OverlayLayer() {
       return store.session ? <ActivateDialog heroId={top.heroId} siteId={top.siteId} /> : null;
     case 'stack-info':
       return <StackInfoDialog creatureId={top.creatureId} count={top.count} />;
-    case 'spellbook':
-      return store.session ? <SpellbookDialog heroId={top.heroId} /> : null;
+    case 'spellbook': {
+      const caster = top.caster ?? store.session?.state.heroes[top.heroId];
+      const cast = top.cast;
+      return store.session && caster ? (
+        <SpellBook
+          catalog={store.catalog}
+          hero={caster}
+          onClose={() => store.closeOverlay()}
+          cast={
+            cast
+              ? {
+                  ...cast,
+                  onCast: (spellId) => {
+                    store.closeOverlay();
+                    cast.onCast(spellId);
+                  },
+                }
+              : undefined
+          }
+        />
+      ) : null;
+    }
     case 'handoff':
       return store.session ? <HandoffDialog playerId={top.playerId} /> : null;
     case 'camp':

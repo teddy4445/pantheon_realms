@@ -69,10 +69,9 @@ export async function clickHex(page: Page, q: number, r: number, button: 'left' 
 
 export async function startCampaign(page: Page): Promise<void> {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-campaign').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-campaign').click();
   await page.getByTestId('scenario-three_beacons').click();
-  await page.getByTestId('setup-next').click();
-  await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-begin').click();
   await page.getByTestId('briefing-begin').click();
   await waitFor(page, (s) => s.screen === 'adventure' && s.overlays.length === 0, 'adventure map');

@@ -26,6 +26,7 @@
     "cursors:import": "python3 tools/assets/import_cursors.py",
     "art:import": "python3 tools/assets/import_story_art.py",
     "sprites:plan": "vitest run --config tools/assets/sprites/vitest.config.ts",
+    "vfx:list": "vitest run --config tools/assets/vfx/vitest.config.ts",
     "sprites:placeholders": "python3 tools/assets/sprites/make_sprite_placeholders.py",
     "sprites:cut": "python3 tools/assets/sprites/cut_sheets.py",
     "sprites:import": "python3 tools/assets/sprites/import_sprites.py",

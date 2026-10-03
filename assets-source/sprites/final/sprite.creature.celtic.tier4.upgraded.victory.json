@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 4,
+ "loop": true,
+ "anchor": [
+  0.5,
+  0.8672
+ ],
+ "pixelsPerHex": 168.096,
+ "cutFrom": "sheet.creature.celtic.tier4.upgraded.part2.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 138.615,
+  "guideIdleFraction": 0.67,
+  "observedIdleFraction": 0.8125,
+  "worldScaleMultiplier": 0.8246
+ }
+}

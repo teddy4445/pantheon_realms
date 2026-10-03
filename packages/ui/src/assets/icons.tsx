@@ -69,7 +69,13 @@ export type IconName =
   | 'sword2'
   | 'bow'
   | 'ability'
-  | 'surrender';
+  | 'surrender'
+  | 'build'
+  | 'recruit'
+  | 'market'
+  | 'tavern'
+  | 'merchant'
+  | 'gift';
 
 const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
 
@@ -164,6 +170,13 @@ const PATHS: Record<IconName, JSX.Element> = {
   star: <path {...common} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z" />,
   ability: <path {...common} d="M12 2l2 7 7 3-7 3-2 7-2-7-7-3 7-3z" />,
   surrender: <path {...common} d="M6 21V4m0 0h10l-1.5 3.5L16 11H6" />,
+  // Town actions (2026-10-03): glyphs until icon art is delivered as icon.ui.<name>.
+  build: <path {...common} d="M13.5 3.5l7 7-2.6 2.6-7-7zM12.2 7.8l-8.6 8.6a1.5 1.5 0 000 2.1l1.9 1.9a1.5 1.5 0 002.1 0l8.6-8.6" />,
+  recruit: <path {...common} d="M4 15a8 8 0 0116 0v2h-5v4H9v-4H4zM12 7V2.5M9.5 2.5h5M8 12h8" />,
+  market: <path {...common} d="M12 3v17M7.5 20.5h9M4.5 7h15M6.5 7L3.5 13a3 3 0 006 0zM17.5 7l-3 6a3 3 0 006 0z" />,
+  tavern: <path {...common} d="M5 8h10v11a2 2 0 01-2 2H7a2 2 0 01-2-2zM15 11h2a2 2 0 012 2v2a2 2 0 01-2 2h-2M5 8c0-2 1.6-3 3-2.2C8.7 4 11.6 4 12.6 5.8 14 5.2 15 6.3 15 8M8.5 12v5M11.5 12v5" />,
+  merchant: <path {...common} d="M8 8h8l3 4v6a3 3 0 01-3 3H8a3 3 0 01-3-3v-6zM9.5 8L7.5 3.5h9l-2 4.5M13.6 12.2h-2.4a1.2 1.2 0 000 2.4h1.6a1.2 1.2 0 010 2.4h-2.6M12 11v1.2M12 17v1.2" />,
+  gift: <path {...common} d="M4 10h16v4H4zM5.5 14h13v7h-13zM12 10v11M12 10c-1.5-3.5-6-4.5-6-1.5S12 10 12 10zm0 0c1.5-3.5 6-4.5 6-1.5S12 10 12 10z" />,
 };
 
 /** Illustrative icons drawn from the UI art manifest (asset IDs, never file paths). */

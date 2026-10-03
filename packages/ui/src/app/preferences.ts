@@ -18,8 +18,6 @@ export interface Preferences {
   readonly battleSpeed: BattleSpeed;
   readonly enemyMovement: AnimSpeed;
   readonly confirmEndDayWithMovement: boolean;
-  readonly confirmLargePurchases: boolean;
-  readonly largePurchaseThreshold: number;
   readonly combatLogDetail: 'compact' | 'standard' | 'detailed';
   readonly tutorialHints: boolean;
   readonly dismissedHints: readonly string[];
@@ -70,8 +68,6 @@ export const DEFAULT_PREFERENCES: Preferences = {
   battleSpeed: '1',
   enemyMovement: 'fast',
   confirmEndDayWithMovement: true,
-  confirmLargePurchases: true,
-  largePurchaseThreshold: 2000,
   combatLogDetail: 'standard',
   tutorialHints: true,
   dismissedHints: [],

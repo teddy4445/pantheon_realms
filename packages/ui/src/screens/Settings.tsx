@@ -159,12 +159,6 @@ export function SettingsScreen() {
               <Field label="Confirm End Day while heroes can move">
                 <Toggle label="Confirm End Day" checked={draft.confirmEndDayWithMovement} onChange={(v) => set('confirmEndDayWithMovement', v)} />
               </Field>
-              <Field label="Confirm large recruitments" hint={`At or above ${draft.largePurchaseThreshold} Gold. Buildings always ask.`}>
-                <Toggle label="Confirm large purchases" checked={draft.confirmLargePurchases} onChange={(v) => set('confirmLargePurchases', v)} />
-              </Field>
-              <Field label="Large purchase threshold">
-                <Slider label="Large purchase threshold" value={draft.largePurchaseThreshold} min={500} max={10000} step={500} onChange={(n) => set('largePurchaseThreshold', n)} />
-              </Field>
               <Field label="Combat log detail">
                 <Select label="Combat log detail" value={draft.combatLogDetail} options={[{ id: 'compact', label: 'Compact' }, { id: 'standard', label: 'Standard' }, { id: 'detailed', label: 'Detailed' }]} onChange={(v) => set('combatLogDetail', v)} />
               </Field>

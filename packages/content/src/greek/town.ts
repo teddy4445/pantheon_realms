@@ -127,6 +127,8 @@ export const GREEK_TOWN: TownArchetypeDefinition = {
   pantheonId: G,
   name: 'Greek Polis',
   backgroundAssetId: 'town.greek.background',
+  // Sky and sea at the top left; Athena's statue stands at the top centre-right.
+  hudAnchor: 'left',
   slots: [
     slot('civic_hall', 'support', 'Civic Hall', ['village_hall', 'town_hall', 'city_hall', 'capitol'], { x: 51, y: 38, width: 18, height: 18, layer: 4 }, { role: 'civic_hall' }),
     slot('pantheon_temple', 'support', 'Pantheon Temple', ['temple_1', 'temple_2'], { x: 47.5, y: 23, width: 14, height: 14, layer: 2 }, { role: 'pantheon_temple' }),

@@ -3,1424 +3,1626 @@
  "notice": "2D sprite manifest. Placeholder entries come from tools/assets/sprites/make_sprite_placeholders.py; final GPT-6 strips are registered by `npm run sprites:import` (ASSET_PIPELINE.md \u00a71). The game reads sprites only through this file.",
  "creatures": {
   "celtic_pooka": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 170.19,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_pooka/idle.webp",
+     "frames": 6,
+     "frameWidth": 176,
+     "frameHeight": 164,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_pooka/move.webp",
+     "frames": 6,
+     "frameWidth": 176,
+     "frameHeight": 164,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_pooka/attack.webp",
+     "frames": 6,
+     "frameWidth": 176,
+     "frameHeight": 164,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_pooka/defend.webp",
+     "frames": 3,
+     "frameWidth": 176,
+     "frameHeight": 164,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_pooka/hit.webp",
+     "frames": 3,
+     "frameWidth": 176,
+     "frameHeight": 164,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_pooka/death.webp",
+     "frames": 6,
+     "frameWidth": 176,
+     "frameHeight": 164,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_pooka/victory.webp",
+     "frames": 6,
+     "frameWidth": 176,
+     "frameHeight": 164,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.base/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_pooka/ability.webp",
+     "frames": 6,
+     "frameWidth": 176,
+     "frameHeight": 164,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_elder_pooka": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 162.09,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_elder_pooka/idle.webp",
+     "frames": 6,
+     "frameWidth": 179,
+     "frameHeight": 166,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_elder_pooka/move.webp",
+     "frames": 6,
+     "frameWidth": 179,
+     "frameHeight": 166,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_elder_pooka/attack.webp",
+     "frames": 6,
+     "frameWidth": 179,
+     "frameHeight": 166,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_elder_pooka/defend.webp",
+     "frames": 3,
+     "frameWidth": 179,
+     "frameHeight": 166,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_elder_pooka/hit.webp",
+     "frames": 3,
+     "frameWidth": 179,
+     "frameHeight": 166,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_elder_pooka/death.webp",
+     "frames": 6,
+     "frameWidth": 178,
+     "frameHeight": 166,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_elder_pooka/victory.webp",
+     "frames": 6,
+     "frameWidth": 178,
+     "frameHeight": 166,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_elder_pooka/ability.webp",
+     "frames": 6,
+     "frameWidth": 178,
+     "frameHeight": 166,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_cu_sith": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 164.98,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_cu_sith/idle.webp",
+     "frames": 6,
+     "frameWidth": 203,
+     "frameHeight": 189,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_cu_sith/move.webp",
+     "frames": 6,
+     "frameWidth": 203,
+     "frameHeight": 189,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_cu_sith/attack.webp",
+     "frames": 6,
+     "frameWidth": 203,
+     "frameHeight": 189,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_cu_sith/defend.webp",
+     "frames": 3,
+     "frameWidth": 203,
+     "frameHeight": 189,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_cu_sith/hit.webp",
+     "frames": 3,
+     "frameWidth": 203,
+     "frameHeight": 189,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_cu_sith/death.webp",
+     "frames": 6,
+     "frameWidth": 203,
+     "frameHeight": 189,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_cu_sith/victory.webp",
+     "frames": 6,
+     "frameWidth": 203,
+     "frameHeight": 189,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_great_cu_sith": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 157.13,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_great_cu_sith/idle.webp",
+     "frames": 6,
+     "frameWidth": 207,
+     "frameHeight": 192,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_great_cu_sith/move.webp",
+     "frames": 6,
+     "frameWidth": 207,
+     "frameHeight": 192,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_great_cu_sith/attack.webp",
+     "frames": 6,
+     "frameWidth": 207,
+     "frameHeight": 192,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_great_cu_sith/defend.webp",
+     "frames": 3,
+     "frameWidth": 207,
+     "frameHeight": 192,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_great_cu_sith/hit.webp",
+     "frames": 3,
+     "frameWidth": 207,
+     "frameHeight": 192,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_great_cu_sith/death.webp",
+     "frames": 6,
+     "frameWidth": 207,
+     "frameHeight": 192,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_great_cu_sith/victory.webp",
+     "frames": 6,
+     "frameWidth": 207,
+     "frameHeight": 192,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_kelpie": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 160.08,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_kelpie/idle.webp",
+     "frames": 6,
+     "frameWidth": 247,
+     "frameHeight": 155,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_kelpie/move.webp",
+     "frames": 6,
+     "frameWidth": 247,
+     "frameHeight": 155,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_kelpie/attack.webp",
+     "frames": 6,
+     "frameWidth": 247,
+     "frameHeight": 155,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_kelpie/defend.webp",
+     "frames": 3,
+     "frameWidth": 247,
+     "frameHeight": 155,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_kelpie/hit.webp",
+     "frames": 3,
+     "frameWidth": 247,
+     "frameHeight": 155,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_kelpie/death.webp",
+     "frames": 6,
+     "frameWidth": 248,
+     "frameHeight": 155,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_kelpie/victory.webp",
+     "frames": 6,
+     "frameWidth": 248,
+     "frameHeight": 155,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.base/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_kelpie/ability.webp",
+     "frames": 6,
+     "frameWidth": 248,
+     "frameHeight": 155,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_dread_kelpie": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 152.46,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_dread_kelpie/idle.webp",
+     "frames": 6,
+     "frameWidth": 260,
+     "frameHeight": 163,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_dread_kelpie/move.webp",
+     "frames": 6,
+     "frameWidth": 260,
+     "frameHeight": 163,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_dread_kelpie/attack.webp",
+     "frames": 6,
+     "frameWidth": 260,
+     "frameHeight": 163,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_dread_kelpie/defend.webp",
+     "frames": 3,
+     "frameWidth": 260,
+     "frameHeight": 163,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_dread_kelpie/hit.webp",
+     "frames": 3,
+     "frameWidth": 260,
+     "frameHeight": 163,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_dread_kelpie/death.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 163,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_dread_kelpie/victory.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 163,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_dread_kelpie/ability.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 163,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_banshee": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (spirit, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 113.61,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/spirit.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_banshee/idle.webp",
+     "frames": 6,
+     "frameWidth": 265,
+     "frameHeight": 246,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_banshee/move.webp",
+     "frames": 6,
+     "frameWidth": 265,
+     "frameHeight": 246,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_banshee/attack.webp",
+     "frames": 6,
+     "frameWidth": 265,
+     "frameHeight": 246,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "shoot": {
+     "file": "sprites/final/creatures/celtic_banshee/shoot.webp",
+     "frames": 6,
+     "frameWidth": 264,
+     "frameHeight": 246,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_banshee/defend.webp",
+     "frames": 3,
+     "frameWidth": 265,
+     "frameHeight": 246,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_banshee/hit.webp",
+     "frames": 3,
+     "frameWidth": 265,
+     "frameHeight": 246,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_banshee/death.webp",
+     "frames": 6,
+     "frameWidth": 264,
+     "frameHeight": 246,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_banshee/victory.webp",
+     "frames": 6,
+     "frameWidth": 264,
+     "frameHeight": 246,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/spirit.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/spirit.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "shoot": {
-     "file": "sprites/creatures/_silhouette/spirit.base/shoot.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 9,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/spirit.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/spirit.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/spirit.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/spirit.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_battle_banshee": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (spirit, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 108.2,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_battle_banshee/idle.webp",
+     "frames": 6,
+     "frameWidth": 275,
+     "frameHeight": 256,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_battle_banshee/move.webp",
+     "frames": 6,
+     "frameWidth": 275,
+     "frameHeight": 256,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_battle_banshee/attack.webp",
+     "frames": 6,
+     "frameWidth": 275,
+     "frameHeight": 256,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "shoot": {
+     "file": "sprites/final/creatures/celtic_battle_banshee/shoot.webp",
+     "frames": 6,
+     "frameWidth": 274,
+     "frameHeight": 256,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_battle_banshee/defend.webp",
+     "frames": 3,
+     "frameWidth": 275,
+     "frameHeight": 256,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_battle_banshee/hit.webp",
+     "frames": 3,
+     "frameWidth": 275,
+     "frameHeight": 256,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_battle_banshee/death.webp",
+     "frames": 6,
+     "frameWidth": 274,
+     "frameHeight": 256,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_battle_banshee/victory.webp",
+     "frames": 6,
+     "frameWidth": 274,
+     "frameHeight": 256,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "shoot": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/shoot.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 9,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/spirit.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_selkie": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 151.11,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_selkie/idle.webp",
+     "frames": 6,
+     "frameWidth": 336,
+     "frameHeight": 210,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_selkie/move.webp",
+     "frames": 6,
+     "frameWidth": 336,
+     "frameHeight": 210,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_selkie/attack.webp",
+     "frames": 6,
+     "frameWidth": 336,
+     "frameHeight": 210,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_selkie/defend.webp",
+     "frames": 3,
+     "frameWidth": 336,
+     "frameHeight": 210,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_selkie/hit.webp",
+     "frames": 3,
+     "frameWidth": 336,
+     "frameHeight": 210,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_selkie/death.webp",
+     "frames": 6,
+     "frameWidth": 337,
+     "frameHeight": 210,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_selkie/victory.webp",
+     "frames": 6,
+     "frameWidth": 337,
+     "frameHeight": 210,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.base/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_selkie/ability.webp",
+     "frames": 6,
+     "frameWidth": 337,
+     "frameHeight": 210,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_storm_selkie": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 143.91,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_storm_selkie/idle.webp",
+     "frames": 6,
+     "frameWidth": 344,
+     "frameHeight": 215,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_storm_selkie/move.webp",
+     "frames": 6,
+     "frameWidth": 344,
+     "frameHeight": 215,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_storm_selkie/attack.webp",
+     "frames": 6,
+     "frameWidth": 344,
+     "frameHeight": 215,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_storm_selkie/defend.webp",
+     "frames": 3,
+     "frameWidth": 344,
+     "frameHeight": 215,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_storm_selkie/hit.webp",
+     "frames": 3,
+     "frameWidth": 344,
+     "frameHeight": 215,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_storm_selkie/death.webp",
+     "frames": 6,
+     "frameWidth": 345,
+     "frameHeight": 215,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_storm_selkie/victory.webp",
+     "frames": 6,
+     "frameWidth": 345,
+     "frameHeight": 215,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_storm_selkie/ability.webp",
+     "frames": 6,
+     "frameWidth": 345,
+     "frameHeight": 215,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_horned_stag_spirit": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 146.99,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/idle.webp",
+     "frames": 6,
+     "frameWidth": 272,
+     "frameHeight": 170,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/move.webp",
+     "frames": 6,
+     "frameWidth": 272,
+     "frameHeight": 170,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/attack.webp",
+     "frames": 6,
+     "frameWidth": 272,
+     "frameHeight": 170,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/defend.webp",
+     "frames": 3,
+     "frameWidth": 272,
+     "frameHeight": 170,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/hit.webp",
+     "frames": 3,
+     "frameWidth": 272,
+     "frameHeight": 170,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/death.webp",
+     "frames": 6,
+     "frameWidth": 274,
+     "frameHeight": 170,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.869
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/victory.webp",
+     "frames": 6,
+     "frameWidth": 274,
+     "frameHeight": 170,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.869
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.base/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_horned_stag_spirit/ability.webp",
+     "frames": 6,
+     "frameWidth": 274,
+     "frameHeight": 170,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.869
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_great_stag_spirit": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 139.99,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/idle.webp",
+     "frames": 6,
+     "frameWidth": 285,
+     "frameHeight": 178,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/move.webp",
+     "frames": 6,
+     "frameWidth": 285,
+     "frameHeight": 178,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/attack.webp",
+     "frames": 6,
+     "frameWidth": 285,
+     "frameHeight": 178,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/defend.webp",
+     "frames": 3,
+     "frameWidth": 285,
+     "frameHeight": 178,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/hit.webp",
+     "frames": 3,
+     "frameWidth": 285,
+     "frameHeight": 178,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/death.webp",
+     "frames": 6,
+     "frameWidth": 286,
+     "frameHeight": 178,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/victory.webp",
+     "frames": 6,
+     "frameWidth": 286,
+     "frameHeight": 178,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/celtic_great_stag_spirit/ability.webp",
+     "frames": 6,
+     "frameWidth": 286,
+     "frameHeight": 178,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "celtic_fomorian_giant": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (giant, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 73.48,
-   "tint": "accent",
+   "pixelsPerHex": 75.95,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/giant.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_fomorian_giant/idle.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 75.95,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_fomorian_giant/move.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 75.95,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_fomorian_giant/attack.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 75.95,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_fomorian_giant/defend.webp",
+     "frames": 3,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 75.95,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_fomorian_giant/hit.webp",
+     "frames": 3,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 75.95,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_fomorian_giant/death.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 75.95,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_fomorian_giant/victory.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/giant.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/giant.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/giant.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/giant.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/giant.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/giant.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8657
+     ],
+     "pixelsPerHex": 75.95,
+     "status": "final"
     }
    }
   },
   "celtic_ancient_fomorian": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (giant, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 69.98,
-   "tint": "accent",
+   "pixelsPerHex": 73.28,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/celtic_ancient_fomorian/idle.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 73.28,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/celtic_ancient_fomorian/move.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 73.28,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/celtic_ancient_fomorian/attack.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 73.28,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/celtic_ancient_fomorian/defend.webp",
+     "frames": 3,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 73.28,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/celtic_ancient_fomorian/hit.webp",
+     "frames": 3,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 73.28,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/celtic_ancient_fomorian/death.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8657
+     ],
+     "pixelsPerHex": 73.28,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/celtic_ancient_fomorian/victory.webp",
+     "frames": 6,
+     "frameWidth": 333,
+     "frameHeight": 207,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8657
+     ],
+     "pixelsPerHex": 73.28,
+     "status": "final"
     }
    }
   },
@@ -1985,664 +2187,842 @@
    }
   },
   "japanese_kitsune": {
-   "status": "placeholder",
-   "provenance": "Still pose cut from the delivered canonical reference view creature.japanese.tier1.base.ref.threequarter.png (Brief 5, three-quarter master, facing right); no animation strips yet \u2014 the battle adds simple motion. Replace with GPT-6 strips (GPT6_2D_CONTENT_GENERATION.md).",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 345.19,
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/japanese_kitsune/idle.webp",
-     "frames": 1,
-     "frameWidth": 478,
-     "frameHeight": 306,
+     "file": "sprites/final/creatures/japanese_kitsune/idle.webp",
+     "frames": 6,
+     "frameWidth": 197,
+     "frameHeight": 183,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/japanese_kitsune/attack.webp",
+     "frames": 6,
+     "frameWidth": 197,
+     "frameHeight": 183,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_kitsune/death.webp",
+     "frames": 6,
+     "frameWidth": 197,
+     "frameHeight": 183,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/japanese_kitsune/defend.webp",
+     "frames": 3,
+     "frameWidth": 197,
+     "frameHeight": 183,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_kitsune/hit.webp",
+     "frames": 3,
+     "frameWidth": 197,
+     "frameHeight": 183,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/japanese_kitsune/move.webp",
+     "frames": 6,
+     "frameWidth": 197,
+     "frameHeight": 183,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/japanese_kitsune/victory.webp",
+     "frames": 6,
+     "frameWidth": 197,
+     "frameHeight": 183,
      "fps": 4,
      "loop": true,
      "anchor": [
-      0.7092,
-      0.9804
-     ]
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "japanese_nine_tailed_kitsune": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 162.09,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/idle.webp",
+     "frames": 6,
+     "frameWidth": 201,
+     "frameHeight": 187,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/move.webp",
+     "frames": 6,
+     "frameWidth": 201,
+     "frameHeight": 187,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/attack.webp",
+     "frames": 6,
+     "frameWidth": 201,
+     "frameHeight": 187,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/defend.webp",
+     "frames": 3,
+     "frameWidth": 201,
+     "frameHeight": 187,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/hit.webp",
+     "frames": 3,
+     "frameWidth": 201,
+     "frameHeight": 187,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8671
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/death.webp",
+     "frames": 6,
+     "frameWidth": 200,
+     "frameHeight": 187,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/victory.webp",
+     "frames": 6,
+     "frameWidth": 200,
+     "frameHeight": 187,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "ability": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/ability.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/japanese_nine_tailed_kitsune/ability.webp",
+     "frames": 6,
+     "frameWidth": 200,
+     "frameHeight": 187,
+     "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8672
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "japanese_kappa": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 164.98,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_kappa/idle.webp",
+     "frames": 6,
+     "frameWidth": 161,
+     "frameHeight": 150,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/japanese_kappa/move.webp",
+     "frames": 6,
+     "frameWidth": 161,
+     "frameHeight": 150,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/japanese_kappa/attack.webp",
+     "frames": 6,
+     "frameWidth": 161,
+     "frameHeight": 150,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/japanese_kappa/defend.webp",
+     "frames": 3,
+     "frameWidth": 161,
+     "frameHeight": 150,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_kappa/hit.webp",
+     "frames": 3,
+     "frameWidth": 161,
+     "frameHeight": 150,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_kappa/death.webp",
+     "frames": 6,
+     "frameWidth": 161,
+     "frameHeight": 150,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/japanese_kappa/victory.webp",
+     "frames": 6,
+     "frameWidth": 161,
+     "frameHeight": 150,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "japanese_river_elder_kappa": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (beast, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 157.13,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_river_elder_kappa/idle.webp",
+     "frames": 6,
+     "frameWidth": 160,
+     "frameHeight": 149,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/japanese_river_elder_kappa/move.webp",
+     "frames": 6,
+     "frameWidth": 160,
+     "frameHeight": 149,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/japanese_river_elder_kappa/attack.webp",
+     "frames": 6,
+     "frameWidth": 160,
+     "frameHeight": 149,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/japanese_river_elder_kappa/defend.webp",
+     "frames": 3,
+     "frameWidth": 160,
+     "frameHeight": 149,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_river_elder_kappa/hit.webp",
+     "frames": 3,
+     "frameWidth": 160,
+     "frameHeight": 149,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_river_elder_kappa/death.webp",
+     "frames": 6,
+     "frameWidth": 160,
+     "frameHeight": 149,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/japanese_river_elder_kappa/victory.webp",
+     "frames": 6,
+     "frameWidth": 160,
+     "frameHeight": 149,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/beast.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8674
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "japanese_tengu": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (winged humanoid, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 112.65,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_tengu/idle.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 250,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/japanese_tengu/move.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 250,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/japanese_tengu/attack.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 250,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/japanese_tengu/defend.webp",
+     "frames": 3,
+     "frameWidth": 261,
+     "frameHeight": 250,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_tengu/hit.webp",
+     "frames": 3,
+     "frameWidth": 261,
+     "frameHeight": 250,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_tengu/death.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 250,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/japanese_tengu/victory.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 250,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "takeoff": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/takeoff.webp",
+     "file": "sprites/final/creatures/japanese_tengu/takeoff.webp",
      "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "frameWidth": 261,
+     "frameHeight": 250,
      "fps": 8,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "fly": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/fly.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/japanese_tengu/fly.webp",
+     "frames": 6,
+     "frameWidth": 261,
+     "frameHeight": 250,
+     "fps": 10,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "landing": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.base/landing.webp",
+     "file": "sprites/final/creatures/japanese_tengu/landing.webp",
      "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "frameWidth": 261,
+     "frameHeight": 250,
      "fps": 8,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "japanese_great_tengu": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (winged humanoid, upgraded) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 107.29,
-   "tint": "accent",
+   "pixelsPerHex": 120.0,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_great_tengu/idle.webp",
+     "frames": 6,
+     "frameWidth": 263,
+     "frameHeight": 252,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/japanese_great_tengu/move.webp",
+     "frames": 6,
+     "frameWidth": 263,
+     "frameHeight": 252,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/japanese_great_tengu/attack.webp",
+     "frames": 6,
+     "frameWidth": 263,
+     "frameHeight": 252,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/japanese_great_tengu/defend.webp",
+     "frames": 3,
+     "frameWidth": 263,
+     "frameHeight": 252,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_great_tengu/hit.webp",
+     "frames": 3,
+     "frameWidth": 263,
+     "frameHeight": 252,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_great_tengu/death.webp",
+     "frames": 6,
+     "frameWidth": 263,
+     "frameHeight": 252,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/japanese_great_tengu/victory.webp",
+     "frames": 6,
+     "frameWidth": 263,
+     "frameHeight": 252,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "takeoff": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/takeoff.webp",
+     "file": "sprites/final/creatures/japanese_great_tengu/takeoff.webp",
      "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "frameWidth": 263,
+     "frameHeight": 252,
      "fps": 8,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "fly": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/fly.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
+     "file": "sprites/final/creatures/japanese_great_tengu/fly.webp",
+     "frames": 6,
+     "frameWidth": 263,
+     "frameHeight": 252,
+     "fps": 10,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     },
     "landing": {
-     "file": "sprites/creatures/_silhouette/winged_humanoid.upgraded/landing.webp",
+     "file": "sprites/final/creatures/japanese_great_tengu/landing.webp",
      "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "frameWidth": 263,
+     "frameHeight": 252,
      "fps": 8,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8667
+     ],
+     "pixelsPerHex": 120.0,
+     "status": "final"
     }
    }
   },
   "japanese_oni": {
-   "status": "placeholder",
-   "provenance": "Procedural silhouette (giant, base) from the interface's placeholder art, tinted with the owner's colour; simple multi-frame strips. No reference view delivered yet.",
+   "status": "final",
+   "provenance": "GPT-6 animation strips (GPT6_2D_CONTENT_GENERATION.md), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 79.83,
-   "tint": "accent",
+   "pixelsPerHex": 93.56,
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/giant.base/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_oni/idle.webp",
+     "frames": 6,
+     "frameWidth": 302,
+     "frameHeight": 228,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8666
+     ],
+     "pixelsPerHex": 93.56,
+     "status": "final"
+    },
+    "move": {
+     "file": "sprites/final/creatures/japanese_oni/move.webp",
+     "frames": 6,
+     "frameWidth": 302,
+     "frameHeight": 228,
+     "fps": 8,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.8666
+     ],
+     "pixelsPerHex": 93.56,
+     "status": "final"
+    },
+    "attack": {
+     "file": "sprites/final/creatures/japanese_oni/attack.webp",
+     "frames": 6,
+     "frameWidth": 302,
+     "frameHeight": 228,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8666
+     ],
+     "pixelsPerHex": 93.56,
+     "status": "final"
+    },
+    "defend": {
+     "file": "sprites/final/creatures/japanese_oni/defend.webp",
+     "frames": 3,
+     "frameWidth": 302,
+     "frameHeight": 228,
+     "fps": 8,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8666
+     ],
+     "pixelsPerHex": 93.56,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_oni/hit.webp",
+     "frames": 3,
+     "frameWidth": 302,
+     "frameHeight": 228,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8666
+     ],
+     "pixelsPerHex": 93.56,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_oni/death.webp",
+     "frames": 6,
+     "frameWidth": 302,
+     "frameHeight": 228,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8666
+     ],
+     "pixelsPerHex": 93.56,
+     "status": "final"
+    },
+    "victory": {
+     "file": "sprites/final/creatures/japanese_oni/victory.webp",
+     "frames": 6,
+     "frameWidth": 302,
+     "frameHeight": 228,
      "fps": 4,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
-    },
-    "move": {
-     "file": "sprites/creatures/_silhouette/giant.base/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "attack": {
-     "file": "sprites/creatures/_silhouette/giant.base/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/giant.base/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/giant.base/hit.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/giant.base/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 8,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "victory": {
-     "file": "sprites/creatures/_silhouette/giant.base/victory.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 6,
-     "loop": true,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
+      0.8666
+     ],
+     "pixelsPerHex": 93.56,
+     "status": "final"
     }
    }
   },
@@ -2654,76 +3034,88 @@
    "tint": "accent",
    "animations": {
     "idle": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/idle.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 4,
+     "file": "sprites/final/creatures/japanese_oni_warlord/idle.webp",
+     "frames": 6,
+     "frameWidth": 296,
+     "frameHeight": 232,
+     "fps": 3,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8682
+     ],
+     "pixelsPerHex": 89.38,
+     "status": "final"
     },
     "move": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_oni_warlord/move.webp",
+     "frames": 6,
+     "frameWidth": 296,
+     "frameHeight": 232,
      "fps": 8,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8682
+     ],
+     "pixelsPerHex": 89.38,
+     "status": "final"
     },
     "attack": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/attack.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "defend": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/defend.webp",
-     "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/creatures/japanese_oni_warlord/attack.webp",
+     "frames": 6,
+     "frameWidth": 296,
+     "frameHeight": 232,
      "fps": 6,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8682
+     ],
+     "pixelsPerHex": 89.38,
+     "status": "final"
     },
-    "hit": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/hit.webp",
+    "defend": {
+     "file": "sprites/final/creatures/japanese_oni_warlord/defend.webp",
      "frames": 3,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 10,
-     "loop": false,
-     "anchor": [
-      0.5,
-      0.9286
-     ]
-    },
-    "death": {
-     "file": "sprites/creatures/_silhouette/giant.upgraded/death.webp",
-     "frames": 5,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "frameWidth": 296,
+     "frameHeight": 232,
      "fps": 8,
      "loop": false,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.8682
+     ],
+     "pixelsPerHex": 89.38,
+     "status": "final"
+    },
+    "hit": {
+     "file": "sprites/final/creatures/japanese_oni_warlord/hit.webp",
+     "frames": 3,
+     "frameWidth": 296,
+     "frameHeight": 232,
+     "fps": 10,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8682
+     ],
+     "pixelsPerHex": 89.38,
+     "status": "final"
+    },
+    "death": {
+     "file": "sprites/final/creatures/japanese_oni_warlord/death.webp",
+     "frames": 6,
+     "frameWidth": 296,
+     "frameHeight": 232,
+     "fps": 5,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8682
+     ],
+     "pixelsPerHex": 89.38,
+     "status": "final"
     },
     "victory": {
      "file": "sprites/creatures/_silhouette/giant.upgraded/victory.webp",

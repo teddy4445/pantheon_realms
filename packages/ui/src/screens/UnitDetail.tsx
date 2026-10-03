@@ -2,23 +2,21 @@
  * S18 Unit Detail / Animated Bestiary. A large 2D animated viewer of the
  * creature's battle sprite set (the animations its gameplay content calls for:
  * idle, move, attack, defend, hit, death, victory, plus shoot / takeoff-fly-
- * landing / ability where it has them), base/upgraded switching, playback
- * controls with a reduced-motion still, and exact statistics, abilities with
- * exact rules, sourced notes and original lore.
+ * landing / ability where it has them) with playback controls and a
+ * reduced-motion still, beside one panel: name, summary, statistics, growth
+ * and cost, abilities with their exact rules, and lore. Each form is its own
+ * page (opened from the Encyclopedia or a stack).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { creatureSprites, requiredAnimations } from '@pr/presentation/core';
 import type { UnitViewerController, ViewerSpriteStatus } from '@pr/presentation';
 import { useStore } from '../app/context';
-import { Button, Chip, Panel, SectionTitle, Tabs, Toggle } from '../components/kit';
+import { Button, Panel, SectionTitle, Toggle } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
-import { BalanceChip, CostList, CreatureStats, ScreenHeader, StatusChip } from '../components/game';
+import { CostList, CreatureStats, ScreenHeader } from '../components/game';
 import { SceneViewport, type SceneFactory } from '../scene/SceneHost';
-import { resolveAsset } from '../assets/manifest';
 import { reducedMotion } from '../app/preferences';
 import { AbilityBadge } from '../components/badges';
-
-type Tab = 'stats' | 'abilities' | 'lore' | 'assets';
 
 const STATE_LABEL: Record<string, string> = {
   idle: 'Idle',
@@ -40,8 +38,7 @@ export function UnitDetailScreen() {
   const store = useStore();
   const catalog = store.catalog;
   const initial = (store.screen.params.creatureId as string | undefined) ?? 'hoplite';
-  const [creatureId, setCreatureId] = useState(initial);
-  const [tab, setTab] = useState<Tab>('stats');
+  const creatureId = initial;
   const [anim, setAnim] = useState<string>('idle');
   const reduced = reducedMotion(store.prefs);
   const [autoplay, setAutoplay] = useState(store.prefs.codexAutoplay && !reduced);
@@ -52,7 +49,6 @@ export function UnitDetailScreen() {
   const ctrl = useRef<UnitViewerController | null>(null);
   const def = catalog.creatures[creatureId] ?? catalog.creatures['hoplite']!;
   const fam = catalog.families[def.familyId];
-  const other = def.form === 'base' ? (def.upgradeId ? catalog.creatures[def.upgradeId] : undefined) : def.baseId ? catalog.creatures[def.baseId] : undefined;
   const lore = catalog.lore[def.loreId];
   const accent = def.pantheonId ? (catalog.pantheons[def.pantheonId]?.theme.accent ?? '#3b73d9') : '#6b5a3a';
   const states = requiredAnimations(catalog, def);
@@ -109,23 +105,7 @@ export function UnitDetailScreen() {
   const own = (s: string) => !!set?.animations[s];
   return (
     <div className="screen unit-screen">
-      <ScreenHeader
-        title={def.name}
-        subtitle={`Tier ${def.tier} · ${def.form === 'upgraded' ? 'Upgraded form' : 'Base form'} · ${def.roleLabel} · ${def.pantheonId ? catalog.pantheons[def.pantheonId]?.name : 'Neutral'}`}
-        right={
-          other ? (
-            <div className="tabs">
-              {[fam?.baseCreatureId, fam?.upgradedCreatureId].map((id) =>
-                id ? (
-                  <button key={id} type="button" role="tab" className="tab" aria-selected={id === def.id} onClick={() => { setCreatureId(id); store.setParams({ creatureId: id }); }}>
-                    {catalog.creatures[id]?.name}
-                  </button>
-                ) : null,
-              )}
-            </div>
-          ) : undefined
-        }
-      />
+      <ScreenHeader title={def.name} />
       <div className="unit-layout">
         <div className="unit-viewer panel">
           <SceneViewport factory={factory} onController={onController} className="unit-viewer__scene" label={`${def.name} animated preview`} />
@@ -184,154 +164,61 @@ export function UnitDetailScreen() {
             {states.some((st) => !own(st)) ? <div className="faint small">* Stand-in: this animation is not drawn yet; another strip plays in its place.</div> : null}
           </div>
         </div>
-        <div className="unit-info">
-          <div className="row gap">
-            <CreaturePortrait catalog={catalog} creatureId={def.id} size="8rem" showPlaceholderTag />
-            <div>
-              <div className="row gap wrap">
-                <StatusChip status={def.implementationStatus} />
-                <BalanceChip status={def.balanceStatus} />
-                <Chip>Growth {fam?.baseGrowth ?? '—'}/week (shared)</Chip>
+        <Panel className="unit-info" bodyClassName="scroll unit-info__body">
+          <div className="unit-head">
+            <CreaturePortrait catalog={catalog} creatureId={def.id} size="7rem" showPlaceholderTag />
+            <div className="unit-head__text">
+              <h2 className="unit-head__name" data-testid="unit-name">
+                {def.name}
+              </h2>
+              <div className="unit-head__meta">
+                Tier {def.tier} · {def.form === 'upgraded' ? 'Upgraded form' : 'Base form'} · {def.roleLabel} · {def.pantheonId ? catalog.pantheons[def.pantheonId]?.name : 'Neutral'}
               </div>
-              <p className="small">{def.summary}</p>
+              <p className="unit-head__summary">{def.summary}</p>
             </div>
           </div>
-          <Tabs<Tab>
-            label="Unit information"
-            value={tab}
-            onChange={setTab}
-            tabs={[
-              { id: 'stats', label: 'Statistics' },
-              { id: 'abilities', label: 'Abilities' },
-              { id: 'lore', label: 'Lore' },
-              { id: 'assets', label: 'Assets' },
-            ]}
-          />
-          <Panel className="unit-tab" bodyClassName="scroll">
-            {tab === 'stats' ? (
-              <>
-                <CreatureStats def={def} compare={def.form === 'upgraded' ? other : undefined} />
-                <SectionTitle>Cost</SectionTitle>
-                {def.cost ? <CostList cost={def.cost} /> : <span className="dim">Not designed</span>}
-                {other?.stats && def.stats ? (
-                  <>
-                    <SectionTitle>{def.form === 'base' ? `Upgrade → ${other.name}` : `Upgraded from ${other.name}`}</SectionTitle>
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th />
-                          <th>{def.form === 'base' ? def.name : other.name}</th>
-                          <th>{def.form === 'base' ? other.name : def.name}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(['attack', 'defense', 'hp', 'speed', 'shots', 'range'] as const).map((k) => {
-                          const b = def.form === 'base' ? def.stats! : other.stats!;
-                          const u = def.form === 'base' ? other.stats! : def.stats!;
-                          if (k === 'range' && !b.range && !u.range) return null;
-                          return (
-                            <tr key={k}>
-                              <th>{k}</th>
-                              <td className="num">{b[k] ?? '—'}</td>
-                              <td className={`num ${(u[k] ?? 0) > (b[k] ?? 0) ? 'success' : ''}`}>{u[k] ?? '—'}</td>
-                            </tr>
-                          );
-                        })}
-                        <tr>
-                          <th>damage</th>
-                          <td className="num">
-                            {(def.form === 'base' ? def.stats : other.stats)!.damageMin}–{(def.form === 'base' ? def.stats : other.stats)!.damageMax}
-                          </td>
-                          <td className="num">
-                            {(def.form === 'base' ? other.stats : def.stats)!.damageMin}–{(def.form === 'base' ? other.stats : def.stats)!.damageMax}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </>
-                ) : null}
-              </>
-            ) : null}
-            {tab === 'abilities' ? (
-              def.abilityIds.length === 0 ? (
-                <p className="dim">No special abilities.</p>
-              ) : (
-                def.abilityIds.map((a) => {
-                  const ab = catalog.abilities[a];
-                  if (!ab) return null;
-                  return (
-                    <div key={a} className="ability">
-                      <div className="ability__name">
-                        <AbilityBadge catalog={catalog} abilityId={a} size="1.3rem" /> {ab.name} <Chip>{ab.activation}</Chip> <StatusChip status={ab.implementationStatus} />
-                      </div>
-                      <div className="small">{ab.summary}</div>
-                      <div className="small">
-                        <strong>Exact rule:</strong> {ab.exactRule}
-                      </div>
-                      {ab.restriction ? <div className="faint small">Restriction: {ab.restriction}</div> : null}
-                    </div>
-                  );
-                })
-              )
-            ) : null}
-            {tab === 'lore' ? (
-              lore ? (
-                <>
-                  <SectionTitle>In the world</SectionTitle>
-                  <p className="lore">{lore.gameLore}</p>
-                  {lore.upgradeLore ? <p className="lore dim">{lore.upgradeLore}</p> : null}
-                  <SectionTitle>Historical and mythological note</SectionTitle>
-                  <p className="small">{lore.sourceNote}</p>
-                  <div className="row gap wrap">
-                    <Chip tone={lore.sourceStatus === 'verified_note' ? 'ok' : lore.sourceStatus === 'original_invention' ? 'info' : 'warn'}>
-                      {lore.sourceStatus === 'verified_note' ? 'Verified note' : lore.sourceStatus === 'original_invention' ? 'Original fiction' : 'Draft — requires review'}
-                    </Chip>
-                    {lore.sourceRefs.map((r) => (
-                      <Chip key={r}>{r}</Chip>
-                    ))}
+          <SectionTitle>Statistics</SectionTitle>
+          <CreatureStats def={def} />
+          <div className="unit-facts">
+            <span>
+              <span className="dim">Growth</span> {fam?.baseGrowth ?? '—'} per week
+            </span>
+            <span>
+              <span className="dim">Cost</span> {def.cost ? <CostList cost={def.cost} /> : <span className="dim">—</span>}
+            </span>
+          </div>
+          <SectionTitle>Abilities</SectionTitle>
+          {def.abilityIds.length === 0 ? (
+            <p className="dim">No special abilities.</p>
+          ) : (
+            def.abilityIds.map((a) => {
+              const ab = catalog.abilities[a];
+              if (!ab) return null;
+              return (
+                <div key={a} className="ability">
+                  <div className="ability__name">
+                    <AbilityBadge catalog={catalog} abilityId={a} size="1.5rem" /> {ab.name} <span className="dim small">· {ab.activation === 'active' ? 'Active' : 'Passive'}</span>
                   </div>
-                </>
-              ) : (
-                <p className="dim">No lore written for this creature yet.</p>
-              )
-            ) : null}
-            {tab === 'assets' ? (
-              <table className="table">
-                <tbody>
-                  <tr>
-                    <th>Sprites</th>
-                    <td>
-                      <code>{def.presentation.spriteAssetId}</code> <Chip tone={set?.status === 'final' ? 'ok' : 'muted'}>{set?.status ?? 'missing'}</Chip>
-                      {set ? <div className="faint small">{set.provenance}</div> : null}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Portrait</th>
-                    <td>
-                      <code>{def.presentation.portraitAssetId}</code> <Chip tone={resolveAsset(def.presentation.portraitAssetId).status === 'final' ? 'ok' : 'muted'}>{resolveAsset(def.presentation.portraitAssetId).status}</Chip>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Body profile</th>
-                    <td>
-                      <code>{def.presentation.bodyProfile}</code>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Animations</th>
-                    <td>
-                      {states.map((st) => (
-                        <Chip key={st} tone={own(st) ? (set?.status === 'final' ? 'ok' : 'muted') : 'warn'}>
-                          {st}
-                        </Chip>
-                      ))}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            ) : null}
-          </Panel>
-        </div>
+                  <div>{ab.summary}</div>
+                  <div className="small">
+                    <strong>Exact rule:</strong> {ab.exactRule}
+                  </div>
+                  {ab.restriction ? <div className="faint small">Restriction: {ab.restriction}</div> : null}
+                </div>
+              );
+            })
+          )}
+          <SectionTitle>Lore</SectionTitle>
+          {lore ? (
+            <>
+              <p className="lore">{lore.gameLore}</p>
+              {lore.upgradeLore ? <p className="lore dim">{lore.upgradeLore}</p> : null}
+              <p className="small dim">{lore.sourceNote}</p>
+            </>
+          ) : (
+            <p className="dim">No lore written for this creature yet.</p>
+          )}
+        </Panel>
       </div>
     </div>
   );

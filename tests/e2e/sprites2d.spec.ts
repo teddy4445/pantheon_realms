@@ -45,8 +45,11 @@ test('bestiary: the animated 2D viewer plays the states this creature has, switc
   await page.waitForTimeout(400);
   await page.screenshot({ path: 'test-results/sprites2d-viewer-peltast.png' });
   for (const id of ['viewer-pause', 'viewer-play', 'viewer-stop', 'viewer-restart']) await page.getByTestId(id).click();
-  // Base ↔ upgraded switching from the header tabs.
-  await page.getByRole('tab', { name: 'Veteran Peltast' }).click();
+  // One creature per page (owner request 2026-10-03): no base/upgraded tabs; the upgraded form opens from the Encyclopedia.
+  await expect(page.getByRole('tab', { name: 'Veteran Peltast' })).toHaveCount(0);
+  await page.goto('/?e2e', { waitUntil: 'networkidle' });
+  await page.getByTestId('menu-encyclopedia').click();
+  await page.getByTestId('codex-veteran_peltast').click();
   expect((await inspect(page)).screen).toBe('unit-detail');
   await expect(page.locator('.screen-header__title')).toHaveText('Veteran Peltast');
   await expect(page.getByTestId('viewer-sprite-status')).toHaveText('Placeholder sprites');

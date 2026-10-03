@@ -123,6 +123,8 @@ export const NORSE_TOWN: TownArchetypeDefinition = {
   pantheonId: N,
   name: 'Norse Hold',
   backgroundAssetId: 'town.norse.background',
+  // Aurora over the peaks at the top centre; the giant's statue stands at the top left, the great hall at the top right.
+  hudAnchor: 'center',
   slots: [
     slot('civic_hall', 'support', 'Civic Hall', ['norse_longhouse', 'norse_jarls_hall', 'norse_high_hall', 'norse_hall_of_kings'], { x: 55, y: 47, width: 17, height: 17, layer: 4 }, { role: 'civic_hall' }),
     slot('pantheon_temple', 'support', 'Pantheon Temple (Hof)', ['norse_hof_1', 'norse_hof_2'], { x: 60, y: 21.5, width: 13, height: 13, layer: 2 }, { role: 'pantheon_temple' }),

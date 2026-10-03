@@ -7,9 +7,10 @@
  * creatures close the bestiary); Spells, Skills, Artifacts (with the artifact
  * sets) and Abilities give every entry a card. Status is written into the
  * cards as plain text where it matters (content not yet in play says so), not
- * as tags.
+ * as tags. Within a page every card of a kind has the same height (the
+ * tallest one's), so the grid reads as even rows.
  */
-import { useState, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { ARTIFACT_SLOT_LABEL, type ArtifactSlot, type ContentCatalog, type CreatureTier, type PantheonDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Panel, SectionTitle, Tabs } from '../components/kit';
@@ -17,6 +18,7 @@ import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, HeroPortrait, Buil
 import { CostList, ScreenHeader } from '../components/game';
 import { Icon } from '../assets/icons';
 import { AbilityBadge, SetBadge } from '../components/badges';
+import { heroStory } from '../app/view';
 
 type Tab = 'creatures' | 'gods' | 'heroes' | 'town' | 'spells' | 'skills' | 'artifacts' | 'abilities';
 
@@ -33,20 +35,6 @@ const TABS: readonly { id: Tab; label: string }[] = [
 
 const RARITY_LABEL: Readonly<Record<string, string>> = { treasure: 'Treasure', minor: 'Minor artifact', major: 'Major artifact', relic: 'Relic' };
 const RANKS = ['Basic', 'Advanced', 'Expert'] as const;
-
-/**
- * A hero's biography as story text: the content keeps provenance and availability
- * notes in it ("Concept-board hero.", "Hireable in skirmish."), which are status,
- * not lore — the encyclopedia shows only the story sentences.
- */
-function storyOf(biography: string): string {
-  return biography
-    .replace(/;\s*hireable in skirmish[^.]*\./gi, '.')
-    .split(/(?<=\.)\s+/)
-    .filter((x) => !/^(Concept-board hero|Class assignment is provisional|Hireable in skirmish)/i.test(x))
-    .join(' ')
-    .trim();
-}
 
 const notInPlay = (status: string) => (status === 'implemented' ? '' : status === 'preparation' ? 'Not playable yet' : 'Planned — not in play');
 
@@ -92,7 +80,7 @@ function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalo
   const fam = catalog.families[familyId];
   if (!fam) return null;
   return (
-    <div className="bestiary-tier panel">
+    <div className="bestiary-tier panel" data-eq="tier">
       <div className="bestiary-tier__head">
         <span className="tier-badge">T{tier as CreatureTier}</span> {fam.name} family
         <span className="codex-meta"> · growth {fam.baseGrowth}/week</span>
@@ -180,7 +168,7 @@ function Gods({ catalog }: { catalog: ContentCatalog }) {
             if (!god) return null;
             const status = notInPlay(god.implementationStatus);
             return (
-              <article key={g} className="codex-card codex-card--portrait panel" data-testid={`codex-god-${g}`}>
+              <article key={g} className="codex-card codex-card--portrait panel" data-eq="card" data-testid={`codex-god-${g}`}>
                 <GodPortrait catalog={catalog} godId={g} size="6.4rem" locked={god.implementationStatus !== 'implemented'} />
                 <div className="codex-card__body">
                   <h3 className="codex-card__name">{god.name}</h3>
@@ -215,14 +203,14 @@ function Heroes({ catalog }: { catalog: ContentCatalog }) {
             const hero = catalog.heroes[h];
             if (!hero) return null;
             return (
-              <article key={h} className="codex-card codex-card--portrait panel" data-testid={`codex-hero-${h}`}>
+              <article key={h} className="codex-card codex-card--portrait panel" data-eq="card" data-testid={`codex-hero-${h}`}>
                 <HeroPortrait catalog={catalog} definitionId={h} size="6.4rem" />
                 <div className="codex-card__body">
                   <h3 className="codex-card__name">{hero.name}</h3>
                   <div className="codex-card__sub">{hero.title}</div>
                   <div className="codex-meta">{catalog.heroClasses[hero.classId]?.name ?? hero.classId}</div>
                   <SpecialtyLine catalog={catalog} definitionId={h} size="2.8rem" />
-                  {storyOf(hero.biography) ? <p className="codex-card__text">{storyOf(hero.biography)}</p> : null}
+                  {heroStory(hero.biography) ? <p className="codex-card__text">{heroStory(hero.biography)}</p> : null}
                 </div>
               </article>
             );
@@ -242,7 +230,7 @@ function Towns({ catalog }: { catalog: ContentCatalog }) {
         return (
           <div className="codex-cards">
             {town.slots.map((s) => (
-              <Panel key={s.id} title={s.label} className="codex-town-slot">
+              <Panel key={s.id} title={s.label} className="codex-town-slot" eq="slot">
                 {s.chain.map((b) => {
                   const bd = catalog.buildings[b];
                   if (!bd) return null;
@@ -281,7 +269,7 @@ function Spells({ catalog }: { catalog: ContentCatalog }) {
               .map((sp) => {
                 const status = notInPlay(sp.implementationStatus);
                 return (
-                  <article key={sp.id} className="codex-card panel" data-testid={`codex-spell-${sp.id}`}>
+                  <article key={sp.id} className="codex-card panel" data-eq="card" data-testid={`codex-spell-${sp.id}`}>
                     <SpellIcon iconAssetId={sp.iconAssetId} effectType={sp.effect.type} size="3.6rem" />
                     <div className="codex-card__body">
                       <h3 className="codex-card__name">{sp.name}</h3>
@@ -307,7 +295,7 @@ function Skills({ catalog }: { catalog: ContentCatalog }) {
   return (
     <div className="codex-cards codex-cards--wide">
       {Object.values(catalog.skills).map((sk) => (
-        <article key={sk.id} className="codex-card panel" data-testid={`codex-skill-${sk.id}`}>
+        <article key={sk.id} className="codex-card panel" data-eq="card" data-testid={`codex-skill-${sk.id}`}>
           <SkillIcon iconAssetId={sk.iconAssetId} size="3.6rem" />
           <div className="codex-card__body">
             <h3 className="codex-card__name">{sk.name}</h3>
@@ -346,7 +334,7 @@ function Artifacts({ catalog }: { catalog: ContentCatalog }) {
             {all
               .filter((a) => a.slot === slot)
               .map((a) => (
-                <article key={a.id} className="codex-card panel" data-testid={`codex-artifact-${a.id}`}>
+                <article key={a.id} className="codex-card panel" data-eq="card" data-testid={`codex-artifact-${a.id}`}>
                   <ArtifactIcon iconAssetId={a.iconAssetId} kind={a.slot} size="3.6rem" rarity={a.rarity} />
                   <div className="codex-card__body">
                     <h3 className="codex-card__name">{a.name}</h3>
@@ -374,7 +362,7 @@ function Artifacts({ catalog }: { catalog: ContentCatalog }) {
           <SectionTitle>Artifact sets</SectionTitle>
           <div className="codex-cards codex-cards--wide">
             {sets.map((set) => (
-              <article key={set.id} className="codex-card panel" data-testid={`codex-set-${set.id}`}>
+              <article key={set.id} className="codex-card panel" data-eq="set" data-testid={`codex-set-${set.id}`}>
                 <SetBadge catalog={catalog} setId={set.id} size="3.2rem" />
                 <div className="codex-card__body">
                   <h3 className="codex-card__name">{set.name}</h3>
@@ -399,7 +387,7 @@ function Abilities({ catalog }: { catalog: ContentCatalog }) {
   return (
     <div className="codex-cards codex-cards--wide">
       {Object.values(catalog.abilities).map((a) => (
-        <article key={a.id} className="codex-card panel" data-testid={`codex-ability-${a.id}`}>
+        <article key={a.id} className="codex-card panel" data-eq="card" data-testid={`codex-ability-${a.id}`}>
           <AbilityBadge catalog={catalog} abilityId={a.id} size="3rem" />
           <div className="codex-card__body">
             <h3 className="codex-card__name">{a.name}</h3>
@@ -413,6 +401,47 @@ function Abilities({ catalog }: { catalog: ContentCatalog }) {
   );
 }
 
+/**
+ * Equal card heights: every element marked `data-eq="<kind>"` inside the page gets
+ * the height of the tallest of its kind; measured again when the page width
+ * changes (cards rewrap) and once the fonts have loaded.
+ */
+function useEqualHeights(root: RefObject<HTMLElement | null>, key: unknown): void {
+  useLayoutEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    let width = -1;
+    const apply = () => {
+      const groups = new Map<string, HTMLElement[]>();
+      el.querySelectorAll<HTMLElement>('[data-eq]').forEach((n) => {
+        const k = n.dataset.eq ?? '';
+        const list = groups.get(k) ?? [];
+        list.push(n);
+        groups.set(k, list);
+      });
+      for (const list of groups.values()) {
+        for (const n of list) n.style.minHeight = '';
+        const h = Math.max(0, ...list.map((n) => n.getBoundingClientRect().height));
+        for (const n of list) n.style.minHeight = `${Math.ceil(h)}px`;
+      }
+    };
+    apply();
+    const ro = new ResizeObserver(() => {
+      if (el.clientWidth !== width) {
+        width = el.clientWidth;
+        apply();
+      }
+    });
+    ro.observe(el);
+    let alive = true;
+    void document.fonts?.ready.then(() => alive && apply());
+    return () => {
+      alive = false;
+      ro.disconnect();
+    };
+  }, [root, key]);
+}
+
 export function EncyclopediaScreen() {
   const store = useStore();
   const catalog = store.catalog;
@@ -422,13 +451,15 @@ export function EncyclopediaScreen() {
     setTab(t);
     store.setParams({ tab: t });
   };
+  const body = useRef<HTMLDivElement | null>(null);
+  useEqualHeights(body, tab);
   return (
     <div className="screen codex-screen">
-      <ScreenHeader title="Encyclopedia" subtitle="Creatures, gods, heroes, towns, magic and artifacts" />
+      <ScreenHeader title="Encyclopedia" />
       <div className="codex-bar">
         <Tabs<Tab> label="Encyclopedia sections" value={tab} onChange={set} tabs={TABS.map((t) => ({ ...t }))} />
       </div>
-      <div className="codex-body scroll" key={tab}>
+      <div className="codex-body scroll" key={tab} ref={body}>
         {tab === 'creatures' ? <Bestiary catalog={catalog} /> : null}
         {tab === 'gods' ? <Gods catalog={catalog} /> : null}
         {tab === 'heroes' ? <Heroes catalog={catalog} /> : null}

@@ -22,6 +22,8 @@ export const MESOAMERICAN_SPEC: PantheonKitSpec = {
   accentSoft: '#4d2a12',
   town: {
     archetypeId: 'mesoamerican_city',
+    // Mountains at the top right; the sun disc crowns the top centre.
+    hudAnchor: 'right',
     name: 'Mesoamerican Temple City',
     names: {
       civic_hall: ['Calpulli House', 'Tecpan', 'Great Palace', 'Palace of the Sun'],

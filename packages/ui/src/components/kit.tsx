@@ -14,6 +14,8 @@ export function Panel({
   style,
   bodyClassName = '',
   headerIcon,
+  eq,
+  label,
 }: {
   title?: ReactNode;
   actions?: ReactNode;
@@ -23,9 +25,13 @@ export function Panel({
   style?: CSSProperties;
   bodyClassName?: string;
   headerIcon?: IconName;
+  /** Equal-height group (see the Encyclopedia's equal card heights). */
+  eq?: string;
+  /** Accessible name for a panel shown without a title. */
+  label?: string;
 }) {
   return (
-    <section className={`panel ${variant ? `panel--${variant}` : ''} ${className}`} style={style}>
+    <section className={`panel ${variant ? `panel--${variant}` : ''} ${className}`} style={style} data-eq={eq} aria-label={label}>
       <span className="panel__corner panel__corner--tl" />
       <span className="panel__corner panel__corner--tr" />
       <span className="panel__corner panel__corner--bl" />

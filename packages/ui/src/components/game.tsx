@@ -144,6 +144,43 @@ export function ArmyStrip({
   );
 }
 
+/**
+ * A read-only army seen on the map (guards, a monster band, an enemy hero):
+ * each stack as its portrait with the count, its ability badges, tier and name.
+ * Clicking a stack opens its creature card.
+ */
+export function ArmyPreview({
+  catalog,
+  stacks,
+  onInfo,
+  testId,
+}: {
+  catalog: ContentCatalog;
+  stacks: readonly { readonly creatureId: string; readonly count: number }[];
+  onInfo?: (creatureId: string, count: number) => void;
+  testId?: string;
+}) {
+  return (
+    <div className="army-preview" role="list" data-testid={testId}>
+      {stacks.map((s, i) => {
+        const def = catalog.creatures[s.creatureId];
+        const label = `${s.count} ${s.count === 1 ? (def?.name ?? s.creatureId) : (def?.pluralName ?? s.creatureId)}`;
+        return (
+          <button key={i} type="button" role="listitem" className="army-preview__stack" onClick={() => onInfo?.(s.creatureId, s.count)} disabled={!onInfo} aria-label={label} title={label}>
+            <span className="army-preview__art">
+              <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="100%" style={{ border: 'none', boxShadow: 'none', width: '100%', height: '100%' }} />
+              <span className="army-preview__count num">{s.count}</span>
+              {def ? <span className="army-preview__tier">{def.tier}</span> : null}
+              <AbilityBadges catalog={catalog} creatureId={s.creatureId} size="0.8rem" />
+            </span>
+            <span className="army-preview__name">{s.count === 1 ? def?.name : def?.pluralName}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /** Standard in-game screen chrome: title, screen code, resources and back. */
 export function ScreenHeader({ title, subtitle, back = true, right, onBack }: { title: ReactNode; subtitle?: ReactNode; back?: boolean; right?: ReactNode; onBack?: () => void }) {
   const store = useStore();
@@ -160,16 +197,19 @@ export function ScreenHeader({ title, subtitle, back = true, right, onBack }: { 
       <span className="screen-header__code" aria-hidden="true">
         {code}
       </span>
+      {/* Resources always sit in the middle of the screen (owner request 2026-10-03), as on the map. */}
+      {player && state ? (
+        <div className="screen-header__resources">
+          <ResourceBar wallet={player.wallet} compact />
+        </div>
+      ) : null}
       <div className="screen-header__right">
         {right}
         {player && state ? (
-          <>
-            <ResourceBar wallet={player.wallet} compact />
-            <div className="daybox" title={`Day ${state.day}`}>
-              <Icon name="hourglass" />
-              <span>{dayLabel(state).text}</span>
-            </div>
-          </>
+          <div className="daybox" title={`Day ${state.day}`}>
+            <Icon name="hourglass" />
+            <span>{dayLabel(state).text}</span>
+          </div>
         ) : null}
       </div>
     </header>

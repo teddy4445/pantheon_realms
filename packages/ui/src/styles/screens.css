@@ -51,6 +51,9 @@ code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.78rem
 .screen-header__code { font-family: var(--font-ui); font-size: 0.6rem; color: var(--text-faint); border: 1px solid rgba(194, 154, 82, 0.25); border-radius: 3px; padding: 0 0.3rem; }
 .screen-header__right { margin-left: auto; display: flex; align-items: center; gap: 0.8rem; }
 .screen-header .resbar { padding: 0; }
+/* The wallet always sits in the middle of the screen (as on the adventure map). */
+.screen-header__resources { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: auto; }
+@media (max-width: 1100px) { .screen-header__resources { position: static; transform: none; margin-left: auto; } }
 .screen-header .res { min-width: 4.8rem; padding: 0.08rem 0.5rem 0.08rem 0.12rem; }
 .screen-header .res__icon { width: 1.45rem; height: 1.45rem; }
 
@@ -158,12 +161,30 @@ code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.78rem
 .mode-card p { font-size: 0.9rem; color: var(--text-dim); flex: 1; }
 
 .pantheon-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.7rem; padding: 0.4rem 1.6rem 0.8rem; }
-.pantheon-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; padding: 0.85rem 0.4rem 0.75rem; cursor: var(--cur-pointer, pointer); color: var(--text); background: linear-gradient(180deg, color-mix(in srgb, var(--faction) 28%, #0b1626), #070e1a 85%); border: 1px solid rgba(194, 154, 82, 0.5); border-top: 3px solid var(--faction); border-radius: var(--radius-s); box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.7), 0 2px 6px rgba(0, 0, 0, 0.5); font: inherit; transition: transform var(--motion-fast), box-shadow var(--motion-fast); }
-.pantheon-card:hover { transform: translateY(-2px); border-color: var(--gold-400); }
-.pantheon-card.is-selected { border-color: var(--gold-200); box-shadow: inset 0 0 0 1px var(--gold-300), var(--glow-gold-strong); }
-.pantheon-card.is-prep { filter: saturate(0.6); }
-.pantheon-card__name { font-family: var(--font-display); font-size: 1.05rem; color: var(--gold-200); }
-.pantheon-card__epithet { font-size: 0.78rem; color: var(--text-dim); text-align: center; }
+.pantheon-card {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  min-height: 13.5rem; padding: 1.1rem 0.6rem 1rem; overflow: hidden;
+  cursor: var(--cur-pointer, pointer); color: var(--text); font: inherit;
+  background:
+    radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--faction) 45%, transparent) 0, transparent 46%),
+    linear-gradient(180deg, color-mix(in srgb, var(--faction) 26%, #0b1626) 0%, #0a1322 62%, #060b14 100%);
+  border: 1px solid rgba(194, 154, 82, 0.55); border-radius: 0.7rem;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.75), inset 0 0 0 3px rgba(234, 208, 143, 0.08), 0 0.4rem 1rem rgba(0, 0, 0, 0.5);
+  transition: transform var(--motion-fast), box-shadow var(--motion-fast), border-color var(--motion-fast);
+}
+/* Faction band along the top edge and a fine gold rule inside the frame. */
+.pantheon-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, transparent, var(--faction), transparent); }
+.pantheon-card::after { content: ''; position: absolute; inset: 6px; border: 1px solid rgba(216, 181, 108, 0.16); border-radius: 0.5rem; pointer-events: none; }
+.pantheon-card:hover { transform: translateY(-3px); border-color: var(--gold-400); box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.75), 0 0.6rem 1.4rem rgba(0, 0, 0, 0.55), 0 0 1rem color-mix(in srgb, var(--faction) 45%, transparent); }
+.pantheon-card.is-selected { border-color: var(--gold-200); box-shadow: inset 0 0 0 1px var(--gold-300), inset 0 0 0 3px rgba(234, 208, 143, 0.18), var(--glow-gold-strong); }
+.pantheon-card.is-selected::after { border-color: rgba(234, 208, 143, 0.45); }
+.pantheon-card.is-prep { filter: saturate(0.55) brightness(0.85); }
+.pantheon-card__emblem { display: grid; place-items: center; width: 6.4rem; height: 6.4rem; margin-bottom: 0.25rem; border-radius: 50%; background: radial-gradient(circle at 50% 40%, rgba(255, 238, 190, 0.12), rgba(5, 9, 15, 0.55) 70%); box-shadow: inset 0 0 0 1px rgba(216, 181, 108, 0.35), 0 0 1.2rem color-mix(in srgb, var(--faction) 35%, transparent); transition: transform var(--motion-fast); }
+.pantheon-card:hover .pantheon-card__emblem, .pantheon-card.is-selected .pantheon-card__emblem { transform: scale(1.05); }
+.pantheon-card__name { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.06em; color: var(--gold-200); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); }
+.pantheon-card__name::after { content: ''; display: block; width: 4rem; height: 12px; margin: 0.2rem auto 0; background: var(--orn-divider) center / contain no-repeat; }
+.pantheon-card__epithet { font-family: var(--font-body); font-style: italic; font-size: 1.03rem; line-height: 1.2; color: var(--text); text-align: center; }
+.pantheon-card__note { margin-top: auto; font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
 .rival-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; padding: 0 1.6rem 0.7rem; }
 .rival-picker__label { font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-200); margin-right: 0.3rem; }
 .rival-chip { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.7rem 0.15rem 0.2rem; border-radius: 999px; cursor: var(--cur-pointer, pointer); font: inherit; font-size: 0.88rem; color: var(--text); background: linear-gradient(180deg, color-mix(in srgb, var(--faction) 18%, #0b1626), #070e1a); border: 1px solid rgba(194, 154, 82, 0.35); }
@@ -218,9 +239,6 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .minimap__frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
 .minimap__frame polygon { fill: rgba(245, 228, 183, 0.08); stroke: #f5e4b7; stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
 .minimap { display: block; width: 100%; height: auto; image-rendering: pixelated; cursor: crosshair; border: 1px solid var(--gold-600); box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0 0 1px rgba(5, 9, 15, 0.9); border-radius: 2px; }
-.adv-hero__top { display: flex; gap: 0.7rem; margin-bottom: 0.6rem; }
-.adv-hero__stats { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.88rem; }
-.adv-hero .army { gap: 0.25rem; }
 .adv-tile .panel__body { max-height: 30vh; overflow: auto; }
 .tile-info__head { display: flex; align-items: center; gap: 0.5rem; }
 .tile-info__head .marker-icon { width: 2.4rem !important; height: 2.4rem !important; margin: -0.2rem 0; }
@@ -279,8 +297,7 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
    S08 Town
    ============================================================ */
 .town-screen { background: radial-gradient(120% 90% at 50% 0%, rgba(22, 41, 69, 0.85), rgba(5, 9, 15, 0.97) 70%), var(--app-art) center / cover no-repeat, var(--ink-0); }
-.town-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 22rem; gap: 0.8rem; padding: 0.6rem 0.8rem 0; }
-.town-stage { min-height: 0; display: grid; place-items: center; overflow: hidden; }
+.town-stage { flex: 1; min-height: 0; display: grid; place-items: center; overflow: hidden; padding: 0.6rem 0.8rem 0; }
 .town-scene { position: relative; aspect-ratio: 1448 / 1086; height: 100%; max-width: 100%; max-height: 100%; background: #10213a center / cover no-repeat; border: 2px solid var(--gold-500); box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0 0 4px rgba(194, 154, 82, 0.35), var(--shadow-drop); border-radius: var(--radius-s); overflow: hidden; container-type: size; }
 @supports not (aspect-ratio: 1) { .town-scene { width: 100%; padding-top: 75%; height: auto; } }
 .town-scene__tag { font-size: 0.6rem; }
@@ -296,18 +313,69 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .town-slot__label { position: absolute; bottom: -0.2rem; left: 50%; transform: translate(-50%, 100%); white-space: nowrap; font-family: var(--font-display); font-size: 0.72rem; color: var(--gold-100, #fff3d6); background: rgba(7, 14, 26, 0.82); border: 1px solid rgba(194, 154, 82, 0.5); border-radius: 3px; padding: 0.05rem 0.4rem; opacity: 0; pointer-events: none; transition: opacity var(--motion-fast); z-index: 30; }
 .town-slot:hover .town-slot__label, .town-slot.is-selected .town-slot__label, .town-slot:focus-visible .town-slot__label { opacity: 1; }
 .town-slot__can { color: var(--success); }
-.town-side { min-height: 0; display: flex; flex-direction: column; gap: 0.6rem; }
-.town-detail { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.town-detail .panel__body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-.bld-current { display: flex; gap: 0.7rem; align-items: center; }
-.bld-current__art { width: 7rem; height: auto; flex: none; }
-.bld-name { font-family: var(--font-display); color: var(--gold-200); font-size: 1.05rem; }
-.bld-services { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start; }
-.town-armies { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem; align-items: end; margin: 0.6rem 0.8rem 0.8rem; padding: 0.6rem 0.9rem; }
-.town-armies__bar { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; min-height: 2rem; }
+.town-scene { --bld-pop-w: 19.5rem; }
+/* Town economy: a slim bar on the painting's top edge, over open sky (anchor per archetype). */
+.town-hud {
+  position: absolute; top: 0.45rem; z-index: 40;
+  display: flex; flex-direction: column; align-items: stretch; gap: 0.2rem;
+  padding: 0.3rem 0.45rem 0.35rem;
+  border: 1px solid rgba(216, 181, 108, 0.6); border-radius: 0.6rem;
+  background: linear-gradient(180deg, rgba(14, 27, 46, 0.86), rgba(6, 12, 22, 0.9));
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8), 0 4px 12px rgba(0, 0, 0, 0.45);
+  color: var(--text-strong); font-size: 0.82rem; white-space: nowrap;
+}
+.town-hud__row { display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+.town-hud--left { left: 0.6rem; }
+.town-hud--right { right: 0.6rem; }
+.town-hud--center { left: 50%; transform: translateX(-50%); }
+.town-hud--at { transform: translateX(-50%); }
+.town-hud__item { display: inline-flex; align-items: center; gap: 0.25rem; }
+.town-hud__item .cost { gap: 0.35rem; }
+.town-hud__unit { color: var(--text-dim); font-size: 0.78rem; }
+.town-hud__icon { width: 1.25rem; height: 1.25rem; color: var(--gold-300); }
+.town-hud__build.is-ready .town-hud__icon { color: var(--success); }
+.town-hud__build.is-used .town-hud__icon { color: var(--text-faint); }
+.town-hud__sep { width: 1px; align-self: stretch; margin: 0.15rem 0.1rem; background: linear-gradient(180deg, transparent, rgba(216, 181, 108, 0.6), transparent); }
+.town-action.btn { min-width: 2rem; width: 2rem; height: 2rem; min-height: 2rem; padding: 0; border-radius: 50%; }
+.town-action.btn svg { width: 1.15rem !important; height: 1.15rem !important; }
+.bld-pop .town-action.btn { min-width: 2.4rem; width: 2.4rem; height: 2.4rem; min-height: 2.4rem; }
+.bld-pop .town-action.btn svg { width: 1.35rem !important; height: 1.35rem !important; }
+/* The pop-up beside the selected building. */
+.bld-pop {
+  position: absolute; z-index: 45; width: var(--bld-pop-w); max-height: 72%;
+  display: flex; flex-direction: column;
+  background: linear-gradient(180deg, rgba(17, 32, 54, 0.95), rgba(7, 14, 26, 0.96));
+  animation: fade-in var(--motion-fast) ease-out;
+}
+.bld-pop__head { display: flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.55rem 0.35rem 0.8rem; border-bottom: 1px solid rgba(194, 154, 82, 0.35); }
+.bld-pop__title { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 1.05rem; color: var(--gold-200); letter-spacing: 0.03em; }
+.bld-pop__close { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; padding: 0; border-radius: 50%; border: 1px solid rgba(194, 154, 82, 0.45); background: rgba(5, 9, 15, 0.6); color: var(--gold-300); cursor: var(--cur-pointer, pointer); }
+.bld-pop__close svg { width: 0.95rem; height: 0.95rem; }
+.bld-pop__body { padding: 0.5rem 0.8rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.4rem; }
+.bld-pop__text { margin: 0; font-size: 0.9rem; line-height: 1.3; }
+.bld-pop__level { display: flex; gap: 0.25rem; }
+.bld-pop__pip { width: 0.55rem; height: 0.55rem; transform: rotate(45deg); border: 1px solid var(--gold-600); background: rgba(5, 9, 15, 0.7); }
+.bld-pop__pip.is-on { background: var(--gold-bevel); border-color: var(--gold-300); }
+.bld-pop__next { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.4rem; border-top: 1px solid rgba(194, 154, 82, 0.2); }
+.bld-pop__sub { font-family: var(--font-display); color: var(--gold-300); font-size: 0.92rem; }
+.bld-pop__line { font-size: 0.84rem; color: var(--text-dim); }
+.bld-pop__actions { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0.45rem 0.8rem 0.6rem; border-top: 1px solid rgba(194, 154, 82, 0.25); }
+.bld-pop__actions:empty { display: none; }
+/* Armies: garrison and visiting hero centred, an ornamental divider between them. */
+.town-armies { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; margin: 0.6rem 0.8rem 0.8rem; padding: 0.55rem 0.9rem 0.6rem; }
+.town-armies__row { display: flex; align-items: flex-end; justify-content: center; gap: 1.1rem; }
+.town-army { display: flex; flex-direction: column; gap: 0.3rem; }
+.town-army__label { display: flex; align-items: center; justify-content: center; gap: 0.35rem; min-height: 1.6rem; font-family: var(--font-display); font-size: 0.9rem; letter-spacing: 0.05em; color: var(--gold-200); }
+.town-army__label svg { width: 1.1rem; height: 1.1rem; color: var(--gold-400); }
+.town-army .army { width: 28rem; max-width: none; }
+.town-armies__divider { position: relative; align-self: stretch; width: 2.6rem; display: grid; place-items: center; }
+.town-armies__divider::before { content: ''; position: absolute; top: 0.2rem; bottom: 0.2rem; left: 50%; width: 2px; transform: translateX(-50%); background: linear-gradient(180deg, transparent, var(--gold-500) 20%, var(--gold-300) 50%, var(--gold-500) 80%, transparent); }
+.town-armies__gem { position: relative; display: grid; place-items: center; width: 2.2rem; height: 2.2rem; transform: rotate(45deg); border: 1px solid var(--gold-300); background: radial-gradient(circle at 40% 35%, #25426a, #070e1a 80%); box-shadow: 0 0 0.6rem rgba(234, 208, 143, 0.35); }
+.town-armies__gem svg { width: 1.1rem; height: 1.1rem; transform: rotate(-45deg); color: var(--gold-200); }
+.town-armies__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.6rem; }
+.army--vacant { opacity: 0.55; }
+.army--vacant .slot { cursor: var(--cur-default, default); }
 .town-army .slot[draggable='true'] { cursor: var(--cur-grab, grab); }
-.town-army .army { max-width: 30rem; }
-.army--empty { display: flex; align-items: center; min-height: 4rem; padding: 0 0.6rem; border: 1px dashed rgba(194, 154, 82, 0.25); border-radius: var(--radius-s); }
 .modal__actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 0.8rem; }
 .hire-list { display: flex; flex-direction: column; gap: 0.6rem; }
 .hire-card { display: flex; gap: 0.8rem; padding: 0.7rem; }
@@ -448,6 +516,14 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .objective.is-locked { opacity: 0.6; }
 .objective__body { display: flex; flex-direction: column; gap: 0.25rem; }
 .objective__title { font-family: var(--font-display); color: var(--gold-200); display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+.objective__progress { font-family: var(--font-ui); font-size: 0.78rem; color: var(--text-dim); }
+/* Status as an icon badge (Journal; shape + tooltip carry the status). */
+.status-icon { display: inline-grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: 50%; border: 1px solid currentColor; background: rgba(5, 9, 15, 0.6); color: var(--text-faint); vertical-align: middle; flex: none; }
+.status-icon svg { width: 0.95rem; height: 0.95rem; }
+.status-icon.is-completed { color: var(--success); background: rgba(123, 184, 106, 0.14); }
+.status-icon.is-active, .status-icon.is-current { color: var(--warning); background: rgba(224, 176, 80, 0.12); }
+.status-icon.is-available { color: var(--teal); background: rgba(62, 188, 208, 0.12); }
+.status-icon.is-failed { color: var(--danger); background: rgba(210, 90, 69, 0.14); }
 .dialogue { display: flex; flex-direction: column; gap: 0.6rem; margin: 0.5rem 0; }
 .dialogue__line { display: flex; gap: 0.7rem; align-items: flex-start; }
 .dialogue__speaker { font-family: var(--font-display); color: var(--gold-300); font-size: 0.9rem; }
@@ -529,9 +605,16 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .anim-btn.is-on { color: #241806; background: var(--gold-bevel); border-color: #f1d99a; box-shadow: inset 0 1px 0 rgba(255, 250, 225, 0.7); }
 .anim-btn:disabled { opacity: 0.4; cursor: var(--cur-default, default); }
 .anim-btn.is-standin:not(.is-on) { border-style: dashed; }
-.unit-info { min-height: 0; display: flex; flex-direction: column; gap: 0.6rem; }
-.unit-tab { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.unit-tab .panel__body { flex: 1; min-height: 0; }
+.unit-info { min-height: 0; display: flex; flex-direction: column; }
+.unit-info__body { flex: 1; min-height: 0; padding-right: 0.4rem; }
+.unit-head { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 0.4rem; }
+.unit-head__text { flex: 1; min-width: 0; }
+.unit-head__name { margin: 0; font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.04em; color: var(--gold-100); line-height: 1.15; }
+.unit-head__meta { font-size: 1rem; color: var(--text-dim); margin-top: 0.15rem; }
+.unit-head__summary { margin: 0.45rem 0 0; font-size: 1.28rem; line-height: 1.45; color: var(--text-strong); }
+.unit-facts { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; margin-top: 0.55rem; font-size: 1.08rem; align-items: center; }
+.unit-facts > span { display: inline-flex; align-items: center; gap: 0.45rem; }
+.unit-info .ability { font-size: 1.05rem; }
 .ability { padding: 0.45rem 0; border-bottom: 1px solid rgba(194, 154, 82, 0.15); display: flex; flex-direction: column; gap: 0.2rem; }
 .ability__name { font-family: var(--font-display); color: var(--gold-200); }
 .lore { font-size: 1.02rem; line-height: 1.5; font-style: italic; }
@@ -649,7 +732,6 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
 .shortcut-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1.6rem; }
 .weekly-chip { cursor: help; }
 .set-status { margin-top: 0.6rem; padding: 0.5rem 0.7rem; border: 1px solid rgba(62, 188, 208, 0.35); border-radius: var(--radius-m); background: rgba(62, 188, 208, 0.06); }
-.adv-spells { flex-wrap: wrap; margin: 0.4rem 0; }
 
 /* ---------------------------------------------------------------------------
  * S07 Hero screen, Heroes-3 layout (2026-10-01): stats column, paper doll with
@@ -657,7 +739,7 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
  * ------------------------------------------------------------------------- */
 .plate { position: relative; background: var(--plate); border: 1px solid var(--rim); border-radius: var(--radius-m); box-shadow: var(--rim-double), 0 6px 18px rgba(0, 0, 0, 0.55); }
 .h3 { display: flex; flex-direction: column; }
-.h3-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(20rem, 26rem) minmax(0, 1fr) 5.6rem; gap: 0.8rem; padding: 0.8rem 1rem 0.4rem; overflow: auto; }
+.h3-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(19rem, 25rem) minmax(20rem, 1fr) minmax(17.5rem, 21rem) 5.2rem; gap: 0.8rem; padding: 0.8rem 1rem 0.4rem; overflow: auto; }
 .h3-left { padding: 0.8rem; display: flex; flex-direction: column; gap: 0.7rem; min-width: 0; }
 .h3-ident { display: flex; gap: 0.8rem; align-items: center; }
 .h3-ident__text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
@@ -682,13 +764,13 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
 .h3-skill__rank { font-family: var(--font-ui); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
 .h3-skill__name { font-family: var(--font-display); font-size: 0.85rem; color: var(--gold-200); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.h3-doll { padding: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; overflow-y: auto; }
-.h3-doll__stage { position: relative; flex: none; height: clamp(21rem, 48vh, 32rem); border: 1px solid var(--rim-faint); border-radius: var(--radius-s); background: #0b1524; overflow: hidden; }
-.h3-doll__stage::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: radial-gradient(ellipse at 50% 52%, transparent 38%, rgba(5, 9, 15, 0.78) 82%); }
-.h3-figure { position: absolute; inset: 0; }
-.h3-figure__art { position: absolute; left: 50%; bottom: 6%; height: 84%; max-width: 92%; object-fit: contain; transform: translateX(-50%); pointer-events: none; user-select: none; }
-.h3-figure__fallback { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
-.h3-figure.is-loading .h3-figure__fallback { opacity: 0.55; }
+/* Centre: the schematic body (4:5, the drawing's view box) with a box on each body part. */
+.h3-doll { padding: 0.7rem; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; overflow: hidden; }
+.h3-doll__stage { position: relative; height: 100%; min-height: 24rem; aspect-ratio: 4 / 5; max-width: 100%; border: 1px solid var(--rim-faint); border-radius: var(--radius-s); background: radial-gradient(ellipse at 50% 45%, #10203a, #070e1a 80%); box-shadow: inset 0 0 2.4rem rgba(0, 0, 0, 0.6); }
+.h3-body { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.h3-body__guides { fill: none; stroke: rgba(216, 181, 108, 0.13); stroke-width: 1; }
+.h3-body__figure { fill: url(#h3-body-fill); }
+.h3-body__lines { fill: none; stroke: rgba(234, 208, 143, 0.32); stroke-width: 1.4; stroke-linecap: round; }
 .h3-slot { position: absolute; transform: translate(-50%, -50%); width: 3.5rem; height: 3.5rem; display: grid; place-items: center; padding: 0; cursor: var(--cur-pointer, pointer); border: 1px solid rgba(194, 154, 82, 0.4); border-radius: 6px; background: var(--plate-sunken); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(5, 9, 15, 0.8); color: var(--text-faint); transition: border-color var(--motion-fast), box-shadow var(--motion-fast); z-index: 2; }
 .h3-slot:hover { border-color: var(--gold-300); }
 .h3-slot.is-filled { border-color: var(--gold-400); background: radial-gradient(circle at 50% 35%, rgba(52, 88, 132, 0.55), rgba(7, 14, 26, 0.95) 80%); }
@@ -699,25 +781,33 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
 .h3-slot__empty { font-family: var(--font-ui); font-size: 0.52rem; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; line-height: 1.1; padding: 0 0.15rem; }
 .h3-slot--pack { position: relative; transform: none; }
 .h3-slot--pack:disabled { cursor: var(--cur-default, default); opacity: 0.55; }
-.h3-book { position: absolute; left: 50%; top: 2%; transform: translateX(-50%); z-index: 2; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.7rem; border: 1px solid var(--gold-500); border-radius: 999px; background: var(--plate-raised); color: var(--gold-200); font-family: var(--font-display); font-size: 0.78rem; cursor: var(--cur-pointer, pointer); }
-.h3-book svg { width: 1.1rem; height: 1.1rem; }
-.h3-book.is-missing { opacity: 0.55; }
-.h3-doll > * { flex: none; }
-.h3-doll__info { min-height: 5.5rem; }
+.h3-book { flex-direction: column; gap: 0.1rem; color: var(--gold-200); background: radial-gradient(circle at 50% 35%, rgba(90, 60, 140, 0.6), rgba(7, 14, 26, 0.95) 80%); border-color: var(--gold-400); }
+.h3-book svg { width: 1.6rem; height: 1.6rem; }
+.h3-book .h3-slot__empty { color: var(--gold-300); }
+.h3-book.is-missing { opacity: 0.5; }
+/* Right: the inventory as a grid of boxes, then the picked item and the sets. */
+.h3-inv { padding: 0.7rem; display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; overflow-y: auto; }
+.h3-inv__head { display: flex; align-items: baseline; justify-content: space-between; }
+.h3-inv__title { font-family: var(--font-display); color: var(--gold-200); letter-spacing: 0.05em; }
+.h3-doll__info { min-height: 4rem; }
 .h3-artifact-card { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.5rem 0.6rem; border: 1px solid rgba(194, 154, 82, 0.45); border-radius: var(--radius-s); background: var(--plate-raised); }
 .h3-artifact-card__body { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
 .h3-artifact-card__name { font-family: var(--font-display); font-size: 1rem; color: var(--gold-200); }
 .h3-lore { font-style: italic; }
-.h3-backpack { display: flex; align-items: center; gap: 0.4rem; }
-.h3-backpack__slots { display: grid; grid-template-columns: repeat(8, 3.5rem); gap: 0.35rem; }
+.h3-backpack { display: grid; grid-template-columns: repeat(5, minmax(0, 3.3rem)); gap: 0.3rem; justify-content: center; padding: 0.45rem; border-radius: var(--radius-s); background: rgba(5, 9, 15, 0.55); box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6); }
+.h3-backpack .h3-slot--pack { width: 100%; height: auto; aspect-ratio: 1; }
 .h3-sets { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; }
 .h3-heroes { padding: 0.5rem 0.35rem; display: flex; flex-direction: column; gap: 0.45rem; align-items: center; overflow-y: auto; }
 .h3-heroes__item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.15rem; border: 2px solid transparent; border-radius: 6px; background: none; cursor: var(--cur-pointer, pointer); width: 4.6rem; }
 .h3-heroes__item.is-selected { border-color: var(--gold-300); box-shadow: 0 0 0.6rem rgba(234, 208, 143, 0.35); }
 .h3-heroes__bars { display: flex; flex-direction: column; gap: 2px; width: 100%; }
-.h3-army { margin: 0 1rem 0.8rem; padding: 0.55rem 0.8rem; }
-.h3-army__head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
-.h3-army__title { font-family: var(--font-display); color: var(--gold-200); }
+/* Bottom: the army, centred, no caption; larger slots; actions at the right edge. */
+.h3-army { margin: 0 1rem 0.8rem; padding: 0.55rem 0.8rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.8rem; }
+.h3-army__strip { grid-column: 2; }
+.h3-army .army-editor .army, .h3-army .army { max-width: none; grid-template-columns: repeat(7, 5.6rem); gap: 0.45rem; }
+.h3-army .army-editor__bar { justify-content: center; min-height: 2.2rem; margin-top: 0.35rem; }
+.h3-army .army-editor__bar:empty { display: none; }
+.h3-army__actions { grid-column: 3; justify-self: end; display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; }
 
 .artifact-socket { display: inline-grid; place-items: center; flex: none; border-radius: 6px; overflow: hidden; background: radial-gradient(circle at 50% 35%, #1d3557, #05090f 75%); border: 1px solid var(--gold-500); box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8); color: var(--gold-300); }
 .artifact-socket img { width: 90%; height: 90%; object-fit: contain; }
@@ -730,13 +820,119 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
 .skill-socket__glyph { width: 62%; height: 62%; opacity: 0.85; }
 .h3-slot .artifact-socket { width: 88%; height: 88%; border: none; background: none; box-shadow: none; }
 
-.spellbook-pages { margin-top: 0.7rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 0.9rem; max-height: 62vh; overflow-y: auto; padding: 0.7rem; border-radius: var(--radius-s); background: linear-gradient(90deg, rgba(232, 217, 181, 0.07), rgba(232, 217, 181, 0.02) 49.5%, rgba(5, 9, 15, 0.6) 50%, rgba(232, 217, 181, 0.02) 50.5%, rgba(232, 217, 181, 0.07)); }
-.spellbook-entry { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.35rem; border-bottom: 1px solid var(--rim-faint); }
-.spellbook-entry.is-short { opacity: 0.7; }
+/* Spellbook pop-up (components/spellbook.tsx): an open tome, fixed size, filters always shown. */
+.tome { display: flex; flex-direction: column; gap: 0.7rem; }
+.tome__bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.tome__filters { display: flex; gap: 0.9rem; flex-wrap: wrap; align-items: flex-end; }
+.tome__tabs { display: flex; gap: 0.25rem; }
+.tome__tab {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 2.1rem; padding: 0.2rem 0.8rem 0.35rem;
+  font-family: var(--font-display); font-size: 0.86rem; letter-spacing: 0.04em; color: var(--gold-300);
+  background: linear-gradient(180deg, #3a2614 0%, #23160b 100%);
+  border: 1px solid var(--gold-700); border-bottom: none; border-radius: 0.55rem 0.55rem 0 0;
+  box-shadow: inset 0 1px 0 rgba(255, 238, 190, 0.12);
+  cursor: var(--cur-pointer, pointer);
+  transition: background var(--motion-fast), color var(--motion-fast), transform var(--motion-fast);
+}
+.tome__tab:hover { color: var(--gold-100); transform: translateY(-1px); }
+.tome__tab.is-on { color: var(--text-ink); background: var(--gold-bevel); border-color: var(--gold-500); transform: translateY(-2px); }
+.tome__tab--tier { min-width: 2.4rem; justify-content: center; padding-inline: 0.5rem; }
+.tome__count {
+  min-width: 1.3rem; padding: 0 0.3rem; border-radius: 0.65rem; font-family: var(--font-ui); font-size: 0.72rem; line-height: 1.2rem; text-align: center;
+  color: var(--gold-200); background: rgba(5, 9, 15, 0.75); border: 1px solid var(--gold-700);
+}
+.tome__tab.is-on .tome__count { color: var(--gold-200); }
+.tome__mana { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.3rem 0.8rem; border: 1px solid var(--rim); border-radius: 999px; background: var(--plate-sunken); font-size: 1.05rem; color: var(--text-strong); }
+.tome__gem, .tome-spell__mana {
+  display: inline-grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, #cfe6ff 0%, #5aa7ff 35%, #1b4f9a 75%, #0b2550 100%);
+  border: 1px solid #a8d2ff; box-shadow: 0 0 0.5rem rgba(90, 167, 255, 0.55), inset 0 -2px 3px rgba(5, 9, 15, 0.5);
+}
+.tome__gem { width: 1rem; height: 1rem; transform: rotate(45deg); border-radius: 0.2rem; }
+/* The book: leather cover, two parchment pages and the spine. Its size never changes. */
+.tome__book {
+  position: relative;
+  height: min(31rem, 58vh);
+  padding: 0.75rem;
+  border-radius: 0.6rem;
+  background: linear-gradient(180deg, #4a2e17, #2b190b);
+  border: 1px solid var(--gold-600);
+  box-shadow: inset 0 0 0 2px #1a0f06, inset 0 0 0 3px rgba(216, 181, 108, 0.45), 0 0.6rem 1.6rem rgba(0, 0, 0, 0.55);
+}
+.tome__book::before {
+  content: '';
+  position: absolute; inset: 0.75rem;
+  border-radius: 0.25rem;
+  background:
+    linear-gradient(90deg, transparent 0 calc(50% - 1.6rem), rgba(80, 52, 22, 0.32) calc(50% - 0.25rem), rgba(40, 24, 10, 0.55) 50%, rgba(80, 52, 22, 0.32) calc(50% + 0.25rem), transparent calc(50% + 1.6rem)),
+    radial-gradient(ellipse at 25% 40%, #f3e6c4 0%, #e8d9b5 55%, #d7c393 100%) left / 50% 100% no-repeat,
+    radial-gradient(ellipse at 75% 40%, #f3e6c4 0%, #e8d9b5 55%, #d7c393 100%) right / 50% 100% no-repeat;
+  box-shadow: inset 0 0 1.4rem rgba(90, 60, 25, 0.45);
+  pointer-events: none;
+}
+.tome__pages {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  column-gap: 3.4rem;
+  row-gap: 0.15rem;
+  padding: 0.9rem 1.2rem;
+  color: var(--text-ink);
+  scrollbar-color: var(--gold-700) transparent;
+}
+.tome__empty { grid-column: 1 / -1; align-self: center; margin-top: 6rem; text-align: center; font-family: var(--font-body); font-style: italic; font-size: 1.15rem; color: #5b4a2e; padding: 0 2rem; }
+.tome-spell {
+  display: flex; gap: 0.75rem; align-items: flex-start; text-align: left;
+  padding: 0.55rem 0.4rem 0.6rem;
+  border: none; border-bottom: 1px solid rgba(122, 90, 38, 0.3);
+  background: none; color: inherit; font: inherit;
+  border-radius: 0.3rem;
+}
+button.tome-spell { cursor: var(--cur-pointer, pointer); transition: background var(--motion-fast), box-shadow var(--motion-fast); }
+button.tome-spell:hover:not(:disabled), button.tome-spell:focus-visible { background: rgba(194, 154, 82, 0.22); box-shadow: 0 0 0 1px rgba(122, 90, 38, 0.55); outline: none; }
+button.tome-spell:disabled { cursor: var(--cur-default, default); }
+/* No CSS filters here: the book can sit over the game canvas (performance rule in components.css). */
+.tome-spell.is-off .tome-spell__art, .tome-spell.is-off .tome-spell__name, .tome-spell.is-off .tome-spell__summary { opacity: 0.45; }
+.tome-spell.is-short .tome-spell__art { opacity: 0.7; }
+.tome-spell__art { position: relative; flex: none; }
+.tome-spell__art .spell-socket { box-shadow: 0 2px 6px rgba(60, 38, 12, 0.55); }
+.tome-spell__mana {
+  position: absolute; right: -0.45rem; bottom: -0.35rem;
+  min-width: 1.55rem; height: 1.55rem; padding: 0 0.2rem; border-radius: 0.8rem;
+  font-family: var(--font-ui); font-weight: 700; font-size: 0.78rem; color: #fff;
+  text-shadow: 0 1px 2px rgba(5, 9, 15, 0.8);
+}
+.tome-spell__mana.is-short { background: radial-gradient(circle at 35% 30%, #f0b9ad 0%, #d25a45 40%, #6e2015 100%); border-color: #f3b0a2; box-shadow: none; }
+.tome-spell__text { display: flex; flex-direction: column; gap: 0.12rem; min-width: 0; }
+.tome-spell__name { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; color: #3a2410; }
+.tome-spell__tier {
+  display: inline-grid; place-items: center; min-width: 1.45rem; height: 1.45rem; padding: 0 0.15rem;
+  border-radius: 50%; font-size: 0.66rem; letter-spacing: 0;
+  color: var(--gold-200); background: radial-gradient(circle at 40% 35%, #a33a2a, #5e1a10 80%);
+  border: 1px solid #3a0f08; box-shadow: 0 1px 2px rgba(60, 20, 10, 0.5);
+}
+.tome-spell__crest { display: inline-flex; margin-left: 0.1rem; }
+.tome-spell__use { font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #7a5a26; }
+.tome-spell__summary { font-family: var(--font-body); font-size: 0.98rem; line-height: 1.3; color: var(--text-ink); }
+.tome-spell__lore { font-family: var(--font-body); font-style: italic; font-size: 0.86rem; line-height: 1.25; color: #6b5532; }
+.tome-spell__reason { font-family: var(--font-ui); font-size: 0.74rem; color: #8e3325; }
+.tome__foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+@media (max-width: 900px) {
+  .tome__pages { grid-template-columns: 1fr; }
+  .tome__book::before { background: radial-gradient(ellipse at 50% 40%, #f3e6c4 0%, #e8d9b5 55%, #d7c393 100%); }
+}
 
 @media (max-width: 1100px) {
   .h3-layout { grid-template-columns: 1fr; }
   .h3-heroes { flex-direction: row; overflow-x: auto; }
+  .h3-doll__stage { height: auto; width: min(100%, 30rem); }
+  .h3-army { grid-template-columns: 1fr; }
+  .h3-army__strip, .h3-army__actions { grid-column: 1; justify-self: center; }
+  .h3-army .army-editor .army, .h3-army .army { grid-template-columns: repeat(7, minmax(0, 5.6rem)); }
 }
 
 /* Random Map setup: map type cards (2026-10-01) */
@@ -750,7 +946,7 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
 .h3-compare { margin-top: 0.4rem; padding: 0.4rem 0.6rem; border: 1px dashed rgba(194, 154, 82, 0.45); border-radius: var(--radius-s); background: rgba(5, 9, 15, 0.45); display: flex; flex-direction: column; gap: 0.35rem; }
 .h3-compare__title { font-family: var(--font-display); color: var(--gold-200); font-size: 0.85rem; }
 .h3-compare__slot { display: flex; flex-direction: column; gap: 0.2rem; }
-.h3-backpack.is-droptarget .h3-backpack__slots { outline: 2px dashed var(--teal); outline-offset: 3px; border-radius: 6px; }
+.h3-backpack.is-droptarget { outline: 2px dashed var(--teal); outline-offset: 3px; }
 .h3-slot[draggable='true'] { cursor: var(--cur-grab, grab); }
 
 /* Battle result over the player's pantheon painting (20 % black layer): the live
@@ -774,3 +970,10 @@ button.creature-chip:hover:not(:disabled) { border-color: var(--gold-400); }
 .gift-row { display: flex; align-items: center; gap: 1rem; padding: 0.55rem 0.7rem; border: 1px solid rgba(194, 154, 82, 0.35); border-radius: var(--radius-s); background: var(--plate-raised); }
 .gift-row__text { flex: 1; min-width: 0; }
 .gift-row__name { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold-100); }
+
+@media (max-width: 1100px) {
+  .town-armies__row { flex-wrap: wrap; }
+  .town-armies__divider { display: none; }
+  .town-army .army { width: min(28rem, 92vw); }
+  .town-hud { font-size: 0.78rem; gap: 0.35rem; }
+}

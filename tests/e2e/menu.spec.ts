@@ -19,11 +19,12 @@ test('main menu: honest Continue, no fake Quit, encyclopedia and bestiary viewer
   await expect(page.locator('.main-menu__tagline, .main-menu__emblem')).toHaveCount(0);
   await expect(page.getByText('Temporary art')).toHaveCount(0);
   await expect(page.locator('.main-menu__shade')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0.2)');
-  for (const id of ['menu-new', 'menu-load', 'menu-campaign', 'menu-skirmish', 'menu-encyclopedia', 'menu-settings', 'menu-credits']) await expect(page.getByTestId(id)).toBeVisible();
-  // Random Map and High Scores live under New Game and the end-of-game summary.
-  for (const id of ['menu-random', 'menu-highscores']) await expect(page.getByTestId(id)).toHaveCount(0);
+  for (const id of ['menu-new', 'menu-load', 'menu-encyclopedia', 'menu-settings']) await expect(page.getByTestId(id)).toBeVisible();
+  // Campaign and Skirmish live under New Game; Random Map too; High Scores under the end-of-game summary; no Credits.
+  for (const id of ['menu-campaign', 'menu-skirmish', 'menu-credits', 'menu-random', 'menu-highscores']) await expect(page.getByTestId(id)).toHaveCount(0);
   await page.getByTestId('menu-encyclopedia').click();
   await expect(page.getByTestId('codex-hoplite')).toBeVisible();
+  await expect(page.locator('.screen-header__subtitle')).toHaveCount(0);
   // Eight pages; every pantheon's bestiary one below the other, each under its own divider (no pantheon buttons, no tags).
   await expect(page.getByRole('tab')).toHaveText(['Bestiary', 'Gods', 'Heroes', 'Towns', 'Spells', 'Skills', 'Artifacts', 'Abilities'].map((t) => new RegExp(t)));
   for (const p of ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican', 'neutral']) await expect(page.getByTestId(`codex-pantheon-${p}`).locator('.codex-divider')).toHaveCount(1);
@@ -36,11 +37,27 @@ test('main menu: honest Continue, no fake Quit, encyclopedia and bestiary viewer
     if (t === 'Heroes') {
       await expect(page.getByTestId('codex-hero-heracles')).toBeVisible();
       await expect(page.locator('.codex-body').getByText(/hireable|concept-board/i)).toHaveCount(0);
+      // Every hero has a short story under its specialty.
+      await expect(page.getByTestId('codex-hero-heracles')).toContainText(/labours|labors/i);
     }
+    // Cards of one section share one height.
+    await expect
+      .poll(async () => {
+        const hs = await page.locator('.codex-body [data-eq]').evaluateAll((els) => els.map((e) => [e.getAttribute('data-eq'), Math.round(e.getBoundingClientRect().height)] as const));
+        const groups = new Map<string, number[]>();
+        for (const [g, h] of hs) groups.set(g ?? '', [...(groups.get(g ?? '') ?? []), h]);
+        return Math.max(0, ...[...groups.values()].map((v) => Math.max(...v) - Math.min(...v)));
+      }, { message: `${t}: equal card heights` })
+      .toBeLessThanOrEqual(1);
   }
   await page.getByRole('tab', { name: 'Bestiary' }).click();
   await page.getByTestId('codex-griffin').click();
   expect((await inspect(page)).screen).toBe('unit-detail');
+  // One panel: name, larger summary, statistics, abilities, lore — no tags, no version tabs, no assets section.
+  await expect(page.getByTestId('unit-name')).toHaveText('Griffin');
+  await expect(page.locator('.unit-info .chip')).toHaveCount(0);
+  await expect(page.getByRole('tab', { name: 'Windcrest Griffin' })).toHaveCount(0);
+  await expect(page.locator('.unit-info')).not.toContainText(/Implemented|Balance: proposed|Assets/);
   // The griffin's animations follow its content: the seven base ones plus take-off, fly and land (Flight); no shoot.
   for (const s of ['move', 'attack', 'defend', 'hit', 'death', 'victory', 'takeoff', 'fly', 'landing', 'idle']) await page.getByTestId(`anim-${s}`).click();
   await expect(page.getByTestId('anim-shoot')).toHaveCount(0);
@@ -62,14 +79,8 @@ test('settings persist across reloads', async ({ page }) => {
   await expect(page.getByLabel('Screen flashes')).toHaveCount(0);
 });
 
-test('credits name the creator in large type; the Settings header has no subtitle', async ({ page }) => {
+test('the Settings header has no subtitle', async ({ page }) => {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-credits').click();
-  const credits = page.getByTestId('credits');
-  await expect(credits.locator('.credits__name')).toHaveText('Teddy Lazebnik');
-  const size = await credits.locator('.credits__name').evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
-  expect(size).toBeGreaterThanOrEqual(22);
-  await page.keyboard.press('Escape');
   await page.getByTestId('menu-settings').click();
   await expect(page.locator('.screen-header__title')).toHaveText('Settings');
   await expect(page.locator('.screen-header__subtitle')).toHaveCount(0);

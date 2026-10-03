@@ -108,17 +108,14 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   await page.keyboard.press('Escape');
   await waitFor(page, (x) => x.screen === 'adventure', 'back to map');
 
-  // The bridge (its story scene: Continue and Backlog), then the lighthouse garrison.
+  // The bridge (its story scene: Continue; no Backlog button), then the lighthouse garrison.
   await marchAndFight(page, { q: 10, r: 7 }, 'ford', async () => {
     const box = page.getByTestId('story-dialogue');
     await expect(box).toBeVisible();
     await expect(box).toContainText('The bridge is ours');
     await page.getByTestId('story-continue').click();
     await expect(box).toContainText('Keep the road watched');
-    await page.getByTestId('story-backlog-toggle').click();
-    await expect(page.getByTestId('story-backlog')).toContainText('The bridge is ours');
-    await page.keyboard.press('l');
-    await expect(page.getByTestId('story-backlog')).toBeHidden();
+    await expect(page.getByTestId('story-backlog-toggle')).toHaveCount(0);
   });
   s = await inspect(page);
   expect(s.state.world.sites.m01_ford.cleared).toBe(true);

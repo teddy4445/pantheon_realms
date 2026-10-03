@@ -3,6 +3,8 @@
 > v0.3: IDs remain stable. S03 includes three campaign mission nodes; briefing/debrief are supporting overlays. The adopted desktop/offline stack and all-screen visual assembly are specified in [production/01](../production/01_approved_stack_and_architecture.md) and [production/04](../production/04_environment_towns_ui_and_audio.md).
 **Status:** P. Keep the old 17 IDs so existing review notes remain useful; add S18. 'Screen' describes a functional view, not a requirement to render every item as a separate full-window page.
 
+> **Owner decision 2026-10-03:** S05 and S15 are removed from the game. Every pantheon has one implemented patron, preselected, so a campaign goes from S03 straight to its briefing and a skirmish from S04; the adventure map has no Overview button or screen. The IDs stay reserved so old review notes still read correctly. S18 shows one creature form per page (no base/upgrade switch; both forms open from the Encyclopedia).
+
 | ID | Name | v0.2 responsibility / change |
 | --- | --- | --- |
 | S01 | Main Menu | Full resume/new/load/reference/settings entry; no debug sidebar in ordinary mode |

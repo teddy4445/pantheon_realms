@@ -1,5 +1,5 @@
 /**
- * The Heroes-3-style hero screen (paper doll, backpack, spellbook, mounted figure)
+ * The Heroes-3-style hero screen (schematic body, inventory grid, spellbook)
  * and the start of The Winter Oath, in the production build. The fixture is an
  * ordinary save file brought in through Load → Import; the page is only read
  * (__prInspect), never driven through hooks.
@@ -30,7 +30,7 @@ const equipment = async (page: Page): Promise<Record<string, string>> => {
 };
 const backpack = async (page: Page): Promise<string[]> => ((await inspect(page)).state.heroes[HERO].backpack as { artifactId: string }[]).map((b) => b.artifactId);
 
-test('hero screen: equip by slot, refuse a wrong slot, unequip, read the spellbook, see the mounted figure', async ({ page }) => {
+test('hero screen: equip by slot, refuse a wrong slot, unequip, read the spellbook, Heroes 3 layout', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
@@ -75,14 +75,28 @@ test('hero screen: equip by slot, refuse a wrong slot, unequip, read the spellbo
   expect(await backpack(page)).toContain('rune_marked_sword');
 
   // Spellbook: Hervor learned Kaldvik's Rune Circle (Rune of Tyr is the Norse tier-1 rune).
+  // The book keeps one size whatever it holds, and its use and tier filters are always there.
   await page.getByTestId('hero-spellbook').click();
   await waitFor(page, (s) => s.overlays.includes('spellbook'), 'spellbook');
   await expect(page.getByTestId('spell-rune_of_tyr')).toBeVisible();
+  // Layout heights (offsetHeight ignores the dialog's opening scale animation).
+  const book = page.getByTestId('tome-pages');
+  const full = await book.evaluate((el) => (el as HTMLElement).offsetHeight);
+  await page.getByTestId('book-use-adventure').click();
+  await expect(page.getByTestId('spell-rune_of_tyr')).toHaveCount(0);
+  for (const id of ['book-use-all', 'book-use-battle', 'book-use-adventure']) await expect(page.getByTestId(id)).toBeVisible();
+  expect(await book.evaluate((el) => (el as HTMLElement).offsetHeight)).toBe(full);
+  await expect(page.getByTestId('spellbook').locator('.chip')).toHaveCount(0);
   await page.keyboard.press('Escape');
   await waitFor(page, (s) => !s.overlays.includes('spellbook'), 'spellbook closed');
 
-  // The mounted hero model is shown in the figure panel.
-  await expect(page.getByTestId('hero-figure')).toHaveAttribute('data-status', 'ready', { timeout: 60_000 });
+  // Heroes 3 layout (owner request 2026-10-03): a schematic body with a box per worn slot, the inventory
+  // as a grid of boxes, the header "Hero's State" with no subtitle, the army centred with no caption.
+  await expect(page.getByTestId('hero-body')).toBeVisible();
+  await expect(page.locator('.screen-header__title')).toHaveText('Hero’s State');
+  await expect(page.locator('.screen-header__subtitle')).toHaveCount(0);
+  await expect(page.getByTestId('hero-backpack').locator('.h3-slot--pack')).toHaveCount(30);
+  await expect(page.locator('.h3-army')).not.toContainText('creatures');
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
@@ -132,12 +146,11 @@ test('The Winter Oath is playable from New Game: seven Norse missions, Odin fixe
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-campaign').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-campaign').click();
   await page.getByTestId('scenario-winter_oath').click();
   await expect(page.locator('.setup-detail')).toContainText('Barrow Light');
   await expect(page.locator('.setup-detail')).toContainText('Oathbreaker’s Hall');
-  await page.getByTestId('setup-next').click();
-  await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-begin').click();
   await waitFor(page, (s) => s.overlays.includes('briefing'), 'briefing');
   await expect(page.getByTestId('briefing')).toContainText('Barrow Light');

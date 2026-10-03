@@ -2,6 +2,8 @@
  * S14 Quest / Journal: objectives with live progress (from the rules'
  * conditionProgress), claimable rewards, story dialogue, mission help and
  * campaign progress. Markers focus the adventure camera only on known sites.
+ * Statuses are icons, not tags; a step already achieved before it opens
+ * ("done early") reads as completed (owner request 2026-10-03).
  */
 import { useState } from 'react';
 import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, objectiveDoneEarly, objectivePrerequisites, type ObjectiveDefinition, requireScenarioMission } from '@pr/rules';
@@ -11,7 +13,7 @@ import { Button, Chip, Panel, Tabs } from '../components/kit';
 import { MarkerIcon, SpeakerPortrait, HeroPortrait } from '../components/art';
 import { resolveAsset } from '../assets/manifest';
 import { ScreenHeader } from '../components/game';
-import { Icon } from '../assets/icons';
+import { Icon, type IconName } from '../assets/icons';
 
 /** Quest-marker art per objective status (shape carries the status, not color alone). */
 const OBJECTIVE_MARKER: Record<string, string> = {
@@ -22,13 +24,24 @@ const OBJECTIVE_MARKER: Record<string, string> = {
   locked: 'icon.marker.locked',
 };
 
-const STATUS: Record<string, { text: string; tone: 'ok' | 'warn' | 'bad' | 'info' | 'muted' }> = {
-  locked: { text: 'Locked', tone: 'muted' },
-  available: { text: 'Ready to claim', tone: 'info' },
-  active: { text: 'Active', tone: 'warn' },
-  completed: { text: 'Completed', tone: 'ok' },
-  failed: { text: 'Failed', tone: 'bad' },
+const STATUS: Record<string, { text: string; icon: IconName }> = {
+  locked: { text: 'Locked', icon: 'lock' },
+  available: { text: 'Ready to claim', icon: 'star' },
+  active: { text: 'Active', icon: 'flag' },
+  completed: { text: 'Completed', icon: 'check' },
+  failed: { text: 'Failed', icon: 'close' },
+  current: { text: 'In progress', icon: 'flag' },
 };
+
+/** A status as a small round icon (shape and tooltip carry it, not colour alone). */
+export function StatusIcon({ status }: { status: string }) {
+  const s = STATUS[status] ?? STATUS.locked!;
+  return (
+    <span className={`status-icon is-${status}`} role="img" aria-label={s.text} title={s.text} data-status={status}>
+      <Icon name={s.icon} glyph />
+    </span>
+  );
+}
 
 type Tab = 'objectives' | 'story' | 'help' | 'campaign';
 
@@ -71,7 +84,9 @@ export function JournalScreen() {
 
   const row = (o: ObjectiveDefinition) => {
     const st = state.mission.objectives[o.id];
-    const status = st?.status ?? 'locked';
+    // A locked step whose condition is already met reads as completed: it completes the moment it opens.
+    const early = (st?.status ?? 'locked') === 'locked' && objectiveDoneEarly(catalog, state, o);
+    const status = early ? 'completed' : (st?.status ?? 'locked');
     const prog = status === 'completed' ? null : conditionProgress(catalog, state, o.condition);
     const site = o.markerSiteId ? missionSite(catalog, state, o.markerSiteId) : undefined;
     const known = site ? explored[cellIndex(state.world.map, site.coord)] === 1 || state.mission.revealedSiteIds.includes(site.id) : false;
@@ -84,15 +99,10 @@ export function JournalScreen() {
         )}
         <div className="objective__body">
           <div className="objective__title">
-            {o.title} <Chip tone={STATUS[status]!.tone}>{STATUS[status]!.text}</Chip> {prog ? <Chip>{prog}</Chip> : null}
+            {o.title} <StatusIcon status={status} /> {prog ? <span className="objective__progress num">{prog}</span> : null}
             {st?.completedOnDay ? <span className="faint small"> · day {st.completedOnDay}</span> : null}
           </div>
           <div className="small">{status === 'locked' ? lockedText(o) : o.description}</div>
-          {objectiveDoneEarly(catalog, state, o) ? (
-            <div className="small">
-              <Chip tone="ok">Done early</Chip> <span className="faint">Already achieved — it counts as soon as this step opens.</span>
-            </div>
-          ) : null}
           {o.hint && status !== 'completed' && status !== 'locked' ? <div className="faint small">Hint: {o.hint}</div> : null}
           <div className="row gap">
             {site && status !== 'locked' ? (
@@ -122,7 +132,7 @@ export function JournalScreen() {
 
   return (
     <div className="screen journal-screen">
-      <ScreenHeader title="Journal" subtitle={`${mission.name} — ${mission.subtitle}`} />
+      <ScreenHeader title="Journal" />
       <div className="journal-tabs">
         <Tabs<Tab>
           label="Journal sections"
@@ -225,7 +235,9 @@ export function JournalScreen() {
                       <td>
                         {m?.order}. {m?.name}
                       </td>
-                      <td>{rec ? <Chip tone="ok">Completed</Chip> : current ? <Chip tone="warn">In progress</Chip> : <Chip tone="muted">Locked</Chip>}</td>
+                      <td>
+                        <StatusIcon status={rec ? 'completed' : current ? 'current' : 'locked'} />
+                      </td>
                       <td className="num">{rec?.summary.days ?? '—'}</td>
                       <td>{rec ? `Lv ${rec.summary.heroLevel} · ${rec.summary.heroXp} XP${rec.summary.xpCapped ? ' (capped)' : ''}` : '—'}</td>
                     </tr>

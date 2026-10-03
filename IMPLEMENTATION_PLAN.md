@@ -32,7 +32,8 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 ## Phase C — All eighteen screens ✅
 
 * ✅ S01–S05 main menu and setup flow (mode → campaign/scenario → pantheon →
-  patron → briefing).
+  patron → briefing). 2026-10-03 (owner): S05 and S15 removed — a campaign
+  goes from S03 straight to its briefing, a skirmish from S04.
 * ✅ S06–S18 in-game screens and dialogs, all driven by rules quotes.
 
 ## Phase D — Adventure and town logic ✅

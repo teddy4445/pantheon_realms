@@ -18,7 +18,7 @@ function skirmish(name: string): GameDriver {
   return d;
 }
 
-test('the hero stands at the town gate, not on the town; clicking the town from the gate opens it; walking back stops at the gate', async ({ page }) => {
+test('the hero stands at the town gate, not on the town; clicking the town from the gate opens it; walking back stops at the gate and opens the town', async ({ page }) => {
   await usePrefs(page, { graphicsTested: true });
   const d = skirmish('gate');
   const west = d.state.towns['westharbor']!;
@@ -43,6 +43,8 @@ test('the hero stands at the town gate, not on the town; clicking the town from 
   await clickHex(page, west.coord.q, west.coord.r);
   s = await waitFor(page, (x) => x.state.heroes[hero.id].position.q === gate.q && x.state.heroes[hero.id].position.r === gate.r && !x.busy, 'back at the gate');
   expect(s.state.heroes[hero.id].position).not.toEqual(west.coord);
+  // Arriving at one of your towns opens it (owner request 2026-10-03).
+  await waitFor(page, (x) => x.screen === 'town', 'the town opens on arrival');
 });
 
 test('town: drag a stack from the hero to the garrison; Shift-drag splits; click-select splits too; no Exchange button', async ({ page }) => {
@@ -131,7 +133,12 @@ test('delivered cursors: served at 1x and 2x, picked by context on the map', asy
   await waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0 && x.humanTurn, 'map');
   const viewport = page.locator('.scene-viewport');
   const cursorAt = async (q: number, r: number) => {
-    const p = await page.evaluate(([a, b]) => (globalThis as unknown as { __prProject: (k: string, a: number, b: number) => { x: number; y: number } | null }).__prProject('adventure', a!, b!), [q, r]);
+    // The map view loads on demand: wait until it projects tiles.
+    let p: { x: number; y: number } | null = null;
+    for (let i = 0; i < 60 && !p; i++) {
+      p = await page.evaluate(([a, b]) => (globalThis as unknown as { __prProject: (k: string, a: number, b: number) => { x: number; y: number } | null }).__prProject('adventure', a!, b!), [q, r]);
+      if (!p) await page.waitForTimeout(100);
+    }
     await page.mouse.move(p!.x, p!.y);
     await page.waitForTimeout(300);
     return viewport.evaluate((el) => (el as HTMLElement).style.cursor);
@@ -150,7 +157,15 @@ test('battle board on screen matches the melee sword directions (pointy-top hexe
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await importAndLoad(page, file);
   await toHumanBattleTurn(page);
-  const proj = (c: number, r: number) => page.evaluate(([a, b]) => (globalThis as unknown as { __prProject: (k: string, a: number, b: number) => { x: number; y: number } | null }).__prProject('battle', a!, b!), [c, r]);
+  // The battle view loads on demand: wait until it projects cells.
+  const proj = async (c: number, r: number) => {
+    for (let i = 0; i < 60; i++) {
+      const p = await page.evaluate(([a, b]) => (globalThis as unknown as { __prProject: (k: string, a: number, b: number) => { x: number; y: number } | null }).__prProject('battle', a!, b!), [c, r]);
+      if (p) return p;
+      await page.waitForTimeout(100);
+    }
+    return null;
+  };
   const a = (await proj(6, 4))!;
   const right = (await proj(7, 4))!;
   const evenToOdd = (await proj(6, 5))!; // row 4 → row 5: down and to the right (60°)

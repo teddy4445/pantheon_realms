@@ -22,6 +22,8 @@ export const CELTIC_SPEC: PantheonKitSpec = {
   accentSoft: '#1f3d25',
   town: {
     archetypeId: 'celtic_hillfort',
+    // Mountains at the top right; the great tree and the stone arch stand at the top left and centre.
+    hudAnchor: 'right',
     name: 'Celtic Hillfort',
     names: {
       civic_hall: ['Roundhouse', "Chieftain's Hall", "High King's Hall", 'Hall of Tara'],

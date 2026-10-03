@@ -104,7 +104,7 @@ Do not bake dialogue, unit statistics, resource counts or translated text into i
 | S02 Game Mode | Reusable campaign/skirmish cards | Availability, descriptions, selected mode |
 | S03 Scenario / Campaign Mission | Three-node campaign overview and mission thumbnail | Mission unlock, replay/practice status, objectives and difficulty |
 | S04 Faction | Faction emblem/hero artwork | Greek playable; other factions labeled planned |
-| S05 Starting God | Zeus portrait/emblem and path preview | Fixed patron explanation; no fake eligible Athena/Ares starter choices |
+| S05 Starting God | _Removed 2026-10-03 (owner): the single patron is preselected_ | — |
 | S06 Adventure | Generated 2D map drawn in PixiJS layers (painted terrain, roads, objects, fog; pan/zoom camera) | Resources, day, route costs, hero/army, objectives, End player turn |
 | S07 Hero | Consistent portrait and item icons | Stats, skills, seven slots, form labels, equipment changes |
 | S08 Town | Painted 2D town background with building overlays at fixed locations | Costs, prerequisites, build allowance, garrison and visiting hero |
@@ -114,7 +114,7 @@ Do not bake dialogue, unit statistics, resource counts or translated text into i
 | S12 Results | Modest outcome accent and still unit icons | Actual before/after counts, XP, loot, no duplicated rewards |
 | S13 Level-Up | Hero portrait and skill emblems | Persisted legal offers and exact effects |
 | S14 Journal | Map snippets, quest illustrations, beacon icons | State/conditions, claim/track actions and unknown-location handling |
-| S15 World Overview | Compact site/hero thumbnails | Live owned-entity summaries, income and jump links |
+| S15 World Overview | _Removed 2026-10-03 (owner)_ | — |
 | S16 Encyclopedia | Family portraits and category icons | Search, filters, implementation/lore status |
 | S18 Unit Detail | One animated sprite viewer with base/upgrade switch and animation state buttons | Correct base/context stats, abilities, provenance, history and game lore |
 | S17 Settings | Quiet/static backdrop | Real controls, Apply/Cancel, defaults, accessibility and disabled reasons |

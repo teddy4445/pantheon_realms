@@ -214,3 +214,17 @@ export function relativeTime(iso: string | null): string {
   if (Number.isNaN(d.getTime())) return 'unknown time';
   return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 }
+
+/**
+ * A hero's biography as story text: the content keeps provenance and availability
+ * notes in it ("Concept-board hero.", "Hireable in skirmish."), which are status,
+ * not lore — screens show only the story sentences.
+ */
+export function heroStory(biography: string): string {
+  return biography
+    .replace(/;\s*hireable in skirmish[^.]*\./gi, '.')
+    .split(/(?<=\.)\s+/)
+    .filter((x) => !/^(Concept-board hero|Class assignment is provisional|Hireable in skirmish)/i.test(x))
+    .join(' ')
+    .trim();
+}

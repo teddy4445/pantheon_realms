@@ -1,12 +1,13 @@
 /**
- * Story dialogue window (campaign doc: "a text-first dialogue overlay with
- * portraits, subtitles, Backlog and Continue"), and the contextual tip panel.
+ * Story dialogue window (a text-first dialogue overlay with portraits,
+ * subtitles, Skip and Continue; the owner removed the Backlog button
+ * 2026-10-03), and the contextual tip panel.
  *
  * Both are presentation only. Story scenes are recorded by the rules when
  * their trigger fires; this window shows their lines one at a time. The AI
  * waits while a scene is open. All lines stay readable without audio.
  */
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { DialogueLine } from '@pr/rules';
 import { useStore } from '../app/context';
 import { HINTS } from '../app/hints';
@@ -74,16 +75,10 @@ export function StoryLayer() {
   const store = useStore();
   const entry = store.story[0];
   const [index, setIndex] = useState(0);
-  const [backlog, setBacklog] = useState(false);
-  const logRef = useRef<HTMLDivElement>(null);
   const key = entry?.key ?? '';
   useEffect(() => {
     setIndex(0);
-    setBacklog(false);
   }, [key]);
-  useEffect(() => {
-    if (backlog && logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
-  }, [backlog]);
   const lines = entry?.lines ?? [];
   const line = lines[Math.min(index, lines.length - 1)];
   const protagonist = useProtagonist();
@@ -101,49 +96,20 @@ export function StoryLayer() {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         e.stopPropagation();
-        if (backlog) setBacklog(false);
-        else advance();
+        advance();
       } else if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();
-        if (backlog) setBacklog(false);
-        else store.closeStory();
-      } else if (e.key.toLowerCase() === 'l') {
-        e.preventDefault();
-        e.stopPropagation();
-        setBacklog((b) => !b);
+        store.closeStory();
       }
     };
     window.addEventListener('keydown', onKey, true);
     return () => window.removeEventListener('keydown', onKey, true);
   });
   if (!entry || !line) return null;
-  const history = [...store.storyLog, ...lines.slice(0, index + 1)];
   return (
     <div className={`story-layer ${backdrop ? 'story-layer--backdrop' : ''}`} role="dialog" aria-modal="true" aria-label={entry.title ?? 'Story'} data-testid="story-dialogue">
       {backdrop ? <SceneArt art={backdrop} scrim="bottom" /> : null}
-      {backlog ? (
-        <div className="story-backlog panel" data-testid="story-backlog">
-          <div className="story-backlog__head">
-            <span className="story-backlog__title">Backlog</span>
-            <span className="grow" />
-            <Button size="small" onClick={() => setBacklog(false)} autoFocus>
-              Back to the scene
-            </Button>
-          </div>
-          <div className="story-backlog__list scroll" ref={logRef}>
-            {history.map((l, i) => (
-              <div key={i} className="dialogue__line">
-                <SpeakerPortrait catalog={store.catalog} line={l} size="2.6rem" />
-                <div>
-                  <div className="dialogue__speaker">{l.speaker}</div>
-                  <div className="dialogue__text">{l.text}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null}
       <DialogueStage
         line={line}
         side={sides.get(line.speaker) ?? 'left'}
@@ -155,9 +121,6 @@ export function StoryLayer() {
               {index + 1} / {lines.length}
             </span>
             <span className="grow" />
-            <Button size="small" variant="ghost" onClick={() => setBacklog((b) => !b)} data-testid="story-backlog-toggle" title="Backlog (L)">
-              Backlog
-            </Button>
             {!last ? (
               <Button size="small" variant="ghost" onClick={() => store.closeStory()} title="Skip the rest of this scene (Esc)">
                 Skip

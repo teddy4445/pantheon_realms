@@ -1100,10 +1100,6 @@ input[type='radio']:disabled {
 .story-box__speaker { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--gold-200); margin-bottom: 0.3rem; }
 .story-box__text p { font-size: 1.15rem; line-height: 1.5; color: var(--text-strong); margin: 0; }
 .story-box__footer { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.6rem; }
-.story-backlog { width: min(58rem, 94vw); max-height: 52vh; display: flex; flex-direction: column; padding: 0.7rem 1rem; }
-.story-backlog__head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-.story-backlog__title { font-family: var(--font-display); font-weight: 600; color: var(--gold-300); letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.9rem; }
-.story-backlog__list { display: flex; flex-direction: column; gap: 0.7rem; overflow: auto; padding-right: 0.4rem; }
 
 /* ============================================================
    Story art (ASSET_PIPELINE.md §13): scene pictures and dialogue busts.
@@ -1141,7 +1137,7 @@ input[type='radio']:disabled {
   .story-bust { height: clamp(10rem, 50vh, 20rem); }
 }
 
-/* A bust in a small 2:3 slot (dialogue lists, backlog). */
+/* A bust in a small 2:3 slot (dialogue lists). */
 .bust-slot { position: relative; display: block; flex: none; border: 1px solid rgba(194, 154, 82, 0.55); border-radius: var(--radius-s); overflow: hidden; background: radial-gradient(circle at 50% 30%, rgba(52, 88, 132, 0.55), var(--navy-950)); }
 .bust-slot img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
 
@@ -1225,6 +1221,72 @@ input[type='radio']:disabled {
   top: 0.15rem;
   z-index: 1;
 }
+
+/* Read-only army seen on the map (guards, monsters, enemy heroes). */
+.army-preview { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.army-preview__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  width: 4.1rem;
+  padding: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: var(--cur-pointer, pointer);
+}
+.army-preview__stack:disabled { cursor: var(--cur-default, default); }
+.army-preview__art {
+  position: relative;
+  width: 4.1rem;
+  height: 4.4rem;
+  border: 1px solid var(--gold-600);
+  border-radius: var(--radius-s);
+  background: radial-gradient(circle at 50% 30%, rgba(42, 75, 116, 0.55), rgba(7, 14, 26, 0.95) 75%);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 2px rgba(234, 208, 143, 0.22), 0 2px 5px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.army-preview__stack:hover:not(:disabled) .army-preview__art { border-color: var(--gold-400); box-shadow: var(--glow-gold); }
+.army-preview__art .portrait { position: absolute; inset: 2px; }
+.army-preview__art .portrait::after { display: none; }
+.army-preview__count {
+  position: absolute;
+  right: 0.15rem;
+  bottom: 0.15rem;
+  min-width: 1.35rem;
+  padding: 0 0.3rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1.2rem;
+  text-align: center;
+  color: var(--text-strong);
+  background: linear-gradient(180deg, #172b47, #05090f);
+  border: 1px solid var(--gold-400);
+  border-radius: 0.4rem;
+  z-index: 1;
+}
+.army-preview__tier {
+  position: absolute;
+  left: 0.15rem;
+  top: 0.15rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--gold-200);
+  background: radial-gradient(circle at 50% 35%, #1d3557, #05090f 80%);
+  border: 1px solid var(--gold-500);
+  border-radius: 50%;
+  z-index: 1;
+}
+.army-preview__art .ability-badges { position: absolute; right: 0.15rem; top: 0.15rem; z-index: 1; }
+.army-preview__name { font-size: 0.74rem; line-height: 1.15; color: var(--text-dim); text-align: center; }
 .h3-slot .set-badge {
   position: absolute;
   right: 0.12rem;
@@ -1309,13 +1371,6 @@ input[type='radio']:disabled {
    glow is the painting's own (no CSS filter, see the performance rule at the top). */
 .week-banner { width: min(60rem, 86vw); padding: 0; border: 0; background: none; cursor: var(--cur-pointer, pointer); font: inherit; color: inherit; animation: moment-drop calc(var(--motion-slow) * 1.4) ease-out both; }
 .week-banner:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 2px; }
-
-/* Credits */
-.credits { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1rem 0 1.4rem; text-align: center; }
-.credits__logo { width: min(22rem, 80%); height: auto; }
-.credits__game { font-family: var(--font-display); font-weight: 700; font-size: 2rem; letter-spacing: 0.08em; color: var(--gold-200); text-shadow: 0 2px 6px #000; }
-.credits__role { margin-top: 0.6rem; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-dim); }
-.credits__name { font-family: var(--font-display); font-weight: 600; font-size: 1.9rem; letter-spacing: 0.06em; color: var(--text-strong); }
 
 /* A pantheon emblem in front of a screen title (town, kingdom overview). */
 .title-with-emblem { display: inline-flex; align-items: center; gap: 0.5rem; }

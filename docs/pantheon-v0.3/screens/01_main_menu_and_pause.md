@@ -18,6 +18,8 @@ GAME TITLE / VERSION
 Save/storage status and compact help
 ```
 
+> **Owner decision 2026-10-03:** no Credits entry; Campaign and Skirmish are reached through New Game only. The pause overlay (D01) has no logo, no Quit to Desktop and no close button — Resume or Esc returns to play; quitting goes through the main menu.
+
 The title/menu is functional before final background art exists. An optional brief splash can precede it, but does not need a separate full-screen feature or a mandatory animation. First launch must not force an account, online connection, or personal-data entry.
 
 ## Actions and destination contracts

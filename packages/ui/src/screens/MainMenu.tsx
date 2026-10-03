@@ -1,8 +1,9 @@
 /**
  * S01 Main Menu (opening screen). One of the opening backgrounds is chosen at
  * random each time the game starts, under a 20 % black layer; the title
- * lettering sits above the ornate frame that holds the menu. Random Map is
- * reached through New Game, high scores through the end-of-game summary. Continue shows the most recent compatible save with its
+ * lettering sits above the ornate frame that holds the menu. Campaigns,
+ * skirmish and random maps are reached through New Game, high scores through
+ * the end-of-game summary. Continue shows the most recent compatible save with its
  * metadata and is disabled (with the reason) when none exists. Quit appears
  * only on desktop; the browser build never pretends to close its tab.
  *
@@ -45,10 +46,7 @@ export function MainMenuScreen() {
     store.loadSnapshot(envelope.snapshot);
   };
 
-  const playableCampaigns = Object.values(catalog.campaigns).filter((c) => c.status === 'playable');
   const describe = (text: string) => (on: boolean) => setPreview(on ? text : null);
-  const campaignText = playableCampaigns.length ? playableCampaigns.map((c) => `${c.name} — ${c.tagline}`).join(' · ') : 'Story campaign';
-  const skirmishText = 'An authored map against the AI or a second player (hot-seat)';
 
   const frameStyle = {
     '--win-left': `${win.left * 100}%`,
@@ -101,33 +99,8 @@ export function MainMenuScreen() {
                 }}
               />
               <MenuButton variant="framed" icon="load" label="Load Game" testId="menu-load" onPreview={describe('Saves, autosaves and imported save files')} onClick={() => store.openOverlay({ kind: 'save-load', mode: 'load' })} />
-              <MenuButton
-                variant="framed"
-                icon="campaign"
-                label="Campaign"
-                testId="menu-campaign"
-                title={campaignText}
-                onPreview={describe(campaignText)}
-                onClick={() => {
-                  store.resetSetup('campaign');
-                  store.goto('scenario-select');
-                }}
-              />
-              <MenuButton
-                variant="framed"
-                icon="skirmish"
-                label="Skirmish"
-                testId="menu-skirmish"
-                title={skirmishText}
-                onPreview={describe(skirmishText)}
-                onClick={() => {
-                  store.resetSetup('skirmish');
-                  store.goto('scenario-select');
-                }}
-              />
               <MenuButton variant="framed" icon="bestiary" label="Encyclopedia" testId="menu-encyclopedia" onPreview={describe('Pantheons, gods, creatures, buildings and rules')} onClick={() => store.goto('encyclopedia')} />
               <MenuButton variant="framed" icon="settings" label="Settings" testId="menu-settings" onPreview={describe('Display, audio, gameplay, controls and accessibility')} onClick={() => store.goto('settings')} />
-              <MenuButton variant="framed" icon="credits" label="Credits" testId="menu-credits" onPreview={describe('Who made this build, and the state of its art')} onClick={() => store.openOverlay({ kind: 'credits' })} />
               {platform.canQuit ? (
                 <MenuButton
                   variant="framed"

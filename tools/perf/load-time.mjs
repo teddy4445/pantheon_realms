@@ -93,7 +93,8 @@ async function once(profile, pause = 0) {
   // Scripts whose request started before the menu appeared (the page's own clock).
   const scripts = await page.evaluate((t) => performance.getEntriesByType('resource').filter((e) => e.initiatorType === 'script' || /\.js$/.test(e.name)).filter((e) => e.startTime <= t).map((e) => new URL(e.name).pathname), menu);
   if (pause) await page.waitForTimeout(pause);
-  for (const id of ['menu-campaign', 'setup-next', 'setup-next', 'setup-begin']) await page.click(`[data-testid=${id}]`);
+  // New Game → Campaign → The Three Beacons → its briefing (no pantheon or patron step since 2026-10-03).
+  for (const id of ['menu-new', 'mode-campaign', 'scenario-three_beacons', 'setup-begin']) await page.click(`[data-testid=${id}]`);
   await page.waitForSelector('[data-testid=briefing-begin]');
   await page.evaluate(() => {
     window.__prMarks.begin = performance.now();

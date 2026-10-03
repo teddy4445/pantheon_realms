@@ -35,7 +35,8 @@ for (const size of SIZES) {
   test(`campaign selection shows covers and cards; the briefing shows the mission art and busts (${size.name})`, async ({ page }) => {
     await page.setViewportSize({ width: size.width, height: size.height });
     await page.goto('/?e2e', { waitUntil: 'networkidle' });
-    await page.getByTestId('menu-campaign').click();
+    await page.getByTestId('menu-new').click();
+    await page.getByTestId('mode-campaign').click();
     await page.getByTestId('scenario-winter_oath').click();
     await page.waitForTimeout(500);
     let imgs = await imagesLoaded(page);
@@ -46,8 +47,6 @@ for (const size of SIZES) {
 
     // The Three Beacons: mission 1 briefing — Thaleia (right, mirrored) then Alexios (left).
     await page.getByTestId('scenario-three_beacons').click();
-    await page.getByTestId('setup-next').click();
-    await page.getByTestId('setup-next').click();
     await page.getByTestId('setup-begin').click();
     await waitFor(page, (s) => s.overlays.includes('briefing'), 'briefing', 30_000, true);
     const art = page.getByTestId('scene-art');

@@ -118,11 +118,11 @@ export const GREEK_HEROES: readonly HeroDefinition[] = [
   hero('alexios', 'Alexios', 'Strategos of Asterion', 'strategos', 'campaign', 'The expedition commander sent to relight the three beacons of the Asterion coast. His command portrait, skills and artifacts persist through The Three Beacons.', 'v0.3-campaign'),
   hero('melas', 'Melas', 'Former Coastal Commander', 'champion', 'enemy', 'A former coastal commander who carried the great beacon’s lens to the storm plateau, believing one light should command the whole coast.', 'v0.3-campaign'),
   hero('scout_captain', 'Scout Captain', 'Plateau Patrol', 'champion', 'enemy', 'Leader of the patrol that sweeps the middle plateau between the first crossings and the ward gate.', 'v0.3-campaign'),
-  hero('heracles', 'Heracles', 'Hero of Labors', 'champion', 'hireable', 'Concept-board hero. Class assignment is provisional. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
-  hero('achilles', 'Achilles', 'Swift Champion', 'champion', 'hireable', 'Concept-board hero. Class assignment is provisional. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
-  hero('odysseus', 'Odysseus', 'Cunning Voyager', 'strategos', 'hireable', 'Concept-board hero. Class assignment is provisional. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
-  hero('atalanta', 'Atalanta', 'Huntress of Arcadia', 'strategos', 'hireable', 'Concept-board hero. Class assignment is provisional. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
-  hero('perseus', 'Perseus', 'Slayer of the Gorgon', 'oracle', 'hireable', 'Concept-board hero. Class assignment is provisional. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
+  hero('heracles', 'Heracles', 'Hero of Labors', 'champion', 'hireable', 'Concept-board hero. Class assignment is provisional. A son of Zeus who finished twelve impossible labours and still walks the roads looking for a thirteenth. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
+  hero('achilles', 'Achilles', 'Swift Champion', 'champion', 'hireable', 'Concept-board hero. Class assignment is provisional. The fastest spear of his generation, whose charge breaks a line before it has finished forming. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
+  hero('odysseus', 'Odysseus', 'Cunning Voyager', 'strategos', 'hireable', 'Concept-board hero. Class assignment is provisional. A king of a small rocky island who took ten years to sail home and outwitted everyone who tried to stop him. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
+  hero('atalanta', 'Atalanta', 'Huntress of Arcadia', 'strategos', 'hireable', 'Concept-board hero. Class assignment is provisional. Raised by the bears of Arcadia, she outruns every hunter and never misses the first shot. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
+  hero('perseus', 'Perseus', 'Slayer of the Gorgon', 'oracle', 'hireable', 'Concept-board hero. Class assignment is provisional. He cut off the Gorgon’s head with a borrowed sword and a polished shield, and keeps both close. Hireable in skirmish; not part of The Three Beacons.', 'concept-board'),
 ];
 
 export const GREEK_PANTHEON: PantheonDefinition = {

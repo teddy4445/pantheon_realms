@@ -94,6 +94,13 @@ export interface TownArchetypeDefinition {
   readonly pantheonId: PantheonId;
   readonly name: string;
   readonly backgroundAssetId: AssetId;
+  /**
+   * Presentation only: where the town screen's economy panel sits along the top
+   * edge of the painting — the stretch of sky free of buildings and landmarks:
+   * a corner, the centre (default), or the panel's centre as a percentage of
+   * the painting's width.
+   */
+  readonly hudAnchor?: 'left' | 'center' | 'right' | number;
   /** Exactly 18 locations: 11 support + 7 dwellings. */
   readonly slots: readonly BuildingSlotDefinition[];
 }

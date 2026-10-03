@@ -128,9 +128,10 @@ try {
   if (audio.decoded !== 6) fail('sound files did not decode');
   if (audio.state !== 'running') fail(`audio did not start without a click (state ${audio.state})`);
   // Start a campaign and save into slot 1 through the UI.
-  await win.click('[data-testid=menu-campaign]');
-  await win.click('[data-testid=setup-next]');
-  await win.click('[data-testid=setup-next]');
+  // New Game → Campaign → The Three Beacons → briefing (no pantheon or patron step since 2026-10-03).
+  await win.click('[data-testid=menu-new]');
+  await win.click('[data-testid=mode-campaign]');
+  await win.click('[data-testid=scenario-three_beacons]');
   await win.click('[data-testid=setup-begin]');
   await win.click('[data-testid=briefing-begin]');
   // The 2D adventure map renders offline (PixiJS on WebGL, local files only).

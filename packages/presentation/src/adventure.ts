@@ -170,6 +170,8 @@ export class AdventureSceneController implements SceneController {
   private readonly reach = new Graphics();
   private readonly ground = new Container();
   private readonly pathLayer = new Graphics();
+  /** The route a moving hero still has to walk (drawn during movement playback, cleared step by step). */
+  private readonly trailLayer = new Graphics();
   private readonly hover = new Graphics();
   private readonly selectRing = new Graphics();
   private readonly objects = new Container();
@@ -189,6 +191,15 @@ export class AdventureSceneController implements SceneController {
   private heroes = new Map<string, HeroEntry>();
   private sites = new Map<string, SiteEntry>();
   private selectedHero: string | null = null;
+  /**
+   * Destinations of heroes whose move the view already shows but whose walk has
+   * not been played yet: a location there keeps its old look (a pickup stays on
+   * the ground, a guard stands) until the hero arrives.
+   */
+  private arrivals = new Map<string, HexCoord>();
+  /** The site views last drawn, and the latest view received. */
+  private drawnSites = new Map<string, AdventureSiteView>();
+  private lastSites: readonly AdventureSiteView[] = [];
   private down: { x: number; y: number; button: number; tx: number; ty: number; dragging: boolean } | null = null;
   private lastHover = '';
   private hoverHex: HexCoord | null = null;
@@ -205,7 +216,7 @@ export class AdventureSceneController implements SceneController {
     this.canvas = canvas;
     this.cb = cb;
     this.root.addChild(this.world);
-    this.ground.addChild(this.selectRing, this.pathLayer, this.hover);
+    this.ground.addChild(this.selectRing, this.pathLayer, this.trailLayer, this.hover);
     this.objects.sortableChildren = true;
     this.world.addChild(this.backdrop, this.terrain, this.roads, this.grid, this.reach, this.ground, this.objects, this.fog, this.effects);
     this.hover.visible = false;
@@ -246,8 +257,9 @@ export class AdventureSceneController implements SceneController {
       this.buildReach(view.reachable);
       this.reachKey = view.reachKey;
     }
-    this.syncSites(view.sites);
     this.syncHeroes(view.heroes);
+    this.lastSites = view.sites;
+    this.syncSites(view.sites);
     const pk = view.path ? `${view.path.steps.map((s) => `${s.q},${s.r}`).join(';')}|${view.path.stopIndex}|${view.path.encounter}|${this.selectedHero ?? ''}` : '';
     if (pk !== this.pathKey) {
       this.buildPath(view.path);
@@ -554,8 +566,23 @@ export class AdventureSceneController implements SceneController {
     return g;
   }
 
-  private syncSites(views: readonly AdventureSiteView[]): void {
+  private held(c: HexCoord): boolean {
+    for (const a of this.arrivals.values()) if (a.q === c.q && a.r === c.r) return true;
+    return false;
+  }
+
+  /** A hero arrived (or will not be animated): its destination's locations show their current state. */
+  private releaseArrival(heroId: string): void {
+    if (!this.arrivals.delete(heroId)) return;
+    if (!this.disposed) this.syncSites(this.lastSites);
+  }
+
+  private syncSites(latest: readonly AdventureSiteView[]): void {
     const seen = new Set<string>();
+    const views = latest.map((v) => (this.held(v.coord) ? (this.drawnSites.get(v.id) ?? v) : v));
+    // A location at a held destination that left the view (taken) stays until the hero arrives.
+    for (const [id, v] of this.drawnSites) if (!latest.some((x) => x.id === id) && this.held(v.coord)) views.push(v);
+    this.drawnSites = new Map(views.map((v) => [v.id, v]));
     for (const v of views) {
       seen.add(v.id);
       let e = this.sites.get(v.id);
@@ -715,6 +742,7 @@ export class AdventureSceneController implements SceneController {
       if (e.coord.q !== v.coord.q || e.coord.r !== v.coord.r) {
         e.prevCoord = e.coord;
         e.coord = v.coord;
+        this.arrivals.set(v.id, v.coord);
         // Give a queued movement playback two frames to claim the hero before snapping.
         if (e.locked === 0) e.snapIn = 2;
       } else if (e.locked === 0 && e.snapIn === 0) {
@@ -742,9 +770,12 @@ export class AdventureSceneController implements SceneController {
    * avatar walks hex to hex facing its direction (walk strip, or a light step bob
    * while only a still exists) and returns to idle when it stops.
    */
-  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord): Promise<void> {
+  async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord, trail = false): Promise<void> {
     const e = this.heroes.get(heroId);
-    if (!e || path.length === 0) return;
+    if (!e || path.length === 0) {
+      this.releaseArrival(heroId);
+      return;
+    }
     const end = path[path.length - 1]!;
     const same = (a: HexCoord | undefined, b: HexCoord) => !!a && a.q === b.q && a.r === b.r;
     // The view may already show where the move ended (or, through a portal, the twin).
@@ -757,7 +788,9 @@ export class AdventureSceneController implements SceneController {
       this.placeHero(e, from);
       if (speed > 0) this.setClip(e, 'walk');
       const bob = e.figure.resolve(e.monster ? 'move' : 'walk')?.fallback !== false;
-      for (const step of path) {
+      // The route stays on the ground ahead of the hero and is cleared tile by tile as it walks.
+      if (trail && speed > 0) this.drawTrail(path, 0);
+      for (const [n, step] of path.entries()) {
         const a = this.hexCenter(from);
         const b = this.hexCenter(step);
         this.faceToward(e, b.x - a.x, b.y - a.y);
@@ -775,16 +808,42 @@ export class AdventureSceneController implements SceneController {
           linear,
         );
         from = step;
+        if (trail && speed > 0) this.drawTrail(path, n + 1);
       }
       e.figure.pose.y = 0;
       if (teleportTo) await this.playTeleport(e, teleportTo, speed, follow);
     } finally {
+      if (trail) this.trailLayer.clear();
       e.locked -= 1;
       if (e.locked === 0) {
         this.placeHero(e, e.coord);
         if (e.clip === 'walk') this.setClip(e, 'idle');
         e.figure.pose.y = 0;
+        this.releaseArrival(heroId);
       }
+    }
+  }
+
+  /** The part of a walked route from step `from` on: dots, and the end marker at its last tile. */
+  private drawTrail(path: readonly HexCoord[], from: number): void {
+    const g = this.trailLayer;
+    g.clear();
+    const col = colorOf(PATH_TODAY);
+    const dark = 0x0f141f;
+    const last = path.length - 1;
+    for (let i = Math.max(0, from); i <= last; i++) {
+      const p = this.hexCenter(path[i]!);
+      if (i < last) {
+        const q = this.hexCenter(path[i + 1]!);
+        g.moveTo(p.x, p.y).lineTo(q.x, q.y).stroke({ width: R * 0.12, color: col, alpha: 0.9, cap: 'round' });
+      }
+    }
+    for (let i = Math.max(0, from); i <= last; i++) {
+      const p = this.hexCenter(path[i]!);
+      if (i === last) {
+        g.ellipse(p.x, p.y, R * 0.3, R * 0.3 * S).fill({ color: col });
+        g.ellipse(p.x, p.y, R * 0.18, R * 0.18 * S).fill({ color: dark });
+      } else g.ellipse(p.x, p.y, R * 0.14, R * 0.14 * S).fill({ color: col });
     }
   }
 
@@ -809,7 +868,10 @@ export class AdventureSceneController implements SceneController {
       await this.playTeleport(e, to, speed, follow);
     } finally {
       e.locked -= 1;
-      if (e.locked === 0) this.placeHero(e, e.coord);
+      if (e.locked === 0) {
+        this.placeHero(e, e.coord);
+        this.releaseArrival(heroId);
+      }
     }
   }
 
@@ -1086,7 +1148,11 @@ export class AdventureSceneController implements SceneController {
     for (const e of this.heroes.values()) {
       if (e.snapIn > 0 && e.locked === 0) {
         e.snapIn -= 1;
-        if (e.snapIn === 0) this.placeHero(e, e.coord);
+        if (e.snapIn === 0) {
+          this.placeHero(e, e.coord);
+          // No playback claimed this move (out of sight, or instant): show its destination as it is now.
+          for (const [id, h] of this.heroes) if (h === e) this.releaseArrival(id);
+        }
       }
       if (motion || e.clip === 'walk') e.figure.tick(dt);
     }

@@ -110,7 +110,7 @@ export interface SoundContext {
   readonly soundscape: string | null;
 }
 
-const MENU_SCREENS: ReadonlySet<ScreenId> = new Set(['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'divine-select']);
+const MENU_SCREENS: ReadonlySet<ScreenId> = new Set(['main-menu', 'game-mode', 'scenario-select', 'pantheon-select']);
 
 export function soundscapeFor(ctx: SoundContext): { music: string | null; ambience: string | null } {
   const scape = ctx.soundscape ?? DEFAULT_SOUNDSCAPE;

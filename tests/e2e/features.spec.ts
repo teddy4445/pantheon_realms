@@ -24,12 +24,12 @@ test('New Game offers Campaign, Skirmish and Random Map — no Multiplayer panel
 
 test('Twin Harbors on Hard: the AI rival starts richer and earns more; the choice is stored in the match', async ({ page }) => {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-skirmish').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-skirmish').click();
   await page.getByTestId('scenario-skirmish_twin_harbors').click();
   await page.getByTestId('setup-next').click();
   await page.getByTestId('difficulty-hard').click();
   await expect(page.getByTestId('match-settings')).toContainText('130%');
-  await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-begin').click();
   await page.getByTestId('briefing-begin').click();
   const s = await waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0, 'adventure map');
@@ -85,9 +85,9 @@ test('keyboard: F1 lists the shortcuts; a rebound key opens the Hero screen', as
   await expect(page.getByTestId('bind-open_hero')).toHaveText('K');
   await page.getByTestId('settings-apply').click();
   await page.keyboard.press('Escape');
-  await page.getByTestId('menu-skirmish').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-skirmish').click();
   await page.getByTestId('scenario-skirmish_twin_harbors').click();
-  await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-begin').click();
   await page.getByTestId('briefing-begin').click();
@@ -105,9 +105,9 @@ test('keyboard: F1 lists the shortcuts; a rebound key opens the Hero screen', as
 
 test('tips: the route tip appears once, and “Got it” is remembered after a reload', async ({ page }) => {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-skirmish').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-skirmish').click();
   await page.getByTestId('scenario-skirmish_twin_harbors').click();
-  await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-begin').click();
   await page.getByTestId('briefing-begin').click();
@@ -157,9 +157,9 @@ test('the last rival falls: game over, summary charts and score, then the high-s
 
 test('end day helper still works with tips on (smoke)', async ({ page }) => {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-skirmish').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-skirmish').click();
   await page.getByTestId('scenario-skirmish_twin_harbors').click();
-  await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-next').click();
   await page.getByTestId('setup-begin').click();
   await page.getByTestId('briefing-begin').click();

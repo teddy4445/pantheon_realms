@@ -19,6 +19,7 @@ import {
   movementBudget,
   maxMana,
   missionObjectiveDefs,
+  objectiveDoneEarly,
   adventureSpellsOf,
   quoteAdventureSpell,
   campStock,
@@ -52,20 +53,17 @@ import { adventurePlaybackFactor } from '../app/preferences';
 import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
-import { HeroPortrait, MarkerIcon, SpellIcon, siteMarkerAsset } from '../components/art';
-import { ArmyStrip, ResourceBar } from '../components/game';
+import { HeroPortrait, MarkerIcon, siteMarkerAsset } from '../components/art';
+import { ArmyPreview, ResourceBar } from '../components/game';
 import { Icon } from '../assets/icons';
 import {
   dailyIncome,
   dayLabel,
-  guardStrength,
-  heroStrength,
   humanPlayer,
   playerHeroes,
   siteArchetype,
   siteKindLabel,
   terrainLabel,
-  threatLabel,
   townAtHero,
 } from '../app/view';
 
@@ -339,23 +337,15 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           <div>
             <Icon name="attack" className="inline-icon" /> <strong>{site.def.guard.label}</strong>
           </div>
-          <div className="row gap wrap">
-            {(site.state.guard ?? site.def.guard.army).map((s, i) => (
-              <Chip key={i}>
-                {s.count} {s.count === 1 ? catalog.creatures[s.creatureId]?.name : catalog.creatures[s.creatureId]?.pluralName}
-              </Chip>
-            ))}
-          </div>
+          <ArmyPreview catalog={catalog} stacks={site.state.guard ?? site.def.guard.army} onInfo={(creatureId, count) => store.openOverlay({ kind: 'stack-info', creatureId, count })} testId="guard-army" />
           {hero ? (
             (() => {
-              const t = threatLabel(catalog, heroStrength(catalog, hero), guardStrength(catalog, state, site.def.id));
               const r = quoteNeutralReaction(catalog, state, hero.id, site.def.coord);
-              return (
-                <div className="small">
-                  Estimate vs {hero.name}: <Chip tone={t.tone}>{t.text}</Chip> <span className="faint">(heuristic)</span>
-                  {r.kind ? <div data-testid="neutral-reaction">{r.kind === 'join' ? 'They would rather join your army than fight it.' : 'They will flee from your army rather than fight.'}</div> : null}
+              return r.kind ? (
+                <div className="small" data-testid="neutral-reaction">
+                  {r.kind === 'join' ? 'They would rather join your army than fight it.' : 'They will flee from your army rather than fight.'}
                 </div>
-              );
+              ) : null;
             })()
           ) : null}
         </div>
@@ -396,27 +386,13 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
       {other && (vis || other.ownerId === playerId) ? (
         <div className="small">
           <Icon name="hero" className="inline-icon" /> {other.name} ({other.ownerId === playerId ? 'yours' : (state.players[other.ownerId]?.name ?? 'hostile')})
-          {other.monster ? (
-            <div className="row gap wrap">
-              {other.army.slots.map((s, i) =>
-                s ? (
-                  <Chip key={i}>
-                    {s.count} {s.count === 1 ? catalog.creatures[s.creatureId]?.name : catalog.creatures[s.creatureId]?.pluralName}
-                  </Chip>
-                ) : null,
-              )}
-            </div>
+          {other.ownerId !== playerId ? (
+            <ArmyPreview catalog={catalog} stacks={other.army.slots.filter((s): s is NonNullable<typeof s> => !!s)} onInfo={(creatureId, count) => store.openOverlay({ kind: 'stack-info', creatureId, count })} testId="foe-army" />
           ) : null}
-          {other.ownerId !== playerId && hero ? (
+          {other.ownerId !== playerId && other.monster && hero ? (
             (() => {
-              const t = threatLabel(catalog, heroStrength(catalog, hero), heroStrength(catalog, other));
-              const r = other.monster ? quoteNeutralReaction(catalog, state, hero.id, other.position) : null;
-              return (
-                <div>
-                  Estimate vs {hero.name}: <Chip tone={t.tone}>{t.text}</Chip> <span className="faint">(heuristic)</span>
-                  {r?.kind ? <div>{r.kind === 'join' ? 'They would rather join your army than fight it.' : 'They will flee from your army rather than fight.'}</div> : null}
-                </div>
-              );
+              const r = quoteNeutralReaction(catalog, state, hero.id, other.position);
+              return r.kind ? <div>{r.kind === 'join' ? 'They would rather join your army than fight it.' : 'They will flee from your army rather than fight.'}</div> : null;
             })()
           ) : null}
         </div>
@@ -616,7 +592,8 @@ export function AdventureScreen() {
         if (!seen) continue;
         if (mine) store.audio?.heroSteps(true);
         try {
-          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine || (teleportTo && vis.has(cellIndex(store.session!.state.world.map, teleportTo))) ? teleportTo : undefined);
+          // The viewer's own walk keeps its route on the ground, cleared step by step.
+          await c.playHeroMove(m.heroId, m.path, adventurePlaybackFactor(store.prefs, source === 'ai'), true, mine || (teleportTo && vis.has(cellIndex(store.session!.state.world.map, teleportTo))) ? teleportTo : undefined, mine);
         } finally {
           if (mine) store.audio?.heroSteps(false);
         }
@@ -656,7 +633,10 @@ export function AdventureScreen() {
       const outcome = await c.prepareForBattle(attacker.id, b.encounter.destination, adventurePlaybackFactor(store.prefs, source === 'ai'), () => store.session === session && session.state.battle?.battleId === battleId);
       store.prepareWar[outcome] += 1;
     }
-    /** After the viewer's hero arrives at a camp or an unused event, open its dialog. */
+    /**
+     * After the viewer's hero arrives: at one of its own towns, open the town; at a
+     * camp or an unused event, chest or quest hut, open its dialog.
+     */
     function afterMoves(moves: readonly { kind: string; heroId?: string }[]) {
       const session = store.session;
       if (!session || moves.length === 0) return;
@@ -664,8 +644,15 @@ export function AdventureScreen() {
       const st = session.state;
       const hero = st.heroes[last.heroId];
       if (!hero || hero.ownerId !== session.humanPlayerId || hero.status !== 'active' || st.battle) return;
+      if (store.overlays.length || store.screen.id !== 'adventure') return;
+      const town = townAtHero(catalog, st, hero);
+      if (town && town.ownerId === session.humanPlayerId) {
+        store.selectedHeroId = hero.id;
+        store.goto('town', { townId: town.id });
+        return;
+      }
       const site = siteAt(catalog, st, hero.position);
-      if (!site || store.overlays.length) return;
+      if (!site) return;
       if (site.def.kind.type === 'creature_camp' && (!site.def.guard || site.state.cleared)) {
         store.showHint('creature_camp');
         store.openOverlay({ kind: 'camp', heroId: hero.id, siteId: site.def.id });
@@ -695,6 +682,39 @@ export function AdventureScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
+
+  /** The Spells button: the hero's book, opened to cast on the map. */
+  const openSpells = () => {
+    if (!selected) return;
+    const hero = selected;
+    const options: Record<string, { castable: boolean; reason: string | null }> = {};
+    for (const sp of adventureSpellsOf(catalog, state, hero.id)) {
+      const q = quoteAdventureSpell(catalog, state, playerId, hero.id, sp.id, null);
+      options[sp.id] = { castable: humanTurn && q.legal, reason: !humanTurn ? 'Not your turn' : q.legal ? null : (q.reason ?? 'Cannot be cast now') };
+    }
+    store.openOverlay({
+      kind: 'spellbook',
+      heroId: hero.id,
+      cast: {
+        context: 'adventure',
+        options,
+        onCast: (spellId) => {
+          const sp = catalog.spells[spellId];
+          if (!sp) return;
+          // A spell with a target tile (Divine Sight) asks for the tile next.
+          if (sp.effect.type === 'reveal_radius') {
+            setCasting(spellId);
+            return;
+          }
+          const run = () => {
+            if (!store.dispatch({ kind: 'CastAdventureSpell', heroId: hero.id, spellId, target: hero.position })) store.toast(`${sp.name}: ${sp.summary}`, 'success');
+          };
+          if (sp.effect.type === 'recall') store.confirm(`Cast ${sp.name}?`, `${hero.name} returns to the nearest town you own and ends the day's movement there.`, 'Cast', run);
+          else run();
+        },
+      },
+    });
+  };
 
   const selectHero = (h: HeroState) => {
     store.selectedHeroId = h.id;
@@ -829,16 +849,23 @@ export function AdventureScreen() {
     } else go();
   };
 
+  // Esc while choosing a spell's tile cancels the spell (capture phase: before Esc opens the pause menu).
+  useEffect(() => {
+    if (!casting) return;
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || store.overlays.length || store.story.length) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setCasting(null);
+    };
+    window.addEventListener('keydown', onEsc, true);
+    return () => window.removeEventListener('keydown', onEsc, true);
+  }, [casting, store]);
+
   // Keyboard: camera pan/zoom, Space = continue along path, Enter = end day, Tab = next hero.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (store.overlays.length || e.ctrlKey || e.metaKey || e.altKey) return;
-      if (casting && e.key === 'Escape') {
-        e.preventDefault();
-        e.stopPropagation();
-        setCasting(null);
-        return;
-      }
       const t = e.target as HTMLElement;
       if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') return;
       if (store.story.length > 0) return;
@@ -865,6 +892,9 @@ export function AdventureScreen() {
       else if (is('interventions') && interventionsOn) {
         e.preventDefault();
         store.openOverlay({ kind: 'interventions' });
+      } else if (is('open_spells') && selected) {
+        e.preventDefault();
+        openSpells();
       } else return;
     };
     window.addEventListener('keydown', onKey);
@@ -930,7 +960,7 @@ export function AdventureScreen() {
       ) : null}
 
       <aside className="adv-left">
-        <Panel title="Heroes" className="adv-list" headerIcon="hero">
+        <Panel className="adv-list" label="Heroes">
           {heroes.map((h) => {
             const budget = movementBudget(catalog, state, h);
             return (
@@ -944,7 +974,7 @@ export function AdventureScreen() {
             );
           })}
         </Panel>
-        <Panel title="Towns" className="adv-list" headerIcon="town">
+        <Panel className="adv-list" label="Towns">
           {Object.values(state.towns)
             .filter((t) => t.ownerId === playerId)
             .map((t) => (
@@ -963,68 +993,6 @@ export function AdventureScreen() {
       </aside>
 
       <aside className="adv-right">
-        {selected ? (
-          <Panel title={selected.name} className="adv-hero" headerIcon="hero" actions={<Button size="small" onClick={() => store.goto('hero', { heroId: selected.id })}>Details</Button>}>
-            <div className="adv-hero__top">
-              <HeroPortrait catalog={catalog} definitionId={selected.definitionId} name={selected.name} size="4.4rem" />
-              <div className="adv-hero__stats">
-                <div>
-                  Level {selected.level} {catalog.heroClasses[selected.classId]?.name}
-                </div>
-                <div className="row gap small">
-                  <span title="Attack"><Icon name="attack" className="inline-icon" /> {selected.attributes.attack}</span>
-                  <span title="Defense"><Icon name="defense" className="inline-icon" /> {selected.attributes.defense}</span>
-                  <span title="Power"><Icon name="power" className="inline-icon" /> {selected.attributes.power}</span>
-                  <span title="Knowledge"><Icon name="knowledge" className="inline-icon" /> {selected.attributes.knowledge}</span>
-                </div>
-                <div className="small">
-                  <Icon name="movement" className="inline-icon" /> Movement <span className="num">{selected.movementPoints}</span> / {movementBudget(catalog, state, selected).total}
-                </div>
-                <div className="small">
-                  <Icon name="mana" className="inline-icon" /> Mana <span className="num">{selected.mana}</span> / {maxMana(catalog, state, selected)}
-                </div>
-              </div>
-            </div>
-            {adventureSpellsOf(catalog, state, selected.id).length > 0 ? (
-              <div className="adv-spells row gap">
-                {adventureSpellsOf(catalog, state, selected.id).map((sp) => {
-                  const q = quoteAdventureSpell(catalog, state, playerId, selected.id, sp.id, null);
-                  return (
-                    <Button
-                      key={sp.id}
-                      size="small"
-                      variant={casting === sp.id ? 'primary' : undefined}
-                      disabled={!humanTurn || !q.legal}
-                      disabledReason={!humanTurn ? 'Not your turn' : q.reason}
-                      onClick={() => {
-                        if (sp.effect.type !== 'reveal_radius') {
-                          // Self spells (Swiftness, Homecoming…) need no target tile.
-                          const run = () => {
-                            if (!store.dispatch({ kind: 'CastAdventureSpell', heroId: selected.id, spellId: sp.id, target: selected.position })) store.toast(`${sp.name}: ${sp.summary}`, 'success');
-                          };
-                          if (sp.effect.type === 'recall') store.confirm(`Cast ${sp.name}?`, `${selected.name} returns to the nearest town you own and ends the day's movement there.`, 'Cast', run);
-                          else run();
-                          return;
-                        }
-                        setCasting((c) => (c === sp.id ? null : sp.id));
-                      }}
-                      title={sp.summary}
-                      data-testid={`cast-${sp.id}`}
-                    >
-                      <SpellIcon iconAssetId={sp.iconAssetId} effectType={sp.effect.type} size="1.6rem" />
-                      {sp.name} ({sp.manaCost})
-                    </Button>
-                  );
-                })}
-              </div>
-            ) : null}
-            <ArmyStrip catalog={catalog} army={selected.army} label={`${selected.name}'s army`} onSlot={(i) => { const s = selected.army.slots[i]; if (s) store.openOverlay({ kind: 'stack-info', creatureId: s.creatureId, count: s.count }); }} />
-          </Panel>
-        ) : (
-          <Panel title="No hero">
-            <p className="dim">You have no active hero.</p>
-          </Panel>
-        )}
         {info ? (
           <Panel title={pinned ? 'Tile (pinned)' : 'Tile'} className="adv-tile" actions={pinned ? <Button size="small" variant="ghost" icon="close" onClick={() => setPinned(null)} aria-label="Unpin" /> : undefined}>
             <TileInfo store={store} state={state} c={info} hero={selected} />
@@ -1033,7 +1001,9 @@ export function AdventureScreen() {
         <Panel title="Objectives" className="adv-objectives" headerIcon="journal" actions={<Button size="small" onClick={() => store.goto('journal')}>Journal</Button>}>
           <ul className="objective-mini">
             {objectives.map((o) => {
-              const st = state.mission.objectives[o.id]?.status ?? 'locked';
+              const raw = state.mission.objectives[o.id]?.status ?? 'locked';
+              // A step already achieved before it opens reads as completed (as in the Journal).
+              const st = raw === 'locked' && objectiveDoneEarly(catalog, state, o) ? 'completed' : raw;
               if (st === 'locked') return null;
               return (
                 <li key={o.id} className={`is-${st}`}>
@@ -1070,8 +1040,8 @@ export function AdventureScreen() {
           <Button icon="journal" onClick={() => store.goto('journal')} title="Journal (J)">
             Journal
           </Button>
-          <Button icon="overview" onClick={() => store.goto('overview')} title="Overview (O)">
-            Overview
+          <Button icon="spell" onClick={openSpells} disabled={!selected} title="Spells (C)" data-testid="open-spells">
+            Spells
           </Button>
           <Button icon="bestiary" onClick={() => store.goto('encyclopedia')} title="Encyclopedia (B)">
             Bestiary

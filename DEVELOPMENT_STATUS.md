@@ -1,12 +1,96 @@
 # Development Status
 
-_Last updated: 2026-10-03 · **app 0.9.0** (Windows installer with the 2D migration, built for play-testing) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
+_Last updated: 2026-10-03 · **owner interface pass, third round** (14 requests; below) · **app 0.9.0** (Windows installer with the 2D migration, built for play-testing) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## Owner interface pass of 2026-10-03, third round (14 requests)
+
+What changed, request by request (all presentation; no rule, content value or
+save change — the one content addition is presentation data, `hudAnchor`):
+
+1. **Main menu:** no Credits, Campaign or Skirmish entries (both under New Game).
+2. **Encyclopedia:** no header subtitle; every section's cards share one height
+   (`useEqualHeights`, per `data-eq` group, re-measured on resize and font load);
+   all 62 heroes show a short story (five Greek concept heroes gained one; the
+   build notes "Concept-board hero…", "Hireable in skirmish…" are stripped).
+3. **Creature window (S18):** one panel — portrait, name again, larger summary,
+   statistics with growth and cost, abilities, lore. No right-hand chips,
+   Implemented/Balance tags, Assets section, lore tags or base/upgrade tabs.
+4. **New Game:** no header subtitles; the campaign list has no tags, no
+   "What carries between missions" and no "Other pantheon campaigns" card; the
+   Campaigns/Skirmish tabs are gone. A campaign goes from its card straight to
+   the briefing (the pantheon and patron steps are skipped); the **Starting
+   Patron screen (S05) is removed** — each pantheon has one implemented patron,
+   preselected. Pantheon cards redesigned (medallion, faction band, name and
+   epithet 4 px larger at 1920 px), no Playable/god/hero tags.
+5. **Map:** the **Overview button and screen (S15) are removed**; no top-right
+   hero panel; the left lists have no title or icon.
+6. **Pause menu:** no logo, no Quit to Desktop, no close button (Resume or Esc).
+7. **Before an attack:** the tile panel shows the guards (or a monster band /
+   enemy hero) as portraits with counts, tier and ability badges
+   (`ArmyPreview`); the "Estimate vs …" strength heuristic is gone.
+8. **Spells:** a spellbook pop-up (`components/spellbook.tsx`) — an open tome
+   of a fixed size with the use filters (All/Battle/Adventure, with counts)
+   and tier filters always shown, mana gems, Roman tier seals and pantheon
+   crests. The map has a **Spells** button (key C) and the battle's Spell
+   button (key S) opens it to cast; picking a spell with a target asks for
+   the target next. The hero screen's book uses the same component.
+9. **Dialogue:** no Backlog button (nor the L key).
+10. **Hero screen ("Hero's State"):** a schematic body (SVG) with a box on each
+    body part for its item, accessories and mount beside it, the spellbook in
+    the corner; the inventory as a grid of all 30 boxes on the right; the army
+    centred with larger slots and no caption or hint text.
+11. **Movement:** a location at the hero's destination keeps its look until the
+    hero arrives (the view holds it while the walk plays); the viewer's own
+    walk draws its route on the ground and clears it tile by tile. Arriving at
+    one of your towns opens it.
+12. **Town:** no header subtitle; the painting fills the screen; the town
+    economy is a compact panel on the painting's top edge, placed per town
+    where the sky is free (`TownArchetypeDefinition.hudAnchor`; checked on all
+    six paintings); a building opens a pop-up beside it with icon actions
+    (build, recruit, market, tavern, gods, offering, gifts, training, merchant,
+    spellbook) and no tags; the garrison and visiting army are centred with an
+    ornamental divider. The wallet sits in the middle of every screen header
+    (as on the map). **Recruiting never asks for approval** (the "Confirm
+    large recruitments" setting is gone; training never asked). Building
+    still asks once.
+13. **Journal:** no header subtitle; statuses are icons (check, flag, star,
+    lock, cross) instead of tags; a locked step already achieved reads as
+    completed (also in the map's objective list).
+14. **VFX list:** `VFX_MAGIC_AND_FAVORS.md`, generated by `npm run vfx:list`
+    (`tools/assets/vfx/`) from the content: 9 shared status overlays, 47
+    battle spells, 7 adventure spells, 14 miracles, 6 divine gifts and the
+    Temple offering — 84 effects, 177 asset IDs, each with its phases, what
+    the game shows today and a one-line look. **A list only; nothing
+    implemented.**
+
+Also fixed: Esc while choosing a map spell's tile now cancels the spell (it
+opened the pause menu before).
+
+| Command | Result |
+|---|---|
+| `npm run check` | pass — boundaries, type-check, 32 files / 315 unit tests |
+| `npm run build` | pass (start-up script 1,706.43 KB / 430.73 KB gzip) |
+| `npm run vfx:list` | wrote `VFX_MAGIC_AND_FAVORS.md` (0 looks missing) |
+| `npm run icons:catalog` | 792 entries; the six new town-action glyphs listed as `icon.ui.<name>` with briefs |
+| Full Playwright suite (`npx playwright test`, fresh build) | 130 tests: 86 passed, 2 failed, 42 skipped (opt-in review sweep). The two failures were test issues, fixed and re-run: the fixed-size book was measured during the dialog's opening scale (now layout height), and the battle-board check projected before the on-demand battle view loaded (now waits). Re-run of `round10` + `round11` + `heroscreen`: all pass (one flaky cursor check passed on re-run and now also waits for the map view) |
+| New `tests/e2e/round11.spec.ts` (setup flow, map, spells on the map and in battle, town, journal, recruit without approval) | 5 / 5 pass |
+| `node tools/perf/load-time.mjs` (3-run medians, SwiftShader; tool updated to the new New Game flow) | menu 215 / 436 ms, first scene 1,107 / 1,244 ms (local / throttled web) |
+| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` (smoke updated to the new flow) | DESKTOP SMOKE OK (map on WebGL, saves, audio) |
+| Visual check (screenshots, 1600×900) | every changed screen; the economy panel and pop-ups on all six town paintings |
+
+Known limits: icon glyphs for the new town actions (`build`, `recruit`,
+`market`, `tavern`, `merchant`, `gift`) are simple SVG stand-ins until icon art
+is delivered as `icon.ui.<name>`. The hero-screen figure sprites
+(`sprite.hero.<pantheon>.figure`, GPT-6 sheet D) are no longer shown; that
+sheet can be skipped. In the test container (software WebGL) the map renders
+at 1–10 frames per second, so dialog fade-ins look slow there; not measured on
+a GPU.
 
 ## 0.9.0 installer and the sheet-based GPT-6 queue (owner requests, 2026-10-03)
 

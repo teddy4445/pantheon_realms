@@ -7,7 +7,7 @@ import { StoreProvider, useStore } from './context';
 import type { AppStore, ScreenId } from './store';
 import { SceneHostLayer } from '../scene/SceneHost';
 import { MainMenuScreen } from '../screens/MainMenu';
-import { GameModeScreen, ScenarioSelectScreen, PantheonSelectScreen, DivineSelectScreen } from '../screens/Setup';
+import { GameModeScreen, ScenarioSelectScreen, PantheonSelectScreen } from '../screens/Setup';
 import { AdventureScreen } from '../screens/Adventure';
 import { HeroScreen } from '../screens/Hero';
 import { TownScreen } from '../screens/Town';
@@ -17,7 +17,6 @@ import { BattleScreen } from '../screens/Battle';
 import { BattleResultScreen } from '../screens/BattleResult';
 import { LevelUpScreen } from '../screens/LevelUp';
 import { JournalScreen } from '../screens/Journal';
-import { OverviewScreen } from '../screens/Overview';
 import { EncyclopediaScreen } from '../screens/Encyclopedia';
 import { SettingsScreen } from '../screens/Settings';
 import { UnitDetailScreen } from '../screens/UnitDetail';
@@ -33,7 +32,6 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   'game-mode': GameModeScreen,
   'scenario-select': ScenarioSelectScreen,
   'pantheon-select': PantheonSelectScreen,
-  'divine-select': DivineSelectScreen,
   adventure: AdventureScreen,
   hero: HeroScreen,
   town: TownScreen,
@@ -43,7 +41,6 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   'battle-result': BattleResultScreen,
   'level-up': LevelUpScreen,
   journal: JournalScreen,
-  overview: OverviewScreen,
   encyclopedia: EncyclopediaScreen,
   settings: SettingsScreen,
   'unit-detail': UnitDetailScreen,
@@ -52,7 +49,7 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   'high-scores': HighScoresScreen,
 };
 
-const IN_GAME_BACKABLE: ScreenId[] = ['hero', 'town', 'recruitment', 'pantheon', 'journal', 'overview', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'divine-select', 'random-setup', 'high-scores'];
+const IN_GAME_BACKABLE: ScreenId[] = ['hero', 'town', 'recruitment', 'pantheon', 'journal', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'random-setup', 'high-scores'];
 
 /** Mandatory flow overlays: Escape does not dismiss them. */
 const STICKY_OVERLAYS = new Set(['mission-failed', 'debrief', 'campaign-complete', 'game-over', 'handoff']);
@@ -66,7 +63,7 @@ function useGlobalKeys(store: AppStore) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (isTyping(e.target)) return;
-      // The story window handles its own keys (Enter, Esc, L).
+      // The story window handles its own keys (Enter, Esc).
       if (store.story.length > 0) return;
       const top = store.overlays[store.overlays.length - 1];
       const screen = store.screen.id;
@@ -97,7 +94,6 @@ function useGlobalKeys(store: AppStore) {
         ['open_hero', 'hero'],
         ['open_town', 'town'],
         ['open_journal', 'journal'],
-        ['open_overview', 'overview'],
         ['open_encyclopedia', 'encyclopedia'],
         ['open_pantheon', 'pantheon'],
       ];
@@ -116,7 +112,7 @@ function Router() {
   const store = useStore();
   const entry = store.screen;
   const Screen = SCREENS[entry.id];
-  const needsSession = !['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'divine-select', 'encyclopedia', 'settings', 'unit-detail', 'random-setup', 'high-scores'].includes(entry.id);
+  const needsSession = !['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'encyclopedia', 'settings', 'unit-detail', 'random-setup', 'high-scores'].includes(entry.id);
   if (needsSession && !store.session) {
     return <MainMenuScreen />;
   }

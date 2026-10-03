@@ -53,6 +53,9 @@ test('Training Academy trains a visiting hero; Watchtower widens vision', async 
   await page.getByTestId('town-tab-westharbor').click();
   await page.getByTestId('slot-watchtower').click();
   await expect(page.getByText('Town vision: 8 hexes.')).toBeVisible();
+  // The building pop-up opens beside its building; Esc closes it before the next one.
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('building-popup')).toHaveCount(0);
   await page.getByTestId('slot-training_academy').click();
   await page.getByTestId('train-alexios').click();
   await waitFor(page, (x) => x.state.heroes.alexios.xp === 500, 'training XP');
@@ -93,7 +96,7 @@ test('second god choice: commit to a second minor god after the first', async ({
   await open(page, file);
   await page.getByTestId('town-tab-westharbor').click();
   await page.getByTestId('slot-pantheon_temple').click();
-  await page.getByRole('button', { name: 'Pantheon & gods' }).click();
+  await page.getByTestId('building-popup').getByRole('button', { name: 'Pantheon & gods' }).click();
   await expect(page.getByTestId('signature')).toContainText('Glory');
   await page.getByTestId('god-hermes').getByRole('button', { name: 'Commit' }).click();
   await page.getByTestId('confirm-ok').click();

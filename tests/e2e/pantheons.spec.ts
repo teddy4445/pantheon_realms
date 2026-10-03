@@ -18,15 +18,16 @@ for (const c of CASES) {
   test(`${c.id} skirmish vs ${c.rival}: setup, town, build and recruit through the UI`, async ({ page }) => {
     test.setTimeout(180_000);
     await page.goto('/?e2e', { waitUntil: 'networkidle' });
-    await page.getByTestId('menu-skirmish').click();
+    await page.getByTestId('menu-new').click();
+    await page.getByTestId('mode-skirmish').click();
     await page.getByTestId('scenario-skirmish_twin_harbors').click();
     await page.getByTestId('setup-next').click();
     // Pantheon step: every pantheon is playable; the rival is chosen here too.
     await page.getByTestId(`pantheon-${c.id}`).click();
-    await expect(page.getByTestId(`pantheon-${c.id}`)).toContainText('Playable');
+    // Cards show emblem, name and epithet only: no 'Playable' tag, no god or hero counts.
+    await expect(page.getByTestId(`pantheon-${c.id}`)).not.toContainText('Playable');
     await page.getByTestId(`rival-${c.rival}`).click();
     await expect(page.getByTestId(`rival-${c.rival}`)).toHaveAttribute('aria-checked', 'true');
-    await page.getByTestId('setup-next').click();
     // A single implemented patron is preselected (no mechanical bonus — mirrors Zeus).
     await expect(page.getByText(c.patron).first()).toBeVisible();
     await page.getByTestId('setup-begin').click();

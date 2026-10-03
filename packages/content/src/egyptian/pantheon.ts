@@ -23,6 +23,8 @@ export const EGYPTIAN_SPEC: PantheonKitSpec = {
   accentSoft: '#1b4a4d',
   town: {
     archetypeId: 'egyptian_city',
+    // Open sky at the top left; the pyramids rise at the top centre.
+    hudAnchor: 'left',
     name: 'Egyptian City',
     names: {
       civic_hall: ['Nome House', "Governor's Palace", "Vizier's Palace", "Pharaoh's Palace"],
