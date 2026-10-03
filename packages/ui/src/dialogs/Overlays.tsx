@@ -527,7 +527,7 @@ function DebriefDialog({ final }: { final: boolean }) {
       ) : null}
       {final ? (
         <p className="note">
-          You have completed {catalog.campaigns[campaign?.campaignId ?? '']?.name ?? 'the campaign'}. Thank you for playing this development build — all art, models and animation are temporary placeholders.
+          You have completed {catalog.campaigns[campaign?.campaignId ?? '']?.name ?? 'the campaign'}. Thank you for playing this development build — much of the art and animation is still a temporary placeholder.
         </p>
       ) : null}
     </Modal>

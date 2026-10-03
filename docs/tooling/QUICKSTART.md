@@ -6,7 +6,7 @@ Use a normal local development checkout. Commit or back up current work before c
 
 The supplied scripts were tested with Node 22.16.0 on Linux. Use a supported installed Node release and verify each third-party package's `engines` when resolving it. A local Claude Code installation/account is needed to use the skills/MCP interactively. Scripts can be inspected and the audit CLI used without Claude.
 
-No global npm install, Python environment, Blender or browser download is required for the bundled local checks.
+No global npm install, Python environment or browser download is required for the bundled local checks.
 
 ## 2. Run the toolkit checks
 
@@ -15,10 +15,10 @@ From the repository root:
 ```bash
 node --test tools/pantheon-dev/tests/toolkit.test.mjs
 node tools/pantheon-dev/audit.mjs catalog tools/pantheon-dev/fixtures/creature-pairs.valid.json
-node tools/pantheon-dev/audit.mjs asset tools/pantheon-dev/fixtures/metadata-only.gltf idle_a attack_melee_a
+node tools/pantheon-dev/audit.mjs sprites
 ```
 
-The last file is deliberately a metadata-only fixture, not a real animated model. Do not copy it into the game's asset pack.
+The last command reads the game's `assets-runtime/sprites/manifest.json` and reports entries by section and status (`placeholder`/`final`) and any referenced file missing locally. It does not judge art quality; in a checkout without the game assets it reports the missing manifest and exits nonzero.
 
 ## 3. Register only the local audit MCP
 
@@ -52,12 +52,12 @@ keep one population pool and reject unaffordable or invalid destinations.
 
 Follow [MCP setup](MCP_SETUP.md). The dependency planner uses network access only to fetch registry metadata; it does not install or execute it. Review the plan and lockfile before explicitly installing software.
 
-Claude hosted web conversations cannot directly control an unauthenticated local Blender socket just because these files were uploaded. Use a supported **local client** with the project and required applications installed. Never expose the Blender port on the public internet to work around this.
+Hosted web conversations cannot drive local tools just because these files were uploaded. Use a supported **local client** with the project and required applications installed. Never expose a local tool port on the public internet to work around this.
 
 ## Windows notes
 
-The commands above run in PowerShell or a terminal where `node` is available. Paths written by setup are correctly JSON-escaped, including spaces. For Blender activation, pass a quoted absolute uvx path, for example `--uvx=C:\Tools\uv\uvx.exe` as one argument. Use `(Get-Command uvx).Source` to inspect the installed location; replace examples with your actual path.
+The commands above run in PowerShell or a terminal where `node` is available. Paths written by setup are correctly JSON-escaped, including spaces.
 
 A Claude process inherits environment variables when launched. Restart it from the terminal where optional credentials were set; merely writing a `.env` file does not guarantee that MCP configuration expands it. Never include real keys in source control or screenshots.
 
-The live Windows client, installer and Blender integration were not tested here. The unit suite's symlink test can require Windows developer mode or appropriate permission; on a machine that cannot create test symlinks, record that test as not run rather than disabling path restrictions.
+The live Windows client and installer were not tested here. The unit suite's symlink test can require Windows developer mode or appropriate permission; on a machine that cannot create test symlinks, record that test as not run rather than disabling path restrictions.

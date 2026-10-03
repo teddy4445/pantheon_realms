@@ -1,56 +1,41 @@
 /**
- * BattleSceneController: the tactical hex board, stack figures, highlights and
- * event playback (move, melee, ranged, retaliation, spells, defend, wait,
- * morale, destruction, victory).
+ * BattleSceneController (S11): the tactical battle in 2D —
+ *
+ *   painted battlefield background
+ *   + logical hex overlay (cells, deployment zone, moat, town side, grid)
+ *   + highlights (moves, targets, route, attack side, hover, active stack)
+ *   + obstacle and siege sprites, creature stacks (depth-sorted)
+ *   + projectiles and spell/combat effects, floating numbers
+ *   (+ the React battle HUD around the canvas).
  *
  * All outcomes (damage, kills, destruction) are already committed by the rules
- * before playback starts; this controller only visualizes GameEvents. Instant
+ * before playback starts; this controller only visualises GameEvents. Instant
  * playback (speed 0) completes synchronously and cannot change any result.
+ * Creature sprites face right; the defending side is mirrored.
  */
-import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
-import { Color3 } from '@babylonjs/core/Maths/math.color';
-import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
-import { Engine } from '@babylonjs/core/Engines/engine';
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
-import { LinesMesh } from '@babylonjs/core/Meshes/linesMesh';
-import { Mesh } from '@babylonjs/core/Meshes/mesh';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
-import { PointerEventTypes, type PointerInfo } from '@babylonjs/core/Events/pointerEvents';
-import { Scene } from '@babylonjs/core/scene';
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import type { Observer } from '@babylonjs/core/Misc/observable';
-import type { BattleCell, BodyProfile, GameEvent } from '@pr/rules';
-import type { SceneController } from './engineHost';
-import { MeshAccumulator, cellWorld, clearColor, createLabel, hexCorner, pickGround, projectPoint, worldCell, type Label } from './meshkit';
-import { hexToRgb, tileNoise } from './palette';
-import { MaterialCache, buildCreatureProxy, disposeProxy } from './proxies';
-import { TweenPlayer, easeInOut, linear } from './tween';
-import { applyCheer, applyIdle, deadPose, faceGroup, playState, restFigure, type Figure } from './animations';
-import { ModelCache, unitModelFor, type ModelRig } from './models';
+import { Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
+import type { BattleCell, GameEvent } from '@pr/rules';
+import type { EngineHost, SceneController } from './engineHost';
+import { BATTLE_SQUASH, SQRT3, cellPoint, hexPolygon, pointCell } from './hexmath';
+import { tileNoise } from './palette';
+import { TweenPlayer, easeInOut, easeOut, linear } from './tween';
 import { BATTLEFIELD_LAYOUT, battlefieldArt } from './environmentArt';
-import { groundMaterial, loadArtTexture } from './artTextures';
 import { graphicsProfile } from './graphics';
-import { contactShadowSource } from './contactShadow';
-import type { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { VertexBuffer } from '@babylonjs/core/Buffers/buffer';
+import { SpriteFigure } from './figure';
+import { creatureSprites, spriteManifest, type EffectDefinition, type StaticSpriteDefinition } from './sprites';
+import { loadStrip, loadTexture } from './textures';
+import { colorOf, groundShadow, stillHeight, stillSprite } from './staticSprites';
 
-const R = 1;
-const WHITE: readonly [number, number, number] = [1, 1, 1];
-/**
- * Battlefield presentation scale for GLB figures: models are authored in true
- * meters (a 1.8 m human); the board uses 1-unit hex radii, so figures are drawn
- * at 0.6 × authored size to sit inside one hex like the proxies. The bestiary
- * shows models at true scale. See ASSET_PIPELINE.md §2.
- */
-export const BATTLE_MODEL_SCALE = 0.6;
+/** Hex radius in board pixels before the fit-to-view scale. */
+const RB = 40;
+const S = BATTLE_SQUASH;
+const HEX_W = SQRT3 * RB;
 
 export interface BattleStackView {
   readonly id: string;
-  /** Creature ID: selects a registered GLB model, else the procedural proxy. */
+  /** Creature ID: selects the creature's sprite set. */
   readonly creatureId?: string;
   readonly side: 'attacker' | 'defender';
-  readonly body: BodyProfile;
   readonly upgraded: boolean;
   readonly accent: string;
   readonly anchor: BattleCell;
@@ -134,27 +119,35 @@ export interface BattleCue {
   readonly heavy?: boolean;
 }
 
+/** How a battle spell looks (the interface maps a spell's effect type to one of these). */
+export type SpellLook = 'damage' | 'area' | 'heal' | 'buff' | 'curse';
+
 export interface BattleCallbacks {
-  onCellClick(c: BattleCell, button: number, offset: { x: number; z: number }): void;
-  onCellHover(c: BattleCell | null, offset: { x: number; z: number }): void;
+  /** `offset`: pointer position inside the cell, in hex radii (x right, y down, foreshortened like the board). */
+  onCellClick(c: BattleCell, button: number, offset: { x: number; y: number }): void;
+  onCellHover(c: BattleCell | null, offset: { x: number; y: number }): void;
   /** Optional: presentation cues timed with playback (sound). */
   onCue?(cue: BattleCue): void;
+  /** Optional: the look of a spell's effect (default: from its damage/heal numbers). */
+  spellLook?(spellId: string): SpellLook | null;
 }
 
 interface StackEntry {
-  group: TransformNode;
-  figures: Figure[];
-  base: Mesh;
-  label: Label;
+  root: Container;
+  figure: SpriteFigure;
+  base: Graphics;
+  badge: Container;
+  badgeText: Text;
+  badgeBg: Graphics;
   view: BattleStackView;
   shownAnchor: BattleCell;
   prevAnchor: BattleCell;
   locked: number;
   snapIn: number;
-  hideIn: number;
   key: string;
-  /** GLB rigs waiting for the stack to be idle before they replace the proxies. */
-  pendingRigs: ModelRig[] | null;
+  seed: number;
+  /** The fallen lie where they died (owner request 2026-10-03). */
+  down: boolean;
 }
 
 const ARCHETYPE_GROUND: Record<string, string> = {
@@ -166,444 +159,336 @@ const ARCHETYPE_GROUND: Record<string, string> = {
   open_field: '#7e8a4f',
 };
 
+/** Obstacle stills per battlefield (manifest `obstacles` IDs); any missing ID falls back to the first that exists. */
+const OBSTACLE_KINDS: Record<string, readonly string[]> = {
+  coast_road: ['rock', 'boulder', 'log'],
+  ridge_pass: ['boulder', 'rock', 'rock'],
+  grove: ['tree', 'stump', 'tree'],
+  plateau: ['column', 'boulder', 'rock'],
+  beacon_clearing: ['stone_circle', 'rock', 'log'],
+  open_field: ['rock', 'tree', 'log'],
+};
+
 export class BattleSceneController implements SceneController {
-  readonly scene: Scene;
+  readonly root = new Container();
   readonly tweens = new TweenPlayer();
-  private readonly camera: ArcRotateCamera;
-  private readonly mats: MaterialCache;
+  private readonly canvas: HTMLCanvasElement;
   private readonly cb: BattleCallbacks;
+  private readonly board = new Container();
+  private readonly backdrop = new Container();
+  private readonly cells = new Graphics();
+  private readonly grid = new Graphics();
+  private readonly highlight = new Graphics();
+  private readonly hover = new Graphics();
+  private readonly activeRing = new Graphics();
+  private readonly objects = new Container();
+  private readonly fx = new Container();
+  private readonly floats = new Container();
   private boardKey = '';
-  private board: Mesh | null = null;
-  /** Painted battlefield (Brief 2): the ground plane and the board's cell tops show one painting. */
-  private boardArt: Mesh | null = null;
-  private boardArtColors: Float32Array | null = null;
-  private artGround: Mesh | null = null;
-  private artDisposables: { dispose(): void }[] = [];
-  private surround: Mesh;
-  private surroundDefault: StandardMaterial | null = null;
-  private obstacleRoot: TransformNode | null = null;
-  private grid: LinesMesh | null = null;
-  private highlight: Mesh | null = null;
   private highlightKey = '';
-  private hover: LinesMesh;
-  private activeRing: Mesh;
   private stacks = new Map<string, StackEntry>();
-  private readonly models: ModelCache;
-  private pointerObs: Observer<PointerInfo> | null = null;
+  private obstacleSprites: Container[] = [];
   private lastHover = '';
   private time = 0;
   private cols = 15;
   private rows = 11;
-  private obstacleSet = new Set<string>();
   private siegeView: SiegeView | null = null;
-  private structureRoot: TransformNode | null = null;
-  /** Soft contact shadows under figures and obstacles (graphics quality Medium and High). */
-  private shadowSrc: Mesh | null = null;
-  private structureLabels: Label[] = [];
   /** Structure HP as currently drawn (playback advances it event by event). */
   private shownHp = new Map<string, number>();
   private structureKey = '';
   private structureSnapIn = 0;
   private structuresLocked = 0;
+  private view = { width: 1, height: 1 };
+  private fitScale = 1;
+  private zoomK = 1;
+  private readonly listeners: [string, EventListener][] = [];
+  private disposed = false;
+  private activeStack: StackEntry | null = null;
+  /** Winners cheering after the battle was won (until the screen closes). */
+  private celebrating = new Set<StackEntry>();
+  private extraTweens: TweenPlayer[] = [];
 
-  constructor(engine: Engine, canvas: HTMLCanvasElement, cb: BattleCallbacks) {
+  constructor(engine: EngineHost, canvas: HTMLCanvasElement, cb: BattleCallbacks) {
+    this.canvas = canvas;
     this.cb = cb;
-    const scene = new Scene(engine);
-    // Right-handed before any glTF load (production/02 §5).
-    scene.useRightHandedSystem = true;
-    this.scene = scene;
-    this.models = new ModelCache(scene);
-    scene.clearColor = clearColor('#0a1220');
-    scene.skipPointerMovePicking = true;
-    this.mats = new MaterialCache(scene);
-    const center = cellWorld({ col: 7, row: 5 }, R);
-    const cam = new ArcRotateCamera('battle-cam', Math.PI / 2, 0.8, 27.5, new Vector3(center.x + 0.45, 0, center.z + 0.6), scene);
-    cam.lowerRadiusLimit = 17;
-    cam.upperRadiusLimit = 34;
-    cam.lowerBetaLimit = 0.82;
-    cam.upperBetaLimit = 0.82;
-    cam.inputs.clear();
-    cam.inputs.addMouseWheel();
-    cam.wheelPrecision = 30;
-    cam.attachControl(canvas, true);
-    this.camera = cam;
-    const hemi = new HemisphericLight('hemi', new Vector3(0.1, 1, 0.2), scene);
-    hemi.intensity = 0.7;
-    hemi.groundColor = new Color3(0.2, 0.2, 0.28);
-    const sun = new DirectionalLight('sun', new Vector3(-0.5, -1, -0.4), scene);
-    sun.intensity = 0.7;
-    if (graphicsProfile().contactShadows) this.shadowSrc = contactShadowSource(scene);
-    const ground = MeshBuilder.CreateGround('surround', { width: 90, height: 70 }, scene);
-    ground.position.set(center.x, -0.12, center.z);
-    ground.material = this.mats.get('#2b3524');
-    ground.isPickable = false;
-    this.surround = ground;
-    this.surroundDefault = ground.material as StandardMaterial;
-    this.hover = this.outline('hover', '#f5e4b7');
-    this.hover.isVisible = false;
-    this.activeRing = MeshBuilder.CreateTorus('active', { diameter: 1.45, thickness: 0.08, tessellation: 36 }, scene);
-    this.activeRing.material = this.mats.get('#f1d48a', { emissive: 0.9 });
-    this.activeRing.isPickable = false;
-    this.activeRing.isVisible = false;
-    this.pointerObs = scene.onPointerObservable.add((p) => this.onPointer(p));
+    this.objects.sortableChildren = true;
+    this.board.addChild(this.backdrop, this.cells, this.grid, this.highlight, this.hover, this.activeRing, this.objects, this.fx, this.floats);
+    this.root.addChild(this.board);
+    this.hover.visible = false;
+    this.activeRing.visible = false;
+    this.view = { width: engine.width, height: engine.height };
+    const on = (type: string, fn: (e: Event) => void) => {
+      canvas.addEventListener(type, fn, { passive: type !== 'wheel' && type !== 'contextmenu' });
+      this.listeners.push([type, fn]);
+    };
+    on('pointermove', (e) => this.onMove(e as PointerEvent));
+    on('pointerup', (e) => this.onUp(e as PointerEvent));
+    on('pointerleave', () => this.onLeave());
+    on('wheel', (e) => this.onWheel(e as WheelEvent));
+    on('contextmenu', (e) => e.preventDefault());
+  }
+
+  // ------------------------------------------------------------------ layout
+
+  resize(width: number, height: number): void {
+    this.view = { width, height };
+    this.layout();
+  }
+
+  /** Board extent in board pixels: the cells plus headroom above the top row for tall creatures. */
+  private boardRect(): { x0: number; y0: number; x1: number; y1: number } {
+    const last = cellPoint({ col: this.cols - 1, row: 1 }, RB, S);
+    const bottom = cellPoint({ col: 0, row: this.rows - 1 }, RB, S);
+    return { x0: -HEX_W / 2, y0: -RB * S - RB * 1.6, x1: last.x + HEX_W / 2, y1: bottom.y + RB * S + RB * 0.35 };
+  }
+
+  /** Screen margins kept clear for the battle HUD (top bar and turn order, bottom action bar). */
+  private insets = { top: 112, bottom: 82, left: 16, right: 16 };
+
+  /** The interface tells the view how much of the canvas its HUD covers (CSS pixels). */
+  setInsets(i: { top: number; bottom: number; left: number; right: number }): void {
+    this.insets = i;
+    this.layout();
+  }
+
+  private layout(): void {
+    const b = this.boardRect();
+    const { width, height } = this.view;
+    const ins = this.insets;
+    const w = Math.max(100, width - ins.left - ins.right);
+    const h = Math.max(100, height - ins.top - ins.bottom);
+    const k = Math.min(w / (b.x1 - b.x0), h / (b.y1 - b.y0));
+    this.fitScale = Math.max(0.2, k);
+    const z = this.fitScale * this.zoomK;
+    this.board.scale.set(z);
+    const cx = (b.x0 + b.x1) / 2;
+    const cy = (b.y0 + b.y1) / 2;
+    this.board.position.set(Math.round(ins.left + w / 2 - cx * z), Math.round(ins.top + h / 2 - cy * z));
   }
 
   // ------------------------------------------------------------------ board
 
-  private outline(name: string, hex: string): LinesMesh {
-    const pts: Vector3[] = [];
-    for (let k = 0; k <= 6; k++) {
-      const c = hexCorner(k % 6, R * 0.95);
-      pts.push(new Vector3(c.x, 0, c.z));
-    }
-    const l = MeshBuilder.CreateLines(name, { points: pts }, this.scene);
-    l.color = Color3.FromHexString(hex);
-    l.isPickable = false;
-    return l;
-  }
-
-  private disposeBoardArt(): void {
-    const mats = new Set([this.boardArt?.material, this.artGround?.material].filter((m) => !!m));
-    for (const m of mats) m!.dispose();
-    this.boardArt?.dispose();
-    this.boardArt = null;
-    this.boardArtColors = null;
-    this.artGround?.dispose();
-    this.artGround = null;
-    for (const d of this.artDisposables) d.dispose();
-    this.artDisposables = [];
-    if (this.surroundDefault) this.surround.material = this.surroundDefault;
+  private cellXY(c: BattleCell): { x: number; y: number } {
+    return cellPoint(c, RB, S);
   }
 
   /**
-   * The painted battlefield (Brief 2, §6.0): one painting drawn once (clamped)
-   * across the ground, seen straight down, with the 15 × 11 board fitted inside
-   * its quiet centre (about 1500 × 1000 of 4096 × 3200 px). Image top = the far
-   * side of the field. Returns the world → UV mapping, or null without art.
+   * The painted battlefield (Brief 2, §6.0): one painting, foreshortened like the
+   * board, with the 15 × 11 board fitted inside its quiet centre (about
+   * 1500 × 1000 of 4096 × 3200 px). Image top = the far side of the field.
    */
-  private battlefieldMapping(view: BattleView): { uv: (x: number, z: number) => readonly [number, number]; x0: number; z0: number; w: number; h: number } | null {
-    const art = battlefieldArt(view.archetype, view.climate);
-    if (!art) return null;
-    let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-    for (const [col, row] of [[0, 0], [view.cols - 1, 0], [0, view.rows - 1], [view.cols - 1, view.rows - 1], [0, 1], [view.cols - 1, 1]] as const) {
-      const p = cellWorld({ col, row }, R);
-      minX = Math.min(minX, p.x - R);
-      maxX = Math.max(maxX, p.x + R);
-      minZ = Math.min(minZ, p.z - R);
-      maxZ = Math.max(maxZ, p.z + R);
-    }
+  private buildBackdrop(view: BattleView): void {
+    for (const c of this.backdrop.removeChildren()) c.destroy();
+    const ground = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
+    const plain = new Graphics().rect(-4000, -3000, 9000, 7000).fill({ color: ground });
+    this.backdrop.addChild(plain);
+    const art = graphicsProfile().paintedGround ? battlefieldArt(view.archetype, view.climate) : null;
+    if (!art) return;
+    const first = this.cellXY({ col: 0, row: 0 });
+    const last = this.cellXY({ col: view.cols - 1, row: view.rows - 1 });
+    const minX = first.x - RB;
+    const maxX = this.cellXY({ col: view.cols - 1, row: 1 }).x + RB;
+    const minY = first.y - RB * S;
+    const maxY = last.y + RB * S;
     const L = BATTLEFIELD_LAYOUT;
-    // World units per layout pixel: the board fits the quiet centre in both directions.
-    const unit = Math.max((maxX - minX) / L.centreWidth, (maxZ - minZ) / L.centreHeight);
+    // Board pixels per layout pixel: the board fits the quiet centre in both directions (rows foreshortened).
+    const unit = Math.max((maxX - minX) / L.centreWidth, (maxY - minY) / S / L.centreHeight);
     const w = L.width * unit;
-    const h = L.height * unit;
+    const h = L.height * unit * S;
     const cx = (minX + maxX) / 2;
-    const cz = (minZ + maxZ) / 2;
-    const x0 = cx - w / 2;
-    const z0 = cz - h / 2;
-    // Rows advance toward +Z (the camera side), so the image top (v = 1) is the far edge (−Z).
-    const uv = (x: number, z: number) => [(x - x0) / w, 1 - (z - z0) / h] as const;
-    return { uv, x0, z0, w, h };
+    const cy = (minY + maxY) / 2;
+    const battleId = view.battleId;
+    if (art.edge) plain.tint = colorOf(art.edge);
+    void loadTexture(art.url).then(
+      (tex) => {
+        if (this.disposed || !this.boardKey.startsWith(battleId)) return;
+        const s = new Sprite(tex);
+        s.width = w;
+        s.height = h;
+        s.position.set(cx - w / 2, cy - h / 2);
+        this.backdrop.addChild(s);
+      },
+      () => undefined,
+    );
   }
 
   private buildBoard(view: BattleView): void {
-    this.board?.dispose();
-    this.grid?.dispose();
-    this.obstacleRoot?.dispose();
-    this.disposeBoardArt();
     this.cols = view.cols;
     this.rows = view.rows;
-    this.obstacleSet = new Set(view.obstacles.map((c) => `${c.col}:${c.row}`));
+    this.layout();
+    this.buildBackdrop(view);
     const moat = new Set((view.siege?.moat ?? []).map((c) => `${c.col}:${c.row}`));
-    const acc = new MeshAccumulator();
-    // Low quality keeps the procedural board colours (no battlefield painting).
-    const mapping = graphicsProfile().paintedGround ? this.battlefieldMapping(view) : null;
-    const art = mapping ? battlefieldArt(view.archetype, view.climate) : null;
-    const tops = mapping ? new MeshAccumulator(mapping.uv) : null;
-    /** Per painted cell top: the tint it keeps once the painting shows (deployment columns slightly darker). */
-    const paintedTint: number[] = [];
-    const baseRgb = hexToRgb(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
-    const water = hexToRgb('#2e5871');
-    const paved = hexToRgb('#8c8474');
-    const lines: Vector3[][] = [];
+    const painted = graphicsProfile().paintedGround && !!battlefieldArt(view.archetype, view.climate);
+    const base = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
+    const g = this.cells;
+    g.clear();
+    this.grid.clear();
     for (let row = 0; row < view.rows; row++) {
       for (let col = 0; col < view.cols; col++) {
-        const { x, z } = cellWorld({ col, row }, R);
-        const n = tileNoise(col * 3 + 1, row * 5 + 2) * 0.045;
-        const deploy = col < 2 || col >= view.cols - 2 ? -0.03 : 0;
+        const { x, y } = this.cellXY({ col, row });
+        const poly = hexPolygon(x, y, RB * 0.975, S);
         const inMoat = moat.has(`${col}:${row}`);
         const inTown = !!view.siege && view.siege.structures.length > 0 && col > view.siege.wallCol;
-        const src = inMoat ? water : inTown ? paved : baseRgb;
-        const rgb = src.map((c) => Math.max(0, Math.min(1, c + n + (inMoat ? 0 : deploy))));
-        const top = inMoat ? -0.08 : 0;
-        if (tops && !inMoat && !inTown) {
-          // Painted cell: the battlefield painting continues across the board.
-          tops.hexTop(x, z, R * 0.975, top, rgb);
-          for (let k = 0; k < 7; k++) paintedTint.push(deploy < 0 ? 0.9 : 1);
-        } else {
-          acc.hexTop(x, z, R * 0.975, top, rgb);
-        }
-        acc.hexSides(x, z, R * 0.975, top, -0.12, rgb.map((c) => c * 0.5));
-        const ring: Vector3[] = [];
-        for (let k = 0; k <= 6; k++) {
-          const cc = hexCorner(k % 6, R * 0.975);
-          ring.push(new Vector3(x + cc.x, 0.012, z + cc.z));
-        }
-        lines.push(ring);
+        const deploy = col < 2 || col >= view.cols - 2;
+        if (inMoat) g.poly(poly).fill({ color: 0x2e5871, alpha: 0.9 });
+        else if (inTown) g.poly(poly).fill({ color: 0x8c8474, alpha: painted ? 0.55 : 1 });
+        else if (!painted) {
+          const n = tileNoise(col * 3 + 1, row * 5 + 2) * 0.045 - (deploy ? 0.03 : 0);
+          const r = ((base >> 16) & 255) / 255 + n;
+          const gg = ((base >> 8) & 255) / 255 + n;
+          const bb = (base & 255) / 255 + n;
+          g.poly(poly).fill({ color: (Math.round(Math.max(0, Math.min(1, r)) * 255) << 16) | (Math.round(Math.max(0, Math.min(1, gg)) * 255) << 8) | Math.round(Math.max(0, Math.min(1, bb)) * 255) });
+        } else if (deploy) g.poly(poly).fill({ color: 0x000000, alpha: 0.1 });
+        this.grid.poly(hexPolygon(x, y, RB * 0.975, S));
       }
     }
-    this.board = acc.build('board', this.scene);
-    if (tops && mapping && art && tops.positions.length) {
-      const painted = tops.build('board-art', this.scene, { updatableColors: true });
-      this.boardArt = painted;
-      this.boardArtColors = new Float32Array(tops.colors);
-      // The ground plane under and around the board shows the same painting (clamped at its edges).
-      const g = new MeshAccumulator(mapping.uv);
-      const y = -0.115;
-      const a = g.vertex(mapping.x0, y, mapping.z0, WHITE);
-      const b = g.vertex(mapping.x0 + mapping.w, y, mapping.z0, WHITE);
-      const c = g.vertex(mapping.x0 + mapping.w, y, mapping.z0 + mapping.h, WHITE);
-      const d = g.vertex(mapping.x0, y, mapping.z0 + mapping.h, WHITE);
-      g.indices.push(a, b, c, a, c, d);
-      const plane = g.build('battlefield-art', this.scene);
-      plane.isVisible = false;
-      this.artGround = plane;
-      const colors = this.boardArtColors;
-      const tint = paintedTint;
-      const tex = loadArtTexture(this.scene, art, 'clamp', 'clamp', (loaded) => {
-        if (this.boardArt !== painted) return;
-        const mat = groundMaterial('battlefield-art', this.scene, loaded);
-        plane.material = mat;
-        plane.isVisible = true;
-        const old = painted.material;
-        painted.material = mat;
-        old?.dispose();
-        for (let v = 0; v < tint.length; v++) {
-          colors[v * 4] = tint[v]!;
-          colors[v * 4 + 1] = tint[v]!;
-          colors[v * 4 + 2] = tint[v]!;
-        }
-        painted.updateVerticesData(VertexBuffer.ColorKind, colors);
-        // Beyond the painting, the old surround takes the colour of the painting's far margin.
-        if (art.edge) this.surround.material = this.mats.get(art.edge);
-      });
-      this.artDisposables.push(tex);
-    }
-    this.grid = MeshBuilder.CreateLineSystem('bgrid', { lines }, this.scene);
-    this.grid.color = new Color3(0.08, 0.1, 0.08);
-    this.grid.alpha = 0.5;
-    this.grid.isPickable = false;
-    const root = new TransformNode('obstacles', this.scene);
-    this.obstacleRoot = root;
+    this.grid.stroke({ width: 1.2, color: 0x141a14, alpha: 0.5 });
+    // Obstacles: rocks, trees, logs, columns — drawn where the rules placed them.
+    for (const o of this.obstacleSprites) o.destroy({ children: true });
+    this.obstacleSprites = [];
+    const kinds = OBSTACLE_KINDS[view.archetype] ?? OBSTACLE_KINDS['open_field']!;
+    const all = spriteManifest().obstacles;
+    const anyDef = Object.values(all)[0] ?? null;
     view.obstacles.forEach((c, i) => {
-      const { x, z } = cellWorld(c, R);
-      const kind = (c.col * 7 + c.row * 3 + i) % 3;
-      const m =
-        kind === 0
-          ? MeshBuilder.CreatePolyhedron(`ob-${i}`, { type: 2, size: 0.42 }, this.scene)
-          : kind === 1
-            ? MeshBuilder.CreateCylinder(`ob-${i}`, { height: 1.0, diameterTop: 0.5, diameterBottom: 0.62, tessellation: 8 }, this.scene)
-            : MeshBuilder.CreateCylinder(`ob-${i}`, { height: 0.9, diameterTop: 0, diameterBottom: 0.9, tessellation: 7 }, this.scene);
-      m.material = this.mats.get(kind === 2 ? '#35573a' : kind === 1 ? '#bdb6a6' : '#7b7872');
-      m.position.set(x, kind === 0 ? 0.3 : 0.45, z);
-      m.rotation.y = i * 1.3;
-      m.parent = root;
-      m.isPickable = false;
-      this.contactShadow(root, `ob-shadow-${i}`, kind === 1 ? 1.35 : 1.6, x, z);
+      const kind = kinds[(c.col * 7 + c.row * 3 + i) % kinds.length]!;
+      const def: StaticSpriteDefinition | null = all[kind] ?? anyDef;
+      const { x, y } = this.cellXY(c);
+      const root = new Container();
+      root.position.set(x, y + RB * S * 0.35);
+      root.zIndex = root.y;
+      if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.42, HEX_W * 0.16, 0.34));
+      const s = stillSprite(def, HEX_W);
+      if ((c.col + c.row) % 2 === 1) s.scale.x *= -1;
+      root.addChild(s);
+      this.objects.addChild(root);
+      this.obstacleSprites.push(root);
     });
   }
 
-  /** A soft shadow disc of `size` world units under `parent` (no-op without contact shadows). */
-  private contactShadow(parent: TransformNode, name: string, size: number, x = 0, z = 0): void {
-    if (!this.shadowSrc) return;
-    const s = this.shadowSrc.createInstance(name);
-    s.parent = parent;
-    s.isPickable = false;
-    s.scaling.set(size, 1, size);
-    s.position.set(x, 0.045, z);
-  }
-
   private buildHighlights(view: BattleView): void {
-    this.highlight?.dispose();
-    this.highlight = null;
-    const acc = new MeshAccumulator();
-    const move = hexToRgb('#4fc3d6');
-    const target = hexToRgb('#e0573f');
-    const path = hexToRgb('#8fe07a');
-    const from = hexToRgb('#f1d48a');
-    const zone = hexToRgb('#f1d48a');
-    for (const c of view.zone) {
-      const { x, z } = cellWorld(c, R);
-      acc.hexTop(x, z, R * 0.93, 0.015, zone, 0.24);
-    }
-    for (const c of view.moves) {
-      const { x, z } = cellWorld(c, R);
-      acc.hexTop(x, z, R * 0.86, 0.02, move, 0.22);
-    }
-    for (const c of view.targets) {
-      const { x, z } = cellWorld(c, R);
-      acc.hexTop(x, z, R * 0.9, 0.025, target, 0.3);
-    }
+    const g = this.highlight;
+    g.clear();
+    const fill = (cells: readonly BattleCell[], k: number, color: number, alpha: number) => {
+      if (!cells.length) return;
+      for (const c of cells) {
+        const { x, y } = this.cellXY(c);
+        g.poly(hexPolygon(x, y, RB * k, S));
+      }
+      g.fill({ color, alpha });
+    };
+    fill(view.zone, 0.93, 0xf1d48a, 0.24);
+    fill(view.moves, 0.86, 0x4fc3d6, 0.24);
+    fill(view.targets, 0.9, 0xe0573f, 0.32);
     if (view.path) {
       for (const c of view.path) {
-        const { x, z } = cellWorld(c, R);
-        acc.hexTop(x, z, 0.16, 0.04, path, 0.95);
+        const { x, y } = this.cellXY(c);
+        g.ellipse(x, y, RB * 0.16, RB * 0.16 * S);
       }
+      g.fill({ color: 0x8fe07a, alpha: 0.95 });
     }
     if (view.attackFrom) {
-      const { x, z } = cellWorld(view.attackFrom, R);
-      acc.hexTop(x, z, R * 0.7, 0.035, from, 0.45);
-      acc.hexTop(x, z, R * 0.52, 0.04, [0.2, 0.2, 0.15], 0.3);
+      const { x, y } = this.cellXY(view.attackFrom);
+      g.poly(hexPolygon(x, y, RB * 0.7, S)).fill({ color: 0xf1d48a, alpha: 0.45 });
+      g.poly(hexPolygon(x, y, RB * 0.52, S)).fill({ color: 0x33332a, alpha: 0.3 });
     }
-    if (acc.positions.length) this.highlight = acc.build('highlights', this.scene, { alpha: true });
   }
 
   // ------------------------------------------------------------------ stacks
 
-  private groupPosition(anchor: BattleCell, footprint: 1 | 2, facing: 1 | -1): Vector3 {
-    const a = cellWorld(anchor, R);
-    if (footprint === 1) return new Vector3(a.x, 0, a.z);
-    const b = cellWorld({ col: anchor.col - facing, row: anchor.row }, R);
-    return new Vector3((a.x + b.x) / 2, 0, (a.z + b.z) / 2);
+  private groupPosition(anchor: BattleCell, footprint: 1 | 2, facing: 1 | -1): { x: number; y: number } {
+    const a = this.cellXY(anchor);
+    if (footprint === 1) return { x: a.x, y: a.y + RB * S * 0.3 };
+    const b = this.cellXY({ col: anchor.col - facing, row: anchor.row });
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 + RB * S * 0.3 };
   }
 
-  private figureCount(v: BattleStackView): number {
-    const most = graphicsProfile().maxFigures;
-    if (v.footprint === 2) return Math.min(most, v.count >= 5 ? 2 : 1);
-    return Math.min(most, v.count >= 10 ? 3 : v.count >= 2 ? 2 : 1);
+  private place(e: StackEntry, anchor: BattleCell): void {
+    const p = this.groupPosition(anchor, e.view.footprint, e.view.facing);
+    e.root.position.set(p.x, p.y);
+    e.root.zIndex = p.y;
   }
 
   private createStack(v: BattleStackView): StackEntry {
-    const group = new TransformNode(`stack-${v.id}`, this.scene);
-    const baseAcc = new MeshAccumulator();
-    const sideRgb = hexToRgb(v.side === 'attacker' ? '#3b73d9' : '#b8453a');
-    const w = v.footprint === 2 ? 1.6 : 1;
-    baseAcc.hexTop(0, 0, 0.62 * w, 0.03, sideRgb, 0.55);
-    if (v.side === 'defender') baseAcc.hexTop(0, 0, 0.4 * w, 0.035, [0.08, 0.08, 0.1], 0.55);
-    const base = baseAcc.build(`base-${v.id}`, this.scene, { alpha: true });
-    base.parent = group;
-    const n = this.figureCount(v);
-    const offsets: [number, number][] =
-      v.footprint === 2
-        ? n === 2
-          ? [
-              [0.35, 0.25],
-              [-0.35, -0.2],
-            ]
-          : [[0, 0]]
-        : n === 3
-          ? [
-              [0.22, 0.26],
-              [0.24, -0.26],
-              [-0.24, 0],
-            ]
-          : n === 2
-            ? [
-                [0.16, 0.22],
-                [-0.16, -0.2],
-              ]
-            : [[0, 0]];
-    const scale = n === 3 ? 0.95 : n === 2 ? 1.08 : v.footprint === 2 ? 1.35 : 1.25;
-    // Each figure sits in a scaled wrapper so pose resets (scale 1) keep the stack size.
-    const figures: Figure[] = offsets.map(([x, z], i) => {
-      const wrap = new TransformNode(`wrap-${v.id}-${i}`, this.scene);
-      wrap.parent = group;
-      wrap.scaling.setAll(scale);
-      wrap.position.set(x, 0, z);
-      const proxy = buildCreatureProxy(this.scene, this.mats, v.body, v.upgraded, v.accent, `fig-${v.id}-${i}`);
-      proxy.root.parent = wrap;
-      return { proxy, base: { x: 0, y: 0, z: 0 }, seed: i * 1.7 + v.id.length };
-    });
-    const label = createLabel(this.scene, `lbl-${v.id}`, v.label, { worldWidth: 0.95, width: 256, height: 96 });
-    label.mesh.parent = group;
-    // The camera looks down −Z; local z is mirrored for groups facing −X, so keep the badge on the camera side.
-    label.mesh.position.set(0, 0.2, 0.62 * v.facing);
-    faceGroup(group, v.facing);
+    const root = new Container();
+    const w = v.footprint === 2 ? 1.7 : 1;
+    if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.36 * w, HEX_W * 0.13, 0.36));
+    // Side marker under the figure: blue disc (attacker) or red disc with a dark centre (defender) — shape, not only colour.
+    const base = new Graphics();
+    const sideCol = v.side === 'attacker' ? 0x3b73d9 : 0xb8453a;
+    base.ellipse(0, 0, HEX_W * 0.4 * w, HEX_W * 0.4 * S * 0.62).fill({ color: sideCol, alpha: 0.5 }).stroke({ width: 2, color: sideCol, alpha: 0.95 });
+    if (v.side === 'defender') base.ellipse(0, 0, HEX_W * 0.22 * w, HEX_W * 0.22 * S * 0.62).fill({ color: 0x14141a, alpha: 0.5 });
+    root.addChild(base);
+    const figure = new SpriteFigure({ set: creatureSprites(v.creatureId), hexWidth: HEX_W, accent: colorOf(v.accent) });
+    figure.mirror = v.facing === -1;
+    root.addChild(figure.view);
+    // Count badge at the front foot.
+    const badge = new Container();
+    const badgeBg = new Graphics();
+    const badgeText = new Text({ text: v.label, style: { fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: '700', fill: v.labelColor } });
+    badgeText.anchor.set(0.5);
+    badge.addChild(badgeBg, badgeText);
+    badge.position.set(v.facing * HEX_W * 0.34 * w, RB * S * 0.28);
+    root.addChild(badge);
     const e: StackEntry = {
-      group,
-      figures,
+      root,
+      figure,
       base,
-      label,
+      badge,
+      badgeText,
+      badgeBg,
       view: v,
       shownAnchor: v.anchor,
       prevAnchor: v.anchor,
       locked: 0,
       snapIn: 0,
-      hideIn: 0,
-      key: `${v.body}|${v.upgraded}|${this.figureCount(v)}|${v.side}|${v.creatureId ?? ''}`,
-      pendingRigs: null,
+      key: `${v.creatureId ?? ''}|${v.side}|${v.footprint}`,
+      seed: v.id.length * 1.7 + v.anchor.row,
+      down: false,
     };
-    group.position.copyFrom(this.groupPosition(v.anchor, v.footprint, v.facing));
-    // Each figure stands on a soft shadow (it follows the figure's wrapper, not its lunges).
-    figures.forEach((f, i) => this.contactShadow(f.proxy.root.parent as TransformNode, `shadow-${v.id}-${i}`, v.footprint === 2 ? 1.2 : 0.8));
+    this.setBadge(e, v.label, v.labelColor);
+    this.place(e, v.anchor);
+    this.objects.addChild(root);
+    figure.setLoop('idle');
     // A stack already dead (a battle loaded from a save) lies where it fell.
-    if (v.alive) this.requestModels(e);
-    else this.layDown(e);
+    if (!v.alive) this.layDown(e);
     return e;
   }
 
+  private setBadge(e: StackEntry, label: string, color: string): void {
+    if (e.badgeText.text !== label) e.badgeText.text = label;
+    e.badgeText.style.fill = color;
+    const w = Math.max(22, e.badgeText.width + 10);
+    e.badgeBg.clear();
+    e.badgeBg.roundRect(-w / 2, -10, w, 20, 5).fill({ color: e.view.side === 'attacker' ? 0x16284a : 0x4a1a16, alpha: 0.92 }).stroke({ width: 1.2, color: 0xc29a52, alpha: 0.9 });
+  }
+
   /**
-   * The fallen stay on the battlefield (owner request 2026-10-03): lying down,
-   * without their side's base disc or count label; the rules keep their cells taken.
+   * The fallen stay on the battlefield (owner request 2026-10-03): lying down
+   * (their death strip's last frame, or the figure laid on its side), without
+   * their side's marker or count; the rules keep their cells taken.
    */
   private layDown(e: StackEntry): void {
-    e.group.setEnabled(true);
-    e.base.isVisible = false;
-    e.label.mesh.isVisible = false;
-    for (const f of e.figures) deadPose(f);
+    e.down = true;
+    e.root.visible = true;
+    e.base.visible = false;
+    e.badge.visible = false;
+    e.figure.rest();
+    if (e.figure.has('death')) e.figure.holdLast('death');
+    else this.fallenPose(e, 1);
+    e.root.zIndex = e.root.y - 2;
   }
 
-  /** Replace the stack's proxies with GLB rigs when a model is registered (async; proxies stay on failure). */
-  private requestModels(e: StackEntry): void {
-    const entry = e.view.creatureId ? unitModelFor(e.view.creatureId) : undefined;
-    if (!entry) return;
-    const key = e.key;
-    void Promise.all(e.figures.map(() => this.models.instantiate(entry))).then((results) => {
-      const rigs = results.flatMap((r) => (r.ok ? [r.rig] : []));
-      const current = this.stacks.get(e.view.id);
-      if (rigs.length !== results.length || current !== e || e.key !== key || this.disposed) {
-        for (const r of rigs) r.dispose();
-        return;
-      }
-      e.pendingRigs = rigs;
-      if (e.locked === 0) this.applyRigs(e);
-    });
-  }
-
-  private applyRigs(e: StackEntry): void {
-    const rigs = e.pendingRigs;
-    if (!rigs) return;
-    e.pendingRigs = null;
-    // Models that arrive after the stack fell are not swapped in: the body stays as it fell.
-    if (!e.view.alive) {
-      for (const r of rigs) r.dispose();
-      return;
-    }
-    e.figures = e.figures.map((f, i) => {
-      const rig = rigs[i]!;
-      const wrap = f.proxy.root.parent as TransformNode;
-      disposeProxy(f.proxy);
-      // Scale on an intermediate node: figure resets restore the rig root to scale 1.
-      const scaler = new TransformNode(`model-scale-${e.view.id}-${i}`, this.scene);
-      scaler.parent = wrap;
-      scaler.scaling.setAll(BATTLE_MODEL_SCALE);
-      rig.root.parent = scaler;
-      const strike = new TransformNode(`strike-${e.view.id}-${i}`, this.scene);
-      strike.parent = rig.root;
-      rig.loop('idle');
-      return { proxy: { root: rig.root, meshes: rig.meshes, strike, shield: null, height: rig.height }, rig, base: f.base, seed: f.seed };
-    });
+  /** Fallback death pose (no death strip): tipped over backwards and a little dimmed. */
+  private fallenPose(e: StackEntry, t: number): void {
+    const back = e.view.facing === 1 ? -1 : 1;
+    e.figure.pose.rotation = back * t * (Math.PI / 2.2);
+    e.figure.pose.y = -t * e.figure.height * 0.12;
+    e.figure.pose.alpha = 1 - t * 0.15;
   }
 
   private disposeStack(e: StackEntry): void {
-    for (const r of e.pendingRigs ?? []) r.dispose();
-    e.pendingRigs = null;
-    for (const f of e.figures) {
-      if (f.rig) f.rig.dispose();
-      else disposeProxy(f.proxy);
-    }
-    e.label.dispose();
-    e.group.dispose(false, false);
+    e.figure.destroy();
+    e.root.destroy({ children: true });
   }
 
   private syncStacks(views: readonly BattleStackView[]): void {
@@ -612,7 +497,7 @@ export class BattleSceneController implements SceneController {
     for (const v of views) {
       seen.add(v.id);
       let e = this.stacks.get(v.id);
-      const key = `${v.body}|${v.upgraded}|${this.figureCount(v)}|${v.side}|${v.creatureId ?? ''}`;
+      const key = `${v.creatureId ?? ''}|${v.side}|${v.footprint}`;
       if (e && e.key !== key && e.locked === 0 && v.alive) {
         this.disposeStack(e);
         e = undefined;
@@ -627,10 +512,16 @@ export class BattleSceneController implements SceneController {
         if (e.locked === 0) e.snapIn = 3;
       }
       const died = !v.alive && e.view.alive;
-      if (v.alive) e.group.setEnabled(true);
       e.view = v;
-      e.label.set(v.label, v.labelColor);
-      e.label.mesh.isVisible = v.alive;
+      this.setBadge(e, v.label, v.labelColor);
+      e.badge.visible = v.alive;
+      if (v.alive && e.down && e.locked === 0) {
+        // Raised again (resurrection-type recovery): stand up.
+        e.down = false;
+        e.base.visible = true;
+        e.figure.rest();
+        e.figure.setLoop('idle');
+      }
       // Died without playback (instant speed): lie down now; otherwise the death playback does it.
       if (died && e.locked === 0) this.layDown(e);
       if (v.active && v.alive) active = e;
@@ -644,17 +535,13 @@ export class BattleSceneController implements SceneController {
     this.activeStack = active;
   }
 
-  private activeStack: StackEntry | null = null;
-  /** Winners cheering after the battle was won (until the screen closes). */
-  private celebrating = new Set<StackEntry>();
-
   update(view: BattleView): void {
     const bk = `${view.battleId}|${view.obstacles.length}|${view.siege?.moat.length ?? -1}|${view.siege?.structures.length ?? -1}`;
     if (bk !== this.boardKey) {
       for (const e of this.stacks.values()) this.disposeStack(e);
       this.stacks.clear();
-      this.buildBoard(view);
       this.boardKey = bk;
+      this.buildBoard(view);
       this.shownHp.clear();
       this.structureKey = '';
     }
@@ -666,7 +553,7 @@ export class BattleSceneController implements SceneController {
       if (first) this.syncStructures();
       else if (this.structuresLocked === 0) this.structureSnapIn = 3;
     }
-    if (this.grid) this.grid.isVisible = view.grid;
+    this.grid.visible = view.grid;
     if (view.highlightKey !== this.highlightKey) {
       this.buildHighlights(view);
       this.highlightKey = view.highlightKey;
@@ -676,25 +563,32 @@ export class BattleSceneController implements SceneController {
 
   // ------------------------------------------------------------------ siege structures
 
-  /** Where a structure stands in the world (the keep sits beyond the east edge). */
-  private structurePos(st: SiegeStructureView): Vector3 {
+  /** Where a structure stands (the keep sits beyond the east edge). */
+  private structurePos(st: SiegeStructureView): { x: number; y: number } {
     if (st.cells.length === 0) {
-      const w = cellWorld({ col: this.cols, row: 5 }, R);
-      return new Vector3(w.x + 1.1, 0, w.z);
+      const w = this.cellXY({ col: this.cols, row: 5 });
+      return { x: w.x + RB * 1.1, y: w.y };
     }
     let x = 0;
-    let z = 0;
+    let y = 0;
     for (const c of st.cells) {
-      const w = cellWorld(c, R);
+      const w = this.cellXY(c);
       x += w.x;
-      z += w.z;
+      y += w.y;
     }
-    return new Vector3(x / st.cells.length, 0, z / st.cells.length);
+    return { x: x / st.cells.length, y: y / st.cells.length };
   }
 
-  private structureTop(st: SiegeStructureView): Vector3 {
-    const h = st.kind === 'keep' ? 3 : st.kind === 'tower' ? 2.6 : st.kind === 'gate' ? 1.4 : 1.7;
-    return this.structurePos(st).add(new Vector3(0, h, 0));
+  private structureTop(st: SiegeStructureView): { x: number; y: number } {
+    const p = this.structurePos(st);
+    const def = this.siegeDef(st, this.shownHp.get(st.id) ?? st.hp);
+    return { x: p.x, y: p.y + RB * S * 0.3 - Math.max(RB, stillHeight(def, HEX_W)) };
+  }
+
+  private siegeDef(st: SiegeStructureView, hp: number): StaticSpriteDefinition | null {
+    const all = spriteManifest().siege;
+    const state = hp <= 0 ? 'rubble' : hp < st.maxHp ? 'damaged' : 'intact';
+    return all[`${st.kind}.${state}`] ?? all[`${st.kind}.intact`] ?? null;
   }
 
   /** Draw every structure at its shown HP (intact, damaged or rubble). */
@@ -705,184 +599,170 @@ export class BattleSceneController implements SceneController {
   }
 
   private drawStructures(): void {
-    this.structureRoot?.dispose();
-    for (const l of this.structureLabels) l.dispose();
-    this.structureLabels = [];
-    this.structureRoot = null;
+    this.clearStructurePieces();
     const view = this.siegeView;
     if (!view || view.structures.length === 0) return;
-    const root = new TransformNode('siege', this.scene);
-    this.structureRoot = root;
-    const stone = this.mats.get('#b9ae96');
-    const stoneDark = this.mats.get('#8a8070');
-    const rubble = this.mats.get('#6f675b');
-    const wood = this.mats.get('#7a5230');
-    const roof = this.mats.get('#8c3b2a');
     for (const st of view.structures) {
       const hp = this.shownHp.get(st.id) ?? st.hp;
-      const frac = st.maxHp > 0 ? hp / st.maxHp : 0;
-      const destroyed = hp <= 0;
-      const add = (m: Mesh, x: number, y: number, z: number) => {
-        m.parent = root;
-        m.position.set(x, y, z);
-        m.isPickable = false;
-      };
-      if (st.kind === 'keep') {
-        const p = this.structurePos(st);
-        const h = destroyed ? 0.5 : 2.2 + 0.8 * frac;
-        const body = MeshBuilder.CreateBox(`keep`, { width: 2, depth: 3.2, height: h }, this.scene);
-        body.material = destroyed ? rubble : stone;
-        add(body, p.x, h / 2, p.z);
-        if (!destroyed) {
-          const top = MeshBuilder.CreateCylinder('keep-roof', { height: 0.9, diameterTop: 0, diameterBottom: 2.2, tessellation: 4 }, this.scene);
-          top.material = roof;
-          add(top, p.x, h + 0.45, p.z);
-        }
-      } else {
-        for (const c of st.cells) {
-          const w = cellWorld(c, R);
-          if (st.kind === 'tower') {
-            const h = destroyed ? 0.4 : 1.8 + 0.8 * frac;
-            const t = MeshBuilder.CreateCylinder(`tower-${st.id}`, { height: h, diameter: 1.35, tessellation: 12 }, this.scene);
-            t.material = destroyed ? rubble : stoneDark;
-            add(t, w.x, h / 2, w.z);
-            if (!destroyed) {
-              const cap = MeshBuilder.CreateCylinder(`tower-cap-${st.id}`, { height: 0.8, diameterTop: 0, diameterBottom: 1.6, tessellation: 12 }, this.scene);
-              cap.material = roof;
-              add(cap, w.x, h + 0.4, w.z);
-            }
-          } else if (st.kind === 'gate') {
-            const h = destroyed ? 0.15 : 0.9 + 0.5 * frac;
-            const g = MeshBuilder.CreateBox(`gate`, { width: 0.5, depth: 1.3, height: h }, this.scene);
-            g.material = destroyed ? rubble : wood;
-            add(g, w.x, h / 2, w.z);
-            if (!destroyed) {
-              for (const dz of [-0.78, 0.78]) {
-                const post = MeshBuilder.CreateBox('gate-post', { width: 0.8, depth: 0.3, height: 1.9 }, this.scene);
-                post.material = stone;
-                add(post, w.x, 0.95, w.z + dz);
-              }
-            }
-          } else {
-            const h = destroyed ? 0.3 : 1.0 + 0.7 * frac;
-            const wall = MeshBuilder.CreateBox(`wall-${st.id}`, { width: 0.85, depth: 1.62, height: h }, this.scene);
-            wall.material = destroyed ? rubble : frac < 1 ? stoneDark : stone;
-            add(wall, w.x, h / 2, w.z);
-            if (!destroyed) {
-              for (const dz of [-0.5, 0, 0.5]) {
-                const m = MeshBuilder.CreateBox('merlon', { width: 0.85, depth: 0.28, height: 0.28 }, this.scene);
-                m.material = wall.material;
-                add(m, w.x, h + 0.14, w.z + dz);
-              }
-            }
-          }
-        }
+      const def = this.siegeDef(st, hp);
+      const spots = st.kind === 'keep' || st.cells.length === 0 ? [this.structurePos(st)] : st.cells.map((c) => this.cellXY(c));
+      for (const p of spots) {
+        // Pieces join the depth-sorted objects so creatures pass in front and behind correctly.
+        const piece = new Container();
+        piece.position.set(p.x, p.y + RB * S * 0.3);
+        piece.zIndex = piece.y;
+        piece.addChild(stillSprite(def, HEX_W, st.kind === 'keep' ? 1.6 : 1));
+        this.objects.addChild(piece);
+        this.structurePieces.push(piece);
       }
-      if (!destroyed) {
-        const lbl = createLabel(this.scene, `st-${st.id}`, `${hp}/${st.maxHp}`, { worldWidth: 0.7, width: 192, height: 80 });
-        lbl.mesh.position.copyFrom(this.structureTop(st).add(new Vector3(0, 0.45, 0)));
-        this.structureLabels.push(lbl);
+      if (hp > 0) {
+        const top = this.structureTop(st);
+        const t = new Text({ text: `${hp}/${st.maxHp}`, style: { fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: '700', fill: '#f5e4b7', stroke: { color: '#1a1208', width: 3 } } });
+        t.anchor.set(0.5, 1);
+        t.position.set(top.x, top.y - 4);
+        this.floats.addChild(t);
+        this.structureLabels.push(t);
       }
     }
+  }
+
+  private structurePieces: Container[] = [];
+  private structureLabels: Text[] = [];
+
+  private clearStructurePieces(): void {
+    for (const p of this.structurePieces) p.destroy({ children: true });
+    for (const l of this.structureLabels) l.destroy();
+    this.structurePieces = [];
+    this.structureLabels = [];
   }
 
   private structureById(id: string): SiegeStructureView | undefined {
     return this.siegeView?.structures.find((s) => s.id === id);
   }
 
-  // ------------------------------------------------------------------ playback
+  // ------------------------------------------------------------------ playback helpers
 
-  private floatText(at: Vector3, text: string, color: string, speed: number): Promise<void> {
-    const lbl = createLabel(this.scene, `float-${this.time}-${text}`, text, { background: null, worldWidth: 1.5, width: 320, height: 96, color, font: '700 60px Inter, sans-serif' });
-    lbl.mesh.position.copyFrom(at);
-    lbl.mesh.renderingGroupId = 2;
+  private floatText(at: { x: number; y: number }, text: string, color: string, speed: number): Promise<void> {
+    const t = new Text({ text, style: { fontFamily: 'Inter, sans-serif', fontSize: 22, fontWeight: '700', fill: color, stroke: { color: '#10131a', width: 4 } } });
+    t.anchor.set(0.5, 1);
+    t.position.set(at.x, at.y);
+    this.floats.addChild(t);
     const tw = new TweenPlayer();
     tw.speed = speed;
     this.extraTweens.push(tw);
     return tw
       .tween(
         900,
-        (t) => {
-          lbl.mesh.position.y = at.y + t * 0.9;
-          lbl.mesh.visibility = t < 0.7 ? 1 : 1 - (t - 0.7) / 0.3;
+        (k) => {
+          t.y = at.y - k * RB * 0.9;
+          t.alpha = k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3;
         },
         linear,
       )
       .then(() => {
-        lbl.dispose();
+        t.destroy();
         this.extraTweens = this.extraTweens.filter((x) => x !== tw);
       });
   }
 
-  private extraTweens: TweenPlayer[] = [];
+  private headOf(e: StackEntry): { x: number; y: number } {
+    return { x: e.root.x, y: e.root.y - Math.max(RB * 0.9, e.figure.height * 0.85) };
+  }
 
-  private async projectile(from: Vector3, to: Vector3, color: string): Promise<void> {
-    const p = MeshBuilder.CreateCylinder('proj', { height: 0.5, diameter: 0.05, tessellation: 5 }, this.scene);
-    p.material = this.mats.get(color, { emissive: 0.6 });
-    p.isPickable = false;
-    const dist = Vector3.Distance(from, to);
+  private chestOf(e: StackEntry): { x: number; y: number } {
+    return { x: e.root.x, y: e.root.y - Math.max(RB * 0.5, e.figure.height * 0.5) };
+  }
+
+  private async projectile(from: { x: number; y: number }, to: { x: number; y: number }, kind: string): Promise<void> {
+    const def = spriteManifest().projectiles[kind] ?? null;
+    const p = stillSprite(def, HEX_W);
+    if (!def) {
+      const g = new Graphics().rect(-RB * 0.3, -1.5, RB * 0.6, 3).fill({ color: 0xd8c08a });
+      p.addChild(g);
+      p.visible = true;
+    }
+    this.fx.addChild(p);
+    const dist = Math.hypot(to.x - from.x, to.y - from.y);
+    const arc = Math.min(RB * 2.4, dist * 0.18);
     await this.tweens.tween(
-      Math.max(220, dist * 45),
+      Math.max(220, (dist / RB) * 45),
       (t) => {
         const x = from.x + (to.x - from.x) * t;
-        const z = from.z + (to.z - from.z) * t;
-        const y = from.y + (to.y - from.y) * t + Math.sin(t * Math.PI) * Math.min(2.2, dist * 0.18);
-        p.position.set(x, y, z);
-        const dy = Math.cos(t * Math.PI) * Math.min(2.2, dist * 0.18) * Math.PI;
-        p.rotation.z = Math.atan2(dy, dist) - Math.PI / 2;
-        p.rotation.y = Math.atan2(-(to.z - from.z), to.x - from.x);
+        const y = from.y + (to.y - from.y) * t - Math.sin(t * Math.PI) * arc;
+        p.position.set(x, y);
+        const dy = (to.y - from.y) - Math.cos(t * Math.PI) * arc * Math.PI;
+        p.rotation = Math.atan2(dy, to.x - from.x);
       },
       linear,
     );
-    p.dispose();
+    p.destroy();
   }
 
-  private async spellColumn(at: Vector3, color: string): Promise<void> {
-    const c = MeshBuilder.CreateCylinder('spell', { height: 4, diameterTop: 0.2, diameterBottom: 1.1, tessellation: 16 }, this.scene);
-    c.material = this.mats.get(color, { emissive: 1, alpha: 0.45 });
-    c.isPickable = false;
-    c.position.set(at.x, 2, at.z);
-    await this.tweens.tween(520, (t) => {
-      c.scaling.set(1 - t * 0.4, 1, 1 - t * 0.4);
-      c.visibility = t < 0.5 ? t * 2 : 2 - t * 2;
-    });
-    c.dispose();
+  /** A one-shot effect strip at a point (a short flash in `flash` colour on Low or when the strip is missing). */
+  private async effect(id: string, at: { x: number; y: number }, opts: { flash?: number; scale?: number } = {}): Promise<void> {
+    const def: EffectDefinition | undefined = spriteManifest().effects[id];
+    const scale = opts.scale ?? 1;
+    if (!def || graphicsProfile().effects === 'simple') {
+      const g = new Graphics();
+      g.ellipse(0, 0, RB * 0.9 * scale, RB * 0.9 * S * scale).fill({ color: opts.flash ?? 0xffffff, alpha: 0.5 });
+      g.position.set(at.x, at.y);
+      g.blendMode = 'add';
+      this.fx.addChild(g);
+      await this.tweens.tween(320, (t) => {
+        g.alpha = 1 - t;
+        g.scale.set(0.6 + t * 0.6);
+      });
+      g.destroy();
+      return;
+    }
+    const frames = await loadStrip(def).catch(() => null);
+    if (!frames || this.disposed) return;
+    const s = new Sprite(frames[0] ?? Texture.EMPTY);
+    s.anchor.set(def.anchor[0], def.anchor[1]);
+    s.scale.set((HEX_W / def.pixelsPerHex) * scale);
+    if (def.additive) s.blendMode = 'add';
+    s.position.set(at.x, at.y);
+    this.fx.addChild(s);
+    await this.tweens.tween(
+      (frames.length / Math.max(1, def.fps)) * 1000,
+      (t) => {
+        const i = Math.min(frames.length - 1, Math.floor(t * frames.length));
+        s.texture = frames[i]!;
+      },
+      linear,
+    );
+    s.destroy();
   }
 
   private lock(e: StackEntry | undefined): void {
     if (!e) return;
     e.locked += 1;
     e.snapIn = 0;
-    e.hideIn = 0;
   }
 
   private unlock(e: StackEntry | undefined): void {
     if (!e) return;
     e.locked = Math.max(0, e.locked - 1);
-    if (e.locked === 0) {
-      this.applyRigs(e);
-      this.snap(e);
-    }
+    if (e.locked === 0) this.snap(e);
   }
 
   private snap(e: StackEntry): void {
-    e.group.position.copyFrom(this.groupPosition(e.view.anchor, e.view.footprint, e.view.facing));
-    faceGroup(e.group, e.view.facing);
+    this.place(e, e.view.anchor);
+    e.figure.mirror = e.view.facing === -1;
     e.shownAnchor = e.view.anchor;
     if (!e.view.alive) {
-      this.layDown(e);
+      if (!e.down) this.layDown(e);
+      else e.root.zIndex = e.root.y - 2;
       return;
     }
-    e.group.setEnabled(true);
-    e.base.isVisible = true;
-    for (const f of e.figures) restFigure(f);
+    e.root.visible = true;
+    e.base.visible = true;
+    e.badge.visible = true;
+    e.figure.rest();
+    if (!this.celebrating.has(e)) e.figure.setLoop('idle');
   }
 
-  private headOf(e: StackEntry): Vector3 {
-    return e.group.position.add(new Vector3(0, 1.3, 0));
-  }
-
-  /** Visualize one batch of committed events. Resolves when playback is finished. */
+  /** Visualise one batch of committed events. Resolves when playback is finished. */
   async play(events: readonly GameEvent[], speed: number): Promise<void> {
     this.tweens.speed = speed;
     const touched = new Set<StackEntry>();
@@ -930,6 +810,67 @@ export class BattleSceneController implements SceneController {
     }
   }
 
+  /** Attack choreography: the strip plays while the figure lunges toward the target (further when only a still exists). */
+  private async strike(a: StackEntry, toward: StackEntry, name: 'attack' | 'shoot', k = 1): Promise<void> {
+    const f = a.figure;
+    const own = f.has(name);
+    const dir = Math.sign(toward.root.x - a.root.x) || a.view.facing;
+    const reach = (own ? 0.16 : 0.34) * HEX_W;
+    const lunge = name === 'attack' ? reach : -0.06 * HEX_W;
+    const strip = f.playOnce(name, this.tweens, { minMs: 560 * k });
+    await this.tweens.tween(200 * k, (t) => (f.pose.x = dir * lunge * t));
+    await this.tweens.tween(140 * k, () => undefined, easeOut);
+    await this.tweens.tween(220 * k, (t) => (f.pose.x = dir * lunge * (1 - t)));
+    await strip;
+    f.pose.x = 0;
+  }
+
+  /** Being hit: the strip, or a flinch and flash when only a still exists. */
+  private async flinch(e: StackEntry): Promise<void> {
+    const f = e.figure;
+    const strip = f.playOnce('hit', this.tweens, { minMs: 320 });
+    const back = e.view.facing === 1 ? -1 : 1;
+    const own = f.has('hit');
+    await this.tweens.tween(
+      320,
+      (t) => {
+        const kick = Math.sin(t * Math.PI);
+        f.pose.x = back * kick * (own ? 0.04 : 0.1) * HEX_W;
+        if (!own) {
+          f.pose.rotation = back * kick * 0.12;
+          f.sprite.alpha = t < 0.5 ? (Math.floor(t * 12) % 2 === 0 ? 0.45 : 1) : 1;
+        }
+      },
+      linear,
+    );
+    await strip;
+    f.rest();
+  }
+
+  /** Dying on the killing blow: the death strip held on its last frame, or the fallback fall. */
+  private async die(e: StackEntry): Promise<void> {
+    const f = e.figure;
+    e.badge.visible = false;
+    if (f.has('death')) {
+      await f.playOnce('death', this.tweens, { hold: true });
+    } else {
+      await this.tweens.tween(620, (t) => this.fallenPose(e, t));
+    }
+    e.view = { ...e.view, alive: false };
+    this.layDown(e);
+  }
+
+  private async cheer(e: StackEntry): Promise<void> {
+    const f = e.figure;
+    if (f.has('victory')) {
+      await f.playOnce('victory', this.tweens);
+      f.setLoop('victory');
+      return;
+    }
+    await this.tweens.tween(700, (t) => (f.pose.y = -Math.abs(Math.sin(t * Math.PI * 2)) * RB * 0.35), linear);
+    f.pose.y = 0;
+  }
+
   private async playEvent(ev: GameEvent, speed: number): Promise<void> {
     switch (ev.kind) {
       case 'BattleStackMoved': {
@@ -937,33 +878,49 @@ export class BattleSceneController implements SceneController {
         if (!e || ev.path.length === 0) return;
         this.cue(ev.flying ? 'flight' : 'march');
         const v = e.view;
-        const start = e.shownAnchor;
-        let from = this.groupPosition(start, v.footprint, v.facing);
-        for (const f of e.figures) if (f.rig) f.rig.loop(ev.flying && f.rig.has('fly') ? 'fly' : 'move');
+        const f = e.figure;
+        let from = this.groupPosition(e.shownAnchor, v.footprint, v.facing);
+        const last = ev.path[ev.path.length - 1]!;
+        const dest = this.groupPosition(last, v.footprint, v.facing);
+        f.mirror = dest.x < from.x - 1 ? true : dest.x > from.x + 1 ? false : v.facing === -1;
         if (ev.flying) {
-          const last = ev.path[ev.path.length - 1]!;
-          const to = this.groupPosition(last, v.footprint, v.facing);
-          const f0 = from.clone();
-          const dist = Vector3.Distance(f0, to);
-          await this.tweens.tween(Math.max(380, dist * 90), (t) => {
-            e.group.position.set(f0.x + (to.x - f0.x) * t, Math.sin(t * Math.PI) * Math.min(2.5, 0.8 + dist * 0.15), f0.z + (to.z - f0.z) * t);
-          }, easeInOut);
+          if (f.has('takeoff')) await f.playOnce('takeoff', this.tweens);
+          f.setLoop(f.has('fly') ? 'fly' : 'move');
+          const f0 = { ...from };
+          const dist = Math.hypot(dest.x - f0.x, dest.y - f0.y);
+          const lift = Math.min(RB * 2.6, RB * 0.8 + dist * 0.15);
+          await this.tweens.tween(
+            Math.max(380, (dist / RB) * 90),
+            (t) => {
+              e.root.position.set(f0.x + (dest.x - f0.x) * t, f0.y + (dest.y - f0.y) * t);
+              e.root.zIndex = e.root.y;
+              f.pose.y = -Math.sin(t * Math.PI) * lift;
+            },
+            easeInOut,
+          );
+          f.pose.y = 0;
+          if (f.has('landing')) await f.playOnce('landing', this.tweens);
         } else {
+          f.setLoop('move');
+          const bob = !f.has('move');
           for (const c of ev.path) {
             const to = this.groupPosition(c, v.footprint, v.facing);
-            const f0 = from.clone();
+            const f0 = { ...from };
             await this.tweens.tween(
               170,
               (t) => {
-                e.group.position.set(f0.x + (to.x - f0.x) * t, Math.abs(Math.sin(t * Math.PI)) * 0.06, f0.z + (to.z - f0.z) * t);
+                e.root.position.set(f0.x + (to.x - f0.x) * t, f0.y + (to.y - f0.y) * t);
+                e.root.zIndex = e.root.y;
+                if (bob) f.pose.y = -Math.abs(Math.sin(t * Math.PI)) * RB * 0.12;
               },
               linear,
             );
             from = to;
           }
+          f.pose.y = 0;
         }
-        e.shownAnchor = ev.path[ev.path.length - 1]!;
-        for (const f of e.figures) f.rig?.loop('idle');
+        e.shownAnchor = last;
+        f.setLoop('idle');
         return;
       }
       case 'BattleAttack': {
@@ -974,33 +931,35 @@ export class BattleSceneController implements SceneController {
         const heavy = ev.killed > 0;
         if (ev.mode === 'shot') {
           await Promise.all([
-            playState(this.tweens, a.figures, 'ranged'),
+            this.strike(a, t, 'shoot'),
             this.tweens.wait(260).then(() => {
               this.cue('shot');
-              return this.projectile(this.headOf(a), this.headOf(t).subtract(new Vector3(0, 0.4, 0)), '#d8c08a').then(() => this.cue('arrow-hit', heavy));
+              return this.projectile(this.chestOf(a), this.chestOf(t), 'arrow').then(() => this.cue('arrow-hit', heavy));
             }),
           ]);
         } else {
           this.cue('swing');
-          await playState(this.tweens, a.figures, 'melee', retaliation ? 0.85 : 1);
+          await this.strike(a, t, 'attack', retaliation ? 0.85 : 1);
           this.cue('impact', heavy);
+          void this.effect('impact', this.chestOf(t), { flash: 0xfff1c8, scale: 0.8 });
         }
         if (ev.targetRemaining <= 0) this.cue('death');
         const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
-        const floats = this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed);
-        await playState(this.tweens, t.figures, ev.targetRemaining > 0 ? 'hit' : 'defeat');
-        void floats;
+        void this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed);
+        if (ev.targetRemaining > 0) await this.flinch(t);
+        else await this.die(t);
         return;
       }
       case 'BattleSpellCast': {
         const t = this.stacks.get(ev.targetId);
         if (!t) return;
-        const heal = ev.healed > 0;
-        this.cue(heal ? 'heal' : ev.damage > 0 ? 'spell' : 'bless');
-        await this.spellColumn(t.group.position, heal ? '#9be58a' : ev.damage > 0 ? '#7fb2ff' : '#f5e4b7');
-        const txt = heal ? `+${ev.healed} HP` : ev.damage > 0 ? `−${ev.damage}` : 'Blessed';
-        void this.floatText(this.headOf(t), txt, heal ? '#9be58a' : ev.damage > 0 ? '#9cc4ff' : '#f5e4b7', speed);
-        if (ev.damage > 0) await playState(this.tweens, t.figures, 'hit');
+        const look: SpellLook = this.cb.spellLook?.(ev.spellId) ?? (ev.healed > 0 ? 'heal' : ev.damage > 0 ? 'damage' : 'buff');
+        this.cue(look === 'heal' ? 'heal' : ev.damage > 0 ? 'spell' : 'bless');
+        const tint = look === 'heal' ? 0x9be58a : look === 'damage' || look === 'area' ? 0x7fb2ff : look === 'curse' ? 0xb07ad8 : 0xf5e4b7;
+        await this.effect(`spell.${look}`, { x: t.root.x, y: t.root.y }, { flash: tint, scale: look === 'area' ? 1.4 : 1 });
+        const txt = ev.healed > 0 ? `+${ev.healed} HP` : ev.damage > 0 ? `−${ev.damage}` : look === 'curse' ? 'Cursed' : 'Blessed';
+        void this.floatText(this.headOf(t), txt, ev.healed > 0 ? '#9be58a' : ev.damage > 0 ? '#9cc4ff' : look === 'curse' ? '#d7b0ff' : '#f5e4b7', speed);
+        if (ev.damage > 0) await this.flinch(t);
         return;
       }
       case 'BattleAbilityUsed': {
@@ -1008,15 +967,9 @@ export class BattleSceneController implements SceneController {
         if (!e) return;
         this.cue('ward');
         void this.floatText(this.headOf(e), 'Ward!', '#9fe8ff', speed);
-        const clip = `ability_${ev.abilityId}` as const;
-        const withClip = e.figures.filter((f) => f.rig?.has(clip));
-        await Promise.all([
-          ...withClip.map(async (f) => {
-            await f.rig!.playOnce(clip, this.tweens);
-            f.rig!.loop('idle');
-          }),
-          playState(this.tweens, e.figures.filter((f) => !withClip.includes(f)), 'defend', 0.7),
-        ]);
+        void this.effect('ward', { x: e.root.x, y: e.root.y }, { flash: 0x9fe8ff });
+        if (e.figure.has('ability')) await e.figure.playOnce('ability', this.tweens);
+        else await this.defendPose(e, 0.7);
         return;
       }
       case 'BattleStackDefended': {
@@ -1024,7 +977,7 @@ export class BattleSceneController implements SceneController {
         if (!e) return;
         this.cue('defend');
         void this.floatText(this.headOf(e), 'Defend', '#cfe3ff', speed);
-        await playState(this.tweens, e.figures, 'defend', 0.8);
+        await this.defendPose(e, 0.8);
         return;
       }
       case 'BattleStackWaited': {
@@ -1037,6 +990,7 @@ export class BattleSceneController implements SceneController {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
         this.cue(ev.positive ? 'morale-up' : 'morale-down');
+        void this.effect(ev.positive ? 'morale.up' : 'morale.down', { x: e.root.x, y: e.root.y }, { flash: ev.positive ? 0xf5e4b7 : 0xff9d8a });
         await this.floatText(this.headOf(e), ev.positive ? 'Morale! Acts again' : 'Falters — skips turn', ev.positive ? '#f5e4b7' : '#ff9d8a', speed * 0.8);
         return;
       }
@@ -1049,32 +1003,34 @@ export class BattleSceneController implements SceneController {
         // blow: the rules have already cleared the battle), so unlocking the
         // stack after playback keeps it lying down.
         e.view = { ...e.view, alive: false };
-        this.layDown(e);
+        if (!e.down) this.layDown(e);
         return;
       }
       case 'SiegeStructureDamaged': {
         const st = this.structureById(ev.structureId);
         if (!st) return;
-        const to = this.structureTop(st).subtract(new Vector3(0, 0.4, 0));
+        const top = this.structureTop(st);
+        const to = { x: top.x, y: top.y + RB * 0.4 };
         if (ev.source === 'catapult') {
-          const from = new Vector3(cellWorld({ col: 0, row: 5 }, R).x - 3, 0.8, to.z);
+          const left = this.cellXY({ col: 0, row: 5 });
           this.cue('catapult');
-          await this.projectile(from, to, '#8f8676');
+          await this.projectile({ x: left.x - RB * 3, y: left.y - RB }, to, 'stone');
         } else {
           const a = ev.attackerId ? this.stacks.get(ev.attackerId) : undefined;
           if (a)
             await Promise.all([
-              playState(this.tweens, a.figures, 'ranged'),
+              a.figure.playOnce(a.figure.has('shoot') ? 'shoot' : 'attack', this.tweens, { minMs: 400 }),
               this.tweens.wait(260).then(() => {
                 this.cue('shot');
-                return this.projectile(this.headOf(a), to, '#8f8676');
+                return this.projectile(this.chestOf(a), to, 'stone');
               }),
             ]);
         }
         this.cue('stone-hit');
+        void this.effect('impact', to, { flash: 0xc8b89a });
         this.shownHp.set(st.id, ev.hp);
         this.drawStructures();
-        void this.floatText(to.add(new Vector3(0, 0.6, 0)), ev.source === 'catapult' ? 'Catapult −1' : '−1', '#f0c27a', speed);
+        void this.floatText({ x: to.x, y: to.y - RB * 0.6 }, ev.source === 'catapult' ? 'Catapult −1' : '−1', '#f0c27a', speed);
         return;
       }
       case 'SiegeStructureDestroyed': {
@@ -1089,10 +1045,11 @@ export class BattleSceneController implements SceneController {
         const t = this.stacks.get(ev.targetId);
         if (!st || !t) return;
         this.cue('turret');
-        await this.projectile(this.structureTop(st), this.headOf(t).subtract(new Vector3(0, 0.4, 0)), '#d8c08a');
+        await this.projectile(this.structureTop(st), this.chestOf(t), 'arrow');
         this.cue('arrow-hit', ev.killed > 0);
         void this.floatText(this.headOf(t), ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`, '#ff8a70', speed);
-        await playState(this.tweens, t.figures, ev.targetRemaining > 0 ? 'hit' : 'defeat');
+        if (ev.targetRemaining > 0) await this.flinch(t);
+        else await this.die(t);
         return;
       }
       case 'SiegeMoatDamage': {
@@ -1100,7 +1057,8 @@ export class BattleSceneController implements SceneController {
         if (!t) return;
         this.cue('moat');
         void this.floatText(this.headOf(t), `Moat −${ev.damage}`, '#9cc4ff', speed);
-        await playState(this.tweens, t.figures, ev.targetRemaining > 0 ? 'hit' : 'defeat');
+        if (ev.targetRemaining > 0) await this.flinch(t);
+        else await this.die(t);
         return;
       }
       case 'BattleStackShapeshifted': {
@@ -1116,15 +1074,12 @@ export class BattleSceneController implements SceneController {
         // keeps cheering until the result screen opens (owner request 2026-10-03).
         const winners = [...this.stacks.values()].filter((e) => e.view.side === ev.winner && e.view.alive);
         for (const e of winners) {
-          e.group.setEnabled(true);
-          e.group.position.copyFrom(this.groupPosition(e.view.anchor, e.view.footprint, e.view.facing));
-          for (const f of e.figures) restFigure(f);
+          e.root.visible = true;
+          this.place(e, e.view.anchor);
+          e.figure.rest();
         }
-        await Promise.all(winners.map((e) => playState(this.tweens, e.figures, 'victory')));
-        for (const e of winners) {
-          this.celebrating.add(e);
-          for (const f of e.figures) if (f.rig?.has('victory')) f.rig.loop('victory');
-        }
+        await Promise.all(winners.map((e) => this.cheer(e)));
+        for (const e of winners) this.celebrating.add(e);
         return;
       }
       default:
@@ -1132,42 +1087,99 @@ export class BattleSceneController implements SceneController {
     }
   }
 
+  /** Defending: the strip, or a crouch behind the shield when only a still exists. */
+  private async defendPose(e: StackEntry, k: number): Promise<void> {
+    const f = e.figure;
+    if (f.has('defend')) {
+      await f.playOnce('defend', this.tweens, { minMs: 600 * k });
+      return;
+    }
+    const back = e.view.facing === 1 ? -1 : 1;
+    await this.tweens.tween(260 * k, (t) => {
+      f.pose.scale.y = 1 - t * 0.08;
+      f.pose.x = back * t * 0.05 * HEX_W;
+    });
+    await this.tweens.wait(360 * k);
+    await this.tweens.tween(220 * k, (t) => {
+      f.pose.scale.y = 0.92 + t * 0.08;
+      f.pose.x = back * 0.05 * HEX_W * (1 - t);
+    });
+    f.rest();
+  }
+
   // ------------------------------------------------------------------ input
 
-  private cellAt(x: number, y: number): { cell: BattleCell; offset: { x: number; z: number } } | null {
-    const p = pickGround(this.scene, this.camera, x, y, 0);
-    if (!p) return null;
-    const c = worldCell(p.x, p.z, R);
+  private local(e: { clientX: number; clientY: number }): { x: number; y: number } {
+    const r = this.canvas.getBoundingClientRect();
+    const z = this.board.scale.x;
+    return { x: (e.clientX - r.left - this.board.x) / z, y: (e.clientY - r.top - this.board.y) / z };
+  }
+
+  private cellAt(p: { x: number; y: number }): { cell: BattleCell; offset: { x: number; y: number } } | null {
+    const c = pointCell(p.x, p.y, RB, S);
     if (c.col < 0 || c.row < 0 || c.col >= this.cols || c.row >= this.rows) return null;
-    const w = cellWorld(c, R);
-    return { cell: c, offset: { x: p.x - w.x, z: p.z - w.z } };
+    const w = this.cellXY(c);
+    return { cell: c, offset: { x: (p.x - w.x) / RB, y: (p.y - w.y) / RB } };
   }
 
-  private onPointer(p: PointerInfo): void {
-    const x = this.scene.pointerX;
-    const y = this.scene.pointerY;
-    if (p.type === PointerEventTypes.POINTERMOVE) {
-      const hit = this.cellAt(x, y);
-      const key = hit ? `${hit.cell.col}:${hit.cell.row}:${Math.sign(hit.offset.x)}:${Math.sign(hit.offset.z)}:${Math.round(Math.atan2(hit.offset.z, hit.offset.x) / (Math.PI / 3))}` : '';
-      if (key !== this.lastHover) {
-        this.lastHover = key;
-        if (hit) {
-          const w = cellWorld(hit.cell, R);
-          this.hover.position.set(w.x, 0.03, w.z);
-          this.hover.isVisible = true;
-        } else this.hover.isVisible = false;
-        this.cb.onCellHover(hit?.cell ?? null, hit?.offset ?? { x: 0, z: 0 });
-      }
-    } else if (p.type === PointerEventTypes.POINTERUP) {
-      const hit = this.cellAt(x, y);
-      if (hit) this.cb.onCellClick(hit.cell, (p.event as PointerEvent).button, hit.offset);
+  private onMove(e: PointerEvent): void {
+    const hit = this.cellAt(this.local(e));
+    const key = hit ? `${hit.cell.col}:${hit.cell.row}:${Math.sign(hit.offset.x)}:${Math.sign(hit.offset.y)}:${Math.round(Math.atan2(hit.offset.y, hit.offset.x) / (Math.PI / 3))}` : '';
+    if (key === this.lastHover) return;
+    this.lastHover = key;
+    const g = this.hover;
+    g.clear();
+    if (hit) {
+      const w = this.cellXY(hit.cell);
+      g.poly(hexPolygon(w.x, w.y, RB * 0.95, S)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
+      g.visible = true;
+    } else g.visible = false;
+    this.cb.onCellHover(hit?.cell ?? null, hit?.offset ?? { x: 0, y: 0 });
+  }
+
+  private onUp(e: PointerEvent): void {
+    const hit = this.cellAt(this.local(e));
+    if (hit) this.cb.onCellClick(hit.cell, e.button, hit.offset);
+  }
+
+  private onLeave(): void {
+    if (this.lastHover === '') return;
+    this.lastHover = '';
+    this.hover.visible = false;
+    this.cb.onCellHover(null, { x: 0, y: 0 });
+  }
+
+  private onWheel(e: WheelEvent): void {
+    e.preventDefault();
+    this.zoomK = Math.max(0.85, Math.min(1.6, this.zoomK * Math.exp(-Math.max(-120, Math.min(120, e.deltaY)) * 0.0012)));
+    this.layout();
+  }
+
+  /** Read-only state of every stack figure (tests and diagnostics): where it is drawn and how. */
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean }> = {};
+    const z = this.board.scale.x;
+    for (const [id, e] of this.stacks) {
+      out[id] = {
+        anchor: e.shownAnchor,
+        x: Math.round((e.root.x * z + this.board.x) * 10) / 10,
+        y: Math.round((e.root.y * z + this.board.y) * 10) / 10,
+        mirrored: e.figure.pose.scale.x < 0,
+        drawn: e.figure.current?.drawn ?? null,
+        status: e.figure.set?.status ?? null,
+        sprite: e.figure.status,
+        down: e.down,
+        visible: e.root.visible,
+      };
     }
+    return out;
   }
 
-  /** Screen position (CSS pixels within the canvas) of a battle cell center — read-only. */
+  /** Screen position (CSS pixels within the canvas) of a battle cell centre — read-only. */
   projectCell(c: BattleCell): { x: number; y: number } | null {
-    const w = cellWorld(c, R);
-    return projectPoint(this.scene, this.camera, new Vector3(w.x, 0, w.z));
+    const w = this.cellXY(c);
+    const z = this.board.scale.x;
+    return { x: w.x * z + this.board.x, y: w.y * z + this.board.y };
   }
 
   // ------------------------------------------------------------------ frame
@@ -1179,20 +1191,25 @@ export class BattleSceneController implements SceneController {
     for (const tw of this.extraTweens) tw.tick(dt);
     const motion = graphicsProfile().ambientMotion;
     for (const e of this.stacks.values()) {
-      if (e.locked === 0) {
-        if (e.snapIn > 0 && --e.snapIn === 0) this.snap(e);
-        if (e.hideIn > 0 && --e.hideIn === 0 && !e.view.alive) this.layDown(e);
-        if (e.view.alive && this.celebrating.has(e)) for (const f of e.figures) applyCheer(f, this.time);
-        else if (e.view.alive && motion) for (const f of e.figures) applyIdle(f, this.time);
+      if (e.locked === 0 && e.snapIn > 0 && --e.snapIn === 0) this.snap(e);
+      if (e.down) continue;
+      if (motion || e.locked > 0) e.figure.tick(dt);
+      if (e.locked === 0 && this.celebrating.has(e) && !e.figure.has('victory')) {
+        // Winners keep cheering (a little hop) until the result opens.
+        const t = this.time / 1000 + e.seed * 0.37;
+        e.figure.pose.y = -Math.abs(Math.sin(t * Math.PI * 1.6)) * RB * 0.28;
       }
     }
     const a = this.activeStack;
+    const ring = this.activeRing;
     if (a && a.locked === 0 && a.view.alive) {
-      this.activeRing.position.set(a.group.position.x, 0.06, a.group.position.z);
-      this.activeRing.scaling.x = a.view.footprint === 2 ? 1.6 : 1;
-      this.activeRing.rotation.y = this.time / 700;
-      this.activeRing.isVisible = true;
-    } else this.activeRing.isVisible = false;
+      const w = a.view.footprint === 2 ? 1.7 : 1;
+      const pulse = 1 + Math.sin(this.time / 220) * 0.05;
+      ring.clear();
+      ring.ellipse(0, 0, HEX_W * 0.48 * w * pulse, HEX_W * 0.48 * S * 0.62 * pulse).stroke({ width: 3, color: 0xf1d48a, alpha: 0.95 });
+      ring.position.set(a.root.x, a.root.y);
+      ring.visible = true;
+    } else ring.visible = false;
   }
 
   get busy(): boolean {
@@ -1206,15 +1223,12 @@ export class BattleSceneController implements SceneController {
     for (const tw of this.extraTweens) tw.flush();
   }
 
-  private disposed = false;
-
   dispose(): void {
     this.disposed = true;
     this.skip();
-    this.models.dispose();
-    for (const l of this.structureLabels) l.dispose();
-    if (this.pointerObs) this.scene.onPointerObservable.remove(this.pointerObs);
-    this.mats.dispose();
-    this.scene.dispose();
+    for (const [type, fn] of this.listeners) this.canvas.removeEventListener(type, fn);
+    for (const e of this.stacks.values()) e.figure.destroy();
+    this.stacks.clear();
+    this.root.destroy({ children: true });
   }
 }

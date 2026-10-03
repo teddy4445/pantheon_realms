@@ -1,11 +1,22 @@
-# @pr/presentation — Babylon.js scenes
+# @pr/presentation — PixiJS 2D views
 
-One long-lived `EngineHost` and three scene controllers:
+One long-lived `EngineHost` (a PixiJS WebGL renderer and canvas) and three view controllers:
 
-* `AdventureSceneController` — terrain, fog, roads, decor, sites, heroes, reachable area, path preview, picking, movement playback.
-* `BattleSceneController` — hex board, stacks, highlights, playback of committed battle events.
-* `UnitViewerController` — bestiary viewer with the states `idle, move, melee, ranged, defend, hit, defeat, victory`.
+* `AdventureSceneController` — layered 2D map: terrain (painted ground per climate), roads,
+  hex grid and reachable area, decoration, map locations and heroes (depth-sorted), route
+  preview, fog of war, effects; 2D camera (pan, zoom); hex picking by inverting the board
+  transform; movement playback with the pantheon's mounted map avatar (idle / walk).
+* `BattleSceneController` — painted battlefield, logical hex overlay, obstacle and siege
+  sprites, creature sprites (defenders mirrored), projectiles and effects; playback of
+  committed battle events (strips by semantic name, simple motion where a strip is missing).
+* `UnitViewerController` — the bestiary's animated sprite viewer (the animations a creature's
+  content calls for, playback controls, reduced-motion still).
 
-Controllers receive view models built from committed state and immutable events.
-They never decide legality or change state. Placeholder geometry lives in `proxies.ts`;
-final GLBs replace it per asset ID.
+`@pr/presentation/core` holds everything without PixiJS (loaded at start-up): the sprite
+manifest model and lookup (`sprites.ts`: semantic animation names, anchors, fallbacks,
+`requiredAnimations`), hex ↔ screen conversions (`hexmath.ts`), palette, ground/sky art
+lookup and graphics presets.
+
+Controllers receive view models built from committed state and immutable events. They never
+decide legality or change state. Every sprite comes from `assets-runtime/sprites/manifest.json`
+by ID (placeholder or final; ASSET_PIPELINE.md §1); replacing art never needs a code change.

@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 
 const pkg = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
-// PR_FEW_CHUNKS=1: put all of Babylon.js (still loaded on demand, after the menu) into one
-// chunk instead of ~250, for static hosts that limit the number of files per site.
+// PR_FEW_CHUNKS=1: put all of PixiJS (still loaded on demand, after the menu) into one
+// chunk instead of several, for static hosts that limit the number of files per site.
 const fewChunks = !!process.env.PR_FEW_CHUNKS;
 
 // One client build serves the browser and the Electron renderer (prgame://app/).
@@ -22,7 +22,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 9000,
     sourcemap: false,
     // The preload helper gets its own group so the start-up chunk never has to import the
-    // Babylon chunk to reach it (groups pull in their dependencies by default).
+    // renderer chunk to reach it (groups pull in their dependencies by default).
     ...(fewChunks
       ? {
           rollupOptions: {
@@ -30,7 +30,7 @@ export default defineConfig({
               advancedChunks: {
                 groups: [
                   { name: 'preload', test: /preload-helper/, priority: 2 },
-                  { name: 'babylon', test: /node_modules[\\/]@babylonjs[\\/]/, priority: 1 },
+                  { name: 'pixi', test: /node_modules[\\/]pixi\.js[\\/]/, priority: 1 },
                 ],
               },
             },

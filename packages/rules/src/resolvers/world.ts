@@ -2,7 +2,7 @@
  * World resolvers: terrain lookup, movement costs, passability, pathfinding
  * and visibility on the axial adventure map.
  *
- * Movement legality is decided here from logical data; Babylon never decides it.
+ * Movement legality is decided here from logical data; the renderer never decides it.
  * Pathfinding uses integer Dijkstra with canonical neighbor order and stable
  * key tie-breaks so previews and commits always agree.
  */

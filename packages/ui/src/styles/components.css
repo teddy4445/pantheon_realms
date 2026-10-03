@@ -5,7 +5,7 @@
  * capitals, burnished-gold primary actions and framed icon sockets.
  *
  * Performance rule: no CSS `filter`/`backdrop-filter` on anything that can sit
- * over the 3D canvas (HUD, dialogs, icons). The compositor re-applies filters
+ * over the game canvas (HUD, dialogs, icons). The compositor re-applies filters
  * every frame there; shadows belong in box-shadow/text-shadow or the art.
  */
 
@@ -336,8 +336,8 @@
 .menu-btn:focus-visible .menu-btn__icon {
   transform: scale(1.08);
 }
-/* Glow only on the opening screen (no 3D canvas underneath: CSS filters over the
-   canvas are re-applied every frame by the compositor and slow the 3D scenes). */
+/* Glow only on the opening screen (no game canvas underneath: CSS filters over the
+   canvas are re-applied every frame by the compositor and slow the map and battle). */
 .menu-btn--framed:hover:not(:disabled) .menu-btn__icon,
 .menu-btn--framed:focus-visible .menu-btn__icon {
   filter: drop-shadow(0 0 6px rgba(255, 226, 150, 0.6));
@@ -1127,7 +1127,7 @@ input[type='radio']:disabled {
   height: clamp(14rem, 56vh, 36rem); width: auto; max-width: none;
   object-fit: contain; transform-origin: 50% 100%;
   pointer-events: none; user-select: none;
-  /* No CSS filter: story scenes can sit over the 3D map (performance rule above). */
+  /* No CSS filter: story scenes can sit over the map (performance rule above). */
   animation: fade-in var(--motion-med) ease-out;
 }
 .story-bust--left { left: -1rem; }
@@ -1244,7 +1244,7 @@ input[type='radio']:disabled {
 .result-splash > img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
 
 /* The live title in the paintings' calm upper-centre area (x 30–70 %, y 8–30 %).
-   Shadows are text-shadows: end-of-game dialogs can sit over the 3D map (no CSS filters there). */
+   Shadows are text-shadows: end-of-game dialogs can sit over the map (no CSS filters there). */
 .splash-title { position: absolute; z-index: 1; left: 30%; right: 30%; top: 8%; height: 22%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; pointer-events: none;
   /* A soft contrast pool behind the live title, for bright skies. */
   background: radial-gradient(50% 50% at 50% 50%, rgba(5, 9, 15, 0.5), rgba(5, 9, 15, 0.22) 60%, rgba(5, 9, 15, 0) 100%); }
@@ -1305,7 +1305,7 @@ input[type='radio']:disabled {
 .miracle-card__name { font-family: var(--font-display); font-weight: 700; font-size: calc(var(--card-h) * 0.036); line-height: 1.1; letter-spacing: 0.05em; color: var(--gold-200); text-shadow: 0 2px 6px #000; text-wrap: balance; }
 .miracle-card__by { font-size: calc(var(--card-h) * 0.018); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); }
 
-/* New-week banner: drops in under the top bar; a click closes it. It sits over the 3D map, so its
+/* New-week banner: drops in under the top bar; a click closes it. It sits over the map, so its
    glow is the painting's own (no CSS filter, see the performance rule at the top). */
 .week-banner { width: min(60rem, 86vw); padding: 0; border: 0; background: none; cursor: var(--cur-pointer, pointer); font: inherit; color: inherit; animation: moment-drop calc(var(--motion-slow) * 1.4) ease-out both; }
 .week-banner:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 2px; }

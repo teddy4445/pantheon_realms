@@ -5,12 +5,12 @@
 // Serves the build from a local static server (gzip, like a normal web host) and
 // opens it in headless Chromium with a fresh profile per run. Reports medians of:
 //   menu       navigation start -> the main menu's New Game button is in the page
-//   scene      Begin on the mission briefing -> the first 3D scene is built and has drawn a
+//   scene      Begin on the mission briefing -> the first 2D map view is built and has drawn a
 //              frame (so moving code out of the start-up bundle is not hidden by a slower first
 //              scene). Measured twice: clicking straight through the menus (worst case), and
 //              after a 3-second pause on the main menu, as a person would take.
 //   settled    Begin -> the end of the last long main-thread task in the next 3 s (scene
-//              building, shader compilation): steadier than "scene" in software-GPU runs.
+//              building, texture uploads): steadier than "scene" in software-GPU runs.
 //   startup JS script files the page requested before the menu appeared (raw and gzip)
 // Two profiles: "local" (no throttling: parse, compile and execution dominate, as in
 // the desktop app) and "web" (Chrome DevTools network emulation: 20 Mbit/s down, 40 ms RTT).
@@ -31,7 +31,7 @@ const dist = path.resolve(positional[0] ?? 'apps/client/dist');
 const runs = Number(flag('--runs', '7'));
 const jsonOut = flag('--json', null);
 
-const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2', '.woff': 'font/woff', '.glb': 'model/gltf-binary', '.ogg': 'audio/ogg', '.wav': 'audio/wav' };
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ogg': 'audio/ogg', '.wav': 'audio/wav' };
 const gzCache = new Map();
 const server = createServer(async (req, res) => {
   try {
@@ -58,7 +58,7 @@ const origin = `http://127.0.0.1:${server.address().port}`;
 // Records when the menu button and the first scene canvas first appear (page clock).
 const observer = () => {
   const marks = (window.__prMarks = {});
-  // Long main-thread tasks (> 50 ms): building the first scene, compiling shaders.
+  // Long main-thread tasks (> 50 ms): building the first view, decoding textures.
   const long = (window.__prLong = []);
   try {
     new PerformanceObserver((l) => {

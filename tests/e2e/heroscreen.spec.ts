@@ -1,5 +1,5 @@
 /**
- * The Heroes-3-style hero screen (paper doll, backpack, spellbook, 3D figure)
+ * The Heroes-3-style hero screen (paper doll, backpack, spellbook, mounted figure)
  * and the start of The Winter Oath, in the production build. The fixture is an
  * ordinary save file brought in through Load → Import; the page is only read
  * (__prInspect), never driven through hooks.
@@ -30,7 +30,7 @@ const equipment = async (page: Page): Promise<Record<string, string>> => {
 };
 const backpack = async (page: Page): Promise<string[]> => ((await inspect(page)).state.heroes[HERO].backpack as { artifactId: string }[]).map((b) => b.artifactId);
 
-test('hero screen: equip by slot, refuse a wrong slot, unequip, read the spellbook, see the 3D figure', async ({ page }) => {
+test('hero screen: equip by slot, refuse a wrong slot, unequip, read the spellbook, see the mounted figure', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));

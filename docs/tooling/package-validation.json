@@ -1,8 +1,8 @@
 {
-  "sourceDocumentsPreserved": 35,
+  "sourceDocumentsPreserved": 17,
   "skillsValidatedAndPackaged": 10,
-  "jsonFilesParsed": 13,
-  "javascriptFilesSyntaxChecked": 7,
+  "jsonFilesParsed": 10,
+  "javascriptFilesSyntaxChecked": 6,
   "authoredRelativeLinksChecked": 26,
   "errors": []
 }

@@ -4,7 +4,7 @@
   React bindings, preferences, save-slot policy, read-only view helpers.
 * `screens/` — the 18 screens; `dialogs/Overlays.tsx` — modal flows.
 * `components/` — UI kit, art components (asset-ID resolution), game widgets.
-* `scene/SceneHost.tsx` — mounts the shared Babylon canvas into a screen.
+* `scene/SceneHost.tsx` — mounts the shared 2D (PixiJS) canvas into a screen.
 * `assets/` — icons, procedural placeholder portraits, asset manifest.
 * `styles/` — tokens, base, components, screens.
 

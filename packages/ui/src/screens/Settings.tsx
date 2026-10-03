@@ -1,8 +1,8 @@
 /**
  * S17 Settings. Edits a draft and applies/persists it explicitly. Volume changes
  * are heard live while editing; Cancel/leaving without applying restores them.
- * Controls for features this build does not have (voice lines, camera shake)
- * are shown disabled with the honest reason.
+ * Only options that work are shown (2D migration directive §19); a few fixed
+ * behaviours are stated as such (ownership is never colour alone).
  */
 import { useEffect, useState, type ReactNode } from 'react';
 import { CONTEXT_LABEL, FIXED_KEYS, KEY_ACTIONS, bindingMap, isReservedKey, keyLabel, normalizeKey, rebind, type KeyContext } from '../app/keys';
@@ -16,9 +16,9 @@ import { probeGraphics } from '../app/graphicsProbe';
 
 /** What each preset changes (values in `@pr/presentation/core` graphics.ts). */
 const GRAPHICS_HINT: Record<Preferences['graphicsQuality'], string> = {
-  high: 'Full resolution on sharp screens, soft shadows under troops, three figures per troop, all map detail, painted ground and sky, no frame cap.',
-  medium: 'Standard resolution, soft shadows under troops, two figures per troop at most, no grass tufts, 60 frames per second at most.',
-  low: 'Reduced resolution, no shadows or anti-aliasing, one figure per troop, sparse map detail, plain ground colours, 30 frames per second at most.',
+  high: 'Full resolution on sharp screens, soft ground shadows, all map decoration, painted ground and sky, full spell effects, idle animations, no frame cap.',
+  medium: 'Standard resolution, soft ground shadows, no grass tufts, painted ground and sky, full spell effects, 60 frames per second at most.',
+  low: 'Reduced resolution, no shadows or anti-aliasing, sparse map decoration, plain ground colours, simple effect flashes, still figures between actions, 30 frames per second at most.',
 };
 
 type Tab = 'gameplay' | 'interface' | 'display' | 'audio' | 'accessibility' | 'controls' | 'storage';
@@ -203,14 +203,8 @@ export function SettingsScreen() {
               <Field label="Battle stack labels">
                 <Select label="Stack labels" value={draft.unitLabels} options={[{ id: 'count', label: 'Count' }, { id: 'health', label: 'Front health' }, { id: 'both', label: 'Count and health' }]} onChange={(v) => set('unitLabels', v)} />
               </Field>
-              <Field label="Bestiary auto-rotate">
-                <Toggle label="Bestiary auto-rotate" checked={draft.codexAutoplay} onChange={(v) => set('codexAutoplay', v)} />
-              </Field>
-              <Field label="Map name labels" disabledReason="Floating map labels are not implemented yet; hover or right-click a tile for its name.">
-                <Toggle label="Map labels" checked={draft.mapLabels} onChange={(v) => set('mapLabels', v)} disabled />
-              </Field>
-              <Field label="Tooltips" disabledReason="Tooltips are always shown in this build.">
-                <Toggle label="Tooltips" checked={draft.tooltips} onChange={(v) => set('tooltips', v)} disabled />
+              <Field label="Bestiary animation" hint="Creatures in the bestiary play their idle animation by themselves">
+                <Toggle label="Bestiary animation" checked={draft.codexAutoplay} onChange={(v) => set('codexAutoplay', v)} />
               </Field>
             </>
           ) : null}
@@ -260,9 +254,6 @@ export function SettingsScreen() {
                   <Slider label={`${label} volume`} value={draft[k]} min={0} max={100} step={5} onChange={(n) => set(k, n)} format={(n) => `${n}%`} />
                 </Field>
               ))}
-              <Field label="Voice" disabledReason="This build has no voice lines.">
-                <Slider label="Voice volume" value={draft.voiceVolume} min={0} max={100} step={5} onChange={(n) => set('voiceVolume', n)} format={(n) => `${n}%`} disabled />
-              </Field>
               <Field label="Mute all" hint="Silences everything; your volumes are kept">
                 <Toggle label="Mute all" checked={draft.muteAll} onChange={(v) => set('muteAll', v)} />
               </Field>
@@ -289,12 +280,6 @@ export function SettingsScreen() {
               </Field>
               <Field label="Color-independent ownership" disabledReason="Always on: ownership also uses banner shape (square = yours, pennant = others) and text.">
                 <Toggle label="Color-independent ownership" checked disabled onChange={() => undefined} />
-              </Field>
-              <Field label="Camera shake" disabledReason="This build uses no camera shake.">
-                <Toggle label="Camera shake" checked={draft.cameraShake} onChange={(v) => set('cameraShake', v)} disabled />
-              </Field>
-              <Field label="Screen flashes" disabledReason="This build uses no full-screen flashes.">
-                <Select label="Screen flashes" value={draft.screenFlashes} options={[{ id: 'reduced', label: 'Reduced' }, { id: 'standard', label: 'Standard' }]} onChange={(v) => set('screenFlashes', v)} disabled />
               </Field>
             </>
           ) : null}

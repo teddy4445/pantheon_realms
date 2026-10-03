@@ -1,13 +1,261 @@
 # Development Status
 
-_Last updated: 2026-10-03 · **app 0.7.0** (Windows installer built for play-testing, see below; 0.6.0 before it) · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
+_Last updated: 2026-10-03 · **app 0.9.0** (Windows installer with the 2D migration, built for play-testing) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
+Sections dated before the 2D migration are history: their mentions of the
+deleted 3D layer are marked **obsolete** where they occur.
+
+## 0.9.0 installer and the sheet-based GPT-6 queue (owner requests, 2026-10-03)
+
+**0.9.0 Windows installer** (version bumped in `package.json`,
+`apps/desktop/package.json`, `package-lock.json`; content unchanged,
+`content-0.8.0`, so saves still load). The first installer with the 2D
+presentation.
+
+| Command | Result |
+|---|---|
+| `npm run build` + `npm run desktop:build` | pass (start-up script 1,716.76 KB / 432.17 KB gzip; PixiJS chunk 364.29 KB, loaded after the menu) |
+| `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.9.0-x64.exe` (225,791,725 bytes, SHA-256 `2c6d499e01deabb71829c8170118603959d542960a51743b15dcc592efa0e659`) |
+| Payload check (7-Zip) | the installer's `app-64.7z` extracts byte-identical to `win-unpacked`; `app.asar` 118.1 MB, 1,415 entries, packaged version 0.9.0; no `.glb`/`.gltf`/`.blend`, Babylon, `assets-source/`, source maps or development tools |
+| `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` inside `unshare -n` (no network) | **pass** (packaged: `isPackaged`, DevTools refused; 303 sprite files, the map drawn on WebGL, saves, records, 255 painted-art files, 279 interface images, audio running) |
+| Copied to the owner's `installer\` folder | in 12 parts, joined on the computer; SHA-256 matches |
+
+**Not run on Windows; unsigned** (SmartScreen: More info → Run anyway).
+
+**GPT-6 queue in sheets** (owner request: "generate inside the same image as
+much content as possible"). `GPT6_2D_CONTENT_GENERATION.md` now asks for
+**140 sheets** instead of 1,097 single images (the 54 optional battlefield
+paintings stay one per image):
+
+| Group | Sheets | Files cut from them |
+|---|---|---|
+| A canonical references — three families per sheet, base left, upgraded right | 12 | 59 |
+| B portraits — the same families, opaque, black gutters | 12 | 59 |
+| C battle animations — **one sheet per creature form**, one row per animation, six cells per row | 102 | 800 strips |
+| D mounted heroes — one per pantheon (5 directions × idle 4 + walk 6) + one sheet of the six figures | 7 | 102 |
+| E map objects — towns, resources, two location sheets (decoration included) | 4 | 47 |
+| G obstacles, siege pieces (rows = piece, columns = intact / damaged / rubble) | 2 | 19 |
+| H effects (one row each) and projectiles | 1 | 11 |
+
+Changes that come with it (proposed, unplaytested): creature animations
+have **6 frames** (`defend`, `hit`, `takeoff`, `landing` 3) instead of 8
+(6, 4), with frame rates that keep the pacing targets (idle 6 at 3 fps = 2 s,
+attack 6 at 6 fps = 1 s, death 6 at 5 fps, victory 6 at 4 fps); map heroes
+need **5 directions** (the game already mirrors east, north-east and
+south-east for the west) and walk 6 frames instead of 8. At the image size
+GPT-6 has delivered so far (about 1.6 MP) a creature cell is about
+150–210 px — the battlefield at 100 % zoom shows a one-hex creature's frame
+at about 147 px, so this is enough at normal zoom but softer when zoomed in
+or on high-DPI screens; each sheet asks for "this size or larger", and the
+busiest sheets (more than six rows) may be delivered in two parts.
+
+New tool `npm run sprites:cut` (`tools/assets/sprites/cut_sheets.py`) with
+the layouts written by `npm run sprites:queue`
+(`assets-source/sprites/sheet-layouts.json`): keys out a non-transparent
+background (flat magenta, grey, fake checkerboard; edge pixels unmixed, a
+magenta key removed everywhere including enclosed gaps), moves each cut to
+the emptiest line near the grid, re-aligns every animation on the creature's
+feet (median ground contact and foot position; airborne frames keep the idle
+row's height), crops objects to content with the anchor at the ground
+contact, squares references and figures, cuts portraits along their
+gutters, writes a sidecar per strip (frames, fps, loop, anchor, pixels per
+hex), a preview per sheet, and a cut log (a sheet is re-cut only when it
+changes; files it did not cut are never overwritten). `npm run
+sprites:import` reads the sidecars (any frame size; runtime scale never
+above the nominal, never enlarged), completes a map hero with five
+directions, and accepts hero figures from 300 px.
+
+| Check (cloud) | Result |
+|---|---|
+| `python3 tools/assets/sprites/cut_sheets.py --self-test` (synthetic sheets: jittered figures on magenta, a two-part transparent hero sheet, objects on a fake checkerboard, opaque portraits; re-run skipping; no overwrite of foreign files) | **pass** |
+| Realistic sheets made from the delivered Hoplite and Griffin reference stills (Hoplite on flat magenta at 1256², Griffin transparent at 1.4 × the size, rows jittered by up to 5 %) → `cut_all` → `import_sprites.py --src …` (real import) | 17 strips cut and imported, 0 problems; both sets became `final`; `sprites.test.ts` 9/9; the built game's Unit Detail showed "Final sprites", the Hoplite on its pedestal and the Griffin hovering in `fly`; magenta fully removed after the edge-unmixing fix. **Reverted afterwards** (manifest restored, `assets-runtime/sprites/final/` removed) |
+| Synthetic sheets for every other layout kind (hero, effects + projectiles, towns, locations + decoration, siege, obstacles, references, figures, portraits) with the real layouts | 69 sprite files + 5 references + 5 portraits cut; `import_sprites.py --dry-run` 0 problems; a real import of the Greek hero sheet marked the hero `final` with five directions (reverted) |
+| `npm run sprites:queue` | 140 sheets, Brief 5 descriptions for 102/102 forms |
+
+**Not established:** how well GPT-6 keeps a 6-column grid, one creature at
+one size across 36–54 frames, and empty space between frames — no real
+sheet has been generated yet. Suggested pilot: `sheet.creature.greek.tier1.base`
+first, then `npm run sprites:cut` and look at its preview.
+
+## 2D presentation migration (owner directive, 2026-10-03)
+
+> Pantheon Realms is a desktop-first, offline-capable, data-driven
+> deterministic turn-based strategy game. TypeScript owns authoritative rules
+> and AI. React owns application interface screens. PixiJS owns the 2D
+> Adventure Map, Tactical Battle presentation, sprite animation, and animated
+> Unit Detail viewer. Electron packages the desktop application and a browser
+> build uses the same core. Content presentation uses high-resolution 2D
+> backgrounds, sprites, atlases, portraits, UI art and animation strips.
+> Gameplay state changes only through validated commands; presentation never
+> defines gameplay outcomes.
+
+The owner's *2D Presentation Migration Directive* replaced Babylon.js with
+PixiJS 8 (`pixi.js` 8.22.0) for the Adventure Map, the Tactical Battle and the
+Unit Detail viewer. Rules, AI, content, campaigns, saves and the React screens
+are unchanged (no rule, value or save format changed; content stays
+`content-0.8.0`, saves still load). Inventory and plan:
+`2D_MIGRATION_AUDIT.md`. App version not bumped in this step (the 0.9.0
+installer above contains it).
+
+**What the game does now (measured in the browser build and the desktop build):**
+
+* **Adventure Map** — PixiJS layers: sea and sky backdrop, painted terrain
+  (the delivered ground paintings repeating in map space), roads, optional
+  grid, reachable area, route preview and selection, map locations,
+  decoration, guards and one mounted avatar per pantheon (depth-sorted), fog,
+  effects. Picking inverts the hex projection, so sprite size cannot change
+  which hex is chosen. Avatars walk facing the step's direction (mirrored
+  westward until direction strips exist) and hold a 1.2 s readiness beat
+  before an accepted battle (skipped at Instant). 2D camera: drag/arrow-key
+  pan, wheel zoom 0.42–2.2, clamped to the map.
+* **Tactical Battle** — painted battlefield background fitted under the
+  logical 15 × 11 hex overlay, obstacles, siege pieces in intact / damaged /
+  rubble states, creature sprites standing on their anchor cell (defenders
+  mirrored), count badges, projectiles and effects; the fallen play `death`
+  (or are laid down) and stay; winners cheer. The React HUD is unchanged and
+  the board is laid out between its insets.
+* **Unit Detail** — portrait plus the animated 2D viewer: base/upgraded
+  switch, one button per animation the creature's content needs (stand-ins
+  marked `*`), Play/Pause/Stop/Restart, 0.5×/1×/2×, Autoplay, Face left;
+  reduced motion shows a still frame; the Assets tab lists every strip with
+  its status and provenance.
+* **Hero screen** — the pantheon avatar's still in the paper doll.
+* **Towns** — unchanged 2D background + building overlays; 18 locations per
+  pantheon (7 dwellings + 11 support), base and upgraded dwelling pictures
+  replace each other at one location (new unit test).
+* **Settings** — 3D-only and non-working options removed (camera
+  auto-rotation, map labels, tooltips toggle, voice volume, camera shake,
+  screen flashes); graphics presets now drive the 2D renderer (resolution,
+  anti-aliasing, ground shadows, decoration density, painted ground, ambient
+  animation, effects level, frame cap).
+
+**1. 2D assets reused** (not regenerated): the 92 story pictures, 76 ground and
+sky paintings (map terrain, battle backgrounds, skies), 41 big-moment
+pictures, 43 creature portraits, 172 functional icons, 24 cursors, 6 pantheon
+emblems, the opening/menu art, the town backgrounds and building art of all
+six pantheons, and — as placeholder sources — the 172 creature reference
+views (still poses for 43 forms), the six mounted-hero boards (map avatars and
+hero-screen figures) and the map-marker concept sheet (40 map locations).
+
+**2. Placeholders created** (`assets-runtime/sprites/`, 7.1 MB, 186 manifest
+entries, every one `status: "placeholder"` with provenance; generated by
+`npm run sprites:placeholders`): 102 creature sets (43 stills cut from the
+delivered three-quarter reference views, 59 silhouette strips with the
+animations each form needs), 7 map-avatar sets (6 from the hero boards, 1
+neutral rider) with 6 hero-screen figures, 41 map locations (40 from the
+marker sheet, 1 drawn windmill), 6 decorations, 7 obstacles, 12 siege pieces,
+2 projectiles and 9 effect strips. A contact sheet is in
+`assets-source/sprites/placeholder-contact.png`.
+
+**3. Still to be generated by GPT-6** (`GPT6_2D_CONTENT_GENERATION.md` as
+first written, one entry per file — **replaced the same day by the sheet
+edition above**: 140 sheets cut into these files): A 59 canonical references (forms without one), B 59 portraits, C 800
+battle animation strips (102 forms), D 102 map-avatar files (6 pantheons × 8
+directions × idle/walk + 6 figures), E 48 adventure objects, F 54 battle
+backgrounds (optional climate variants), G 19 obstacles and siege pieces,
+H 11 effects/projectiles. Delivered files are imported with
+`npm run sprites:import` (no code change).
+
+**4. 3D removed** (deleted, git history is the backup): dependencies
+`@babylonjs/core` 9.28.0, `@babylonjs/loaders` 9.28.0, `@gltf-transform/core`,
+`gltf-validator`; the Babylon scene code (`meshkit`, `proxies`, `models`,
+`modelRegistry`, `mountedHeroes`, `contactShadow`, `artTextures`,
+`animations`, the 3D `viewer` and `heroFigure`, 2,546 lines) and its tests
+(`heroes.test.ts`, `models.test.ts`, `tests/e2e/models.spec.ts`, the
+`?e2e=calibration` mode); the six mounted-hero GLBs with their animation
+manifest and rig contract (9.4 MB) and the calibration GLB; the GLB tools
+(`validate-units.mjs`, `make-calibration-glb.mjs`, npm scripts `assets:check`,
+`assets:calibration`), `HERO_ANIMATION_REPORT.md`; the GLB sections of
+`ASSET_PIPELINE.md`; in the owner's toolkit the `pr-babylon-scene` skill
+(replaced by `pr-pixi-scene`) and the glTF/Babylon/Blender parts of
+`tools/pantheon-dev`. No `.glb`, `.gltf` or `.blend` file remains in the
+repository. The owner's separate Blender project was not touched.
+
+**5. Tests and checks run (cloud, 2026-10-03):**
+
+| Command | Result |
+|---|---|
+| `npm run check` (boundaries + type-check + unit tests) | **pass** — 32 files, 315 tests (new: sprite manifest, animation vocabulary, hex round trips, town art) |
+| `node --test tools/pantheon-dev/tests/toolkit.test.mjs` | **pass** — 38 tests |
+| `npm run build` | pass — start-up script 1,716.76 KB / 432.17 KB gzip (0.8.0 before the migration: 1,587.69 / 428.87; the sprite manifest is bundled), PixiJS chunk 364.29 KB / 108.56 KB gzip, loaded after the menu |
+| `npx playwright test` (full suite, Chromium + SwiftShader, against the fresh build) | 125 tests: **81 passed, 2 failed, 42 skipped** (the opt-in screenshot sweep `zz-moments-review`, `PR_REVIEW=1`) in 34 min. Both failures were test assumptions: `round9` asked for a hex's screen position before the on-demand 2D view had loaded, and expected the old graphics-preset wording. Fixed in the test (it now waits for the view; new wording); `round9.spec.ts` rerun **4/4 passed** |
+| `npm run desktop:build` + `xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (dev layout): 303 sprite files served and decoded, no `.glb/.gltf/.blend` in the renderer, the adventure map drawn on WebGL without a view error, saves, records, 255 painted-art files, 279 interface images, audio running |
+| `node tools/perf/load-time.mjs apps/client/dist --runs 3` | menu **214 ms** local / **443 ms** web (0.7.0 round: 221 / 446); first scene **912 ms** local / **1,220 ms** web (0.7.0 round with the 3D layer: 1,311 / 1,255; 3-run medians on the software renderer, noisy) |
+| the same smoke inside a network namespace with only loopback (`unshare -n`; `curl https://example.com` fails) | **pass** — the desktop game starts and draws the map with networking disabled |
+| `electron-builder --linux dir --x64` + `PR_SMOKE_EXE=…/linux-unpacked/pantheon-realms` smoke, also inside `unshare -n` | **pass** (packaged: `isPackaged`, DevTools refused); `app.asar` 118.1 MB (0.8.0: 124.6 MB), 1,415 entries, no `.glb`/`.gltf`/`.blend` or Babylon file, no `assets-source/`, source maps or development tools |
+| stale-term search (directive §23) | see below |
+
+Not run: the game on Windows after the migration, a real GPU (all rendering
+was SwiftShader, which the automatic graphics pick sets to Low), Safari or
+Firefox, a human play-test of the 2D views.
+
+**Stale-term search after the migration** (`Babylon babylon GLB glb glTF gltf
+Blender blender mesh skeleton armature "3D model" "3d model" SceneLoader
+ArcRotateCamera`, all non-generated files; `apps/desktop/renderer/` is build
+output and was rebuilt):
+**no remaining match claims a 3D renderer, GLB/glTF runtime format, Blender
+pipeline, rigs or 3D units.** No `.glb`, `.gltf` or `.blend` file is in the
+repository, `npm ls` finds no Babylon or glTF package, and the 10 skill zips
+hold no match. Remaining matches (case-insensitive), all classified:
+
+| File (matches) | Classification |
+|---|---|
+| `DEVELOPMENT_STATUS.md` (58) | this section's record of what was deleted and of the search itself; the rest are in dated history sections, each marked **Obsolete (in part / whole section)** |
+| `2D_MIGRATION_AUDIT.md` (35) | the pre-migration audit (a required deliverable); marked at the top as a record of the removed 3D state |
+| `tools/check-boundaries.mjs` (1), `tools/desktop-smoke.mjs` (3), `tests/e2e/heroes.spec.ts` (2) | valid non-3D meaning: checks that **forbid** Babylon imports and `.glb/.gltf/.blend` files |
+| `ARCHITECTURE.md` (3), `CLAUDE.md` (2), `IMPLEMENTATION_PLAN.md` (1) | the boundary lint's forbidden list, the smoke check, and "deleted/obsolete" notes |
+| `docs/pantheon-v0.3/` `CHANGELOG_v0_3.md` (3), `DECISIONS_v0_3.md` (1), `implementation/06…` (3), `reference/05…` (1) | inside passages explicitly marked obsolete (the decision log records DEC-23, the 2D migration) |
+| `assets-source/creatures/reference/delivery-notes/` (6) | the creature delivery's unaltered records (hashes in its manifest); marked obsolete by the folder's README (1 match, the marking note) |
+
+Generated build output (`apps/client/dist`, `apps/desktop/renderer`,
+`apps/desktop/release`) was rebuilt and holds no 3D engine code; its only
+matches are inside PixiJS itself (its 2D `mesh` drawing pipe and `glBuffer`
+WebGL helpers — third-party code, valid 2D meaning).
+
+**6. Owner decisions needed** (nothing here blocks play):
+
+1. **Placeholder art is what the game shows** until the GPT-6 queue is
+   delivered: is the queue's order (A references → … → H effects) and its
+   scope (54 optional climate backgrounds) right?
+2. **Egyptian tiers 2 and 5 change body plan on upgrade** (four-legged base,
+   upright upgrade, following the pantheon board): keep (two motion designs
+   per pair) or redesign so each pair shares one?
+3. **Hero-screen figure**: a still of the pantheon's map avatar (the 3D
+   figure's salute is gone); a different picture per named hero would be new
+   art.
+4. **Version and installer**: done — the 0.9.0 installer (above) contains the migration.
+5. The six-pantheon **v0.3 design documents** in `docs/pantheon-v0.3/` were
+   updated for the 2D stack (18 of 35 files; history marked obsolete, the
+   original hashes kept in `docs/tooling/source-document-checksums.json`):
+   please confirm the rewritten production chapters 01–04.
+
+## 0.8.0 Windows installer (2026-10-03, for play-testing)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
+
+Version bumped from 0.7.0 to **0.8.0** (`package.json`, `apps/desktop/package.json`,
+`package-lock.json`): the first installer with the second fix round, the delivered
+cursors and the pantheon emblems (below). Content `content-0.8.0`, so earlier saves
+load; heroes saved standing on a town's tile are moved to its gate when loaded.
+
+| Command | Result |
+|---|---|
+| `npm run build` + `npm run desktop:build` | pass (start-up script 1,587.69 KB / 428.87 KB gzip) |
+| `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.8.0-x64.exe` (222,612,988 bytes, SHA-256 `46d655248461dbbe016664d4fad4beb1a45f1b16ef1b87083dc010a3d8e68f4b`) |
+| Payload check (7-Zip) | the installer's `app-64.7z` extracts byte-identical to `win-unpacked`; `app.asar` (124.6 MB) says version 0.8.0, holds the 58 cursor images and the 6 emblems, and no `assets-source/` or source maps |
+| `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` | **pass** (packaged: `isPackaged` true, DevTools refused; saves, records, unit GLB, six hero GLBs, 255 painted-art files, audio running). New smoke check: all **279 interface images** (58 cursor rasters at 1x and 2x, 221 final icons with the emblems) are served by the app protocol and decode, and the interface cursor variable points at the delivered arrow (`prgame://app/ui/cursors/…`) |
+| Copied to the owner's `installer\` folder | in 9 parts, joined on the computer, SHA-256 matches |
+
+**Not run on Windows; unsigned** (SmartScreen warns: More info → Run anyway). The
+cursors' look and hotspots on a real Windows screen (and at 125–200 % display
+scaling) are untested.
+
 ## Owner fixes of 2026-10-03, second round (town gates, the fallen, victory, town armies), the delivered cursors and pantheon emblems
 
-**Not in the 0.7.0 installer.** Owner decisions (rules changes, unplaytested):
+**In the 0.8.0 installer.** Owner decisions (rules changes, unplaytested):
 
 1. **Victory:** when a battle is won, every surviving creature of the winning side
    plays its victory animation, then keeps cheering until the result opens (the
@@ -78,6 +326,8 @@ high-density screen, still needs a person.
 
 ## 0.7.0 Windows installer (2026-10-03, for play-testing)
 
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
+
 Version bumped from 0.6.0 to **0.7.0** (`package.json`, `apps/desktop/package.json`,
 `package-lock.json`): the first installer with the owner's interface pass, the
 first 43 creature portraits and the 2026-10-03 requests (below). Content
@@ -98,6 +348,8 @@ The automatic graphics pick and the presets have only been run on the
 software renderer here; on a real Windows GPU they are untested.
 
 ## Owner requests of 2026-10-03 (cursors, divine gifts, smarter AI, three fixes, graphics quality)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
 
 **In the 0.7.0 installer.** Designs and proposed values:
 `DESIGN_PROPOSALS.md` group 0.8 (§29–32). Owner answers: Favor buys **divine
@@ -164,6 +416,8 @@ hand-over (the change is two lines in the store's hand-over; the existing
 hot-seat tests pass), real-GPU checks of the presets and the quick test.
 
 ## Creature art, first part (Brief 5, delivery 2026-10-03)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
 
 The owner's art project delivered **forms 001–043** of the 102 (all Greek,
 Norse and Egyptian forms and the Kitsune): 172 model-reference views and 43
@@ -292,6 +546,8 @@ build and smoke, an installer (0.6.0 stays the latest).
 
 ## 0.5.0 Windows installer (2026-10-02)
 
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
+
 Version bumped from 0.4.1 to **0.5.0** (`package.json`, `apps/desktop/package.json`,
 `package-lock.json`) — the first installer with the mounted heroes and both
 2026-10-01 and 2026-10-02 rounds. Content, rules and saves are unchanged by the
@@ -310,6 +566,8 @@ bump (content `content-0.8.0`).
 incompatible and kept.
 
 ## 0.6.0 Windows installer (2026-10-02, for play-testing)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
 
 Version bumped from 0.5.0 to **0.6.0** (`package.json`, `apps/desktop/package.json`,
 `package-lock.json`): the first installer with the 172 functional icons, hero
@@ -331,6 +589,8 @@ installer and uninstaller leave alone (`deleteAppDataOnUninstall: false`; by
 configuration — not tried on Windows).
 
 ## Big-moment art (Brief 3, delivery 2026-10-02)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
 
 The owner's 41 big-moment pictures (14 miracle cards, 12 victory/defeat
 splashes, 6 level-up and 9 new-week banners) are in the game, imported by
@@ -401,6 +661,8 @@ hand-over screen). The weekly event's rules event still carries the envelope ID
 in its `eventId` field (see above).
 
 ## Ground and sky art (Brief 2, delivery 2026-10-02)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
 
 The owner's 76 ground and sky pictures (60 terrain textures, 6 battlefield
 paintings, 10 skies) are in the game: imported by `npm run art:import` and drawn
@@ -554,6 +816,8 @@ as it was (0.45). This is the owner's chosen rule; options are in
 
 ## Functional icons delivered 2026-10-02 (172: interface, spells, artifacts, skills)
 
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
+
 An art integration, not a redesign: layouts, labels, tooltips and
 accessibility are unchanged. **Not in the 0.5.0 installer** (built before the
 icons); a rebuilt installer is needed to see them in the installed game.
@@ -634,6 +898,8 @@ added. The corrected catalog lists these uses.
 * Not committed.
 
 ## Owner requests of 2026-10-02 (AI, hero screen, random maps 0.3, four campaigns, three fixes)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
 
 Designs and values: `DESIGN_PROPOSALS.md` §19–23 and
 `CAMPAIGNS_3_TO_6_OUTLINE.md`. Owner answers: about **8 hexes a day**;
@@ -786,6 +1052,8 @@ Twin Harbors above). Many three-empire matches still reach the day-40 cap
 
 ## Owner requests of 2026-10-01 (icons, second campaign, M02 order, random maps, hero screen, spells and artifacts)
 
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
+
 Designs and values: `DESIGN_PROPOSALS.md` §13–18 and
 `CAMPAIGN_2_NORSE_OUTLINE.md`. Owner answers: Norse — *The Winter Oath*; M02
 blocked on the map **and** early completion (every campaign); Heroes-3-style
@@ -853,6 +1121,8 @@ artifacts. Everything else is **proposed, unplaytested**.
 7. Not committed or pushed; no new installer.
 
 ## Mounted adventure-map heroes (owner request, after 0.4.1)
+
+> **Obsolete (2026-10-03):** this whole section describes the mounted-hero GLB models and their 3D animation, deleted by the 2D migration (map avatars are 2D sprites now; see "2D presentation migration" above). Kept as history only.
 
 The six animated mounted heroes (rider + mount, one skinned GLB per
 pantheon, release `MountedHero_Animations_v1`) were **copied** from the
@@ -947,6 +1217,8 @@ project. Details and the file table: `ASSET_PIPELINE.md` §12.
 
 ## Tests and checks actually run (0.4.1 visual update, this session)
 
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
+
 | Command | Result |
 |---|---|
 | `python3 tools/assets/prepare_ui_art.py` | 120 UI assets (11 backgrounds, logo, emblem, frame, 9 menu icons, 96 pack icons, app icon), 6.2 MB of runtime files; contact sheet of the 96 crops checked by eye |
@@ -959,6 +1231,8 @@ project. Details and the file table: `ASSET_PIPELINE.md` §12.
 | Performance fix found on the way | the first redesign put CSS `filter: drop-shadow` on icons and a large inset blur on every panel; over the 3D canvas the compositor re-applies filters each frame (first scene 868 vs 681 ms in an interleaved run). Removed: icon shadows are in the art, panels use a gradient vignette; a comment in `components.css` records the rule |
 
 ## Tests and checks actually run (0.4.0, earlier on 2026-10-01)
+
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
 
 | Command | Result |
 |---|---|
@@ -1219,6 +1493,8 @@ playtests.
 
 ## New in 0.4.1 — visual design (owner GUI references, 2026-10-01)
 
+> **Obsolete in part (2026-10-03):** the mentions of the deleted 3D layer in this dated section (Babylon.js, GLB/glTF models, the calibration model, meshes, 3D scenes) are history only; the 2D migration replaced them (see "2D presentation migration" above). Measurements were taken on that build.
+
 No rules, content, saves, AI or screen flow changed; content stays
 `content-0.7.0`, so 0.4.0 saves load unchanged.
 
@@ -1391,9 +1667,7 @@ runs.
 * **Windows installer** (`npm run desktop:dist`): per-user NSIS x64 installer
   with Start-menu and desktop shortcuts, an original placeholder icon, saves
   kept on uninstall; the installed build ignores `PR_DEV_URL` and has no
-  DevTools. (The small calibration GLB stays in the bundle, as in the browser
-  build; it is loaded only in the `?e2e=calibration` test mode, which the
-  installed app cannot navigate to.)
+  DevTools.
 * **Skirmish AI**: builds from data, hires heroes (and returning heroes) from
   its true Tavern roster, explores, buys divine gifts with spare Favor, **besieges visible towns** when it is
   clearly stronger after a wall factor, **defends threatened towns** against
@@ -1404,16 +1678,19 @@ runs.
   makes Temple offerings while it needs Favor, trains at the academy, buys
   artifacts for empty slots, saves for a new hero when it has none, and uses
   free Shapeshift in battle.
-* **GLB model pipeline**: bundled unit manifests bound by creature ID,
-  validation (clip names, sockets, no CDN-decoder extensions), right-handed
-  battle and viewer scenes, independent rigs per figure, clip playback by
-  semantic state with the same speed/instant/skip timing as procedural motion,
-  proxy fallback with a reason, viewer Play/Pause/Stop/Restart and
-  0.5×/1×/2×, states without a clip disabled with a reason. Artist spec:
-  `ASSET_PIPELINE.md`. Calibration fixture generated by
-  `tools/assets/make-calibration-glb.mjs`.
+* **2D presentation (PixiJS, since 2026-10-03)**: the Adventure Map, Tactical
+  Battle and Unit Detail viewer draw sprites from one manifest
+  (`assets-runtime/sprites/manifest.json`) with explicit anchors, statuses
+  and provenance; animation by semantic state (`idle, move, attack, defend,
+  hit, death, victory` + `shoot`, `takeoff/fly/landing`, `ability` as the
+  content needs) with the same speed/instant/skip timing everywhere, a
+  fallback chain for missing strips, viewer Play/Pause/Stop/Restart,
+  0.5×/1×/2×, Autoplay and Face left. Labelled placeholders for everything
+  (`npm run sprites:placeholders`), an importer for final art
+  (`npm run sprites:import`) and the production queue
+  (`GPT6_2D_CONTENT_GENERATION.md`). Artist spec: `ASSET_PIPELINE.md` §1–9.
 * **Saves, desktop, UI, presentation**: as before (versioned envelopes,
-  atomic desktop saves, shared Babylon engine, event playback), now 21
+  atomic desktop saves, one shared PixiJS renderer, event playback), now 21
   screens (S19 Random Map, S20 Summary, S21 High Scores) and a separate
   high-score store.
 * **Sound** (`@pr/audio` + `ui/src/audio`, placeholder files): one Web Audio
@@ -1427,22 +1704,25 @@ runs.
   timed to battle playback cues (swing and impact, shot and hit, deaths,
   spells, heals, wards, defend, morale, shapeshift, Afterlife, catapult,
   stone hits, breaches, towers, moat), or one sound per action when playback
-  is instant. Settings: Master, Music, Ambience, Interface, Combat, Voice
-  (disabled), Mute all, mute in the background, Calmer sound, a test sound;
+  is instant. Settings: Master, Music, Ambience, Interface, Combat, Mute all,
+  mute in the background, Calmer sound, a test sound (no Voice volume until
+  there are voice lines: Settings shows only working options);
   volumes preview live and Cancel restores them. Silence never blocks play.
-* **On-demand 3D layer**: the start-up script no longer contains Babylon.js;
-  the 3D layer is fetched in the background once the menu is up, and the
-  glTF loader only when a model is loaded.
+* **On-demand presentation layer**: the start-up script does not contain
+  PixiJS; the 2D views' chunk (about 363 KB) is fetched in the background once
+  the menu is up.
 
 ## Partial
 
-* **No production 3D models exist yet.** Every creature shows its procedural
-  placeholder; only the calibration fixture exercises the GLB path (and only
-  in the `?e2e=calibration` test mode). Battle playback loops `fly` during a
-  flight arc; `takeoff`/`land` are validated but not yet played. The
-  adventure map is still a left-handed scene (it loads no GLB).
+* **No final sprite exists yet.** Every battle sprite, map avatar, map
+  location, decoration, obstacle, siege piece, projectile and effect is a
+  labelled placeholder (186 manifest entries, all `placeholder`): 43 creature
+  forms show a still cut from their reference view (the game supplies the
+  motion), 59 forms simple silhouette strips, the map avatars one direction
+  mirrored westward. Battle playback loops `fly` during a flight arc;
+  `takeoff`/`landing` play only once strips exist.
 * **Town screen** is a composed 2D scene (owner concept backgrounds + cropped
-  building sprites), not a 3D town. Norse, Egyptian, Japanese, Celtic and
+  building sprites), unchanged by the 2D migration. Norse, Egyptian, Japanese, Celtic and
   Mesoamerican placements are first-pass estimates checked on composite
   previews; several dwellings use themed stand-in art (below).
 * **Balance** of the five proposed pantheons, the six signatures, the 18 new
@@ -1453,8 +1733,8 @@ runs.
 * **Sound is all placeholder.** Every music track, ambience and effect is
   synthesized by `tools/audio/make_placeholders.py` (plucked strings, simple
   pads, drums, filtered noise) and was checked by measurement only — levels,
-  seamless loops, no clipping, spectrograms — not listened to. Voice volume is
-  shown but disabled (no voice lines). Captions are not needed yet because
+  seamless loops, no clipping, spectrograms — not listened to. There is no
+  Voice volume (no voice lines yet; removed with the 2D settings pass). Captions are not needed yet because
   every sound accompanies something already on screen. Music is Ogg Vorbis:
   decoding was verified in Chromium and Electron only (not Safari/Firefox).
 * **AI caution** (retreat, secondaries on their own half, no lone advance) is
@@ -1545,12 +1825,15 @@ Nothing is blocked. Open owner decisions are listed under deviations.
   sizes, not upscaled). Square portraits of the story characters (for lists) are
   still procedural where no hero portrait exists; lists show the bust in a 2:3
   slot instead.
-* 3D creatures, heroes, sites, siege structures and props: procedural
-  primitives; animations are procedural transforms mapped to the final
-  state names.
-* `assets-runtime/units/_calibration/forward_arrow/` — generated calibration
-  GLB (development fixture, never bound to a creature; only loaded in the
-  `?e2e=calibration` test mode).
+* **Sprites (2D migration, 2026-10-03)** — `assets-runtime/sprites/` (7.1 MB,
+  186 manifest entries, every one `status: "placeholder"` with its
+  provenance): creature stills cut from the 43 delivered reference views,
+  silhouette strips for the other 59 forms, map avatars and hero-screen
+  figures cut from the owner's six hero boards, 40 map locations cut from the
+  owner's map-marker sheet (plus a drawn windmill), procedural decoration,
+  obstacles, siege pieces, projectiles and effects. Generated by
+  `npm run sprites:placeholders`; replaced by file through
+  `npm run sprites:import`.
 * **Interface art (0.4.1)** — opening backgrounds, full logo, emblem, menu
   frame, the nine menu icons and the resource & status icon pack are
   owner-supplied AI-generated visual references (sources in
@@ -1600,9 +1883,9 @@ Nothing is blocked. Open owner decisions are listed under deviations.
    merging** during defender selection (identical forms stay separate).
 10. **AI information honesty**: belief state hides unseen heroes, wallets,
     other fog, unexplored sites and unseen garrisons.
-11. The e2e read-only hooks (`__prInspect`, `__prProject`) and the
-    presentation-only `?e2e=calibration` model fixture exist only when the page
-    URL contains `?e2e`; they expose no commands.
+11. The e2e read-only hooks (`__prInspect`, `__prProject`, `__prHeroes`,
+    `__prCamera`, `__prBattle`) exist only when the page URL contains `?e2e`;
+    they read presentation state and expose no commands.
 12. **Tactical AI**: an engaged stack with no profitable trade now strikes in
     place instead of side-stepping (this removed 60-round stalls exposed by
     Norse retaliation-heavy units).
@@ -1710,9 +1993,9 @@ Nothing is blocked. Open owner decisions are listed under deviations.
     stronger enemy's reach; secondary heroes (below 60% of their strongest)
     stay on their own half unless within 3 hexes of it; the tactical AI does
     not advance alone into more enemy reach than it has allies beside it.
-36. **Loading**: Babylon is imported by module path and the 3D layer loads on
-    demand (§ Tests). The UI may take values only from
-    `@pr/presentation/core`, enforced by the boundary lint.
+36. **Loading**: the PixiJS layer loads on demand (§ Tests). The UI may take
+    values only from `@pr/presentation/core` (no Pixi), enforced by the
+    boundary lint.
 37. **0.4 proposals** (`DESIGN_PROPOSALS.md` §4–12) are all skirmish
     features or expanded content, switched off in The Three Beacons
     (`features` all false), so the campaign's documented content and

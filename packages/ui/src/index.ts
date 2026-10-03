@@ -5,8 +5,8 @@
  * the AppStore, then mounts <App/>. The same code runs in the browser build and
  * the Electron renderer.
  */
-import { classifyGraphics, registerUnitModels } from '@pr/presentation/core';
-import { fixtureUnitModels, menuBackground } from './assets/manifest';
+import { classifyGraphics } from '@pr/presentation/core';
+import { menuBackground } from './assets/manifest';
 import '@fontsource/cinzel/500.css';
 import '@fontsource/cinzel/600.css';
 import '@fontsource/cinzel/700.css';
@@ -65,7 +65,7 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
   // (changeable in Settings). Skipped in UI-test mode so test runs stay reproducible.
   const e2e = typeof location !== 'undefined' && new URLSearchParams(location.search).has('e2e');
   if (!prefs.graphicsTested && !e2e) {
-    // When the menu is idle (the test takes up to ~0.6 s), before any 3D screen creates the engine.
+    // When the menu is idle (the test takes up to ~0.6 s), before the first map or battle creates the renderer.
     const test = () => {
       if (store.prefs.graphicsTested) return;
       const q = classifyGraphics(probeGraphics());
@@ -74,7 +74,7 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
     if (typeof requestIdleCallback === 'function') requestIdleCallback(test, { timeout: 1500 });
     else setTimeout(test, 200);
   }
-  // The menu is up without the 3D engine; fetch it in the background for the first 3D screen.
+  // The menu is up without the renderer; fetch the 2D layer in the background for the first map or battle.
   preloadPresentation();
   // Automated UI tests may read (never write) a deep copy of the state and
   // project map coordinates to the page when explicitly requested. No command
@@ -99,14 +99,11 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
         }),
       );
     g.__prProject = (kind, a, b) => projectors[kind]?.(a, b) ?? null;
-    // Read-only: mounted-hero animation state and the adventure camera pose.
+    // Read-only: map avatar animation state and the adventure camera.
     (g as { __prHeroes?: () => unknown }).__prHeroes = () => inspectors.adventure?.heroes() ?? null;
     (g as { __prCamera?: () => unknown }).__prCamera = () => inspectors.adventure?.camera() ?? null;
-    // Presentation-only test fixture: show the axis/scale calibration GLB in place of the
-    // Hoplite so the model pipeline can be checked in a real browser. No game state changes.
-    if (new URLSearchParams(location.search).get('e2e') === 'calibration') {
-      registerUnitModels(fixtureUnitModels().map((e) => ({ ...e, manifest: { ...e.manifest, creatureId: 'hoplite' } })));
-    }
+    // Read-only: where each battle stack's sprite is drawn, its facing and animation.
+    (g as { __prBattle?: () => unknown }).__prBattle = () => inspectors.battle?.stacks() ?? null;
   }
   return store;
 }

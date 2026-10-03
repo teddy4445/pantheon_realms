@@ -31,8 +31,9 @@ test('the map cursor follows what a click would do; the minimap frames the view'
   const viewport = page.locator('.scene-viewport');
   await expect(viewport).toHaveAttribute('data-cursor', 'context');
   const cursorAt = async (q: number, r: number) => {
+    // The 2D map view loads on demand: wait until it can project hexes.
+    await expect.poll(() => project(page, q, r), { message: `${q},${r} on screen`, timeout: 20_000 }).not.toBeNull();
     const p = await project(page, q, r);
-    expect(p, `${q},${r} on screen`).not.toBeNull();
     await page.mouse.move(p!.x, p!.y);
     await page.waitForTimeout(250);
     return viewport.evaluate((el) => (el as HTMLElement).style.cursor);
@@ -110,9 +111,9 @@ test('graphics: Settings offers three presets; Low draws plain ground with no pa
   const select = page.getByRole('combobox', { name: 'Graphics quality' });
   await expect(select).toBeEnabled();
   await expect(select).toHaveValue('low');
-  await expect(page.getByText('Reduced resolution, no shadows')).toBeVisible();
+  await expect(page.getByText(/^Reduced resolution, no shadows/)).toBeVisible();
   await select.selectOption('medium');
-  await expect(page.getByText('Standard resolution, soft shadows under troops')).toBeVisible();
+  await expect(page.getByText(/^Standard resolution, soft ground shadows/)).toBeVisible();
   await page.getByTestId('graphics-test').click();
   await expect(page.getByTestId('graphics-note')).toContainText('Quick test:');
   await page.screenshot({ path: 'test-results/round9-settings-graphics.png' });

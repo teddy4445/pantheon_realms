@@ -12,13 +12,11 @@ The local audit annotations are hints, not security guarantees. Its code restric
 | --- | --- | --- |
 | Local audit | Reading approved local content; malformed metadata | Narrow roots/extensions, size limits, no raw-file tool, no eval/network/write |
 | Playwright | Browser/page content and powerful evaluation tools | Disposable isolated context, localhost workflow, sandbox, no personal account/session |
-| Babylon authoring | Local editor/server and possible public publishing | Local exports, loopback sessions, no public snippets/uploads without permission |
-| Blender community bridge | Python execution and scene/filesystem changes | Backups/scratch file, reviewed commands, loopback, no exposed unauthenticated port |
 | Context7 | Documentation query leaves the machine | Send library questions, not source files, secrets or unreleased content |
 | GitHub | Remote repository access and credentials | Read-only endpoint plus independently scoped read-only token |
 | Upstream skill imports | Instructions/scripts become executable workflows | Pin snapshot, preserve licenses, inspect all files, enable explicitly |
 
-Blender safe mode is not a sandbox, and Playwright origin filters do not provide complete network isolation. Keep their upstream caveats visible. Optional cloud generation can incur cost and disclose assets; no such integration is activated by the toolkit.
+Playwright origin filters do not provide complete network isolation. Keep the upstream caveats visible. Optional cloud generation can incur cost and disclose assets; no such integration is activated by the toolkit.
 
 ## Dependency review
 
@@ -34,7 +32,7 @@ A generic `.env` file is not automatically loaded by Claude Code's MCP environme
 
 ## Distribution boundary
 
-Exclude `.claude`, `.mcp.json`, `CLAUDE_TOOLING.md`, `tools/pantheon-dev`, vendor dependencies, optional-skills downloads, test fixtures, source `.blend` files and private docs from the game installer unless deliberately required as public documentation. The installed game must not connect to Context7, GitHub, Blender MCP or an AI provider to play.
+Exclude `.claude`, `.mcp.json`, `CLAUDE_TOOLING.md`, `tools/pantheon-dev`, vendor dependencies, optional-skills downloads, test fixtures, art sources under `assets-source/` and private docs from the game installer unless deliberately required as public documentation. The installed game must not connect to Context7, GitHub, any MCP server or an AI provider to play.
 
 `docs/tooling/gitignore.fragment` is a suggestion to merge manually, not a script that changes repository policy. A gitignore is not a packager allowlist. Audit actual packaged files and network behavior.
 

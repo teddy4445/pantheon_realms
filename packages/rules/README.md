@@ -1,7 +1,7 @@
 # @pr/rules — authoritative rules core
 
 The only place game rules live. Pure TypeScript with no DOM, Node, React,
-Babylon or Electron imports.
+PixiJS or Electron imports.
 
 * `definitions/` — immutable content **types** (the vocabulary content is written in).
 * `state/match.ts` — `MatchState`, the plain serializable runtime record.

@@ -14,10 +14,14 @@ decisions they settle.
 
 ## Non-negotiables
 
-* Stack: TypeScript rules + AI, React UI, Babylon.js 3D, Electron desktop,
-  browser build from the same core. Do not substitute engines.
-* All game state changes go through `processCommand`. React, Babylon,
-  animation callbacks and the AI never mutate `MatchState`.
+* Stack: TypeScript rules + AI, React UI, PixiJS 2D (Adventure Map, Tactical
+  Battle, sprite animation, Unit Detail viewer), Electron desktop, browser
+  build from the same core. Do not substitute engines. The 2D migration
+  (`2D_MIGRATION_AUDIT.md`, 2026-10-03) deleted the obsolete Babylon.js 3D
+  layer; do not reintroduce 3D code, GLB/glTF assets or Blender steps.
+* All game state changes go through `processCommand`. React, Pixi views,
+  animation callbacks and the AI never mutate `MatchState`; animation never
+  decides an outcome (instant and normal playback give identical results).
 * The simulation core (`rules`, `content`, `mapgen`, `campaign`, `ai`,
   `session`) stays DOM-free and Node-free. Run `npm run check`.
 * Content is data: new gods, heroes, buildings, creatures and abilities are
@@ -35,8 +39,8 @@ decisions they settle.
 * Never describe placeholder behavior as final. Keep `DEVELOPMENT_STATUS.md`
   honest: measured results vs targets, commands actually run.
 * The desktop game must work with networking disabled; no CDN assets.
-* Start-up size: `@pr/ui` takes values only from `@pr/presentation/core`;
-  Babylon is imported by module path and the 3D layer loads on demand through
+* Start-up size: `@pr/ui` takes values only from `@pr/presentation/core`
+  (no Pixi there); the PixiJS views load on demand through
   `ui/src/scene/SceneHost.tsx` (the boundary lint enforces this). Measure with
   `node tools/perf/load-time.mjs` after changes that touch start-up.
 * Sound is referenced by sound ID only (`assets-runtime/audio/manifest.json`);
@@ -64,8 +68,11 @@ npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run
 npm run balance -- random --matches 4   # random-map seat fairness only
 node tools/perf/load-time.mjs [dist]          # start-up + first-scene load times (after npm run build)
 python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg)
-npm run assets:check     # unit + mounted-hero models: Khronos validator + manifest/GLB + game-binding tests
-npm run assets:calibration  # regenerate the axis/scale calibration GLB
+npm run sprites:plan          # content plan (forms, animations, sites, battlefields) → assets-source/sprites/content-plan.json
+npm run sprites:placeholders  # regenerate labelled placeholder sprites + assets-runtime/sprites/manifest.json (keeps final entries)
+npm run sprites:cut           # cut GPT-6 sheets from assets-source/sprites/sheets/ into single files (layouts: sheet-layouts.json; previews in sheets/_preview/); --self-test checks the cutter
+npm run sprites:import        # final sprites from assets-source/sprites/final/ (cut files or single files) → manifest status "final"
+npm run sprites:queue         # regenerate GPT6_2D_CONTENT_GENERATION.md + sheet-layouts.json from the manifest's actual gaps
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
 npm run icons:catalog    # regenerate ICON_CATALOG.md + assets-source/icons/ICON_CATALOG.xlsx/.csv from the game
@@ -79,13 +86,20 @@ provenance in `assets-runtime/ui/` (ASSET_PIPELINE.md §11). The visual
 language lives in the shared kit and `styles/components.css`; style screens
 through those, not one by one.
 
-Mounted adventure-map heroes: six animated GLBs copied from the owner's
-separate Blender project into `assets-runtime/heroes/` with a path-updated
-`animation_manifest.json` (ASSET_PIPELINE.md §12). The Blender project is
-never a runtime dependency; to replace a model, copy the GLB, update its
-checksum in the manifest and run `npm run assets:check`.
+2D sprites (ASSET_PIPELINE.md §1): every creature form, map avatar, map
+location, decoration, obstacle, siege piece, projectile and effect is an
+entry in `assets-runtime/sprites/manifest.json` with an explicit anchor
+(battle: feet, bottom centre; map avatars: the ground point between the
+mount's feet), `status` (`placeholder` | `final`) and provenance. Sprites
+face right; the views mirror defenders and westward travel. Replacing a
+placeholder is an art drop + `npm run sprites:cut` + `npm run sprites:import`,
+never a code change.
+Keep `packages/presentation/src/hexmath.ts` as the only screen↔hex
+transform, so sprite sizes never change which hex a click selects.
+`GPT6_2D_CONTENT_GENERATION.md` is the production queue for the remaining
+art, as *sheets* (many sprites per image: one per creature form, one per map
+hero, grouped objects and effects); regenerate it with `npm run sprites:queue`
+after the manifest changes.
 
-Battle and viewer scenes are right-handed (GLB models load natively); keep
-`cellWorld`/`worldCell` in `meshkit.ts` as the only battle board transform.
 UI tests build scenario fixtures as ordinary save files (`tests/e2e/fixtures.ts`)
 and bring them in through Load → Import — never through privileged hooks.

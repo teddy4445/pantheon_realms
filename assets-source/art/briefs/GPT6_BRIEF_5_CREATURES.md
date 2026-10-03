@@ -1,14 +1,18 @@
-# Pantheon Realms — Art Brief 5 for GPT-6: CREATURES (model reference views and portraits)
+# Pantheon Realms — Art Brief 5 for GPT-6: CREATURES (canonical reference views and portraits)
+
+> **Updated 2026-10-03 (2D migration):** the game is 2D; the reference views are
+> now the drawing masters for each form's 2D animation strips
+> (`GPT6_2D_CONTENT_GENERATION.md`). The earlier plan to turn them into
+> models is obsolete.
 
 **What this file is.** A complete production brief for the game's **102
 creature forms** — 51 creature families, each with a base form and an
 upgraded form: 42 pantheon families (seven per pantheon) and 9 neutral
 families. For every form it asks for **five images**:
 
-* **four model-reference views** — three-quarter, front, side and top — that a
-  later 3D step (an image-to-3D tool and a modeller) will turn into the
-  creature's 3D model and animations. **No 3D models or animations are made
-  now.**
+* **four canonical reference views** — three-quarter, front, side and top —
+  the masters from which the creature's 2D animation strips are drawn
+  (`GPT6_2D_CONTENT_GENERATION.md`). **No animation is made in this brief.**
 * **one painted portrait** — the 2D picture the game shows in its panels
   (army slots, recruitment, the battle turn order, the creature details and
   the Encyclopedia).
@@ -40,7 +44,7 @@ creature must look as if it came from the same studio**.
 
 1. **One image per request**, at the exact size given (1024 × 1024). PNG, sRGB.
 2. **Name the file exactly** as written (lowercase, dots and underscores,
-   ending in `.png`). The game and the 3D step find every image by this name.
+   ending in `.png`). The game's tools find every image by this name.
    No extra numbers, dates or words.
 3. **Work one creature form at a time, in this order:**
    1. the **three-quarter view** — this is the design master;
@@ -131,9 +135,8 @@ apart from the other six of its pantheon at small size.
 
 How they are used:
 
-* **A** is not shown in the game. A later step gives the four views of each
-  form to an image-to-3D tool and a modeller, who build, rig and animate the
-  creature's model from them. They must therefore describe the creature's
+* **A** is not shown in the game. Every 2D animation strip of the form is
+  drawn from these four views, so they must describe the creature's
   **shape** precisely and consistently — more like a sculptor's turnaround
   than an illustration.
 * **B** is shown in the game's panels: army slots, recruitment, the battle
@@ -143,7 +146,7 @@ How they are used:
 
 ---
 
-## 5. Group A — Model reference views (408)
+## 5. Group A — Canonical reference views (408)
 
 ### 5.1 The four views
 
@@ -163,8 +166,8 @@ match.
 
 ### 5.2 Pose
 
-A neutral, symmetrical **"model pose"** — not an action pose — so the 3D
-step can see every limb and later animate it:
+A neutral, symmetrical **reference pose** — not an action pose — so every
+limb is visible to the artist who draws the animation strips:
 
 * **Two-legged creatures and humanoids:** standing upright in a relaxed
   A-pose — feet about shoulder-width apart, arms held away from the body
@@ -190,7 +193,7 @@ Section 7 gives the exact pose for every creature.
 
 * **Even, soft, neutral-white studio light** from the front and above. No
   coloured lights, no hard cast shadows, no rim light, no fog, no god-rays.
-  Surfaces show their **true colours** (they become the model's textures).
+  Surfaces show their **true colours** (the animation strips take their colours from them).
 * Glowing parts (eyes, runes, fire manes, sun discs) may glow softly but must
   not light the surroundings or hide the shape under them.
 * **Fully transparent background** (PNG alpha). No ground, no floor shadow,
@@ -219,7 +222,7 @@ view with the three-quarter view attached again.
 ### 5.6 Upgraded forms
 
 The upgraded form keeps **the same anatomy, proportions, silhouette and pose**
-as its base form, so that one skeleton can animate both. It may be up to 10 %
+as its base form, so that one motion design animates both. It may be up to 10 %
 bigger. What changes is armour, ornament, colour, markings and glow — and
 extra parts only where its description names them (for example the Great
 Sphinx's wings, the Nine-Tailed Kitsune's tails). Attach the base form's
@@ -278,7 +281,7 @@ Design source: the Greek pantheon board (**R1-G**) shows an older roster; only t
 * Looks: A crested-helmet spear soldier with reinforced shoulder armor and a command sash.
 * What it is: Line infantry — Seasoned shield-bearers with crested helmets and practiced steadiness. Occupies 1 hex (person-sized or smaller); braces against charges.
 * Lore: _Veteran Hoplites teach the pause before a charge reaches the line._
-* Upgrade of **Hoplite**: same anatomy, proportions, silhouette and pose as Hoplite (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Hoplite**: same anatomy, proportions, silhouette and pose as Hoplite (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.greek.tier1.upgraded.ref.threequarter.png`, `creature.greek.tier1.upgraded.ref.front.png`, `creature.greek.tier1.upgraded.ref.side.png`, `creature.greek.tier1.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.greek.tier1.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -296,7 +299,7 @@ Design source: the Greek pantheon board (**R1-G**) shows an older roster; only t
 * Design: no board card — design it from the description, in the board’s style.
 * Looks: A skirmisher with a reinforced helmet, braced throwing arm and a tidy javelin harness.
 * What it is: Javelin skirmisher — Experienced skirmishers who choose their own firing ground and carry more javelins. Occupies 1 hex (person-sized or smaller); shoots.
-* Upgrade of **Peltast**: same anatomy, proportions, silhouette and pose as Peltast (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Peltast**: same anatomy, proportions, silhouette and pose as Peltast (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Relaxed **A-pose**; one javelin held in the right hand pointing down and outward, the rest in the harness on the back; shield on the left forearm, turned outward.
 * Files: `creature.greek.tier2.upgraded.ref.threequarter.png`, `creature.greek.tier2.upgraded.ref.front.png`, `creature.greek.tier2.upgraded.ref.side.png`, `creature.greek.tier2.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.greek.tier2.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -315,7 +318,7 @@ Design source: the Greek pantheon board (**R1-G**) shows an older roster; only t
 * Looks: A griffin with a swept feather crest, long primary feathers and pale-blue accents.
 * What it is: Flying interceptor — Guardians of the highest nests whose retaliation has no count limit. Occupies 2 hexes (large — horse-sized or bigger); flies, answers every attack.
 * Lore: _Windcrest Griffins are experienced guardians of the highest nests._
-* Upgrade of **Griffin**: same anatomy, proportions, silhouette and pose as Griffin (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Griffin**: same anatomy, proportions, silhouette and pose as Griffin (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **on its legs** (not flying), legs straight and apart, head level and looking forward, **wings half-spread** to the sides and slightly back so the body and legs stay visible, tail straight out behind.
 * Files: `creature.greek.tier3.upgraded.ref.threequarter.png`, `creature.greek.tier3.upgraded.ref.front.png`, `creature.greek.tier3.upgraded.ref.side.png`, `creature.greek.tier3.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.greek.tier3.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -334,7 +337,7 @@ Design source: the Greek pantheon board (**R1-G**) shows an older roster; only t
 * Looks: A crested rider on a horse with layered neck and chest protection.
 * What it is: Mounted shock troops — Trusted riders in layered armor who train together until signals are almost unnecessary. Occupies 2 hexes (large — horse-sized or bigger); charges.
 * Lore: _Companion riders train together until the commander’s signal is almost unnecessary._
-* Upgrade of **Cavalry**: same anatomy, proportions, silhouette and pose as Cavalry (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Cavalry**: same anatomy, proportions, silhouette and pose as Cavalry (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Horse standing **square on all four legs**, head level; the rider seated upright, lance held **vertically** in the right hand, shield on the left arm turned outward. Rider and horse are one figure.
 * Files: `creature.greek.tier4.upgraded.ref.threequarter.png`, `creature.greek.tier4.upgraded.ref.front.png`, `creature.greek.tier4.upgraded.ref.side.png`, `creature.greek.tier4.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.greek.tier4.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -353,7 +356,7 @@ Design source: the Greek pantheon board (**R1-G**) shows an older roster; only t
 * Looks: A robed seer with a sculpted headpiece, layered mantle and a larger staff focus.
 * What it is: Ranged support — Seers who can place one shared protective ward per battle. Occupies 1 hex (person-sized or smaller); shoots, can ward an ally.
 * Lore: _Seers learn to place a brief ward over their companions. The rite is shared by the whole company — one family-wide charge._
-* Upgrade of **Temple Adept**: same anatomy, proportions, silhouette and pose as Temple Adept (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Temple Adept**: same anatomy, proportions, silhouette and pose as Temple Adept (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Relaxed **A-pose**; the staff held upright in the right hand, away from the body; mantle hanging straight.
 * Files: `creature.greek.tier5.upgraded.ref.threequarter.png`, `creature.greek.tier5.upgraded.ref.front.png`, `creature.greek.tier5.upgraded.ref.side.png`, `creature.greek.tier5.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.greek.tier5.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -372,7 +375,7 @@ Design source: the Greek pantheon board (**R1-G**) shows an older roster; only t
 * Looks: A minotaur in patterned chest armor with horn fittings and a heavier axe.
 * What it is: Heavy melee — Wardens entrusted with the passages others must not lose. Occupies 2 hexes (large — horse-sized or bigger); never loses heart.
 * Lore: _A Labyrinth Warden is entrusted with the passages others must not lose._
-* Upgrade of **Minotaur**: same anatomy, proportions, silhouette and pose as Minotaur (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Minotaur**: same anatomy, proportions, silhouette and pose as Minotaur (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.greek.tier6.upgraded.ref.threequarter.png`, `creature.greek.tier6.upgraded.ref.front.png`, `creature.greek.tier6.upgraded.ref.side.png`, `creature.greek.tier6.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.greek.tier6.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -391,7 +394,7 @@ Design source: the Greek pantheon board (**R1-G**) shows an older roster; only t
 * Looks: A cyclops with forged bronze bracers, engraved seams and a faintly luminous boulder.
 * What it is: Apex ranged giant — Cyclopes bearing forge-marked stones; the name adds no lightning damage. Occupies 2 hexes (large — horse-sized or bigger); shoots, breaks walls, fights well up close too.
 * Lore: _Stormforged Cyclopes carry stones marked by the forge’s rites._
-* Upgrade of **Cyclops**: same anatomy, proportions, silhouette and pose as Cyclops (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Cyclops**: same anatomy, proportions, silhouette and pose as Cyclops (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright in a relaxed A-pose, arms away from the body; the boulder held low in the right hand at the side.
 * Files: `creature.greek.tier7.upgraded.ref.threequarter.png`, `creature.greek.tier7.upgraded.ref.front.png`, `creature.greek.tier7.upgraded.ref.side.png`, `creature.greek.tier7.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.greek.tier7.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -415,7 +418,7 @@ Design source: the Norse pantheon board (**R1-N**), row “7 Creature Levels & U
 * Looks: A draugr with rune-etched armor plates, glowing blue eyes and a notched longaxe.
 * What it is: Line infantry — Older dead bound by a sworn oath; their resolve never wavers. Occupies 1 hex (person-sized or smaller); never loses heart.
 * Lore: _The Deathless keep an oath older than the hold itself; nothing on a battlefield is frightening enough to break it._
-* Upgrade of **Draugr**: same anatomy, proportions, silhouette and pose as Draugr (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Draugr**: same anatomy, proportions, silhouette and pose as Draugr (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.norse.tier1.upgraded.ref.threequarter.png`, `creature.norse.tier1.upgraded.ref.front.png`, `creature.norse.tier1.upgraded.ref.side.png`, `creature.norse.tier1.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.norse.tier1.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -434,7 +437,7 @@ Design source: the Norse pantheon board (**R1-N**), row “7 Creature Levels & U
 * Looks: A massive dark-grey wolf with a broken chain collar and a scarred muzzle.
 * What it is: Fast flanker — Named for the bound wolf of legend; bigger, faster and harder to turn aside. Occupies 1 hex (person-sized or smaller); charges.
 * Lore: _Fenrir Wolves wear a broken link of chain as a collar. Nobody in the hold remembers who first put it there._
-* Upgrade of **Frost Wolf**: same anatomy, proportions, silhouette and pose as Frost Wolf (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Frost Wolf**: same anatomy, proportions, silhouette and pose as Frost Wolf (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.norse.tier2.upgraded.ref.threequarter.png`, `creature.norse.tier2.upgraded.ref.front.png`, `creature.norse.tier2.upgraded.ref.side.png`, `creature.norse.tier2.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.norse.tier2.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -453,7 +456,7 @@ Design source: the Norse pantheon board (**R1-N**), row “7 Creature Levels & U
 * Looks: A towering troll with a crust of blue ice across its back and a boulder-headed club.
 * What it is: Bruiser — Trolls old enough to have moss turned to ice on their shoulders. Occupies 2 hexes (large — horse-sized or bigger); braces against charges.
 * Lore: _The ancient trolls have ice grown into their skin like armor, and they are slower to anger and far slower to stop._
-* Upgrade of **Frost Troll**: same anatomy, proportions, silhouette and pose as Frost Troll (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Frost Troll**: same anatomy, proportions, silhouette and pose as Frost Troll (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.norse.tier3.upgraded.ref.threequarter.png`, `creature.norse.tier3.upgraded.ref.front.png`, `creature.norse.tier3.upgraded.ref.side.png`, `creature.norse.tier3.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.norse.tier3.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -472,7 +475,7 @@ Design source: the Norse pantheon board (**R1-N**), row “7 Creature Levels & U
 * Looks: A valkyrie in blue-enamelled scale armor with broad white wings and a long spear.
 * What it is: Flying lancer — Veteran choosers of the slain who answer two attacks each round. Occupies 1 hex (person-sized or smaller); flies, answers two attacks a round.
 * Lore: _Battle Valkyries have chosen before. They turn to meet a second attacker without looking._
-* Upgrade of **Valkyrie**: same anatomy, proportions, silhouette and pose as Valkyrie (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Valkyrie**: same anatomy, proportions, silhouette and pose as Valkyrie (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright in a relaxed **A-pose** (feet shoulder-width apart, arms about 40° below horizontal; any weapon in the right hand pointing down and outward, any shield on the left forearm turned outward). **Wings half-spread** out to the sides and slightly back, fully visible, not touching the body or each other. Feet on the ground — not flying.
 * Files: `creature.norse.tier4.upgraded.ref.threequarter.png`, `creature.norse.tier4.upgraded.ref.front.png`, `creature.norse.tier4.upgraded.ref.side.png`, `creature.norse.tier4.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.norse.tier4.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -491,7 +494,7 @@ Design source: the Norse pantheon board (**R1-N**), row “7 Creature Levels & U
 * Looks: A slate-blue lindworm with crackling pale markings and a raised crest.
 * What it is: Ranged breath — Storm-coloured lindworms that bite as hard as they breathe. Occupies 2 hexes (large — horse-sized or bigger); shoots, fights well up close too.
 * Lore: _Storm Lindworms are the ones that survived lightning; they bite as readily as they breathe._
-* Upgrade of **Lindworm**: same anatomy, proportions, silhouette and pose as Lindworm (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Lindworm**: same anatomy, proportions, silhouette and pose as Lindworm (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Long body laid in a wide, shallow S-curve that never crosses itself, the **two forelegs planted**, crest raised, head looking forward.
 * Files: `creature.norse.tier5.upgraded.ref.threequarter.png`, `creature.norse.tier5.upgraded.ref.front.png`, `creature.norse.tier5.upgraded.ref.side.png`, `creature.norse.tier5.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.norse.tier5.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -510,7 +513,7 @@ Design source: the Norse pantheon board (**R1-N**), row “7 Creature Levels & U
 * Looks: A giant with glowing blue runes cut into stone bracers and a rune-marked hammer.
 * What it is: Giant warrior — Giants carved with protective runes who can ward one ally per battle. Occupies 2 hexes (large — horse-sized or bigger); answers two attacks a round, can ward an ally.
 * Lore: _Runic Jotnar cut protections into their own stone bracers and will lend one to an ally who asks politely._
-* Upgrade of **Jotunn**: same anatomy, proportions, silhouette and pose as Jotunn (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Jotunn**: same anatomy, proportions, silhouette and pose as Jotunn (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.norse.tier6.upgraded.ref.threequarter.png`, `creature.norse.tier6.upgraded.ref.front.png`, `creature.norse.tier6.upgraded.ref.side.png`, `creature.norse.tier6.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.norse.tier6.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -529,7 +532,7 @@ Design source: the Norse pantheon board (**R1-N**), row “7 Creature Levels & U
 * Looks: A vast sea-green serpent with barnacled scales and glowing rune-like markings.
 * What it is: Apex wyrm — Sea-green wyrms of the world-coil; no charge moves them. Occupies 2 hexes (large — horse-sized or bigger); never loses heart, answers every attack, braces against charges.
 * Lore: _World-Serpent Wyrms are sea-green and barnacled. Nothing moves them that they do not wish to be moved by._
-* Upgrade of **Nidhogg Wyrm**: same anatomy, proportions, silhouette and pose as Nidhogg Wyrm (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Nidhogg Wyrm**: same anatomy, proportions, silhouette and pose as Nidhogg Wyrm (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Body laid in a wide, shallow S-curve that never crosses itself, head raised and looking forward, jaws closed or slightly open.
 * Files: `creature.norse.tier7.upgraded.ref.threequarter.png`, `creature.norse.tier7.upgraded.ref.front.png`, `creature.norse.tier7.upgraded.ref.side.png`, `creature.norse.tier7.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.norse.tier7.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -553,7 +556,7 @@ Design source: the Egyptian pantheon board (**R1-E**), row “7 Creature Levels 
 * Looks: A golden scarab holding a glowing sun-disc between its forelegs.
 * What it is: Armored swarm — Scarabs that have carried the sun-disc; their gilded shells turn charges aside. Occupies 1 hex (person-sized or smaller); braces against charges.
 * Lore: _Solar Scarabs have rolled the sun-disc once. The keepers say its warmth never quite leaves their shells._
-* Upgrade of **Sacred Scarab**: same anatomy, proportions, silhouette and pose as Sacred Scarab (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Sacred Scarab**: same anatomy, proportions, silhouette and pose as Sacred Scarab (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing on **all six legs**, legs spread evenly, wing cases closed; the sun-disc held low between the forelegs (or on its back) so it does not hide the head.
 * Files: `creature.egyptian.tier1.upgraded.ref.threequarter.png`, `creature.egyptian.tier1.upgraded.ref.front.png`, `creature.egyptian.tier1.upgraded.ref.side.png`, `creature.egyptian.tier1.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.egyptian.tier1.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -572,7 +575,7 @@ Design source: the Egyptian pantheon board (**R1-E**), row “7 Creature Levels 
 * Looks: A black-furred jackal warrior in gold-banded armor with a javelin raised to throw.
 * What it is: Javelin guard — Senior wardens of the tomb gates, as dangerous with a spear in hand as with a thrown one. Occupies 1 hex (person-sized or smaller); shoots, fights well up close too.
 * Lore: _An Anubian Warden has guarded a king’s door for a lifetime. It no longer matters to him how close the thief gets._
-* Upgrade of **Jackal Guardian**: same anatomy, proportions, silhouette and pose as Jackal Guardian (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Jackal Guardian**: same anatomy, proportions, silhouette and pose as Jackal Guardian (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Relaxed **A-pose** — not mid-throw; one javelin in the right hand pointing down and outward, the rest on the back.
 * Files: `creature.egyptian.tier2.upgraded.ref.threequarter.png`, `creature.egyptian.tier2.upgraded.ref.front.png`, `creature.egyptian.tier2.upgraded.ref.side.png`, `creature.egyptian.tier2.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.egyptian.tier2.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -591,7 +594,7 @@ Design source: the Egyptian pantheon board (**R1-E**), row “7 Creature Levels 
 * Looks: A tall gilded ushabti with a royal headdress and rows of hieroglyphs on its body.
 * What it is: Tireless construct — Figures made for a pharaoh’s tomb, carved larger and inscribed with stronger spells. Occupies 1 hex (person-sized or smaller); never loses heart, braces against charges.
 * Lore: _Royal Ushabti were made by the hundred for a single king. They have never been told he is gone._
-* Upgrade of **Ushabti**: same anatomy, proportions, silhouette and pose as Ushabti (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Ushabti**: same anatomy, proportions, silhouette and pose as Ushabti (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright and stiff like a statue, arms held a little away from the body, hands holding its tools low at the sides.
 * Files: `creature.egyptian.tier3.upgraded.ref.threequarter.png`, `creature.egyptian.tier3.upgraded.ref.front.png`, `creature.egyptian.tier3.upgraded.ref.side.png`, `creature.egyptian.tier3.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.egyptian.tier3.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -610,7 +613,7 @@ Design source: the Egyptian pantheon board (**R1-E**), row “7 Creature Levels 
 * Looks: A great sphinx with falcon wings spread, sandstone-coloured fur and a golden beard.
 * What it is: Guardian beast — Winged sphinxes of the royal terraces who strike from above and still answer twice. Occupies 2 hexes (large — horse-sized or bigger); answers two attacks a round, flies.
 * Lore: _The Great Sphinxes are the ones that grew wings. They still prefer to wait, but they no longer have to._
-* Upgrade of **Sphinx**: same anatomy, proportions, silhouette and pose as Sphinx (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Sphinx**: same anatomy, proportions, silhouette and pose as Sphinx (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs** (not crouched), head level, **falcon wings half-spread** to the sides and slightly back.
 * Files: `creature.egyptian.tier4.upgraded.ref.threequarter.png`, `creature.egyptian.tier4.upgraded.ref.front.png`, `creature.egyptian.tier4.upgraded.ref.side.png`, `creature.egyptian.tier4.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.egyptian.tier4.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -629,7 +632,7 @@ Design source: the Egyptian pantheon board (**R1-E**), row “7 Creature Levels 
 * Looks: A crocodile in a bronze-scale harness with a sun-disc crest between its eyes.
 * What it is: River shock beast — Crocodiles consecrated to Sobek, armored in bronze scales and quick to turn. Occupies 2 hexes (large — horse-sized or bigger); charges, answers two attacks a round.
 * Lore: _A Sobek Warbeast wears its god’s sun-disc. The priests say that is why it never has to look where it is going._
-* Upgrade of **Crocodile Beast**: same anatomy, proportions, silhouette and pose as Crocodile Beast (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Crocodile Beast**: same anatomy, proportions, silhouette and pose as Crocodile Beast (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.egyptian.tier5.upgraded.ref.threequarter.png`, `creature.egyptian.tier5.upgraded.ref.front.png`, `creature.egyptian.tier5.upgraded.ref.side.png`, `creature.egyptian.tier5.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.egyptian.tier5.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -648,7 +651,7 @@ Design source: the Egyptian pantheon board (**R1-E**), row “7 Creature Levels 
 * Looks: A blazing golden bird with sun-rays in its crest and wings trailing light.
 * What it is: Flying striker — Bennu that have burned and risen again; nothing on the field shakes them. Occupies 2 hexes (large — horse-sized or bigger); flies, never loses heart.
 * Lore: _A Radiant Bennu has already died once in fire. It sees no reason to be afraid of anything smaller._
-* Upgrade of **Bennu**: same anatomy, proportions, silhouette and pose as Bennu (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Bennu**: same anatomy, proportions, silhouette and pose as Bennu (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing on its two legs, neck raised, **wings half-spread** to the sides; the light along the wings drawn as solid glowing feather shapes, not loose rays.
 * Files: `creature.egyptian.tier6.upgraded.ref.threequarter.png`, `creature.egyptian.tier6.upgraded.ref.front.png`, `creature.egyptian.tier6.upgraded.ref.side.png`, `creature.egyptian.tier6.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.egyptian.tier6.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -667,7 +670,7 @@ Design source: the Egyptian pantheon board (**R1-E**), row “7 Creature Levels 
 * Looks: A colossal statue with a gold-inlaid headdress and eyes of lapis, a stone block in each hand.
 * What it is: Apex siege construct — Colossi inlaid with gold and faience, carrying more stones and striking harder. Occupies 2 hexes (large — horse-sized or bigger); shoots, breaks walls, fights well up close too.
 * Lore: _The Divine Colossi carry gold in their joints. It is said to be what lets them lift a whole doorway and throw it._
-* Upgrade of **Desert Colossus**: same anatomy, proportions, silhouette and pose as Desert Colossus (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Desert Colossus**: same anatomy, proportions, silhouette and pose as Desert Colossus (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright in a relaxed A-pose, arms away from the body, a stone block held low in each hand, away from the body.
 * Files: `creature.egyptian.tier7.upgraded.ref.threequarter.png`, `creature.egyptian.tier7.upgraded.ref.front.png`, `creature.egyptian.tier7.upgraded.ref.side.png`, `creature.egyptian.tier7.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.egyptian.tier7.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -691,7 +694,7 @@ Design source: the Japanese pantheon board (**R1-J**), row “7 Creature Levels 
 * Looks: A white fox with nine fanned tails and a ring of pale fox-fire.
 * What it is: Fox skirmisher — Old white foxes that can ward one ally per battle with fox-fire. Occupies 1 hex (person-sized or smaller); can ward an ally.
 * Lore: _A fox that has grown nine tails remembers every favour it has ever owed, and pays them at the worst moment for its enemies._
-* Upgrade of **Kitsune**: same anatomy, proportions, silhouette and pose as Kitsune (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Kitsune**: same anatomy, proportions, silhouette and pose as Kitsune (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, head level, the **nine tails fanned out** behind and above, none hiding the body; no fox-fire ring.
 * Files: `creature.japanese.tier1.upgraded.ref.threequarter.png`, `creature.japanese.tier1.upgraded.ref.front.png`, `creature.japanese.tier1.upgraded.ref.side.png`, `creature.japanese.tier1.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.japanese.tier1.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -710,7 +713,7 @@ Design source: the Japanese pantheon board (**R1-J**), row “7 Creature Levels 
 * Looks: A large mossy-shelled kappa with a white beard and a bamboo staff.
 * What it is: River guard — Moss-shelled elders of the deep pools who answer two attackers each round. Occupies 1 hex (person-sized or smaller); braces against charges, answers two attacks a round.
 * Lore: _The River Elders made that agreement themselves. They are very strict about the bowing._
-* Upgrade of **Kappa**: same anatomy, proportions, silhouette and pose as Kappa (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Kappa**: same anatomy, proportions, silhouette and pose as Kappa (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright on two legs, arms held away from the body, the bamboo staff in the right hand pointing down and outward, head level.
 * Files: `creature.japanese.tier2.upgraded.ref.threequarter.png`, `creature.japanese.tier2.upgraded.ref.front.png`, `creature.japanese.tier2.upgraded.ref.side.png`, `creature.japanese.tier2.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.japanese.tier2.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -729,7 +732,7 @@ Design source: the Japanese pantheon board (**R1-J**), row “7 Creature Levels 
 * Looks: A tengu in monk’s robes with great black wings and a feather fan.
 * What it is: Mountain flyer — Masters of the mountain schools, quick enough to answer two attackers. Occupies 1 hex (person-sized or smaller); flies, answers two attacks a round.
 * Lore: _Great Tengu taught the teachers. They still correct the stance of anyone who fights near them._
-* Upgrade of **Tengu**: same anatomy, proportions, silhouette and pose as Tengu (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Tengu**: same anatomy, proportions, silhouette and pose as Tengu (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright in a relaxed A-pose, the feather fan in the right hand held low and away from the body; **wings half-spread**.
 * Files: `creature.japanese.tier3.upgraded.ref.threequarter.png`, `creature.japanese.tier3.upgraded.ref.front.png`, `creature.japanese.tier3.upgraded.ref.side.png`, `creature.japanese.tier3.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.japanese.tier3.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -748,7 +751,7 @@ Design source: the Japanese pantheon board (**R1-J**), row “7 Creature Levels 
 * Looks: A blue-skinned oni in lacquered samurai armor with a huge kanabō.
 * What it is: Brute — Armored oni chieftains that stop a charge dead. Occupies 2 hexes (large — horse-sized or bigger); never loses heart, braces against charges.
 * Lore: _An Oni Warlord wears the armor of the general who beat him. He considers it a compliment to them both._
-* Upgrade of **Oni**: same anatomy, proportions, silhouette and pose as Oni (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Oni**: same anatomy, proportions, silhouette and pose as Oni (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.japanese.tier4.upgraded.ref.threequarter.png`, `creature.japanese.tier4.upgraded.ref.front.png`, `creature.japanese.tier4.upgraded.ref.side.png`, `creature.japanese.tier4.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.japanese.tier4.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -767,7 +770,7 @@ Design source: the Japanese pantheon board (**R1-J**), row “7 Creature Levels 
 * Looks: A spider-bodied woman in a gold-threaded kimono, webs glittering behind her.
 * What it is: Spider spirit — Ancient spider queens who shield one ally per battle in a cocoon of silk. Occupies 1 hex (person-sized or smaller); answers two attacks a round, can ward an ally.
 * Lore: _The Queen has spun for four hundred years. Her silk can hold a falling wall._
-* Upgrade of **Jorogumo**: same anatomy, proportions, silhouette and pose as Jorogumo (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Jorogumo**: same anatomy, proportions, silhouette and pose as Jorogumo (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Upright woman’s upper body rising from a **spider body on eight legs** spread evenly around it, legs bent but not crossing; arms in a relaxed A-pose; no web drawn behind her (the web is a battle effect).
 * Files: `creature.japanese.tier5.upgraded.ref.threequarter.png`, `creature.japanese.tier5.upgraded.ref.front.png`, `creature.japanese.tier5.upgraded.ref.side.png`, `creature.japanese.tier5.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.japanese.tier5.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -786,7 +789,7 @@ Design source: the Japanese pantheon board (**R1-J**), row “7 Creature Levels 
 * Looks: A golden-scaled kirin walking on clouds, mane of white fire streaming.
 * What it is: Holy beast (ranged) — Kirin that walk on clouds; more fire and more reach. Occupies 2 hexes (large — horse-sized or bigger); shoots, fights well up close too.
 * Lore: _The Celestial Kirin came down from the clouds when a fair lord took the castle. It has not decided yet whether to stay._
-* Upgrade of **Kirin**: same anatomy, proportions, silhouette and pose as Kirin (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Kirin**: same anatomy, proportions, silhouette and pose as Kirin (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs** on flat ground (no clouds under it), head level; the white-fire mane as solid flame shapes close to the neck.
 * Files: `creature.japanese.tier6.upgraded.ref.threequarter.png`, `creature.japanese.tier6.upgraded.ref.front.png`, `creature.japanese.tier6.upgraded.ref.side.png`, `creature.japanese.tier6.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.japanese.tier6.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -805,7 +808,7 @@ Design source: the Japanese pantheon board (**R1-J**), row “7 Creature Levels 
 * Looks: An eight-headed serpent with gold scales and a golden crest on every head.
 * What it is: Apex serpent — Orochi crowned with gold who never lose their nerve. Occupies 2 hexes (large — horse-sized or bigger); answers every attack, never loses heart.
 * Lore: _The Imperial Orochi are older than the story. They consider it slander._
-* Upgrade of **Orochi**: same anatomy, proportions, silhouette and pose as Orochi (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Orochi**: same anatomy, proportions, silhouette and pose as Orochi (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: One body laid in a wide, shallow S-curve; **all eight heads fanned out side by side** on raised necks, none crossing another, all looking forward.
 * Files: `creature.japanese.tier7.upgraded.ref.threequarter.png`, `creature.japanese.tier7.upgraded.ref.front.png`, `creature.japanese.tier7.upgraded.ref.side.png`, `creature.japanese.tier7.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.japanese.tier7.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -829,7 +832,7 @@ Design source: the Celtic pantheon board (**R1-C**), row “7 Creature Levels & 
 * Looks: A great dark horse-goat with curling horns and a shaggy mane.
 * What it is: Shape-shifter — Old pooka that turn into something too big to charge through at the last moment. Occupies 1 hex (person-sized or smaller); braces against charges.
 * Lore: _An Elder Pooka has been a horse, a goat, an eagle and once, briefly, a cart. It knows which shape a spear hates most._
-* Upgrade of **Pooka**: same anatomy, proportions, silhouette and pose as Pooka (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Pooka**: same anatomy, proportions, silhouette and pose as Pooka (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Follow the board card. Same stance as the Pooka, forelimbs away from the body, antlers/horns fully visible.
 * Files: `creature.celtic.tier1.upgraded.ref.threequarter.png`, `creature.celtic.tier1.upgraded.ref.front.png`, `creature.celtic.tier1.upgraded.ref.side.png`, `creature.celtic.tier1.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.celtic.tier1.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -848,7 +851,7 @@ Design source: the Celtic pantheon board (**R1-C**), row “7 Creature Levels & 
 * Looks: A massive green hound with glowing eyes and a silver torc collar.
 * What it is: Otherworld hound — Pack leaders whose bay carries across three hills. Occupies 1 hex (person-sized or smaller); charges.
 * Lore: _The Great Hounds answer only to whoever holds the hall. They have outlived eleven chieftains so far._
-* Upgrade of **Cu Sith**: same anatomy, proportions, silhouette and pose as Cu Sith (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Cu Sith**: same anatomy, proportions, silhouette and pose as Cu Sith (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.celtic.tier2.upgraded.ref.threequarter.png`, `creature.celtic.tier2.upgraded.ref.front.png`, `creature.celtic.tier2.upgraded.ref.side.png`, `creature.celtic.tier2.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.celtic.tier2.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -867,7 +870,7 @@ Design source: the Celtic pantheon board (**R1-C**), row “7 Creature Levels & 
 * Looks: A black water-horse with sea-green eyes and a mane like streaming kelp.
 * What it is: Water horse — Black loch-horses that no charge can knock aside. Occupies 2 hexes (large — horse-sized or bigger); charges, braces against charges.
 * Lore: _Dread Kelpies come from the loch that has no bottom. They do not stop for anything, including walls._
-* Upgrade of **Kelpie**: same anatomy, proportions, silhouette and pose as Kelpie (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Kelpie**: same anatomy, proportions, silhouette and pose as Kelpie (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.celtic.tier3.upgraded.ref.threequarter.png`, `creature.celtic.tier3.upgraded.ref.front.png`, `creature.celtic.tier3.upgraded.ref.side.png`, `creature.celtic.tier3.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.celtic.tier3.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -886,7 +889,7 @@ Design source: the Celtic pantheon board (**R1-C**), row “7 Creature Levels & 
 * Looks: A banshee in torn battle-red wrappings, hair streaming like smoke.
 * What it is: Keening spirit (ranged) — Banshees who follow the war-bands and keen for the enemy instead. Occupies 1 hex (person-sized or smaller); shoots, fights well up close too.
 * Lore: _A Battle Banshee has cried for so many warriors that she knows exactly where the next one will fall._
-* Upgrade of **Banshee**: same anatomy, proportions, silhouette and pose as Banshee (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Banshee**: same anatomy, proportions, silhouette and pose as Banshee (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Hovering a hand’s width above the ground, upright, arms in a relaxed A-pose, wrappings hanging straight down, hair behind the shoulders. Mouth closed.
 * Files: `creature.celtic.tier4.upgraded.ref.threequarter.png`, `creature.celtic.tier4.upgraded.ref.front.png`, `creature.celtic.tier4.upgraded.ref.side.png`, `creature.celtic.tier4.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.celtic.tier4.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -905,7 +908,7 @@ Design source: the Celtic pantheon board (**R1-C**), row “7 Creature Levels & 
 * Looks: A dark storm-grey selkie with a mantle of spray and sea-glass eyes.
 * What it is: Sea guardian — Selkies of the winter sea who can wrap one ally in sea-mist once per battle. Occupies 2 hexes (large — horse-sized or bigger); answers two attacks a round, can ward an ally.
 * Lore: _Storm Selkies come in only when the winter sea is at its worst. They bring a little of it with them._
-* Upgrade of **Selkie**: same anatomy, proportions, silhouette and pose as Selkie (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Selkie**: same anatomy, proportions, silhouette and pose as Selkie (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Same stance as the Selkie: on its belly, body straight, head raised, flippers planted. The spray mantle stays close to the body as solid shapes, not mist.
 * Files: `creature.celtic.tier5.upgraded.ref.threequarter.png`, `creature.celtic.tier5.upgraded.ref.front.png`, `creature.celtic.tier5.upgraded.ref.side.png`, `creature.celtic.tier5.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.celtic.tier5.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -924,7 +927,7 @@ Design source: the Celtic pantheon board (**R1-C**), row “7 Creature Levels & 
 * Looks: A stag of pale gold with an antler crown hung with leaves and stars.
 * What it is: Forest charger — The lord of the grove; its courage never breaks. Occupies 2 hexes (large — horse-sized or bigger); charges, never loses heart.
 * Lore: _The Great Stag has never been hunted. It has, however, hunted._
-* Upgrade of **Horned Stag Spirit**: same anatomy, proportions, silhouette and pose as Horned Stag Spirit (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Horned Stag Spirit**: same anatomy, proportions, silhouette and pose as Horned Stag Spirit (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.celtic.tier6.upgraded.ref.threequarter.png`, `creature.celtic.tier6.upgraded.ref.front.png`, `creature.celtic.tier6.upgraded.ref.side.png`, `creature.celtic.tier6.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.celtic.tier6.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -943,7 +946,7 @@ Design source: the Celtic pantheon board (**R1-C**), row “7 Creature Levels & 
 * Looks: An ancient sea-giant crowned with coral, a whale-jaw club over one shoulder.
 * What it is: Apex giant — The oldest Fomorians, who swat two attackers in a round. Occupies 2 hexes (large — horse-sized or bigger); never loses heart, braces against charges, answers two attacks a round.
 * Lore: _The Ancient Fomorians remember the war. They fight as if it never ended._
-* Upgrade of **Fomorian Giant**: same anatomy, proportions, silhouette and pose as Fomorian Giant (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Fomorian Giant**: same anatomy, proportions, silhouette and pose as Fomorian Giant (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright in a relaxed A-pose, the whale-jaw club held low in the right hand, away from the body (not over the shoulder).
 * Files: `creature.celtic.tier7.upgraded.ref.threequarter.png`, `creature.celtic.tier7.upgraded.ref.front.png`, `creature.celtic.tier7.upgraded.ref.side.png`, `creature.celtic.tier7.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.celtic.tier7.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -967,7 +970,7 @@ Design source: the Mesoamerican pantheon board (**R1-M**), row “7 Creature Lev
 * Looks: A turquoise serpent with long feathered wings spread against a gold sky.
 * What it is: Serpent swarm — Serpents whose plumes have grown into wings; they cross the field in a single glide. Occupies 1 hex (person-sized or smaller); flies.
 * Lore: _Celestial serpents are the ones that learned to fly. The priests say they are practising to become something larger._
-* Upgrade of **Feathered Serpent**: same anatomy, proportions, silhouette and pose as Feathered Serpent (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Feathered Serpent**: same anatomy, proportions, silhouette and pose as Feathered Serpent (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Body laid on the ground in a wide, shallow S-curve that never crosses itself, head raised; **feathered wings half-spread** to the sides.
 * Files: `creature.mesoamerican.tier1.upgraded.ref.threequarter.png`, `creature.mesoamerican.tier1.upgraded.ref.front.png`, `creature.mesoamerican.tier1.upgraded.ref.side.png`, `creature.mesoamerican.tier1.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.mesoamerican.tier1.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -986,7 +989,7 @@ Design source: the Mesoamerican pantheon board (**R1-M**), row “7 Creature Lev
 * Looks: A bright-gold jaguar with a sun-disc pattern across its shoulders.
 * What it is: Pouncing predator — Jaguars that hunt by day, gold-furred and quick to turn on two attackers. Occupies 1 hex (person-sized or smaller); charges, answers two attacks a round.
 * Lore: _Sun Jaguars hunt when the others sleep. They do not need the dark to be unseen._
-* Upgrade of **Jaguar Spirit**: same anatomy, proportions, silhouette and pose as Jaguar Spirit (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Jaguar Spirit**: same anatomy, proportions, silhouette and pose as Jaguar Spirit (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.mesoamerican.tier2.upgraded.ref.threequarter.png`, `creature.mesoamerican.tier2.upgraded.ref.front.png`, `creature.mesoamerican.tier2.upgraded.ref.side.png`, `creature.mesoamerican.tier2.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.mesoamerican.tier2.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1005,7 +1008,7 @@ Design source: the Mesoamerican pantheon board (**R1-M**), row “7 Creature Lev
 * Looks: An eagle warrior in golden feathers with a sun-ray shield and a bundle of darts.
 * What it is: Dart thrower — Eagle warriors of the sun’s house, with more darts and longer arms. Occupies 1 hex (person-sized or smaller); shoots.
 * Lore: _Solar Eagle Warriors finished their four years and chose to return anyway._
-* Upgrade of **Eagle Warrior Spirit**: same anatomy, proportions, silhouette and pose as Eagle Warrior Spirit (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Eagle Warrior Spirit**: same anatomy, proportions, silhouette and pose as Eagle Warrior Spirit (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Relaxed **A-pose**; the atlatl in the right hand pointing down and outward, darts on the back, the sun-ray shield on the left forearm turned outward.
 * Files: `creature.mesoamerican.tier3.upgraded.ref.threequarter.png`, `creature.mesoamerican.tier3.upgraded.ref.front.png`, `creature.mesoamerican.tier3.upgraded.ref.side.png`, `creature.mesoamerican.tier3.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.mesoamerican.tier3.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1024,7 +1027,7 @@ Design source: the Mesoamerican pantheon board (**R1-M**), row “7 Creature Lev
 * Looks: A great crocodile with carved jade plates bound to its back.
 * What it is: Temple guardian — Crocodiles raised in the temple cenote, answering two attackers each round. Occupies 2 hexes (large — horse-sized or bigger); braces against charges, answers two attacks a round.
 * Lore: _A Temple Crocodile has lived in the temple pool since before the temple. It thinks of the priests as its keepers, not the other way round._
-* Upgrade of **Cenote Crocodile**: same anatomy, proportions, silhouette and pose as Cenote Crocodile (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Cenote Crocodile**: same anatomy, proportions, silhouette and pose as Cenote Crocodile (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.mesoamerican.tier4.upgraded.ref.threequarter.png`, `creature.mesoamerican.tier4.upgraded.ref.front.png`, `creature.mesoamerican.tier4.upgraded.ref.side.png`, `creature.mesoamerican.tier4.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.mesoamerican.tier4.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1043,7 +1046,7 @@ Design source: the Mesoamerican pantheon board (**R1-M**), row “7 Creature Lev
 * Looks: A crimson-winged bat spirit silhouetted against a red moon.
 * What it is: Bat raider — Camazotz of the blood moon, who strike back at two attackers each round. Occupies 1 hex (person-sized or smaller); flies, answers two attacks a round.
 * Lore: _On a blood moon the Camazotz fly higher and come back later. The city stays indoors._
-* Upgrade of **Camazotz**: same anatomy, proportions, silhouette and pose as Camazotz (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Camazotz**: same anatomy, proportions, silhouette and pose as Camazotz (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright in a relaxed A-pose, blade in the right hand pointing down; **wings half-spread** to the sides; no moon behind it.
 * Files: `creature.mesoamerican.tier5.upgraded.ref.threequarter.png`, `creature.mesoamerican.tier5.upgraded.ref.front.png`, `creature.mesoamerican.tier5.upgraded.ref.side.png`, `creature.mesoamerican.tier5.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.mesoamerican.tier5.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1062,7 +1065,7 @@ Design source: the Mesoamerican pantheon board (**R1-M**), row “7 Creature Lev
 * Looks: A blazing blue-and-gold serpent wreathed in a corona of fire.
 * What it is: Fire serpent (ranged) — Fire serpents of the sun’s own weapon; more flame and a hotter bite. Occupies 2 hexes (large — horse-sized or bigger); shoots, fights well up close too.
 * Lore: _A Divine Xiuhcoatl has been thrown by a god. It remembers the arc, and it still enjoys it._
-* Upgrade of **Xiuhcoatl**: same anatomy, proportions, silhouette and pose as Xiuhcoatl (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Xiuhcoatl**: same anatomy, proportions, silhouette and pose as Xiuhcoatl (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Body laid in a wide, shallow S-curve that never crosses itself, head raised; the fire corona drawn as **solid, sculpted flame shapes** close to the body, not smoke or loose sparks.
 * Files: `creature.mesoamerican.tier6.upgraded.ref.threequarter.png`, `creature.mesoamerican.tier6.upgraded.ref.front.png`, `creature.mesoamerican.tier6.upgraded.ref.side.png`, `creature.mesoamerican.tier6.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.mesoamerican.tier6.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1081,7 +1084,7 @@ Design source: the Mesoamerican pantheon board (**R1-M**), row “7 Creature Lev
 * Looks: A colossal statue with glowing gold glyphs and a sun-disc on its chest.
 * What it is: Apex guardian — Colossi lit from within by the sun; they answer every blow. Occupies 2 hexes (large — horse-sized or bigger); never loses heart, braces against charges, answers every attack.
 * Lore: _A Sun Colossus has the day’s light sealed inside it. It is warm to the touch, even at midnight._
-* Upgrade of **Stone Colossus**: same anatomy, proportions, silhouette and pose as Stone Colossus (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Stone Colossus**: same anatomy, proportions, silhouette and pose as Stone Colossus (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.mesoamerican.tier7.upgraded.ref.threequarter.png`, `creature.mesoamerican.tier7.upgraded.ref.front.png`, `creature.mesoamerican.tier7.upgraded.ref.side.png`, `creature.mesoamerican.tier7.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.mesoamerican.tier7.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1105,7 +1108,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: A lean outlaw in a dark scarf with a notched spear and a dented round shield.
 * What it is: Line infantry (neutral) — Seasoned outlaws who have learned which caravans fight back. Occupies 1 hex (person-sized or smaller).
 * Lore: _Cutthroats are the brigands who lived long enough to choose their ambushes._
-* Upgrade of **Brigand**: same anatomy, proportions, silhouette and pose as Brigand (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Brigand**: same anatomy, proportions, silhouette and pose as Brigand (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.neutral.brigand.upgraded.ref.threequarter.png`, `creature.neutral.brigand.upgraded.ref.front.png`, `creature.neutral.brigand.upgraded.ref.side.png`, `creature.neutral.brigand.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.brigand.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1124,7 +1127,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: A slinger with a braided double sling and a bag of lead shot.
 * What it is: Short-range shooters (neutral) — Hill folk who cast shaped lead bullets farther and harder than any stone. Occupies 1 hex (person-sized or smaller); shoots.
 * Lore: _Sling Masters cast shaped lead bullets that fly farther than stones and land harder._
-* Upgrade of **Hill Slinger**: same anatomy, proportions, silhouette and pose as Hill Slinger (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Hill Slinger**: same anatomy, proportions, silhouette and pose as Hill Slinger (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Relaxed **A-pose**; the double sling hanging loose from the right hand (not whirling), the shot bag at the belt.
 * Files: `creature.neutral.hill_slinger.upgraded.ref.threequarter.png`, `creature.neutral.hill_slinger.upgraded.ref.front.png`, `creature.neutral.hill_slinger.upgraded.ref.side.png`, `creature.neutral.hill_slinger.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.hill_slinger.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1143,7 +1146,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: A huge scarred boar with long ivory tusks and a ridge of grey bristles.
 * What it is: Charging beasts (neutral) — Old boars as heavy as a pony, scarred by every hunt that failed. Occupies 1 hex (person-sized or smaller); charges.
 * Lore: _The great tuskers are old boars that have outlived every hunt sent for them._
-* Upgrade of **Wild Boar**: same anatomy, proportions, silhouette and pose as Wild Boar (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Wild Boar**: same anatomy, proportions, silhouette and pose as Wild Boar (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs**, legs straight and slightly apart so every leg is visible from the side, head level and looking forward, mouth closed or slightly open, tail straight out behind (not curled over the back).
 * Files: `creature.neutral.wild_boar.upgraded.ref.threequarter.png`, `creature.neutral.wild_boar.upgraded.ref.front.png`, `creature.neutral.wild_boar.upgraded.ref.side.png`, `creature.neutral.wild_boar.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.wild_boar.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1162,7 +1165,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: A centaur with foreleg protection, a tied crest and a reinforced spearhead.
 * What it is: Fast ground melee (neutral) — Seasoned grove guardians who lead the first response on old boundary routes. Occupies 2 hexes (large — horse-sized or bigger).
 * Lore: _Sentinels know the old boundary routes and lead the first response when a covenant’s roads are threatened._
-* Upgrade of **Centaur**: same anatomy, proportions, silhouette and pose as Centaur (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Centaur**: same anatomy, proportions, silhouette and pose as Centaur (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Horse body standing **square on all four legs**; the human torso upright, arms in a relaxed A-pose (about 40° below horizontal), spear in the right hand pointing down and outward. Head level, eyes forward.
 * Files: `creature.neutral.centaur.upgraded.ref.threequarter.png`, `creature.neutral.centaur.upgraded.ref.front.png`, `creature.neutral.centaur.upgraded.ref.side.png`, `creature.neutral.centaur.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.centaur.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1181,7 +1184,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: A clay golem plated in green-patinated bronze, with riveted shoulders.
 * What it is: Slow guardians (neutral) — Golems sheathed in bronze plates; a charge breaks against them. Occupies 1 hex (person-sized or smaller); never loses heart, braces against charges.
 * Lore: _Bronze Golems were sheathed by a later smith who wanted his treasury safe from charges._
-* Upgrade of **Clay Golem**: same anatomy, proportions, silhouette and pose as Clay Golem (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Clay Golem**: same anatomy, proportions, silhouette and pose as Clay Golem (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.neutral.clay_golem.upgraded.ref.threequarter.png`, `creature.neutral.clay_golem.upgraded.ref.front.png`, `creature.neutral.clay_golem.upgraded.ref.side.png`, `creature.neutral.clay_golem.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.clay_golem.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1200,7 +1203,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: A larger wyvern with a frilled crest and torn, battle-scarred wings.
 * What it is: Flying hunters (neutral) — Nest-mothers that turn on every attacker, twice if they must. Occupies 2 hexes (large — horse-sized or bigger); flies, answers two attacks a round.
 * Lore: _Matriarchs guard the egg ledges and answer every attack on the nest._
-* Upgrade of **Wyvern**: same anatomy, proportions, silhouette and pose as Wyvern (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Wyvern**: same anatomy, proportions, silhouette and pose as Wyvern (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing on its **two legs**, body level, **wings half-spread** to the sides and slightly back, tail straight out behind, head forward.
 * Files: `creature.neutral.wyvern.upgraded.ref.threequarter.png`, `creature.neutral.wyvern.upgraded.ref.front.png`, `creature.neutral.wyvern.upgraded.ref.side.png`, `creature.neutral.wyvern.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.wyvern.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1218,7 +1221,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Design: no board card — design it from the description, in the board’s style.
 * Looks: A scarred ogre wearing a crown of bent iron and a cloak of bear fur.
 * What it is: Brutes (neutral) — Ogres who rule a valley by beating every challenger; they hit back twice. Occupies 2 hexes (large — horse-sized or bigger); answers two attacks a round.
-* Upgrade of **Ogre**: same anatomy, proportions, silhouette and pose as Ogre (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Ogre**: same anatomy, proportions, silhouette and pose as Ogre (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing upright, facing straight ahead, in a relaxed **A-pose**: feet about shoulder-width apart, legs straight, arms held away from the body (about 40° below horizontal), nothing crossing in front of the torso or face. If it carries a weapon, it is held in the right hand, pointing down and outward; if it has a shield, it is strapped on the left forearm, turned outward so it does not cover the body. Head level, eyes forward, mouth closed.
 * Files: `creature.neutral.ogre.upgraded.ref.threequarter.png`, `creature.neutral.ogre.upgraded.ref.front.png`, `creature.neutral.ogre.upgraded.ref.side.png`, `creature.neutral.ogre.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.ogre.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1237,7 +1240,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: A larger basilisk with stone-grey scales and a ring of horns around its crown.
 * What it is: Armoured serpents (neutral) — Ancient basilisks whose hides turn spears; charges stall in front of them. Occupies 2 hexes (large — horse-sized or bigger); answers two attacks a round, braces against charges.
 * Lore: _The greater basilisks are old enough that spears break on them and charges stall._
-* Upgrade of **Basilisk**: same anatomy, proportions, silhouette and pose as Basilisk (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Basilisk**: same anatomy, proportions, silhouette and pose as Basilisk (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Long scaled body laid in a wide, shallow S-curve that never crosses itself; if it has legs, all planted; head raised, horn ring fully visible.
 * Files: `creature.neutral.basilisk.upgraded.ref.threequarter.png`, `creature.neutral.basilisk.upgraded.ref.front.png`, `creature.neutral.basilisk.upgraded.ref.side.png`, `creature.neutral.basilisk.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.basilisk.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1256,7 +1259,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 * Looks: An immense dragon with horn-crowned head and scales dulled to dark gold by age.
 * What it is: Ancient dragons (neutral) — The oldest drakes; every blow against them is answered. Occupies 2 hexes (large — horse-sized or bigger); flies, answers every attack.
 * Lore: _The ancient ones answer every blow; no hero has struck one twice unanswered._
-* Upgrade of **Elder Drake**: same anatomy, proportions, silhouette and pose as Elder Drake (so one skeleton fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
+* Upgrade of **Elder Drake**: same anatomy, proportions, silhouette and pose as Elder Drake (so one motion design fits both); it may be up to 10 % bigger. Change armour, ornament, colour, markings and glow as described, and add parts (wings, more tails or heads) only where the description names them — keep the body plan.
 * Pose for the reference views: Standing **square on all four legs** on flat ground, head level, **wings half-spread** to the sides, tail straight out behind.
 * Files: `creature.neutral.elder_drake.upgraded.ref.threequarter.png`, `creature.neutral.elder_drake.upgraded.ref.front.png`, `creature.neutral.elder_drake.upgraded.ref.side.png`, `creature.neutral.elder_drake.upgraded.ref.top.png` → `assets-source/creatures/reference/`; `creature.neutral.elder_drake.upgraded.portrait.png` → `assets-source/icons/final/`
 
@@ -1267,7 +1270,7 @@ Neutral creatures belong to no pantheon (guards, camps and wandering monsters). 
 Reference views go into **`assets-source/creatures/reference/`**; portraits
 (the lines ending in `.portrait.png`) go into **`assets-source/icons/final/`**.
 After delivery the game's own tool (`npm run icons:import`) imports the
-portraits; the reference views wait for the 3D step.
+portraits; the reference views are the masters for the 2D animation strips.
 
 ```
 creature.greek.tier1.base.ref.threequarter.png

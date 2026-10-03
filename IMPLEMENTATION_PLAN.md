@@ -25,7 +25,7 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 * ✅ Electron main + preload (custom origin, CSP, sandbox, validated IPC,
   atomic saves); browser platform adapters.
 * ✅ React shell: router with return context, overlays, toasts, keyboard.
-* ✅ Babylon `EngineHost` (one engine, re-parented canvas).
+* ✅ Presentation `EngineHost` (one renderer, re-parented canvas; PixiJS 2D since the 2D migration, Phase L).
 * ✅ Preferences (draft/apply/persist), save-slot policy, placeholder asset
   manifest + procedural portraits.
 
@@ -43,9 +43,9 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 
 ## Phase E — Tactical battle ✅
 
-* ✅ Battle rules and resolution, tactical AI, auto-combat, Babylon battle
-  scene with placeholder animation playback, previews, result and level-up
-  flows.
+* ✅ Battle rules and resolution, tactical AI, auto-combat, battle view
+  with placeholder animation playback (2D since Phase L), previews, result
+  and level-up flows.
 * ✅ Town sieges (walls, gate, keep, moat, towers, Catapult, wall breaker,
   capture), BAT-14 defender selection, Tactics deployment.
 
@@ -59,9 +59,10 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 ## Phase G — Hardening 🟡
 
 * ✅ Boundary lint, e2e journey, desktop smoke, save corruption handling.
-* ✅ Babylon deep imports + on-demand 3D layer: the start-up script is
-  0.88 MB (0.25 MB gzip) instead of 8.3 MB; the menu appears about 5× sooner
-  (`tools/perf/load-time.mjs`).
+* ✅ On-demand presentation layer: the views load in their own chunk after the
+  menu appears (measured with the earlier 3D layer: start-up script 0.88 MB
+  instead of 8.3 MB, menu about 5× sooner; the PixiJS chunk since Phase L is
+  loaded the same way — `tools/perf/load-time.mjs`).
 * ✅ Audio foundation: sound manifest by ID, five buses, crossfading music
   and ambience per mission soundscape, stingers, interface and combat sounds
   timed with battle playback, Settings volumes/mute/"Calmer sound" — with
@@ -69,7 +70,7 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 * 🟡 Installer builds: Windows x64 NSIS installer built and inspected (not yet
   run on Windows; unsigned). macOS/Linux installers not built.
 * ⬜ Performance budget measurement on target GPUs (frame time, memory).
-* ⬜ Accessibility audit (screen reader labels on the 3D views, focus order).
+* ⬜ Accessibility audit (screen reader labels on the map and battle views, focus order).
 * ⬜ Owner review of every "proposed" number (no planned-only town location remains).
 
 ## Phase H — All six pantheons and asset pipeline ✅ (values proposed)
@@ -78,9 +79,9 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 * ✅ Egyptian, Japanese, Celtic and Mesoamerican playable in skirmish from data
   only (shared pantheon kit); Twin Harbors offers all 36 pairings, chosen in
   setup (own pantheon + AI rival).
-* ✅ GLB unit-model pipeline: manifests, validation, right-handed battle/viewer
-  scenes, rigs with clip playback, proxy fallback, calibration fixture,
-  `ASSET_PIPELINE.md` for artists.
+* ✅ Creature presentation pipeline for artists (`ASSET_PIPELINE.md`) — since
+  Phase L the 2D sprite pipeline (the earlier model pipeline is obsolete and
+  was deleted).
 * ⬜ First production creature pair (Hoplite) through the pipeline.
 * ✅ Fair skirmish: point-symmetric Twin Harbors v2, same-archetype leaders,
   AI hiring/holding/danger fixes; `npm run balance` measures all pantheons
@@ -135,6 +136,24 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 - [ ] Owner review of the details against `gui_guide.png` and the UI-kit
   sheet; a twelfth opening background; icons for Random Map and High Scores.
 
+## Phase L — 2D presentation (owner directive, 2026-10-03) 🟡
+
+* ✅ Audit of what to keep, adapt, remove and still make (`2D_MIGRATION_AUDIT.md`).
+* ✅ PixiJS 8 foundation: one `EngineHost`, sprite manifest with explicit
+  anchors, statuses and provenance, animation vocabulary and fallbacks,
+  `SpriteFigure` playback, labelled placeholders (`npm run sprites:placeholders`)
+  and an importer for final art (`npm run sprites:import`).
+* ✅ Adventure Map in 2D layers (terrain, roads, decoration, locations, avatars,
+  overlays, fog, effects); one mounted avatar per pantheon.
+* ✅ Tactical Battle in 2D (painted background, logical hex overlay, obstacles,
+  siege pieces, creature sprites, projectiles, effects; React HUD).
+* ✅ Unit Detail animated 2D viewer; hero screen figure; towns verified
+  (18 locations, base/upgraded dwelling art).
+* ✅ Babylon.js code, 3D assets, dependencies, tools and tests deleted; settings
+  reduced to working options.
+* ✅ Production queue for the remaining art (`GPT6_2D_CONTENT_GENERATION.md`), as 140 sheets with a cutter (`npm run sprites:cut`).
+* ⬜ Final art: every sprite is a placeholder until the queue is delivered.
+
 ## Next steps (in order)
 
 1. Install the Windows build on a real PC and play; report anything that breaks.
@@ -147,8 +166,11 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
 3. Owner decision on the Norse campaign outline; if approved, build it.
 4. Human playtests per pantheon and of random maps and hot-seat (re-run `npm run balance` after any value
    change); replace the dwelling stand-in art noted in the placeholder manifest.
-5. First production model pair (Hoplite / Veteran Hoplite) through
-   `ASSET_PIPELINE.md`; play `takeoff`/`land` in battle when the first flyer lands.
+5. First production sprite pair (Hoplite / Veteran Hoplite) as GPT-6 sheets
+   (`GPT6_2D_CONTENT_GENERATION.md`), cut with `npm run sprites:cut` and
+   imported with `npm run sprites:import`; judge the sheet approach on that
+   pilot (grid kept, one size across frames); check `takeoff`/`fly`/`landing`
+   in battle when the first flyer's sheet lands.
 6. Listen to the placeholder sounds and music and say what to keep, change or
    commission; final recordings replace files by sound ID (ASSET_PIPELINE §10).
 7. AI on random maps: split attention evenly in three-way games (AI-only
@@ -157,8 +179,8 @@ Status legend: ✅ done · 🟡 partial · ⬜ not started
    Remaining balance outliers after the AI fixes (see DEVELOPMENT_STATUS):
    Celtic upgraded armies high; Greek upgraded armies low against the
    proposed pantheons.
-8. Measure the first 3D scene on a real GPU; if it is still ~0.4 s slower than
-   before the split (DEVELOPMENT_STATUS, "Start-up load time"), find the cause.
+8. Measure the first map and battle views on a real GPU (frame time, memory,
+   first-view time with the PixiJS layer).
    Minimap viewport frame; combat-log back-fill of the opening round.
 9. AI use of adventure spells; stack merging before sieges; code signing for
    the installer (needs a certificate — owner decision); the map editor.

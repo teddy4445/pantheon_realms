@@ -18,14 +18,6 @@
 
 **Used for:** Project .mcp.json, stdio/HTTP entries, environment substitutions and project approval.
 
-## SRC-03 - Official Babylon MCP authoring servers
-
-[Official Babylon MCP authoring servers](https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/packages/public/@babylonjs/mcp-servers/readme.md)
-
-**Publisher/status:** Official BabylonJS repository.
-
-**Used for:** @babylonjs/mcp-servers; NME, NPE, NGE and other editors; local authoring/export.
-
 ## SRC-04 - Playwright MCP
 
 [Playwright MCP](https://github.com/microsoft/playwright-mcp)
@@ -33,14 +25,6 @@
 **Publisher/status:** Official Microsoft repository.
 
 **Used for:** @playwright/mcp; browser configuration, isolated profile, vision, local tooling and security limitations.
-
-## SRC-05 - Blender MCP
-
-[Blender MCP](https://github.com/ahujasid/mcp-for-blender)
-
-**Publisher/status:** Community maintainer repository, NOT official Blender.
-
-**Used for:** Renamed package mcp-for-blender, add-on requirement, localhost socket, arbitrary Python, safe-mode limitations and telemetry controls.
 
 ## SRC-06 - Context7 for Claude Code
 
@@ -74,14 +58,6 @@
 
 **Used for:** Optional browser testing workflow; Python examples do not override this project TypeScript test architecture.
 
-## SRC-10 - Khronos glTF Validator
-
-[Khronos glTF Validator](https://github.com/KhronosGroup/glTF-Validator)
-
-**Publisher/status:** Official Khronos repository.
-
-**Used for:** Full conformance validator, separate from the toolkit metadata audit.
-
 ## SRC-11 - MCP stdio transport
 
 [MCP stdio transport](https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/main/docs/specification/2025-11-25/basic/transports.mdx)
@@ -98,19 +74,29 @@
 
 **Used for:** Remote documentation queries, library resolution and anonymous/authenticated access.
 
+## SRC-13 - PixiJS 8 guides
+
+[PixiJS 8 guides](https://pixijs.com/8.x/guides)
+
+**Publisher/status:** Official PixiJS documentation. Inspected 3 October 2026.
+
+**Used for:** Renderer, application/ticker, sprites, textures and assets, and v8 migration notes behind the `pr-pixi-scene` skill. Check the game's pinned `pixi.js` version before applying an example.
+
+Sources SRC-03, SRC-05 and SRC-10 were removed on 3 October 2026 with the 2D presentation migration; they described tool integrations the project no longer uses. Their IDs are not reused.
+
 
 ## What is original and what is external
 
-All ten `pr-*` skills and the local audit/setup/test scripts are newly authored for this project. They are not copied from Anthropic, Babylon, Microsoft, Blender, or an installed ChatGPT skill. Only the common Agent Skills file conventions are reused.
+All ten `pr-*` skills and the local audit/setup/test scripts are newly authored for this project. They are not copied from Anthropic, Microsoft, PixiJS or an installed ChatGPT skill. Only the common Agent Skills file conventions are reused.
 
-The 35 files in `docs/pantheon-v0.3/` are the user's prior current handoff, preserved unchanged. Their hashes are in `source-document-checksums.json`. They are a source snapshot, not a competing instruction hierarchy.
+The 35 files in `docs/pantheon-v0.3/` are the user's prior handoff. Their pre-migration hashes are in `source-document-checksums.json`; 18 of them were revised for the 2D migration on 3 October 2026, so a mismatch there marks a revised document, not corruption (`FILE_MANIFEST.json` has their current hashes). They are a source snapshot, not a competing instruction hierarchy.
 
 The two Anthropic skill candidates are researched but NOT bundled or enabled. The optional downloader resolves one commit, records Git blob hashes, preserves each skill's LICENSE.txt, and requires a separate enable step. Both inspected license files were Apache-2.0 at the research date; verify the downloaded snapshot rather than assuming all skills in that repository share a license.
 
-Third-party MCP software, browser executables, Blender/add-ons, Python, Node, runtime game dependencies, models, fonts and audio are NOT bundled. npm metadata is resolved only when the user explicitly runs the plan command. The exact version and integrity are then recorded before installation. We did not verify those future resolved releases by executing them here.
+Third-party MCP software, browser executables, Python, Node, runtime game dependencies, art, fonts and audio are NOT bundled. npm metadata is resolved only when the user explicitly runs the plan command. The exact version and integrity are then recorded before installation. We did not verify those future resolved releases by executing them here.
 
 ## Verification limitations
 
-There was no usable network access from the build container to npm/PyPI/GitHub downloads, although source pages could be inspected through web retrieval. No external executable was fetched, installed or run for this toolkit. The package therefore contains reviewed configuration logic and explicit staged installers rather than pretending it contains preinstalled third-party tools.
+There was no usable network access from the build container to npm/GitHub downloads, although source pages could be inspected through web retrieval. No external executable was fetched, installed or run for this toolkit. The package therefore contains reviewed configuration logic and explicit staged installers rather than pretending it contains preinstalled third-party tools.
 
 A pinned version/commit improves reproducibility; it is not a security or licensing guarantee. Network requests, account policies, tool schemas and package exports can change. Setup deliberately fails on unexpected executable names or missing licenses instead of guessing.

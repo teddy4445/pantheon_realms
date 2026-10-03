@@ -1,6 +1,6 @@
 ---
 name: pr-campaign-mapgen
-description: "Implement, validate, or debug the Three Beacons campaign, mission state, carryover, seeded map generation, route previews, story gates and resource dependencies in Pantheon Realms. Use for mission manifests, golden seeds, blocked-route bugs, procedural decoration, optional encounter placement and campaign save transitions. Keep logical generation independent of Babylon and preserve every creature pair."
+description: "Implement, validate, or debug the Three Beacons campaign, mission state, carryover, seeded map generation, route previews, story gates and resource dependencies in Pantheon Realms. Use for mission manifests, golden seeds, blocked-route bugs, procedural decoration, optional encounter placement and campaign save transitions. Keep logical generation independent of PixiJS and preserve every creature pair."
 ---
 
 # Campaign and Map Generation

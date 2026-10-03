@@ -1,12 +1,14 @@
 # Pantheon Realms - Production, Campaign and Asset Handoff
 
 **Package version:** 0.3-production-handoff  
-**Updated:** 2026-09-29  
+**Updated:** 2026-09-29; presentation technology updated 2026-10-03 (2D migration, [DEC-23](DECISIONS_v0_3.md))  
 **Purpose:** Extend the existing gameplay/rules documentation into a concrete development and asset-production specification. This is documentation, not a new executable game or a delivered art pack.
 
 ## Adopted direction
 
-Desktop-first and offline-capable. TypeScript owns game rules and AI. Babylon.js renders a stylized 3D world. React supplies the interface. Blender is the editable asset source and glTF/GLB is the runtime interchange. Electron packages the desktop game; a browser build uses the same core. Every creature has exactly one upgrade.
+Pantheon Realms is a desktop-first, offline-capable, data-driven deterministic turn-based strategy game. TypeScript owns authoritative rules and AI. React owns application interface screens. PixiJS owns the 2D Adventure Map, Tactical Battle presentation, sprite animation, and animated Unit Detail viewer. Electron packages the desktop application and a browser build uses the same core. Content presentation uses high-resolution 2D backgrounds, sprites, atlases, portraits, UI art and animation strips. Gameplay state changes only through validated commands; presentation never defines gameplay outcomes. Every creature has exactly one upgrade.
+
+Creature art follows the 2D pipeline: canonical reference views -> portraits -> animation strips (facing right, explicit anchors), delivered by GPT-6 from the production queue `GPT6_2D_CONTENT_GENERATION.md` and imported with `npm run sprites:import`; labelled placeholders stand in until then.
 
 The first proposed campaign is **The Three Beacons**, three short linked missions. Its story, exact encounters, map templates and economy fixtures are original proposals; they have not been playtested. The eight Greek families already defined in v0.2 are retained as sixteen base/upgraded forms.
 
@@ -24,7 +26,7 @@ The first proposed campaign is **The Three Beacons**, three short linked mission
 
 | Area | Contents |
 | --- | --- |
-| `production/` | Stack, independent simulation, local AI, offline packaging, asset workflow, sixteen creature briefs, every other visual element |
+| `production/` | Stack, independent simulation, local AI, offline packaging, 2D sprite/animation workflow, sixteen creature briefs, every other visual element |
 | `campaign/` | Three exact mission manifests, narrative/quests/carryover, seeds/anchors/roads/gates, generation and validation logic |
 | `content/` | One-upgrade invariant, lore, original animation behavior contract |
 | `design/` | Existing five-resource economy, 32 building definitions, 16 creature forms, battle/hero/magic candidate rules |

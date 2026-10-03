@@ -145,7 +145,7 @@ export class GameAudio {
       inSession: !!session,
       soundscape: mission?.soundscape ?? null,
     });
-    // Loading and decoding tracks competes with building a 3D scene for the CPU and the
+    // Loading and decoding tracks competes with building the map or battle for the CPU and the
     // network, so music changes and the combat pre-load wait until the page is idle.
     if (scape.music !== this.wantMusic || scape.ambience !== this.wantAmbience) {
       this.wantMusic = scape.music;

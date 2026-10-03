@@ -1,5 +1,5 @@
 /**
- * S06 Adventure Map. The Babylon view shows committed world state; every
+ * S06 Adventure Map. The 2D map view shows committed world state; every
  * movement, path and legality question is answered by the rules (quoteMovement,
  * reachableTiles, tileRole) and every change is a command.
  *
@@ -108,6 +108,20 @@ function siteLit(catalog: ContentCatalog, state: MatchState, def: SiteDefinition
   }
 }
 
+/** Sprite variant of a map location: a town's pantheon, a pickup's main reward. */
+function siteVariant(catalog: ContentCatalog, state: MatchState, def: SiteDefinition): string | null {
+  const k = def.kind;
+  if (k.type === 'town') return state.towns[k.townId]?.pantheonId ?? null;
+  if (k.type === 'pickup') {
+    if (k.reward.artifactIds?.length) return 'artifact';
+    let best: string | null = null;
+    let most = 0;
+    for (const [res, n] of Object.entries(k.reward.resources ?? {})) if ((n ?? 0) > most) [best, most] = [res, n ?? 0];
+    return best;
+  }
+  return null;
+}
+
 function buildView(
   catalog: ContentCatalog,
   state: MatchState,
@@ -133,12 +147,12 @@ function buildView(
       id: def.id,
       coord: def.coord,
       archetype: siteArchetype(def),
+      variant: siteVariant(catalog, state, def),
       name: def.name,
       shown,
       ownerColor: owner ? (state.players[owner]?.color ?? null) : null,
       ownerShape: owner === playerId ? ('square' as const) : ('pennant' as const),
-      guardBody: guardCreature?.presentation.bodyProfile ?? null,
-      guardUpgraded: guardCreature?.form === 'upgraded',
+      guard: guardCreature?.id ?? null,
       // Event shrines glow until used; a relic and a portal always glow.
       lit: siteLit(catalog, state, def, st),
       // Key gates show their barrier only to empires without the key.
@@ -158,11 +172,10 @@ function buildView(
         color: state.players[h.ownerId]?.color ?? '#999',
         shown: h.ownerId === playerId || visible.has(cellIndex(map, h.position)),
         selected: selected?.id === h.id,
-        // Heroes visit a town from its gate tile (2026-10-03), so no offset off the town model.
+        // Heroes visit a town from its gate tile (2026-10-03), so no offset off the town sprite.
         inTown: false,
-        monsterBody: lead?.presentation.bodyProfile ?? null,
-        monsterUpgraded: lead?.form === 'upgraded',
-        // The mounted model follows the hero's own pantheon (else its owner's).
+        monster: lead?.id ?? null,
+        // The mounted map avatar follows the hero's own pantheon (else its owner's).
         pantheonId: catalog.heroes[h.definitionId]?.pantheonId ?? state.players[h.ownerId]?.pantheonId ?? null,
       };
     });
@@ -551,7 +564,7 @@ export function AdventureScreen() {
 
   const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? target : null, humanTurn, grid), [catalog, state, playerId, selected, target, humanTurn, grid]);
 
-  // The controller can arrive after the first render (the 3D layer loads on demand),
+  // The controller can arrive after the first render (the 2D layer loads on demand),
   // so it reads the latest view and selection from refs when it does.
   const viewRef = useRef(view);
   viewRef.current = view;
@@ -562,7 +575,7 @@ export function AdventureScreen() {
     ctrl.current?.update(view);
   }, [view]);
 
-  // A different game (load, restart) abandons any pending Prepare_War of the old one.
+  // A different game (load, restart) abandons any pending readiness beat of the old one.
   const sessionRef = store.session;
   useEffect(() => () => ctrl.current?.cancelPreparations(), [sessionRef]);
 
@@ -624,12 +637,11 @@ export function AdventureScreen() {
       afterMoves(moves);
     });
     /**
-     * Prepare_War: the attacking mounted hero has stopped on its approach tile; it
-     * faces the opponent and plays the readiness gesture once. The battlefield opens
-     * (store.routeAfterUpdate, after this presentation step) only once the clip's
-     * animation-finished event has fired. If the encounter is abandoned meanwhile
-     * (another game loaded, the battle gone), the completion is ignored and the hero
-     * blends back to idle.
+     * Readiness beat: the attacking mounted hero has stopped on its approach tile; it
+     * faces the opponent and holds its readiness pose once. The battlefield opens
+     * (store.routeAfterUpdate, after this presentation step) only once the beat has
+     * finished. If the encounter is abandoned meanwhile (another game loaded, the
+     * battle gone), the completion is ignored and the hero returns to idle.
      */
     async function prepareBeforeBattle(c: AdventureSceneController, battleId: string, source: string) {
       const session = store.session;

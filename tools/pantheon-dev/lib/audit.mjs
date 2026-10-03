@@ -86,44 +86,53 @@ export async function auditCatalog(root,relative) {
   return {file:relative,...validateCreaturePairs(data)};
 }
 
-export function parseGltf(bytes, extension) {
-  if (extension === '.gltf') { if(bytes.length>MAX_JSON) throw new Error('Oversized glTF JSON.'); return JSON.parse(bytes.toString('utf8')); }
-  if (bytes.length < 20 || bytes.readUInt32LE(0)!==0x46546c67 || bytes.readUInt32LE(4)!==2 || bytes.readUInt32LE(8)!==bytes.length) throw new Error('Invalid GLB 2 header or total length.');
-  let offset=12, json;
-  while (offset<bytes.length) {
-    if (offset+8>bytes.length) throw new Error('Truncated GLB chunk header.');
-    const size=bytes.readUInt32LE(offset), type=bytes.readUInt32LE(offset+4);
-    if (size%4!==0 || offset+8+size>bytes.length) throw new Error('Invalid GLB chunk alignment or length.');
-    if (offset===12 && type!==0x4e4f534a) throw new Error('First GLB chunk must be JSON.');
-    if (type===0x4e4f534a) {
-      if (json!==undefined || size>MAX_JSON) throw new Error('Duplicate or oversized JSON chunk.');
-      json=JSON.parse(bytes.subarray(offset+8,offset+8+size).toString('utf8').trim());
-    }
-    offset+=8+size;
+const SPRITE_SCHEMA = 'pantheon-realms-sprites-1';
+const SPRITE_SECTIONS = ['creatures', 'heroes', 'sites', 'decor', 'obstacles', 'siege', 'projectiles', 'effects'];
+const SPRITE_STATUSES = ['placeholder', 'final'];
+export const DEFAULT_SPRITE_MANIFEST = 'assets-runtime/sprites/manifest.json';
+
+/** Collect every `file` reference in a manifest entry (bounded depth). */
+function spriteFiles(value, out, errors, where, depth = 0) {
+  if (depth > 6 || value === null || typeof value !== 'object') return;
+  if (Array.isArray(value)) { for (const x of value) spriteFiles(x, out, errors, where, depth + 1); return; }
+  for (const [key, x] of Object.entries(value)) {
+    if (key === 'file') { if (typeof x === 'string' && x) out.add(x); else errors.push(`${where}: file must be a non-empty string.`); }
+    else spriteFiles(x, out, errors, where, depth + 1);
   }
-  if (!json) throw new Error('Missing GLB JSON chunk.');
-  return json;
 }
 
-export async function inspectAsset(root,relative,requiredClips=[]) {
-  if (!Array.isArray(requiredClips) || requiredClips.length>32 || requiredClips.some(x=>!idOK(x))) throw new Error('requiredClips must be at most 32 semantic clip names.');
-  const file=await projectFile(root,relative,['.glb','.gltf'],MAX_ASSET);
-  const bytes=await fs.readFile(file);
-  const doc=parseGltf(bytes,path.extname(file).toLowerCase());
-  if (!object(doc) || doc.asset?.version!=='2.0') throw new Error('Expected a glTF 2.0 asset.');
-  for (const key of ['animations','skins','meshes','materials','buffers','images']) if (doc[key]!==undefined && !Array.isArray(doc[key])) throw new Error(`Invalid ${key} array.`);
-  const clips=(doc.animations??[]).map(a=>typeof a.name==='string'?a.name:'<unnamed>').slice(0,256);
-  const uris=[...(doc.buffers??[]),...(doc.images??[])].map(x=>x.uri).filter(x=>typeof x==='string');
-  const externalReferences=uris.filter(x=>!x.startsWith('data:'));
-  const unsafeReferences=externalReferences.filter(x=>{try { const u=decodeURIComponent(x); return /^(?:[a-z][a-z0-9+.-]*:|\/|\\)/i.test(u) || /[?#]/.test(u) || u.split(/[\\/]/).includes('..'); } catch {return true;} });
-  const missingClips=requiredClips.filter(x=>!clips.includes(x));
-  const duplicateAnimationNames=clips.filter((x,i)=>x!=='<unnamed>'&&clips.indexOf(x)!==i);
-  return {file:relative, bytes:bytes.length, format:'glTF 2.0', meshes:doc.meshes?.length??0,
-    materials:doc.materials?.length??0, skins:doc.skins?.length??0, animationNames:clips,
-    missingClips, duplicateAnimationNames,
-    externalReferences:externalReferences.slice(0,64), unsafeReferences:unsafeReferences.slice(0,64),
-    metadataChecksPass:!missingClips.length&&!unsafeReferences.length&&!duplicateAnimationNames.length,
-    scope:'Header/JSON metadata inspection only. Does not validate accessors, visual quality, deformation, physics, or glTF specification conformance. Run the Khronos glTF Validator separately.'};
+/** Read-only bookkeeping check of the 2D sprite manifest: counts by section/status and referenced files missing locally. */
+export async function inspectSpriteManifest(root, relative = DEFAULT_SPRITE_MANIFEST) {
+  const file = await projectFile(root, relative, ['.json']);
+  const doc = JSON.parse(await fs.readFile(file, 'utf8'));
+  if (!object(doc) || doc.schema !== SPRITE_SCHEMA) throw new Error(`Expected a ${SPRITE_SCHEMA} sprite manifest.`);
+  const sections = {}, byStatus = {}, errors = [], files = new Set();
+  let entryCount = 0;
+  for (const name of SPRITE_SECTIONS) {
+    const section = doc[name] ?? {};
+    if (!object(section)) { errors.push(`${name}: section must be an object keyed by sprite ID.`); continue; }
+    const counts = {};
+    for (const [id, entry] of Object.entries(section)) {
+      if (++entryCount > 5000) throw new Error('Sprite manifest exceeds 5000 entries.');
+      const status = object(entry) && SPRITE_STATUSES.includes(entry.status) ? entry.status : 'invalid';
+      if (status === 'invalid') errors.push(`${name}.${id}: status must be placeholder or final.`);
+      counts[status] = (counts[status] ?? 0) + 1;
+      byStatus[status] = (byStatus[status] ?? 0) + 1;
+      spriteFiles(entry, files, errors, `${name}.${id}`);
+      if (files.size > 20000) throw new Error('Sprite manifest references more than 20000 files.');
+    }
+    sections[name] = counts;
+  }
+  const missingFiles = [];
+  for (const ref of [...files].sort()) {
+    // Runtime paths are relative to the application root, which maps to assets-runtime/.
+    try { await projectFile(root, 'assets-runtime/' + ref, ['.webp', '.png'], MAX_ASSET); } catch { missingFiles.push(ref); }
+  }
+  return {file:relative, schema:doc.schema, entryCount, sections, byStatus, referencedFiles:files.size,
+    missingFileCount:missingFiles.length, missingFiles:missingFiles.slice(0,100),
+    errors:errors.slice(0,100), errorsTruncated:errors.length>100,
+    valid:errors.length===0 && missingFiles.length===0,
+    scope:'Manifest bookkeeping only: entry status and local file presence (missing, unsafe or unsupported references are listed as missing). Does not check frame grids, anchors, transparency or how an animation reads; use npm run sprites:import and review in the viewer/battle.'};
 }
 
 export async function auditManifest(root,relative) {
@@ -131,7 +140,7 @@ export async function auditManifest(root,relative) {
   const doc=JSON.parse(await fs.readFile(file,'utf8'));
   if (!object(doc) || !Array.isArray(doc.assets) || !doc.assets.length || doc.assets.length>2000) throw new Error('Expected 1-2000 records in {assets:[{id,path}]} .');
   const errors=[], seen=new Set();
-  const extensions=['.glb','.gltf','.bin','.png','.jpg','.jpeg','.webp','.ktx2','.ogg','.mp3','.wav','.wasm','.js','.mjs','.json'];
+  const extensions=['.png','.jpg','.jpeg','.webp','.ogg','.mp3','.wav','.woff2','.js','.mjs','.json'];
   for (const a of doc.assets) {
     if (!object(a) || !idOK(a.id) || seen.has(a.id)) {errors.push('Invalid or duplicate asset ID.');continue;}
     seen.add(a.id);
@@ -139,12 +148,12 @@ export async function auditManifest(root,relative) {
     try {await projectFile(root,a.path,extensions,MAX_ASSET);} catch {errors.push(`${a.id}: missing, unsafe, oversized, or unsupported asset path.`);}
   }
   return {valid:errors.length===0,assetCount:doc.assets.length,errors:errors.slice(0,100),errorsTruncated:errors.length>100,
-    scope:'Declared local references only; not proof of offline launch. Audit dynamic decoder URLs and test a clean installed game with networking disabled.'};
+    scope:'Declared local references only; not proof of offline launch. Audit dynamic loader URLs and test a clean installed game with networking disabled.'};
 }
 
 export async function projectHealth(root) {
   const checks={};
-  for (const rel of ['CLAUDE.md','CLAUDE_TOOLING.md','docs/pantheon-v0.3/production/01_approved_stack_and_architecture.md','apps/client','apps/desktop','packages/rules','packages/ai','assets-runtime']) {
+  for (const rel of ['CLAUDE.md','CLAUDE_TOOLING.md','ARCHITECTURE.md','ASSET_PIPELINE.md','apps/client','apps/desktop','packages/rules','packages/ai','packages/presentation','assets-runtime','assets-runtime/sprites/manifest.json']) {
     try {const s=await fs.lstat(path.join(root,rel));checks[rel]=s.isSymbolicLink()?'symlink-not-inspected':s.isDirectory()?'directory':'file';}
     catch {checks[rel]='absent';}
   }

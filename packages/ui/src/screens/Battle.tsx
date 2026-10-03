@@ -1,7 +1,7 @@
 /**
  * S11 Tactical Battle. Legal moves, targets, spell/ability options and damage
  * previews come from the rules (legalActions / preview*). Every action is a
- * battle command; the result is committed before the Babylon playback starts,
+ * battle command; the result is committed before the 2D playback starts,
  * so playback speed (including instant) never changes the outcome.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -38,17 +38,19 @@ import {
   type DamagePreview,
   type GameEvent,
   type MatchState,
+  type SpellEffect,
   interventionsFor,
   quoteIntervention,
 } from '@pr/rules';
-import type { BattleSceneController, BattleView } from '@pr/presentation';
+import type { BattleSceneController, BattleView, SpellLook } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { battleCursor } from '../app/cursorContext';
 import { battleLogLines } from '../app/battleLog';
 import { cursorCss } from '../assets/cursors';
 import { battlePlaybackFactor } from '../app/preferences';
 import { matches } from '../app/keys';
-import { SceneViewport, presentation, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
+import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
+import { cellPoint } from '@pr/presentation/core';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
 import { CreaturePortrait, SpellIcon } from '../components/art';
 import { Icon } from '../assets/icons';
@@ -88,12 +90,33 @@ function effectChips(fx: BattleSideEffects | null): { key: string; text: string;
   return out;
 }
 
+/** How a battle spell's effect looks on the battlefield (presentation only; from the spell's effect data). */
+function spellLookOf(effect: SpellEffect | undefined): SpellLook | null {
+  if (!effect) return null;
+  switch (effect.type) {
+    case 'direct_damage':
+      return 'damage';
+    case 'area_damage':
+    case 'mass_damage':
+      return 'area';
+    case 'heal_front':
+    case 'mass_heal':
+      return 'heal';
+    case 'min_damage_roll':
+      return 'curse';
+    case 'speed_bonus':
+      return effect.amount < 0 ? 'curse' : 'buff';
+    default:
+      return 'buff';
+  }
+}
+
 function buildView(
   catalog: ContentCatalog,
   state: MatchState,
   la: BattleLegalActions | null,
   mode: Mode,
-  hover: { cell: BattleCell; offset: { x: number; z: number } } | null,
+  hover: { cell: BattleCell; offset: { x: number; y: number } } | null,
   unitLabels: string,
   grid: boolean,
   deploySel: string | null = null,
@@ -113,7 +136,6 @@ function buildView(
       id: s.id,
       creatureId: s.creatureId,
       side: s.side,
-      body: def.presentation.bodyProfile,
       upgraded: def.form === 'upgraded',
       accent,
       anchor: s.anchor,
@@ -161,17 +183,16 @@ function buildView(
       const active = battle.stacks[la.stackId]!;
       if (mode.kind === 'normal' && occId && battle.stacks[occId]?.side !== la.side && !la.shootTargets.includes(occId)) {
         const m = la.melee.find((x) => x.targetId === occId);
-        // Hover comes from the 3D scene, so the 3D layer (and its board transform) is loaded here.
-        const cellWorld = presentation()?.cellWorld;
-        if (m && cellWorld) {
-          const w = cellWorld(hover.cell, 1);
+        // The attack side under the pointer: the option whose cell is nearest, on the board's own transform.
+        if (m) {
+          const w = cellPoint(hover.cell, 1);
           const px = w.x + hover.offset.x;
-          const pz = w.z + hover.offset.z;
+          const py = w.y + hover.offset.y;
           let best = m.options[0]!;
           let bd = Infinity;
           for (const o of m.options) {
-            const ow = cellWorld(o.from, 1);
-            const d = (ow.x - px) ** 2 + (ow.z - pz) ** 2 + o.distance * 0.001;
+            const ow = cellPoint(o.from, 1);
+            const d = (ow.x - px) ** 2 + (ow.y - py) ** 2 + o.distance * 0.001;
             if (d < bd) {
               bd = d;
               best = o;
@@ -235,7 +256,7 @@ export function BattleScreen() {
   const battle = state.battle;
   const ctrl = useRef<BattleSceneController | null>(null);
   const [mode, setMode] = useState<Mode>({ kind: 'normal' });
-  const [hover, setHover] = useState<{ cell: BattleCell; offset: { x: number; z: number } } | null>(null);
+  const [hover, setHover] = useState<{ cell: BattleCell; offset: { x: number; y: number } } | null>(null);
   const [auto, setAuto] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [deploySel, setDeploySel] = useState<string | null>(null);
@@ -258,7 +279,7 @@ export function BattleScreen() {
     // After the battle ended the board keeps what the final playback showed.
     if (built && !ended) ctrl.current?.update(built.view);
   }, [built, ended]);
-  // The controller can arrive after the first render (the 3D layer loads on demand).
+  // The controller can arrive after the first render (the 2D layer loads on demand).
   const builtRef = useRef(built);
   builtRef.current = built;
 
@@ -300,7 +321,7 @@ export function BattleScreen() {
     store.dispatch(payload);
   };
 
-  const onCellClick = (cell: BattleCell, button: number, offset: { x: number; z: number }) => {
+  const onCellClick = (cell: BattleCell, button: number, offset: { x: number; y: number }) => {
     const s = store.session?.state;
     const b = s?.battle;
     if (!s || !b) return;
@@ -382,12 +403,14 @@ export function BattleScreen() {
         onCellClick: (c, b, o) => clickRef.current(c, b, o),
         onCellHover: (c, o) => setHover(c ? { cell: c, offset: o } : null),
         onCue: (cue) => store.audio?.battleCue(cue),
+        spellLook: (spellId) => spellLookOf(catalog.spells[spellId]?.effect),
       }),
     [],
   );
   const onController = useCallback((c: BattleSceneController | null) => {
     ctrl.current = c;
     projectors.battle = c ? (col, row) => toPage(c.projectCell({ col, row })) : undefined;
+    inspectors.battle = c ? { stacks: () => c.stackDebug() } : undefined;
     if (c && builtRef.current) c.update(builtRef.current.view);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

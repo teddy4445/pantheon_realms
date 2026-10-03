@@ -1,6 +1,6 @@
 ---
 name: pr-rules-engine
-description: "Implement or review Pantheon Realms headless TypeScript rules, economy, combat, calendars, recruitment, creature upgrades, saved state, or command validation. Use for rule changes, shared stat/price calculations, casualty accounting, replay determinism and idempotency bugs. Preserve current candidate-rule provenance and keep rules independent of React, Babylon, Electron, network APIs and presentation timing."
+description: "Implement or review Pantheon Realms headless TypeScript rules, economy, combat, calendars, recruitment, creature upgrades, saved state, or command validation. Use for rule changes, shared stat/price calculations, casualty accounting, replay determinism and idempotency bugs. Preserve current candidate-rule provenance and keep rules independent of React, PixiJS, Electron, network APIs and presentation timing."
 ---
 
 # Deterministic Rules Engine
@@ -11,7 +11,7 @@ Read [project-contract.md](references/project-contract.md). Load the current `de
 
 1. Locate the authoritative state, command validator, content definitions and tests. Identify the version of the rule being changed.
 2. Specify preconditions, cost quote, mutation, emitted immutable events, failure reason, and persistence effect. Validate all preconditions before any mutation.
-3. Implement in TypeScript without DOM, Babylon, Electron, wall-clock randomness or renderer references. Use explicit integer/rational rounding and stable ordering.
+3. Implement in TypeScript without DOM, PixiJS, Electron, wall-clock randomness or renderer references. Use explicit integer/rational rounding and stable ordering.
 4. Use saved gameplay RNG streams; never consume them to create previews, search rollouts, cosmetic effects or UI examples.
 5. Add success, rejection, replay and repeated-command tests before connecting a view. Quotes and displayed outcomes must use the same calculation as commits.
 6. Run the repository's actual tests. Save a regression seed and event sequence for probabilistic failures.

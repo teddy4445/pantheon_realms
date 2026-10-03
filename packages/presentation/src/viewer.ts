@@ -1,111 +1,97 @@
 /**
- * UnitViewerController (S18 Animated Bestiary): one creature on a pedestal with
- * an orbit camera and explicit playback controls (production/02 §8):
- * Play / Pause / Stop / Restart, 0.5× / 1× / 2×, defeat plays once and holds,
- * reduced motion disables idle autoplay and auto-rotation.
+ * UnitViewerController (S18 Animated Bestiary): one creature drawn large from
+ * its battle sprite set on a plinth, with explicit playback controls:
+ * Play / Pause / Stop / Restart, 0.5× / 1× / 2×, a choice among the
+ * animations this creature has, facing left or right. Loops loop; one-shots
+ * repeat after a pause; death plays once and holds. Reduced motion: nothing
+ * plays by itself — the first idle frame is shown until Play is pressed.
  *
- * The subject is the creature's registered GLB model when one exists (loaded
- * into this right-handed scene), otherwise the procedural proxy. The viewer
- * reports which one it shows so the screen never presents a placeholder as
- * final art.
+ * The viewer reports the sprite set's status (placeholder or final) and which
+ * animations are its own, so the screen never presents a stand-in as final art.
  */
-import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
-import { Color3 } from '@babylonjs/core/Maths/math.color';
-import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
-import { Engine } from '@babylonjs/core/Engines/engine';
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
-import { Scene } from '@babylonjs/core/scene';
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import type { BodyProfile } from '@pr/rules';
-import type { SceneController } from './engineHost';
-import { clearColor } from './meshkit';
-import { MaterialCache, buildCreatureProxy, disposeProxy, type CreatureProxy } from './proxies';
+import { Container, Graphics } from 'pixi.js';
+import type { EngineHost, SceneController } from './engineHost';
+import { SpriteFigure } from './figure';
+import { creatureSprites, type SpriteStatus } from './sprites';
 import { TweenPlayer } from './tween';
-import { applyIdle, playState, restFigure, type AnimationState, type Figure } from './animations';
-import { ModelCache, unitModelFor, type ModelRig } from './models';
+import { colorOf, groundShadow } from './staticSprites';
 
 export interface ViewerSubject {
   readonly key: string;
-  readonly body: BodyProfile;
-  readonly upgraded: boolean;
+  readonly creatureId: string;
   readonly accent: string;
   readonly footprint: 1 | 2;
-  /** Selects a registered GLB model; the proxy is shown until it loads or if it fails. */
-  readonly creatureId?: string;
 }
 
-export type ViewerModelStatus =
-  | { readonly kind: 'proxy' }
-  | { readonly kind: 'loading'; readonly assetId: string }
-  | { readonly kind: 'model'; readonly assetId: string; readonly status: string; readonly clips: readonly AnimationState[] }
-  | { readonly kind: 'failed'; readonly assetId: string; readonly reason: string };
+export type ViewerSpriteStatus =
+  | { readonly kind: 'loading' }
+  | { readonly kind: 'ready'; readonly status: SpriteStatus; readonly provenance: string; readonly animations: readonly string[] }
+  | { readonly kind: 'missing' };
 
 export type PlaybackState = 'playing' | 'paused' | 'stopped';
 
-const LOOPING: ReadonlySet<AnimationState> = new Set(['idle', 'move', 'defend']);
+const LOOPING: ReadonlySet<string> = new Set(['idle', 'move', 'fly', 'victory']);
 
 export class UnitViewerController implements SceneController {
-  readonly scene: Scene;
-  private readonly camera: ArcRotateCamera;
-  private readonly mats: MaterialCache;
+  readonly root = new Container();
   private readonly tweens = new TweenPlayer();
-  private readonly holder: TransformNode;
-  private readonly models: ModelCache;
-  private proxy: CreatureProxy | null = null;
-  private rig: ModelRig | null = null;
-  private figure: Figure | null = null;
+  private readonly stage = new Container();
+  private readonly backdrop = new Graphics();
+  private readonly holder = new Container();
+  private figure: SpriteFigure | null = null;
   private subjectKey = '';
-  private state: AnimationState = 'idle';
-  private loopToken = 0;
-  private time = 0;
+  private state = 'idle';
+  private token = 0;
   private playback: PlaybackState = 'playing';
-  private status: ViewerModelStatus = { kind: 'proxy' };
-  autoRotate = true;
+  private status: ViewerSpriteStatus = { kind: 'loading' };
+  private view = { width: 1, height: 1 };
+  private mirrored = false;
   /** Playback rate: 0.5, 1 or 2. */
   speed = 1;
-  /** Reduced motion: no idle autoplay, no auto-rotation. */
+  /** Reduced motion: no autoplay. */
   reducedMotion = false;
-  onStatus: ((s: ViewerModelStatus) => void) | null = null;
+  /** Idle plays by itself (Settings: bestiary animation autoplay). */
+  autoplay = true;
+  onStatus: ((s: ViewerSpriteStatus) => void) | null = null;
 
-  constructor(engine: Engine, canvas: HTMLCanvasElement) {
-    const scene = new Scene(engine);
-    scene.useRightHandedSystem = true;
-    this.scene = scene;
-    this.models = new ModelCache(scene);
-    scene.clearColor = clearColor('#0e1a2c');
-    this.mats = new MaterialCache(scene);
-    const cam = new ArcRotateCamera('viewer-cam', Math.PI / 2.6, 1.22, 5.6, new Vector3(0, 0.6, 0), scene);
-    cam.lowerRadiusLimit = 2.2;
-    cam.upperRadiusLimit = 8;
-    cam.lowerBetaLimit = 0.5;
-    cam.upperBetaLimit = 1.45;
-    cam.wheelPrecision = 60;
-    cam.panningSensibility = 0;
-    cam.attachControl(canvas, true);
-    this.camera = cam;
-    const hemi = new HemisphericLight('hemi', new Vector3(0, 1, 0), scene);
-    hemi.intensity = 0.62;
-    hemi.groundColor = new Color3(0.15, 0.16, 0.24);
-    const key = new DirectionalLight('key', new Vector3(-0.6, -1, -0.5), scene);
-    key.intensity = 0.9;
-    const rim = new DirectionalLight('rim', new Vector3(0.7, -0.4, 0.8), scene);
-    rim.intensity = 0.4;
-    rim.diffuse = new Color3(0.6, 0.75, 1);
-    const plinth = MeshBuilder.CreateCylinder('plinth', { height: 0.22, diameterTop: 2.1, diameterBottom: 2.3, tessellation: 48 }, scene);
-    plinth.position.y = -0.11;
-    plinth.material = this.mats.get('#5b5a58');
-    const trim = MeshBuilder.CreateTorus('trim', { diameter: 2.2, thickness: 0.05, tessellation: 64 }, scene);
-    trim.position.y = 0.005;
-    trim.material = this.mats.get('#c29a52', { emissive: 0.25 });
-    const floor = MeshBuilder.CreateGround('floor', { width: 400, height: 400 }, scene);
-    floor.position.y = -0.22;
-    floor.material = this.mats.get('#0e1a2c');
-    this.holder = new TransformNode('holder', scene);
+  constructor(engine: EngineHost, _canvas: HTMLCanvasElement) {
+    this.root.addChild(this.backdrop, this.stage);
+    this.stage.addChild(this.holder);
+    this.view = { width: engine.width, height: engine.height };
+    this.layout();
   }
 
-  get modelStatus(): ViewerModelStatus {
+  resize(width: number, height: number): void {
+    this.view = { width, height };
+    this.layout();
+  }
+
+  private layout(): void {
+    const { width, height } = this.view;
+    const g = this.backdrop;
+    g.clear();
+    g.rect(0, 0, width, height).fill({ color: 0x0e1a2c });
+    for (let i = 6; i > 0; i--) g.ellipse(width / 2, height * 0.58, width * 0.12 * i, height * 0.1 * i).fill({ color: 0x24406a, alpha: 0.05 });
+    const px = width / 2;
+    const py = height * 0.8;
+    const rx = Math.min(width * 0.32, height * 0.42);
+    g.ellipse(px, py + 6, rx * 1.04, rx * 0.2).fill({ color: 0x2e2c29 });
+    g.ellipse(px, py, rx, rx * 0.19).fill({ color: 0x5b5a58 }).stroke({ width: 2, color: 0xc29a52, alpha: 0.85 });
+    this.stage.position.set(px, py);
+    this.fit();
+  }
+
+  /** Scale the subject so its idle frame fills about two thirds of the view height. */
+  private fit(): void {
+    const f = this.figure;
+    const idle = f?.set?.animations['idle'];
+    if (!f || !idle) return;
+    const unscaled = idle.frameHeight * idle.anchor[1] * (100 / (idle.pixelsPerHex ?? f.set!.pixelsPerHex));
+    const target = Math.min(this.view.height * 0.66, this.view.width * 0.7);
+    this.holder.scale.set(target / Math.max(1, unscaled));
+  }
+
+  get spriteStatus(): ViewerSpriteStatus {
     return this.status;
   }
 
@@ -113,156 +99,170 @@ export class UnitViewerController implements SceneController {
     return this.playback;
   }
 
-  private setStatus(s: ViewerModelStatus): void {
+  private setStatus(s: ViewerSpriteStatus): void {
     this.status = s;
     this.onStatus?.(s);
-  }
-
-  private clearSubject(): void {
-    this.loopToken += 1;
-    this.tweens.flush();
-    if (this.rig) this.rig.dispose();
-    else if (this.proxy) disposeProxy(this.proxy);
-    this.rig = null;
-    this.proxy = null;
-    this.figure = null;
   }
 
   setSubject(s: ViewerSubject): void {
     if (s.key === this.subjectKey) return;
     this.subjectKey = s.key;
-    this.clearSubject();
-    const proxy = buildCreatureProxy(this.scene, this.mats, s.body, s.upgraded, s.accent, `viewer-${s.key}`);
-    proxy.root.parent = this.holder;
-    const scale = s.footprint === 2 ? 1.05 : 1.35;
-    this.holder.scaling.setAll(scale);
-    this.proxy = proxy;
-    this.figure = { proxy, base: { x: 0, y: 0, z: 0 }, seed: 0 };
-    this.camera.target = new Vector3(0, (proxy.height * scale) / 2, 0);
-    const entry = s.creatureId ? unitModelFor(s.creatureId) : undefined;
-    if (!entry) {
-      this.setStatus({ kind: 'proxy' });
-      this.setAnimation(this.state);
+    this.token += 1;
+    this.tweens.flush();
+    this.figure?.destroy();
+    const set = creatureSprites(s.creatureId);
+    // A neutral size for the figure itself; the holder scales it to the view.
+    const f = new SpriteFigure({ set, hexWidth: 100, accent: colorOf(s.accent) });
+    f.mirror = this.mirrored;
+    this.holder.removeChildren();
+    this.holder.addChild(groundShadow(60 * (s.footprint === 2 ? 1.5 : 1), 12, 0.4), f.view);
+    this.figure = f;
+    this.fit();
+    if (!set) {
+      this.setStatus({ kind: 'missing' });
       return;
     }
-    this.setStatus({ kind: 'loading', assetId: entry.manifest.assetId });
-    this.setAnimation(this.state);
+    this.setStatus({ kind: 'loading' });
     const key = s.key;
-    void this.models.instantiate(entry).then((r) => {
-      if (this.subjectKey !== key) {
-        if (r.ok) r.rig.dispose();
-        return;
-      }
-      if (!r.ok) {
-        this.setStatus({ kind: 'failed', assetId: entry.manifest.assetId, reason: r.reason });
-        return;
-      }
-      this.loopToken += 1;
-      this.tweens.flush();
-      if (this.proxy) disposeProxy(this.proxy);
-      this.proxy = null;
-      this.rig = r.rig;
-      // Models are authored in meters; show them at their true size on the 2.2 m plinth.
-      this.holder.scaling.setAll(1);
-      r.rig.root.parent = this.holder;
-      const strike = new TransformNode('viewer-strike', this.scene);
-      strike.parent = r.rig.root;
-      this.figure = { proxy: { root: r.rig.root, meshes: r.rig.meshes, strike, shield: null, height: r.rig.height }, rig: r.rig, base: { x: 0, y: 0, z: 0 }, seed: 0 };
-      this.camera.target = new Vector3(0, r.rig.height / 2, 0);
-      const clips = (['idle', 'move', 'melee', 'ranged', 'defend', 'hit', 'defeat', 'victory'] as const).filter((c) => r.rig.has(c));
-      this.setStatus({ kind: 'model', assetId: entry.manifest.assetId, status: entry.manifest.status, clips });
+    void f.loaded.then(() => {
+      if (this.subjectKey !== key || this.figure !== f) return;
+      if (f.status !== 'ready') return this.setStatus({ kind: 'missing' });
+      this.setStatus({ kind: 'ready', status: set.status, provenance: set.provenance, animations: Object.keys(set.animations) });
       this.setAnimation(this.state);
     });
   }
 
-  /** States the current subject can show (a model lacking a clip cannot fake it). */
-  available(state: AnimationState): boolean {
-    return !this.rig || this.rig.has(state);
+  /** 'own': the creature's own strip; 'fallback': another strip stands in; 'none': nothing to show. */
+  available(name: string): 'own' | 'fallback' | 'none' {
+    const f = this.figure;
+    if (!f?.set) return 'none';
+    if (f.has(name)) return 'own';
+    return f.resolve(name) ? 'fallback' : 'none';
   }
 
-  /** Select and play a state. Loops loop; one-shots repeat with a pause; defeat plays once and holds. */
-  setAnimation(state: AnimationState): void {
+  get mirror(): boolean {
+    return this.mirrored;
+  }
+
+  /** Face left (the defending side's view) or right. */
+  set mirror(m: boolean) {
+    this.mirrored = m;
+    if (this.figure) this.figure.mirror = m;
+  }
+
+  /** Select and play a state. Loops loop; one-shots repeat with a pause; death plays once and holds. */
+  setAnimation(state: string): void {
     this.state = state;
-    this.playback = 'playing';
-    this.loopToken += 1;
-    const token = this.loopToken;
+    const f = this.figure;
+    this.token += 1;
+    const token = this.token;
     this.tweens.flush();
-    this.rig?.stop();
-    if (this.figure) restFigure(this.figure);
-    if (!this.figure) return;
-    if (state === 'idle') {
-      if (this.reducedMotion) this.rig?.stop();
-      else this.rig?.loop('idle', this.speed);
+    if (!f || f.status !== 'ready') return;
+    f.rest();
+    this.tweens.speed = 1 / Math.max(0.25, this.speed);
+    if (this.reducedMotion && !this.forcePlay) {
+      // Reduced motion: the first frame of the state, nothing moving.
+      f.setLoop('idle');
+      this.playback = 'stopped';
+      if (state !== 'idle') f.holdLast(state);
       return;
     }
-    if (this.rig && !this.rig.has(state)) return;
-    if (this.rig && LOOPING.has(state)) {
-      this.rig.loop(state, this.speed);
+    this.forcePlay = false;
+    this.playback = 'playing';
+    if (LOOPING.has(state) && (f.has(state) || state === 'idle')) {
+      f.setLoop(state);
+      if (!this.autoplay && state === 'idle') this.playback = 'stopped';
       return;
     }
+    f.setLoop('idle');
     const run = async () => {
-      while (token === this.loopToken && this.figure) {
-        this.tweens.speed = this.speed <= 0 ? 1 : 1 / this.speed;
-        await playState(this.tweens, [this.figure], state);
-        if (token !== this.loopToken) return;
-        if (state === 'defeat' || this.reducedMotion) {
+      while (token === this.token && this.figure === f) {
+        if (state === 'death') {
+          if (f.has('death')) await f.playOnce('death', this.tweens, { hold: true });
+          else
+            await this.tweens.tween(620, (t) => {
+              f.pose.rotation = -t * (Math.PI / 2.2);
+              f.pose.alpha = 1 - t * 0.15;
+            });
+          if (token === this.token) this.playback = 'stopped';
+          return;
+        }
+        if (f.has(state) || !f.resolve(state)) await f.playOnce(state, this.tweens, { minMs: 500 });
+        else await this.standIn(f, state);
+        if (token !== this.token) return;
+        if (this.reducedMotion) {
           this.playback = 'stopped';
           return;
         }
-        await this.tweens.wait(380);
-        if (this.figure && token === this.loopToken) restFigure(this.figure);
+        await this.tweens.wait(420);
+        if (token === this.token) f.rest();
       }
     };
     void run();
   }
 
-  get animation(): AnimationState {
+  /** A missing strip: the stand-in strip plus a little motion of the figure itself. */
+  private async standIn(f: SpriteFigure, state: string): Promise<void> {
+    const strip = f.playOnce(state, this.tweens, { minMs: 560 });
+    const lunge = state === 'attack' || state === 'ability' || state === 'cast' ? 22 : state === 'shoot' ? -6 : 0;
+    if (lunge) {
+      await this.tweens.tween(220, (t) => (f.pose.x = lunge * t));
+      await this.tweens.tween(260, (t) => (f.pose.x = lunge * (1 - t)));
+    } else if (state === 'hit') {
+      await this.tweens.tween(320, (t) => (f.pose.x = -Math.sin(t * Math.PI) * 10));
+    } else if (state === 'defend') {
+      await this.tweens.tween(520, (t) => (f.pose.scale.y = 1 - Math.sin(t * Math.PI) * 0.08));
+    } else if (state === 'victory' || state === 'takeoff' || state === 'landing') {
+      await this.tweens.tween(620, (t) => (f.pose.y = -Math.abs(Math.sin(t * Math.PI * 2)) * 24));
+    }
+    await strip;
+    f.rest();
+  }
+
+  get animation(): string {
     return this.state;
   }
+
+  private forcePlay = false;
 
   pause(): void {
     if (this.playback !== 'playing') return;
     this.playback = 'paused';
-    for (const g of this.scene.animationGroups) if (g.isPlaying) g.pause();
   }
 
   resume(): void {
     if (this.playback !== 'paused') return;
     this.playback = 'playing';
-    for (const g of this.scene.animationGroups) if (g.isStarted && !g.isPlaying) g.play();
   }
 
-  /** Stop immediately and return to the rest pose. */
+  /** Stop immediately and return to the first idle frame. */
   stop(): void {
-    this.loopToken += 1;
+    this.token += 1;
     this.tweens.flush();
-    this.rig?.stop();
-    if (this.figure) restFigure(this.figure);
-    this.rig?.stop();
+    const f = this.figure;
+    if (f) {
+      f.rest();
+      f.setLoop('idle');
+    }
     this.playback = 'stopped';
   }
 
+  /** Play the selected state from its start (also under reduced motion, once). */
   restart(): void {
+    this.forcePlay = true;
     this.setAnimation(this.state);
   }
 
-  resetCamera(): void {
-    this.camera.alpha = Math.PI / 2.6;
-    this.camera.beta = 1.22;
-    this.camera.radius = 5.6;
-  }
-
   tick(dt: number): void {
-    this.time += dt;
-    if (this.playback !== 'paused') this.tweens.tick(dt);
-    if (this.autoRotate && !this.reducedMotion && this.playback !== 'paused') this.holder.rotation.y += dt * 0.00035;
-    if (this.state === 'idle' && this.figure && !this.reducedMotion && this.playback === 'playing') applyIdle(this.figure, this.time);
+    if (this.playback !== 'playing') return;
+    this.tweens.tick(dt);
+    this.figure?.tick(dt, this.speed);
   }
 
   dispose(): void {
-    this.clearSubject();
-    this.models.dispose();
-    this.mats.dispose();
-    this.scene.dispose();
+    this.token += 1;
+    this.tweens.flush();
+    this.figure?.destroy();
+    this.root.destroy({ children: true });
   }
 }

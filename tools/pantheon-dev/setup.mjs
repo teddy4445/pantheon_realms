@@ -5,7 +5,8 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 
-export const NPM_PACKAGES = Object.freeze({playwright:'@playwright/mcp',babylon:'@babylonjs/mcp-servers',gltf:'gltf-validator'});
+export const NPM_PACKAGES = Object.freeze({playwright:'@playwright/mcp'});
+export const ACTIVATION_PROFILES = Object.freeze(['playwright','context7','github']);
 const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 export async function safeDestination(root,relative) {
   if(path.isAbsolute(relative)||relative.split(/[\\/]/).some(x=>x==='..'||!x)||relative.includes(':'))throw new Error('Invalid destination.');
@@ -63,14 +64,10 @@ async function jsonFetch(url,fetcher=fetch){
   return r.json();
 }
 export async function resolvePlan(selected,fetcher=fetch) {
-  const plan={schemaVersion:1,resolvedAt:new Date().toISOString(),npm:{},blender:null};
+  for(const key of selected)if(!Object.hasOwn(NPM_PACKAGES,key))throw new Error(`Unknown install profile: ${key}`);
+  const plan={schemaVersion:1,resolvedAt:new Date().toISOString(),npm:{}};
   for(const key of selected){
-    if(key==='blender'){
-      const p=await jsonFetch('https://pypi.org/pypi/mcp-for-blender/json',fetcher);
-      if(!versionOK(p.info?.version))throw new Error('Invalid Blender package version.');
-      plan.blender={name:'mcp-for-blender',version:p.info.version,source:'https://pypi.org/project/mcp-for-blender/',requiresPython:p.info.requires_python??null};continue;
-    }
-    const name=NPM_PACKAGES[key];if(!name)throw new Error(`Unknown install profile: ${key}`);
+    const name=NPM_PACKAGES[key];
     const base='https://registry.npmjs.org/'+encodeURIComponent(name);
     const index=await jsonFetch(base,fetcher),version=index['dist-tags']?.latest;
     if(!versionOK(version))throw new Error(`Invalid registry version: ${name}`);
@@ -100,35 +97,29 @@ export async function installedBin(root,plan,key,binName){
   if(!resolved.startsWith(realDir+path.sep))throw new Error('Package executable escapes its directory.');
   return resolved;
 }
-export async function activationEntries(root,selected,{uvx,env=process.env}={}){
-  const local=selected.some(k=>['playwright','babylon','blender'].includes(k));
+export async function activationEntries(root,selected,{env=process.env}={}){
+  for(const key of selected)if(!ACTIVATION_PROFILES.includes(key))throw new Error(`Unknown activation profile: ${key}`);
+  const local=selected.includes('playwright');
   const plan=local?JSON.parse(await readOptional(root,'tools/pantheon-dev/vendor/plan.json')??'null'):null;
   if(local&&!plan)throw new Error('Resolve, review, and install the vendor plan first.');
   const entries={};
   if(selected.includes('playwright'))entries['pr-playwright']={type:'stdio',command:process.execPath,args:[await installedBin(root,plan,'playwright','playwright-mcp'),'--config',path.join(root,'tools/pantheon-dev/playwright.config.json')]};
-  if(selected.includes('babylon'))for(const name of ['nme','npe','nge'])entries['pr-babylon-'+name]={type:'stdio',command:process.execPath,args:[await installedBin(root,plan,'babylon','babylonjs-'+name+'-mcp-server')]};
   if(selected.includes('context7'))entries['pr-context7']={type:'http',url:'https://mcp.context7.com/mcp',...(env.CONTEXT7_API_KEY?{headers:{Authorization:'Bearer ${CONTEXT7_API_KEY}'}}:{})};
   if(selected.includes('github')){
     if(!env.PANTHEON_GITHUB_TOKEN)throw new Error('Set a read-only, repository-scoped PANTHEON_GITHUB_TOKEN in the client environment before activation. Its value will not be written.');
     entries['pr-github-readonly']={type:'http',url:'https://api.githubcopilot.com/mcp/readonly',headers:{Authorization:'Bearer ${PANTHEON_GITHUB_TOKEN}'}};
   }
-  if(selected.includes('blender')){
-    if(!versionOK(plan.blender?.version))throw new Error('No Blender package in the reviewed plan.');
-    if(!uvx||!path.isAbsolute(uvx))throw new Error('Pass --uvx=<absolute path to uvx>; no shell/path guessing.');
-    entries['pr-blender']={type:'stdio',command:await fs.realpath(uvx),args:['--python','3.11','--from','mcp-for-blender=='+plan.blender.version,'mcp-for-blender'],env:{BLENDER_HOST:'127.0.0.1',BLENDER_PORT:'9876',BLENDER_MCP_SAFE_MODE:'1',DISABLE_TELEMETRY:'true'}};
-  }
-  for(const key of selected)if(!['playwright','babylon','context7','github','blender'].includes(key))throw new Error(`Unknown activation profile: ${key}`);
   return entries;
 }
 function options(argv){const out={};for(const arg of argv){if(!arg.startsWith('--'))throw new Error('Expected named options.');const at=arg.indexOf('=');const k=arg.slice(2,at<0?undefined:at);if(Object.hasOwn(out,k))throw new Error('Repeated option.');out[k]=at<0?true:arg.slice(at+1);}return out;}
 export async function main(argv=process.argv.slice(2)){
   const root=await fs.realpath(path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..'));
   const [cmd,...rest]=argv,opts=options(rest);
-  for(const k of Object.keys(opts))if(!['with','link-claude','uvx'].includes(k))throw new Error(`Unknown option ${k}`);
+  for(const k of Object.keys(opts))if(!['with','link-claude'].includes(k))throw new Error(`Unknown option ${k}`);
   const chosen=typeof opts.with==='string'?[...new Set(opts.with.split(',').filter(Boolean))]:[];
   if(cmd==='init')return initProject(root,opts['link-claude']===true);
-  if(cmd==='plan'){if(!chosen.length)throw new Error('Choose --with=playwright,babylon,gltf (and optionally blender).');return savePlan(root,chosen);}
-  if(cmd==='activate'){if(!chosen.length)throw new Error('Choose profiles with --with=...');const entries=await activationEntries(root,chosen,{uvx:opts.uvx});return {configured:await writeMcp(root,entries),notice:'No software was executed. Restart/reload the local client and review each MCP permission prompt.'};}
-  return {usage:['node tools/pantheon-dev/setup.mjs init --link-claude','node tools/pantheon-dev/setup.mjs plan --with=playwright,babylon,gltf','Review vendor/plan.json and package.json; create/review lockfile and install explicitly (see Quick Start).','node tools/pantheon-dev/setup.mjs activate --with=playwright,babylon','node tools/pantheon-dev/setup.mjs activate --with=context7','node tools/pantheon-dev/setup.mjs activate --with=github'],note:'No command silently installs third-party code, runs Blender, or bypasses tool approvals.'};
+  if(cmd==='plan'){if(!chosen.length)throw new Error('Choose --with=playwright.');return savePlan(root,chosen);}
+  if(cmd==='activate'){if(!chosen.length)throw new Error('Choose profiles with --with=...');const entries=await activationEntries(root,chosen);return {configured:await writeMcp(root,entries),notice:'No software was executed. Restart/reload the local client and review each MCP permission prompt.'};}
+  return {usage:['node tools/pantheon-dev/setup.mjs init --link-claude','node tools/pantheon-dev/setup.mjs plan --with=playwright','Review vendor/plan.json and package.json; create/review lockfile and install explicitly (see Quick Start).','node tools/pantheon-dev/setup.mjs activate --with=playwright','node tools/pantheon-dev/setup.mjs activate --with=context7','node tools/pantheon-dev/setup.mjs activate --with=github'],note:'No command silently installs third-party code or bypasses tool approvals.'};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))main().then(v=>console.log(JSON.stringify(v,null,2))).catch(e=>{console.error(e.message);process.exitCode=1;});

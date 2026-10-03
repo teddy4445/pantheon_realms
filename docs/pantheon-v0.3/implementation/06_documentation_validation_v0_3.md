@@ -2,6 +2,8 @@
 
 **Date:** 29 September 2026. **Package:** `0.3-production-handoff`.
 
+> **Obsolete (2026-10-03):** describes the abandoned 3D pipeline; superseded by the 2D migration (PixiJS sprites). Kept as history only. This 2026-09-29 report names the renderer and asset tools of that pipeline in its scope statements; the checks themselves are unaffected.
+
 These checks were executed on the Markdown package and a small Python reference of its logical map templates. They validate document consistency, selected arithmetic, and graph constraints. They do **not** run the TypeScript game, render a Babylon scene, generate a Blender asset, simulate tactical victories, or establish balanced gameplay.
 
 ## Checks actually performed
@@ -47,6 +49,8 @@ The 14 gate assertions comprise one each for the M01 bridge and M02 pass, eight 
 M02 starts with 15 Favor and its two required guardian rewards grant another 5 and 10. Temple income supplies additional Favor but is not needed to prove this minimum. An optional spellbook costs a further 500 Gold. Casualty replacement, discretionary spending, optional buildings and human mistakes are not included in these minimums; the test does not guarantee victory with an arbitrary army or purchase order.
 
 ## Not tested in this pass
+
+> **Obsolete (2026-10-03):** describes the abandoned 3D pipeline; superseded by the 2D migration (PixiJS sprites). Kept as history only. (The "animation export, glTF file" items below refer to that pipeline.)
 
 No complete game build, Electron installer, browser/desktop parity test, save backend, animation export, glTF file, audio file, AI battle, human playtest, or measured performance run was produced. The specified PRNG and 1,000-variation-seed corpus were not executed here. Dependency/softlock reviews are not exhaustive state-space searches. The new per-form ability mapping remains a proposal to freeze before combat implementation.
 

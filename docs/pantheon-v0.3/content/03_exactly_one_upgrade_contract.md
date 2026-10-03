@@ -5,7 +5,7 @@
 
 ## Canonical pairs
 
-Use these existing IDs. Do not invent new spellings in models, JSON, campaign encounters, screenshots, or the bestiary.
+Use these existing IDs. Do not invent new spellings in sprite manifests, JSON, campaign encounters, screenshots, or the bestiary.
 
 | Family ID | Base ID / name | Upgrade ID / name | Tier | Upgrade building |
 | --- | --- | --- | ---: | --- |
@@ -37,7 +37,7 @@ A family has exactly `baseId` and `upgradeId`. The base definition uses `form: "
 
 The catalog validator rejects missing upgrades, self-links, cycles, two incoming base families for one upgrade, outgoing links on an upgrade, unpaired neutral recruitable species, duplicate IDs, and third gameplay forms disguised as skins. A campaign boss made from an existing upgraded creature remains that same definition; a named encounter is not a new promotion.
 
-Unique heroes and deity portraits are not army-creature families. Cosmetic team colors, damage poses, LOD meshes, costumes, and accessibility outlines are presentation variants without independent prices or statistics. A future summon or non-recruitable monster must be classified explicitly; adding a new creature family still requires its pair rather than quietly creating an exception.
+Unique heroes and deity portraits are not army-creature families. Cosmetic team colors, damage poses, sprite resolutions, costumes, and accessibility outlines are presentation variants without independent prices or statistics. A future summon or non-recruitable monster must be classified explicitly; adding a new creature family still requires its pair rather than quietly creating an exception.
 
 ## Recruitment and training
 
@@ -49,14 +49,14 @@ Both forms remain recruitable when unlocked in the candidate profile. There is n
 
 ## Visual and animation invariant
 
-Each pair is approved together, preferably using the same skeleton, proportions, sockets, clip names and material layout. The upgrade needs a readable silhouette/detail change, a material treatment, a portrait, a rank marker, and a distinct written description. Recolor alone is insufficient, and extra ornament cannot obscure the underlying family.
+Each pair is approved together, using the same canonical reference, proportions, frame size and anchor, animation names and colour layout; the upgrade's strips are generated from the base strips frame for frame. The upgrade needs a readable silhouette/detail change, a material treatment, a portrait, a rank marker, and a distinct written description. Recolor alone is insufficient, and extra ornament cannot obscure the underlying family.
 
-Reuse motion where it remains anatomically and tactically correct. Add upgrade-specific motion only for a real new ability or a useful character detail. Temple Seer gains a Ward presentation; Windcrest Griffin still uses physical melee/retaliation and does not acquire an invented ranged wind spell. No upgrade may lose a required clip because only the base was commissioned.
+Reuse motion where it remains anatomically and tactically correct. Add upgrade-specific motion only for a real new ability or a useful character detail. Temple Seer gains a Ward presentation; Windcrest Griffin still uses physical melee/retaliation and does not acquire an invented ranged wind spell. No upgrade may lose a required strip because only the base was commissioned.
 
-The production catalog is not complete until **both forms** have a runtime asset, required clips, an accessible still, lore status, bestiary entry, valid material/texture references, and a tested shared data link. A developer placeholder build may label assets pending; it may not advertise an unpaired finished family. All sixteen Greek forms receive briefs in the [creature bible](../production/03_creature_pairs_and_animation_bible.md).
+The production catalog is not complete until **both forms** have a runtime sprite set, required strips, an accessible still, lore status, bestiary entry, valid sprite manifest references, and a tested shared data link. A developer placeholder build may label assets pending; it may not advertise an unpaired finished family. All sixteen Greek forms receive briefs in the [creature bible](../production/03_creature_pairs_and_animation_bible.md).
 
 ## Screen requirements
 
-S09 recruitment shows base/upgrade names, current family stock, total price, and missing building requirements. S07 army inspection differentiates exact forms. S18 bestiary links both directions, compares the same fields in the same order, and offers a 3D preview for either form. A main-menu preview cannot display fictitious live army modifiers.
+S09 recruitment shows base/upgrade names, current family stock, total price, and missing building requirements. S07 army inspection differentiates exact forms. S18 bestiary links both directions, compares the same fields in the same order, and offers an animated sprite preview for either form. A main-menu preview cannot display fictitious live army modifiers.
 
 Never duplicate weekly growth in the comparison total. An upgrade is not guaranteed to win every matchup: show actual stat/ability differences rather than a universal power score. Tier number and upgrade rank are separate labels.

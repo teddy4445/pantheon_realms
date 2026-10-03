@@ -15,7 +15,7 @@ import path from 'node:path';
 const userData = await mkdtemp(path.join(tmpdir(), 'pr-desktop-'));
 const env = { ...process.env };
 delete env.PR_DEV_URL;
-// SwiftShader flags let the WebGL scene render under Xvfb (test-only; not used by the app).
+// SwiftShader flags let the WebGL 2D views render under Xvfb (test-only; not used by the app).
 // PR_SMOKE_EXE=<packaged executable> checks an installed-layout build (app.isPackaged true)
 // instead of the development layout in apps/desktop.
 const flags = ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', `--user-data-dir=${userData}`];
@@ -36,29 +36,39 @@ try {
   const footer = await win.locator('.main-menu__footer').innerText();
   if (!footer.includes('Desktop build')) fail('platform not detected as desktop');
   await win.screenshot({ path: path.join(process.env.PR_SMOKE_OUT ?? '.', 'desktop-menu.png') });
-  // Bundled GLB models are served by the app protocol under the CSP (binary intact).
-  const glbs = (await readdir('apps/desktop/renderer/assets').catch(() => [])).filter((f) => f.endsWith('.glb'));
-  if (glbs.length === 0) fail('no bundled GLB in the renderer build');
-  for (const g of glbs) {
-    const magic = await win.evaluate(async (name) => {
-      const res = await fetch(`./assets/${name}`);
-      const b = new Uint8Array(await res.arrayBuffer());
-      return String.fromCharCode(b[0], b[1], b[2], b[3]);
-    }, g);
-    if (magic !== 'glTF') fail(`GLB ${g} not served intact (magic "${magic}")`);
-  }
-  // Mounted adventure-map heroes: the six GLBs come from the app's own heroes/ folder.
-  const heroGlbs = await win.evaluate(async () => {
-    const m = await (await fetch('./heroes/animation_manifest.json')).json();
-    const out = [];
-    for (const a of m.assets) {
-      const res = await fetch(`./heroes/${a.runtime}`);
-      const b = new Uint8Array(await res.arrayBuffer());
-      out.push({ runtime: a.runtime, ok: res.ok && b.length === a.runtime_bytes, magic: String.fromCharCode(b[0], b[1], b[2], b[3]) });
+  // 2D sprites (creature strips, map avatars and figures, map sites, decoration, obstacles,
+  // siege pieces, projectiles, effects): every file in the sprite manifest is served by the
+  // app protocol and decodes; no 3D model file is shipped.
+  const sprites = await win.evaluate(async () => {
+    const m = await (await fetch('./sprites/manifest.json')).json();
+    const files = new Set();
+    const add = (d) => {
+      if (d && typeof d.file === 'string') files.add(d.file);
+      for (const v of Object.values(d?.directions ?? {})) add(v);
+    };
+    for (const section of ['creatures', 'heroes']) {
+      for (const set of Object.values(m[section])) {
+        for (const a of Object.values(set.animations)) add(a);
+        if (set.figure) add(set.figure);
+      }
     }
-    return out;
+    for (const section of ['sites', 'decor', 'obstacles', 'siege', 'projectiles', 'effects']) for (const d of Object.values(m[section])) add(d);
+    const bad = [];
+    for (const f of files) {
+      try {
+        const res = await fetch(`./${f}`);
+        const bmp = await createImageBitmap(await res.blob());
+        if (!res.ok || bmp.width < 4) bad.push(f);
+        bmp.close();
+      } catch {
+        bad.push(f);
+      }
+    }
+    return { files: files.size, creatures: Object.keys(m.creatures).length, heroes: Object.keys(m.heroes).length, bad };
   });
-  if (heroGlbs.length !== 6 || heroGlbs.some((h) => !h.ok || h.magic !== 'glTF')) fail(`mounted hero GLBs not served intact: ${JSON.stringify(heroGlbs)}`);
+  if (sprites.files < 100 || sprites.creatures < 102 || sprites.heroes < 7 || sprites.bad.length) fail(`2D sprites not served or not decodable: ${JSON.stringify({ ...sprites, bad: sprites.bad.slice(0, 5) })}`);
+  const models = (await readdir('apps/desktop/renderer', { recursive: true }).catch(() => [])).filter((f) => /\.(glb|gltf|blend)$/i.test(String(f)));
+  if (models.length) fail(`3D model files shipped: ${models.slice(0, 5).join(', ')}`);
   // Painted art (story, ground and sky, big moments): every file in the art manifest is
   // served by the app protocol and decodes at its registered size.
   const art = await win.evaluate(async () => {
@@ -79,6 +89,27 @@ try {
     return { files: n, bad };
   });
   if (art.files < 1 || art.bad.length) fail(`painted art not served or not decodable: ${JSON.stringify(art.bad.slice(0, 5))}`);
+  // Mouse cursors (1x and 2x) and the final icons (emblems among them) are served by the
+  // app protocol and decode; the interface cursor variable points at the delivered arrow.
+  const ui = await win.evaluate(async () => {
+    const bad = [];
+    const cur = await (await fetch('./ui/cursors/manifest.json')).json();
+    const files = Object.values(cur.assets).flatMap((a) => [a.file, a.file2x]);
+    const fin = await (await fetch('./ui/final-manifest.json')).json();
+    for (const a of Object.values(fin.assets)) files.push(a.file);
+    for (const f of files) {
+      try {
+        const res = await fetch(`./${f}`);
+        const bmp = await createImageBitmap(await res.blob());
+        if (!res.ok || bmp.width < 16) bad.push(f);
+        bmp.close();
+      } catch {
+        bad.push(f);
+      }
+    }
+    return { files: files.length, bad, cursorVar: getComputedStyle(document.documentElement).getPropertyValue('--cur-default') };
+  });
+  if (ui.files < 1 || ui.bad.length || !ui.cursorVar.includes('prgame://') && !ui.cursorVar.includes('ui/cursors/cursor.ui.default')) fail(`cursors or icons not served: ${JSON.stringify(ui.bad.slice(0, 5))} ${ui.cursorVar.slice(0, 120)}`);
   // Sound: the app protocol serves the Ogg files intact, they decode, and audio may start
   // without a click (the desktop app sets the autoplay policy; browsers wait for a click).
   const audio = await win.evaluate(async () => {
@@ -102,7 +133,15 @@ try {
   await win.click('[data-testid=setup-next]');
   await win.click('[data-testid=setup-begin]');
   await win.click('[data-testid=briefing-begin]');
+  // The 2D adventure map renders offline (PixiJS on WebGL, local files only).
+  await win.waitForSelector('.scene-viewport canvas', { timeout: 30000 });
   await win.waitForTimeout(1500);
+  const mapView = await win.evaluate(() => {
+    const c = document.querySelector('.scene-viewport canvas');
+    return { error: !!document.querySelector('.scene-error'), w: c?.width ?? 0, h: c?.height ?? 0, gl: !!(c && (c.getContext('webgl2') || c.getContext('webgl'))) };
+  });
+  if (mapView.error || mapView.w < 100 || mapView.h < 100) fail(`2D map view did not render: ${JSON.stringify(mapView)}`);
+  await win.screenshot({ path: path.join(process.env.PR_SMOKE_OUT ?? '.', 'desktop-map.png') });
   await win.keyboard.press('Escape');
   await win.click('text=Save Game');
   await win.click('[data-testid=save-manual-1]');
@@ -139,7 +178,7 @@ try {
     if (packaged.devTools) fail('DevTools opened in the packaged build');
     if (packaged.name !== 'Pantheon Realms') fail(`unexpected app name ${packaged.name}`);
   }
-  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', glbs, heroGlbs: heroGlbs.length, art: art.files, audio, ...(packaged ? { packaged } : {}) });
+  if (!process.exitCode) console.log('DESKTOP SMOKE OK', { url, saves: files, records: 'records.json', sprites: sprites.files, map: mapView, art: art.files, uiImages: ui.files, cursor: ui.cursorVar.slice(0, 60), audio, ...(packaged ? { packaged } : {}) });
 } catch (e) {
   fail(e instanceof Error ? e.message : String(e));
 } finally {

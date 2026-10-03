@@ -1,6 +1,6 @@
 # Pantheon Realms - Skills and MCP Development Toolkit
 
-**Prepared:** 29 September 2026 | **Toolkit:** 1.0.0 | **Source design:** v0.3
+**Prepared:** 29 September 2026; updated 3 October 2026 for the 2D presentation migration (PixiJS sprites) | **Toolkit:** 1.1.0 | **Source design:** v0.3 + 2D migration
 
 This is a repository add-on for developing the real Pantheon Realms game with Claude Code. It is not a game engine, an implemented campaign, or a collection of preinstalled external apps.
 
@@ -15,7 +15,7 @@ node --test tools/pantheon-dev/tests/toolkit.test.mjs
 node tools/pantheon-dev/setup.mjs init --link-claude
 ```
 
-The second command writes/merges a **local-only audit server** in `.mcp.json`, backs up changed existing files, and appends `@CLAUDE_TOOLING.md` once to the existing CLAUDE.md. It does not download software, run Blender or enable hosted services. Restart your local Claude Code session and review its project/tool approval prompts.
+The second command writes/merges a **local-only audit server** in `.mcp.json`, backs up changed existing files, and appends `@CLAUDE_TOOLING.md` once to the existing CLAUDE.md. It does not download software or enable hosted services. Restart your local Claude Code session and review its project/tool approval prompts.
 
 Begin with:
 
@@ -30,20 +30,20 @@ Do not install optional integrations or change approved mechanics yet.
 
 | Item | Contents |
 | --- | --- |
-| Ten original project skills | Architecture, rules, map generation, local AI, Babylon scenes, React UI, creature production, audio/VFX, Electron offline, QA |
+| Ten original project skills | Architecture, rules, map generation, local AI, PixiJS 2D scenes, React UI, 2D creature production, audio/VFX, Electron offline, QA |
 | Local audit MCP | Four read-only tools; no npm dependencies, HTTP listener, shell execution or write tool |
-| Optional MCP preparation | Staged configuration for Playwright, official Babylon NME/NPE/NGE, community Blender, Context7 and read-only GitHub |
+| Optional MCP preparation | Staged configuration for Playwright, Context7 and read-only GitHub |
 | Optional upstream skill preparation | Commit-pinned downloader for Anthropic frontend-design and webapp-testing; not bundled/enabled |
-| Validation helpers | Pair topology CLI, glTF metadata inspector, local manifest checker, optional Khronos validator wrapper |
+| Validation helpers | Pair topology CLI, 2D sprite-manifest inspector (status counts, missing files), local manifest checker |
 | Test suite | Local script/protocol/security-boundary/configuration tests with fixtures |
-| Source documentation | The 35 current v0.3 Markdown files preserved unchanged |
+| Source documentation | The 35 v0.3 Markdown files; their original hashes are recorded, and their owners are revising some of them for the 2D migration |
 | Individual skill archives | `individual-skills/<name>/skill.zip`, one skill per archive |
 
 ## Recommended activation sequence
 
-Start with the bundled skills and audit. Add Playwright when a browser build exists. Add Babylon authoring and Blender only when producing assets. Add Context7 for external API documentation. Add read-only GitHub only when repository-hosted issues/PRs/CI are useful. Avoid enabling the whole set at startup.
+Start with the bundled skills and audit. Add Playwright when a browser build exists. Add Context7 for external API documentation. Add read-only GitHub only when repository-hosted issues/PRs/CI are useful. Avoid enabling the whole set at startup.
 
-The default audit server works after Node is installed. External tools need explicit installation, and Blender additionally needs the application and add-on. Context7/GitHub need network access; GitHub needs credentials. An offline-capable game does not mean the coding assistant itself works offline.
+The default audit server works after Node is installed. External tools need explicit installation. Context7/GitHub need network access; GitHub needs credentials. An offline-capable game does not mean the coding assistant itself works offline.
 
 ## Guide map
 
@@ -56,4 +56,4 @@ The default audit server works after Node is installed. External tools need expl
 - [Sources and provenance](docs/tooling/SOURCES.md)
 - [Tests actually run and remaining limitations](docs/tooling/VALIDATION.md)
 
-No external server/client integration has been tested in the user's environment. The test report distinguishes local protocol/fixture checks from live Claude Code, Blender, Babylon authoring, Playwright and Electron testing. Tool descriptions do not promise finished models, animations or balanced gameplay.
+No external server/client integration has been tested in the user's environment. The test report distinguishes local protocol/fixture checks from live Claude Code, Playwright and Electron testing. Tool descriptions do not promise finished art, animations or balanced gameplay.

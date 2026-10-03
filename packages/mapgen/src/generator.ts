@@ -3,7 +3,7 @@
  *
  * Authored story graph + fixed anchors and barriers + deterministic road carving
  * + seeded non-critical terrain + explicit validation. Output is DATA (a logical
- * WorldMapDefinition plus a cosmetic decor manifest), never a Babylon scene.
+ * WorldMapDefinition plus a cosmetic decor manifest), never a rendered scene.
  *
  * Stages: A validate inputs, B terrain/anchors, C carve roads, D bounded terrain
  * variation, F cosmetic decor, G validate + hash. (Stage E — placing mission

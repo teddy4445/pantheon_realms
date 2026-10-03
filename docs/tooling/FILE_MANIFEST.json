@@ -1,8 +1,8 @@
 [
   {
     "path": ".claude/skills/pr-audio-vfx/SKILL.md",
-    "bytes": 2499,
-    "sha256": "386974631664625f2536ad6ab3754cbffa91d93dc1d29961d51e528fbbee321b"
+    "bytes": 2789,
+    "sha256": "786e7ae22013760f8eb16be7a83f204aa4878814d5f1476988b64e3fb9cbe6b6"
   },
   {
     "path": ".claude/skills/pr-audio-vfx/agents/openai.yaml",
@@ -11,28 +11,13 @@
   },
   {
     "path": ".claude/skills/pr-audio-vfx/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
-  },
-  {
-    "path": ".claude/skills/pr-babylon-scene/SKILL.md",
-    "bytes": 2622,
-    "sha256": "1f615627bee4f45068a6e30cb89d77e03990dd0fda2bea6bb67aca05940f9165"
-  },
-  {
-    "path": ".claude/skills/pr-babylon-scene/agents/openai.yaml",
-    "bytes": 134,
-    "sha256": "54608d4ed0cccdefa09349447bc8a35e4770448ed8bbed8c052112ac758d8014"
-  },
-  {
-    "path": ".claude/skills/pr-babylon-scene/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-campaign-mapgen/SKILL.md",
-    "bytes": 2940,
-    "sha256": "aca2b74b0640cb628c05d984514dd9ebe50e351c234abd7678a1a3257ea69aee"
+    "bytes": 2939,
+    "sha256": "8c66b7998763e9c113c6558643195410cf8160e9573a31fda991dc8516cb4620"
   },
   {
     "path": ".claude/skills/pr-campaign-mapgen/agents/openai.yaml",
@@ -41,33 +26,33 @@
   },
   {
     "path": ".claude/skills/pr-campaign-mapgen/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-creature-pipeline/SKILL.md",
-    "bytes": 2916,
-    "sha256": "ce0c6c1fbc5401614a81417bc0c0f85c7463558f0f49dad6a7177d4dadd7b65d"
+    "bytes": 4390,
+    "sha256": "ba3ee2f629c349016ed29239b25adfd11e443f89c3aeb236eff84c76e9a98140"
   },
   {
     "path": ".claude/skills/pr-creature-pipeline/agents/openai.yaml",
-    "bytes": 141,
-    "sha256": "cc3bb1d26e4a1fdd45be56ba5c5f591e956a7419f00533bac07359f7bbe70aaf"
+    "bytes": 150,
+    "sha256": "4b36fdf9ad1de03507e7653678385aa3e9daddd037f876ce95385ff81526220d"
   },
   {
     "path": ".claude/skills/pr-creature-pipeline/references/pair-checklist.md",
-    "bytes": 1729,
-    "sha256": "6acfe32e6859e8e88799eaaa554492b10b769943b47461140f350e8b549268c2"
+    "bytes": 2312,
+    "sha256": "53bda222ccabed23ad3c24f47f2ae896329b3ed67b97e23e117656de11fc304f"
   },
   {
     "path": ".claude/skills/pr-creature-pipeline/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-electron-offline/SKILL.md",
-    "bytes": 2757,
-    "sha256": "6dabe5a6708a72063c8eb87ad7b02465aa262e51de1f71ea249a047ba418847f"
+    "bytes": 2879,
+    "sha256": "95ff479a23eee696ceebecdd7c044ab69a522195905e32fd30564110079df2b2"
   },
   {
     "path": ".claude/skills/pr-electron-offline/agents/openai.yaml",
@@ -76,8 +61,8 @@
   },
   {
     "path": ".claude/skills/pr-electron-offline/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-local-ai/SKILL.md",
@@ -91,13 +76,28 @@
   },
   {
     "path": ".claude/skills/pr-local-ai/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
+  },
+  {
+    "path": ".claude/skills/pr-pixi-scene/SKILL.md",
+    "bytes": 4661,
+    "sha256": "c6ceb01c480d6a6cdefe65b5a13e05421ccd4fd245af6bba53552aebb5f77cba"
+  },
+  {
+    "path": ".claude/skills/pr-pixi-scene/agents/openai.yaml",
+    "bytes": 137,
+    "sha256": "5ab8cf4856517c92695da6e2dc9e4ce6afd7ea8cb793fad212c563795d024ffb"
+  },
+  {
+    "path": ".claude/skills/pr-pixi-scene/references/project-contract.md",
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-project-lead/SKILL.md",
-    "bytes": 2805,
-    "sha256": "c9d12a1e7c7b8b6d0afc581430264023324ec6bc79dd12dda52d31eaf0cd7a94"
+    "bytes": 2838,
+    "sha256": "404f2125da1e87bb1f7ce903614e0f0ab3767174c230a47c137a08b07d466d53"
   },
   {
     "path": ".claude/skills/pr-project-lead/agents/openai.yaml",
@@ -106,13 +106,13 @@
   },
   {
     "path": ".claude/skills/pr-project-lead/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-qa-release/SKILL.md",
-    "bytes": 2861,
-    "sha256": "1d1eb7ad2bcf21214348e5f98a6aac520527347a0188abd1cead352d5e2706d4"
+    "bytes": 3090,
+    "sha256": "6e4807ef490fcc00683891c8a4b0b1b1f3b39e8001dcb442ce195cc4f0bcee5f"
   },
   {
     "path": ".claude/skills/pr-qa-release/agents/openai.yaml",
@@ -121,13 +121,13 @@
   },
   {
     "path": ".claude/skills/pr-qa-release/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-react-game-ui/SKILL.md",
-    "bytes": 2758,
-    "sha256": "a07bb6d5f003bd36dac2a6275fbdcff2b24750e6a56a2adf0e4ddd0960eb659b"
+    "bytes": 2877,
+    "sha256": "a4864dbb7d25b5b87aa976de61206a158aa7551672e83a12e2fa6e43032c8b03"
   },
   {
     "path": ".claude/skills/pr-react-game-ui/agents/openai.yaml",
@@ -136,13 +136,13 @@
   },
   {
     "path": ".claude/skills/pr-react-game-ui/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": ".claude/skills/pr-rules-engine/SKILL.md",
-    "bytes": 3064,
-    "sha256": "96e5c5f4fa84d625fdc727c0242c17ef951bb4ae655f7d07367c63fc143bcc92"
+    "bytes": 3062,
+    "sha256": "40d949666f3c3411ec988c8ab9a93ebe2b5063f193cf101a6a7a2525bf10e98b"
   },
   {
     "path": ".claude/skills/pr-rules-engine/agents/openai.yaml",
@@ -151,18 +151,18 @@
   },
   {
     "path": ".claude/skills/pr-rules-engine/references/project-contract.md",
-    "bytes": 2612,
-    "sha256": "862bbef7b020a41a583f41e63cf9a536d136078bf95a6999ad9a1e4b84fd9d82"
+    "bytes": 3268,
+    "sha256": "fefeb9fb043e1d7dd535f90aba08290f4e40b737f8c66ad66f18c61dbf5f30e0"
   },
   {
     "path": "CLAUDE_TOOLING.md",
-    "bytes": 2814,
-    "sha256": "7df76f1fb05e7918677cdfbd89c36040f0afec18dc6085dbd97fa32410d07217"
+    "bytes": 3426,
+    "sha256": "5bb864bf9fe84c725a0b64f75c1950a051109e78b376a1f425dbedcb1058feb8"
   },
   {
     "path": "PANTHEON_TOOLKIT_README.md",
-    "bytes": 4097,
-    "sha256": "bc724dc3f3927488110ceac466c0a7aa1b9859fe5948d0f34e3b06a736691f68"
+    "bytes": 4051,
+    "sha256": "13b3fc3a72aef4e6f7f20a916656b6c4ac20af79f62614cfc8523db527eb0b3c"
   },
   {
     "path": "TOOLING_LICENSE.txt",
@@ -176,33 +176,33 @@
   },
   {
     "path": "docs/pantheon-v0.3/CHANGELOG_v0_3.md",
-    "bytes": 1742,
-    "sha256": "62245d369fb21963415c75a6d4608d32f6a5906828f29c97739f485fc70c9a56"
+    "bytes": 3491,
+    "sha256": "db76c39ca30f67acb6c5ba90ac567199406b31d2a795358143d07bff41e4cf8a"
   },
   {
     "path": "docs/pantheon-v0.3/CLAUDE.md",
-    "bytes": 4942,
-    "sha256": "16d0e9a1b61c74143920f3f7488f677efc7923ec3859e2d6b7880075e74393ad"
+    "bytes": 5592,
+    "sha256": "e4be75f4e93d297c5183808611b785efe6ae7ef19448017467d5a733d7278844"
   },
   {
     "path": "docs/pantheon-v0.3/DECISIONS_v0_3.md",
-    "bytes": 2737,
-    "sha256": "d0f56a9050769953ff2ac2ccff894ea90f1dbfc2b9fffca35e8e6d3045f6d989"
+    "bytes": 4372,
+    "sha256": "2844e5dd5d623afd7f677c4406ff98fda16ef692e4aa93d07232d2f92ae8d35f"
   },
   {
     "path": "docs/pantheon-v0.3/README.md",
-    "bytes": 5198,
-    "sha256": "4144e307913dc6596779075ac6345b5b667040c22f772530680a8adced2460de"
+    "bytes": 5912,
+    "sha256": "9ed4d6405fcac6dea24caaf344daa53d91c1800358592dfd5cf4f05818f609ac"
   },
   {
     "path": "docs/pantheon-v0.3/campaign/01_the_three_beacons.md",
-    "bytes": 23453,
-    "sha256": "1f03223f02c95c14453b097c10801491bfb78badd3949956462ae6e2c4088ae6"
+    "bytes": 23458,
+    "sha256": "ec29c650a7b4a32a3432989c2399f92a709957ebf12096e9e91acf08780dd8bd"
   },
   {
     "path": "docs/pantheon-v0.3/campaign/02_map_generation_specification.md",
-    "bytes": 19802,
-    "sha256": "6b23666897636b04eb151e86d1821c387d196b48f01ec79baac9acc5f2706844"
+    "bytes": 20016,
+    "sha256": "c2b5a6372f619a6b6b71d344eef5a00037a37a21516e05a34213b1faa2e57b84"
   },
   {
     "path": "docs/pantheon-v0.3/content/01_unit_history_and_lore.md",
@@ -211,13 +211,13 @@
   },
   {
     "path": "docs/pantheon-v0.3/content/02_animation_behavior_contract.md",
-    "bytes": 4708,
-    "sha256": "0e0a1236b51ecca5fa03c951f438107588a84fb4e5ef792f8dacf5c83c2ec48c"
+    "bytes": 5404,
+    "sha256": "cdf61b2d54ce28ba9bf231b2cda49d249bddc54f0119661ea0cf3027528304ac"
   },
   {
     "path": "docs/pantheon-v0.3/content/03_exactly_one_upgrade_contract.md",
-    "bytes": 5977,
-    "sha256": "38e3675df91dbbe4361fb024800684b9a13027f5f805656c4d234ada4ed96dfb"
+    "bytes": 6105,
+    "sha256": "cb4f6999024f134c0d7af7b1bc7e77f3b10ff0fa1965cf90023996c6a1d6f8d1"
   },
   {
     "path": "docs/pantheon-v0.3/design/01_rule_adoption_matrix.md",
@@ -261,8 +261,8 @@
   },
   {
     "path": "docs/pantheon-v0.3/implementation/03_demo_migration_and_open_decisions.md",
-    "bytes": 6273,
-    "sha256": "cf0907072fa22fa623f7118ce078b39226b675ce6eaf27077d81206f0e09fa00"
+    "bytes": 6411,
+    "sha256": "7fd6835624b902069ba6536daf170db67b98019fac678e4f61af9cb647b1f2fc"
   },
   {
     "path": "docs/pantheon-v0.3/implementation/04_document_validation.md",
@@ -271,33 +271,33 @@
   },
   {
     "path": "docs/pantheon-v0.3/implementation/05_production_campaign_acceptance.md",
-    "bytes": 7054,
-    "sha256": "6d009102cd958ea1f7ddffa97460fbed6cdc618b2084ed611349f225d3190f3e"
+    "bytes": 7393,
+    "sha256": "15dd81e5bed03a080a5972c49578ce57b84c6470f2deb72d49fa585a2bcfc428"
   },
   {
     "path": "docs/pantheon-v0.3/implementation/06_documentation_validation_v0_3.md",
-    "bytes": 6104,
-    "sha256": "bac8d1f56f822964de4d3a82d71b4fa75b9e79b045649bc961f27265d22e68e3"
+    "bytes": 6590,
+    "sha256": "788b77319c0075d21b4921611b37819463b5c4aca88fd54de788d96b9daf85fe"
   },
   {
     "path": "docs/pantheon-v0.3/production/01_approved_stack_and_architecture.md",
-    "bytes": 17518,
-    "sha256": "18fcf2c9d6c579f31472bc0b48576b87fba35b43a548cedb20f1e4322a090ef8"
+    "bytes": 19411,
+    "sha256": "e0f55f99f8d7c0127e2d32c8b6d6f09771eedabdc7aa6df8132812778bff95d5"
   },
   {
     "path": "docs/pantheon-v0.3/production/02_visual_and_animation_pipeline.md",
-    "bytes": 15162,
-    "sha256": "c9b5884effd8d90772feab57bb22f08ed393442fd314306d5bf433a0be1310db"
+    "bytes": 19214,
+    "sha256": "59a76851c632391c522b83f7c4d946d5f1019d2827eaa6d59ff0867532f9f283"
   },
   {
     "path": "docs/pantheon-v0.3/production/03_creature_pairs_and_animation_bible.md",
-    "bytes": 15629,
-    "sha256": "27f5fb06f2b6326ef4f883cca46669f4a27b3d2f5aee81ccf50d2368a89f7b93"
+    "bytes": 16366,
+    "sha256": "1d38c16d761489eec68666a31cf52adb348eaf24103fe0b64d92900bb2003bdc"
   },
   {
     "path": "docs/pantheon-v0.3/production/04_environment_towns_ui_and_audio.md",
-    "bytes": 16981,
-    "sha256": "95657f85296dd130186c2b199c602945bf05494f1d0881bfceb625fdf7da3358"
+    "bytes": 17625,
+    "sha256": "e2c0a34b248cfc70ea1e61ebf1d9f97b21cfb95b16cdddb2ebe9fc53b9afc717"
   },
   {
     "path": "docs/pantheon-v0.3/reference/01_sources_and_version_scope.md",
@@ -321,13 +321,13 @@
   },
   {
     "path": "docs/pantheon-v0.3/reference/05_production_sources.md",
-    "bytes": 3615,
-    "sha256": "d56a56af878abf802be2370ee1095c4b47327e55756cfe38568cccf48c6fa279"
+    "bytes": 4804,
+    "sha256": "1559790d371c5ab4d71d7c5802212f480629de0a2fefc66e24d63620d6d1b87e"
   },
   {
     "path": "docs/pantheon-v0.3/screens/01_main_menu_and_pause.md",
-    "bytes": 5494,
-    "sha256": "6c88a9dacf6bf35c5133bd6d0baf90bff212633a7b0c59caa1bb54b6458dcf40"
+    "bytes": 5526,
+    "sha256": "a6a7e28b5193fdffab95c779a8910209501821631b61a8d2c31306cc94373be1"
   },
   {
     "path": "docs/pantheon-v0.3/screens/02_settings_and_accessibility.md",
@@ -336,8 +336,8 @@
   },
   {
     "path": "docs/pantheon-v0.3/screens/03_unit_codex_and_inspection.md",
-    "bytes": 8517,
-    "sha256": "5c4de2915dc88b5430a7be331dba7ef73c3337ba2e49976067e569e388b3572e"
+    "bytes": 8572,
+    "sha256": "f824ed7ea4d55125481aa53f17ba74df9de67bea095f6f21dc6b0ac06b92af8a"
   },
   {
     "path": "docs/pantheon-v0.3/screens/04_screen_inventory_and_navigation.md",
@@ -346,48 +346,48 @@
   },
   {
     "path": "docs/tooling/CURATED_TOOLS.md",
-    "bytes": 5568,
-    "sha256": "473c74fab4985288515d5831380432a64701d7662fd1ac4614f6b47f85ef5af4"
+    "bytes": 5200,
+    "sha256": "30b259e5fbb691fe26a25509b890ac4d8a4ed51576cf045bea897841a543d5d8"
   },
   {
     "path": "docs/tooling/LOCAL_AUDIT.md",
-    "bytes": 4162,
-    "sha256": "c2baf4b93ab814fe2e11c455ac44b1274583126d6b11842fb5bc0ef1e70b51c1"
+    "bytes": 4925,
+    "sha256": "910574355557639b7e60fff1056ff2a70de21f3ae2d6fc7d8534df97836b7971"
   },
   {
     "path": "docs/tooling/MCP_SETUP.md",
-    "bytes": 9953,
-    "sha256": "24c12103350950c5da5389f48588853dc1facc3ab3ed18c873e6373fb661503a"
+    "bytes": 7085,
+    "sha256": "77875e314208c67b4216f12baff31bf2fdd3d69c9eed8b3b41678847358463de"
   },
   {
     "path": "docs/tooling/QUICKSTART.md",
-    "bytes": 4459,
-    "sha256": "10ff16b46bdb5a1fdf20d3ef847df5d24a576f305c0956098833e8cc8398d110"
+    "bytes": 4272,
+    "sha256": "248e15c9c4643d90f0ae5ab54e8cdf5ce6174c53c32383d878d7b13b9278c171"
   },
   {
     "path": "docs/tooling/SECURITY.md",
-    "bytes": 4351,
-    "sha256": "733db52a406a25cbcadd927fb1adec0def5b1102e01bd26115c8d84776951594"
+    "bytes": 4006,
+    "sha256": "32d3b4e67b95204a193402074bfc550fcbfed045b5221bae9be29354824ffada"
   },
   {
     "path": "docs/tooling/SOURCES.md",
-    "bytes": 5758,
-    "sha256": "f104b8529aa91ed3cc023c2dea855ddb40dd08b3e8b4e17f8eb6fd3d33693c55"
+    "bytes": 5515,
+    "sha256": "97aa820fe0192bd04e58838ea4e79c84c8bda0d1bae9e648e75d42b2952dcb31"
   },
   {
     "path": "docs/tooling/THIRD_PARTY_NOTICES.md",
-    "bytes": 923,
-    "sha256": "6c37e587bca8d9e09c23422c5a1c633c37d9277f6d8cc22d3ab8825d9f0b949b"
+    "bytes": 900,
+    "sha256": "42286333138968998fd3036cf3cced63673d96b8a196efd52a49b0bbabab9005"
   },
   {
     "path": "docs/tooling/VALIDATION.md",
-    "bytes": 3634,
-    "sha256": "f250889108d98233272714e57e7aac290eaf62faccf8d892f8a9e303892fa460"
+    "bytes": 4440,
+    "sha256": "c73da1437e698c5d8230645e479166fa3a9ac29d62c784a7835de32794e1e691"
   },
   {
     "path": "docs/tooling/WORKFLOWS.md",
-    "bytes": 3424,
-    "sha256": "e5295626f53f5b57a266d1cd14ccb466c74f0b5c01464e3bb2302fc5161652e7"
+    "bytes": 3626,
+    "sha256": "207002c4fa36cdcb88e68f256568e67fb6fd60654f15b79e4145c4fcc221bff1"
   },
   {
     "path": "docs/tooling/gitignore.fragment",
@@ -397,17 +397,17 @@
   {
     "path": "docs/tooling/package-validation.json",
     "bytes": 189,
-    "sha256": "bc126bffcb1c1a0eab1fc70984587cad52a293ebaf1288c0cea5c55ec695e486"
+    "sha256": "7e471c90a1428624e82949699c65e3f183e865c7f3ed2cbe4f91e4edb37b73b5"
   },
   {
     "path": "docs/tooling/skill-catalog.json",
-    "bytes": 2541,
-    "sha256": "3bbe56c4d2ed40c9e9715b78005e9917ffd46b45f8b33361dc3af53d9a37cc9a"
+    "bytes": 2550,
+    "sha256": "866a1b879883a07fd8ed56f59769e3f92a375d5946babd0e8eafaaf707a35df5"
   },
   {
     "path": "docs/tooling/skill-evaluation-prompts.json",
-    "bytes": 3384,
-    "sha256": "7297d4fae43a5103e5896f374e1d96c0b1a2bf389a59631fdc06f76ff3c9f156"
+    "bytes": 3443,
+    "sha256": "08efb7c61c447c8f97e9c45e240eb2dca442aa62909496aa96a2fa8fd04e0320"
   },
   {
     "path": "docs/tooling/source-document-checksums.json",
@@ -416,78 +416,78 @@
   },
   {
     "path": "docs/tooling/source-registry.json",
-    "bytes": 4110,
-    "sha256": "7ca9ff38759892b70d08e36c63eed7d1b4b16717dae9af9540cee54447489ea6"
+    "bytes": 3420,
+    "sha256": "816a00b57bb6fe1b5958a150f939906cd6e6c9c417454afecf298b3bc883ddb0"
   },
   {
     "path": "docs/tooling/toolkit-test-results.tap",
-    "bytes": 6892,
-    "sha256": "fc13c2fcb15e9aaa96b2049e465dae8e91aa619b68109ff648de834a2c40d00d"
+    "bytes": 6338,
+    "sha256": "e2233e4d3cbd87f5a6c78c383cece2ea3a26e9c2e522c9d9307bef03772956f0"
   },
   {
     "path": "individual-skills/pr-audio-vfx/skill.zip",
-    "bytes": 3235,
-    "sha256": "d41a59fa7bbe0ae3c8d5e83dc706269d357469a3761898445ddfb0253d79d160"
-  },
-  {
-    "path": "individual-skills/pr-babylon-scene/skill.zip",
-    "bytes": 3303,
-    "sha256": "253af53b36b84b588e82b4ed10cd93632c6dd37650bf78fb7863dbcf012eed1a"
+    "bytes": 3690,
+    "sha256": "4e4a478976eda8676948fe5df164945f26263378a750a483fc0de1af3bef1d18"
   },
   {
     "path": "individual-skills/pr-campaign-mapgen/skill.zip",
-    "bytes": 3474,
-    "sha256": "4e4b95f577b706e6fa56211d8018243f48290a114cbf6256a93dd2df09d0b169"
+    "bytes": 3778,
+    "sha256": "feedbeec533e7f79dea01052675144dfebe8283f30d09d17c5b4779ef7771921"
   },
   {
     "path": "individual-skills/pr-creature-pipeline/skill.zip",
-    "bytes": 4588,
-    "sha256": "fd4a0e31cc707bfc90d8d61fb2df7b2e6700b76bc50fdef2a0caf505821a8dce"
+    "bytes": 5753,
+    "sha256": "70553cf49b07927085b20acca42a8e9ec1c56d13312f18c010bd3b06e36814d7"
   },
   {
     "path": "individual-skills/pr-electron-offline/skill.zip",
-    "bytes": 3362,
-    "sha256": "b5b1342d92a24f61e99aae995991152ddcada5627ed30d372de47956f181bc67"
+    "bytes": 3730,
+    "sha256": "6c81abd5ebf0d26d12d100ad8f98f1a6c760afde439b0eca39e95a82932df837"
   },
   {
     "path": "individual-skills/pr-local-ai/skill.zip",
-    "bytes": 3254,
-    "sha256": "8d2558ed85fd01de3c972bd367329f995096fab89539cb17b6c5260f2e8df134"
+    "bytes": 3556,
+    "sha256": "7447564cf8c516db253b8bfcf8056fe5b99ffce947911fcf7ec1fb9eff3009d4"
+  },
+  {
+    "path": "individual-skills/pr-pixi-scene/skill.zip",
+    "bytes": 4499,
+    "sha256": "be39c5075325eb826a847cd2767487bb77c09339b605ab81346b65ae24ad780d"
   },
   {
     "path": "individual-skills/pr-project-lead/skill.zip",
-    "bytes": 3360,
-    "sha256": "b47820c875d8993924605e42177f165acbe90f23612d3b6c06f70a2357cffb2c"
+    "bytes": 3678,
+    "sha256": "29e73add8bdc31dc7a5af41af98baac207641435e7da3d06c78884bf93274059"
   },
   {
     "path": "individual-skills/pr-qa-release/skill.zip",
-    "bytes": 3396,
-    "sha256": "20384460251ec95a8a3d672746b5615a0f043b5aafe0626b8cd3de03a9960407"
+    "bytes": 3802,
+    "sha256": "f656093a8e8a45747f9a895789030b17d023535e171d75fa90369dc3d504e67c"
   },
   {
     "path": "individual-skills/pr-react-game-ui/skill.zip",
-    "bytes": 3372,
-    "sha256": "300d091e5d8862293bab4e5064a2eb5195d9557c32f8658a3b7757bcd4596222"
+    "bytes": 3744,
+    "sha256": "624e3fdb2eaaa4bc60245ed70ce3db8c7c5b6026b5504910a41d84310282b6e3"
   },
   {
     "path": "individual-skills/pr-rules-engine/skill.zip",
-    "bytes": 3502,
-    "sha256": "eca5dc60617c65488538ef29c861ae6a15bcda9a1a8192e3a110936aecb18cd9"
+    "bytes": 3806,
+    "sha256": "71266b8699b3a4ab6679e9c289ec04c33552f624ee023f94625b6a81e4c718a2"
   },
   {
     "path": "tools/pantheon-dev/README.md",
-    "bytes": 1084,
-    "sha256": "2a4e6e7e97e6426c94508fe10e2f659ca07f7be7e24e20ebed4749fe082d6760"
+    "bytes": 1068,
+    "sha256": "b3c9ba36e61210975f2ca956b30b14242caf8c7d4f1c0ae76fc90d6ea843a430"
   },
   {
     "path": "tools/pantheon-dev/audit.mjs",
-    "bytes": 782,
-    "sha256": "52ed4fe682a620bb95896b2e522e41b999759abc718ac558f5bac6023f953e8d"
+    "bytes": 816,
+    "sha256": "64ef38899d3762bab0d29e8648f41922c7de971a7d54605accd90290485056e3"
   },
   {
     "path": "tools/pantheon-dev/fixtures/README.md",
-    "bytes": 673,
-    "sha256": "cd5bf8a05a8a7ba554a40b3fea6e384b5572baa437e0fd45d4bfa72f26b84be1"
+    "bytes": 527,
+    "sha256": "be27fb30e294d23606e65e52d5d6ef2962ee858293272a07e5cbf31165158a8e"
   },
   {
     "path": "tools/pantheon-dev/fixtures/creature-pairs.valid.json",
@@ -495,29 +495,14 @@
     "sha256": "4e98d9e1015b4e22c88b9b9a86eaa16f3f6ac3ba423d5956745ef013fb4242d1"
   },
   {
-    "path": "tools/pantheon-dev/fixtures/metadata-only.gltf",
-    "bytes": 447,
-    "sha256": "c60c2e99c9ba1d2a630a7d6193d302d3218bf7ab9e9c281e27d0ae178141cfcc"
-  },
-  {
     "path": "tools/pantheon-dev/lib/audit.mjs",
-    "bytes": 10676,
-    "sha256": "153553ee51b3128ba82da8e3bb2cf5a973762c8070d82f9103249889ab7ddafe"
+    "bytes": 10737,
+    "sha256": "ce893663fdc344f77305c3e57fb53e8944ec2ee3b259bece359c4c42c615f88b"
   },
   {
     "path": "tools/pantheon-dev/mcp-templates/README.md",
-    "bytes": 865,
-    "sha256": "2ee9ac2a72c9560440d893796108e85ae2f406fc5caeb03916d0bbaded07263a"
-  },
-  {
-    "path": "tools/pantheon-dev/mcp-templates/babylon-authoring.example.json",
-    "bytes": 466,
-    "sha256": "e46408d79176f42991a3503e9cd823d112f4e91f075710fcd58f9556c3b670a3"
-  },
-  {
-    "path": "tools/pantheon-dev/mcp-templates/blender.example.json",
-    "bytes": 438,
-    "sha256": "4d96aa5e086302a0e8ce48649d9bda2cf65073c74215907d53c0250f30e41b76"
+    "bytes": 821,
+    "sha256": "dfba5339285edfe380979d878dfb10941e65bbf6cd231401b38397b4a7f4f6b0"
   },
   {
     "path": "tools/pantheon-dev/mcp-templates/context7.example.json",
@@ -546,27 +531,22 @@
   },
   {
     "path": "tools/pantheon-dev/server.mjs",
-    "bytes": 6047,
-    "sha256": "a1275c0a5a9eebb5f3f3a901f44aaa376ef7720762f537f699b610da05464435"
+    "bytes": 5806,
+    "sha256": "25fc2a9f78179c82c63a819e407a51fe6593b1e9a7fe12881f182a169460dad2"
   },
   {
     "path": "tools/pantheon-dev/setup.mjs",
-    "bytes": 11357,
-    "sha256": "aef0e6613c73a2e6e9b1d273f4ad8913f2e7aeb482e0e71f41ff3c108bc9cf70"
+    "bytes": 10142,
+    "sha256": "61fe8aa06dbcd45658ee5d3a297f0b05ece3d70e277e861b0705f3a29056d7e9"
   },
   {
     "path": "tools/pantheon-dev/tests/toolkit.test.mjs",
-    "bytes": 14937,
-    "sha256": "0bd3166a8505e222f3307037e8040e80dad4bb674b0396759d8217d850d37209"
+    "bytes": 15782,
+    "sha256": "3b6383a0c8635d5f44b3786ea87bbd7f0eac211adbbe112fe97f59f7a5af5dcc"
   },
   {
     "path": "tools/pantheon-dev/upstream-skills.mjs",
     "bytes": 6569,
     "sha256": "9cba1aeca9fede3cfe58750a08eb559d30b9cfaf7645b2406f1fa0666b59713e"
-  },
-  {
-    "path": "tools/pantheon-dev/validate-gltf.mjs",
-    "bytes": 1984,
-    "sha256": "fa5d29a072eb582168aad9a711eadd3f49c91b7671f641b5fa418cf5fe0201b5"
   }
 ]

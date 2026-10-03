@@ -13,9 +13,8 @@ import placeholderManifest from '../../../../assets-runtime/placeholders/manifes
 import uiArtManifest from '../../../../assets-runtime/ui/manifest.json';
 import finalArtManifest from '../../../../assets-runtime/ui/final-manifest.json';
 import storyArtManifest from '../../../../assets-runtime/art/manifest.json';
-// Named imports keep only the fields the game reads in the start-up bundle.
-import { assets as heroAssets, clips as heroClips, ground_alignment as heroGround, suggested_crossfade_seconds as heroCrossfade } from '../../../../assets-runtime/heroes/animation_manifest.json';
-import { heroModelEntriesFromManifest, registerEnvironmentArt, registerHeroModels, registerUnitModels, type EnvironmentArt, type MountedHeroModelEntry, type UnitFamilyManifest, type UnitModelEntry } from '@pr/presentation/core';
+import spriteManifestFile from '../../../../assets-runtime/sprites/manifest.json';
+import { registerEnvironmentArt, registerSpriteManifest, spriteManifest, type EnvironmentArt, type SpriteManifest } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
 
@@ -87,8 +86,8 @@ export function resolveArt(id: string): StoryArtRecord | null {
 }
 
 /**
- * Ground and sky art (Brief 2) for the 3D scenes: terrain textures, battlefield
- * paintings and sky panoramas, from the same manifest. The scenes keep their
+ * Ground and sky art (Brief 2) for the 2D views: terrain textures, battlefield
+ * paintings and sky panoramas, from the same manifest. The views keep their
  * procedural colours for anything not delivered.
  */
 export function resolveEnvironmentArt(id: string): EnvironmentArt | null {
@@ -159,50 +158,19 @@ export function listKnownAssets(): AssetRecord[] {
 }
 
 // ---------------------------------------------------------------------------
-// Unit models (GLB) — assets-runtime/units/<pantheon>/<family>/family.manifest.json
+// 2D sprites — assets-runtime/sprites/manifest.json (written by the placeholder
+// generator and by `npm run sprites:import`; ASSET_PIPELINE.md §1). Creature
+// battle strips, mounted map avatars, map locations, decoration, obstacles,
+// siege pieces, projectiles and effects, each with its status (placeholder or
+// final). Every file is served from the app's own runtime folder.
 // ---------------------------------------------------------------------------
 
+registerSpriteManifest(spriteManifestFile as unknown as SpriteManifest, (file) => `./${file}`);
 
-/** Bundled family manifests and GLB URLs (Vite copies the files; nothing is fetched from a CDN). */
-const UNIT_MANIFESTS = import.meta.glob<UnitFamilyManifest>('../../../../assets-runtime/units/**/family.manifest.json', { eager: true, import: 'default' });
-const UNIT_FILES = import.meta.glob<string>('../../../../assets-runtime/units/**/*.glb', { eager: true, query: '?url', import: 'default' });
-
-function entriesOf(includeFixtures: boolean): UnitModelEntry[] {
-  const out: UnitModelEntry[] = [];
-  for (const [path, family] of Object.entries(UNIT_MANIFESTS)) {
-    if (!family || family.schema !== 'pantheon-realms-unit-family') continue;
-    if (family.familyId.startsWith('_') !== includeFixtures) continue;
-    const dir = path.slice(0, path.lastIndexOf('/') + 1);
-    for (const form of [family.forms.base, family.forms.upgraded]) {
-      if (!form) continue;
-      const url = UNIT_FILES[`${dir}${form.model}`];
-      if (url) out.push({ manifest: form, url });
-    }
-  }
-  return out;
+/** The pantheon's large mounted-hero still for the hero screen (null when none is registered). */
+export function heroFigureArt(pantheonId: string | null | undefined): { url: string; width: number; height: number; status: string } | null {
+  const m = spriteManifest();
+  const h = (pantheonId && m.heroes[pantheonId]) || m.heroes['neutral'];
+  if (!h?.figure) return null;
+  return { url: `./${h.figure.file}`, width: h.figure.width, height: h.figure.height, status: h.figure.status };
 }
-
-/** Entries bound to real creature IDs. The calibration fixture (`_calibration`) is never bound here. */
-export function bundledUnitModels(): UnitModelEntry[] {
-  return entriesOf(false);
-}
-
-/** Development fixtures (axis/scale calibration), used only by the `?e2e=calibration` UI test mode. */
-export function fixtureUnitModels(): UnitModelEntry[] {
-  return entriesOf(true);
-}
-
-registerUnitModels(bundledUnitModels());
-
-// ---------------------------------------------------------------------------
-// Mounted adventure-map heroes — assets-runtime/heroes/ (copied from the Blender
-// asset project; ASSET_PIPELINE.md §12). The GLBs are served from the app's own
-// runtime folder (./heroes/<pantheon>/hero_<pantheon>.glb) in development, the
-// browser build and the desktop package alike; nothing points outside the project.
-// ---------------------------------------------------------------------------
-
-export function bundledHeroModels(): MountedHeroModelEntry[] {
-  return heroModelEntriesFromManifest({ assets: heroAssets, clips: heroClips, ground_alignment: heroGround, suggested_crossfade_seconds: heroCrossfade }, (runtime) => `./heroes/${runtime}`);
-}
-
-registerHeroModels(bundledHeroModels());

@@ -2,6 +2,6 @@
 
 `creature-pairs.valid.json` is a minimal aggregate for topology checks. It intentionally lacks attack/cost/ability data required by a real creature definition. Do not import it as the production catalog.
 
-`metadata-only.gltf` exercises named animation inspection. It has no renderable geometry and deliberately empty animation channels. It is not a conforming animated creature or proof of export quality. The test suite constructs synthetic GLB bytes separately to test parser rejection and header handling.
+The sprite-manifest tests build small synthetic `pantheon-realms-sprites-1` manifests and placeholder files in a temporary directory; no game art is stored here.
 
-The tools use these fixtures without creating a game, editing Blender, connecting to external servers or running the campaign.
+The tools use these fixtures without creating a game, editing art, connecting to external servers or running the campaign.

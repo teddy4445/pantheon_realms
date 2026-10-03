@@ -1,6 +1,6 @@
 /**
  * Browser-build UI tests (Chromium). The WebGL scene runs on SwiftShader in CI
- * containers, so these tests exercise the real Babylon + React application.
+ * containers, so these tests exercise the real PixiJS + React application.
  */
 import { defineConfig } from '@playwright/test';
 

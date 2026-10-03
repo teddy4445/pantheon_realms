@@ -8,14 +8,14 @@ The original server is `tools/pantheon-dev/server.mjs`. It needs Node but no npm
 | --- | --- | --- |
 | `project_health` | Empty object | Presence of expected project components; missing folders are normal before coding |
 | `validate_creature_pairs` | `path` to JSON aggregate | Exactly two forms, reciprocal links, shared faction/tier/growth/footprint |
-| `inspect_gltf_asset` | `path`, optional `requiredClips` | Header/JSON metadata, clip names, missing names and unsafe external references |
+| `inspect_sprite_manifest` | Optional `path` (default `assets-runtime/sprites/manifest.json`) | Entries by section and status (`placeholder`/`final`), referenced files missing locally, invalid statuses or file fields |
 | `check_local_asset_manifest` | `path` to `{assets:[{id,path}]}` | Local existence and safe-path checks for declared assets |
 
 All tools carry read-only annotations, but the implementation restrictions matter more than hints. The server never opens a network listener, executes a shell, follows asset URLs or exposes an arbitrary file-reading tool.
 
 ## Allowed files
 
-Inputs must be project-relative POSIX paths under `packages/content/`, `assets-runtime/`, or `tools/pantheon-dev/fixtures/`. Absolute paths, hidden components, traversal, URLs, backslashes and symlinks are rejected. JSON inputs are limited to 4 MiB; model and individual runtime assets to 64 MiB. Catalogs are bounded to 1,000 families/2,000 forms; manifests to 2,000 entries. Requests are bounded and serialized.
+Inputs must be project-relative POSIX paths under `packages/content/`, `assets-runtime/`, or `tools/pantheon-dev/fixtures/`. Absolute paths, hidden components, traversal, URLs, backslashes and symlinks are rejected. JSON inputs are limited to 4 MiB; individual runtime assets to 64 MiB. Catalogs are bounded to 1,000 families/2,000 forms; manifests to 2,000 entries. Requests are bounded and serialized.
 
 Do not put secrets in the approved content roots. This is defense-in-depth validation within a same-user local process, not a hardened operating-system sandbox against a concurrent hostile process changing files.
 
@@ -40,7 +40,8 @@ Export an aggregate adapter when the implementation stores creatures across file
 ```bash
 node tools/pantheon-dev/audit.mjs health
 node tools/pantheon-dev/audit.mjs catalog packages/content/catalog.audit.json
-node tools/pantheon-dev/audit.mjs asset assets-runtime/creatures/griffin/base.glb idle_a move_fly attack_melee_a defeat
+node tools/pantheon-dev/audit.mjs sprites
+node tools/pantheon-dev/audit.mjs sprites assets-runtime/sprites/manifest.json
 node tools/pantheon-dev/audit.mjs manifest packages/content/runtime-assets.audit.json
 ```
 
@@ -49,10 +50,16 @@ The CLI prints JSON; a failed check exits nonzero. Run from the project root. Th
 Manifest example:
 
 ```json
-{"assets":[{"id":"griffin.base","path":"assets-runtime/creatures/griffin/base.glb"}]}
+{"assets":[{"id":"griffin.base.idle","path":"assets-runtime/sprites/creatures/griffin/idle.webp"}]}
 ```
 
-The manifest only checks entries actually declared. It cannot discover hidden CDN requests, prove browser cache completeness, or verify that a GLB's local URI files are bundled. Use the full glTF wrapper and cold-offline runtime tests separately. Clip-name inspection does not verify channels, weight painting, footprints in motion, conformance or performance.
+The manifest only checks entries actually declared. It cannot discover hidden CDN requests or prove browser cache completeness; run cold-offline runtime tests separately.
+
+## Sprite manifest inspection
+
+`inspect_sprite_manifest` reads a `pantheon-realms-sprites-1` manifest (sections `creatures`, `heroes`, `sites`, `decor`, `obstacles`, `siege`, `projectiles`, `effects`). It returns `entryCount`, per-section and overall counts by `status`, the number of distinct `file` references, and `missingFiles`: references that do not resolve to a local `.webp`/`.png` under `assets-runtime/` (missing, remote, traversing or otherwise unsafe paths are all listed). `valid` is false when a file is missing or an entry has an invalid status or `file` field; placeholders are counted, not treated as errors.
+
+It is bookkeeping only. It does not check frame grids, anchors, transparency, facing, how an animation reads or rendering performance; the sprite importer (`npm run sprites:import`) and a review in the Unit Detail viewer and battle do that.
 
 ## Live-client smoke test
 

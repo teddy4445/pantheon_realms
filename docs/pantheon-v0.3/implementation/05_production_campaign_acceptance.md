@@ -9,10 +9,10 @@
 | QA-01 | Cold offline launch | Install on a clean test profile, disconnect networking, open menu/settings/bestiary and start every mission; no required remote request. |
 | QA-02 | Full offline campaign | Finish all missions against local AI, save, relaunch and continue with networking disabled. |
 | QA-03 | Platform parity | Same rules/content/seed/commands yield the same canonical state in the browser and packaged desktop. |
-| QA-04 | No forbidden dependencies | Rules/AI/mapgen/campaign imports contain no React, Babylon, Electron or browser-storage code. |
+| QA-04 | No forbidden dependencies | Rules/AI/mapgen/campaign imports contain no React, PixiJS, Electron or browser-storage code. |
 | QA-05 | Privileged boundary | Reject unknown IPC, invalid sender, arbitrary OS paths and save path traversal; renderer has no direct Node access. |
 | QA-06 | Worker revisions | Cancel AI/generation, change state, then receive old results; stale revision cannot commit. |
-| QA-07 | Decoder locality | Exercise every compressed asset from a clean cache; decoder/worker/font/audio files resolve locally. |
+| QA-07 | Decoder locality | Exercise every runtime image (WebP strips, stills, paintings) from a clean cache; worker/font/audio files resolve locally. |
 | QA-08 | Save interruption | Interrupt save replacement and campaign continuation; recover the previous-good snapshot or committed next entry, never half a reward. |
 | QA-09 | Settings without match | Apply/Cancel preferences from Main Menu, including reduced motion and audio; they persist without inventing a game state. |
 | QA-10 | Repeated scene lifecycle | Open/close town, battle and bestiary repeatedly; no duplicate loops, stale sounds or steadily leaked live instances. |
@@ -51,14 +51,14 @@
 
 | ID | Test | Expected evidence |
 | --- | --- | --- |
-| QA-31 | glTF validation | Validate all runtime forms and referenced assets; save per-asset reports with exporter/tool versions. |
-| QA-32 | Axis and scale calibration | Load a forward-arrow and human/footprint rig fixture; verify Y-up, +Z facing, meters and correct logical anchors. |
+| QA-31 | Sprite import validation | Run `npm run sprites:import` on all delivered strips (transparency, frame grid, size); save the import report with tool versions and every manifest entry's `placeholder`/`final` status. |
+| QA-32 | Anchor and scale calibration | Place a reference figure and one/two-hex footprint fixture on both boards; verify right facing, mirroring, anchors at the declared baseline, one hex = 240 px (battle) / 150 px (map heroes), and picking by hex transform, not sprite size. |
 | QA-33 | Upgrade readability | Identify each pair at battle zoom in grayscale and with player colors changed; recolor alone fails. |
-| QA-34 | Clip completeness | Every form supplies its required common and role-specific clips; all manifest names resolve. |
-| QA-35 | Base/upgrade deformation | Check both forms in every required clip for hand/weapon, saddle, horn, wing, hoof and armor clipping. |
+| QA-34 | Strip completeness | Every form supplies its required common and role-specific strips; all manifest names resolve; fallbacks used are reported. |
+| QA-35 | Base/upgrade frame consistency | Check both forms in every required strip for baseline jitter, hand/weapon, saddle, horn, wing, hoof and armor continuity and frame-edge clipping. |
 | QA-36 | Missing/loading assets | Text and stats remain usable; required production assets fail validation, development fallback is labeled. |
-| QA-37 | Reduced motion | No automatic idle, camera spin/sway or screen shake; explicit clip playback has an immediate Stop. |
-| QA-38 | Fog and picking | Unseen live enemies are not displayed; decorative geometry cannot create or remove legal paths. |
+| QA-37 | Reduced motion | No automatic idle, camera sway or screen shake; a still frame is shown; explicit strip playback has an immediate Stop. |
+| QA-38 | Fog and picking | Unseen live enemies are not displayed; decorative sprites cannot create or remove legal paths. |
 | QA-39 | All building/screen states | Check the 32 building definitions and S01-S18 coverage against the package inventory; disabled mission content is honest. |
 | QA-40 | Measured performance | Record hardware/backend and measure full fourteen-stack battle, town, map and bestiary; budgets are not accepted without evidence. |
 

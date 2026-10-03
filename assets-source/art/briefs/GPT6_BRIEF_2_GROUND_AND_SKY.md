@@ -16,14 +16,14 @@ sections "How to work", "Style" and the group rules apply to every image.
 *Pantheon Realms* is a turn-based fantasy strategy game in the tradition of
 classic hero-and-army strategy games: six mythological pantheons (Greek, Norse,
 Egyptian, Japanese, Celtic, Mesoamerican) explore an **adventure map** made of
-hexagonal tiles and fight on a **hex-grid battlefield**. Both are 3D scenes seen
-from a fixed, high, angled camera.
+hexagonal tiles and fight on a **hex-grid battlefield**. Both are 2D views seen
+from a fixed, high, angled point of view.
 
 * **Ground textures** are painted onto the tiles of the adventure map. Each tile
   has a ground type (plains, forest, rough, marsh, mountain, water) and each map
   has a climate (temperate, desert, tundra…). The game tiles the texture across
-  the whole map in world space, so **it must repeat seamlessly** in every
-  direction. Trees, peaks, rocks, towns and sites are separate 3D objects placed
+  the whole map in map space, so **it must repeat seamlessly** in every
+  direction. Trees, peaks, rocks, towns and sites are separate sprites placed
   on top; the textures are only the ground under them.
 * **Battlefield grounds** are painted onto the ground of the battle scene. The
   game draws the hex grid, the creatures and the obstacles (rocks, trees) on
@@ -133,11 +133,11 @@ All files go into the project folder **`assets-source/art/final/`**.
 * **What the six ground types mean:**
   * `plains` — open, walkable land typical of the climate.
   * `forest` — the **floor of a forest** (leaf litter, needles, moss, roots,
-    undergrowth). The trees themselves are 3D objects added by the game, so do
+    undergrowth). The trees themselves are sprites added by the game, so do
     **not** paint tree crowns.
   * `rough` — broken ground: stones, gravel, scrub, cracked earth.
   * `marsh` — wet ground with shallow pools, reeds and mud.
-  * `mountain` — **bare rock surface seen from above** (the peaks are 3D objects
+  * `mountain` — **bare rock surface seen from above** (the peaks are sprites
     placed on top); ledges, cracks, scree.
   * `water` — the **surface of water** seen from above, calm with gentle ripples.
     No foam lines and no shoreline (the game adds shores and moving waves).

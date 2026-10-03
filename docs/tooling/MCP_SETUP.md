@@ -12,10 +12,10 @@ Only `pr-audit` is added. `.mcp.json` is created/merged after validating existin
 
 ## B. Resolve exact external versions before installation
 
-Choose only needed npm tools. Add `blender` to this first plan only when preparing that integration too:
+The only planned npm tool is the Playwright MCP:
 
 ```bash
-node tools/pantheon-dev/setup.mjs plan --with=playwright,babylon,gltf
+node tools/pantheon-dev/setup.mjs plan --with=playwright
 ```
 
 This makes metadata requests to the official npm registry and writes:
@@ -23,7 +23,7 @@ This makes metadata requests to the official npm registry and writes:
 - `tools/pantheon-dev/vendor/plan.json`: exact resolved versions, tarball integrity and source metadata.
 - `tools/pantheon-dev/vendor/package.json`: exact direct dependencies; no version ranges.
 
-It does NOT install packages or run their code. There are no preclaimed current release versions in this ZIP. `plan` resolves the published version at your run time; review its publisher, license, engines, source, scripts and security notes before proceeding. A changed Babylon authoring version must be tested with the pinned game runtime, not used as a reason to upgrade the renderer blindly.
+It does NOT install packages or run their code. There are no preclaimed current release versions in this ZIP. `plan` resolves the published version at your run time; review its publisher, license, engines, source, scripts and security notes before proceeding. Never use a development tool's release as a reason to upgrade the game's pinned `pixi.js` renderer blindly.
 
 Create and review the transitive lockfile, then install explicitly:
 
@@ -51,19 +51,9 @@ The supplied config uses Chromium, headless mode, Chromium sandbox enabled, a cl
 
 Origin restrictions are best-effort routing limits, NOT a security boundary and not comprehensive redirect isolation. Use a disposable profile and no personal sessions. Do not enable unrestricted file access, a browser extension attached to your logged-in profile, or no-sandbox merely for convenience. Use a machine/container that supports the intended sandbox.
 
-The isolated MCP browser loses its storage when closed. Use checked-in tests with a deliberate test profile for persistence; separately test the packaged Electron app. The DOM snapshot cannot prove what a WebGL creature looks like. Use screenshots, required human/visual checks and authorized semantic state.
+The isolated MCP browser loses its storage when closed. Use checked-in tests with a deliberate test profile for persistence; separately test the packaged Electron app. The DOM snapshot cannot prove what a creature sprite on the PixiJS canvas looks like. Use screenshots, required human/visual checks and authorized semantic state.
 
-## D. Official Babylon authoring
-
-```bash
-node tools/pantheon-dev/setup.mjs activate --with=babylon
-```
-
-This adds `pr-babylon-nme`, `pr-babylon-npe` and `pr-babylon-nge`, using the installed package's exact version and documented executable names. Setup fails if a bin is missing. It does not use the GUI or Flow Graph tools.
-
-Use NME for unit/terrain materials, NPE for beacon/spell particles, and NGE for optional geometric prop work. Keep source graphs and exported files local in the project and validate them in the game. The official authoring tools can expose temporary local editor sessions; do not forward their ports or publish snippets/assets without explicit approval. Tools do not replace Blender rigging or the game's code.
-
-## E. Context7: optional online documentation
+## D. Context7: optional online documentation
 
 ```bash
 node tools/pantheon-dev/setup.mjs activate --with=context7
@@ -73,7 +63,7 @@ The hosted endpoint is `https://mcp.context7.com/mcp`. The default has no stored
 
 Confirm the requested library and installed version. Avoid sending private game documents, credentials or entire source files. This is online developer assistance, not a game dependency.
 
-## F. GitHub read-only: optional repository context
+## E. GitHub read-only: optional repository context
 
 Set `PANTHEON_GITHUB_TOKEN` in the environment of your local coding client, using a fine-grained read-only token limited to the relevant repository. Then:
 
@@ -83,36 +73,7 @@ node tools/pantheon-dev/setup.mjs activate --with=github
 
 Setup refuses a missing token, writes only `${PANTHEON_GITHUB_TOKEN}`, and uses `https://api.githubcopilot.com/mcp/readonly`. Existing client/provider account and organization policies still apply. Do not assume a `.env` file is loaded automatically; restart the client with the correct environment. Write operations, pushes, issue creation and public publication are not authorized by this configuration.
 
-## G. Blender: optional, explicit higher-risk authoring
-
-Blender requires the installed Blender application, the community add-on, a local bridge session and uv/uvx. No add-on or Blender executable is bundled.
-
-Include `blender` when creating the vendor plan, for example `--with=playwright,babylon,gltf,blender`. Read the exact package version from `vendor/plan.json`. Use that version rather than the literal placeholder below:
-
-```bash
-uvx --python 3.11 --from mcp-for-blender==PINNED_VERSION mcp-for-blender install-addon
-node tools/pantheon-dev/setup.mjs activate --with=blender --uvx=/absolute/path/to/uvx
-```
-
-`install-addon` is a separate, explicit user command because it writes to Blender's user configuration. Read the upstream instructions and review the pinned add-on before running it. Python 3.11 is the maintainer-recommended compatibility choice at the research date; uvx may need to download Python/packages the first time. Enable the add-on inside Blender, open a disposable/backup scene, and start its local server as documented.
-
-This uvx recipe pins the top-level Python package, not all of its transitive dependencies. For a reproducible team authoring environment, create a reviewed dedicated uv project and commit its dependency lock before standardizing the setup. Do not claim the npm lockfile covers Blender/Python dependencies.
-
-Setup supplies `BLENDER_HOST=127.0.0.1`, `BLENDER_PORT=9876`, `BLENDER_MCP_SAFE_MODE=1` and `DISABLE_TELEMETRY=true`. Check the actual add-on is also bound to loopback. Safe mode is a script filter, not isolation; arbitrary Python access remains a serious capability. Do not expose the port to a network. Do not enable optional cloud-generation or download services by default. Stop the bridge when the task is finished.
-
-The configuration cannot create a good rig by itself. Use the paired-creature skill and actual export/deformation checks.
-
-## H. Optional full glTF conformance
-
-After installing `gltf` from the reviewed plan:
-
-```bash
-node tools/pantheon-dev/validate-gltf.mjs assets-runtime/creatures/hoplite/base.glb
-```
-
-This wrapper loads the exact installed Khronos validator and permits only safe local asset references. It does not upload the model. A full validator still does not judge anatomy, silhouette, movement quality or frame rate.
-
-## I. Optional upstream skills
+## F. Optional upstream skills
 
 ```bash
 node tools/pantheon-dev/upstream-skills.mjs plan
@@ -135,6 +96,6 @@ The snapshot is hash-checked, license-preserving, staged and collision-refusing.
 
 ## Disable and rollback
 
-Stop the local client and authoring sessions. Remove only the selected `pr-*` entries from `.mcp.json`; keep unrelated servers. Remove the `@CLAUDE_TOOLING.md` import only when intentionally removing this toolkit. Restore a backup after comparing it with newer user changes, not by blindly overwriting the current file. Remove only the corresponding skill directory to stop its discovery.
+Stop the local client and any tool sessions. Remove only the selected `pr-*` entries from `.mcp.json`; keep unrelated servers. The toolkit now configures only `pr-audit`, `pr-playwright`, `pr-context7` and `pr-github-readonly`; if an older checkout of this toolkit added other `pr-*` authoring entries, remove them, because the 2D pipeline (2026-10-03) no longer uses or supports them. Remove the `@CLAUDE_TOOLING.md` import only when intentionally removing this toolkit. Restore a backup after comparing it with newer user changes, not by blindly overwriting the current file. Remove only the corresponding skill directory to stop its discovery.
 
 Keep credentials outside the repository. Installed vendor folders and absolute machine-local config should not go into the game package. See [security](SECURITY.md) before enabling an external tool.

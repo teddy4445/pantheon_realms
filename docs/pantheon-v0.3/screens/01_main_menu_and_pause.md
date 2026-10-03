@@ -1,6 +1,6 @@
 # S01 - Main Menu, Resume, and Pause Flow
 
-> v0.3 production overlay: use the adopted stylized-3D/React presentation and the [three-level campaign](../campaign/01_the_three_beacons.md). The functional menu contract below is retained; art/audio specifics are proposed in [the element inventory](../production/04_environment_towns_ui_and_audio.md).
+> v0.3 production overlay: use the adopted 2D (PixiJS sprites and painted backgrounds)/React presentation and the [three-level campaign](../campaign/01_the_three_beacons.md). The functional menu contract below is retained; art/audio specifics are proposed in [the element inventory](../production/04_environment_towns_ui_and_audio.md).
 **Status:** P. The earlier S01 Landing technically existed, but it was a review-demo entry rather than a fully specified game front door. This expands S01 without renumbering the other screens. Visual style and music remain undecided.
 
 ## Main menu purpose

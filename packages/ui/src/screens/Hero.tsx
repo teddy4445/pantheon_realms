@@ -6,14 +6,15 @@
  * strip; the hero list on the right; and the seven army slots along the bottom.
  * Equipping, unequipping, reordering, splitting and merging are commands the
  * rules validate (EquipArtifact with a chosen position, UnequipArtifact,
- * TransferStack). The 3D figure is presentation only.
+ * TransferStack). The mounted figure (the pantheon's 2D map-avatar art) is
+ * presentation only.
  *
  * 2026-10-02 (owner request): items can also be dragged — backpack to a slot,
  * slot to slot of the same kind, slot back to the backpack; a picked backpack
  * item is compared with what the hero wears (attribute and set changes); set
  * pieces carry a set badge (final icon once delivered).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ARTIFACT_SLOT_LABEL,
   specialtiesEnabled,
@@ -41,16 +42,13 @@ import {
   type HeroState,
 } from '@pr/rules';
 import { SetBadge } from '../components/badges';
-import type { HeroFigureController } from '@pr/presentation';
 import { useStore } from '../app/context';
-import { reducedMotion } from '../app/preferences';
 import { Bar, Button, Chip, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, ScreenHeader } from '../components/game';
 import { Icon, type IconName } from '../assets/icons';
-import { resolveAsset } from '../assets/manifest';
+import { heroFigureArt, resolveAsset } from '../assets/manifest';
 import { humanPlayer, playerHeroes, townAtHero } from '../app/view';
-import { SceneViewport, type SceneFactory } from '../scene/SceneHost';
 
 const ATTR: Record<string, { label: string; icon: IconName; hint: string }> = {
   attack: { label: 'Attack', icon: 'attack', hint: 'Adds to every stack’s Attack in battle.' },
@@ -274,29 +272,14 @@ export function ArmyEditor({ hero }: { hero: HeroState }) {
   );
 }
 
-/** The hero's mounted figure in the middle of the paper doll (the portrait while it loads or without a model). */
+/** The hero's mounted figure in the middle of the paper doll: the pantheon's 2D figure (the portrait while it loads or without one). */
 function HeroFigure({ pantheonId, fallback }: { pantheonId: string | null; fallback: React.ReactNode }) {
-  const store = useStore();
-  const ctrl = useRef<HeroFigureController | null>(null);
-  const [status, setStatus] = useState<string>('loading');
-  const factory = useCallback<SceneFactory<HeroFigureController>>((lib, engine, canvas) => new lib.HeroFigureController(engine, canvas), []);
-  const onController = useCallback(
-    (c: HeroFigureController | null) => {
-      ctrl.current = c;
-      if (!c) return;
-      c.reducedMotion = reducedMotion(store.prefs);
-      c.onStatus = (s) => setStatus(s);
-      c.setHero(pantheonId);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
-  useEffect(() => {
-    ctrl.current?.setHero(pantheonId);
-  }, [pantheonId]);
+  const art = heroFigureArt(pantheonId);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'none'>(art ? 'loading' : 'none');
+  useEffect(() => setStatus(art ? 'loading' : 'none'), [art?.url]);
   return (
-    <div className={`h3-figure is-${status}`} data-testid="hero-figure" data-status={status}>
-      <SceneViewport factory={factory} onController={onController} className="h3-figure__scene" label="Hero figure (click to salute)" />
+    <div className={`h3-figure is-${status}`} data-testid="hero-figure" data-status={status} data-art={art?.status ?? 'none'}>
+      {art ? <img className="h3-figure__art" src={art.url} alt="" draggable={false} onLoad={() => setStatus('ready')} onError={() => setStatus('none')} /> : null}
       {status !== 'ready' ? <div className="h3-figure__fallback">{fallback}</div> : null}
     </div>
   );

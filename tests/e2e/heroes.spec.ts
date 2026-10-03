@@ -1,35 +1,30 @@
 /**
- * Mounted adventure-map heroes and the fixed-angle map camera, in the production
- * build (ASSET_PIPELINE.md §12). Fixtures are ordinary save files imported
- * through Load → Import; the page is only read (__prInspect / __prHeroes /
- * __prCamera), never driven through hooks.
+ * Mounted map avatars (one per pantheon, 2D sprites) and the 2D map camera, in
+ * the production build (ASSET_PIPELINE.md §1). Fixtures are ordinary save files
+ * imported through Load → Import; the page is only read (__prInspect /
+ * __prHeroes / __prCamera), never driven through hooks.
  */
 import { expect, test, type Page } from '@playwright/test';
 import { GameDriver } from '@pr/testing';
 import { axialNeighbors, quoteMovement, reachableTiles, parseHexKey, type HexCoord } from '@pr/rules';
+import { axialPoint, directionOf } from '@pr/presentation/core';
 import { approachTile, importAndLoad, writeSave } from './fixtures';
 import { clickHex, inspect, waitFor } from './helpers';
 
 interface HeroDebug {
-  model: string;
-  pantheonId?: string;
-  clip?: string;
-  playbackRate?: number;
-  formulaRate?: number;
-  weights?: Record<string, number>;
-  playing?: string[];
-  prepareStarted?: number;
-  prepareFinished?: number;
-  prepareCancelled?: number;
-  holdingReadyPose?: boolean;
-  yaw?: number;
+  sprite: 'ready' | 'loading' | 'missing';
+  status: 'final' | 'placeholder' | null;
+  clip: 'idle' | 'walk' | 'prepare';
+  drawn: string | null;
+  facing: string;
+  mirrored: boolean;
+  prepareCount: number;
 }
 type Heroes = Record<string, HeroDebug>;
 interface Pose {
-  alpha: number;
-  beta: number;
-  radius: number;
-  target: { x: number; y: number; z: number };
+  x: number;
+  y: number;
+  zoom: number;
 }
 interface Sample {
   t: number;
@@ -62,23 +57,22 @@ async function stopSampling(page: Page): Promise<Sample[]> {
   });
 }
 
-async function waitModels(page: Page, ids: readonly string[]): Promise<Heroes> {
+async function waitAvatars(page: Page, ids: readonly string[]): Promise<Heroes> {
   for (let i = 0; i < 120; i++) {
     const h = (await heroes(page)) ?? {};
-    if (ids.every((id) => h[id]?.model === 'ready')) return h;
-    if (ids.some((id) => h[id]?.model === 'failed')) throw new Error(`hero model failed: ${JSON.stringify(h)}`);
+    if (ids.every((id) => h[id]?.sprite === 'ready')) return h;
+    if (ids.some((id) => h[id]?.sprite === 'missing')) throw new Error(`hero avatar missing: ${JSON.stringify(h)}`);
     await page.waitForTimeout(250);
   }
-  throw new Error(`hero models not ready: ${JSON.stringify(await heroes(page))}`);
+  throw new Error(`hero avatars not ready: ${JSON.stringify(await heroes(page))}`);
 }
 
-const world = (c: HexCoord) => ({ x: Math.sqrt(3) * (c.q + c.r / 2), z: -1.5 * c.r });
-const yawTo = (a: HexCoord, b: HexCoord) => {
-  const p = world(a);
-  const q = world(b);
-  return Math.atan2(-(q.z - p.z), q.x - p.x);
+/** The map direction from one hex to another on the 2D board. */
+const dirTo = (a: HexCoord, b: HexCoord) => {
+  const p = axialPoint(a);
+  const q = axialPoint(b);
+  return directionOf(q.x - p.x, q.y - p.y);
 };
-const angleDiff = (a: number, b: number) => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
 
 function driver(matchId: string): GameDriver {
   const d = GameDriver.mission('skirmish_twin_harbors', { matchId });
@@ -98,7 +92,7 @@ async function openSave(page: Page, file: string, errors: string[]): Promise<voi
 
 const OTHER_PANTHEON_HEROES = ['norse_ragnar', 'egyptian_hatshepsut', 'japanese_yoshitsune', 'celtic_boudicca', 'mesoamerican_hunahpu'];
 
-test('six pantheons show their own mounted hero, idling, loaded from the game’s own files', async ({ page }) => {
+test('six pantheons show their own mounted map avatar, idling, loaded from the game’s own files', async ({ page }) => {
   test.setTimeout(240_000);
   const d = driver('e2e-heroes-six');
   const lead = Object.values(d.state.heroes).find((h) => h.ownerId === 'player')!;
@@ -115,36 +109,33 @@ test('six pantheons show their own mounted hero, idling, loaded from the game’
   expect(new Set(Object.values(expected))).toEqual(new Set(['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican']));
 
   const requests: string[] = [];
-  const glb: { url: string; status: number; bytes: number }[] = [];
+  const sprites: { url: string; status: number }[] = [];
   page.on('request', (r) => requests.push(r.url()));
-  page.on('response', async (r) => {
-    if (/\.glb(\?|$)/.test(r.url())) glb.push({ url: r.url(), status: r.status(), bytes: (await r.body().catch(() => Buffer.alloc(0))).length });
+  page.on('response', (r) => {
+    if (r.url().includes('/sprites/heroes/')) sprites.push({ url: r.url(), status: r.status() });
   });
   const errors: string[] = [];
   await openSave(page, writeSave(d, 'heroes six'), errors);
-  const h = await waitModels(page, ids);
+  const h = await waitAvatars(page, ids);
   await page.waitForTimeout(500);
+  for (const id of ids) expect(h[id], id).toMatchObject({ sprite: 'ready', status: 'placeholder', clip: 'idle', drawn: 'idle' });
 
-  for (const id of ids) {
-    expect(h[id], id).toMatchObject({ model: 'ready', pantheonId: expected[id], clip: 'Idle_Standing' });
-  }
-  const now = (await heroes(page))!;
-  for (const id of ids) expect(now[id]!.playing, id).toEqual(['Idle_Standing']);
-
-  // Every request stays on the game's own origin; the six hero GLBs come from ./heroes/<pantheon>/.
+  // Every request stays on the game's own origin; each pantheon's avatar comes from ./sprites/heroes/<pantheon>/.
   const origin = new URL(page.url()).origin;
   expect(requests.filter((u) => !u.startsWith(origin) && !u.startsWith('data:') && !u.startsWith('blob:'))).toEqual([]);
-  const heroGlbs = glb.filter((g) => g.url.includes('/heroes/'));
-  expect(new Set(heroGlbs.map((g) => new URL(g.url).pathname))).toEqual(new Set(['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'].map((p) => `/heroes/${p}/hero_${p}.glb`)));
-  for (const g of heroGlbs) {
-    expect(g.status, g.url).toBe(200);
-    expect(g.bytes, g.url).toBeGreaterThan(100_000);
+  const paths = new Set(sprites.map((s) => new URL(s.url).pathname));
+  for (const p of ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican']) {
+    expect(paths.has(`/sprites/heroes/${p}/idle.webp`), p).toBe(true);
+    expect(paths.has(`/sprites/heroes/${p}/walk.webp`), p).toBe(true);
   }
+  for (const s of sprites) expect(s.status, s.url).toBe(200);
+  // No 3D model is ever requested.
+  expect(requests.filter((u) => /\.(glb|gltf)(\?|$)/i.test(u))).toEqual([]);
   await page.screenshot({ path: 'test-results/heroes-six.png' });
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
-test('moving plays Walk on that hero only, faces the travel direction and returns to idle; the camera angle never changes', async ({ page }) => {
+test('moving plays walk on that hero only, faces the travel direction and returns to idle; the zoom never changes', async ({ page }) => {
   test.setTimeout(180_000);
   const d = driver('e2e-heroes-walk');
   const lead = Object.values(d.state.heroes).find((h) => h.ownerId === 'player')!;
@@ -163,42 +154,30 @@ test('moving plays Walk on that hero only, faces the travel direction and return
   d.state.heroes.e2e_buddy = { ...structuredClone(lead), id: 'e2e_buddy', definitionId: 'norse_ragnar', name: 'Ragnar', position: buddyTile };
   const errors: string[] = [];
   await openSave(page, writeSave(d, 'heroes walk'), errors);
-  await waitModels(page, [lead.id, 'e2e_buddy']);
+  await waitAvatars(page, [lead.id, 'e2e_buddy']);
   const pose0 = await camera(page);
 
   await clickHex(page, dest.q, dest.r); // preview
   await startSampling(page);
   await clickHex(page, dest.q, dest.r); // commit
   await waitFor(page, (s) => s.state.heroes[lead.id].position.q === dest.q && s.state.heroes[lead.id].position.r === dest.r && !s.busy, 'hero moved', 15_000);
-  // The 0.2 s crossfade back to idle runs on frame time (slow software-rendered frames in CI).
-  for (const t0 = Date.now(); Date.now() - t0 < 10_000; ) {
-    const h = (await heroes(page))?.[lead.id];
-    if (h?.clip === 'Idle_Standing' && h.weights?.walk === 0) break;
-    await page.waitForTimeout(100);
-  }
-  await page.waitForTimeout(300);
+  await page.waitForTimeout(400);
   const samples = (await stopSampling(page)).filter((s) => s.h && s.cam);
 
-  const walking = samples.filter((s) => s.h![lead.id]?.clip === 'Walk');
+  const walking = samples.filter((s) => s.h![lead.id]?.clip === 'walk');
   expect(walking.length).toBeGreaterThan(5);
-  const w = walking[walking.length - 1]!.h![lead.id]!;
-  // Normal map pace: 210 ms per hex step of √3 world units → 8.25 units/s; the formula asks for ~30×, capped at 3.5.
-  expect(w.formulaRate!).toBeGreaterThan(25);
-  expect(w.playbackRate).toBe(3.5);
-  expect(walking.some((s) => (s.h![lead.id]!.weights?.walk ?? 0) > 0 && (s.h![lead.id]!.weights?.idle ?? 0) > 0)).toBe(true); // crossfade
+  expect(walking.every((s) => s.h![lead.id]!.drawn === 'walk')).toBe(true);
+  // Each step faces its own direction (the facings seen while walking are the steps' directions).
+  const steps = path.map((c, i) => dirTo(i === 0 ? lead.position : path[i - 1]!, c));
+  for (const s of walking) expect(steps).toContain(s.h![lead.id]!.facing);
   // The other hero idles throughout.
-  for (const s of samples) expect(s.h!.e2e_buddy?.clip).toBe('Idle_Standing');
-  // Stopped: back to idle, facing the last step.
+  for (const s of samples) expect(s.h!.e2e_buddy?.clip).toBe('idle');
+  // Stopped: back to idle, facing the last step (westward steps mirror the side view).
   const end = samples[samples.length - 1]!.h![lead.id]!;
-  expect(end).toMatchObject({ clip: 'Idle_Standing', playing: ['Idle_Standing'] });
-  expect(end.weights).toMatchObject({ idle: 1, walk: 0 });
-  const last = path.length >= 2 ? path[path.length - 2]! : lead.position;
-  expect(angleDiff(end.yaw!, yawTo(last, dest))).toBeLessThan(0.01);
-  // Hero rotation and camera follow never change the viewing angle.
-  for (const s of samples) {
-    expect(s.cam!.alpha).toBe(pose0.alpha);
-    expect(s.cam!.beta).toBe(pose0.beta);
-  }
+  expect(end).toMatchObject({ clip: 'idle', drawn: 'idle', facing: steps[steps.length - 1] });
+  expect(end.mirrored).toBe(['w', 'nw', 'sw'].includes(steps[steps.length - 1]!));
+  // Following the hero pans the view; it never zooms.
+  for (const s of samples) expect(s.cam!.zoom).toBe(pose0.zoom);
   // Selection and the HUD are intact after the move.
   expect((await inspect(page)).state.heroes[lead.id].position).toEqual(dest);
   await expect(page.getByTestId('end-day')).toBeEnabled();
@@ -234,11 +213,11 @@ async function openEncounter(page: Page, rival: HexCoord): Promise<void> {
   await waitFor(page, (s) => s.overlays.includes('encounter'), 'encounter dialog');
 }
 
-test('Withdraw cancels the encounter: no battle and no readiness gesture', async ({ page }) => {
+test('Withdraw cancels the encounter: no battle and no readiness beat', async ({ page }) => {
   const enc = encounterSave('heroes withdraw');
   const errors: string[] = [];
   await openSave(page, enc.file, errors);
-  await waitModels(page, [enc.heroId, 'rival_odysseus']);
+  await waitAvatars(page, [enc.heroId, 'rival_odysseus']);
   await openEncounter(page, enc.rivalTile);
   // The two armies face each other; no strength estimate; Withdraw carries an icon.
   await expect(page.getByTestId('encounter').locator('.encounter-side')).toHaveCount(2);
@@ -246,47 +225,47 @@ test('Withdraw cancels the encounter: no battle and no readiness gesture', async
   await expect(page.getByTestId('encounter-withdraw').locator('svg, img')).toHaveCount(1);
   await page.screenshot({ path: 'test-results/encounter-dialog.png' });
   await page.getByRole('button', { name: 'Withdraw' }).click();
-  await page.waitForTimeout(3500);
+  await page.waitForTimeout(2500);
   const s = await inspect(page);
   expect(s.screen).toBe('adventure');
   expect(s.state.battle).toBeNull();
   expect((s as unknown as { battleScreenOpens: number }).battleScreenOpens).toBe(0);
   const h = (await heroes(page))!;
-  expect(h[enc.heroId]).toMatchObject({ clip: 'Idle_Standing', prepareStarted: 0, prepareFinished: 0 });
+  expect(h[enc.heroId]).toMatchObject({ clip: 'idle', prepareCount: 0 });
   expect((s as unknown as { prepareWar: unknown }).prepareWar).toEqual({ finished: 0, cancelled: 0, skipped: 0 });
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
-test('Attack: the hero walks to the approach tile, faces the opponent, plays Prepare_War once, and the battle opens once after it finishes', async ({ page }) => {
+test('Attack: the hero walks to the approach tile, faces the opponent, plays its readiness beat once, and the battle opens once after it', async ({ page }) => {
   test.setTimeout(180_000);
   const enc = encounterSave('heroes attack');
   const errors: string[] = [];
   await openSave(page, enc.file, errors);
-  await waitModels(page, [enc.heroId, 'rival_odysseus']);
+  await waitAvatars(page, [enc.heroId, 'rival_odysseus']);
   await openEncounter(page, enc.rivalTile);
   await startSampling(page);
   await page.getByTestId('encounter-attack').click();
   await waitFor(page, (s) => s.screen === 'battle', 'battle screen', 30_000);
-  await page.waitForTimeout(2500);
+  await page.waitForTimeout(1500);
   const all = await stopSampling(page);
   const samples = all.filter((s) => s.h?.[enc.heroId]);
   const at = (pred: (h: HeroDebug) => boolean) => samples.find((s) => pred(s.h![enc.heroId]!));
-  const walk = at((h) => h.clip === 'Walk');
-  const prep = at((h) => h.clip === 'Prepare_War');
+  const walk = at((h) => h.clip === 'walk');
+  const prep = at((h) => h.clip === 'prepare');
   expect(walk, 'walked to the approach tile').toBeDefined();
-  expect(prep, 'Prepare_War played').toBeDefined();
+  expect(prep, 'readiness beat played').toBeDefined();
   expect(walk!.t).toBeLessThan(prep!.t);
-  // Movement had stopped before the gesture: no Walk once Prepare_War began, played once.
+  // Movement had stopped before the beat: no walk once it began, played once.
   const during = samples.filter((s) => s.t >= prep!.t);
-  expect(during.every((s) => s.h![enc.heroId]!.clip === 'Prepare_War' && s.h![enc.heroId]!.prepareStarted === 1)).toBe(true);
-  // Facing the opponent; the defending mounted hero turned to meet the attacker.
+  expect(during.every((s) => s.h![enc.heroId]!.clip === 'prepare' && s.h![enc.heroId]!.prepareCount === 1)).toBe(true);
+  // Facing the opponent; the defending hero turned to meet the attacker.
   const lastMap = samples[samples.length - 1]!;
-  expect(angleDiff(lastMap.h![enc.heroId]!.yaw!, yawTo(enc.approach, enc.rivalTile))).toBeLessThan(0.01);
-  expect(angleDiff(lastMap.h!.rival_odysseus!.yaw!, yawTo(enc.rivalTile, enc.approach))).toBeLessThan(0.01);
-  // The map stays until the clip's finished event (2.4 s, no shortcut timer); the battle then opens exactly once.
+  expect(lastMap.h![enc.heroId]!.facing).toBe(dirTo(enc.approach, enc.rivalTile));
+  expect(lastMap.h!.rival_odysseus!.facing).toBe(dirTo(enc.rivalTile, enc.approach));
+  // The map stays until the beat ends (about 1.2 s); the battle then opens exactly once.
   const firstGone = all.find((s) => s.t > prep!.t && !s.h);
   expect(firstGone, 'map closed for the battle').toBeDefined();
-  expect(firstGone!.t - prep!.t).toBeGreaterThan(2200);
+  expect(firstGone!.t - prep!.t).toBeGreaterThan(1000);
   const s = await inspect(page);
   expect(s.screen).toBe('battle');
   expect((s as unknown as { battleScreenOpens: number }).battleScreenOpens).toBe(1);
@@ -294,24 +273,23 @@ test('Attack: the hero walks to the approach tile, faces the opponent, plays Pre
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
-test('leaving for the main menu during Prepare_War ignores its completion: no battle screen', async ({ page }) => {
+test('leaving for the main menu during the readiness beat ignores its completion: no battle screen', async ({ page }) => {
   const enc = encounterSave('heroes abandon');
   const errors: string[] = [];
   await openSave(page, enc.file, errors);
-  await waitModels(page, [enc.heroId, 'rival_odysseus']);
+  await waitAvatars(page, [enc.heroId, 'rival_odysseus']);
   await openEncounter(page, enc.rivalTile);
   await page.getByTestId('encounter-attack').click();
-  // Software-rendered CI frames are slow; wait for the gesture by time, not by a frame count.
   for (const t0 = Date.now(); Date.now() - t0 < 20_000; ) {
-    if ((await heroes(page))?.[enc.heroId]?.clip === 'Prepare_War') break;
-    await page.waitForTimeout(30);
+    if ((await heroes(page))?.[enc.heroId]?.clip === 'prepare') break;
+    await page.waitForTimeout(20);
   }
-  expect((await heroes(page))?.[enc.heroId]?.clip).toBe('Prepare_War');
-  // Pause → Main Menu → confirm, quickly (the gesture lasts 2.4 s).
+  expect((await heroes(page))?.[enc.heroId]?.clip).toBe('prepare');
+  // Pause → Main Menu → confirm, quickly (the beat lasts about 1.2 s).
   await page.keyboard.press('Escape');
   await page.getByRole('button', { name: /Main Menu/ }).click({ force: true });
   await page.getByTestId('confirm-ok').click({ force: true });
-  await page.waitForTimeout(4000);
+  await page.waitForTimeout(3000);
   const s = await inspect(page);
   expect(s.screen).toBe('main-menu');
   expect((s as unknown as { battleScreenOpens: number }).battleScreenOpens).toBe(0);
@@ -319,17 +297,13 @@ test('leaving for the main menu during Prepare_War ignores its completion: no ba
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
-test('the map camera pans left, right, up and down without changing its angle', async ({ page }) => {
+test('the map pans left, right, up and down by dragging and keys; the wheel zooms; panning stops at the map edge', async ({ page }) => {
   const d = driver('e2e-heroes-camera');
   const errors: string[] = [];
   await openSave(page, writeSave(d, 'heroes camera'), errors);
   await page.waitForTimeout(800);
   const p0 = await camera(page);
-  const same = (p: Pose) => {
-    expect(p.alpha).toBe(p0.alpha);
-    expect(p.beta).toBe(p0.beta);
-  };
-  const box = (await page.locator('canvas').first().boundingBox())!;
+  const box = (await page.locator('.scene-viewport canvas').first().boundingBox())!;
   const cx = box.x + box.width / 2;
   const cy = box.y + box.height / 2;
   async function drag(dx: number, dy: number, button: 'left' | 'middle' | 'right' = 'left'): Promise<Pose> {
@@ -340,47 +314,44 @@ test('the map camera pans left, right, up and down without changing its angle', 
     await page.mouse.up({ button });
     await page.waitForTimeout(150);
     const after = await camera(page);
-    same(after);
-    expect(after.radius).toBe(before.radius);
-    return { ...after, target: { x: after.target.x - before.target.x, y: after.target.y - before.target.y, z: after.target.z - before.target.z } };
+    expect(after.zoom).toBe(before.zoom);
+    return { x: after.x - before.x, y: after.y - before.y, zoom: after.zoom };
   }
   // The map follows the mouse: dragging left moves the view right, dragging up moves it toward the bottom.
   const left = await drag(-220, 0);
-  expect(left.target.x).toBeGreaterThan(0.5);
-  expect(Math.abs(left.target.z)).toBeLessThan(0.05);
+  expect(left.x).toBeGreaterThan(20);
+  expect(Math.abs(left.y)).toBeLessThan(1);
   const right = await drag(220, 0);
-  expect(right.target.x).toBeLessThan(-0.5);
+  expect(right.x).toBeLessThan(-20);
   const up = await drag(0, -160);
-  expect(up.target.z).toBeLessThan(-0.5);
-  expect(Math.abs(up.target.x)).toBeLessThan(0.05);
+  expect(up.y).toBeGreaterThan(20);
+  expect(Math.abs(up.x)).toBeLessThan(1);
   const down = await drag(0, 160);
-  expect(down.target.z).toBeGreaterThan(0.5);
-  // Middle-drag pans too; right-drag never orbits or tilts.
+  expect(down.y).toBeLessThan(-20);
+  // Middle-drag pans too; right-drag does nothing.
   const mid = await drag(-150, 0, 'middle');
-  expect(mid.target.x).toBeGreaterThan(0.3);
-  await drag(150, 120, 'right');
-  // Keyboard panning is screen-relative too.
-  for (const [key, axis, sign] of [['ArrowRight', 'x', 1], ['ArrowLeft', 'x', -1], ['ArrowUp', 'z', 1], ['ArrowDown', 'z', -1]] as const) {
+  expect(mid.x).toBeGreaterThan(10);
+  const r = await drag(150, 120, 'right');
+  expect(Math.abs(r.x) + Math.abs(r.y)).toBeLessThan(1);
+  // Keyboard panning is screen-relative.
+  for (const [key, axis, sign] of [['ArrowRight', 'x', 1], ['ArrowLeft', 'x', -1], ['ArrowUp', 'y', -1], ['ArrowDown', 'y', 1]] as const) {
     const before = await camera(page);
     await page.mouse.move(cx, cy);
     await page.keyboard.press(key);
     await page.waitForTimeout(80);
     const after = await camera(page);
-    same(after);
-    expect((after.target[axis] - before.target[axis]) * sign, key).toBeCloseTo(1.2, 3);
+    expect((after[axis] - before[axis]) * sign, key).toBeGreaterThan(10);
+    expect(after.zoom).toBe(before.zoom);
   }
-  // Zoom changes the distance only.
+  // The wheel zooms in.
   await page.mouse.move(cx, cy);
   await page.mouse.wheel(0, -400);
   await page.waitForTimeout(150);
-  const z = await camera(page);
-  same(z);
-  expect(z.radius).toBeLessThan(p0.radius);
+  expect((await camera(page)).zoom).toBeGreaterThan(p0.zoom);
   // Panning is clamped to the map: a long drag stops at the edge.
   for (let i = 0; i < 6; i++) await drag(-600, 0);
-  const edge = (await camera(page)).target.x;
+  const edge = (await camera(page)).x;
   await drag(-600, 0);
-  expect((await camera(page)).target.x).toBeCloseTo(edge, 6);
-  same(await camera(page));
+  expect((await camera(page)).x).toBeCloseTo(edge, 6);
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });

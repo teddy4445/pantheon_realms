@@ -3,9 +3,10 @@
 //
 // Each package may import only the packages listed for it. The simulation core
 // (rules, content, mapgen, campaign, ai, session) may never import React,
-// Babylon, Electron, DOM-only modules or Node built-ins. Relative imports must
+// PixiJS, Electron, DOM-only modules or Node built-ins. Relative imports must
 // stay inside their own package, with one documented exception (the UI reads
-// the committed placeholder, UI-art and hero-animation asset manifests).
+// the committed asset manifests: placeholders, UI art, final icons, painted art,
+// 2D sprites, sound, cursors).
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,7 +22,7 @@ const ALLOWED = {
   'packages/session': ['@pr/rules', '@pr/campaign', '@pr/ai'],
   'packages/testing': ['@pr/rules', '@pr/content', '@pr/campaign', '@pr/ai', '@pr/mapgen'],
   'packages/platform': [],
-  'packages/presentation': ['@pr/rules', '@pr/mapgen', '@babylonjs/core', '@babylonjs/loaders'],
+  'packages/presentation': ['@pr/rules', '@pr/mapgen', 'pixi.js'],
   'packages/audio': [],
   'packages/ui': ['@pr/rules', '@pr/content', '@pr/session', '@pr/platform', '@pr/presentation', '@pr/audio', '@pr/ai', 'react', 'react-dom', '@fontsource/cinzel', '@fontsource/eb-garamond', '@fontsource/inter'],
   'apps/client': ['@pr/ui', '@pr/platform', 'react', 'react-dom'],
@@ -33,14 +34,14 @@ const RELATIVE_EXCEPTIONS = [
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/final-manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/art/manifest.json' },
-  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/heroes/animation_manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/sprites/manifest.json' },
   { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
   { from: 'packages/ui/src/assets/cursors.ts', to: 'assets-runtime/ui/cursors/manifest.json' },
 ];
 
 // Start-up size: the interface may take VALUES only from '@pr/presentation/core' (no
-// Babylon). The 3D layer '@pr/presentation' is reached through `import type` or the
-// on-demand loader in scene/SceneHost.tsx, so the main menu never waits for the engine.
+// PixiJS). The 2D layer '@pr/presentation' is reached through `import type` or the
+// on-demand loader in scene/SceneHost.tsx, so the main menu never waits for the renderer.
 const LAZY_ONLY = { pkg: 'packages/ui', spec: '@pr/presentation', loader: 'packages/ui/src/scene/SceneHost.tsx' };
 const STATIC_VALUE_RE = /^\s*(?:import|export)\s+(?!type\b)[^'";]*?from\s+['"]([^'"]+)['"]/gm;
 
@@ -97,14 +98,64 @@ for (const [pkg, allowed] of Object.entries(ALLOWED)) {
     if (pkg === LAZY_ONLY.pkg) {
       for (const m of text.matchAll(STATIC_VALUE_RE)) {
         if (m[1] === LAZY_ONLY.spec) {
-          console.error(`${rel}: static value import of "${LAZY_ONLY.spec}" pulls Babylon into start-up — use "import type" or "@pr/presentation/core", and load scenes through ${LAZY_ONLY.loader}`);
+          console.error(`${rel}: static value import of "${LAZY_ONLY.spec}" pulls PixiJS into start-up — use "import type" or "@pr/presentation/core", and load views through ${LAZY_ONLY.loader}`);
           problems++;
         }
       }
       if (rel !== LAZY_ONLY.loader && text.includes(`import('${LAZY_ONLY.spec}')`) && !/typeof import\('@pr\/presentation'\)/.test(text)) {
-        console.error(`${rel}: load the 3D layer through ${LAZY_ONLY.loader} (loadPresentation), not a second dynamic import`);
+        console.error(`${rel}: load the 2D layer through ${LAZY_ONLY.loader} (loadPresentation), not a second dynamic import`);
         problems++;
       }
+    }
+  }
+}
+
+// '@pr/presentation/core' must stay renderer-free: none of its modules may import PixiJS.
+{
+  const coreFile = path.join(root, 'packages/presentation/src/core.ts');
+  const seen = new Set();
+  const visit = (file) => {
+    if (seen.has(file)) return;
+    seen.add(file);
+    const text = readFileSync(file, 'utf8');
+    for (const m of text.matchAll(IMPORT_RE)) {
+      const spec = m[1] ?? m[2];
+      if (!spec) continue;
+      if (spec === 'pixi.js' || spec.startsWith('pixi.js/')) {
+        if (!/import\s+type\b/.test(m[0])) {
+          console.error(`${path.relative(root, file)}: '@pr/presentation/core' imports PixiJS ("${spec}") — keep the renderer out of start-up`);
+          problems++;
+        }
+      } else if (spec.startsWith('.')) {
+        const target = path.resolve(path.dirname(file), spec);
+        for (const ext of ['.ts', '.tsx', '/index.ts']) {
+          try {
+            if (statSync(target + ext).isFile()) {
+              visit(target + ext);
+              break;
+            }
+          } catch {
+            // try the next extension
+          }
+        }
+      }
+    }
+  };
+  visit(coreFile);
+}
+
+// No 3D engine anywhere in the game (2D migration, 2026-10-03).
+for (const pkg of Object.keys(ALLOWED)) {
+  let files;
+  try {
+    files = walk(path.join(root, pkg, 'src'));
+  } catch {
+    continue;
+  }
+  for (const file of files) {
+    if (/@babylonjs\/|three\b['"]|SceneLoader|ArcRotateCamera/.test(readFileSync(file, 'utf8'))) {
+      console.error(`${path.relative(root, file)}: references a 3D engine — the game's views are 2D (PixiJS)`);
+      problems++;
     }
   }
 }

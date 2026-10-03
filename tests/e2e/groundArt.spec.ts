@@ -6,12 +6,12 @@ import { approachTile, importAndLoad, writeSave } from './fixtures';
 /**
  * Ground and sky art (Brief 2, delivery 2026-10-02) in the production build:
  * the map's climate picks its six terrain textures, its water for the sea and
- * its sky past the north edge; a battle shows its battlefield painting; the map
- * camera keeps its fixed angle. Every texture is served from the game's own
- * runtime folder. Screenshots are kept for review.
+ * its sky past the north edge; a battle shows its battlefield painting; panning
+ * never changes the zoom. Every texture is served from the game's own runtime
+ * folder. Screenshots are kept for review.
  */
 
-type Pose = { alpha: number; beta: number };
+type Pose = { x: number; y: number; zoom: number };
 const camera = (page: Page): Promise<Pose> => page.evaluate(() => (globalThis as unknown as { __prCamera: () => Pose }).__prCamera());
 
 function served(page: Page): Map<string, number> {
@@ -29,7 +29,7 @@ async function settle(page: Page, seen: Map<string, number>, files: string[]): P
 }
 
 for (const climate of ['temperate', 'tundra'] as const) {
-  test(`the ${climate} climate paints the map, the sea and the sky; the camera angle is unchanged`, async ({ page }) => {
+  test(`the ${climate} climate paints the map, the sea and the sky; panning keeps the zoom`, async ({ page }) => {
     const seen = served(page);
     const d = GameDriver.mission('skirmish_twin_harbors', { matchId: `e2e-ground-${climate}` });
     for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
@@ -45,15 +45,14 @@ for (const climate of ['temperate', 'tundra'] as const) {
     await settle(page, seen, [`art/terrain/terrain.${climate}.plains.webp`, `art/terrain/terrain.${climate}.forest.webp`, `art/terrain/terrain.${climate}.water.webp`, `art/sky/sky.${climate}.webp`]);
     // Only this climate's terrain is fetched.
     expect([...seen.keys()].filter((k) => k.startsWith('art/terrain/') && !k.includes(`.${climate}.`))).toEqual([]);
+    void before;
     const pose = await camera(page);
-    if (before) expect(pose).toMatchObject({ alpha: before.alpha, beta: before.beta });
-    await page.keyboard.down('ArrowUp');
-    await page.waitForTimeout(1200);
-    await page.keyboard.up('ArrowUp');
+    // Toward the north edge, where the sky panorama stands.
+    for (let i = 0; i < 30; i++) await page.keyboard.press('ArrowUp');
     await page.waitForTimeout(600);
     const after = await camera(page);
-    expect(after.alpha).toBe(pose.alpha);
-    expect(after.beta).toBe(pose.beta);
+    expect(after.zoom).toBe(pose.zoom);
+    expect(after.y).toBeLessThan(pose.y);
     await page.screenshot({ path: `test-results/ground-${climate}.png` });
   });
 }

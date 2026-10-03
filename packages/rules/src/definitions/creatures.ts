@@ -29,7 +29,7 @@ export type CreatureRole =
   | 'unassigned';
 
 /**
- * Presentation hint used by placeholder proxies and future rigs.
+ * Presentation hint: the silhouette family of placeholder sprites.
  * Not a rule: footprint and movement mode come from stats/abilities.
  */
 export type BodyProfile =
@@ -71,7 +71,8 @@ export interface CreatureStats {
 export interface CreaturePresentationRefs {
   readonly bodyProfile: BodyProfile;
   readonly portraitAssetId: AssetId;
-  readonly modelAssetId: AssetId;
+  /** 2D sprite set (battle and bestiary animation strips) in the sprite manifest. */
+  readonly spriteAssetId: AssetId;
   readonly animationProfileId: AssetId;
   /** Short accessible description of the portrait. */
   readonly portraitAlt: string;

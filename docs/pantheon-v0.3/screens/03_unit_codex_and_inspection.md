@@ -1,6 +1,6 @@
 # S18 - Unit Detail, Animated Bestiary, and Contextual Inspection
 
-> v0.3 production overlay: all eight Greek families have a base and exactly one upgrade. Their actual 3D previews use the [paired-creature bible](../production/03_creature_pairs_and_animation_bible.md); historical 2D discussion below is fallback context, not the chosen production renderer.
+> v0.3 production overlay: all eight Greek families have a base and exactly one upgrade. Their animated sprite previews (PixiJS, since the 2D migration of 2026-10-03) use the [paired-creature bible](../production/03_creature_pairs_and_animation_bible.md); the 2D viewer described below is the chosen production renderer.
 **Status:** P. This is the newly requested unit-information experience. S16 is the searchable reference index; S18 is the focused unit page. A lightweight D03 inspector provides the same facts within hero, town, recruitment, and battle views.
 
 ## 1. What the player should learn
@@ -22,9 +22,9 @@ Example: Recruitment -> inspect Griffin -> compare upgrade -> read covenant requ
 ```text
 [Back]  Griffin / Greek / Tier 3 / Flying interceptor   [Compare]
 
-[Animated model or sprite]   [Base / Current context stats]
+[Animated sprite]            [Base / Current context stats]
 [Idle | Move | Attack ...]  [Attack, Defense, HP, damage, Speed]
-[Play/Pause | facing]       [Shots, footprint, retaliations, morale]
+[Play/Pause | base/upgrade] [Shots, footprint, retaliations, morale]
 
 [Abilities] [Recruitment & upgrades] [History & mythology] [Game lore]
 
@@ -78,7 +78,7 @@ For a non-historical invented class such as Temple Adept, state that its combat 
 
 Offer only states that exist for this unit: Idle, Move/Fly, Melee, Shoot, Ability, Hit, Defeat, Victory. Idle may loop if the user's motion setting permits it. Attacks/abilities/defeat play only on request and return to idle or a static frame. A ranged animation does not authorize an extra gameplay attack.
 
-For 2D, switch among supplied facings; for a future 3D model, rotation may be added. Do not display a 360-degree rotation control for a flat sprite. Show loading/missing-asset fallbacks without hiding stats. Playback has Pause, Stop, speed selection, and a static-image alternative. The [animation contract](../content/02_animation_behavior_contract.md) is authoritative for behavior.
+Strips are authored facing right and may be mirrored; switch between the base and upgraded form with the same state selected. Do not display a rotation control for a sprite. Show loading/missing-asset fallbacks without hiding stats. Playback has Pause, Stop, speed selection, and a static-image alternative. The [animation contract](../content/02_animation_behavior_contract.md) is authoritative for behavior.
 
 No animation preview advances simulation, consumes mana, spends ammunition, applies a status, or consumes gameplay RNG. Keep only one unit viewer active; comparison uses still portraits unless the player deliberately selects one side to animate.
 

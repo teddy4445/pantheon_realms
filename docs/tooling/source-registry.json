@@ -16,27 +16,11 @@
     "inspected": "2026-09-29"
   },
   {
-    "id": "SRC-03",
-    "title": "Official Babylon MCP authoring servers",
-    "url": "https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/packages/public/@babylonjs/mcp-servers/readme.md",
-    "publisher": "Official BabylonJS repository",
-    "usedFor": "@babylonjs/mcp-servers; NME, NPE, NGE and other editors; local authoring/export.",
-    "inspected": "2026-09-29"
-  },
-  {
     "id": "SRC-04",
     "title": "Playwright MCP",
     "url": "https://github.com/microsoft/playwright-mcp",
     "publisher": "Official Microsoft repository",
     "usedFor": "@playwright/mcp; browser configuration, isolated profile, vision, local tooling and security limitations.",
-    "inspected": "2026-09-29"
-  },
-  {
-    "id": "SRC-05",
-    "title": "Blender MCP",
-    "url": "https://github.com/ahujasid/mcp-for-blender",
-    "publisher": "Community maintainer repository, NOT official Blender",
-    "usedFor": "Renamed package mcp-for-blender, add-on requirement, localhost socket, arbitrary Python, safe-mode limitations and telemetry controls.",
     "inspected": "2026-09-29"
   },
   {
@@ -72,14 +56,6 @@
     "inspected": "2026-09-29"
   },
   {
-    "id": "SRC-10",
-    "title": "Khronos glTF Validator",
-    "url": "https://github.com/KhronosGroup/glTF-Validator",
-    "publisher": "Official Khronos repository",
-    "usedFor": "Full conformance validator, separate from the toolkit metadata audit.",
-    "inspected": "2026-09-29"
-  },
-  {
     "id": "SRC-11",
     "title": "MCP stdio transport",
     "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/main/docs/specification/2025-11-25/basic/transports.mdx",
@@ -94,5 +70,13 @@
     "publisher": "Official Upstash repository",
     "usedFor": "Remote documentation queries, library resolution and anonymous/authenticated access.",
     "inspected": "2026-09-29"
+  },
+  {
+    "id": "SRC-13",
+    "title": "PixiJS 8 guides",
+    "url": "https://pixijs.com/8.x/guides",
+    "publisher": "Official PixiJS documentation",
+    "usedFor": "Renderer, application/ticker, sprites, textures and assets, and v8 migration notes behind the pr-pixi-scene skill; check the game's pinned pixi.js version first.",
+    "inspected": "2026-10-03"
   }
 ]

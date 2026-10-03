@@ -1,7 +1,8 @@
 /**
- * Presentation palette for placeholder geometry. Colors are cosmetic only and
- * never encode rules on their own: ownership also uses banner shape, and
- * highlights also use marker shape (disc vs ring vs flag).
+ * Presentation palette for the 2D views (procedural ground colours, overlays,
+ * markers). Colors are cosmetic only and never encode rules on their own:
+ * ownership also uses banner shape, and highlights also use marker shape
+ * (disc vs ring vs flag).
  */
 import type { Terrain } from '@pr/rules';
 
@@ -12,16 +13,6 @@ export const TERRAIN_COLORS: Readonly<Record<Terrain, string>> = {
   marsh: '#4d6b5c',
   mountain: '#6f6a64',
   water: '#2c5c86',
-};
-
-/** Tile top heights (world units) — visual relief only. */
-export const TERRAIN_HEIGHT: Readonly<Record<Terrain, number>> = {
-  plains: 0,
-  forest: 0.04,
-  rough: 0.1,
-  marsh: -0.04,
-  mountain: 0.28,
-  water: -0.16,
 };
 
 export const BIOME_TINT: Readonly<Record<string, [number, number, number]>> = {

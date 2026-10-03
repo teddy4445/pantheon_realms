@@ -2,7 +2,7 @@
  * @pr/rules — the authoritative rules core.
  *
  * Depends on nothing outside the TypeScript standard library. Never import React,
- * Babylon, Electron, DOM or storage APIs here (enforced by tools/check-boundaries.mjs
+ * PixiJS, Electron, DOM or storage APIs here (enforced by tools/check-boundaries.mjs
  * and a DOM-free tsconfig).
  */
 export * from './ids';

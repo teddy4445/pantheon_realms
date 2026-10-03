@@ -1,7 +1,7 @@
 /**
  * GameEvent: immutable facts emitted by a committed command.
  *
- * Events drive UI notifications, Babylon animation, audio cues, replay and tests.
+ * Events drive UI notifications, 2D sprite animation, audio cues, replay and tests.
  * They are results, never requests: playing (or skipping) an event's animation
  * cannot change MatchState. The authoritative state remains MatchState.
  */

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Shared React + Babylon client application (browser build and Electron renderer).",
+  "description": "Shared React + PixiJS client application (browser build and Electron renderer).",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -1,6 +1,6 @@
 ---
 name: pr-qa-release
-description: "Test, review or prepare a Pantheon Realms feature or release using deterministic rules tests, campaign seed/gate checks, browser UI interaction, creature pair/GLB audits and packaged Electron offline validation. Use for regressions, end-to-end flows, release gates and claims of completion. Separate exploratory MCP sessions from checked-in automated tests and distinguish measured results from targets."
+description: "Test, review or prepare a Pantheon Realms feature or release using deterministic rules tests, campaign seed/gate checks, browser UI interaction, creature pair/sprite-manifest audits and packaged Electron offline validation. Use for regressions, end-to-end flows, release gates and claims of completion. Separate exploratory MCP sessions from checked-in automated tests and distinguish measured results from targets."
 ---
 
 # Evidence-Based Game QA
@@ -13,8 +13,8 @@ Read [project-contract.md](references/project-contract.md), `implementation/05_p
 2. Rules: valid/invalid commands, conservation, rounding, idempotency, seeded replay, ordinary/fast/instant equivalence and save round trips.
 3. Campaign: golden/boundary seeds, gate combinations, optional encounter independence, economy recovery, carryover and exactly-once completion.
 4. UI: main menu without match, settings cancel/apply, town/recruitment transactions, bestiary context preservation, required choices and helpful empty/error states.
-5. Assets: metadata/required clips, full validator, actual animation/deformation review, base/upgrade silhouette, missing-asset fallback and cleanup.
-6. Desktop: packaged cold-offline launch, native save/close/relaunch, decoder locality, crash recovery and no development services shipped.
+5. Assets: sprite-manifest status and missing files (`inspect_sprite_manifest`), required animation strips per form, importer checks, actual animation review in the viewer and battle (anchors, facing, mirroring), base/upgrade silhouette, placeholder fallback and cleanup; `tests/e2e/sprites2d.spec.ts` and `tests/e2e/heroes.spec.ts`.
+6. Desktop: packaged cold-offline launch under the strict CSP, native save/close/relaunch, local sprite/texture loading, crash recovery and no development services shipped.
 
 ## Tools
 

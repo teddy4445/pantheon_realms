@@ -1,189 +1,263 @@
-# Asset Pipeline — 3D creature models (artist spec)
+# Asset Pipeline — 2D sprites, painted art, icons and sound
 
-_For modellers, riggers and animators delivering creature GLBs. Engine side:
-`packages/presentation/src/models.ts`. Source of truth for the rules behind
-this sheet: `docs/pantheon-v0.3/production/02_visual_and_animation_pipeline.md`
-and `CREATURE_ANIMATION_REQUIREMENTS.md`. Nothing here changes game rules._
+_For artists and for whoever brings art into the game. Engine side:
+`packages/presentation/src/sprites.ts` (manifest, animation vocabulary,
+fallbacks), `figure.ts` (playback) and `ui/src/assets/manifest.ts`
+(registration). Source of truth for the rules behind this sheet:
+`docs/pantheon-v0.3/production/02_visual_and_animation_pipeline.md` and
+`CREATURE_ANIMATION_REQUIREMENTS.md`. Nothing here changes game rules._
 
-**Status of the pipeline (measured, this build):** GLB loading, manifest
-binding, clip playback in the bestiary and on the battlefield, the proxy
-fallback and validation are implemented and tested with a generated
-calibration model. **No production creature model exists yet** — every
-creature still shows its procedural placeholder until its GLB is delivered.
+**Status (measured, this build):** the 2D views (Adventure Map, Tactical
+Battle, Unit Detail viewer) draw everything from
+`assets-runtime/sprites/manifest.json`. **Every sprite is still a labelled
+placeholder** (`"status": "placeholder"`, 186 entries): 43 creature forms
+show a still cut from their delivered canonical reference view, the other 59
+forms simple silhouette strips, the six map avatars a side view cut from the
+owner's hero boards, map locations crops of the owner's map-marker sheet,
+and decoration, obstacles, siege pieces, projectiles and effects procedural
+drawings. The art still to make is listed in `GPT6_2D_CONTENT_GENERATION.md`
+as **140 sheets** — large images holding many sprites each (all animations
+of one creature form, all directions of one map hero, a dozen map objects),
+with a layout and prompt each — cut into single files by
+`npm run sprites:cut` (§4). `npm run sprites:queue` regenerates the queue
+and its layouts from the manifest's actual gaps.
 
 ---
 
-## 1. Orientation, units, origin
+## 1. The sprite contract
 
 | Rule | Value |
 |---|---|
-| Format | glTF 2.0 binary (`.glb`), one file per form (base and upgraded separately) |
-| Units | **meters** (1 unit = 1 m). A standing human is ~1.8 m tall |
-| Up axis | **+Y** in the exported file |
-| Front | **+Z** in the exported file (the direction the creature looks and attacks) |
-| Handedness | Right-handed (glTF standard). The game loads models into right-handed scenes, so no conversion is applied |
-| Origin / root | At the feet — the ground projection of the body centre. Flying forms keep the same ground anchor; altitude is presentation |
-| Blender | Author Z-up, facing **−Y**, and export with the standard glTF exporter "+Y Up" option. Apply scale/rotation **before** binding the skeleton. No negative scale / mirroring |
+| Format delivered | PNG, RGBA, **transparent background** (the importer rejects a frame whose border is more than 2 % opaque) |
+| Runtime format | WebP, written by `npm run sprites:import` (never edited by hand) |
+| Strip | One image per animation: **N equal frames side by side, left to right**, no gaps, same baseline in every frame |
+| Facing | Every creature and avatar is drawn **facing right** (screen right). The game mirrors defenders, enemies and westward travel; never deliver a mirrored copy |
+| Light | From the upper left, the same in every frame and every form |
+| Camera | The game's fixed three-quarter view from the front-right (as in the canonical reference views); no camera move inside a strip |
+| Padding | Keep the whole figure inside the frame in every frame (weapons, wings, tails, effects attached to the body); nothing cut at the edges |
+| One figure | One figure per stack (the count badge shows numbers); never draw a squad in one frame |
+| What is not in the strip | Shadows on the ground, selection rings, health or count labels, projectiles in flight and spell effects are drawn by the game |
 
-Do not add a "correction" rotation in the file. Check your export against the
-calibration model instead (§7): its red arrow points to the front, its blue
-block sits on the model's +X side (the creature's **left** when it faces +Z).
+Statuses: `placeholder` (generated here, may be replaced at any time) and
+`final` (delivered art, imported). A set is `final` only when every
+animation its content needs is final; until then each strip keeps its own
+status, so a half-delivered creature mixes final and placeholder strips and
+the game says "Placeholder sprites" in the Unit Detail viewer.
 
-## 2. Size on the battlefield
+## 2. Size and anchors
 
-The rules decide how many hexes a creature occupies (1 or 2); the model never
-changes that. On the battle board one hex has a radius of 1 unit, and figures
-are drawn at **0.6 × authored size** (`BATTLE_MODEL_SCALE`), so a 1.8 m soldier
-reads ~1.1 units tall — the same as today's placeholders. The bestiary shows the
-model at its true size.
+Every strip names its **anchor** (the point placed on the logical position,
+as fractions of the frame) and its **scale** (frame pixels per hex width).
+The views place sprites from logical positions only, so a sprite's size
+never changes which hex a click selects (`hexmath.ts` is the only
+screen↔hex transform).
 
-* **One-hex creatures:** keep the body within a ~1.2 m radius of the root.
-* **Two-hex creatures:** the game centres the model between its two cells;
-  keep it within ~2.6 m along the front axis and ~1.4 m sideways. If the rig's
-  root is not at the body centre, set `visualOffset` in the manifest (meters;
-  presentation only — it never moves hit areas or reach).
-* Large wings or tails may overhang visually; selection and landing still use
-  the rules' cells.
-* Stacks show a bounded formation: up to 3 small soldiers, 2 medium creatures,
-  or 1 apex creature. The unit count is shown as a label.
-
-## 3. The eight animation states (clip names)
-
-The game plays clips **by these exact names** (they are bound in the manifest,
-so a different name is possible, but please use these):
-
-| Semantic state | Clip name | Loop | Typical length | Notes |
+| Kind | Delivered frame | Anchor | One hex width = | Runtime scale |
 |---|---|---|---|---|
-| Idle | `idle_a` | loop | 2–4 s | Breathing, weight shift. Ends must match |
-| Move | `move_walk` | loop | 0.7–1.3 s per cycle | **In place** (no root motion); the game moves the figure along the path |
-| Melee | `attack_melee_a` | once | 0.8–1.4 s | Anticipation, contact, recovery. Also used for retaliation. Put the contact frame in `impactAt` (0–1) |
-| Ranged | `attack_shoot` | once | 0.8–1.4 s | **Shooters only.** Prepare/aim, release, recover. Release frame in `releaseAt`. The projectile is a separate game object launched from the `projectile` socket |
-| Defend | `guard` | loop (or held pose) | ~1 s | A readable brace, distinct from attack wind-up |
-| Hit | `hit_a` | once | 0.2–0.45 s | Reaction to damage already decided by the rules |
-| Defeat | `defeat` | once, **never loops** | 1–1.8 s | The game holds the last frame |
-| Victory | `victory` | once | 1.5–2.5 s | End-of-battle flourish; may be skipped |
+| Battle creature (one hex) | 512 × 512 | feet, bottom centre: (0.5, 0.9) | 240 px | ½ (256 × 256 frames) |
+| Battle creature (two hexes) | 768 × 512 | feet, bottom centre: (0.5, 0.9); the body spans both hexes | 240 px | ½ |
+| Map hero avatar (rider and mount) | 320 × 320 | ground point between the mount's feet: (0.5, 0.88) | 150 px | 0.6 |
+| Hero-screen figure (still) | 1024 × 1024 | — (fitted to its panel) | — | ≤ 720 px |
+| Map location | 512 × 512 | ground contact: (0.5, 0.92) | 280 px | ½ |
+| Map decoration | 256 × 256 | (0.5, 0.95) | 280 px | ½ |
+| Battle obstacle | 512 × 512 | (0.5, 0.92) | 240 px | ½ |
+| Siege piece (wall, gate, tower) | 512 × 512 (keep 768 × 768) | (0.5, 0.95) | 240 px | ½ |
+| Projectile | 128 × 32, pointing right | centre (0.5, 0.5) | 240 px | ½ |
+| Effect | 256 × 256 frames | (0.5, 0.62) | 240 px | ½ |
 
-Extra clips when they apply:
+**Sheets** (the normal delivery, §4) replace the frame sizes above with
+cells: each sheet states how many hex widths one cell spans and where its
+ground line is, and the cutter writes every strip with its own anchor and
+pixels per hex (cell height ÷ cell height in hexes), so any delivered
+resolution works. A single strip may still be delivered directly at any
+uniform frame size from **half to twice** the listed one with the same shape.
+Either way the importer never enlarges: the runtime scale is the delivered
+one, capped at the nominal runtime scale (½ of the sizes above). Sizes on
+the board come from the creature's size class (taller forms use more of the
+cell), never from its footprint alone; each creature sheet in
+`GPT6_2D_CONTENT_GENERATION.md` states the cell size and the creature's
+height in it.
 
-* **Flyers** (Griffins, Valkyries, Tengu, Bennu, Camazotz, …): `takeoff` (once), `move_fly` (loop, bound
-  as `fly`), `land` (once); `move_walk` covers short ground moves.
-* **Active abilities**: `ability_<id>`, e.g. `ability_family_ward` for the
-  Temple Seer, the Runic Jotunn and the other warders listed in §9. Passive
-  traits need no clip.
-* The Cyclops' wall battering reuses `attack_shoot`.
+## 3. Animation vocabulary
 
-Sample at 30 fps. Both forms of a family should share the rig and clips where
-the anatomy allows; each form must still pass the checks on its own.
+| Name | Plays when | Loop | Frames (sheet) | Default rate |
+|---|---|---|---|---|
+| `idle` | standing, waiting, selected | loop | 6 (map avatars 4) | 3 fps (2 s) |
+| `move` | walking a path on the board | loop | 6 | 8 fps (0.75 s) |
+| `attack` | melee attack and retaliation | once | 6 | 6 fps (1 s) |
+| `defend` | Defend command | once, hold | 3 | 8 fps |
+| `hit` | taking damage | once | 3 | 10 fps (0.3 s) |
+| `death` | the stack is destroyed (the last frame stays: the fallen lie on the board) | once, hold | 6 | 5 fps (1.2 s) |
+| `victory` | the battle is won (every surviving winner) | loop | 6 | 4 fps (1.5 s) |
+| `shoot` | ranged attack — **only creatures that shoot** | once | 6 | 6 fps (1 s) |
+| `takeoff`, `fly`, `landing` | travel by flight — **only creatures with Flight** | once / loop / once | 3 / 6 / 3 | 8 / 10 / 8 fps |
+| `ability` | an active ability — **only creatures that have one** | once | 6 | 6 fps (1 s) |
+| `walk` | map avatars travelling (with `idle`) | loop | 6 | 8 fps |
+
+`cast` is reserved (heroes cast spells; creatures do not). Which strips a
+form needs follows its gameplay content (`requiredAnimations`): the base
+seven, plus `shoot`, the flight three or `ability` as above — the Unit
+Detail viewer shows exactly those buttons. The rates above put the strips
+inside the pacing targets of `CREATURE_ANIMATION_REQUIREMENTS.md`; a sidecar
+`<same name>.json` (`{"fps": 6, "loop": true, "anchor": [0.5, 0.9]}`) next
+to a delivered file overrides them (the cutter writes one for every strip,
+with the frame rates of `assets-source/sprites/sheet-layouts.json`). Animation never decides an outcome: the
+rules have committed the result before anything plays, and Instant or Skip
+gives the same result.
 
 ## 4. Files and folders
 
-```text
-assets-src/units/<pantheon>/<familyId>/     # NOT shipped: .blend, textures, review renders
-assets-runtime/units/<pantheon>/<familyId>/
-  base/model.glb
-  base/portrait.webp            # optional until portraits are rendered from the model
-  upgraded/model.glb
-  upgraded/portrait.webp
-  family.manifest.json          # binds the files to creature IDs (below)
+**Sheets.** GPT-6 delivers sheets into `assets-source/sprites/sheets/`
+under the names in `GPT6_2D_CONTENT_GENERATION.md`:
+
+```
+sheet.creature.<pantheon>.tier<N>.<base|upgraded>.png   all animations of one form, one row each (6 cells per row;
+sheet.creature.neutral.<family>.<base|upgraded>.png     defend+hit and takeoff+landing share a row)
+sheet.hero.<pantheon>.png                               5 directions (rows) × idle 4 + walk 6 (cells)
+sheet.hero.figures.png                                  the six hero-screen figures
+sheet.ref.<pantheon|neutral>.<n>.png                    canonical references, 3 families × (base, upgraded)
+sheet.portrait.<pantheon|neutral>.<n>.png               portraits, same families (opaque, black gutters)
+sheet.map.towns.png, sheet.map.resources.png, sheet.map.locations.1.png, sheet.map.locations.2.png
+sheet.battle.obstacles.png, sheet.battle.siege.png, sheet.fx.png
 ```
 
-Everything under `assets-runtime/units` is bundled into the game build (no
-downloads at runtime). Keep source files out of `assets-runtime`.
+A sheet may arrive as two row ranges, `<sheet>.part1.png` and
+`<sheet>.part2.png` (the upper part has the extra row when the count is
+odd). Each sheet's grid, cell size in hexes, ground line and the file every
+cell becomes are in `assets-source/sprites/sheet-layouts.json` (written by
+`npm run sprites:queue`). `npm run sprites:cut` keys out a non-transparent
+background (flat magenta, grey, a fake checkerboard), moves each cut to the
+emptiest line near the grid, re-aligns every animation on the creature's
+feet (median ground contact and foot position; airborne frames keep the
+idle row's height), crops objects to their content with the anchor at their
+ground contact, squares references and figures, cuts portraits along their
+gutters, and writes:
 
-## 5. The family manifest
+* strips and objects (with a sidecar JSON: frames, fps, loop, anchor, pixels
+  per hex) to `assets-source/sprites/final/` under the single-file names
+  below;
+* references to `assets-source/creatures/reference/`, portraits to
+  `assets-source/icons/final/`;
+* a preview of every cut (frames on a checkerboard with the anchor and
+  ground line) to `assets-source/sprites/sheets/_preview/` (not committed);
+* `assets-source/sprites/sheets/cut-log.json`: what each sheet produced. A
+  sheet is cut again only when it changes, and the cutter never overwrites a
+  file it did not cut (`--force` overrides both).
+
+It reports frames that are empty, figures that touch (a row with more or
+fewer separate figures than cells) and sheets whose background it cannot
+separate; `--dry-run` checks without writing, `--self-test` cuts synthetic
+sheets and checks the results.
+
+**Single files.** The cut files — or any file delivered on its own — go into
+`assets-source/sprites/final/` under these exact names:
+
+```
+sprite.creature.<pantheon>.tier<N>.<base|upgraded>.<animation>.png
+sprite.creature.neutral.<family>.<base|upgraded>.<animation>.png
+sprite.hero.<pantheon>.<idle|walk>.<e|ne|n|s|se>.png   (nw, w, sw accepted; the game mirrors ne, e, se for them)
+sprite.hero.<pantheon>.figure.png
+sprite.map.site.<kind>[.<variant>].png        (towns: .<pantheon>; pickups: .<resource>|.artifact)
+sprite.map.decor.<kind>.png
+sprite.battle.obstacle.<kind>.png
+sprite.battle.siege.<wall|gate|tower|keep>.<intact|damaged|rubble>.png
+sprite.battle.projectile.<arrow|stone>.png
+sprite.fx.<effect>.png
+```
+
+Map avatars: `e` is right, `n` away from the camera, `s` toward it. The
+game mirrors the right-facing ones for the west (`w` ← `e`, `nw` ← `ne`,
+`sw` ← `se`), so five directions complete a set.
+
+Runtime layout (generated): `assets-runtime/sprites/manifest.json`,
+placeholders in `assets-runtime/sprites/{creatures,heroes,map,battle,effects}/`,
+imported finals in `assets-runtime/sprites/final/…`. Sources that are not
+read by the game: `assets-source/creatures/reference/` (canonical reference
+views of 43 forms, the drawing reference for every strip of that form),
+`assets-source/sprites/content-plan.json` (`npm run sprites:plan`: forms,
+animations, map locations, battlefields, climates and spells the content
+uses) and `assets-source/sprites/silhouettes/`.
+
+## 5. The sprite manifest
+
+`assets-runtime/sprites/manifest.json`, schema `pantheon-realms-sprites-1`,
+sections `creatures` (by creature ID), `heroes` (by pantheon, plus
+`neutral`), `sites`, `decor`, `obstacles`, `siege`, `projectiles`,
+`effects`:
 
 ```json
-{
-  "schema": "pantheon-realms-unit-family",
-  "schemaVersion": 1,
-  "familyId": "hoplite",
-  "pantheonId": "greek",
-  "forms": {
-    "base": {
-      "assetId": "unit.greek.hoplite.base",
-      "creatureId": "hoplite",
-      "form": "base",
-      "status": "exported",
-      "model": "base/model.glb",
-      "portrait": "base/portrait.webp",
-      "rigId": "rig.hoplite.v1",
-      "scale": 1,
-      "visualOffset": [0, 0, 0],
-      "sockets": { "projectile": "socket_projectile" },
-      "clips": {
-        "idle":    { "name": "idle_a", "loop": true },
-        "move":    { "name": "move_walk", "loop": true },
-        "melee":   { "name": "attack_melee_a", "loop": false, "impactAt": 0.52 },
-        "defend":  { "name": "guard", "loop": true },
-        "hit":     { "name": "hit_a", "loop": false },
-        "defeat":  { "name": "defeat", "loop": false },
-        "victory": { "name": "victory", "loop": false }
-      },
-      "provenanceId": "provenance.hoplite.v1"
-    },
-    "upgraded": { "...": "same shape, creatureId veteran_hoplite" }
+"veteran_peltast": {
+  "status": "placeholder",
+  "provenance": "Still pose cut from the delivered canonical reference view …",
+  "facing": "right",
+  "pixelsPerHex": 120,
+  "tint": "accent",
+  "animations": {
+    "idle":  { "file": "sprites/final/creatures/veteran_peltast/idle.webp", "frames": 8,
+               "frameWidth": 256, "frameHeight": 256, "fps": 4, "loop": true,
+               "anchor": [0.5, 0.9], "pixelsPerHex": 120, "status": "final" },
+    "shoot": { "file": "…", "frames": 8, "…": "…" }
   }
 }
 ```
 
-* `creatureId` must be the game ID from the table in §9 — **not** the display name.
-* `scale` is a per-asset correction (normally `1`; the file is already in meters).
-* `sockets` name empty nodes in the GLB (e.g. `socket_projectile` at the hand
-  or mouth).
-* `status` follows `briefed → concept_approved → modeled → rigged → animated →
-  exported → integrated → verified`. A file existing is not verification.
+`tint: "accent"` colours a placeholder with its owner's colour so sides stay
+readable; final strips are never tinted. Map avatars may carry
+`directions` per animation and a `figure` still for the hero screen. The
+manifest is written by the tools (§7); edit it by hand only to fix an
+anchor, and then re-run `npm run check`.
 
-## 6. Export rules and budgets
+## 6. Image rules and budgets
 
-* glTF 2.0 binary; textures embedded (PNG or JPEG). Up to 4 bone influences per vertex.
-* **No Draco, Meshopt or KTX2/Basis compression.** Their decoders would be
-  downloaded from a CDN and the desktop game runs offline. The validator
-  rejects these files.
-* Do not rely on the first animation auto-playing; the game starts clips itself.
-* Starting budgets (production/02 §6 — to be measured, not guarantees):
-
-| Asset class | LOD0 triangles | Other |
-|---|---|---|
-| Human infantry / caster | 6,000–12,000 | 1–2 materials, ≤ 64 deform bones, mostly 2K textures |
-| Rider / centaur | 16,000–28,000 | ≤ 96 bones (combined rig) |
-| Griffin / winged | 18,000–30,000 | ≤ 96 bones; review feather overdraw |
-| Large (Minotaur, Cyclops, Troll, Jotunn, Wyrm) | 12,000–24,000 | Strong silhouette, few accessories |
+* Transparent background, clean edges (no halo of the generation
+  background), no text, no frame or border, no ground or cast shadow.
+* Consistency across a pair: the upgraded form keeps the base form's
+  silhouette family, palette and proportions, with the upgrade's added
+  details (as in the reference views and portraits); both forms share one
+  motion design (same frame count and timing per animation).
+* Consistency across frames: same scale, light, line weight and baseline;
+  the feet stay on the baseline except where the motion lifts them (jumps,
+  flight).
+* Budgets (runtime, measured on the placeholders: 7.1 MB for all 186
+  entries): aim for ≤ 150 KB per creature strip and ≤ 2.5 MB per creature
+  pair after import (WebP quality 90); the importer reports sizes.
+* Painted backgrounds (battlefields, terrain, skies) follow §13 instead.
 
 ## 7. Checking your delivery
 
-1. `npm run assets:calibration` regenerates the calibration fixture
-   (`assets-runtime/units/_calibration/forward_arrow/`): a 1.8 m post, a red
-   arrow to +Z, a blue block on +X, a 1 m footprint disc, and all eight clips as
-   simple motions. Import it next to your export in Blender or any glTF viewer:
-   heights, front and sides must agree.
-2. `npm run assets:check` runs the Khronos glTF Validator on every model,
-   checks every bound clip/socket and the forbidden extensions, writes
-   `<form>.validation.json` beside the manifest (with the validator version),
-   then runs the game-binding tests (creature ID and form exist, shooters bind
-   `ranged`, flyers bind `takeoff`/`fly`/`land`, and a headless load checks
-   meters, +Y and +Z).
-3. In the game: **Bestiary → the creature**. The viewer label reads
-   `GLB model · <status>` when your file loaded, or says it fell back to the
-   placeholder (the reason is in the developer console under `[models]`).
-   Try every state with Play / Pause / Stop / Restart at 0.5×, 1× and 2×; states
-   without a clip are disabled with the reason.
-4. Start a battle with that creature to see the formation, facing (attackers
-   face right, defenders left) and playback at battle speed.
+```
+npm run sprites:cut                   # cut new or changed sheets; look at assets-source/sprites/sheets/_preview/
+npm run sprites:import -- --dry-run   # check names, frame grid, sizes, transparency; write nothing
+npm run sprites:import                # write WebP into assets-runtime/sprites/final/, mark "final"
+npm run icons:import                  # portraits cut from portrait sheets
+npm run check                         # manifest completeness, files at their declared sizes, tests
+npm run sprites:queue                 # refresh GPT6_2D_CONTENT_GENERATION.md (delivered strips drop out)
+```
 
-A validator pass proves the file is well-formed — not that the deformation,
-art quality or frame rate are good. Those still need a review in the game.
+The importer refuses (and lists) a file whose name matches no form or
+animation, whose width is not a whole number of frames of the expected
+shape, whose height is outside half to twice the nominal one, or whose
+background is not transparent. Then look at the result in the game: the
+Unit Detail viewer plays every state (open the creature from the
+Encyclopedia; the state buttons sit under the viewer, "Face left" checks the
+mirrored side, the Assets tab lists each strip's status), a battle shows the stack on its cell
+with the feet at the cell centre.
 
 ## 8. What happens when something is missing
 
-* No manifest for a creature → the procedural placeholder is shown (labelled as such).
-* Manifest present but the file fails to load or validate → placeholder, plus a
-  `[models]` warning with the reason.
-* A required clip is missing → the bestiary disables that state with a reason;
-  on the battlefield that state falls back to the placeholder motion on the model.
+* A missing optional animation falls back along a fixed chain (`shoot` →
+  `attack` → `idle`; `fly` → `move` → `idle`; `takeoff`/`landing` → `move`;
+  `ability` → `attack`; …); the viewer marks a stand-in with `*`.
+* A missing `death` strip: the view lays the figure down itself.
+* A file that fails to load keeps the previous frame; a set without a
+  usable `idle` shows the portrait only ("No sprites yet — portrait only").
+* Placeholders are regenerated by `npm run sprites:placeholders`
+  (`tools/assets/sprites/make_sprite_placeholders.py`; Python 3 with Pillow,
+  NumPy, SciPy and cairosvg); it never overwrites a `final` entry or strip.
 
 ## 9. Creature IDs to bind (all six pantheons)
 
-| Pantheon | Tier | Family ID | Base creature ID | Upgraded creature ID | Footprint | Flies | Shoots | Active ability clips |
+| Pantheon | Tier | Family ID | Base creature ID | Upgraded creature ID | Footprint | Flies | Shoots | `ability` strip |
 |---|---|---|---|---|---|---|---|---|
 | Greek | 1 | `hoplite` | `hoplite` | `veteran_hoplite` | 1 hex | no | no | — |
 | Greek | 2 | `peltast` | `peltast` | `veteran_peltast` | 1 hex | no | yes | — |
@@ -243,15 +317,15 @@ rules; their asset IDs are `creature.neutral.<familyId>.<base|upgraded>.*`:
 | 6 | `basilisk` | `basilisk` | `greater_basilisk` | 2 hex | no | no |
 | 7 | `elder_drake` | `elder_drake` | `ancient_drake` | 2 hex | yes | no |
 
-Shooters now have a shooting range in hexes (proposed values in each
-creature's statistics; Encyclopedia and creature details show it). Every non-Greek number is proposed; final roles may
-change their required clips (e.g. a shooter needs `attack_shoot`, a flyer
-`takeoff`/`fly`/`land`). "base only"/"upgraded only" means the ability is
-gained or lost on upgrade, so only that form needs the clips.
+Every non-Greek number is proposed; if a creature's content changes (it
+gains Flight, a ranged attack or an active ability), its required strips
+change with it (`requiredAnimations`), and `npm run sprites:queue` lists the
+new ones. "base only"/"upgraded only" means the ability is gained or lost on
+upgrade, so only that form needs those strips.
 
 Suggested order (production/02 §10): finish the Hoplite pair end to end, then
 Peltast, Cavalry and Griffin to prove the humanoid, ranged, mounted and flying
-paths, then the rest.
+paths, then the rest (the queue in `GPT6_2D_CONTENT_GENERATION.md` follows it).
 
 ## 10. Sound and music (replacing the placeholders)
 
@@ -332,7 +406,7 @@ menu entries…) inside the same 24×24 `<svg>`, so every resource counter, cost
 list, stat block, battle control and menu entry picks it up; interface glyphs
 (close, back, check, lock…) stay SVG. Map-marker art appears beside site names
 in the adventure tile panel and on Journal objectives (`siteMarkerAsset`,
-`MarkerIcon` in `components/art.tsx`); the 3D map itself is unchanged.
+`MarkerIcon` in `components/art.tsx`); on the map itself each location is a sprite (§1, `sites`).
 
 To add or replace an opening background, drop `opening-<name>.png` into
 `assets-source/ui/backgrounds/` and run the script.
@@ -357,7 +431,7 @@ changes are needed.
 
 First delivery (2026-10-02): **172 functional icons** — 22 interface
 (`icon.ui.*`), 54 spells, 79 artifacts, 17 skills — copied from the owner's
-Blender-project handoff folder into `assets-source/icons/final/` (unmodified
+art-project handoff folder (`blannder_models`) into `assets-source/icons/final/` (unmodified
 1254 × 1254 RGBA masters; the originals stay where they were) and imported to
 128 px (spells, artifacts) and 96 px (interface, skills) runtime PNGs, 3.7 MB
 in all. The game never reads the handoff folder or its
@@ -381,9 +455,11 @@ army slots, recruitment and training, the battle turn order and stack panel,
 the Bestiary, the creature detail screen (now 8 rem), encounters and results —
 inside the game's own square gold frame (no second frame). The other 59 forms
 (the Nine-Tailed Kitsune and forms 045–102) keep the generated stand-in until
-delivered. The 172 matching model-reference views are in
-`assets-source/creatures/reference/` with the delivery's modelling notes
-(`delivery-notes/`); the game does not read them.
+delivered. The 172 matching canonical reference views (four per form) are in
+`assets-source/creatures/reference/` with the delivery's notes
+(`delivery-notes/`); the game does not read them at run time — they are the
+drawing reference for each form's 2D strips, and the placeholder generator
+cuts the 43 forms' battle stills from the three-quarter views.
 
 Set and ability badges (2026-10-02) use the same path: `icon.set.<setId>`
 appears on worn and packed set pieces, the set list and item cards;
@@ -422,79 +498,32 @@ icon and the portal marker were added).
    variables for the arrow, hand, grab, busy and blocked). Settings → Display →
    *Game cursors* turns them off.
 
-## 12. Mounted adventure-map heroes (six animated GLBs)
+## 12. Mounted adventure-map heroes (2D avatars)
 
-The six mounted heroes — rider and mount in one skinned model per pantheon —
-come from the separate Blender asset project (on the owner's computer:
-`C:\Users\lazeb\Desktop\blannder_models`, release `MountedHero_Animations_v1`).
-They were **copied** into the game on 2026-10-01; the game never reads,
-links or imports anything from the Blender project, and the Blender
-sources (`.blend`) are not part of the game (they are only needed to edit
-the models).
+One mounted avatar per pantheon (named heroes keep their own portraits and
+share their pantheon's avatar), plus a neutral one: sprite sets in the
+manifest's `heroes` section with `idle` and `walk` strips, optional
+`directions` (eight: `e`, `ne`, `n`, `nw`, `w`, `sw`, `s`, `se`) and a
+`figure` still for the hero screen (§2, §4 for sizes and names).
 
-| Copied from the Blender project | Game copy |
-|---|---|
-| `runtime\models\heroes\animated\hero_<pantheon>.glb` (six files) | `assets-runtime/heroes/<pantheon>/hero_<pantheon>.glb` (byte-identical; SHA-256 as in the manifest) |
-| `animation_manifest.json` | `assets-runtime/heroes/animation_manifest.json` — paths rewritten for the game (`assets[].runtime`, `skeleton.contract`, `integration_guide`) plus a `game_copy` block naming the source; `assets[].source`, `assets[].validation` and `combined_source` still name files in the Blender project and are never read |
-| `assets\characters\heroes\shared\mounted_hero_animated_rig.json` | `assets-runtime/heroes/shared/mounted_hero_animated_rig.json` (identical; the 44-bone `MountedHero_v1` contract) |
-| `HERO_ANIMATION_REPORT.md` | `assets-source/heroes/HERO_ANIMATION_REPORT.md` (identical text under a short "game copy" note) |
+**Placeholders (this build).** Cut from the owner's six mounted-hero boards
+(`support images/heros_full_view/`, side view; order greek, norse,
+egyptian, japanese, celtic, mesoamerican): one right-facing direction, `idle`
+one frame and `walk` four frames of a step bob, and the board's figure as
+the hero-screen still. The game mirrors them for westward travel.
 
-**Loading.** `packages/ui/src/assets/manifest.ts` imports the copied manifest
-and registers one entry per pantheon (`heroModelEntriesFromManifest`,
-`packages/presentation/src/modelRegistry.ts`) with the URL
-`./heroes/<pantheon>/hero_<pantheon>.glb`. Vite serves `assets-runtime/` as
-the public folder, so the same relative URL works in `npm run dev`, the
-browser build and the desktop package (no CDN, no hashed duplicate). Before a
-model is used, the GLB's JSON is checked: the three clips by exact name, a
-skin, no extension whose decoder would come from a CDN. A model that fails to
-load leaves the hero's earlier placeholder rider in place.
-
-**Placement.** `MountedHeroCache` (`packages/presentation/src/mountedHeroes.ts`)
-loads each GLB once per map scene and instantiates an independent copy per
-hero (own nodes, skeleton and animation groups). Orientation and scale are set
-on a container node only: the model's +Z front is turned to the map figure's
-+X front (`rotation.y = π/2`), one uniform scale `MOUNTED_HERO_SCALE = 0.36`
-for all six (1 model metre = 0.36 map units; measured heights 1.28–1.43 map
-units, a hex is 1.73 wide), and the manifest's −0.02 m ground offset. The
-entity node (position, facing) belongs to the map; the hierarchy, skin
-weights, materials and vertex colours inside the model are untouched. Each
-hero keeps an owner-coloured banner and a translucent owner-coloured base disc
-so faction ownership stays visible; the selection ring is unchanged.
-
-**Animation policy** (configured in the game — glTF carries no loop flags or
-events):
-
-| Clip | Game use |
-|---|---|
-| `Idle_Standing` (4 s) | loops while the hero stands; each instance starts at a random phase |
-| `Walk` (1.6 s, in place) | loops while the map moves the entity; the entity faces each step; rate = speed ÷ (0.75 × 0.36), **capped at 3.5** (see below); 0.2 s crossfades in and out; back to idle when the move ends |
-| `Prepare_War` (2.4 s) | plays once (no loop) on the attacking hero after an accepted encounter, holds the last pose; the battle screen opens from the clip's own end event, once |
-
-Walk speed: the map moves a hero 1 hex (1.73 map units) per 210 ms at normal
-adventure speed, 8.25 map units/s. The formula then asks for a playback rate
-of about 30.5 (×2.2 at "fast"), which would be an unreadable blur, so the rate
-is capped at 3.5 and the hooves slide. Slowing the map pace to match the clip
-would make a 1-hex step take ~6 s at rate 1; that is a design decision for the
-owner, not taken here.
-
-**Battle flow.** Encounter dialog → **Attack** commits the move through the
-rules (unchanged). The presentation plays the approach move (Walk), stops the
-hero on its approach tile, turns it — and a defending mounted hero — to face
-the opponent, plays Prepare_War, and only then lets the battle screen open
-(`AppStore.routeAfterUpdate` waits for the presentation step). The hero
-holds the ready pose until the map is replaced by the battle screen (which
-then shows its own loading state while the battlefield builds). **Withdraw** cancels before
-anything is committed. If the encounter goes away while the gesture plays
-(another game loaded, Main Menu, Restart Mission) the completion is ignored
-and the hero blends back to idle. The gesture is skipped (battle opens at
-once, as before) when adventure animation is instant or reduced motion is on,
-when the attacker is a monster or out of sight, or when no human side takes
-part.
-
-**Replacing a model.** Copy the new GLB over the game copy, update its
-`runtime_sha256` (and `runtime_bytes`) in `assets-runtime/heroes/animation_manifest.json`,
-and run `npm run assets:check` (Khronos validator, checksums, clips, skin)
-and `npx playwright test tests/e2e/heroes.spec.ts`.
+**In the game.** The avatar stands with the ground point between the
+mount's feet on its hex; it plays `walk` while moving, turned to the
+direction of each step (`directionOf`; a direction strip when delivered,
+else the mirrored right-facing one), `idle` otherwise, and a short readiness
+beat (1.2 s × the adventure animation speed; skipped at Instant, for monsters
+and hidden heroes) before an accepted battle, after which the battle screen
+opens. The rules are untouched. Wandering monsters and site guards use their
+creature's `idle` strip, drawn smaller. Final art: the D group of
+`GPT6_2D_CONTENT_GENERATION.md` (one sheet per pantheon: five directions ×
+`idle` + `walk`, mirrored by the game for the other three; the six figures on
+one more sheet), cut by `npm run sprites:cut` and imported by
+`npm run sprites:import`.
 
 ## 13. Large painted art (story, ground and sky, big moments)
 
@@ -510,9 +539,11 @@ game" below). A fourth brief, `GPT6_BRIEF_4_GOD_PORTRAITS.md`, covers the 60
 god portraits (1024 × 1024, round crop); those are icons-catalog portraits and
 go into `assets-source/icons/final/` with `npm run icons:import`. A fifth,
 `GPT6_BRIEF_5_CREATURES.md`, asks for every creature form (102): four
-**model-reference views** (three-quarter, front, side, top; 1024 × 1024,
-transparent, neutral pose and light) for the later 3D step, kept in
-`assets-source/creatures/reference/` and never read by the game, and the
+**canonical reference views** (three-quarter, front, side, top; 1024 × 1024,
+transparent, neutral pose and light; written for a later modelling step that
+the 2D migration of 2026-10-03 replaced — they are now the drawing
+reference for the 2D strips), kept in `assets-source/creatures/reference/`
+and never read by the game at run time, and the
 **painted portrait** shown in the panels (`creature.….portrait`, into
 `assets-source/icons/final/`, imported at 256 × 256 by `npm run icons:import`).
 First part delivered 2026-10-03: forms 001–043 (215 of the 510 images; see
@@ -638,32 +669,30 @@ and re-import to switch them to a plain repeat (owner decision 2026-10-02:
 mirrored repeat until finished art arrives).
 
 **Where they appear** (presentation only; `@pr/presentation/core`
-`registerEnvironmentArt`, filled by the interface's manifest; the map camera's
-fixed angle, panning and zoom are unchanged):
+`registerEnvironmentArt`, filled by the interface's manifest; drawn by the
+PixiJS views since the 2D migration):
 
-* **Adventure map** — each ground type of the map's climate (`map.biome`) is
-  its own mesh with **world-space UVs**: one texture spans two tiles
-  (2√3 world units) and continues across neighbouring tiles; mipmaps,
-  trilinear and 8× anisotropic filtering. Fog of war dims the texture through
-  the vertex colours. Hex sides, roads, rivers, sites, trees (on forest floor)
-  and peaks (on mountain rock) stay separate. The sea around the map shows the
-  climate's water, darkened. Until a texture has loaded — or if one is
-  missing — the tile keeps its old flat colour. The minimap keeps the brief's
-  colours.
-* **Sky** — the fixed camera never looks up to the horizon, so the climate's
-  sky stands as a backdrop 4 units past the **north edge of the map** (owner
-  decision 2026-10-02): unlit, proportions kept (150 world units per panorama),
-  horizon 1.2 units above the sea, clamped vertically and repeated sideways
-  (mirrored). Seen whenever the view reaches the north edge. Temperate is the
+* **Adventure map** — each ground type of the map's climate (`map.biome`)
+  fills its hexes with the painting as a repeating pattern in **map space**:
+  one texture spans two hexes and continues across neighbouring hexes
+  (mirrored repeat while `wrap` is `mirror`). Fog of war is a dark layer
+  above it. Hex sides, roads, rivers, locations, trees (on forest floor) and
+  peaks (on mountain rock) are separate layers and sprites. The sea around
+  the map shows the climate's water, darkened. Until a texture has loaded —
+  or if one is missing — the hex keeps its flat colour. The minimap keeps
+  the brief's colours.
+* **Sky** — the climate's sky is a strip above the **north edge of the map**
+  (owner decision 2026-10-02), proportions kept, repeated sideways
+  (mirrored); seen whenever the view reaches the north edge. Temperate is the
   fallback. Battles show no sky (the painting fills the view to its top edge).
-* **Battles** — the archetype's painting is drawn once (clamped) across the
-  ground, straight down, the 15 × 11 board fitted inside its quiet centre
-  (1500 × 1000 of 4096 × 3200); the board's cell tops show the same painting,
-  deployment columns 10 % darker, moat and town cells keep their colours.
-  Image top = far side (coast sea, plateau chasm and beacon base at the top;
-  ridge walls left and right). Beyond the painting, the ground takes the
-  colour of its far margin. Climate variants (`battlefield.<b>.ground.<climate>`)
-  are used automatically if they are ever delivered.
+* **Battles** — the archetype's painting is the battle's background, fitted
+  so the 15 × 11 board lies inside its quiet centre (1500 × 1000 of
+  4096 × 3200); the logical hexes are an overlay on it (deployment columns
+  darker, moat and paved town cells in their colours, grid optional). Image
+  top = far side (coast sea, plateau chasm and beacon base at the top; ridge
+  walls left and right). Beyond the painting, the view takes the colour of
+  its far margin. Climate variants (`battlefield.<b>.ground.<climate>`) are
+  used automatically if they are ever delivered.
 
 ### Big moments in the game (Brief 3, first delivery, 2026-10-02)
 

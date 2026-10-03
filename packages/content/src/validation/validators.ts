@@ -555,7 +555,7 @@ function expandedContentValidator(c: ContentCatalog, push: Push): void {
 function assetReferenceValidator(c: ContentCatalog, push: Push): void {
   const seen = new Set<string>();
   for (const cr of Object.values(c.creatures)) {
-    for (const a of [cr.presentation.portraitAssetId, cr.presentation.modelAssetId]) {
+    for (const a of [cr.presentation.portraitAssetId, cr.presentation.spriteAssetId]) {
       if (!a) push(`${cr.id}: empty asset ID`);
       if (seen.has(a)) push(`${cr.id}: duplicate asset ID ${a} (base and upgraded need distinct assets)`);
       seen.add(a);

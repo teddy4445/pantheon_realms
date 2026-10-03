@@ -24,9 +24,9 @@
     "origin": "Original project-specific skill; no third-party skill text copied."
   },
   {
-    "name": "pr-babylon-scene",
-    "displayName": "Pantheon Babylon Scenes",
-    "description": "Build rich scenes without coupling rendering to gameplay.",
+    "name": "pr-pixi-scene",
+    "displayName": "Pantheon PixiJS Scenes",
+    "description": "Build 2D sprite views without coupling rendering to gameplay.",
     "origin": "Original project-specific skill; no third-party skill text copied."
   },
   {
@@ -38,7 +38,7 @@
   {
     "name": "pr-creature-pipeline",
     "displayName": "Pantheon Creature Pipeline",
-    "description": "Produce complete base-and-upgrade rigs, clips and GLB assets.",
+    "description": "Produce complete base-and-upgrade 2D references, portraits and strips.",
     "origin": "Original project-specific skill; no third-party skill text copied."
   },
   {

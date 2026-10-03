@@ -1,12 +1,12 @@
 /**
  * Ground and sky art lookup (ASSET_PIPELINE.md §13, Brief 2) — presentation only,
- * no Babylon import (part of `@pr/presentation/core`).
+ * no PixiJS import (part of `@pr/presentation/core`).
  *
  * The interface registers a resolver from its own asset manifest at start-up
- * (`registerEnvironmentArt`); the 3D scenes ask it for terrain textures by
+ * (`registerEnvironmentArt`); the 2D views ask it for terrain textures by
  * climate and ground type, battlefield paintings by archetype (and climate, for
  * later variants) and sky panoramas by climate. When nothing is registered or a
- * file is missing, the scenes keep their existing procedural colours.
+ * file is missing, the views keep their procedural colours.
  */
 import type { Terrain } from '@pr/rules';
 
@@ -54,7 +54,7 @@ export function skyArt(climate: string): EnvironmentArt | null {
   return resolver(`sky.${climate}`) ?? resolver('sky.temperate');
 }
 
-/** World units covered by one ground texture: about two map tiles across (Brief 2, §5.0). */
+/** Hex radii covered by one ground texture: about two map tiles across (Brief 2, §5.0). */
 export const TERRAIN_TEXTURE_WORLD = 2 * Math.sqrt(3);
 
 /**

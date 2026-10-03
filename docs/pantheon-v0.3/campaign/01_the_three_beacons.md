@@ -22,7 +22,7 @@ Total intended first-play session is approximately 45-70 minutes, excluding exte
 
 ## 2. Cast and reusable assets
 
-**Alexios:** The player's sole playable hero, a Strategos. His command portrait, adventure model, skills, and artifacts persist; he remains an off-grid commander in tactical combat.
+**Alexios:** The player's sole playable hero, a Strategos. His command portrait, adventure-map sprite, skills, and artifacts persist; he remains an off-grid commander in tactical combat.
 
 **Thaleia:** Asterion's steward. A portrait and short text boxes introduce construction and the responsibility to leave garrisons behind. She is not an additional recruitable troop.
 

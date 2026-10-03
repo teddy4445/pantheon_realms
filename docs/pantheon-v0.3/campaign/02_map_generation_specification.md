@@ -9,7 +9,7 @@ The three missions teach a specific progression. An unrestricted random map coul
 
 Use a hybrid: authored story graph, fixed mandatory anchors and barriers, deterministic road carving, seeded non-critical terrain and decoration, then explicit validation. The campaign is three scenarios, not one random map with an incrementing difficulty number. First play uses three golden seeds. A replay may change approved scenery and terrain variation without changing the story, fixed rewards, mandatory enemy counts or upgrade economy.
 
-The authoritative output is a logical map plus object/encounter definitions. Babylon builds a visual scene from it. A 3D mesh, texture, collider, or animated gate cannot silently determine legal movement.
+The authoritative output is a logical map plus object/encounter definitions. The PixiJS adventure view draws it in 2D layers. A sprite, texture, pick shape, or animated gate cannot silently determine legal movement.
 
 ## 2. Coordinate system
 
@@ -17,7 +17,7 @@ Use a rectangular **axial-hex coordinate domain**: integer q from 0 to W-1 and r
 
 Hex distance is `(abs(dq) + abs(dr) + abs(dq+dr)) / 2`. The tactical board remains the separate **15 x 11 odd-row-offset board** defined in v0.2. Convert coordinate representations explicitly when necessary; adventure coordinates are never used directly as tactical cell indices.
 
-An example pointy-top rendering transform for adventure hex radius R is `x = sqrt(3)*R*(q+r/2)`, `z = 1.5*R*r`, with Y as vertical. This display transform uses floating point; rules pathfinding uses integer graph edges. Proposed scene radii are 2 meters for adventure tiles and 1.5 meters for tactical cells. The adventure scene is an abstract diorama, not literal geographical scale.
+The pointy-top screen transform for adventure hex radius R is `x = sqrt(3)*R*(q+r/2)`, `y = 1.5*R*squash*r`, with +y down the screen and a vertical foreshortening `squash` (0.84 on the adventure map, 0.74 on the battle board) so the ground reads as seen from an elevated three-quarter camera. This display transform uses floating point; rules pathfinding uses integer graph edges, and picking inverts the same transform, never sprite bounds. The adventure view is an abstract diorama, not literal geographical scale.
 
 Terrain cost is the existing destination-edge rule: road 75, plains 100, forest/rough 125, marsh 150 movement points. Mountains and water are impassable. A road is an edge property between adjacent cells, not an assumption that every neighboring road-painted cell has a free connection. Flight in a creature stack does not let its hero fly over mountains on the adventure map.
 
@@ -31,7 +31,7 @@ All outer-boundary cells (`q=0`, `q=W-1`, `r=0`, `r=H-1`) are impassable. No pat
 | M02 | `three_beacons_m02_v1` | 26 x 18 | 170202 | q=13 mountains, except pass `(13,8)` |
 | M03 | `three_beacons_m03_v1` | 30 x 20 | 170303 | q=12 mountains except `(12,6)` and `(12,13)`; q=21 mountains except ward gate `(21,10)` |
 
-All remaining interior cells start as plains. Heights, coastline meshes and mountain silhouettes are presentation layers constrained by this logical mask. The M01 water column can be presented as a river/tidal cut, not an unnavigable void disguised as a traversable beach.
+All remaining interior cells start as plains. Painted coastlines, cliff sprites and mountain silhouettes are presentation layers constrained by this logical mask. The M01 water column can be presented as a river/tidal cut, not an unnavigable void disguised as a traversable beach.
 
 ### M01 anchors
 
@@ -115,7 +115,7 @@ Do not carve through a mountain barrier except at its named opening. A failure t
 
 Outside all protected cells and immutable masks, choose plains/forest/rough in proportions 60/25/15 using an integer weighted draw. The first release adds no new impassable terrain in this stage. This guarantees that optional decoration cannot sever an essential route. Marsh can be an explicit authored patch in a later template version; it is not silently introduced to extend the demo.
 
-A tree mesh may overlap the edge of a passable forest tile, but colliders and selectable meshes must not override logical travel. Keep large occluders out of the interaction clearance halo. On protected roads, purely cosmetic grass/pebbles are allowed, never tall opaque cover over the hero or a waypoint.
+A tree sprite may overlap the edge of a passable forest tile, but sprite bounds and pick shapes must not override logical travel. Keep large occluders out of the interaction clearance halo. On protected roads, purely cosmetic grass/pebbles are allowed, never tall opaque cover over the hero or a waypoint.
 
 ### Stage E - Place gameplay objects and encounters
 
@@ -125,9 +125,9 @@ Create the patrol with its explicit permissions and route. Do not spawn more pat
 
 ### Stage F - Build presentation manifest
 
-Choose biome-compatible grass, trees, cliff modules, rocks, ruins, shoreline pieces and distant backgrounds from a **cosmetic** seed stream. Record object IDs, local transform, prefab version and color variation separately from the core map. Use fixed archetype sockets for important sites rather than asking an image generator to infer walkability from a painted map.
+Choose biome-compatible grass, trees, cliff modules, rocks, ruins, shoreline pieces and distant backgrounds from a **cosmetic** seed stream. Record object IDs, sprite ID, position offset, scale, mirroring and color variation separately from the core map. Use fixed archetype anchors for important sites rather than asking an image generator to infer walkability from a painted map.
 
-Create scene chunks (proposed 8 x 8 logical cells), ground meshes, instanced non-skinned props, explicit pick targets and an invisible selection surface. Keep fog rendering separate from cached map geometry. Never render live hidden enemy positions merely because their region was explored previously.
+Build the view in layers (backdrop, painted terrain, roads, grid and reach, ground markers, depth-sorted objects, fog, effects) with explicit hex picking through the screen transform. Keep the fog layer separate from cached terrain drawing. Never render live hidden enemy positions merely because their region was explored previously.
 
 ### Stage G - Validate, hash and save
 
@@ -141,7 +141,7 @@ Use one explicit unsigned 32-bit seed per mission. Proposed stream derivation: U
 
 Each stream uses xorshift32 with shifts 13, 17 and 5, converting the final state to uint32. For bounded draws, the nonzero xorshift32 output domain has M = 2^32 - 1 values: set `sample = nextUint32() - 1`, reject samples at or above `M - (M mod n)`, and return `sample mod n`. Validate n is an integer from 1 through M. This avoids treating the excluded zero state as a possible draw; no bound in this generator requires n = 2^32. Never rely on `Math.random()`, current time, locale string ordering, frame count, asynchronous completion order or GPU noise for logical generation.
 
-Separate streams: `road_ties`, `terrain`, `decor`, and `tactical_layout`. Combat outcomes and hero skill offerings use different saved streams outside map generation. Changing a tree texture, display resolution, model LOD or animation quality must not change a road, reward, AI plan or combat RNG state.
+Separate streams: `road_ties`, `terrain`, `decor`, and `tactical_layout`. Combat outcomes and hero skill offerings use different saved streams outside map generation. Changing a tree texture, display resolution, graphics quality preset or animation quality must not change a road, reward, AI plan or combat RNG state.
 
 The golden mission chooses canonical road tie order, regardless of `road_ties`. Variation mode may randomize shortest-path ties as described. Every accepted logical result still records the actual map; a later generator version cannot regenerate it implicitly on load.
 
@@ -173,7 +173,7 @@ Generation validation can establish connectivity and arithmetic, not a guarantee
 
 Try at most 16 bounded candidates for a selected variation seed. Preserve the user's requested seed and the chosen attempt index. If all fail, load the shipped reviewed golden logical map for that same mission/rules version and clearly record the fallback in diagnostics. Never silently remove a guardian, give free troops, widen a required gate, or change an objective to make validation pass.
 
-Shipping a golden fallback requires exporting and testing it first. This documentation provides its templates/anchors, not a claim that its production JSON or Babylon scene has already been built. An invalid or missing golden fallback is a build failure, not an excuse to continue with an empty map.
+Shipping a golden fallback requires exporting and testing it first. This documentation provides its templates/anchors, not a claim that its production JSON or its rendered map has already been built. An invalid or missing golden fallback is a build failure, not an excuse to continue with an empty map.
 
 ## 8. Tactical maps
 
@@ -201,7 +201,7 @@ generateMission(template, seed, content, rules, mode):
     return loadAndValidateGoldenFallback(template.id, rules.version)
 ```
 
-Run this in a worker. Its output is data, not a Babylon scene. The authoritative mission state is committed only after generation and validation succeed. Desktop and browser must produce identical canonical logical hashes for the same versions, seed and mode.
+Run this in a worker. Its output is data, not a rendered view. The authoritative mission state is committed only after generation and validation succeed. Desktop and browser must produce identical canonical logical hashes for the same versions, seed and mode.
 
 ## 10. Developer tooling and acceptance corpus
 

@@ -2,7 +2,7 @@
  * Adventure-map content: terrain, map templates, sites and encounters.
  *
  * The logical map (WorldMapDefinition) is produced by @pr/mapgen from a template
- * and is immutable for a mission. Babylon geometry is built from it; geometry
+ * and is immutable for a mission. The 2D map is drawn from it; drawing
  * never defines legal movement.
  */
 import type {
@@ -66,7 +66,7 @@ export interface MapTemplateDefinition {
   /** Additional coordinate waypoints connected in order (and closed) with internal roads. */
   readonly patrolLoop?: readonly HexCoord[];
   /**
-   * Presentation biome hint (materials/lighting), never a rule. Coast-like
+   * Presentation biome hint (ground art, sky and colours), never a rule. Coast-like
    * biomes ('coast', 'fjord') use water for the map edge, the others mountain.
    */
   readonly biome: 'coast' | 'high_pass' | 'storm_plateau' | 'temperate' | 'tundra' | 'fjord' | 'desert' | 'jungle' | 'autumn' | 'moor';

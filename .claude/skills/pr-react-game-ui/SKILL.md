@@ -11,7 +11,7 @@ Read [project-contract.md](references/project-contract.md) and the current `scre
 
 1. Identify entry, data context, legal actions, consequences, return destination, empty state and disabled reasons.
 2. Build selectors/view models from the shared state and quote resolvers. Never maintain UI-owned prices, wallets or damage formulas.
-3. Keep React responsible for accessible controls and lifecycle, not per-frame bone/particle updates. Preserve one explicit Babylon canvas host boundary.
+3. Keep React responsible for accessible controls and lifecycle, not per-frame sprite/particle updates. Preserve one explicit PixiJS canvas host boundary: take values only from `@pr/presentation/core` and load the views lazily through `packages/ui/src/scene/SceneHost.tsx`.
 4. Implement focus, keyboard navigation, visible labels, sensible tab order, dialogs and text alternatives. A right-click-only action is insufficient.
 5. Test normal flows and failure states through visible controls. Add stable semantic selectors only where needed; do not create privileged action hooks exposed in production.
 
@@ -26,6 +26,6 @@ Read [project-contract.md](references/project-contract.md) and the current `scre
 
 ## MCP testing
 
-Use Playwright DOM snapshots for semantic UI, screenshots/vision for the Babylon canvas, and checked-in TypeScript tests for reproducibility. The isolated MCP browser does not preserve storage after its context closes. Test durable saves with an explicit persistent test profile or Electron harness, never a personal signed-in browser. Browser checks do not validate native packaging.
+Use Playwright DOM snapshots for semantic UI, screenshots/vision for the PixiJS canvas, and checked-in TypeScript tests for reproducibility. The isolated MCP browser does not preserve storage after its context closes. Test durable saves with an explicit persistent test profile or Electron harness, never a personal signed-in browser. Browser checks do not validate native packaging.
 
 Output implemented screen states, navigation contract, screenshots, accessibility interactions checked, test commands and known failures. An attractive static screen is not a completed gameplay flow.

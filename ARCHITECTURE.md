@@ -1,10 +1,19 @@
 # Pantheon Realms — Architecture
 
-Pantheon Realms is a data-driven, deterministic, turn-based strategy game. One
-TypeScript simulation core runs unchanged in the browser build, the Electron
-desktop build and headless tests. React draws the interface, Babylon.js draws
-the adventure map, battlefield and bestiary viewer, and Electron only provides
-native storage and window services.
+> Pantheon Realms is a desktop-first, offline-capable, data-driven
+> deterministic turn-based strategy game. TypeScript owns authoritative rules
+> and AI. React owns application interface screens. PixiJS owns the 2D
+> Adventure Map, Tactical Battle presentation, sprite animation, and animated
+> Unit Detail viewer. Electron packages the desktop application and a browser
+> build uses the same core. Content presentation uses high-resolution 2D
+> backgrounds, sprites, atlases, portraits, UI art and animation strips.
+> Gameplay state changes only through validated commands; presentation never
+> defines gameplay outcomes.
+
+One TypeScript simulation core runs unchanged in the browser build, the
+Electron desktop build and headless tests. Electron only provides native
+storage and window services. (The 2D migration of 2026-10-03 replaced the
+earlier 3D presentation layer; see `2D_MIGRATION_AUDIT.md`.)
 
 ```
 Content definitions ──► Shared TS rules ──► GameCommand ──► validate ──► commit
@@ -12,11 +21,11 @@ Content definitions ──► Shared TS rules ──► GameCommand ──► va
                          MatchState (revision + 1) + immutable GameEvent[]
                                                                    │
                  ┌──────────────────────┬──────────────────────────┼───────────────┐
-              React UI          Babylon scenes (playback)     AI observers     saves/tests
+              React UI          PixiJS 2D views (playback)    AI observers     saves/tests
 ```
 
 The rules decide; everything else presents. React never subtracts gold,
-Babylon never computes damage, animation callbacks never kill creatures and the
+the Pixi views never compute damage, animation callbacks never kill creatures and the
 AI never mutates state directly — each of those paths goes through
 `processCommand`.
 
@@ -24,16 +33,16 @@ AI never mutates state directly — each of those paths goes through
 
 | Package | Owns | Must not |
 |---|---|---|
-| `@pr/rules` | IDs, resources, deterministic RNG, hex math, content *types*, `MatchState`, commands, events, `processCommand`, every quote/commit (economy, movement, sites, heroes, gods, quests, turn/dawn, adventure spells, tactical battle, sieges, deployment, damage) | import anything outside the TS standard library (no DOM, React, Babylon, Electron, Node) |
+| `@pr/rules` | IDs, resources, deterministic RNG, hex math, content *types*, `MatchState`, commands, events, `processCommand`, every quote/commit (economy, movement, sites, heroes, gods, quests, turn/dawn, adventure spells, tactical battle, sieges, deployment, damage) | import anything outside the TS standard library (no DOM, React, PixiJS, Electron, Node) |
 | `@pr/content` | The authored, validated `ContentCatalog`: six playable pantheons (Greek design values; Norse, Egyptian, Japanese, Celtic and Mesoamerican values proposed) with rosters/towns/gods/heroes/classes/lore, spells, skills, artifacts (incl. the `arcana` spells, artifacts and sets with lore), *The Three Beacons*, *The Winter Oath* (seven Norse missions), the four arc campaigns (`campaign/arc.ts` builds seven-mission campaigns from writing + layout; *The Twelfth Hour*, *The Lantern Road*, *The Silver Branch*, *The New Fire*), the neutral creature roster (`common/neutrals.ts`), the *Twin Harbors* skirmish in 36 pantheon pairings, validators | contain logic beyond building and validating data |
 | `@pr/mapgen` | Template-driven logical map generation (`pr-mapgen-0.3`), validation, logical hash, cosmetic decor stream; the symmetric random skirmish generator (`pr-skirmishgen-0.3`, `skirmish.ts`: six map types, zones, guarded passes and gates, two-way portals paired by the map's symmetry, roads to the centre, neutral + pantheon creatures half and half, size/guard/treasure/wealth/road/reveal/portal settings) that outputs a full `MissionDefinition` | affect rules through cosmetic data |
 | `@pr/campaign` | Mission factory (scenario manifest or generated scenario → `MatchState`; difficulty, seat controllers, names and patrons), hero carryover, campaign state machine, completion records with mission scores; `createRandomSkirmish` (re-exports the generator for the session and UI) | render or persist |
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
 | `@pr/platform` | `SaveRepository` / `PreferencesStore` (preferences and the separate high-score `records` store) / window + quit contracts; browser (IndexedDB/localStorage), desktop (preload bridge) and memory adapters | contain rules |
-| `@pr/presentation` | One long-lived Babylon `EngineHost`; adventure, battle and unit-viewer scene controllers; GLB unit-model pipeline (manifests, loader, rigs, validation) with procedural proxies as fallback; mounted adventure-map hero models and their animation controller; animation states; battle playback cues for sound. `@pr/presentation/core` is its Babylon-free part (unit-model registry and validation, palette, animation state list) | decide legality or change state |
+| `@pr/presentation` | PixiJS 2D views: one long-lived `EngineHost` (one Pixi renderer and canvas); the Adventure Map, Tactical Battle and Unit Detail viewer controllers; `SpriteFigure` sprite animation (loops on the frame clock, one-shots on the tween clock); the sprite manifest types, animation vocabulary, fallback chain and `requiredAnimations`; battle playback cues for sound. `@pr/presentation/core` is its Pixi-free part (sprite manifest lookup, hex↔screen transforms, palette, environment art keys, graphics presets) | decide legality or change state |
 | `@pr/audio` | Web Audio mixer: sound manifest types and validation, buses (music, ambience, interface, combat, voice), music/ambience crossfades, stinger ducking, voice limits and cooldowns, the "Calmer sound" policy | read or change game state; fetch anything that is not bundled |
-| `@pr/ui` | React app shell, 21 screens, dialogs (incl. the story dialogue window, hot-seat hand-over, camps, map events, interventions), view helpers, preferences (incl. key bindings and tips), high-score records, save-slot policy, asset manifest (placeholders + bundled unit models), which sound plays when (`audio/`) | edit `MatchState` (it dispatches commands) |
+| `@pr/ui` | React app shell, 21 screens, dialogs (incl. the story dialogue window, hot-seat hand-over, camps, map events, interventions), view helpers, preferences (incl. key bindings and tips), high-score records, save-slot policy, asset manifest (art by asset ID + the sprite manifest), which sound plays when (`audio/`) | edit `MatchState` (it dispatches commands) |
 | `@pr/testing` | Headless `GameDriver` for scripted playthroughs | bypass validation |
 | `apps/client` | Vite entry for browser + Electron renderer | — |
 | `apps/desktop` | Electron main (custom `prgame://app` origin, CSP, sandbox, validated IPC, atomic saves) + preload bridge | expose Node/Electron to the renderer |
@@ -49,7 +58,7 @@ campaign   ← rules, mapgen
 session    ← rules, campaign, ai
 testing    ← rules, content, campaign, ai, mapgen
 platform   ← (nothing)
-presentation ← rules, mapgen, @babylonjs/core, @babylonjs/loaders
+presentation ← rules, mapgen, pixi.js
 audio      ← (nothing)
 ui         ← rules, content, session, platform, presentation, audio, ai, react, fonts
 client     ← ui, platform, react
@@ -57,9 +66,11 @@ desktop    ← electron, node:*
 ```
 
 **Start-up size rule (also enforced by the lint):** `ui` may take *values*
-only from `@pr/presentation/core`. The 3D layer is reached through
-`import type` or the one on-demand loader in `ui/src/scene/SceneHost.tsx`,
-so Babylon.js is not part of the start-up bundle (see §6).
+only from `@pr/presentation/core`, which must not import `pixi.js`. The 2D
+views are reached through `import type` or the one on-demand loader in
+`ui/src/scene/SceneHost.tsx`, so PixiJS is not part of the start-up bundle
+(see §6). The lint also rejects any `@babylonjs/*`, `three`, `SceneLoader` or
+`ArcRotateCamera` reference in package sources.
 
 The simulation core (`rules`, `content`, `mapgen`, `campaign`, `ai`,
 `session`) is also type-checked with a DOM-free `tsconfig.core.json`
@@ -342,60 +353,66 @@ never appear in the save list.
 
 ## 6. Presentation
 
-**Loading on demand.** Babylon.js is imported by module path (never through
-its package index, which pulls in the whole engine), and the 3D layer is a
-separate chunk: the main menu starts without it, `preloadPresentation()`
-fetches it when the browser is idle after the menu appears (with the two
-shader programs every scene compiles bundled in, and Babylon's own lazy
-shader imports warmed), and a 3D screen that opens before that waits for it
-behind "Loading the 3D view…". Controllers therefore reach their screen
-asynchronously; screens push their latest view from refs when one arrives.
-The glTF loader is fetched only when a scene first loads a model.
-`tools/perf/load-time.mjs` measures start-up and first-scene times.
+**Loading on demand.** PixiJS 8 lives in a separate chunk (about 363 KB): the
+main menu starts without it, `preloadPresentation()` fetches it when the
+browser is idle after the menu appears, and a map, battle or bestiary screen
+that opens before that waits for it behind "Loading…". Controllers therefore
+reach their screen asynchronously; screens push their latest view from refs
+when one arrives. Sprite strips are fetched when a view first needs them
+(local files only; the desktop CSP forbids `eval`, so the views import
+`pixi.js/unsafe-eval`, Pixi's no-eval shader path). `tools/perf/load-time.mjs`
+measures start-up and first-scene times.
 
-A single `EngineHost` owns one WebGL2 engine and canvas; screens mount it into
-their viewport and ask for a scene controller:
+A single `EngineHost` owns one Pixi renderer (WebGL) and canvas, its own
+frame loop (capped by the graphics preset) and context-loss handling; screens
+mount it into their viewport and ask for a scene controller:
 
-* `AdventureSceneController` — merged vertex-colored terrain mesh, fog caps
-  that hide unexplored geometry, roads, decor instances, site proxies,
-  mounted hero models (placeholder riders until loaded or if a load fails),
-  reachable overlay, path preview (shape-coded: dots today, rings later, X for
-  battle), pointer→hex picking via ground-plane intersection, movement
-  playback, the pre-battle Prepare_War gesture, fixed-angle camera panning.
-* `BattleSceneController` — 15×11 odd-r board, obstacles, siege walls/gate/
-  towers/keep/moat, deployment-zone shading, stack groups (1–3 figures),
-  count/health billboards, highlights, and playback of committed battle
-  events (move, melee, shot + projectile, retaliation, spell, ward, defend,
-  wait, morale, catapult/turret/moat/structure damage, destruction, victory).
-* `UnitViewerController` — pedestal viewer with the eight animation states
-  `idle, move, melee, ranged, defend, hit, defeat, victory`, Play / Pause /
-  Stop / Restart, 0.5×/1×/2×, defeat once-and-hold, reduced-motion rules.
+* `AdventureSceneController` — 2D layers, back to front: backdrop (sea, sky
+  above the north edge), painted terrain (the delivered ground paintings as
+  repeating fills in map space), roads, optional hex grid, reachable
+  overlay, ground markers (selection ring, route preview — dots, then an X
+  for a battle — and hover), objects depth-sorted by screen *y* (map
+  locations, decoration, guards, one mounted avatar per pantheon), fog and
+  effects. Pointer→hex picking inverts the hex projection
+  (`hexmath.pointAxial`), so a sprite's size never changes which hex is
+  chosen. Avatars play `idle`/`walk` facing one of eight directions (a
+  direction strip when delivered, else the right-facing strip mirrored) and
+  a short readiness beat before an accepted battle; the Adventure presenter
+  awaits it after a committed `BattleStarted`, so the battle screen follows
+  it — the rules are untouched. A 2D camera pans (drag, arrow keys) and zooms
+  (wheel, 0.42–2.2), clamped to the map.
+* `BattleSceneController` — the painted battlefield background fitted to the
+  board, the logical 15×11 odd-r hex overlay (deployment zones, moat, paved
+  town cells, optional grid), obstacles and siege pieces (wall, gate, towers,
+  keep in intact/damaged/rubble states with HP labels), creature stack
+  sprites standing on their anchor cell (feet at the cell centre; defenders
+  mirrored), count badges, highlights, projectiles and effects, and playback
+  of committed battle events (move, melee, shot + projectile, retaliation,
+  spell, ward, defend, wait, morale, catapult/turret/moat/structure damage,
+  destruction — the fallen play `death` and stay lying on their cells — and
+  victory). The React HUD sits on top; the board is laid out between its
+  insets.
+* `UnitViewerController` — the animated Unit Detail viewer: the subject's
+  strips by state (the buttons come from `requiredAnimations`: the base
+  seven `idle, move, attack, defend, hit, death, victory`, plus `shoot`,
+  `takeoff/fly/landing` or `ability` when the creature's content has them),
+  stand-ins marked when a strip falls back, Play / Pause / Stop / Restart,
+  0.5×/1×/2×, Autoplay, Face left, `death` once-and-hold, reduced motion
+  shows a still frame.
 
-**Handedness.** The battle and viewer scenes are right-handed
-(`useRightHandedSystem` before any load, production/02 §5) so glTF models
-import without a conversion root. The adventure map stays a left-handed
-scene; its six mounted hero GLBs load through `MountedHeroCache`
-(`mountedHeroes.ts`), which accepts the loader's conversion root and turns
-and scales each model on a container node (+Z front → the map figure's +X,
-uniform 0.36). **Mounted heroes**: the copied
-`assets-runtime/heroes/animation_manifest.json` is registered per pantheon
-(`heroModelEntriesFromManifest`); every hero gets its own instance
-(skeleton + animation groups) with Idle_Standing / Walk (speed-matched,
-capped) / Prepare_War (once, held; resolves from the group's end event, once,
-or is cancelled by a token). The Adventure presenter awaits Prepare_War
-after a committed BattleStarted, so the battle screen (opened by
-`AppStore.routeAfterUpdate` when the presentation queue drains) follows the
-gesture; the rules are untouched. The map camera has a fixed yaw and pitch
-(limits locked, no orbit input, target moves keep alpha/beta/radius);
-dragging and the arrow keys translate its target screen-relatively, clamped
-to the map. See `ASSET_PIPELINE.md` §12. **Unit models** (`models.ts`): the UI bundles
-`assets-runtime/units/**/family.manifest.json` + GLBs and registers them by
-creature ID; `ModelCache` validates each GLB (clip names, sockets, no
-CDN-decoder extensions), loads it once per scene and instantiates independent
-rigs; `playState` plays the bound clip per semantic state (timed by the shared
-tween player so 2×/Instant/Skip behave identically) and falls back to the
-procedural motion when a clip is missing. A failed load keeps the proxy and
-reports the reason. See `ASSET_PIPELINE.md`.
+**Sprites.** `assets-runtime/sprites/manifest.json` (schema
+`pantheon-realms-sprites-1`, registered by `ui/src/assets/manifest.ts`)
+lists every sprite set: 102 creature forms, seven map avatars (six
+pantheons + neutral) with a hero-screen figure each, map locations,
+decoration, obstacles, siege pieces, projectiles and effects. Each strip is
+one horizontal row of equal frames with an explicit anchor (battle: feet,
+bottom centre; map avatars: the ground point between the mount's feet),
+a frame rate and loop policy, a scale (pixels per hex), and a `status`
+(`placeholder` | `final`) with provenance; sprites face right and the views
+mirror them. A missing optional animation falls back (`shoot`→`attack`,
+`fly`→`move`→`idle`, `ability`→`attack`, …); a missing `death` lays the figure
+down. Replacing a placeholder is an art drop + `npm run sprites:import`
+(`ASSET_PIPELINE.md` §1); no view code changes.
 
 Playback runs after the rules committed the result. Speed 0 (instant or
 reduced motion) completes synchronously and cannot change outcomes. Screens
@@ -408,7 +425,7 @@ Assets are referenced only by stable IDs (`creature.greek.tier3.base.portrait`,
 final manifest (`assets-runtime/ui/final-manifest.json`, written by
 `npm run icons:import`) → UI art and placeholder manifests (`assets-runtime/ui`,
 `assets-runtime/placeholders`) → procedural placeholder. `ICON_CATALOG.md`
-lists every asset ID the screens show (generated by `npm run icons:catalog`). Swapping in final art or GLB models requires manifest
+lists every asset ID the screens show (generated by `npm run icons:catalog`). Swapping in final art or sprites requires manifest
 entries, not screen changes.
 
 **Sound.** `@pr/audio`'s `AudioDirector` is one Web Audio graph (source →
@@ -470,6 +487,11 @@ rebinding in `Preferences.keyBindings`); Esc, F1 and the arrows are fixed.
   battle legality/determinism/reward idempotency, divine choices, hiring,
   save round-trip and corruption, map generation golden values, full headless
   campaign journeys, AI legality.
+* `packages/presentation/test` — sprite manifest completeness (every creature
+  form, avatar, location, obstacle, effect; files at their declared sizes),
+  animation requirements following content, the fallback chain, direction
+  strips, hex↔screen round trips; `packages/ui/test/townArt.test.ts` — six
+  towns, 18 locations each, base and upgraded dwelling pictures.
 * Playwright (Chromium, SwiftShader WebGL) — main menu honesty, settings
   persistence, bestiary viewer, a UI journey through Mission 1, Mission 1 to
   its debrief and into Mission 2 (with its story scenes, Continue and
@@ -477,13 +499,15 @@ rebinding in `Preferences.keyBindings`); Esc, F1 and the arrows are fixed.
   with hand-overs, shortcut help and rebinding, tips, the game-over →
   summary → high-score flow, sieges (BAT-14 selection, Tactics
   deployment, wall battering, capture), a skirmish for each non-Greek pantheon
-  chosen with its rival in setup (town, build, recruit), and the GLB
-  pipeline (`?e2e=calibration`, a presentation-only fixture mode that shows the
-  calibration model in place of the Hoplite). Scenario fixtures are ordinary
-  save files built headlessly and brought in through Load → Import.
+  chosen with its rival in setup (town, build, recruit), the 2D views
+  (`sprites2d.spec.ts`: bestiary states and reduced motion, battle stacks on
+  their logical cells and mirrored, instant and normal auto-battle giving
+  identical results; `heroes.spec.ts`: map avatars, walk facing, readiness
+  beat, 2D camera). Scenario fixtures are ordinary save files built
+  headlessly and brought in through Load → Import; the `?e2e` inspectors
+  (`__prBattle`, hero animation debug) are read-only.
 * `tools/desktop-smoke.mjs` (Electron under Xvfb) — app origin, sandboxed
-  bridge, Quit on desktop, save written to disk, bundled GLB served intact,
-  navigation blocked.
-* `npm run assets:check` — Khronos glTF Validator + manifest/GLB checks for
-  every unit model, then the headless model tests.
+  bridge, Quit on desktop, save written to disk, the sprite manifest and its
+  files served and decoded (no `.glb`/`.gltf`/`.blend` in the renderer), the
+  adventure map drawn without a view error, navigation blocked.
 * `tools/check-boundaries.mjs` — package import rules.

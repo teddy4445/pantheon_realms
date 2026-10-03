@@ -6,6 +6,7 @@ apps/desktop/release/
 test-results/
 playwright-report/
 *.tsbuildinfo
+__pycache__/
 
 # Balance tool output (npm run balance)
 balance-reports/
@@ -18,9 +19,13 @@ Thumbs.db
 # Local saves/preferences created by development runs
 *.prsave
 
+# Sheet-cut previews (npm run sprites:cut; regenerated, for review only)
+assets-source/sprites/sheets/_preview/
+
 # Desktop smoke-test screenshots (tools/desktop-smoke.mjs, PR_SMOKE_OUT)
 /desktop-menu.png
 /desktop-save.png
+/desktop-map.png
 
 # Local deliverables (installers are built by `npm run desktop:dist`; not source)
 installer/

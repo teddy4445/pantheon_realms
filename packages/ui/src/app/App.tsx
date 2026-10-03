@@ -1,6 +1,6 @@
 /**
  * App shell: screen router with return context, overlay (dialog) stack, toasts,
- * the persistent Babylon canvas host, and context-aware keyboard shortcuts.
+ * the persistent 2D canvas host, and context-aware keyboard shortcuts.
  */
 import { useEffect, type ComponentType } from 'react';
 import { StoreProvider, useStore } from './context';

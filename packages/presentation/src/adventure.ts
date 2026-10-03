@@ -1,84 +1,61 @@
 /**
- * AdventureSceneController: renders the logical world map (terrain, roads, fog,
- * sites, heroes, reachable area and path preview) from a view model built by the
- * UI from committed MatchState.
+ * AdventureSceneController (S06): the 2D adventure map, drawn in layers from a
+ * view model the interface builds from committed MatchState.
  *
- * Owns: meshes, camera, pointer→hex picking, movement playback, and the mounted
- * hero models with their animation (Idle_Standing / Walk / Prepare_War,
- * mountedHeroes.ts).
- * Does not own: legality (movement/paths come from the rules via the view model),
- * selection state (UI), or anything persisted.
+ *   0 sea and sky backdrop      4 decoration, map locations and heroes (depth-sorted)
+ *   1 terrain (painted ground)  5 route preview, hover and selection
+ *   2 roads                     6 fog of war
+ *   3 hex grid, reachable area  7 cosmetic effects (glows, teleport)
  *
- * Camera: a fixed viewing angle. Alpha (yaw), beta (pitch) and roll never change
- * during play; the mouse and keys only pan the target across the map plane
- * (screen-relative, clamped to the map) and the wheel only zooms (radius).
+ * Owns: sprites, the 2D camera (pan and zoom only), pointer → hex picking,
+ * movement playback and the mounted map avatars (one per pantheon, idle/walk).
+ * Does not own: legality (reachable tiles and routes come from the rules via
+ * the view model), selection (interface), or anything persisted. The hex under
+ * the pointer is found by inverting the board transform, so sprite sizes never
+ * change what a click selects.
  */
-import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
-import { Color3 } from '@babylonjs/core/Maths/math.color';
-import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
-import { Engine } from '@babylonjs/core/Engines/engine';
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
-import { LinesMesh } from '@babylonjs/core/Meshes/linesMesh';
-import { Mesh } from '@babylonjs/core/Meshes/mesh';
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
-import { PointerEventTypes, type PointerInfo } from '@babylonjs/core/Events/pointerEvents';
-import { Scene } from '@babylonjs/core/scene';
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import { VertexBuffer } from '@babylonjs/core/Buffers/buffer';
-import type { Observer } from '@babylonjs/core/Misc/observable';
-import type { Texture } from '@babylonjs/core/Materials/Textures/texture';
-import type { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { TERRAIN_BY_CODE, type BodyProfile, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
+import { Container, FillPattern, Graphics, Matrix, Sprite, Texture, TilingSprite } from 'pixi.js';
+import { TERRAIN_BY_CODE, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
-import type { SceneController } from './engineHost';
-import { MeshAccumulator, axialWorld, clearColor, hexCorner, pickGround, projectPoint, worldAxial } from './meshkit';
-import {
-  BIOME_TINT,
-  HIGHLIGHT_REACH,
-  PATH_ENCOUNTER,
-  PATH_LATER,
-  PATH_TODAY,
-  ROAD_COLOR,
-  SEA_COLOR,
-  SELECT_RING,
-  TERRAIN_HEIGHT,
-  UNKNOWN_COLOR,
-  biomeTerrainRgb,
-  hexToRgb,
-  tileNoise,
-} from './palette';
-import { MaterialCache, buildBanner, buildCreatureProxy, buildHeroProxy, buildSiteProxy, disposeProxy, type CreatureProxy, type SiteArchetype, type SiteProxy } from './proxies';
+import type { EngineHost, SceneController } from './engineHost';
+import { MAP_SQUASH, SQRT3, axialPoint, directionOf, hexPolygon, pointAxial, pointAxialFraction, type MapDirection } from './hexmath';
+import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, ROAD_COLOR, SEA_COLOR, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
 import { TweenPlayer, linear } from './tween';
-import { heroModelFor } from './modelRegistry';
-import { MountedHeroCache, type MountedHeroDebug, type MountedHeroRig, type PrepareOutcome } from './mountedHeroes';
 import { TERRAIN_TEXTURE_WORLD, skyArt, terrainArt, type EnvironmentArt } from './environmentArt';
-import { backdropMaterial, groundMaterial, loadArtTexture } from './artTextures';
 import { graphicsProfile } from './graphics';
+import { SpriteFigure } from './figure';
+import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
+import { loadTexture } from './textures';
+import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
 
 /** Nominal map time per hex step (ms, before the Adventure animation speed setting). */
 const STEP_MS = 210;
-/** Fixed adventure camera angle (yaw, pitch). The mouse never changes these. */
-const CAMERA_ALPHA = -Math.PI / 2;
-const CAMERA_BETA = 0.92;
+/** Hex radius in view pixels at zoom 1. */
+const R = 36;
+const S = MAP_SQUASH;
+const HEX_W = SQRT3 * R;
+const ZOOM_MIN = 0.42;
+const ZOOM_MAX = 2.2;
+const ZOOM_DEFAULT = 1;
+/** Sky panorama beyond the north edge (owner decision 2026-10-02): its width in hexes and the gap above row 0. */
+const SKY_WIDTH_HEXES = 70;
+const SKY_GAP = 3 * R;
 
-const R = 1;
-const FOG_TOP = 0.46;
-const FOG_BOTTOM = -0.4;
-const SKIRT_BOTTOM = -0.42;
-const WHITE: readonly [number, number, number] = [1, 1, 1];
+export type { SiteArchetype } from './sprites';
 
 export interface AdventureSiteView {
   readonly id: string;
   readonly coord: HexCoord;
   readonly archetype: SiteArchetype;
+  /** Sprite variant: a town's pantheon, a pickup's main reward. */
+  readonly variant?: string | null;
   readonly name: string;
   /** Drawn at all (explored tile or story-revealed marker). */
   readonly shown: boolean;
   readonly ownerColor: string | null;
   readonly ownerShape: 'square' | 'pennant';
-  readonly guardBody: BodyProfile | null;
-  readonly guardUpgraded: boolean;
+  /** Creature ID of the strongest guard still standing (drawn beside the location). */
+  readonly guard: string | null;
   readonly lit: boolean;
   readonly open: boolean;
   readonly claimed: boolean;
@@ -94,10 +71,9 @@ export interface AdventureHeroView {
   readonly selected: boolean;
   /** Offset when sharing a tile with a town. */
   readonly inTown: boolean;
-  /** Wandering monster: drawn as its creature body instead of a rider. */
-  readonly monsterBody?: BodyProfile | null;
-  readonly monsterUpgraded?: boolean;
-  /** Pantheon whose mounted hero model draws this hero (hero definition, else the owner's). */
+  /** Wandering monster: drawn as this creature instead of a rider. */
+  readonly monster?: string | null;
+  /** Pantheon whose mounted avatar draws this hero (hero definition, else the owner's). */
   readonly pantheonId?: string | null;
 }
 
@@ -129,169 +105,127 @@ export interface AdventureCallbacks {
   onDrag?(dragging: boolean): void;
 }
 
+export type PrepareOutcome = 'finished' | 'cancelled';
+
+/** Read-only avatar state for tests and diagnostics. */
+export interface HeroAnimationDebug {
+  readonly sprite: 'ready' | 'loading' | 'missing';
+  readonly status: 'final' | 'placeholder' | null;
+  /** Animation requested: idle, walk or prepare (the readiness beat before a battle). */
+  readonly clip: 'idle' | 'walk' | 'prepare';
+  /** Strip actually drawn (a missing walk strip falls back to idle). */
+  readonly drawn: string | null;
+  readonly facing: MapDirection;
+  readonly mirrored: boolean;
+  readonly prepareCount: number;
+}
+
 interface HeroEntry {
-  /** The game entity: one node for position, facing and visibility (rider + mount + banner). */
-  root: TransformNode;
-  /** Placeholder rider / monster body (kept until the mounted model is ready, or if it fails). */
-  proxy: CreatureProxy | null;
-  /** Mounted hero model with its own skeleton and animation state. */
-  rig: MountedHeroRig | null;
-  /** Owner banner and base disc drawn with the model (faction ownership). */
-  marks: TransformNode | null;
+  /** The game entity: placed at the hex's ground point. */
+  root: Container;
+  figure: SpriteFigure;
+  marks: Container | null;
   color: string;
-  /** Visual identity (pantheon + owner colour, or monster body). */
   look: string;
   pantheonId: string | null;
-  modelState: 'none' | 'loading' | 'ready' | 'failed';
-  modelReason: string | null;
+  monster: boolean;
   coord: HexCoord;
   prevCoord: HexCoord;
   locked: number;
   snapIn: number;
   inTown: boolean;
+  clip: 'idle' | 'walk' | 'prepare';
+  prepares: number;
+  /** Pending readiness beat (resolved early by cancelPreparations). */
+  cancel: (() => void) | null;
 }
 
 interface SiteEntry {
-  proxy: SiteProxy;
-  guard: CreatureProxy | null;
-  guardKey: string;
-  banner: TransformNode | null;
+  root: Container;
+  sprite: Sprite;
+  def: StaticSpriteDefinition | null;
+  key: string;
+  glow: Graphics | null;
+  seal: Graphics | null;
+  banner: Graphics | null;
   bannerKey: string;
+  guard: SpriteFigure | null;
+  guardKey: string;
 }
 
-interface TerrainPart {
-  readonly mesh: Mesh;
-  readonly colors: Float32Array;
-  /** The painted texture is showing: vertex colours carry only fog dimming. */
-  textured: boolean;
-}
-
-interface TileSpan {
-  readonly part: number;
-  readonly start: number;
-  readonly count: number;
-  /** Vertices from this index on are hex sides (drawn darker). */
-  readonly sideFrom: number;
-}
-
-/** Ground types in a fixed order (one terrain part each when painted). */
+/** Ground types in a fixed order. */
 const GROUND_TYPES: readonly Terrain[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
 
-/** Sky backdrop past the north edge of the map (owner decision 2026-10-02): world size of one panorama and distance beyond the edge. */
-const SKY_IMAGE_WORLD_WIDTH = 150;
-const SKY_DISTANCE = 4;
-/** Height of the panorama's horizon above the sea (the distant land rises out of the sea). */
-const SKY_HORIZON_Y = 1.2;
-
 export class AdventureSceneController implements SceneController {
-  readonly scene: Scene;
+  readonly root = new Container();
   readonly tweens = new TweenPlayer();
-  private readonly camera: ArcRotateCamera;
-  private readonly mats: MaterialCache;
+  private readonly engine: EngineHost;
+  private readonly canvas: HTMLCanvasElement;
   private readonly cb: AdventureCallbacks;
+  private readonly world = new Container();
+  private readonly backdrop = new Container();
+  private readonly terrain = new Graphics();
+  private readonly roads = new Graphics();
+  private readonly grid = new Graphics();
+  private readonly reach = new Graphics();
+  private readonly ground = new Container();
+  private readonly pathLayer = new Graphics();
+  private readonly hover = new Graphics();
+  private readonly selectRing = new Graphics();
+  private readonly objects = new Container();
+  private readonly fog = new Graphics();
+  private readonly effects = new Container();
   private map: WorldMapDefinition | null = null;
   private mapKey = '';
-  /** Terrain meshes: one per painted ground type plus one for sides and unpainted tops. */
-  private terrainParts: TerrainPart[] = [];
-  /** Per tile: the vertex spans it owns in the terrain parts. */
-  private tileSpans: TileSpan[][] = [];
-  private tileBase: [number, number, number][] = [];
-  /** Painted ground and sky of the current map (textures and materials to dispose on rebuild). */
-  private artDisposables: { dispose(): void }[] = [];
-  private seaMesh: Mesh;
-  private seaDefault: StandardMaterial | null = null;
-  private sky: Mesh | null = null;
-  private roads: Mesh | null = null;
-  private fog: Mesh | null = null;
-  private grid: LinesMesh | null = null;
-  private decorRoot: TransformNode | null = null;
-  private decorByTile = new Map<number, Mesh[]>();
-  private reach: Mesh | null = null;
-  private pathMesh: Mesh | null = null;
-  private hover: LinesMesh;
-  private selectRing: Mesh;
+  private terrainArts = new Map<Terrain, EnvironmentArt>();
+  private terrainTextures = new Map<Terrain, Texture>();
   private fogKey = '';
   private reachKey = '';
   private pathKey = '';
   private gridMode: AdventureView['grid'] = 'always';
   private explored: readonly number[] = [];
   private visibleSet: ReadonlySet<number> = new Set();
+  private decorByTile = new Map<number, Container[]>();
   private heroes = new Map<string, HeroEntry>();
   private sites = new Map<string, SiteEntry>();
   private selectedHero: string | null = null;
-  private pointerObs: Observer<PointerInfo> | null = null;
-  private down: { x: number; y: number; button: number; ground: Vector3 | null; dragging: boolean } | null = null;
+  private down: { x: number; y: number; button: number; tx: number; ty: number; dragging: boolean } | null = null;
   private lastHover = '';
-  private camGoal: Vector3 | null = null;
+  private hoverHex: HexCoord | null = null;
+  /** Camera: the world point at the view's centre, and the zoom. */
+  private cam = { x: 0, y: 0, zoom: ZOOM_DEFAULT };
+  private camGoal: { x: number; y: number } | null = null;
+  private view = { width: 1, height: 1 };
   private time = 0;
-  private readonly heroModels: MountedHeroCache;
   private disposed = false;
-  /**
-   * Mounted hero models load only after the map has drawn its first frames (the
-   * placeholder riders show meanwhile), so fetching and parsing the GLBs never
-   * delays the first picture of the map.
-   */
-  private modelLoadsOpen = false;
-  private readonly pendingModelLoads: (() => void)[] = [];
+  private readonly listeners: [string, EventListener][] = [];
 
-  constructor(engine: Engine, canvas: HTMLCanvasElement, cb: AdventureCallbacks) {
+  constructor(engine: EngineHost, canvas: HTMLCanvasElement, cb: AdventureCallbacks) {
+    this.engine = engine;
+    this.canvas = canvas;
     this.cb = cb;
-    const scene = new Scene(engine);
-    this.scene = scene;
-    scene.clearColor = clearColor('#070e1a');
-    scene.skipPointerMovePicking = true;
-    this.mats = new MaterialCache(scene);
-    const cam = new ArcRotateCamera('adv-cam', CAMERA_ALPHA, CAMERA_BETA, 24, Vector3.Zero(), scene);
-    cam.lowerRadiusLimit = 8;
-    cam.upperRadiusLimit = 36;
-    // Fixed viewing angle: yaw and pitch are locked; there is no orbit, tilt or mouse-look
-    // input at all (only the wheel, which changes the distance). Panning moves the target.
-    cam.lowerAlphaLimit = CAMERA_ALPHA;
-    cam.upperAlphaLimit = CAMERA_ALPHA;
-    cam.lowerBetaLimit = CAMERA_BETA;
-    cam.upperBetaLimit = CAMERA_BETA;
-    // Moving the target translates the camera with it: alpha, beta and radius are kept
-    // as they are (Babylon would otherwise re-derive them from the old position, which
-    // drifts the zoom on every pan).
-    cam.overrideCloneAlphaBetaRadius = true;
-    cam.panningSensibility = 0;
-    cam.inertia = 0;
-    cam.inputs.clear();
-    cam.inputs.addMouseWheel();
-    cam.wheelPrecision = 18;
-    cam.minZ = 0.5;
-    cam.maxZ = 400;
-    cam.attachControl(canvas, true);
-    this.camera = cam;
-    const hemi = new HemisphericLight('hemi', new Vector3(0.2, 1, -0.3), scene);
-    hemi.intensity = 0.68;
-    hemi.groundColor = new Color3(0.2, 0.22, 0.3);
-    const sun = new DirectionalLight('sun', new Vector3(-0.45, -1, 0.35), scene);
-    sun.intensity = 0.75;
-    const sea = MeshBuilder.CreateGround('sea', { width: 400, height: 400 }, scene);
-    sea.position.y = -0.34;
-    sea.material = this.mats.get(SEA_COLOR, { specular: 0.2 });
-    sea.isPickable = false;
-    this.seaMesh = sea;
-    this.seaDefault = sea.material as StandardMaterial;
-    this.hover = this.hexOutline('hover', '#f5e4b7');
-    this.hover.isVisible = false;
-    this.selectRing = MeshBuilder.CreateTorus('select', { diameter: 1.25, thickness: 0.07, tessellation: 32 }, scene);
-    this.selectRing.material = this.mats.get(SELECT_RING, { emissive: 0.8 });
-    this.selectRing.isPickable = false;
-    this.selectRing.isVisible = false;
-    this.pointerObs = scene.onPointerObservable.add((p) => this.onPointer(p));
-    this.heroModels = new MountedHeroCache(scene);
-    let frames = 0;
-    const opener = scene.onAfterRenderObservable.add(() => {
-      if (++frames < 3) return;
-      scene.onAfterRenderObservable.remove(opener);
-      setTimeout(() => {
-        if (this.disposed) return;
-        this.modelLoadsOpen = true;
-        for (const load of this.pendingModelLoads.splice(0)) load();
-      }, 60);
-    });
+    this.root.addChild(this.world);
+    this.ground.addChild(this.selectRing, this.pathLayer, this.hover);
+    this.objects.sortableChildren = true;
+    this.world.addChild(this.backdrop, this.terrain, this.roads, this.grid, this.reach, this.ground, this.objects, this.fog, this.effects);
+    this.hover.visible = false;
+    this.selectRing.visible = false;
+    this.view = { width: engine.width, height: engine.height };
+    const on = (type: string, fn: (e: Event) => void) => {
+      canvas.addEventListener(type, fn, { passive: type !== 'wheel' && type !== 'contextmenu' });
+      this.listeners.push([type, fn]);
+    };
+    on('pointerdown', (e) => this.onDown(e as PointerEvent));
+    on('pointermove', (e) => this.onMove(e as PointerEvent));
+    on('pointerup', (e) => this.onUp(e as PointerEvent));
+    on('pointerleave', () => this.onLeave());
+    on('wheel', (e) => this.onWheel(e as WheelEvent));
+    on('contextmenu', (e) => e.preventDefault());
+  }
+
+  resize(width: number, height: number): void {
+    this.view = { width, height };
+    this.applyCamera();
   }
 
   // ------------------------------------------------------------------ view updates
@@ -312,418 +246,312 @@ export class AdventureSceneController implements SceneController {
       this.buildReach(view.reachable);
       this.reachKey = view.reachKey;
     }
-    const pk = view.path ? `${view.path.steps.map((s) => `${s.q},${s.r}`).join(';')}|${view.path.stopIndex}|${view.path.encounter}` : '';
+    this.syncSites(view.sites);
+    this.syncHeroes(view.heroes);
+    const pk = view.path ? `${view.path.steps.map((s) => `${s.q},${s.r}`).join(';')}|${view.path.stopIndex}|${view.path.encounter}|${this.selectedHero ?? ''}` : '';
     if (pk !== this.pathKey) {
       this.buildPath(view.path);
       this.pathKey = pk;
     }
-    this.syncSites(view.sites);
-    this.syncHeroes(view.heroes);
-  }
-
-  private heightAt(c: HexCoord): number {
-    const map = this.map;
-    if (!map || c.q < 0 || c.r < 0 || c.q >= map.width || c.r >= map.height) return 0;
-    const t = TERRAIN_BY_CODE[map.terrain[c.r * map.width + c.q] ?? 'p'] ?? 'plains';
-    return TERRAIN_HEIGHT[t] ?? 0;
   }
 
   private terrainOf(map: WorldMapDefinition, i: number): Terrain {
     return TERRAIN_BY_CODE[map.terrain[i] ?? 'p'] ?? 'plains';
   }
 
-  private disposeTerrain(): void {
-    for (const p of this.terrainParts) {
-      p.mesh.material?.dispose();
-      p.mesh.dispose();
-    }
-    this.terrainParts = [];
-    this.tileSpans = [];
-    for (const d of this.artDisposables) d.dispose();
-    this.artDisposables = [];
-    this.sky?.dispose();
-    this.sky = null;
-    if (this.seaDefault) this.seaMesh.material = this.seaDefault;
+  private hexCenter(c: HexCoord): { x: number; y: number } {
+    return axialPoint(c, R, S);
   }
 
-  /**
-   * Terrain tiles. Each ground type of the map's climate that has a painted
-   * texture (Brief 2) gets its own mesh with world-space UVs — one texture spans
-   * about two tiles and continues across neighbouring tiles — shown once the
-   * texture has loaded. Sides and unpainted types keep the procedural colours.
-   */
-  private buildTerrain(map: WorldMapDefinition): void {
-    const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
-    const arts = new Map<Terrain, EnvironmentArt>();
-    // Low quality keeps the procedural colours (no painted ground, sea or sky).
+  private mapBounds(map: WorldMapDefinition): { minX: number; maxX: number; minY: number; maxY: number } {
+    let minX = Infinity;
+    let maxX = -Infinity;
+    for (const [q, r] of [[0, 0], [map.width - 1, 0], [0, map.height - 1], [map.width - 1, map.height - 1]] as const) {
+      const p = this.hexCenter({ q, r });
+      minX = Math.min(minX, p.x - HEX_W / 2);
+      maxX = Math.max(maxX, p.x + HEX_W / 2);
+    }
+    return { minX, maxX, minY: -R * S, maxY: this.hexCenter({ q: 0, r: map.height - 1 }).y + R * S };
+  }
+
+  private buildMap(map: WorldMapDefinition): void {
+    for (const s of this.sites.values()) this.disposeSite(s);
+    this.sites.clear();
+    for (const list of this.decorByTile.values()) for (const d of list) d.destroy({ children: true });
+    this.decorByTile.clear();
+    this.map = map;
+    this.terrainArts.clear();
+    this.terrainTextures.clear();
     const painted = graphicsProfile().paintedGround;
     for (const t of GROUND_TYPES) {
       const a = painted ? terrainArt(map.biome, t) : null;
-      if (a) arts.set(t, a);
+      if (a) this.terrainArts.set(t, a);
     }
-    const uv = (x: number, z: number) => [x / TERRAIN_TEXTURE_WORLD, z / TERRAIN_TEXTURE_WORLD] as const;
-    const tops = new Map<Terrain, MeshAccumulator>();
-    for (const t of arts.keys()) tops.set(t, new MeshAccumulator(uv));
-    const rest = new MeshAccumulator();
-    const spans: { acc: MeshAccumulator; key: Terrain | 'rest'; start: number; count: number; sideFrom: number }[][] = [];
-    this.tileBase = [];
+    this.drawTerrain();
+    this.buildBackdrop(map);
+    this.buildDecor(map);
+    // Painted ground replaces the flat colours as each texture arrives.
+    for (const [t, art] of this.terrainArts) {
+      void loadTexture(art.url).then(
+        (tex) => {
+          if (this.disposed || this.map !== map) return;
+          tex.source.style.addressModeU = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
+          tex.source.style.addressModeV = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
+          tex.source.style.update();
+          this.terrainTextures.set(t, tex);
+          this.drawTerrain();
+          if (t === 'water') this.buildBackdrop(map);
+        },
+        () => undefined,
+      );
+    }
+    // Centre the camera on the map initially.
+    const c = this.hexCenter({ q: Math.round(map.width / 2 - map.height / 4), r: Math.round(map.height / 2) });
+    this.cam = { x: c.x, y: c.y, zoom: this.cam.zoom };
+    this.applyCamera();
+  }
+
+  /** The texture fill of a ground type: one painting spans about two tiles and continues across hexes. */
+  private pattern(t: Terrain): FillPattern | null {
+    const tex = this.terrainTextures.get(t);
+    if (!tex) return null;
+    const p = new FillPattern(tex, 'repeat');
+    const mode = this.terrainArts.get(t)?.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
+    tex.source.style.addressModeU = mode;
+    tex.source.style.addressModeV = mode;
+    const span = TERRAIN_TEXTURE_WORLD * R;
+    p.setTransform(new Matrix().scale(span / tex.width, (span * S) / tex.height));
+    return p;
+  }
+
+  private drawTerrain(): void {
+    const map = this.map;
+    const g = this.terrain;
+    g.clear();
+    if (!map) return;
+    const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
+    const patterns = new Map<Terrain, FillPattern | null>();
+    for (const t of GROUND_TYPES) patterns.set(t, this.pattern(t));
     for (let r = 0; r < map.height; r++) {
       for (let q = 0; q < map.width; q++) {
         const i = r * map.width + q;
         const t = this.terrainOf(map, i);
-        const base = biomeTerrainRgb(t, map.biome);
+        const { x, y } = this.hexCenter({ q, r });
+        const poly = hexPolygon(x, y, R * 1.012, S);
         const n = tileNoise(q, r) * 0.06;
-        const rgb: [number, number, number] = [
-          Math.min(1, base[0] * tint[0] + n),
-          Math.min(1, base[1] * tint[1] + n),
-          Math.min(1, base[2] * tint[2] + n),
-        ];
-        const { x, z } = axialWorld({ q, r }, R);
-        const h = TERRAIN_HEIGHT[t];
-        const top = tops.get(t);
-        const tile: (typeof spans)[number] = [];
-        if (top) {
-          const start = top.vertexCount;
-          top.hexTop(x, z, R * 0.985, h, rgb);
-          tile.push({ acc: top, key: t, start, count: top.vertexCount - start, sideFrom: top.vertexCount - start });
-          const s0 = rest.vertexCount;
-          rest.hexSides(x, z, R * 0.985, h, SKIRT_BOTTOM, rgb.map((c) => c * 0.55));
-          tile.push({ acc: rest, key: 'rest', start: s0, count: rest.vertexCount - s0, sideFrom: 0 });
+        const pat = patterns.get(t);
+        if (pat) {
+          // The painting shows; a light per-tile variation keeps large areas from looking flat.
+          g.poly(poly).fill({ fill: pat, color: rgbOf(0.96 + n, 0.96 + n, 0.96 + n) });
         } else {
-          const start = rest.vertexCount;
-          rest.hexTop(x, z, R * 0.985, h, rgb);
-          rest.hexSides(x, z, R * 0.985, h, SKIRT_BOTTOM, rgb.map((c) => c * 0.55));
-          tile.push({ acc: rest, key: 'rest', start, count: rest.vertexCount - start, sideFrom: 7 });
+          const base = biomeTerrainRgb(t, map.biome);
+          g.poly(poly).fill({ color: rgbOf(base[0] * tint[0] + n, base[1] * tint[1] + n, base[2] * tint[2] + n) });
         }
-        spans.push(tile);
-        this.tileBase.push(rgb);
       }
     }
-    const partIndex = new Map<Terrain | 'rest', number>();
-    const addPart = (key: Terrain | 'rest', acc: MeshAccumulator) => {
-      if (!acc.positions.length) return;
-      const mesh = acc.build(key === 'rest' ? 'terrain' : `terrain-${key}`, this.scene, { updatableColors: true });
-      partIndex.set(key, this.terrainParts.length);
-      this.terrainParts.push({ mesh, colors: new Float32Array(acc.colors), textured: false });
-    };
-    addPart('rest', rest);
-    for (const [t, acc] of tops) addPart(t, acc);
-    this.tileSpans = spans.map((tile) => tile.map((sp) => ({ part: partIndex.get(sp.key)!, start: sp.start, count: sp.count, sideFrom: sp.sideFrom })));
-    // Painted textures replace the flat colours as they arrive (mirrored repeat until the seams are verified).
-    for (const [t, art] of arts) {
-      const pi = partIndex.get(t);
-      if (pi === undefined) continue;
-      const wrap = art.wrap ?? 'mirror';
-      const tex = loadArtTexture(this.scene, art, wrap, wrap, (loaded) => {
-        const part = this.terrainParts[pi];
-        if (!part || this.map !== map) return;
-        const old = part.mesh.material;
-        part.mesh.material = groundMaterial(`terrain-${t}-art`, this.scene, loaded);
-        old?.dispose();
-        part.textured = true;
-        this.refreshTerrainColors();
-      });
-      this.artDisposables.push(tex);
-    }
-    // The sea around the map shows the climate's water (also on maps without water tiles).
-    const water = arts.get('water');
-    if (water) {
-      const wrap = water.wrap ?? 'mirror';
-      const tex = loadArtTexture(this.scene, water, wrap, wrap, (loaded) => {
-        if (this.map === map) this.paintSea(loaded, wrap);
-      });
-      this.artDisposables.push(tex);
-    }
-    this.buildSky(map);
-  }
-
-  /** The sea around the map takes the climate's painted water (same world scale, darker). */
-  private paintSea(tex: Texture, wrap: 'repeat' | 'mirror'): void {
-    tex.uScale = 400 / TERRAIN_TEXTURE_WORLD;
-    tex.vScale = 400 / TERRAIN_TEXTURE_WORLD;
-    const mat = groundMaterial(`sea-art-${wrap}`, this.scene, tex);
-    mat.diffuseColor.set(0.6, 0.64, 0.7);
-    this.seaMesh.material = mat;
-    this.artDisposables.push(mat);
   }
 
   /**
-   * The climate's sky panorama as a backdrop standing past the north edge of the
-   * map (owner decision 2026-10-02: the fixed camera never looks up to the
-   * horizon, so the sky shows when the view reaches the map's far edge). The
-   * panorama keeps its proportions; its horizon (about 62 % from the top) sits
-   * just above the sea so the distant land rises out of it. Clamped vertically;
-   * repeated sideways (mirrored until its left/right seam is verified).
+   * The sea around the map (the climate's painted water, darker) and the sky
+   * panorama standing past the north edge (owner decision 2026-10-02): the
+   * panorama keeps its proportions, its horizon sits just above row 0, and it
+   * repeats sideways (mirrored until its seam is verified).
    */
-  private buildSky(map: WorldMapDefinition): void {
-    const art = graphicsProfile().paintedGround ? skyArt(map.biome) : null;
-    if (!art) return;
-    let minX = Infinity;
-    let maxX = -Infinity;
-    for (const [q, r] of [[0, 0], [map.width - 1, 0], [0, map.height - 1], [map.width - 1, map.height - 1]] as const) {
-      const p = axialWorld({ q, r }, R);
-      minX = Math.min(minX, p.x);
-      maxX = Math.max(maxX, p.x);
+  private buildBackdrop(map: WorldMapDefinition): void {
+    for (const c of this.backdrop.removeChildren()) c.destroy();
+    const b = this.mapBounds(map);
+    const margin = 40 * R;
+    const sky = graphicsProfile().paintedGround ? skyArt(map.biome) : null;
+    const horizonY = b.minY - SKY_GAP;
+    const seaTop = sky ? horizonY : b.minY - margin;
+    const water = this.terrainTextures.get('water');
+    if (water) {
+      const sea = new TilingSprite({ texture: water, width: b.maxX - b.minX + margin * 2, height: b.maxY + margin - seaTop });
+      sea.position.set(b.minX - margin, seaTop);
+      const span = TERRAIN_TEXTURE_WORLD * R;
+      sea.tileScale.set(span / water.width, (span * S) / water.height);
+      sea.tint = 0x99a3b3;
+      this.backdrop.addChild(sea);
+    } else {
+      const sea = new Graphics().rect(b.minX - margin, seaTop, b.maxX - b.minX + margin * 2, b.maxY + margin - seaTop).fill({ color: colorOf(SEA_COLOR) });
+      this.backdrop.addChild(sea);
     }
-    const imageW = SKY_IMAGE_WORLD_WIDTH;
-    const imageH = (imageW * art.height) / art.width;
-    const planeW = maxX - minX + 160;
-    const horizon = art.horizon ?? 0.62;
-    const centerX = (minX + maxX) / 2;
-    const plane = MeshBuilder.CreatePlane('sky', { width: planeW, height: imageH }, this.scene);
-    // Horizon line (horizon × height below the top edge) at SKY_HORIZON_Y.
-    plane.position.set(centerX, SKY_HORIZON_Y + imageH * (horizon - 0.5), R + SKY_DISTANCE);
-    plane.isPickable = false;
-    plane.isVisible = false;
-    this.sky = plane;
-    const wrap = art.wrap ?? 'mirror';
-    const tex = loadArtTexture(this.scene, art, wrap, 'clamp', (loaded) => {
-      if (this.sky !== plane) return;
-      loaded.uScale = planeW / imageW;
-      // Centre one copy of the panorama on the map (the sun keeps to the left of the centre).
-      loaded.uOffset = 0.5 - planeW / imageW / 2;
-      const mat = backdropMaterial('sky-art', this.scene, loaded);
-      plane.material = mat;
-      plane.isVisible = true;
-      this.artDisposables.push(mat);
-    });
-    this.artDisposables.push(tex);
+    if (!sky) return;
+    void loadTexture(sky.url).then(
+      (tex) => {
+        if (this.disposed || this.map !== map) return;
+        const w = SKY_WIDTH_HEXES * HEX_W;
+        const h = (w * sky.height) / sky.width;
+        const horizon = sky.horizon ?? 0.62;
+        tex.source.style.addressModeU = sky.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
+        tex.source.style.addressModeV = 'clamp-to-edge';
+        const band = new TilingSprite({ texture: tex, width: b.maxX - b.minX + margin * 2, height: h });
+        band.tileScale.set(w / tex.width, h / tex.height);
+        // Centre one copy of the panorama on the map.
+        band.tilePosition.x = (b.maxX - b.minX + margin * 2) / 2 - w / 2;
+        band.position.set(b.minX - margin, horizonY - horizon * h);
+        this.backdrop.addChildAt(band, 0);
+      },
+      () => undefined,
+    );
   }
 
-  /** Re-apply the fog-of-war colours (after a painted texture arrives). */
-  private refreshTerrainColors(): void {
-    if (this.map) this.applyFog(this.explored, this.visibleSet);
-  }
-
-  private buildMap(map: WorldMapDefinition): void {
-    this.disposeTerrain();
-    this.roads?.dispose();
-    this.decorRoot?.dispose();
-    this.decorByTile.clear();
-    for (const s of this.sites.values()) this.disposeSite(s);
-    this.sites.clear();
-    this.map = map;
-    this.buildTerrain(map);
-    // Roads
-    const roads = new MeshAccumulator();
-    const road = hexToRgb(ROAD_COLOR);
-    for (const k of map.roads) {
-      const [a, b] = k.split('|');
-      const [aq, ar] = a!.split(',').map(Number);
-      const [bq, br] = b!.split(',').map(Number);
-      const pa = axialWorld({ q: aq!, r: ar! }, R);
-      const pb = axialWorld({ q: bq!, r: br! }, R);
-      const y = Math.max(this.heightAt({ q: aq!, r: ar! }), this.heightAt({ q: bq!, r: br! })) + 0.02;
-      roads.ribbon(pa.x, pa.z, pb.x, pb.z, y, 0.26, road);
-      roads.hexTop(pa.x, pa.z, 0.15, y + 0.001, road);
-      roads.hexTop(pb.x, pb.z, 0.15, y + 0.001, road);
-    }
-    this.roads = roads.build('roads', this.scene);
-    this.roads.metadata = { edges: map.roads };
-    this.buildDecor(map);
-    // Center the camera on the map initially.
-    const center = axialWorld({ q: map.width / 2 - map.height / 4, r: map.height / 2 }, R);
-    this.camera.target = new Vector3(center.x, 0, center.z);
+  private decorSprite(kind: string, size: number, mirror: boolean): Container | null {
+    const def = spriteManifest().decor[kind] ?? null;
+    if (!def) return null;
+    const c = new Container();
+    if (graphicsProfile().shadows && kind !== 'grass') c.addChild(groundShadow(HEX_W * 0.16 * size, HEX_W * 0.07 * size, 0.22));
+    const s = stillSprite(def, HEX_W, size);
+    if (mirror) s.scale.x *= -1;
+    c.addChild(s);
+    return c;
   }
 
   private buildDecor(map: WorldMapDefinition): void {
-    const root = new TransformNode('decor', this.scene);
-    this.decorRoot = root;
-    const streams = deriveStreams(map.seed, map.templateId, map.attempt);
-    const items = buildDecor(map, streams);
-    const tree = MeshBuilder.CreateCylinder('tree-src', { height: 0.62, diameterTop: 0, diameterBottom: 0.36, tessellation: 7 }, this.scene);
-    tree.material = this.mats.get('#2f5a30');
-    const pine = MeshBuilder.CreateCylinder('pine-src', { height: 0.8, diameterTop: 0, diameterBottom: 0.3, tessellation: 6 }, this.scene);
-    pine.material = this.mats.get('#28492c');
-    const rock = MeshBuilder.CreatePolyhedron('rock-src', { type: 1, size: 0.14 }, this.scene);
-    rock.material = this.mats.get('#7d7a74');
-    const shrub = MeshBuilder.CreateSphere('shrub-src', { diameter: 0.22, segments: 4 }, this.scene);
-    shrub.material = this.mats.get('#5b7a3a');
-    const peak = MeshBuilder.CreateCylinder('peak-src', { height: 1.1, diameterTop: 0.05, diameterBottom: 1.3, tessellation: 6 }, this.scene);
-    peak.material = this.mats.get('#77726b');
-    const snow = MeshBuilder.CreateCylinder('snow-src', { height: 0.28, diameterTop: 0.02, diameterBottom: 0.38, tessellation: 6 }, this.scene);
-    snow.material = this.mats.get('#e9e6df');
-    for (const src of [tree, pine, rock, shrub, peak, snow]) {
-      src.isVisible = false;
-      src.isPickable = false;
-      src.parent = root;
-    }
-    const push = (i: number, m: Mesh) => {
-      m.parent = root;
-      m.isPickable = false;
+    const push = (i: number, c: Container) => {
+      this.objects.addChild(c);
       const list = this.decorByTile.get(i) ?? [];
-      list.push(m);
+      list.push(c);
       this.decorByTile.set(i, list);
     };
     for (let r = 0; r < map.height; r++) {
       for (let q = 0; q < map.width; q++) {
         const i = r * map.width + q;
         if (this.terrainOf(map, i) !== 'mountain') continue;
-        const { x, z } = axialWorld({ q, r }, R);
-        const p = peak.createInstance(`peak-${i}`);
-        p.position.set(x, TERRAIN_HEIGHT.mountain + 0.5, z);
-        p.rotation.y = tileNoise(q, r) * 3;
-        push(i, p as unknown as Mesh);
-        const s = snow.createInstance(`snow-${i}`);
-        s.position.set(x, TERRAIN_HEIGHT.mountain + 0.96, z);
-        push(i, s as unknown as Mesh);
+        const { x, y } = this.hexCenter({ q, r });
+        const m = this.decorSprite('mountain', 1 + tileNoise(q, r) * 0.08, tileNoise(q + 3, r) > 0);
+        if (!m) continue;
+        m.position.set(x, y + R * S * 0.55);
+        m.zIndex = m.y;
+        push(i, m);
       }
     }
+    const streams = deriveStreams(map.seed, map.templateId, map.attempt);
+    const items = buildDecor(map, streams);
     // Graphics quality: Medium drops grass tufts and shrubs, Low also every other tree and rock.
     const decor = graphicsProfile().decor;
     for (const [n, d] of items.entries()) {
       if (decor !== 'all' && (d.kind === 'grass' || d.kind === 'shrub')) continue;
       if (decor === 'sparse' && n % 2 === 1) continue;
-      const src = d.kind === 'pine' ? pine : d.kind === 'tree' ? tree : d.kind === 'rock' ? rock : d.kind === 'shrub' ? shrub : d.kind === 'grass' ? shrub : rock;
       if (d.kind === 'rock' && this.terrainOf(map, d.r * map.width + d.q) === 'mountain') continue;
-      const { x, z } = axialWorld({ q: d.q, r: d.r }, R);
-      const inst = src.createInstance(`d-${d.q}-${d.r}-${Math.round(d.dx * 100)}`);
-      const h = this.heightAt({ q: d.q, r: d.r });
-      const s = d.kind === 'grass' ? d.scale * 0.5 : d.scale;
-      inst.scaling.set(s, s, s);
-      inst.position.set(x + d.dx * 0.42, h + (src === tree ? 0.31 : src === pine ? 0.4 : 0.07) * s, z + d.dz * 0.42);
-      inst.rotation.y = d.rotation;
-      push(d.r * map.width + d.q, inst as unknown as Mesh);
+      const s = this.decorSprite(d.kind, d.kind === 'grass' ? d.scale * 0.7 : d.scale, d.rotation > Math.PI);
+      if (!s) continue;
+      const { x, y } = this.hexCenter({ q: d.q, r: d.r });
+      s.position.set(x + d.dx * 0.42 * R, y - d.dz * 0.42 * R * S);
+      s.zIndex = s.y;
+      push(d.r * map.width + d.q, s);
     }
   }
 
   private applyFog(explored: readonly number[], visible: ReadonlySet<number>): void {
     const map = this.map;
-    if (!map || !this.terrainParts.length) return;
+    if (!map) return;
     this.explored = explored;
     this.visibleSet = visible;
-    const fog = new MeshAccumulator();
+    const fog = this.fog;
+    const grid = this.grid;
+    fog.clear();
+    grid.clear();
     const unknown = hexToRgb(UNKNOWN_COLOR);
-    const gridPts: Vector3[][] = [];
     for (let i = 0; i < map.width * map.height; i++) {
       const q = i % map.width;
       const r = Math.floor(i / map.width);
       const known = explored[i] === 1;
       const vis = visible.has(i);
-      const f = known ? (vis ? 1 : 0.58) : 0;
-      for (const span of this.tileSpans[i] ?? []) {
-        const part = this.terrainParts[span.part]!;
-        // A painted tile shows its texture; the vertex colour only dims it under fog.
-        const base = part.textured ? WHITE : this.tileBase[i]!;
-        const colors = part.colors;
-        for (let v = 0; v < span.count; v++) {
-          const side = v >= span.sideFrom ? 0.55 : 1;
-          const o = (span.start + v) * 4;
-          colors[o] = base[0] * f * side;
-          colors[o + 1] = base[1] * f * side;
-          colors[o + 2] = base[2] * f * side;
-        }
-      }
-      for (const m of this.decorByTile.get(i) ?? []) m.isVisible = known;
-      const { x, z } = axialWorld({ q, r }, R);
+      for (const d of this.decorByTile.get(i) ?? []) d.visible = known;
+      const { x, y } = this.hexCenter({ q, r });
       if (!known) {
         const n = 0.02 * tileNoise(q + 7, r + 3);
-        const c = [unknown[0] + n, unknown[1] + n, unknown[2] + n * 1.4];
-        fog.hexTop(x, z, R * 1.0, FOG_TOP + tileNoise(q, r + 11) * 0.03, c);
-        fog.hexSides(x, z, R * 1.0, FOG_TOP, FOG_BOTTOM, c.map((k) => k * 0.8));
-      } else if (this.gridMode === 'always') {
-        const h = this.heightAt({ q, r }) + 0.012;
-        const ring: Vector3[] = [];
-        for (let k = 0; k <= 6; k++) {
-          const cc = hexCorner(k % 6, R * 0.985);
-          ring.push(new Vector3(x + cc.x, h, z + cc.z));
-        }
-        gridPts.push(ring);
+        fog.poly(hexPolygon(x, y, R * 1.03, S)).fill({ color: rgbOf(unknown[0] + n, unknown[1] + n, unknown[2] + n * 1.4) });
+      } else {
+        if (!vis) fog.poly(hexPolygon(x, y, R * 1.012, S)).fill({ color: 0x000000, alpha: 0.42 });
+        if (this.gridMode === 'always') grid.poly(hexPolygon(x, y, R * 0.985, S));
       }
     }
-    for (const part of this.terrainParts) part.mesh.updateVerticesData(VertexBuffer.ColorKind, part.colors);
-    this.fog?.dispose();
-    this.fog = fog.positions.length ? fog.build('fog', this.scene) : null;
-    this.grid?.dispose();
-    this.grid = null;
-    if (gridPts.length) {
-      this.grid = MeshBuilder.CreateLineSystem('grid', { lines: gridPts }, this.scene);
-      this.grid.color = new Color3(0.05, 0.07, 0.1);
-      this.grid.alpha = 0.42;
-      this.grid.isPickable = false;
+    if (this.gridMode === 'always') grid.stroke({ width: 1.1, color: 0x0d121a, alpha: 0.42 });
+    // Roads only over explored tiles, dimmer where neither end is in sight.
+    const roads = this.roads;
+    roads.clear();
+    const road = colorOf(ROAD_COLOR);
+    const edges: { a: { x: number; y: number }; b: { x: number; y: number }; dim: boolean }[] = [];
+    for (const k of map.roads) {
+      const [a, b] = k.split('|');
+      const [aq, ar] = a!.split(',').map(Number);
+      const [bq, br] = b!.split(',').map(Number);
+      const ia = ar! * map.width + aq!;
+      const ib = br! * map.width + bq!;
+      if (explored[ia] !== 1 || explored[ib] !== 1) continue;
+      edges.push({ a: this.hexCenter({ q: aq!, r: ar! }), b: this.hexCenter({ q: bq!, r: br! }), dim: !(visible.has(ia) || visible.has(ib)) });
     }
-    // Roads only over explored tiles: rebuild from the edge list.
-    if (this.roads) {
-      this.roads.dispose();
-      const roads = new MeshAccumulator();
-      const road = hexToRgb(ROAD_COLOR);
-      for (const k of map.roads) {
-        const [a, b] = k.split('|');
-        const [aq, ar] = a!.split(',').map(Number);
-        const [bq, br] = b!.split(',').map(Number);
-        const ia = ar! * map.width + aq!;
-        const ib = br! * map.width + bq!;
-        if (explored[ia] !== 1 || explored[ib] !== 1) continue;
-        const pa = axialWorld({ q: aq!, r: ar! }, R);
-        const pb = axialWorld({ q: bq!, r: br! }, R);
-        const dim = visible.has(ia) || visible.has(ib) ? 1 : 0.6;
-        const rgb = road.map((c) => c * dim);
-        const y = Math.max(this.heightAt({ q: aq!, r: ar! }), this.heightAt({ q: bq!, r: br! })) + 0.02;
-        roads.ribbon(pa.x, pa.z, pb.x, pb.z, y, 0.26, rgb);
-        roads.hexTop(pa.x, pa.z, 0.15, y + 0.001, rgb);
-        roads.hexTop(pb.x, pb.z, 0.15, y + 0.001, rgb);
-      }
-      this.roads = roads.positions.length ? roads.build('roads', this.scene) : new Mesh('roads-empty', this.scene);
-    }
+    for (const e of edges) roads.moveTo(e.a.x, e.a.y).lineTo(e.b.x, e.b.y);
+    roads.stroke({ width: R * 0.36, color: 0x3b2f1c, alpha: 0.45, cap: 'round', join: 'round' });
+    for (const e of edges) roads.moveTo(e.a.x, e.a.y).lineTo(e.b.x, e.b.y).stroke({ width: R * 0.24, color: road, alpha: e.dim ? 0.62 : 1, cap: 'round', join: 'round' });
   }
 
   private buildReach(tiles: readonly HexCoord[] | null): void {
-    this.reach?.dispose();
-    this.reach = null;
+    const g = this.reach;
+    g.clear();
     if (!tiles || tiles.length === 0) return;
-    const acc = new MeshAccumulator();
-    const rgb = hexToRgb(HIGHLIGHT_REACH);
     for (const c of tiles) {
-      const { x, z } = axialWorld(c, R);
-      acc.hexTop(x, z, R * 0.86, this.heightAt(c) + 0.03, rgb, 0.2);
+      const { x, y } = this.hexCenter(c);
+      g.poly(hexPolygon(x, y, R * 0.86, S));
     }
-    this.reach = acc.build('reach', this.scene, { alpha: true });
+    g.fill({ color: colorOf(HIGHLIGHT_REACH), alpha: 0.2 });
   }
 
   private buildPath(path: AdventurePathView | null): void {
-    this.pathMesh?.dispose();
-    this.pathMesh = null;
+    const g = this.pathLayer;
+    g.clear();
     if (!path || path.steps.length === 0) return;
-    const acc = new MeshAccumulator();
-    const today = hexToRgb(PATH_TODAY);
-    const later = hexToRgb(PATH_LATER);
-    const enc = hexToRgb(PATH_ENCOUNTER);
+    const today = colorOf(PATH_TODAY);
+    const later = colorOf(PATH_LATER);
+    const enc = colorOf(PATH_ENCOUNTER);
+    const dark = 0x0f141f;
     const last = path.steps.length - 1;
-    let prev: { x: number; z: number; y: number } | null = null;
-    const heroStart = this.selectedHero ? this.heroes.get(this.selectedHero)?.coord : undefined;
-    if (heroStart) {
-      const w = axialWorld(heroStart, R);
-      prev = { ...w, y: this.heightAt(heroStart) + 0.05 };
-    }
+    const start = this.selectedHero ? this.heroes.get(this.selectedHero)?.coord : undefined;
+    let prev = start ? this.hexCenter(start) : null;
     path.steps.forEach((c, i) => {
-      const w = axialWorld(c, R);
-      const y = this.heightAt(c) + 0.05;
-      const rgb = i <= path.stopIndex ? today : later;
-      if (prev) acc.ribbon(prev.x, prev.z, w.x, w.z, Math.max(prev.y, y), 0.07, rgb, 0.9);
+      const p = this.hexCenter(c);
+      const col = i <= path.stopIndex ? today : later;
+      if (prev) g.moveTo(prev.x, prev.y).lineTo(p.x, p.y).stroke({ width: R * 0.12, color: col, alpha: 0.9, cap: 'round' });
+      prev = p;
+    });
+    path.steps.forEach((c, i) => {
+      const p = this.hexCenter(c);
+      const col = i <= path.stopIndex ? today : later;
       if (i === last) {
         if (path.encounter) {
-          // Crossed-swords "X" marker: shape, not only color.
-          acc.ribbon(w.x - 0.3, w.z - 0.3, w.x + 0.3, w.z + 0.3, y + 0.02, 0.12, enc);
-          acc.ribbon(w.x - 0.3, w.z + 0.3, w.x + 0.3, w.z - 0.3, y + 0.02, 0.12, enc);
+          // Crossed-swords "X" marker: shape, not only colour.
+          const k = R * 0.32;
+          g.moveTo(p.x - k, p.y - k * S).lineTo(p.x + k, p.y + k * S).moveTo(p.x - k, p.y + k * S).lineTo(p.x + k, p.y - k * S).stroke({ width: R * 0.14, color: enc, cap: 'round' });
         } else {
-          acc.hexTop(w.x, w.z, 0.3, y + 0.01, rgb);
-          acc.hexTop(w.x, w.z, 0.18, y + 0.02, [0.06, 0.08, 0.12]);
+          g.ellipse(p.x, p.y, R * 0.3, R * 0.3 * S).fill({ color: col });
+          g.ellipse(p.x, p.y, R * 0.18, R * 0.18 * S).fill({ color: dark });
         }
       } else {
         // Today: solid dot; later days: hollow ring (shape cue).
-        acc.hexTop(w.x, w.z, 0.14, y + 0.01, rgb);
-        if (i > path.stopIndex) acc.hexTop(w.x, w.z, 0.07, y + 0.02, [0.06, 0.08, 0.12]);
+        g.ellipse(p.x, p.y, R * 0.14, R * 0.14 * S).fill({ color: col });
+        if (i > path.stopIndex) g.ellipse(p.x, p.y, R * 0.07, R * 0.07 * S).fill({ color: dark });
       }
-      prev = { ...w, y };
     });
-    this.pathMesh = acc.build('path', this.scene, { alpha: true });
   }
 
   // ------------------------------------------------------------------ sites & heroes
 
   private disposeSite(s: SiteEntry): void {
-    s.proxy.root.dispose(false, false);
-    if (s.guard) disposeProxy(s.guard);
+    s.guard?.destroy();
+    s.root.destroy({ children: true });
+  }
+
+  /** Owner banner on a pole: square = yours, pennant = others (ownership is never colour alone). */
+  private banner(color: string, shape: 'square' | 'pennant', height: number): Graphics {
+    const g = new Graphics();
+    const c = colorOf(color);
+    g.moveTo(0, 0).lineTo(0, -height).stroke({ width: 2.2, color: 0x3a2c1c });
+    const top = -height;
+    if (shape === 'square') g.rect(1, top, R * 0.42, R * 0.3).fill({ color: c }).stroke({ width: 1, color: 0x1a1208, alpha: 0.6 });
+    else g.poly([1, top, 1 + R * 0.5, top + R * 0.15, 1, top + R * 0.3]).fill({ color: c }).stroke({ width: 1, color: 0x1a1208, alpha: 0.6 });
+    return g;
   }
 
   private syncSites(views: readonly AdventureSiteView[]): void {
@@ -732,37 +560,73 @@ export class AdventureSceneController implements SceneController {
       seen.add(v.id);
       let e = this.sites.get(v.id);
       if (!v.shown || ((v.archetype === 'pickup' || v.archetype === 'treasure_chest') && v.claimed)) {
-        if (e) e.proxy.root.setEnabled(false);
+        if (e) e.root.visible = false;
         continue;
       }
+      const def = siteSprite(v.archetype, v.variant);
+      const key = `${v.archetype}|${v.variant ?? ''}`;
+      if (e && e.key !== key) {
+        this.disposeSite(e);
+        this.sites.delete(v.id);
+        e = undefined;
+      }
       if (!e) {
-        const proxy = buildSiteProxy(this.scene, this.mats, v.archetype, `site-${v.id}`, v.tint);
-        const w = axialWorld(v.coord, R);
-        proxy.root.position.set(w.x, this.heightAt(v.coord), w.z);
-        proxy.root.scaling.setAll(v.archetype === 'town' ? 0.95 : 0.8);
-        e = { proxy, guard: null, guardKey: '', banner: null, bannerKey: '' };
+        const root = new Container();
+        const { x, y } = this.hexCenter(v.coord);
+        root.position.set(x, y + R * S * 0.38);
+        root.zIndex = root.y;
+        if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.4, HEX_W * 0.15));
+        const sprite = stillSprite(def, HEX_W);
+        root.addChild(sprite);
+        this.objects.addChild(root);
+        e = { root, sprite, def, key, glow: null, seal: null, banner: null, bannerKey: '', guard: null, guardKey: '' };
         this.sites.set(v.id, e);
       }
-      e.proxy.root.setEnabled(true);
-      if (e.proxy.flame) e.proxy.flame.isVisible = v.lit;
-      if (e.proxy.seal) e.proxy.seal.isVisible = !v.open;
-      const bk = v.ownerColor ? `${v.ownerColor}|${v.ownerShape}` : '';
+      e.root.visible = true;
+      const h = Math.max(R * 0.9, stillHeight(e.def, HEX_W));
+      // Lit sites (beacons, event shrines, relics, portals) glow.
+      if (v.lit && !e.glow) {
+        const g = new Graphics();
+        for (let i = 0; i < 5; i++) g.circle(0, 0, R * (0.55 - i * 0.09)).fill({ color: 0xffc56a, alpha: 0.08 });
+        g.position.set(0, -h * 0.55);
+        g.blendMode = 'add';
+        e.root.addChild(g);
+        e.glow = g;
+      }
+      if (e.glow) e.glow.visible = v.lit;
+      // A closed gate shows a barrier in its key colour (or neutral iron).
+      const closed = (v.archetype === 'gate' || v.archetype === 'key_gate') && !v.open;
+      if (closed && !e.seal) {
+        const g = new Graphics();
+        const w = HEX_W * 0.62;
+        g.roundRect(-w / 2, -R * 0.62, w, R * 0.5, 4).fill({ color: colorOf(v.tint, 0x8c3b2a), alpha: 0.78 }).stroke({ width: 2, color: 0x1a1208, alpha: 0.7 });
+        for (let i = 1; i < 5; i++) g.moveTo(-w / 2 + (w * i) / 5, -R * 0.62).lineTo(-w / 2 + (w * i) / 5, -R * 0.12).stroke({ width: 1.5, color: 0x1a1208, alpha: 0.6 });
+        e.root.addChild(g);
+        e.seal = g;
+      }
+      if (e.seal) e.seal.visible = closed;
+      // Ownership banner (towns, mines) or the key colour of key tents and gates.
+      const bk = v.ownerColor ? `${v.ownerColor}|${v.ownerShape}` : v.tint ? `tint|${v.tint}` : '';
       if (bk !== e.bannerKey) {
-        e.banner?.dispose(false, false);
-        e.banner = v.ownerColor ? buildBanner(this.scene, this.mats, e.proxy.flagPole, v.ownerColor, v.ownerShape) : null;
+        e.banner?.destroy();
+        e.banner = v.ownerColor ? this.banner(v.ownerColor, v.ownerShape, h * 0.9) : v.tint ? this.banner(v.tint, 'pennant', h * 0.8) : null;
+        if (e.banner) {
+          e.banner.position.set(-HEX_W * 0.36, 0);
+          e.root.addChild(e.banner);
+        }
         e.bannerKey = bk;
       }
-      const gk = v.guardBody ? `${v.guardBody}|${v.guardUpgraded}` : '';
+      // The strongest guard stands beside the location, facing the visitor.
+      const gk = v.guard ?? '';
       if (gk !== e.guardKey) {
-        if (e.guard) disposeProxy(e.guard);
+        e.guard?.destroy();
         e.guard = null;
-        if (v.guardBody) {
-          const g = buildCreatureProxy(this.scene, this.mats, v.guardBody, v.guardUpgraded, '#7a2f2a', `guard-${v.id}`);
-          g.root.parent = e.proxy.root;
-          g.root.position.set(0.55, 0, -0.45);
-          g.root.rotation.y = Math.PI * 0.8;
-          g.root.scaling.setAll(0.75);
-          e.guard = g;
+        if (v.guard) {
+          const f = new SpriteFigure({ set: creatureSprites(v.guard), hexWidth: HEX_W, size: 0.62, accent: 0x7a2f2a });
+          f.view.position.set(HEX_W * 0.34, R * S * 0.1);
+          f.mirror = true;
+          e.root.addChild(f.view);
+          e.guard = f;
         }
         e.guardKey = gk;
       }
@@ -776,16 +640,21 @@ export class AdventureSceneController implements SceneController {
   }
 
   private placeHero(e: HeroEntry, c: HexCoord): void {
-    const w = axialWorld(c, R);
-    const off = e.inTown ? 0.42 : 0;
-    e.root.position.set(w.x + off, this.heightAt(c), w.z - off * 0.6);
+    const { x, y } = this.hexCenter(c);
+    const off = e.inTown ? R * 0.42 : 0;
+    e.root.position.set(x + off, y + R * S * 0.3 + off * 0.3);
+    e.root.zIndex = e.root.y + 1;
   }
 
   private disposeHero(e: HeroEntry): void {
-    if (e.proxy) disposeProxy(e.proxy);
-    e.rig?.dispose();
-    e.marks?.dispose(false, false);
-    e.root.dispose(false, false);
+    e.cancel?.();
+    e.figure.destroy();
+    e.root.destroy({ children: true });
+  }
+
+  private setClip(e: HeroEntry, clip: HeroEntry['clip']): void {
+    e.clip = clip;
+    e.figure.setLoop(clip === 'walk' ? (e.monster ? 'move' : 'walk') : 'idle');
   }
 
   private syncHeroes(views: readonly AdventureHeroView[]): void {
@@ -794,41 +663,53 @@ export class AdventureSceneController implements SceneController {
     for (const v of views) {
       seen.add(v.id);
       let e = this.heroes.get(v.id);
-      const pantheonId = v.monsterBody ? null : (v.pantheonId ?? null);
-      const look = v.monsterBody ? `monster|${v.monsterBody}|${v.monsterUpgraded === true}` : `hero|${pantheonId ?? ''}|${v.color}`;
+      const pantheonId = v.monster ? null : (v.pantheonId ?? null);
+      const look = v.monster ? `monster|${v.monster}` : `hero|${pantheonId ?? ''}|${v.color}`;
       if (!e || e.look !== look) {
         const old = e;
-        const root = new TransformNode(`hero-entity-${v.id}`, this.scene);
-        let proxy: CreatureProxy;
-        if (v.monsterBody) {
-          proxy = buildCreatureProxy(this.scene, this.mats, v.monsterBody, v.monsterUpgraded === true, v.color, `monster-${v.id}`);
-          proxy.root.scaling.setAll(0.85);
-        } else proxy = buildHeroProxy(this.scene, this.mats, v.color, `hero-${v.id}`);
-        proxy.root.parent = root;
+        const root = new Container();
+        const monster = !!v.monster;
+        const figure = monster
+          ? new SpriteFigure({ set: creatureSprites(v.monster!), hexWidth: HEX_W, size: 0.8, accent: colorOf(v.color) })
+          : new SpriteFigure({ set: heroSprites(pantheonId), hexWidth: HEX_W, accent: colorOf(v.color) });
+        let marks: Container | null = null;
+        if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.34, HEX_W * 0.12));
+        if (!monster) {
+          // Faction ownership stays visible on the avatar: a base disc and the owner's banner behind the rider.
+          marks = new Container();
+          marks.addChild(new Graphics().ellipse(0, 0, HEX_W * 0.36, HEX_W * 0.36 * S * 0.5).fill({ color: colorOf(v.color), alpha: 0.5 }).stroke({ width: 1.5, color: colorOf(v.color), alpha: 0.9 }));
+          const flag = this.banner(v.color, 'square', R * 1.75);
+          flag.position.set(-HEX_W * 0.3, -2);
+          marks.addChild(flag);
+          root.addChild(marks);
+        }
+        root.addChild(figure.view);
         e = {
           root,
-          proxy,
-          rig: null,
-          marks: null,
+          figure,
+          marks,
           color: v.color,
           look,
           pantheonId,
-          modelState: 'none',
-          modelReason: null,
+          monster,
           coord: v.coord,
           prevCoord: old?.prevCoord ?? v.coord,
           locked: 0,
           snapIn: 0,
           inTown: v.inTown,
+          clip: 'idle',
+          prepares: 0,
+          cancel: null,
         };
         if (old) {
           root.position.copyFrom(old.root.position);
-          root.rotation.y = old.root.rotation.y;
+          figure.mirror = old.figure.mirror;
           this.disposeHero(old);
         }
+        this.objects.addChild(root);
         this.heroes.set(v.id, e);
         this.placeHero(e, v.coord);
-        if (!v.monsterBody) this.loadHeroModel(v.id, e);
+        this.setClip(e, 'idle');
       }
       e.inTown = v.inTown;
       if (e.coord.q !== v.coord.q || e.coord.r !== v.coord.r) {
@@ -839,7 +720,7 @@ export class AdventureSceneController implements SceneController {
       } else if (e.locked === 0 && e.snapIn === 0) {
         this.placeHero(e, v.coord);
       }
-      e.root.setEnabled(v.shown);
+      e.root.visible = v.shown;
       if (v.selected) this.selectedHero = v.id;
     }
     for (const [id, e] of this.heroes) {
@@ -850,56 +731,16 @@ export class AdventureSceneController implements SceneController {
     }
   }
 
-  /** Swap the placeholder rider for the pantheon's mounted hero model once it has loaded. */
-  private loadHeroModel(heroId: string, e: HeroEntry): void {
-    const entry = heroModelFor(e.pantheonId);
-    if (!entry) return;
-    e.modelState = 'loading';
-    if (!this.modelLoadsOpen) {
-      this.pendingModelLoads.push(() => {
-        if (this.heroes.get(heroId) === e) this.loadHeroModel(heroId, e);
-      });
-      return;
-    }
-    void this.heroModels.instantiate(entry).then((res) => {
-      const live = this.heroes.get(heroId);
-      if (this.disposed || live !== e) {
-        if (res.ok) res.rig.dispose();
-        return;
-      }
-      if (!res.ok) {
-        e.modelState = 'failed';
-        e.modelReason = res.reason;
-        return;
-      }
-      const rig = res.rig;
-      rig.root.parent = e.root;
-      e.rig = rig;
-      e.modelState = 'ready';
-      if (e.proxy) disposeProxy(e.proxy);
-      e.proxy = null;
-      // Faction ownership stays visible on the model: owner banner behind the rider and a base disc.
-      const marks = new TransformNode(`hero-marks-${heroId}`, this.scene);
-      marks.parent = e.root;
-      const banner = buildBanner(this.scene, this.mats, marks, e.color, 'square');
-      banner.position.set(-0.5, 0.42, 0.3);
-      const disc = MeshBuilder.CreateDisc(`hero-base-${heroId}`, { radius: 0.56, tessellation: 28 }, this.scene);
-      disc.parent = marks;
-      disc.rotation.x = Math.PI / 2;
-      disc.position.y = 0.025;
-      disc.material = this.mats.get(e.color, { alpha: 0.55, emissive: 0.35 });
-      disc.isPickable = false;
-      e.marks = marks;
-      if (e.locked > 0) rig.setMoving(this.lastWalkSpeed);
-    });
+  /** Face the avatar toward a screen vector (8 directions; mirrored when only the side view exists). */
+  private faceToward(e: HeroEntry, dx: number, dy: number): void {
+    if (Math.hypot(dx, dy) < 1e-3) return;
+    e.figure.face(directionOf(dx, dy));
   }
-
-  private lastWalkSpeed = 0;
 
   /**
    * Movement playback for a committed HeroMoved event (never changes state). The
-   * entity moves through the world; a mounted model plays Walk in place at the
-   * matching rate, faces each step, and returns to Idle_Standing when it stops.
+   * avatar walks hex to hex facing its direction (walk strip, or a light step bob
+   * while only a still exists) and returns to idle when it stops.
    */
   async playHeroMove(heroId: string, path: readonly HexCoord[], speed: number, follow: boolean, teleportTo?: HexCoord): Promise<void> {
     const e = this.heroes.get(heroId);
@@ -914,48 +755,48 @@ export class AdventureSceneController implements SceneController {
     try {
       let from = start;
       this.placeHero(e, from);
+      if (speed > 0) this.setClip(e, 'walk');
+      const bob = e.figure.resolve(e.monster ? 'move' : 'walk')?.fallback !== false;
       for (const step of path) {
-        const a = axialWorld(from, R);
-        const b = axialWorld(step, R);
-        const ha = this.heightAt(from);
-        const hb = this.heightAt(step);
-        e.root.rotation.y = Math.atan2(-(b.z - a.z), b.x - a.x);
-        const ms = STEP_MS * speed;
-        if (e.rig && ms > 0) {
-          this.lastWalkSpeed = Math.hypot(b.x - a.x, b.z - a.z) / (ms / 1000);
-          e.rig.setMoving(this.lastWalkSpeed);
-        }
-        // The placeholder rider hops; the mounted model walks (no hop).
-        const hop = e.rig ? 0 : 0.08;
+        const a = this.hexCenter(from);
+        const b = this.hexCenter(step);
+        this.faceToward(e, b.x - a.x, b.y - a.y);
+        const base = { x: e.root.x, y: e.root.y };
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
         await this.tweens.tween(
           STEP_MS,
           (t) => {
-            e.root.position.set(a.x + (b.x - a.x) * t, ha + (hb - ha) * t + Math.sin(t * Math.PI) * hop, a.z + (b.z - a.z) * t);
-            if (follow) this.camGoal = new Vector3(e.root.position.x, 0, e.root.position.z);
+            e.root.position.set(base.x + dx * t, base.y + dy * t);
+            e.root.zIndex = e.root.y + 1;
+            if (bob) e.figure.pose.y = -Math.abs(Math.sin(t * Math.PI)) * R * 0.1;
+            if (follow) this.camGoal = { x: e.root.x, y: e.root.y };
           },
           linear,
         );
         from = step;
       }
+      e.figure.pose.y = 0;
       if (teleportTo) await this.playTeleport(e, teleportTo, speed, follow);
     } finally {
       e.locked -= 1;
       if (e.locked === 0) {
         this.placeHero(e, e.coord);
-        e.rig?.setMoving(0);
+        if (e.clip === 'walk') this.setClip(e, 'idle');
+        e.figure.pose.y = 0;
       }
     }
   }
 
-  /** A hero steps into a portal (or is recalled): it sinks out of sight and rises at `to`. */
-  async playTeleport(e: HeroEntry, to: HexCoord, speed: number, follow: boolean): Promise<void> {
+  /** A hero steps into a portal (or is recalled): it shrinks out of sight and grows back at `to`. */
+  private async playTeleport(e: HeroEntry, to: HexCoord, speed: number, follow: boolean): Promise<void> {
     const ms = STEP_MS * 1.5;
-    e.rig?.setMoving(0);
-    if (speed > 0) await this.tweens.tween(ms, (t) => e.root.scaling.setAll(1 - 0.85 * t), linear);
+    this.setClip(e, 'idle');
+    if (speed > 0) await this.tweens.tween(ms, (t) => e.root.scale.set(1 - 0.85 * t), linear);
     this.placeHero(e, to);
     if (follow) this.focus(to, speed > 0);
-    if (speed > 0) await this.tweens.tween(ms, (t) => e.root.scaling.setAll(0.15 + 0.85 * t), linear);
-    e.root.scaling.setAll(1);
+    if (speed > 0) await this.tweens.tween(ms, (t) => e.root.scale.set(0.15 + 0.85 * t), linear);
+    e.root.scale.set(1);
   }
 
   /** Playback for a teleport that had no walk before it (the Recall spell). */
@@ -973,186 +814,231 @@ export class AdventureSceneController implements SceneController {
   }
 
   /**
-   * Readiness before a battle: stop map movement, face the opponent and play
-   * Prepare_War once. Resolves 'finished' from the clip's own animation-finished
-   * event (exactly once) — the caller starts the battle transition then — or
-   * 'cancelled' when the encounter is abandoned first (cancelPreparations or
-   * `stillValid()` false at completion), after which the hero blends back to idle.
-   * 'skipped' when there is no mounted model to animate (placeholder, monster,
-   * hidden) or playback is instant.
+   * Readiness before a battle: stop on the approach tile, face the opponent and
+   * play a short readiness beat (the rider rises and the banner flashes) once.
+   * Resolves 'finished' when it ends — the caller opens the battle then — or
+   * 'cancelled' when the encounter is abandoned first (cancelPreparations, or
+   * `stillValid()` false at completion). 'skipped' for monsters, hidden heroes
+   * and instant playback.
    */
   async prepareForBattle(heroId: string, opponent: HexCoord, speed: number, stillValid: () => boolean = () => true): Promise<PrepareOutcome | 'skipped'> {
     const e = this.heroes.get(heroId);
-    if (!e || this.disposed) return 'skipped';
-    if (!e.rig && e.modelState === 'loading') {
-      // The model may still be arriving (first sight of this hero): give it a moment.
-      for (let i = 0; i < 40 && !e.rig && e.modelState === 'loading' && !this.disposed; i++) await new Promise((r) => setTimeout(r, 50));
-    }
-    const rig = e.rig;
-    if (!rig || !e.root.isEnabled() || speed <= 0) return 'skipped';
-    // Stop on the approach tile, then face the opponent.
+    if (!e || this.disposed || e.monster || !e.root.visible || speed <= 0) return 'skipped';
+    if (e.figure.status === 'loading') await Promise.race([e.figure.loaded, new Promise((r) => setTimeout(r, 2000))]);
     if (e.locked === 0) this.placeHero(e, e.coord);
-    const a = e.root.position;
-    const b = axialWorld(opponent, R);
-    if (Math.hypot(b.x - a.x, b.z - a.z) > 1e-3) e.root.rotation.y = Math.atan2(-(b.z - a.z), b.x - a.x);
-    rig.setMoving(0);
-    // A defending mounted hero turns to meet the attacker (no gesture of its own).
+    const b = this.hexCenter(opponent);
+    this.faceToward(e, b.x - e.root.x, b.y - e.root.y);
+    // A defending hero turns to meet the attacker.
     for (const [id, other] of this.heroes) {
-      if (id === heroId || other.coord.q !== opponent.q || other.coord.r !== opponent.r || !other.rig) continue;
-      other.root.rotation.y = Math.atan2(-(a.z - other.root.position.z), a.x - other.root.position.x);
+      if (id === heroId || other.coord.q !== opponent.q || other.coord.r !== opponent.r) continue;
+      this.faceToward(other, e.root.x - other.root.x, e.root.y - other.root.y);
     }
-    const outcome = await rig.prepareWar(1 / speed);
-    if (outcome === 'finished' && (this.disposed || !stillValid())) {
-      // The encounter went away while the gesture played: ignore its completion.
-      rig.cancelPrepare();
-      return 'cancelled';
-    }
+    e.prepares += 1;
+    e.clip = 'prepare';
+    const ms = 1200 * speed;
+    const outcome = await new Promise<PrepareOutcome>((resolve) => {
+      let done = false;
+      const finish = (o: PrepareOutcome) => {
+        if (done) return;
+        done = true;
+        e.cancel = null;
+        e.figure.rest();
+        e.marks?.scale.set(1);
+        if (e.clip === 'prepare') this.setClip(e, 'idle');
+        resolve(o);
+      };
+      e.cancel = () => finish('cancelled');
+      const tw = new TweenPlayer();
+      this.extraTweens.push(tw);
+      void tw
+        .tween(ms, (t) => {
+          const k = Math.sin(t * Math.PI);
+          e.figure.pose.y = -k * R * 0.22;
+          e.figure.pose.scale.y = 1 + k * 0.06;
+          e.marks?.scale.set(1 + k * 0.12);
+        })
+        .then(() => {
+          this.extraTweens = this.extraTweens.filter((x) => x !== tw);
+          finish('finished');
+        });
+    });
+    if (outcome === 'finished' && (this.disposed || !stillValid())) return 'cancelled';
     return outcome;
   }
 
-  /** Abandon every pending Prepare_War (encounter cancelled): completions are ignored, heroes return to idle. */
+  /** Abandon every pending readiness beat (encounter cancelled): heroes return to idle. */
   cancelPreparations(): void {
-    for (const e of this.heroes.values()) e.rig?.cancelPrepare();
+    for (const e of this.heroes.values()) e.cancel?.();
   }
 
-  /** Read-only animation state of every mounted hero (tests and diagnostics). */
-  heroAnimationDebug(): Record<string, (MountedHeroDebug & { model: 'ready'; yaw: number }) | { model: 'none' | 'loading' | 'failed'; reason: string | null }> {
-    const out: Record<string, (MountedHeroDebug & { model: 'ready'; yaw: number }) | { model: 'none' | 'loading' | 'failed'; reason: string | null }> = {};
+  /** Read-only avatar state of every hero (tests and diagnostics). */
+  heroAnimationDebug(): Record<string, HeroAnimationDebug> {
+    const out: Record<string, HeroAnimationDebug> = {};
     for (const [id, e] of this.heroes) {
-      out[id] = e.rig ? { model: 'ready', yaw: Math.round(e.root.rotation.y * 1000) / 1000, ...e.rig.debug() } : { model: e.modelState === 'ready' ? 'none' : e.modelState, reason: e.modelReason };
+      const cur = e.figure.current;
+      out[id] = {
+        sprite: e.figure.status,
+        status: e.figure.set?.status ?? null,
+        clip: e.clip,
+        drawn: cur?.drawn ?? null,
+        facing: e.figure.facing,
+        mirrored: e.figure.pose.scale.x < 0,
+        prepareCount: e.prepares,
+      };
     }
     return out;
   }
 
-  /** Read-only camera pose (tests: the angle must never change while panning). */
-  cameraPose(): { alpha: number; beta: number; radius: number; target: { x: number; y: number; z: number } } {
-    const c = this.camera;
-    return { alpha: c.alpha, beta: c.beta, radius: c.radius, target: { x: c.target.x, y: c.target.y, z: c.target.z } };
+  /** Read-only camera state (tests): the view centre in map pixels and the zoom. */
+  cameraPose(): { x: number; y: number; zoom: number } {
+    return { x: Math.round(this.cam.x * 100) / 100, y: Math.round(this.cam.y * 100) / 100, zoom: Math.round(this.cam.zoom * 1000) / 1000 };
   }
 
   /**
-   * The ground the camera shows: the four corners of the view on the map plane,
-   * as fractional axial coordinates (top-left, top-right, bottom-right,
-   * bottom-left), for the minimap's frame. Null when a corner sees no ground.
+   * The ground the view shows: its four corners as fractional axial
+   * coordinates (top-left, top-right, bottom-right, bottom-left), for the
+   * minimap's frame.
    */
   viewFootprint(): { q: number; r: number }[] | null {
-    const engine = this.scene.getEngine();
-    const k = engine.getHardwareScalingLevel();
-    const w = engine.getRenderWidth() * k;
-    const h = engine.getRenderHeight() * k;
-    const out: { q: number; r: number }[] = [];
-    for (const [x, y] of [[0, 0], [w, 0], [w, h], [0, h]] as const) {
-      const g = pickGround(this.scene, this.camera, x, y, 0);
-      if (!g) return null;
-      const rf = -g.z / (1.5 * R);
-      out.push({ q: g.x / (Math.sqrt(3) * R) - rf / 2, r: rf });
-    }
-    return out;
+    if (!this.map) return null;
+    const { width: w, height: h } = this.view;
+    return [
+      [0, 0],
+      [w, 0],
+      [w, h],
+      [0, h],
+    ].map(([x, y]) => {
+      const p = this.toWorld(x!, y!);
+      return pointAxialFraction(p.x, p.y, R, S);
+    });
   }
 
   // ------------------------------------------------------------------ camera
 
-  focus(c: HexCoord, animate = true): void {
-    const w = axialWorld(c, R);
-    const goal = new Vector3(w.x, 0, w.z - 1.2);
-    if (animate) this.camGoal = goal;
-    else this.camera.target = goal;
+  private applyCamera(): void {
+    const { width, height } = this.view;
+    const z = this.cam.zoom;
+    this.world.scale.set(z);
+    this.world.position.set(Math.round(width / 2 - this.cam.x * z), Math.round(height / 2 - this.cam.y * z));
   }
 
-  /**
-   * Pan relative to the screen: +dx = right, +dz = toward the top of the screen,
-   * projected onto the map plane. Only the target moves (the camera follows at the
-   * same yaw, pitch and distance), so the viewing angle is preserved.
-   */
-  pan(dx: number, dz: number): void {
-    const c = this.camera;
-    const fwd = c.target.subtract(c.position);
-    fwd.y = 0;
-    if (fwd.lengthSquared() < 1e-9) return;
-    fwd.normalize();
-    // Left-handed scene: screen-right = up × forward.
-    const right = Vector3.Cross(Vector3.Up(), fwd).normalize();
-    const t = c.target.add(right.scale(dx)).add(fwd.scale(dz));
-    t.y = 0;
-    this.camera.target = this.clampTarget(t);
-    this.camGoal = null;
+  private toWorld(x: number, y: number): { x: number; y: number } {
+    const z = this.cam.zoom;
+    return { x: (x - this.world.x) / z, y: (y - this.world.y) / z };
   }
 
-  zoom(delta: number): void {
-    const c = this.camera;
-    c.radius = Math.max(c.lowerRadiusLimit ?? 8, Math.min(c.upperRadiusLimit ?? 36, c.radius + delta));
-  }
-
-  private clampTarget(t: Vector3): Vector3 {
+  private clampCam(): void {
     const map = this.map;
-    if (!map) return t;
-    const a = axialWorld({ q: 0, r: 0 }, R);
-    const b = axialWorld({ q: map.width - 1, r: map.height - 1 }, R);
-    const minX = Math.min(a.x, b.x, axialWorld({ q: 0, r: map.height - 1 }, R).x) - 2;
-    const maxX = Math.max(a.x, b.x, axialWorld({ q: map.width - 1, r: 0 }, R).x) + 2;
-    t.x = Math.max(minX, Math.min(maxX, t.x));
-    t.z = Math.max(b.z - 4, Math.min(a.z + 2, t.z));
-    return t;
+    if (!map) return;
+    const b = this.mapBounds(map);
+    this.cam.x = Math.max(b.minX - 2 * R, Math.min(b.maxX + 2 * R, this.cam.x));
+    this.cam.y = Math.max(b.minY - SKY_GAP - 2 * R, Math.min(b.maxY + 2 * R, this.cam.y));
+  }
+
+  focus(c: HexCoord, animate = true): void {
+    const p = this.hexCenter(c);
+    if (animate) this.camGoal = { x: p.x, y: p.y };
+    else {
+      this.cam.x = p.x;
+      this.cam.y = p.y;
+      this.camGoal = null;
+      this.clampCam();
+      this.applyCamera();
+    }
+  }
+
+  /** Pan relative to the screen: +dx = right, +dz = toward the top of the screen (hex radii). */
+  pan(dx: number, dz: number): void {
+    this.cam.x += (dx * R * 1.6) / Math.max(0.5, this.cam.zoom);
+    this.cam.y -= (dz * R * 1.6) / Math.max(0.5, this.cam.zoom);
+    this.camGoal = null;
+    this.clampCam();
+    this.applyCamera();
+  }
+
+  /** Zoom by steps (negative = closer), as the keyboard shortcuts send them. */
+  zoom(delta: number): void {
+    this.cam.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, this.cam.zoom * Math.exp(-delta * 0.08)));
+    this.clampCam();
+    this.applyCamera();
   }
 
   // ------------------------------------------------------------------ input
 
-  private hexOutline(name: string, hex: string): LinesMesh {
-    const pts: Vector3[] = [];
-    for (let k = 0; k <= 6; k++) {
-      const c = hexCorner(k % 6, R * 0.97);
-      pts.push(new Vector3(c.x, 0, c.z));
-    }
-    const l = MeshBuilder.CreateLines(name, { points: pts }, this.scene);
-    l.color = Color3.FromHexString(hex);
-    l.isPickable = false;
-    return l;
+  private local(e: { clientX: number; clientY: number }): { x: number; y: number } {
+    const r = this.canvas.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
   }
 
-  private tileAtPointer(x: number, y: number): HexCoord | null {
-    const p = pickGround(this.scene, this.camera, x, y, 0);
-    if (!p || !this.map) return null;
-    const c = worldAxial(p.x, p.z, R);
+  private tileAt(x: number, y: number): HexCoord | null {
+    if (!this.map) return null;
+    const p = this.toWorld(x, y);
+    const c = pointAxial(p.x, p.y, R, S);
     if (c.q < 0 || c.r < 0 || c.q >= this.map.width || c.r >= this.map.height) return null;
     return c;
   }
 
-  private onPointer(p: PointerInfo): void {
-    const ev = p.event as PointerEvent;
-    const x = this.scene.pointerX;
-    const y = this.scene.pointerY;
-    if (p.type === PointerEventTypes.POINTERDOWN) {
-      this.down = { x, y, button: ev.button, ground: pickGround(this.scene, this.camera, x, y, 0), dragging: false };
-    } else if (p.type === PointerEventTypes.POINTERMOVE) {
-      const d = this.down;
-      if (d && (d.button === 0 || d.button === 1) && (d.dragging || Math.hypot(x - d.x, y - d.y) > 7)) {
-        if (!d.dragging) this.cb.onDrag?.(true);
-        d.dragging = true;
-        const g = pickGround(this.scene, this.camera, x, y, 0);
-        if (g && d.ground) {
-          const t = this.camera.target.clone();
-          t.x -= g.x - d.ground.x;
-          t.z -= g.z - d.ground.z;
-          this.camera.target = this.clampTarget(t);
-          this.camGoal = null;
-        }
-        return;
-      }
-      const c = this.tileAtPointer(x, y);
-      const key = c ? `${c.q},${c.r}` : '';
-      if (key !== this.lastHover) {
-        this.lastHover = key;
-        this.setHover(c);
-        this.cb.onTileHover(c && this.isExplored(c) ? c : null);
-      }
-    } else if (p.type === PointerEventTypes.POINTERUP) {
-      const d = this.down;
-      this.down = null;
-      if (d?.dragging) this.cb.onDrag?.(false);
-      if (!d || d.dragging) return;
-      const c = this.tileAtPointer(x, y);
-      if (c && this.isExplored(c)) this.cb.onTileClick(c, d.button);
+  private onDown(e: PointerEvent): void {
+    const p = this.local(e);
+    this.down = { x: p.x, y: p.y, button: e.button, tx: this.cam.x, ty: this.cam.y, dragging: false };
+  }
+
+  private onMove(e: PointerEvent): void {
+    const p = this.local(e);
+    const d = this.down;
+    if (d && (d.button === 0 || d.button === 1) && (e.buttons & 5) !== 0 && (d.dragging || Math.hypot(p.x - d.x, p.y - d.y) > 7)) {
+      if (!d.dragging) this.cb.onDrag?.(true);
+      d.dragging = true;
+      this.cam.x = d.tx - (p.x - d.x) / this.cam.zoom;
+      this.cam.y = d.ty - (p.y - d.y) / this.cam.zoom;
+      this.camGoal = null;
+      this.clampCam();
+      this.applyCamera();
+      return;
     }
+    const c = this.tileAt(p.x, p.y);
+    const key = c ? `${c.q},${c.r}` : '';
+    if (key !== this.lastHover) {
+      this.lastHover = key;
+      this.setHover(c);
+      this.cb.onTileHover(c && this.isExplored(c) ? c : null);
+    }
+  }
+
+  private onUp(e: PointerEvent): void {
+    const d = this.down;
+    this.down = null;
+    if (d?.dragging) this.cb.onDrag?.(false);
+    if (!d || d.dragging) return;
+    const p = this.local(e);
+    const c = this.tileAt(p.x, p.y);
+    if (c && this.isExplored(c)) this.cb.onTileClick(c, d.button);
+  }
+
+  private onLeave(): void {
+    if (this.down?.dragging) this.cb.onDrag?.(false);
+    this.down = null;
+    if (this.lastHover !== '') {
+      this.lastHover = '';
+      this.setHover(null);
+      this.cb.onTileHover(null);
+    }
+  }
+
+  private onWheel(e: WheelEvent): void {
+    e.preventDefault();
+    const p = this.local(e);
+    const before = this.toWorld(p.x, p.y);
+    const k = Math.exp(-Math.max(-120, Math.min(120, e.deltaY)) * 0.0016);
+    this.cam.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, this.cam.zoom * k));
+    // Keep the point under the pointer in place.
+    this.applyCamera();
+    const after = this.toWorld(p.x, p.y);
+    this.cam.x += before.x - after.x;
+    this.cam.y += before.y - after.y;
+    this.camGoal = null;
+    this.clampCam();
+    this.applyCamera();
   }
 
   private isExplored(c: HexCoord): boolean {
@@ -1161,52 +1047,65 @@ export class AdventureSceneController implements SceneController {
   }
 
   private setHover(c: HexCoord | null): void {
+    this.hoverHex = c;
+    const g = this.hover;
+    g.clear();
     if (!c || !this.isExplored(c) || this.gridMode === 'off') {
-      this.hover.isVisible = false;
+      g.visible = false;
       return;
     }
-    const w = axialWorld(c, R);
-    this.hover.position.set(w.x, this.heightAt(c) + 0.03, w.z);
-    this.hover.isVisible = true;
+    const { x, y } = this.hexCenter(c);
+    g.poly(hexPolygon(x, y, R * 0.97, S)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
+    g.visible = true;
   }
 
-  /** Screen position (CSS pixels within the canvas) of a hex center — read-only, for tests and UI anchoring. */
+  /** Screen position (CSS pixels within the canvas) of a hex centre — read-only, for tests and UI anchoring. */
   projectHex(c: HexCoord): { x: number; y: number } | null {
-    const w = axialWorld(c, R);
-    return projectPoint(this.scene, this.camera, new Vector3(w.x, this.heightAt(c), w.z));
+    const p = this.hexCenter(c);
+    const z = this.cam.zoom;
+    return { x: p.x * z + this.world.x, y: p.y * z + this.world.y };
   }
 
   // ------------------------------------------------------------------ frame
 
+  private extraTweens: TweenPlayer[] = [];
+
   tick(dt: number): void {
     this.time += dt;
     this.tweens.tick(dt);
+    for (const tw of this.extraTweens) tw.tick(dt);
     if (this.camGoal) {
-      const t = this.camera.target;
       const k = Math.min(1, dt / 160);
-      const next = new Vector3(t.x + (this.camGoal.x - t.x) * k, 0, t.z + (this.camGoal.z - t.z) * k);
-      this.camera.target = this.clampTarget(next);
-      if (Vector3.Distance(next, this.camGoal) < 0.02) this.camGoal = null;
+      this.cam.x += (this.camGoal.x - this.cam.x) * k;
+      this.cam.y += (this.camGoal.y - this.cam.y) * k;
+      if (Math.hypot(this.camGoal.x - this.cam.x, this.camGoal.y - this.cam.y) < 0.5) this.camGoal = null;
+      this.clampCam();
+      this.applyCamera();
     }
+    const motion = graphicsProfile().ambientMotion;
     for (const e of this.heroes.values()) {
       if (e.snapIn > 0 && e.locked === 0) {
         e.snapIn -= 1;
         if (e.snapIn === 0) this.placeHero(e, e.coord);
       }
-      e.rig?.update(dt);
+      if (motion || e.clip === 'walk') e.figure.tick(dt);
     }
+    if (motion) for (const s of this.sites.values()) s.guard?.tick(dt);
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;
-    if (sel && sel.root.isEnabled()) {
-      const p = sel.root.position;
-      this.selectRing.position.set(p.x, p.y + 0.05, p.z);
-      this.selectRing.rotation.y = this.time / 900;
-      this.selectRing.isVisible = true;
-    } else this.selectRing.isVisible = false;
-    const motion = graphicsProfile().ambientMotion;
-    for (const s of this.sites.values()) {
-      if (motion && s.proxy.flame && s.proxy.flame.isVisible) {
-        const k = 1 + Math.sin(this.time / 120) * 0.08;
-        s.proxy.flame.scaling.set(k, 1 + Math.sin(this.time / 90) * 0.12, k);
+    const ring = this.selectRing;
+    if (sel && sel.root.visible) {
+      ring.clear();
+      const pulse = 1 + Math.sin(this.time / 260) * 0.04;
+      ring.ellipse(0, 0, HEX_W * 0.44 * pulse, HEX_W * 0.44 * pulse * S * 0.5).stroke({ width: 3, color: colorOf(SELECT_RING), alpha: 0.95 });
+      ring.position.set(sel.root.x, sel.root.y);
+      ring.visible = true;
+    } else ring.visible = false;
+    if (motion) {
+      for (const s of this.sites.values()) {
+        if (s.glow && s.glow.visible) {
+          const k = 1 + Math.sin(this.time / 120) * 0.08;
+          s.glow.scale.set(k, 1 + Math.sin(this.time / 90) * 0.1);
+        }
       }
     }
   }
@@ -1217,14 +1116,18 @@ export class AdventureSceneController implements SceneController {
 
   dispose(): void {
     this.disposed = true;
-    // Leaving the map abandons any pending readiness gesture (its completion is ignored).
+    // Leaving the map abandons any pending readiness beat (its completion is ignored).
     this.cancelPreparations();
     this.tweens.flush();
-    if (this.pointerObs) this.scene.onPointerObservable.remove(this.pointerObs);
-    for (const e of this.heroes.values()) this.disposeHero(e);
+    for (const tw of this.extraTweens) tw.flush();
+    for (const [type, fn] of this.listeners) this.canvas.removeEventListener(type, fn);
+    for (const e of this.heroes.values()) e.figure.destroy();
+    for (const s of this.sites.values()) s.guard?.destroy();
     this.heroes.clear();
-    this.heroModels.dispose();
-    this.mats.dispose();
-    this.scene.dispose();
+    this.sites.clear();
+    this.root.destroy({ children: true });
   }
 }
+
+/** URL helper re-exported for the interface (asset-status readouts). */
+export { spriteUrl };

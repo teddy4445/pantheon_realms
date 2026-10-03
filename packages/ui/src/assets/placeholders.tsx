@@ -140,6 +140,9 @@ const SILHOUETTES: Record<BodyProfile, (up: boolean) => JSX.Element> = {
   ),
 };
 
+/** The silhouettes by body profile (also exported as SVG sources for the 2D placeholder sprites: `npm run sprites:plan`). */
+export const CREATURE_SILHOUETTES = SILHOUETTES;
+
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 
 export interface CreaturePortraitProps {

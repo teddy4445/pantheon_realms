@@ -13,7 +13,7 @@ Read [project-contract.md](references/project-contract.md), the architecture's E
 2. Keep renderer isolation, sandbox and `nodeIntegration: false`. Expose narrow typed IPC operations; validate sender, arguments and save identifiers in the main process.
 3. Confine custom-protocol asset resolution to packaged paths. Reject traversal, unexpected navigation/windows and unsolicited remote content. Do not disable web security to fix asset loading.
 4. Implement versioned save envelopes, checksums, backups, interruption recovery and import validation. Native filesystem writes are not the game's rule resolver.
-5. Vendor decoder WASM/workers, environment maps, models, audio and licensed font assets locally. Check glTF external references and dynamic loader defaults.
+5. Package sprites, atlases, backgrounds, portraits, audio and licensed font assets locally under `assets-runtime/`. Keep PixiJS on the `pixi.js/unsafe-eval` shim so the strict CSP needs no `eval`; check dynamic loader defaults and that no texture URL leaves the packaged origin.
 6. Exclude `.claude`, `.mcp.json`, `tools/pantheon-dev`, vendor tool dependencies, secrets and authoring sources from distributable game assets.
 7. Test a packaged build on identified target hardware with empty caches and networking disabled. Launch menu/settings/bestiary, complete a mission, save, close, relaunch and resume.
 

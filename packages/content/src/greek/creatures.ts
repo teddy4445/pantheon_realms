@@ -355,7 +355,7 @@ export function buildFamilies(
         presentation: {
           bodyProfile: f.body,
           portraitAssetId: `${asset}.portrait`,
-          modelAssetId: `${asset}.model`,
+          spriteAssetId: `${asset}.sprites`,
           animationProfileId: `anim.${f.body}`,
           portraitAlt: spec.portraitAlt,
         },

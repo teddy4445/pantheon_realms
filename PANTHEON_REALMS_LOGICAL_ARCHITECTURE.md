@@ -1,8 +1,9 @@
 # Pantheon Realms — Logical Architecture and Domain Model
 
 **Status:** Development reference  
+**Updated:** 2026-10-03 — presentation technology migrated to PixiJS 2D sprites (owner directive, *2D Presentation Migration Directive*); the domain model, rules and invariants are unchanged.  
 **Purpose:** Canonical guide for Claude and human developers implementing Pantheon Realms.  
-**Core principle:** The game is a **data-driven, deterministic strategy simulation**. Content definitions describe what things are; runtime state describes what is happening in a match; systems change state only through validated commands; immutable events describe committed results; React, Babylon.js, animation, VFX, and audio present those results but never define game truth.
+**Core principle:** The game is a **data-driven, deterministic strategy simulation**. Content definitions describe what things are; runtime state describes what is happening in a match; systems change state only through validated commands; immutable events describe committed results; React, PixiJS, animation, VFX, and audio present those results but never define game truth.
 
 ---
 
@@ -21,7 +22,7 @@
 11. **Each city has eighteen logical building locations:** seven creature-dwelling locations and eleven support-building locations.
 12. **A creature dwelling uses one location for both forms:** `empty -> base dwelling -> upgraded dwelling`.
 13. **God count is not tied to city-building count.** A pantheon may contain many gods; divine choices are primarily content/progression, not one temple per god.
-14. **Desktop-first and offline-capable.** TypeScript rules/AI, Babylon.js 3D presentation, React UI, Blender/glTF assets, Electron packaging, and a browser build from the same core.
+14. **Desktop-first and offline-capable, 2D presentation.** TypeScript owns authoritative rules and AI. React owns application interface screens. PixiJS owns the 2D Adventure Map, Tactical Battle presentation, sprite animation, and animated Unit Detail viewer. Electron packages the desktop application and a browser build uses the same core. Content presentation uses high-resolution 2D backgrounds, sprites, atlases, portraits, UI art and animation strips.
 
 ---
 
@@ -265,8 +266,8 @@ CreatureDefinition
 | `AbilityDefinition` | Reusable creature mechanic |
 | `StatusEffectDefinition` | Reusable status rules |
 | `StatusEffectInstance` | Runtime applied status |
-| `CreaturePresentationDefinition` | Model, portrait, icon, sound, lore references |
-| `AnimationProfileDefinition` | Clip aliases, sockets, loops, required states |
+| `CreaturePresentationDefinition` | Sprite set (`spriteAssetId`), portrait, icon, sound, lore references |
+| `AnimationProfileDefinition` | Animation names (shared vocabulary and fallbacks), loops, required states; strips, frame grids and anchors live in the sprite manifest |
 
 ### Exactly-one-upgrade invariant
 
@@ -609,7 +610,7 @@ WorldMapState
 | `Path` | Validated route |
 | `MovementQuote` | Route cost and legality |
 
-Babylon.js visual geometry is built from map data. Geometry must never silently define legal movement.
+The 2D adventure view (PixiJS layers and sprites) is drawn from map data. Sprites, sprite bounds and decoration must never silently define legal movement; picking inverts the hex transform, never sprite size.
 
 ---
 
@@ -653,7 +654,7 @@ MapGenerator
 | `VisibilityResolver` | Fog/reveal calculation |
 | `MovementCostResolver` | Terrain/road movement calculation |
 
-Map generation should run independently of Babylon scene creation.
+Map generation should run independently of building the 2D view.
 
 ---
 
@@ -1049,7 +1050,7 @@ SaveRepository
 | `SaveMigrator` | Explicit supported migrations |
 | `ReplayRecord` | Optional deterministic command/event record |
 
-Do not serialize Babylon objects, React objects, class prototypes, native handles, or incidental JS object ordering.
+Do not serialize PixiJS display objects, React objects, class prototypes, native handles, or incidental JS object ordering.
 
 ---
 
@@ -1081,6 +1082,8 @@ CreaturePresentationController
 ```
 
 These read committed state/events. They do not authoritatively mutate gameplay.
+
+In the 2D implementation (`packages/presentation`, PixiJS): the adventure map, battle and unit viewer controllers share one renderer and frame loop; the town is a React screen over a painted background with building overlays at its eighteen locations. `AssetManifest` is the sprite manifest (one horizontal strip per animation, explicit anchor, right-facing art mirrored by the renderer, `placeholder`/`final` status and provenance per entry). `CameraController` is a 2D pan/zoom camera with clamps. Screen-to-hex conversion has exactly one implementation, and picking never depends on sprite size.
 
 ---
 
@@ -1284,11 +1287,11 @@ events:
   CreatureStackCreated / CreatureStackIncreased
         ↓
 React updates displayed values
-Babylon may play presentation
+PixiJS may play presentation
 Audio may play recruitment cue
 ```
 
-React and Babylon never directly add troops or remove resources.
+React and PixiJS never directly add troops or remove resources.
 
 ---
 
@@ -1384,6 +1387,7 @@ packages/
     town/
     battle/
     units/
+    sprites/
     animation/
     vfx/
     audio/
@@ -1425,7 +1429,7 @@ Authoritative MatchState + Events
 ┌───────────────┬──────────────────┬───────────────────┐
 UI View Models   AI Observation     Presentation Events
        ↓               ↓                    ↓
-React UI         AI planners          Babylon / Audio
+React UI         AI planners          PixiJS / Audio
 ```
 
 Platform adapters sit outside the domain:
@@ -1533,7 +1537,7 @@ If those answers are unclear, the feature should not be implemented yet.
 
 ## 41. Architecture statement for `CLAUDE.md`
 
-> **Pantheon Realms is a data-driven deterministic turn-based strategy simulation. Immutable content definitions describe creatures, gods, heroes, buildings, spells, maps, quests, and campaigns. Runtime state represents one match. Authoritative state may change only through validated commands processed by the shared TypeScript rules core; committed changes emit immutable events. React, Babylon.js, animation, VFX, audio, Electron, and browser adapters present or persist game state but never define gameplay truth. Prefer composition, discriminated unions, effects, requirements, and stable IDs over deep domain inheritance. Each pantheon has exactly seven creature families, each creature family has exactly one base form and one upgraded form, and each town contains eighteen logical building locations: seven creature dwellings and eleven support structures. Human and AI players use the same rules and command path.**
+> **Pantheon Realms is a data-driven deterministic turn-based strategy simulation. Immutable content definitions describe creatures, gods, heroes, buildings, spells, maps, quests, and campaigns. Runtime state represents one match. Authoritative state may change only through validated commands processed by the shared TypeScript rules core; committed changes emit immutable events. React, PixiJS, animation, VFX, audio, Electron, and browser adapters present or persist game state but never define gameplay truth. Prefer composition, discriminated unions, effects, requirements, and stable IDs over deep domain inheritance. Each pantheon has exactly seven creature families, each creature family has exactly one base form and one upgraded form, and each town contains eighteen logical building locations: seven creature dwellings and eleven support structures. Human and AI players use the same rules and command path.**
 
 ---
 
@@ -1569,7 +1573,7 @@ If those answers are unclear, the feature should not be implemented yet.
                 │                             │
          ┌──────┼────────┐          ┌─────────┼──────────┐
          ▼      ▼        ▼          ▼         ▼          ▼
-       React   Saves    AI obs.   Babylon    Audio      VFX
+       React   Saves    AI obs.   PixiJS     Audio      VFX
         UI
 ```
 

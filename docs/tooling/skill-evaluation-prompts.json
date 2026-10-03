@@ -5,7 +5,7 @@
       "skill": "pr-project-lead",
       "should_trigger": [
         "Plan the first complete Hoplite/Veteran Hoplite implementation slice.",
-        "Review a proposal to move combat rules into Babylon animation callbacks."
+        "Review a proposal to move combat rules into PixiJS animation callbacks."
       ],
       "should_not_trigger": "Write an unrelated wedding speech."
     },
@@ -34,10 +34,10 @@
       "should_not_trigger": "Write a sourced mythology biography without AI changes."
     },
     {
-      "skill": "pr-babylon-scene",
+      "skill": "pr-pixi-scene",
       "should_trigger": [
-        "Build a reusable tactical GLB stack presenter with event-driven animation.",
-        "Create a local Babylon particle graph for beacon activation without changing quest state."
+        "Build a reusable tactical stack sprite presenter that mirrors defenders and plays strips from committed events.",
+        "Fix Adventure Map hex picking after zooming without relying on sprite bounds."
       ],
       "should_not_trigger": "Change creature recruitment prices only."
     },
@@ -68,7 +68,7 @@
     {
       "skill": "pr-electron-offline",
       "should_trigger": [
-        "Audit packaged Draco decoding for a cold offline Electron install.",
+        "Audit packaged sprite and texture loading under the strict CSP for a cold offline Electron install.",
         "Implement narrow save import IPC and reject path traversal."
       ],
       "should_not_trigger": "Enable unrestricted renderer shell execution for convenience."
@@ -77,7 +77,7 @@
       "skill": "pr-qa-release",
       "should_trigger": [
         "Create a regression checklist for all three missions and paired creatures.",
-        "Review whether a web screenshot and GLB metadata check justify an offline release claim."
+        "Review whether a web screenshot and a sprite-manifest check justify an offline release claim."
       ],
       "should_not_trigger": "Write a positive test report without running or observing any tests."
     }

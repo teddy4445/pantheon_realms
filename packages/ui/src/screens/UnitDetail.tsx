@@ -1,11 +1,14 @@
 /**
- * S18 Unit Detail / Animated Bestiary. A 3D viewer (procedural proxy today,
- * GLB-ready by modelAssetId) with the eight animation states, plus exact
- * statistics, abilities with exact rules, sourced notes and original lore.
+ * S18 Unit Detail / Animated Bestiary. A large 2D animated viewer of the
+ * creature's battle sprite set (the animations its gameplay content calls for:
+ * idle, move, attack, defend, hit, death, victory, plus shoot / takeoff-fly-
+ * landing / ability where it has them), base/upgraded switching, playback
+ * controls with a reduced-motion still, and exact statistics, abilities with
+ * exact rules, sourced notes and original lore.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ANIMATION_STATES, type AnimationState } from '@pr/presentation/core';
-import type { UnitViewerController, ViewerModelStatus } from '@pr/presentation';
+import { creatureSprites, requiredAnimations } from '@pr/presentation/core';
+import type { UnitViewerController, ViewerSpriteStatus } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle, Tabs, Toggle } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
@@ -17,15 +20,20 @@ import { AbilityBadge } from '../components/badges';
 
 type Tab = 'stats' | 'abilities' | 'lore' | 'assets';
 
-const STATE_LABEL: Record<AnimationState, string> = {
+const STATE_LABEL: Record<string, string> = {
   idle: 'Idle',
   move: 'Move',
-  melee: 'Melee',
-  ranged: 'Ranged',
+  attack: 'Attack',
+  shoot: 'Shoot',
   defend: 'Defend',
   hit: 'Hit',
-  defeat: 'Defeat',
+  death: 'Death',
   victory: 'Victory',
+  takeoff: 'Take off',
+  fly: 'Fly',
+  landing: 'Land',
+  cast: 'Cast',
+  ability: 'Ability',
 };
 
 export function UnitDetailScreen() {
@@ -34,11 +42,12 @@ export function UnitDetailScreen() {
   const initial = (store.screen.params.creatureId as string | undefined) ?? 'hoplite';
   const [creatureId, setCreatureId] = useState(initial);
   const [tab, setTab] = useState<Tab>('stats');
-  const [anim, setAnim] = useState<AnimationState>('idle');
+  const [anim, setAnim] = useState<string>('idle');
   const reduced = reducedMotion(store.prefs);
-  const [spin, setSpin] = useState(store.prefs.codexAutoplay && !reduced);
+  const [autoplay, setAutoplay] = useState(store.prefs.codexAutoplay && !reduced);
+  const [facingLeft, setFacingLeft] = useState(false);
   const [rate, setRate] = useState(1);
-  const [status, setStatus] = useState<ViewerModelStatus>({ kind: 'proxy' });
+  const [status, setStatus] = useState<ViewerSpriteStatus>({ kind: 'loading' });
   const [, bump] = useState(0);
   const ctrl = useRef<UnitViewerController | null>(null);
   const def = catalog.creatures[creatureId] ?? catalog.creatures['hoplite']!;
@@ -46,12 +55,14 @@ export function UnitDetailScreen() {
   const other = def.form === 'base' ? (def.upgradeId ? catalog.creatures[def.upgradeId] : undefined) : def.baseId ? catalog.creatures[def.baseId] : undefined;
   const lore = catalog.lore[def.loreId];
   const accent = def.pantheonId ? (catalog.pantheons[def.pantheonId]?.theme.accent ?? '#3b73d9') : '#6b5a3a';
-  const shooter = (def.stats?.shots ?? 0) > 0;
+  const states = requiredAnimations(catalog, def);
+  const set = creatureSprites(def.id);
+  const subject = (d: typeof def, a: string) => ({ key: d.id, creatureId: d.id, accent: a, footprint: d.stats?.footprint ?? 1 });
 
   useEffect(() => {
-    const c = ctrl.current;
-    if (!c) return;
-    c.setSubject({ key: def.id, creatureId: def.id, body: def.presentation.bodyProfile, upgraded: def.form === 'upgraded', accent, footprint: def.stats?.footprint ?? 1 });
+    if (!states.includes(anim as never)) setAnim('idle');
+    ctrl.current?.setSubject(subject(def, accent));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [def, accent]);
   useEffect(() => {
     if (ctrl.current) {
@@ -63,24 +74,31 @@ export function UnitDetailScreen() {
     ctrl.current?.setAnimation(anim);
   }, [anim]);
   useEffect(() => {
-    if (ctrl.current) ctrl.current.autoRotate = spin;
-  }, [spin]);
+    if (ctrl.current) {
+      ctrl.current.autoplay = autoplay;
+      ctrl.current.setAnimation(ctrl.current.animation);
+    }
+  }, [autoplay]);
+  useEffect(() => {
+    if (ctrl.current) ctrl.current.mirror = facingLeft;
+  }, [facingLeft]);
 
   const factory = useCallback<SceneFactory<UnitViewerController>>((lib, engine, canvas) => new lib.UnitViewerController(engine, canvas), []);
-  // The controller can arrive after the first render (the 3D layer loads on demand),
+  // The controller can arrive after the first render (the 2D layer loads on demand),
   // so it reads the latest settings from a ref when it does.
-  const latest = useRef({ spin, reduced, rate, def, accent, anim });
-  latest.current = { spin, reduced, rate, def, accent, anim };
+  const latest = useRef({ autoplay, reduced, rate, def, accent, anim, facingLeft });
+  latest.current = { autoplay, reduced, rate, def, accent, anim, facingLeft };
   const onController = useCallback(
     (c: UnitViewerController | null) => {
       ctrl.current = c;
       if (c) {
         const l = latest.current;
-        c.autoRotate = l.spin;
+        c.autoplay = l.autoplay;
         c.reducedMotion = l.reduced;
         c.speed = l.rate;
+        c.mirror = l.facingLeft;
         c.onStatus = setStatus;
-        c.setSubject({ key: l.def.id, creatureId: l.def.id, body: l.def.presentation.bodyProfile, upgraded: l.def.form === 'upgraded', accent: l.accent, footprint: l.def.stats?.footprint ?? 1 });
+        c.setSubject(subject(l.def, l.accent));
         c.setAnimation(l.anim);
       }
     },
@@ -88,7 +106,7 @@ export function UnitDetailScreen() {
     [],
   );
 
-  const model = resolveAsset(def.presentation.modelAssetId);
+  const own = (s: string) => !!set?.animations[s];
   return (
     <div className="screen unit-screen">
       <ScreenHeader
@@ -110,27 +128,25 @@ export function UnitDetailScreen() {
       />
       <div className="unit-layout">
         <div className="unit-viewer panel">
-          <SceneViewport factory={factory} onController={onController} className="unit-viewer__scene" label={`${def.name} 3D preview`} />
-          <span className="placeholder-tag unit-viewer__tag" data-testid="viewer-model-status">
-            {status.kind === 'model'
-              ? `GLB model · ${status.status}`
+          <SceneViewport factory={factory} onController={onController} className="unit-viewer__scene" label={`${def.name} animated preview`} />
+          <span className="placeholder-tag unit-viewer__tag" data-testid="viewer-sprite-status" data-status={status.kind === 'ready' ? status.status : status.kind}>
+            {status.kind === 'ready'
+              ? status.status === 'final'
+                ? 'Final sprites'
+                : 'Placeholder sprites'
               : status.kind === 'loading'
-                ? 'Loading model…'
-                : status.kind === 'failed'
-                  ? 'Model failed to load — placeholder shown'
-                  : model.status === 'final'
-                    ? 'Final model'
-                    : 'Procedural placeholder model'}
+                ? 'Loading sprites…'
+                : 'No sprites yet — portrait only'}
           </span>
           <div className="unit-viewer__controls">
-            <div className="anim-buttons" role="radiogroup" aria-label="Animation state">
-              {ANIMATION_STATES.map((s) => {
-                const noRanged = s === 'ranged' && !shooter;
-                const noClip = status.kind === 'model' && !status.clips.includes(s);
-                const reason = noRanged ? 'This creature has no ranged attack' : noClip ? `The model has no clip for “${STATE_LABEL[s]}”` : undefined;
+            <div className="anim-buttons" role="radiogroup" aria-label="Animation">
+              {states.map((st) => {
+                const mine = own(st);
+                const reason = mine ? undefined : `No ${STATE_LABEL[st]?.toLowerCase() ?? st} strip yet: a stand-in plays`;
                 return (
-                  <button key={s} type="button" role="radio" aria-checked={anim === s} className={`anim-btn ${anim === s ? 'is-on' : ''}`} onClick={() => setAnim(s)} disabled={noRanged || noClip} title={reason} data-testid={`anim-${s}`}>
-                    {STATE_LABEL[s]}
+                  <button key={st} type="button" role="radio" aria-checked={anim === st} className={`anim-btn ${anim === st ? 'is-on' : ''} ${mine ? '' : 'is-standin'}`} onClick={() => setAnim(st)} disabled={!set} title={reason} data-testid={`anim-${st}`} data-own={mine ? 'yes' : 'no'}>
+                    {STATE_LABEL[st] ?? st}
+                    {mine ? null : <span className="faint"> *</span>}
                   </button>
                 );
               })}
@@ -156,16 +172,16 @@ export function UnitDetailScreen() {
                 ))}
               </div>
             </div>
-            {reduced ? <div className="faint small">Reduced motion: no idle autoplay or auto-rotation; clips play only when you press Play.</div> : null}
+            {reduced ? <div className="faint small">Reduced motion: a still picture; an animation plays once when you press Play.</div> : null}
             <div className="row gap">
               <label className="row gap small">
-                <Toggle checked={spin} onChange={setSpin} label="Auto-rotate" disabled={reduced} /> Auto-rotate
+                <Toggle checked={autoplay} onChange={setAutoplay} label="Autoplay" disabled={reduced} /> Autoplay
               </label>
-              <Button size="small" onClick={() => ctrl.current?.resetCamera()}>
-                Reset view
-              </Button>
+              <label className="row gap small">
+                <Toggle checked={facingLeft} onChange={setFacingLeft} label="Face left (defending side)" /> Face left
+              </label>
             </div>
-            <div className="faint small">Drag to orbit · wheel to zoom</div>
+            {states.some((st) => !own(st)) ? <div className="faint small">* Stand-in: this animation is not drawn yet; another strip plays in its place.</div> : null}
           </div>
         </div>
         <div className="unit-info">
@@ -282,22 +298,34 @@ export function UnitDetailScreen() {
             {tab === 'assets' ? (
               <table className="table">
                 <tbody>
-                  {[
-                    ['Model', def.presentation.modelAssetId],
-                    ['Portrait', def.presentation.portraitAssetId],
-                    ['Animation profile', def.presentation.animationProfileId],
-                    ['Body profile', def.presentation.bodyProfile],
-                  ].map(([k, v]) => (
-                    <tr key={k}>
-                      <th>{k}</th>
-                      <td>
-                        <code>{v}</code> {k === 'Model' || k === 'Portrait' ? <Chip tone={resolveAsset(v!).status === 'final' ? 'ok' : 'muted'}>{resolveAsset(v!).status}</Chip> : null}
-                      </td>
-                    </tr>
-                  ))}
                   <tr>
-                    <th>States</th>
-                    <td>{ANIMATION_STATES.join(', ')}</td>
+                    <th>Sprites</th>
+                    <td>
+                      <code>{def.presentation.spriteAssetId}</code> <Chip tone={set?.status === 'final' ? 'ok' : 'muted'}>{set?.status ?? 'missing'}</Chip>
+                      {set ? <div className="faint small">{set.provenance}</div> : null}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Portrait</th>
+                    <td>
+                      <code>{def.presentation.portraitAssetId}</code> <Chip tone={resolveAsset(def.presentation.portraitAssetId).status === 'final' ? 'ok' : 'muted'}>{resolveAsset(def.presentation.portraitAssetId).status}</Chip>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Body profile</th>
+                    <td>
+                      <code>{def.presentation.bodyProfile}</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Animations</th>
+                    <td>
+                      {states.map((st) => (
+                        <Chip key={st} tone={own(st) ? (set?.status === 'final' ? 'ok' : 'muted') : 'warn'}>
+                          {st}
+                        </Chip>
+                      ))}
+                    </td>
                   </tr>
                 </tbody>
               </table>

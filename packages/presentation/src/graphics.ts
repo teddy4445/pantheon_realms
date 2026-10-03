@@ -1,9 +1,10 @@
 /**
  * Graphics quality presets (owner request 2026-10-03: "graphics quality
- * settings would help on weaker PCs"; owner choice: presets + automatic pick).
+ * settings would help on weaker PCs"; owner choice: presets + automatic pick),
+ * for the 2D renderer.
  *
- * No Babylon import: the interface reads the presets and the automatic pick
- * from `@pr/presentation/core` at start-up; the engine host and the two scenes
+ * No PixiJS import: the interface reads the presets and the automatic pick
+ * from `@pr/presentation/core` at start-up; the engine host and the two views
  * read the active profile when they build. The values are proposed defaults,
  * measured only on the development machine (DEVELOPMENT_STATUS.md).
  */
@@ -16,39 +17,37 @@ export interface GraphicsProfile {
   readonly maxPixelRatio: number;
   /** Fraction of that resolution actually rendered (the image is scaled up to fill the view). */
   readonly renderScale: number;
-  /** Multisample anti-aliasing (a WebGL context attribute: takes effect at the next start). */
+  /** Multisample anti-aliasing of shape edges (a WebGL context attribute: takes effect at the next start). */
   readonly antialias: boolean;
-  /** Soft contact shadows under battle figures and obstacles. */
-  readonly contactShadows: boolean;
-  /** Painted ground, sea, sky and battlefield textures (off: the plain procedural colours). */
+  /** Soft ground shadows under figures, heroes, map objects and obstacles. */
+  readonly shadows: boolean;
+  /** Painted ground, sea, sky and battlefield art (off: the plain procedural colours). */
   readonly paintedGround: boolean;
-  /** Texture anisotropic filtering level for the painted ground. */
-  readonly anisotropy: number;
-  /** Most figures drawn per battle stack. */
-  readonly maxFigures: number;
   /** Map decoration kept: 'all', 'no-grass' (no grass tufts or shrubs), 'sparse' (trees and rocks thinned by half). */
   readonly decor: 'all' | 'no-grass' | 'sparse';
-  /** Small animated effects (beacon flames, idle sway). */
+  /** Small ambient animations (idle loops on the map and battlefield, beacon glows, cheering). */
   readonly ambientMotion: boolean;
+  /** Spell and combat effects: 'full' (effect strips and glows), 'simple' (short flashes only). */
+  readonly effects: 'full' | 'simple';
   /** Frames per second at most (0: the display's own rate). */
   readonly frameCap: number;
 }
 
 export const GRAPHICS_PRESETS: Readonly<Record<GraphicsQuality, GraphicsProfile>> = {
-  high: { quality: 'high', maxPixelRatio: 2, renderScale: 1, antialias: true, contactShadows: true, paintedGround: true, anisotropy: 8, maxFigures: 3, decor: 'all', ambientMotion: true, frameCap: 0 },
-  medium: { quality: 'medium', maxPixelRatio: 1, renderScale: 1, antialias: true, contactShadows: true, paintedGround: true, anisotropy: 4, maxFigures: 2, decor: 'no-grass', ambientMotion: true, frameCap: 60 },
-  low: { quality: 'low', maxPixelRatio: 1, renderScale: 0.7, antialias: false, contactShadows: false, paintedGround: false, anisotropy: 1, maxFigures: 1, decor: 'sparse', ambientMotion: false, frameCap: 30 },
+  high: { quality: 'high', maxPixelRatio: 2, renderScale: 1, antialias: true, shadows: true, paintedGround: true, decor: 'all', ambientMotion: true, effects: 'full', frameCap: 0 },
+  medium: { quality: 'medium', maxPixelRatio: 1, renderScale: 1, antialias: true, shadows: true, paintedGround: true, decor: 'no-grass', ambientMotion: true, effects: 'full', frameCap: 60 },
+  low: { quality: 'low', maxPixelRatio: 1, renderScale: 0.7, antialias: false, shadows: false, paintedGround: false, decor: 'sparse', ambientMotion: false, effects: 'simple', frameCap: 30 },
 };
 
 let active: GraphicsProfile = GRAPHICS_PRESETS.high;
 const listeners = new Set<(p: GraphicsProfile) => void>();
 
-/** The profile the engine and the scenes use now. */
+/** The profile the engine and the views use now. */
 export function graphicsProfile(): GraphicsProfile {
   return active;
 }
 
-/** Switch presets (Settings, or the automatic pick). The engine applies resolution and frame cap at once; scenes on their next build. */
+/** Switch presets (Settings, or the automatic pick). The engine applies resolution and frame cap at once; views on their next build. */
 export function setGraphicsQuality(q: GraphicsQuality): void {
   const next = GRAPHICS_PRESETS[q] ?? GRAPHICS_PRESETS.high;
   if (next === active) return;
@@ -62,12 +61,11 @@ export function onGraphicsChange(l: (p: GraphicsProfile) => void): () => void {
 }
 
 /**
- * Babylon hardware scaling level for a profile on a screen with this device-pixel
- * ratio (render size = view size ÷ level; 1 = one rendered pixel per CSS pixel).
+ * Rendered pixels per CSS pixel for a profile on a screen with this
+ * device-pixel ratio (1 = one rendered pixel per CSS pixel).
  */
-export function hardwareScalingLevel(p: GraphicsProfile, devicePixelRatio: number): number {
-  const ratio = Math.max(0.5, Math.min(p.maxPixelRatio, devicePixelRatio || 1)) * p.renderScale;
-  return 1 / ratio;
+export function renderResolution(p: GraphicsProfile, devicePixelRatio: number): number {
+  return Math.max(0.5, Math.min(p.maxPixelRatio, devicePixelRatio || 1)) * p.renderScale;
 }
 
 /** What the quick start-up test measured (graphicsProbe.ts in the interface). */

@@ -4,7 +4,7 @@
  *
  * Saves contain MatchState (including the generated logical map, fog, quests,
  * divine progression, RNG states and pending decisions) plus CampaignState.
- * They never contain Babylon meshes, React objects or native handles.
+ * They never contain renderer objects (sprites, textures), React objects or native handles.
  * Loading never regenerates a map; the stored logical map is authoritative.
  */
 import { canonicalJson, hashString, type ContentCatalog, type MatchState, type VersionBundle, scenarioMission } from '@pr/rules';

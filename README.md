@@ -1,14 +1,23 @@
 # Pantheon Realms
 
-A desktop-first, offline-capable, turn-based mythological strategy game.
-TypeScript rules and AI, React interface, Babylon.js 3D, Electron desktop
-shell, and a browser build from the same core.
+Pantheon Realms is a desktop-first, offline-capable, data-driven deterministic
+turn-based strategy game. TypeScript owns authoritative rules and AI. React
+owns application interface screens. PixiJS owns the 2D Adventure Map, Tactical
+Battle presentation, sprite animation, and animated Unit Detail viewer.
+Electron packages the desktop application and a browser build uses the same
+core. Content presentation uses high-resolution 2D backgrounds, sprites,
+atlases, portraits, UI art and animation strips. Gameplay state changes only
+through validated commands; presentation never defines gameplay outcomes.
 
-> **Development build.** The architecture, screens and game logic are real;
-> all art, models, animation and portraits are temporary placeholders (the GLB
-> model pipeline is ready, but no production model exists yet). Music and
-> sounds are temporary placeholders synthesized by a script; final recordings
-> replace them by file. See [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md).
+> **Development build.** The architecture, screens and game logic are real.
+> Delivered art is in (story pictures, ground and sky paintings, big moments,
+> 43 creature portraits, icons, cursors, pantheon emblems); every battle
+> sprite, map avatar and map object is still a **labelled placeholder**
+> (`assets-runtime/sprites/manifest.json`, `status: "placeholder"`) waiting
+> for the art in [`GPT6_2D_CONTENT_GENERATION.md`](GPT6_2D_CONTENT_GENERATION.md),
+> and town pictures are crops of the owner's boards. Music and sounds are
+> temporary placeholders synthesized by a script; final recordings replace
+> them by file. See [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md).
 
 ## Playable now
 
@@ -68,7 +77,7 @@ npm run dev            # browser build at http://localhost:5173
 npm run desktop        # build and launch the Electron app
 npm run check          # import boundaries + type-check + unit tests
 npm run test:e2e       # Playwright UI tests (Chromium)
-npm run assets:check   # validate unit models (Khronos validator + game checks)
+npm run sprites:cut && npm run sprites:import   # cut delivered GPT-6 sheets and bring the sprites in
 npm run balance        # AI-vs-AI balance report (tools/balance/README.md)
 node tools/perf/load-time.mjs          # start-up and first-scene load times (after npm run build)
 python3 tools/audio/make_placeholders.py   # regenerate the placeholder music and sounds
@@ -86,15 +95,16 @@ packages/campaign  missions, carryover, campaign state machine
 packages/ai        AI observation, planners, controller
 packages/session   game session, checkpoints, save format
 packages/platform  storage/window adapters (browser, desktop, memory)
-packages/presentation  Babylon.js scene controllers and placeholder proxies (loaded on demand;
-                   presentation/core is the Babylon-free part the menu uses)
+packages/presentation  PixiJS 2D views: Adventure Map, Tactical Battle, Unit Detail viewer, sprite
+                   animation (loaded on demand; presentation/core is the Pixi-free part the menu uses)
 packages/audio     Web Audio mixer: sound manifest, buses, music/ambience crossfades
 packages/ui        React screens, dialogs, preferences, asset manifest
 packages/testing   headless game driver for tests
-assets-runtime     committed runtime placeholders (+ provenance), interface art (ui/, icons/),
-                   unit models (units/) and sounds (audio/)
-assets-source      owner-supplied interface art sources (opening backgrounds, logo, frame, icons);
-                   tools/assets/prepare_ui_art.py turns them into assets-runtime/ui
+assets-runtime     runtime art (+ provenance): sprites (sprites/manifest.json: creatures, map
+                   avatars, map objects, obstacles, effects), painted art (art/), towns, portraits,
+                   interface art (ui/, icons/) and sounds (audio/)
+assets-source      owner-supplied sources (interface art, icons, cursors, painted art, creature
+                   reference views) and sprite tooling inputs (sprites/: content plan, final drops)
 tests/e2e          Playwright UI tests
 tools              boundary lint, desktop smoke test, load-time measurement, balance tool,
                    placeholder art and sound generators
@@ -112,7 +122,13 @@ tools              boundary lint, desktop smoke test, load-time measurement, bal
   and results screens, with exact numbers.
 * [`CAMPAIGN_2_NORSE_OUTLINE.md`](CAMPAIGN_2_NORSE_OUTLINE.md) — the proposed
   second campaign (*The Winter Oath*), an outline awaiting approval.
-* [`ASSET_PIPELINE.md`](ASSET_PIPELINE.md) — artist spec for creature GLBs:
-  orientation, scale, the eight clip names, manifests, validation; and how to
-  replace the placeholder sounds.
+* [`ASSET_PIPELINE.md`](ASSET_PIPELINE.md) — the 2D sprite contract (file
+  names, frame sizes, anchors, facing, animation names, import and
+  validation), painted art, icons, cursors, and how to replace the
+  placeholder sounds.
+* [`GPT6_2D_CONTENT_GENERATION.md`](GPT6_2D_CONTENT_GENERATION.md) — the exact
+  production queue for the remaining 2D art: 140 sheets (many sprites per
+  image), each with its layout and prompt.
+* [`2D_MIGRATION_AUDIT.md`](2D_MIGRATION_AUDIT.md) — what the 2D migration
+  kept, adapted, removed and still misses.
 * `docs/` — the owner's design, content, campaign and production documents.

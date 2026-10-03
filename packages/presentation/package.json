@@ -3,15 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Babylon.js scene controllers. Presents committed state/events; never decides rules.",
+  "description": "PixiJS 2D views (adventure map, tactical battle, bestiary viewer). Presents committed state/events; never decides rules.",
   "exports": {
     ".": "./src/index.ts",
     "./core": "./src/core.ts"
   },
   "dependencies": {
-    "@babylonjs/core": "9.28.0",
-    "@babylonjs/loaders": "9.28.0",
     "@pr/mapgen": "*",
-    "@pr/rules": "*"
+    "@pr/rules": "*",
+    "pixi.js": "8.22.0"
   }
 }

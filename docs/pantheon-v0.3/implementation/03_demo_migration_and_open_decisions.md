@@ -58,13 +58,13 @@ The original DEC IDs stay meaningful. v0.2 supplies proposed answers, not silent
 | DEC-15 sieges | Combat | Simplified candidate; later milestone |
 | DEC-16 conquest | Economy | Candidate elimination/grace-period rule |
 | DEC-17 diplomacy | Economy / town | Hostile Greek rivals first; cross-faction conversion later |
-| DEC-18 technology | [Production architecture](../production/01_approved_stack_and_architecture.md) | ADOPTED in v0.3: TypeScript, Babylon.js, React, Blender/glTF, Electron; desktop-first/offline plus shared browser core |
+| DEC-18 technology | [Production architecture](../production/01_approved_stack_and_architecture.md) | ADOPTED in v0.3: TypeScript, React, Electron; desktop-first/offline plus shared browser core. Presentation since 2026-10-03: PixiJS 2D sprites ([DEC-23](../DECISIONS_v0_3.md)) |
 | DEC-19 saves | Data/menu documents | Versioned checkpoint proposal; no old-save conversion |
 | DEC-20 content/lore | Roster / lore | Greek draft; other cultures and final assets still OPEN |
 
 ## New screen/content decisions
 
-S01 Main Menu and S17 Settings are expanded requirements, not new duplicate screens. S18 Unit Detail is new. v0.3 selects stylized 3D models with Blender/glTF and Babylon.js; static portraits remain accessibility/loading fallbacks, not the intended animated production treatment. Voice narration is optional and uncommissioned. The prototype may display sourced lore as text without voice or motion.
+S01 Main Menu and S17 Settings are expanded requirements, not new duplicate screens. S18 Unit Detail is new. Since the 2D migration (DEC-23, 2026-10-03) S18 shows the animated sprite viewer (PixiJS) with animation state buttons and a base/upgraded switch; static portraits remain accessibility/loading fallbacks, not the intended animated production treatment. Voice narration is optional and uncommissioned. The prototype may display sourced lore as text without voice or motion.
 
 ## Review record template
 

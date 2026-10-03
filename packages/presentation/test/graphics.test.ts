@@ -5,7 +5,7 @@
  * a preset (software renderers always Low).
  */
 import { describe, expect, it } from 'vitest';
-import { GRAPHICS_PRESETS, classifyGraphics, graphicsProfile, hardwareScalingLevel, onGraphicsChange, setGraphicsQuality, type GraphicsProbeResult } from '../src/graphics';
+import { GRAPHICS_PRESETS, classifyGraphics, graphicsProfile, renderResolution, onGraphicsChange, setGraphicsQuality, type GraphicsProbeResult } from '../src/graphics';
 
 const probe = (over: Partial<GraphicsProbeResult>): GraphicsProbeResult => ({ webgl2: true, renderer: 'ANGLE (NVIDIA GeForce)', msPerPass: 2, cores: 8, memoryGb: 16, ...over });
 
@@ -14,22 +14,23 @@ describe('graphics presets', () => {
     const [h, m, l] = [GRAPHICS_PRESETS.high, GRAPHICS_PRESETS.medium, GRAPHICS_PRESETS.low];
     for (const [a, b] of [[h, m], [m, l]] as const) {
       expect(a.maxPixelRatio * a.renderScale).toBeGreaterThanOrEqual(b.maxPixelRatio * b.renderScale);
-      expect(Number(a.contactShadows)).toBeGreaterThanOrEqual(Number(b.contactShadows));
-      expect(a.maxFigures).toBeGreaterThanOrEqual(b.maxFigures);
-      expect(a.anisotropy).toBeGreaterThanOrEqual(b.anisotropy);
+      expect(Number(a.shadows)).toBeGreaterThanOrEqual(Number(b.shadows));
+      expect(Number(a.ambientMotion)).toBeGreaterThanOrEqual(Number(b.ambientMotion));
+      expect(['all', 'no-grass', 'sparse'].indexOf(a.decor)).toBeLessThanOrEqual(['all', 'no-grass', 'sparse'].indexOf(b.decor));
       expect(a.frameCap === 0 || (b.frameCap > 0 && b.frameCap <= a.frameCap)).toBe(true);
     }
-    expect(l.contactShadows).toBe(false);
+    expect(l.shadows).toBe(false);
+    expect(l.effects).toBe('simple');
     expect(l.paintedGround).toBe(false);
     expect(l.antialias).toBe(false);
   });
 
   it('render resolution: High is sharp on a 2× screen, Medium renders CSS pixels, Low renders 70% of them', () => {
-    expect(hardwareScalingLevel(GRAPHICS_PRESETS.high, 2)).toBeCloseTo(0.5);
-    expect(hardwareScalingLevel(GRAPHICS_PRESETS.high, 3)).toBeCloseTo(0.5);
-    expect(hardwareScalingLevel(GRAPHICS_PRESETS.medium, 2)).toBeCloseTo(1);
-    expect(hardwareScalingLevel(GRAPHICS_PRESETS.low, 1)).toBeCloseTo(1 / 0.7);
-    expect(hardwareScalingLevel(GRAPHICS_PRESETS.high, 1)).toBeCloseTo(1);
+    expect(renderResolution(GRAPHICS_PRESETS.high, 2)).toBeCloseTo(2);
+    expect(renderResolution(GRAPHICS_PRESETS.high, 3)).toBeCloseTo(2);
+    expect(renderResolution(GRAPHICS_PRESETS.medium, 2)).toBeCloseTo(1);
+    expect(renderResolution(GRAPHICS_PRESETS.low, 1)).toBeCloseTo(0.7);
+    expect(renderResolution(GRAPHICS_PRESETS.high, 1)).toBeCloseTo(1);
   });
 
   it('switching presets notifies the engine', () => {

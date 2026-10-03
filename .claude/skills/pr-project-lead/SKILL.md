@@ -22,16 +22,16 @@ Read [project-contract.md](references/project-contract.md) and the current root 
 | Economy, combat, upgrades, saves | `pr-rules-engine` |
 | Mission content, roads, gates and seed validation | `pr-campaign-mapgen` |
 | Local strategic/tactical planning | `pr-local-ai` |
-| Babylon scenes, loaders, performance | `pr-babylon-scene` |
+| PixiJS 2D views, sprite manifest, camera, picking, performance | `pr-pixi-scene` |
 | Menus, settings, bestiary and accessible UI | `pr-react-game-ui` |
-| Creature base/upgrade modeling and animation | `pr-creature-pipeline` |
+| Creature base/upgrade references, portraits and animation strips | `pr-creature-pipeline` |
 | Sound, music transitions and presentation effects | `pr-audio-vfx` |
 | Electron, native saves and offline distribution | `pr-electron-offline` |
 | Reproducible tests and release evidence | `pr-qa-release` |
 
 ## Tool policy
 
-Use the bundled `pr-audit` MCP for narrow read-only checks. Use Context7 only for non-confidential API questions; verify package versions. Use Playwright for browser interaction, not proof of native behavior. Enable Babylon authoring or Blender only for a task that needs it. Do not request all MCPs in every session.
+Use the bundled `pr-audit` MCP for narrow read-only checks. Use Context7 only for non-confidential API questions; verify package versions. Use Playwright for browser interaction, not proof of native behavior. Enable Context7 or GitHub only for a task that needs it. Do not request all MCPs in every session.
 
 ## Deliverable
 

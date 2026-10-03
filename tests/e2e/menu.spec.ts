@@ -41,8 +41,9 @@ test('main menu: honest Continue, no fake Quit, encyclopedia and bestiary viewer
   await page.getByRole('tab', { name: 'Bestiary' }).click();
   await page.getByTestId('codex-griffin').click();
   expect((await inspect(page)).screen).toBe('unit-detail');
-  for (const s of ['Move', 'Melee', 'Defend', 'Hit', 'Defeat', 'Victory', 'Idle']) await page.getByRole('radio', { name: s }).click();
-  await expect(page.getByRole('radio', { name: 'Ranged' })).toBeDisabled();
+  // The griffin's animations follow its content: the seven base ones plus take-off, fly and land (Flight); no shoot.
+  for (const s of ['move', 'attack', 'defend', 'hit', 'death', 'victory', 'takeoff', 'fly', 'landing', 'idle']) await page.getByTestId(`anim-${s}`).click();
+  await expect(page.getByTestId('anim-shoot')).toHaveCount(0);
 });
 
 test('settings persist across reloads', async ({ page }) => {
@@ -53,10 +54,12 @@ test('settings persist across reloads', async ({ page }) => {
   await page.reload({ waitUntil: 'networkidle' });
   await page.getByTestId('menu-settings').click();
   await expect(page.getByLabel('Battle speed')).toHaveValue('instant');
-  // Unsupported features are disabled with a reason, not faked.
+  // Only options that work are offered (no voice, camera-shake or screen-flash controls in this build).
   await page.getByRole('tab', { name: 'Audio' }).click();
-  await expect(page.getByText('This build has no voice lines.').first()).toBeVisible();
-  await expect(page.getByLabel('Voice volume')).toBeDisabled();
+  await expect(page.getByLabel('Voice volume')).toHaveCount(0);
+  await page.getByRole('tab', { name: 'Accessibility' }).click();
+  await expect(page.getByLabel('Camera shake')).toHaveCount(0);
+  await expect(page.getByLabel('Screen flashes')).toHaveCount(0);
 });
 
 test('credits name the creator in large type; the Settings header has no subtitle', async ({ page }) => {

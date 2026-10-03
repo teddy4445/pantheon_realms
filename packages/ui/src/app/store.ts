@@ -179,7 +179,7 @@ export class AppStore {
   presentationBusy = false;
   /** Diagnostics: how many times a started battle opened the battlefield (read by UI tests). */
   battleScreenOpens = 0;
-  /** Diagnostics: outcomes of the mounted heroes' Prepare_War gestures before battles (read by UI tests). */
+  /** Diagnostics: outcomes of the mounted heroes' readiness beats before battles (read by UI tests). */
   readonly prepareWar = { finished: 0, cancelled: 0, skipped: 0 };
   /** Sound (null until bootstrap attaches it, and in headless tests). Presentation only. */
   audio: GameAudio | null = null;

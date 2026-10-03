@@ -1,19 +1,21 @@
-# Creature Pair Acceptance Checklist
+# Creature Pair Acceptance Checklist (2D)
 
 ## Identity
 
-Use the eight canonical pairs from the current upgrade contract. Every base points to one upgrade; every upgrade points back and has no next promotion. Base/upgrade share family, faction, tier, growth and footprint. Labels and portraits identify the exact form.
+Use the canonical pairs from the current upgrade contract and content catalog. Every base points to one upgrade; every upgrade points back and has no next promotion. Base/upgrade share family, pantheon, tier, growth and footprint. Labels and portraits identify the exact form.
 
-## Source and export
+## Sources and provenance
 
-Retain editable Blender sources, both meshes/materials, deform rig, actions, socket conventions, export preset and provenance. Use source units/transforms as specified by the current visual pipeline. Preserve negative-scale/skin checks and bake unsupported constraints. A generated reference image is not an exportable rig.
+Keep both canonical reference views (`assets-source/creatures/reference/`), both portraits, each form's delivered sheet in `assets-source/sprites/sheets/` (`sheet.creature.<pantheon>.tier<N>.<base|upgraded>.png`) and the strips cut from it in `assets-source/sprites/final/` (`sprite.creature.<…>.<animation>.png`, with their sidecar JSON), and a provenance record (generator, date, queue group, owner approval). A concept image is not an imported strip.
 
-## Animation
+## Animation strips
 
-Ground common clips: idle_a, move_walk, attack_melee_a, guard, hit_a, defeat, victory. Every shooter also requires attack_shoot. Griffins use takeoff, move_fly, land and move_ground plus idle/melee/guard/hit/defeat/victory. Temple Seer adds ability_ward. Compare actual required clips against the current asset manifest; names alone do not validate channels or contacts.
+Every creature: idle, move, attack, defend, hit, death, victory. Shooters add shoot; Flight adds takeoff, fly and landing; an active ability adds ability. No creature strip uses cast. Compare against `requiredAnimations` and the production queue; a file name alone does not prove the motion reads.
 
-Confirm held equipment/socket release, root anchor, contact, two-hex facing, independent instance pose, event timing, transitions, reduced motion and cleanup for BOTH forms. Make weapon trails/projectiles presentation-only. Retaliation can reuse the legal melee clip; it cannot recursively dispatch another attack.
+Every strip: transparent background, facing right, equal frames left to right without gaps, frames 512 x 512 (768 x 512 for two-hex creatures) or a uniform half/double scale, feet at 90 % of the frame height, one hex = 240 px, the same camera, scale and baseline in every frame, nothing touching the frame edge. The upgraded strip keeps the base strip's poses and timing.
+
+Missing optional strips fall back (shoot to attack, fly to move to idle, ability to attack); a missing death strip lays the figure down. Fallbacks are acceptable for placeholders, not for a family declared final.
 
 ## Runtime
 
-Check GLB metadata; run Khronos validation; load in Babylon; inspect at tactical and bestiary zoom; test animation at normal/fast/instant settings; verify no save/RNG change from previews. Missing assets show a labeled fallback. Review grayscale silhouette and team-color independence. A family is not production-complete when only its base is finished.
+`npm run sprites:import` accepts every file and the manifest entries read `final`; the `inspect_sprite_manifest` audit reports no missing files. Review both forms in the Unit Detail viewer (every animation button, base/upgraded switch, reduced-motion still) and in battle at tactical zoom: anchored on the hex, mirrored as a defender, two-hex footprint aligned, normal/fast/instant playback with identical results, no save/RNG change from previews. Check grayscale silhouettes and team-colour independence. A family is not production-complete when only its base is finished.

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Pantheon PixiJS Scenes"
+  short_description: "Build 2D sprite views without coupling rendering to gameplay."

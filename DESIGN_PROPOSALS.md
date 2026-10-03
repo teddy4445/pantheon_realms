@@ -476,8 +476,9 @@ Winter Oath uses the same rule in all seven missions.
 
 * **Layout:** left — portrait, the four primary skills as tiles, experience and
   mana bars, morale, luck, movement and vision, eight secondary-skill slots
-  (Basic / Advanced / Expert); centre — a paper doll around the hero's own 3D
-  mounted model (click it for a salute) with the spellbook button; right — the
+  (Basic / Advanced / Expert); centre — a paper doll around the hero's
+  mounted figure (a 2D still of the pantheon's avatar since the 2D migration)
+  with the spellbook button; right — the
   player's heroes; bottom — army, exchange and quest buttons.
 * **Equipment:** 19 slots — head, neck, cape, weapon, shield, armor, two rings,
   feet, mount and five miscellaneous — plus the backpack. An artifact has a
@@ -908,15 +909,17 @@ Low / Medium / High (`packages/presentation/src/graphics.ts`), picked on the
 first start by a quick test and changeable in Settings → Display (with *Test
 again*). Proposed values:
 
+Since the 2D migration (2026-10-03) the presets drive the PixiJS views:
+
 | | High | Medium | Low |
 |---|---|---|---|
 | Render resolution | up to 2 × on sharp screens | CSS pixels (1 ×) | 70 % of CSS pixels |
 | Anti-aliasing (next start) | on | on | off |
-| Soft contact shadows under troops and obstacles | on | on | off |
-| Figures per troop | up to 3 | up to 2 | 1 |
+| Soft ground shadows under figures, heroes, map objects and obstacles | on | on | off |
 | Map decoration | all | no grass tufts or shrubs | trees and rocks thinned by half |
-| Painted ground, sea, sky, battlefield | yes (anisotropic 8) | yes (anisotropic 4) | no (procedural colours) |
-| Small animations (beacon flames, idle sway) | on | on | off |
+| Painted ground, sea, sky, battlefield | yes | yes | no (procedural colours) |
+| Small ambient animations (idle loops, beacon glows, cheering) | on | on | off |
+| Spell and combat effects | effect strips and glows | effect strips and glows | short flashes only |
 | Frame-rate cap | display rate | 60 | 30 |
 
 The quick test: a hidden 1280 × 720 WebGL 2 canvas, a fixed-cost shader drawn
@@ -924,9 +927,7 @@ three passes at a time (median of up to five samples, at most 0.6 s), plus the
 renderer name. Proposed thresholds: under 4 ms a pass → High, under 12 ms →
 Medium, slower → Low; software renderers (SwiftShader, llvmpipe, Microsoft
 Basic Render) → Low; fewer than four cores or under 4 GB memory cap the pick at
-Medium. Not calibrated on a range of real PCs. Babylon shadow maps were tried
-first and dropped: on the test renderer they shaded only the casters, not the
-ground; the contact shadows are cheaper and render the same everywhere.
+Medium. Not calibrated on a range of real PCs.
 
 ### 32. Context cursors (stand-ins until Brief 7)
 
