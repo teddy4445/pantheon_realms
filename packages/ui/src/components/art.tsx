@@ -72,7 +72,10 @@ export function HeroPortrait({
   style?: CSSProperties;
 }) {
   const def = catalog.heroes[definitionId];
-  const rec = resolveAsset(def?.portraitAssetId ?? `hero.${definitionId}.portrait`);
+  const portraitId = def?.portraitAssetId ?? `hero.${definitionId}.portrait`;
+  const rec = resolveAsset(portraitId);
+  // No portrait of its own: the hero's painted story bust (Brief 1), framed on the head and shoulders.
+  const bust = rec.url ? null : speakerBust({ portraitAssetId: portraitId });
   // Placeholder look follows the class's starting skill (pantheon classes mirror the three base classes).
   const classDef = catalog.heroClasses[classId ?? def?.classId ?? 'champion'];
   const skillIds = classDef?.startingSkills.map((s) => s.skillId) ?? [];
@@ -81,6 +84,8 @@ export function HeroPortrait({
     <span className="portrait" style={{ width: size, height: size, ...style }} title={name ?? def?.name}>
       {rec.url ? (
         <img src={rec.url} alt={`${name ?? def?.name} portrait`} />
+      ) : bust ? (
+        <img className="portrait__bust" src={bust.url} alt={`${name ?? def?.name} portrait`} draggable={false} data-asset={bust.id} />
       ) : (
         <HeroPortraitArt seed={definitionId} name={name ?? def?.name ?? '?'} accent={pantheonAccent(catalog, def?.pantheonId ?? 'greek')} variant={cls} />
       )}

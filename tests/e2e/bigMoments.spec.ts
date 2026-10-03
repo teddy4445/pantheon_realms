@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { GameDriver } from '@pr/testing';
 import { processCommand, xpForLevel, type GameCommand } from '@pr/rules';
 import { clickHex, inspect, waitFor } from './helpers';
@@ -32,6 +32,32 @@ import {
  * Moments are observed by an in-page probe (frames are slow in this
  * software-rendered browser). Screenshots are kept for review.
  */
+
+
+/**
+ * The battle result layout (victory and defeat): no line under the title; the
+ * two sides right below it at one height; the outcome centred under them;
+ * Continue under the outcome; a 20 % black layer over the painting.
+ */
+async function expectResultLayout(page: Page): Promise<void> {
+  await expect(page.locator('.result-banner__sub')).toHaveCount(0);
+  const box = async (sel: string) => (await page.locator(sel).first().boundingBox())!;
+  const title = await box('.result-banner');
+  const sides = await page.locator('.result-side').evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON() as DOMRect));
+  expect(sides).toHaveLength(2);
+  expect(Math.abs(sides[0]!.height - sides[1]!.height)).toBeLessThan(1.5);
+  expect(Math.abs(sides[0]!.y - sides[1]!.y)).toBeLessThan(1.5);
+  expect(sides[0]!.y).toBeGreaterThanOrEqual(title.y + title.height - 1);
+  expect(sides[0]!.y - (title.y + title.height)).toBeLessThan(40);
+  const outcome = await box('.result-outcome');
+  expect(outcome.y).toBeGreaterThanOrEqual(sides[0]!.y + sides[0]!.height - 1);
+  const vp = page.viewportSize()!;
+  expect(Math.abs(outcome.x + outcome.width / 2 - vp.width / 2)).toBeLessThan(12);
+  const cont = await box('[data-testid="result-continue"]');
+  expect(cont.y).toBeGreaterThanOrEqual(outcome.y + outcome.height - 1);
+  expect(Math.abs(cont.x + cont.width / 2 - vp.width / 2)).toBeLessThan(12);
+  await expect(page.locator('.result-splash__shade')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0.2)');
+}
 
 test('a map miracle shows its painted card once, in the gold frame with a live nameplate; Esc closes it; a load shows none', async ({ page }) => {
   test.setTimeout(120_000);
@@ -150,6 +176,7 @@ test('a battle miracle on an enemy stack shows its card; a won battle shows the 
   const t = (await page.locator('.result-banner__title').boundingBox())!;
   expect(t.y).toBeGreaterThan(vp.height * 0.08);
   expect(t.y + t.height).toBeLessThan(vp.height * 0.3);
+  await expectResultLayout(page);
   expect(await imagesLoaded(page)).toEqual([]);
   await page.screenshot({ path: 'test-results/moment-result-victory.png' });
   // The Favor was spent once, whatever replayed on screen.
@@ -169,6 +196,7 @@ test('a lost battle shows the player’s defeat painting', async ({ page }) => {
   expect(s.state.lastBattleResult.winner).not.toBe(s.state.lastBattleResult.playerSide);
   await expect(page.getByTestId('result-splash')).toHaveAttribute('data-asset', 'splash.norse.defeat');
   await expect(page.locator('.result-banner__title')).toHaveText('Defeat');
+  await expectResultLayout(page);
   await page.screenshot({ path: 'test-results/moment-result-defeat.png' });
 });
 
@@ -269,9 +297,15 @@ test('level-up shows the hero’s own pantheon banner with the words live on its
   expect(await plaque.locator('.plaque-text__title').evaluate((el) => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
   expect(await imagesLoaded(page)).toEqual([]);
   await page.screenshot({ path: 'test-results/moment-levelup.png' });
-  // The choice itself is unchanged.
-  await page.getByTestId('offer-0').click();
-  await page.getByTestId('levelup-confirm').click();
+  // No panel title and no Confirm: the large skill icon sits left of its details, and picking an offer is the choice.
+  await expect(page.getByText('Choose your advancement')).toHaveCount(0);
+  await expect(page.getByTestId('levelup-confirm')).toHaveCount(0);
+  const offer = page.getByTestId('offer-0');
+  const icon = (await offer.locator('.offer-card__icon').boundingBox())!;
+  const body = (await offer.locator('.offer-card__body').boundingBox())!;
+  expect(icon.width).toBeGreaterThan(60);
+  expect(icon.x + icon.width).toBeLessThanOrEqual(body.x + 1);
+  await offer.click();
   await waitFor(page, (x) => x.state.pendingDecisions.length < pending, 'level-up chosen');
 });
 

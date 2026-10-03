@@ -43,7 +43,7 @@ import { resources } from '@pr/rules';
 import { useStore } from '../app/context';
 import type { AppStore } from '../app/store';
 import { Button, Chip, Modal, Panel, QuantitySelector, SectionTitle } from '../components/kit';
-import { ArtifactIcon, BuildingArt, HeroPortrait, SpecialtyLine } from '../components/art';
+import { ArtifactIcon, BuildingArt, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, CostList, ScreenHeader, StatusChip } from '../components/game';
 import { resolveAsset } from '../assets/manifest';
 import { Icon } from '../assets/icons';
@@ -365,7 +365,11 @@ export function TownScreen() {
   return (
     <div className="screen town-screen">
       <ScreenHeader
-        title={town.name}
+        title={
+          <span className="title-with-emblem">
+            <Emblem catalog={catalog} pantheonId={town.pantheonId} size="1.9rem" /> {town.name}
+          </span>
+        }
         subtitle={`${catalog.pantheons[town.pantheonId]?.name} town · ${usedToday ? 'Built today — next build tomorrow' : 'One building can be built today'}`}
         right={
           owned.length > 1 ? (

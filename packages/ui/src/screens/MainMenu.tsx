@@ -1,7 +1,8 @@
 /**
  * S01 Main Menu (opening screen). One of the opening backgrounds is chosen at
- * random each time the game starts; the title logo sits above the ornate frame
- * that holds the menu. Continue shows the most recent compatible save with its
+ * random each time the game starts, under a 20 % black layer; the title
+ * lettering sits above the ornate frame that holds the menu. Random Map is
+ * reached through New Game, high scores through the end-of-game summary. Continue shows the most recent compatible save with its
  * metadata and is disabled (with the reason) when none exists. Quit appears
  * only on desktop; the browser build never pretends to close its tab.
  *
@@ -10,7 +11,7 @@
  */
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useStore } from '../app/context';
-import { MenuButton, Chip } from '../components/kit';
+import { MenuButton } from '../components/kit';
 import { menuBackground, menuFrameInterior, resolveAsset } from '../assets/manifest';
 import { relativeTime } from '../app/view';
 
@@ -22,9 +23,9 @@ export function MainMenuScreen() {
   }, [store, store.continueChecked]);
   const [preview, setPreview] = useState<string | null>(null);
   const bg = menuBackground();
-  const logo = resolveAsset('brand.logo.full');
+  // The lettering only (the emblem stays the app icon).
+  const logo = resolveAsset('brand.logo.text');
   const frame = resolveAsset('menu.frame');
-  const emblem = resolveAsset('brand.emblem');
   const win = menuFrameInterior();
   const meta = continueSlot?.metadata;
   const continueDisabledReason = !continueChecked
@@ -48,7 +49,6 @@ export function MainMenuScreen() {
   const describe = (text: string) => (on: boolean) => setPreview(on ? text : null);
   const campaignText = playableCampaigns.length ? playableCampaigns.map((c) => `${c.name} — ${c.tagline}`).join(' · ') : 'Story campaign';
   const skirmishText = 'An authored map against the AI or a second player (hot-seat)';
-  const randomText = 'A new symmetric map for two to four empires';
 
   const frameStyle = {
     '--win-left': `${win.left * 100}%`,
@@ -65,7 +65,6 @@ export function MainMenuScreen() {
         <h1 className="main-menu__title">
           {logo.url ? <img className="main-menu__logo" src={logo.url} alt="Pantheon Realms" draggable={false} /> : 'Pantheon Realms'}
         </h1>
-        <div className="main-menu__tagline">Gods, heroes and the armies of myth</div>
       </header>
       <div className="main-menu__stage">
         <div className="menu-frame" style={frameStyle}>
@@ -139,21 +138,6 @@ export function MainMenuScreen() {
                 />
               ) : null}
             </div>
-            <div className="menu-frame__extra">
-              <MenuButton
-                variant="compact"
-                icon="map"
-                label="Random Map"
-                testId="menu-random"
-                title={randomText}
-                onPreview={describe(randomText)}
-                onClick={() => {
-                  store.resetSetup('skirmish');
-                  store.goto('random-setup');
-                }}
-              />
-              <MenuButton variant="compact" icon="star" label="High Scores" testId="menu-highscores" onPreview={describe('Your best campaign and skirmish results')} onClick={() => store.goto('high-scores')} />
-            </div>
           </nav>
         </div>
         <div className="main-menu__caption" aria-live="polite">
@@ -161,13 +145,9 @@ export function MainMenuScreen() {
         </div>
       </div>
       <footer className="main-menu__footer">
-        {emblem.url ? <img className="main-menu__emblem" src={emblem.url} alt="" draggable={false} /> : null}
         <span>
           v{platform.appVersion} · {platform.kind === 'desktop' ? 'Desktop' : 'Browser'} build · Rules {catalog.versions.rulesVersion} · Content {catalog.versions.contentVersion}
         </span>
-        <Chip tone="warn" title="Unit models, town art and animation are development placeholders">
-          Temporary art
-        </Chip>
         {platform.kind === 'browser' ? <span className="dim">Saves are stored in this browser. Close the tab to quit.</span> : null}
       </footer>
     </div>

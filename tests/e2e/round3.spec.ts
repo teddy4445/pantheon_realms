@@ -46,15 +46,16 @@ test('the last blow of a battle is played on the board before the result opens',
   expect(errors).toEqual([]);
 });
 
-test('random map: portals on by default, shown in the preview, and neutral creatures guard the sites', async ({ page }) => {
+test('random map: portals on by default and neutral creatures guard the sites', async ({ page }) => {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-random').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-random').click();
   await page.getByTestId('random-size-small').click();
   await page.getByTestId('random-seed').fill('4242');
   await expect(page.getByRole('switch', { name: 'Two-way portals' })).toHaveAttribute('aria-checked', 'true');
-  await expect(page.getByTestId('random-preview')).toBeVisible();
   await page.getByTestId('random-start').click();
-  const s = await waitFor(page, (x) => x.screen === 'adventure' || x.overlays.length > 0, 'game start', 30_000);
+  const s = await waitFor(page, (x) => x.screen === 'adventure', 'game start', 30_000);
+  expect(s.overlays).not.toContain('briefing');
   const sites = s.state.customMission.sites as { kind: { type: string; exitSiteId?: string }; guard?: { army: { creatureId: string }[] } }[];
   const portals = sites.filter((x) => x.kind.type === 'portal');
   expect(portals.length).toBeGreaterThanOrEqual(2);
@@ -64,12 +65,13 @@ test('random map: portals on by default, shown in the preview, and neutral creat
   expect(guards.some((g) => neutral.has(g))).toBe(true);
 });
 
-test('bestiary: the Neutral filter lists the creatures of no pantheon', async ({ page }) => {
+test('bestiary: the Neutral section closes the bestiary with the creatures of no pantheon', async ({ page }) => {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-encyclopedia').click();
-  await page.getByTestId('codex-neutral').click();
-  for (const id of ['brigand', 'wild_boar', 'clay_golem', 'wyvern', 'ogre', 'basilisk', 'elder_drake']) await expect(page.getByTestId(`codex-${id}`)).toBeVisible();
-  await page.getByTestId('codex-hill_slinger').click();
+  const neutral = page.getByTestId('codex-pantheon-neutral');
+  await neutral.scrollIntoViewIfNeeded();
+  for (const id of ['brigand', 'wild_boar', 'clay_golem', 'wyvern', 'ogre', 'basilisk', 'elder_drake']) await expect(neutral.getByTestId(`codex-${id}`)).toBeVisible();
+  await neutral.getByTestId('codex-hill_slinger').click();
   await expect(page.getByText(/hexes/).first()).toBeVisible();
 });
 

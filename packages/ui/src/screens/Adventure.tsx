@@ -1025,10 +1025,6 @@ export function AdventureScreen() {
                 Cancel
               </Button>
             </span>
-          ) : pending ? (
-            <Button variant="primary" icon="star" onClick={() => store.goto('level-up')} data-testid="levelup-pending">
-              Level up: {state.heroes[pending.heroId]?.name}
-            </Button>
           ) : target && selected ? (
             <span className="small">
               {(() => {

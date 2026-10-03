@@ -1,433 +1,442 @@
 /**
  * S16 Encyclopedia / Bestiary Index. Reads immutable content only, so it is
- * available from the main menu without a game in progress. Implementation and
- * balance status are always shown, so preparation content is never mistaken
- * for playable content.
+ * available from the main menu without a game in progress.
+ *
+ * Eight pages: Bestiary, Gods, Heroes and Towns show every pantheon one below
+ * the other, each opened by its own divider (emblem, name, epithet; neutral
+ * creatures close the bestiary); Spells, Skills, Artifacts (with the artifact
+ * sets) and Abilities give every entry a card. Status is written into the
+ * cards as plain text where it matters (content not yet in play says so), not
+ * as tags.
  */
-import { useState } from 'react';
-import { ARTIFACT_SLOT_LABEL, NEUTRAL_FLEE_RATIO, NEUTRAL_JOIN_RATIO, RESOURCE_LABELS, type CreatureTier } from '@pr/rules';
+import { useState, type ReactNode } from 'react';
+import { ARTIFACT_SLOT_LABEL, type ArtifactSlot, type ContentCatalog, type CreatureTier, type PantheonDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
-import { Chip, Panel, Tabs } from '../components/kit';
+import { Panel, SectionTitle, Tabs } from '../components/kit';
 import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt, SkillIcon, SpecialtyLine, SpellIcon } from '../components/art';
-import { BalanceChip, CostList, ScreenHeader, StatusChip } from '../components/game';
+import { CostList, ScreenHeader } from '../components/game';
 import { Icon } from '../assets/icons';
 import { AbilityBadge, SetBadge } from '../components/badges';
 
-type Tab = 'creatures' | 'pantheons' | 'gods' | 'heroes' | 'town' | 'magic' | 'world' | 'rules';
+type Tab = 'creatures' | 'gods' | 'heroes' | 'town' | 'spells' | 'skills' | 'artifacts' | 'abilities';
 
-/** The map sites added 2026-10-02, as players read them (rules: rules/systems/sites.ts). */
-const MAP_SITE_HELP: readonly (readonly [string, string])[] = [
-  ['Learning stone', 'Every hero who stops here once gains 1,000 experience.'],
-  ['Spell shrine', 'Teaches its spell to every hero with a spellbook (and the Wisdom its tier needs).'],
-  ['Skill trainer', 'Teaches its skill at Basic to every hero with a free skill slot who lacks it.'],
-  ['Quest hut', 'Bring the resources it asks for, or defeat the named guards yourself, then stop here for the reward. First empire only.'],
-  ['Key tent and key gate', 'Visiting the tent gives your empire that colour’s key; key gates of the colour then open for all your heroes. Each locked treasury is sealed by one.'],
-  ['Windmill', 'The first hero to stop here each week collects its resources.'],
-  ['Treasure chest', 'Choose: the Gold for your treasury or the experience for the hero.'],
-  ['Prison', 'Frees a captive hero who joins your empire (with level-ups to choose) if you lead fewer than eight heroes.'],
+const TABS: readonly { id: Tab; label: string }[] = [
+  { id: 'creatures', label: 'Bestiary' },
+  { id: 'gods', label: 'Gods' },
+  { id: 'heroes', label: 'Heroes' },
+  { id: 'town', label: 'Towns' },
+  { id: 'spells', label: 'Spells' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'artifacts', label: 'Artifacts' },
+  { id: 'abilities', label: 'Abilities' },
 ];
 
-export function EncyclopediaScreen() {
+const RARITY_LABEL: Readonly<Record<string, string>> = { treasure: 'Treasure', minor: 'Minor artifact', major: 'Major artifact', relic: 'Relic' };
+const RANKS = ['Basic', 'Advanced', 'Expert'] as const;
+
+/**
+ * A hero's biography as story text: the content keeps provenance and availability
+ * notes in it ("Concept-board hero.", "Hireable in skirmish."), which are status,
+ * not lore — the encyclopedia shows only the story sentences.
+ */
+function storyOf(biography: string): string {
+  return biography
+    .replace(/;\s*hireable in skirmish[^.]*\./gi, '.')
+    .split(/(?<=\.)\s+/)
+    .filter((x) => !/^(Concept-board hero|Class assignment is provisional|Hireable in skirmish)/i.test(x))
+    .join(' ')
+    .trim();
+}
+
+const notInPlay = (status: string) => (status === 'implemented' ? '' : status === 'preparation' ? 'Not playable yet' : 'Planned — not in play');
+
+/** The banner that opens a pantheon's section: emblem in a medallion, name, epithet, ornamental rules. */
+function PantheonDivider({ catalog, p }: { catalog: ContentCatalog; p: PantheonDefinition }) {
+  return (
+    <div className="codex-divider" role="heading" aria-level={2} aria-label={`${p.name} pantheon`}>
+      <span className="codex-divider__line" aria-hidden="true" />
+      <span className="codex-divider__center">
+        <span className="codex-divider__medal">
+          <Emblem catalog={catalog} pantheonId={p.id} size="3rem" />
+        </span>
+        <span className="codex-divider__titles">
+          <span className="codex-divider__name">{p.name}</span>
+          <span className="codex-divider__epithet">{p.epithet}</span>
+        </span>
+      </span>
+      <span className="codex-divider__line codex-divider__line--end" aria-hidden="true" />
+    </div>
+  );
+}
+
+/** Every pantheon in the catalog's order, one below the other. */
+function ByPantheon({ catalog, children }: { catalog: ContentCatalog; children: (p: PantheonDefinition) => ReactNode }) {
+  return (
+    <>
+      {catalog.pantheonOrder.map((id) => {
+        const p = catalog.pantheons[id];
+        if (!p) return null;
+        return (
+          <section key={id} className="codex-pantheon" style={{ ['--faction' as string]: p.theme.accent }} data-testid={`codex-pantheon-${id}`}>
+            <PantheonDivider catalog={catalog} p={p} />
+            {children(p)}
+          </section>
+        );
+      })}
+    </>
+  );
+}
+
+function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalog; tier: number; familyId: string }) {
   const store = useStore();
-  const catalog = store.catalog;
-  const [tab, setTab] = useState<Tab>((store.screen.params.tab as Tab | undefined) ?? 'creatures');
-  const [pantheonId, setPantheonId] = useState<string>((store.screen.params.pantheonId as string | undefined) ?? 'greek');
-  const pantheon = catalog.pantheons[pantheonId]!;
-  // Neutral creatures (no pantheon) are a bestiary filter of their own.
-  const [neutral, setNeutral] = useState<boolean>(store.screen.params.neutral === true);
-  const neutralFamilies = Object.values(catalog.families)
+  const fam = catalog.families[familyId];
+  if (!fam) return null;
+  return (
+    <div className="bestiary-tier panel">
+      <div className="bestiary-tier__head">
+        <span className="tier-badge">T{tier as CreatureTier}</span> {fam.name} family
+        <span className="codex-meta"> · growth {fam.baseGrowth}/week</span>
+      </div>
+      <div className="bestiary-tier__pair">
+        {[fam.baseCreatureId, fam.upgradedCreatureId].map((cid) => {
+          const c = catalog.creatures[cid];
+          if (!c) return null;
+          return (
+            <button key={cid} type="button" className="bestiary-card" onClick={() => store.goto('unit-detail', { creatureId: cid })} data-testid={`codex-${cid}`}>
+              <CreaturePortrait catalog={catalog} creatureId={cid} size="5.6rem" />
+              <div>
+                <div className="bestiary-card__name">{c.name}</div>
+                <div className="codex-meta">
+                  {c.form === 'upgraded' ? 'Upgraded form' : 'Base form'} · {c.roleLabel}
+                </div>
+                {c.stats ? (
+                  <div className="bestiary-card__stats">
+                    <span title="Attack"><Icon name="attack" className="inline-icon" /> {c.stats.attack}</span>
+                    <span title="Defense"><Icon name="defense" className="inline-icon" /> {c.stats.defense}</span>
+                    <span title="Health"><Icon name="hp" className="inline-icon" /> {c.stats.hp}</span>
+                    <span title="Damage"><Icon name="damage" className="inline-icon" /> {c.stats.damageMin}–{c.stats.damageMax}</span>
+                    <span title="Speed"><Icon name="speed" className="inline-icon" /> {c.stats.speed}</span>
+                  </div>
+                ) : (
+                  <div className="codex-meta">Stats not designed</div>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Bestiary({ catalog }: { catalog: ContentCatalog }) {
+  const neutral = Object.values(catalog.families)
     .filter((f) => f.classification === 'neutral')
     .sort((a, b) => a.tier - b.tier || (a.name < b.name ? -1 : 1));
-  const set = (t: Tab) => {
-    setTab(t);
-    store.setParams({ tab: t });
-  };
-  const rp = catalog.rulesProfile;
-  const town = pantheon.townArchetypeId ? catalog.townArchetypes[pantheon.townArchetypeId] : undefined;
   return (
-    <div className="screen codex-screen">
-      <ScreenHeader title="Encyclopedia" subtitle="Creatures, gods, heroes, buildings and rules of this build" />
-      <div className="codex-bar">
-        <Tabs<Tab>
-          label="Encyclopedia sections"
-          value={tab}
-          onChange={set}
-          tabs={[
-            { id: 'creatures', label: 'Bestiary' },
-            { id: 'pantheons', label: 'Pantheons' },
-            { id: 'gods', label: 'Gods' },
-            { id: 'heroes', label: 'Heroes' },
-            { id: 'town', label: 'Town' },
-            { id: 'magic', label: 'Spells, Skills & Artifacts' },
-            { id: 'world', label: 'Skirmish & World' },
-            { id: 'rules', label: 'Rules' },
-          ]}
-        />
-        {tab === 'creatures' || tab === 'gods' || tab === 'heroes' || tab === 'town' ? (
-          <div className="row gap" role="group" aria-label="Pantheon filter">
-            {catalog.pantheonOrder.map((id) => (
-              <button
-                key={id}
-                type="button"
-                className={`filter-chip ${pantheonId === id && !(tab === 'creatures' && neutral) ? 'is-on' : ''}`}
-                onClick={() => {
-                  setPantheonId(id);
-                  setNeutral(false);
-                  store.setParams({ pantheonId: id, neutral: false });
-                }}
-                aria-pressed={pantheonId === id && !(tab === 'creatures' && neutral)}
-              >
-                <Emblem catalog={catalog} pantheonId={id} size="1.4rem" /> {catalog.pantheons[id]?.name}
-              </button>
-            ))}
-            {tab === 'creatures' && neutralFamilies.length > 0 ? (
-              <button
-                type="button"
-                className={`filter-chip ${neutral ? 'is-on' : ''}`}
-                onClick={() => {
-                  setNeutral(true);
-                  store.setParams({ neutral: true });
-                }}
-                aria-pressed={neutral}
-                data-testid="codex-neutral"
-                title="Creatures of no pantheon: they guard sites, sell themselves at camps and roam the wilds of random maps"
-              >
-                Neutral
-              </button>
-            ) : null}
-          </div>
-        ) : null}
-      </div>
-      <div className="codex-body scroll">
-        {tab === 'creatures' ? (
+    <>
+      <ByPantheon catalog={catalog}>
+        {(p) => (
           <div className="bestiary">
-            {(neutral ? neutralFamilies.map((f) => ({ tier: f.tier, familyId: f.id })) : pantheon.roster).map((r) => {
-              const fam = catalog.families[r.familyId];
-              if (!fam) return null;
-              return (
-                <div key={fam.id} className="bestiary-tier panel">
-                  <div className="bestiary-tier__head">
-                    <span className="tier-badge">T{r.tier as CreatureTier}</span> {fam.name} family <StatusChip status={fam.implementationStatus} />{' '}
-                    <BalanceChip status={catalog.creatures[fam.baseCreatureId]?.balanceStatus ?? 'not_applicable'} />
-                    <span className="faint small"> · growth {fam.baseGrowth}/week</span>
-                  </div>
-                  <div className="bestiary-tier__pair">
-                    {[fam.baseCreatureId, fam.upgradedCreatureId].map((cid) => {
-                      const c = catalog.creatures[cid]!;
-                      return (
-                        <button key={cid} type="button" className="bestiary-card" onClick={() => store.goto('unit-detail', { creatureId: cid })} data-testid={`codex-${cid}`}>
-                          <CreaturePortrait catalog={catalog} creatureId={cid} size="5rem" showPlaceholderTag />
-                          <div>
-                            <div className="bestiary-card__name">{c.name}</div>
-                            <div className="faint small">
-                              {c.form === 'upgraded' ? 'Upgraded form' : 'Base form'} · {c.roleLabel}
-                            </div>
-                            {c.stats ? (
-                              <div className="small row gap">
-                                <span title="Attack"><Icon name="attack" className="inline-icon" /> {c.stats.attack}</span>
-                                <span title="Defense"><Icon name="defense" className="inline-icon" /> {c.stats.defense}</span>
-                                <span title="Health"><Icon name="hp" className="inline-icon" /> {c.stats.hp}</span>
-                                <span title="Damage"><Icon name="damage" className="inline-icon" /> {c.stats.damageMin}–{c.stats.damageMax}</span>
-                                <span title="Speed"><Icon name="speed" className="inline-icon" /> {c.stats.speed}</span>
-                              </div>
-                            ) : (
-                              <div className="faint small">Stats not designed</div>
-                            )}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+            {p.roster.map((r) => (
+              <CreatureTierPanel key={r.familyId} catalog={catalog} tier={r.tier} familyId={r.familyId} />
+            ))}
           </div>
-        ) : null}
-        {tab === 'pantheons' ? (
-          <div className="codex-grid">
-            {catalog.pantheonOrder.map((id) => {
-              const p = catalog.pantheons[id]!;
-              return (
-                <Panel key={id} title={p.name} style={{ ['--faction' as string]: p.theme.accent }}>
-                  <div className="row gap">
-                    <Emblem catalog={catalog} pantheonId={id} size="3.4rem" />
-                    <div>
-                      <div className="tagline">{p.epithet}</div>
-                      <Chip tone={p.playability === 'playable' ? 'ok' : 'info'}>{p.playability === 'playable' ? 'Playable' : 'Preparation'}</Chip>
-                      {p.provenance.source === 'proposed-this-build' ? <Chip tone="warn" title="Every number is proposed and unplaytested">Proposed values</Chip> : null}
-                    </div>
-                  </div>
-                  <p className="small">{p.summary}</p>
-                  <div className="faint small">
-                    7 tiers · {p.godIds.length} gods · {p.heroIds.length} heroes · {p.townArchetypeId ? 'town designed' : 'town not designed'}
-                  </div>
-                </Panel>
-              );
-            })}
+        )}
+      </ByPantheon>
+      {neutral.length ? (
+        <section className="codex-pantheon codex-pantheon--neutral" data-testid="codex-pantheon-neutral">
+          <div className="codex-divider" role="heading" aria-level={2} aria-label="Neutral creatures">
+            <span className="codex-divider__line" aria-hidden="true" />
+            <span className="codex-divider__center">
+              <span className="codex-divider__medal">
+                <Icon name="bestiary" style={{ width: '2.4rem', height: '2.4rem', color: 'var(--gold-300)' }} />
+              </span>
+              <span className="codex-divider__titles">
+                <span className="codex-divider__name">Neutral</span>
+                <span className="codex-divider__epithet">Creatures of no pantheon: they guard sites, sell themselves at camps and roam the wilds</span>
+              </span>
+            </span>
+            <span className="codex-divider__line codex-divider__line--end" aria-hidden="true" />
           </div>
-        ) : null}
-        {tab === 'gods' ? (
-          <div className="codex-grid">
-            {pantheon.godIds.map((g) => {
-              const god = catalog.gods[g]!;
-              return (
-                <Panel key={g} title={god.name}>
-                  <div className="row gap">
-                    <GodPortrait catalog={catalog} godId={g} size="4rem" locked={god.implementationStatus !== 'implemented'} />
-                    <div>
-                      <div className="dim">{god.domain}</div>
-                      <div className="row gap wrap">
-                        <StatusChip status={god.implementationStatus} />
-                        <Chip>{god.role}</Chip>
-                        {god.favorCost ? <Chip tone="info">{god.favorCost} Favor</Chip> : null}
-                      </div>
-                    </div>
+          <div className="bestiary">
+            {neutral.map((f) => (
+              <CreatureTierPanel key={f.id} catalog={catalog} tier={f.tier} familyId={f.id} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </>
+  );
+}
+
+function Gods({ catalog }: { catalog: ContentCatalog }) {
+  return (
+    <ByPantheon catalog={catalog}>
+      {(p) => (
+        <div className="codex-cards codex-cards--wide">
+          {p.godIds.map((g) => {
+            const god = catalog.gods[g];
+            if (!god) return null;
+            const status = notInPlay(god.implementationStatus);
+            return (
+              <article key={g} className="codex-card codex-card--portrait panel" data-testid={`codex-god-${g}`}>
+                <GodPortrait catalog={catalog} godId={g} size="6.4rem" locked={god.implementationStatus !== 'implemented'} />
+                <div className="codex-card__body">
+                  <h3 className="codex-card__name">{god.name}</h3>
+                  <div className="codex-card__sub">{god.domain}</div>
+                  <div className="codex-meta">
+                    {god.role === 'patron' ? 'Patron god' : god.role === 'minor' ? `Minor god · ${god.favorCost} Favor` : 'Not designed yet'}
+                    {status ? ` · ${status}` : ''}
                   </div>
                   {god.benefitSummary.length ? (
-                    <ul className="bullets small">
+                    <ul className="codex-bullets">
                       {god.benefitSummary.map((b) => (
                         <li key={b}>{b}</li>
                       ))}
                     </ul>
                   ) : null}
-                </Panel>
-              );
-            })}
-          </div>
-        ) : null}
-        {tab === 'heroes' ? (
-          <div className="codex-grid">
-            {pantheon.heroIds.map((h) => {
-              const hero = catalog.heroes[h]!;
-              return (
-                <Panel key={h} title={hero.name}>
-                  <div className="row gap">
-                    <HeroPortrait catalog={catalog} definitionId={h} size="4.4rem" />
-                    <div>
-                      <div className="dim">{hero.title}</div>
-                      <div className="row gap wrap">
-                        <Chip>{catalog.heroClasses[hero.classId]?.name ?? hero.classId}</Chip>
-                        <Chip tone={hero.availability === 'preview' ? 'muted' : 'info'}>{hero.availability}</Chip>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </ByPantheon>
+  );
+}
+
+function Heroes({ catalog }: { catalog: ContentCatalog }) {
+  return (
+    <ByPantheon catalog={catalog}>
+      {(p) => (
+        <div className="codex-cards codex-cards--wide">
+          {p.heroIds.map((h) => {
+            const hero = catalog.heroes[h];
+            if (!hero) return null;
+            return (
+              <article key={h} className="codex-card codex-card--portrait panel" data-testid={`codex-hero-${h}`}>
+                <HeroPortrait catalog={catalog} definitionId={h} size="6.4rem" />
+                <div className="codex-card__body">
+                  <h3 className="codex-card__name">{hero.name}</h3>
+                  <div className="codex-card__sub">{hero.title}</div>
+                  <div className="codex-meta">{catalog.heroClasses[hero.classId]?.name ?? hero.classId}</div>
+                  <SpecialtyLine catalog={catalog} definitionId={h} size="2.8rem" />
+                  {storyOf(hero.biography) ? <p className="codex-card__text">{storyOf(hero.biography)}</p> : null}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </ByPantheon>
+  );
+}
+
+function Towns({ catalog }: { catalog: ContentCatalog }) {
+  return (
+    <ByPantheon catalog={catalog}>
+      {(p) => {
+        const town = p.townArchetypeId ? catalog.townArchetypes[p.townArchetypeId] : undefined;
+        if (!town) return <p className="codex-card__text dim">This pantheon has no town design yet.</p>;
+        return (
+          <div className="codex-cards">
+            {town.slots.map((s) => (
+              <Panel key={s.id} title={s.label} className="codex-town-slot">
+                {s.chain.map((b) => {
+                  const bd = catalog.buildings[b];
+                  if (!bd) return null;
+                  const status = notInPlay(bd.implementationStatus);
+                  return (
+                    <div key={b} className="codex-building">
+                      <BuildingArt artAssetId={bd.artAssetId} alt={bd.name} className="codex-building__art" />
+                      <div>
+                        <div className="codex-building__name">{bd.name}</div>
+                        <div className="codex-card__text">{bd.summary}</div>
+                        {status ? <div className="codex-meta">{status}</div> : <CostList cost={bd.cost} />}
                       </div>
                     </div>
-                  </div>
-                  <SpecialtyLine catalog={catalog} definitionId={h} />
-                  <p className="small">{hero.biography}</p>
-                </Panel>
-              );
-            })}
+                  );
+                })}
+              </Panel>
+            ))}
           </div>
-        ) : null}
-        {tab === 'town' ? (
-          town ? (
-            <div className="codex-grid">
-              {town.slots.map((s) => (
-                <Panel key={s.id} title={s.label}>
-                  {s.chain.map((b) => {
-                    const bd = catalog.buildings[b]!;
-                    return (
-                      <div key={b} className="codex-building">
-                        <BuildingArt artAssetId={bd.artAssetId} alt={bd.name} className="codex-building__art" />
-                        <div>
-                          <div>
-                            <strong>{bd.name}</strong> <StatusChip status={bd.implementationStatus} />
-                          </div>
-                          <div className="small">{bd.summary}</div>
-                          {bd.implementationStatus !== 'planned' ? <CostList cost={bd.cost} /> : null}
-                        </div>
+        );
+      }}
+    </ByPantheon>
+  );
+}
+
+function Spells({ catalog }: { catalog: ContentCatalog }) {
+  const spells = Object.values(catalog.spells).sort((a, b) => a.tier - b.tier || (a.name < b.name ? -1 : 1));
+  const tiers = [...new Set(spells.map((s) => s.tier))];
+  return (
+    <>
+      {tiers.map((t) => (
+        <section key={t} className="codex-group">
+          <SectionTitle>Tier {t} spells</SectionTitle>
+          <div className="codex-cards">
+            {spells
+              .filter((sp) => sp.tier === t)
+              .map((sp) => {
+                const status = notInPlay(sp.implementationStatus);
+                return (
+                  <article key={sp.id} className="codex-card panel" data-testid={`codex-spell-${sp.id}`}>
+                    <SpellIcon iconAssetId={sp.iconAssetId} effectType={sp.effect.type} size="3.6rem" />
+                    <div className="codex-card__body">
+                      <h3 className="codex-card__name">{sp.name}</h3>
+                      <div className="codex-meta">
+                        {sp.manaCost} mana · {sp.context === 'battle' ? 'Battle' : 'Adventure map'} · {sp.pantheonId ? `${catalog.pantheons[sp.pantheonId]?.name} towns` : 'Any Sanctum'}
+                        {sp.scope === 'expanded' ? ' · Skirmish and later campaigns' : ''}
+                        {status ? ` · ${status}` : ''}
                       </div>
-                    );
-                  })}
-                </Panel>
-              ))}
-            </div>
-          ) : (
-            <p className="dim">This pantheon has no town design yet.</p>
-          )
-        ) : null}
-        {tab === 'magic' ? (
-          <div className="codex-grid">
-            <Panel title="Spells">
-              {Object.values(catalog.spells).map((sp) => (
-                <div key={sp.id} className="codex-line codex-line--icon">
-                  <SpellIcon iconAssetId={sp.iconAssetId} effectType={sp.effect.type} size="2.2rem" />
-                  <div>
-                    <strong>{sp.name}</strong> <Chip>T{sp.tier}</Chip> <Chip tone="info">{sp.manaCost} mana</Chip> <Chip>{sp.context}</Chip> <StatusChip status={sp.implementationStatus} />
-                    {sp.pantheonId ? <Chip tone="info">{catalog.pantheons[sp.pantheonId]?.name}</Chip> : null}
-                    {sp.scope === 'expanded' ? <Chip tone="muted">Skirmish &amp; Winter Oath</Chip> : null}
-                    <div className="small dim">{sp.summary}</div>
-                    {sp.lore ? <div className="faint small h3-lore">{sp.lore}</div> : null}
-                  </div>
-                </div>
-              ))}
-            </Panel>
-            <Panel title="Skills">
-              {Object.values(catalog.skills).map((sk) => (
-                <div key={sk.id} className="codex-line codex-line--icon">
-                  <SkillIcon iconAssetId={sk.iconAssetId} size="2.2rem" />
-                  <div>
-                    <strong>{sk.name}</strong> {sk.pantheonId ? <Chip tone="info">{catalog.pantheons[sk.pantheonId]?.name}</Chip> : null}
-                    {sk.scope === 'expanded' ? <Chip tone="muted">Skirmish only</Chip> : null}
-                    <div className="small dim">{sk.rankSummaries.map((r, i) => `${['Basic', 'Advanced', 'Expert'][i]}: ${r}`).join(' · ')}</div>
-                  </div>
-                </div>
-              ))}
-            </Panel>
-            <Panel title="Artifacts">
-              {Object.values(catalog.artifacts).map((a) => (
-                <div key={a.id} className="codex-line codex-line--icon">
-                  <ArtifactIcon iconAssetId={a.iconAssetId} kind={a.slot} size="2.2rem" rarity={a.rarity} />
-                  <div>
-                    <strong>{a.name}</strong> <Chip>{ARTIFACT_SLOT_LABEL[a.slot]}</Chip>
-                    {a.rarity ? <Chip tone="muted">{a.rarity}</Chip> : null}
-                    {a.setId ? (
-                      <Chip tone="info">
-                        <SetBadge catalog={catalog} setId={a.setId} size="0.9rem" /> {catalog.artifactSets?.[a.setId]?.name ?? 'Set'}
-                      </Chip>
-                    ) : null}
-                    <div className="small dim">{a.summary}</div>
-                    {a.lore ? <div className="faint small h3-lore">{a.lore}</div> : null}
-                  </div>
-                </div>
-              ))}
-            </Panel>
-            <Panel title="Abilities">
-              {Object.values(catalog.abilities).map((a) => (
-                <div key={a.id} className="codex-line">
-                  <AbilityBadge catalog={catalog} abilityId={a.id} size="1.2rem" /> <strong>{a.name}</strong> <Chip>{a.activation}</Chip>
-                  <div className="small">{a.exactRule}</div>
-                  {a.restriction ? <div className="faint small">{a.restriction}</div> : null}
-                </div>
-              ))}
-            </Panel>
+                      <p className="codex-card__text">{sp.summary}</p>
+                      {sp.lore ? <p className="codex-card__lore">{sp.lore}</p> : null}
+                    </div>
+                  </article>
+                );
+              })}
           </div>
-        ) : null}
-        {tab === 'world' ? (
-          <div className="codex-grid">
-            <Panel title="Map sites (random maps)">
-              {MAP_SITE_HELP.map(([name, text]) => (
-                <div key={name} className="codex-line">
-                  <strong>{name}</strong>
-                  <div className="small dim">{text}</div>
-                </div>
-              ))}
-              <p className="faint small">Added 2026-10-02. Every empire gets the same sites around its town. Proposed values, unplaytested.</p>
-            </Panel>
-            <Panel title="Neutral creatures">
-              <div className="codex-line small">
-                When a hero’s army is at least {NEUTRAL_FLEE_RATIO}× as strong as neutral guards or a wandering monster, they will not fight: they flee, and a hero at least {NEUTRAL_JOIN_RATIO}× as strong (with room in the army) is offered to take them into the army for free. You may also let them go or fight anyway. Either way the guard’s reward stays for you, but no experience is gained. Strength is the game’s estimate (army HP and damage adjusted by Attack and Defense). Skirmish and random maps only.
+        </section>
+      ))}
+    </>
+  );
+}
+
+function Skills({ catalog }: { catalog: ContentCatalog }) {
+  return (
+    <div className="codex-cards codex-cards--wide">
+      {Object.values(catalog.skills).map((sk) => (
+        <article key={sk.id} className="codex-card panel" data-testid={`codex-skill-${sk.id}`}>
+          <SkillIcon iconAssetId={sk.iconAssetId} size="3.6rem" />
+          <div className="codex-card__body">
+            <h3 className="codex-card__name">{sk.name}</h3>
+            {sk.pantheonId || sk.scope === 'expanded' ? (
+              <div className="codex-meta">
+                {sk.pantheonId ? `${catalog.pantheons[sk.pantheonId]?.name} heroes` : ''}
+                {sk.pantheonId && sk.scope === 'expanded' ? ' · ' : ''}
+                {sk.scope === 'expanded' ? 'Skirmish and later campaigns' : ''}
               </div>
-            </Panel>
-            <Panel title="Difficulty (skirmish)">
-              {Object.values(catalog.difficulties ?? {})
-                .sort((a, b) => a.order - b.order)
-                .map((d) => (
-                  <div key={d.id} className="codex-line">
-                    <strong>{d.name}</strong> <span className="small dim">— {d.summary}</span>
-                    <ul className="bullets small">
-                      {d.details.map((x) => (
-                        <li key={x}>{x}</li>
-                      ))}
-                    </ul>
+            ) : null}
+            <dl className="codex-ranks">
+              {sk.rankSummaries.map((r, i) => (
+                <div key={i}>
+                  <dt>{RANKS[i] ?? `Rank ${i + 1}`}</dt>
+                  <dd>{r}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function Artifacts({ catalog }: { catalog: ContentCatalog }) {
+  const all = Object.values(catalog.artifacts);
+  const slots = (Object.keys(ARTIFACT_SLOT_LABEL) as ArtifactSlot[]).filter((s) => all.some((a) => a.slot === s));
+  const sets = Object.values(catalog.artifactSets ?? {});
+  return (
+    <>
+      {slots.map((slot) => (
+        <section key={slot} className="codex-group">
+          <SectionTitle>{ARTIFACT_SLOT_LABEL[slot]}</SectionTitle>
+          <div className="codex-cards">
+            {all
+              .filter((a) => a.slot === slot)
+              .map((a) => (
+                <article key={a.id} className="codex-card panel" data-testid={`codex-artifact-${a.id}`}>
+                  <ArtifactIcon iconAssetId={a.iconAssetId} kind={a.slot} size="3.6rem" rarity={a.rarity} />
+                  <div className="codex-card__body">
+                    <h3 className="codex-card__name">{a.name}</h3>
+                    {a.rarity || a.setId ? (
+                      <div className="codex-meta">
+                        {a.rarity ? (RARITY_LABEL[a.rarity] ?? a.rarity) : null}
+                        {a.rarity && a.setId ? ' · ' : null}
+                        {a.setId ? (
+                          <>
+                            <SetBadge catalog={catalog} setId={a.setId} size="1rem" /> {catalog.artifactSets?.[a.setId]?.name ?? 'Set'}
+                          </>
+                        ) : null}
+                      </div>
+                    ) : null}
+                    <p className="codex-card__text">{a.summary}</p>
+                    {a.lore ? <p className="codex-card__lore">{a.lore}</p> : null}
                   </div>
-                ))}
-              <p className="faint small">The campaign keeps its authored balance. Difficulty never changes creature statistics.</p>
-            </Panel>
-            <Panel title="Divine interventions">
-              {Object.values(catalog.interventions ?? {}).map((d) => (
-                <div key={d.id} className="codex-line">
-                  <strong>{d.name}</strong> <Chip tone="info">{d.favorCost} Favor</Chip> <Chip>{d.context === 'battle' ? 'Battle' : 'Map'}</Chip>
-                  {d.pantheonIds?.map((p) => (
-                    <Chip key={p}>{catalog.pantheons[p]?.name}</Chip>
-                  ))}
-                  <div className="small dim">{d.summary}</div>
-                </div>
+                </article>
               ))}
-              <p className="faint small">One intervention per week. Skirmish and random maps only.</p>
-            </Panel>
-            <Panel title="Weekly events">
-              {Object.values(catalog.weeklyEvents ?? {}).map((w) => (
-                <div key={w.id} className="codex-line">
-                  <strong>{w.name}</strong>
-                  <div className="small dim">{w.summary}</div>
-                </div>
-              ))}
-            </Panel>
-            <Panel title="Artifact sets">
-              {Object.values(catalog.artifactSets ?? {}).map((set) => (
-                <div key={set.id} className="codex-line">
-                  <SetBadge catalog={catalog} setId={set.id} size="1.3rem" /> <strong>{set.name}</strong>
-                  <div className="small dim">{set.summary}</div>
-                  <div className="small">Pieces: {set.pieceIds.map((id) => catalog.artifacts[id]?.name ?? id).join(', ')}</div>
-                  <ul className="bullets small">
+          </div>
+        </section>
+      ))}
+      {sets.length ? (
+        <section className="codex-group">
+          <SectionTitle>Artifact sets</SectionTitle>
+          <div className="codex-cards codex-cards--wide">
+            {sets.map((set) => (
+              <article key={set.id} className="codex-card panel" data-testid={`codex-set-${set.id}`}>
+                <SetBadge catalog={catalog} setId={set.id} size="3.2rem" />
+                <div className="codex-card__body">
+                  <h3 className="codex-card__name">{set.name}</h3>
+                  <p className="codex-card__text">{set.summary}</p>
+                  <div className="codex-meta">Pieces: {set.pieceIds.map((id) => catalog.artifacts[id]?.name ?? id).join(', ')}</div>
+                  <ul className="codex-bullets">
                     {set.bonuses.map((b) => (
                       <li key={b.pieces}>{b.summary}</li>
                     ))}
                   </ul>
                 </div>
-              ))}
-            </Panel>
-            <Panel title="Creature camps, events and monsters">
-              <ul className="bullets small">
-                <li>Creature camps sell their creature to a visiting hero at the normal price; each camp gains volunteers every week.</li>
-                <li>Map events happen once: the first hero to arrive picks one of the offered results.</li>
-                <li>Wandering monsters roam near their lair, attack heroes they can beat and guard treasure.</li>
-                <li>Random maps are symmetric: every empire gets the same terrain, roads and sites around its town.</li>
-              </ul>
-            </Panel>
+              </article>
+            ))}
           </div>
-        ) : null}
-        {tab === 'rules' ? (
-          <div className="codex-grid">
-            <Panel title="Movement">
-              <table className="table">
-                <tbody>
-                  <tr>
-                    <th>Road</th>
-                    <td>{rp.roadCost} per hex</td>
-                  </tr>
-                  {Object.entries(rp.terrainCost).map(([t, c]) => (
-                    <tr key={t}>
-                      <th>{t}</th>
-                      <td>{c === null ? 'impassable' : `${c} per hex`}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="small dim">Daily movement comes from the army’s slowest Speed ({rp.minimumMovement}–{rp.maximumMovement}), plus Logistics and artifacts. Unexplored tiles are never used for routes.</p>
-            </Panel>
-            <Panel title="Economy">
-              <ul className="bullets small">
-                <li>One building per town per day, paid in full at once.</li>
-                <li>Base and upgraded forms of a family share one weekly pool; growth arrives on day 1 of each week.</li>
-                <li>Training a stack pays the price difference and uses no population.</li>
-                <li>Market trades go through Gold. Favor cannot be traded.</li>
-                <li>
-                  Market rates with 1 market: sell {RESOURCE_LABELS.wood}/{RESOURCE_LABELS.stone} for {rp.market[0]?.sellCommon} Gold, buy for {rp.market[0]?.buyCommon}.
-                </li>
-              </ul>
-            </Panel>
-            <Panel title="Combat">
-              <ul className="bullets small">
-                <li>15 × 11 hex battlefield; stacks act by Speed, sides alternate priority each round.</li>
-                <li>Attack advantage: +{rp.combat.attackBonusPerPoint / 10}% per point (cap {rp.combat.attackBonusCap / 10}%). Defense advantage: −{rp.combat.defenseReductionPerPoint / 10}% per point (cap {rp.combat.defenseReductionCap / 10}%).</li>
-                <li>Defending multiplies Defense by {rp.combat.defendMultiplier.numerator}/{rp.combat.defendMultiplier.denominator} until the stack acts again.</li>
-                <li>Every shooter has its own range (shown in its statistics): it cannot shoot farther, and shots in the far half of its range deal half damage. Shooters adjacent to an enemy cannot shoot.</li>
-                <li>Damage is rounded down once and is at least 1. Previews never consume randomness.</li>
-                <li>Morale: negative morale can skip an activation (|m|/{rp.combat.negativeMoraleDenominator}); positive morale can grant an extra action (m/{rp.combat.positiveMoraleDenominator}).</li>
-              </ul>
-            </Panel>
-            <Panel title="Heroes">
-              <ul className="bullets small">
-                <li>Level thresholds: {rp.xpThresholds.slice(1, 6).join(', ')}… XP.</li>
-                <li>Each level grants a primary attribute and one of the rolled skill offers.</li>
-                <li>Up to {rp.maxSecondarySkills} skills, rank {rp.maxSkillRank} maximum.</li>
-                <li>Mana: {rp.manaPerKnowledge} per Knowledge. Spellbooks cost {rp.spellbookCost} Gold at a Sanctum.</li>
-              </ul>
-              <p className="faint small">Rules profile {rp.id}. Every number is a proposed, unplaytested value.</p>
-            </Panel>
+        </section>
+      ) : null}
+    </>
+  );
+}
+
+function Abilities({ catalog }: { catalog: ContentCatalog }) {
+  return (
+    <div className="codex-cards codex-cards--wide">
+      {Object.values(catalog.abilities).map((a) => (
+        <article key={a.id} className="codex-card panel" data-testid={`codex-ability-${a.id}`}>
+          <AbilityBadge catalog={catalog} abilityId={a.id} size="3rem" />
+          <div className="codex-card__body">
+            <h3 className="codex-card__name">{a.name}</h3>
+            <div className="codex-meta">{a.activation === 'active' ? 'Active ability' : 'Passive ability'}</div>
+            <p className="codex-card__text">{a.exactRule}</p>
+            {a.restriction ? <p className="codex-card__lore">{a.restriction}</p> : null}
           </div>
-        ) : null}
+        </article>
+      ))}
+    </div>
+  );
+}
+
+export function EncyclopediaScreen() {
+  const store = useStore();
+  const catalog = store.catalog;
+  const asked = store.screen.params.tab as string | undefined;
+  const [tab, setTab] = useState<Tab>(TABS.some((t) => t.id === asked) ? (asked as Tab) : 'creatures');
+  const set = (t: Tab) => {
+    setTab(t);
+    store.setParams({ tab: t });
+  };
+  return (
+    <div className="screen codex-screen">
+      <ScreenHeader title="Encyclopedia" subtitle="Creatures, gods, heroes, towns, magic and artifacts" />
+      <div className="codex-bar">
+        <Tabs<Tab> label="Encyclopedia sections" value={tab} onChange={set} tabs={TABS.map((t) => ({ ...t }))} />
+      </div>
+      <div className="codex-body scroll" key={tab}>
+        {tab === 'creatures' ? <Bestiary catalog={catalog} /> : null}
+        {tab === 'gods' ? <Gods catalog={catalog} /> : null}
+        {tab === 'heroes' ? <Heroes catalog={catalog} /> : null}
+        {tab === 'town' ? <Towns catalog={catalog} /> : null}
+        {tab === 'spells' ? <Spells catalog={catalog} /> : null}
+        {tab === 'skills' ? <Skills catalog={catalog} /> : null}
+        {tab === 'artifacts' ? <Artifacts catalog={catalog} /> : null}
+        {tab === 'abilities' ? <Abilities catalog={catalog} /> : null}
       </div>
     </div>
   );

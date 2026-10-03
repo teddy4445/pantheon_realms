@@ -373,7 +373,6 @@ export function HeroScreen() {
   const mine = hero.ownerId === player.id;
   const neighbors = heroes.filter((h) => h.id !== hero.id && Math.max(Math.abs(h.position.q - hero.position.q), Math.abs(h.position.r - hero.position.r), Math.abs(h.position.q + h.position.r - hero.position.q - hero.position.r)) <= 1);
   const totalCreatures = armyStacks(hero.army).reduce((n, s) => n + s.count, 0);
-  const pending = state.pendingDecisions.find((d) => d.heroId === hero.id);
   const morale = heroMoraleBonus(catalog, state, hero);
   const luck = heroLuckBonus(catalog, state, hero);
   const mana = maxMana(catalog, state, hero);
@@ -527,11 +526,6 @@ export function HeroScreen() {
             </div>
           </div>
           {state.scenario.xpCap !== null ? <div className="faint small">Mission experience cap: {state.scenario.xpCap} (applied at mission end)</div> : null}
-          {pending ? (
-            <Button variant="primary" icon="star" onClick={() => store.goto('level-up')}>
-              Choose level-up reward
-            </Button>
-          ) : null}
           <div className="h3-skills" data-testid="hero-skills">
             {Array.from({ length: catalog.rulesProfile.maxSecondarySkills }, (_, i) => {
               const s = hero.skills[i];

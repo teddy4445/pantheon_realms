@@ -240,6 +240,11 @@ test('Withdraw cancels the encounter: no battle and no readiness gesture', async
   await openSave(page, enc.file, errors);
   await waitModels(page, [enc.heroId, 'rival_odysseus']);
   await openEncounter(page, enc.rivalTile);
+  // The two armies face each other; no strength estimate; Withdraw carries an icon.
+  await expect(page.getByTestId('encounter').locator('.encounter-side')).toHaveCount(2);
+  await expect(page.getByTestId('encounter')).not.toContainText('Estimate');
+  await expect(page.getByTestId('encounter-withdraw').locator('svg, img')).toHaveCount(1);
+  await page.screenshot({ path: 'test-results/encounter-dialog.png' });
   await page.getByRole('button', { name: 'Withdraw' }).click();
   await page.waitForTimeout(3500);
   const s = await inspect(page);

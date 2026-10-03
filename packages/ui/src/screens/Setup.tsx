@@ -1,7 +1,8 @@
 /**
  * Setup flow: S02 Game Mode → S03 Scenario/Campaign → S04 Pantheon →
  * S05 Starting Divine Selection → Mission Briefing → Adventure Map.
- * Random maps have their own setup screen (S19, RandomSetup.tsx).
+ * Random maps have their own setup screen (S19, RandomSetup.tsx) and start
+ * without a briefing.
  *
  * Future campaigns and undesigned content are shown honestly as not
  * playable; nothing here invents hidden mechanics. Skirmish scenarios with
@@ -28,20 +29,6 @@ function campaignBackdrop(campaignId: string | null | undefined): { className: s
   return art ? { className: 'setup-screen setup-screen--cover', style: { ['--app-art' as string]: `url("${art.url}")` } } : { className: 'setup-screen' };
 }
 
-function SetupSteps({ step }: { step: number }) {
-  const store = useStore();
-  const steps = ['Mode', store.setup.mode === 'skirmish' ? 'Scenario' : 'Campaign', 'Pantheon', 'Patron', 'Briefing'];
-  return (
-    <ol className="setup-steps" aria-label="Setup progress">
-      {steps.map((s, i) => (
-        <li key={s} className={i === step ? 'is-current' : i < step ? 'is-done' : ''} aria-current={i === step ? 'step' : undefined}>
-          <span className="setup-steps__n">{i + 1}</span> {s}
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // S02 Game Mode
 // ---------------------------------------------------------------------------
@@ -58,21 +45,19 @@ export function GameModeScreen() {
     store.goto('scenario-select');
   };
   const modes = [
-    { id: 'campaign' as const, icon: 'campaign' as const, title: 'Campaign', text: 'Story missions with a persistent hero: The Three Beacons (three Greek missions) and The Winter Oath (seven Norse missions).', status: 'Playable' },
-    { id: 'skirmish' as const, icon: 'skirmish' as const, title: 'Skirmish', text: 'An authored map against the AI or a second player on this computer (hot-seat). All six pantheons, three difficulties.', status: 'Playable' },
-    { id: 'random' as const, icon: 'map' as const, title: 'Random Map', text: 'A new fair map every time: two to four empires, AI or hot-seat seats, and a choice of victory condition.', status: 'Playable' },
+    { id: 'campaign' as const, icon: 'campaign' as const, title: 'Campaign', text: 'Story missions with a persistent hero: The Three Beacons (three Greek missions) and The Winter Oath (seven Norse missions).' },
+    { id: 'skirmish' as const, icon: 'skirmish' as const, title: 'Skirmish', text: 'An authored map against the AI or a second player on this computer (hot-seat). All six pantheons, three difficulties.' },
+    { id: 'random' as const, icon: 'map' as const, title: 'Random Map', text: 'A new fair map every time: two to four empires, AI or hot-seat seats, and a choice of victory condition.' },
   ];
   return (
     <div className="setup-screen">
       <ScreenHeader title="New Game" subtitle="Choose how you want to play" />
-      <SetupSteps step={0} />
-      <div className="mode-grid mode-grid--3">
+      <div className="mode-grid mode-grid--3 mode-grid--large">
         {modes.map((m) => (
           <button key={m.id} type="button" className="mode-card panel" onClick={() => pick(m.id)} data-testid={`mode-${m.id}`}>
             <Icon name={m.icon} className="mode-card__icon" />
             <h2>{m.title}</h2>
             <p>{m.text}</p>
-            <Chip tone="ok">{m.status}</Chip>
           </button>
         ))}
       </div>
@@ -218,7 +203,6 @@ export function ScenarioSelectScreen() {
           </div>
         }
       />
-      <SetupSteps step={1} />
       <div className="setup-split">
         <Panel title={mode === 'campaign' ? 'Campaigns' : 'Scenarios'} className="setup-list" bodyClassName="scroll">
           {(mode === 'campaign' ? campaigns : skirmishes).map((c) => (
@@ -425,7 +409,6 @@ export function PantheonSelectScreen() {
               : `${catalog.pantheonOrder.length} pantheons; ${catalog.pantheonOrder.filter((id) => catalog.pantheons[id]?.playability === 'playable').length} playable in this build`
         }
       />
-      <SetupSteps step={2} />
       <div className="pantheon-row" role="listbox" aria-label="Pantheons">
         {catalog.pantheonOrder.map((id) => {
           const pp = catalog.pantheons[id];
@@ -567,7 +550,6 @@ export function DivineSelectScreen() {
   return (
     <div {...campaignBackdrop(setup.mode === 'campaign' ? setup.campaignId : null)}>
       <ScreenHeader title="Starting Patron" subtitle={fixed ? 'This scenario fixes its patron god' : 'Choose the god who sponsors your expedition'} />
-      <SetupSteps step={3} />
       <div className="divine-layout">
         <Panel title={fixed ? 'Fixed patron' : 'Patron options'} className="divine-options">
           <div className="god-grid">

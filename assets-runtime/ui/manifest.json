@@ -32,6 +32,13 @@
       "width": 1460,
       "height": 474
     },
+    "brand.logo.text": {
+      "file": "ui/branding/logo-text.webp",
+      "status": "placeholder",
+      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Title lettering without the emblem (cut from the title logo).",
+      "width": 1047,
+      "height": 294
+    },
     "icon.action.ability": {
       "file": "ui/icons/action.ability.png",
       "status": "placeholder",

@@ -58,6 +58,7 @@ import {
   type ContentCatalog,
   type CreatureDefinition,
   type GuardDefinition,
+  type HeroDefinitionId,
   type HexCoord,
   type HostileHeroDefinition,
   type MissionDefinition,
@@ -157,6 +158,17 @@ export class SkirmishGenerationError extends Error {
     super(message);
     this.name = 'SkirmishGenerationError';
   }
+}
+
+/**
+ * The hero pool of a random map's taverns: the hireable heroes and the heroes of
+ * the campaigns (35 in this build), in catalog order. Opponents written for a
+ * campaign stay out. Each tavern still offers only its own pantheon's heroes.
+ */
+export function randomMapTavernPool(catalog: ContentCatalog): HeroDefinitionId[] {
+  return Object.values(catalog.heroes)
+    .filter((h) => h.availability === 'hireable' || h.availability === 'campaign')
+    .map((h) => h.id);
 }
 
 /** Four empires need at least a medium map (their nearest neighbour sits one radius away). */
@@ -1225,6 +1237,9 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     victoryCondition: victory.type === 'hold_relic' && relicSite ? { type: 'hold_site', siteId: relicSite.id, days: victory.days } : { type: 'elimination' },
     purchasableBuildingIds: null,
     heroHiringEnabled: true,
+    // Taverns on random maps offer every hireable hero and the campaign heroes too
+    // (owner request 2026-10-02), each in the towns of the hero's own pantheon.
+    hireableHeroIds: randomMapTavernPool(catalog),
     sites,
     objectives: [
       victory.type === 'hold_relic'

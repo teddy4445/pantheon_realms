@@ -214,6 +214,23 @@ def main() -> int:
     logo = crop_alpha(keyed(Image.open(SRC / "branding" / "full-logo.png")), pad=10)
     save_webp(logo, OUT / "branding" / "full-logo.webp", 90)
     reg("brand.logo.full", OUT / "branding" / "full-logo.webp", "Title logo; navy background keyed out.", width=logo.width, height=logo.height)
+    # The lettering alone ("PANTHEON REALMS" without the emblem on its left): split at the
+    # widest empty column gap in the left half of the keyed logo.
+    la = np.asarray(logo)[:, :, 3]
+    empty = (la > 20).sum(axis=0) == 0
+    best, run, start = (0, 0), 0, 0
+    for x in range(int(logo.width * 0.5)):
+        if empty[x]:
+            if run == 0:
+                start = x
+            run += 1
+            if run > best[1]:
+                best = (start, run)
+        else:
+            run = 0
+    text = crop_alpha(logo.crop((best[0] + best[1], 0, logo.width, logo.height)), pad=10) if best[1] >= 8 else logo
+    save_webp(text, OUT / "branding" / "logo-text.webp", 90)
+    reg("brand.logo.text", OUT / "branding" / "logo-text.webp", "Title lettering without the emblem (cut from the title logo).", width=text.width, height=text.height)
 
     emblem_src = Image.open(SRC / "branding" / "logo.png").convert("RGB")
     emblem = crop_alpha(keyed(emblem_src), pad=6)

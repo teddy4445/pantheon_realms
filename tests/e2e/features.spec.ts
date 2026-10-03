@@ -17,6 +17,9 @@ test('New Game offers Campaign, Skirmish and Random Map — no Multiplayer panel
   await expect(page.getByTestId('mode-random')).toBeVisible();
   await expect(page.getByText('Multiplayer')).toHaveCount(0);
   await expect(page.getByText('Custom Map')).toHaveCount(0);
+  // No setup stepper and no 'Playable' badges on the mode cards.
+  await expect(page.getByRole('list', { name: 'Setup progress' })).toHaveCount(0);
+  await expect(page.locator('.mode-card', { hasText: 'Playable' })).toHaveCount(0);
 });
 
 test('Twin Harbors on Hard: the AI rival starts richer and earns more; the choice is stored in the match', async ({ page }) => {
@@ -38,16 +41,17 @@ test('Twin Harbors on Hard: the AI rival starts richer and earns more; the choic
 test('random map, two people on one computer: the map is hidden at every hand-over', async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
-  await page.getByTestId('menu-random').click();
+  await page.getByTestId('menu-new').click();
+  await page.getByTestId('mode-random').click();
   await page.getByTestId('random-size-small').click();
   await page.getByTestId('seat-1-controller-human').click();
   await page.getByTestId('seat-1-name').fill('Brynja');
   await page.getByTestId('seat-1-pantheon').selectOption('norse');
-  await expect(page.getByTestId('random-preview')).toBeVisible();
-  await expect(page.getByText('Fairness checks 6/6')).toBeVisible();
+  // One panel, no map preview; Start opens the map directly (no briefing).
+  await expect(page.getByTestId('random-preview')).toHaveCount(0);
+  await expect(page.locator('.random-setup .panel')).toHaveCount(1);
   await page.getByTestId('random-seed').fill('4242');
   await page.getByTestId('random-start').click();
-  await page.getByTestId('briefing-begin').click();
   let s = await waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0, 'adventure map');
   expect(s.state.customMission.id).toContain('random_small_2p_4242');
   expect(s.state.players.p2).toMatchObject({ controller: 'human', name: 'Brynja', pantheonId: 'norse' });

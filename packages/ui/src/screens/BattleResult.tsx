@@ -1,8 +1,11 @@
 /**
  * S12 Battle Result. Shows the committed BattleResultRecord: casualties,
  * experience (with visible caps), rewards granted exactly once by the rules,
- * advanced objectives and queued level-ups. Continue leads to pending
- * level-up decisions first, then back to the adventure map.
+ * advanced objectives and queued level-ups. Layout (victory and defeat alike):
+ * the title, the two sides' boxes side by side at one height right below it,
+ * the outcome centred under them and Continue under that, over the player's
+ * pantheon painting dimmed by a 20 % black layer. Continue opens pending
+ * level-up decisions first, then returns to the adventure map.
  */
 import { useEffect } from 'react';
 import { RESOURCE_KEYS, scenarioMission } from '@pr/rules';
@@ -68,35 +71,34 @@ export function BattleResultScreen() {
     ));
   return (
     <div className={`screen result-screen ${splash ? 'result-screen--splash' : ''}`} data-testid="battle-result">
-      {splash ? <ResultSplash art={splash} /> : null}
-      <div className={`result-banner ${playerWon ? 'is-victory' : 'is-defeat'}`}>
-        <div className="result-banner__title">{title}</div>
-        <div className="result-banner__sub">
-          {r.label} · Day {r.day} · {r.rounds} round{r.rounds === 1 ? '' : 's'}
+      {splash ? <ResultSplash art={splash} shade /> : null}
+      <div className="result-body">
+        <div className={`result-banner ${playerWon ? 'is-victory' : 'is-defeat'}`}>
+          <div className="result-banner__title">{title}</div>
         </div>
-      </div>
-      <div className="result-layout">
-        {[
-          { side: r.attacker, key: 'attacker' as const },
-          { side: r.defender, key: 'defender' as const },
-        ].map(({ side, key }) => (
-          <Panel key={key} title={`${side.name}${r.playerSide === key ? ' (you)' : ''}`} className="result-side">
-            <div className="row gap">
-              <Chip tone={r.winner === key ? 'ok' : 'bad'}>{r.winner === key ? 'Won' : 'Lost'}</Chip>
-            </div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Stack</th>
-                  <th>Before</th>
-                  <th>Lost</th>
-                  <th>After</th>
-                </tr>
-              </thead>
-              <tbody>{lines(side)}</tbody>
-            </table>
-          </Panel>
-        ))}
+        <div className="result-sides">
+          {[
+            { side: r.attacker, key: 'attacker' as const },
+            { side: r.defender, key: 'defender' as const },
+          ].map(({ side, key }) => (
+            <Panel key={key} title={`${side.name}${r.playerSide === key ? ' (you)' : ''}`} className="result-side" bodyClassName="scroll">
+              <div className="row gap">
+                <Chip tone={r.winner === key ? 'ok' : 'bad'}>{r.winner === key ? 'Won' : 'Lost'}</Chip>
+              </div>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Stack</th>
+                    <th>Before</th>
+                    <th>Lost</th>
+                    <th>After</th>
+                  </tr>
+                </thead>
+                <tbody>{lines(side)}</tbody>
+              </table>
+            </Panel>
+          ))}
+        </div>
         <Panel title="Outcome" className="result-outcome">
           <p>{r.heroOutcome}</p>
           {r.xpAwarded.length ? (
@@ -114,7 +116,7 @@ export function BattleResultScreen() {
               <SectionTitle>Rewards</SectionTitle>
               <CostList cost={r.rewards.resources} empty="—" />
               {r.rewards.artifactIds.map((a) => (
-                <div key={a} className="small row gap">
+                <div key={a} className="small row gap result-outcome__artifact">
                   {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="2rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
                   <span>
                     Artifact: <strong>{catalog.artifacts[a]?.name}</strong> — {catalog.artifacts[a]?.summary}
@@ -138,14 +140,14 @@ export function BattleResultScreen() {
               </ul>
             </>
           ) : null}
-          {r.levelUpsQueued > 0 ? <p className="success">Level up! {r.levelUpsQueued} decision{r.levelUpsQueued > 1 ? 's' : ''} waiting.</p> : null}
+          {r.levelUpsQueued > 0 ? <p className="success">Level up! {r.levelUpsQueued > 1 ? `${r.levelUpsQueued} new levels` : 'A new level'} to choose next.</p> : null}
         </Panel>
+        <div className="result-actions">
+          <Button variant="primary" size="large" onClick={onContinue} autoFocus data-testid="result-continue">
+            Continue
+          </Button>
+        </div>
       </div>
-      <footer className="setup-footer">
-        <Button variant="primary" size="large" onClick={onContinue} autoFocus data-testid="result-continue">
-          {pending ? 'Continue — Level up' : 'Continue'}
-        </Button>
-      </footer>
     </div>
   );
 }

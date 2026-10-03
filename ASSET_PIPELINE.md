@@ -312,8 +312,8 @@ changes. Edit the sources and re-run the script; never edit the outputs.
 | Source (`assets-source/ui/`) | Runtime output | Asset ID(s) / use |
 |---|---|---|
 | `backgrounds/opening-<pantheon>-<landscape\|battle>.png` | `assets-runtime/ui/backgrounds/*.webp` (WebP q80, ≤1920 px wide) | `menu.background.<name>`; the main menu picks one **at random each time the game starts**; the same image, darkened, sits behind the menu-style screens |
-| `branding/full-logo.png` | `ui/branding/full-logo.webp` (navy background keyed out, cropped) | `brand.logo.full` — main-menu title |
-| `branding/logo.png` | `ui/branding/emblem-256.png`, `assets-runtime/favicon.png` (64 px), `apps/desktop/build-resources/icon.ico` (16–256 px) and `icon.png` (512 px), `ui/branding/app-icon-256.png` | `brand.emblem` (small branding: menu footer, pause, credits), app/installer icon, favicon, window icon |
+| `branding/full-logo.png` | `ui/branding/full-logo.webp` (navy background keyed out, cropped) and `ui/branding/logo-text.webp` (the lettering alone: the logo split at the widest empty column gap in its left half, 1047 × 294) | `brand.logo.full`; `brand.logo.text` — the main-menu title and the Credits dialog (owner request 2026-10-02: the lettering only, no emblem) |
+| `branding/logo.png` | `ui/branding/emblem-256.png`, `assets-runtime/favicon.png` (64 px), `apps/desktop/build-resources/icon.ico` (16–256 px) and `icon.png` (512 px), `ui/branding/app-icon-256.png` | `brand.emblem` (small branding: the in-game pause menu), app/installer icon, favicon, window icon |
 | `frames/intro-frame.png` | `ui/frames/intro-frame.webp` | `menu.frame`; the script also measures the transparent window (`interior`) the menu sits in |
 | `menu-icons/menu-*.png` (the owner's nine `init_icon` files, renamed by meaning) | `assets-runtime/icons/menu-*.png` (192 px) | `icon.menu.<continue\|new-game\|load-game\|campaign\|skirmish\|encyclopedia\|settings\|credits\|quit>` |
 | `sheets/resource-status-icon-pack.png` | `ui/icons/<group>.<name>.png` (96 px, 96 icons) | `icon.res.*`, `icon.stat.*`, `icon.world.*`, `icon.time.*`, `icon.status.*`, `icon.attr.*`, `icon.action.*` (battle actions), `icon.fx.*`, `icon.marker.*` (map markers) |
@@ -322,8 +322,9 @@ changes. Edit the sources and re-run the script; never edit the outputs.
 Main-menu icon mapping (by meaning): double chevron → Continue, four-point
 star → New Game, tray with arrow → Load Game, map with route → Campaign,
 crossed swords → Skirmish, open book → Encyclopedia, gear → Settings, laurel
-with "i" → Credits, door with arrow → Quit. Random Map and High Scores have
-no art of their own yet and use the SVG glyphs.
+with "i" → Credits, door with arrow → Quit. Random Map and High Scores are
+no longer main-menu entries (owner request 2026-10-02): Random Map is a card
+under New Game, High Scores open from the end-of-game summary.
 
 Where icon art is used: `Icon` (`packages/ui/src/assets/icons.tsx`) draws the
 art for the names listed in `ICON_ART` (resources, hero stats, battle actions,
@@ -472,6 +473,25 @@ transparent, neutral pose and light) for the later 3D step, kept in
 `assets-source/creatures/reference/` and never read by the game, and the
 **painted portrait** shown in the panels (`creature.….portrait`, into
 `assets-source/icons/final/`, imported at 256 × 256 by `npm run icons:import`).
+A sixth, `GPT6_BRIEF_6_PANTHEON_EMBLEMS.md`, covers the six pantheon emblems
+(`emblem.<pantheon>`, 1024 × 1024 transparent crests with six different
+silhouettes, readable at 18 px; into `assets-source/icons/final/`, imported at
+256 × 256 by `npm run icons:import`). The game shows every pantheon emblem
+through one component (`Emblem`, `components/art.tsx`: setup cards and rival
+chips, random-map seats, the Encyclopedia's pantheon dividers, the Pantheon,
+Town, Kingdom Overview and hero screens, world dialogs, the summary and high
+scores), so the delivered files replace the generated stand-in everywhere at
+once. A seventh, `GPT6_BRIEF_7_CURSORS.md`, covers 24 context mouse cursors
+(128 × 128 masters with hotspot rules, into `assets-source/ui/cursors/`); the
+game does not use custom cursors yet — the importer and the context switching
+are described in the brief and not built.
+
+Hero portraits: a hero without a portrait of its own (`hero.….portrait`, none
+delivered yet) shows its painted dialogue bust when one exists, framed on the
+head and shoulders in the square portrait frame — 20 of the 62 heroes (the six
+campaign heroes, Hervor among them, and 14 campaign opponents). The other 42,
+29 of the 30 hireable heroes among them, keep the generated stand-in until
+hero portraits are delivered.
 
 | Group | Files | Size | Asset ID pattern |
 |---|---|---|---|

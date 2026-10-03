@@ -72,10 +72,7 @@ test('Three Beacons M01 journey through the UI', async ({ page }) => {
   await readStory(page);
   await page.getByTestId('result-continue').click();
   s = await inspect(page);
-  if (s.screen === 'level-up') {
-    await page.getByTestId('offer-0').click();
-    await page.getByTestId('levelup-confirm').click();
-  }
+  if (s.screen === 'level-up') await page.getByTestId('offer-0').click();
   s = await waitFor(page, (x) => x.screen === 'adventure', 'map after battle');
   // Rewards were granted exactly once (reopening the result would not add more).
   expect(s.state.players.player.wallet.gold).toBe(goldAfterBattle);

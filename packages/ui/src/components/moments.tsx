@@ -28,12 +28,15 @@ export function BannerPlaque({ art, children, className = '' }: { art: StoryArtR
   );
 }
 
-/** A full-window victory or defeat painting behind result UI, with the existing contrast scrim. */
-export function ResultSplash({ art }: { art: StoryArtRecord }) {
+/**
+ * A full-window victory or defeat painting behind result UI: with the existing
+ * contrast scrim, or (`shade`) under an even 20 % black layer (battle result).
+ */
+export function ResultSplash({ art, shade = false }: { art: StoryArtRecord; shade?: boolean }) {
   return (
     <div className="result-splash" aria-hidden="true" data-testid="result-splash" data-asset={art.id}>
       <img src={art.url} alt="" draggable={false} />
-      <div className="scene-art__scrim scene-art__scrim--bottom" />
+      <div className={shade ? 'result-splash__shade' : 'scene-art__scrim scene-art__scrim--bottom'} />
     </div>
   );
 }

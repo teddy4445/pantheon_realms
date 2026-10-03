@@ -490,6 +490,13 @@
 .portrait--round {
   border-radius: 50%;
 }
+/* A 2:3 story bust in a square portrait frame: zoomed on the head and shoulders (the heads sit near 20% of the picture's height). */
+.portrait img.portrait__bust {
+  object-fit: cover;
+  object-position: 50% 0;
+  transform: scale(1.75);
+  transform-origin: 50% 28%;
+}
 .portrait__badge {
   position: absolute;
   right: 0.15rem;
@@ -971,6 +978,7 @@ input[type='radio']:disabled {
 }
 
 .toggle {
+  flex: none;
   width: 2.9rem;
   height: 1.5rem;
   border-radius: 999px;
@@ -1301,3 +1309,13 @@ input[type='radio']:disabled {
    glow is the painting's own (no CSS filter, see the performance rule at the top). */
 .week-banner { width: min(60rem, 86vw); padding: 0; border: 0; background: none; cursor: pointer; font: inherit; color: inherit; animation: moment-drop calc(var(--motion-slow) * 1.4) ease-out both; }
 .week-banner:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 2px; }
+
+/* Credits */
+.credits { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1rem 0 1.4rem; text-align: center; }
+.credits__logo { width: min(22rem, 80%); height: auto; }
+.credits__game { font-family: var(--font-display); font-weight: 700; font-size: 2rem; letter-spacing: 0.08em; color: var(--gold-200); text-shadow: 0 2px 6px #000; }
+.credits__role { margin-top: 0.6rem; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-dim); }
+.credits__name { font-family: var(--font-display); font-weight: 600; font-size: 1.9rem; letter-spacing: 0.06em; color: var(--text-strong); }
+
+/* A pantheon emblem in front of a screen title (town, kingdom overview). */
+.title-with-emblem { display: inline-flex; align-items: center; gap: 0.5rem; }

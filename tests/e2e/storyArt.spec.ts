@@ -135,11 +135,8 @@ test('the campaign’s own ending picture fills the screen behind its epilogue',
       await page.getByTestId('story-continue').click();
     } else if (s.screen === 'level-up') {
       await page.getByTestId('offer-0').click();
-      await page.getByTestId('levelup-confirm').click();
-    } else if (s.screen === 'adventure' && s.state.pendingDecisions.length > 0) {
-      await page.getByTestId('levelup-pending').click();
     }
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
     s = await inspect(page);
   }
   expect(s.story[0]).toBe('epilogue:three_beacons');

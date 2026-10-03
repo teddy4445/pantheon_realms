@@ -1,9 +1,94 @@
 # Development Status
 
-_Last updated: 2026-10-02 · **app 0.6.0** (Windows installer built for play-testing, see below; 0.5.0 before it) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
+_Last updated: 2026-10-03 · **app 0.6.0** (Windows installer built for play-testing, see below; 0.5.0 before it) · after 0.6.0: the **owner's interface pass** (below; not in the 0.6.0 installer) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (0.7.0 saves refused: content version) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
+
+## Owner interface pass (2026-10-03, after the 0.6.0 installer)
+
+Twelve changes the owner asked for after play-testing 0.6.0. **Not in the
+0.6.0 installer.** Rules and content values are unchanged except item 9.
+
+1. **Main menu:** title is the logo lettering only (`brand.logo.text`, cut from
+   the full logo by `prepare_ui_art.py`); no tagline, no emblem and no
+   "Temporary art" chip in the footer; Random Map and High Scores are no longer
+   menu entries (Random Map is under New Game, High Scores open from the
+   end-of-game summary); a flat 20 % black layer between the painting and the
+   menu (it replaced the gradient scrim).
+2. **Credits:** the logo lettering, "Created by", **Teddy Lazebnik**, in large type.
+3. **Settings:** no subtitle under the title.
+4. **Encyclopedia:** eight pages — Bestiary, Gods, Heroes, Towns, Spells,
+   Skills, Artifacts (with the artifact sets), Abilities. The Pantheons,
+   Skirmish & World and Rules pages are gone. Most of their text is still in
+   the game elsewhere — map sites in a random map's Journal help, difficulty
+   effects on the setup screens, each miracle in the Miracles dialog, the
+   current weekly event at its dawn — but the lists of all weekly events and
+   the movement / economy / combat rules summary are no longer shown anywhere.
+   Bestiary, Gods, Heroes and Towns show every pantheon one
+   below the other under a divider (emblem medallion, name, epithet; Neutral
+   closes the Bestiary); no pantheon buttons, no tags (status that matters is a
+   plain line, e.g. "Planned — not in play"). Every spell, skill, artifact and
+   ability has its own card; text about two steps larger (Encyclopedia only).
+   Hero cards show the story only (the content's "Concept-board hero… Hireable
+   in skirmish" notes are left out). Heroes and gods use the larger portrait;
+   a hero with a painted dialogue bust now shows it (head and shoulders) as its
+   portrait everywhere — 20 of 62 heroes; the others and all 60 gods still show
+   generated stand-ins until portraits are delivered (Brief 4 covers the gods).
+5. **Setup:** the MODE / SCENARIO / PANTHEON / PATRON / BRIEFING step bar is
+   gone; the New Game cards have no "Playable" badge and larger text and titles.
+6. **Random Map:** one panel (map, game, empires) with **Start** in its own bar;
+   the live preview, its fairness list and legend and the footer Back button
+   are gone (the preview code is removed; the map is generated when Start is
+   pressed — a generator error shows under Start). Random maps start straight
+   on the adventure map, **without a briefing** (objectives stay in the Journal).
+7. **Pantheon icons:** every pantheon icon goes through one component
+   (`Emblem`), now also in the Town and Kingdom Overview titles. The emblems are
+   still the generated stand-ins: **GPT-6 Brief 6** (`GPT6_BRIEF_6_PANTHEON_EMBLEMS.md`)
+   asks for the six crests; `npm run icons:import` brings them in with no code
+   change.
+8. **Battle result (victory and defeat):** no line under the title; the two
+   sides' boxes directly below it at one height; Outcome centred under them;
+   Continue under Outcome; a 20 % black layer over the painting.
+9. **Random-map taverns:** hire from the 30 hireable heroes **and the 5
+   campaign heroes** (Alexios, Seshet, Akane, Orla, Itzel; Hervor was already
+   hireable) — 35, each in the towns of the hero's own pantheon
+   (`randomMapTavernPool`, `MissionDefinition.hireableHeroIds`). Campaign
+   opponents stay out; authored skirmishes and the campaigns are unchanged.
+   Generator version not bumped (same maps for the same seed; only the
+   mission's tavern list changed), so random maps saved before keep their old
+   list.
+10. **Attack panel:** your army and the opponent's face each other across a VS
+    medallion; the strength "Estimate" is gone from the panel (the tile panel
+    still shows its estimate); Withdraw has an icon.
+11. **Level-up:** opens by itself — after a battle through the result's
+    Continue, otherwise as soon as the map is idle and no dialog, story scene
+    or hand-over is open (from the map, town, hero, recruitment, pantheon,
+    journal or overview screens); the "Level up" buttons on the map status bar
+    and the hero screen are gone. No panel title, no Confirm: clicking a skill
+    card is the choice (a second click within 0.35 s is ignored, so a double
+    click cannot also pick the next level's offer); with no offers a Continue
+    button remains. Large skill icon on the left of each card, details on the
+    right. After the last choice the screen underneath returns.
+12. **Mouse cursors:** **GPT-6 Brief 7** (`GPT6_BRIEF_7_CURSORS.md`): 24 context
+    cursors (interface, adventure map, battle; one sword turned to the six
+    sides of a hex) with hotspot rules. Not wired into the game yet (importer
+    and context switching described in the brief).
+
+**Checks run for the interface pass (cloud, 2026-10-03):**
+
+| Command | Result |
+|---|---|
+| `npm run check` | pass — boundaries, type-check, **292 unit tests in 26 files** (new: `packages/rules/test/randomTavern.test.ts`, 4 tests) |
+| `npm run build` | pass — start-up script 1,542.83 KB / 417.49 KB gzip (1,549 / 420 at 0.6.0), dist 120 MB |
+| `npx playwright test` (full suite) | **69 passed, 1 failed**, 42 skipped (the opt-in review sweep), 37.7 min; the failure was `menu.spec` still counting the removed footer emblem — test updated, then passed |
+| After a last CSS change (random-map panel on small windows) and rebuild: `menu.spec`, `features.spec`, `round3.spec` (menu, credits, New Game, both random-map tests, bestiary) | 6/6 pass |
+| Targeted earlier in the round: `bigMoments.spec` (victory and defeat layout checks, level-up without Confirm), `heroes.spec` Withdraw (two-sided attack panel, Withdraw icon) | pass |
+| Screenshots reviewed | main menu, Credits, Settings, New Game, Random Map (1600 × 900 and 1024 × 640), all eight Encyclopedia pages, scenario/pantheon/patron setup, battle result victory and defeat, level-up, attack panel |
+
+Not run this round: the balance tool (no value changed except the random-map
+tavern list, which the AI uses through the same hiring rules), the desktop
+build and smoke, an installer (0.6.0 stays the latest).
 
 ## 0.5.0 Windows installer (2026-10-02)
 

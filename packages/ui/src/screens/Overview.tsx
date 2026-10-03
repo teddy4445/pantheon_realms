@@ -5,7 +5,7 @@
 import { armyStacks, builtBuildingIds, cellIndex, maxMana, movementBudget, townDailyIncome, weeklyGrowthFor, scenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel } from '../components/kit';
-import { HeroPortrait, CreaturePortrait } from '../components/art';
+import { Emblem, HeroPortrait, CreaturePortrait } from '../components/art';
 import { CostList, ScreenHeader } from '../components/game';
 import { dailyIncome, heroStrength, humanPlayer, playerHeroes, siteKindLabel } from '../app/view';
 
@@ -22,7 +22,13 @@ export function OverviewScreen() {
   const knownRivals = state.playerOrder.filter((p) => p !== player.id).map((p) => state.players[p]!);
   return (
     <div className="screen overview-screen">
-      <ScreenHeader title="Kingdom Overview" subtitle={`${player.name} · ${catalog.pantheons[player.pantheonId]?.name}`} />
+      <ScreenHeader
+        title={
+          <span className="title-with-emblem">
+            <Emblem catalog={catalog} pantheonId={player.pantheonId} size="1.9rem" /> Kingdom Overview
+          </span>
+        }
+        subtitle={`${player.name} · ${catalog.pantheons[player.pantheonId]?.name}`} />
       <div className="overview-grid">
         <Panel title="Income per day" headerIcon="gold">
           <CostList cost={dailyIncome(catalog, state, player.id)} empty="No income" />

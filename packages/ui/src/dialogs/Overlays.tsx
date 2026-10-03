@@ -29,11 +29,13 @@ import { endOfGameSplash } from '../components/moments';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle } from '../components/kit';
-import { ArtifactIcon, BrandEmblem, CreaturePortrait, MissionThumb, SceneArt, briefingArt, speakerSides } from '../components/art';
+import { ArtifactIcon, BrandEmblem, CreaturePortrait, HeroPortrait, MissionThumb, SceneArt, briefingArt, speakerSides } from '../components/art';
 import { DialogueStage, useProtagonist } from './Story';
 import { ArmyStrip, CostList, CreatureStats } from '../components/game';
+import { Icon } from '../assets/icons';
 import { DialogueLines } from '../screens/Journal';
-import { guardStrength, heroStrength, relativeTime, siegeStrength, threatLabel } from '../app/view';
+import { resolveAsset } from '../assets/manifest';
+import { relativeTime } from '../app/view';
 import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog } from './WorldDialogs';
 import { SpellbookDialog } from './Spellbook';
 import { AbilityBadge } from '../components/badges';
@@ -586,15 +588,14 @@ function MissionFailedDialog() {
 
 function CreditsDialog() {
   const store = useStore();
+  const logo = resolveAsset('brand.logo.text');
   return (
-    <Modal title="Credits" onClose={() => store.closeOverlay()} width="34rem">
-      <BrandEmblem size="4.4rem" />
-      <h3 style={{ textAlign: 'center' }}>Pantheon Realms</h3>
-      <p style={{ textAlign: 'center' }}>Development build {store.platform.appVersion}.</p>
-      <p className="small">Game design documents, campaign and content: project owner. Implementation: TypeScript rules core, React interface, Babylon.js scenes, Electron desktop shell.</p>
-      <p className="small">Opening backgrounds, logo, emblem, menu frame and interface icons: owner-supplied art (AI-generated visual references), replaceable by asset ID.</p>
-      <p className="small">Fonts: Cinzel, EB Garamond, Inter (SIL Open Font License), bundled locally.</p>
-      <p className="note small">Unit models, animation and portraits are temporary development placeholders. Town art is derived from the owner’s concept references. Music and sounds are generated placeholders.</p>
+    <Modal title="Credits" onClose={() => store.closeOverlay()} width="34rem" testId="credits">
+      <div className="credits">
+        {logo.url ? <img className="credits__logo" src={logo.url} alt="Pantheon Realms" draggable={false} /> : <div className="credits__game">Pantheon Realms</div>}
+        <div className="credits__role">Created by</div>
+        <div className="credits__name">Teddy Lazebnik</div>
+      </div>
     </Modal>
   );
 }
@@ -712,8 +713,6 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
       : site
         ? (state.world.sites[site.id]?.guard ?? site.guard?.army ?? [])
         : [];
-  const theirs = town ? siegeStrength(catalog, town, enemyHero, level) : enemyHero ? heroStrength(catalog, enemyHero) : site ? guardStrength(catalog, state, site.id) : 0;
-  const t = hero ? threatLabel(catalog, heroStrength(catalog, hero), theirs) : null;
   const label = q?.encounterLabel ?? site?.guard?.label ?? 'Encounter';
   const reward = site?.guard?.reward;
   // Much weaker neutrals join for free or flee (scenario feature; proposed 2026-10-02).
@@ -733,11 +732,13 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
     <Modal
       title={reaction?.kind === 'join' ? `${label} — they offer to join you` : reaction?.kind === 'flee' ? `${label} — they flee from you` : town ? `Besiege ${town.name}?` : `Attack ${label}?`}
       onClose={() => store.closeOverlay()}
-      width={reaction?.kind ? '58rem' : '40rem'}
+      width={reaction?.kind ? '62rem' : '54rem'}
       testId="encounter"
       footer={
         <>
-          <Button onClick={() => store.closeOverlay()}>Withdraw</Button>
+          <Button icon="retreat" onClick={() => store.closeOverlay()} data-testid="encounter-withdraw">
+            Withdraw
+          </Button>
           <span className="grow" />
           {reaction?.kind === 'join' ? (
             <Button variant="primary" size="large" icon="check" onClick={() => react('join')} autoFocus data-testid="encounter-join">
@@ -762,49 +763,77 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
             : `Your army is far stronger. These creatures will flee rather than fight. Letting them go leaves the way clear and keeps the reward, but gains no experience.`}
         </p>
       ) : null}
-      <p>
+      <p className="encounter-lead">
         {reaction?.kind ? 'If you fight anyway, ' : ''}
         {hero?.name} will engage {enemyHero ? `${enemyHero.name}’s army` : `the ${label.toLowerCase()}`}
         {site ? ` at ${site.name}` : ''}. A checkpoint is saved before the battle begins.
       </p>
-      <div className="encounter-army">
-        {army.map((s, i) => (
-          <div key={i} className="encounter-army__stack">
-            <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="4rem" count={s.count} />
-            <div className="small">{catalog.creatures[s.creatureId]?.pluralName}</div>
+      <div className="encounter-versus">
+        <section className="encounter-side encounter-side--mine" aria-label="Your army">
+          <header className="encounter-side__head">
+            {hero ? <HeroPortrait catalog={catalog} definitionId={hero.definitionId} name={hero.name} size="3.4rem" /> : null}
+            <div>
+              <div className="encounter-side__label">Your army</div>
+              <div className="encounter-side__name">{hero?.name}</div>
+            </div>
+          </header>
+          <div className="encounter-army">
+            {(hero ? armyStacks(hero.army) : []).map((s, i) => (
+              <div key={i} className="encounter-army__stack">
+                <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="3.6rem" count={s.count} />
+                <div className="encounter-army__name">{catalog.creatures[s.creatureId]?.pluralName}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </section>
+        <div className="encounter-vs" aria-hidden="true">
+          <Icon name="attack" className="encounter-vs__icon" />
+          <span>VS</span>
+        </div>
+        <section className="encounter-side encounter-side--foe" aria-label={town ? 'Defenders' : 'Opponent'}>
+          <header className="encounter-side__head">
+            {enemyHero ? (
+              <HeroPortrait catalog={catalog} definitionId={enemyHero.definitionId} name={enemyHero.name} size="3.4rem" />
+            ) : (
+              <span className="encounter-side__glyph">
+                <Icon name={town ? 'town' : 'bestiary'} />
+              </span>
+            )}
+            <div>
+              <div className="encounter-side__label">{town ? 'Defenders' : enemyHero ? 'Enemy hero' : 'Guards'}</div>
+              <div className="encounter-side__name">{town ? town.name : (enemyHero?.name ?? site?.guard?.commander?.name ?? label)}</div>
+            </div>
+          </header>
+          <div className="encounter-army">
+            {army.map((s, i) => (
+              <div key={i} className="encounter-army__stack">
+                <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="3.6rem" count={s.count} />
+                <div className="encounter-army__name">{catalog.creatures[s.creatureId]?.pluralName}</div>
+              </div>
+            ))}
+          </div>
+          {town && enemyHero ? <div className="encounter-side__note">Led by {enemyHero.name}</div> : !enemyHero && site?.guard?.commander ? <div className="encounter-side__note">Commander: {site.guard.commander.name}</div> : null}
+        </section>
       </div>
-      {enemyHero || site?.guard?.commander ? <p className="small">Commander: {enemyHero?.name ?? site?.guard?.commander?.name}</p> : null}
       {town ? (
-        <div className="small siege-brief" data-testid="siege-brief">
+        <div className="encounter-note siege-brief" data-testid="siege-brief">
           <p>
             <strong>Siege.</strong> {FORT_TEXT[level] ?? FORT_TEXT[0]} Your Catapult removes one structure point at the start of every round; Cyclopes can batter the walls instead of shooting. Shots into the town across an intact wall deal half damage.
           </p>
           <p className="faint">The defender fights with at most seven stacks and cannot retreat or surrender. Winning captures {town.name}. Temporary siege model; values are proposed.</p>
         </div>
       ) : null}
-      {t ? (
-        <p>
-          Estimate: <Chip tone={t.tone}>{t.text}</Chip> <span className="faint small">— a heuristic from army health and attributes, not a prediction.</span>
-        </p>
-      ) : null}
       {reward?.resources || reward?.artifactIds?.length ? (
-        <div className="small">
-          Reward on victory: <CostList cost={reward.resources ?? {}} empty="" />
+        <div className="encounter-reward">
+          <span className="encounter-reward__label">Reward on victory</span>
+          <CostList cost={reward.resources ?? {}} empty="" />
           {(reward.artifactIds ?? []).map((a) => (
-            <Chip key={a} tone="info">
-              {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="1.25rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
+            <span key={a} className="encounter-reward__artifact">
+              {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="1.6rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
               {catalog.artifacts[a]?.name}
-            </Chip>
+            </span>
           ))}
         </div>
-      ) : null}
-      {hero ? (
-        <>
-          <SectionTitle>Your army</SectionTitle>
-          <ArmyStrip catalog={catalog} army={hero.army} label="Your army" />
-        </>
       ) : null}
     </Modal>
   );

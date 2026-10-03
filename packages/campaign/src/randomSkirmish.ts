@@ -17,6 +17,7 @@ export {
   TREASURE_PERCENT,
   WEALTH_PERCENT,
   skirmishSizeAllows,
+  randomMapTavernPool,
   type GuardStrength,
   type RoadDensity,
   type SkirmishGenOptions,

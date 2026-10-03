@@ -20,8 +20,7 @@ async function settleAfterBattle(page: Page, onResult?: () => Promise<void>): Pr
     s = await inspect(page);
     if (s.screen !== 'level-up') break;
     await page.getByTestId('offer-0').click();
-    await page.getByTestId('levelup-confirm').click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(500);
   }
   return waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0, 'map after battle');
 }
@@ -137,14 +136,10 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   for (let i = 0; i < 20; i++) {
     s = await inspect(page);
     if (s.overlays.includes('debrief')) break;
-    if (s.screen === 'level-up') {
-      await page.getByTestId('offer-0').click();
-      await page.getByTestId('levelup-confirm').click();
-    } else if (s.screen === 'adventure' && s.state.pendingDecisions.length > 0) {
-      // Victory waits for the quest-XP level-up; the map offers it in the status bar.
-      await page.getByTestId('levelup-pending').click();
-    }
-    await page.waitForTimeout(300);
+    // Victory waits for the quest-XP level-up, which opens by itself (no button on the map).
+    expect(await page.getByTestId('levelup-pending').count()).toBe(0);
+    if (s.screen === 'level-up') await page.getByTestId('offer-0').click();
+    await page.waitForTimeout(500);
   }
   s = await waitFor(page, (x) => x.overlays.includes('debrief'), 'debrief');
   expect(s.state.outcome.status).toBe('victory');

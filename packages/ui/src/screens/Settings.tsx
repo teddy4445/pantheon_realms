@@ -107,7 +107,7 @@ export function SettingsScreen() {
 
   return (
     <div className="screen settings-screen">
-      <ScreenHeader title="Settings" subtitle="Presentation and input preferences — never game rules" onBack={leave} />
+      <ScreenHeader title="Settings" onBack={leave} />
       <div className="settings-layout">
         <Tabs<Tab>
           label="Settings sections"

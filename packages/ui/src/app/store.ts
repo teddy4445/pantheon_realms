@@ -15,6 +15,8 @@ import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, battleP
 
 /** How long the battlefield stays after the final blow before the result screen (normal playback). */
 const FINAL_BLOW_BEAT_MS = 700;
+/** Screens a pending level-up opens over by itself (not the battle, its result or the menus). */
+const LEVEL_UP_FROM: readonly ScreenId[] = ['adventure', 'town', 'hero', 'recruitment', 'pantheon', 'journal', 'overview'];
 import type { GameAudio } from '../audio/gameAudio';
 import { campaignEndingArtId } from '../assets/storyArt';
 import { momentsFromEvents, type Moment } from './moments';
@@ -198,6 +200,7 @@ export class AppStore {
   private presenters = new Set<Presenter>();
   private unsubSession: (() => void) | null = null;
   private aiTimer: ReturnType<typeof setTimeout> | null = null;
+  private levelUpQueued = false;
   private presentQueue: Promise<void> = Promise.resolve();
   private toastSeq = 1;
 
@@ -272,11 +275,13 @@ export class AppStore {
   closeOverlay(): void {
     this.overlays = this.overlays.slice(0, -1);
     this.notify();
+    this.checkLevelUp();
   }
 
   closeAllOverlays(): void {
     this.overlays = [];
     this.notify();
+    this.checkLevelUp();
   }
 
   confirm(title: string, body: string, confirmLabel: string, onConfirm: () => void, opts: { danger?: boolean; detail?: string[] } = {}): void {
@@ -327,6 +332,7 @@ export class AppStore {
       this.queueStory(u.events);
       this.routeAfterUpdate(u.events);
       this.checkHandoff();
+      this.checkLevelUp();
       this.scheduleAI();
     });
     session.onCheckpoint((kind, snapshot) => {
@@ -383,12 +389,15 @@ export class AppStore {
     this.openOverlay({ kind: 'briefing' });
   }
 
-  /** Start a generated (random-map) skirmish. */
+  /**
+   * Start a generated (random-map) skirmish: straight onto the adventure map —
+   * a random map has no story, so there is no briefing to show first (its
+   * objectives stay in the Journal).
+   */
   startGenerated(generated: RandomSkirmish, godId: string | null, opts: StartOptions = {}): void {
     const session = GameSession.newGenerated(this.catalog, generated, `random-${Date.now().toString(36)}`, { ...opts, startingGodId: godId });
     this.attach(session);
     this.resetTo('adventure');
-    this.openOverlay({ kind: 'briefing' });
   }
 
   loadSnapshot(snapshot: SaveSnapshot): void {
@@ -468,6 +477,7 @@ export class AppStore {
     this.story = this.story.slice(1);
     if (done.then === 'campaign-complete') this.openOverlay({ kind: 'campaign-complete' });
     this.notify();
+    this.checkLevelUp();
     this.scheduleAI();
   }
 
@@ -497,6 +507,31 @@ export class AppStore {
   }
 
   // ------------------------------------------------------------ hot-seat hand-over
+
+  /**
+   * A hero of the viewer's reached a new level outside a battle (a quest
+   * reward, a learning stone, a chest, the Training Academy, a freed prisoner):
+   * the level-up screen opens by itself — no button — once the map is idle and
+   * nothing waits in front of it (a story scene, a dialog, a hand-over). After a
+   * battle the result screen's Continue leads there.
+   */
+  private checkLevelUp(): void {
+    const session = this.session;
+    if (!session || this.levelUpQueued || !this.levelUpReady(session)) return;
+    this.levelUpQueued = true;
+    void this.whenIdle().then(() => {
+      this.levelUpQueued = false;
+      if (this.session === session && this.levelUpReady(session)) this.goto('level-up');
+    });
+  }
+
+  private levelUpReady(session: GameSession): boolean {
+    const st = session.state;
+    if (st.battle || this.story.length > 0 || this.overlays.length > 0) return false;
+    if (!LEVEL_UP_FROM.includes(this.screen.id)) return false;
+    const viewer = session.humanPlayerId;
+    return st.pendingDecisions.some((d) => st.heroes[d.heroId]?.ownerId === viewer);
+  }
 
   private checkHandoff(): void {
     const session = this.session;
