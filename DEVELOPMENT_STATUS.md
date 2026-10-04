@@ -1,12 +1,163 @@
 # Development Status
 
-_Last updated: 2026-10-04 · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.5`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
+_Last updated: 2026-10-04 · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.5`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## Gods, heroes, town levels and map-hero animations in the game (owner delivery of briefs 8–11, 2026-10-04)
+
+The owner's delivery (`blannder_models\gods_heroes_towns_delivery_2026-10-04`,
+287 assets) had already been copied into the owner's folder with its own
+scoped `copy_to_project.py` (not committed). Checked there: all 287 runtime
+files and all 659 payload files hash-equal to the delivery's
+`asset-index.json` / `bundle-files.json`, and the three merged manifests only
+**add** entries (UI 155 IDs, art 72, sprites the six avatars' `prepare` and
+`cast`); no existing entry changed or disappeared. The cloud copy took the same
+files and manifests (hash-checked again after transfer). Nothing is loaded
+from the art project at run time.
+
+* **60 god portraits and 74 hero portraits** (painted, 256 × 256 WebP): every
+  god and hero of the content has its own (IDs matched one for one). They
+  reach every screen through the existing portrait components — god choice and
+  Pantheon screen, Encyclopedia, Tavern, the map's hero list, hero screen,
+  encounters — and **the battle header now shows each commanding hero's
+  portrait** beside the name (neutral guards have none).
+* **72 town building levels** (`town.<pantheon>.support.<building>.lN`,
+  320 × 320 transparent cutouts): the town already picked the exact level's
+  picture, so they appear with no code change; checked for all six towns at
+  levels 1–4 (Civic Hall 1–4, Temple 1–2, Mage Guild 1–3, Fortifications 1–3),
+  drawn in proportion over the painting with their transparency.
+* **21 god-card icons** and the **icon rows** the brief asked for
+  (`components/godIcons.tsx`): on the Pantheon screen and in the
+  Encyclopedia each blessing is a token of who or what improves, the
+  attribute or resource icon and the definition's number; the price is the
+  Favor icon and cost and one icon per requirement (temple level 1 or 2, civic
+  hall, after the first choice), outlined red when unmet; the state chips
+  carry the patron, first/second choice, committed and excluded icons, and the
+  choice rule the permanent icon. Each token's tooltip and screen-reader text
+  is the content's own sentence, so no number or condition is lost; the
+  missing-requirement list and the reasons stay visible under the card.
+  Patrons without a mechanical blessing keep their sentences. Eight icons were
+  cut at their native 192–250 px (not enlarged); the icon test now allows that.
+* **60 map-hero strips** (`prepare` and `cast`, five drawn directions, 6
+  frames at 6 fps, played once, their own frame size, anchor and 90 px per
+  hex). `prepare` now plays on the beat's clock and **holds its ready pose
+  until the map closes for the battle** (it used to drop back to idle at the
+  end of the beat); an abandoned encounter returns the hero to idle; a second
+  beat request for the same hero while one is pending is skipped. Map spells,
+  Homecoming included, play `cast` once with the spell's own effects, then
+  idle. The camera is unchanged (pan and zoom only; zoom keeps the angle).
+
+**Code changes (presentation, UI, tests, tools; no rule or content change):**
+`presentation/src/adventure.ts` (prepare hold, double-beat guard, Homecoming
+cast), `ui/src/components/godIcons.tsx` (new), `ui/src/screens/Pantheon.tsx`,
+`Encyclopedia.tsx`, `Battle.tsx`, `ui/src/components/art.tsx`
+(`HeroPortrait` takes a snapshot's portrait ID), styles,
+`tools/assets/icon-catalog/inventory.measure.ts` (delivered art is no longer
+counted as missing; god-card icon notes). Tests: `godIcons.test.tsx` (new:
+every designed god's blessings have icons carrying their sentence and number;
+prices; the 21 files), `sprites.test.ts` (prepare/cast metadata and
+mirroring), `uiArt.test.ts` (native-size icons), `heroes.spec.ts` (the
+delivered prepare strip is what is drawn and held), `round12.spec.ts` (the
+caster draws `cast`, then idle).
+
+**Docs:** ASSET_PIPELINE.md (top note, §12, §13), CLAUDE.md, ICON_CATALOG.md
+(regenerated: 834 entries, 23 without art of their own — seven Workshop
+artifacts and 16 story characters).
+
+| Command | Result |
+|---|---|
+| Delivery audit (device: Python over the owner's folder; cloud: after transfer) | 287 / 287 runtime files and 659 / 659 payload files equal the delivery's hashes; manifests: +155 UI, +72 art, +648 sprite keys, 0 changed, 0 removed; every god and hero of the content has its portrait ID delivered, every delivered town level is a content building's art |
+| `npm run check` | boundaries + type-check OK; 38 files / 346 tests passed (new `godIcons.test.tsx`; `sprites.test.ts` +1) |
+| `npm run build` | OK; start-up script 1,976.57 KB / 459.42 KB gzip (before: 1,910.96 / 453.79) |
+| `node tools/perf/load-time.mjs` | local: menu 194 ms, first scene 910 ms; web profile: menu 448 ms, first scene 1,153 ms |
+| Playwright, every spec (`--grep-invert zz-`, 94 tests) | 94 passed in 36.0 min. Before it, one failure fixed: the Encyclopedia's Towns cards differed by 29 px once the square level pictures loaded after the cards were equalised (the building picture now has a fixed 4:3 box drawn with `contain`, and cards re-equalise when a picture loads); `heroes.spec` and `round12.spec` re-run with their new assertions: pass |
+| Visual tour (temporary spec, 1280 × 720, SwiftShader; deleted afterwards) | per pantheon: Pantheon screen with icon rows (first choice committed in three, so committed and excluded show), the map hero idle → `cast` (Far Sight, Fleet Foot) → idle and idle → `prepare` facing the rival in six directions (`e`, `ne`, `nw`·mirrored, `w`·mirrored, `sw`·mirrored, `se`; the readout matched the expected facing every time), the battle header portraits; all six towns at levels 1–4 (each location requested its exact `.lN` picture); Encyclopedia gods and heroes; the Tavern |
+
+Known limits: checked in SwiftShader captures at 1280 × 720 (not at speed on a
+GPU, not by a person). The `n` and `s` strips are not reachable as neighbour
+directions on the map and were checked only by metadata. A prepare beat
+abandoned by leaving the map is covered by the existing test; there is no
+in-game "cancel" once the battle is accepted. The start-up script grew to
+1,976.57 KB (453.79 → 459.42 KB gzip) because the embedded manifests grew.
+
+## Magic and Favor strips, town icons and battlefield climates in the game (owner delivery, 2026-10-04)
+
+The owner's delivery (`blannder_models\magic_icons_battlefields_delivery_2026-10-04`,
+237 new assets) had already been imported into the owner's folder and committed
+(HEAD 2de3a50); the cloud copy took the same runtime files and manifests (all
+237 runtime files SHA-256-checked against the delivery's `ASSET_INDEX.json`,
+and the three manifests equal to HEAD; the delivery's `FINAL_VALIDATION.json`:
+237 passed, 0 failures). Nothing is loaded from the art project at run time.
+
+* **177 VFX phase strips** under their full `fx.*` IDs (9 status overlays, 117
+  battle-spell, 15 adventure-spell, 28 miracle phases, 6 gifts, 2 offering
+  phases) next to the nine shared effects; loops only for status overlays,
+  `travel` and `aura`.
+* **6 town-action icons** (`icon.ui.build`, `recruit`, `market`, `tavern`,
+  `merchant`, `gift`): they replace the SVG stand-ins through the existing
+  icon lookup (no code change).
+* **54 battlefield paintings** (`battlefield.<archetype>.ground.<climate>`,
+  six archetypes × nine climates), native 1419 × 1108 (the proportions of the
+  4096 × 3200 layout; not 4K, not enlarged); the battle picks them from the
+  map's climate, temperate keeps the default painting.
+
+**Code changes (presentation and tools only; no rule or content change):**
+
+1. **Importer fixed** (`tools/assets/sprites/import_sprites.py`): it stripped
+   the `fx.` prefix and forced every effect to play once; it now keeps full
+   `fx.*` IDs (the nine shared effects keep their short IDs), takes `loop` and
+   `additive` from the sidecar, and imports a subset with `--only`. Regression:
+   `--self-test` (synthetic strips in a temporary project) run by
+   `packages/presentation/test/importSprites.test.ts`, which also checks the
+   game manifest (no stripped IDs; loops only where the brief plays one).
+2. **Map aura loops**: Fleet Foot and Wings of Hermes loop their `aura` strip on
+   the hero for the rest of the day they were cast (the interface keeps the
+   cast — match, hero, day — while the session lasts; presentation only, not
+   saved, so a reload drops the aura though the extra movement stays). A still
+   frame under Reduce motion, nothing on Low quality. Read-only `aura` in the
+   map's hero readout (`__prHeroes`).
+3. **Whole-view strips** cover the view with their proportions kept (no
+   stretching), at 60 % opacity easing in and out, mirrored for the defender;
+   they now also play for the seven map miracles, whose drawn look has no
+   whole-view moment (their `screen` strips were otherwise never shown).
+4. **Homecoming** plays its `cast` phase on the hero before `depart`/`arrive`.
+5. **Town**: the gift's strip, smaller and centred, also lands where the gift
+   goes — the resource counters, the visiting hero's portrait (Anointing,
+   Temple Relic) — and `fx.offering.favor` plays on the Favor counter after an
+   offering, once the dialog has closed. Strip bursts follow the window height
+   (frame pixels were fixed before). Found in the tour: a counter burst placed
+   straight in a screen was made `relative` by `.screen > *` and drawn below
+   the window; it now keeps `position: fixed` (two-class rule).
+6. **Status overlays** from strips show their first frame as soon as the strip
+   loads, so they read as still shapes on Low quality and under Reduce motion.
+7. `packages/presentation/test/vfxHooks.test.ts`: every delivered `fx.*` strip
+   is one the game asks for.
+8. Map area scale checked: the strip's ring spans two hexes at scale 1 and is
+   scaled to (reveal radius + ½) hex widths, so its diameter is twice that —
+   no double scaling.
+
+**Docs:** `VFX_MAGIC_AND_FAVORS.md` (generator now marks delivered IDs: 177 of
+177 ✓), `ICON_CATALOG.md`, ASSET_PIPELINE.md §5, §11 and §13, CLAUDE.md.
+
+| Command | Result |
+|---|---|
+| `python3 tools/assets/sprites/import_sprites.py --self-test` | self-test passed (synthetic strips in a temporary project) |
+| `npm run check` | boundaries + type-check OK; 37 files / 341 tests passed (including `importSprites`, `vfxHooks`, the 54 climate paintings in `groundArt`) |
+| `npm run build` | OK; start-up script 1,910.96 KB / 453.79 KB gzip (before: 1,839.60 / 448.99) |
+| `node tools/perf/load-time.mjs` | local: menu 216 ms, first scene 1,129 ms; web profile: menu 453 ms, first scene 1,293 ms |
+| Playwright `bigMoments`, `groundArt`, `round11`, `round12`, `services`, `sprites2d` | 33 tests passed (two runs; the first stopped at the 10-minute tool limit after 22 passes, the rest re-run) |
+| Visual tour (temporary spec with video, 1280 × 720, SwiftShader; deleted afterwards) | battle: Lightning (cast, sky travel, impact), Rallying Hymn (whole view), Ill Omen and Blessing (status overlays), Ember Burst; Thunderbolt miracle (card, then whole view, then impact); map: Far Sight, Fleet Foot (aura readout `fx.spell.fleet_foot.aura`, ring at the hero's feet), Favorable Winds, Homecoming (cast, depart, arrive); town: offering (rise at the temple, sparkle on the Favor counter), Temple Treasury (temple burst, coins on the Gold counter), the six action icons; 60 battles — six archetypes × ten climates — each requested its own painting (`battlefield.<archetype>.ground.<climate>`, the default for temperate) and showed it under a readable board |
+
+Known limits: the effects were looked at frame by frame only in SwiftShader
+video captures at 1280 × 720 — not at speed on a GPU or by a person. The start-up
+script grew to 1,910.65 KB (448.99 → 453.63 KB gzip) because the sprite and art
+manifests it embeds grew with the delivery. An aura set before a reload is not
+shown again after it.
 
 ## App 0.11.0: the delivered 2D art in the game, and the owner's 21 requests of 2026-10-04
 

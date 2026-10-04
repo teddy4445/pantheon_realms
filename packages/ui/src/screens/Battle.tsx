@@ -53,7 +53,7 @@ import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { cellPoint, miracleLook, spellLook, statusOverlays } from '@pr/presentation/core';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
-import { CreaturePortrait } from '../components/art';
+import { CreaturePortrait, HeroPortrait } from '../components/art';
 import { Icon } from '../assets/icons';
 import { MiracleBook, type MiracleOption } from '../components/miraclebook';
 
@@ -339,6 +339,7 @@ export function BattleScreen() {
         const factor = battlePlaybackFactor(store.prefs);
         // A miracle's light falls once its painted card has been seen; its targets keep their look meanwhile.
         if (c && factor > 0 && events.some((e) => e.kind === 'InterventionInvoked')) {
+          for (const e of events) if (e.kind === 'InterventionInvoked') c.preloadFx(`fx.miracle.${e.interventionId}`);
           await store.whenMiracleCardsClosed();
           await c.play(events, battlePlaybackFactor(store.prefs));
           return;
@@ -518,6 +519,13 @@ export function BattleScreen() {
     const stacks = Object.values(battle.stacks).filter((s) => s.side === sideId && s.totalHp > 0);
     return { side, name: side.commander?.name ?? (sideId === 'defender' ? battle.encounter.label : 'Attacker'), owner: pl?.name ?? 'Neutral', total: stacks.reduce((n, s) => n + aliveCount(catalog, s), 0), color: pl?.color ?? NEUTRAL_ACCENT, mana: commanderMana(state, side) };
   };
+  // The commanding hero's portrait (Brief 9) beside the side's name; neutral guards have none.
+  const commanderPortrait = (side: (typeof battle.sides)['attacker']) => {
+    const c = side.commander;
+    if (!c?.heroId) return null;
+    const h = state.heroes[c.heroId];
+    return <HeroPortrait catalog={catalog} definitionId={h?.definitionId ?? ''} portraitAssetId={c.portraitAssetId} name={c.name} size="2.7rem" style={{ flex: 'none' }} />;
+  };
   const att = sideInfo('attacker');
   const def = sideInfo('defender');
   const hoverStack = built?.hoverTarget ? battle.stacks[built.hoverTarget] : undefined;
@@ -595,6 +603,8 @@ export function BattleScreen() {
       {miracleBook}
       <header className="battle-top">
         <div className="battle-side battle-side--att" style={{ ['--side' as string]: att.color }}>
+          {commanderPortrait(att.side)}
+          <div className="battle-side__text">
           <div className="battle-side__name">{att.name}</div>
           <div className="small dim">
             {att.owner} · {att.total} creatures{att.side.commander?.spellbook ? ` · ${att.mana} mana` : ''}
@@ -606,6 +616,7 @@ export function BattleScreen() {
               </Chip>
             ))}
           </div>
+          </div>
         </div>
         <div className="battle-round">
           <div className="battle-round__label">{battle.phase === 'deployment' ? 'Deployment' : battle.phase === 'selection' ? 'Defenders' : 'Round'}</div>
@@ -613,6 +624,8 @@ export function BattleScreen() {
           <div className="faint small">{battle.phase === 'waiting' ? 'Waiting phase' : battle.encounter.label}</div>
         </div>
         <div className="battle-side battle-side--def" style={{ ['--side' as string]: def.color }}>
+          {commanderPortrait(def.side)}
+          <div className="battle-side__text">
           <div className="battle-side__name">{def.name}</div>
           <div className="small dim">
             {def.owner} · {def.total} creatures{def.side.commander?.spellbook ? ` · ${def.mana} mana` : ''}
@@ -633,7 +646,7 @@ export function BattleScreen() {
               ))}
             </div>
           ) : null}
-
+          </div>
         </div>
       </header>
       <div className="turn-order" aria-label="Turn order">

@@ -13,6 +13,7 @@ import { ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
 import { humanPlayer } from '../app/view';
 import { InterventionList } from '../dialogs/WorldDialogs';
+import { GodBenefits, GodCardIcon, GodPrice, GodState, PermanentNote } from '../components/godIcons';
 
 const STATE_CHIP: Record<string, { text: string; tone: 'ok' | 'warn' | 'bad' | 'info' | 'muted' }> = {
   selected: { text: 'Committed', tone: 'ok' },
@@ -35,14 +36,11 @@ export function PantheonScreen() {
   const patron = player.pantheon.patronGodId ? catalog.gods[player.pantheon.patronGodId] : undefined;
   const towns = Object.values(state.towns).filter((t) => t.ownerId === player.id);
   const [assignTown, setAssignTown] = useState<Record<string, string>>({});
-  const reqNames = (group: string) => {
-    const g = gods.find((x) => x.exclusivityGroup === group);
-    const names = (g?.requirements ?? []).flatMap((r) => (r.type === 'has_building' ? [catalog.buildings[r.buildingId]?.name ?? r.buildingId] : []));
-    return g ? `${names.join(' and ')} in one town, ${g.favorCost} Favor` : null;
-  };
-  const first = reqNames('first_minor');
-  const second = reqNames('second_minor');
-  const choiceNote = [first ? `First choice: ${first}.` : '', second ? `Second choice, after the first: ${second}.` : '', 'Each choice is permanent and excludes the other gods of that choice.'].filter(Boolean).join(' ');
+  // The price of each choice once, as an icon row (the cards repeat it per god).
+  const choiceRows = (['first_minor', 'second_minor'] as const).flatMap((group) => {
+    const g = gods.find((x) => x.exclusivityGroup === group && x.role === 'minor');
+    return g ? [{ group, god: g }] : [];
+  });
 
   const commit = (god: GodDefinition) => {
     const excluded = god.exclusivityGroup ? gods.filter((g) => g.id !== god.id && g.exclusivityGroup === god.exclusivityGroup).map((g) => g.name) : [];
@@ -69,11 +67,7 @@ export function PantheonScreen() {
                 <div className="patron__name">{patron.name}</div>
                 <div className="dim">{patron.domain}</div>
                 {patron.quote ? <blockquote className="quote">“{patron.quote}”</blockquote> : null}
-                <ul className="bullets">
-                  {patron.benefitSummary.map((b) => (
-                    <li key={b}>{b}</li>
-                  ))}
-                </ul>
+                <GodBenefits catalog={catalog} god={patron} />
               </div>
             </div>
           ) : (
@@ -102,7 +96,18 @@ export function PantheonScreen() {
               </ul>
             </div>
           ) : null}
-          <p className="dim small">{choiceNote}</p>
+          <div className="god-choices small" data-testid="god-choices">
+            {choiceRows.map(({ group, god }) => (
+              <div key={group} className="god-choices__row">
+                <span className="god-choices__label">
+                  <GodCardIcon id={group === 'first_minor' ? 'icon.god.first_choice' : 'icon.god.second_choice'} fallback="star" />
+                  {GROUP_LABEL[group]}
+                </span>
+                <GodPrice catalog={catalog} god={god} />
+              </div>
+            ))}
+            <PermanentNote>Each choice is permanent and excludes the other gods of that choice.</PermanentNote>
+          </div>
           <div className="god-grid god-grid--wide">
             {gods.map((g) => {
               const q = quoteGodSelection(catalog, state, player.id, g.id);
@@ -112,20 +117,9 @@ export function PantheonScreen() {
                   <GodPortrait catalog={catalog} godId={g.id} size="5.5rem" locked={q.state === 'undesigned' || q.state === 'excluded'} />
                   <div className="god-card__name">{g.name}</div>
                   <div className="god-card__domain">{g.domain}</div>
-                  <div className="row gap wrap center">
-                    <Chip tone={chip.tone}>{chip.text}</Chip>
-                    <Chip>{g.role === 'patron' ? 'Patron' : g.role === 'minor' ? GROUP_LABEL[g.exclusivityGroup ?? ''] ?? 'Minor god' : 'Unassigned'}</Chip>
-                    {g.role === 'minor' ? <Chip tone="info">{g.favorCost} Favor</Chip> : null}
-                  </div>
-                  {g.benefitSummary.length ? (
-                    <ul className="bullets small">
-                      {g.benefitSummary.map((b) => (
-                        <li key={b}>{b}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <StatusChip status={g.implementationStatus} />
-                  )}
+                  <GodState god={g} quote={q} stateText={chip.text} stateTone={chip.tone} />
+                  {g.benefitSummary.length ? <GodBenefits catalog={catalog} god={g} /> : <StatusChip status={g.implementationStatus} />}
+                  {q.state !== 'selected' && q.state !== 'excluded' ? <GodPrice catalog={catalog} god={g} quote={q} /> : null}
                   {q.missing.length ? (
                     <ul className="bullets small danger-list">
                       {q.missing.map((m) => (

@@ -61,6 +61,7 @@ export function HeroPortrait({
   definitionId,
   name,
   classId,
+  portraitAssetId,
   size = '4rem',
   style,
 }: {
@@ -68,11 +69,13 @@ export function HeroPortrait({
   definitionId: string;
   name?: string;
   classId?: string;
+  /** A snapshot's own portrait ID (battle commanders), when it differs from the definition's. */
+  portraitAssetId?: string;
   size?: string;
   style?: CSSProperties;
 }) {
   const def = catalog.heroes[definitionId];
-  const portraitId = def?.portraitAssetId ?? `hero.${definitionId}.portrait`;
+  const portraitId = portraitAssetId ?? def?.portraitAssetId ?? `hero.${definitionId}.portrait`;
   const rec = resolveAsset(portraitId);
   // No portrait of its own: the hero's painted story bust (Brief 1), framed on the head and shoulders.
   const bust = rec.url ? null : speakerBust({ portraitAssetId: portraitId });

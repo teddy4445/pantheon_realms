@@ -95,6 +95,32 @@ describe('sprite manifest', () => {
     }
   });
 
+  it('Brief 11: every pantheon avatar has prepare and cast, five drawn directions, 6 frames at 6 fps played once; the west mirrors the east on the same ground anchor', () => {
+    for (const p of ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican']) {
+      const h = manifest.heroes[p]!;
+      const idle = h.animations['idle']!;
+      for (const name of ['prepare', 'cast']) {
+        const a = h.animations[name];
+        expect(a, `${p} ${name}`).toBeDefined();
+        expect(Object.keys(a!.directions ?? {}).sort(), `${p} ${name}`).toEqual(['e', 'n', 'ne', 's', 'se']);
+        for (const d of Object.values(a!.directions!)) {
+          expect(d!.frames, `${p} ${name}`).toBe(6);
+          expect(d!.fps, `${p} ${name}`).toBe(6);
+          expect(d!.loop, `${p} ${name}`).toBe(false);
+          // Its own frame size and scale (not the idle strip's), calibrated to the same pixels per hex.
+          expect(d!.pixelsPerHex ?? a!.pixelsPerHex ?? h.pixelsPerHex, `${p} ${name}`).toBe(idle.pixelsPerHex ?? h.pixelsPerHex);
+          expect(d!.anchor[1], `${p} ${name}`).toBeGreaterThan(0.75);
+        }
+        for (const [w, e] of [['w', 'e'], ['nw', 'ne'], ['sw', 'se']] as const) {
+          const m = directionalStrip(a!, w);
+          expect(m.mirror, `${p} ${name} ${w}`).toBe(true);
+          expect(m.strip, `${p} ${name} ${w}`).toBe(a!.directions![e]);
+        }
+        expect(directionalStrip(a!, 'n')).toEqual({ strip: a!.directions!.n, mirror: false });
+      }
+    }
+  });
+
   it('every map location kind has a sprite; towns have one per pantheon, pickups one per resource', () => {
     for (const k of SITE_ARCHETYPES) expect(siteSprite(k), k).not.toBeNull();
     for (const p of Object.keys(catalog.pantheons)) expect(siteSprite('town', p), p).toBe(manifest.sites[`map.site.town.${p}`]);

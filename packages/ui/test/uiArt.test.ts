@@ -67,8 +67,8 @@ describe('UI art manifest', () => {
 /**
  * Final art delivered by asset ID (ICON_CATALOG.md, `npm run icons:import`): every
  * source PNG in assets-source/icons/final/ is registered, every registration points
- * at a bundled file of its section's size — an RGBA PNG for icons with transparency,
- * a WebP for opaque paintings (creature portraits) — and every ID is a catalog asset ID.
+ * at a bundled file of its section's size (or a little smaller, never enlarged) — an RGBA PNG for icons with transparency,
+ * a WebP for opaque paintings (creature, god and hero portraits) — and every ID is a catalog asset ID.
  */
 describe('final art manifest', () => {
   const finalManifest = JSON.parse(readFileSync(path.join(runtime, 'ui/final-manifest.json'), 'utf8')) as {
@@ -117,7 +117,10 @@ describe('final art manifest', () => {
         [w, h] = [data.readUInt32BE(16), data.readUInt32BE(20)];
         expect(data[25], `${a.file} keeps its alpha channel`).toBe(6);
       }
-      expect(Math.max(w, h), `${a.file} size`).toBe(sizeOf.get(id));
+      // The catalog size, or a little less: eight god-card icons of the 2026-10-04 delivery were
+      // cut at their native 192–250 px and are never enlarged (they draw at CSS sizes).
+      expect(Math.max(w, h), `${a.file} size`).toBeLessThanOrEqual(sizeOf.get(id)!);
+      expect(Math.max(w, h), `${a.file} size`).toBeGreaterThanOrEqual(Math.round(sizeOf.get(id)! * 0.75));
       expect(a.provenance).toMatch(/assets-source\/icons\/final\//);
     }
   });

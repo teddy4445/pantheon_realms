@@ -266,6 +266,8 @@ test('Attack: the hero walks to the approach tile, faces the opponent, plays its
   // Movement had stopped before the beat: no walk once it began, played once.
   const during = samples.filter((s) => s.t >= prep!.t);
   expect(during.every((s) => s.h![enc.heroId]!.clip === 'prepare' && s.h![enc.heroId]!.prepareCount === 1)).toBe(true);
+  // The delivered prepare strip (Brief 11) is what is drawn, played once and then held until the map closes.
+  expect(during.every((s) => s.h![enc.heroId]!.drawn === 'prepare')).toBe(true);
   // Facing the opponent; the defending hero turned to meet the attacker.
   const lastMap = samples[samples.length - 1]!;
   expect(lastMap.h![enc.heroId]!.facing).toBe(dirTo(enc.approach, enc.rivalTile));

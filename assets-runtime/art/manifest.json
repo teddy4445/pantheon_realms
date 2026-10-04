@@ -2525,6 +2525,438 @@
    "height": 1108,
    "average": "#9498A3",
    "edge": "#868C96"
+  },
+  "town.celtic.support.civic_hall.l1": {
+   "file": "art/town/town.celtic.support.civic_hall.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.civic_hall.l2": {
+   "file": "art/town/town.celtic.support.civic_hall.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.civic_hall.l3": {
+   "file": "art/town/town.celtic.support.civic_hall.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.civic_hall.l4": {
+   "file": "art/town/town.celtic.support.civic_hall.l4.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.fortifications.l1": {
+   "file": "art/town/town.celtic.support.fortifications.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.fortifications.l2": {
+   "file": "art/town/town.celtic.support.fortifications.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.fortifications.l3": {
+   "file": "art/town/town.celtic.support.fortifications.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.mage_guild.l1": {
+   "file": "art/town/town.celtic.support.mage_guild.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.mage_guild.l2": {
+   "file": "art/town/town.celtic.support.mage_guild.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.mage_guild.l3": {
+   "file": "art/town/town.celtic.support.mage_guild.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.pantheon_temple.l1": {
+   "file": "art/town/town.celtic.support.pantheon_temple.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.celtic.support.pantheon_temple.l2": {
+   "file": "art/town/town.celtic.support.pantheon_temple.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.civic_hall.l1": {
+   "file": "art/town/town.egyptian.support.civic_hall.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.civic_hall.l2": {
+   "file": "art/town/town.egyptian.support.civic_hall.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.civic_hall.l3": {
+   "file": "art/town/town.egyptian.support.civic_hall.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.civic_hall.l4": {
+   "file": "art/town/town.egyptian.support.civic_hall.l4.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.fortifications.l1": {
+   "file": "art/town/town.egyptian.support.fortifications.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.fortifications.l2": {
+   "file": "art/town/town.egyptian.support.fortifications.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.fortifications.l3": {
+   "file": "art/town/town.egyptian.support.fortifications.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.mage_guild.l1": {
+   "file": "art/town/town.egyptian.support.mage_guild.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.mage_guild.l2": {
+   "file": "art/town/town.egyptian.support.mage_guild.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.mage_guild.l3": {
+   "file": "art/town/town.egyptian.support.mage_guild.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.pantheon_temple.l1": {
+   "file": "art/town/town.egyptian.support.pantheon_temple.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.egyptian.support.pantheon_temple.l2": {
+   "file": "art/town/town.egyptian.support.pantheon_temple.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.civic_hall.l1": {
+   "file": "art/town/town.greek.support.civic_hall.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.civic_hall.l2": {
+   "file": "art/town/town.greek.support.civic_hall.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.civic_hall.l3": {
+   "file": "art/town/town.greek.support.civic_hall.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.civic_hall.l4": {
+   "file": "art/town/town.greek.support.civic_hall.l4.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.fortifications.l1": {
+   "file": "art/town/town.greek.support.fortifications.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.fortifications.l2": {
+   "file": "art/town/town.greek.support.fortifications.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.fortifications.l3": {
+   "file": "art/town/town.greek.support.fortifications.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.mage_guild.l1": {
+   "file": "art/town/town.greek.support.mage_guild.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.mage_guild.l2": {
+   "file": "art/town/town.greek.support.mage_guild.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.mage_guild.l3": {
+   "file": "art/town/town.greek.support.mage_guild.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.pantheon_temple.l1": {
+   "file": "art/town/town.greek.support.pantheon_temple.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.greek.support.pantheon_temple.l2": {
+   "file": "art/town/town.greek.support.pantheon_temple.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.civic_hall.l1": {
+   "file": "art/town/town.japanese.support.civic_hall.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.civic_hall.l2": {
+   "file": "art/town/town.japanese.support.civic_hall.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.civic_hall.l3": {
+   "file": "art/town/town.japanese.support.civic_hall.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.civic_hall.l4": {
+   "file": "art/town/town.japanese.support.civic_hall.l4.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.fortifications.l1": {
+   "file": "art/town/town.japanese.support.fortifications.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.fortifications.l2": {
+   "file": "art/town/town.japanese.support.fortifications.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.fortifications.l3": {
+   "file": "art/town/town.japanese.support.fortifications.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.mage_guild.l1": {
+   "file": "art/town/town.japanese.support.mage_guild.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.mage_guild.l2": {
+   "file": "art/town/town.japanese.support.mage_guild.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.mage_guild.l3": {
+   "file": "art/town/town.japanese.support.mage_guild.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.pantheon_temple.l1": {
+   "file": "art/town/town.japanese.support.pantheon_temple.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.japanese.support.pantheon_temple.l2": {
+   "file": "art/town/town.japanese.support.pantheon_temple.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.civic_hall.l1": {
+   "file": "art/town/town.mesoamerican.support.civic_hall.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.civic_hall.l2": {
+   "file": "art/town/town.mesoamerican.support.civic_hall.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.civic_hall.l3": {
+   "file": "art/town/town.mesoamerican.support.civic_hall.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.civic_hall.l4": {
+   "file": "art/town/town.mesoamerican.support.civic_hall.l4.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.fortifications.l1": {
+   "file": "art/town/town.mesoamerican.support.fortifications.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.fortifications.l2": {
+   "file": "art/town/town.mesoamerican.support.fortifications.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.fortifications.l3": {
+   "file": "art/town/town.mesoamerican.support.fortifications.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.mage_guild.l1": {
+   "file": "art/town/town.mesoamerican.support.mage_guild.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.mage_guild.l2": {
+   "file": "art/town/town.mesoamerican.support.mage_guild.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.mage_guild.l3": {
+   "file": "art/town/town.mesoamerican.support.mage_guild.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.pantheon_temple.l1": {
+   "file": "art/town/town.mesoamerican.support.pantheon_temple.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.mesoamerican.support.pantheon_temple.l2": {
+   "file": "art/town/town.mesoamerican.support.pantheon_temple.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.civic_hall.l1": {
+   "file": "art/town/town.norse.support.civic_hall.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.civic_hall.l2": {
+   "file": "art/town/town.norse.support.civic_hall.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.civic_hall.l3": {
+   "file": "art/town/town.norse.support.civic_hall.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.civic_hall.l4": {
+   "file": "art/town/town.norse.support.civic_hall.l4.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.fortifications.l1": {
+   "file": "art/town/town.norse.support.fortifications.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.fortifications.l2": {
+   "file": "art/town/town.norse.support.fortifications.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.fortifications.l3": {
+   "file": "art/town/town.norse.support.fortifications.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.mage_guild.l1": {
+   "file": "art/town/town.norse.support.mage_guild.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.mage_guild.l2": {
+   "file": "art/town/town.norse.support.mage_guild.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.mage_guild.l3": {
+   "file": "art/town/town.norse.support.mage_guild.l3.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.pantheon_temple.l1": {
+   "file": "art/town/town.norse.support.pantheon_temple.l1.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
+  },
+  "town.norse.support.pantheon_temple.l2": {
+   "file": "art/town/town.norse.support.pantheon_temple.l2.webp",
+   "kind": "building",
+   "width": 320,
+   "height": 320
   }
  }
 }

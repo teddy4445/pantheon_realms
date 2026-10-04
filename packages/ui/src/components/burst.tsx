@@ -3,8 +3,8 @@
  * tossed up, timber and stone tumbling out, crystals rising, motes of light
  * (VFX_MAGIC_AND_FAVORS.md, divine gifts and the Temple offering). CSS
  * transforms and opacity only (no filters over the game); the caller leaves
- * them out under reduced motion. Placeholder look until the `fx.gift.*` and
- * `fx.offering.*` strips are delivered.
+ * them out under reduced motion. A delivered `fx.gift.*` / `fx.offering.*`
+ * strip (2026-10-04) plays instead of the drawn pieces.
  */
 import { useEffect, useMemo, type CSSProperties } from 'react';
 import { spriteManifest, spriteUrl, type TownFxKind } from '@pr/presentation/core';
@@ -18,7 +18,7 @@ const MOTION: Record<TownFxKind, 'toss' | 'fling' | 'rise'> = { coins: 'toss', t
  * (`fx.gift.<id>`, `fx.offering.rise`) a delivered effect strip in the sprite
  * manifest plays instead of the drawn pieces.
  */
-export function Burst({ kind, stripId, onDone, style, className, scale = 1 }: { kind: TownFxKind; stripId?: string; onDone?: () => void; style?: CSSProperties; className?: string; scale?: number }) {
+export function Burst({ kind, stripId, onDone, style, className, scale = 1, centered = false }: { kind: TownFxKind; stripId?: string; onDone?: () => void; style?: CSSProperties; className?: string; scale?: number; /** Centre a strip on the point (a counter or portrait) instead of standing it on its anchor. */ centered?: boolean }) {
   const strip = stripId ? spriteManifest().effects[stripId] : undefined;
   const ms = strip ? Math.round((strip.frames / Math.max(1, strip.fps)) * 1000) : 1700;
   useEffect(() => {
@@ -41,13 +41,16 @@ export function Burst({ kind, stripId, onDone, style, className, scale = 1 }: { 
     });
   }, [kind, scale]);
   if (strip) {
-    const w = strip.frameWidth * scale;
-    const h = strip.frameHeight * scale;
+    // Frame pixels are sized for a 900 px tall view: follow the window so the burst keeps its place on the painting.
+    const vs = typeof window === 'undefined' ? 1 : Math.max(0.6, Math.min(1.6, window.innerHeight / 900));
+    const w = Math.round(strip.frameWidth * scale * vs);
+    const h = Math.round(strip.frameHeight * scale * vs);
+    const [ax, ay] = centered ? [0.5, 0.5] : strip.anchor;
     return (
       <div className={`burst burst--${kind} ${className ?? ''}`} style={style} aria-hidden="true" data-testid={`burst-${kind}`}>
         <span
           className="burst__strip"
-          style={{ width: w, height: h, left: -w * strip.anchor[0], top: -h * strip.anchor[1], backgroundImage: `url(${spriteUrl(strip.file)})`, backgroundSize: `${w * strip.frames}px ${h}px`, '--frames': strip.frames, '--fw': `${w}px`, '--dur': `${ms}ms` } as CSSProperties}
+          style={{ width: w, height: h, left: -w * ax, top: -h * ay, backgroundImage: `url(${spriteUrl(strip.file)})`, backgroundSize: `${w * strip.frames}px ${h}px`, '--frames': strip.frames, '--fw': `${w}px`, '--dur': `${ms}ms` } as CSSProperties}
         />
       </div>
     );

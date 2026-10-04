@@ -12281,6 +12281,178 @@
        "status": "final"
       }
      }
+    },
+    "prepare": {
+     "file": "sprites/final/heroes/greek/prepare/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/greek/prepare/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/greek/prepare/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/greek/prepare/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/greek/prepare/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/greek/prepare/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "cast": {
+     "file": "sprites/final/heroes/greek/cast/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/greek/cast/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/greek/cast/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/greek/cast/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/greek/cast/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/greek/cast/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
     }
    },
    "figure": {
@@ -12546,6 +12718,178 @@
        "anchor": [
         0.5,
         0.8615
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "prepare": {
+     "file": "sprites/final/heroes/norse/prepare/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/norse/prepare/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/norse/prepare/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/norse/prepare/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/norse/prepare/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/norse/prepare/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "cast": {
+     "file": "sprites/final/heroes/norse/cast/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/norse/cast/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/norse/cast/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/norse/cast/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/norse/cast/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/norse/cast/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
        ],
        "pixelsPerHex": 90.0,
        "status": "final"
@@ -12821,6 +13165,178 @@
        "status": "final"
       }
      }
+    },
+    "prepare": {
+     "file": "sprites/final/heroes/egyptian/prepare/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/egyptian/prepare/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/egyptian/prepare/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/egyptian/prepare/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/egyptian/prepare/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/egyptian/prepare/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "cast": {
+     "file": "sprites/final/heroes/egyptian/cast/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/egyptian/cast/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/egyptian/cast/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/egyptian/cast/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/egyptian/cast/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/egyptian/cast/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
     }
    },
    "figure": {
@@ -13086,6 +13602,178 @@
        "anchor": [
         0.5,
         0.8616
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "prepare": {
+     "file": "sprites/final/heroes/japanese/prepare/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/japanese/prepare/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/japanese/prepare/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/japanese/prepare/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/japanese/prepare/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/japanese/prepare/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "cast": {
+     "file": "sprites/final/heroes/japanese/cast/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/japanese/cast/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/japanese/cast/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/japanese/cast/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/japanese/cast/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/japanese/cast/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
        ],
        "pixelsPerHex": 90.0,
        "status": "final"
@@ -13361,6 +14049,178 @@
        "status": "final"
       }
      }
+    },
+    "prepare": {
+     "file": "sprites/final/heroes/celtic/prepare/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/celtic/prepare/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/celtic/prepare/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/celtic/prepare/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/celtic/prepare/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/celtic/prepare/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "cast": {
+     "file": "sprites/final/heroes/celtic/cast/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/celtic/cast/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/celtic/cast/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/celtic/cast/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/celtic/cast/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/celtic/cast/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
     }
    },
    "figure": {
@@ -13626,6 +14486,178 @@
        "anchor": [
         0.5,
         0.863
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "prepare": {
+     "file": "sprites/final/heroes/mesoamerican/prepare/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/mesoamerican/prepare/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/mesoamerican/prepare/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/mesoamerican/prepare/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/mesoamerican/prepare/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/mesoamerican/prepare/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "cast": {
+     "file": "sprites/final/heroes/mesoamerican/cast/e.webp",
+     "frames": 6,
+     "frameWidth": 250,
+     "frameHeight": 232,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.8524
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/mesoamerican/cast/e.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/mesoamerican/cast/n.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/mesoamerican/cast/ne.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/mesoamerican/cast/s.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/mesoamerican/cast/se.webp",
+       "frames": 6,
+       "frameWidth": 250,
+       "frameHeight": 232,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.8524
        ],
        "pixelsPerHex": 90.0,
        "status": "final"

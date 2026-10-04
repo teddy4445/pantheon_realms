@@ -1,6 +1,6 @@
 /**
  * Ground and sky art (Brief 2, delivery 2026-10-02): all 60 terrain textures,
- * 6 battlefield paintings and 10 skies resolve through the game's own manifest
+ * 6 battlefield paintings (and, since 2026-10-04, their 54 climate variants) and 10 skies resolve through the game's own manifest
  * for every map climate; runtime files exist at the registered sizes; nothing was
  * upscaled; seams are not claimed (mirrored repeat until verified).
  */
@@ -51,12 +51,27 @@ describe('ground and sky art', () => {
     expect(terrainArt('nowhere', 'plains')).toBeNull();
   });
 
-  it('six battlefield paintings, the defaults for every climate (no variants delivered)', () => {
+  it('six battlefield paintings, each with a painting for every other climate (delivery 2026-10-04); temperate and unknown climates use the default', () => {
     for (const f of FIELDS) {
       expect(battlefieldArt(f)?.url).toBe(`./art/battle/battlefield.${f}.ground.webp`);
-      expect(battlefieldArt(f, 'desert')?.url).toBe(`./art/battle/battlefield.${f}.ground.webp`);
+      expect(battlefieldArt(f, 'temperate')?.url).toBe(`./art/battle/battlefield.${f}.ground.webp`);
+      expect(battlefieldArt(f, 'nowhere')?.url).toBe(`./art/battle/battlefield.${f}.ground.webp`);
+      for (const c of CLIMATES.filter((x) => x !== 'temperate')) expect(battlefieldArt(f, c)?.url, `${f}/${c}`).toBe(`./art/battle/battlefield.${f}.ground.${c}.webp`);
     }
     expect(battlefieldArt('nowhere')).toBeNull();
+  });
+
+  it('the 54 climate paintings exist at their registered sizes, in the proportions of the 4096 × 3200 layout', () => {
+    const art = JSON.parse(readFileSync(path.join(runtime, 'art/manifest.json'), 'utf8')) as { assets: Record<string, Entry> };
+    const variants = Object.entries(art.assets).filter(([id]) => /^battlefield\.[a-z_]+\.ground\.[a-z_]+$/.test(id));
+    expect(variants).toHaveLength(54);
+    for (const [id, a] of variants) {
+      expect(a.kind, id).toBe('battlefield');
+      const file = path.join(runtime, a.file);
+      expect(existsSync(file), a.file).toBe(true);
+      expect(webpSize(file), a.file).toEqual([a.width, a.height]);
+      expect(Math.abs(a.width / a.height - 4096 / 3200), id).toBeLessThan(0.01);
+    }
   });
 
   it('runtime files exist at their registered sizes, inside assets-runtime, never upscaled', () => {

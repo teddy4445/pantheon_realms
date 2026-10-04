@@ -1,0 +1,11 @@
+{
+ "frames": 6,
+ "fps": 6,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8524
+ ],
+ "pixelsPerHex": 90.014,
+ "cutFrom": "sheet.heroanim.greek.png"
+}

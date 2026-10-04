@@ -202,6 +202,12 @@ export class AppStore {
   selectedHeroId: string | null = null;
   /** One-shot camera focus request consumed by the adventure screen (journal markers etc.). */
   focusRequest: HexCoord | null = null;
+  /**
+   * Presentation only: looping map auras of the viewer's own spells that last
+   * the day (Fleet Foot, Wings of Hermes), set when the cast plays. Shown while
+   * the match and hero are the same and the day is before `untilDay`; never saved.
+   */
+  mapAuras: { matchId: string; heroId: string; id: string; untilDay: number }[] = [];
   /** Story scenes waiting to be shown (the dialogue window shows the first). */
   story: StoryEntry[] = [];
   /** Big moments waiting to be shown (miracle cards, new-week banners; the moment layer shows the first). */

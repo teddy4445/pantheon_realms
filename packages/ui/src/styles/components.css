@@ -1405,8 +1405,9 @@ input[type='radio']:disabled {
 :root[data-motion='reduced'] .burst { display: none; }
 /* Town screen: the burst over a building (left/top set inline from the slot's placement). */
 .town-burst { position: absolute; z-index: 45; pointer-events: none; }
-/* Adventure: the coin shower over the resource bar's Gold counter (placed from the counter's position). */
-.burst--resbar { position: fixed; z-index: 60; }
+/* Adventure and town: a burst over a resource-bar counter or the visiting hero (placed from the element's position). */
+/* Two classes: `.screen > *` (screens.css) would otherwise make a burst placed straight in a screen relative. */
+.burst.burst--resbar { position: fixed; z-index: 60; }
 
 /* Mission/campaign victory: every action on one line (owner request 2026-10-04). */
 .debrief-actions { display: flex; flex-wrap: nowrap; align-items: center; gap: 0.6rem; width: 100%; }

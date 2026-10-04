@@ -131,6 +131,8 @@ function buildView(
   target: HexCoord | null,
   showReach: boolean,
   grid: AdventureView['grid'],
+  auras: readonly { matchId: string; heroId: string; id: string; untilDay: number }[] = [],
+  calm = false,
 ): AdventureView {
   const explored = state.fog[playerId]?.explored ?? [];
   const visible = visibleCells(catalog, state, playerId);
@@ -178,6 +180,8 @@ function buildView(
         monster: lead?.id ?? null,
         // The mounted map avatar follows the hero's own pantheon (else its owner's).
         pantheonId: catalog.heroes[h.definitionId]?.pantheonId ?? state.players[h.ownerId]?.pantheonId ?? null,
+        // A spell lasting the day (Fleet Foot, Wings of Hermes) loops its aura on the viewer's own hero.
+        aura: h.ownerId === playerId ? (auras.find((a) => a.heroId === h.id && a.matchId === state.matchId && state.day < a.untilDay)?.id ?? null) : null,
       };
     });
   let reachable: HexCoord[] | null = null;
@@ -198,6 +202,7 @@ function buildView(
     reachKey: `${state.revision}|${selected?.id ?? ''}|${showReach}`,
     path,
     grid,
+    calm,
   };
 }
 
@@ -554,7 +559,10 @@ export function AdventureScreen() {
     if (seesMonster) store.showHint('wandering_monsters');
   }, [seesMonster, store]);
 
-  const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? target : null, humanTurn, grid), [catalog, state, playerId, selected, target, humanTurn, grid]);
+  const [auraTick, setAuraTick] = useState(0);
+  const calm = reducedMotion(store.prefs);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? target : null, humanTurn, grid, store.mapAuras, calm), [catalog, state, playerId, selected, target, humanTurn, grid, auraTick, calm]);
 
   // The controller can arrive after the first render (the 2D layer loads on demand),
   // so it reads the latest view and selection from refs when it does.
@@ -650,9 +658,15 @@ export function AdventureScreen() {
           const look = spellLook(spell);
           const id = `fx.spell.${spell.id}`;
           await c.playMapFx(spell.effect.type === 'reveal_radius' ? { look, id, caster: e.heroId, area: { center: e.center, radius: e.radius } } : { look, id, caster: e.heroId, heroIds: [e.heroId] }, factor);
+          if (spell.effect.type === 'movement_bonus') {
+            // The extra movement lasts the day: its aura loops on the hero until then (when its strip is delivered).
+            store.mapAuras = [...store.mapAuras.filter((a) => a.matchId === st.matchId && a.heroId !== e.heroId && st.day < a.untilDay), { matchId: st.matchId, heroId: e.heroId, id: `${id}.aura`, untilDay: e.untilDay }];
+            setAuraTick((n) => n + 1);
+          }
         } else if (e.kind === 'InterventionInvoked' && e.playerId === me) {
           const def = catalog.interventions?.[e.interventionId];
           if (!def || def.context !== 'adventure') continue;
+          c.preloadFx(`fx.miracle.${def.id}`);
           if (factor > 0) await store.whenMiracleCardsClosed();
           const look = miracleLook(def);
           const id = `fx.miracle.${def.id}`;

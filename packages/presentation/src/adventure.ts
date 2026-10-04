@@ -24,8 +24,8 @@ import { TweenPlayer, linear } from './tween';
 import { TERRAIN_TEXTURE_WORLD, terrainArt, type EnvironmentArt } from './environmentArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
-import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
-import { loadTexture } from './textures';
+import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type EffectDefinition, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
+import { loadStrip, loadTexture, stripFrames } from './textures';
 import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
 import { FxPainter, type FxTarget } from './fx';
 import type { FxLook } from './fxLooks';
@@ -79,6 +79,11 @@ export interface AdventureHeroView {
   readonly monster?: string | null;
   /** Pantheon whose mounted avatar draws this hero (hero definition, else the owner's). */
   readonly pantheonId?: string | null;
+  /**
+   * A looping map aura while a spell's effect lasts on this hero (the effect asset ID,
+   * e.g. `fx.spell.fleet_foot.aura`): drawn only when its strip is delivered.
+   */
+  readonly aura?: string | null;
 }
 
 export interface AdventurePathView {
@@ -100,6 +105,8 @@ export interface AdventureView {
   readonly reachKey: string;
   readonly path: AdventurePathView | null;
   readonly grid: 'always' | 'hover' | 'off';
+  /** The player asked for reduced motion: looping map auras hold still. */
+  readonly calm?: boolean;
 }
 
 export interface AdventureCallbacks {
@@ -122,6 +129,8 @@ export interface HeroAnimationDebug {
   readonly facing: MapDirection;
   readonly mirrored: boolean;
   readonly prepareCount: number;
+  /** The looping aura strip drawn on the hero (asset ID), if any. */
+  readonly aura: string | null;
 }
 
 interface HeroEntry {
@@ -142,6 +151,8 @@ interface HeroEntry {
   prepares: number;
   /** Pending readiness beat (resolved early by cancelPreparations). */
   cancel: (() => void) | null;
+  /** A looping aura strip on the hero while a map spell lasts (Fleet Foot, Wings of Hermes). */
+  aura: { id: string; sprite: Sprite; def: EffectDefinition } | null;
 }
 
 interface SiteEntry {
@@ -252,6 +263,7 @@ export class AdventureSceneController implements SceneController {
   // ------------------------------------------------------------------ view updates
 
   update(view: AdventureView): void {
+    this.calm = !!view.calm;
     const key = `${view.map.templateId}|${view.map.logicalHash}`;
     if (key !== this.mapKey) {
       this.buildMap(view.map);
@@ -720,6 +732,7 @@ export class AdventureSceneController implements SceneController {
           clip: 'idle',
           prepares: 0,
           cancel: null,
+          aura: null,
         };
         if (old) {
           root.position.copyFrom(old.root.position);
@@ -742,6 +755,7 @@ export class AdventureSceneController implements SceneController {
         this.placeHero(e, v.coord);
       }
       e.root.visible = v.shown;
+      this.syncAura(e, v.monster ? null : (v.aura ?? null));
       if (v.selected) this.selectedHero = v.id;
     }
     for (const [id, e] of this.heroes) {
@@ -750,6 +764,31 @@ export class AdventureSceneController implements SceneController {
         this.heroes.delete(id);
       }
     }
+  }
+
+  /**
+   * The looping aura of a map spell on a hero (its delivered strip, anchored at the
+   * hero's feet, over the rider). Nothing on Low quality (short flashes only) or
+   * without a delivered strip; a still first frame under reduced motion.
+   */
+  private syncAura(e: HeroEntry, id: string | null): void {
+    const def = id && graphicsProfile().effects !== 'simple' ? (spriteManifest().effects[id] ?? null) : null;
+    if (e.aura && (!def || e.aura.id !== id)) {
+      if (!e.aura.sprite.destroyed) e.aura.sprite.destroy();
+      e.aura = null;
+    }
+    if (!def || e.aura) return;
+    const sprite = new Sprite(Texture.EMPTY);
+    sprite.anchor.set(def.anchor[0], def.anchor[1]);
+    sprite.scale.set(HEX_W / def.pixelsPerHex);
+    if (def.additive) sprite.blendMode = 'add';
+    e.root.addChild(sprite);
+    e.aura = { id: id!, sprite, def };
+    void loadStrip(def)
+      .then((frames) => {
+        if (!sprite.destroyed && sprite.texture === Texture.EMPTY && frames[0]) sprite.texture = frames[0];
+      })
+      .catch(() => null);
   }
 
   /** Face the avatar toward a screen vector (8 directions; mirrored when only the side view exists). */
@@ -864,6 +903,12 @@ export class AdventureSceneController implements SceneController {
     try {
       if (fx && speed > 0) {
         this.logFx(fx.id);
+        this.painter.preload(fx.id);
+        // The rider's own `cast` strip (Brief 11) with the spell's sigil on the hero, then the column of light.
+        if (e.root.visible) {
+          const anim = !e.monster && e.figure.has('cast') ? e.figure.playOnce('cast', this.tweens) : null;
+          await Promise.all([this.painter.cast(fx.look, { x: e.root.x, y: e.root.y }, `${fx.id}.cast`), anim]);
+        }
         const column = { ...fx.look, impact: 'pillar' as const };
         const depart = this.painter.impact(column, this.heroTarget(e), `${fx.id}.depart`);
         await this.tweens.wait(260);
@@ -888,6 +933,11 @@ export class AdventureSceneController implements SceneController {
     this.fxLog = [...this.fxLog.slice(-19), id];
   }
 
+  /** Start loading an effect's delivered strips (e.g. a miracle's, while its painted card is up). Presentation only. */
+  preloadFx(id: string): void {
+    this.painter.preload(id);
+  }
+
   /** The magic effects played most recently (read-only diagnostics for tests). */
   fxDebug(): readonly string[] {
     return this.fxLog;
@@ -906,10 +956,11 @@ export class AdventureSceneController implements SceneController {
     if (speed <= 0 || this.disposed) return;
     this.tweens.speed = speed;
     this.logFx(fx.id);
+    this.painter.preload(fx.id);
     const { look, id } = fx;
     const caster = fx.caster ? this.heroes.get(fx.caster) : undefined;
     if (caster && caster.root.visible) {
-      // A delivered `cast` strip (GPT6_BRIEF_11) plays with the sigil; until then the sigil alone.
+      // The rider's own `cast` strip (Brief 11: a hand glow, played once, then idle) with the spell's sigil.
       const anim = !caster.monster && caster.figure.has('cast') ? caster.figure.playOnce('cast', this.tweens) : null;
       await Promise.all([this.painter.cast(look, { x: caster.root.x, y: caster.root.y }, `${id}.cast`), anim]);
     }
@@ -941,7 +992,8 @@ export class AdventureSceneController implements SceneController {
    */
   async prepareForBattle(heroId: string, opponent: HexCoord, speed: number, stillValid: () => boolean = () => true): Promise<PrepareOutcome | 'skipped'> {
     const e = this.heroes.get(heroId);
-    if (!e || this.disposed || e.monster || !e.root.visible || speed <= 0) return 'skipped';
+    // One beat at a time per hero: a second request while one is pending never plays it twice.
+    if (!e || this.disposed || e.monster || !e.root.visible || speed <= 0 || e.cancel) return 'skipped';
     if (e.figure.status === 'loading') await Promise.race([e.figure.loaded, new Promise((r) => setTimeout(r, 2000))]);
     if (e.locked === 0) this.placeHero(e, e.coord);
     const b = this.hexCenter(opponent);
@@ -953,9 +1005,11 @@ export class AdventureSceneController implements SceneController {
     }
     e.prepares += 1;
     e.clip = 'prepare';
-    // A delivered `prepare` strip (GPT6_BRIEF_11: the rider readies for battle) plays once
-    // within the beat; until then the code-drawn rise of the rider is all there is.
+    // The delivered `prepare` strip (Brief 11, 6 frames at 6 fps: five poses and the ready
+    // hold) plays once within the beat on the same clock and holds its last frame until
+    // the battle opens; a set without one gets the code-drawn rise of the rider.
     const strip = !e.monster && e.figure.has('prepare');
+    this.tweens.speed = speed;
     if (strip) void e.figure.playOnce('prepare', this.tweens, { hold: true });
     const ms = 1200 * speed;
     const outcome = await new Promise<PrepareOutcome>((resolve) => {
@@ -966,7 +1020,8 @@ export class AdventureSceneController implements SceneController {
         e.cancel = null;
         e.figure.rest();
         e.marks?.scale.set(1);
-        if (e.clip === 'prepare') this.setClip(e, 'idle');
+        // Finished: the ready pose stays until the map closes for the battle. Cancelled: back to idle.
+        if (o === 'cancelled' && e.clip === 'prepare') this.setClip(e, 'idle');
         resolve(o);
       };
       e.cancel = () => finish('cancelled');
@@ -986,7 +1041,11 @@ export class AdventureSceneController implements SceneController {
           finish('finished');
         });
     });
-    if (outcome === 'finished' && (this.disposed || !stillValid())) return 'cancelled';
+    if (outcome === 'finished' && (this.disposed || !stillValid())) {
+      // The encounter went away during the beat: release the held pose.
+      if (!this.disposed && e.clip === 'prepare') this.setClip(e, 'idle');
+      return 'cancelled';
+    }
     return outcome;
   }
 
@@ -1008,6 +1067,7 @@ export class AdventureSceneController implements SceneController {
         facing: e.figure.facing,
         mirrored: e.figure.pose.scale.x < 0,
         prepareCount: e.prepares,
+        aura: e.aura && !e.aura.sprite.destroyed ? e.aura.id : null,
       };
     }
     return out;
@@ -1204,6 +1264,8 @@ export class AdventureSceneController implements SceneController {
   // ------------------------------------------------------------------ frame
 
   private extraTweens: TweenPlayer[] = [];
+  /** Reduced motion (from the view): auras hold their first frame. */
+  private calm = false;
 
   tick(dt: number): void {
     this.time += dt;
@@ -1228,6 +1290,11 @@ export class AdventureSceneController implements SceneController {
         }
       }
       if (motion || e.clip === 'walk') e.figure.tick(dt, e.clip === 'walk' ? WALK_RATE : 1);
+      if (e.aura) {
+        const frames = stripFrames(e.aura.def);
+        // Loops with the scene time; a still first frame without ambient motion (Low, reduced motion).
+        if (frames && frames.length) e.aura.sprite.texture = frames[motion && !this.calm ? Math.floor((this.time * Math.max(1, e.aura.def.fps)) / 1000) % frames.length : 0]!;
+      }
     }
     if (motion) for (const s of this.sites.values()) s.guard?.tick(dt);
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;

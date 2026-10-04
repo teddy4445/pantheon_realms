@@ -33,11 +33,20 @@ File names (one image each; strips are N equal frames left to right):
   sprite.battle.siege.<kind>.<state>.png     512 x 512 (keep 768 x 768), ground at 95 %
   sprite.battle.projectile.<kind>.png        128 x 32, centred, pointing right
   sprite.fx.<effect>.png                     frames 256 x 256, centred at 62 %
+        the nine shared battle effects keep their short IDs (sprite.fx.impact.png →
+        effects "impact"); every magic and Favor phase keeps its full ID
+        (sprite.fx.spell.lightning.cast.png → effects "fx.spell.lightning.cast",
+        also fx.miracle.*, fx.status.*, fx.gift.*, fx.offering.*;
+        VFX_MAGIC_AND_FAVORS.md)
 
-A sidecar <same name>.json may set "fps", "loop" and "anchor"; with "frames"
-and "pixelsPerHex" (as written by the cutter) any frame size is accepted.
+A sidecar <same name>.json may set "fps", "loop", "anchor" and (effects)
+"additive"; with "frames" and "pixelsPerHex" (as written by the cutter) any
+frame size is accepted. Effects loop only when their sidecar says so (status
+overlays, travel and aura phases).
 
-Usage: python3 tools/assets/sprites/import_sprites.py [--dry-run] [--src DIR]
+Usage: python3 tools/assets/sprites/import_sprites.py [--dry-run] [--src DIR] [--only TEXT] [--self-test]
+  --only TEXT   import only files whose name contains TEXT (e.g. --only sprite.fx.)
+  --self-test   import synthetic effect strips into a temporary folder and check the IDs and loops
 """
 from __future__ import annotations
 
@@ -64,6 +73,27 @@ FPS = {"idle": 3, "move": 8, "attack": 6, "shoot": 6, "defend": 8, "hit": 10, "d
 LOOPS = {"idle", "move", "fly", "victory", "walk"}
 ANIMS = set(FPS)
 DIRS = {"e", "ne", "n", "nw", "w", "sw", "s", "se"}
+# The nine shared battle effects registered under short IDs before the magic and Favor phases existed
+# (sprite.fx.impact.png → effects "impact"). Everything else under sprite.fx.* keeps its full fx.* ID.
+LEGACY_FX = {"impact", "ward", "morale.up", "morale.down", "spell.damage", "spell.area", "spell.heal", "spell.buff", "spell.curse"}
+
+
+def effect_key(name: str) -> str:
+    """Manifest key of an effect file (name without "sprite."): legacy short ID or the full fx.* asset ID."""
+    rest = name.removeprefix("fx.")
+    return rest if rest in LEGACY_FX else name
+
+
+def effect_entry(entry: dict, key: str, over: dict) -> dict:
+    """Manifest entry of an effect strip: it loops only when its sidecar says so; additive unless told otherwise."""
+    legacy = key in LEGACY_FX
+    return {
+        **entry,
+        "loop": bool(over.get("loop", False)),
+        "provenance": "GPT-6 effect strip." if legacy else "Magic and Favor VFX phase (VFX_MAGIC_AND_FAVORS.md), imported by `npm run sprites:import` with its full asset ID.",
+        "additive": bool(over.get("additive", True)),
+    }
+
 HERO_DIRS_NEEDED = {"e", "ne", "n", "s", "se"}  # the game mirrors e, ne, se for w, nw, sw
 
 # kind → (frame w, frame h, anchor, source px per hex, runtime scale)
@@ -100,11 +130,15 @@ def runtime_strip(img: Image.Image, fw: int, fh: int, k: float) -> tuple[Image.I
     return out, rw, rh
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--src", help="folder to import from (default assets-source/sprites/final)")
-    args = ap.parse_args()
+    ap.add_argument("--only", help="import only files whose name contains this text")
+    ap.add_argument("--self-test", action="store_true")
+    args = ap.parse_args(argv)
+    if args.self_test:
+        return self_test()
     global SRC
     if args.src:
         SRC = Path(args.src).resolve()
@@ -117,6 +151,8 @@ def main() -> int:
     problems: list[str] = []
     done: list[str] = []
     for src in sorted(SRC.glob("sprite.*.png")):
+        if args.only and args.only not in src.name:
+            continue
         name = src.stem.removeprefix("sprite.")
         side = src.with_suffix(".json")
         over = json.loads(side.read_text()) if side.exists() else {}
@@ -154,7 +190,7 @@ def main() -> int:
             target = ("projectiles", name.removeprefix("battle.projectile."))
             kind = "projectile"
         elif parts[0] == "fx":
-            target = ("effects", name.removeprefix("fx."))
+            target = ("effects", effect_key(name))
             kind = "fx"
         else:
             problems.append(f"{src.name}: name does not match any sprite family")
@@ -234,7 +270,7 @@ def main() -> int:
             else:
                 still = {k2: entry[k2] for k2 in ("file", "anchor", "pixelsPerHex", "status")}
                 if target[0] == "effects":
-                    manifest["effects"][target[1]] = {**entry, "loop": False, "provenance": "GPT-6 effect strip.", "additive": over.get("additive", True)}
+                    manifest["effects"][target[1]] = effect_entry(entry, target[1], over)
                 else:
                     manifest[target[0]][target[1]] = {**still, "width": rw * frames, "height": rh, "provenance": "GPT-6 final art, imported by `npm run sprites:import`."}
         done.append(src.name)
@@ -244,6 +280,83 @@ def main() -> int:
         print("PROBLEM", p, file=sys.stderr)
     print(f"imported {len(done)} file(s){' (dry run)' if args.dry_run else ''}; {len(problems)} problem(s)")
     return 1 if problems else 0
+
+
+def self_test() -> int:
+    """Synthetic effect strips → import into a temporary project → check IDs, loops and untouched entries."""
+    import shutil
+    import tempfile
+
+    global SRC, PLAN, RUNTIME, OUT, MANIFEST
+    saved = (SRC, PLAN, RUNTIME, OUT, MANIFEST)
+    tmp = Path(tempfile.mkdtemp(prefix="import-sprites-"))
+    fails: list[str] = []
+    try:
+        SRC = tmp / "src"
+        SRC.mkdir()
+        PLAN = tmp / "content-plan.json"
+        PLAN.write_text(json.dumps({"creatures": []}))
+        RUNTIME = tmp / "runtime"
+        OUT = RUNTIME / "sprites" / "final"
+        MANIFEST = RUNTIME / "sprites" / "manifest.json"
+        MANIFEST.parent.mkdir(parents=True)
+        keep = {"file": "sprites/final/effects/keep.webp", "frames": 1, "status": "final"}
+        MANIFEST.write_text(json.dumps({"effects": {"fx.spell.other.cast": keep}, "creatures": {}, "heroes": {}}))
+
+        def strip(name: str, frames: int, side: dict | None) -> None:
+            fw = fh = 128
+            img = Image.new("RGBA", (fw * frames, fh), (0, 0, 0, 0))
+            px = img.load()
+            for i in range(frames):
+                for y in range(40, 90):
+                    for x in range(i * fw + 40, i * fw + 90):
+                        px[x, y] = (255, 200, 80, 255)
+            img.save(SRC / f"sprite.{name}.png")
+            if side is not None:
+                (SRC / f"sprite.{name}.json").write_text(json.dumps({"frames": frames, "pixelsPerHex": 120, **side}))
+
+        strip("fx.impact", 6, {"fps": 14})
+        strip("fx.spell.test.cast", 6, {"fps": 10, "loop": False})
+        strip("fx.spell.test.travel", 4, {"fps": 12, "loop": True})
+        strip("fx.status.test", 6, {"fps": 6, "loop": True, "additive": False})
+        strip("fx.gift.test", 8, {"fps": 12})
+        rc = main(["--only", "sprite.fx.", "--src", str(SRC)])
+        if rc != 0:
+            fails.append(f"import returned {rc}")
+        eff = json.loads(MANIFEST.read_text())["effects"]
+        expect = {
+            "impact": (6, False, True),
+            "fx.spell.test.cast": (6, False, True),
+            "fx.spell.test.travel": (4, True, True),
+            "fx.status.test": (6, True, False),
+            "fx.gift.test": (8, False, True),
+        }
+        for key, (frames, loop, additive) in expect.items():
+            e = eff.get(key)
+            if not e:
+                fails.append(f"missing effects[{key!r}]")
+                continue
+            if (e["frames"], e["loop"], e["additive"]) != (frames, loop, additive):
+                fails.append(f"{key}: frames/loop/additive {(e['frames'], e['loop'], e['additive'])} != {(frames, loop, additive)}")
+            if not (RUNTIME / e["file"]).exists():
+                fails.append(f"{key}: runtime file {e['file']} not written")
+        for wrong in ("spell.test.cast", "status.test", "gift.test"):
+            if wrong in eff:
+                fails.append(f"stripped ID {wrong!r} registered (the fx. prefix was lost)")
+        if eff.get("fx.spell.other.cast") != keep:
+            fails.append("an unrelated effect entry was changed")
+        # --only skips the rest.
+        strip("fx.spell.skipped.cast", 6, {"fps": 10})
+        main(["--only", "fx.gift.", "--src", str(SRC)])
+        if "fx.spell.skipped.cast" in json.loads(MANIFEST.read_text())["effects"]:
+            fails.append("--only imported a file it should have skipped")
+    finally:
+        SRC, PLAN, RUNTIME, OUT, MANIFEST = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+    for f in fails:
+        print("SELF-TEST FAIL", f, file=sys.stderr)
+    print("self-test " + ("passed" if not fails else f"failed ({len(fails)})"))
+    return 1 if fails else 0
 
 
 if __name__ == "__main__":

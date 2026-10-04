@@ -1269,6 +1269,7 @@ export class BattleSceneController implements SceneController {
     const look = this.spellLookOf(ev);
     const id = `fx.spell.${ev.spellId}`;
     this.logFx(id);
+    this.painter.preload(id);
     const victims = this.victims(t, look.scope);
     const dir = ev.side === 'attacker' ? 1 : -1;
     const from = this.casterPoint(ev.side);
@@ -1312,6 +1313,7 @@ export class BattleSceneController implements SceneController {
     const look = m.look;
     const id = `fx.miracle.${ev.interventionId}`;
     this.logFx(id);
+    this.painter.preload(id);
     const victims = this.miracleVictims(m, ev.targetStackId);
     const dir = m.side === 'attacker' ? 1 : -1;
     const healed = heal && heal.side === m.side ? heal.healed : 0;
@@ -1333,6 +1335,11 @@ export class BattleSceneController implements SceneController {
       await hit;
     };
     await Promise.all([...victims.map(react), screen]);
+  }
+
+  /** Start loading an effect's delivered strips (e.g. a miracle's, while its painted card is up). Presentation only. */
+  preloadFx(id: string): void {
+    this.painter.preload(id);
   }
 
   /** The magic effects played most recently (read-only diagnostics for tests). */

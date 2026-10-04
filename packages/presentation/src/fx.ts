@@ -69,6 +69,8 @@ export function genericImpactOf(look: FxLook): string | null {
       return null;
   }
 }
+/** Peak opacity of a delivered whole-view strip (army spells, battle miracles). */
+export const SCREEN_STRIP_ALPHA = 0.6;
 /** Schools drawn with ordinary (not additive) blending: dark matter does not glow. */
 const DARK: ReadonlySet<FxSchool> = new Set<FxSchool>(['swarm', 'obsidian', 'shadow', 'curse', 'blight', 'earth', 'fate']);
 /** Schools whose sky strike is a lightning bolt (the others fall as streaks). */
@@ -207,6 +209,17 @@ export class FxPainter {
   stripOf(id: string | undefined): EffectDefinition | null {
     if (!id || this.simple) return null;
     return spriteManifest().effects[id] ?? null;
+  }
+
+  /**
+   * Start loading the delivered strips of an effect's phases (`<id>.cast`, `.travel`, …) so a
+   * later phase does not wait for its texture between two others. Never waits; Low quality loads nothing.
+   */
+  preload(id: string, phases: readonly string[] = ['cast', 'travel', 'impact', 'screen', 'area', 'depart', 'arrive']): void {
+    for (const p of phases) {
+      const def = this.stripOf(`${id}.${p}`);
+      if (def) void loadStrip(def).catch(() => null);
+    }
   }
 
   /** Like `stripOf`, but only final art (a placeholder strip never replaces the drawn effect). */
@@ -906,19 +919,27 @@ export class FxPainter {
   /** A moment over the whole view (army spells, battle miracles). `dir`: 1 = from the left (attacker's side). */
   async screenFx(kind: FxScreen, school: FxSchool, dir: 1 | -1 = 1, id?: string): Promise<void> {
     const sc = this.screen;
-    if (!sc || kind === 'none' || this.simple) return;
+    if (!sc || this.simple) return;
     const { width: W, height: H } = sc.size();
+    // A delivered strip plays even where the drawn look has no whole-field moment (the map miracles' `screen` phase).
     const def = this.stripOf(id);
     if (def) {
-      // A delivered screen strip is stretched over the view.
+      // A delivered screen strip covers the view (its proportions kept, centred) at a
+      // controlled opacity that eases in and out, so the board stays readable under it.
       const frames = await loadStrip(def).catch(() => null);
       if (!frames || sc.layer.destroyed) return;
       const s = new Sprite(frames[0] ?? Texture.EMPTY);
-      s.width = W;
-      s.height = H;
+      s.anchor.set(0.5);
+      const k = Math.max(W / Math.max(1, def.frameWidth), H / Math.max(1, def.frameHeight));
+      s.scale.set(k * (dir === -1 ? -1 : 1), k);
+      s.position.set(W / 2, H / 2);
       if (def.additive) s.blendMode = 'add';
-      return this.run([s], (frames.length / Math.max(1, def.fps)) * 1000, (t) => (s.texture = frames[Math.min(frames.length - 1, Math.floor(t * frames.length))]!), sc.layer);
+      return this.run([s], (frames.length / Math.max(1, def.fps)) * 1000, (t) => {
+        s.texture = frames[Math.min(frames.length - 1, Math.floor(t * frames.length))]!;
+        s.alpha = SCREEN_STRIP_ALPHA * Math.min(1, t / 0.12, (1 - t) / 0.18);
+      }, sc.layer);
     }
+    if (kind === 'none') return;
     const [core, glow, spark] = FX_PALETTE[school];
     const tint = (color: number, peak: number, ms: number, add = false, hold = 0.4) => {
       const g = new Graphics().rect(0, 0, W, H).fill({ color });
@@ -1247,7 +1268,13 @@ export class StatusAura {
     s.scale.set(((Math.sqrt(3) * this.u) / def.pixelsPerHex) * w);
     if (def.additive) s.blendMode = 'add';
     node.addChild(s);
-    void loadStrip(def).catch(() => null);
+    // The first frame as soon as the strip is loaded: without ambient motion (Low, reduced motion)
+    // `anim` is not called again, and the overlay must still read as a still shape.
+    void loadStrip(def)
+      .then((frames) => {
+        if (!s.destroyed && s.texture === Texture.EMPTY && frames[0]) s.texture = frames[0];
+      })
+      .catch(() => null);
     void h;
     return {
       kind,

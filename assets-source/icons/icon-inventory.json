@@ -21,7 +21,7 @@
           "assetId": "icon.res.gold",
           "name": "gold",
           "group": "Interface",
-          "where": "Costs and rewards (every screen); Resource bar (adventure, town)",
+          "where": "Costs and rewards (every screen); Resource bar (adventure, town); components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/res.gold.png",
@@ -73,7 +73,7 @@
           "assetId": "icon.res.favor",
           "name": "favor",
           "group": "Interface",
-          "where": "Adventure map; Battle; Costs and rewards (every screen); Map dialogs (camps, events, sites); Pantheon; Resource bar (adventure, town); Town",
+          "where": "Adventure map; Battle; Costs and rewards (every screen); Map dialogs (camps, events, sites); Pantheon; Resource bar (adventure, town); Town; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/res.favor.png",
@@ -86,7 +86,7 @@
           "assetId": "icon.stat.attack",
           "name": "attack",
           "group": "Interface",
-          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Dialogs (briefing, debrief, pause, save/load, encounters); Encyclopedia; Hero screen",
+          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Dialogs (briefing, debrief, pause, save/load, encounters); Encyclopedia; Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.attack.png",
@@ -216,7 +216,7 @@
           "assetId": "icon.stat.movement",
           "name": "movement",
           "group": "Interface",
-          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.movement.png",
@@ -229,7 +229,7 @@
           "assetId": "icon.stat.mana",
           "name": "mana",
           "group": "Interface",
-          "where": "Hero screen",
+          "where": "Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.mana.png",
@@ -320,7 +320,7 @@
           "assetId": "icon.world.town",
           "name": "town",
           "group": "Interface",
-          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Town",
+          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Town; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/world.town.png",
@@ -658,7 +658,7 @@
           "assetId": "icon.ui.lock",
           "name": "lock",
           "group": "Interface",
-          "where": "Hero screen; Journal; Town",
+          "where": "Hero screen; Journal; Town; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.lock.png",
@@ -723,7 +723,7 @@
           "assetId": "icon.stat.vision",
           "name": "eye",
           "group": "Interface",
-          "where": "Adventure map; Hero screen; Journal",
+          "where": "Adventure map; Hero screen; Journal; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/stat.vision.png",
@@ -762,7 +762,7 @@
           "assetId": "icon.ui.star",
           "name": "star",
           "group": "Interface",
-          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Journal; Results / high scores; Shared art widgets",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Journal; Results / high scores; Shared art widgets; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
@@ -803,12 +803,12 @@
           "group": "Interface",
           "where": "Town",
           "current": {
-            "type": "glyph",
-            "file": "assets-source/icons/current/glyph.build.svg",
-            "glyph": "build"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.build.png",
+            "status": "final"
           },
           "brief": "Build (town pop-up and build-today mark) — a builder’s hammer.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.ui.recruit",
@@ -816,12 +816,12 @@
           "group": "Interface",
           "where": "Town",
           "current": {
-            "type": "glyph",
-            "file": "assets-source/icons/current/glyph.recruit.svg",
-            "glyph": "recruit"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.recruit.png",
+            "status": "final"
           },
           "brief": "Recruit troops — a crested helmet over a small banner.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.ui.market",
@@ -829,12 +829,12 @@
           "group": "Interface",
           "where": "Town",
           "current": {
-            "type": "glyph",
-            "file": "assets-source/icons/current/glyph.market.svg",
-            "glyph": "market"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.market.png",
+            "status": "final"
           },
           "brief": "Marketplace / trade resources — a balance scale.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.ui.tavern",
@@ -842,12 +842,12 @@
           "group": "Interface",
           "where": "Town",
           "current": {
-            "type": "glyph",
-            "file": "assets-source/icons/current/glyph.tavern.svg",
-            "glyph": "tavern"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.tavern.png",
+            "status": "final"
           },
           "brief": "Tavern / hire heroes — a foaming tankard.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.ui.merchant",
@@ -855,12 +855,12 @@
           "group": "Interface",
           "where": "Town",
           "current": {
-            "type": "glyph",
-            "file": "assets-source/icons/current/glyph.merchant.svg",
-            "glyph": "merchant"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.merchant.png",
+            "status": "final"
           },
           "brief": "Artifact Merchant — a coin pouch with a gem.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.ui.gift",
@@ -868,12 +868,12 @@
           "group": "Interface",
           "where": "Town",
           "current": {
-            "type": "glyph",
-            "file": "assets-source/icons/current/glyph.gift.svg",
-            "glyph": "gift"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.gift.png",
+            "status": "final"
           },
           "brief": "Divine gifts — a wrapped offering box with a ribbon.",
-          "priority": "now"
+          "priority": "later"
         }
       ]
     },
@@ -2829,7 +2829,7 @@
           "brief": "Scholar’s Oil Lamp — draw the object alone, three-quarter view. A small clay lamp for reading at night.",
           "details": "treasure · +1 mana at dawn. · expanded content",
           "lore": "A small clay lamp for reading at night. A spellcaster who studies by it wakes with one more charm remembered.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.wayfarer_compass",
@@ -2909,7 +2909,7 @@
           "brief": "Watchman’s Lantern — draw the object alone, three-quarter view. A horn-paned lantern with a hood that throws its light forward.",
           "details": "treasure · +1 hex of vision. · expanded content",
           "lore": "A horn-paned lantern with a hood that throws its light forward. Night watches see farther, and so does the hero who carries one.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.hippeis_barding",
@@ -4214,10 +4214,11 @@
           "assetId": "icon.bless.commanders",
           "name": "Your heroes",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.commanders.png",
+            "status": "final"
           },
           "brief": "Your heroes: the blessing applies to your heroes (commanders). Draw: a crested hero’s helmet seen from the front, gold rim, a small laurel at the brow.",
           "priority": "later"
@@ -4226,10 +4227,11 @@
           "assetId": "icon.bless.armies",
           "name": "Your armies",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.armies.png",
+            "status": "final"
           },
           "brief": "Your armies: the blessing applies to all your armies (morale, luck). Draw: a tall war banner on a pole with a forked swallow-tail flag streaming in the wind.",
           "priority": "later"
@@ -4238,10 +4240,11 @@
           "assetId": "icon.bless.creatures",
           "name": "Your creatures",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.creatures.png",
+            "status": "final"
           },
           "brief": "Your creatures: the blessing applies to your creatures (with a tier range beside it). Draw: a single large clawed paw print pressed into gold.",
           "priority": "later"
@@ -4250,10 +4253,11 @@
           "assetId": "icon.bless.shooters",
           "name": "Your shooters",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.shooters.png",
+            "status": "final"
           },
           "brief": "Your shooters: the blessing applies to your shooters. Draw: a recurved bow fully drawn with an arrow on the string, aimed up and right.",
           "priority": "later"
@@ -4262,10 +4266,11 @@
           "assetId": "icon.bless.flyers",
           "name": "Your flyers",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.flyers.png",
+            "status": "final"
           },
           "brief": "Your flyers: the blessing applies to your flying creatures. Draw: one great spread feathered wing, pale gold with blue tips.",
           "priority": "later"
@@ -4274,10 +4279,11 @@
           "assetId": "icon.bless.growth",
           "name": "Weekly growth",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.growth.png",
+            "status": "final"
           },
           "brief": "Weekly growth: more creatures appear in your dwellings each week. Draw: an arched dwelling doorway with a green shoot springing from its threshold and three small upward chevrons above it.",
           "priority": "later"
@@ -4286,10 +4292,11 @@
           "assetId": "icon.bless.recovery",
           "name": "Recovery after victory",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.recovery.png",
+            "status": "final"
           },
           "brief": "Recovery after victory: after a battle you win, stacks regain part of their losses. Draw: a small rising spirit flame inside a curved arrow that circles back on itself.",
           "priority": "later"
@@ -4298,10 +4305,11 @@
           "assetId": "icon.bless.spell_unlock",
           "name": "Spell to learn",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.spell_unlock.png",
+            "status": "final"
           },
           "brief": "Spell to learn: a spell becomes learnable at your library. Draw: an open book with a glowing golden key lying across its pages.",
           "priority": "later"
@@ -4310,10 +4318,11 @@
           "assetId": "icon.bless.daily_income",
           "name": "Daily income",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.daily_income.png",
+            "status": "final"
           },
           "brief": "Daily income: an income every day (shown with the resource icon). Draw: three stacked coins under the rim of a rising sun with short rays.",
           "priority": "later"
@@ -4322,10 +4331,11 @@
           "assetId": "icon.bless.offering",
           "name": "Richer offerings",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.offering.png",
+            "status": "final"
           },
           "brief": "Richer offerings: offerings at the Temple yield more Favor. Draw: a bronze altar bowl holding coins, a bright golden spark rising from it.",
           "priority": "later"
@@ -4334,10 +4344,11 @@
           "assetId": "icon.bless.fury",
           "name": "Fury of the wounded",
           "group": "God card · advantage",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.bless.fury.png",
+            "status": "final"
           },
           "brief": "Fury of the wounded: stacks at half strength or less attack harder. Draw: a cracked round shield with a red-orange flame bursting through the crack.",
           "priority": "later"
@@ -4346,10 +4357,11 @@
           "assetId": "icon.req.temple",
           "name": "Temple needed",
           "group": "God card · price",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.req.temple.png",
+            "status": "final"
           },
           "brief": "Temple needed: needs a Temple (level 1) in one town. Draw: a small classical temple front: four columns under a triangular roof, gold on stone.",
           "priority": "later"
@@ -4358,10 +4370,11 @@
           "assetId": "icon.req.grand_temple",
           "name": "Grand Temple needed",
           "group": "God card · price",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.req.grand_temple.png",
+            "status": "final"
           },
           "brief": "Grand Temple needed: needs the Temple’s second level. Draw: the same temple front grown taller: a second storey of columns and a sun disc on the roof.",
           "priority": "later"
@@ -4370,10 +4383,11 @@
           "assetId": "icon.req.city_hall",
           "name": "City Hall needed",
           "group": "God card · price",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.req.city_hall.png",
+            "status": "final"
           },
           "brief": "City Hall needed: needs the third level of the civic hall. Draw: a domed civic hall with a short bell tower and a flag on top.",
           "priority": "later"
@@ -4382,10 +4396,11 @@
           "assetId": "icon.req.after_first",
           "name": "After the first choice",
           "group": "God card · price",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.req.after_first.png",
+            "status": "final"
           },
           "brief": "After the first choice: available only after your first choice. Draw: one golden gem on the left joined by a short glowing line to a second, unlit gem on the right.",
           "priority": "later"
@@ -4394,10 +4409,11 @@
           "assetId": "icon.god.patron",
           "name": "Patron",
           "group": "God card · choice",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.god.patron.png",
+            "status": "final"
           },
           "brief": "Patron: your patron god (from the start). Draw: a golden laurel crown with a small sun at its front.",
           "priority": "later"
@@ -4406,10 +4422,11 @@
           "assetId": "icon.god.first_choice",
           "name": "First choice",
           "group": "God card · choice",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.god.first_choice.png",
+            "status": "final"
           },
           "brief": "First choice: one of the gods of your first choice. Draw: a single faceted golden star-gem with a soft glow.",
           "priority": "later"
@@ -4418,10 +4435,11 @@
           "assetId": "icon.god.second_choice",
           "name": "Second choice",
           "group": "God card · choice",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.god.second_choice.png",
+            "status": "final"
           },
           "brief": "Second choice: one of the gods of your second choice. Draw: two faceted golden star-gems side by side with a soft glow.",
           "priority": "later"
@@ -4430,10 +4448,11 @@
           "assetId": "icon.god.committed",
           "name": "Committed",
           "group": "God card · choice",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.god.committed.png",
+            "status": "final"
           },
           "brief": "Committed: you have committed to this god. Draw: a round golden seal with a ribbon tied in a bow below it, glowing warmly.",
           "priority": "later"
@@ -4442,10 +4461,11 @@
           "assetId": "icon.god.excluded",
           "name": "Excluded",
           "group": "God card · choice",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.god.excluded.png",
+            "status": "final"
           },
           "brief": "Excluded: another god of this choice was chosen. Draw: a grey chain broken in the middle, its two links falling apart.",
           "priority": "later"
@@ -4454,10 +4474,11 @@
           "assetId": "icon.god.permanent",
           "name": "Permanent",
           "group": "God card · choice",
-          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "where": "Pantheon screen and Encyclopedia god cards (icon rows; the sentence is the tooltip)",
           "current": {
-            "type": "procedural",
-            "note": "not shown yet (sentence on the card)"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.god.permanent.png",
+            "status": "final"
           },
           "brief": "Permanent: the choice cannot be undone. Draw: a closed bronze padlock wrapped by a laurel sprig.",
           "priority": "later"
@@ -4925,7 +4946,7 @@
     {
       "id": "portraits",
       "title": "Portraits (heroes, story characters, gods)",
-      "intro": "Square portraits. Placeholders today are generated busts.",
+      "intro": "Square painted portraits: every hero and god delivered 2026-10-04; story characters without a hero definition keep their dialogue bust or a generated stand-in.",
       "size": "256 × 256 px PNG (shown at 48–160 px)",
       "rows": [
         {
@@ -4935,11 +4956,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.alexios.portrait.webp",
+            "status": "final"
           },
           "brief": "Alexios, Strategos of Asterion (Strategos). The expedition commander sent to relight the three beacons of the Asterion coast.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.melas.portrait",
@@ -4948,11 +4970,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.melas.portrait.webp",
+            "status": "final"
           },
           "brief": "Melas, Former Coastal Commander (Champion). A former coastal commander who carried the great beacon’s lens to the storm plateau, believing one light should command the whole coast.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.scout_captain.portrait",
@@ -4961,11 +4984,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.scout_captain.portrait.webp",
+            "status": "final"
           },
           "brief": "Scout Captain, Plateau Patrol (Champion). Leader of the patrol that sweeps the middle plateau between the first crossings and the ward gate.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.heracles.portrait",
@@ -4974,11 +4998,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.heracles.portrait.webp",
+            "status": "final"
           },
           "brief": "Heracles, Hero of Labors (Champion). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.achilles.portrait",
@@ -4987,11 +5012,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.achilles.portrait.webp",
+            "status": "final"
           },
           "brief": "Achilles, Swift Champion (Champion). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.odysseus.portrait",
@@ -5000,11 +5026,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.odysseus.portrait.webp",
+            "status": "final"
           },
           "brief": "Odysseus, Cunning Voyager (Strategos). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.atalanta.portrait",
@@ -5013,11 +5040,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.atalanta.portrait.webp",
+            "status": "final"
           },
           "brief": "Atalanta, Huntress of Arcadia (Strategos). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.perseus.portrait",
@@ -5026,11 +5054,12 @@
           "pantheon": "Greek",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.perseus.portrait.webp",
+            "status": "final"
           },
           "brief": "Perseus, Slayer of the Gorgon (Oracle). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.sigurd.portrait",
@@ -5039,11 +5068,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.sigurd.portrait.webp",
+            "status": "final"
           },
           "brief": "Sigurd, Dragonslayer & Destiny (Huscarl). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.brynhild.portrait",
@@ -5052,11 +5082,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.brynhild.portrait.webp",
+            "status": "final"
           },
           "brief": "Brynhild, Valkyrie & Devotion (Huscarl). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.ragnar.portrait",
@@ -5065,11 +5096,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.ragnar.portrait.webp",
+            "status": "final"
           },
           "brief": "Ragnar, Conquest & Glory (Jarl). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.lagertha.portrait",
@@ -5078,11 +5110,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.lagertha.portrait.webp",
+            "status": "final"
           },
           "brief": "Lagertha, Leadership & Resilience (Jarl). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.hervor.portrait",
@@ -5091,11 +5124,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.hervor.portrait.webp",
+            "status": "final"
           },
           "brief": "Hervor, Ancestral Power & Vengeance (Völva). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.grey_jarl.portrait",
@@ -5104,11 +5138,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.grey_jarl.portrait.webp",
+            "status": "final"
           },
           "brief": "The Grey Jarl, Barrow-king of the Long Winter (Huscarl). Hrolf, a king of a thousand winters ago, swore to hold the winter under his mound in exchange for a kingdom when it ended.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.ulfhild.portrait",
@@ -5117,11 +5152,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.ulfhild.portrait.webp",
+            "status": "final"
           },
           "brief": "Ulfhild, Jarl of Hvitstrand (Jarl). A living jarl who swore to keep the Grey Jarl’s winter for a frozen sea that keeps her rivals’ ships in harbour.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.hrafn.portrait",
@@ -5130,11 +5166,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.hrafn.portrait.webp",
+            "status": "final"
           },
           "brief": "Hrafn the Hollow, Oathless Einherjar (Huscarl). Chosen by the Valkyries once, he walked out of their hall for the Grey Jarl’s promise of a war that never ends.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.bone_helm.portrait",
@@ -5143,11 +5180,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.bone_helm.portrait.webp",
+            "status": "final"
           },
           "brief": "Bone-Helm, Captain of the Nail-ship (Huscarl). Draugr captain of the ship of nails, who walks the frozen sound with his crew.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.barrow_captain.portrait",
@@ -5156,11 +5194,12 @@
           "pantheon": "Norse",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.barrow_captain.portrait.webp",
+            "status": "final"
           },
           "brief": "Barrow Captain, Warden of the Glacier Plateau (Huscarl). The Grey Jarl’s oldest captain, who sweeps the plateau before the barrow-gate.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.imhotep.portrait",
@@ -5169,11 +5208,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.imhotep.portrait.webp",
+            "status": "final"
           },
           "brief": "Imhotep, Master Architect (Lector Priest). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.hatshepsut.portrait",
@@ -5182,11 +5222,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.hatshepsut.portrait.webp",
+            "status": "final"
           },
           "brief": "Hatshepsut, Visionary Pharaoh (Vizier). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.ramses.portrait",
@@ -5195,11 +5236,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.ramses.portrait.webp",
+            "status": "final"
           },
           "brief": "Ramses, Conquering King (Medjay). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.cleopatra.portrait",
@@ -5208,11 +5250,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.cleopatra.portrait.webp",
+            "status": "final"
           },
           "brief": "Cleopatra, Diplomat & Strategist (Vizier). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.nefertiti.portrait",
@@ -5221,11 +5264,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.nefertiti.portrait.webp",
+            "status": "final"
           },
           "brief": "Nefertiti, Culture & Unity (Lector Priest). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.ahmose.portrait",
@@ -5234,11 +5278,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.ahmose.portrait.webp",
+            "status": "final"
           },
           "brief": "Ahmose, Liberator of the Two Lands (Medjay). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.tiye.portrait",
@@ -5247,11 +5292,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.tiye.portrait.webp",
+            "status": "final"
           },
           "brief": "Tiye, Great Royal Wife (Vizier). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.peseshet.portrait",
@@ -5260,11 +5306,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.peseshet.portrait.webp",
+            "status": "final"
           },
           "brief": "Peseshet, Overseer of Physicians (Lector Priest). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.momotaro.portrait",
@@ -5273,11 +5320,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.momotaro.portrait.webp",
+            "status": "final"
           },
           "brief": "Momotaro, People's Hero (Onmyōji). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.yamato_takeru.portrait",
@@ -5286,11 +5334,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.yamato_takeru.portrait.webp",
+            "status": "final"
           },
           "brief": "Yamato Takeru, Imperial Explorer (Samurai). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.tomoe_gozen.portrait",
@@ -5299,11 +5348,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.tomoe_gozen.portrait.webp",
+            "status": "final"
           },
           "brief": "Tomoe Gozen, Legendary Archer (Samurai). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.benkei.portrait",
@@ -5312,11 +5362,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.benkei.portrait.webp",
+            "status": "final"
           },
           "brief": "Benkei, Devoted Guardian (Daimyo). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.yoshitsune.portrait",
@@ -5325,11 +5376,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.yoshitsune.portrait.webp",
+            "status": "final"
           },
           "brief": "Yoshitsune, Brilliant Strategist (Daimyo). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.kusunoki_masashige.portrait",
@@ -5338,11 +5390,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.kusunoki_masashige.portrait.webp",
+            "status": "final"
           },
           "brief": "Kusunoki Masashige, Loyal Defender (Daimyo). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.abe_no_seimei.portrait",
@@ -5351,11 +5404,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.abe_no_seimei.portrait.webp",
+            "status": "final"
           },
           "brief": "Abe no Seimei, Master of Onmyō (Onmyōji). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.hangaku_gozen.portrait",
@@ -5364,11 +5418,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.hangaku_gozen.portrait.webp",
+            "status": "final"
           },
           "brief": "Hangaku Gozen, Archer of Torisaka (Samurai). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.cu_chulainn.portrait",
@@ -5377,11 +5432,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.cu_chulainn.portrait.webp",
+            "status": "final"
           },
           "brief": "Cu Chulainn, Hound of Ulster (Fian). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.fionn_mac_cumhaill.portrait",
@@ -5390,11 +5446,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.webp",
+            "status": "final"
           },
           "brief": "Fionn mac Cumhaill, Leader of the Fianna (Chieftain). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.scathach.portrait",
@@ -5403,11 +5460,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.scathach.portrait.webp",
+            "status": "final"
           },
           "brief": "Scathach, Warrior Teacher (Fian). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.deirdre.portrait",
@@ -5416,11 +5474,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.deirdre.portrait.webp",
+            "status": "final"
           },
           "brief": "Deirdre, Sorrow & Resolve (Druid). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.boudicca.portrait",
@@ -5429,11 +5488,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.boudicca.portrait.webp",
+            "status": "final"
           },
           "brief": "Boudicca, Rebel Queen (Chieftain). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.medb.portrait",
@@ -5442,11 +5502,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.medb.portrait.webp",
+            "status": "final"
           },
           "brief": "Medb, Queen of Connacht (Chieftain). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.amergin.portrait",
@@ -5455,11 +5516,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.amergin.portrait.webp",
+            "status": "final"
           },
           "brief": "Amergin, Poet of the Landing (Druid). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.fergus_mac_roich.portrait",
@@ -5468,11 +5530,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.fergus_mac_roich.portrait.webp",
+            "status": "final"
           },
           "brief": "Fergus mac Roich, Exiled King of Ulster (Fian). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.hunahpu.portrait",
@@ -5481,11 +5544,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.hunahpu.portrait.webp",
+            "status": "final"
           },
           "brief": "Hunahpu, Trickster & Resilience (Jaguar Knight). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.xbalanque.portrait",
@@ -5494,11 +5558,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.xbalanque.portrait.webp",
+            "status": "final"
           },
           "brief": "Xbalanque, Skill & Opportunity (Jaguar Knight). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.nezahualcoyotl.portrait",
@@ -5507,11 +5572,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.webp",
+            "status": "final"
           },
           "brief": "Nezahualcoyotl, Poet King & Harmony (Tlatoani). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.topiltzin_quetzalcoatl.portrait",
@@ -5520,11 +5586,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.webp",
+            "status": "final"
           },
           "brief": "Topiltzin Quetzalcoatl, Reform & Enlightenment (Day Keeper). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.eight_deer_jaguar_claw.portrait",
@@ -5533,11 +5600,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.webp",
+            "status": "final"
           },
           "brief": "Eight Deer Jaguar Claw, Tactics & Divine Right (Tlatoani). Concept-board hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.moctezuma_ilhuicamina.portrait",
@@ -5546,11 +5614,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.webp",
+            "status": "final"
           },
           "brief": "Moctezuma Ilhuicamina, Archer of the Sky (Tlatoani). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.lady_six_sky.portrait",
@@ -5559,11 +5628,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.lady_six_sky.portrait.webp",
+            "status": "final"
           },
           "brief": "Lady Six Sky, Warrior Queen of Naranjo (Jaguar Knight). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.chilam_balam.portrait",
@@ -5572,11 +5642,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.chilam_balam.portrait.webp",
+            "status": "final"
           },
           "brief": "Chilam Balam, Jaguar Prophet (Day Keeper). Proposed hero.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.seshet.portrait",
@@ -5585,11 +5656,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.seshet.portrait.webp",
+            "status": "final"
           },
           "brief": "Seshet, Lector of the House of Life (Lector Priest). A lector priestess of Abedju who reads the hymns that send the sun through the night.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.djedkhonsu.portrait",
@@ -5598,11 +5670,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.djedkhonsu.portrait.webp",
+            "status": "final"
           },
           "brief": "Djedkhonsu, The Hollow Lector (Lector Priest). Once the highest reader of the House of Life, he learned the name of the coiled dark and bargained with it for an endless dusk to rule.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.paser.portrait",
@@ -5611,11 +5684,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.paser.portrait.webp",
+            "status": "final"
           },
           "brief": "Paser, The Red Vizier (Vizier). A vizier who crowned himself in the dusk and calls Djedkhonsu his priest.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.ankhwen.portrait",
@@ -5624,11 +5698,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.ankhwen.portrait.webp",
+            "status": "final"
           },
           "brief": "Ankhwen, Captain of the Drowned Barge (Medjay). A river captain who drowned in the first dark morning and came back hungry for orders.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.hekaib.portrait",
@@ -5637,11 +5712,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.hekaib.portrait.webp",
+            "status": "final"
           },
           "brief": "Hekaib, Sword of the Hollow Lector (Medjay). Djedkhonsu’s champion, who holds the rookery gate.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.iti.portrait",
@@ -5650,11 +5726,12 @@
           "pantheon": "Egyptian",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.iti.portrait.webp",
+            "status": "final"
           },
           "brief": "Iti, Warden of the Horizon (Medjay). Keeper of the road between the two horizon-stones.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.akane.portrait",
@@ -5663,11 +5740,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.akane.portrait.webp",
+            "status": "final"
           },
           "brief": "Akane, Diviner of the Western Shrine (Onmyōji). A shrine diviner who reads the lantern-smoke at the festival of the dead.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.yamikage.portrait",
@@ -5676,11 +5754,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.yamikage.portrait.webp",
+            "status": "final"
           },
           "brief": "Yamikage, The Lantern-Eater (Onmyōji). A spirit of the borderlands who learned to swallow light, and swallowed the lanterns of seven provinces.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.kurogane.portrait",
@@ -5689,11 +5768,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.kurogane.portrait.webp",
+            "status": "final"
           },
           "brief": "Kurogane, The Iron Daimyo (Daimyo). A lord who fences the wandering dead into his army and calls them loyal.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.gonryo.portrait",
@@ -5702,11 +5782,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.gonryo.portrait.webp",
+            "status": "final"
           },
           "brief": "Gonryō, Captain of the Fog Fleet (Samurai). A sea captain whose ships sail out of the fog and never into port.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.oboro.portrait",
@@ -5715,11 +5796,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.oboro.portrait.webp",
+            "status": "final"
           },
           "brief": "Oboro, General of the Hazy Moon (Samurai). Yamikage’s general, who holds the kirin meadow’s gate.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.kagero.portrait",
@@ -5728,11 +5810,12 @@
           "pantheon": "Japanese",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.kagero.portrait.webp",
+            "status": "final"
           },
           "brief": "Kagerō, Warden of the Last Torii (Samurai). A warden who walks the road between the sun stone and the moon stone.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.orla.portrait",
@@ -5741,11 +5824,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.orla.portrait.webp",
+            "status": "final"
           },
           "brief": "Orla, Druid of the Hazel Grove (Druid). A druid of the hazel grove who keeps the calendar of fires.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.dubhghall.portrait",
@@ -5754,11 +5838,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.dubhghall.portrait.webp",
+            "status": "final"
           },
           "brief": "Dubhghall, The Withered King (Chieftain). A king who swore himself to the dark half of the year and broke the silver branch so it would never end.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.fiachra.portrait",
@@ -5767,11 +5852,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.fiachra.portrait.webp",
+            "status": "final"
           },
           "brief": "Fiachra, The Usurper of the Ford (Chieftain). A chieftain who took the high seat in the long winter and keeps it with the Withered King’s help.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.corc.portrait",
@@ -5780,11 +5866,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.corc.portrait.webp",
+            "status": "final"
           },
           "brief": "Corc, Raider of the Grey Sea (Fian). A sea-raider who came with the mist and stayed for the plunder.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.tadhg.portrait",
@@ -5793,11 +5880,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.tadhg.portrait.webp",
+            "status": "final"
           },
           "brief": "Tadhg the Grey, Champion of the Withered King (Fian). The Withered King’s champion, who holds the stags’ wood.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.ciar.portrait",
@@ -5806,11 +5894,12 @@
           "pantheon": "Celtic",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.ciar.portrait.webp",
+            "status": "final"
           },
           "brief": "Ciar, Warden of the Mound (Fian). Keeper of the road between the summer stone and the winter stone.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.itzel.portrait",
@@ -5819,11 +5908,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.itzel.portrait.webp",
+            "status": "final"
           },
           "brief": "Itzel, Day-Keeper of Xochitla (Day Keeper). A day-keeper who counts the calendar and knows which fire belongs to which day.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.itztli.portrait",
@@ -5832,11 +5922,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.itztli.portrait.webp",
+            "status": "final"
           },
           "brief": "Itztli, The Night-Knife (Day Keeper). An obsidian priest who wants the age to end in darkness so that the next one will be his.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.tecuani.portrait",
@@ -5845,11 +5936,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.tecuani.portrait.webp",
+            "status": "final"
           },
           "brief": "Tecuani, Lord of Itzcalli (Tlatoani). A city lord who swore to the Night-Knife in exchange for the next age’s throne.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.acatl.portrait",
@@ -5858,11 +5950,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.acatl.portrait.webp",
+            "status": "final"
           },
           "brief": "Acatl, Captain of the Lake Canoes (Jaguar Knight). A canoe captain who raids the lake towns in the Night-Knife’s name.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.mazatl.portrait",
@@ -5871,11 +5964,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.mazatl.portrait.webp",
+            "status": "final"
           },
           "brief": "Mazatl, Keeper of the Fire Mountain (Jaguar Knight). The Night-Knife’s champion, who holds the fire mountain.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.tlacatl.portrait",
@@ -5884,11 +5978,12 @@
           "pantheon": "Mesoamerican",
           "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder bust"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.tlacatl.portrait.webp",
+            "status": "final"
           },
           "brief": "Tlacatl, Warden of the Smoking Gate (Jaguar Knight). Keeper of the road between the morning-star stone and the evening-star stone.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.cathal.portrait",
@@ -6105,11 +6200,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.zeus.portrait.webp",
+            "status": "final"
           },
           "brief": "Zeus, Lightning & Power. “The storm answers to the one who keeps the lights.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.athena.portrait",
@@ -6118,11 +6214,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.athena.portrait.webp",
+            "status": "final"
           },
           "brief": "Athena, Knowledge & Strategy. “Hold the road together.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.ares.portrait",
@@ -6131,11 +6228,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.ares.portrait.webp",
+            "status": "final"
           },
           "brief": "Ares, War & Conquest. “Break the force that bars the road.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.apollo.portrait",
@@ -6144,11 +6242,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.apollo.portrait.webp",
+            "status": "final"
           },
           "brief": "Apollo, Sun & Inspiration. “Sing before the battle, and the battle sings back.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.artemis.portrait",
@@ -6157,11 +6256,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.artemis.portrait.webp",
+            "status": "final"
           },
           "brief": "Artemis, Hunt & Wilderness. “Wait for the wind. Then loose.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.hermes.portrait",
@@ -6170,11 +6270,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.hermes.portrait.webp",
+            "status": "final"
           },
           "brief": "Hermes, Trade & Movement. “A road walked quickly is a road walked twice.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.demeter.portrait",
@@ -6183,11 +6284,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.demeter.portrait.webp",
+            "status": "final"
           },
           "brief": "Demeter, Harvest & Abundance. “Feed the valley and the valley will march for you.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.hades.portrait",
@@ -6196,11 +6298,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.hades.portrait.webp",
+            "status": "final"
           },
           "brief": "Hades, Underworld & Control. “Not every shade has to stay below.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.poseidon.portrait",
@@ -6209,11 +6312,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.poseidon.portrait.webp",
+            "status": "final"
           },
           "brief": "Poseidon, Sea & Dominion. “The tide does not ask the shore.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.hera.portrait",
@@ -6222,11 +6326,12 @@
           "pantheon": "Greek",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.greek.hera.portrait.webp",
+            "status": "final"
           },
           "brief": "Hera, Authority & Family. “A city is a household. Keep it full.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.odin.portrait",
@@ -6235,11 +6340,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.odin.portrait.webp",
+            "status": "final"
           },
           "brief": "Odin, Wisdom & Knowledge. “Every road north is paid for in wisdom.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.thor.portrait",
@@ -6248,11 +6354,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.thor.portrait.webp",
+            "status": "final"
           },
           "brief": "Thor, Strength & Storms. “Swing first, and swing true.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.tyr.portrait",
@@ -6261,11 +6368,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.tyr.portrait.webp",
+            "status": "final"
           },
           "brief": "Tyr, Law & Honor. “An oath holds the line longer than a shield.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.frigg.portrait",
@@ -6274,11 +6382,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.frigg.portrait.webp",
+            "status": "final"
           },
           "brief": "Frigg, Foresight & Protection. “I know how this ends. Walk where I point.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.baldr.portrait",
@@ -6287,11 +6396,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.baldr.portrait.webp",
+            "status": "final"
           },
           "brief": "Baldr, Light & Purity. “Even the long night has a morning in it.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.freyja.portrait",
@@ -6300,11 +6410,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.freyja.portrait.webp",
+            "status": "final"
           },
           "brief": "Freyja, Love & Fertility. “Every hall fills again by spring.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.heimdall.portrait",
@@ -6313,11 +6424,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.heimdall.portrait.webp",
+            "status": "final"
           },
           "brief": "Heimdall, Vigilance & Alertness. “I hear the grass grow. I heard you coming.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.hel.portrait",
@@ -6326,11 +6438,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.hel.portrait.webp",
+            "status": "final"
           },
           "brief": "Hel, Death & Transition. “Half of what falls is mine. I may lend it back.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.loki.portrait",
@@ -6339,11 +6452,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.loki.portrait.webp",
+            "status": "final"
           },
           "brief": "Loki, Trickery & Change. “Rules are for people who lose.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.norse.njord.portrait",
@@ -6352,11 +6466,12 @@
           "pantheon": "Norse",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.norse.njord.portrait.webp",
+            "status": "final"
           },
           "brief": "Njord, Sea & Prosperity. “Fair wind, full nets, heavy purses.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.ra.portrait",
@@ -6365,11 +6480,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.ra.portrait.webp",
+            "status": "final"
           },
           "brief": "Ra, Sun & Vitality. “Each dawn I cross the sky; each dawn the city rises with me.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.set.portrait",
@@ -6378,11 +6494,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.set.portrait.webp",
+            "status": "final"
           },
           "brief": "Set, Chaos & Strength. “Storms clear the ground for the strong.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.isis.portrait",
@@ -6391,11 +6508,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.isis.portrait.webp",
+            "status": "final"
           },
           "brief": "Isis, Magic & Healing. “What is loved is put back together.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.anubis.portrait",
@@ -6404,11 +6522,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.anubis.portrait.webp",
+            "status": "final"
           },
           "brief": "Anubis, Funerary Protection. “I weigh every heart. Yours may stay a while.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.bastet.portrait",
@@ -6417,11 +6536,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.bastet.portrait.webp",
+            "status": "final"
           },
           "brief": "Bastet, Grace & Protection. “Soft paws, sharp claws, a home well kept.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.osiris.portrait",
@@ -6430,11 +6550,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.osiris.portrait.webp",
+            "status": "final"
           },
           "brief": "Osiris, Rebirth & Eternity. “I was scattered once. I know the way back.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.thoth.portrait",
@@ -6443,11 +6564,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.thoth.portrait.webp",
+            "status": "final"
           },
           "brief": "Thoth, Knowledge & Wisdom. “Write it down, and it is yours forever.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.horus.portrait",
@@ -6456,11 +6578,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.horus.portrait.webp",
+            "status": "final"
           },
           "brief": "Horus, Kingship & Dominion. “Whatever flies, flies for the throne.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.hathor.portrait",
@@ -6469,11 +6592,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.hathor.portrait.webp",
+            "status": "final"
           },
           "brief": "Hathor, Joy & Prosperity. “Music in the hall, gold in the treasury.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.egyptian.sobek.portrait",
@@ -6482,11 +6606,12 @@
           "pantheon": "Egyptian",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.egyptian.sobek.portrait.webp",
+            "status": "final"
           },
           "brief": "Sobek, River Power & Fertility. “The flood takes, and the flood gives more.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.amaterasu.portrait",
@@ -6495,11 +6620,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.amaterasu.portrait.webp",
+            "status": "final"
           },
           "brief": "Amaterasu, Light & Prosperity. “Open the cave door, and the world is bright again.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.hachiman.portrait",
@@ -6508,11 +6634,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.hachiman.portrait.webp",
+            "status": "final"
           },
           "brief": "Hachiman, War & Guardianship. “Draw the bow to its full length.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.susanoo.portrait",
@@ -6521,11 +6648,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.susanoo.portrait.webp",
+            "status": "final"
           },
           "brief": "Susanoo, Storms & Protection. “The storm that breaks the wave also shelters the bay.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.tsukuyomi.portrait",
@@ -6534,11 +6662,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.tsukuyomi.portrait.webp",
+            "status": "final"
           },
           "brief": "Tsukuyomi, Night & Insight. “What the sun hides, the moon shows.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.benzaiten.portrait",
@@ -6547,11 +6676,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.benzaiten.portrait.webp",
+            "status": "final"
           },
           "brief": "Benzaiten, Arts & Inspiration. “Play one true note and the river answers.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.inari.portrait",
@@ -6560,11 +6690,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.inari.portrait.webp",
+            "status": "final"
           },
           "brief": "Inari, Prosperity & Bounty. “Leave rice at the shrine; find more in the storehouse.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.fujin.portrait",
@@ -6573,11 +6704,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.fujin.portrait.webp",
+            "status": "final"
           },
           "brief": "Fujin, Wind & Movement. “Open the bag. Let the road come to you.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.raijin.portrait",
@@ -6586,11 +6718,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.raijin.portrait.webp",
+            "status": "final"
           },
           "brief": "Raijin, Thunder & Power. “Every arrow carries a little of the storm.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.izanagi.portrait",
@@ -6599,11 +6732,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.izanagi.portrait.webp",
+            "status": "final"
           },
           "brief": "Izanagi, Creation & Renewal. “Stir the sea again; new islands will rise.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.japanese.izanami.portrait",
@@ -6612,11 +6746,12 @@
           "pantheon": "Japanese",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.japanese.izanami.portrait.webp",
+            "status": "final"
           },
           "brief": "Izanami, Death & Rebirth. “Do not look back at me. Just come home.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.dagda.portrait",
@@ -6625,11 +6760,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.dagda.portrait.webp",
+            "status": "final"
           },
           "brief": "Dagda, Abundance & Prosperity. “The cauldron is never empty for those who share it.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.morrigan.portrait",
@@ -6638,11 +6774,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.morrigan.portrait.webp",
+            "status": "final"
           },
           "brief": "Morrigan, War & Prophecy. “I have seen how this battle ends. Hurry.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.brigid.portrait",
@@ -6651,11 +6788,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.brigid.portrait.webp",
+            "status": "final"
           },
           "brief": "Brigid, Hearth & Healing. “Keep the fire lit and the door will hold.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.nuada.portrait",
@@ -6664,11 +6802,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.nuada.portrait.webp",
+            "status": "final"
           },
           "brief": "Nuada, Kingship & Justice. “A king stands in front. Stand with me.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.danu.portrait",
@@ -6677,11 +6816,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.danu.portrait.webp",
+            "status": "final"
           },
           "brief": "Danu, Ancestry & the Land. “The land remembers every child it fed.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.cernunnos.portrait",
@@ -6690,11 +6830,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.cernunnos.portrait.webp",
+            "status": "final"
           },
           "brief": "Cernunnos, Wilds & Transformation. “The small ones of the wood are fiercer than they look.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.epona.portrait",
@@ -6703,11 +6844,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.epona.portrait.webp",
+            "status": "final"
           },
           "brief": "Epona, Horses & Journeys. “Saddle up. The long road is shorter with me.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.lugh.portrait",
@@ -6716,11 +6858,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.lugh.portrait.webp",
+            "status": "final"
           },
           "brief": "Lugh, Light & Skill. “Master one craft and I will teach you the rest.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.arawn.portrait",
@@ -6729,11 +6872,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.arawn.portrait.webp",
+            "status": "final"
           },
           "brief": "Arawn, Underworld & the Otherworld. “My hounds bring back what the field takes.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.celtic.manannan.portrait",
@@ -6742,11 +6886,12 @@
           "pantheon": "Celtic",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.celtic.manannan.portrait.webp",
+            "status": "final"
           },
           "brief": "Manannan, Seas & Mists. “Step into the mist; step out where you meant to be.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.quetzalcoatl.portrait",
@@ -6755,11 +6900,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.quetzalcoatl.portrait.webp",
+            "status": "final"
           },
           "brief": "Quetzalcoatl, Wind & Wisdom. “The wind goes before the rain; wisdom goes before the harvest.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.huitzilopochtli.portrait",
@@ -6768,11 +6914,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.huitzilopochtli.portrait.webp",
+            "status": "final"
           },
           "brief": "Huitzilopochtli, War & Power. “The sun must fight to rise. So must you.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.coatlicue.portrait",
@@ -6781,11 +6928,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.coatlicue.portrait.webp",
+            "status": "final"
           },
           "brief": "Coatlicue, Earth & Creation. “The earth holds everything, and lets nothing fall.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.mixcoatl.portrait",
@@ -6794,11 +6942,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.mixcoatl.portrait.webp",
+            "status": "final"
           },
           "brief": "Mixcoatl, Hunt & Survival. “Follow the deer; the deer knows the way.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.xolotl.portrait",
@@ -6807,11 +6956,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.xolotl.portrait.webp",
+            "status": "final"
           },
           "brief": "Xolotl, Journey & Underworld Guidance. “I have walked every road below. This one is short.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.tlaloc.portrait",
@@ -6820,11 +6970,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.tlaloc.portrait.webp",
+            "status": "final"
           },
           "brief": "Tlaloc, Rain & Fertility. “The rain comes to those who remember it.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.tezcatlipoca.portrait",
@@ -6833,11 +6984,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.tezcatlipoca.portrait.webp",
+            "status": "final"
           },
           "brief": "Tezcatlipoca, Shadow & Fate. “Look in the smoking mirror. See who wins.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.xiuhtecuhtli.portrait",
@@ -6846,11 +6998,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.webp",
+            "status": "final"
           },
           "brief": "Xiuhtecuhtli, Fire & Renewal. “Feed the new fire, and it gives back more.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.chalchiuhtlicue.portrait",
@@ -6859,11 +7012,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.webp",
+            "status": "final"
           },
           "brief": "Chalchiuhtlicue, Waters & Healing. “The river washes the wound and fills the field.”",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.mesoamerican.mictlantecuhtli.portrait",
@@ -6872,11 +7026,12 @@
           "pantheon": "Mesoamerican",
           "where": "Pantheon screen; God choice; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/god.mesoamerican.mictlantecuhtli.portrait.webp",
+            "status": "final"
           },
           "brief": "Mictlantecuhtli, Death & Transformation. “The nearer to me, the harder they fight.”",
-          "priority": "now"
+          "priority": "later"
         }
       ]
     },
@@ -6898,7 +7053,7 @@
             "status": "final"
           },
           "brief": "A ragged fighter with a hooded cloak, a short spear and a mismatched shield.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.brigand.upgraded.portrait",
@@ -6912,7 +7067,7 @@
             "status": "final"
           },
           "brief": "A lean outlaw in a dark scarf with a notched spear and a dented round shield.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.hill_slinger.base.portrait",
@@ -6926,7 +7081,7 @@
             "status": "final"
           },
           "brief": "A shepherd in a wool cloak whirling a leather sling, a pouch of stones at the belt.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.wild_boar.base.portrait",
@@ -6940,7 +7095,7 @@
             "status": "final"
           },
           "brief": "A bristling dark boar with curved tusks, head lowered to charge.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.hill_slinger.upgraded.portrait",
@@ -6954,7 +7109,7 @@
             "status": "final"
           },
           "brief": "A slinger with a braided double sling and a bag of lead shot.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.wild_boar.upgraded.portrait",
@@ -6968,7 +7123,7 @@
             "status": "final"
           },
           "brief": "A huge scarred boar with long ivory tusks and a ridge of grey bristles.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.centaur.base.portrait",
@@ -6982,7 +7137,7 @@
             "status": "final"
           },
           "brief": "A centaur with a chestnut coat, simple chest protection and a melee spear.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.clay_golem.base.portrait",
@@ -6996,7 +7151,7 @@
             "status": "final"
           },
           "brief": "A heavy figure of red fired clay with a blank face and a sigil pressed into its chest.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.centaur.upgraded.portrait",
@@ -7010,7 +7165,7 @@
             "status": "final"
           },
           "brief": "A centaur with foreleg protection, a tied crest and a reinforced spearhead.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.clay_golem.upgraded.portrait",
@@ -7024,7 +7179,7 @@
             "status": "final"
           },
           "brief": "A clay golem plated in green-patinated bronze, with riveted shoulders.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.wyvern.base.portrait",
@@ -7038,7 +7193,7 @@
             "status": "final"
           },
           "brief": "A lean two-legged winged dragon with leathery wings and a barbed tail.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.wyvern.upgraded.portrait",
@@ -7052,7 +7207,7 @@
             "status": "final"
           },
           "brief": "A larger wyvern with a frilled crest and torn, battle-scarred wings.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.ogre.base.portrait",
@@ -7066,7 +7221,7 @@
             "status": "final"
           },
           "brief": "A towering brute in hides with a knotted club over one shoulder.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.ogre.upgraded.portrait",
@@ -7080,7 +7235,7 @@
             "status": "final"
           },
           "brief": "A scarred ogre wearing a crown of bent iron and a cloak of bear fur.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.basilisk.base.portrait",
@@ -7094,7 +7249,7 @@
             "status": "final"
           },
           "brief": "A great scaled serpent with a crest like a crown and pale, staring eyes.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.basilisk.upgraded.portrait",
@@ -7108,7 +7263,7 @@
             "status": "final"
           },
           "brief": "A larger basilisk with stone-grey scales and a ring of horns around its crown.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.elder_drake.base.portrait",
@@ -7122,7 +7277,7 @@
             "status": "final"
           },
           "brief": "A massive four-legged dragon with bronze scales and folded wings over a heap of coins.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.neutral.elder_drake.upgraded.portrait",
@@ -7136,7 +7291,7 @@
             "status": "final"
           },
           "brief": "An immense dragon with horn-crowned head and scales dulled to dark gold by age.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier1.base.portrait",
@@ -7150,7 +7305,7 @@
             "status": "final"
           },
           "brief": "A black long-eared creature, half hare and half goat, with golden eyes.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier1.upgraded.portrait",
@@ -7164,7 +7319,7 @@
             "status": "final"
           },
           "brief": "A great dark horse-goat with curling horns and a shaggy mane.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier2.base.portrait",
@@ -7178,7 +7333,7 @@
             "status": "final"
           },
           "brief": "A shaggy dark-green hound the size of a calf with a braided tail.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier2.upgraded.portrait",
@@ -7192,7 +7347,7 @@
             "status": "final"
           },
           "brief": "A massive green hound with glowing eyes and a silver torc collar.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier3.base.portrait",
@@ -7206,7 +7361,7 @@
             "status": "final"
           },
           "brief": "A grey horse with a dripping weed-tangled mane and hooves turned backwards.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier3.upgraded.portrait",
@@ -7220,7 +7375,7 @@
             "status": "final"
           },
           "brief": "A black water-horse with sea-green eyes and a mane like streaming kelp.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier4.base.portrait",
@@ -7234,7 +7389,7 @@
             "status": "final"
           },
           "brief": "A pale grey-cloaked woman with long silver hair, mouth open in a cry.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier4.upgraded.portrait",
@@ -7248,7 +7403,7 @@
             "status": "final"
           },
           "brief": "A banshee in torn battle-red wrappings, hair streaming like smoke.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier5.base.portrait",
@@ -7262,7 +7417,7 @@
             "status": "final"
           },
           "brief": "A great grey seal with a human gaze, rising from surf onto rocks.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier5.upgraded.portrait",
@@ -7276,7 +7431,7 @@
             "status": "final"
           },
           "brief": "A dark storm-grey selkie with a mantle of spray and sea-glass eyes.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier6.base.portrait",
@@ -7290,7 +7445,7 @@
             "status": "final"
           },
           "brief": "A huge white stag with moss-hung antlers and a faint green glow.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier6.upgraded.portrait",
@@ -7304,7 +7459,7 @@
             "status": "final"
           },
           "brief": "A stag of pale gold with an antler crown hung with leaves and stars.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier7.base.portrait",
@@ -7318,7 +7473,7 @@
             "status": "final"
           },
           "brief": "A towering giant with barnacled skin, a single great eye and a driftwood club.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.celtic.tier7.upgraded.portrait",
@@ -7332,7 +7487,7 @@
             "status": "final"
           },
           "brief": "An ancient sea-giant crowned with coral, a whale-jaw club over one shoulder.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier1.base.portrait",
@@ -7346,7 +7501,7 @@
             "status": "final"
           },
           "brief": "A large dark-green scarab beetle with a gleaming carapace and forelegs raised.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier1.upgraded.portrait",
@@ -7360,7 +7515,7 @@
             "status": "final"
           },
           "brief": "A golden scarab holding a glowing sun-disc between its forelegs.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier2.base.portrait",
@@ -7374,7 +7529,7 @@
             "status": "final"
           },
           "brief": "A jackal-headed warrior in a striped headdress with a bundle of javelins.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier2.upgraded.portrait",
@@ -7388,7 +7543,7 @@
             "status": "final"
           },
           "brief": "A black-furred jackal warrior in gold-banded armor with a javelin raised to throw.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier3.base.portrait",
@@ -7402,7 +7557,7 @@
             "status": "final"
           },
           "brief": "A mummiform blue-glazed figure holding a hoe and a basket, eyes painted wide.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier3.upgraded.portrait",
@@ -7416,7 +7571,7 @@
             "status": "final"
           },
           "brief": "A tall gilded ushabti with a royal headdress and rows of hieroglyphs on its body.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier4.base.portrait",
@@ -7430,7 +7585,7 @@
             "status": "final"
           },
           "brief": "A lion with a human face and a striped royal headdress, crouched to spring.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier4.upgraded.portrait",
@@ -7444,7 +7599,7 @@
             "status": "final"
           },
           "brief": "A great sphinx with falcon wings spread, sandstone-coloured fur and a golden beard.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier5.base.portrait",
@@ -7458,7 +7613,7 @@
             "status": "final"
           },
           "brief": "A huge Nile crocodile with bronze rings on its forelegs, jaws half open.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier5.upgraded.portrait",
@@ -7472,7 +7627,7 @@
             "status": "final"
           },
           "brief": "A crocodile in a bronze-scale harness with a sun-disc crest between its eyes.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier6.base.portrait",
@@ -7486,7 +7641,7 @@
             "status": "final"
           },
           "brief": "A huge grey-gold heron-like bird with a two-feathered crest and ember-lit wings.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier6.upgraded.portrait",
@@ -7500,7 +7655,7 @@
             "status": "final"
           },
           "brief": "A blazing golden bird with sun-rays in its crest and wings trailing light.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier7.base.portrait",
@@ -7514,7 +7669,7 @@
             "status": "final"
           },
           "brief": "A towering seated-king statue of red granite, now standing, with sand pouring from its joints.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.egyptian.tier7.upgraded.portrait",
@@ -7528,7 +7683,7 @@
             "status": "final"
           },
           "brief": "A colossal statue with a gold-inlaid headdress and eyes of lapis, a stone block in each hand.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier1.base.portrait",
@@ -7542,7 +7697,7 @@
             "status": "final"
           },
           "brief": "A spear-and-shield soldier in a bronze helmet and pale linen tunic.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier1.upgraded.portrait",
@@ -7556,7 +7711,7 @@
             "status": "final"
           },
           "brief": "A crested-helmet spear soldier with reinforced shoulder armor and a command sash.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier2.base.portrait",
@@ -7570,7 +7725,7 @@
             "status": "final"
           },
           "brief": "A lightly armored skirmisher with a crescent shield and a bundle of javelins.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier2.upgraded.portrait",
@@ -7584,7 +7739,7 @@
             "status": "final"
           },
           "brief": "A skirmisher with a reinforced helmet, braced throwing arm and a tidy javelin harness.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier3.base.portrait",
@@ -7598,7 +7753,7 @@
             "status": "final"
           },
           "brief": "An eagle-headed, winged lion-bodied creature with tawny fur and pale head feathers.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier3.upgraded.portrait",
@@ -7612,7 +7767,7 @@
             "status": "final"
           },
           "brief": "A griffin with a swept feather crest, long primary feathers and pale-blue accents.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier4.base.portrait",
@@ -7626,7 +7781,7 @@
             "status": "final"
           },
           "brief": "A lance-bearing rider with a shield on a compact warhorse with a saddle blanket.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier4.upgraded.portrait",
@@ -7640,7 +7795,7 @@
             "status": "final"
           },
           "brief": "A crested rider on a horse with layered neck and chest protection.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier5.base.portrait",
@@ -7654,7 +7809,7 @@
             "status": "final"
           },
           "brief": "A robed scholar with a staff topped by a geometric bronze focus.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier5.upgraded.portrait",
@@ -7668,7 +7823,7 @@
             "status": "final"
           },
           "brief": "A robed seer with a sculpted headpiece, layered mantle and a larger staff focus.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier6.base.portrait",
@@ -7682,7 +7837,7 @@
             "status": "final"
           },
           "brief": "A bull-headed biped with powerful shoulders, chest straps and a heavy axe.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier6.upgraded.portrait",
@@ -7696,7 +7851,7 @@
             "status": "final"
           },
           "brief": "A minotaur in patterned chest armor with horn fittings and a heavier axe.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier7.base.portrait",
@@ -7710,7 +7865,7 @@
             "status": "final"
           },
           "brief": "A one-eyed giant with a stone satchel and simple bracers.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.greek.tier7.upgraded.portrait",
@@ -7724,7 +7879,7 @@
             "status": "final"
           },
           "brief": "A cyclops with forged bronze bracers, engraved seams and a faintly luminous boulder.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier1.base.portrait",
@@ -7738,7 +7893,7 @@
             "status": "final"
           },
           "brief": "A russet fox with two tails and a faint blue flame floating beside it.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier1.upgraded.portrait",
@@ -7752,7 +7907,7 @@
             "status": "final"
           },
           "brief": "A white fox with nine fanned tails and a ring of pale fox-fire.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier2.base.portrait",
@@ -7766,7 +7921,7 @@
             "status": "final"
           },
           "brief": "A green turtle-shelled creature with a water-filled dish on its head and webbed hands.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier2.upgraded.portrait",
@@ -7780,7 +7935,7 @@
             "status": "final"
           },
           "brief": "A large mossy-shelled kappa with a white beard and a bamboo staff.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier3.base.portrait",
@@ -7794,7 +7949,7 @@
             "status": "final"
           },
           "brief": "A crow-winged warrior with a red long-nosed mask and a short sword.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier3.upgraded.portrait",
@@ -7808,7 +7963,7 @@
             "status": "final"
           },
           "brief": "A tengu in monk’s robes with great black wings and a feather fan.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier4.base.portrait",
@@ -7822,7 +7977,7 @@
             "status": "final"
           },
           "brief": "A red-skinned horned ogre in a tiger-skin wrap carrying a studded iron club.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier4.upgraded.portrait",
@@ -7836,7 +7991,7 @@
             "status": "final"
           },
           "brief": "A blue-skinned oni in lacquered samurai armor with a huge kanabō.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier5.base.portrait",
@@ -7850,7 +8005,7 @@
             "status": "final"
           },
           "brief": "A pale woman in a web-patterned kimono whose shadow has eight spider legs.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier5.upgraded.portrait",
@@ -7864,7 +8019,7 @@
             "status": "final"
           },
           "brief": "A spider-bodied woman in a gold-threaded kimono, webs glittering behind her.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier6.base.portrait",
@@ -7878,7 +8033,7 @@
             "status": "final"
           },
           "brief": "A deer-like beast with dragon scales, a single antler and flames at its hooves.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier6.upgraded.portrait",
@@ -7892,7 +8047,7 @@
             "status": "final"
           },
           "brief": "A golden-scaled kirin walking on clouds, mane of white fire streaming.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier7.base.portrait",
@@ -7906,7 +8061,7 @@
             "status": "final"
           },
           "brief": "A vast serpent with many heads rising from one coiled body, eyes red as lanterns.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.japanese.tier7.upgraded.portrait",
@@ -7920,7 +8075,7 @@
             "status": "final"
           },
           "brief": "An eight-headed serpent with gold scales and a golden crest on every head.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier1.base.portrait",
@@ -7934,7 +8089,7 @@
             "status": "final"
           },
           "brief": "A green serpent with a ruff of quetzal feathers around its head.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier1.upgraded.portrait",
@@ -7948,7 +8103,7 @@
             "status": "final"
           },
           "brief": "A turquoise serpent with long feathered wings spread against a gold sky.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier2.base.portrait",
@@ -7962,7 +8117,7 @@
             "status": "final"
           },
           "brief": "A black-spotted golden jaguar with jade eyes, crouched to spring.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier2.upgraded.portrait",
@@ -7976,7 +8131,7 @@
             "status": "final"
           },
           "brief": "A bright-gold jaguar with a sun-disc pattern across its shoulders.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier3.base.portrait",
@@ -7990,7 +8145,7 @@
             "status": "final"
           },
           "brief": "A warrior in a feathered eagle-head helmet holding an atlatl and darts.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier3.upgraded.portrait",
@@ -8004,7 +8159,7 @@
             "status": "final"
           },
           "brief": "An eagle warrior in golden feathers with a sun-ray shield and a bundle of darts.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier4.base.portrait",
@@ -8018,7 +8173,7 @@
             "status": "final"
           },
           "brief": "A dark crocodile with jade-green scutes emerging from still blue water.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier4.upgraded.portrait",
@@ -8032,7 +8187,7 @@
             "status": "final"
           },
           "brief": "A great crocodile with carved jade plates bound to its back.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier5.base.portrait",
@@ -8046,7 +8201,7 @@
             "status": "final"
           },
           "brief": "A tall bat-headed figure with leathery wings and an obsidian blade.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier5.upgraded.portrait",
@@ -8060,7 +8215,7 @@
             "status": "final"
           },
           "brief": "A crimson-winged bat spirit silhouetted against a red moon.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier6.base.portrait",
@@ -8074,7 +8229,7 @@
             "status": "final"
           },
           "brief": "A turquoise serpent with a flaming, segmented tail and a snout curling upward.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier6.upgraded.portrait",
@@ -8088,7 +8243,7 @@
             "status": "final"
           },
           "brief": "A blazing blue-and-gold serpent wreathed in a corona of fire.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier7.base.portrait",
@@ -8102,7 +8257,7 @@
             "status": "final"
           },
           "brief": "A towering basalt warrior statue with a feathered headdress and a stone shield.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.mesoamerican.tier7.upgraded.portrait",
@@ -8116,7 +8271,7 @@
             "status": "final"
           },
           "brief": "A colossal statue with glowing gold glyphs and a sun-disc on its chest.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier1.base.portrait",
@@ -8130,7 +8285,7 @@
             "status": "final"
           },
           "brief": "A gaunt warrior in corroded mail and a frost-rimed helmet, holding an axe and round shield.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier1.upgraded.portrait",
@@ -8144,7 +8299,7 @@
             "status": "final"
           },
           "brief": "A draugr with rune-etched armor plates, glowing blue eyes and a notched longaxe.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier2.base.portrait",
@@ -8158,7 +8313,7 @@
             "status": "final"
           },
           "brief": "A large white-grey wolf with frost on its muzzle and pale blue eyes.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier2.upgraded.portrait",
@@ -8172,7 +8327,7 @@
             "status": "final"
           },
           "brief": "A massive dark-grey wolf with a broken chain collar and a scarred muzzle.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier3.base.portrait",
@@ -8186,7 +8341,7 @@
             "status": "final"
           },
           "brief": "A hulking blue-grey troll with icicles in its beard and a stone club.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier3.upgraded.portrait",
@@ -8200,7 +8355,7 @@
             "status": "final"
           },
           "brief": "A towering troll with a crust of blue ice across its back and a boulder-headed club.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier4.base.portrait",
@@ -8214,7 +8369,7 @@
             "status": "final"
           },
           "brief": "A winged warrior woman in a silver helm with a spear and round shield.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier4.upgraded.portrait",
@@ -8228,7 +8383,7 @@
             "status": "final"
           },
           "brief": "A valkyrie in blue-enamelled scale armor with broad white wings and a long spear.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier5.base.portrait",
@@ -8242,7 +8397,7 @@
             "status": "final"
           },
           "brief": "A long wingless serpent-dragon with two clawed forelegs and frost on its scales.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier5.upgraded.portrait",
@@ -8256,7 +8411,7 @@
             "status": "final"
           },
           "brief": "A slate-blue lindworm with crackling pale markings and a raised crest.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier6.base.portrait",
@@ -8270,7 +8425,7 @@
             "status": "final"
           },
           "brief": "A towering giant in furs and iron bands with a frost-covered greataxe.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier6.upgraded.portrait",
@@ -8284,7 +8439,7 @@
             "status": "final"
           },
           "brief": "A giant with glowing blue runes cut into stone bracers and a rune-marked hammer.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier7.base.portrait",
@@ -8298,7 +8453,7 @@
             "status": "final"
           },
           "brief": "A huge dark serpent-dragon coiled around ice-covered roots, jaws open.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "creature.norse.tier7.upgraded.portrait",
@@ -8312,7 +8467,7 @@
             "status": "final"
           },
           "brief": "A vast sea-green serpent with barnacled scales and glowing rune-like markings.",
-          "priority": "now"
+          "priority": "later"
         }
       ]
     },
@@ -8334,7 +8489,7 @@
             "status": "final"
           },
           "brief": "Greek — Glory & Champions. A single heraldic emblem in the pantheon accent #3b73d9.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "emblem.norse",
@@ -8348,7 +8503,7 @@
             "status": "final"
           },
           "brief": "Norse — Fate & Battle. A single heraldic emblem in the pantheon accent #7fb3d9.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "emblem.egyptian",
@@ -8362,7 +8517,7 @@
             "status": "final"
           },
           "brief": "Egyptian — Afterlife & Resurrection. A single heraldic emblem in the pantheon accent #2aa3a8.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "emblem.japanese",
@@ -8376,7 +8531,7 @@
             "status": "final"
           },
           "brief": "Japanese — Spirits & Harmony. A single heraldic emblem in the pantheon accent #d0453f.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "emblem.celtic",
@@ -8390,7 +8545,7 @@
             "status": "final"
           },
           "brief": "Celtic — Nature & Transformation. A single heraldic emblem in the pantheon accent #4f9f5c.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "emblem.mesoamerican",
@@ -8404,7 +8559,7 @@
             "status": "final"
           },
           "brief": "Mesoamerican — Ritual & Sacrifice. A single heraldic emblem in the pantheon accent #d9772f.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "town.greek.support.civic_hall.l1",
@@ -8413,8 +8568,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.civic_hall.l1.webp",
+            "status": "final"
           },
           "brief": "Village Hall: Starting civic building. 500 Gold per day.",
           "priority": "later"
@@ -8426,8 +8582,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.civic_hall.l2.webp",
+            "status": "final"
           },
           "brief": "Town Hall: 1,000 Gold per day in total (replaces Village Hall income).",
           "priority": "later"
@@ -8439,8 +8596,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.civic_hall.l3.webp",
+            "status": "final"
           },
           "brief": "City Hall: 2,000 Gold per day in total.",
           "priority": "later"
@@ -8452,8 +8610,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.civic_hall.l4.webp",
+            "status": "final"
           },
           "brief": "Capitol: 4,000 Gold per day in total. One Capitol per player.",
           "priority": "later"
@@ -8517,8 +8676,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.mage_guild.l1.webp",
+            "status": "final"
           },
           "brief": "Sanctum I: Tier-1 spells; sells spellbooks (500 Gold).",
           "priority": "later"
@@ -8530,8 +8690,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.mage_guild.l2.webp",
+            "status": "final"
           },
           "brief": "Sanctum II: Tier-2 spells.",
           "priority": "later"
@@ -8543,8 +8704,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.mage_guild.l3.webp",
+            "status": "final"
           },
           "brief": "Sanctum III: Tier-3 spells (Wisdom required to learn).",
           "priority": "later"
@@ -8556,8 +8718,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.pantheon_temple.l1.webp",
+            "status": "final"
           },
           "brief": "Temple I: 1 Favor per day.",
           "priority": "later"
@@ -8569,8 +8732,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.pantheon_temple.l2.webp",
+            "status": "final"
           },
           "brief": "Temple II: 2 Favor per day in total; enables a minor-god commitment.",
           "priority": "later"
@@ -8582,8 +8746,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.fortifications.l1.webp",
+            "status": "final"
           },
           "brief": "Fort: Perimeter walls and gate; military prerequisite.",
           "priority": "later"
@@ -8595,8 +8760,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.fortifications.l2.webp",
+            "status": "final"
           },
           "brief": "Citadel: 1.5× base weekly growth; keep and moat.",
           "priority": "later"
@@ -8608,8 +8774,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.fortifications.l3.webp",
+            "status": "final"
           },
           "brief": "Castle: 2× base weekly growth; stronger walls and towers.",
           "priority": "later"
@@ -8856,8 +9023,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.civic_hall.l1.webp",
+            "status": "final"
           },
           "brief": "Longhouse: Starting civic building. 500 Gold per day.",
           "priority": "later"
@@ -8869,8 +9037,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.civic_hall.l2.webp",
+            "status": "final"
           },
           "brief": "Jarl’s Hall: 1,000 Gold per day in total (replaces Longhouse income).",
           "priority": "later"
@@ -8882,8 +9051,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.civic_hall.l3.webp",
+            "status": "final"
           },
           "brief": "High Hall: 2,000 Gold per day in total.",
           "priority": "later"
@@ -8895,8 +9065,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.civic_hall.l4.webp",
+            "status": "final"
           },
           "brief": "Hall of Kings: 4,000 Gold per day in total. One per player.",
           "priority": "later"
@@ -8960,8 +9131,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.mage_guild.l1.webp",
+            "status": "final"
           },
           "brief": "Rune Circle I: Tier-1 spells; sells spellbooks (500 Gold).",
           "priority": "later"
@@ -8973,8 +9145,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.mage_guild.l2.webp",
+            "status": "final"
           },
           "brief": "Rune Circle II: Tier-2 spells.",
           "priority": "later"
@@ -8986,8 +9159,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.mage_guild.l3.webp",
+            "status": "final"
           },
           "brief": "Rune Circle III: Tier-3 spells (Wisdom required to learn).",
           "priority": "later"
@@ -8999,8 +9173,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.pantheon_temple.l1.webp",
+            "status": "final"
           },
           "brief": "Hof I: 1 Favor per day.",
           "priority": "later"
@@ -9012,8 +9187,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.pantheon_temple.l2.webp",
+            "status": "final"
           },
           "brief": "Hof II: 2 Favor per day in total; enables a minor-god commitment.",
           "priority": "later"
@@ -9025,8 +9201,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.fortifications.l1.webp",
+            "status": "final"
           },
           "brief": "Palisade: Perimeter walls and gate; military prerequisite.",
           "priority": "later"
@@ -9038,8 +9215,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.fortifications.l2.webp",
+            "status": "final"
           },
           "brief": "Stronghold: 1.5× base weekly growth; keep and moat.",
           "priority": "later"
@@ -9051,8 +9229,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.fortifications.l3.webp",
+            "status": "final"
           },
           "brief": "Fortress: 2× base weekly growth; stronger walls and towers.",
           "priority": "later"
@@ -9299,8 +9478,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.civic_hall.l1.webp",
+            "status": "final"
           },
           "brief": "Nome House: Starting civic building. 500 Gold per day.",
           "priority": "later"
@@ -9312,8 +9492,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.civic_hall.l2.webp",
+            "status": "final"
           },
           "brief": "Governor's Palace: 1,000 Gold per day in total (replaces Nome House income).",
           "priority": "later"
@@ -9325,8 +9506,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.civic_hall.l3.webp",
+            "status": "final"
           },
           "brief": "Vizier's Palace: 2,000 Gold per day in total.",
           "priority": "later"
@@ -9338,8 +9520,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.civic_hall.l4.webp",
+            "status": "final"
           },
           "brief": "Pharaoh's Palace: 4,000 Gold per day in total. One per player.",
           "priority": "later"
@@ -9403,8 +9586,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.mage_guild.l1.webp",
+            "status": "final"
           },
           "brief": "House of Life I: Tier-1 spells; sells spellbooks (500 Gold).",
           "priority": "later"
@@ -9416,8 +9600,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.mage_guild.l2.webp",
+            "status": "final"
           },
           "brief": "House of Life II: Tier-2 spells.",
           "priority": "later"
@@ -9429,8 +9614,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.mage_guild.l3.webp",
+            "status": "final"
           },
           "brief": "House of Life III: Tier-3 spells (Wisdom required to learn).",
           "priority": "later"
@@ -9442,8 +9628,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.pantheon_temple.l1.webp",
+            "status": "final"
           },
           "brief": "Temple of the Sun I: 1 Favor per day.",
           "priority": "later"
@@ -9455,8 +9642,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.pantheon_temple.l2.webp",
+            "status": "final"
           },
           "brief": "Temple of the Sun II: 2 Favor per day in total; enables a minor-god commitment.",
           "priority": "later"
@@ -9468,8 +9656,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.fortifications.l1.webp",
+            "status": "final"
           },
           "brief": "Enclosure Wall: Perimeter walls and gate; military prerequisite.",
           "priority": "later"
@@ -9481,8 +9670,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.fortifications.l2.webp",
+            "status": "final"
           },
           "brief": "Fortress: 1.5× base weekly growth; keep and moat.",
           "priority": "later"
@@ -9494,8 +9684,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.fortifications.l3.webp",
+            "status": "final"
           },
           "brief": "Great Fortress: 2× base weekly growth; stronger walls and towers.",
           "priority": "later"
@@ -9742,8 +9933,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.civic_hall.l1.webp",
+            "status": "final"
           },
           "brief": "Headman's House: Starting civic building. 500 Gold per day.",
           "priority": "later"
@@ -9755,8 +9947,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.civic_hall.l2.webp",
+            "status": "final"
           },
           "brief": "Magistrate's Hall: 1,000 Gold per day in total (replaces Headman's House income).",
           "priority": "later"
@@ -9768,8 +9961,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.civic_hall.l3.webp",
+            "status": "final"
           },
           "brief": "Daimyo's Hall: 2,000 Gold per day in total.",
           "priority": "later"
@@ -9781,8 +9975,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.civic_hall.l4.webp",
+            "status": "final"
           },
           "brief": "Shogun's Palace: 4,000 Gold per day in total. One per player.",
           "priority": "later"
@@ -9846,8 +10041,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.mage_guild.l1.webp",
+            "status": "final"
           },
           "brief": "Onmyō Hall I: Tier-1 spells; sells spellbooks (500 Gold).",
           "priority": "later"
@@ -9859,8 +10055,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.mage_guild.l2.webp",
+            "status": "final"
           },
           "brief": "Onmyō Hall II: Tier-2 spells.",
           "priority": "later"
@@ -9872,8 +10069,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.mage_guild.l3.webp",
+            "status": "final"
           },
           "brief": "Onmyō Hall III: Tier-3 spells (Wisdom required to learn).",
           "priority": "later"
@@ -9885,8 +10083,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.pantheon_temple.l1.webp",
+            "status": "final"
           },
           "brief": "Shrine: 1 Favor per day.",
           "priority": "later"
@@ -9898,8 +10097,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.pantheon_temple.l2.webp",
+            "status": "final"
           },
           "brief": "Grand Shrine: 2 Favor per day in total; enables a minor-god commitment.",
           "priority": "later"
@@ -9911,8 +10111,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.fortifications.l1.webp",
+            "status": "final"
           },
           "brief": "Stockade: Perimeter walls and gate; military prerequisite.",
           "priority": "later"
@@ -9924,8 +10125,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.fortifications.l2.webp",
+            "status": "final"
           },
           "brief": "Castle Walls: 1.5× base weekly growth; keep and moat.",
           "priority": "later"
@@ -9937,8 +10139,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.fortifications.l3.webp",
+            "status": "final"
           },
           "brief": "Great Castle: 2× base weekly growth; stronger walls and towers.",
           "priority": "later"
@@ -10185,8 +10388,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.civic_hall.l1.webp",
+            "status": "final"
           },
           "brief": "Roundhouse: Starting civic building. 500 Gold per day.",
           "priority": "later"
@@ -10198,8 +10402,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.civic_hall.l2.webp",
+            "status": "final"
           },
           "brief": "Chieftain's Hall: 1,000 Gold per day in total (replaces Roundhouse income).",
           "priority": "later"
@@ -10211,8 +10416,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.civic_hall.l3.webp",
+            "status": "final"
           },
           "brief": "High King's Hall: 2,000 Gold per day in total.",
           "priority": "later"
@@ -10224,8 +10430,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.civic_hall.l4.webp",
+            "status": "final"
           },
           "brief": "Hall of Tara: 4,000 Gold per day in total. One per player.",
           "priority": "later"
@@ -10289,8 +10496,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.mage_guild.l1.webp",
+            "status": "final"
           },
           "brief": "Druid Grove I: Tier-1 spells; sells spellbooks (500 Gold).",
           "priority": "later"
@@ -10302,8 +10510,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.mage_guild.l2.webp",
+            "status": "final"
           },
           "brief": "Druid Grove II: Tier-2 spells.",
           "priority": "later"
@@ -10315,8 +10524,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.mage_guild.l3.webp",
+            "status": "final"
           },
           "brief": "Druid Grove III: Tier-3 spells (Wisdom required to learn).",
           "priority": "later"
@@ -10328,8 +10538,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.pantheon_temple.l1.webp",
+            "status": "final"
           },
           "brief": "Nemeton I: 1 Favor per day.",
           "priority": "later"
@@ -10341,8 +10552,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.pantheon_temple.l2.webp",
+            "status": "final"
           },
           "brief": "Nemeton II: 2 Favor per day in total; enables a minor-god commitment.",
           "priority": "later"
@@ -10354,8 +10566,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.fortifications.l1.webp",
+            "status": "final"
           },
           "brief": "Palisade: Perimeter walls and gate; military prerequisite.",
           "priority": "later"
@@ -10367,8 +10580,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.fortifications.l2.webp",
+            "status": "final"
           },
           "brief": "Ringfort: 1.5× base weekly growth; keep and moat.",
           "priority": "later"
@@ -10380,8 +10594,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.fortifications.l3.webp",
+            "status": "final"
           },
           "brief": "Hillfort: 2× base weekly growth; stronger walls and towers.",
           "priority": "later"
@@ -10628,8 +10843,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.civic_hall.l1.webp",
+            "status": "final"
           },
           "brief": "Calpulli House: Starting civic building. 500 Gold per day.",
           "priority": "later"
@@ -10641,8 +10857,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.civic_hall.l2.webp",
+            "status": "final"
           },
           "brief": "Tecpan: 1,000 Gold per day in total (replaces Calpulli House income).",
           "priority": "later"
@@ -10654,8 +10871,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.civic_hall.l3.webp",
+            "status": "final"
           },
           "brief": "Great Palace: 2,000 Gold per day in total.",
           "priority": "later"
@@ -10667,8 +10885,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.civic_hall.l4.webp",
+            "status": "final"
           },
           "brief": "Palace of the Sun: 4,000 Gold per day in total. One per player.",
           "priority": "later"
@@ -10732,8 +10951,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.mage_guild.l1.webp",
+            "status": "final"
           },
           "brief": "House of the Codex I: Tier-1 spells; sells spellbooks (500 Gold).",
           "priority": "later"
@@ -10745,8 +10965,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.mage_guild.l2.webp",
+            "status": "final"
           },
           "brief": "House of the Codex II: Tier-2 spells.",
           "priority": "later"
@@ -10758,8 +10979,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.mage_guild.l3.webp",
+            "status": "final"
           },
           "brief": "House of the Codex III: Tier-3 spells (Wisdom required to learn).",
           "priority": "later"
@@ -10771,8 +10993,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.pantheon_temple.l1.webp",
+            "status": "final"
           },
           "brief": "Temple Pyramid: 1 Favor per day.",
           "priority": "later"
@@ -10784,8 +11007,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.pantheon_temple.l2.webp",
+            "status": "final"
           },
           "brief": "Great Pyramid: 2 Favor per day in total; enables a minor-god commitment.",
           "priority": "later"
@@ -10797,8 +11021,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.fortifications.l1.webp",
+            "status": "final"
           },
           "brief": "Stone Walls: Perimeter walls and gate; military prerequisite.",
           "priority": "later"
@@ -10810,8 +11035,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.fortifications.l2.webp",
+            "status": "final"
           },
           "brief": "Fortified Precinct: 1.5× base weekly growth; keep and moat.",
           "priority": "later"
@@ -10823,8 +11049,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.fortifications.l3.webp",
+            "status": "final"
           },
           "brief": "Great Precinct: 2× base weekly growth; stronger walls and towers.",
           "priority": "later"

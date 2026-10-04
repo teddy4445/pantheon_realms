@@ -15,6 +15,7 @@ import { ARTIFACT_SLOT_LABEL, type ArtifactSlot, type ContentCatalog, type Creat
 import { useStore } from '../app/context';
 import { Panel, SectionTitle, Tabs } from '../components/kit';
 import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, HeroPortrait, BuildingArt, SkillIcon, SpecialtyLine, SpellIcon } from '../components/art';
+import { GodBenefits, GodPrice } from '../components/godIcons';
 import { CostList, ScreenHeader } from '../components/game';
 import { Icon } from '../assets/icons';
 import { AbilityBadge, SetBadge } from '../components/badges';
@@ -171,16 +172,11 @@ function Gods({ catalog }: { catalog: ContentCatalog }) {
                   <h3 className="codex-card__name">{god.name}</h3>
                   <div className="codex-card__sub">{god.domain}</div>
                   <div className="codex-meta">
-                    {god.role === 'patron' ? 'Patron god' : god.role === 'minor' ? `Minor god · ${god.favorCost} Favor` : 'Not designed yet'}
+                    {god.role === 'patron' ? 'Patron god' : god.role === 'minor' ? 'Minor god' : 'Not designed yet'}
                     {status ? ` · ${status}` : ''}
                   </div>
-                  {god.benefitSummary.length ? (
-                    <ul className="codex-bullets">
-                      {god.benefitSummary.map((b) => (
-                        <li key={b}>{b}</li>
-                      ))}
-                    </ul>
-                  ) : null}
+                  {god.benefitSummary.length ? <GodBenefits catalog={catalog} god={god} /> : null}
+                  <GodPrice catalog={catalog} god={god} />
                 </div>
               </article>
             );
@@ -432,9 +428,15 @@ function useEqualHeights(root: RefObject<HTMLElement | null>, key: unknown): voi
     ro.observe(el);
     let alive = true;
     void document.fonts?.ready.then(() => alive && apply());
+    // A picture that arrives later (portraits, building levels) can change a card's height.
+    const onLoad = (e: Event) => {
+      if (e.target instanceof HTMLImageElement) apply();
+    };
+    el.addEventListener('load', onLoad, true);
     return () => {
       alive = false;
       ro.disconnect();
+      el.removeEventListener('load', onLoad, true);
     };
   }, [root, key]);
 }

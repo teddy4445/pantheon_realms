@@ -98,20 +98,24 @@ placeholder is an art drop + `npm run sprites:cut` + `npm run sprites:import`,
 never a code change.
 Keep `packages/presentation/src/hexmath.ts` as the only screen↔hex
 transform, so sprite sizes never change which hex a click selects.
-Magic and Favor effects are drawn by code from the looks in
-`packages/presentation/src/fxLooks.ts` (painted by `fx.ts`) until strips are
-delivered under the `fx.*` asset IDs listed in `VFX_MAGIC_AND_FAVORS.md`; a
-new spell or miracle gets a look from its effect type, so add a table entry
-only to refine it.
+Magic and Favor effects play the delivered strips under the full `fx.*`
+asset IDs of `VFX_MAGIC_AND_FAVORS.md` (all 177 delivered 2026-10-04); a phase
+without a strip — e.g. a new spell or miracle — is drawn by code from the looks
+in `packages/presentation/src/fxLooks.ts` (painted by `fx.ts`; a new spell gets
+a look from its effect type, so add a table entry only to refine it). The
+importer keeps full `fx.*` IDs and sidecar loops (`import_sprites.py
+--self-test`).
 `GPT6_2D_CONTENT_GENERATION.md` is the guide the owner's sprite delivery
 (commit 071968c: all 140 sheets, 1,097 files) was made from; keep it as
 delivered — do not regenerate it, or `sheet-layouts.json`, over the delivery.
 The delivered final PNGs and JSON sidecars in `assets-source/sprites/final/`
 are authoritative (some strips carry held-frame repairs and reviewed
 component cuts): never re-cut all sheets; cut a new or corrected sheet alone
-with `npm run sprites:cut -- --only <sheet>`. What GPT-6 still has to make is
-in the briefs 8–11 under `assets-source/art/briefs/` (`npm run art:briefs`)
-and `VFX_MAGIC_AND_FAVORS.md`.
+with `npm run sprites:cut -- --only <sheet>`. The briefs 8–11 under
+`assets-source/art/briefs/` (`npm run art:briefs`) and `VFX_MAGIC_AND_FAVORS.md`
+were delivered on 2026-10-04 (ASSET_PIPELINE.md §5, §12, §13); the god cards
+show their blessings, price and state as icon rows (`components/godIcons.tsx`)
+whose tooltips keep the content's sentences.
 
 UI tests build scenario fixtures as ordinary save files (`tests/e2e/fixtures.ts`)
 and bring them in through Load → Import — never through privileged hooks.

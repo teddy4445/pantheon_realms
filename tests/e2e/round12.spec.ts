@@ -144,9 +144,24 @@ test('map: Far Sight spreads its ring over the chosen tile; Fleet Foot winds rou
   await expect.poll(async () => (await fxLog(page)).adventure ?? [], { timeout: 60_000 }).toContain('fx.spell.far_sight');
   await waitFor(page, (x) => !x.busy, 'playback finished', 60_000);
   await page.getByTestId('open-spells').click();
+  // Record what the caster's avatar draws every frame (Brief 11: the rider's own cast strip, once, then idle).
+  await page.evaluate((id) => {
+    const g = globalThis as unknown as { __drawn: string[]; __prHeroes: () => Record<string, { drawn: string | null }> | null };
+    g.__drawn = [];
+    const step = () => {
+      const x = g.__prHeroes()?.[id]?.drawn ?? 'none';
+      if (g.__drawn[g.__drawn.length - 1] !== x) g.__drawn.push(x);
+      if (g.__drawn.length < 50) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, h.id);
   await page.getByTestId('cast-fleet_foot').click();
   await film(page, 'r12-fleet-foot', 3, 600);
   await expect.poll(async () => (await fxLog(page)).adventure ?? [], { timeout: 60_000 }).toContain('fx.spell.fleet_foot');
+  await waitFor(page, (x) => !x.busy, 'playback finished', 60_000);
+  const drawn = await page.evaluate(() => (globalThis as unknown as { __drawn: string[] }).__drawn);
+  expect(drawn).toContain('cast');
+  expect(drawn[drawn.length - 1]).toBe('idle');
 });
 
 test('map miracle: Tithe of the Faithful showers coins over the Gold counter after its card', async ({ page }) => {

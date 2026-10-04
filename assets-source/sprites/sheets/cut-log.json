@@ -1759,5 +1759,417 @@
    "assets-source/sprites/final/sprite.hero.mesoamerican.figure.png",
    "assets-source/sprites/final/sprite.hero.norse.figure.png"
   ]
+ },
+ "sheet.god.greek": {
+  "sha256": "63de0217f6de9548216b9869906936aed57e01fbd5f56bedb79da489f12b5788",
+  "outputs": [
+   "assets-source/icons/final/god.greek.zeus.portrait.png",
+   "assets-source/icons/final/god.greek.athena.portrait.png",
+   "assets-source/icons/final/god.greek.ares.portrait.png",
+   "assets-source/icons/final/god.greek.apollo.portrait.png",
+   "assets-source/icons/final/god.greek.artemis.portrait.png",
+   "assets-source/icons/final/god.greek.hermes.portrait.png",
+   "assets-source/icons/final/god.greek.demeter.portrait.png",
+   "assets-source/icons/final/god.greek.hades.portrait.png",
+   "assets-source/icons/final/god.greek.poseidon.portrait.png",
+   "assets-source/icons/final/god.greek.hera.portrait.png"
+  ]
+ },
+ "sheet.god.norse": {
+  "sha256": "85ba2faa3119a6d793c07a94e745743d14f956136979224ceed050fd586c9c1d",
+  "outputs": [
+   "assets-source/icons/final/god.norse.odin.portrait.png",
+   "assets-source/icons/final/god.norse.thor.portrait.png",
+   "assets-source/icons/final/god.norse.tyr.portrait.png",
+   "assets-source/icons/final/god.norse.frigg.portrait.png",
+   "assets-source/icons/final/god.norse.baldr.portrait.png",
+   "assets-source/icons/final/god.norse.freyja.portrait.png",
+   "assets-source/icons/final/god.norse.heimdall.portrait.png",
+   "assets-source/icons/final/god.norse.hel.portrait.png",
+   "assets-source/icons/final/god.norse.loki.portrait.png",
+   "assets-source/icons/final/god.norse.njord.portrait.png"
+  ]
+ },
+ "sheet.god.egyptian": {
+  "sha256": "8bdbd5c13dcf8bbbdcc9430575341a7a54139dc7b51ce3023503b09737dd0fb8",
+  "outputs": [
+   "assets-source/icons/final/god.egyptian.ra.portrait.png",
+   "assets-source/icons/final/god.egyptian.set.portrait.png",
+   "assets-source/icons/final/god.egyptian.isis.portrait.png",
+   "assets-source/icons/final/god.egyptian.anubis.portrait.png",
+   "assets-source/icons/final/god.egyptian.bastet.portrait.png",
+   "assets-source/icons/final/god.egyptian.osiris.portrait.png",
+   "assets-source/icons/final/god.egyptian.thoth.portrait.png",
+   "assets-source/icons/final/god.egyptian.horus.portrait.png",
+   "assets-source/icons/final/god.egyptian.hathor.portrait.png",
+   "assets-source/icons/final/god.egyptian.sobek.portrait.png"
+  ]
+ },
+ "sheet.god.japanese": {
+  "sha256": "4292fc58e03703ade0675c59051a8f64fd18f81a07c985d066795a4a0b525cf4",
+  "outputs": [
+   "assets-source/icons/final/god.japanese.amaterasu.portrait.png",
+   "assets-source/icons/final/god.japanese.hachiman.portrait.png",
+   "assets-source/icons/final/god.japanese.susanoo.portrait.png",
+   "assets-source/icons/final/god.japanese.tsukuyomi.portrait.png",
+   "assets-source/icons/final/god.japanese.benzaiten.portrait.png",
+   "assets-source/icons/final/god.japanese.inari.portrait.png",
+   "assets-source/icons/final/god.japanese.fujin.portrait.png",
+   "assets-source/icons/final/god.japanese.raijin.portrait.png",
+   "assets-source/icons/final/god.japanese.izanagi.portrait.png",
+   "assets-source/icons/final/god.japanese.izanami.portrait.png"
+  ]
+ },
+ "sheet.god.celtic": {
+  "sha256": "acf061bc9b4d7a5fc29e617f66144b3db9b33d0eb6d3da55b11aee746d65f3fc",
+  "outputs": [
+   "assets-source/icons/final/god.celtic.dagda.portrait.png",
+   "assets-source/icons/final/god.celtic.morrigan.portrait.png",
+   "assets-source/icons/final/god.celtic.brigid.portrait.png",
+   "assets-source/icons/final/god.celtic.nuada.portrait.png",
+   "assets-source/icons/final/god.celtic.danu.portrait.png",
+   "assets-source/icons/final/god.celtic.cernunnos.portrait.png",
+   "assets-source/icons/final/god.celtic.epona.portrait.png",
+   "assets-source/icons/final/god.celtic.lugh.portrait.png",
+   "assets-source/icons/final/god.celtic.arawn.portrait.png",
+   "assets-source/icons/final/god.celtic.manannan.portrait.png"
+  ]
+ },
+ "sheet.god.mesoamerican": {
+  "sha256": "00a8094df301ef7ae9bf5cb2dae2240385fc0dc3d008b546a08b43ac6657ce1e",
+  "outputs": [
+   "assets-source/icons/final/god.mesoamerican.quetzalcoatl.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.huitzilopochtli.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.coatlicue.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.mixcoatl.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.xolotl.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.tlaloc.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.tezcatlipoca.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.png",
+   "assets-source/icons/final/god.mesoamerican.mictlantecuhtli.portrait.png"
+  ]
+ },
+ "sheet.icons.gods": {
+  "sha256": "42f96f257906617a90c2da573a5dc39cbe7d0b2bba581609391c7956e47b09fa",
+  "outputs": [
+   "assets-source/icons/final/icon.bless.commanders.png",
+   "assets-source/icons/final/icon.bless.armies.png",
+   "assets-source/icons/final/icon.bless.creatures.png",
+   "assets-source/icons/final/icon.bless.shooters.png",
+   "assets-source/icons/final/icon.bless.flyers.png",
+   "assets-source/icons/final/icon.bless.growth.png",
+   "assets-source/icons/final/icon.bless.recovery.png",
+   "assets-source/icons/final/icon.bless.spell_unlock.png",
+   "assets-source/icons/final/icon.bless.daily_income.png",
+   "assets-source/icons/final/icon.bless.offering.png",
+   "assets-source/icons/final/icon.bless.fury.png",
+   "assets-source/icons/final/icon.req.temple.png",
+   "assets-source/icons/final/icon.req.grand_temple.png",
+   "assets-source/icons/final/icon.req.city_hall.png",
+   "assets-source/icons/final/icon.req.after_first.png",
+   "assets-source/icons/final/icon.god.patron.png",
+   "assets-source/icons/final/icon.god.first_choice.png",
+   "assets-source/icons/final/icon.god.second_choice.png",
+   "assets-source/icons/final/icon.god.committed.png",
+   "assets-source/icons/final/icon.god.excluded.png",
+   "assets-source/icons/final/icon.god.permanent.png"
+  ]
+ },
+ "sheet.heroportrait.greek": {
+  "sha256": "aea23c614961d2d4a81ea597d6f2761c6191902ab9fb2d25ee811391945b4818",
+  "outputs": [
+   "assets-source/icons/final/hero.greek.achilles.portrait.png",
+   "assets-source/icons/final/hero.greek.atalanta.portrait.png",
+   "assets-source/icons/final/hero.greek.heracles.portrait.png",
+   "assets-source/icons/final/hero.greek.odysseus.portrait.png",
+   "assets-source/icons/final/hero.greek.perseus.portrait.png",
+   "assets-source/icons/final/hero.greek.alexios.portrait.png",
+   "assets-source/icons/final/hero.greek.melas.portrait.png",
+   "assets-source/icons/final/hero.greek.scout_captain.portrait.png"
+  ]
+ },
+ "sheet.heroportrait.celtic": {
+  "sha256": "73c9573b4f2077b19f3766cfa0590b89bba72bf4704dc5477895ec54e330f264",
+  "outputs": [
+   "assets-source/icons/final/hero.celtic.amergin.portrait.png",
+   "assets-source/icons/final/hero.celtic.boudicca.portrait.png",
+   "assets-source/icons/final/hero.celtic.cu_chulainn.portrait.png",
+   "assets-source/icons/final/hero.celtic.deirdre.portrait.png",
+   "assets-source/icons/final/hero.celtic.fergus_mac_roich.portrait.png",
+   "assets-source/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.png",
+   "assets-source/icons/final/hero.celtic.medb.portrait.png",
+   "assets-source/icons/final/hero.celtic.scathach.portrait.png",
+   "assets-source/icons/final/hero.celtic.orla.portrait.png",
+   "assets-source/icons/final/hero.celtic.ciar.portrait.png",
+   "assets-source/icons/final/hero.celtic.corc.portrait.png",
+   "assets-source/icons/final/hero.celtic.dubhghall.portrait.png",
+   "assets-source/icons/final/hero.celtic.fiachra.portrait.png",
+   "assets-source/icons/final/hero.celtic.tadhg.portrait.png"
+  ]
+ },
+ "sheet.town.greek.levels": {
+  "sha256": "68024e12edb01daf102534f913b95f0d0352091ad98b3fd6f460bf885f3e9997",
+  "outputs": [
+   "assets-source/art/final/town.greek.support.civic_hall.l1.png",
+   "assets-source/art/final/town.greek.support.civic_hall.l2.png",
+   "assets-source/art/final/town.greek.support.civic_hall.l3.png",
+   "assets-source/art/final/town.greek.support.civic_hall.l4.png",
+   "assets-source/art/final/town.greek.support.pantheon_temple.l1.png",
+   "assets-source/art/final/town.greek.support.pantheon_temple.l2.png",
+   "assets-source/art/final/town.greek.support.mage_guild.l1.png",
+   "assets-source/art/final/town.greek.support.mage_guild.l2.png",
+   "assets-source/art/final/town.greek.support.mage_guild.l3.png",
+   "assets-source/art/final/town.greek.support.fortifications.l1.png",
+   "assets-source/art/final/town.greek.support.fortifications.l2.png",
+   "assets-source/art/final/town.greek.support.fortifications.l3.png"
+  ]
+ },
+ "sheet.town.norse.levels": {
+  "sha256": "0a8c7851621d43e57af4f1da4d681a02d733dec735f0d413f84ec146bb078867",
+  "outputs": [
+   "assets-source/art/final/town.norse.support.civic_hall.l1.png",
+   "assets-source/art/final/town.norse.support.civic_hall.l2.png",
+   "assets-source/art/final/town.norse.support.civic_hall.l3.png",
+   "assets-source/art/final/town.norse.support.civic_hall.l4.png",
+   "assets-source/art/final/town.norse.support.pantheon_temple.l1.png",
+   "assets-source/art/final/town.norse.support.pantheon_temple.l2.png",
+   "assets-source/art/final/town.norse.support.mage_guild.l1.png",
+   "assets-source/art/final/town.norse.support.mage_guild.l2.png",
+   "assets-source/art/final/town.norse.support.mage_guild.l3.png",
+   "assets-source/art/final/town.norse.support.fortifications.l1.png",
+   "assets-source/art/final/town.norse.support.fortifications.l2.png",
+   "assets-source/art/final/town.norse.support.fortifications.l3.png"
+  ]
+ },
+ "sheet.town.egyptian.levels": {
+  "sha256": "d19ce7ddbf4c6eed9b78569186e69bfb02d6e774b7eb28f5ba3c2ae2a4b7bf7a",
+  "outputs": [
+   "assets-source/art/final/town.egyptian.support.civic_hall.l1.png",
+   "assets-source/art/final/town.egyptian.support.civic_hall.l2.png",
+   "assets-source/art/final/town.egyptian.support.civic_hall.l3.png",
+   "assets-source/art/final/town.egyptian.support.civic_hall.l4.png",
+   "assets-source/art/final/town.egyptian.support.pantheon_temple.l1.png",
+   "assets-source/art/final/town.egyptian.support.pantheon_temple.l2.png",
+   "assets-source/art/final/town.egyptian.support.mage_guild.l1.png",
+   "assets-source/art/final/town.egyptian.support.mage_guild.l2.png",
+   "assets-source/art/final/town.egyptian.support.mage_guild.l3.png",
+   "assets-source/art/final/town.egyptian.support.fortifications.l1.png",
+   "assets-source/art/final/town.egyptian.support.fortifications.l2.png",
+   "assets-source/art/final/town.egyptian.support.fortifications.l3.png"
+  ]
+ },
+ "sheet.town.japanese.levels": {
+  "sha256": "c9d5db7ebf57ec9f8a62b68b52045a56c5fc858e2257cbbb7565bd3c6f8838cd",
+  "outputs": [
+   "assets-source/art/final/town.japanese.support.civic_hall.l1.png",
+   "assets-source/art/final/town.japanese.support.civic_hall.l2.png",
+   "assets-source/art/final/town.japanese.support.civic_hall.l3.png",
+   "assets-source/art/final/town.japanese.support.civic_hall.l4.png",
+   "assets-source/art/final/town.japanese.support.pantheon_temple.l1.png",
+   "assets-source/art/final/town.japanese.support.pantheon_temple.l2.png",
+   "assets-source/art/final/town.japanese.support.mage_guild.l1.png",
+   "assets-source/art/final/town.japanese.support.mage_guild.l2.png",
+   "assets-source/art/final/town.japanese.support.mage_guild.l3.png",
+   "assets-source/art/final/town.japanese.support.fortifications.l1.png",
+   "assets-source/art/final/town.japanese.support.fortifications.l2.png",
+   "assets-source/art/final/town.japanese.support.fortifications.l3.png"
+  ]
+ },
+ "sheet.town.celtic.levels": {
+  "sha256": "8ad2f3500a6099452fbca2c7459368226cb9b33372f53683851074ea528d6da5",
+  "outputs": [
+   "assets-source/art/final/town.celtic.support.civic_hall.l1.png",
+   "assets-source/art/final/town.celtic.support.civic_hall.l2.png",
+   "assets-source/art/final/town.celtic.support.civic_hall.l3.png",
+   "assets-source/art/final/town.celtic.support.civic_hall.l4.png",
+   "assets-source/art/final/town.celtic.support.pantheon_temple.l1.png",
+   "assets-source/art/final/town.celtic.support.pantheon_temple.l2.png",
+   "assets-source/art/final/town.celtic.support.mage_guild.l1.png",
+   "assets-source/art/final/town.celtic.support.mage_guild.l2.png",
+   "assets-source/art/final/town.celtic.support.mage_guild.l3.png",
+   "assets-source/art/final/town.celtic.support.fortifications.l1.png",
+   "assets-source/art/final/town.celtic.support.fortifications.l2.png",
+   "assets-source/art/final/town.celtic.support.fortifications.l3.png"
+  ]
+ },
+ "sheet.town.mesoamerican.levels": {
+  "sha256": "69a75adad547362bb404f4f63c8e3e957d6aa83de4b949f8a613389ca01be7e8",
+  "outputs": [
+   "assets-source/art/final/town.mesoamerican.support.civic_hall.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.civic_hall.l2.png",
+   "assets-source/art/final/town.mesoamerican.support.civic_hall.l3.png",
+   "assets-source/art/final/town.mesoamerican.support.civic_hall.l4.png",
+   "assets-source/art/final/town.mesoamerican.support.pantheon_temple.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.pantheon_temple.l2.png",
+   "assets-source/art/final/town.mesoamerican.support.mage_guild.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.mage_guild.l2.png",
+   "assets-source/art/final/town.mesoamerican.support.mage_guild.l3.png",
+   "assets-source/art/final/town.mesoamerican.support.fortifications.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.fortifications.l2.png",
+   "assets-source/art/final/town.mesoamerican.support.fortifications.l3.png"
+  ]
+ },
+ "sheet.heroportrait.norse": {
+  "sha256": "bc66994736a816624621a4df2e0e45145bba8e3b03b2e271b7ca105e61ce4754",
+  "outputs": [
+   "assets-source/icons/final/hero.norse.brynhild.portrait.png",
+   "assets-source/icons/final/hero.norse.hervor.portrait.png",
+   "assets-source/icons/final/hero.norse.lagertha.portrait.png",
+   "assets-source/icons/final/hero.norse.ragnar.portrait.png",
+   "assets-source/icons/final/hero.norse.sigurd.portrait.png",
+   "assets-source/icons/final/hero.norse.barrow_captain.portrait.png",
+   "assets-source/icons/final/hero.norse.bone_helm.portrait.png",
+   "assets-source/icons/final/hero.norse.hrafn.portrait.png",
+   "assets-source/icons/final/hero.norse.grey_jarl.portrait.png",
+   "assets-source/icons/final/hero.norse.ulfhild.portrait.png"
+  ]
+ },
+ "sheet.heroportrait.egyptian": {
+  "sha256": "81383cf2636eca79ad5d910c3b439cf2cf8944974bf80385c3156c0f5725344b",
+  "outputs": [
+   "assets-source/icons/final/hero.egyptian.ahmose.portrait.png",
+   "assets-source/icons/final/hero.egyptian.cleopatra.portrait.png",
+   "assets-source/icons/final/hero.egyptian.hatshepsut.portrait.png",
+   "assets-source/icons/final/hero.egyptian.imhotep.portrait.png",
+   "assets-source/icons/final/hero.egyptian.nefertiti.portrait.png",
+   "assets-source/icons/final/hero.egyptian.peseshet.portrait.png",
+   "assets-source/icons/final/hero.egyptian.ramses.portrait.png",
+   "assets-source/icons/final/hero.egyptian.tiye.portrait.png",
+   "assets-source/icons/final/hero.egyptian.seshet.portrait.png",
+   "assets-source/icons/final/hero.egyptian.ankhwen.portrait.png",
+   "assets-source/icons/final/hero.egyptian.djedkhonsu.portrait.png",
+   "assets-source/icons/final/hero.egyptian.hekaib.portrait.png",
+   "assets-source/icons/final/hero.egyptian.iti.portrait.png",
+   "assets-source/icons/final/hero.egyptian.paser.portrait.png"
+  ]
+ },
+ "sheet.heroportrait.japanese": {
+  "sha256": "378c54e67cf0a8569feec0eb04223deeae9fb4e5d50035b6f806c51ce23129db",
+  "outputs": [
+   "assets-source/icons/final/hero.japanese.abe_no_seimei.portrait.png",
+   "assets-source/icons/final/hero.japanese.benkei.portrait.png",
+   "assets-source/icons/final/hero.japanese.hangaku_gozen.portrait.png",
+   "assets-source/icons/final/hero.japanese.kusunoki_masashige.portrait.png",
+   "assets-source/icons/final/hero.japanese.momotaro.portrait.png",
+   "assets-source/icons/final/hero.japanese.tomoe_gozen.portrait.png",
+   "assets-source/icons/final/hero.japanese.yamato_takeru.portrait.png",
+   "assets-source/icons/final/hero.japanese.yoshitsune.portrait.png",
+   "assets-source/icons/final/hero.japanese.akane.portrait.png",
+   "assets-source/icons/final/hero.japanese.gonryo.portrait.png",
+   "assets-source/icons/final/hero.japanese.kagero.portrait.png",
+   "assets-source/icons/final/hero.japanese.kurogane.portrait.png",
+   "assets-source/icons/final/hero.japanese.oboro.portrait.png",
+   "assets-source/icons/final/hero.japanese.yamikage.portrait.png"
+  ]
+ },
+ "sheet.heroportrait.mesoamerican": {
+  "sha256": "87e9b62c0b4ab0c716b8351d9f4da3d9d1fd27a6f4f7ddb837b5d40d139c8961",
+  "outputs": [
+   "assets-source/icons/final/hero.mesoamerican.chilam_balam.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.hunahpu.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.lady_six_sky.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.xbalanque.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.itzel.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.acatl.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.itztli.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.mazatl.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.tecuani.portrait.png",
+   "assets-source/icons/final/hero.mesoamerican.tlacatl.portrait.png"
+  ]
+ },
+ "sheet.heroanim.greek": {
+  "sha256": "9b0acfa0674b5852985bf7e9fb8ff5fd4c86eeaf6d736b26445dcc33330ea87d",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.greek.cast.e.png",
+   "assets-source/sprites/final/sprite.hero.greek.cast.n.png",
+   "assets-source/sprites/final/sprite.hero.greek.cast.ne.png",
+   "assets-source/sprites/final/sprite.hero.greek.cast.s.png",
+   "assets-source/sprites/final/sprite.hero.greek.cast.se.png",
+   "assets-source/sprites/final/sprite.hero.greek.prepare.e.png",
+   "assets-source/sprites/final/sprite.hero.greek.prepare.n.png",
+   "assets-source/sprites/final/sprite.hero.greek.prepare.ne.png",
+   "assets-source/sprites/final/sprite.hero.greek.prepare.s.png",
+   "assets-source/sprites/final/sprite.hero.greek.prepare.se.png"
+  ]
+ },
+ "sheet.heroanim.norse": {
+  "sha256": "26e95bf85f5f037ad1238c1bdc54684359edabf4145073b314fb245668afdbdf",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.norse.cast.e.png",
+   "assets-source/sprites/final/sprite.hero.norse.cast.n.png",
+   "assets-source/sprites/final/sprite.hero.norse.cast.ne.png",
+   "assets-source/sprites/final/sprite.hero.norse.cast.s.png",
+   "assets-source/sprites/final/sprite.hero.norse.cast.se.png",
+   "assets-source/sprites/final/sprite.hero.norse.prepare.e.png",
+   "assets-source/sprites/final/sprite.hero.norse.prepare.n.png",
+   "assets-source/sprites/final/sprite.hero.norse.prepare.ne.png",
+   "assets-source/sprites/final/sprite.hero.norse.prepare.s.png",
+   "assets-source/sprites/final/sprite.hero.norse.prepare.se.png"
+  ]
+ },
+ "sheet.heroanim.egyptian": {
+  "sha256": "faf5d547ca5b875dce7b1f19ff29a74c51acca2379e6525a498e5d50bee65098",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.egyptian.cast.e.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.cast.n.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.cast.ne.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.cast.s.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.cast.se.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.prepare.e.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.prepare.n.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.prepare.ne.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.prepare.s.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.prepare.se.png"
+  ]
+ },
+ "sheet.heroanim.japanese": {
+  "sha256": "65909e69205cc4488d06dbf7e19b42486b4f1a1c8a35523b94d14be6166d1b9d",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.japanese.cast.e.png",
+   "assets-source/sprites/final/sprite.hero.japanese.cast.n.png",
+   "assets-source/sprites/final/sprite.hero.japanese.cast.ne.png",
+   "assets-source/sprites/final/sprite.hero.japanese.cast.s.png",
+   "assets-source/sprites/final/sprite.hero.japanese.cast.se.png",
+   "assets-source/sprites/final/sprite.hero.japanese.prepare.e.png",
+   "assets-source/sprites/final/sprite.hero.japanese.prepare.n.png",
+   "assets-source/sprites/final/sprite.hero.japanese.prepare.ne.png",
+   "assets-source/sprites/final/sprite.hero.japanese.prepare.s.png",
+   "assets-source/sprites/final/sprite.hero.japanese.prepare.se.png"
+  ]
+ },
+ "sheet.heroanim.celtic": {
+  "sha256": "60816e626cc9d4f0ea9f04def0fa9c4a16f7b419a0fe4e73fb7f8e48aaf94ef2",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.celtic.cast.e.png",
+   "assets-source/sprites/final/sprite.hero.celtic.cast.n.png",
+   "assets-source/sprites/final/sprite.hero.celtic.cast.ne.png",
+   "assets-source/sprites/final/sprite.hero.celtic.cast.s.png",
+   "assets-source/sprites/final/sprite.hero.celtic.cast.se.png",
+   "assets-source/sprites/final/sprite.hero.celtic.prepare.e.png",
+   "assets-source/sprites/final/sprite.hero.celtic.prepare.n.png",
+   "assets-source/sprites/final/sprite.hero.celtic.prepare.ne.png",
+   "assets-source/sprites/final/sprite.hero.celtic.prepare.s.png",
+   "assets-source/sprites/final/sprite.hero.celtic.prepare.se.png"
+  ]
+ },
+ "sheet.heroanim.mesoamerican": {
+  "sha256": "14a598ef437f179c68f0e47a5095ac7d4c59bc28838c42a2653117de8a246752",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.mesoamerican.cast.e.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.cast.n.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.cast.ne.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.cast.s.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.cast.se.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.prepare.e.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.prepare.n.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.prepare.ne.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.prepare.s.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.prepare.se.png"
+  ]
  }
 }

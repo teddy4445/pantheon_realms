@@ -699,6 +699,8 @@ export function TownScreen() {
   const archetype = town ? catalog.townArchetypes[town.archetypeId] : undefined;
   // Favor at the Temple: gifts and offerings rise from it (VFX_MAGIC_AND_FAVORS.md; placeholder bursts).
   const [bursts, setBursts] = useState<{ key: number; kind: TownFxKind; slotId: string; stripId?: string }[]>([]);
+  // The same effect, smaller, where the gift lands: the resource counters, the Favor counter, the visiting hero.
+  const [pins, setPins] = useState<{ key: number; kind: TownFxKind; stripId: string; x: number; y: number }[]>([]);
   const burstSeq = useRef(0);
   useEffect(
     () =>
@@ -710,11 +712,20 @@ export function TownScreen() {
         if (!t || !arch || reducedMotion(store.prefs)) return;
         const temple = arch.slots.find((x) => x.role === 'pantheon_temple');
         const add: { kind: TownFxKind; slotId: string; stripId?: string }[] = [];
+        const pin: { kind: TownFxKind; stripId: string; x: number; y: number }[] = [];
+        const at = (selector: string, kind: TownFxKind, stripId: string) => {
+          const r = document.querySelector(selector)?.getBoundingClientRect();
+          if (r && r.width > 0) pin.push({ kind, stripId, x: r.left + r.width / 2, y: r.top + r.height / 2 });
+        };
         for (const e of events) {
           if ((e.kind !== 'DivineGiftReceived' && e.kind !== 'OfferingMade') || e.playerId !== me || e.townId !== t.id) continue;
           const grant = e.kind === 'DivineGiftReceived' ? catalog.divineGifts?.[e.giftId]?.grant : undefined;
           const kind: TownFxKind = e.kind === 'OfferingMade' ? 'offering' : grant ? giftFxKind(grant) : 'coins';
           if (temple) add.push({ kind, slotId: temple.id, stripId: e.kind === 'OfferingMade' ? 'fx.offering.rise' : `fx.gift.${e.giftId}` });
+          if (e.kind === 'OfferingMade') at('[data-testid="res-favor"]', 'offering', 'fx.offering.favor');
+          else if (grant?.type === 'resources') {
+            for (const [res, n] of Object.entries(grant.resources)) if ((n ?? 0) > 0) at(`[data-testid="res-${res}"]`, res === 'gold' ? 'coins' : res === 'crystal' ? 'crystal' : 'timber', `fx.gift.${e.giftId}`);
+          } else if (grant?.type === 'experience' || grant?.type === 'artifact') at('.town-army--visitor .town-army__label', kind, `fx.gift.${e.giftId}`);
           if (grant?.type === 'recruits') {
             // Light runs to each dwelling whose pool grew.
             for (const x of arch.slots) {
@@ -724,7 +735,13 @@ export function TownScreen() {
             }
           }
         }
+        if (add.length || pin.length) {
+          // The gift and offering dialogs (and their confirmation) close first, so the burst is not under their fading backdrop.
+          for (let i = 0; i < 30 && store.overlays.length > 0; i++) await new Promise((r) => setTimeout(r, 50));
+          await new Promise((r) => setTimeout(r, 220));
+        }
         if (add.length) setBursts((b) => [...b, ...add.map((a) => ({ ...a, key: ++burstSeq.current }))]);
+        if (pin.length) setPins((b) => [...b, ...pin.map((a) => ({ ...a, key: ++burstSeq.current }))]);
       }),
     [store, catalog, townId],
   );
@@ -1008,6 +1025,10 @@ export function TownScreen() {
       {modal === 'merchant' ? <MerchantModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'workshop' ? <WorkshopModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'gifts' ? <GiftsModal town={town} onClose={() => setModal(null)} /> : null}
+      {/* Outside the painting: its size containment and clipping would hold a fixed burst inside it. */}
+      {pins.map((b) => (
+        <Burst key={b.key} kind={b.kind} stripId={b.stripId} className="burst--resbar" scale={0.42} centered style={{ left: b.x, top: b.y }} onDone={() => setPins((list) => list.filter((x) => x.key !== b.key))} />
+      ))}
     </div>
   );
 }

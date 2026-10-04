@@ -13,18 +13,22 @@ Tactical Battle, Unit Detail viewer) draw everything from
 071968c) made **every creature form (102), the six pantheon map heroes (idle
 and walk, eight directions), the 41 map locations, decoration (6), obstacles
 (7), siege pieces (12), projectiles (2) and the 9 shared effect strips
-`final`**; the neutral map hero is the one placeholder left.
+`final`**; the neutral map hero is the one placeholder left. Two owner
+deliveries of 2026-10-04 added the **177 magic and Favor strips** (§5), six
+town-action icons and 54 climate battlefields, then the **map heroes'
+`prepare` and `cast` strips** (60, §12) with the god and hero portraits, the
+god-card icons and the town building levels (§13).
 `GPT6_2D_CONTENT_GENERATION.md` is the guide that delivery was made from and
 stays as delivered. **The delivered final PNGs and their JSON sidecars in
 `assets-source/sprites/final/` are authoritative**: some strips carry
 reviewed component cuts, padding, calibrated scale and held-frame repairs
 (sidecar `assemblyNote`), so the delivered sheets are never re-cut wholesale;
 a re-import uses `tools/assets/sprites/import_sprites.py` on the final
-sources. What GPT-6 still has to make is in `VFX_MAGIC_AND_FAVORS.md` (spell,
-miracle and gift strips) and the briefs 8–11 of 2026-10-04 in
-`assets-source/art/briefs/` (god portraits and god-card icons, hero
-portraits, town building levels, map-hero prepare and cast; §13), each a
-**sheet** cut alone with `npm run sprites:cut -- --only <sheet>` (§4).
+sources. The magic and Favor strips of `VFX_MAGIC_AND_FAVORS.md` (§5) and the
+briefs 8–11 in `assets-source/art/briefs/` (god portraits and god-card icons,
+hero portraits, town building levels, map-hero prepare and cast; §12, §13)
+were all delivered on 2026-10-04. A new or corrected sheet is cut alone with
+`npm run sprites:cut -- --only <sheet>` (§4).
 
 ---
 
@@ -220,22 +224,59 @@ readable; final strips are never tinted. Map avatars may carry
 manifest is written by the tools (§7); edit it by hand only to fix an
 anchor, and then re-run `npm run check`.
 
-**Magic and Favor effects** (2026-10-03) are drawn by code until strips are
-delivered: every spell, miracle and divine gift has a *look*
-(`packages/presentation/src/fxLooks.ts`) that `fx.ts` paints — sigil, flight,
-impact, field moment, status overlays — and the town's gift bursts are CSS
-(`packages/ui/src/components/burst.tsx`). Before each phase the views look up
-the phase's asset ID in `effects` (`fx.spell.<id>.<phase>`,
-`fx.miracle.<id>.<phase>`, `fx.status.<name>`; the list with phases, frame
-counts and looks is `VFX_MAGIC_AND_FAVORS.md`) and play that strip instead, so
-a delivery is an `effects` entry and no code change. Until a spell or
-miracle has its own strip, a delivered **shared** strip stands for its impact
-when the look matches (`genericImpactOf`, `fx.ts`): `spell.damage` for
-lightning and star strikes, `spell.area` for fire, sun and obsidian,
-`spell.heal` for healing, `spell.buff` for bright blessings, `spell.curse`
-for curses and drains, `ward` for domes; every other impact (frost, thorns,
-petals, wind, swarms, coins, motes, map rings) stays code-drawn. `impact`,
-`ward` and `morale.*` also play for blows, wards and morale.
+**Magic and Favor effects.** All 177 phase strips of `VFX_MAGIC_AND_FAVORS.md`
+were delivered on 2026-10-04 (owner's delivery `magic_icons_battlefields_delivery_2026-10-04`,
+commit 2de3a50) and sit in `effects` under their full asset IDs
+(`fx.spell.<id>.<phase>`, `fx.miracle.<id>.<phase>`, `fx.status.<name>`,
+`fx.gift.<id>`, `fx.offering.rise|favor`), with the nine shared battle effects
+(`impact`, `ward`, `morale.*`, `spell.*`) still under their short IDs. Phases
+and playback: `cast` 6 frames @ 10 fps, `travel` 4 @ 12 looping, `impact`,
+`area`, `depart`, `arrive`, gifts and offering 8 @ 12, `screen` 12 @ 12, status
+overlays 6 @ 6 looping, `aura` 6 @ 6 looping. Before each phase the views look
+up the phase's ID and play its strip (frames, rate, loop, anchor, pixels per
+hex and `additive` from the manifest); without one the code-drawn look
+(`fxLooks.ts`, painted by `fx.ts`) draws it, and a delivered **shared** strip
+stands for an impact whose look matches (`genericImpactOf`: `spell.damage`,
+`spell.area`, `spell.heal`, `spell.buff`, `spell.curse`, `ward`). Where they
+play:
+
+* **Battle:** `cast` at the commander's banner corner, `travel` from it to the
+  target (the sky strike falls from above), `impact` at each stack's feet
+  (wider for two-hex creatures, mirrored for the side facing left), `screen`
+  over the whole view — proportions kept, covering it, at 60 % opacity easing
+  in and out, mirrored for the defender — and `fx.status.*` as a looping
+  overlay on each stack while its status lasts (a still first frame on Low
+  quality and under Reduce motion). A battle miracle plays after its painted
+  card.
+* **Map:** `cast` on the hero, `area` centred on the chosen tile (the strip's
+  ring spans two hexes at scale 1; it is scaled to the reveal radius + ½ hex,
+  so its diameter is twice that), the `impact` on each hero or town, the
+  `screen` strip of map miracles too (their drawn look has no whole-view
+  moment), Homecoming's `cast` then `depart` and `arrive`, and the `aura`
+  loops of Fleet Foot and Wings of Hermes on the hero for the rest of the day
+  they were cast (presentation only, kept by the interface while the session
+  lasts; a still frame under Reduce motion; none on Low quality).
+* **Town:** the gift's strip (`fx.gift.<id>`) or `fx.offering.rise` rises from
+  the Temple; the same strip, smaller, lands where the gift goes — the
+  resource counters (Gold, Wood, Stone, Crystal), the visiting hero's portrait
+  (Anointing, Temple Relic) — and `fx.offering.favor` plays on the Favor
+  counter. Blessed Brood also lights each dwelling. Strip frames are sized
+  for a 900 px tall window and follow the window's height.
+* **Low quality** keeps a short flash per phase and leaves out whole-view
+  moments; **Reduce motion** and instant playback skip the one-shot phases
+  (results are applied the same).
+
+**Importing effect strips.** `npm run sprites:import` keeps the full `fx.*` ID
+of every magic and Favor phase and takes `loop` and `additive` from the
+strip's sidecar (an effect loops only when its sidecar says so); the nine
+shared effects keep their short IDs. Before 2026-10-04 it stripped the `fx.`
+prefix and forced every effect to play once, so the delivery was imported with
+a scoped wrapper; the importer is fixed and checked by
+`python3 tools/assets/sprites/import_sprites.py --self-test` (run by
+`packages/presentation/test/importSprites.test.ts` where Python with Pillow and
+NumPy is installed). `--only <text>` imports a subset (e.g. `--only sprite.fx.`).
+`packages/presentation/test/vfxHooks.test.ts` checks that every delivered
+`fx.*` strip is one the game plays.
 
 ## 6. Image rules and budgets
 
@@ -498,6 +539,13 @@ the game already draws that glyph, including the ability-badge stand-ins
 (`bow` for Shooter, `upgrade` for Shapeshift) and completed objectives
 (`check`).
 
+Second delivery (2026-10-04): the six town-action icons `icon.ui.build`,
+`icon.ui.recruit`, `icon.ui.market`, `icon.ui.tavern`, `icon.ui.merchant` and
+`icon.ui.gift` (96 px runtime PNGs; masters in `assets-source/icons/final/`
+and `assets-source/icons/masters/`). They replace the SVG stand-ins of the
+same names wherever the game draws those glyphs (the building pop-up actions
+and the town bar among them) with no code change.
+
 Creature portraits (Brief 5, first part delivered 2026-10-03): **43 painted
 portraits** — every Greek, Norse and Egyptian form and the Kitsune — imported
 from 1254 × 1254 opaque masters to 256 × 256. Pictures without transparency
@@ -580,6 +628,23 @@ strip, drawn smaller. `prepare` and `cast` are ordered in
 directions × 6 + 6 frames), cut by `npm run sprites:cut -- --only sheet.heroanim.<pantheon>` and imported by
 `npm run sprites:import` (6 fps, played once).
 
+**`prepare` and `cast` delivered (owner delivery
+`gods_heroes_towns_delivery_2026-10-04`, 60 strips).** Every pantheon avatar
+has both in the five drawn directions (`e`, `ne`, `n`, `s`, `se`; `w`, `nw`,
+`sw` mirror `e`, `ne`, `se` on the same ground anchor): 6 frames at 6 fps,
+`loop: false`, each strip with its own frame size (1500 × 232 px strips of
+250 × 232 frames), anchor and 90 px per hex (calibrated to the idle
+avatar's height). `prepare` holds five poses and repeats the ready pose. In
+the game the beat plays `prepare` once on the beat's clock and **holds the
+ready pose until the map closes for the battle**; an abandoned encounter
+(leaving the map, the battle gone) puts the hero back to `idle`, and a second
+request while a beat is pending is skipped. A map spell — Homecoming
+included — plays `cast` once with the spell's own effects, then `idle`.
+Direction never changes during either. Checked frame by frame in SwiftShader
+captures for all six pantheons in six directions (`e`, `ne`, `nw`, `w`, `sw`,
+`se`; `n` and `s` are not neighbour directions on the map and are covered by
+`sprites.test.ts`).
+
 ## 13. Large painted art (story, ground and sky, big moments)
 
 Three production briefs for an image generator live in
@@ -625,8 +690,7 @@ sheets in the §4 sheet format and write their layouts to
   `assets-source/icons/final/god.….portrait.png`, then `npm run icons:import`),
   and **21 god-card icons** on one transparent 5 × 5 sheet
   (`icon.bless.*`, `icon.req.*`, `icon.god.*`; list in
-  `tools/assets/briefs/godIcons.ts`). The god cards do not show these icons
-  yet; the icon row is built when they are delivered.
+  `tools/assets/briefs/godIcons.ts`).
 * `GPT6_BRIEF_9_HERO_PORTRAITS.md` — the 74 hero portraits
   (`hero.<pantheon>.<hero>.portrait`), one sheet per pantheon (4 columns of
   384 px cells), with the dialogue bust attached where one exists.
@@ -640,12 +704,36 @@ sheets in the §4 sheet format and write their layouts to
 * `GPT6_BRIEF_11_MAP_HERO_ANIMATIONS.md` — the map heroes' `prepare` and
   `cast` strips (§12).
 
-Hero portraits: a hero without a portrait of its own (`hero.….portrait`, none
-delivered yet) shows its painted dialogue bust when one exists, framed on the
-head and shoulders in the square portrait frame — 20 of the 62 heroes (the six
-campaign heroes, Hervor among them, and 14 campaign opponents). The other 42,
-29 of the 30 hireable heroes among them, keep the generated stand-in until
-hero portraits are delivered.
+**Briefs 8–11 delivered (2026-10-04, `gods_heroes_towns_delivery_2026-10-04`,
+287 assets; the owner copied them in with the delivery's own scoped
+`copy_to_project.py`, which merges only the delivered IDs into the three
+manifests).** 60 god portraits and 74 hero portraits (painted, 256 × 256
+WebP in `assets-runtime/ui/icons/final/`), 21 god-card icons (transparent
+PNG; eight of them were cut at their native 192–250 px and are not enlarged),
+72 town building levels (`town.<pantheon>.support.<building>.lN`, 320 × 320
+transparent cutouts in `assets-runtime/art/town/`) and the 60 `prepare` /
+`cast` strips (§12). No higher-resolution painted detail is claimed; the
+delivery's `asset-index.json` records every source and runtime size and hash.
+The portraits reach every screen through `GodPortrait` / `HeroPortrait`
+(god choice and Pantheon screen, Encyclopedia, Tavern, map hero list, hero
+screen, encounters, story lists and — new — the battle header beside each
+commanding hero's name); the town picks each location's exact level picture
+(`resolveBuildingArt`), drawn in proportion with its transparency.
+
+**God-card icon rows** (`components/godIcons.tsx`, Pantheon screen and
+Encyclopedia): each blessing is a token of *who* (`icon.bless.commanders`,
+`armies`, `creatures`, `shooters`, `flyers`) or *what* (`growth`, `recovery`,
+`spell_unlock`, `daily_income`, `offering`, `fury`) with the existing
+attribute, morale, luck, movement, vision, mana and resource icons and the
+definition's number; the price is the Favor icon and cost, then
+`icon.req.temple` / `grand_temple` (temple level 1 / 2), `city_hall` (civic
+hall) and `after_first` per requirement; the state chips carry
+`icon.god.patron`, `first_choice`, `second_choice`, `committed` and
+`excluded`, and the choice rule `icon.god.permanent`. Every token's tooltip and
+screen-reader text is the content's own sentence (`benefitSummary`, the
+requirement, the quote's reason), so no number or condition is lost;
+`godIcons.test.tsx` checks this for every god. Patrons without a mechanical
+blessing keep their sentences.
 
 | Group | Files | Size | Asset ID pattern |
 |---|---|---|---|
@@ -757,22 +845,23 @@ PixiJS views since the 2D migration):
   one texture spans two hexes and continues across neighbouring hexes
   (mirrored repeat while `wrap` is `mirror`). Fog of war is a dark layer
   above it. Hex sides, roads, rivers, locations, trees (on forest floor) and
-  peaks (on mountain rock) are separate layers and sprites. The sea around
-  the map shows the climate's water, darkened. Until a texture has loaded —
+  peaks (on mountain rock) are separate layers and sprites. Since
+  2026-10-04 the space around the map is black (owner request; no sea). Until a texture has loaded —
   or if one is missing — the hex keeps its flat colour. The minimap keeps
   the brief's colours.
-* **Sky** — the climate's sky is a strip above the **north edge of the map**
-  (owner decision 2026-10-02), proportions kept, repeated sideways
-  (mirrored); seen whenever the view reaches the north edge. Temperate is the
-  fallback. Battles show no sky (the painting fills the view to its top edge).
+* **Sky** — no longer shown (owner request 2026-10-04: black around the map);
+  the ten sky files stay in the game unused. Battles never showed a sky.
 * **Battles** — the archetype's painting is the battle's background, fitted
   so the 15 × 11 board lies inside its quiet centre (1500 × 1000 of
   4096 × 3200); the logical hexes are an overlay on it (deployment columns
   darker, moat and paved town cells in their colours, grid optional). Image
   top = far side (coast sea, plateau chasm and beacon base at the top; ridge
   walls left and right). Beyond the painting, the view takes the colour of
-  its far margin. Climate variants (`battlefield.<b>.ground.<climate>`) are
-  used automatically if they are ever delivered.
+  its far margin. **Climate paintings** (`battlefield.<b>.ground.<climate>`):
+  all 54 — the six archetypes in the nine climates other than temperate —
+  were delivered on 2026-10-04 (native 1419 × 1108, the proportions of the
+  4096 × 3200 layout; not enlarged) and are chosen from the map's climate;
+  temperate and unknown climates keep the default painting.
 
 ### Big moments in the game (Brief 3, first delivery, 2026-10-02)
 

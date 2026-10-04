@@ -441,8 +441,9 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .battle { position: absolute; inset: 0; overflow: hidden; }
 .battle__scene { position: absolute; inset: 0; }
 .battle-top { position: absolute; top: 0; left: 0; right: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0.4rem 1rem; background: radial-gradient(40% 160% at 50% 0%, rgba(52, 88, 132, 0.3), transparent 70%), linear-gradient(180deg, rgba(11, 22, 38, 0.96), rgba(7, 14, 26, 0.72)); border-bottom: 1px solid var(--gold-500); box-shadow: 0 1px 0 rgba(5, 9, 15, 0.9), 0 3px 0 -1px rgba(194, 154, 82, 0.3), 0 8px 22px rgba(0, 0, 0, 0.45); z-index: 3; }
-.battle-side { padding: 0.2rem 0.8rem; border-left: 4px solid var(--side); }
-.battle-side--def { text-align: right; border-left: 0; border-right: 4px solid var(--side); }
+.battle-side { display: flex; align-items: center; gap: 0.6rem; padding: 0.2rem 0.8rem; border-left: 4px solid var(--side); }
+.battle-side--def { flex-direction: row-reverse; text-align: right; border-left: 0; border-right: 4px solid var(--side); }
+.battle-side__text { min-width: 0; }
 .battle-side__name { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--gold-200); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85); }
 .battle-round { text-align: center; padding: 0.15rem 1.4rem; border: 1px solid rgba(194, 154, 82, 0.55); border-radius: 0.5rem; background: var(--plate-sunken); box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6); }
 .battle-round__label { font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-faint); }
@@ -599,7 +600,7 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .bestiary-card__stats > span { white-space: nowrap; }
 .codex-building { display: flex; gap: 0.8rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(194, 154, 82, 0.12); }
 .codex-building:last-child { border-bottom: 0; }
-.codex-building__art { width: 6.4rem; height: auto; flex: none; }
+.codex-building__art { width: 6.4rem; height: 4.8rem; object-fit: contain; flex: none; }
 .codex-building__name { font-family: var(--font-display); font-size: 1.15rem; color: var(--gold-100); }
 .codex-building .cost { display: inline-flex; margin-top: 0.25rem; font-size: 1.02rem; }
 .unit-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1.1fr; gap: 0.8rem; padding: 0.8rem; }
@@ -1020,3 +1021,25 @@ button.tome-spell:disabled { cursor: var(--cur-default, default); }
 .ware__sold { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
 .ware__stamp { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; font-size: 1.2rem; color: #e6a389; padding: 0.2rem 0.9rem; border: 2px solid #c0573e; border-radius: 4px; transform: rotate(-8deg); }
 @media (max-width: 1100px) { .workshop__counter { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* God-card icon rows (Brief 8, Part B): blessings, price and state as icons and numbers; sentences in the tooltips. */
+.god-row { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem; }
+.god-tok { display: inline-flex; align-items: center; gap: 0.15rem; padding: 0.12rem 0.4rem 0.12rem 0.22rem; border: 1px solid rgba(194, 154, 82, 0.35); border-radius: 999px; background: rgba(7, 14, 26, 0.55); font-size: 0.8rem; line-height: 1; color: var(--text); cursor: var(--cur-default, default); }
+.god-tok:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 1px; }
+.god-tok__icons { display: inline-flex; align-items: center; gap: 0.15rem; }
+.god-tok__word { font-size: 0.75rem; }
+.god-tok .num { font-weight: 700; color: var(--gold-100); white-space: nowrap; }
+.god-ico { width: 1.35rem; height: 1.35rem; flex: none; object-fit: contain; }
+.god-ico--attr { width: 1.05rem; height: 1.05rem; }
+.god-ico--glyph { color: var(--gold-300); }
+.god-row--price .god-tok { border-color: rgba(143, 179, 214, 0.35); }
+.god-row--price.is-unmet .god-tok:not(:first-child), .god-tok.is-unmet { border-color: var(--danger); box-shadow: inset 0 0 0 1px rgba(192, 86, 75, 0.35); }
+.god-chip { display: inline-flex; align-items: center; gap: 0.25rem; }
+.god-chip .god-ico { width: 1.1rem; height: 1.1rem; }
+.god-sentences { text-align: left; align-self: stretch; }
+.god-choices { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 1.1rem; margin-bottom: 0.6rem; color: var(--text-dim); }
+.god-choices__row { display: inline-flex; align-items: center; gap: 0.4rem; }
+.god-choices__label { display: inline-flex; align-items: center; gap: 0.25rem; font-family: var(--font-ui); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; color: var(--gold-300); }
+.god-permanent { display: inline-flex; align-items: center; gap: 0.3rem; }
+.god-permanent .god-ico { width: 1.15rem; height: 1.15rem; }
+.codex-card .god-row { justify-content: flex-start; margin-top: 0.3rem; }
