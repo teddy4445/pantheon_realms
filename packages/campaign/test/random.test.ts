@@ -32,8 +32,10 @@ describe('random skirmish generator', () => {
     [2, 'large'],
     [3, 'small'],
     [3, 'medium'],
-    [4, 'medium'],
     [4, 'large'],
+    [5, 'large'],
+    [6, 'large'],
+    [6, 'huge'],
   ] as const) {
     it(`${n} empires on a ${size} map: every fairness check passes and the mission validates`, () => {
       for (const seed of [1, 42, 90210]) {
@@ -57,8 +59,8 @@ describe('random skirmish generator', () => {
   });
 
   it('gives every empire the same distances from its town to the center and the same kinds of sites', () => {
-    for (const n of [2, 3, 4]) {
-      const g = createRandomSkirmish(catalog, opts(n, n === 4 ? 'medium' : 'small', 5150 + n));
+    for (const n of [2, 3, 4, 5, 6]) {
+      const g = createRandomSkirmish(catalog, opts(n, n >= 4 ? 'large' : 'small', 5150 + n));
       const center: HexCoord = { q: (g.map.width - 1) / 2, r: (g.map.height - 1) / 2 };
       const towns = g.mission.sites.filter((s) => s.kind.type === 'town');
       expect(towns.length).toBe(n);
@@ -88,9 +90,46 @@ describe('random skirmish generator', () => {
     expect(g.mission.victoryCondition).toEqual({ type: 'hold_site', siteId: relic!.id, days: 5 });
   });
 
-  it('refuses four empires on a small map and fewer than two empires', () => {
-    expect(() => createRandomSkirmish(catalog, opts(4, 'small', 1))).toThrow(/medium or large/);
-    expect(() => createRandomSkirmish(catalog, { ...opts(2, 'small', 1), seats: seats(['greek']) })).toThrow(/2 to 4/);
+  it('refuses four or more empires on small and medium maps, fewer than two and more than six', () => {
+    expect(() => createRandomSkirmish(catalog, opts(4, 'small', 1))).toThrow(/large or huge/);
+    expect(() => createRandomSkirmish(catalog, opts(4, 'medium', 1))).toThrow(/large or huge/);
+    expect(() => createRandomSkirmish(catalog, opts(5, 'medium', 1))).toThrow(/large or huge/);
+    expect(() => createRandomSkirmish(catalog, { ...opts(2, 'small', 1), seats: seats(['greek']) })).toThrow(/2 to 6/);
+    expect(() => createRandomSkirmish(catalog, { ...opts(6, 'huge', 1), seats: seats(['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican', 'greek']) })).toThrow(/2 to 6/);
+  });
+
+  it('every size is square: as many rows as hexes per row, void outside the square, mountain wilds in its corners, no sea', () => {
+    for (const size of ['small', 'medium', 'large', 'huge'] as const) {
+      const g = createRandomSkirmish(catalog, opts(2, size, 7));
+      const { width: w, height: h, terrain } = g.map;
+      const rows = Array.from({ length: h }, (_, r) => terrain.slice(r * w, (r + 1) * w).replace(/v/g, ''));
+      // Every row has 2·Rh+1 hexes (rows an odd number of rows from the centre, staggered, 2·Rh+2), and there are 2·Rh+1 rows.
+      const mid = (h - 1) / 2;
+      for (const [r, row] of rows.entries()) expect(row.length, `${size} row ${r}`).toBe((r - mid) % 2 === 0 ? h : h + 1);
+      // Each row's own cells are contiguous (the square), with void only on either side.
+      for (let r = 0; r < h; r++) expect(terrain.slice(r * w, (r + 1) * w)).toMatch(/^v*[^v]+v*$/);
+      expect(terrain).toContain('v');
+      expect(terrain).not.toContain('w'); // continental: no water at all, and none around the map
+      const center = { q: (w - 1) / 2, r: (h - 1) / 2 };
+      const Rh = (h - 1) / 2;
+      for (let r = 0; r < h; r++)
+        for (let q = 0; q < w; q++) {
+          const code = terrain[r * w + q]!;
+          if (code !== 'v' && axialDistance({ q, r }, center) > Rh) expect(code, `${size} corner ${q},${r}`).toBe('m');
+        }
+    }
+  });
+
+  it('five empires share the six-fold layout: five identical regions and one wild region with no sites', () => {
+    const g = createRandomSkirmish(catalog, opts(5, 'large', 31));
+    const towns = g.mission.sites.filter((s) => s.kind.type === 'town');
+    expect(towns).toHaveLength(5);
+    const counts = Array.from({ length: 5 }, (_, i) => g.mission.sites.filter((s) => s.id.endsWith(`_${i + 1}`) && s.kind.type !== 'town').length);
+    expect(new Set(counts).size).toBe(1);
+    // The wild sixth region holds only the portals that lead into it (every portal keeps its twin).
+    expect(g.mission.sites.filter((s) => s.id.endsWith('_6')).every((s) => s.kind.type === 'portal')).toBe(true);
+    expect(g.mission.rivals).toHaveLength(4);
+    expect(new Set([g.mission.player.playerId, ...(g.mission.rivals ?? []).map((r) => r.color)]).size).toBe(5);
   });
 });
 
@@ -175,12 +214,15 @@ describe('generator 0.3: portals, roads to the center, neutral creatures', () =>
     for (const [n, size, perEmpire] of [
       [2, 'small', 1],
       [3, 'medium', 2],
-      [4, 'medium', 1],
+      [4, 'large', 1],
+      [5, 'large', 2],
+      [6, 'large', 2],
     ] as const) {
       for (const seed of [3, 17, 404]) {
         const g = createRandomSkirmish(catalog, opts(n, size, seed));
         const portals = portalsOf(g);
-        expect(portals.length, `${n} empires seed ${seed}`).toBe(n * perEmpire);
+        // Five empires: the wild sixth region has its two portals as well.
+        expect(portals.length, `${n} empires seed ${seed}`).toBe((n === 5 ? 6 : n) * perEmpire);
         for (const p of portals) {
           const exit = portals.find((x) => x.id === exitOf(p))!;
           expect(exit).toBeDefined();

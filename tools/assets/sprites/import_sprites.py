@@ -21,7 +21,8 @@ File names (one image each; strips are N equal frames left to right):
         the baseline at 90 % of the height, one hex width = 240 px (any frame
         height from half to twice the nominal one is accepted, same shape;
         the hex width scales with it)
-  sprite.hero.<pantheon>.<idle|walk>.<e|ne|n|nw|w|sw|s|se>.png
+  sprite.hero.<pantheon>.<idle|walk|prepare|cast>.<e|ne|n|nw|w|sw|s|se>.png
+        (prepare: readying for battle, cast: casting a map spell — GPT6_BRIEF_11; both play once)
         frames 320 x 320, ground point between the mount's feet at 88 %,
         one hex width = 150 px (e, ne, n, s, se are enough: the game mirrors
         e, ne, se for w, nw, sw)
@@ -59,7 +60,7 @@ MANIFEST = RUNTIME / "sprites" / "manifest.json"
 # Default frame rates: with the sheets' frame counts (GPT6_2D_CONTENT_GENERATION.md) they give the pacing
 # targets of CREATURE_ANIMATION_REQUIREMENTS.md (idle 6 @ 3 = 2 s, move 6 @ 8 = 0.75 s, attack/shoot 6 @ 6 = 1 s,
 # hit 3 @ 10 = 0.3 s, death 6 @ 5 = 1.2 s, victory 6 @ 4 = 1.5 s). A sidecar JSON (the cutter writes one) overrides them.
-FPS = {"idle": 3, "move": 8, "attack": 6, "shoot": 6, "defend": 8, "hit": 10, "death": 5, "victory": 4, "takeoff": 8, "fly": 10, "landing": 8, "cast": 6, "ability": 6, "walk": 8}
+FPS = {"idle": 3, "move": 8, "attack": 6, "shoot": 6, "defend": 8, "hit": 10, "death": 5, "victory": 4, "takeoff": 8, "fly": 10, "landing": 8, "cast": 6, "ability": 6, "walk": 8, "prepare": 6}
 LOOPS = {"idle", "move", "fly", "victory", "walk"}
 ANIMS = set(FPS)
 DIRS = {"e", "ne", "n", "nw", "w", "sw", "s", "se"}
@@ -133,7 +134,7 @@ def main() -> int:
         elif parts[0] == "hero" and len(parts) == 3 and parts[2] == "figure":
             target = ("figure", parts[1])
             kind = "figure"
-        elif parts[0] == "hero" and len(parts) == 4 and parts[2] in ("idle", "walk") and parts[3] in DIRS:
+        elif parts[0] == "hero" and len(parts) == 4 and parts[2] in ("idle", "walk", "prepare", "cast") and parts[3] in DIRS:
             target = ("heroes", parts[1], parts[2], parts[3])
             kind = "hero"
         elif name.startswith("map.site."):

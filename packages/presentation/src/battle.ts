@@ -161,9 +161,11 @@ interface StackEntry {
   root: Container;
   figure: SpriteFigure;
   base: Graphics;
+  /** Count badge: drawn on its own layer above every figure (large final sprites would cover it), following `root`. */
   badge: Container;
   badgeText: Text;
   badgeBg: Graphics;
+  badgeOffset: { x: number; y: number };
   view: BattleStackView;
   shownAnchor: BattleCell;
   prevAnchor: BattleCell;
@@ -178,6 +180,9 @@ interface StackEntry {
   shownStatuses: readonly StatusOverlay[];
   /** Frames until a status change from a newer view is shown (lets playback claim it first). */
   auraDelay: number;
+  /** Times the death and hit playback ran (read-only diagnostics). */
+  deathPlays: number;
+  hitPlays: number;
 }
 
 const ARCHETYPE_GROUND: Record<string, string> = {
@@ -212,6 +217,8 @@ export class BattleSceneController implements SceneController {
   private readonly hover = new Graphics();
   private readonly activeRing = new Graphics();
   private readonly objects = new Container();
+  /** Count badges, above every figure so a tall creature in the row in front never hides another stack's count. */
+  private readonly badges = new Container();
   private readonly fx = new Container();
   private readonly floats = new Container();
   /** Whole-field moments (screen pixels, over the board). */
@@ -250,7 +257,8 @@ export class BattleSceneController implements SceneController {
     this.canvas = canvas;
     this.cb = cb;
     this.objects.sortableChildren = true;
-    this.board.addChild(this.backdrop, this.cells, this.grid, this.highlight, this.hover, this.activeRing, this.objects, this.fx, this.floats);
+    this.badges.sortableChildren = true;
+    this.board.addChild(this.backdrop, this.cells, this.grid, this.highlight, this.hover, this.activeRing, this.objects, this.badges, this.fx, this.floats);
     this.root.addChild(this.board, this.screenLayer);
     this.hover.visible = false;
     this.activeRing.visible = false;
@@ -445,6 +453,7 @@ export class BattleSceneController implements SceneController {
     const p = this.groupPosition(anchor, e.view.footprint, e.view.facing);
     e.root.position.set(p.x, p.y);
     e.root.zIndex = p.y;
+    e.badge.position.set(p.x + e.badgeOffset.x, p.y + e.badgeOffset.y);
   }
 
   private createStack(v: BattleStackView): StackEntry {
@@ -469,8 +478,8 @@ export class BattleSceneController implements SceneController {
     const badgeText = new Text({ text: v.label, style: { fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: '700', fill: v.labelColor } });
     badgeText.anchor.set(0.5);
     badge.addChild(badgeBg, badgeText);
-    badge.position.set(v.facing * HEX_W * 0.34 * w, RB * S * 0.28);
-    root.addChild(badge);
+    const badgeOffset = { x: v.facing * HEX_W * 0.34 * w, y: RB * S * 0.28 };
+    this.badges.addChild(badge);
     const e: StackEntry = {
       root,
       figure,
@@ -478,6 +487,7 @@ export class BattleSceneController implements SceneController {
       badge,
       badgeText,
       badgeBg,
+      badgeOffset,
       view: v,
       shownAnchor: v.anchor,
       prevAnchor: v.anchor,
@@ -489,6 +499,8 @@ export class BattleSceneController implements SceneController {
       aura,
       shownStatuses: [],
       auraDelay: 0,
+      deathPlays: 0,
+      hitPlays: 0,
     };
     this.setBadge(e, v.label, v.labelColor);
     this.place(e, v.anchor);
@@ -547,6 +559,7 @@ export class BattleSceneController implements SceneController {
 
   private disposeStack(e: StackEntry): void {
     e.figure.destroy();
+    e.badge.destroy({ children: true });
     e.root.destroy({ children: true });
   }
 
@@ -913,9 +926,11 @@ export class BattleSceneController implements SceneController {
 
   /** Being hit: the strip, or a flinch and flash when only a still exists. */
   private async flinch(e: StackEntry): Promise<void> {
+    e.hitPlays += 1;
     const f = e.figure;
     const strip = f.playOnce('hit', this.tweens, { minMs: 320 });
-    const back = e.view.facing === 1 ? -1 : 1;
+    // Recoil away from where the figure faces (it may have turned toward its attacker).
+    const back = f.mirror ? 1 : -1;
     const own = f.has('hit');
     await this.tweens.tween(
       320,
@@ -933,8 +948,23 @@ export class BattleSceneController implements SceneController {
     f.rest();
   }
 
-  /** Dying on the killing blow: the death strip held on its last frame, or the fallback fall. */
+  /**
+   * Taking a blow: the hit strip always plays first; only when the stack is
+   * destroyed does its death strip follow, once (owner request 2026-10-04).
+   */
+  private async sufferBlow(e: StackEntry, killed: boolean): Promise<void> {
+    if (e.down) return;
+    await this.flinch(e);
+    if (killed) {
+      this.cue('death');
+      await this.die(e);
+    }
+  }
+
+  /** Dying on the killing blow: the death strip held on its last frame, or the fallback fall (never twice). */
   private async die(e: StackEntry): Promise<void> {
+    if (e.down) return;
+    e.deathPlays += 1;
     const f = e.figure;
     e.badge.visible = false;
     if (f.has('death')) {
@@ -1015,6 +1045,12 @@ export class BattleSceneController implements SceneController {
         if (!a || !t) return;
         const retaliation = ev.mode === 'retaliation';
         const heavy = ev.killed > 0;
+        // Both turn to face each other for the exchange (owner request 2026-10-04), then turn back.
+        const dx = t.root.x - a.root.x;
+        if (Math.abs(dx) > 1) {
+          a.figure.mirror = dx < 0;
+          if (!t.down) t.figure.mirror = dx > 0;
+        }
         if (ev.mode === 'shot') {
           await Promise.all([
             this.strike(a, t, 'shoot'),
@@ -1029,11 +1065,11 @@ export class BattleSceneController implements SceneController {
           this.cue('impact', heavy);
           void this.effect('impact', this.chestOf(t), { flash: 0xfff1c8, scale: 0.8 });
         }
-        if (ev.targetRemaining <= 0) this.cue('death');
         const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
         void this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed);
-        if (ev.targetRemaining > 0) await this.flinch(t);
-        else await this.die(t);
+        await this.sufferBlow(t, ev.targetRemaining <= 0);
+        a.figure.mirror = a.view.facing === -1;
+        if (!t.down) t.figure.mirror = t.view.facing === -1;
         return;
       }
       case 'BattleSpellCast':
@@ -1129,8 +1165,7 @@ export class BattleSceneController implements SceneController {
         await this.projectile(this.structureTop(st), this.chestOf(t), 'arrow');
         this.cue('arrow-hit', ev.killed > 0);
         void this.floatText(this.headOf(t), ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`, '#ff8a70', speed);
-        if (ev.targetRemaining > 0) await this.flinch(t);
-        else await this.die(t);
+        await this.sufferBlow(t, ev.targetRemaining <= 0);
         return;
       }
       case 'SiegeMoatDamage': {
@@ -1138,8 +1173,7 @@ export class BattleSceneController implements SceneController {
         if (!t) return;
         this.cue('moat');
         void this.floatText(this.headOf(t), `Moat −${ev.damage}`, '#9cc4ff', speed);
-        if (ev.targetRemaining > 0) await this.flinch(t);
-        else await this.die(t);
+        await this.sufferBlow(t, ev.targetRemaining <= 0);
         return;
       }
       case 'BattleStackShapeshifted': {
@@ -1263,10 +1297,7 @@ export class BattleSceneController implements SceneController {
         color = look.hostile ? '#d7b0ff' : '#f5e4b7';
       }
       if (text) void this.floatText(this.headOf(v), text, color, speed);
-      if (ev.damage > 0) {
-        if (v.view.alive) await this.flinch(v);
-        else if (!v.down) await this.die(v);
-      }
+      if (ev.damage > 0) await this.sufferBlow(v, !v.view.alive);
       await hit;
     };
     await Promise.all([...victims.map(react), screen]);
@@ -1294,8 +1325,7 @@ export class BattleSceneController implements SceneController {
       await this.tweens.wait(220);
       if (m.damage) {
         void this.floatText(this.headOf(v), `−${m.damage}`, '#ff8a70', speed);
-        if (v.view.alive) await this.flinch(v);
-        else if (!v.down) await this.die(v);
+        await this.sufferBlow(v, !v.view.alive);
       } else if (i === 0) {
         const text = healed > 0 ? `+${healed} HP` : m.label;
         if (text) void this.floatText(this.headOf(v), text, healed > 0 ? '#9be58a' : '#f5e4b7', speed);
@@ -1379,8 +1409,8 @@ export class BattleSceneController implements SceneController {
   }
 
   /** Read-only state of every stack figure (tests and diagnostics): where it is drawn and how. */
-  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[] }> {
-    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[] }> = {};
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; deaths: number; hits: number }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; deaths: number; hits: number }> = {};
     const z = this.board.scale.x;
     for (const [id, e] of this.stacks) {
       out[id] = {
@@ -1394,6 +1424,8 @@ export class BattleSceneController implements SceneController {
         down: e.down,
         visible: e.root.visible,
         overlays: e.aura.kinds,
+        deaths: e.deathPlays,
+        hits: e.hitPlays,
       };
     }
     return out;
@@ -1416,6 +1448,9 @@ export class BattleSceneController implements SceneController {
     const motion = graphicsProfile().ambientMotion;
     for (const e of this.stacks.values()) {
       if (e.locked === 0 && e.snapIn > 0 && --e.snapIn === 0) this.snap(e);
+      e.badge.position.set(e.root.x + e.badgeOffset.x, e.root.y + e.badgeOffset.y);
+      e.badge.zIndex = e.root.y;
+      e.badge.renderable = e.root.visible;
       if (e.down) continue;
       if (motion || e.locked > 0) e.figure.tick(dt);
       if (e.locked === 0 && e.auraDelay > 0 && --e.auraDelay === 0) this.applyAura(e);

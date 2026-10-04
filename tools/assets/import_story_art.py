@@ -29,6 +29,11 @@ Big moments (Brief 3):
                                             transparent padding kept (never cropped), with the measured
                                             box of its blank plaque (where the game writes its text)
 
+Town building levels (Brief 10, cut from the level sheets by `npm run sprites:cut`):
+  town.<pantheon>.support.<location>.l<N>.png -> art/town/<id>.webp, at most 512 px, transparency
+                                            kept; the town shows level N of that building with it
+                                            (until then every level uses the one location image)
+
 Rules: the sources are never modified; nothing is ever upscaled (derivatives
 are the native size or smaller, aspect ratio kept); dialogue portraits keep
 their transparency; landscape art is stored at its native size (the 2026-10-02
@@ -82,7 +87,9 @@ PATTERNS = [
     ('miracle', re.compile(r'^intervention\.[a-z_]+\.card$')),
     ('splash', re.compile(r'^splash\.[a-z]+\.(victory|defeat)$')),
     ('banner', re.compile(r'^banner\.(level_up\.[a-z]+|new_week|week\.[a-z_]+)$')),
+    ('building', re.compile(r'^town\.[a-z]+\.support\.[a-z_]+\.l\d$')),
 ]
+BUILDING_MAX = 512         # town building level art: at most 512 px on the long side (shown at ~150–300 px)
 
 # The brief's nominal plaque (about 60 % x 45 %, centred) when it cannot be measured.
 NOMINAL_PLAQUE = [0.2, 0.275, 0.8, 0.725]
@@ -204,7 +211,7 @@ def main():
     files = sorted(f for f in os.listdir(SRC) if f.lower().endswith('.png'))
     assets = {}
     warnings = []
-    counts = {'bust': 0, 'cover': 0, 'ending': 0, 'mission': 0, 'terrain': 0, 'battlefield': 0, 'sky': 0, 'miracle': 0, 'splash': 0, 'banner': 0}
+    counts = {'bust': 0, 'cover': 0, 'ending': 0, 'mission': 0, 'terrain': 0, 'battlefield': 0, 'sky': 0, 'miracle': 0, 'splash': 0, 'banner': 0, 'building': 0}
     today = date.today().isoformat()
     verified = seamless_verified()
     for f in files:
@@ -218,8 +225,20 @@ def main():
         src.load()
         sw, sh = src.size
         source = {'file': f'assets-source/art/final/{f}', 'width': sw, 'height': sh, 'sha256': sha256(path)}
-        brief = 'ground and sky art (GPT6_BRIEF_2)' if kind in ('terrain', 'battlefield', 'sky') else 'big-moment art (GPT6_BRIEF_3)' if kind in ('miracle', 'splash', 'banner') else 'story art (GPT6_BRIEF_1)'
+        brief = 'ground and sky art (GPT6_BRIEF_2)' if kind in ('terrain', 'battlefield', 'sky') else 'big-moment art (GPT6_BRIEF_3)' if kind in ('miracle', 'splash', 'banner') else 'town building level art (GPT6_BRIEF_10)' if kind == 'building' else 'story art (GPT6_BRIEF_1)'
         note = f'Owner-delivered {brief}, imported {today}; source {sw} x {sh}'
+        if kind == 'building':
+            if src.mode != 'RGBA':
+                warnings.append(f'{f}: building art without transparency ({src.mode})')
+            im = src.convert('RGBA')
+            if max(im.size) > BUILDING_MAX:
+                k = BUILDING_MAX / max(im.size)
+                im = im.resize((max(1, round(im.width * k)), max(1, round(im.height * k))), Image.LANCZOS)
+            out = os.path.join(OUT, 'town', f'{asset_id}.webp')
+            save_webp(im, out, 86, alpha_quality=90)
+            assets[asset_id] = {'file': rel(out), 'kind': 'building', 'width': im.width, 'height': im.height, 'source': source, 'provenance': f'{note}; {im.width} x {im.height}, transparency kept.'}
+            counts['building'] += 1
+            continue
         if kind in ('miracle', 'splash', 'banner'):
             if kind == 'banner':
                 if src.mode != 'RGBA' or src.getchannel('A').getextrema()[0] == 255:
@@ -341,7 +360,7 @@ def main():
         counts[kind] += 1
     # Remove runtime files no longer produced (a source was removed or renamed).
     produced = {os.path.normpath(os.path.join(RUNTIME, a['file'])) for a in assets.values()}
-    for folder in ('busts', 'covers', 'endings', 'missions', 'cards', 'terrain', 'battle', 'sky', 'miracles', 'splashes', 'banners'):
+    for folder in ('busts', 'covers', 'endings', 'missions', 'cards', 'terrain', 'battle', 'sky', 'miracles', 'splashes', 'banners', 'town'):
         d = os.path.join(OUT, folder)
         if not os.path.isdir(d):
             continue
@@ -372,7 +391,7 @@ def main():
     total = sum(os.path.getsize(os.path.join(RUNTIME, a['file'])) for a in assets.values())
     print(f"painted art: {counts['bust']} busts, {counts['cover']} covers, {counts['ending']} endings, {counts['mission']} mission pictures, "
           f"{counts['terrain']} terrain, {counts['battlefield']} battlefields, {counts['sky']} skies, "
-          f"{counts['miracle']} miracle cards, {counts['splash']} splashes, {counts['banner']} banners -> {len(assets)} runtime files, {total / 1e6:.1f} MB")
+          f"{counts['miracle']} miracle cards, {counts['splash']} splashes, {counts['banner']} banners, {counts['building']} town building levels -> {len(assets)} runtime files, {total / 1e6:.1f} MB")
     return 0
 
 

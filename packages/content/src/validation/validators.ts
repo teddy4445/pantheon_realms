@@ -165,6 +165,12 @@ function checkEffect(c: ContentCatalog, e: EffectDefinition, where: string, push
       if (e.stockSize <= 0) push(`${where}: merchant needs a positive stock size`);
       if (!Object.values(c.artifacts).some((a) => a.merchantPrice && !a.unique)) push(`${where}: no artifact has a merchant price`);
       break;
+    case 'enables_workshop': {
+      if (e.stockSize <= 0) push(`${where}: workshop needs a positive stock size`);
+      const pool = Object.values(c.artifacts).filter((a) => a.merchantPrice && !a.unique && e.rarities.includes(a.rarity ?? 'minor'));
+      if (pool.length < e.stockSize) push(`${where}: only ${pool.length} priced items of class ${e.rarities.join('/')} for a stock of ${e.stockSize}`);
+      break;
+    }
     default:
       break;
   }

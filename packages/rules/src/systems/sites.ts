@@ -12,6 +12,7 @@
 import type { HeroId, PlayerId, SiteId } from '../ids';
 import { axialNeighbors, hexEquals, type HexCoord } from '../core/hex';
 import { canAfford, resources } from '../core/resources';
+import { RngCursor, seedFromLabel } from '../core/rng';
 import type { ContentCatalog } from '../definitions/catalog';
 import type { QuestHutQuest, SiteDefinition, StackSpec } from '../definitions/world';
 import type { HeroState, MatchState, SiteState } from '../state/match';
@@ -246,10 +247,28 @@ export function commitCompleteQuestHut(tx: Tx, heroId: HeroId, siteId: SiteId): 
 // Neutral reactions (proposed 2026-10-02; owner answer "Join free or flee")
 // ---------------------------------------------------------------------------
 
-/** Neutrals at most 1/2 as strong as the hero's army will not fight unless attacked. */
+/** Neutrals at most 1/2 as strong as the hero's army may not fight unless attacked. */
 export const NEUTRAL_FLEE_RATIO = 2;
-/** At most 1/3 as strong, they offer to join for free (when every stack fits the army). */
+/** At most 1/3 as strong, they may offer to join for free (when every stack fits the army). */
 export const NEUTRAL_JOIN_RATIO = 3;
+/**
+ * Chances (owner request 2026-10-04: joining a quarter as likely as before,
+ * fleeing a third): neutrals who could join offer to with this chance…
+ */
+export const NEUTRAL_JOIN_CHANCE = 1 / 4;
+/** …and neutrals who could flee (or could join but do not) run with this chance; otherwise they fight. */
+export const NEUTRAL_FLEE_CHANCE = 1 / 3;
+
+/**
+ * The day's draw for one group of neutrals meeting one hero, in [0, 1): a pure
+ * function of match, group, hero and day (no RNG state is consumed), so the
+ * encounter panel, the AI's estimate and the move itself agree, and asking
+ * again the same day gives the same answer.
+ */
+export function neutralReactionRoll(state: Pick<MatchState, 'matchId' | 'day'>, heroId: HeroId, groupKey: string): number {
+  const rng = new RngCursor(seedFromLabel(`neutral|${state.matchId}|${groupKey}|${heroId}|${state.day}`));
+  return rng.nextUint32() / 4294967296;
+}
 
 export interface NeutralReaction {
   /** 'join': they offer to join (or may be let go); 'flee': they will run; null: they fight. */
@@ -293,7 +312,11 @@ export function quoteNeutralReaction(catalog: ContentCatalog, state: MatchState,
   const ratio = theirs > 0 ? heroArmyStrength(catalog, state, hero) / theirs : Number.POSITIVE_INFINITY;
   if (ratio < NEUTRAL_FLEE_RATIO) return none('They are not afraid of your army', ratio, stacks, siteId, monsterHeroId);
   const fits = placementPlan(hero.army, stacks).every((s) => s !== null);
-  const kind = ratio >= NEUTRAL_JOIN_RATIO && fits ? 'join' : 'flee';
+  const roll = neutralReactionRoll(state, hero.id, siteId ?? monsterHeroId ?? `${dest.q},${dest.r}`);
+  let kind: 'join' | 'flee' | null;
+  if (ratio >= NEUTRAL_JOIN_RATIO && fits) kind = roll < NEUTRAL_JOIN_CHANCE ? 'join' : roll < NEUTRAL_JOIN_CHANCE + (1 - NEUTRAL_JOIN_CHANCE) * NEUTRAL_FLEE_CHANCE ? 'flee' : null;
+  else kind = roll < NEUTRAL_FLEE_CHANCE ? 'flee' : null;
+  if (!kind) return none('They stand their ground today', ratio, stacks, siteId, monsterHeroId);
   return { kind, ratio, stacks, siteId, monsterHeroId, reason: null };
 }
 

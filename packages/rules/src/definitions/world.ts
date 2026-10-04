@@ -23,7 +23,12 @@ import type { HexCoord } from '../core/hex';
 import type { ResourceCost, ResourceKey } from '../core/resources';
 import type { HeroAttribute, RequirementDefinition, RewardDefinition } from './logic';
 
-export type Terrain = 'plains' | 'forest' | 'rough' | 'marsh' | 'mountain' | 'water';
+/**
+ * Ground types. `void` is not ground: the cells of the stored map array that lie
+ * outside the map's own shape (a square random map kept in the axial array).
+ * Impassable, never explored, drawn black (owner request 2026-10-04).
+ */
+export type Terrain = 'plains' | 'forest' | 'rough' | 'marsh' | 'mountain' | 'water' | 'void';
 export const TERRAIN_CODES: Readonly<Record<Terrain, string>> = {
   plains: 'p',
   forest: 'f',
@@ -31,6 +36,7 @@ export const TERRAIN_CODES: Readonly<Record<Terrain, string>> = {
   marsh: 's',
   mountain: 'm',
   water: 'w',
+  void: 'v',
 };
 export const TERRAIN_BY_CODE: Readonly<Record<string, Terrain>> = {
   p: 'plains',
@@ -39,6 +45,7 @@ export const TERRAIN_BY_CODE: Readonly<Record<string, Terrain>> = {
   s: 'marsh',
   m: 'mountain',
   w: 'water',
+  v: 'void',
 };
 
 export interface MapBarrierDefinition {

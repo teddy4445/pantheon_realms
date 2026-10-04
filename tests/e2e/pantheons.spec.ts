@@ -45,7 +45,6 @@ for (const c of CASES) {
     await page.screenshot({ path: `test-results/town-${c.id}.png` });
     await page.getByTestId('slot-marketplace').click();
     await page.getByTestId('build').click();
-    await page.getByTestId('confirm-ok').click();
     s = await waitFor(page, (x) => x.state.towns.westharbor.buildings.marketplace === 1, 'marketplace built');
     await page.getByRole('button', { name: 'Recruit', exact: true }).first().click();
     await page.getByTestId(`recruit-${c.t1}`).click();

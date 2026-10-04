@@ -133,8 +133,6 @@ export function SummaryScreen() {
   const [scoreFor, setScoreFor] = useState(session.humanPlayerId);
   const score = matchScore(catalog, state, scoreFor);
   const totals = ensureStats(state).totals;
-  const outcome = state.outcome;
-  const winners = outcome.status !== 'running' ? (outcome.winnerIds ?? []).map((id) => state.players[id]?.name).filter(Boolean) : [];
   const campaign = session.campaign;
   // The finished match's painting for the viewer's pantheon, behind the summary.
   const won = viewerWon(state, session.humanPlayerId);
@@ -160,7 +158,6 @@ export function SummaryScreen() {
       {splash ? <ResultSplash art={splash} /> : null}
       <ScreenHeader
         title={`Summary — ${mission?.name ?? state.scenario.name}`}
-        subtitle={outcome.status === 'running' ? `Day ${state.day} (in progress)` : `${outcome.reason} · day ${outcome.day}${winners.length ? ` · winner: ${winners.join(', ')}` : ''}`}
         back={false}
         right={
           <div className="row gap">

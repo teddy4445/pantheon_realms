@@ -3,7 +3,8 @@
  * and artifacts ... with logical stories"). PROPOSED, unplaytested values.
  *
  * Thirty spells (three more for each pantheon, so every pantheon has five, and
- * twelve shared Sanctum spells) and forty-six artifacts for every paper-doll
+ * twelve shared Sanctum spells) and forty-six artifacts (fifty-five with the nine
+ * Workshop wares of 2026-10-04) for every paper-doll
  * slot, including six new sets. All of it is 'expanded' content: skirmish,
  * random maps and The Winter Oath use it; The Three Beacons keeps it off.
  * Every entry carries `lore` — a short in-world story used by the encyclopedia
@@ -329,6 +330,26 @@ export const ARCANA_ARTIFACTS: readonly ArtifactDefinition[] = [
     'A round shield faced with eagle feathers and a gold rim. The eagle fights the sun’s enemies every dawn; its warriors fight the empire’s.', 'mesoamerican', { gold: 3200 }, 'gifts_of_the_feathered_serpent'),
   art('bronze_buckler', 'Bronze Buckler', 'shield', 'treasure', [def(1)], '+1 commander Defense.',
     'A small fist-shield sold in every market from the harbours to the mountains. Not glorious, but often enough.', null, { gold: 1200 }),
+
+  // --- Workshop wares (tier 1; owner request 2026-10-04): plain crafted gear the Workshop sells four of each week ---
+  art('iron_shod_spear', 'Iron-shod Spear', 'weapon', 'treasure', [atk(1)], '+1 commander Attack.',
+    'Ash shaft, iron point, a smith’s mark on the socket. The first weapon of every militia and the last one a veteran gives up.', null, { gold: 1200 }),
+  art('boiled_leather_jerkin', 'Boiled-leather Jerkin', 'armor', 'treasure', [def(1)], '+1 commander Defense.',
+    'Ox-hide boiled in wax until it is hard as wood. It turns a glancing blade and costs a week’s wages.', null, { gold: 1000 }),
+  art('waxed_travel_cloak', 'Waxed Travel Cloak', 'cape', 'treasure', [move(5)], '+5% daily land movement.',
+    'Wool rubbed with beeswax so the rain runs off. A dry rider rides longer.', null, { gold: 1000 }),
+  art('copper_circlet', 'Copper Circlet', 'head', 'treasure', [know(1)], '+1 commander Knowledge.',
+    'A plain band hammered from one sheet of copper. Students wear it to keep their hair — and, they say, their thoughts — in place.', null, { gold: 1100 }),
+  art('clay_votive_amulet', 'Clay Votive Amulet', 'neck', 'treasure', [morale(1)], '+1 morale.',
+    'A thumb-sized figure of the household god, fired in a potter’s kiln and blessed at the town shrine. Soldiers touch it before every charge.', null, { gold: 1300 }),
+  art('watchmans_lantern', 'Watchman’s Lantern', 'misc', 'treasure', [vision(1)], '+1 hex of vision.',
+    'A horn-paned lantern with a hood that throws its light forward. Night watches see farther, and so does the hero who carries one.', null, { gold: 900 }),
+  art('scholars_oil_lamp', 'Scholar’s Oil Lamp', 'misc', 'treasure', [mana(1)], '+1 mana at dawn.',
+    'A small clay lamp for reading at night. A spellcaster who studies by it wakes with one more charm remembered.', null, { gold: 1100 }),
+  art('bronze_seal_ring', 'Bronze Seal Ring', 'ring', 'treasure', [pow(1)], '+1 commander Spell Power.',
+    'A signet cut with a spiral. Pressed into wax it seals a letter; pressed into a palm before a spell, its owner swears, it seals the spell tighter.', null, { gold: 1200 }),
+  art('woven_saddle_blanket', 'Woven Saddle Blanket', 'mount', 'treasure', [move(5)], '+5% daily land movement.',
+    'Thick wool in the colours of the weaver’s village. A horse that does not chafe walks an extra hour.', null, { gold: 900 }),
 
   // --- Armor ---
   art('einherjar_mail', 'Mail of the Einherjar', 'armor', 'major', [def(3)], '+3 commander Defense.',

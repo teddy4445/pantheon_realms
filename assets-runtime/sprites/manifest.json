@@ -14644,6 +14644,2838 @@
    "status": "final",
    "provenance": "GPT-6 effect strip.",
    "additive": true
+  },
+  "fx.status.attack_down": {
+   "file": "sprites/final/effects/fx.status.attack_down.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.status.attack_up": {
+   "file": "sprites/final/effects/fx.status.attack_up.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.status.blessed": {
+   "file": "sprites/final/effects/fx.status.blessed.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.status.cursed": {
+   "file": "sprites/final/effects/fx.status.cursed.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.status.defense_up": {
+   "file": "sprites/final/effects/fx.status.defense_up.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.status.melee_ward": {
+   "file": "sprites/final/effects/fx.status.melee_ward.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.status.ranged_ward": {
+   "file": "sprites/final/effects/fx.status.ranged_ward.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.status.speed_down": {
+   "file": "sprites/final/effects/fx.status.speed_down.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.status.speed_up": {
+   "file": "sprites/final/effects/fx.status.speed_up.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.blessing.cast": {
+   "file": "sprites/final/effects/fx.spell.blessing.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.blessing.impact": {
+   "file": "sprites/final/effects/fx.spell.blessing.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.hearthlight.cast": {
+   "file": "sprites/final/effects/fx.spell.hearthlight.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.hearthlight.impact": {
+   "file": "sprites/final/effects/fx.spell.hearthlight.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ill_omen.cast": {
+   "file": "sprites/final/effects/fx.spell.ill_omen.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.ill_omen.impact": {
+   "file": "sprites/final/effects/fx.spell.ill_omen.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.shield_of_faith.cast": {
+   "file": "sprites/final/effects/fx.spell.shield_of_faith.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.shield_of_faith.impact": {
+   "file": "sprites/final/effects/fx.spell.shield_of_faith.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.spark.cast": {
+   "file": "sprites/final/effects/fx.spell.spark.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.spark.travel": {
+   "file": "sprites/final/effects/fx.spell.spark.travel.webp",
+   "frames": 4,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.spark.impact": {
+   "file": "sprites/final/effects/fx.spell.spark.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.swiftness.cast": {
+   "file": "sprites/final/effects/fx.spell.swiftness.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.swiftness.impact": {
+   "file": "sprites/final/effects/fx.spell.swiftness.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.warcry.cast": {
+   "file": "sprites/final/effects/fx.spell.warcry.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.warcry.impact": {
+   "file": "sprites/final/effects/fx.spell.warcry.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ward.cast": {
+   "file": "sprites/final/effects/fx.spell.ward.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ward.impact": {
+   "file": "sprites/final/effects/fx.spell.ward.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ember_burst.cast": {
+   "file": "sprites/final/effects/fx.spell.ember_burst.cast.webp",
+   "frames": 6,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ember_burst.travel": {
+   "file": "sprites/final/effects/fx.spell.ember_burst.travel.webp",
+   "frames": 4,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ember_burst.impact": {
+   "file": "sprites/final/effects/fx.spell.ember_burst.impact.webp",
+   "frames": 8,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.lightning.cast": {
+   "file": "sprites/final/effects/fx.spell.lightning.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.lightning.travel": {
+   "file": "sprites/final/effects/fx.spell.lightning.travel.webp",
+   "frames": 4,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.lightning.impact": {
+   "file": "sprites/final/effects/fx.spell.lightning.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.mend.cast": {
+   "file": "sprites/final/effects/fx.spell.mend.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.mend.impact": {
+   "file": "sprites/final/effects/fx.spell.mend.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.sapping_touch.cast": {
+   "file": "sprites/final/effects/fx.spell.sapping_touch.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.sapping_touch.impact": {
+   "file": "sprites/final/effects/fx.spell.sapping_touch.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.steadfast.cast": {
+   "file": "sprites/final/effects/fx.spell.steadfast.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.steadfast.impact": {
+   "file": "sprites/final/effects/fx.spell.steadfast.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.veil.cast": {
+   "file": "sprites/final/effects/fx.spell.veil.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.veil.impact": {
+   "file": "sprites/final/effects/fx.spell.veil.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.weariness.cast": {
+   "file": "sprites/final/effects/fx.spell.weariness.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.weariness.impact": {
+   "file": "sprites/final/effects/fx.spell.weariness.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.leaden_air.cast": {
+   "file": "sprites/final/effects/fx.spell.leaden_air.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.leaden_air.screen": {
+   "file": "sprites/final/effects/fx.spell.leaden_air.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.leaden_air.impact": {
+   "file": "sprites/final/effects/fx.spell.leaden_air.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.rallying_hymn.cast": {
+   "file": "sprites/final/effects/fx.spell.rallying_hymn.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.rallying_hymn.screen": {
+   "file": "sprites/final/effects/fx.spell.rallying_hymn.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.rallying_hymn.impact": {
+   "file": "sprites/final/effects/fx.spell.rallying_hymn.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.renewal.cast": {
+   "file": "sprites/final/effects/fx.spell.renewal.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.renewal.screen": {
+   "file": "sprites/final/effects/fx.spell.renewal.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.renewal.impact": {
+   "file": "sprites/final/effects/fx.spell.renewal.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.starfall.cast": {
+   "file": "sprites/final/effects/fx.spell.starfall.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.starfall.screen": {
+   "file": "sprites/final/effects/fx.spell.starfall.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.starfall.impact": {
+   "file": "sprites/final/effects/fx.spell.starfall.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.hoplon_wall.cast": {
+   "file": "sprites/final/effects/fx.spell.hoplon_wall.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.hoplon_wall.impact": {
+   "file": "sprites/final/effects/fx.spell.hoplon_wall.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.apollos_arrow.cast": {
+   "file": "sprites/final/effects/fx.spell.apollos_arrow.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.apollos_arrow.travel": {
+   "file": "sprites/final/effects/fx.spell.apollos_arrow.travel.webp",
+   "frames": 4,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.apollos_arrow.impact": {
+   "file": "sprites/final/effects/fx.spell.apollos_arrow.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.aegis.cast": {
+   "file": "sprites/final/effects/fx.spell.aegis.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.aegis.screen": {
+   "file": "sprites/final/effects/fx.spell.aegis.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.aegis.impact": {
+   "file": "sprites/final/effects/fx.spell.aegis.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.thunderclap.cast": {
+   "file": "sprites/final/effects/fx.spell.thunderclap.cast.webp",
+   "frames": 6,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.thunderclap.travel": {
+   "file": "sprites/final/effects/fx.spell.thunderclap.travel.webp",
+   "frames": 4,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.thunderclap.impact": {
+   "file": "sprites/final/effects/fx.spell.thunderclap.impact.webp",
+   "frames": 8,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.rune_of_tyr.cast": {
+   "file": "sprites/final/effects/fx.spell.rune_of_tyr.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.rune_of_tyr.impact": {
+   "file": "sprites/final/effects/fx.spell.rune_of_tyr.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.frost_breath.cast": {
+   "file": "sprites/final/effects/fx.spell.frost_breath.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.frost_breath.impact": {
+   "file": "sprites/final/effects/fx.spell.frost_breath.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.norns_thread.cast": {
+   "file": "sprites/final/effects/fx.spell.norns_thread.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.norns_thread.impact": {
+   "file": "sprites/final/effects/fx.spell.norns_thread.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.berserkergang.cast": {
+   "file": "sprites/final/effects/fx.spell.berserkergang.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.berserkergang.screen": {
+   "file": "sprites/final/effects/fx.spell.berserkergang.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.berserkergang.impact": {
+   "file": "sprites/final/effects/fx.spell.berserkergang.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.gjallarhorn.cast": {
+   "file": "sprites/final/effects/fx.spell.gjallarhorn.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.gjallarhorn.screen": {
+   "file": "sprites/final/effects/fx.spell.gjallarhorn.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.gjallarhorn.impact": {
+   "file": "sprites/final/effects/fx.spell.gjallarhorn.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ankh_of_renewal.cast": {
+   "file": "sprites/final/effects/fx.spell.ankh_of_renewal.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.ankh_of_renewal.impact": {
+   "file": "sprites/final/effects/fx.spell.ankh_of_renewal.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.wrath_of_sekhmet.cast": {
+   "file": "sprites/final/effects/fx.spell.wrath_of_sekhmet.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.wrath_of_sekhmet.travel": {
+   "file": "sprites/final/effects/fx.spell.wrath_of_sekhmet.travel.webp",
+   "frames": 4,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.wrath_of_sekhmet.impact": {
+   "file": "sprites/final/effects/fx.spell.wrath_of_sekhmet.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.balance_of_maat.cast": {
+   "file": "sprites/final/effects/fx.spell.balance_of_maat.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.balance_of_maat.screen": {
+   "file": "sprites/final/effects/fx.spell.balance_of_maat.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.balance_of_maat.impact": {
+   "file": "sprites/final/effects/fx.spell.balance_of_maat.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.scarab_swarm.cast": {
+   "file": "sprites/final/effects/fx.spell.scarab_swarm.cast.webp",
+   "frames": 6,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.scarab_swarm.travel": {
+   "file": "sprites/final/effects/fx.spell.scarab_swarm.travel.webp",
+   "frames": 4,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.scarab_swarm.impact": {
+   "file": "sprites/final/effects/fx.spell.scarab_swarm.impact.webp",
+   "frames": 8,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.kitsune_fire.cast": {
+   "file": "sprites/final/effects/fx.spell.kitsune_fire.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.kitsune_fire.travel": {
+   "file": "sprites/final/effects/fx.spell.kitsune_fire.travel.webp",
+   "frames": 4,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.kitsune_fire.impact": {
+   "file": "sprites/final/effects/fx.spell.kitsune_fire.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.blossom_veil.cast": {
+   "file": "sprites/final/effects/fx.spell.blossom_veil.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.blossom_veil.impact": {
+   "file": "sprites/final/effects/fx.spell.blossom_veil.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.yata_mirror.cast": {
+   "file": "sprites/final/effects/fx.spell.yata_mirror.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.yata_mirror.impact": {
+   "file": "sprites/final/effects/fx.spell.yata_mirror.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.divine_wind.cast": {
+   "file": "sprites/final/effects/fx.spell.divine_wind.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.divine_wind.screen": {
+   "file": "sprites/final/effects/fx.spell.divine_wind.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.divine_wind.impact": {
+   "file": "sprites/final/effects/fx.spell.divine_wind.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.raijin_drums.cast": {
+   "file": "sprites/final/effects/fx.spell.raijin_drums.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.raijin_drums.screen": {
+   "file": "sprites/final/effects/fx.spell.raijin_drums.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.raijin_drums.impact": {
+   "file": "sprites/final/effects/fx.spell.raijin_drums.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.bramble_snare.cast": {
+   "file": "sprites/final/effects/fx.spell.bramble_snare.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.bramble_snare.impact": {
+   "file": "sprites/final/effects/fx.spell.bramble_snare.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.cauldron_of_dagda.cast": {
+   "file": "sprites/final/effects/fx.spell.cauldron_of_dagda.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.cauldron_of_dagda.impact": {
+   "file": "sprites/final/effects/fx.spell.cauldron_of_dagda.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.mist_of_manannan.cast": {
+   "file": "sprites/final/effects/fx.spell.mist_of_manannan.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.mist_of_manannan.screen": {
+   "file": "sprites/final/effects/fx.spell.mist_of_manannan.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.mist_of_manannan.impact": {
+   "file": "sprites/final/effects/fx.spell.mist_of_manannan.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.wild_hunt.cast": {
+   "file": "sprites/final/effects/fx.spell.wild_hunt.cast.webp",
+   "frames": 6,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.wild_hunt.travel": {
+   "file": "sprites/final/effects/fx.spell.wild_hunt.travel.webp",
+   "frames": 4,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.wild_hunt.impact": {
+   "file": "sprites/final/effects/fx.spell.wild_hunt.impact.webp",
+   "frames": 8,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.glamour.cast": {
+   "file": "sprites/final/effects/fx.spell.glamour.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.glamour.impact": {
+   "file": "sprites/final/effects/fx.spell.glamour.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.jaguar_spirit.cast": {
+   "file": "sprites/final/effects/fx.spell.jaguar_spirit.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.jaguar_spirit.impact": {
+   "file": "sprites/final/effects/fx.spell.jaguar_spirit.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.rain_of_tlaloc.cast": {
+   "file": "sprites/final/effects/fx.spell.rain_of_tlaloc.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.rain_of_tlaloc.screen": {
+   "file": "sprites/final/effects/fx.spell.rain_of_tlaloc.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.rain_of_tlaloc.impact": {
+   "file": "sprites/final/effects/fx.spell.rain_of_tlaloc.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.smoking_mirror.cast": {
+   "file": "sprites/final/effects/fx.spell.smoking_mirror.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.smoking_mirror.impact": {
+   "file": "sprites/final/effects/fx.spell.smoking_mirror.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.fifth_sun.cast": {
+   "file": "sprites/final/effects/fx.spell.fifth_sun.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.fifth_sun.screen": {
+   "file": "sprites/final/effects/fx.spell.fifth_sun.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.fifth_sun.impact": {
+   "file": "sprites/final/effects/fx.spell.fifth_sun.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.obsidian_rain.cast": {
+   "file": "sprites/final/effects/fx.spell.obsidian_rain.cast.webp",
+   "frames": 6,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.obsidian_rain.travel": {
+   "file": "sprites/final/effects/fx.spell.obsidian_rain.travel.webp",
+   "frames": 4,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.obsidian_rain.impact": {
+   "file": "sprites/final/effects/fx.spell.obsidian_rain.impact.webp",
+   "frames": 8,
+   "frameWidth": 404,
+   "frameHeight": 404,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.spell.far_sight.cast": {
+   "file": "sprites/final/effects/fx.spell.far_sight.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.far_sight.area": {
+   "file": "sprites/final/effects/fx.spell.far_sight.area.webp",
+   "frames": 8,
+   "frameWidth": 269,
+   "frameHeight": 269,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.clear_skies.cast": {
+   "file": "sprites/final/effects/fx.spell.clear_skies.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.clear_skies.area": {
+   "file": "sprites/final/effects/fx.spell.clear_skies.area.webp",
+   "frames": 8,
+   "frameWidth": 269,
+   "frameHeight": 269,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.eye_of_horus.cast": {
+   "file": "sprites/final/effects/fx.spell.eye_of_horus.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.eye_of_horus.area": {
+   "file": "sprites/final/effects/fx.spell.eye_of_horus.area.webp",
+   "frames": 8,
+   "frameWidth": 269,
+   "frameHeight": 269,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.fleet_foot.aura": {
+   "file": "sprites/final/effects/fx.spell.fleet_foot.aura.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.wings_of_hermes.cast": {
+   "file": "sprites/final/effects/fx.spell.wings_of_hermes.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.wings_of_hermes.aura": {
+   "file": "sprites/final/effects/fx.spell.wings_of_hermes.aura.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 6,
+   "loop": true,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.divine_sight.cast": {
+   "file": "sprites/final/effects/fx.spell.divine_sight.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.divine_sight.area": {
+   "file": "sprites/final/effects/fx.spell.divine_sight.area.webp",
+   "frames": 8,
+   "frameWidth": 269,
+   "frameHeight": 269,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.homecoming.cast": {
+   "file": "sprites/final/effects/fx.spell.homecoming.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.homecoming.depart": {
+   "file": "sprites/final/effects/fx.spell.homecoming.depart.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.homecoming.arrive": {
+   "file": "sprites/final/effects/fx.spell.homecoming.arrive.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.spell.fleet_foot.cast": {
+   "file": "sprites/final/effects/fx.spell.fleet_foot.cast.webp",
+   "frames": 6,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 10,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6070383275261324
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.rally_the_faithful.screen": {
+   "file": "sprites/final/effects/fx.miracle.rally_the_faithful.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.rally_the_faithful.impact": {
+   "file": "sprites/final/effects/fx.miracle.rally_the_faithful.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.shield_of_the_gods.screen": {
+   "file": "sprites/final/effects/fx.miracle.shield_of_the_gods.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.shield_of_the_gods.impact": {
+   "file": "sprites/final/effects/fx.miracle.shield_of_the_gods.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.mending_light.impact": {
+   "file": "sprites/final/effects/fx.miracle.mending_light.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.wrath_from_above.screen": {
+   "file": "sprites/final/effects/fx.miracle.wrath_from_above.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.wrath_from_above.impact": {
+   "file": "sprites/final/effects/fx.miracle.wrath_from_above.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.thunderbolt_of_zeus.screen": {
+   "file": "sprites/final/effects/fx.miracle.thunderbolt_of_zeus.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.thunderbolt_of_zeus.impact": {
+   "file": "sprites/final/effects/fx.miracle.thunderbolt_of_zeus.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.ride_of_the_valkyries.screen": {
+   "file": "sprites/final/effects/fx.miracle.ride_of_the_valkyries.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.ride_of_the_valkyries.impact": {
+   "file": "sprites/final/effects/fx.miracle.ride_of_the_valkyries.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.ward_of_the_kami.screen": {
+   "file": "sprites/final/effects/fx.miracle.ward_of_the_kami.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.ward_of_the_kami.impact": {
+   "file": "sprites/final/effects/fx.miracle.ward_of_the_kami.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.mending_light.screen": {
+   "file": "sprites/final/effects/fx.miracle.mending_light.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.favorable_winds.screen": {
+   "file": "sprites/final/effects/fx.miracle.favorable_winds.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.favorable_winds.impact": {
+   "file": "sprites/final/effects/fx.miracle.favorable_winds.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.bountiful_harvest.screen": {
+   "file": "sprites/final/effects/fx.miracle.bountiful_harvest.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.bountiful_harvest.impact": {
+   "file": "sprites/final/effects/fx.miracle.bountiful_harvest.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.tithe_of_the_faithful.screen": {
+   "file": "sprites/final/effects/fx.miracle.tithe_of_the_faithful.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.tithe_of_the_faithful.impact": {
+   "file": "sprites/final/effects/fx.miracle.tithe_of_the_faithful.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.inspiration.screen": {
+   "file": "sprites/final/effects/fx.miracle.inspiration.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.inspiration.impact": {
+   "file": "sprites/final/effects/fx.miracle.inspiration.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.blessing_of_the_nile.screen": {
+   "file": "sprites/final/effects/fx.miracle.blessing_of_the_nile.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.blessing_of_the_nile.impact": {
+   "file": "sprites/final/effects/fx.miracle.blessing_of_the_nile.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.mists_of_the_sidhe.screen": {
+   "file": "sprites/final/effects/fx.miracle.mists_of_the_sidhe.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.mists_of_the_sidhe.impact": {
+   "file": "sprites/final/effects/fx.miracle.mists_of_the_sidhe.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.gift_of_the_feathered_serpent.screen": {
+   "file": "sprites/final/effects/fx.miracle.gift_of_the_feathered_serpent.screen.webp",
+   "frames": 12,
+   "frameWidth": 540,
+   "frameHeight": 305,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.5
+   ],
+   "pixelsPerHex": 60.25,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.miracle.gift_of_the_feathered_serpent.impact": {
+   "file": "sprites/final/effects/fx.miracle.gift_of_the_feathered_serpent.impact.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": true
+  },
+  "fx.gift.temple_treasury": {
+   "file": "sprites/final/effects/fx.gift.temple_treasury.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.gift.timber_and_stone": {
+   "file": "sprites/final/effects/fx.gift.timber_and_stone.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.gift.tears_of_the_gods": {
+   "file": "sprites/final/effects/fx.gift.tears_of_the_gods.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.gift.anointing": {
+   "file": "sprites/final/effects/fx.gift.anointing.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.gift.blessed_brood": {
+   "file": "sprites/final/effects/fx.gift.blessed_brood.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.gift.temple_relic": {
+   "file": "sprites/final/effects/fx.gift.temple_relic.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.offering.rise": {
+   "file": "sprites/final/effects/fx.offering.rise.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
+  },
+  "fx.offering.favor": {
+   "file": "sprites/final/effects/fx.offering.favor.webp",
+   "frames": 8,
+   "frameWidth": 215,
+   "frameHeight": 215,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.6069617706237425
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
+   "additive": false
   }
  }
 }

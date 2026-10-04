@@ -24,6 +24,7 @@ import {
   type RewardDefinition,
 } from '@pr/rules';
 import { useStore } from '../app/context';
+import { MiracleBook, type MiracleOption } from '../components/miraclebook';
 import { endOfGameSplash } from '../components/moments';
 import { CONTEXT_LABEL, FIXED_KEYS, KEY_ACTIONS, bindingMap, keyLabel, type KeyContext } from '../app/keys';
 import { Button, Chip, Modal, QuantitySelector, SectionTitle } from '../components/kit';
@@ -405,12 +406,57 @@ export function InterventionList({ adventure }: { adventure: boolean }) {
   );
 }
 
+/** The map's Miracles button: the book of Favor (same design as the spellbook; owner request 2026-10-04). */
 export function InterventionsDialog() {
   const store = useStore();
+  const catalog = store.catalog;
+  const session = store.session!;
+  const state = session.state;
+  const playerId = session.humanPlayerId;
+  const list = interventionsFor(catalog, state, playerId);
+  const towns = Object.values(state.towns).filter((t) => t.ownerId === playerId);
+  const [townId, setTownId] = useState(towns[0]?.id ?? '');
+  const humanTurn = state.activePlayerId === playerId && !state.battle;
+  const options: Record<string, MiracleOption> = {};
+  for (const d of list) {
+    const q = quoteIntervention(catalog, state, playerId, d.id, { townId: d.target === 'own_town' ? townId : null });
+    options[d.id] = humanTurn ? { legal: q.legal, reason: q.reason } : { legal: false, reason: 'Not your turn' };
+  }
   return (
-    <Modal title="Divine interventions" onClose={() => store.closeOverlay()} width="40rem" testId="interventions">
-      <InterventionList adventure />
-    </Modal>
+    <MiracleBook
+      catalog={catalog}
+      title="Divine interventions"
+      miracles={list}
+      favor={state.players[playerId]?.wallet.favor ?? 0}
+      context="adventure"
+      usedThisWeek={interventionUsedThisWeek(catalog, state, playerId)}
+      options={options}
+      testId="interventions"
+      idPrefix="invoke-"
+      onClose={() => store.closeOverlay()}
+      onInvoke={(id) => {
+        const d = catalog.interventions?.[id];
+        if (!d) return;
+        if (!store.dispatch({ kind: 'InvokeIntervention', interventionId: id, ...(d.target === 'own_town' ? { townId } : {}) })) {
+          store.toast(`${d.name}: the gods answer.`, 'success');
+          store.closeOverlay();
+        }
+      }}
+      extra={
+        list.some((d) => d.context === 'adventure' && d.target === 'own_town') && towns.length > 1 ? (
+          <label className="row gap small tome__town">
+            Town:
+            <select className="select" value={townId} onChange={(e) => setTownId(e.target.value)} aria-label="Town for town miracles">
+              {towns.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null
+      }
+    />
   );
 }
 

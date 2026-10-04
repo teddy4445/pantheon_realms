@@ -76,6 +76,7 @@ describe('ground and sky art', () => {
   });
 
   it('the minimap keeps the brief’s terrain colours', () => {
-    expect(TERRAIN_COLORS).toEqual({ plains: '#7f8f4f', forest: '#3f6136', rough: '#8c7b58', marsh: '#4d6b5c', mountain: '#6f6a64', water: '#2c5c86' });
+    // `void` (cells outside a square random map) is black, like the space around every map (2026-10-04).
+    expect(TERRAIN_COLORS).toEqual({ plains: '#7f8f4f', forest: '#3f6136', rough: '#8c7b58', marsh: '#4d6b5c', mountain: '#6f6a64', water: '#2c5c86', void: '#000000' });
   });
 });

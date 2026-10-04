@@ -224,7 +224,7 @@ export function heroStory(biography: string): string {
   return biography
     .replace(/;\s*hireable in skirmish[^.]*\./gi, '.')
     .split(/(?<=\.)\s+/)
-    .filter((x) => !/^(Concept-board hero|Class assignment is provisional|Hireable in skirmish)/i.test(x))
+    .filter((x) => !/^(Concept-board hero|Proposed hero|Class assignment is provisional|Hireable in skirmish)/i.test(x))
     .join(' ')
     .trim();
 }

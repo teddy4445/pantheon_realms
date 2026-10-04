@@ -651,6 +651,10 @@ def main() -> int:
         print("no sheet layouts: run `npm run sprites:queue` first")
         return 1
     layouts = json.loads(LAYOUTS.read_text())["sheets"]
+    # Further layouts from the art briefs (`npm run art:briefs`: GPT6_BRIEF_8–11 — god and hero
+    # portraits, blessing icons, town building levels, map-hero animations), same format.
+    for extra in sorted(LAYOUTS.parent.glob("sheet-layouts.*.json")):
+        layouts.update(json.loads(extra.read_text())["sheets"])
     if not SHEETS.exists():
         print(f"nothing to cut: {SHEETS.relative_to(ROOT)} does not exist")
         return 0

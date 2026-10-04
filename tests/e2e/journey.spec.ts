@@ -19,7 +19,6 @@ test('Three Beacons M01 journey through the UI', async ({ page }) => {
   await page.getByTestId('town-tab-asterion').click();
   await page.getByTestId('slot-dwelling_t1').click();
   await page.getByTestId('build').click();
-  await page.getByTestId('confirm-ok').click();
   await waitFor(page, (s) => s.state.towns.asterion.buildings.dwelling_t1 === 2, 'Veteran Barracks');
   await expect(page.getByTestId('build')).toHaveCount(0);
 

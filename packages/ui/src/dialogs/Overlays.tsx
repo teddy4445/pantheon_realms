@@ -439,11 +439,12 @@ function DebriefDialog({ final }: { final: boolean }) {
   return (
     <Modal
       title={final ? 'Campaign complete' : state.outcome.status === 'victory' ? `Victory — ${mission.name}` : mission.name}
-      width="52rem"
+      width={next ? '70rem' : '56rem'}
       testId={final ? 'campaign-complete' : 'debrief'}
       splash={endOfGameSplash(state, session.humanPlayerId, final ? 'Campaign complete' : state.outcome.status === 'victory' ? 'Victory' : 'Mission complete', final ? (campDef?.name ?? mission.name) : mission.name)}
       footer={
-        <>
+        // All three buttons on one line (owner request 2026-10-04).
+        <div className="debrief-actions" data-testid="debrief-actions">
           <Button onClick={() => toMainMenu(store)}>Main Menu</Button>
           <Button
             onClick={() => {
@@ -470,7 +471,7 @@ function DebriefDialog({ final }: { final: boolean }) {
               Continue to {nextMission ? `Mission ${nextMission.order}: ${nextMission.name}` : 'next mission'}
             </Button>
           ) : null}
-        </>
+        </div>
       }
     >
       <DialogueLines lines={mission.victory} />

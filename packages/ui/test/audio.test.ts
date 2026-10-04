@@ -98,8 +98,14 @@ describe('audio preferences', () => {
     expect(p.interfaceVolume).toBe(35);
     expect(p.combatVolume).toBe(35);
     expect(p.masterVolume).toBe(70);
-    expect(p.schemaVersion).toBe(2);
+    expect(p.schemaVersion).toBe(3);
     expect((p as unknown as Record<string, unknown>).effectsVolume).toBeUndefined();
+  });
+  it('schema 3: map tile lines move to the pointer only (an old "always" becomes "hover"; a later choice is kept)', () => {
+    expect(sanitizePreferences({ schemaVersion: 2, hexOverlay: 'always' }).hexOverlay).toBe('hover');
+    expect(sanitizePreferences({ schemaVersion: 2, hexOverlay: 'off' }).hexOverlay).toBe('off');
+    expect(sanitizePreferences({ schemaVersion: 3, hexOverlay: 'always' }).hexOverlay).toBe('always');
+    expect(sanitizePreferences({}).hexOverlay).toBe('hover');
   });
   it('clamps volumes and maps preferences onto mixer levels', () => {
     const p = sanitizePreferences({ musicVolume: 400, ambienceVolume: -3, muteAll: true, calmerSound: true });

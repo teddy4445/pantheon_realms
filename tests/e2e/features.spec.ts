@@ -50,10 +50,9 @@ test('random map, two people on one computer: the map is hidden at every hand-ov
   // One panel, no map preview; Start opens the map directly (no briefing).
   await expect(page.getByTestId('random-preview')).toHaveCount(0);
   await expect(page.locator('.random-setup .panel')).toHaveCount(1);
-  await page.getByTestId('random-seed').fill('4242');
   await page.getByTestId('random-start').click();
   let s = await waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0, 'adventure map');
-  expect(s.state.customMission.id).toContain('random_small_2p_4242');
+  expect(s.state.customMission.id).toMatch(/^random_small_2p_\d+/);
   expect(s.state.players.p2).toMatchObject({ controller: 'human', name: 'Brynja', pantheonId: 'norse' });
   expect(s.state.players.p2.pantheon.patronGodId).toBe('norse_odin');
 

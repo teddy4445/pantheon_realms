@@ -215,6 +215,8 @@ export class AppStore {
   /** Result of the last high-score recording (summary screen). */
   lastRecord: { table: 'campaign' | 'skirmish'; rank: number | null; score: number } | null = null;
   private presenters = new Set<Presenter>();
+  /** Called synchronously with each batch before the screens re-render (a view can hold what the batch will animate). */
+  private preparers = new Set<(events: readonly GameEvent[]) => void>();
   private unsubSession: (() => void) | null = null;
   private aiTimer: ReturnType<typeof setTimeout> | null = null;
   private levelUpQueued = false;
@@ -340,6 +342,7 @@ export class AppStore {
     clearBattleLogs();
     this.unsubSession = session.subscribe((u) => {
       if (u.events.length > 0) recordBattleEvents(this.catalog, u.state, u.events, this.prefs.combatLogDetail);
+      if (u.events.length > 0) this.prepare(u.events);
       this.notify();
       if (u.events.length > 0) this.present(u.events, u.source);
       if (u.source === 'start' || u.source === 'load') {
@@ -802,6 +805,27 @@ export class AppStore {
   registerPresenter(p: Presenter): () => void {
     this.presenters.add(p);
     return () => this.presenters.delete(p);
+  }
+
+  /**
+   * Register a synchronous step run for every published batch before the
+   * screens re-render with the new state — e.g. the battle view keeps the
+   * stacks a batch touches as they were drawn until its playback (presenters
+   * run later, after any queued playback).
+   */
+  registerPreparer(p: (events: readonly GameEvent[]) => void): () => void {
+    this.preparers.add(p);
+    return () => this.preparers.delete(p);
+  }
+
+  private prepare(events: readonly GameEvent[]): void {
+    for (const p of this.preparers) {
+      try {
+        p(events);
+      } catch {
+        // Presentation must never break the game.
+      }
+    }
   }
 
   private present(events: readonly GameEvent[], source: string): void {

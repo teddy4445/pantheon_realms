@@ -7,20 +7,24 @@ fallbacks), `figure.ts` (playback) and `ui/src/assets/manifest.ts`
 `docs/pantheon-v0.3/production/02_visual_and_animation_pipeline.md` and
 `CREATURE_ANIMATION_REQUIREMENTS.md`. Nothing here changes game rules._
 
-**Status (measured, this build):** the 2D views (Adventure Map, Tactical
-Battle, Unit Detail viewer) draw everything from
-`assets-runtime/sprites/manifest.json`. **Every sprite is still a labelled
-placeholder** (`"status": "placeholder"`, 186 entries): 43 creature forms
-show a still cut from their delivered canonical reference view, the other 59
-forms simple silhouette strips, the six map avatars a side view cut from the
-owner's hero boards, map locations crops of the owner's map-marker sheet,
-and decoration, obstacles, siege pieces, projectiles and effects procedural
-drawings. The art still to make is listed in `GPT6_2D_CONTENT_GENERATION.md`
-as **140 sheets** — large images holding many sprites each (all animations
-of one creature form, all directions of one map hero, a dozen map objects),
-with a layout and prompt each — cut into single files by
-`npm run sprites:cut` (§4). `npm run sprites:queue` regenerates the queue
-and its layouts from the manifest's actual gaps.
+**Status (measured, 2026-10-04, app 0.11.0):** the 2D views (Adventure Map,
+Tactical Battle, Unit Detail viewer) draw everything from
+`assets-runtime/sprites/manifest.json`. The owner's GPT-6 delivery (commit
+071968c) made **every creature form (102), the six pantheon map heroes (idle
+and walk, eight directions), the 41 map locations, decoration (6), obstacles
+(7), siege pieces (12), projectiles (2) and the 9 shared effect strips
+`final`**; the neutral map hero is the one placeholder left.
+`GPT6_2D_CONTENT_GENERATION.md` is the guide that delivery was made from and
+stays as delivered. **The delivered final PNGs and their JSON sidecars in
+`assets-source/sprites/final/` are authoritative**: some strips carry
+reviewed component cuts, padding, calibrated scale and held-frame repairs
+(sidecar `assemblyNote`), so the delivered sheets are never re-cut wholesale;
+a re-import uses `tools/assets/sprites/import_sprites.py` on the final
+sources. What GPT-6 still has to make is in `VFX_MAGIC_AND_FAVORS.md` (spell,
+miracle and gift strips) and the briefs 8–11 of 2026-10-04 in
+`assets-source/art/briefs/` (god portraits and god-card icons, hero
+portraits, town building levels, map-hero prepare and cast; §13), each a
+**sheet** cut alone with `npm run sprites:cut -- --only <sheet>` (§4).
 
 ---
 
@@ -119,7 +123,16 @@ sheet.ref.<pantheon|neutral>.<n>.png                    canonical references, 3 
 sheet.portrait.<pantheon|neutral>.<n>.png               portraits, same families (opaque, black gutters)
 sheet.map.towns.png, sheet.map.resources.png, sheet.map.locations.1.png, sheet.map.locations.2.png
 sheet.battle.obstacles.png, sheet.battle.siege.png, sheet.fx.png
+sheet.heroanim.<pantheon>.png                           map hero prepare + cast: 5 directions (rows) × 6 + 6 cells (Brief 11)
+sheet.god.<pantheon>.png, sheet.icons.gods.png          god portraits; the 21 god-card icons (Brief 8)
+sheet.heroportrait.<pantheon>.png                       hero portraits (Brief 9)
+sheet.town.<pantheon>.levels.png                        town building levels (Brief 10)
 ```
+
+The briefs' sheets have their layouts in
+`assets-source/sprites/sheet-layouts.briefs.json` (written by
+`npm run art:briefs`); the cutter reads every `sheet-layouts*.json` next to
+the main one.
 
 A sheet may arrive as two row ranges, `<sheet>.part1.png` and
 `<sheet>.part2.png` (the upper part has the extra row when the count is
@@ -155,7 +168,7 @@ sheets and checks the results.
 ```
 sprite.creature.<pantheon>.tier<N>.<base|upgraded>.<animation>.png
 sprite.creature.neutral.<family>.<base|upgraded>.<animation>.png
-sprite.hero.<pantheon>.<idle|walk>.<e|ne|n|s|se>.png   (nw, w, sw accepted; the game mirrors ne, e, se for them)
+sprite.hero.<pantheon>.<idle|walk|prepare|cast>.<e|ne|n|s|se>.png   (nw, w, sw accepted; the game mirrors ne, e, se for them)
 sprite.hero.<pantheon>.figure.png
 sprite.map.site.<kind>[.<variant>].png        (towns: .<pantheon>; pickups: .<resource>|.artifact)
 sprite.map.decor.<kind>.png
@@ -215,9 +228,14 @@ impact, field moment, status overlays — and the town's gift bursts are CSS
 the phase's asset ID in `effects` (`fx.spell.<id>.<phase>`,
 `fx.miracle.<id>.<phase>`, `fx.status.<name>`; the list with phases, frame
 counts and looks is `VFX_MAGIC_AND_FAVORS.md`) and play that strip instead, so
-a delivery is an `effects` entry and no code change. The older generic
-`spell.damage` … `spell.curse` placeholder strips are no longer used for
-spells (`impact`, `ward`, `morale.*` still are).
+a delivery is an `effects` entry and no code change. Until a spell or
+miracle has its own strip, a delivered **shared** strip stands for its impact
+when the look matches (`genericImpactOf`, `fx.ts`): `spell.damage` for
+lightning and star strikes, `spell.area` for fire, sun and obsidian,
+`spell.heal` for healing, `spell.buff` for bright blessings, `spell.curse`
+for curses and drains, `ward` for domes; every other impact (frost, thorns,
+petals, wind, swarms, coins, motes, map rings) stays code-drawn. `impact`,
+`ward` and `morale.*` also play for blows, wards and morale.
 
 ## 6. Image rules and budgets
 
@@ -238,7 +256,7 @@ spells (`impact`, `ward`, `morale.*` still are).
 ## 7. Checking your delivery
 
 ```
-npm run sprites:cut                   # cut new or changed sheets; look at assets-source/sprites/sheets/_preview/
+npm run sprites:cut -- --only <sheet> # cut one new or corrected sheet; look at assets-source/sprites/sheets/_preview/
 npm run sprites:import -- --dry-run   # check names, frame grid, sizes, transparency; write nothing
 npm run sprites:import                # write WebP into assets-runtime/sprites/final/, mark "final"
 npm run icons:import                  # portraits cut from portrait sheets
@@ -541,24 +559,26 @@ manifest's `heroes` section with `idle` and `walk` strips, optional
 `directions` (eight: `e`, `ne`, `n`, `nw`, `w`, `sw`, `s`, `se`) and a
 `figure` still for the hero screen (§2, §4 for sizes and names).
 
-**Placeholders (this build).** Cut from the owner's six mounted-hero boards
-(`support images/heros_full_view/`, side view; order greek, norse,
-egyptian, japanese, celtic, mesoamerican): one right-facing direction, `idle`
-one frame and `walk` four frames of a step bob, and the board's figure as
-the hero-screen still. The game mirrors them for westward travel.
+**Delivered (owner commit 071968c).** The six pantheon avatars are final:
+`idle` (4 frames) and `walk` (6 frames) in all eight directions, and the
+figure still. The neutral avatar is still the placeholder cut from the
+owner's boards.
 
 **In the game.** The avatar stands with the ground point between the
 mount's feet on its hex; it plays `walk` while moving, turned to the
-direction of each step (`directionOf`; a direction strip when delivered,
-else the mirrored right-facing one), `idle` otherwise, and a short readiness
-beat (1.2 s × the adventure animation speed; skipped at Instant, for monsters
-and hidden heroes) before an accepted battle, after which the battle screen
-opens. The rules are untouched. Wandering monsters and site guards use their
-creature's `idle` strip, drawn smaller. Final art: the D group of
-`GPT6_2D_CONTENT_GENERATION.md` (one sheet per pantheon: five directions ×
-`idle` + `walk`, mirrored by the game for the other three; the six figures on
-one more sheet), cut by `npm run sprites:cut` and imported by
-`npm run sprites:import`.
+direction of each step (`directionOf`; the direction's strip, else the
+mirrored right-facing one), `idle` otherwise. Since 2026-10-04 a step takes
+360 ms and the walk strip plays at 0.7× its rate (the owner asked for a
+slower journey). Before an accepted battle a readiness beat (1.2 s × the
+adventure animation speed; skipped at Instant, for monsters and hidden
+heroes) plays the **`prepare`** strip when delivered (once, holding its last
+frame) — else the rider rises a little — and a map spell plays the caster's
+**`cast`** strip when delivered (else only the sigil). The rules are
+untouched. Wandering monsters and site guards use their creature's `idle`
+strip, drawn smaller. `prepare` and `cast` are ordered in
+`GPT6_BRIEF_11_MAP_HERO_ANIMATIONS.md` (one sheet per pantheon: five
+directions × 6 + 6 frames), cut by `npm run sprites:cut -- --only sheet.heroanim.<pantheon>` and imported by
+`npm run sprites:import` (6 fps, played once).
 
 ## 13. Large painted art (story, ground and sky, big moments)
 
@@ -594,6 +614,31 @@ scores), so the delivered files replace the generated stand-in everywhere at
 once. Delivered 2026-10-03: all six (1024 × 1024, imported at 256 px). A seventh, `GPT6_BRIEF_7_CURSORS.md`, covers 24 context mouse cursors
 (128 × 128 masters with hotspot rules, into `assets-source/ui/cursors/`). All 24
 were delivered on 2026-10-03 and are in the game — see *Mouse cursors* below.
+
+Four more briefs (2026-10-04), generated from the content by
+**`npm run art:briefs`** (`tools/assets/briefs/`, a development tool), ask for
+sheets in the §4 sheet format and write their layouts to
+`assets-source/sprites/sheet-layouts.briefs.json`:
+
+* `GPT6_BRIEF_8_GODS_AND_ICONS.md` — the 60 god portraits again as six sheets
+  (one per pantheon, 4 × 3 cells of 384 px, cut into
+  `assets-source/icons/final/god.….portrait.png`, then `npm run icons:import`),
+  and **21 god-card icons** on one transparent 5 × 5 sheet
+  (`icon.bless.*`, `icon.req.*`, `icon.god.*`; list in
+  `tools/assets/briefs/godIcons.ts`). The god cards do not show these icons
+  yet; the icon row is built when they are delivered.
+* `GPT6_BRIEF_9_HERO_PORTRAITS.md` — the 74 hero portraits
+  (`hero.<pantheon>.<hero>.portrait`), one sheet per pantheon (4 columns of
+  384 px cells), with the dialogue bust attached where one exists.
+* `GPT6_BRIEF_10_TOWN_BUILDING_LEVELS.md` — one picture per level for the
+  locations whose levels share one painting today (Civic Hall 4, Temple 2,
+  Mage Guild 3, Fortifications 3; 72 pictures), one 4 × 4 sheet per pantheon,
+  cut into `assets-source/art/final/<level asset ID>.png` and imported by
+  `npm run art:import` (kind `building`: transparent, at most 512 px, into
+  `assets-runtime/art/town/`). The town shows the exact level's picture
+  first, so a delivery needs no code change.
+* `GPT6_BRIEF_11_MAP_HERO_ANIMATIONS.md` — the map heroes' `prepare` and
+  `cast` strips (§12).
 
 Hero portraits: a hero without a portrait of its own (`hero.….portrait`, none
 delivered yet) shows its painted dialogue bust when one exists, framed on the

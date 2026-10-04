@@ -117,7 +117,6 @@ test('battle: a miracle’s light falls on the whole army after its card, and ea
   const { mine } = sides(s);
   await page.getByTestId('battle-miracles').click();
   await page.getByTestId('battle-miracle-shield_of_the_gods').click();
-  await page.getByTestId('confirm-ok').click();
   // The miracle's card comes first (when its painting is delivered); then the light.
   await expect.poll(async () => (await fxLog(page)).battle ?? [], { timeout: 90_000, intervals: [250] }).toContain('fx.miracle.shield_of_the_gods');
   await film(page, 'r12-miracle', 4, 600);

@@ -116,7 +116,7 @@ export const PR_02_CANDIDATE: RulesProfile = {
   ],
   minimumMovement: 750,
   maximumMovement: 1000,
-  terrainCost: { plains: 100, forest: 125, rough: 125, marsh: 150, mountain: null, water: null },
+  terrainCost: { plains: 100, forest: 125, rough: 125, marsh: 150, mountain: null, water: null, void: null },
   roadCost: 75,
   heroVisionRadius: 5,
   townVisionRadius: 3,

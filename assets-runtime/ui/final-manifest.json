@@ -1050,6 +1050,10 @@
       "file": "ui/icons/final/icon.ui.bow.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.bow.png."
     },
+    "icon.ui.build": {
+      "file": "ui/icons/final/icon.ui.build.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ui.build.png."
+    },
     "icon.ui.check": {
       "file": "ui/icons/final/icon.ui.check.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.check.png."
@@ -1061,6 +1065,10 @@
     "icon.ui.flag": {
       "file": "ui/icons/final/icon.ui.flag.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.flag.png."
+    },
+    "icon.ui.gift": {
+      "file": "ui/icons/final/icon.ui.gift.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ui.gift.png."
     },
     "icon.ui.growth": {
       "file": "ui/icons/final/icon.ui.growth.png",
@@ -1082,6 +1090,14 @@
       "file": "ui/icons/final/icon.ui.map.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.map.png."
     },
+    "icon.ui.market": {
+      "file": "ui/icons/final/icon.ui.market.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ui.market.png."
+    },
+    "icon.ui.merchant": {
+      "file": "ui/icons/final/icon.ui.merchant.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ui.merchant.png."
+    },
     "icon.ui.overview": {
       "file": "ui/icons/final/icon.ui.overview.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.overview.png."
@@ -1097,6 +1113,10 @@
     "icon.ui.play": {
       "file": "ui/icons/final/icon.ui.play.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.play.png."
+    },
+    "icon.ui.recruit": {
+      "file": "ui/icons/final/icon.ui.recruit.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ui.recruit.png."
     },
     "icon.ui.save": {
       "file": "ui/icons/final/icon.ui.save.png",
@@ -1117,6 +1137,10 @@
     "icon.ui.sword2": {
       "file": "ui/icons/final/icon.ui.sword2.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.sword2.png."
+    },
+    "icon.ui.tavern": {
+      "file": "ui/icons/final/icon.ui.tavern.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ui.tavern.png."
     },
     "icon.ui.upgrade": {
       "file": "ui/icons/final/icon.ui.upgrade.png",

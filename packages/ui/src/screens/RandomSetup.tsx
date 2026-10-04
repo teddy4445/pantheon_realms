@@ -1,22 +1,26 @@
 /**
  * S19 Random Map setup (proposed): map type (Continental, Highlands, Lake Isle,
  * Wild Forest, Marshlands, Crossroads — after Age of Mythology's map scripts
- * and Heroes 3's zone templates), size up to Huge, two to four seats (each AI
- * or human — several humans play hot-seat on this computer), victory condition,
- * guard strength, treasure, starting wealth, roads, wandering monsters, a
- * revealed-map option, difficulty and seed — all on one panel, with Start in
- * its own bar.
+ * and Heroes 3's zone templates), size up to Huge (square maps), two to six
+ * seats (each AI or human — several humans play hot-seat on this computer;
+ * four or more need a large or huge map), victory condition, guard strength,
+ * treasure, starting wealth, roads, wandering monsters, a revealed-map option
+ * and difficulty — all on one full-width panel, with Start in its own bar.
  *
- * The map comes from the rules-side generator (deterministic for the same
- * options) when the player presses Start; this screen only collects choices.
- * The game opens straight on the adventure map (no briefing).
+ * There is no seed field (owner request 2026-10-04): each Start draws a new
+ * seed, so changing any setting (or starting again) gives a new map; the
+ * generator itself stays deterministic for a seed. The game opens straight on
+ * the adventure map (no briefing).
  */
 import { useState } from 'react';
 import {
   createRandomSkirmish,
   skirmishSizeAllows,
   SKIRMISH_MAP_TYPES,
+  SKIRMISH_MAX_EMPIRES,
   SKIRMISH_SIZE_LABEL,
+  SKIRMISH_START_WALLET,
+  WEALTH_PERCENT,
   type GuardStrength,
   type RandomSkirmish,
   type RoadDensity,
@@ -26,14 +30,23 @@ import {
   type StartWealth,
   type TreasureLevel,
 } from '@pr/session';
-import type { ContentCatalog } from '@pr/rules';
+import { RESOURCE_KEYS, RESOURCE_LABELS, type ContentCatalog } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented, TextInput, Toggle } from '../components/kit';
-import { Emblem, MissionThumb } from '../components/art';
+import { Emblem } from '../components/art';
 import { ScreenHeader } from '../components/game';
 import { DifficultyPicker } from './Setup';
 
-const SEAT_COLORS = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b'];
+const SEAT_COLORS = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b', '#8a4fc2', '#1f9fa6'];
+const MAX_SEATS = SKIRMISH_MAX_EMPIRES;
+/** What the starting-wealth choice means, from the generator's own numbers. */
+function wealthText(w: StartWealth): string {
+  const pct = WEALTH_PERCENT[w];
+  const parts = RESOURCE_KEYS.filter((k) => (SKIRMISH_START_WALLET[k] ?? 0) > 0).map((k) => `${Math.floor(((SKIRMISH_START_WALLET[k] ?? 0) * pct) / 100).toLocaleString('en-US')} ${RESOURCE_LABELS[k]}`);
+  const lead = w === 'low' ? 'Half the usual treasury' : w === 'high' ? 'Twice the usual treasury' : 'The usual treasury';
+  const tail = w === 'low' ? ' A slower, leaner opening.' : w === 'high' ? ' A fast opening: more buildings and troops in the first week.' : '';
+  return `${lead} for every empire: ${parts.join(', ')}.${tail}`;
+}
 
 interface SeatDraft {
   pantheonId: string;
@@ -68,10 +81,8 @@ export function RandomSetupScreen() {
   const [portals, setPortals] = useState(true);
   const [rotating, setRotating] = useState(true);
   const [difficulty, setDifficulty] = useState('normal');
-  const [seed, setSeed] = useState(newSeed);
-  const [seedText, setSeedText] = useState(String(seed));
   const [seats, setSeats] = useState<SeatDraft[]>(() =>
-    [0, 1, 2, 3].map((i) => {
+    Array.from({ length: MAX_SEATS }, (_, i) => i).map((i) => {
       const pantheonId = playable[i % Math.max(1, playable.length)] ?? 'greek';
       return { pantheonId, controller: i === 0 ? 'human' : 'ai', name: i === 0 ? 'Player 1' : `Player ${i + 1}`, godId: patronsOf(catalog, pantheonId)[0] ?? null };
     }),
@@ -84,7 +95,6 @@ export function RandomSetupScreen() {
   const victory: SkirmishVictory = victoryType === 'hold_relic' ? { type: 'hold_relic', days: relicDays } : { type: 'elimination' };
   const turnOrder = count >= 3 ? (rotating ? ('rotating' as const) : ('fixed' as const)) : undefined;
   const options = {
-    seed,
     size,
     seats: active.map((s) => ({ pantheonId: s.pantheonId, controller: s.controller })),
     victory,
@@ -114,7 +124,7 @@ export function RandomSetupScreen() {
     );
 
   const reason = !sizeOk
-    ? 'Four empires need a medium or larger map'
+    ? 'Four or more empires need a large or huge map'
     : humans === 0
       ? 'At least one seat must be played by a person'
       : active.some((s) => s.controller === 'human' && !s.godId)
@@ -123,11 +133,18 @@ export function RandomSetupScreen() {
 
   const start = () => {
     if (reason) return;
-    let generated: RandomSkirmish;
-    try {
-      generated = createRandomSkirmish(catalog, options);
-    } catch (e) {
-      setFailure({ key: optionsKey, text: `The map could not be generated: ${e instanceof Error ? e.message : String(e)}` });
+    // A fresh seed every time (a rare seed the generator cannot lay out is replaced by another).
+    let generated: RandomSkirmish | null = null;
+    let lastError = '';
+    for (let attempt = 0; attempt < 6 && !generated; attempt++) {
+      try {
+        generated = createRandomSkirmish(catalog, { ...options, seed: newSeed() });
+      } catch (e) {
+        lastError = e instanceof Error ? e.message : String(e);
+      }
+    }
+    if (!generated) {
+      setFailure({ key: optionsKey, text: `The map could not be generated: ${lastError}` });
       return;
     }
     const ids = [generated.mission.player.playerId, ...(generated.mission.rivals ?? []).map((r) => r.playerId)];
@@ -143,13 +160,12 @@ export function RandomSetupScreen() {
 
   return (
     <div className="setup-screen">
-      <ScreenHeader title="Random Map" subtitle="A symmetric map generated for two to four empires" />
+      <ScreenHeader title="Random Map" />
       <div className="random-setup">
         <Panel className="random-setup__panel" bodyClassName="random-setup__body">
           <div className="random-setup__scroll scroll">
             <SectionTitle>Map</SectionTitle>
-            <div className="random-setup__top">
-              <MissionThumb catalog={catalog} missionId="" assetId="mission.skirmish.random.thumbnail" style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
+            <div className="random-setup__top random-setup__top--full">
               <div className="setting-block">
                 <div className="setting-block__label">Map type</div>
                 <div className="map-type-grid" role="radiogroup" aria-label="Map type" data-testid="random-type">
@@ -168,7 +184,7 @@ export function RandomSetupScreen() {
                 <Segmented
                   label="Map size"
                   value={size}
-                  options={(['small', 'medium', 'large', 'huge'] as const).map((id) => ({ id, label: SKIRMISH_SIZE_LABEL[id], disabled: !skirmishSizeAllows(id, count), title: !skirmishSizeAllows(id, count) ? 'Too small for four empires' : undefined }))}
+                  options={(['small', 'medium', 'large', 'huge'] as const).map((id) => ({ id, label: SKIRMISH_SIZE_LABEL[id], disabled: !skirmishSizeAllows(id, count), title: !skirmishSizeAllows(id, count) ? 'Four or more empires need a large or huge map' : undefined }))}
                   onChange={setSize}
                   testId="random-size"
                 />
@@ -242,36 +258,6 @@ export function RandomSetupScreen() {
                   <span className="small">Two-way portals link the empires’ outer lands: a shortcut to a rival — and a back door for them.</span>
                 </div>
               </div>
-              <div className="setting-block">
-                <div className="setting-block__label">Seed</div>
-                <div className="row gap">
-                  <TextInput
-                    label="Map seed"
-                    value={seedText}
-                    maxLength={9}
-                    onChange={(v) => {
-                      const clean = v.replace(/[^0-9]/g, '');
-                      setSeedText(clean);
-                      const n = Number(clean);
-                      if (clean && Number.isFinite(n)) setSeed(n);
-                    }}
-                    testId="random-seed"
-                  />
-                  <Button
-                    size="small"
-                    icon="newgame"
-                    onClick={() => {
-                      const s = newSeed();
-                      setSeed(s);
-                      setSeedText(String(s));
-                    }}
-                    data-testid="random-reroll"
-                  >
-                    New seed
-                  </Button>
-                </div>
-                <p className="small faint setting-block__details">The same seed and settings always make the same map.</p>
-              </div>
             </div>
 
             <SectionTitle>Game</SectionTitle>
@@ -280,12 +266,12 @@ export function RandomSetupScreen() {
                 <div className="setting-block__label">Empires</div>
                 <Segmented
                   label="Number of empires"
-                  value={String(count) as '2' | '3' | '4'}
-                  options={(['2', '3', '4'] as const).map((id) => ({ id, label: id }))}
+                  value={String(count) as '2' | '3' | '4' | '5' | '6'}
+                  options={(['2', '3', '4', '5', '6'] as const).map((id) => ({ id, label: id }))}
                   onChange={(v) => {
                     const n = Number(v);
                     setCount(n);
-                    if (!skirmishSizeAllows(size, n)) setSize('medium');
+                    if (!skirmishSizeAllows(size, n)) setSize('large');
                   }}
                   testId="random-count"
                 />
@@ -325,6 +311,9 @@ export function RandomSetupScreen() {
                   onChange={setStartWealth}
                   testId="random-wealth"
                 />
+                <p className="small faint setting-block__details" data-testid="random-wealth-text">
+                  {wealthText(startWealth)}
+                </p>
               </div>
               {count >= 3 ? (
                 <div className="setting-block">

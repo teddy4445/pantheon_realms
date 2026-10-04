@@ -6,7 +6,7 @@ import type { PreferencesStore } from '@pr/platform';
 import { setGraphicsQuality } from '@pr/presentation/core';
 import { applyInterfaceCursors } from '../assets/cursors';
 
-export const PREFERENCES_SCHEMA_VERSION = 2;
+export const PREFERENCES_SCHEMA_VERSION = 3;
 
 export type AnimSpeed = 'instant' | 'fast' | 'normal';
 export type BattleSpeed = '0.5' | '1' | '1.5' | '2' | 'instant';
@@ -76,7 +76,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   textSize: 'standard',
   tooltips: true,
   tooltipDelay: 500,
-  hexOverlay: 'always',
+  hexOverlay: 'hover',
   showPreviews: true,
   mapLabels: true,
   minimap: true,
@@ -122,6 +122,8 @@ export function sanitizePreferences(raw: unknown): Preferences {
     if (r.combatVolume === undefined) out.combatVolume = r.effectsVolume;
   }
   for (const k of ['masterVolume', 'musicVolume', 'ambienceVolume', 'interfaceVolume', 'combatVolume', 'voiceVolume'] as const) out[k] = Math.min(100, Math.max(0, out[k] as number));
+  // Schema 3 (owner request 2026-10-04): no lines between map tiles — the outline follows the pointer.
+  if ((typeof r.schemaVersion === 'number' ? r.schemaVersion : 0) < 3 && out.hexOverlay === 'always') out.hexOverlay = 'hover';
   out.schemaVersion = PREFERENCES_SCHEMA_VERSION;
   out.uiScale = Math.min(1.6, Math.max(0.8, out.uiScale as number));
   if (!['low', 'medium', 'high'].includes(out.graphicsQuality as string)) out.graphicsQuality = DEFAULT_PREFERENCES.graphicsQuality;

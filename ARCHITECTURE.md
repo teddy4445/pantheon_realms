@@ -35,7 +35,7 @@ AI never mutates state directly — each of those paths goes through
 |---|---|---|
 | `@pr/rules` | IDs, resources, deterministic RNG, hex math, content *types*, `MatchState`, commands, events, `processCommand`, every quote/commit (economy, movement, sites, heroes, gods, quests, turn/dawn, adventure spells, tactical battle, sieges, deployment, damage) | import anything outside the TS standard library (no DOM, React, PixiJS, Electron, Node) |
 | `@pr/content` | The authored, validated `ContentCatalog`: six playable pantheons (Greek design values; Norse, Egyptian, Japanese, Celtic and Mesoamerican values proposed) with rosters/towns/gods/heroes/classes/lore, spells, skills, artifacts (incl. the `arcana` spells, artifacts and sets with lore), *The Three Beacons*, *The Winter Oath* (seven Norse missions), the four arc campaigns (`campaign/arc.ts` builds seven-mission campaigns from writing + layout; *The Twelfth Hour*, *The Lantern Road*, *The Silver Branch*, *The New Fire*), the neutral creature roster (`common/neutrals.ts`), the *Twin Harbors* skirmish in 36 pantheon pairings, validators | contain logic beyond building and validating data |
-| `@pr/mapgen` | Template-driven logical map generation (`pr-mapgen-0.3`), validation, logical hash, cosmetic decor stream; the symmetric random skirmish generator (`pr-skirmishgen-0.3`, `skirmish.ts`: six map types, zones, guarded passes and gates, two-way portals paired by the map's symmetry, roads to the centre, neutral + pantheon creatures half and half, size/guard/treasure/wealth/road/reveal/portal settings) that outputs a full `MissionDefinition` | affect rules through cosmetic data |
+| `@pr/mapgen` | Template-driven logical map generation (`pr-mapgen-0.3`), validation, logical hash, cosmetic decor stream; the symmetric random skirmish generator (`pr-skirmishgen-0.5`, `skirmish.ts`: square maps with `void` cells outside the square, two to six empires (`symmetryLayout`), six map types, zones, guarded passes and gates, two-way portals paired by the map's symmetry, roads to the centre, neutral + pantheon creatures half and half, size/guard/treasure/wealth/road/reveal/portal settings) that outputs a full `MissionDefinition` | affect rules through cosmetic data |
 | `@pr/campaign` | Mission factory (scenario manifest or generated scenario → `MatchState`; difficulty, seat controllers, names and patrons), hero carryover, campaign state machine, completion records with mission scores; `createRandomSkirmish` (re-exports the generator for the session and UI) | render or persist |
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
@@ -189,6 +189,10 @@ ordinary effects. Rules consume the types, never the pantheon or god:
   `MakeOffering`, `TrainHero`, `BuyArtifact`. The merchant's weekly stock is
   a pure function of match and week — the same catalog in every town (`refreshMerchantStock`, run at the
   weekly dawn and on construction), so no gameplay RNG stream is touched.
+  The Workshop (`enables_workshop` effect: stock size and item rarities) works
+  the same way (`refreshWorkshopStock`; `TownState.workshop`; `BuyArtifact`
+  with `shop: 'workshop'`); each town marks its own sold pieces until the
+  next week. `refreshTownShops` refreshes both.
 * Scenarios can restrict gods (`committableGodIds`) and turn signatures off
   (`signatureMechanics: false`); The Three Beacons does both, so the campaign
   keeps its documented rules. The Winter Oath keeps signatures on and turns
@@ -439,7 +443,12 @@ Read-only diagnostics: `fxDebug()` on both views (`__prFx` under `?e2e`).
 Playback runs after the rules committed the result. Speed 0 (instant or
 reduced motion) completes synchronously and cannot change outcomes. Screens
 register *presenters* with the `AppStore`; the AI pacing loop waits for the
-presentation queue to drain.
+presentation queue to drain. Presenters run asynchronously, so a screen that
+must freeze its view before React re-renders registers a *preparer*
+(`AppStore.registerPreparer`), called synchronously with each committed
+batch before listeners are notified: the battle screen uses it to hold the
+stacks a blow, spell or miracle reaches, so a killed stack plays its hit and
+then its death once.
 
 Assets are referenced only by stable IDs (`creature.greek.tier3.base.portrait`,
 `town.greek.dwelling.tier1.upgraded`, `town.greek.background`,

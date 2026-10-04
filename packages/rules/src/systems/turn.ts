@@ -17,7 +17,7 @@ import { scenarioMission } from '../resolvers/scenario';
 import type { Tx } from '../engine/tx';
 import { grant } from './economy';
 import { learnSpellsAtTown } from './heroes';
-import { refreshMerchantStock } from './services';
+import { refreshTownShops } from './services';
 import { playerEffects } from '../resolvers/effects';
 import { advanceRelics, restockCamps, startWeeklyEvent } from './world';
 import { recordDayStats } from './stats';
@@ -141,7 +141,7 @@ export function processDawn(tx: Tx): void {
         town.population[familyId] = (town.population[familyId] ?? 0) + added;
         tx.emit({ kind: 'PopulationGrown', townId: town.id, familyId, added, total: town.population[familyId]! });
       }
-      refreshMerchantStock(tx, town);
+      refreshTownShops(tx, town);
     }
     restockCamps(tx, week);
   }

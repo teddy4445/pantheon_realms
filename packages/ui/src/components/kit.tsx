@@ -235,7 +235,7 @@ export function Modal({ title, children, footer, onClose, width, testId, splash 
   return (
     <div className={`modal-layer ${splash ? 'modal-layer--splash' : ''}`} role="dialog" aria-modal="true" aria-label={typeof title === 'string' ? title : undefined} data-testid={testId}>
       {splash}
-      <div ref={ref} className="modal" style={width ? { width } : undefined}>
+      <div ref={ref} className="modal" style={width ? { width, maxWidth: `min(${width}, 94vw)` } : undefined}>
         <Panel
           title={title}
           actions={onClose ? <Button icon="close" variant="ghost" size="small" onClick={onClose} aria-label="Close" /> : undefined}

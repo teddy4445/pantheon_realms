@@ -94,9 +94,6 @@ function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalo
               <CreaturePortrait catalog={catalog} creatureId={cid} size="5.6rem" />
               <div>
                 <div className="bestiary-card__name">{c.name}</div>
-                <div className="codex-meta">
-                  {c.form === 'upgraded' ? 'Upgraded form' : 'Base form'} · {c.roleLabel}
-                </div>
                 {c.stats ? (
                   <div className="bestiary-card__stats">
                     <span title="Attack"><Icon name="attack" className="inline-icon" /> {c.stats.attack}</span>

@@ -278,15 +278,19 @@ export function merchantCandidates(catalog: ContentCatalog, belief: MatchState, 
   const out: CommandPayload[] = [];
   const wallet = belief.players[playerId]!.wallet;
   for (const town of playerTowns(belief, playerId)) {
-    const stock = town.merchant?.stock ?? [];
+    // Both weekly shops: the Artifact Merchant's stock and the Workshop's (tier-1 items).
+    const shops = [
+      { shop: 'merchant' as const, stock: town.merchant?.stock ?? [] },
+      { shop: 'workshop' as const, stock: town.workshop?.stock ?? [] },
+    ];
     for (const h of heroes) {
       if (!heroInTown(catalog, belief, h, town.id)) continue;
       const base = loadoutValue(catalog, equippedIds(h.equipment), h.spellbook);
-      let pick: { index: number; perGold: number; cost: number } | null = null;
-      stock.forEach((id, index) => {
+      let pick: { index: number; perGold: number; cost: number; shop: 'merchant' | 'workshop' } | null = null;
+      for (const { shop, stock } of shops) stock.forEach((id, index) => {
         const def = id ? catalog.artifacts[id] : undefined;
         if (!id || !def) return;
-        const q = quoteArtifactPurchase(catalog, belief, playerId, town.id, h.id, index);
+        const q = quoteArtifactPurchase(catalog, belief, playerId, town.id, h.id, index, shop);
         if (!q.legal || wallet.gold - q.cost.gold < MERCHANT_RESERVE_GOLD) return;
         let gain = 0;
         for (const slot of equipSlotsFor(def.slot)) {
@@ -295,9 +299,12 @@ export function merchantCandidates(catalog: ContentCatalog, belief: MatchState, 
         }
         if (gain <= 2) return;
         const perGold = gain / Math.max(1, q.cost.gold);
-        if (!pick || perGold > pick.perGold || (perGold === pick.perGold && q.cost.gold > pick.cost)) pick = { index, perGold, cost: q.cost.gold };
+        if (!pick || perGold > pick.perGold || (perGold === pick.perGold && q.cost.gold > pick.cost)) pick = { index, perGold, cost: q.cost.gold, shop };
       });
-      if (pick) out.push({ kind: 'BuyArtifact', townId: town.id, heroId: h.id, index: (pick as { index: number }).index });
+      if (pick) {
+        const p = pick as { index: number; shop: 'merchant' | 'workshop' };
+        out.push({ kind: 'BuyArtifact', townId: town.id, heroId: h.id, index: p.index, ...(p.shop === 'workshop' ? { shop: 'workshop' as const } : {}) });
+      }
     }
   }
   return out;

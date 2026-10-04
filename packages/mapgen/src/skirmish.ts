@@ -1,6 +1,6 @@
 /**
- * SkirmishMapGenerator 0.2 (proposed): random skirmish maps for two to four
- * empires, with map types and settings modelled on the random-map scripts of
+ * SkirmishMapGenerator 0.2 (proposed): random skirmish maps for two to six
+ * empires (four until 0.5), with map types and settings modelled on the random-map scripts of
  * Age of Mythology and the zone templates of Heroes of Might and Magic III.
  *
  * Fairness by construction (unchanged from 0.1): the playable area is a
@@ -40,6 +40,12 @@
  * border guards). Placement, rewards and colours are copied by the same
  * symmetry, so every empire still gets the same map.
  *
+ * 0.5 (owner request 2026-10-04): up to six empires (five use the six-fold
+ * layout with one wild region of terrain only), four or more only on large and
+ * huge maps, and square maps: the hexagonal playable ground sits in a square
+ * whose corners are mountain wilds; the stored array's cells outside the square
+ * are `void` (drawn black).
+ *
  * Output is DATA: a WorldMapDefinition and a full MissionDefinition (which the
  * match embeds), plus cosmetic decor and a validation report. Content (kits,
  * creatures, events, artifacts by rarity) comes from the catalog; nothing here
@@ -73,7 +79,7 @@ import {
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
 
-export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.4';
+export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.5';
 export const RANDOM_TEMPLATE_ID = 'random_skirmish';
 
 export type SkirmishMapSize = 'small' | 'medium' | 'large' | 'huge';
@@ -171,9 +177,12 @@ export function randomMapTavernPool(catalog: ContentCatalog): HeroDefinitionId[]
     .map((h) => h.id);
 }
 
-/** Four empires need at least a medium map (their nearest neighbour sits one radius away). */
+/** Most empires per random map (owner request 2026-10-04: up to six). */
+export const SKIRMISH_MAX_EMPIRES = 6;
+
+/** Four or more empires need a large or huge map (owner request 2026-10-04). */
 export function skirmishSizeAllows(size: SkirmishMapSize, empires: number): boolean {
-  return empires <= 3 || size !== 'small';
+  return empires <= 3 || size === 'large' || size === 'huge';
 }
 
 // ---------------------------------------------------------------------------
@@ -195,15 +204,27 @@ const identity: Transform = (c) => ({ q: c.q, r: c.r });
 const compose = (outer: Transform, inner: Transform): Transform => (c) => outer(inner(c));
 
 /**
- * The symmetry group for N empires, in seat order: element i carries the first
- * town (direction 0) onto town i. 2: 180° rotation; 3: 120° rotations;
- * 4: towns at directions 0, 2, 3, 5 with the 180° rotation and a reflection.
+ * The symmetry for N empires. `seats[i]` carries the first town (direction 0)
+ * onto town i; `geom` is the full group the terrain and the region shapes
+ * follow. 2: 180° rotation; 3: 120° rotations; 4: towns at directions 0, 2, 3,
+ * 5 with the 180° rotation and a reflection; 6: the six 60° rotations (owner
+ * request 2026-10-04). Five empires use the six-fold layout with the sixth
+ * region left as wild land (terrain only — no town, sites or monsters), so
+ * every empire still gets an identical region; the two empires beside the wild
+ * region have one rival neighbour fewer (the only asymmetry, and stated as such).
  */
-function symmetryGroup(n: number): Transform[] {
-  if (n === 2) return [identity, rotN(3)];
-  if (n === 3) return [identity, rotN(4), rotN(2)];
-  if (n === 4) return [identity, mirror, rotN(3), compose(mirror, rotN(3))];
-  throw new SkirmishGenerationError(`Random maps support 2 to 4 empires, not ${n}`);
+function symmetryLayout(n: number): { seats: Transform[]; geom: Transform[] } {
+  if (n === 2) return { seats: [identity, rotN(3)], geom: [identity, rotN(3)] };
+  if (n === 3) return { seats: [identity, rotN(4), rotN(2)], geom: [identity, rotN(4), rotN(2)] };
+  if (n === 4) {
+    const g = [identity, mirror, rotN(3), compose(mirror, rotN(3))];
+    return { seats: g, geom: g };
+  }
+  if (n === 5 || n === 6) {
+    const g = [0, 1, 2, 3, 4, 5].map((k) => rotN(k));
+    return { seats: g.slice(0, n), geom: g };
+  }
+  throw new SkirmishGenerationError(`Random maps support 2 to ${SKIRMISH_MAX_EMPIRES} empires, not ${n}`);
 }
 
 const relDist = (c: HexCoord) => axialDistance(c, { q: 0, r: 0 });
@@ -222,8 +243,10 @@ interface BuildCtx {
   readonly scope: ScenarioFeatures;
 }
 
-const PALETTE = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b'];
-const START_WALLET: ResourceCost = { gold: 10000, wood: 20, stone: 20, crystal: 10, favor: 10 };
+const PALETTE = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b', '#8a4fc2', '#1f9fa6'];
+/** Every empire's starting treasury at normal wealth (scaled by WEALTH_PERCENT). */
+export const SKIRMISH_START_WALLET: ResourceCost = { gold: 10000, wood: 20, stone: 20, crystal: 10, favor: 10 };
+const START_WALLET = SKIRMISH_START_WALLET;
 
 /** Base-form creatures the generator may use for guards, camps and monsters (stable order). */
 function candidateCreatures(catalog: ContentCatalog, minTier: number, maxTier: number): CreatureDefinition[] {
@@ -328,8 +351,8 @@ function chestSite(ctx: BuildCtx, gold: number, xp: number): Pick<SiteDefinition
   };
 }
 
-const KEY_COLOR_ORDER = ['azure', 'crimson', 'emerald', 'amber'] as const;
-const KEY_LABEL: Readonly<Record<(typeof KEY_COLOR_ORDER)[number], string>> = { azure: 'Azure', crimson: 'Crimson', emerald: 'Emerald', amber: 'Amber' };
+const KEY_COLOR_ORDER = ['azure', 'crimson', 'emerald', 'amber', 'violet', 'ivory'] as const;
+const KEY_LABEL: Readonly<Record<(typeof KEY_COLOR_ORDER)[number], string>> = { azure: 'Azure', crimson: 'Crimson', emerald: 'Emerald', amber: 'Amber', violet: 'Violet', ivory: 'Ivory' };
 
 // ---------------------------------------------------------------------------
 // Region content (generated once for the first empire, copied to every other)
@@ -584,8 +607,8 @@ function regionSpecs(R: number, homeR: number, treasure: TreasureLevel): SiteSpe
 
 export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptions): GeneratedSkirmish {
   const n = opts.seats.length;
-  if (n < 2 || n > 4) throw new SkirmishGenerationError(`Random maps support 2 to 4 empires, not ${n}`);
-  if (!skirmishSizeAllows(opts.size, n)) throw new SkirmishGenerationError('Four empires need a medium or larger map');
+  if (n < 2 || n > SKIRMISH_MAX_EMPIRES) throw new SkirmishGenerationError(`Random maps support 2 to ${SKIRMISH_MAX_EMPIRES} empires, not ${n}`);
+  if (!skirmishSizeAllows(opts.size, n)) throw new SkirmishGenerationError('Four or more empires need a large or huge map');
   for (const s of opts.seats) if (!catalog.skirmishKits?.[s.pantheonId]) throw new SkirmishGenerationError(`No skirmish kit for ${s.pantheonId}`);
   const mapType: SkirmishMapType = opts.mapType ?? 'continental';
   const guards: GuardStrength = opts.guards ?? 'normal';
@@ -595,24 +618,33 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const features = opts.features ?? { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true };
   const seed = opts.seed >>> 0;
   const Rh = SKIRMISH_SIZE_RADIUS[opts.size];
-  const W = 2 * Rh + 3;
-  const H = W;
-  const center: HexCoord = { q: Rh + 1, r: Rh + 1 };
+  // Square maps (owner request 2026-10-04): 2·Rh+1 rows of 2·Rh+1 hexes (odd rows staggered
+  // with one more), kept in the axial array with the cells outside the square marked void.
+  // The playable ground stays the hexagon of radius Rh inside it, so the symmetry below still
+  // gives every empire the same region; the square's corners beyond it are mountain wilds.
+  const inSquare = (c: HexCoord) => Math.abs(c.r) <= Rh && Math.abs(c.q + c.r / 2) <= Rh + 0.5;
+  const qMin = Math.ceil(-Rh - 0.5 - Rh / 2);
+  const qMax = Math.floor(Rh + 0.5 + Rh / 2);
+  const W = qMax - qMin + 1;
+  const H = 2 * Rh + 1;
+  const center: HexCoord = { q: -qMin, r: Rh };
   const abs = (c: HexCoord): HexCoord => ({ q: c.q + center.q, r: c.r + center.r });
   const rel = (c: HexCoord): HexCoord => ({ q: c.q - center.q, r: c.r - center.r });
-  const group = symmetryGroup(n);
+  // `group` carries the empires' regions (seat order); `geom` is the full symmetry of the terrain.
+  const { seats: group, geom } = symmetryLayout(n);
   const R = Math.round(Rh * 0.76);
   const A: HexCoord = { q: R, r: 0 };
   const townsRel = group.map((g) => g(A));
+  const geomTowns = geom.map((g) => g(A));
   const inside = (c: HexCoord) => relDist(c) <= Rh;
   // The nearest rival town bounds the home zone: its ring must lie strictly inside the first region.
-  const nearestTown = Math.min(...townsRel.slice(1).map((t) => axialDistance(A, t)));
+  const nearestTown = Math.min(...geomTowns.slice(1).map((t) => axialDistance(A, t)));
   const homeR = Math.max(4, Math.min(Math.round(R * 0.45), Math.floor((nearestTown - 1) / 2) - 1));
   const ringK = homeR + 1;
   const tag = `${SKIRMISH_GENERATOR_VERSION}|${seed}|${mapType}`;
 
   // --- Terrain: symmetric value noise (one sample per symmetry orbit) -------
-  const orbitKey = (c: HexCoord) => group.map((g) => hexKey(g(c))).sort()[0]!;
+  const orbitKey = (c: HexCoord) => geom.map((g) => hexKey(g(c))).sort()[0]!;
   const noise = (c: HexCoord, channel: string) => seedFromLabel(`${tag}|${channel}|${orbitKey(c)}`) / 4294967296;
   const cellsRel: HexCoord[] = [];
   for (let r = 0; r < H; r++) for (let q = 0; q < W; q++) cellsRel.push(rel({ q, r }));
@@ -652,24 +684,29 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
         return w > 0.66 ? 'marsh' : 'plains';
     }
   };
-  for (const c of cellsRel) terrain.set(hexKey(c), inside(c) ? baseTerrain(c) : 'water');
+  for (const c of cellsRel) terrain.set(hexKey(c), inside(c) ? baseTerrain(c) : inSquare(c) ? 'mountain' : 'void');
   const tAt = (c: HexCoord) => terrain.get(hexKey(c));
-  const passableT = (t: Terrain | undefined) => !!t && t !== 'water' && t !== 'mountain';
+  const passableT = (t: Terrain | undefined) => !!t && t !== 'water' && t !== 'mountain' && t !== 'void';
   const setOrbit = (c: HexCoord, t: Terrain) => {
-    for (const g of group) terrain.set(hexKey(g(c)), t);
+    for (const g of geom) terrain.set(hexKey(g(c)), t);
   };
   const hardOrbit = (c: HexCoord, t: Terrain) => {
-    for (const g of group) {
+    for (const g of geom) {
       terrain.set(hexKey(g(c)), t);
       hard.add(hexKey(g(c)));
     }
+  };
+  /** A structural wall cell on its own (no copies). */
+  const hardCell = (c: HexCoord, t: Terrain) => {
+    terrain.set(hexKey(c), t);
+    hard.add(hexKey(c));
   };
   /** Clear to passable ground unless the cell is a structural wall. */
   const clearOrbit = (c: HexCoord, t: Terrain = 'plains') => {
     if (hard.has(hexKey(c)) || !inside(c)) return;
     setOrbit(c, t);
   };
-  const inRegionA = (c: HexCoord) => inside(c) && relDist(c) >= 3 && townsRel.every((t, i) => i === 0 || axialDistance(c, A) < axialDistance(c, t));
+  const inRegionA = (c: HexCoord) => inside(c) && relDist(c) >= 3 && geomTowns.every((t, i) => i === 0 || axialDistance(c, A) < axialDistance(c, t));
   const regionA = cellsRel.filter(inRegionA).sort((a, b) => (hexKey(a) < hexKey(b) ? -1 : 1));
 
   // --- Structure by map type --------------------------------------------------
@@ -691,7 +728,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     const ring = cellsRel.filter((c) => relDist(c) === centerR);
     const gateA = ring.filter((c) => inRegionA(c)).sort((a, b) => axialDistance(a, A) - axialDistance(b, A) || (hexKey(a) < hexKey(b) ? -1 : 1))[0]!;
     const gateKeys = new Set(group.map((g) => hexKey(g(gateA))));
-    for (const c of ring) if (!gateKeys.has(hexKey(c))) hardOrbit(c, 'mountain');
+    for (const c of ring) if (!gateKeys.has(hexKey(c))) hardCell(c, 'mountain');
     gates.push({ pos: gateA, kind: 'gate' });
   } else if (mapType === 'lake_isle') {
     const lakeR = Math.max(4, Math.round(Rh * 0.33));
@@ -701,9 +738,9 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     for (let k = 3; k <= lakeR; k++) for (const g of group) causeway.add(hexKey(g({ q: k, r: 0 })));
     for (const c of cellsRel) {
       const d = relDist(c);
-      if (d > 2 && d <= lakeR && !causeway.has(hexKey(c))) hardOrbit(c, 'water');
+      if (d > 2 && d <= lakeR && !causeway.has(hexKey(c))) hardCell(c, 'water');
     }
-    for (let k = 3; k <= lakeR; k++) setOrbit({ q: k, r: 0 }, 'plains');
+    for (let k = 3; k <= lakeR; k++) for (const g of group) terrain.set(hexKey(g({ q: k, r: 0 })), 'plains');
   }
   // Clear the towns and the center.
   for (const c of cellsRel) {
@@ -711,7 +748,9 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     if (relDist(c) <= 2 || axialDistance(c, A) <= 2) clearOrbit(c);
   }
   for (const gt of gates) {
-    setOrbit(gt.pos, 'plains');
+    // Openings only where an empire's guard will stand: the wild region of a five-empire map stays walled.
+    for (const g of group) terrain.set(hexKey(g(gt.pos)), 'plains');
+    for (const v of geom.slice(group.length)) hardCell(v(gt.pos), 'mountain');
     for (const nb of axialNeighbors(gt.pos)) clearOrbit(nb, tAt(nb) === 'mountain' || tAt(nb) === 'water' ? 'rough' : tAt(nb)!);
   }
 
@@ -790,23 +829,25 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
         !nearHard(c)
       );
     };
-    // The twin of `a` lies in the second region (group element 1).
-    const awayFrom = townsRel[1]!;
-    const toward = n >= 3 ? townsRel[n - 1]! : null;
+    // The twin of `a` lies in the second region (element 1 of the full symmetry; the
+    // wild region of a five-empire map has portals too, so every portal has a twin).
+    const rotationsOnly = n === 3 || n >= 5;
+    const awayFrom = geomTowns[1]!;
+    const toward = geom.length >= 3 ? geomTowns[geom.length - 1]! : null;
     const cands = regionA
-      .filter((c) => okPortal(c) && (n !== 3 || (okPortal(reflectA(c)) && axialDistance(c, reflectA(c)) >= 4)))
+      .filter((c) => okPortal(c) && (!rotationsOnly || (okPortal(reflectA(c)) && axialDistance(c, reflectA(c)) >= 4)))
       .map((c) => ({ c, key: toward ? axialDistance(c, awayFrom) - axialDistance(c, toward) : relDist(c) }))
       .sort((x, y) => y.key - x.key || (hexKey(x.c) < hexKey(y.c) ? -1 : 1));
     if (cands.length > 0) {
       const top = cands.slice(0, Math.max(1, Math.ceil(cands.length / 4)));
       const a = top[rng.nextInt(top.length)]!.c;
-      if (n === 3) {
+      if (rotationsOnly) {
         const b = reflectA(a);
         portalBase.push(a, b);
-        portalPairs.push({ a, partner: group[1]!(b) });
+        portalPairs.push({ a, partner: geom[1]!(b) });
       } else {
         portalBase.push(a);
-        portalPairs.push({ a, partner: group[1]!(a) });
+        portalPairs.push({ a, partner: geom[1]!(a) });
       }
     }
   }
@@ -920,7 +961,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const roadEdges = new Set<string>();
   const route = (from: HexCoord, to: HexCoord): HexCoord[] | null => {
     // Dijkstra over relative coords; soft mountains cost a lot (opened later), walls and water are closed.
-    const keyGates = new Set(pocket ? group.map((g) => hexKey(g(pocket!.gate))) : []);
+    const keyGates = new Set(pocket ? geom.map((g) => hexKey(g(pocket!.gate))) : []);
     const cost = (c: HexCoord) => {
       const t = tAt(c);
       if (!t || t === 'water' || !inside(c) || hard.has(hexKey(c)) || keyGates.has(hexKey(c))) return null;
@@ -1064,12 +1105,12 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   if (portalPairs.length > 0) {
     const placed: { id: string; coord: HexCoord }[] = [];
     portalBase.forEach((base, bi) =>
-      group.forEach((g, i) => placed.push({ id: `${bi === 0 ? 'portal' : 'portal_b'}_${i + 1}`, coord: abs(g(base)) })),
+      geom.forEach((g, i) => placed.push({ id: `${bi === 0 ? 'portal' : 'portal_b'}_${i + 1}`, coord: abs(g(base)) })),
     );
     const idAt = new Map(placed.map((p) => [hexKey(p.coord), p.id]));
     const twin = new Map<string, string>();
     for (const pair of portalPairs) {
-      for (const g of group) {
+      for (const g of geom) {
         const x = idAt.get(hexKey(abs(g(pair.a))));
         const y = idAt.get(hexKey(abs(g(pair.partner))));
         if (!x || !y || x === y) throw new SkirmishGenerationError('Portal pairing failed');
@@ -1209,7 +1250,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     order: 1,
     name: `Random Map — ${typeInfo.label}`,
     subtitle: `${sizeLabel} · ${n} empires · seed ${seed}`,
-    summary: `A generated ${sizeLabel.toLowerCase()} ${typeInfo.label.toLowerCase()} map for ${n} empires. ${typeInfo.summary} ${victory.type === 'hold_relic' ? `Win by holding the central shrine for ${victory.days} days, or by defeating every rival.` : 'Win by defeating every rival empire.'} Every empire gets the same terrain, roads and treasures around its town (symmetric map). Guards ${guards}, treasure ${treasure}, starting wealth ${wealth}. Proposed feature; values unplaytested.`,
+    summary: `A generated ${sizeLabel.toLowerCase()} ${typeInfo.label.toLowerCase()} map for ${n} empires. ${typeInfo.summary} ${victory.type === 'hold_relic' ? `Win by holding the central shrine for ${victory.days} days, or by defeating every rival.` : 'Win by defeating every rival empire.'} Every empire gets the same terrain, roads and treasures around its town (symmetric map${n === 5 ? '; a sixth region is wild land, so two empires have one rival neighbour fewer' : ''}). Guards ${guards}, treasure ${treasure}, starting wealth ${wealth}. Proposed feature; values unplaytested.`,
     mapTemplateId: RANDOM_TEMPLATE_ID,
     soundscape: mapType === 'highlands' || mapType === 'crossroads' ? 'high_pass' : 'coast',
     targetPlaytime: n === 2 ? '30–60 minutes (unmeasured)' : '45–90 minutes (unmeasured)',
@@ -1259,7 +1300,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
 
   // --- Logical map -------------------------------------------------------------
   let terrainStr = '';
-  for (let r = 0; r < H; r++) for (let q = 0; q < W; q++) terrainStr += TERRAIN_CODES[terrain.get(hexKey(rel({ q, r }))) ?? 'water'];
+  for (let r = 0; r < H; r++) for (let q = 0; q < W; q++) terrainStr += TERRAIN_CODES[terrain.get(hexKey(rel({ q, r }))) ?? 'void'];
   const roads = [...roadEdges].sort();
   const map: WorldMapDefinition = {
     templateId: RANDOM_TEMPLATE_ID,
@@ -1327,7 +1368,7 @@ export function validateSkirmishMap(map: WorldMapDefinition, mission: MissionDef
   const fromFirst = travelCosts(map, towns[0]!.coord);
   const unreachable = mission.sites.filter((s) => !fromFirst.has(hexKey(s.coord)));
   checks.push({ id: 'SKM-1', pass: unreachable.length === 0, detail: unreachable.length ? `unreachable: ${unreachable.map((s) => s.id).join(', ')}` : 'every site is reachable' });
-  const badGround = mission.sites.filter((s) => terrainOf(map, s.coord) === 'm' || terrainOf(map, s.coord) === 'w');
+  const badGround = mission.sites.filter((s) => terrainOf(map, s.coord) === 'm' || terrainOf(map, s.coord) === 'w' || terrainOf(map, s.coord) === 'v');
   checks.push({ id: 'SKM-2', pass: badGround.length === 0, detail: badGround.length ? `on impassable terrain: ${badGround.map((s) => s.id).join(', ')}` : 'no site on impassable terrain' });
   const keys = mission.sites.map((s) => hexKey(s.coord));
   checks.push({ id: 'SKM-3', pass: new Set(keys).size === keys.length, detail: 'one site per tile' });

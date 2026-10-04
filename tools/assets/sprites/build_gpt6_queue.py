@@ -224,6 +224,10 @@ def sheet_size(cols: int, rows: int, cell_aspect: float) -> tuple[int, int]:
 def ref_delivered(c: dict) -> bool:
     if (ROOT / f"assets-source/creatures/reference/{asset_of(c)}.ref.threequarter.png").exists():
         return True
+    # The reference is the drawing authority for the battle strips: once every strip of the form is
+    # final it is no longer needed (and the references stay in the owner's folder, not in every copy).
+    if c["animations"] and all(strip_status(c, a) == "final" for a in c["animations"]):
+        return True
     s = SPRITES["creatures"].get(c["id"], {})
     return "cut from the delivered canonical reference view" in s.get("provenance", "")
 
@@ -327,8 +331,26 @@ for c in anim_forms:
             col += n
     add_layout(f"sheet.{a}", group="C", target="creature", creature=c["id"], cols=COLS, rows=len(rows), cellHexes=[cw, ch], groundY=0.9, size=[w, h], background="transparent", segments=segs)
 
-# D: one sheet per mounted hero (five directions; the game mirrors the other three) + one sheet of hero-screen figures.
-heroes = list(PLAN["pantheons"])
+# D: one sheet per mounted hero still missing final idle/walk strips in the five painted directions (the game
+# mirrors the other three) + one sheet of hero-screen figures while any figure is missing.
+
+
+def hero_done(pid: str) -> bool:
+    h = SPRITES.get("heroes", {}).get(pid, {})
+    anims = h.get("animations", {})
+    for anim in ("idle", "walk"):
+        a = anims.get(anim)
+        if not a or a.get("status") != "final":
+            return False
+        dirs = a.get("directions", {})
+        if not all(dirs.get(d, {}).get("status") == "final" for d in HERO_DIRS):
+            return False
+    return True
+
+
+all_heroes = list(PLAN["pantheons"])
+heroes = [p for p in all_heroes if not hero_done(p["id"])]
+figures_missing = [p for p in all_heroes if (SPRITES.get("heroes", {}).get(p["id"], {}).get("figure") or {}).get("status") != "final"]
 for p in heroes:
     pid = p["id"]
     hc = 10
@@ -339,8 +361,9 @@ for p in heroes:
         segs.append({"row": r, "col": HERO_FRAMES["idle"], "frames": HERO_FRAMES["walk"], "anim": "walk", "name": f"sprite.hero.{pid}.walk.{d}", "fps": HERO_FPS["walk"], "loop": True, "airborne": False})
     add_layout(f"sheet.hero.{pid}", group="D", target="hero", cols=hc, rows=len(HERO_DIRS), cellHexes=[2.133, 2.133], groundY=0.88, size=[w, h], background="transparent", segments=segs)
 fw_, fh_ = sheet_size(3, 2, 1.0)
-add_layout("sheet.hero.figures", group="D", target="items", cols=3, rows=2, cellHexes=[1, 1], size=[fw_, fh_], background="transparent",
-           cells=[{"row": i // 3, "col": i % 3, "name": f"sprite.hero.{p['id']}.figure", "kind": "figure", "out": f"assets-source/sprites/final/sprite.hero.{p['id']}.figure.png"} for i, p in enumerate(heroes)])
+if figures_missing:
+    add_layout("sheet.hero.figures", group="D", target="items", cols=3, rows=2, cellHexes=[1, 1], size=[fw_, fh_], background="transparent",
+               cells=[{"row": i // 3, "col": i % 3, "name": f"sprite.hero.{p['id']}.figure", "kind": "figure", "out": f"assets-source/sprites/final/sprite.hero.{p['id']}.figure.png"} for i, p in enumerate(all_heroes)])
 
 # E: map objects, four sheets.
 SITE_TEXT = {
@@ -425,7 +448,14 @@ fields = sorted(PLAN["battlefields"])
 climates = PLAN["climates"]
 field_variants = [(f, cl) for f in fields for cl in climates if cl != "temperate" and f"battlefield.{f}.ground.{cl}" not in ART]
 
-LAYOUT_FILE.write_text(json.dumps({"schema": "pantheon-realms-sheets-1", "generated": dt.date.today().isoformat(), "note": "Written by npm run sprites:queue; read by npm run sprites:cut. Rows and columns count from 0 here (from 1 in GPT6_2D_CONTENT_GENERATION.md).", "sheets": layouts}, indent=1) + "\n")
+# Sheets already delivered leave the queue but keep their layout, so `npm run sprites:cut` can still cut a
+# corrected re-delivery of them; the queue's own sheets replace any older layout of the same name.
+try:
+    _kept = json.loads(LAYOUT_FILE.read_text()).get("sheets", {})
+except (OSError, ValueError):
+    _kept = {}
+_written = {**{k: v for k, v in _kept.items() if k not in layouts}, **layouts}
+LAYOUT_FILE.write_text(json.dumps({"schema": "pantheon-realms-sheets-1", "generated": dt.date.today().isoformat(), "note": "Written by npm run sprites:queue; read by npm run sprites:cut. Rows and columns count from 0 here (from 1 in GPT6_2D_CONTENT_GENERATION.md). Holds the queue's sheets and the layouts of sheets already delivered (for re-cuts).", "sheets": _written}, indent=1) + "\n")
 
 # ---------------------------------------------------------------------------- the document
 
@@ -465,7 +495,7 @@ n_sheets = {g: len(sheets_of(g)) for g in "ABCDEGH"}
 n_items = {g: sum(count_items(v) for _, v in sheets_of(g)) for g in "ABCDEGH"}
 n_files = {
     "A": len(missing_refs), "B": len(missing_portraits),
-    "C": sum(len(c["animations"]) for c in anim_forms), "D": len(heroes) * 17,
+    "C": sum(len(c["animations"]) for c in anim_forms), "D": len(heroes) * 10 + (len(all_heroes) if figures_missing else 0),
     "E": len(site_keys) + len(decor_keys), "G": len(ob_keys) + len(siege_keys), "H": len(fx_keys) + len(pj_keys),
 }
 total_sheets = sum(n_sheets.values())
@@ -480,15 +510,18 @@ W("## 0. Summary")
 W("")
 W("| Group | What | Sheets | Single files cut from them | In the game meanwhile |")
 W("|---|---|---|---|---|")
-W(f"| A | Creature canonical references (three-quarter masters), three families per sheet | **{n_sheets['A']}** | {n_files['A']} | silhouette placeholder |")
-W(f"| B | Creature portraits, three families per sheet | **{n_sheets['B']}** | {n_files['B']} | drawn stand-in portrait |")
-W(f"| C | Battle animations, **one sheet per creature form** (all its strips as rows) | **{n_sheets['C']}** | {n_files['C']} strips | reference still + simple motion (43 forms), animated silhouettes (59 forms) |")
-W(f"| D | Mounted map heroes (one sheet per pantheon: 5 directions × idle + walk) and the six hero-screen figures (one sheet) | **{n_sheets['D']}** | {n_files['D']} | side-view still, mirrored westward, step bob |")
-W(f"| E | Adventure-map locations and decoration (towns, resources, two location sheets) | **{n_sheets['E']}** | {n_files['E']} | concept crops; procedural decoration |")
+W(f"| A | Creature canonical references (three-quarter masters), three families per sheet | **{n_sheets['A']}** | {n_files['A']} | {'all delivered' if n_sheets['A'] == 0 else 'silhouette placeholder'} |")
+W(f"| B | Creature portraits, three families per sheet | **{n_sheets['B']}** | {n_files['B']} | {'all delivered' if n_sheets['B'] == 0 else 'drawn stand-in portrait'} |")
+W(f"| C | Battle animations, **one sheet per creature form** (all its strips as rows) | **{n_sheets['C']}** | {n_files['C']} strips | {'all delivered' if n_sheets['C'] == 0 else 'reference still + simple motion (43 forms), animated silhouettes (59 forms)'} |")
+W(f"| D | Mounted map heroes (one sheet per pantheon: 5 directions × idle + walk) and the six hero-screen figures (one sheet) | **{n_sheets['D']}** | {n_files['D']} | {'all delivered' if n_sheets['D'] == 0 else 'side-view still, mirrored westward, step bob'} |")
+W(f"| E | Adventure-map locations and decoration (towns, resources, two location sheets) | **{n_sheets['E']}** | {n_files['E']} | {'all delivered' if n_sheets['E'] == 0 else 'concept crops; procedural decoration'} |")
 W(f"| F | Battlefield backgrounds per climate (optional; full paintings, one per image) | — | {len(field_variants)} | temperate painting |")
-W(f"| G | Battlefield obstacles (one sheet) and siege pieces (one sheet) | **{n_sheets['G']}** | {n_files['G']} | procedural placeholders |")
-W(f"| H | Spell / combat effects and projectiles (one sheet) | **{n_sheets['H']}** | {n_files['H']} | procedural placeholders |")
+W(f"| G | Battlefield obstacles (one sheet) and siege pieces (one sheet) | **{n_sheets['G']}** | {n_files['G']} | {'all delivered' if n_sheets['G'] == 0 else 'procedural placeholders'} |")
+W(f"| H | Spell / combat effects and projectiles (one sheet) | **{n_sheets['H']}** | {n_files['H']} | {'all delivered' if n_sheets['H'] == 0 else 'procedural placeholders'} |")
 W(f"| | **Total** | **{total_sheets}** | {sum(n_files.values())} | |")
+if total_sheets == 0:
+    W("")
+    W("**Every sprite sheet of groups A–E, G and H is delivered.** What GPT-6 still has to make for the 2D game is in `assets-source/art/briefs/GPT6_BRIEF_8_GODS_AND_ICONS.md` … `GPT6_BRIEF_11_MAP_HERO_ANIMATIONS.md` (god portraits and god-card icons, hero portraits, town building levels, map-hero battle-start and casting strips) and `VFX_MAGIC_AND_FAVORS.md` (spell, miracle and gift effects); the optional battlefield variants of group F are below.")
 W("")
 W("## 1. How sheets work")
 W("")
@@ -649,8 +682,12 @@ for c in anim_forms:
 # ---------------------------------------------------------------- D
 W("## Group D — Mounted map heroes")
 W("")
-W(f"One sheet per pantheon: **5 rows = directions** (east, north-east, north, south, south-east; the game mirrors east, north-east and south-east for west, north-west and south-west), each row **idle in cells 1–{HERO_FRAMES['idle']}** and **walk in cells {HERO_FRAMES['idle'] + 1}–{HERO_FRAMES['idle'] + HERO_FRAMES['walk']}**. Cells are 2.13 map-hex widths square; the ground point between the horse's feet sits at **88 % of the cell height**, centred. Cut into `sprite.hero.<pantheon>.<idle|walk>.<direction>.png`. A seventh sheet holds the six hero-screen figures.")
-W("")
+if not heroes and not figures_missing:
+    W("Nothing to make: all six mounted heroes (idle and walk in every direction) and their hero-screen figures are delivered. Their battle-start and spell-casting strips are ordered in `assets-source/art/briefs/GPT6_BRIEF_11_MAP_HERO_ANIMATIONS.md`.")
+    W("")
+if heroes or figures_missing:
+    W(f"One sheet per pantheon: **5 rows = directions** (east, north-east, north, south, south-east; the game mirrors east, north-east and south-east for west, north-west and south-west), each row **idle in cells 1–{HERO_FRAMES['idle']}** and **walk in cells {HERO_FRAMES['idle'] + 1}–{HERO_FRAMES['idle'] + HERO_FRAMES['walk']}**. Cells are 2.13 map-hex widths square; the ground point between the horse's feet sits at **88 % of the cell height**, centred. Cut into `sprite.hero.<pantheon>.<idle|walk>.<direction>.png`. A seventh sheet holds the six hero-screen figures.")
+    W("")
 for p in heroes:
     pid = p["id"]
     lay = layouts[f"sheet.hero.{pid}"]
@@ -675,23 +712,24 @@ for p in heroes:
     W(f"Modern high-resolution painterly fantasy strategy-game sprite. {BG} No ground, no shadow, no text.")
     W("```")
     W("")
-lay = layouts["sheet.hero.figures"]
-W("### D · hero-screen figures (all six pantheons)")
-W("")
-table([
-    ("Sheet file", f"`{lay['file']}`"),
-    ("Cells", "<br>".join(f"row {i // 3 + 1}, cell {i % 3 + 1}: {p['name']}" for i, p in enumerate(heroes))),
-    ("Image", size_line(lay)),
-    ("Attach", "the six hero boards above"),
-    ("Cuts into", ", ".join(f"`sprite.hero.{p['id']}.figure.png`" for p in heroes)),
-    ("Status", "placeholder (the boards' side views)"),
-])
-W("```text")
-W(f"Using the six attached mounted-hero sheets, paint one sheet of six large standing figures for the Pantheon Realms hero screen: 3 columns × 2 rows of equal square cells, image {lay['size'][0]} × {lay['size'][1]} px (or larger). Order: " + ", ".join(p["name"] for p in heroes) + ".")
-W(f"Each cell: that pantheon's mounted hero, rider and horse standing, side view facing right, whole figure inside the cell with margin, dramatic painterly light on the figure only. {GRID}")
-W(f"{BG} No ground, no shadow, no text.")
-W("```")
-W("")
+if figures_missing:
+    lay = layouts["sheet.hero.figures"]
+    W("### D · hero-screen figures (all six pantheons)")
+    W("")
+    table([
+        ("Sheet file", f"`{lay['file']}`"),
+        ("Cells", "<br>".join(f"row {i // 3 + 1}, cell {i % 3 + 1}: {p['name']}" for i, p in enumerate(heroes))),
+        ("Image", size_line(lay)),
+        ("Attach", "the six hero boards above"),
+        ("Cuts into", ", ".join(f"`sprite.hero.{p['id']}.figure.png`" for p in heroes)),
+        ("Status", "placeholder (the boards' side views)"),
+    ])
+    W("```text")
+    W(f"Using the six attached mounted-hero sheets, paint one sheet of six large standing figures for the Pantheon Realms hero screen: 3 columns × 2 rows of equal square cells, image {lay['size'][0]} × {lay['size'][1]} px (or larger). Order: " + ", ".join(p["name"] for p in heroes) + ".")
+    W(f"Each cell: that pantheon's mounted hero, rider and horse standing, side view facing right, whole figure inside the cell with margin, dramatic painterly light on the figure only. {GRID}")
+    W(f"{BG} No ground, no shadow, no text.")
+    W("```")
+    W("")
 
 # ---------------------------------------------------------------- E
 W("## Group E — Adventure-map locations and decoration")

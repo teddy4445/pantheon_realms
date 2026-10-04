@@ -24,7 +24,7 @@ import {
 import { commitActivateSite, commitMoveHero, updateGates } from '../systems/adventure';
 import { commitBuySpellbook, commitEquip, commitHireHero, commitLevelUpChoice, commitUnequip } from '../systems/heroes';
 import { commitCastAdventureSpell } from '../systems/magic';
-import { commitArtifactPurchase, commitOffering, commitTraining, refreshMerchantStock } from '../systems/services';
+import { commitArtifactPurchase, commitOffering, commitTraining, refreshTownShops } from '../systems/services';
 import { commitDivineGift } from '../systems/gifts';
 import { commitCampRecruitment, commitResolveMapEvent } from '../systems/world';
 import { commitCompleteQuestHut, commitOpenChest } from '../systems/sites';
@@ -114,7 +114,7 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'BuildStructure': {
       commitConstruction(tx, c.townId, c.buildingId);
       const town = tx.state.towns[c.townId];
-      if (town) refreshMerchantStock(tx, town);
+      if (town) refreshTownShops(tx, town);
       return;
     }
     case 'MakeOffering':
@@ -122,7 +122,7 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'TrainHero':
       return commitTraining(tx, c.townId, c.heroId);
     case 'BuyArtifact':
-      return commitArtifactPurchase(tx, c.townId, c.heroId, c.index);
+      return commitArtifactPurchase(tx, c.townId, c.heroId, c.index, c.shop ?? 'merchant');
     case 'RecruitFromCamp':
       return commitCampRecruitment(tx, c.heroId, c.siteId, c.quantity);
     case 'ResolveMapEvent':

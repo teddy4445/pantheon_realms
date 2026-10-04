@@ -4,12 +4,21 @@
  * imported through Load → Import; the page is only read (__prInspect /
  * __prHeroes / __prCamera), never driven through hooks.
  */
+import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 import { GameDriver } from '@pr/testing';
 import { axialNeighbors, quoteMovement, reachableTiles, parseHexKey, type HexCoord } from '@pr/rules';
 import { axialPoint, directionOf } from '@pr/presentation/core';
 import { approachTile, importAndLoad, writeSave } from './fixtures';
 import { clickHex, inspect, waitFor } from './helpers';
+
+type HeroAnim = { file: string; status?: string; directions?: Record<string, { file: string }> };
+/** The game's own sprite manifest: each pantheon's map avatar, final since the owner's delivery (commit 071968c). */
+const HERO_SPRITES = (JSON.parse(readFileSync('assets-runtime/sprites/manifest.json', 'utf8')) as { heroes: Record<string, { status: string; animations: Record<string, HeroAnim> }> }).heroes;
+const heroFiles = (pantheon: string, anim: string): string[] => {
+  const a = HERO_SPRITES[pantheon]?.animations[anim];
+  return a ? [a.file, ...Object.values(a.directions ?? {}).map((d) => d.file)].map((f) => `/${f}`) : [];
+};
 
 interface HeroDebug {
   sprite: 'ready' | 'loading' | 'missing';
@@ -112,21 +121,20 @@ test('six pantheons show their own mounted map avatar, idling, loaded from the g
   const sprites: { url: string; status: number }[] = [];
   page.on('request', (r) => requests.push(r.url()));
   page.on('response', (r) => {
-    if (r.url().includes('/sprites/heroes/')) sprites.push({ url: r.url(), status: r.status() });
+    if (r.url().includes('/heroes/')) sprites.push({ url: r.url(), status: r.status() });
   });
   const errors: string[] = [];
   await openSave(page, writeSave(d, 'heroes six'), errors);
   const h = await waitAvatars(page, ids);
   await page.waitForTimeout(500);
-  for (const id of ids) expect(h[id], id).toMatchObject({ sprite: 'ready', status: 'placeholder', clip: 'idle', drawn: 'idle' });
+  for (const id of ids) expect(h[id], id).toMatchObject({ sprite: 'ready', status: HERO_SPRITES[expected[id]!]!.status, clip: 'idle', drawn: 'idle' });
 
-  // Every request stays on the game's own origin; each pantheon's avatar comes from ./sprites/heroes/<pantheon>/.
+  // Every request stays on the game's own origin; each pantheon's avatar comes from its own files in the manifest.
   const origin = new URL(page.url()).origin;
   expect(requests.filter((u) => !u.startsWith(origin) && !u.startsWith('data:') && !u.startsWith('blob:'))).toEqual([]);
   const paths = new Set(sprites.map((s) => new URL(s.url).pathname));
   for (const p of ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican']) {
-    expect(paths.has(`/sprites/heroes/${p}/idle.webp`), p).toBe(true);
-    expect(paths.has(`/sprites/heroes/${p}/walk.webp`), p).toBe(true);
+    expect(heroFiles(p, 'idle').some((f) => paths.has(f)), `${p} idle`).toBe(true);
   }
   for (const s of sprites) expect(s.status, s.url).toBe(200);
   // No 3D model is ever requested.
@@ -317,6 +325,14 @@ test('the map pans left, right, up and down by dragging and keys; the wheel zoom
     expect(after.zoom).toBe(before.zoom);
     return { x: after.x - before.x, y: after.y - before.y, zoom: after.zoom };
   }
+  // The wheel zooms in. (First: since 2026-10-04 the camera stops half a hex past the map's edge, so at the
+  // opening zoom a map that fits the view's height cannot pan vertically.)
+  await page.mouse.move(cx, cy);
+  for (let i = 0; i < 3; i++) {
+    await page.mouse.wheel(0, -400);
+    await page.waitForTimeout(150);
+  }
+  expect((await camera(page)).zoom).toBeGreaterThan(p0.zoom);
   // The map follows the mouse: dragging left moves the view right, dragging up moves it toward the bottom.
   const left = await drag(-220, 0);
   expect(left.x).toBeGreaterThan(20);
@@ -343,11 +359,6 @@ test('the map pans left, right, up and down by dragging and keys; the wheel zoom
     expect((after[axis] - before[axis]) * sign, key).toBeGreaterThan(10);
     expect(after.zoom).toBe(before.zoom);
   }
-  // The wheel zooms in.
-  await page.mouse.move(cx, cy);
-  await page.mouse.wheel(0, -400);
-  await page.waitForTimeout(150);
-  expect((await camera(page)).zoom).toBeGreaterThan(p0.zoom);
   // Panning is clamped to the map: a long drag stops at the edge.
   for (let i = 0; i < 6; i++) await drag(-600, 0);
   const edge = (await camera(page)).x;

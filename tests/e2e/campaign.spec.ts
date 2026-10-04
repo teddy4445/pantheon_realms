@@ -91,7 +91,6 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   await page.getByTestId('town-tab-asterion').click();
   await page.getByTestId('slot-dwelling_t1').click();
   await page.getByTestId('build').click();
-  await page.getByTestId('confirm-ok').click();
   await waitFor(page, (s) => s.state.towns.asterion.buildings.dwelling_t1 === 2, 'Veteran Barracks');
   await page.getByRole('button', { name: 'Recruit', exact: true }).first().click();
   await page.getByTestId('recruit-hoplite').click();
@@ -143,6 +142,11 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   expect(s.campaign.completions).toHaveLength(1);
   const m1Hero = s.state.heroes.alexios;
   await expect(page.getByTestId('debrief')).toContainText('Victory');
+  // Main Menu, Mission summary and Continue stand on one line (owner request 2026-10-04).
+  const tops = await page.getByTestId('debrief-actions').locator('button').evaluateAll((bs) => bs.map((b) => Math.round(b.getBoundingClientRect().top + b.getBoundingClientRect().height / 2)));
+  expect(tops).toHaveLength(3);
+  expect(Math.max(...tops) - Math.min(...tops)).toBeLessThanOrEqual(4);
+  await page.screenshot({ path: 'test-results/debrief.png' });
 
   // Continue into Mission 2: new map, briefing, the same hero.
   await page.getByTestId('debrief-continue').click();

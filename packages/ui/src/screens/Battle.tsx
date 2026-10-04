@@ -40,6 +40,7 @@ import {
   type MatchState,
   type SpellEffect,
   interventionsFor,
+  interventionUsedThisWeek,
   quoteIntervention,
 } from '@pr/rules';
 import type { BattleMiracleFx, BattleSceneController, BattleSpellFx, BattleView } from '@pr/presentation';
@@ -54,6 +55,7 @@ import { cellPoint, miracleLook, spellLook, statusOverlays } from '@pr/presentat
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
 import { Icon } from '../assets/icons';
+import { MiracleBook, type MiracleOption } from '../components/miraclebook';
 
 type Mode =
   | { kind: 'normal' }
@@ -316,26 +318,41 @@ export function BattleScreen() {
   }, [battle?.phase]);
 
   // Playback + combat log from committed events.
+  // Each published batch is held at once (before the screen re-renders with the new
+  // state), so the stacks it touches keep their old look until it plays: a stack
+  // killed by it is not laid down first and then shown dying again.
+  const pending = useRef<{ events: readonly GameEvent[]; release: () => void }[]>([]);
   useEffect(() => {
-    return store.registerPresenter(async (events) => {
-      // The combat log itself is recorded by the store for every update (app/battleLog.ts),
-      // so events published before this screen opened (the first round) are in it too.
-      force((n) => n + 1);
+    const unprepare = store.registerPreparer((events) => {
       const c = ctrl.current;
-      const factor = battlePlaybackFactor(store.prefs);
-      // A miracle's light falls once its painted card has been seen; its targets keep their look meanwhile.
-      if (c && factor > 0 && events.some((e) => e.kind === 'InterventionInvoked')) {
-        const release = c.hold(events);
-        try {
+      const touches = events.some((e) => e.kind.startsWith('Battle') || e.kind.startsWith('Siege') || e.kind === 'InterventionInvoked');
+      pending.current.push({ events, release: c && touches ? c.hold(events) : () => undefined });
+    });
+    const unpresent = store.registerPresenter(async (events) => {
+      const i = pending.current.findIndex((p) => p.events === events);
+      const held = i >= 0 ? pending.current.splice(i, 1)[0]!.release : () => undefined;
+      try {
+        // The combat log itself is recorded by the store for every update (app/battleLog.ts),
+        // so events published before this screen opened (the first round) are in it too.
+        force((n) => n + 1);
+        const c = ctrl.current;
+        const factor = battlePlaybackFactor(store.prefs);
+        // A miracle's light falls once its painted card has been seen; its targets keep their look meanwhile.
+        if (c && factor > 0 && events.some((e) => e.kind === 'InterventionInvoked')) {
           await store.whenMiracleCardsClosed();
           await c.play(events, battlePlaybackFactor(store.prefs));
-        } finally {
-          release();
+          return;
         }
-        return;
+        if (c && events.some((e) => e.kind.startsWith('Battle') || e.kind === 'InterventionInvoked')) await c.play(events, factor);
+      } finally {
+        held();
       }
-      if (c && events.some((e) => e.kind.startsWith('Battle') || e.kind === 'InterventionInvoked')) await c.play(events, factor);
     });
+    return () => {
+      unprepare();
+      unpresent();
+      for (const p of pending.current.splice(0)) p.release();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store, catalog, battleId]);
 
@@ -530,10 +547,52 @@ export function BattleScreen() {
   openSpellsRef.current = openSpells;
   const actingPlayer = la ? battle.sides[la.side].playerId : null;
   const miracles = actingPlayer ? interventionsFor(catalog, state, actingPlayer).filter((d) => d.context === 'battle') : [];
+  // The book of Favor (same design as the spellbook; owner request 2026-10-04): every miracle of the
+  // acting side, battle ones invokable; an enemy-stack miracle then asks for its target.
+  // Stays open while a playback briefly withholds the legal actions (the acting side does not change).
+  const bookSide = la?.side ?? humanSide?.sideId ?? null;
+  const bookPlayer = actingPlayer ?? humanSide?.playerId ?? null;
+  const miracleBook =
+    mode.kind === 'miracles' && battle && bookSide && bookPlayer
+      ? (() => {
+          const actingPlayer = bookPlayer;
+          const all = interventionsFor(catalog, state, actingPlayer);
+          const enemy = Object.values(battle.stacks).find((x) => x.totalHp > 0 && x.side !== bookSide)?.id ?? null;
+          const options: Record<string, MiracleOption> = {};
+          for (const d of all) {
+            const q = quoteIntervention(catalog, state, actingPlayer, d.id, { stackId: d.target === 'enemy_stack' ? enemy : null });
+            options[d.id] = { legal: q.legal, reason: q.reason };
+          }
+          return (
+            <MiracleBook
+              catalog={catalog}
+              title="Divine interventions"
+              miracles={all}
+              favor={state.players[actingPlayer]?.wallet.favor ?? 0}
+              context="battle"
+              usedThisWeek={interventionUsedThisWeek(catalog, state, actingPlayer)}
+              options={options}
+              testId="battle-miracle-book"
+              idPrefix="battle-miracle-"
+              onClose={() => setMode({ kind: 'normal' })}
+              onInvoke={(id) => {
+                const d = catalog.interventions?.[id];
+                if (!d) return;
+                if (d.target === 'enemy_stack') setMode({ kind: 'intervention', interventionId: id });
+                else {
+                  setMode({ kind: 'normal' });
+                  act({ kind: 'BattleInvokeIntervention', interventionId: id });
+                }
+              }}
+            />
+          );
+        })()
+      : null;
 
   return (
     <div className="battle">
       <SceneViewport factory={factory} onController={onController} className="battle__scene" label="Tactical battlefield" cursor={sceneCursor} />
+      {miracleBook}
       <header className="battle-top">
         <div className="battle-side battle-side--att" style={{ ['--side' as string]: att.color }}>
           <div className="battle-side__name">{att.name}</div>
@@ -683,27 +742,7 @@ export function BattleScreen() {
             </>
           ) : mode.kind === 'miracles' && la && actingPlayer ? (
             <>
-              <span className="small">Divine intervention ({state.players[actingPlayer]?.wallet.favor ?? 0} Favor):</span>
-              {miracles.map((d) => {
-                const q = quoteIntervention(catalog, state, actingPlayer, d.id, { stackId: d.target === 'enemy_stack' ? (Object.values(battle.stacks).find((x) => x.totalHp > 0 && x.side !== la.side)?.id ?? null) : null });
-                return (
-                  <Button
-                    key={d.id}
-                    size="small"
-                    icon="favor"
-                    disabled={!q.legal}
-                    disabledReason={q.reason}
-                    title={d.summary}
-                    onClick={() => {
-                      if (d.target === 'enemy_stack') setMode({ kind: 'intervention', interventionId: d.id });
-                      else store.confirm(`Invoke ${d.name}?`, `${d.summary} Costs ${d.favorCost} Favor; the gods answer once per week.`, 'Invoke', () => act({ kind: 'BattleInvokeIntervention', interventionId: d.id }));
-                    }}
-                    data-testid={`battle-miracle-${d.id}`}
-                  >
-                    {d.name} ({d.favorCost})
-                  </Button>
-                );
-              })}
+              <span className="small">Choose a miracle in the book of Favor…</span>
               <Button size="small" onClick={() => setMode({ kind: 'normal' })}>
                 Cancel
               </Button>

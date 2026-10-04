@@ -40,7 +40,7 @@ import {
   resources,
   heroVisionRadius,
   townVisionRadius,
-  refreshMerchantStock,
+  refreshTownShops,
   grantSpecialtySpell,
   settleHeroesAtTownGates,
   heroInTown,
@@ -425,7 +425,7 @@ function buildMissionMatch(
     const town = Object.values(state.towns).find((t) => t.ownerId === h.ownerId && heroInTown(catalog, state, h, t.id));
     if (town) learnSpellsAtTown(tx, h, town);
   }
-  for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) refreshMerchantStock(tx, town);
+  for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) refreshTownShops(tx, town);
   tx.finalize();
   revealInitial(catalog, state);
   ensureStats(state);

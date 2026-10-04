@@ -16,6 +16,8 @@ export {
   GUARD_PERCENT,
   TREASURE_PERCENT,
   WEALTH_PERCENT,
+  SKIRMISH_START_WALLET,
+  SKIRMISH_MAX_EMPIRES,
   skirmishSizeAllows,
   randomMapTavernPool,
   type GuardStrength,

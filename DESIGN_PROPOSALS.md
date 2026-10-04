@@ -969,3 +969,54 @@ trigger yet (meeting a friendly hero is not a map action).
    corpses block shots (they do not today)?
 6. Town gates: which tile should be the gate when a town has several roads (today:
    the one nearest the map centre)?
+
+## Group 0.9 — owner requests of 2026-10-04 (proposed values)
+
+The owner decided *what* (the Workshop's weekly stock, rarer joining and
+fleeing, square random maps for up to six empires, three hireable heroes for
+each of the four later pantheons); the values below are proposed and not
+play-tested or measured AI-vs-AI.
+
+### 34. The Workshop's weekly wares
+
+* Four different tier-1 (rarity *treasure*) items a week, the same four in
+  every Workshop of the match (drawn from match and week), each bought once per
+  Workshop until the next week. Effect type `enables_workshop` (stock size,
+  rarities), so another building or pantheon can sell another class later.
+* Nine plain-gear items were added so the pool (12) is larger than a week's
+  stock: +1 to one commander attribute (1,000–1,200 Gold), +1 morale (1,300),
+  +5 % daily land movement (900–1,000), +1 vision, +1 mana at dawn.
+* Skirmish feature (`scope: 'expanded'` items): The Three Beacons has no wares.
+
+### 35. Neutral reactions, rarer (`systems/sites.ts`)
+
+* A neutral group facing a strong enough army that it could join now offers to
+  join with chance 1/4 (it always offered before) and flees with chance 1/4
+  (3/4 × 1/3); a group too strong to join but outmatched flees with chance 1/3
+  (it always fled before). Otherwise it stands its ground.
+* The roll is a pure function of match, group, hero and day, so reloading does
+  not change it and coming back the next day can.
+
+### 36. Random maps 0.5 (`pr-skirmishgen-0.5`)
+
+* Square at every size: the generator lays out its hexagon inside a square of
+  land; cells outside the square are `void` (black, impassable) and the
+  square's corners are mountains.
+* Two to six empires; four or more only on Large or Huge. Five empires use the
+  six-fold layout with the sixth sector left wild (its gates walled, portals
+  still in every sector).
+
+### 37. Twelve hireable heroes
+
+Three per pantheon for the Egyptian, Japanese, Celtic and Mesoamerican
+pantheons (historical or legendary figures, dignified; see the content's
+`heroes` for their stories), each with a specialty from the shared vocabulary
+(a creature family, a spell or a resource). Portraits are ordered in Brief 9.
+
+### Open questions for the owner (group 0.9)
+
+1. Workshop: is four items a week right, and should a second Workshop level
+   add minor items?
+2. Neutrals: with joining rarer, should the join price drop?
+3. Six empires: the Huge map gives each empire about the land of a Large
+   four-empire map; is that enough room?

@@ -2,7 +2,7 @@
  * AdventureSceneController (S06): the 2D adventure map, drawn in layers from a
  * view model the interface builds from committed MatchState.
  *
- *   0 sea and sky backdrop      4 decoration, map locations and heroes (depth-sorted)
+ *   0 black surround            4 decoration, map locations and heroes (depth-sorted)
  *   1 terrain (painted ground)  5 route preview, hover and selection
  *   2 roads                     6 fog of war
  *   3 hex grid, reachable area  7 cosmetic effects (glows, teleport)
@@ -14,14 +14,14 @@
  * the pointer is found by inverting the board transform, so sprite sizes never
  * change what a click selects.
  */
-import { Container, FillPattern, Graphics, Matrix, Sprite, Texture, TilingSprite } from 'pixi.js';
-import { TERRAIN_BY_CODE, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
+import { Container, FillPattern, Graphics, Matrix, Sprite, Texture } from 'pixi.js';
+import { TERRAIN_BY_CODE, TERRAIN_CODES, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
 import type { EngineHost, SceneController } from './engineHost';
 import { MAP_SQUASH, SQRT3, axialPoint, directionOf, hexPolygon, pointAxial, pointAxialFraction, type MapDirection } from './hexmath';
-import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, ROAD_COLOR, SEA_COLOR, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
+import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, ROAD_COLOR, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
 import { TweenPlayer, linear } from './tween';
-import { TERRAIN_TEXTURE_WORLD, skyArt, terrainArt, type EnvironmentArt } from './environmentArt';
+import { TERRAIN_TEXTURE_WORLD, terrainArt, type EnvironmentArt } from './environmentArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
 import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
@@ -30,8 +30,13 @@ import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './static
 import { FxPainter, type FxTarget } from './fx';
 import type { FxLook } from './fxLooks';
 
-/** Nominal map time per hex step (ms, before the Adventure animation speed setting). */
-const STEP_MS = 210;
+/**
+ * Nominal map time per hex step (ms, before the Adventure animation speed
+ * setting). Slower since 2026-10-04 (owner request: the player should feel the
+ * journey); the walk strip plays at WALK_RATE of its own pace to match.
+ */
+const STEP_MS = 360;
+const WALK_RATE = 0.7;
 /** Hex radius in view pixels at zoom 1. */
 const R = 36;
 const S = MAP_SQUASH;
@@ -39,9 +44,6 @@ const HEX_W = SQRT3 * R;
 const ZOOM_MIN = 0.42;
 const ZOOM_MAX = 2.2;
 const ZOOM_DEFAULT = 1;
-/** Sky panorama beyond the north edge (owner decision 2026-10-02): its width in hexes and the gap above row 0. */
-const SKY_WIDTH_HEXES = 70;
-const SKY_GAP = 3 * R;
 
 export type { SiteArchetype } from './sprites';
 
@@ -283,16 +285,31 @@ export class AdventureSceneController implements SceneController {
     return axialPoint(c, R, S);
   }
 
+  /** The extent of the map's own cells in view pixels (void cells of the stored array excluded). */
   private mapBounds(map: WorldMapDefinition): { minX: number; maxX: number; minY: number; maxY: number } {
+    if (this.boundsFor === map && this.bounds) return this.bounds;
     let minX = Infinity;
     let maxX = -Infinity;
-    for (const [q, r] of [[0, 0], [map.width - 1, 0], [0, map.height - 1], [map.width - 1, map.height - 1]] as const) {
-      const p = this.hexCenter({ q, r });
-      minX = Math.min(minX, p.x - HEX_W / 2);
-      maxX = Math.max(maxX, p.x + HEX_W / 2);
+    let minY = Infinity;
+    let maxY = -Infinity;
+    for (let r = 0; r < map.height; r++) {
+      for (let q = 0; q < map.width; q++) {
+        if (map.terrain[r * map.width + q] === TERRAIN_CODES.void) continue;
+        const p = this.hexCenter({ q, r });
+        minX = Math.min(minX, p.x - HEX_W / 2);
+        maxX = Math.max(maxX, p.x + HEX_W / 2);
+        minY = Math.min(minY, p.y - R * S);
+        maxY = Math.max(maxY, p.y + R * S);
+      }
     }
-    return { minX, maxX, minY: -R * S, maxY: this.hexCenter({ q: 0, r: map.height - 1 }).y + R * S };
+    if (!Number.isFinite(minX)) ({ minX, maxX, minY, maxY } = { minX: 0, maxX: HEX_W, minY: -R * S, maxY: R * S });
+    this.bounds = { minX, maxX, minY, maxY };
+    this.boundsFor = map;
+    return this.bounds;
   }
+
+  private bounds: { minX: number; maxX: number; minY: number; maxY: number } | null = null;
+  private boundsFor: WorldMapDefinition | null = null;
 
   private buildMap(map: WorldMapDefinition): void {
     for (const s of this.sites.values()) this.disposeSite(s);
@@ -320,7 +337,6 @@ export class AdventureSceneController implements SceneController {
           tex.source.style.update();
           this.terrainTextures.set(t, tex);
           this.drawTerrain();
-          if (t === 'water') this.buildBackdrop(map);
         },
         () => undefined,
       );
@@ -356,64 +372,30 @@ export class AdventureSceneController implements SceneController {
       for (let q = 0; q < map.width; q++) {
         const i = r * map.width + q;
         const t = this.terrainOf(map, i);
+        if (t === 'void') continue;
         const { x, y } = this.hexCenter({ q, r });
         const poly = hexPolygon(x, y, R * 1.012, S);
-        const n = tileNoise(q, r) * 0.06;
         const pat = patterns.get(t);
+        // One even tone per ground type: no per-tile shading, so no hex outlines show (owner request 2026-10-04).
         if (pat) {
-          // The painting shows; a light per-tile variation keeps large areas from looking flat.
-          g.poly(poly).fill({ fill: pat, color: rgbOf(0.96 + n, 0.96 + n, 0.96 + n) });
+          g.poly(poly).fill({ fill: pat, color: rgbOf(0.97, 0.97, 0.97) });
         } else {
           const base = biomeTerrainRgb(t, map.biome);
-          g.poly(poly).fill({ color: rgbOf(base[0] * tint[0] + n, base[1] * tint[1] + n, base[2] * tint[2] + n) });
+          g.poly(poly).fill({ color: rgbOf(base[0] * tint[0], base[1] * tint[1], base[2] * tint[2]) });
         }
       }
     }
   }
 
   /**
-   * The sea around the map (the climate's painted water, darker) and the sky
-   * panorama standing past the north edge (owner decision 2026-10-02): the
-   * panorama keeps its proportions, its horizon sits just above row 0, and it
-   * repeats sideways (mirrored until its seam is verified).
+   * Around the map there is only black (owner request 2026-10-04: no sea, no
+   * sky panorama past the north edge). The map's own water tiles still show.
    */
   private buildBackdrop(map: WorldMapDefinition): void {
     for (const c of this.backdrop.removeChildren()) c.destroy();
     const b = this.mapBounds(map);
     const margin = 40 * R;
-    const sky = graphicsProfile().paintedGround ? skyArt(map.biome) : null;
-    const horizonY = b.minY - SKY_GAP;
-    const seaTop = sky ? horizonY : b.minY - margin;
-    const water = this.terrainTextures.get('water');
-    if (water) {
-      const sea = new TilingSprite({ texture: water, width: b.maxX - b.minX + margin * 2, height: b.maxY + margin - seaTop });
-      sea.position.set(b.minX - margin, seaTop);
-      const span = TERRAIN_TEXTURE_WORLD * R;
-      sea.tileScale.set(span / water.width, (span * S) / water.height);
-      sea.tint = 0x99a3b3;
-      this.backdrop.addChild(sea);
-    } else {
-      const sea = new Graphics().rect(b.minX - margin, seaTop, b.maxX - b.minX + margin * 2, b.maxY + margin - seaTop).fill({ color: colorOf(SEA_COLOR) });
-      this.backdrop.addChild(sea);
-    }
-    if (!sky) return;
-    void loadTexture(sky.url).then(
-      (tex) => {
-        if (this.disposed || this.map !== map) return;
-        const w = SKY_WIDTH_HEXES * HEX_W;
-        const h = (w * sky.height) / sky.width;
-        const horizon = sky.horizon ?? 0.62;
-        tex.source.style.addressModeU = sky.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
-        tex.source.style.addressModeV = 'clamp-to-edge';
-        const band = new TilingSprite({ texture: tex, width: b.maxX - b.minX + margin * 2, height: h });
-        band.tileScale.set(w / tex.width, h / tex.height);
-        // Centre one copy of the panorama on the map.
-        band.tilePosition.x = (b.maxX - b.minX + margin * 2) / 2 - w / 2;
-        band.position.set(b.minX - margin, horizonY - horizon * h);
-        this.backdrop.addChildAt(band, 0);
-      },
-      () => undefined,
-    );
+    this.backdrop.addChild(new Graphics().rect(b.minX - margin, b.minY - margin, b.maxX - b.minX + margin * 2, b.maxY - b.minY + margin * 2).fill({ color: 0x000000 }));
   }
 
   private decorSprite(kind: string, size: number, mirror: boolean): Container | null {
@@ -476,15 +458,17 @@ export class AdventureSceneController implements SceneController {
     for (let i = 0; i < map.width * map.height; i++) {
       const q = i % map.width;
       const r = Math.floor(i / map.width);
+      if (this.terrainOf(map, i) === 'void') continue;
       const known = explored[i] === 1;
       const vis = visible.has(i);
       for (const d of this.decorByTile.get(i) ?? []) d.visible = known;
       const { x, y } = this.hexCenter({ q, r });
       if (!known) {
-        const n = 0.02 * tileNoise(q + 7, r + 3);
-        fog.poly(hexPolygon(x, y, R * 1.03, S)).fill({ color: rgbOf(unknown[0] + n, unknown[1] + n, unknown[2] + n * 1.4) });
+        // Unexplored ground is plain black, like the space around the map (owner request 2026-10-04).
+        fog.poly(hexPolygon(x, y, R * 1.03, S)).fill({ color: rgbOf(unknown[0], unknown[1], unknown[2]) });
       } else {
-        if (!vis) fog.poly(hexPolygon(x, y, R * 1.012, S)).fill({ color: 0x000000, alpha: 0.42 });
+        // Remembered tiles: shaded whole hexes meeting edge to edge (no darker seams between tiles).
+        if (!vis) fog.poly(hexPolygon(x, y, R, S)).fill({ color: 0x000000, alpha: 0.42 });
         if (this.gridMode === 'always') grid.poly(hexPolygon(x, y, R * 0.985, S));
       }
     }
@@ -514,7 +498,8 @@ export class AdventureSceneController implements SceneController {
     if (!tiles || tiles.length === 0) return;
     for (const c of tiles) {
       const { x, y } = this.hexCenter(c);
-      g.poly(hexPolygon(x, y, R * 0.86, S));
+      // Whole hexes that meet edge to edge: no lines between tiles (owner request 2026-10-04).
+      g.poly(hexPolygon(x, y, R, S));
     }
     g.fill({ color: colorOf(HIGHLIGHT_REACH), alpha: 0.2 });
   }
@@ -923,7 +908,11 @@ export class AdventureSceneController implements SceneController {
     this.logFx(fx.id);
     const { look, id } = fx;
     const caster = fx.caster ? this.heroes.get(fx.caster) : undefined;
-    if (caster && caster.root.visible) await this.painter.cast(look, { x: caster.root.x, y: caster.root.y }, `${id}.cast`);
+    if (caster && caster.root.visible) {
+      // A delivered `cast` strip (GPT6_BRIEF_11) plays with the sigil; until then the sigil alone.
+      const anim = !caster.monster && caster.figure.has('cast') ? caster.figure.playOnce('cast', this.tweens) : null;
+      await Promise.all([this.painter.cast(look, { x: caster.root.x, y: caster.root.y }, `${id}.cast`), anim]);
+    }
     const jobs: Promise<void>[] = [this.painter.screenFx(look.screen, look.school, 1, `${id}.screen`)];
     if (fx.area) jobs.push(this.painter.area(look, this.hexCenter(fx.area.center), (fx.area.radius + 0.5) * HEX_W, `${id}.area`));
     (fx.heroIds ?? []).forEach((hid, i) => {
@@ -964,6 +953,10 @@ export class AdventureSceneController implements SceneController {
     }
     e.prepares += 1;
     e.clip = 'prepare';
+    // A delivered `prepare` strip (GPT6_BRIEF_11: the rider readies for battle) plays once
+    // within the beat; until then the code-drawn rise of the rider is all there is.
+    const strip = !e.monster && e.figure.has('prepare');
+    if (strip) void e.figure.playOnce('prepare', this.tweens, { hold: true });
     const ms = 1200 * speed;
     const outcome = await new Promise<PrepareOutcome>((resolve) => {
       let done = false;
@@ -982,8 +975,10 @@ export class AdventureSceneController implements SceneController {
       void tw
         .tween(ms, (t) => {
           const k = Math.sin(t * Math.PI);
-          e.figure.pose.y = -k * R * 0.22;
-          e.figure.pose.scale.y = 1 + k * 0.06;
+          if (!strip) {
+            e.figure.pose.y = -k * R * 0.22;
+            e.figure.pose.scale.y = 1 + k * 0.06;
+          }
           e.marks?.scale.set(1 + k * 0.12);
         })
         .then(() => {
@@ -1056,12 +1051,22 @@ export class AdventureSceneController implements SceneController {
     return { x: (x - this.world.x) / z, y: (y - this.world.y) / z };
   }
 
+  /**
+   * Keep the view on the map: at most a thin band (half a hex) beyond its
+   * edges shows (owner request 2026-10-04); a map smaller than the view is
+   * centred on that axis.
+   */
   private clampCam(): void {
     const map = this.map;
     if (!map) return;
     const b = this.mapBounds(map);
-    this.cam.x = Math.max(b.minX - 2 * R, Math.min(b.maxX + 2 * R, this.cam.x));
-    this.cam.y = Math.max(b.minY - SKY_GAP - 2 * R, Math.min(b.maxY + 2 * R, this.cam.y));
+    const z = Math.max(0.01, this.cam.zoom);
+    const halfW = this.view.width / 2 / z;
+    const halfH = this.view.height / 2 / z;
+    const m = R * 0.5;
+    const axis = (v: number, lo: number, hi: number, half: number) => (hi - lo + 2 * m <= half * 2 ? (lo + hi) / 2 : Math.max(lo - m + half, Math.min(hi + m - half, v)));
+    this.cam.x = axis(this.cam.x, b.minX, b.maxX, halfW);
+    this.cam.y = axis(this.cam.y, b.minY, b.maxY, halfH);
   }
 
   focus(c: HexCoord, animate = true): void {
@@ -1104,6 +1109,7 @@ export class AdventureSceneController implements SceneController {
     const p = this.toWorld(x, y);
     const c = pointAxial(p.x, p.y, R, S);
     if (c.q < 0 || c.r < 0 || c.q >= this.map.width || c.r >= this.map.height) return null;
+    if (this.terrainOf(this.map, c.r * this.map.width + c.q) === 'void') return null;
     return c;
   }
 
@@ -1179,7 +1185,7 @@ export class AdventureSceneController implements SceneController {
     this.hoverHex = c;
     const g = this.hover;
     g.clear();
-    if (!c || !this.isExplored(c) || this.gridMode === 'off') {
+    if (!c || !this.isExplored(c) || this.gridMode === 'off' || (this.map && this.terrainOf(this.map, c.r * this.map.width + c.q) === 'void')) {
       g.visible = false;
       return;
     }
@@ -1221,7 +1227,7 @@ export class AdventureSceneController implements SceneController {
           for (const [id, h] of this.heroes) if (h === e) this.releaseArrival(id);
         }
       }
-      if (motion || e.clip === 'walk') e.figure.tick(dt);
+      if (motion || e.clip === 'walk') e.figure.tick(dt, e.clip === 'walk' ? WALK_RATE : 1);
     }
     if (motion) for (const s of this.sites.values()) s.guard?.tick(dt);
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;

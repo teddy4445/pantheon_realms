@@ -94,6 +94,8 @@ export interface KitHero {
   readonly title: string;
   readonly classId: string;
   readonly biography: string;
+  /** Added by proposal rather than from the owner's concept board (2026-10-04: more heroes). */
+  readonly proposed?: boolean;
 }
 
 export interface PantheonKitSpec {
@@ -142,7 +144,7 @@ const DEFAULT_LABELS: Record<SupportSlot, string> = {
   tavern: 'Tavern / Heroes’ Lodge',
   marketplace: 'Marketplace',
   resource_depot: 'Resource Depot',
-  workshop: 'Blacksmith / Workshop',
+  workshop: 'Workshop',
   mage_guild: 'Mage Guild / Sanctum',
   pantheon_temple: 'Pantheon Temple',
   fortifications: 'Fortifications / Gatehouse',
@@ -242,7 +244,7 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
       case 'resource_depot':
         return '+1 Wood and +1 Stone per day.';
       case 'workshop':
-        return `Military prerequisite (${t4.dwellingNames[0]}, ${nameOf('civic_hall', 3)}).`;
+        return `Military prerequisite (${t4.dwellingNames[0]}, ${nameOf('civic_hall', 3)}). Sells four tier-1 items each week where the scenario has them; each one once a week.`;
       case 'mage_guild':
         return ['Tier-1 spells; sells spellbooks (500 Gold).', 'Tier-2 spells.', 'Tier-3 spells (Wisdom required to learn).'][lvl - 1]!;
       case 'pantheon_temple':
@@ -418,7 +420,9 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
     biography: h.biography,
     portraitAssetId: `hero.${p}.${slug(h.name)}.portrait`,
     availability: 'hireable',
-    provenance: { source: 'concept-board', note: `Name and title from the owner ${spec.name} board; class assignment proposed.` },
+    provenance: h.proposed
+      ? { source: 'proposed-this-build', note: `Owner request 2026-10-04: more ${spec.name} heroes. Name, title, class, story and specialty proposed (unplaytested).` }
+      : { source: 'concept-board', note: `Name and title from the owner ${spec.name} board; class assignment proposed.` },
   }));
 
   const pantheon: PantheonDefinition = {

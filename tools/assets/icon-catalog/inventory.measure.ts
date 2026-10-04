@@ -25,6 +25,7 @@ import { ARTIFACT_KIND_GLYPH, SPELL_EFFECT_ART } from '../../../packages/ui/src/
 import { resolveAsset } from '../../../packages/ui/src/assets/manifest';
 import { ABILITY_GLYPH } from '../../../packages/ui/src/components/badges';
 import { BRIEFS, EFFECT_VISUAL, MARKERS, STYLE } from './briefs';
+import { GOD_ICONS } from '../briefs/godIcons';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const OUT = join(ROOT, 'assets-source', 'icons');
@@ -321,6 +322,18 @@ it('writes the icon inventory', () => {
     priority: 'later' as const,
   }));
   sections.push({ id: 'interventions', title: 'Divine interventions', intro: 'Miracles bought with Favor (skirmish feature).', size: '96 × 96 px PNG, transparent', rows: interventions });
+
+  // --- 7b. God-card icons (GPT6_BRIEF_8 part B; not used by the Pantheon screen until delivered)
+  const godIcons: Row[] = GOD_ICONS.map((g) => ({
+    assetId: g.id,
+    name: g.name,
+    group: `God card · ${g.group}`,
+    where: 'Pantheon screen god cards (planned icon row; the cards show sentences today)',
+    current: artFile(g.id) ?? { type: 'procedural', note: 'not shown yet (sentence on the card)' },
+    brief: `${g.name}: ${g.meaning}. Draw: ${g.draw}.`,
+    priority: 'later' as const,
+  }));
+  sections.push({ id: 'god-icons', title: 'God-card icons', intro: 'Price, advantage and choice icons for the god cards (Brief 8 part B). The card layout that uses them is built once they are delivered.', size: '256 × 256 px PNG, transparent (shown at 20–32 px)', rows: godIcons });
 
   // --- 8. Creature abilities (proposed IDs)
   const abilities: Row[] = Object.values(c.abilities)

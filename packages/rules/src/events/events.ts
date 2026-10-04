@@ -71,8 +71,8 @@ export type GameEventPayload =
   // Town services (proposed this build)
   | { kind: 'OfferingMade'; townId: TownId; playerId: PlayerId; favor: number; creatures: number }
   | { kind: 'HeroTrained'; heroId: HeroId; townId: TownId; xp: number; gold: number }
-  | { kind: 'ArtifactPurchased'; heroId: HeroId; townId: TownId; artifactId: ArtifactId }
-  | { kind: 'MerchantRestocked'; townId: TownId; week: number; artifactIds: ArtifactId[] }
+  | { kind: 'ArtifactPurchased'; heroId: HeroId; townId: TownId; artifactId: ArtifactId; shop?: 'merchant' | 'workshop' }
+  | { kind: 'MerchantRestocked'; townId: TownId; week: number; artifactIds: ArtifactId[]; shop?: 'merchant' | 'workshop' }
   // Divine & quests
   | { kind: 'GodSelected'; playerId: PlayerId; godId: GodId }
   | { kind: 'EntitlementGranted'; playerId: PlayerId; entitlementId: EntitlementId }

@@ -66,7 +66,8 @@ export type CommandPayload =
   // --- Town services (proposed this build) ---
   | { kind: 'MakeOffering'; townId: TownId; offerings: { army: ArmyRef; slot: number; quantity: number }[] }
   | { kind: 'TrainHero'; townId: TownId; heroId: HeroId }
-  | { kind: 'BuyArtifact'; townId: TownId; heroId: HeroId; index: number }
+  /** Buy item `index` of a town's weekly stock: the Artifact Merchant's (default) or the Workshop's. */
+  | { kind: 'BuyArtifact'; townId: TownId; heroId: HeroId; index: number; shop?: 'merchant' | 'workshop' }
   // --- World map and divine interventions (proposed this build) ---
   | { kind: 'RecruitFromCamp'; heroId: HeroId; siteId: SiteId; quantity: number }
   | { kind: 'ResolveMapEvent'; heroId: HeroId; siteId: SiteId; optionIndex: number }

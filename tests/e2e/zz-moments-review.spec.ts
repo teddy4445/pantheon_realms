@@ -86,7 +86,7 @@ for (const [id, p, targeted] of BATTLE_MIRACLES) {
       const mine = Object.values(s.state.battle.sides as Record<string, { sideId: string; playerId: string | null }>).find((x) => x.playerId === 'player')!.sideId;
       const enemy = Object.values(s.state.battle.stacks as Record<string, { side: string; totalHp: number; anchor: { col: number; row: number } }>).find((x) => x.side !== mine && x.totalHp > 0)!;
       await clickBattleCell(page, enemy.anchor.col, enemy.anchor.row);
-    } else await page.getByTestId('confirm-ok').click();
+    }
     const seen = await waitForSighting(page, 'miracle-card');
     expect(seen.asset).toBe(`intervention.${id}.card`);
     await page.waitForTimeout(600);

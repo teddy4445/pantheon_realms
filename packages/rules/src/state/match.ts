@@ -184,6 +184,8 @@ export interface TownState {
   lastGiftWeek?: number;
   /** Artifact Merchant stock for `week`; a sold item leaves a null. Absent until a merchant exists. */
   merchant: { week: number; stock: (ArtifactId | null)[] } | null;
+  /** Workshop stock for `week` (same shape; absent in saves from before 2026-10-04). */
+  workshop?: { week: number; stock: (ArtifactId | null)[] } | null;
 }
 
 // ---------------------------------------------------------------------------

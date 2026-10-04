@@ -2093,6 +2093,438 @@
    "height": 1024,
    "wrap": "mirror",
    "average": "#6A879E"
+  },
+  "battlefield.beacon_clearing.ground.autumn": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#99622A",
+   "edge": "#805230"
+  },
+  "battlefield.beacon_clearing.ground.coast": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9E8C5C",
+   "edge": "#837554"
+  },
+  "battlefield.beacon_clearing.ground.desert": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B38C4E",
+   "edge": "#896E48"
+  },
+  "battlefield.beacon_clearing.ground.fjord": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#717371",
+   "edge": "#696866"
+  },
+  "battlefield.beacon_clearing.ground.high_pass": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#6D6F45",
+   "edge": "#616046"
+  },
+  "battlefield.beacon_clearing.ground.jungle": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#595224",
+   "edge": "#514D2B"
+  },
+  "battlefield.beacon_clearing.ground.moor": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1420,
+   "height": 1108,
+   "average": "#665333",
+   "edge": "#604E3A"
+  },
+  "battlefield.beacon_clearing.ground.storm_plateau": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#615C39",
+   "edge": "#5C5540"
+  },
+  "battlefield.beacon_clearing.ground.tundra": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A3A4A9",
+   "edge": "#807D7F"
+  },
+  "battlefield.coast_road.ground.autumn": {
+   "file": "art/battle/battlefield.coast_road.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9F7445",
+   "edge": "#4D767D"
+  },
+  "battlefield.coast_road.ground.coast": {
+   "file": "art/battle/battlefield.coast_road.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#988C60",
+   "edge": "#528188"
+  },
+  "battlefield.coast_road.ground.desert": {
+   "file": "art/battle/battlefield.coast_road.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B8965C",
+   "edge": "#547D7A"
+  },
+  "battlefield.coast_road.ground.fjord": {
+   "file": "art/battle/battlefield.coast_road.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#7A7E7C",
+   "edge": "#446774"
+  },
+  "battlefield.coast_road.ground.high_pass": {
+   "file": "art/battle/battlefield.coast_road.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6B7049",
+   "edge": "#42727C"
+  },
+  "battlefield.coast_road.ground.jungle": {
+   "file": "art/battle/battlefield.coast_road.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#635F32",
+   "edge": "#437579"
+  },
+  "battlefield.coast_road.ground.moor": {
+   "file": "art/battle/battlefield.coast_road.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#685E41",
+   "edge": "#447178"
+  },
+  "battlefield.coast_road.ground.storm_plateau": {
+   "file": "art/battle/battlefield.coast_road.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#606244",
+   "edge": "#456571"
+  },
+  "battlefield.coast_road.ground.tundra": {
+   "file": "art/battle/battlefield.coast_road.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A2A9B2",
+   "edge": "#567B8C"
+  },
+  "battlefield.grove.ground.autumn": {
+   "file": "art/battle/battlefield.grove.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1420,
+   "height": 1108,
+   "average": "#94571F",
+   "edge": "#873E10"
+  },
+  "battlefield.grove.ground.coast": {
+   "file": "art/battle/battlefield.grove.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#887E4D",
+   "edge": "#565A31"
+  },
+  "battlefield.grove.ground.desert": {
+   "file": "art/battle/battlefield.grove.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A2803C",
+   "edge": "#786326"
+  },
+  "battlefield.grove.ground.fjord": {
+   "file": "art/battle/battlefield.grove.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#6C716E",
+   "edge": "#4B5352"
+  },
+  "battlefield.grove.ground.high_pass": {
+   "file": "art/battle/battlefield.grove.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#5E6B34",
+   "edge": "#3E5625"
+  },
+  "battlefield.grove.ground.jungle": {
+   "file": "art/battle/battlefield.grove.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#4F541E",
+   "edge": "#334916"
+  },
+  "battlefield.grove.ground.moor": {
+   "file": "art/battle/battlefield.grove.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#58522E",
+   "edge": "#424826"
+  },
+  "battlefield.grove.ground.storm_plateau": {
+   "file": "art/battle/battlefield.grove.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#595C35",
+   "edge": "#3F4A29"
+  },
+  "battlefield.grove.ground.tundra": {
+   "file": "art/battle/battlefield.grove.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#949BA5",
+   "edge": "#656E79"
+  },
+  "battlefield.open_field.ground.autumn": {
+   "file": "art/battle/battlefield.open_field.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A16A27",
+   "edge": "#986128"
+  },
+  "battlefield.open_field.ground.coast": {
+   "file": "art/battle/battlefield.open_field.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9D894D",
+   "edge": "#8B7B43"
+  },
+  "battlefield.open_field.ground.desert": {
+   "file": "art/battle/battlefield.open_field.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B98C49",
+   "edge": "#A17B41"
+  },
+  "battlefield.open_field.ground.fjord": {
+   "file": "art/battle/battlefield.open_field.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#7D8181",
+   "edge": "#777C7E"
+  },
+  "battlefield.open_field.ground.high_pass": {
+   "file": "art/battle/battlefield.open_field.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#70723B",
+   "edge": "#71703B"
+  },
+  "battlefield.open_field.ground.jungle": {
+   "file": "art/battle/battlefield.open_field.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#5E5821",
+   "edge": "#575723"
+  },
+  "battlefield.open_field.ground.moor": {
+   "file": "art/battle/battlefield.open_field.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6A5831",
+   "edge": "#6B5835"
+  },
+  "battlefield.open_field.ground.storm_plateau": {
+   "file": "art/battle/battlefield.open_field.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#646037",
+   "edge": "#5D5736"
+  },
+  "battlefield.open_field.ground.tundra": {
+   "file": "art/battle/battlefield.open_field.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#AAACB3",
+   "edge": "#93959B"
+  },
+  "battlefield.plateau.ground.autumn": {
+   "file": "art/battle/battlefield.plateau.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#956838",
+   "edge": "#443F3E"
+  },
+  "battlefield.plateau.ground.coast": {
+   "file": "art/battle/battlefield.plateau.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#9B8A5D",
+   "edge": "#444845"
+  },
+  "battlefield.plateau.ground.desert": {
+   "file": "art/battle/battlefield.plateau.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B98F4E",
+   "edge": "#604A35"
+  },
+  "battlefield.plateau.ground.fjord": {
+   "file": "art/battle/battlefield.plateau.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#747877",
+   "edge": "#384750"
+  },
+  "battlefield.plateau.ground.high_pass": {
+   "file": "art/battle/battlefield.plateau.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6C6D48",
+   "edge": "#3C4546"
+  },
+  "battlefield.plateau.ground.jungle": {
+   "file": "art/battle/battlefield.plateau.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#585426",
+   "edge": "#31392D"
+  },
+  "battlefield.plateau.ground.moor": {
+   "file": "art/battle/battlefield.plateau.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#605538",
+   "edge": "#373A3C"
+  },
+  "battlefield.plateau.ground.storm_plateau": {
+   "file": "art/battle/battlefield.plateau.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#5B5C3D",
+   "edge": "#30383B"
+  },
+  "battlefield.plateau.ground.tundra": {
+   "file": "art/battle/battlefield.plateau.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A7AAB1",
+   "edge": "#4C5562"
+  },
+  "battlefield.ridge_pass.ground.autumn": {
+   "file": "art/battle/battlefield.ridge_pass.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1420,
+   "height": 1108,
+   "average": "#935F33",
+   "edge": "#91582E"
+  },
+  "battlefield.ridge_pass.ground.coast": {
+   "file": "art/battle/battlefield.ridge_pass.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#8A7E56",
+   "edge": "#817851"
+  },
+  "battlefield.ridge_pass.ground.desert": {
+   "file": "art/battle/battlefield.ridge_pass.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A17D47",
+   "edge": "#A17E46"
+  },
+  "battlefield.ridge_pass.ground.fjord": {
+   "file": "art/battle/battlefield.ridge_pass.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6A6E6C",
+   "edge": "#656A68"
+  },
+  "battlefield.ridge_pass.ground.high_pass": {
+   "file": "art/battle/battlefield.ridge_pass.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#676844",
+   "edge": "#626442"
+  },
+  "battlefield.ridge_pass.ground.jungle": {
+   "file": "art/battle/battlefield.ridge_pass.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#575124",
+   "edge": "#4C4C20"
+  },
+  "battlefield.ridge_pass.ground.moor": {
+   "file": "art/battle/battlefield.ridge_pass.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#605337",
+   "edge": "#5E5135"
+  },
+  "battlefield.ridge_pass.ground.storm_plateau": {
+   "file": "art/battle/battlefield.ridge_pass.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#55533D",
+   "edge": "#54523B"
+  },
+  "battlefield.ridge_pass.ground.tundra": {
+   "file": "art/battle/battlefield.ridge_pass.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9498A3",
+   "edge": "#868C96"
   }
  }
 }

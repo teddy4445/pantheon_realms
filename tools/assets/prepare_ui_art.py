@@ -168,6 +168,40 @@ def flood_cut(tile: Image.Image) -> Image.Image:
     return Image.fromarray(np.dstack([col, a * 255]).astype(np.uint8), "RGBA")
 
 
+# Resource icons are shown without their plate and frame (owner request 2026-10-04):
+# (flood tolerance, darkest luminance treated as plate) per icon — dark-grained wood
+# and stone need the gentler cut, coins, crystals and the sun disc a stricter one.
+UNFRAMED = {"res.gold": (44, 62), "res.wood": (26, 70), "res.stone": (26, 70), "res.crystal": (44, 62), "res.favor": (44, 62)}
+
+
+def unplate(framed: Image.Image, tol: float, lum_max: float, inset: float = 0.13) -> Image.Image:
+    """Cut a framed icon down to its subject: drop the frame, then the dark plate around the subject."""
+    w, h = framed.size
+    tile = framed.crop((int(w * inset), int(h * inset), int(w * (1 - inset)), int(h * (1 - inset))))
+    rgba = np.asarray(tile.convert("RGBA")).astype(np.float32)
+    rgb = rgba[:, :, :3]
+    alpha_in = rgba[:, :, 3]
+    border = np.concatenate([rgb[0], rgb[-1], rgb[:, 0], rgb[:, -1]])
+    bg = np.median(border, axis=0)
+    d = np.sqrt(((rgb - bg) ** 2).sum(axis=2))
+    lum = rgb.mean(axis=2)
+    near = (d < tol) & (lum < lum_max)
+    lab, _ = ndimage.label(near)
+    edge_labels = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
+    inside = ~np.isin(lab, list(edge_labels)) & (alpha_in > 8)
+    lab2, n = ndimage.label(inside)
+    if n > 1:
+        sizes = ndimage.sum(inside, lab2, range(1, n + 1))
+        keep = 1 + int(np.argmax(sizes))
+        inside = np.isin(lab2, [i + 1 for i, s in enumerate(sizes) if s >= 0.12 * sizes[keep - 1]])
+    inside = ndimage.binary_fill_holes(inside)
+    soft = ndimage.gaussian_filter(inside.astype(np.float32), 0.8)
+    a = np.clip(soft * 1.3, 0, 1) * (alpha_in / 255.0)
+    safe = np.maximum(a, 1e-3)[..., None]
+    col = np.where(a[..., None] < 0.999, (rgb - (1 - a[..., None]) * bg) / safe, rgb)
+    return Image.fromarray(np.dstack([np.clip(col, 0, 255), a * 255]).astype(np.uint8), "RGBA")
+
+
 def square(img: Image.Image, size: int, margin: float = 0.04) -> Image.Image:
     w, h = img.size
     side = int(max(w, h) * (1 + margin * 2))
@@ -293,6 +327,8 @@ def main() -> int:
     for aid, cx, cy, half in PACK_ICONS:
         tile = pack.crop((cx - half, cy - half, cx + half, cy + half))
         cut = crop_alpha(flood_cut(tile), pad=1, threshold=10)
+        if aid in UNFRAMED:
+            cut = crop_alpha(unplate(cut, *UNFRAMED[aid]), pad=1, threshold=10)
         icon = square(cut, ICON_SIZE, 0.03)
         out = OUT / "icons" / f"{aid}.png"
         save_png(icon, out)

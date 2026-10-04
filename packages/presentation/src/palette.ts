@@ -13,6 +13,7 @@ export const TERRAIN_COLORS: Readonly<Record<Terrain, string>> = {
   marsh: '#4d6b5c',
   mountain: '#6f6a64',
   water: '#2c5c86',
+  void: '#000000',
 };
 
 export const BIOME_TINT: Readonly<Record<string, [number, number, number]>> = {
@@ -67,7 +68,7 @@ export function biomeTerrainCss(t: Terrain, biome: string): string {
   return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
 }
 
-export const UNKNOWN_COLOR = '#0a1322';
+export const UNKNOWN_COLOR = '#000000';
 export const ROAD_COLOR = '#cdb57c';
 export const SEA_COLOR = '#0c1d31';
 export const HIGHLIGHT_REACH = '#4fc3d6';

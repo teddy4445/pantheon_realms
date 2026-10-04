@@ -1,12 +1,164 @@
 # Development Status
 
-_Last updated: 2026-10-03 · **app 0.10.0** (Windows installer for play-testing) with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
+_Last updated: 2026-10-04 · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.5`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## App 0.11.0: the delivered 2D art in the game, and the owner's 21 requests of 2026-10-04
+
+**Delivered 2D art (owner commit 071968c).** The owner's GPT-6 delivery is
+read through the manifests only (no code names a file): in
+`assets-runtime/sprites/manifest.json` all **102 creature forms**, the **six
+pantheon map heroes** (idle and walk in all eight
+directions), **41 map locations**, 6 decorations, 7 obstacles, 12 siege pieces, 2
+projectiles and 9 effect strips are `final`; only the neutral map hero is
+still a placeholder. The delivery note reports thirteen creature strips that
+hold or reuse a few generated poses to keep weapons continuous (sidecar
+`assemblyNote`; listed in the delivery's `frame-assembly-recipes.json`). Checked by screenshots (SwiftShader, 1600 × 900) in each
+context: every pantheon's hero on the map (standing, zoomed, walking in
+several directions), a revealed random map with every kind of location, a
+battle per pantheon and two neutral groups with all seven base forms against
+their upgrades, the bestiary viewer (every animation button of a sample per
+pantheon) and the hero screen. The shared effect strips (`spell.damage`,
+`spell.area`, `spell.heal`, `spell.buff`, `spell.curse`, `ward`) now stand for
+a spell's or miracle's impact when its look matches (`genericImpactOf`,
+`fx.ts`); other impacts stay code-drawn. Not checked by a person at speed on a
+GPU.
+
+**The 21 requests**, one by one (proposed values, not play-tested):
+
+1. **Encyclopedia:** the line under a creature's name (form · role) is gone.
+2. **Gods and their icons for GPT-6:** `assets-source/art/briefs/GPT6_BRIEF_8_GODS_AND_ICONS.md`
+   — part A, the 60 god portraits on 6 sheets (one per pantheon, from Brief 4's
+   descriptions); part B, **21 god-card icons** on one sheet (advantage: who
+   benefits, growth, recovery, a spell to learn, daily income, offerings,
+   fury; price: Temple, Grand Temple, City Hall, after the first choice;
+   state: patron, first/second choice, committed, excluded, permanent),
+   listed in `tools/assets/briefs/godIcons.ts` and in the icon catalog (new
+   section *God-card icons*). **The god cards do not use them yet**: the icon
+   row is built once they are delivered; until then the cards keep their
+   sentences.
+3. **Hero portraits for GPT-6:** `GPT6_BRIEF_9_HERO_PORTRAITS.md` — 74 heroes on 6
+   sheets (one per pantheon, 4 columns), with each hero's class, title and
+   story, and the dialogue bust attached where one exists.
+4. **Twelve new hireable heroes (proposed)**, three each: Egyptian Ahmose
+   (Medjay), Tiye (Vizier), Peseshet (Lector Priest); Japanese Kusunoki
+   Masashige (Daimyo), Abe no Seimei (Onmyoji), Hangaku Gozen (Samurai);
+   Celtic Medb (Chieftain), Amergin (Druid), Fergus mac Roich (Fian);
+   Mesoamerican Moctezuma Ilhuicamina (Tlatoani), Lady Six Sky (Jaguar
+   Knight), Chilam Balam (Day-keeper). Each has a specialty from the shared
+   vocabulary and a short story; they use generated portraits until Brief 9
+   is delivered. 74 heroes in all; each of these four pantheons now has 8
+   hireable heroes; the random tavern pool is 47.
+5. **Town building levels for GPT-6:** `GPT6_BRIEF_10_TOWN_BUILDING_LEVELS.md`
+   — the locations whose levels all share one painting (Civic Hall 4 levels,
+   Temple 2, Mage Guild 3, Fortifications 3 in every pantheon): 72 level
+   pictures on **6 sheets** (4 columns × 4 rows, one row per building), cut by
+   `npm run sprites:cut` into `assets-source/art/final/<level asset ID>.png`
+   and imported by `npm run art:import` (new kind `building`, kept
+   transparent, at most 512 px, into `assets-runtime/art/town/`). The town
+   already asks for the exact level's picture first, so a delivery needs no
+   code change.
+6. **The Workshop:** the Blacksmith/Workshop is called **Workshop** in every
+   pantheon. A new effect type `enables_workshop` (stock size, rarities) on
+   the Greek and Norse workshop buildings and, through the pantheon kit, on
+   the other four. Every week it shows **four different tier-1 items**
+   (rarity *treasure*; 9 new plain-gear items added, 12 in the pool) drawn
+   from the match seed and the week; a bought item is marked *Sold — back in
+   stock next week* until the new week. The store (`WorkshopModal`, from the
+   town bar or the Workshop's pop-up) shows the visiting hero who receives the
+   item, the week and days to the next stock, and four counters with icon,
+   slot, effect, price and Buy. Skirmish-only: The Three Beacons keeps its
+   content core-only, so its Workshops have no wares and no store button.
+7. **Neutral reactions:** when a strong enough army approaches, neutrals now
+   offer to **join a quarter as often** and **flee a third as often** as
+   before (`NEUTRAL_JOIN_CHANCE`, `NEUTRAL_FLEE_CHANCE`, `systems/sites.ts`);
+   otherwise they stand their ground. The roll is fixed per group, hero and
+   day (`seedFromLabel`), so reloading does not change it; the next day can.
+8. **Creature details:** statistics and abilities on the left, the animation
+   viewer on the right.
+9. **Map hero facing and animation brief:** the hero plays the strip of each
+   step's direction (all eight directions are in the manifest for the six
+   pantheons), checked through the read-only `__prHeroes` readout
+   (`facing: "e"` walking east, `"w"` walking west, on screenshots too). `GPT6_BRIEF_11_MAP_HERO_ANIMATIONS.md`
+   asks for the two missing moments for all six pantheons: **prepare**
+   (starting a battle) and **cast** (a map spell), one 12 × 5 sheet per
+   pantheon; the importer and the map view already play them when delivered
+   (until then the code-drawn rise and the sigil).
+10. **Around the map:** black — the sea, sky and per-tile noise around the map
+    are gone (new terrain `void`, code `v`, impassable, never hovered or
+    fogged).
+11. **Battle facing:** before an attack the attacker turns toward its target
+    and the target toward the attacker; after the blow both turn back to
+    their side's facing (the fallen stay as they fell).
+12. **Campaign victory:** the debrief is wider (70rem when there is a next
+    mission) and its three buttons stand on one line.
+13. **Mission summary:** no subtitle under the title; the over-time charts
+    have a 10 % padding inside their cards.
+14. **Random map setup:** no subtitle, no map picture (the settings use the
+    full width), no seed field (a new seed is drawn at each Start); up to
+    **six empires**, four or more only on Large or Huge maps (the smaller
+    sizes are disabled with the reason); a line under *Starting wealth*
+    gives the actual treasury. Random maps are **square** at every size
+    (mapgen `pr-skirmishgen-0.5`: a square of land, `void` outside it,
+    mountains in the corners; five empires use the six-fold layout with one
+    wild sector).
+15. **Map pace and frame:** the hero walks slower (360 ms per step, was 210;
+    the walk strip at 0.7× its rate). Random maps have no Objectives card.
+    The minimap is **twice as large** everywhere (it shows only the map's
+    land, black around it). The camera stops half a hex past the map's edge.
+16. **Map controls:** End Day sits at the top centre under the resources; the
+    eight buttons are centred at the bottom with no card around them.
+17. **Tiles:** no lines between tiles; the hovered tile is outlined (the
+    *Hex grid* setting now defaults to *on hover*, and a saved *always* moves
+    to *on hover* once: preferences schema 3). The tile pop-up has no "Tile"
+    title or divider, no grid position and no route cost tag (only the
+    reason when the tile cannot be reached).
+18. **Resource icons:** the plate around each resource icon is removed (the
+    `res.*` icons regenerated by `prepare_ui_art.py`; only the icon remains).
+19. **Town:** a building is built on click, with no confirmation.
+20. **Battle deaths:** a killed stack plays its hit, then its death once.
+    The cause was a race (the view applied the new state before its
+    animation hold); now `AppStore.registerPreparer` holds the stacks
+    synchronously, and `sufferBlow` / `die` never play a death twice. The
+    battle readout counts `deaths` and `hits` per stack; `round10.spec`
+    checks one death per killed stack.
+21. **Miracles:** a book in the spellbook's style (`components/miraclebook.tsx`)
+    — tabs All / Battle / Map with counts, the Favor gem, painted card
+    thumbnails with their cost, the target and the reason when unavailable —
+    in battle (an enemy-stack miracle asks for its target next; the others act
+    at once, without a confirmation) and on the map (Divine Interventions).
+
+Also: a selected option of a segmented control keeps its gold look under
+the mouse.
+
+| Command | Result |
+|---|---|
+| `npm run check` | pass — boundaries, type-check, 35 files / 337 unit tests (new: rules `workshop.test.ts`, presentation `genericImpact.test.ts`; counts updated for 74 heroes, the 47-hero tavern pool, 8 hireable heroes per later pantheon, preferences schema 3, the `void` colour, random maps 0.5) |
+| `npm run build` | pass — start-up script 1,839.60 KB / 448.99 KB gzip (0.10.0: 1,730.94 / 433.31); most of the growth is the delivered sprite manifest, which the start-up script embeds (318 KB of JSON, 194 KB in 0.10.0) |
+| `node tools/perf/load-time.mjs` (3-run medians, SwiftShader) | menu 205 / 446 ms, first scene 1,116 / 1,369 ms (local / throttled web) |
+| `npm run art:briefs` | briefs 8–11: 7, 6, 6 and 6 sheets |
+| `npm run icons:catalog` | 834 entries in 13 sections (new: *God-card icons*, 21; the twelve new heroes' portraits) |
+| `npm run sprites:queue` (run once, output not kept) | 0 sheets left in groups A–E, G and H. The generator now leaves out delivered map heroes and the reference views of forms whose strips are all final, and keeps the layouts of delivered sheets for re-cuts. Its output was **not kept**: `GPT6_2D_CONTENT_GENERATION.md` and `sheet-layouts.json` stay exactly as delivered (the delivery note asks not to rebuild the queue over the delivery). `cut_sheets.py --self-test` passed; no delivered sheet was re-cut |
+| `npm run vfx:list` | unchanged (0 looks missing) |
+| Playwright, every spec (fresh build) | 136 tests in three runs: 92 passed, 6 failed, 42 skipped (the opt-in review sweep). The 6 were test-side: four expected placeholder sprites that the owner's delivery replaced (`heroes.spec`, `sprites2d.spec`; now read the status from the manifest), one panned vertically at the opening zoom, which the tighter camera no longer allows on Twin Harbors (now zooms in first), and `groundArt.spec` expected the sky (now checks it is not loaded). Re-runs of the three specs: 14 / 14 pass. `campaign.spec` now also checks that the debrief's three buttons share one line |
+| Visual check (screenshots, 1600 × 900) | random setup (six empires), a six-empire random map, the map HUD, tile pop-up, hero walking east then west, the map and battle miracle books, the Workshop before and after a purchase, the Encyclopedia, creature details, the debrief, the mission summary |
+| `npm run desktop:build` + electron-builder (Windows NSIS x64, Linux dir) | `Pantheon-Realms-Setup-0.11.0-x64.exe`, 290,744,270 bytes, SHA-256 `d76175c4914fad9b9b582dc58398a6c355b49674f10a6217e69c6abe48f3f30a`; `app.asar` 183.8 MB, 2,616 entries, no development tools, MCP servers, sources, tests, briefs or 3D files. Unsigned; not run on Windows |
+| Packaged offline smoke (`unshare -n`, loopback only; `PR_SMOKE_EXE=…/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs`) | DESKTOP SMOKE OK: map on WebGL, saves and records written, 981 sprite files, 255 painted pictures, 338 interface images, 86 sounds, packaged without DevTools |
+
+Known limits: the shared impact strips are wired and unit-tested but were not
+seen frame by frame (the SwiftShader screenshots missed their few frames). The
+ten sky paintings are no longer shown (their files stay in the game, 1.1 MB).
+The god-card icons, hero portraits, town level pictures and
+map-hero prepare/cast strips are briefs only (nothing delivered); the new
+items and heroes show glyph and generated stand-ins (the cloak shows the
+movement glyph, a boot, until its icon is delivered). Content values changed
+without a version bump (`content-0.8.0`): 0.10.0 saves still load; an
+existing Workshop starts its stock at the next week.
 
 ## Magic and Favor effects, new sounds, app 0.10.0 (owner requests 1, 7 and 6, 2026-10-03)
 

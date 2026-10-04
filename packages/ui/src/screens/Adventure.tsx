@@ -44,6 +44,7 @@ import {
 } from '@pr/rules';
 import { biomeTerrainCss, miracleLook, spellLook } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
+import { RANDOM_TEMPLATE_ID } from '@pr/session';
 import { useStore } from '../app/context';
 import { adventureCursor } from '../app/cursorContext';
 import { cursorCss } from '../assets/cursors';
@@ -208,13 +209,31 @@ function Minimap({ catalog, state, playerId, onPick, frame }: { catalog: Content
   const ref = useRef<HTMLCanvasElement>(null);
   const map = state.world.map;
   const cell = 7;
-  const w = Math.ceil((map.width + map.height / 2) * cell);
-  const h = Math.ceil(map.height * cell * 0.87 + cell);
+  // Only the map's own cells (a square random map's void cells are left out).
+  const box = useMemo(() => {
+    let x0 = Infinity;
+    let x1 = -Infinity;
+    let r0 = Infinity;
+    let r1 = -Infinity;
+    for (let r = 0; r < map.height; r++)
+      for (let q = 0; q < map.width; q++) {
+        if (map.terrain[r * map.width + q] === 'v') continue;
+        x0 = Math.min(x0, q + r / 2);
+        x1 = Math.max(x1, q + r / 2 + 1);
+        r0 = Math.min(r0, r);
+        r1 = Math.max(r1, r);
+      }
+    return Number.isFinite(x0) ? { x0, x1, r0, r1 } : { x0: 0, x1: map.width + map.height / 2, r0: 0, r1: map.height - 1 };
+  }, [map]);
+  const w = Math.ceil((box.x1 - box.x0) * cell);
+  const h = Math.ceil((box.r1 - box.r0) * cell * 0.87 + cell);
+  const px = (q: number, r: number) => (q + r / 2 - box.x0) * cell;
+  const py = (r: number) => (r - box.r0) * cell * 0.87;
   useEffect(() => {
     const cv = ref.current;
     const ctx = cv?.getContext('2d');
     if (!cv || !ctx) return;
-    ctx.fillStyle = '#081222';
+    ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, w, h);
     const explored = state.fog[playerId]?.explored ?? [];
     for (let r = 0; r < map.height; r++) {
@@ -222,18 +241,17 @@ function Minimap({ catalog, state, playerId, onPick, frame }: { catalog: Content
         const i = r * map.width + q;
         if (explored[i] !== 1) continue;
         const code = map.terrain[i] ?? 'p';
+        if (code === 'v') continue;
         const terrain = ({ p: 'plains', f: 'forest', r: 'rough', s: 'marsh', m: 'mountain', w: 'water' } as const)[code as 'p'] ?? 'plains';
         ctx.fillStyle = biomeTerrainCss(terrain, map.biome);
-        const x = (q + r / 2) * cell;
-        const y = r * cell * 0.87;
-        ctx.fillRect(x, y, cell, cell);
+        ctx.fillRect(px(q, r), py(r), cell, cell);
       }
     }
     for (const t of Object.values(state.towns)) {
       if (explored[cellIndex(map, t.coord)] !== 1) continue;
       ctx.fillStyle = t.ownerId ? (state.players[t.ownerId]?.color ?? '#aaa') : '#aaa';
-      const x = (t.coord.q + t.coord.r / 2) * cell;
-      const y = t.coord.r * cell * 0.87;
+      const x = px(t.coord.q, t.coord.r);
+      const y = py(t.coord.r);
       ctx.fillRect(x - 2, y - 2, cell + 4, cell + 4);
       ctx.strokeStyle = '#f5e4b7';
       ctx.strokeRect(x - 2, y - 2, cell + 4, cell + 4);
@@ -243,17 +261,18 @@ function Minimap({ catalog, state, playerId, onPick, frame }: { catalog: Content
       if (hero.status !== 'active') continue;
       if (hero.ownerId !== playerId && !vis.has(cellIndex(map, hero.position))) continue;
       ctx.fillStyle = state.players[hero.ownerId]?.color ?? '#fff';
-      const x = (hero.position.q + hero.position.r / 2) * cell + cell / 2;
-      const y = hero.position.r * cell * 0.87 + cell / 2;
+      const x = px(hero.position.q, hero.position.r) + cell / 2;
+      const y = py(hero.position.r) + cell / 2;
       ctx.beginPath();
       ctx.arc(x, y, cell * 0.7, 0, Math.PI * 2);
       ctx.fill();
       ctx.strokeStyle = '#000';
       ctx.stroke();
     }
-  }, [catalog, state, playerId, map, w, h]);
-  // The part of the map the camera shows (a trapezoid: the view is tilted).
-  const framePoints = frame?.map((p) => `${((p.q + p.r / 2) * cell + cell / 2).toFixed(1)},${(p.r * cell * 0.87 + cell / 2).toFixed(1)}`).join(' ');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [catalog, state, playerId, map, w, h, box]);
+  // The part of the map the camera shows.
+  const framePoints = frame?.map((p) => `${(px(p.q, p.r) + cell / 2).toFixed(1)},${(py(p.r) + cell / 2).toFixed(1)}`).join(' ');
   return (
     <div className="minimap-wrap">
     <canvas
@@ -264,10 +283,10 @@ function Minimap({ catalog, state, playerId, onPick, frame }: { catalog: Content
       aria-label="Minimap — click to move the camera"
       onClick={(e) => {
         const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-        const px = ((e.clientX - rect.left) / rect.width) * w;
-        const py = ((e.clientY - rect.top) / rect.height) * h;
-        const r = Math.round(py / (cell * 0.87) - 0.5);
-        const q = Math.round(px / cell - r / 2 - 0.5);
+        const mx = ((e.clientX - rect.left) / rect.width) * w;
+        const my = ((e.clientY - rect.top) / rect.height) * h;
+        const r = Math.round(my / (cell * 0.87) - 0.5) + box.r0;
+        const q = Math.round(mx / cell + box.x0 - r / 2 - 0.5);
         const c = { q: Math.max(0, Math.min(map.width - 1, q)), r: Math.max(0, Math.min(map.height - 1, r)) };
         onPick(c);
       }}
@@ -320,10 +339,12 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
         ) : null}
         <div className="tile-info__title">{site ? site.def.name : terrainLabel(state, c)}</div>
       </div>
-      <div className="dim small">
-        {site ? `${siteKindLabel(site.def)} · ${terrainLabel(state, c)}` : `Tile ${c.q}, ${c.r}`}
-        {!vis ? ' · remembered' : ''}
-      </div>
+      {site || !vis ? (
+        <div className="dim small">
+          {site ? `${siteKindLabel(site.def)} · ${terrainLabel(state, c)}` : ''}
+          {!vis ? `${site ? ' · ' : ''}remembered` : ''}
+        </div>
+      ) : null}
       {site ? <p className="small">{site.def.description}</p> : null}
       {site?.def.kind.type === 'resource_site' || site?.def.kind.type === 'town' ? (
         <div className="small">
@@ -399,16 +420,7 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           ) : null}
         </div>
       ) : null}
-      {quote ? (
-        quote.reachable ? (
-          <div className="small">
-            Route: {quote.totalCost} movement {quote.reachesDestinationToday ? <Chip tone="ok">Today</Chip> : <Chip tone="warn">Beyond today</Chip>}
-            {quote.endsInEncounter ? <Chip tone="bad">Battle</Chip> : null}
-          </div>
-        ) : (
-          <div className="small danger">{quote.reason}</div>
-        )
-      ) : null}
+      {quote && !quote.reachable ? <div className="small danger">{quote.reason}</div> : null}
     </div>
   );
 }
@@ -1038,19 +1050,21 @@ export function AdventureScreen() {
               </button>
             ))}
         </Panel>
-        {store.prefs.minimap ? (
-          <Panel className="adv-minimap">
-            <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} frame={viewFrame} />
-          </Panel>
-        ) : null}
       </aside>
+      {store.prefs.minimap ? (
+        <Panel className="adv-minimap">
+          <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} frame={viewFrame} />
+        </Panel>
+      ) : null}
 
       <aside className="adv-right">
         {info ? (
-          <Panel title={pinned ? 'Tile (pinned)' : 'Tile'} className="adv-tile" actions={pinned ? <Button size="small" variant="ghost" icon="close" onClick={() => setPinned(null)} aria-label="Unpin" /> : undefined}>
+          <Panel className="adv-tile" label={pinned ? 'Tile (pinned)' : 'Tile'}>
+            {pinned ? <Button size="small" variant="ghost" icon="close" onClick={() => setPinned(null)} aria-label="Unpin" className="adv-tile__unpin" /> : null}
             <TileInfo store={store} state={state} c={info} hero={selected} />
           </Panel>
         ) : null}
+        {state.world.map.templateId === RANDOM_TEMPLATE_ID ? null : (
         <Panel title="Objectives" className="adv-objectives" headerIcon="journal" actions={<Button size="small" onClick={() => store.goto('journal')}>Journal</Button>}>
           <ul className="objective-mini">
             {objectives.map((o) => {
@@ -1072,9 +1086,16 @@ export function AdventureScreen() {
             })}
           </ul>
         </Panel>
+        )}
       </aside>
 
-      <footer className="adv-bottom panel">
+      <div className="adv-endday">
+        <Button variant="primary" size="large" icon="hourglass" onClick={endDay} disabled={!humanTurn || !!pending} disabledReason={pending ? 'Resolve the pending level-up first' : 'Wait for the other side'} data-testid="end-day">
+          End Day
+        </Button>
+      </div>
+
+      <footer className="adv-bottom">
         <div className="adv-bottom__tools">
           <Button icon="hero" onClick={() => selected && store.goto('hero', { heroId: selected.id })} disabled={!selected} title="Hero (H)">
             Hero
@@ -1123,13 +1144,8 @@ export function AdventureScreen() {
                 );
               })()}
             </span>
-          ) : (
-            <span className="dim small">Click a tile to plan a route · right-click for details · drag to pan · wheel to zoom</span>
-          )}
+          ) : null}
         </div>
-        <Button variant="primary" size="large" icon="hourglass" onClick={endDay} disabled={!humanTurn || !!pending} disabledReason={pending ? 'Resolve the pending level-up first' : 'Wait for the other side'} data-testid="end-day">
-          End Day
-        </Button>
       </footer>
     </div>
   );

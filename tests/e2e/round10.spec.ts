@@ -102,7 +102,16 @@ test('the fallen stay on the board; the winners celebrate before the result', as
   await waitFor(page, (x) => !x.state.battle, 'battle over', 90_000);
   // The final blows and the victory play out, then the winners keep cheering for a beat.
   await waitFor(page, (x) => !x.busy || x.screen !== 'battle', 'final playback', 30_000);
-  if ((await inspect(page)).screen === 'battle') await page.screenshot({ path: 'test-results/round10-victory.png' });
+  if ((await inspect(page)).screen === 'battle') {
+    await page.screenshot({ path: 'test-results/round10-victory.png' });
+    // Each fallen stack showed its hit first and its death exactly once (owner report 2026-10-04: it played twice).
+    const board = await page.evaluate(() => (globalThis as unknown as { __prBattle: () => Record<string, { down: boolean; deaths: number; hits: number }> | null }).__prBattle());
+    const fallen = Object.values(board ?? {}).filter((x) => x.down);
+    for (const f of fallen) {
+      expect(f.deaths).toBe(1);
+      expect(f.hits).toBeGreaterThanOrEqual(1);
+    }
+  }
   await waitFor(page, (x) => x.screen === 'battle-result', 'battle result', 30_000);
   expect((await inspect(page)).state.lastBattleResult.winner).toBe('attacker');
 });

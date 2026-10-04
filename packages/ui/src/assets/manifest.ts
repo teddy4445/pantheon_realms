@@ -49,7 +49,7 @@ const FINAL: Record<string, { file: string; provenance: string }> = { ...(finalA
 export interface StoryArtRecord {
   readonly id: string;
   readonly url: string;
-  readonly kind: 'bust' | 'cover' | 'ending' | 'briefing' | 'card' | 'miracle' | 'splash' | 'banner';
+  readonly kind: 'bust' | 'cover' | 'ending' | 'briefing' | 'card' | 'miracle' | 'splash' | 'banner' | 'building';
   readonly width: number;
   readonly height: number;
   /** Busts and banners: visible (non-transparent) bounds as fractions [left, top, right, bottom]. */

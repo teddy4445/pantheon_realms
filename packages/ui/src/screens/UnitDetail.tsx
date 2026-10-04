@@ -3,9 +3,10 @@
  * creature's battle sprite set (the animations its gameplay content calls for:
  * idle, move, attack, defend, hit, death, victory, plus shoot / takeoff-fly-
  * landing / ability where it has them) with playback controls and a
- * reduced-motion still, beside one panel: name, summary, statistics, growth
- * and cost, abilities with their exact rules, and lore. Each form is its own
- * page (opened from the Encyclopedia or a stack).
+ * reduced-motion still, on the right; on the left one panel: name, summary,
+ * statistics, growth and cost, abilities with their exact rules, and lore
+ * (owner request 2026-10-04). Each form is its own page (opened from the
+ * Encyclopedia or a stack).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { creatureSprites, requiredAnimations } from '@pr/presentation/core';
@@ -107,6 +108,61 @@ export function UnitDetailScreen() {
     <div className="screen unit-screen">
       <ScreenHeader title={def.name} />
       <div className="unit-layout">
+        <Panel className="unit-info" bodyClassName="scroll unit-info__body">
+          <div className="unit-head">
+            <CreaturePortrait catalog={catalog} creatureId={def.id} size="7rem" showPlaceholderTag />
+            <div className="unit-head__text">
+              <div className="unit-head__title">
+                <span className="tier-badge" title={`Tier ${def.tier}`}>T{def.tier}</span>
+                <h2 className="unit-head__name" data-testid="unit-name">
+                  {def.name}
+                </h2>
+              </div>
+              <p className="unit-head__summary">{def.summary}</p>
+            </div>
+          </div>
+          <SectionTitle>Statistics</SectionTitle>
+          <CreatureStats def={def} />
+          <div className="unit-facts">
+            <span>
+              <span className="dim">Growth</span> {fam?.baseGrowth ?? '—'} per week
+            </span>
+            <span>
+              <span className="dim">Cost</span> {def.cost ? <CostList cost={def.cost} /> : <span className="dim">—</span>}
+            </span>
+          </div>
+          <SectionTitle>Abilities</SectionTitle>
+          {def.abilityIds.length === 0 ? (
+            <p className="dim">No special abilities.</p>
+          ) : (
+            def.abilityIds.map((a) => {
+              const ab = catalog.abilities[a];
+              if (!ab) return null;
+              return (
+                <div key={a} className="ability">
+                  <div className="ability__name">
+                    <AbilityBadge catalog={catalog} abilityId={a} size="1.5rem" /> {ab.name} <span className="dim small">· {ab.activation === 'active' ? 'Active' : 'Passive'}</span>
+                  </div>
+                  <div>{ab.summary}</div>
+                  <div className="small">
+                    <strong>Exact rule:</strong> {ab.exactRule}
+                  </div>
+                  {ab.restriction ? <div className="faint small">Restriction: {ab.restriction}</div> : null}
+                </div>
+              );
+            })
+          )}
+          <SectionTitle>Lore</SectionTitle>
+          {lore ? (
+            <>
+              <p className="lore">{lore.gameLore}</p>
+              {lore.upgradeLore ? <p className="lore dim">{lore.upgradeLore}</p> : null}
+              <p className="small dim">{lore.sourceNote}</p>
+            </>
+          ) : (
+            <p className="dim">No lore written for this creature yet.</p>
+          )}
+        </Panel>
         <div className="unit-viewer panel">
           <SceneViewport factory={factory} onController={onController} className="unit-viewer__scene" label={`${def.name} animated preview`} />
           <span className="placeholder-tag unit-viewer__tag" data-testid="viewer-sprite-status" data-status={status.kind === 'ready' ? status.status : status.kind}>
@@ -164,61 +220,6 @@ export function UnitDetailScreen() {
             {states.some((st) => !own(st)) ? <div className="faint small">* Stand-in: this animation is not drawn yet; another strip plays in its place.</div> : null}
           </div>
         </div>
-        <Panel className="unit-info" bodyClassName="scroll unit-info__body">
-          <div className="unit-head">
-            <CreaturePortrait catalog={catalog} creatureId={def.id} size="7rem" showPlaceholderTag />
-            <div className="unit-head__text">
-              <h2 className="unit-head__name" data-testid="unit-name">
-                {def.name}
-              </h2>
-              <div className="unit-head__meta">
-                Tier {def.tier} · {def.form === 'upgraded' ? 'Upgraded form' : 'Base form'} · {def.roleLabel} · {def.pantheonId ? catalog.pantheons[def.pantheonId]?.name : 'Neutral'}
-              </div>
-              <p className="unit-head__summary">{def.summary}</p>
-            </div>
-          </div>
-          <SectionTitle>Statistics</SectionTitle>
-          <CreatureStats def={def} />
-          <div className="unit-facts">
-            <span>
-              <span className="dim">Growth</span> {fam?.baseGrowth ?? '—'} per week
-            </span>
-            <span>
-              <span className="dim">Cost</span> {def.cost ? <CostList cost={def.cost} /> : <span className="dim">—</span>}
-            </span>
-          </div>
-          <SectionTitle>Abilities</SectionTitle>
-          {def.abilityIds.length === 0 ? (
-            <p className="dim">No special abilities.</p>
-          ) : (
-            def.abilityIds.map((a) => {
-              const ab = catalog.abilities[a];
-              if (!ab) return null;
-              return (
-                <div key={a} className="ability">
-                  <div className="ability__name">
-                    <AbilityBadge catalog={catalog} abilityId={a} size="1.5rem" /> {ab.name} <span className="dim small">· {ab.activation === 'active' ? 'Active' : 'Passive'}</span>
-                  </div>
-                  <div>{ab.summary}</div>
-                  <div className="small">
-                    <strong>Exact rule:</strong> {ab.exactRule}
-                  </div>
-                  {ab.restriction ? <div className="faint small">Restriction: {ab.restriction}</div> : null}
-                </div>
-              );
-            })
-          )}
-          <SectionTitle>Lore</SectionTitle>
-          {lore ? (
-            <>
-              <p className="lore">{lore.gameLore}</p>
-              {lore.upgradeLore ? <p className="lore dim">{lore.upgradeLore}</p> : null}
-              <p className="small dim">{lore.sourceNote}</p>
-            </>
-          ) : (
-            <p className="dim">No lore written for this creature yet.</p>
-          )}
-        </Panel>
       </div>
     </div>
   );

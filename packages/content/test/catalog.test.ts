@@ -95,7 +95,8 @@ describe.each(PROPOSED)('%s pantheon (proposed values)', (pid) => {
       expect(['hireable', 'enemy']).toContain(h.availability);
       expect(catalog.heroClasses[h.classId]).toBeDefined();
     }
-    expect(p.heroIds.filter((id) => catalog.heroes[id]!.availability === 'hireable')).toHaveLength(5);
+    // Five concept-board heroes, plus three proposed on 2026-10-04 for the four newer pantheons (owner request).
+    expect(p.heroIds.filter((id) => catalog.heroes[id]!.availability === 'hireable')).toHaveLength(['egyptian', 'japanese', 'celtic', 'mesoamerican'].includes(p.id) ? 8 : 5);
   });
 });
 

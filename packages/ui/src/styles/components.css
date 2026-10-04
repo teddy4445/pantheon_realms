@@ -1079,7 +1079,7 @@ input[type='radio']:disabled {
 .segmented { display: inline-flex; align-self: flex-start; flex-wrap: wrap; border: 1px solid rgba(194, 154, 82, 0.55); border-radius: var(--radius-m); overflow: hidden; background: var(--plate-sunken); box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6); }
 .segmented__opt { font: inherit; font-family: var(--font-ui); font-size: 0.85rem; color: var(--text-dim); background: transparent; border: 0; border-right: 1px solid rgba(194, 154, 82, 0.3); padding: 0.36rem 0.85rem; cursor: var(--cur-pointer, pointer); transition: background var(--motion-fast), color var(--motion-fast); }
 .segmented__opt:last-child { border-right: 0; }
-.segmented__opt:hover:not(:disabled) { color: var(--gold-100); background: rgba(194, 154, 82, 0.14); }
+.segmented__opt:hover:not(:disabled):not(.is-selected) { color: var(--gold-100); background: rgba(194, 154, 82, 0.14); }
 .segmented__opt.is-selected { color: #241806; background: var(--gold-bevel); font-weight: 600; box-shadow: inset 0 1px 0 rgba(255, 250, 225, 0.7); }
 .segmented__opt:disabled { opacity: 0.45; cursor: var(--cur-default, default); }
 .text-input { font: inherit; font-family: var(--font-ui); font-size: 0.9rem; color: var(--text-strong); background: var(--plate-sunken); border: 1px solid rgba(194, 154, 82, 0.55); border-radius: var(--radius-s); box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.65); padding: 0.32rem 0.55rem; min-width: 9rem; user-select: text; }
@@ -1407,3 +1407,7 @@ input[type='radio']:disabled {
 .town-burst { position: absolute; z-index: 45; pointer-events: none; }
 /* Adventure: the coin shower over the resource bar's Gold counter (placed from the counter's position). */
 .burst--resbar { position: fixed; z-index: 60; }
+
+/* Mission/campaign victory: every action on one line (owner request 2026-10-04). */
+.debrief-actions { display: flex; flex-wrap: nowrap; align-items: center; gap: 0.6rem; width: 100%; }
+.debrief-actions .btn { white-space: nowrap; flex: none; }

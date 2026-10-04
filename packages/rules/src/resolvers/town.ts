@@ -11,6 +11,7 @@ import { scopeAllowed } from './scenario';
 import { EMPTY_RESOURCES, addResources, type ResourceBundle } from '../core/resources';
 import { getBuilding, getFamily, getTownArchetype, type ContentCatalog } from '../definitions/catalog';
 import type { EffectDefinition } from '../definitions/logic';
+import type { ArtifactRarity } from '../definitions/pantheons';
 import type { BuildingDefinition, BuildingSlotDefinition } from '../definitions/towns';
 import type { MatchState, TownState } from '../state/match';
 import { playerEffects } from './effects';
@@ -110,6 +111,13 @@ export function townVisionRadius(catalog: ContentCatalog, town: TownState): numb
 export function townTraining(catalog: ContentCatalog, town: TownState): { xp: number; gold: number } | null {
   for (const e of townEffects(catalog, town)) if (e.type === 'enables_hero_training') return { xp: e.xp, gold: e.gold };
   return null;
+}
+
+/** Workshop stock (`enables_workshop`): how many items of which classes; null without one. */
+export function townWorkshopStock(catalog: ContentCatalog, town: TownState): { stockSize: number; rarities: readonly ArtifactRarity[] } | null {
+  let best: { stockSize: number; rarities: readonly ArtifactRarity[] } | null = null;
+  for (const e of townEffects(catalog, town)) if (e.type === 'enables_workshop' && (!best || e.stockSize > best.stockSize)) best = { stockSize: e.stockSize, rarities: e.rarities };
+  return best;
 }
 
 /** Artifact Merchant stock size in this town (0 without one). */

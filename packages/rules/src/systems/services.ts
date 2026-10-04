@@ -13,11 +13,11 @@ import { hexEquals } from '../core/hex';
 import { canAfford, resources, type ResourceBundle } from '../core/resources';
 import { RngCursor, seedFromLabel } from '../core/rng';
 import { getArtifact, getCreature, type ContentCatalog } from '../definitions/catalog';
-import { freeEquipSlot } from '../definitions/pantheons';
+import { freeEquipSlot, type ArtifactRarity } from '../definitions/pantheons';
 import type { ArmyRef, MatchState, TownState } from '../state/match';
 import { resolveArmy } from '../resolvers/army';
 import { offeringRule } from '../resolvers/effects';
-import { townMerchantStockSize, townRoleBuilding, townTraining } from '../resolvers/town';
+import { townMerchantStockSize, townRoleBuilding, townTraining, townWorkshopStock } from '../resolvers/town';
 import { scopeAllowed } from '../resolvers/scenario';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { clampMovement, grant, spend } from './economy';
@@ -189,6 +189,45 @@ export function refreshMerchantStock(tx: Tx, town: TownState): void {
   tx.emit({ kind: 'MerchantRestocked', townId: town.id, week, artifactIds: [...stock] });
 }
 
+// ---------------------------------------------------------------------------
+// Workshop (`enables_workshop`; owner request 2026-10-04)
+// ---------------------------------------------------------------------------
+
+/** Items a Workshop may stock: priced, not unique, of its classes and in the scenario's scope, in stable ID order. */
+export function workshopPool(catalog: ContentCatalog, rarities: readonly ArtifactRarity[], state?: Pick<MatchState, 'scenario'>): ArtifactId[] {
+  return Object.values(catalog.artifacts)
+    .filter((a) => !!a.merchantPrice && !a.unique && rarities.includes(a.rarity ?? 'minor') && (!state || scopeAllowed(state, a.scope)))
+    .map((a) => a.id)
+    .sort();
+}
+
+/**
+ * The Workshop's stock for the current world week: `stockSize` different items
+ * drawn as a pure function of match and week (every Workshop in the match
+ * shows the same items that week; no gameplay RNG stream is touched). No-op
+ * when it is already this week's, without a Workshop, or when the scenario's
+ * content has no such items (The Three Beacons keeps expanded content off).
+ */
+export function refreshWorkshopStock(tx: Tx, town: TownState): void {
+  const ws = townWorkshopStock(tx.catalog, town);
+  if (!ws || ws.stockSize <= 0) return;
+  const week = worldWeek(tx.state, tx.profile.daysPerWeek);
+  if (town.workshop && town.workshop.week === week) return;
+  const pool = workshopPool(tx.catalog, ws.rarities, tx.state);
+  if (pool.length === 0) return;
+  const rng = new RngCursor(seedFromLabel(`workshop|${tx.state.matchId}|${week}`));
+  const stock: ArtifactId[] = [];
+  while (stock.length < ws.stockSize && pool.length > 0) stock.push(pool.splice(rng.nextInt(pool.length), 1)[0]!);
+  town.workshop = { week, stock };
+  tx.emit({ kind: 'MerchantRestocked', townId: town.id, week, artifactIds: [...stock], shop: 'workshop' });
+}
+
+/** Refresh every weekly shop of a town (Artifact Merchant and Workshop). */
+export function refreshTownShops(tx: Tx, town: TownState): void {
+  refreshMerchantStock(tx, town);
+  refreshWorkshopStock(tx, town);
+}
+
 export interface PurchaseQuote {
   readonly legal: boolean;
   readonly code: RejectionCode | null;
@@ -197,17 +236,18 @@ export interface PurchaseQuote {
   readonly cost: ResourceBundle;
 }
 
-export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, townId: TownId, heroId: HeroId, index: number): PurchaseQuote {
+export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, townId: TownId, heroId: HeroId, index: number, shop: 'merchant' | 'workshop' = 'merchant'): PurchaseQuote {
   const town = state.towns[townId];
-  const artifactId = town?.merchant?.stock[index] ?? null;
+  const stockOf = shop === 'workshop' ? town?.workshop : town?.merchant;
+  const artifactId = stockOf?.stock[index] ?? null;
   const def = artifactId ? catalog.artifacts[artifactId] : undefined;
   const cost = resources(def?.merchantPrice ?? {});
   const fail = (code: RejectionCode, reason: string): PurchaseQuote => ({ legal: false, code, reason, artifactId, cost });
   if (!town) return fail('not_found', 'Unknown town');
   if (town.ownerId !== playerId) return fail('not_owner', 'You do not own this town');
-  if (townMerchantStockSize(catalog, town) <= 0) return fail('missing_requirement', 'Requires an Artifact Merchant');
-  if (town.merchant?.week !== worldWeek(state, catalog.rulesProfile.daysPerWeek)) return fail('not_found', 'The stock changes at the start of the week');
-  if (!artifactId || !def) return fail('not_found', 'Already sold');
+  if (shop === 'workshop' ? !townWorkshopStock(catalog, town) : townMerchantStockSize(catalog, town) <= 0) return fail('missing_requirement', shop === 'workshop' ? 'Requires a Workshop' : 'Requires an Artifact Merchant');
+  if (stockOf?.week !== worldWeek(state, catalog.rulesProfile.daysPerWeek)) return fail('not_found', 'The stock changes at the start of the week');
+  if (!artifactId || !def) return fail('not_found', shop === 'workshop' ? 'Sold — back in stock next week' : 'Already sold');
   const hero = state.heroes[heroId];
   if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return fail('not_owner', 'Not your hero');
   if (!heroInTown(catalog, state, hero, town.id)) return fail('not_present', `${hero.name} must be in ${town.name}`);
@@ -217,14 +257,14 @@ export function quoteArtifactPurchase(catalog: ContentCatalog, state: MatchState
   return { legal: true, code: null, reason: null, artifactId, cost };
 }
 
-export function commitArtifactPurchase(tx: Tx, townId: TownId, heroId: HeroId, index: number): void {
-  const q = quoteArtifactPurchase(tx.catalog, tx.state, tx.actorId, townId, heroId, index);
+export function commitArtifactPurchase(tx: Tx, townId: TownId, heroId: HeroId, index: number, shop: 'merchant' | 'workshop' = 'merchant'): void {
+  const q = quoteArtifactPurchase(tx.catalog, tx.state, tx.actorId, townId, heroId, index, shop);
   if (!q.legal || !q.artifactId) reject(q.code ?? 'illegal_action', q.reason ?? 'Cannot buy');
   const town = tx.state.towns[townId]!;
   const def = getArtifact(tx.catalog, q.artifactId);
   const hero = tx.state.heroes[heroId]!;
   spend(tx, tx.actorId, q.cost, `Bought ${def.name}`);
-  town.merchant!.stock[index] = null;
+  (shop === 'workshop' ? town.workshop : town.merchant)!.stock[index] = null;
   const instance = { instanceId: tx.nextId('artifact'), artifactId: q.artifactId };
   const free = freeEquipSlot(hero.equipment, def.slot);
   if (free) {
@@ -234,6 +274,6 @@ export function commitArtifactPurchase(tx: Tx, townId: TownId, heroId: HeroId, i
     hero.backpack.push(instance);
     tx.emit({ kind: 'ArtifactGranted', heroId, artifactId: q.artifactId, location: 'backpack' });
   }
-  tx.emit({ kind: 'ArtifactPurchased', heroId, townId, artifactId: q.artifactId });
+  tx.emit({ kind: 'ArtifactPurchased', heroId, townId, artifactId: q.artifactId, ...(shop === 'workshop' ? { shop } : {}) });
   clampMovement(tx, heroId);
 }

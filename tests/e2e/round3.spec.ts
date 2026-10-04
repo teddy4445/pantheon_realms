@@ -51,7 +51,6 @@ test('random map: portals on by default and neutral creatures guard the sites', 
   await page.getByTestId('menu-new').click();
   await page.getByTestId('mode-random').click();
   await page.getByTestId('random-size-small').click();
-  await page.getByTestId('random-seed').fill('4242');
   await expect(page.getByRole('switch', { name: 'Two-way portals' })).toHaveAttribute('aria-checked', 'true');
   await page.getByTestId('random-start').click();
   const s = await waitFor(page, (x) => x.screen === 'adventure', 'game start', 30_000);

@@ -1,0 +1,2652 @@
+{
+ "schema": "pantheon-realms-sheets-1",
+ "generated": "2026-10-04",
+ "note": "Written by npm run art:briefs (GPT6_BRIEF_8–11); read by npm run sprites:cut with sheet-layouts.json. Rows and columns count from 0.",
+ "sheets": {
+  "sheet.god.greek": {
+   "group": "G8",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1152
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "god.greek.zeus.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.zeus.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "god.greek.athena.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.athena.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "god.greek.ares.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.ares.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "god.greek.apollo.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.apollo.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "god.greek.artemis.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.artemis.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "god.greek.hermes.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.hermes.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "god.greek.demeter.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.demeter.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "god.greek.hades.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.hades.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "god.greek.poseidon.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.poseidon.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "god.greek.hera.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.greek.hera.portrait.png"
+    }
+   ],
+   "file": "sheet.god.greek.png"
+  },
+  "sheet.god.norse": {
+   "group": "G8",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1152
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "god.norse.odin.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.odin.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "god.norse.thor.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.thor.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "god.norse.tyr.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.tyr.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "god.norse.frigg.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.frigg.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "god.norse.baldr.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.baldr.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "god.norse.freyja.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.freyja.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "god.norse.heimdall.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.heimdall.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "god.norse.hel.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.hel.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "god.norse.loki.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.loki.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "god.norse.njord.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.norse.njord.portrait.png"
+    }
+   ],
+   "file": "sheet.god.norse.png"
+  },
+  "sheet.god.egyptian": {
+   "group": "G8",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1152
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "god.egyptian.ra.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.ra.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "god.egyptian.set.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.set.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "god.egyptian.isis.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.isis.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "god.egyptian.anubis.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.anubis.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "god.egyptian.bastet.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.bastet.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "god.egyptian.osiris.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.osiris.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "god.egyptian.thoth.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.thoth.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "god.egyptian.horus.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.horus.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "god.egyptian.hathor.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.hathor.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "god.egyptian.sobek.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.egyptian.sobek.portrait.png"
+    }
+   ],
+   "file": "sheet.god.egyptian.png"
+  },
+  "sheet.god.japanese": {
+   "group": "G8",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1152
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "god.japanese.amaterasu.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.amaterasu.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "god.japanese.hachiman.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.hachiman.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "god.japanese.susanoo.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.susanoo.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "god.japanese.tsukuyomi.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.tsukuyomi.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "god.japanese.benzaiten.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.benzaiten.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "god.japanese.inari.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.inari.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "god.japanese.fujin.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.fujin.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "god.japanese.raijin.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.raijin.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "god.japanese.izanagi.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.izanagi.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "god.japanese.izanami.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.japanese.izanami.portrait.png"
+    }
+   ],
+   "file": "sheet.god.japanese.png"
+  },
+  "sheet.god.celtic": {
+   "group": "G8",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1152
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "god.celtic.dagda.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.dagda.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "god.celtic.morrigan.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.morrigan.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "god.celtic.brigid.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.brigid.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "god.celtic.nuada.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.nuada.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "god.celtic.danu.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.danu.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "god.celtic.cernunnos.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.cernunnos.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "god.celtic.epona.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.epona.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "god.celtic.lugh.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.lugh.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "god.celtic.arawn.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.arawn.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "god.celtic.manannan.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.celtic.manannan.portrait.png"
+    }
+   ],
+   "file": "sheet.god.celtic.png"
+  },
+  "sheet.god.mesoamerican": {
+   "group": "G8",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1152
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "god.mesoamerican.quetzalcoatl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.quetzalcoatl.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "god.mesoamerican.huitzilopochtli.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.huitzilopochtli.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "god.mesoamerican.coatlicue.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.coatlicue.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "god.mesoamerican.mixcoatl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.mixcoatl.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "god.mesoamerican.xolotl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.xolotl.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "god.mesoamerican.tlaloc.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.tlaloc.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "god.mesoamerican.tezcatlipoca.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.tezcatlipoca.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "god.mesoamerican.xiuhtecuhtli.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "god.mesoamerican.chalchiuhtlicue.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "god.mesoamerican.mictlantecuhtli.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/god.mesoamerican.mictlantecuhtli.portrait.png"
+    }
+   ],
+   "file": "sheet.god.mesoamerican.png"
+  },
+  "sheet.icons.gods": {
+   "group": "G8",
+   "target": "items",
+   "cols": 5,
+   "rows": 5,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1280,
+    1280
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "icon.bless.commanders",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.commanders.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "icon.bless.armies",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.armies.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "icon.bless.creatures",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.creatures.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "icon.bless.shooters",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.shooters.png"
+    },
+    {
+     "row": 0,
+     "col": 4,
+     "name": "icon.bless.flyers",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.flyers.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "icon.bless.growth",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.growth.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "icon.bless.recovery",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.recovery.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "icon.bless.spell_unlock",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.spell_unlock.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "icon.bless.daily_income",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.daily_income.png"
+    },
+    {
+     "row": 1,
+     "col": 4,
+     "name": "icon.bless.offering",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.offering.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "icon.bless.fury",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.bless.fury.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "icon.req.temple",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.req.temple.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "icon.req.grand_temple",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.req.grand_temple.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "icon.req.city_hall",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.req.city_hall.png"
+    },
+    {
+     "row": 2,
+     "col": 4,
+     "name": "icon.req.after_first",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.req.after_first.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "icon.god.patron",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.god.patron.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "icon.god.first_choice",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.god.first_choice.png"
+    },
+    {
+     "row": 3,
+     "col": 2,
+     "name": "icon.god.second_choice",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.god.second_choice.png"
+    },
+    {
+     "row": 3,
+     "col": 3,
+     "name": "icon.god.committed",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.god.committed.png"
+    },
+    {
+     "row": 3,
+     "col": 4,
+     "name": "icon.god.excluded",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.god.excluded.png"
+    },
+    {
+     "row": 4,
+     "col": 0,
+     "name": "icon.god.permanent",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.god.permanent.png"
+    }
+   ],
+   "file": "sheet.icons.gods.png"
+  },
+  "sheet.heroportrait.greek": {
+   "group": "G9",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    768
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "hero.greek.achilles.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.achilles.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "hero.greek.atalanta.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.atalanta.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "hero.greek.heracles.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.heracles.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "hero.greek.odysseus.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.odysseus.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "hero.greek.perseus.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.perseus.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "hero.greek.alexios.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.alexios.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "hero.greek.melas.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.melas.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "hero.greek.scout_captain.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.greek.scout_captain.portrait.png"
+    }
+   ],
+   "file": "sheet.heroportrait.greek.png"
+  },
+  "sheet.heroportrait.norse": {
+   "group": "G9",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1152
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "hero.norse.brynhild.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.brynhild.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "hero.norse.hervor.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.hervor.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "hero.norse.lagertha.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.lagertha.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "hero.norse.ragnar.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.ragnar.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "hero.norse.sigurd.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.sigurd.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "hero.norse.barrow_captain.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.barrow_captain.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "hero.norse.bone_helm.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.bone_helm.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "hero.norse.hrafn.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.hrafn.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "hero.norse.grey_jarl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.grey_jarl.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "hero.norse.ulfhild.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.norse.ulfhild.portrait.png"
+    }
+   ],
+   "file": "sheet.heroportrait.norse.png"
+  },
+  "sheet.heroportrait.egyptian": {
+   "group": "G9",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "hero.egyptian.ahmose.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.ahmose.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "hero.egyptian.cleopatra.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.cleopatra.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "hero.egyptian.hatshepsut.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.hatshepsut.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "hero.egyptian.imhotep.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.imhotep.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "hero.egyptian.nefertiti.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.nefertiti.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "hero.egyptian.peseshet.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.peseshet.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "hero.egyptian.ramses.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.ramses.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "hero.egyptian.tiye.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.tiye.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "hero.egyptian.seshet.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.seshet.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "hero.egyptian.ankhwen.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.ankhwen.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "hero.egyptian.djedkhonsu.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.djedkhonsu.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "hero.egyptian.hekaib.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.hekaib.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "hero.egyptian.iti.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.iti.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "hero.egyptian.paser.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.egyptian.paser.portrait.png"
+    }
+   ],
+   "file": "sheet.heroportrait.egyptian.png"
+  },
+  "sheet.heroportrait.japanese": {
+   "group": "G9",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "hero.japanese.abe_no_seimei.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.abe_no_seimei.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "hero.japanese.benkei.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.benkei.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "hero.japanese.hangaku_gozen.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.hangaku_gozen.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "hero.japanese.kusunoki_masashige.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.kusunoki_masashige.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "hero.japanese.momotaro.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.momotaro.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "hero.japanese.tomoe_gozen.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.tomoe_gozen.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "hero.japanese.yamato_takeru.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.yamato_takeru.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "hero.japanese.yoshitsune.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.yoshitsune.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "hero.japanese.akane.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.akane.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "hero.japanese.gonryo.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.gonryo.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "hero.japanese.kagero.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.kagero.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "hero.japanese.kurogane.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.kurogane.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "hero.japanese.oboro.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.oboro.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "hero.japanese.yamikage.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.japanese.yamikage.portrait.png"
+    }
+   ],
+   "file": "sheet.heroportrait.japanese.png"
+  },
+  "sheet.heroportrait.celtic": {
+   "group": "G9",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "hero.celtic.amergin.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.amergin.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "hero.celtic.boudicca.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.boudicca.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "hero.celtic.cu_chulainn.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.cu_chulainn.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "hero.celtic.deirdre.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.deirdre.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "hero.celtic.fergus_mac_roich.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.fergus_mac_roich.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "hero.celtic.fionn_mac_cumhaill.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "hero.celtic.medb.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.medb.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "hero.celtic.scathach.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.scathach.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "hero.celtic.orla.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.orla.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "hero.celtic.ciar.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.ciar.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "hero.celtic.corc.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.corc.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "hero.celtic.dubhghall.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.dubhghall.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "hero.celtic.fiachra.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.fiachra.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "hero.celtic.tadhg.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.celtic.tadhg.portrait.png"
+    }
+   ],
+   "file": "sheet.heroportrait.celtic.png"
+  },
+  "sheet.heroportrait.mesoamerican": {
+   "group": "G9",
+   "target": "portraits",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "opaque",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "hero.mesoamerican.chilam_balam.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.chilam_balam.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "hero.mesoamerican.eight_deer_jaguar_claw.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "hero.mesoamerican.hunahpu.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.hunahpu.portrait.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "hero.mesoamerican.lady_six_sky.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.lady_six_sky.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "hero.mesoamerican.moctezuma_ilhuicamina.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "hero.mesoamerican.nezahualcoyotl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "hero.mesoamerican.topiltzin_quetzalcoatl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "hero.mesoamerican.xbalanque.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.xbalanque.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "hero.mesoamerican.itzel.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.itzel.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "hero.mesoamerican.acatl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.acatl.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "hero.mesoamerican.itztli.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.itztli.portrait.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "hero.mesoamerican.mazatl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.mazatl.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "hero.mesoamerican.tecuani.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.tecuani.portrait.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "hero.mesoamerican.tlacatl.portrait",
+     "kind": "portrait",
+     "out": "assets-source/icons/final/hero.mesoamerican.tlacatl.portrait.png"
+    }
+   ],
+   "file": "sheet.heroportrait.mesoamerican.png"
+  },
+  "sheet.town.greek.levels": {
+   "group": "G10",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.greek.support.civic_hall.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.civic_hall.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.greek.support.civic_hall.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.civic_hall.l2.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.greek.support.civic_hall.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.civic_hall.l3.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.greek.support.civic_hall.l4",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.civic_hall.l4.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.greek.support.pantheon_temple.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.pantheon_temple.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.greek.support.pantheon_temple.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.pantheon_temple.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.greek.support.mage_guild.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.mage_guild.l1.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.greek.support.mage_guild.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.mage_guild.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.greek.support.mage_guild.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.mage_guild.l3.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.greek.support.fortifications.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.fortifications.l1.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.greek.support.fortifications.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.fortifications.l2.png"
+    },
+    {
+     "row": 3,
+     "col": 2,
+     "name": "town.greek.support.fortifications.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.fortifications.l3.png"
+    }
+   ],
+   "file": "sheet.town.greek.levels.png"
+  },
+  "sheet.town.norse.levels": {
+   "group": "G10",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.norse.support.civic_hall.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.civic_hall.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.norse.support.civic_hall.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.civic_hall.l2.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.norse.support.civic_hall.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.civic_hall.l3.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.norse.support.civic_hall.l4",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.civic_hall.l4.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.norse.support.pantheon_temple.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.pantheon_temple.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.norse.support.pantheon_temple.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.pantheon_temple.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.norse.support.mage_guild.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.mage_guild.l1.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.norse.support.mage_guild.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.mage_guild.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.norse.support.mage_guild.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.mage_guild.l3.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.norse.support.fortifications.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.fortifications.l1.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.norse.support.fortifications.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.fortifications.l2.png"
+    },
+    {
+     "row": 3,
+     "col": 2,
+     "name": "town.norse.support.fortifications.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.fortifications.l3.png"
+    }
+   ],
+   "file": "sheet.town.norse.levels.png"
+  },
+  "sheet.town.egyptian.levels": {
+   "group": "G10",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.egyptian.support.civic_hall.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.civic_hall.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.egyptian.support.civic_hall.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.civic_hall.l2.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.egyptian.support.civic_hall.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.civic_hall.l3.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.egyptian.support.civic_hall.l4",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.civic_hall.l4.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.egyptian.support.pantheon_temple.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.pantheon_temple.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.egyptian.support.pantheon_temple.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.pantheon_temple.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.egyptian.support.mage_guild.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.mage_guild.l1.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.egyptian.support.mage_guild.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.mage_guild.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.egyptian.support.mage_guild.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.mage_guild.l3.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.egyptian.support.fortifications.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.fortifications.l1.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.egyptian.support.fortifications.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.fortifications.l2.png"
+    },
+    {
+     "row": 3,
+     "col": 2,
+     "name": "town.egyptian.support.fortifications.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.fortifications.l3.png"
+    }
+   ],
+   "file": "sheet.town.egyptian.levels.png"
+  },
+  "sheet.town.japanese.levels": {
+   "group": "G10",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.japanese.support.civic_hall.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.civic_hall.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.japanese.support.civic_hall.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.civic_hall.l2.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.japanese.support.civic_hall.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.civic_hall.l3.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.japanese.support.civic_hall.l4",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.civic_hall.l4.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.japanese.support.pantheon_temple.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.pantheon_temple.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.japanese.support.pantheon_temple.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.pantheon_temple.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.japanese.support.mage_guild.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.mage_guild.l1.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.japanese.support.mage_guild.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.mage_guild.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.japanese.support.mage_guild.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.mage_guild.l3.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.japanese.support.fortifications.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.fortifications.l1.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.japanese.support.fortifications.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.fortifications.l2.png"
+    },
+    {
+     "row": 3,
+     "col": 2,
+     "name": "town.japanese.support.fortifications.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.fortifications.l3.png"
+    }
+   ],
+   "file": "sheet.town.japanese.levels.png"
+  },
+  "sheet.town.celtic.levels": {
+   "group": "G10",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.celtic.support.civic_hall.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.civic_hall.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.celtic.support.civic_hall.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.civic_hall.l2.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.celtic.support.civic_hall.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.civic_hall.l3.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.celtic.support.civic_hall.l4",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.civic_hall.l4.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.celtic.support.pantheon_temple.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.pantheon_temple.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.celtic.support.pantheon_temple.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.pantheon_temple.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.celtic.support.mage_guild.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.mage_guild.l1.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.celtic.support.mage_guild.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.mage_guild.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.celtic.support.mage_guild.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.mage_guild.l3.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.celtic.support.fortifications.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.fortifications.l1.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.celtic.support.fortifications.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.fortifications.l2.png"
+    },
+    {
+     "row": 3,
+     "col": 2,
+     "name": "town.celtic.support.fortifications.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.fortifications.l3.png"
+    }
+   ],
+   "file": "sheet.town.celtic.levels.png"
+  },
+  "sheet.town.mesoamerican.levels": {
+   "group": "G10",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.mesoamerican.support.civic_hall.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.civic_hall.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.mesoamerican.support.civic_hall.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.civic_hall.l2.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.mesoamerican.support.civic_hall.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.civic_hall.l3.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.mesoamerican.support.civic_hall.l4",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.civic_hall.l4.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.mesoamerican.support.pantheon_temple.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.pantheon_temple.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.mesoamerican.support.pantheon_temple.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.pantheon_temple.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.mesoamerican.support.mage_guild.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.mage_guild.l1.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.mesoamerican.support.mage_guild.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.mage_guild.l2.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.mesoamerican.support.mage_guild.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.mage_guild.l3.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.mesoamerican.support.fortifications.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.fortifications.l1.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.mesoamerican.support.fortifications.l2",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.fortifications.l2.png"
+    },
+    {
+     "row": 3,
+     "col": 2,
+     "name": "town.mesoamerican.support.fortifications.l3",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.fortifications.l3.png"
+    }
+   ],
+   "file": "sheet.town.mesoamerican.levels.png"
+  },
+  "sheet.heroanim.greek": {
+   "group": "G11",
+   "target": "hero",
+   "cols": 12,
+   "rows": 5,
+   "cellHexes": [
+    2.133,
+    2.133
+   ],
+   "groundY": 0.88,
+   "size": [
+    1920,
+    800
+   ],
+   "background": "transparent",
+   "segments": [
+    {
+     "row": 0,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.greek.prepare.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 0,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.greek.cast.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.greek.prepare.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.greek.cast.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.greek.prepare.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.greek.cast.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.greek.prepare.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.greek.cast.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.greek.prepare.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.greek.cast.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    }
+   ],
+   "file": "sheet.heroanim.greek.png"
+  },
+  "sheet.heroanim.norse": {
+   "group": "G11",
+   "target": "hero",
+   "cols": 12,
+   "rows": 5,
+   "cellHexes": [
+    2.133,
+    2.133
+   ],
+   "groundY": 0.88,
+   "size": [
+    1920,
+    800
+   ],
+   "background": "transparent",
+   "segments": [
+    {
+     "row": 0,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.norse.prepare.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 0,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.norse.cast.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.norse.prepare.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.norse.cast.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.norse.prepare.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.norse.cast.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.norse.prepare.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.norse.cast.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.norse.prepare.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.norse.cast.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    }
+   ],
+   "file": "sheet.heroanim.norse.png"
+  },
+  "sheet.heroanim.egyptian": {
+   "group": "G11",
+   "target": "hero",
+   "cols": 12,
+   "rows": 5,
+   "cellHexes": [
+    2.133,
+    2.133
+   ],
+   "groundY": 0.88,
+   "size": [
+    1920,
+    800
+   ],
+   "background": "transparent",
+   "segments": [
+    {
+     "row": 0,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.egyptian.prepare.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 0,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.egyptian.cast.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.egyptian.prepare.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.egyptian.cast.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.egyptian.prepare.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.egyptian.cast.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.egyptian.prepare.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.egyptian.cast.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.egyptian.prepare.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.egyptian.cast.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    }
+   ],
+   "file": "sheet.heroanim.egyptian.png"
+  },
+  "sheet.heroanim.japanese": {
+   "group": "G11",
+   "target": "hero",
+   "cols": 12,
+   "rows": 5,
+   "cellHexes": [
+    2.133,
+    2.133
+   ],
+   "groundY": 0.88,
+   "size": [
+    1920,
+    800
+   ],
+   "background": "transparent",
+   "segments": [
+    {
+     "row": 0,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.japanese.prepare.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 0,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.japanese.cast.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.japanese.prepare.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.japanese.cast.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.japanese.prepare.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.japanese.cast.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.japanese.prepare.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.japanese.cast.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.japanese.prepare.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.japanese.cast.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    }
+   ],
+   "file": "sheet.heroanim.japanese.png"
+  },
+  "sheet.heroanim.celtic": {
+   "group": "G11",
+   "target": "hero",
+   "cols": 12,
+   "rows": 5,
+   "cellHexes": [
+    2.133,
+    2.133
+   ],
+   "groundY": 0.88,
+   "size": [
+    1920,
+    800
+   ],
+   "background": "transparent",
+   "segments": [
+    {
+     "row": 0,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.celtic.prepare.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 0,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.celtic.cast.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.celtic.prepare.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.celtic.cast.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.celtic.prepare.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.celtic.cast.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.celtic.prepare.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.celtic.cast.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.celtic.prepare.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.celtic.cast.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    }
+   ],
+   "file": "sheet.heroanim.celtic.png"
+  },
+  "sheet.heroanim.mesoamerican": {
+   "group": "G11",
+   "target": "hero",
+   "cols": 12,
+   "rows": 5,
+   "cellHexes": [
+    2.133,
+    2.133
+   ],
+   "groundY": 0.88,
+   "size": [
+    1920,
+    800
+   ],
+   "background": "transparent",
+   "segments": [
+    {
+     "row": 0,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.mesoamerican.prepare.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 0,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.mesoamerican.cast.e",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.mesoamerican.prepare.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 1,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.mesoamerican.cast.ne",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.mesoamerican.prepare.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 2,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.mesoamerican.cast.n",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.mesoamerican.prepare.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 3,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.mesoamerican.cast.s",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 0,
+     "frames": 6,
+     "anim": "prepare",
+     "name": "sprite.hero.mesoamerican.prepare.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    },
+    {
+     "row": 4,
+     "col": 6,
+     "frames": 6,
+     "anim": "cast",
+     "name": "sprite.hero.mesoamerican.cast.se",
+     "fps": 6,
+     "loop": false,
+     "airborne": false
+    }
+   ],
+   "file": "sheet.heroanim.mesoamerican.png"
+  }
+ }
+}

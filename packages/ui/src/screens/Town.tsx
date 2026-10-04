@@ -569,6 +569,100 @@ function MerchantModal({ town, onClose }: { town: TownState; onClose: () => void
   );
 }
 
+/**
+ * The Workshop (owner request 2026-10-04): this week's four tier-1 wares laid
+ * out on a counter. Each can be bought once; a sold piece shows its "back next
+ * week" tag until the stock changes. Purchases go to the visiting hero.
+ */
+function WorkshopModal({ town, onClose }: { town: TownState; onClose: () => void }) {
+  const store = useStore();
+  const catalog = store.catalog;
+  const state = store.session!.state;
+  const playerId = store.session!.humanPlayerId;
+  const visitor = heroesInTown(catalog, state, town).find((h) => h.ownerId === playerId);
+  const week = worldWeek(state, catalog.rulesProfile.daysPerWeek);
+  const dpw = catalog.rulesProfile.daysPerWeek;
+  const daysLeft = dpw - ((state.day - 1) % dpw);
+  const stock = town.workshop?.week === week ? town.workshop.stock : [];
+  const wallet = state.players[playerId]!.wallet;
+  return (
+    <Modal title={`Workshop — ${town.name}`} onClose={onClose} width="62rem" testId="workshop">
+      <div className="workshop">
+        <div className="workshop__head">
+          <div className="workshop__who">
+            {visitor ? (
+              <>
+                <HeroPortrait catalog={catalog} definitionId={visitor.definitionId} name={visitor.name} size="2.8rem" />
+                <span>
+                  <span className="workshop__hero">{visitor.name}</span>
+                  <span className="small dim"> receives the purchase · backpack {visitor.backpack.length}/{catalog.rulesProfile.backpackCapacity}</span>
+                </span>
+              </>
+            ) : (
+              <span className="warn small">No hero is visiting: wares can be bought only for a hero in the town.</span>
+            )}
+          </div>
+          <div className="workshop__week" title="The wares change at the start of every week">
+            <Icon name="hourglass" className="inline-icon" /> Week {week} wares · new in {daysLeft} {daysLeft === 1 ? 'day' : 'days'}
+          </div>
+        </div>
+        {stock.length === 0 ? (
+          <p className="dim">The craftsmen have nothing to sell in this land.</p>
+        ) : (
+          <div className="workshop__counter">
+            {stock.map((id, index) => {
+              const art = id ? catalog.artifacts[id] : undefined;
+              const q = visitor ? quoteArtifactPurchase(catalog, state, playerId, town.id, visitor.id, index, 'workshop') : null;
+              const sold = !art;
+              return (
+                <div key={index} className={`ware ${sold ? 'is-sold' : ''}`} data-testid={`workshop-item-${index}`}>
+                  {art ? (
+                    <>
+                      <div className="ware__shelf">
+                        <ArtifactIcon iconAssetId={art.iconAssetId} kind={art.slot} size="5rem" rarity={art.rarity} />
+                      </div>
+                      <div className="ware__name">{art.name}</div>
+                      <div className="ware__slot">{ARTIFACT_SLOT_LABEL[art.slot]}</div>
+                      <div className="ware__fx">{art.summary}</div>
+                      <div className="ware__price">
+                        <CostList cost={q?.cost ?? resources(art.merchantPrice ?? {})} wallet={wallet} />
+                      </div>
+                      <Button
+                        variant="primary"
+                        size="small"
+                        block
+                        disabled={!q?.legal}
+                        disabledReason={q?.reason ?? 'A hero must be in the town'}
+                        onClick={() => {
+                          if (visitor && !store.dispatch({ kind: 'BuyArtifact', townId: town.id, heroId: visitor.id, index, shop: 'workshop' })) store.toast(`${visitor.name} bought ${art.name}`, 'success');
+                        }}
+                        data-testid={`workshop-buy-${index}`}
+                      >
+                        Buy
+                      </Button>
+                    </>
+                  ) : (
+                    <div className="ware__sold">
+                      <span className="ware__stamp">Sold</span>
+                      <span className="small dim">Back in stock next week</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <p className="small faint">Tier-1 wares: plain crafted gear. Each piece can be bought once a week; the same four wares stand in every Workshop this week.</p>
+      </div>
+      <div className="modal__actions">
+        <Button onClick={onClose} data-testid="workshop-close">
+          Close
+        </Button>
+      </div>
+    </Modal>
+  );
+}
+
 /** An icon-only action in the town's pop-up and economy bar (label as tooltip and accessible name). */
 function IconAction({ icon, label, onClick, disabled, reason, testId, primary }: { icon: IconName; label: string; onClick: () => void; disabled?: boolean; reason?: string | null; testId?: string; primary?: boolean }) {
   return (
@@ -596,9 +690,9 @@ export function TownScreen() {
   const town = townId ? state.towns[townId] : undefined;
   // The building pop-up is not restored on return (from recruitment, say): the town opens clean.
   const [selected, setSelected] = useState<string | null>(null);
-  const [modal, setModalState] = useState<'market' | 'tavern' | 'offering' | 'merchant' | 'gifts' | null>(null);
-  /** Town actions (market, tavern, temple, merchant) open with their own sound. */
-  const setModal = (m: 'market' | 'tavern' | 'offering' | 'merchant' | 'gifts' | null) => {
+  const [modal, setModalState] = useState<'market' | 'tavern' | 'offering' | 'merchant' | 'workshop' | 'gifts' | null>(null);
+  /** Town actions (market, tavern, temple, merchant, workshop) open with their own sound. */
+  const setModal = (m: 'market' | 'tavern' | 'offering' | 'merchant' | 'workshop' | 'gifts' | null) => {
     if (m) store.audio?.effect('ui.town_action');
     setModalState(m);
   };
@@ -672,11 +766,10 @@ export function TownScreen() {
     if (id && id !== selected) store.audio?.effect('ui.popup');
     setSelected(id);
   };
+  // Building happens at once — no confirmation (owner request 2026-10-04); the button shows the cost.
   const build = () => {
     if (!next || !quote?.legal) return;
-    store.confirm(`Build ${next.name}?`, next.summary, 'Build', () => {
-      if (!store.dispatch({ kind: 'BuildStructure', townId: town.id, buildingId: next.id })) store.toast(`${next.name} built`, 'success');
-    }, { detail: [`Cost: ${RESOURCE_KEYS.filter((k) => quote.cost[k] > 0).map((k) => `${quote.cost[k]} ${RESOURCE_LABELS[k]}`).join(', ') || 'free'}`, 'Only one building per town per day.'] });
+    if (!store.dispatch({ kind: 'BuildStructure', townId: town.id, buildingId: next.id })) store.toast(`${next.name} built`, 'success');
   };
   const family = slot ? familyForSlot(catalog, slot) : null;
   const spellbookHero = visiting.find((h) => !h.spellbook);
@@ -804,6 +897,7 @@ export function TownScreen() {
               <IconAction icon="tavern" label="Tavern" onClick={() => setModal('tavern')} disabled={!hasTavern} reason="Requires a Tavern" testId="town-tavern" />
               <IconAction icon="pantheon" label="Pantheon & gods" onClick={() => store.goto('pantheon', { townId: town.id })} testId="town-gods" />
               {townMerchantStockSize(catalog, town) > 0 ? <IconAction icon="merchant" label="Artifact Merchant" onClick={() => setModal('merchant')} testId="town-merchant" /> : null}
+              {town.workshop ? <IconAction icon="build" label="Workshop wares" onClick={() => setModal('workshop')} testId="town-workshop" /> : null}
             </div>
           </div>
 
@@ -896,6 +990,7 @@ export function TownScreen() {
                       );
                     })
                   : null}
+                {slot.role === 'workshop' && current && town.workshop ? <IconAction icon="build" label={`Workshop wares (${town.workshop.stock.filter(Boolean).length} for sale this week)`} onClick={() => setModal('workshop')} testId="workshop-open" /> : null}
                 {slot.role === 'artifact_merchant' && current ? <IconAction icon="merchant" label={`Browse artifacts (${town.merchant?.stock.filter(Boolean).length ?? 0} for sale)`} onClick={() => setModal('merchant')} testId="merchant-open" /> : null}
                 {slot.role === 'mage_guild' && current && spellbookHero && sbQuote ? (
                   <IconAction icon="spell" label={`Buy a spellbook for ${spellbookHero.name} (${sbQuote.cost.gold} Gold)`} disabled={!sbQuote.legal} reason={sbQuote.reason} onClick={() => store.dispatch({ kind: 'BuySpellbook', heroId: spellbookHero.id, townId: town.id })} testId="buy-spellbook" />
@@ -911,6 +1006,7 @@ export function TownScreen() {
       {modal === 'tavern' ? <TavernModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'offering' ? <OfferingModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'merchant' ? <MerchantModal town={town} onClose={() => setModal(null)} /> : null}
+      {modal === 'workshop' ? <WorkshopModal town={town} onClose={() => setModal(null)} /> : null}
       {modal === 'gifts' ? <GiftsModal town={town} onClose={() => setModal(null)} /> : null}
     </div>
   );

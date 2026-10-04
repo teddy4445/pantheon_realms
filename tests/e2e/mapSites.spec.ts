@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { GameDriver } from '@pr/testing';
 import { createGeneratedMatch, createRandomSkirmish, type SkirmishGenOptions } from '@pr/campaign';
-import type { HeroState, SiteDefinition } from '@pr/rules';
+import { quoteNeutralReaction, type HeroState, type SiteDefinition } from '@pr/rules';
 import { clickHex, inspect, waitFor } from './helpers';
 import { approachTile, importAndLoad, slots, writeSave } from './fixtures';
 
@@ -85,6 +85,8 @@ test('much weaker neutrals offer to join; accepting adds them without a battle',
   const target = site(d, (s) => !!s.guard && !s.guard.commander && s.kind.type !== 'town');
   const h = besides(d, target);
   h.army.slots = slots([['cyclops', 400]]);
+  // Joining is a daily chance: start on a day when these neutrals offer to join.
+  for (let k = 0; k < 60 && quoteNeutralReaction(d.catalog, d.state, h.id, target.coord).kind !== 'join'; k++) d.state.day += 1;
   const file = writeSave(d, 'neutral-join');
   await open(page, file);
   await walkTo(page, target.coord);

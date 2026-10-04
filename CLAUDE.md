@@ -70,9 +70,9 @@ node tools/perf/load-time.mjs [dist]          # start-up + first-scene load time
 python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg)
 npm run sprites:plan          # content plan (forms, animations, sites, battlefields) → assets-source/sprites/content-plan.json
 npm run sprites:placeholders  # regenerate labelled placeholder sprites + assets-runtime/sprites/manifest.json (keeps final entries)
-npm run sprites:cut           # cut GPT-6 sheets from assets-source/sprites/sheets/ into single files (layouts: sheet-layouts.json; previews in sheets/_preview/); --self-test checks the cutter
+npm run sprites:cut -- --only <sheet>  # cut ONE GPT-6 sheet from assets-source/sprites/sheets/ into single files (layouts: sheet-layouts*.json; previews in sheets/_preview/); never re-cut the delivered sheets; --self-test checks the cutter
 npm run sprites:import        # final sprites from assets-source/sprites/final/ (cut files or single files) → manifest status "final"
-npm run sprites:queue         # regenerate GPT6_2D_CONTENT_GENERATION.md + sheet-layouts.json from the manifest's actual gaps
+npm run sprites:queue         # regenerate GPT6_2D_CONTENT_GENERATION.md + sheet-layouts.json from the manifest's gaps (not over the owner's delivered guide)
 npm run vfx:list              # regenerate VFX_MAGIC_AND_FAVORS.md (spell, miracle, gift VFX still to make; looks in tools/assets/vfx/briefs.ts)
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
@@ -80,6 +80,7 @@ npm run icons:catalog    # regenerate ICON_CATALOG.md + assets-source/icons/ICON
 npm run icons:import     # register final icons dropped into assets-source/icons/final/ (named by asset ID)
 npm run cursors:import   # mouse cursors from assets-source/ui/cursors/ (Brief 7, 128 px, named by cursor ID) → 32 px + hotspots in assets-runtime/ui/cursors/
 npm run art:import       # painted art from assets-source/art/final/ → assets-runtime/art/ (story art, terrain, battlefields, skies, miracle cards, splashes, banners; never upscales)
+npm run art:briefs       # regenerate GPT-6 briefs 8–11 (god portraits + god-card icons, hero portraits, town building levels, map-hero prepare/cast) + assets-source/sprites/sheet-layouts.briefs.json
 ```
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and
@@ -102,10 +103,15 @@ Magic and Favor effects are drawn by code from the looks in
 delivered under the `fx.*` asset IDs listed in `VFX_MAGIC_AND_FAVORS.md`; a
 new spell or miracle gets a look from its effect type, so add a table entry
 only to refine it.
-`GPT6_2D_CONTENT_GENERATION.md` is the production queue for the remaining
-art, as *sheets* (many sprites per image: one per creature form, one per map
-hero, grouped objects and effects); regenerate it with `npm run sprites:queue`
-after the manifest changes.
+`GPT6_2D_CONTENT_GENERATION.md` is the guide the owner's sprite delivery
+(commit 071968c: all 140 sheets, 1,097 files) was made from; keep it as
+delivered — do not regenerate it, or `sheet-layouts.json`, over the delivery.
+The delivered final PNGs and JSON sidecars in `assets-source/sprites/final/`
+are authoritative (some strips carry held-frame repairs and reviewed
+component cuts): never re-cut all sheets; cut a new or corrected sheet alone
+with `npm run sprites:cut -- --only <sheet>`. What GPT-6 still has to make is
+in the briefs 8–11 under `assets-source/art/briefs/` (`npm run art:briefs`)
+and `VFX_MAGIC_AND_FAVORS.md`.
 
 UI tests build scenario fixtures as ordinary save files (`tests/e2e/fixtures.ts`)
 and bring them in through Load → Import — never through privileged hooks.

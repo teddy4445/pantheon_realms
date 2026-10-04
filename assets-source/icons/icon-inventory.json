@@ -515,7 +515,7 @@
           "assetId": "icon.menu.new-game",
           "name": "newgame",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Main menu; Random map setup",
+          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Main menu",
           "current": {
             "type": "art",
             "file": "assets-runtime/icons/menu-new-game.png",
@@ -2172,9 +2172,25 @@
     {
       "id": "artifacts",
       "title": "Artifacts",
-      "intro": "79 artifacts. The paper doll shows the item's own icon in its slot; until it exists the slot shows a glyph for the artifact kind (`ARTIFACT_KIND_GLYPH`). Rarity is shown by the socket frame, so the icon itself needs no frame.",
+      "intro": "88 artifacts. The paper doll shows the item's own icon in its slot; until it exists the slot shows a glyph for the artifact kind (`ARTIFACT_KIND_GLYPH`). Rarity is shown by the socket frame, so the icon itself needs no frame.",
       "size": "128 × 128 px PNG, transparent, object fills ~80 %",
       "rows": [
+        {
+          "assetId": "icon.artifact.boiled_leather_jerkin",
+          "name": "Boiled-leather Jerkin",
+          "group": "Artifact · Armor",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.defense.png",
+            "status": "placeholder"
+          },
+          "brief": "Boiled-leather Jerkin — draw the object alone, three-quarter view. Ox-hide boiled in wax until it is hard as wood.",
+          "details": "treasure · +1 commander Defense. · expanded content",
+          "lore": "Ox-hide boiled in wax until it is hard as wood. It turns a glancing blade and costs a week’s wages.",
+          "priority": "now"
+        },
         {
           "assetId": "icon.artifact.lacquered_oyoroi",
           "name": "Lacquered Ō-yoroi",
@@ -2336,6 +2352,22 @@
           "priority": "later"
         },
         {
+          "assetId": "icon.artifact.waxed_travel_cloak",
+          "name": "Waxed Travel Cloak",
+          "group": "Artifact · Shoulders",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.movement.png",
+            "status": "placeholder"
+          },
+          "brief": "Waxed Travel Cloak — draw the object alone, three-quarter view. Wool rubbed with beeswax so the rain runs off.",
+          "details": "treasure · +5% daily land movement. · expanded content",
+          "lore": "Wool rubbed with beeswax so the rain runs off. A dry rider rides longer.",
+          "priority": "now"
+        },
+        {
           "assetId": "icon.artifact.wayfarer_cloak",
           "name": "Wayfarer’s Cloak",
           "group": "Artifact · Shoulders",
@@ -2478,6 +2510,22 @@
           "details": "major · +2 hexes of adventure vision and +1 Luck. · set: Gear of Perseus · expanded content",
           "lore": "Made by the Cyclopes for the lord of the dead, it hides its wearer from every eye. A hero who wears it sees much and is seldom seen.",
           "priority": "later"
+        },
+        {
+          "assetId": "icon.artifact.copper_circlet",
+          "name": "Copper Circlet",
+          "group": "Artifact · Head",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.power.png",
+            "status": "placeholder"
+          },
+          "brief": "Copper Circlet — draw the object alone, three-quarter view. A plain band hammered from one sheet of copper.",
+          "details": "treasure · +1 commander Knowledge. · expanded content",
+          "lore": "A plain band hammered from one sheet of copper. Students wear it to keep their hair — and, they say, their thoughts — in place.",
+          "priority": "now"
         },
         {
           "assetId": "icon.artifact.phalanx_helm",
@@ -2768,6 +2816,22 @@
           "priority": "later"
         },
         {
+          "assetId": "icon.artifact.scholars_oil_lamp",
+          "name": "Scholar’s Oil Lamp",
+          "group": "Artifact · Miscellaneous",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
+            "status": "final"
+          },
+          "brief": "Scholar’s Oil Lamp — draw the object alone, three-quarter view. A small clay lamp for reading at night.",
+          "details": "treasure · +1 mana at dawn. · expanded content",
+          "lore": "A small clay lamp for reading at night. A spellcaster who studies by it wakes with one more charm remembered.",
+          "priority": "now"
+        },
+        {
           "assetId": "icon.artifact.wayfarer_compass",
           "name": "Star Compass",
           "group": "Artifact · Miscellaneous",
@@ -2830,6 +2894,22 @@
           "details": "major · +1 morale and +10% battle experience. · set: Arms of the Einherjar · expanded content",
           "lore": "The choosers of the slain drink from it before they ride. Warriors who hear it blown know they are being watched — and judged.",
           "priority": "later"
+        },
+        {
+          "assetId": "icon.artifact.watchmans_lantern",
+          "name": "Watchman’s Lantern",
+          "group": "Artifact · Miscellaneous",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
+            "status": "final"
+          },
+          "brief": "Watchman’s Lantern — draw the object alone, three-quarter view. A horn-paned lantern with a hood that throws its light forward.",
+          "details": "treasure · +1 hex of vision. · expanded content",
+          "lore": "A horn-paned lantern with a hood that throws its light forward. Night watches see farther, and so does the hero who carries one.",
+          "priority": "now"
         },
         {
           "assetId": "icon.artifact.hippeis_barding",
@@ -2912,6 +2992,22 @@
           "priority": "later"
         },
         {
+          "assetId": "icon.artifact.woven_saddle_blanket",
+          "name": "Woven Saddle Blanket",
+          "group": "Artifact · Mount",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.speed.png",
+            "status": "placeholder"
+          },
+          "brief": "Woven Saddle Blanket — draw the object alone, three-quarter view. Thick wool in the colours of the weaver’s village.",
+          "details": "treasure · +5% daily land movement. · expanded content",
+          "lore": "Thick wool in the colours of the weaver’s village. A horse that does not chafe walks an extra hour.",
+          "priority": "now"
+        },
+        {
           "assetId": "icon.artifact.champion_torc",
           "name": "Champion’s Torc",
           "group": "Artifact · Neck",
@@ -2926,6 +3022,22 @@
           "details": "minor · +1 Luck for the army. Relics of the Fallen Champion. · set: Relics of the Fallen Champion · expanded content",
           "lore": "A champion’s gold neck-ring, worn smooth by years of fighting.",
           "priority": "later"
+        },
+        {
+          "assetId": "icon.artifact.clay_votive_amulet",
+          "name": "Clay Votive Amulet",
+          "group": "Artifact · Neck",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.luck.png",
+            "status": "placeholder"
+          },
+          "brief": "Clay Votive Amulet — draw the object alone, three-quarter view. A thumb-sized figure of the household god, fired in a potter’s kiln and blessed at the town shrine.",
+          "details": "treasure · +1 morale. · expanded content",
+          "lore": "A thumb-sized figure of the household god, fired in a potter’s kiln and blessed at the town shrine. Soldiers touch it before every charge.",
+          "priority": "now"
         },
         {
           "assetId": "icon.artifact.heart_scarab",
@@ -3038,6 +3150,22 @@
           "details": "minor · +1 commander Knowledge.",
           "lore": "A ring of plain iron, engraved inside with “Know yourself.”",
           "priority": "later"
+        },
+        {
+          "assetId": "icon.artifact.bronze_seal_ring",
+          "name": "Bronze Seal Ring",
+          "group": "Artifact · Ring",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.knowledge.png",
+            "status": "placeholder"
+          },
+          "brief": "Bronze Seal Ring — draw the object alone, three-quarter view. A signet cut with a spiral.",
+          "details": "treasure · +1 commander Spell Power. · expanded content",
+          "lore": "A signet cut with a spiral. Pressed into wax it seals a letter; pressed into a palm before a spell, its owner swears, it seals the spell tighter.",
+          "priority": "now"
         },
         {
           "assetId": "icon.artifact.draupnir_echo",
@@ -3310,6 +3438,22 @@
           "details": "major · +3 commander Attack. · set: Gear of Perseus · expanded content",
           "lore": "A sickle-sword given by the god of messengers, sharp enough to take the head of a monster whose gaze turned men to stone.",
           "priority": "later"
+        },
+        {
+          "assetId": "icon.artifact.iron_shod_spear",
+          "name": "Iron-shod Spear",
+          "group": "Artifact · Weapon",
+          "pantheon": "Shared",
+          "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/stat.attack.png",
+            "status": "placeholder"
+          },
+          "brief": "Iron-shod Spear — draw the object alone, three-quarter view. Ash shaft, iron point, a smith’s mark on the socket.",
+          "details": "treasure · +1 commander Attack. · expanded content",
+          "lore": "Ash shaft, iron point, a smith’s mark on the socket. The first weapon of every militia and the last one a veteran gives up.",
+          "priority": "now"
         },
         {
           "assetId": "icon.artifact.khopesh_of_set",
@@ -4056,6 +4200,266 @@
           },
           "brief": "Gift of the Feathered Serpent: +1,000 Gold and +3 Crystal at once.",
           "details": "10 Favor · target none",
+          "priority": "later"
+        }
+      ]
+    },
+    {
+      "id": "god-icons",
+      "title": "God-card icons",
+      "intro": "Price, advantage and choice icons for the god cards (Brief 8 part B). The card layout that uses them is built once they are delivered.",
+      "size": "256 × 256 px PNG, transparent (shown at 20–32 px)",
+      "rows": [
+        {
+          "assetId": "icon.bless.commanders",
+          "name": "Your heroes",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Your heroes: the blessing applies to your heroes (commanders). Draw: a crested hero’s helmet seen from the front, gold rim, a small laurel at the brow.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.armies",
+          "name": "Your armies",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Your armies: the blessing applies to all your armies (morale, luck). Draw: a tall war banner on a pole with a forked swallow-tail flag streaming in the wind.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.creatures",
+          "name": "Your creatures",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Your creatures: the blessing applies to your creatures (with a tier range beside it). Draw: a single large clawed paw print pressed into gold.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.shooters",
+          "name": "Your shooters",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Your shooters: the blessing applies to your shooters. Draw: a recurved bow fully drawn with an arrow on the string, aimed up and right.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.flyers",
+          "name": "Your flyers",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Your flyers: the blessing applies to your flying creatures. Draw: one great spread feathered wing, pale gold with blue tips.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.growth",
+          "name": "Weekly growth",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Weekly growth: more creatures appear in your dwellings each week. Draw: an arched dwelling doorway with a green shoot springing from its threshold and three small upward chevrons above it.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.recovery",
+          "name": "Recovery after victory",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Recovery after victory: after a battle you win, stacks regain part of their losses. Draw: a small rising spirit flame inside a curved arrow that circles back on itself.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.spell_unlock",
+          "name": "Spell to learn",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Spell to learn: a spell becomes learnable at your library. Draw: an open book with a glowing golden key lying across its pages.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.daily_income",
+          "name": "Daily income",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Daily income: an income every day (shown with the resource icon). Draw: three stacked coins under the rim of a rising sun with short rays.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.offering",
+          "name": "Richer offerings",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Richer offerings: offerings at the Temple yield more Favor. Draw: a bronze altar bowl holding coins, a bright golden spark rising from it.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.bless.fury",
+          "name": "Fury of the wounded",
+          "group": "God card · advantage",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Fury of the wounded: stacks at half strength or less attack harder. Draw: a cracked round shield with a red-orange flame bursting through the crack.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.req.temple",
+          "name": "Temple needed",
+          "group": "God card · price",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Temple needed: needs a Temple (level 1) in one town. Draw: a small classical temple front: four columns under a triangular roof, gold on stone.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.req.grand_temple",
+          "name": "Grand Temple needed",
+          "group": "God card · price",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Grand Temple needed: needs the Temple’s second level. Draw: the same temple front grown taller: a second storey of columns and a sun disc on the roof.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.req.city_hall",
+          "name": "City Hall needed",
+          "group": "God card · price",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "City Hall needed: needs the third level of the civic hall. Draw: a domed civic hall with a short bell tower and a flag on top.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.req.after_first",
+          "name": "After the first choice",
+          "group": "God card · price",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "After the first choice: available only after your first choice. Draw: one golden gem on the left joined by a short glowing line to a second, unlit gem on the right.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.god.patron",
+          "name": "Patron",
+          "group": "God card · choice",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Patron: your patron god (from the start). Draw: a golden laurel crown with a small sun at its front.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.god.first_choice",
+          "name": "First choice",
+          "group": "God card · choice",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "First choice: one of the gods of your first choice. Draw: a single faceted golden star-gem with a soft glow.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.god.second_choice",
+          "name": "Second choice",
+          "group": "God card · choice",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Second choice: one of the gods of your second choice. Draw: two faceted golden star-gems side by side with a soft glow.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.god.committed",
+          "name": "Committed",
+          "group": "God card · choice",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Committed: you have committed to this god. Draw: a round golden seal with a ribbon tied in a bow below it, glowing warmly.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.god.excluded",
+          "name": "Excluded",
+          "group": "God card · choice",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Excluded: another god of this choice was chosen. Draw: a grey chain broken in the middle, its two links falling apart.",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.god.permanent",
+          "name": "Permanent",
+          "group": "God card · choice",
+          "where": "Pantheon screen god cards (planned icon row; the cards show sentences today)",
+          "current": {
+            "type": "procedural",
+            "note": "not shown yet (sentence on the card)"
+          },
+          "brief": "Permanent: the choice cannot be undone. Draw: a closed bronze padlock wrapped by a laurel sprig.",
           "priority": "later"
         }
       ]
@@ -4824,6 +5228,45 @@
           "priority": "now"
         },
         {
+          "assetId": "hero.egyptian.ahmose.portrait",
+          "name": "Ahmose",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Ahmose, Liberator of the Two Lands (Medjay). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.tiye.portrait",
+          "name": "Tiye",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Tiye, Great Royal Wife (Vizier). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.egyptian.peseshet.portrait",
+          "name": "Peseshet",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Egyptian",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Peseshet, Overseer of Physicians (Lector Priest). Proposed hero.",
+          "priority": "now"
+        },
+        {
           "assetId": "hero.japanese.momotaro.portrait",
           "name": "Momotaro",
           "group": "Hero portrait · hireable",
@@ -4886,6 +5329,45 @@
             "note": "generated placeholder bust"
           },
           "brief": "Yoshitsune, Brilliant Strategist (Daimyo). Concept-board hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.kusunoki_masashige.portrait",
+          "name": "Kusunoki Masashige",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Kusunoki Masashige, Loyal Defender (Daimyo). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.abe_no_seimei.portrait",
+          "name": "Abe no Seimei",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Abe no Seimei, Master of Onmyō (Onmyōji). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.japanese.hangaku_gozen.portrait",
+          "name": "Hangaku Gozen",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Japanese",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Hangaku Gozen, Archer of Torisaka (Samurai). Proposed hero.",
           "priority": "now"
         },
         {
@@ -4954,6 +5436,45 @@
           "priority": "now"
         },
         {
+          "assetId": "hero.celtic.medb.portrait",
+          "name": "Medb",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Medb, Queen of Connacht (Chieftain). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.amergin.portrait",
+          "name": "Amergin",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Amergin, Poet of the Landing (Druid). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.celtic.fergus_mac_roich.portrait",
+          "name": "Fergus mac Roich",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Celtic",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Fergus mac Roich, Exiled King of Ulster (Fian). Proposed hero.",
+          "priority": "now"
+        },
+        {
           "assetId": "hero.mesoamerican.hunahpu.portrait",
           "name": "Hunahpu",
           "group": "Hero portrait · hireable",
@@ -5016,6 +5537,45 @@
             "note": "generated placeholder bust"
           },
           "brief": "Eight Deer Jaguar Claw, Tactics & Divine Right (Tlatoani). Concept-board hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.moctezuma_ilhuicamina.portrait",
+          "name": "Moctezuma Ilhuicamina",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Moctezuma Ilhuicamina, Archer of the Sky (Tlatoani). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.lady_six_sky.portrait",
+          "name": "Lady Six Sky",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Lady Six Sky, Warrior Queen of Naranjo (Jaguar Knight). Proposed hero.",
+          "priority": "now"
+        },
+        {
+          "assetId": "hero.mesoamerican.chilam_balam.portrait",
+          "name": "Chilam Balam",
+          "group": "Hero portrait · hireable",
+          "pantheon": "Mesoamerican",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "procedural",
+            "note": "generated placeholder bust"
+          },
+          "brief": "Chilam Balam, Jaguar Prophet (Day Keeper). Proposed hero.",
           "priority": "now"
         },
         {
@@ -6333,8 +6893,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.brigand.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A ragged fighter with a hooded cloak, a short spear and a mismatched shield.",
           "priority": "now"
@@ -6346,8 +6907,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.brigand.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A lean outlaw in a dark scarf with a notched spear and a dented round shield.",
           "priority": "now"
@@ -6359,8 +6921,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.hill_slinger.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A shepherd in a wool cloak whirling a leather sling, a pouch of stones at the belt.",
           "priority": "now"
@@ -6372,8 +6935,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.wild_boar.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A bristling dark boar with curved tusks, head lowered to charge.",
           "priority": "now"
@@ -6385,8 +6949,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.hill_slinger.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A slinger with a braided double sling and a bag of lead shot.",
           "priority": "now"
@@ -6398,8 +6963,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.wild_boar.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A huge scarred boar with long ivory tusks and a ridge of grey bristles.",
           "priority": "now"
@@ -6411,8 +6977,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.centaur.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A centaur with a chestnut coat, simple chest protection and a melee spear.",
           "priority": "now"
@@ -6424,8 +6991,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.clay_golem.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A heavy figure of red fired clay with a blank face and a sigil pressed into its chest.",
           "priority": "now"
@@ -6437,8 +7005,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.centaur.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A centaur with foreleg protection, a tied crest and a reinforced spearhead.",
           "priority": "now"
@@ -6450,8 +7019,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.clay_golem.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A clay golem plated in green-patinated bronze, with riveted shoulders.",
           "priority": "now"
@@ -6463,8 +7033,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.wyvern.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A lean two-legged winged dragon with leathery wings and a barbed tail.",
           "priority": "now"
@@ -6476,8 +7047,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.wyvern.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A larger wyvern with a frilled crest and torn, battle-scarred wings.",
           "priority": "now"
@@ -6489,8 +7061,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.ogre.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A towering brute in hides with a knotted club over one shoulder.",
           "priority": "now"
@@ -6502,8 +7075,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.ogre.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A scarred ogre wearing a crown of bent iron and a cloak of bear fur.",
           "priority": "now"
@@ -6515,8 +7089,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.basilisk.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A great scaled serpent with a crest like a crown and pale, staring eyes.",
           "priority": "now"
@@ -6528,8 +7103,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.basilisk.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A larger basilisk with stone-grey scales and a ring of horns around its crown.",
           "priority": "now"
@@ -6541,8 +7117,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.elder_drake.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A massive four-legged dragon with bronze scales and folded wings over a heap of coins.",
           "priority": "now"
@@ -6554,8 +7131,9 @@
           "pantheon": "Shared",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.neutral.elder_drake.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "An immense dragon with horn-crowned head and scales dulled to dark gold by age.",
           "priority": "now"
@@ -6567,8 +7145,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier1.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A black long-eared creature, half hare and half goat, with golden eyes.",
           "priority": "now"
@@ -6580,8 +7159,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A great dark horse-goat with curling horns and a shaggy mane.",
           "priority": "now"
@@ -6593,8 +7173,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A shaggy dark-green hound the size of a calf with a braided tail.",
           "priority": "now"
@@ -6606,8 +7187,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A massive green hound with glowing eyes and a silver torc collar.",
           "priority": "now"
@@ -6619,8 +7201,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier3.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A grey horse with a dripping weed-tangled mane and hooves turned backwards.",
           "priority": "now"
@@ -6632,8 +7215,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A black water-horse with sea-green eyes and a mane like streaming kelp.",
           "priority": "now"
@@ -6645,8 +7229,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier4.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A pale grey-cloaked woman with long silver hair, mouth open in a cry.",
           "priority": "now"
@@ -6658,8 +7243,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A banshee in torn battle-red wrappings, hair streaming like smoke.",
           "priority": "now"
@@ -6671,8 +7257,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier5.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A great grey seal with a human gaze, rising from surf onto rocks.",
           "priority": "now"
@@ -6684,8 +7271,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A dark storm-grey selkie with a mantle of spray and sea-glass eyes.",
           "priority": "now"
@@ -6697,8 +7285,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A huge white stag with moss-hung antlers and a faint green glow.",
           "priority": "now"
@@ -6710,8 +7299,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A stag of pale gold with an antler crown hung with leaves and stars.",
           "priority": "now"
@@ -6723,8 +7313,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier7.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A towering giant with barnacled skin, a single great eye and a driftwood club.",
           "priority": "now"
@@ -6736,8 +7327,9 @@
           "pantheon": "Celtic",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "An ancient sea-giant crowned with coral, a whale-jaw club over one shoulder.",
           "priority": "now"
@@ -7155,8 +7747,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A white fox with nine fanned tails and a ring of pale fox-fire.",
           "priority": "now"
@@ -7168,8 +7761,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier2.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A green turtle-shelled creature with a water-filled dish on its head and webbed hands.",
           "priority": "now"
@@ -7181,8 +7775,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A large mossy-shelled kappa with a white beard and a bamboo staff.",
           "priority": "now"
@@ -7194,8 +7789,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier3.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A crow-winged warrior with a red long-nosed mask and a short sword.",
           "priority": "now"
@@ -7207,8 +7803,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A tengu in monk’s robes with great black wings and a feather fan.",
           "priority": "now"
@@ -7220,8 +7817,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier4.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A red-skinned horned ogre in a tiger-skin wrap carrying a studded iron club.",
           "priority": "now"
@@ -7233,8 +7831,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A blue-skinned oni in lacquered samurai armor with a huge kanabō.",
           "priority": "now"
@@ -7246,8 +7845,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A pale woman in a web-patterned kimono whose shadow has eight spider legs.",
           "priority": "now"
@@ -7259,8 +7859,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A spider-bodied woman in a gold-threaded kimono, webs glittering behind her.",
           "priority": "now"
@@ -7272,8 +7873,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A deer-like beast with dragon scales, a single antler and flames at its hooves.",
           "priority": "now"
@@ -7285,8 +7887,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A golden-scaled kirin walking on clouds, mane of white fire streaming.",
           "priority": "now"
@@ -7298,8 +7901,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier7.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A vast serpent with many heads rising from one coiled body, eyes red as lanterns.",
           "priority": "now"
@@ -7311,8 +7915,9 @@
           "pantheon": "Japanese",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "An eight-headed serpent with gold scales and a golden crest on every head.",
           "priority": "now"
@@ -7324,8 +7929,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A green serpent with a ruff of quetzal feathers around its head.",
           "priority": "now"
@@ -7337,8 +7943,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A turquoise serpent with long feathered wings spread against a gold sky.",
           "priority": "now"
@@ -7350,8 +7957,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A black-spotted golden jaguar with jade eyes, crouched to spring.",
           "priority": "now"
@@ -7363,8 +7971,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A bright-gold jaguar with a sun-disc pattern across its shoulders.",
           "priority": "now"
@@ -7376,8 +7985,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A warrior in a feathered eagle-head helmet holding an atlatl and darts.",
           "priority": "now"
@@ -7389,8 +7999,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "An eagle warrior in golden feathers with a sun-ray shield and a bundle of darts.",
           "priority": "now"
@@ -7402,8 +8013,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A dark crocodile with jade-green scutes emerging from still blue water.",
           "priority": "now"
@@ -7415,8 +8027,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A great crocodile with carved jade plates bound to its back.",
           "priority": "now"
@@ -7428,8 +8041,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A tall bat-headed figure with leathery wings and an obsidian blade.",
           "priority": "now"
@@ -7441,8 +8055,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A crimson-winged bat spirit silhouetted against a red moon.",
           "priority": "now"
@@ -7454,8 +8069,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A turquoise serpent with a flaming, segmented tail and a snout curling upward.",
           "priority": "now"
@@ -7467,8 +8083,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A blazing blue-and-gold serpent wreathed in a corona of fire.",
           "priority": "now"
@@ -7480,8 +8097,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp",
+            "status": "final"
           },
           "brief": "A towering basalt warrior statue with a feathered headdress and a stone shield.",
           "priority": "now"
@@ -7493,8 +8111,9 @@
           "pantheon": "Mesoamerican",
           "where": "Recruitment; Army slots; Battle queue; Creature detail; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "generated placeholder"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp",
+            "status": "final"
           },
           "brief": "A colossal statue with glowing gold glyphs and a sun-disc on its chest.",
           "priority": "now"
@@ -7888,7 +8507,7 @@
             "type": "procedural",
             "note": "none"
           },
-          "brief": "Workshop: Military prerequisite (Training Court, City Hall).",
+          "brief": "Workshop: Military prerequisite (Training Court, City Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
         },
         {
@@ -8323,7 +8942,7 @@
         },
         {
           "assetId": "town.norse.support.workshop.l1",
-          "name": "Smithy",
+          "name": "Workshop",
           "group": "Town building",
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
@@ -8331,7 +8950,7 @@
             "type": "procedural",
             "note": "none"
           },
-          "brief": "Smithy: Military prerequisite (Valkyrie Aerie, High Hall).",
+          "brief": "Workshop: Military prerequisite (Valkyrie Aerie, High Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
         },
         {
@@ -8766,7 +9385,7 @@
         },
         {
           "assetId": "town.egyptian.support.workshop.l1",
-          "name": "Artisans' Workshop",
+          "name": "Workshop",
           "group": "Town building",
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
@@ -8774,7 +9393,7 @@
             "type": "procedural",
             "note": "none"
           },
-          "brief": "Artisans' Workshop: Military prerequisite (Sphinx Terrace, Vizier's Palace).",
+          "brief": "Workshop: Military prerequisite (Sphinx Terrace, Vizier's Palace). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
         },
         {
@@ -9209,7 +9828,7 @@
         },
         {
           "assetId": "town.japanese.support.workshop.l1",
-          "name": "Forge",
+          "name": "Workshop",
           "group": "Town building",
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
@@ -9217,7 +9836,7 @@
             "type": "procedural",
             "note": "none"
           },
-          "brief": "Forge: Military prerequisite (Oni Quarry, Daimyo's Hall).",
+          "brief": "Workshop: Military prerequisite (Oni Quarry, Daimyo's Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
         },
         {
@@ -9652,7 +10271,7 @@
         },
         {
           "assetId": "town.celtic.support.workshop.l1",
-          "name": "Smithy",
+          "name": "Workshop",
           "group": "Town building",
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
@@ -9660,7 +10279,7 @@
             "type": "procedural",
             "note": "none"
           },
-          "brief": "Smithy: Military prerequisite (Banshee Cairn, High King's Hall).",
+          "brief": "Workshop: Military prerequisite (Banshee Cairn, High King's Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
         },
         {
@@ -10095,7 +10714,7 @@
         },
         {
           "assetId": "town.mesoamerican.support.workshop.l1",
-          "name": "Obsidian Workshop",
+          "name": "Workshop",
           "group": "Town building",
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
@@ -10103,7 +10722,7 @@
             "type": "procedural",
             "note": "none"
           },
-          "brief": "Obsidian Workshop: Military prerequisite (Cenote Pool, Great Palace).",
+          "brief": "Workshop: Military prerequisite (Cenote Pool, Great Palace). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
         },
         {

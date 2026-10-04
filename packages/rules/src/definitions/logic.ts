@@ -17,6 +17,7 @@ import type {
   ArtifactId,
 } from '../ids';
 import type { ResourceCost, ResourceKey } from '../core/resources';
+import type { ArtifactRarity } from './pantheons';
 
 export type HeroAttribute = 'attack' | 'defense' | 'power' | 'knowledge';
 export const HERO_ATTRIBUTES: readonly HeroAttribute[] = ['attack', 'defense', 'power', 'knowledge'];
@@ -104,6 +105,12 @@ export type EffectDefinition =
   | { readonly type: 'town_vision_radius'; readonly radius: number }
   /** Weekly artifact stock of `stockSize` items sold to a visiting hero. */
   | { readonly type: 'enables_artifact_merchant'; readonly stockSize: number }
+  /**
+   * The Workshop's weekly stock (owner request 2026-10-04): `stockSize` different
+   * priced items of these classes (the lowest, `treasure`, is "tier 1"); each can
+   * be bought once until the stock changes at the start of the next week.
+   */
+  | { readonly type: 'enables_workshop'; readonly stockSize: number; readonly rarities: readonly ArtifactRarity[] }
   // --- Hero, artifact-set and world effects (proposed this build) ---
   /** +amount mana restored to the hero at dawn (on top of the rules' regeneration). */
   | { readonly type: 'mana_regen'; readonly amount: number }

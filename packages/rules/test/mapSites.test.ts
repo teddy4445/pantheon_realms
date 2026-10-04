@@ -17,6 +17,8 @@ import {
   imprisonedHeroIds,
   projectedIncome,
   quoteNeutralReaction,
+  NEUTRAL_FLEE_CHANCE,
+  NEUTRAL_JOIN_CHANCE,
   quoteOpenChest,
   specialtiesEnabled,
   specialtyEffects,
@@ -98,9 +100,9 @@ function stepOffAndBack(d: GameDriver, hero: HeroState, site: SiteDefinition) {
 }
 
 describe('hero specialties', () => {
-  it('every one of the 62 heroes has a specialty of one of the three kinds, with exact rule text', () => {
+  it('every one of the 74 heroes has a specialty of one of the three kinds, with exact rule text', () => {
     const heroes = Object.values(catalog.heroes);
-    expect(heroes).toHaveLength(62);
+    expect(heroes).toHaveLength(74); // 62, plus 12 proposed on 2026-10-04
     const kinds = new Map<string, number>();
     for (const h of heroes) {
       expect(h.specialty, h.id).toBeDefined();
@@ -108,7 +110,7 @@ describe('hero specialties', () => {
       kinds.set(h.specialty!.kind, (kinds.get(h.specialty!.kind) ?? 0) + 1);
     }
     expect([...kinds.keys()].sort()).toEqual(['creature', 'resource', 'spell']);
-    expect([...kinds.values()].reduce((a, b) => a + b, 0)).toBe(62);
+    expect([...kinds.values()].reduce((a, b) => a + b, 0)).toBe(74);
   });
 
   it('creature specialties grow at levels 4 and 8 and only touch their own family', () => {
@@ -141,6 +143,9 @@ describe('hero specialties', () => {
     ]);
     if (offered) {
       d.player.wallet.gold = 99999;
+      // The leader steps away from the town gate so the new hero has room there.
+      const lead = d.state.heroes[leader(d.state).id]!;
+      lead.position = freeSpotNear(catalog, d.state, { q: town.coord.q + 4, r: town.coord.r })!;
       d.do({ kind: 'HireHero', townId: town.id, heroDefinitionId: 'perseus' });
       const hired = Object.values(d.state.heroes).find((x) => x.definitionId === 'perseus')!;
       expect(hired.knownSpellIds).toContain('lightning');
@@ -351,12 +356,23 @@ describe('neutral reactions', () => {
     h.army.slots = h.army.slots.map((_, i) => (i === 0 ? { stackId: 'test_stack', creatureId, count } : null));
   }
 
+  /** Test setup only: move the calendar to the first day (from today) on which these neutrals react with `kind`. */
+  function dayWhen(d: GameDriver, hero: HeroState, coord: { q: number; r: number }, kind: 'join' | 'flee' | null): void {
+    const day0 = d.state.day;
+    for (let k = 0; k < 60; k++) {
+      d.state.day = day0 + k;
+      if (quoteNeutralReaction(catalog, d.state, hero.id, coord).kind === kind) return;
+    }
+    throw new Error(`no day with reaction ${kind}`);
+  }
+
   it('much weaker neutrals offer to join for free: no battle, no experience, the reward is kept', () => {
     const d = driverFor(FULL_SEED);
     const hero = leader(d.state);
     const site = guarded(d);
     armHero(d, hero, 400);
     standBeside(d, hero, site.coord);
+    dayWhen(d, hero, site.coord, 'join');
     const r = quoteNeutralReaction(catalog, d.state, hero.id, site.coord);
     expect(r.kind).toBe('join');
     expect(r.ratio).toBeGreaterThanOrEqual(3);
@@ -379,6 +395,7 @@ describe('neutral reactions', () => {
     const site = guarded(d);
     armHero(d, hero, 400);
     standBeside(d, hero, site.coord);
+    dayWhen(d, hero, site.coord, 'join');
     const ev = d.do({ kind: 'MoveHero', heroId: hero.id, destination: site.coord, confirmEncounter: true, encounterChoice: 'release' });
     expect(ev.some((e) => e.kind === 'NeutralsFled')).toBe(true);
     expect(d.state.battle).toBeFalsy();
@@ -387,6 +404,7 @@ describe('neutral reactions', () => {
     const fh = leader(f.state);
     armHero(f, fh, 400);
     standBeside(f, fh, site.coord);
+    dayWhen(f, fh, site.coord, 'join');
     f.do({ kind: 'MoveHero', heroId: fh.id, destination: site.coord, confirmEncounter: true });
     expect(f.state.battle).toBeTruthy();
 
@@ -399,7 +417,35 @@ describe('neutral reactions', () => {
     expect(w.reject({ kind: 'MoveHero', heroId: wh.id, destination: site.coord, confirmEncounter: true, encounterChoice: 'release' }).code).toBe('illegal_action');
   });
 
-  it('between half and a third of the strength they only flee, and they never react in campaigns without the feature', () => {
+  it('joining is a quarter as likely as before and fleeing a third; on other days they fight', () => {
+    const d = driverFor(FULL_SEED);
+    const hero = leader(d.state);
+    const site = guarded(d);
+    armHero(d, hero, 400);
+    standBeside(d, hero, site.coord);
+    const counts = { join: 0, flee: 0, fight: 0 };
+    const day0 = d.state.day;
+    for (let k = 0; k < 600; k++) {
+      d.state.day = day0 + k;
+      const r = quoteNeutralReaction(catalog, d.state, hero.id, site.coord);
+      expect(quoteNeutralReaction(catalog, d.state, hero.id, site.coord).kind).toBe(r.kind);
+      counts[r.kind ?? 'fight'] += 1;
+    }
+    // Expected: join 1/4, flee 3/4 × 1/3 = 1/4, fight 1/2.
+    expect(counts.join / 600).toBeGreaterThan(0.18);
+    expect(counts.join / 600).toBeLessThan(0.32);
+    expect(counts.flee / 600).toBeGreaterThan(0.18);
+    expect(counts.flee / 600).toBeLessThan(0.32);
+    expect(counts.fight / 600).toBeGreaterThan(0.4);
+    d.state.day = day0;
+    dayWhen(d, hero, site.coord, null);
+    d.do({ kind: 'MoveHero', heroId: hero.id, destination: site.coord, confirmEncounter: true });
+    expect(d.state.battle).toBeTruthy();
+    expect(NEUTRAL_JOIN_CHANCE).toBe(0.25);
+    expect(NEUTRAL_FLEE_CHANCE).toBeCloseTo(1 / 3);
+  });
+
+  it('between half and a third of the strength they only flee (or fight), and they never react in campaigns without the feature', () => {
     const d = driverFor(FULL_SEED);
     const hero = leader(d.state);
     const site = guarded(d);
@@ -410,7 +456,9 @@ describe('neutral reactions', () => {
       armHero(d, hero, n, 'hoplite');
       const r = quoteNeutralReaction(catalog, d.state, hero.id, site.coord);
       if (r.ratio >= 2 && r.ratio < 3) {
-        expect(r.kind).toBe('flee');
+        expect(r.kind).not.toBe('join');
+        dayWhen(d, hero, site.coord, 'flee');
+        expect(quoteNeutralReaction(catalog, d.state, hero.id, site.coord).kind).toBe('flee');
         expect(d.reject({ kind: 'MoveHero', heroId: hero.id, destination: site.coord, confirmEncounter: true, encounterChoice: 'join' }).code).toBe('illegal_action');
         found = true;
       }

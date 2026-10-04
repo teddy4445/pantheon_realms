@@ -32,6 +32,43 @@ export interface FxTarget extends Pt {
 }
 
 const TAU = Math.PI * 2;
+
+/**
+ * The shared battle effect strip (sprite manifest `effects`) that stands for a
+ * look's impact once it is delivered as final art: the lightning strike for
+ * strikes and storms, the fire burst for flames and obsidian, the green spiral
+ * for healing, gold rings for blessings, the violet swirl for curses, the blue
+ * dome for wards. Impacts whose colour or shape no shared strip matches (frost,
+ * thorns, petals, wind, fox-fire, swarms, pillars, coins, motes, map rings)
+ * stay code-drawn until a strip of their own is delivered.
+ */
+export function genericImpactOf(look: FxLook): string | null {
+  const s = look.school;
+  switch (look.impact) {
+    case 'sparks':
+    case 'shock':
+      return s === 'strike' || s === 'storm' || s === 'star' ? 'spell.damage' : null;
+    case 'flame':
+      return s === 'fire' || s === 'rage' || s === 'sun' ? 'spell.area' : null;
+    case 'shards':
+      return s === 'obsidian' ? 'spell.area' : null;
+    case 'heal':
+      return 'spell.heal';
+    case 'glyph':
+    case 'ring':
+    case 'chevrons':
+    case 'shield':
+    case 'runes':
+      return DARK.has(s) ? null : 'spell.buff';
+    case 'curse':
+    case 'drain':
+      return 'spell.curse';
+    case 'dome':
+      return 'ward';
+    default:
+      return null;
+  }
+}
 /** Schools drawn with ordinary (not additive) blending: dark matter does not glow. */
 const DARK: ReadonlySet<FxSchool> = new Set<FxSchool>(['swarm', 'obsidian', 'shadow', 'curse', 'blight', 'earth', 'fate']);
 /** Schools whose sky strike is a lightning bolt (the others fall as streaks). */
@@ -170,6 +207,12 @@ export class FxPainter {
   stripOf(id: string | undefined): EffectDefinition | null {
     if (!id || this.simple) return null;
     return spriteManifest().effects[id] ?? null;
+  }
+
+  /** Like `stripOf`, but only final art (a placeholder strip never replaces the drawn effect). */
+  private finalStripOf(id: string | undefined): EffectDefinition | null {
+    const def = this.stripOf(id);
+    return def && def.status === 'final' ? def : null;
   }
 
   // ------------------------------------------------------------------ building blocks
@@ -469,7 +512,9 @@ export class FxPainter {
 
   /** Where the spell lands, on one stack, hero or town (`at`: its feet). */
   async impact(look: FxLook, at: FxTarget, id?: string): Promise<void> {
-    const def = this.stripOf(id);
+    // A strip made for this spell or miracle first; else the delivered final strip of its kind
+    // (genericImpactOf: the shared battle effects); else the code-drawn impact.
+    const def = this.stripOf(id) ?? this.finalStripOf(genericImpactOf(look) ?? undefined);
     if (def) return this.strip(def, at, at.width, this.layer, at.facing === -1);
     const [core, glow, spark] = FX_PALETTE[look.school];
     const chest = { x: at.x, y: at.y - at.height * 0.5 };

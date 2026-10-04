@@ -25,15 +25,17 @@ function randomDriver(seed: number, pantheons: string[]): GameDriver {
 }
 
 describe('random-map taverns', () => {
-  it('the pool is the 30 hireable heroes plus the 5 campaign heroes — no campaign opponents', () => {
+  it('the pool is the 42 hireable heroes plus the 5 campaign heroes — no campaign opponents', () => {
     const pool = randomMapTavernPool(catalog);
-    expect(pool).toHaveLength(35);
-    expect(new Set(pool).size).toBe(35);
+    expect(pool).toHaveLength(47);
+    expect(new Set(pool).size).toBe(47);
     for (const id of CAMPAIGN_HEROES) expect(pool, id).toContain(id);
     for (const id of pool) expect(['hireable', 'campaign']).toContain(catalog.heroes[id]!.availability);
     expect(Object.values(catalog.heroes).filter((h) => h.availability === 'enemy').some((h) => pool.includes(h.id))).toBe(false);
-    // Five hireable heroes per pantheon, plus the campaign hero (Norse: Hervor, the hero of The Winter Oath, is already hireable).
-    for (const p of catalog.pantheonOrder) expect(pool.filter((id) => catalog.heroes[id]!.pantheonId === p), p).toHaveLength(p === 'norse' ? 5 : 6);
+    // Five hireable heroes per pantheon (eight for the four newer ones since 2026-10-04), plus the campaign hero
+    // (Norse: Hervor, the hero of The Winter Oath, is already hireable).
+    const expected: Record<string, number> = { greek: 6, norse: 5, egyptian: 9, japanese: 9, celtic: 9, mesoamerican: 9 };
+    for (const p of catalog.pantheonOrder) expect(pool.filter((id) => catalog.heroes[id]!.pantheonId === p), p).toHaveLength(expected[p]!);
   });
 
   it('a generated map lists them; each tavern offers its own pantheon’s heroes not already in play', () => {
