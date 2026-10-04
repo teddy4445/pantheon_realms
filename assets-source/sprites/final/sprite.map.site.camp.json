@@ -4,6 +4,12 @@
   0.4877,
   0.9135
  ],
- "pixelsPerHex": 198.151,
- "cutFrom": "sheet.map.locations.1.png"
+ "pixelsPerHex": 340.057,
+ "cutFrom": "sheet.map.locations.1.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 198.151,
+  "guideWidthFraction": 0.55,
+  "targetWidthHexes": 1.0057142857142858,
+  "alphaWidthPixels": 342
+ }
 }

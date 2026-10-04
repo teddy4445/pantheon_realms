@@ -1374,3 +1374,36 @@ input[type='radio']:disabled {
 
 /* A pantheon emblem in front of a screen title (town, kingdom overview). */
 .title-with-emblem { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+/* Favor bursts (components/burst.tsx): coins, timber, crystals, motes of light. Transforms and opacity only. */
+.burst { position: absolute; width: 0; height: 0; pointer-events: none; z-index: 45; --burst-glow: rgba(243, 200, 107, 0.55); --burst-bit: #f3c86b; --burst-edge: #8a5a1a; }
+.burst__glow { position: absolute; left: -70px; top: -70px; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, var(--burst-glow) 0%, transparent 68%); opacity: 0; animation: burst-glow 1.3s ease-out forwards; }
+.burst__bit { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: var(--burst-bit); opacity: 0; animation: burst-rise 1.35s cubic-bezier(0.2, 0.7, 0.4, 1) var(--d) forwards; }
+.burst--toss .burst__bit { box-shadow: inset 0 0 0 2px var(--burst-edge), inset 0 0 0 4px rgba(255, 241, 176, 0.6); animation-name: burst-toss; animation-timing-function: linear; }
+.burst--fling .burst__bit { animation-name: burst-fling; }
+.burst--timber { --burst-glow: rgba(196, 160, 110, 0.4); --burst-bit: #8a6a4a; }
+.burst--timber .burst__bit { width: 16px; height: 5px; border-radius: 2px; left: -8px; top: -2px; }
+.burst--timber .burst__bit:nth-child(3n) { background: #9a958a; width: 9px; height: 8px; border-radius: 2px; }
+.burst--crystal { --burst-glow: rgba(143, 216, 255, 0.5); --burst-bit: #9fe0ff; }
+.burst--crystal .burst__bit { border-radius: 2px; width: 9px; height: 9px; box-shadow: 0 0 6px rgba(159, 224, 255, 0.9); }
+.burst--anoint, .burst--offering, .burst--relic { --burst-glow: rgba(255, 233, 160, 0.6); --burst-bit: #ffe9a0; }
+.burst--anoint .burst__bit, .burst--offering .burst__bit, .burst--relic .burst__bit, .burst--brood .burst__bit { width: 8px; height: 8px; left: -4px; top: -4px; box-shadow: 0 0 8px var(--burst-bit); }
+.burst--brood { --burst-glow: rgba(127, 220, 106, 0.45); --burst-bit: #c8f4a0; }
+.burst--relic .burst__glow { width: 60px; left: -30px; top: -160px; height: 240px; border-radius: 30px; background: linear-gradient(to top, rgba(255, 244, 200, 0.75), transparent); }
+@keyframes burst-glow { 0% { opacity: 0; transform: scale(0.4); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.25); } }
+@keyframes burst-rise { 0% { opacity: 0; transform: translate(0, 0) scale(0.5); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--r)); } }
+@keyframes burst-fling { 0% { opacity: 0; transform: translate(0, 0) rotate(0deg); } 12% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--r)); } }
+@keyframes burst-toss {
+  0% { opacity: 0; transform: translate(0, 0) scaleX(1); }
+  8% { opacity: 1; }
+  45% { transform: translate(calc(var(--dx) * 0.5), var(--up)) scaleX(0.2); }
+  70% { opacity: 1; transform: translate(calc(var(--dx) * 0.8), calc(var(--up) * 0.4)) scaleX(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scaleX(0.3); }
+}
+.burst__strip { position: absolute; background-repeat: no-repeat; background-position: 0 0; animation: burst-strip var(--dur) steps(var(--frames)) forwards; }
+@keyframes burst-strip { to { background-position: calc(var(--frames) * var(--fw) * -1) 0; } }
+:root[data-motion='reduced'] .burst { display: none; }
+/* Town screen: the burst over a building (left/top set inline from the slot's placement). */
+.town-burst { position: absolute; z-index: 45; pointer-events: none; }
+/* Adventure: the coin shower over the resource bar's Gold counter (placed from the counter's position). */
+.burst--resbar { position: fixed; z-index: 60; }

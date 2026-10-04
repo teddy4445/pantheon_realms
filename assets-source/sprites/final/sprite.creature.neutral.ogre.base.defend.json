@@ -1,0 +1,17 @@
+{
+ "frames": 3,
+ "fps": 8,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8796
+ ],
+ "pixelsPerHex": 88.057,
+ "cutFrom": "sheet.creature.neutral.ogre.base.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 72.372,
+  "guideIdleFraction": 0.76,
+  "observedIdleFraction": 0.9247,
+  "worldScaleMultiplier": 0.8219
+ }
+}

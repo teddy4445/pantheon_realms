@@ -91,7 +91,7 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
     victory: [ITZEL('The new fire burns on the hill, and the runners are carrying it to the hearths. But only here. The sun was paler again this morning.')],
     town: { townId: 'xochitla', name: 'Xochitla', description: 'Itzel’s city of flower terraces on the lake shore.' },
     biome: 'jungle',
-    soundscape: 'coast',
+    soundscape: 'jungle',
     barrier: 'water',
     event: {
       name: 'Broken Fire-shrine',
@@ -146,7 +146,7 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
     victory: [XOCO('Two altars lit. The old eagle knights say the next fire belongs to the House of Eagles in the mountains — and that the eagles have stopped flying.')],
     town: { townId: 'tepeyolo', name: 'Tepeyolo', description: 'A cacao town in the river valley.' },
     biome: 'jungle',
-    soundscape: 'coast',
+    soundscape: 'jungle',
     barrier: 'water',
     lookout: { name: 'Watcher’s Pyramid', description: 'From its top, the groves beyond the river lie open.' },
     event: {
@@ -226,7 +226,7 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
     victory: [ITZEL('The covenant holds, a god walks with us and the mountain fire burns. From here the road goes down to the great lake.')],
     town: { townId: 'ocelotepec', name: 'Ocelotepec', description: 'A mountain city under the House of Eagles.' },
     biome: 'high_pass',
-    soundscape: 'high_pass',
+    soundscape: 'jungle',
     cache: { name: 'Merchants’ Cache', description: 'Goods hidden by merchants who fled the mountain road.', reward: { resources: { gold: 700, wood: 5 }, artifactIds: ['quilted_cotton_armor'] } },
     pass: {
       name: 'Mountain Road',
@@ -312,7 +312,7 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
     victory: [ITZEL('The bats saw him: the Night-Knife, carrying the old fire into the smoking mountain in the east. And a city lord at Itzcalli holds the road for him.')],
     town: { townId: 'acalco', name: 'Acalco', description: 'A canoe-builders’ town on the great lake.' },
     biome: 'jungle',
-    soundscape: 'coast',
+    soundscape: 'jungle',
     wanderer: {
       name: 'A Travelling Merchant',
       description: 'A long-distance merchant resting on the shore with his bearers.',
@@ -392,7 +392,7 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
     victory: [ITZEL('The stela is broken and the road east is open. Tecuani has nothing left but the Night-Knife’s promise — and so do we, except that we know where the fire is.')],
     town: { townId: 'tonalco', name: 'Tonalco', description: 'A river city on the road east, loyal to the old count.' },
     biome: 'jungle',
-    soundscape: 'coast',
+    soundscape: 'jungle',
     gold: { name: 'Gold Mine', description: 'An unowned mine.', guard: { label: 'Mine pigs', army: [['tusked_boar', 10]], reward: { resources: { gold: 500 } }, battlefield: 'open_field' } },
     event: {
       name: 'The Rain Pool',
@@ -458,7 +458,7 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
     victory: [ITZEL('The serpents fly. Tonight, from the crater rim, I saw the smoking mountain in the east — and the morning-star stone and the evening-star stone on either side of its gate.')],
     town: { townId: 'quetzaltepec', name: 'Quetzaltepec', description: 'A city on the slopes of the fire mountain.' },
     biome: 'high_pass',
-    soundscape: 'high_pass',
+    soundscape: 'jungle',
     north: {
       name: 'Stone Steps',
       description: 'The northern steps to the crater, held by stone jailers.',

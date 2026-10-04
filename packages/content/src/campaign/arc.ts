@@ -148,7 +148,8 @@ export interface MissionWriting {
   readonly help?: readonly HelpTopicDefinition[];
   readonly town: Named & { readonly townId: string };
   readonly biome: Biome;
-  readonly soundscape: 'coast' | 'high_pass' | 'storm_plateau';
+  /** Sound manifest soundscape (`music.explore.<id>`, `amb.<id>`): each campaign has its own, storm_plateau for its darkest hours. */
+  readonly soundscape: 'coast' | 'high_pass' | 'storm_plateau' | 'fjord' | 'desert' | 'shrine' | 'glen' | 'jungle';
 }
 
 interface Built {

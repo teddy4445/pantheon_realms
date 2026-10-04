@@ -344,6 +344,68 @@ def crackle(rng, dur, rate=40, amount=1.0):
     return sig * amount
 
 
+def reed_note(freq, dur, seed=0):
+    """A nasal double reed (ney / mizmar-like): odd-heavy harmonics, late vibrato, a little breath."""
+    n = secs(dur + 0.2)
+    t = tvec(n)
+    rng = np.random.default_rng(seed)
+    vib = 1 + 0.005 * np.sin(2 * np.pi * 5.4 * t) * np.clip((t - 0.15) / 0.3, 0, 1)
+    ph = 2 * np.pi * np.cumsum(freq * vib) / SR
+    sig = np.zeros(n)
+    for k in range(1, 11):
+        if freq * k > 9000:
+            break
+        sig += (1 / k) * (0.9 if k % 2 else 0.5) * np.sin(k * ph)
+    sig = bandpass(sig, freq * 0.9, min(freq * 6, 9000)) + 0.05 * bandpass(white(rng, n), freq * 2, min(freq * 5, 12000))
+    return sig * adsr(n, 0.05, 0.1, 0.85, 0.18) * 0.42
+
+
+def shaku_note(freq, dur, seed=0):
+    """A breathy bamboo flute that bends up into each note."""
+    n = secs(dur + 0.3)
+    t = tvec(n)
+    rng = np.random.default_rng(seed)
+    f = freq * (1 - 0.035 * np.exp(-t / 0.12)) * (1 + 0.003 * np.sin(2 * np.pi * 4.2 * t) * np.clip((t - 0.4) / 0.5, 0, 1))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    sig = np.sin(ph) + 0.12 * np.sin(2 * ph) + 0.05 * np.sin(3 * ph)
+    breath = bandpass(white(rng, n), freq * 1.2, min(freq * 5, 12000)) * (0.22 + 0.18 * np.exp(-t / 0.15))
+    return (sig + breath) * adsr(n, 0.12, 0.1, 0.8, 0.28) * 0.5
+
+
+def whistle_note(freq, dur, seed=0):
+    """A tin whistle an octave up, with a quick cut (grace note) at the start."""
+    n = secs(dur + 0.2)
+    t = tvec(n)
+    rng = np.random.default_rng(seed)
+    f = np.where(t < 0.045, freq * 2 * 2 ** (2 / 12), freq * 2) * (1 + 0.0025 * np.sin(2 * np.pi * 5.8 * t))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    sig = np.sin(ph) + 0.18 * np.sin(2 * ph) + 0.04 * np.sin(3 * ph) + 0.03 * bandpass(white(rng, n), freq * 3, min(freq * 8, 14000))
+    return sig * adsr(n, 0.02, 0.08, 0.8, 0.12) * 0.32
+
+
+def ocarina_note(freq, dur, seed=0):
+    """A clay vessel flute: nearly pure, soft attack, airy."""
+    n = secs(dur + 0.25)
+    t = tvec(n)
+    rng = np.random.default_rng(seed)
+    ph = 2 * np.pi * np.cumsum(freq * (1 + 0.002 * np.sin(2 * np.pi * 4.8 * t))) / SR
+    sig = np.sin(ph) + 0.06 * np.sin(2 * ph) + 0.06 * bandpass(white(rng, n), freq, min(freq * 3, 12000))
+    return sig * adsr(n, 0.06, 0.1, 0.85, 0.2) * 0.5
+
+
+LEADS = {'reed': reed_note, 'shaku': shaku_note, 'whistle': whistle_note, 'ocarina': ocarina_note}
+
+
+def wood(freq, dur=0.35, seed=0):
+    """A slit-drum / wood-block tone (teponaztli-like)."""
+    n = secs(dur)
+    t = tvec(n)
+    rng = np.random.default_rng(seed)
+    sig = np.sin(2 * np.pi * freq * t) * np.exp(-t / 0.07) + 0.4 * np.sin(2 * np.pi * freq * 2.7 * t) * np.exp(-t / 0.025)
+    sig += bandpass(white(rng, n), 1500, 5000) * np.exp(-t / 0.004) * 0.3
+    return fade(sig * 0.6, 0.0005, 0.02)
+
+
 # --------------------------------------------------------------------------- music
 
 
@@ -353,6 +415,10 @@ MODES = {
     'phrygian': [0, 1, 3, 5, 7, 8, 10],
     'mixolydian': [0, 2, 4, 5, 7, 9, 10],
     'aeolian': [0, 2, 3, 5, 7, 8, 10],
+    # Added for the campaign soundscapes (2026-10-03).
+    'hijaz': [0, 1, 4, 5, 7, 8, 10],
+    'miyako': [0, 1, 5, 7, 8],
+    'minpent': [0, 3, 5, 7, 10],
 }
 
 
@@ -378,7 +444,7 @@ class Track:
 
 def scale_note(tr: Track, degree: int, octave: int = 0) -> int:
     iv = MODES[tr.mode]
-    o, d = divmod(degree, 7)
+    o, d = divmod(degree, len(iv))
     return tr.root + iv[d] + 12 * (o + octave)
 
 
@@ -396,7 +462,9 @@ def compose_melody(tr: Track, rng) -> list:
     motifs = []
     for _ in range(2):
         motifs.append([rhythms[i] for i in rng.integers(0, len(rhythms), 2)])
-    deg = 7 + 4  # start on the fifth above the tonic (octave 4)
+    N = len(MODES[tr.mode])  # notes per octave (7, or 5 for the pentatonic modes)
+    top = 9 if N == 7 else 6
+    deg = N + (4 if N == 7 else 3)  # start on the fifth above the tonic (octave 4)
     for bar in range(tr.lead_from, tr.bars):
         phrase_pos = (bar - tr.lead_from) % 4
         if phrase_pos == 3 and rng.random() < 0.6:
@@ -413,9 +481,9 @@ def compose_melody(tr: Track, rng) -> list:
                 deg = target
             else:
                 deg += int(rng.choice([-1, 1, -1, 1, 2, -2]))
-            deg = int(np.clip(deg, 7, 7 + 9))
+            deg = int(np.clip(deg, N, N + top))
             if phrase_pos == 3 and i == len(rhythm) - 1 and (bar - tr.lead_from) % 8 == 7:
-                deg = 7  # resolve to the tonic at the end of each 8-bar period
+                deg = N  # resolve to the tonic at the end of each 8-bar period
             notes.append((bar, beat, r, scale_note(tr, deg, 1)))
             beat += r
     return notes
@@ -463,14 +531,31 @@ def render_track(tr: Track) -> np.ndarray:
             for i, m in enumerate([ch[0], ch[2] + 12] if bar % 2 == 0 else [ch[1] + 12]):
                 s = pluck(midi_hz(m), 2.6, bright=0.35, seed=m + 5)
                 place(buf, pan(s * 0.35, 0.3 - 0.4 * i), secs(bar * bar_s + i * bar_s * 0.5) + rng.integers(0, 200))
+        elif tr.lyre == 'koto':
+            # A plucked zither: a few bright notes at uneven places in the bar.
+            for frac, m, v in ((0.0, ch[0], 0.5), (0.375, ch[2], 0.35), (0.625, ch[0] + 12, 0.3), (0.875, ch[1] + 12, 0.25) if bar % 2 else (0.75, ch[2] + 12, 0.25)):
+                s = pluck(midi_hz(m), 1.8, bright=0.85, decay=0.9945, seed=m + 9)
+                place(buf, pan(s * v * 0.6, -0.25 + frac * 0.5), secs(bar * bar_s + frac * bar_s))
+        elif tr.lyre == 'harp':
+            # A bright harp rolling up and down the chord.
+            pattern = [ch[0], ch[1], ch[2], ch[0] + 12, ch[2], ch[1]] if tr.beats == 3 else [ch[0], ch[1], ch[2], ch[0] + 12, ch[1] + 12, ch[0] + 12, ch[2], ch[1]]
+            step = bar_s / len(pattern)
+            for i, m in enumerate(pattern):
+                s = pluck(midi_hz(m), 1.9, bright=0.75, decay=0.995, seed=m + 13)
+                place(buf, pan(s * (0.6 if i == 0 else 0.42) * 0.32, -0.35 + 0.12 * (i % 4)), secs(bar * bar_s + i * step))
 
     # Lead
     if tr.lead != 'none':
         for bar, beat, dur, m in compose_melody(tr, rng):
             at = secs(bar * bar_s + beat * beat_s)
             d = dur * beat_s * 0.95
-            sig = flute_note(midi_hz(m), d, seed=m + bar) if tr.lead == 'flute' else horn_note(midi_hz(m - 12), d, seed=m + bar)
-            place(buf, pan(sig * (0.34 if tr.lead == 'flute' else 0.4), 0.15), at)
+            if tr.lead == 'flute':
+                sig = flute_note(midi_hz(m), d, seed=m + bar)
+            elif tr.lead == 'horn':
+                sig = horn_note(midi_hz(m - 12), d, seed=m + bar)
+            else:
+                sig = LEADS[tr.lead](midi_hz(m - (12 if tr.lead == 'reed' else 0)), d, seed=m + bar)
+            place(buf, pan(sig * (0.4 if tr.lead == 'horn' else 0.34), 0.15), at)
 
     # Drums
     if tr.drums != 'none':
@@ -482,6 +567,20 @@ def render_track(tr: Track) -> np.ndarray:
                 hits = [(0, 1.0, 85), (1.5, 0.45, 120), (2, 0.8, 95), (3, 0.5, 120), (3.5, 0.4, 120)]
             elif tr.drums == 'storm':
                 hits = [(0, 1.0, 70), (0.75, 0.4, 100), (2, 0.8, 75), (3.5, 0.5, 95)]
+            elif tr.drums in NEW_DRUMS:
+                for b, v, kind in NEW_DRUMS[tr.drums]:
+                    if b >= tr.beats:
+                        continue
+                    if kind == 'lo' or kind == 'hi':
+                        d = wood(330 if kind == 'lo' else 440, seed=bar * 7 + int(b * 4))
+                    elif kind == 'tek':
+                        d = frame_drum(rng, f0=320, dur=0.18, tone=0.3, slap=1.0)
+                    elif kind == 'taiko':
+                        d = frame_drum(rng, f0=52, dur=1.1, tone=1.3, slap=0.25)
+                    else:
+                        d = frame_drum(rng, f0=kind, dur=0.5, slap=0.35 if kind < 100 else 0.7)
+                    place(buf, pan(d * v * 0.5, 0.15 if kind in ('hi', 'tek') else -0.1), secs(base + b * beat_s))
+                continue
             else:  # battle
                 hits = [(0, 1.0, 72), (0.5, 0.35, 150), (1, 0.6, 110), (1.5, 0.35, 150), (2, 0.9, 80), (2.5, 0.35, 150), (3, 0.6, 110), (3.25, 0.3, 150), (3.5, 0.5, 120)]
             for b, v, f in hits:
@@ -498,6 +597,15 @@ def render_track(tr: Track) -> np.ndarray:
     return normalize(out, min(0.89, np.max(np.abs(out))))
 
 
+# Drum patterns for the campaign soundscapes: (beat, velocity, voice); voice = Hz of a frame drum, or 'lo'/'hi' wood, 'tek', 'taiko'.
+NEW_DRUMS = {
+    'darbuka': [(0, 1.0, 85), (1, 0.5, 'tek'), (1.5, 0.4, 'tek'), (2, 0.8, 90), (3, 0.5, 'tek'), (3.5, 0.45, 'tek')],
+    'taiko': [(0, 0.9, 'taiko'), (2.5, 0.5, 'taiko')],
+    'log': [(0, 1.0, 'lo'), (0.75, 0.6, 'hi'), (1.5, 0.7, 'lo'), (2, 0.8, 'hi'), (3, 0.6, 'lo'), (3.5, 0.5, 'hi')],
+    'bodhran': [(0, 1.0, 105), (0.5, 0.35, 130), (1, 0.5, 120), (1.5, 0.8, 105), (2, 0.35, 130), (2.5, 0.5, 120)],
+    'deep': [(0, 0.9, 58), (2, 0.45, 64)],
+}
+
 TRACKS = [
     Track('music_menu', root=50, mode='dorian', bpm=70, beats=4, bars=16, chords=[0, 6, 3, 0, 0, 4, 6, 3], seed=11, lyre='arp', lead='flute', lead_from=4, drums='soft', pad_bright=0.35, wet=0.4),
     Track('music_explore_coast', root=57, mode='aeolian', bpm=84, beats=3, bars=24, chords=[0, 5, 2, 6, 0, 3, 4, 0], seed=21, lyre='arp', lead='flute', lead_from=8, drums='none', pad_bright=0.3, wet=0.38),
@@ -505,6 +613,12 @@ TRACKS = [
     Track('music_explore_storm_plateau', root=50, mode='phrygian', bpm=74, beats=4, bars=16, chords=[0, 1, 0, 6, 0, 1, 3, 1], seed=41, lyre='ostinato', lead='flute', lead_from=8, drums='storm', drone=True, pad_bright=0.25, wet=0.42),
     Track('music_battle', root=52, mode='phrygian', bpm=112, beats=4, bars=16, chords=[0, 1, 0, 6, 0, 1, 3, 4], seed=51, lyre='ostinato', lead='horn', lead_from=4, drums='battle', pad_bright=0.45, wet=0.3, level_db=-19.0),
     Track('music_resolution', root=55, mode='ionian', bpm=68, beats=4, bars=12, chords=[0, 3, 4, 0, 5, 3, 1, 4, 0, 3, 4, 0], seed=61, lyre='arp', lead='flute', lead_from=2, drums='none', pad_bright=0.45, wet=0.45),
+    # Campaign soundscapes (2026-10-03): Norse fjords, the Egyptian river desert, a Japanese shrine, a Celtic glen, a Mesoamerican jungle.
+    Track('music_explore_fjord', root=50, mode='aeolian', bpm=60, beats=4, bars=12, chords=[0, 5, 3, 6, 0, 3, 4, 0], seed=91, lyre='sparse', lead='horn', lead_from=4, drums='deep', drone=True, pad_bright=0.18, wet=0.55),
+    Track('music_explore_desert', root=52, mode='hijaz', bpm=88, beats=4, bars=16, chords=[0, 0, 1, 0, 6, 0, 1, 0], seed=125, lyre='ostinato', lead='reed', lead_from=4, drums='darbuka', drone=True, pad_bright=0.3, wet=0.35),
+    Track('music_explore_shrine', root=50, mode='miyako', bpm=62, beats=4, bars=12, chords=[0, 0, 3, 0, 2, 0], seed=106, lyre='koto', lead='shaku', lead_from=2, drums='taiko', pad_bright=0.22, wet=0.5),
+    Track('music_explore_glen', root=55, mode='mixolydian', bpm=100, beats=3, bars=24, chords=[0, 0, 6, 0, 3, 0, 6, 4], seed=110, lyre='harp', lead='whistle', lead_from=4, drums='bodhran', pad_bright=0.4, wet=0.36),
+    Track('music_explore_jungle', root=57, mode='minpent', bpm=92, beats=4, bars=16, chords=[0, 0, 2, 0, 3, 2, 0, 0], seed=95, lyre='sparse', lead='ocarina', lead_from=4, drums='log', pad_bright=0.28, wet=0.3),
 ]
 
 # --------------------------------------------------------------------------- stingers
@@ -668,6 +782,125 @@ def amb_battlefield():
         return w + np.vstack([hum, np.roll(hum, 700)])
 
     return rms_to(seamless_noise_loop(r, 24.0, 3.0), -29)
+
+
+# Campaign soundscapes (2026-10-03) -------------------------------------------------
+
+
+def chirp(f0, f1, dur, shape=1.0):
+    """A short pitch sweep with a soft envelope (birds, frogs, bubbles)."""
+    n = secs(dur)
+    t = tvec(n)
+    f = f0 + (f1 - f0) * (t / dur) ** shape
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.sin(np.pi * t / dur) ** 2
+
+
+def amb_fjord():
+    rng = np.random.default_rng(85)
+
+    def r(n):
+        out = wind(rng, n, 0.8, bands=(380, 820, 1700, 3400))
+        # Slow, deep water against rock, left and right out of step.
+        for ch, rate in ((0, 0.11), (1, 0.085)):
+            env = lfo(n, rate, rng, 0.0, 1.0) ** 2
+            out[ch] += lowpass(brown(rng, n), 300) * (0.3 + 0.7 * env) * 0.7 + bandpass(pink(rng, n), 300, 1400) * env * 0.25
+        # A far, low creak of ice or timber now and then.
+        for at in rng.uniform(2, n / SR - 3, 3):
+            k = secs(1.2)
+            f = 70 + 25 * np.sin(np.linspace(0, 3, k))
+            creak = np.sin(2 * np.pi * np.cumsum(f) / SR) * bandpass(white(rng, k), 100, 600) * np.sin(np.pi * tvec(k) / 1.2) ** 2 * 0.5
+            place(out, np.vstack([creak, np.roll(creak, 300) * 0.7]), secs(at))
+        return out
+
+    return rms_to(seamless_noise_loop(r, 28.0, 3.0), -25)
+
+
+def amb_desert():
+    rng = np.random.default_rng(86)
+
+    def r(n):
+        out = wind(rng, n, 0.55, bands=(600, 1400, 3000, 6000))
+        # Drifting sand: a fine, high hiss in gusts.
+        gust = lfo(n, 0.07, rng, 0.0, 1.0) ** 3
+        for ch in range(2):
+            out[ch] += highpass(white(rng, n), 5000) * gust * 0.12 + lowpass(crackle(rng, n / SR, rate=25, amount=0.25), 9000) * gust
+            # The river beyond the dunes: a slow, low flow.
+            out[ch] += bandpass(brown(rng, n), 120, 700) * 0.35
+        return out
+
+    return rms_to(seamless_noise_loop(r, 26.0, 3.0), -26)
+
+
+def amb_shrine():
+    rng = np.random.default_rng(87)
+
+    def r(n):
+        out = wind(rng, n, 0.35, bands=(300, 700, 1500))
+        # A thin stream through bamboo pipes.
+        for ch in range(2):
+            out[ch] += bandpass(white(rng, n), 1200, 5200) * (0.04 + 0.03 * lfo(n, 0.9, rng)) + lowpass(brown(rng, n), 400) * 0.15
+        # Wind chimes in the eaves, and once a far temple bell.
+        for at in np.sort(rng.uniform(1, n / SR - 2, 7)):
+            for j in range(rng.integers(1, 4)):
+                c = chime(midi_hz(int(rng.choice([86, 89, 91, 93, 96]))), 1.4) * 0.07
+                place(out, pan(c, rng.uniform(-0.6, 0.6)), secs(at + j * 0.11))
+        place(out, pan(bell(midi_hz(43), 7.0, bright=0.4) * 0.35, -0.2), secs(n / SR * 0.35))
+        # The bamboo fountain's knock.
+        place(out, pan(wood(560, 0.3, seed=5) * 0.25, 0.4), secs(n / SR * 0.7))
+        return out
+
+    return rms_to(seamless_noise_loop(r, 30.0, 3.0), -26)
+
+
+def amb_glen():
+    rng = np.random.default_rng(88)
+
+    def r(n):
+        out = wind(rng, n, 0.3, bands=(500, 1100, 2400))
+        # Leaves fluttering, and a stream over stones.
+        for ch in range(2):
+            flutter = 0.5 + 0.5 * np.sin(2 * np.pi * np.cumsum(rng.uniform(5, 11, n)) / SR)
+            out[ch] += bandpass(pink(rng, n), 1500, 5000) * flutter * lfo(n, 0.05, rng, 0.05, 0.25)
+            babble = bandpass(white(rng, n), 500, 2600) * (0.4 + 0.6 * lfo(n, 2.3, rng)) * 0.12
+            out[ch] += babble + lowpass(brown(rng, n), 350) * 0.12
+        # Songbirds in the trees.
+        for at in np.sort(rng.uniform(1, n / SR - 1.5, 9)):
+            notes = rng.integers(2, 5)
+            p = rng.uniform(-0.7, 0.7)
+            base = rng.uniform(2600, 4200)
+            for j in range(notes):
+                place(out, pan(chirp(base * rng.uniform(0.9, 1.15), base * rng.uniform(1.1, 1.5), rng.uniform(0.05, 0.11)) * 0.05, p), secs(at + j * rng.uniform(0.08, 0.16)))
+        return out
+
+    return rms_to(seamless_noise_loop(r, 28.0, 3.0), -26)
+
+
+def amb_jungle():
+    rng = np.random.default_rng(89)
+
+    def r(n):
+        out = np.zeros((2, n))
+        t = tvec(n)
+        for ch in range(2):
+            # Insects: a high buzz that swells and fades.
+            buzz = bandpass(white(rng, n), 4200, 7500) * (0.5 + 0.5 * np.sin(2 * np.pi * rng.uniform(38, 52) * t)) * lfo(n, 0.12, rng, 0.2, 1.0)
+            out[ch] += buzz * 0.18 + lowpass(brown(rng, n), 300) * 0.25 + bandpass(pink(rng, n), 400, 1800) * 0.08
+        # Frogs, far calls and drips.
+        for at in rng.uniform(0.5, n / SR - 1, 26):
+            k = secs(0.06)
+            frog = np.sin(2 * np.pi * rng.uniform(180, 320) * tvec(k)) * np.sin(np.pi * tvec(k) / 0.06) * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 60 * tvec(k))))
+            place(out, pan(frog * 0.12, rng.uniform(-0.8, 0.8)), secs(at))
+        for at in rng.uniform(1, n / SR - 2, 5):
+            f0 = rng.uniform(900, 1500)
+            call = mix(chirp(f0, f0 * 1.6, 0.18, 0.6), np.zeros(secs(0.05)))
+            p = rng.uniform(-0.8, 0.8)
+            place(out, pan(call * 0.06, p), secs(at))
+            place(out, pan(chirp(f0 * 1.5, f0 * 0.9, 0.22) * 0.05, p), secs(at + 0.25))
+        for at in rng.uniform(0.5, n / SR - 0.5, 18):
+            place(out, pan(chirp(rng.uniform(900, 1400), rng.uniform(1800, 2600), 0.03, 0.5) * 0.05, rng.uniform(-0.6, 0.6)), secs(at))
+        return out
+
+    return rms_to(seamless_noise_loop(r, 28.0, 3.0), -25)
 
 
 # --------------------------------------------------------------------------- effects
@@ -993,6 +1226,234 @@ def sfx_flight(rng):
     return normalize(out, 0.6)
 
 
+# Magic and Favor (fxLooks.FX_SOUNDS), the spellbook and the town (2026-10-03) -----------
+
+
+def _wet(x, wet=0.3, size=1.0):
+    return reverb(x, wet, size)[0]
+
+
+def magic_cast(rng):
+    n = secs(0.6)
+    t = tvec(n)
+    gather = whoosh(rng, 0.6, 600, 7000, True, 0.5)
+    shimmer = sum(np.sin(2 * np.pi * midi_hz(84 + k * 4) * (1 + 0.2 * t) * t) * (0.6 ** k) for k in range(4)) * (t / 0.6) ** 2 * 0.25
+    return normalize(_wet(mix(gather, shimmer), 0.3), 0.6)
+
+
+def magic_strike(rng):
+    n = secs(0.5)
+    t = tvec(n)
+    crack = highpass(white(rng, n), 2500) * np.exp(-t / 0.02)
+    zap = np.sin(2 * np.pi * np.cumsum(2400 * np.exp(-t / 0.05) + 300) / SR) * np.exp(-t / 0.08) * 0.5
+    buzz = np.sign(np.sin(2 * np.pi * 120 * t)) * bandpass(white(rng, n), 800, 3000) * np.exp(-t / 0.12) * 0.25
+    return normalize(_wet(crack + zap + buzz, 0.25), 0.8)
+
+
+def magic_thunder(rng):
+    n = secs(1.8)
+    t = tvec(n)
+    crack = highpass(white(rng, n), 1500) * np.exp(-t / 0.03) * 0.8
+    rumble = lowpass(brown(rng, n), 180) * adsr(n, 0.04, 0.4, 0.6, 1.0) * (0.7 + 0.3 * lfo(n, 6, rng)) * 2.0
+    return normalize(_wet(crack + rumble, 0.35, 1.3), 0.85)
+
+
+def magic_fire(rng):
+    n = secs(1.1)
+    t = tvec(n)
+    roar = bandpass(brown(rng, n), 80, 900) * adsr(n, 0.08, 0.3, 0.6, 0.5) * 1.2
+    return normalize(_wet(mix(whoosh(rng, 0.5, 300, 4000, True, 0.8), roar, crackle(rng, 1.1, rate=70, amount=0.5) * np.exp(-t / 0.6)), 0.25), 0.8)
+
+
+def magic_heal(rng):
+    n = secs(1.3)
+    out = np.zeros(n)
+    for i, m in enumerate([67, 71, 74, 79, 83]):
+        place(out, bell(midi_hz(m), 1.0, bright=0.6) * 0.5, secs(i * 0.08))
+    place(out, pad_note(midi_hz(55), 0.8, bright=0.5, seed=17, attack=0.15, release=0.4) * 0.35, 0)
+    return normalize(_wet(out, 0.4), 0.65)
+
+
+def magic_bless(rng):
+    n = secs(1.4)
+    out = np.zeros(n)
+    for i, m in enumerate([60, 64, 67, 72]):
+        place(out, pad_note(midi_hz(m), 0.9, bright=0.65, seed=30 + i, attack=0.08, release=0.5) * 0.3, 0)
+    for i, m in enumerate([84, 88, 91]):
+        place(out, chime(midi_hz(m), 0.9) * 0.3, secs(0.12 + i * 0.07))
+    return normalize(_wet(out, 0.4), 0.65)
+
+
+def magic_curse(rng):
+    n = secs(1.3)
+    t = tvec(n)
+    out = np.zeros(n)
+    for i, m in enumerate([45, 51, 46]):
+        place(out, pad_note(midi_hz(m), 0.9, bright=0.3, seed=40 + i, attack=0.2, release=0.4, detune=18) * 0.35, 0)
+    whisper = bandpass(white(rng, n), 900, 3500) * np.exp(-((t - 0.5) ** 2) / 0.05) * 0.25
+    return normalize(_wet(out * (0.8 + 0.2 * np.sin(2 * np.pi * 7 * t)) + whisper, 0.35), 0.65)
+
+
+def magic_wind(rng):
+    n = secs(1.0)
+    t = tvec(n)
+    w = bandpass(pink(rng, n), 400, 3000) * np.sin(np.pi * t / 1.0) ** 2 * (0.7 + 0.3 * np.sin(2 * np.pi * 9 * t))
+    return normalize(mix(whoosh(rng, 0.9, 300, 5000, True, 0.6), w * 0.8), 0.6)
+
+
+def magic_frost(rng):
+    n = secs(1.0)
+    t = tvec(n)
+    out = np.zeros(n)
+    for i in range(9):
+        f = rng.uniform(2500, 6000)
+        k = secs(0.4)
+        place(out, np.sin(2 * np.pi * f * tvec(k)) * np.exp(-tvec(k) / 0.06) * 0.25, secs(i * 0.05 + rng.uniform(0, 0.03)))
+    out += highpass(crackle(rng, 1.0, rate=60, amount=0.4), 3000) * np.exp(-t / 0.5)
+    return normalize(_wet(out, 0.35), 0.6)
+
+
+def magic_nature(rng):
+    n = secs(1.0)
+    t = tvec(n)
+    f = 90 + 40 * t
+    creak = np.sin(2 * np.pi * np.cumsum(f) / SR) * bandpass(white(rng, n), 120, 900) * np.sin(np.pi * t) * 0.8
+    rustle = bandpass(pink(rng, n), 2000, 7000) * np.sin(np.pi * t) ** 3 * 0.5
+    snap = np.zeros(n)
+    for at in (0.25, 0.45, 0.62):
+        place(snap, highpass(white(rng, secs(0.02)), 1500) * np.exp(-tvec(secs(0.02)) / 0.004), secs(at))
+    return normalize(_wet(creak + rustle + snap * 0.6, 0.25), 0.65)
+
+
+def magic_swarm(rng):
+    n = secs(1.1)
+    t = tvec(n)
+    out = np.zeros(n)
+    for k in range(9):
+        f = rng.uniform(170, 280) * (1 + 0.03 * np.sin(2 * np.pi * rng.uniform(3, 9) * t))
+        ph = 2 * np.pi * np.cumsum(f) / SR
+        out += np.sign(np.sin(ph)) * 0.08 * (0.6 + 0.4 * np.sin(2 * np.pi * rng.uniform(15, 30) * t))
+    out = bandpass(out, 200, 3000) * adsr(n, 0.15, 0.2, 0.8, 0.4)
+    return normalize(out, 0.55)
+
+
+def magic_water(rng):
+    n = secs(1.1)
+    t = tvec(n)
+    out = bandpass(white(rng, n), 600, 6000) * np.exp(-t / 0.25) * 0.5
+    for _ in range(14):
+        place(out, chirp(rng.uniform(500, 900), rng.uniform(1200, 2200), rng.uniform(0.03, 0.07), 2.0) * 0.25, secs(rng.uniform(0.05, 0.9)))
+    return normalize(_wet(out, 0.3), 0.6)
+
+
+def magic_shadow(rng):
+    n = secs(1.1)
+    t = tvec(n)
+    swell = lowpass(brown(rng, n), 400) * (t / 1.1) ** 2 * np.exp(-np.maximum(0, t - 0.85) / 0.06) * 1.5
+    sub = np.sin(2 * np.pi * 48 * t) * adsr(n, 0.5, 0.2, 0.8, 0.25) * 0.6
+    return normalize(_wet(mix(whoosh(rng, 1.0, 200, 1500, False, 0.5), swell + sub), 0.35, 1.2), 0.7)
+
+
+def magic_holy(rng):
+    n = secs(2.0)
+    out = np.zeros(n)
+    for i, m in enumerate([55, 62, 67, 71, 74, 79]):
+        place(out, pad_note(midi_hz(m), 1.3, bright=0.7, seed=60 + i, attack=0.25, release=0.6) * 0.22, 0)
+    place(out, bell(midi_hz(79), 1.8, bright=0.8) * 0.4, secs(0.2))
+    place(out, bell(midi_hz(86), 1.5, bright=0.8) * 0.25, secs(0.32))
+    return normalize(_wet(out, 0.45, 1.3), 0.7)
+
+
+def magic_smite(rng):
+    n = secs(1.6)
+    t = tvec(n)
+    out = np.zeros(n)
+    place(out, thump(rng, 50, 0.9, noise=1.0) * 1.2, secs(0.05))
+    out += highpass(white(rng, n), 1800) * np.exp(-t / 0.04) * 0.7
+    out += lowpass(brown(rng, n), 200) * adsr(n, 0.05, 0.3, 0.5, 0.9) * 1.4
+    return normalize(_wet(mix(whoosh(rng, 0.25, 800, 6000, False, 0.6), out), 0.35, 1.3), 0.9)
+
+
+def magic_reveal(rng):
+    n = secs(1.3)
+    out = np.zeros(n)
+    for i, m in enumerate([72, 76, 79, 83, 86, 88, 91]):
+        place(out, chime(midi_hz(m), 0.9) * 0.3, secs(i * 0.07))
+    return normalize(_wet(mix(out, whoosh(rng, 1.2, 1000, 8000, True, 0.3)), 0.45), 0.6)
+
+
+def magic_teleport(rng):
+    n = secs(1.3)
+    t = tvec(n)
+    f = 200 * 2 ** (4 * np.clip(t / 0.9, 0, 1))
+    rise = np.sin(2 * np.pi * np.cumsum(f) / SR) * (t / 0.9) ** 1.5 * (t < 0.9) * 0.3
+    out = mix(rise, whoosh(rng, 0.9, 300, 6000, True, 0.5))
+    place(out, chime(midi_hz(91), 0.4) * 0.5, secs(0.9))
+    place(out, chime(midi_hz(96), 0.35) * 0.35, secs(0.93))
+    return normalize(_wet(out, 0.4), 0.65)
+
+
+def magic_coins(rng):
+    n = secs(1.2)
+    out = np.zeros(n)
+    for i in range(18):
+        at = 0.04 * i + rng.uniform(0, 0.05)
+        place(out, metal(rng, rng.uniform(2200, 4200), 0.18, 0.6) * rng.uniform(0.4, 1.0), secs(at))
+    return normalize(_wet(out, 0.2), 0.6)
+
+
+def magic_horn(rng):
+    n = secs(1.8)
+    out = np.zeros(n)
+    place(out, horn_note(midi_hz(43), 0.5, bright=0.6) * 0.9, 0)
+    place(out, horn_note(midi_hz(50), 0.9, bright=0.7) * 0.9, secs(0.45))
+    place(out, horn_note(midi_hz(43), 1.3, bright=0.4) * 0.4, secs(0.45))
+    return normalize(_wet(out, 0.4, 1.4), 0.75)
+
+
+def ui_book_open(rng):
+    n = secs(0.55)
+    out = np.zeros(n)
+    place(out, thump(rng, 110, 0.18, noise=0.6) * 0.6, 0)
+    for i in range(4):
+        k = secs(0.09)
+        place(out, bandpass(white(rng, k), 1500, 6000) * np.sin(np.pi * tvec(k) / 0.09) ** 2 * 0.25 * (1 - i * 0.2), secs(0.06 + i * 0.07))
+    return normalize(out, 0.6)
+
+
+def ui_book_close(rng):
+    n = secs(0.35)
+    out = np.zeros(n)
+    place(out, bandpass(white(rng, secs(0.08)), 1200, 5000) * np.sin(np.pi * tvec(secs(0.08)) / 0.08) ** 2 * 0.2, 0)
+    place(out, thump(rng, 95, 0.25, noise=0.8) * 0.8, secs(0.06))
+    return normalize(out, 0.6)
+
+
+def ui_book_page(rng):
+    n = secs(0.32)
+    t = tvec(n)
+    swish = bandpass(white(rng, n), 900, 7000) * np.sin(np.pi * t / 0.32) ** 1.5 * 0.35
+    crinkle = highpass(crackle(rng, 0.32, rate=60, amount=0.25), 2500) * np.sin(np.pi * t / 0.32)
+    return normalize(swish + crinkle, 0.45)
+
+
+def ui_popup(rng):
+    n = secs(0.35)
+    out = np.zeros(n)
+    place(out, wood(620, 0.2, seed=3) * 0.6, 0)
+    place(out, chime(midi_hz(84), 0.3) * 0.12, secs(0.03))
+    return normalize(out, 0.5)
+
+
+def ui_town_action(rng):
+    n = secs(0.6)
+    out = np.zeros(n)
+    place(out, bandpass(white(rng, secs(0.03)), 1500, 6000) * np.exp(-tvec(secs(0.03)) / 0.006) * 0.7, 0)
+    place(out, wood(480, 0.2, seed=4) * 0.4, secs(0.01))
+    place(out, bell(midi_hz(81), 0.5, bright=0.6) * 0.3, secs(0.05))
+    return normalize(out, 0.5)
+
+
 # --------------------------------------------------------------------------- catalogue
 
 
@@ -1078,6 +1539,44 @@ CATALOGUE = [
     S('combat.breach', 'effect', 'combat', sfx_breach, gain=0.75, max_voices=1, intensity='strong'),
     S('combat.turret', 'effect', 'combat', sfx_turret, gain=0.55, max_voices=2),
     S('combat.moat', 'effect', 'combat', sfx_moat, gain=0.55, max_voices=1),
+    # --- Added 2026-10-03 (appended so earlier sounds keep their seeds) ---
+    # Campaign soundscapes: The Winter Oath (fjord), the Egyptian (desert), Japanese (shrine), Celtic (glen) and Mesoamerican (jungle) campaigns.
+    S('music.explore.fjord', 'music', 'music', music(TRACKS[6]), gain=0.85, stereo=True, quality=3),
+    S('music.explore.desert', 'music', 'music', music(TRACKS[7]), gain=0.85, stereo=True, quality=3),
+    S('music.explore.shrine', 'music', 'music', music(TRACKS[8]), gain=0.85, stereo=True, quality=3),
+    S('music.explore.glen', 'music', 'music', music(TRACKS[9]), gain=0.85, stereo=True, quality=3),
+    S('music.explore.jungle', 'music', 'music', music(TRACKS[10]), gain=0.85, stereo=True, quality=3),
+    S('amb.fjord', 'ambience', 'ambience', lambda r: amb_fjord(), stereo=True, quality=2),
+    S('amb.desert', 'ambience', 'ambience', lambda r: amb_desert(), stereo=True, quality=2),
+    S('amb.shrine', 'ambience', 'ambience', lambda r: amb_shrine(), stereo=True, quality=2),
+    S('amb.glen', 'ambience', 'ambience', lambda r: amb_glen(), stereo=True, quality=2),
+    S('amb.jungle', 'ambience', 'ambience', lambda r: amb_jungle(), stereo=True, quality=2),
+    # The spellbook, the town's building pop-up and its actions.
+    S('ui.book_open', 'effect', 'interface', ui_book_open, gain=0.5, max_voices=1, cooldown_ms=150),
+    S('ui.book_close', 'effect', 'interface', ui_book_close, gain=0.45, max_voices=1, cooldown_ms=150),
+    S('ui.book_page', 'effect', 'interface', ui_book_page, gain=0.45, max_voices=1, cooldown_ms=90, pitch_jitter=80),
+    S('ui.popup', 'effect', 'interface', ui_popup, gain=0.4, max_voices=1, cooldown_ms=100, pitch_jitter=40),
+    S('ui.town_action', 'effect', 'interface', ui_town_action, gain=0.45, max_voices=1, cooldown_ms=150),
+    # Spells and Favor: the gathering of a cast and one sound per look family (presentation/src/fxLooks.ts FX_SOUNDS).
+    S('magic.cast', 'effect', 'combat', magic_cast, gain=0.45, max_voices=1, cooldown_ms=150),
+    S('magic.strike', 'effect', 'combat', magic_strike, gain=0.55, max_voices=2, pitch_jitter=60),
+    S('magic.thunder', 'effect', 'combat', magic_thunder, gain=0.65, max_voices=2, intensity='strong'),
+    S('magic.fire', 'effect', 'combat', magic_fire, gain=0.6, max_voices=2),
+    S('magic.heal', 'effect', 'combat', magic_heal, gain=0.55, max_voices=1),
+    S('magic.bless', 'effect', 'combat', magic_bless, gain=0.5, max_voices=1),
+    S('magic.curse', 'effect', 'combat', magic_curse, gain=0.55, max_voices=1),
+    S('magic.wind', 'effect', 'combat', magic_wind, gain=0.5, max_voices=1),
+    S('magic.frost', 'effect', 'combat', magic_frost, gain=0.5, max_voices=1),
+    S('magic.nature', 'effect', 'combat', magic_nature, gain=0.55, max_voices=1),
+    S('magic.swarm', 'effect', 'combat', magic_swarm, gain=0.5, max_voices=1),
+    S('magic.water', 'effect', 'combat', magic_water, gain=0.5, max_voices=1),
+    S('magic.shadow', 'effect', 'combat', magic_shadow, gain=0.55, max_voices=1),
+    S('magic.holy', 'effect', 'combat', magic_holy, gain=0.55, max_voices=1, cooldown_ms=600),
+    S('magic.smite', 'effect', 'combat', magic_smite, gain=0.7, max_voices=1, intensity='strong'),
+    S('magic.reveal', 'effect', 'combat', magic_reveal, gain=0.5, max_voices=1),
+    S('magic.teleport', 'effect', 'combat', magic_teleport, gain=0.5, max_voices=1),
+    S('magic.coins', 'effect', 'combat', magic_coins, gain=0.5, max_voices=1, cooldown_ms=300),
+    S('magic.horn', 'effect', 'combat', magic_horn, gain=0.4, max_voices=1, cooldown_ms=800),
 ]
 
 

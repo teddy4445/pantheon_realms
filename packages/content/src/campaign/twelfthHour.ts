@@ -92,7 +92,7 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
     victory: [SESHET('The hymn is sung. The sun stood a little higher today — not enough. Somewhere in the night, the barque that carries it has run aground.')],
     town: { townId: 'abedju', name: 'Abedju', description: 'Seshet’s temple-town, where the House of Life keeps the hymns of the hours.' },
     biome: 'desert',
-    soundscape: 'coast',
+    soundscape: 'desert',
     barrier: 'water',
     event: {
       name: 'Broken Shrine of Ra',
@@ -147,7 +147,7 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
     victory: [PAWAH('The western gate is lit again. But listen — the sun did not come back through it tonight. It has gone further in than any gate we can light from this side.')],
     town: { townId: 'nekheb', name: 'Nekheb', description: 'A river town whose west bank is all tombs and shrines.' },
     biome: 'desert',
-    soundscape: 'coast',
+    soundscape: 'desert',
     barrier: 'water',
     lookout: { name: 'Vulture Crag', description: 'From the top, the west bank lies open from the river to the cliffs.' },
     event: {
@@ -227,7 +227,7 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
     victory: [SESHET('The covenant holds, a god walks with us and the cliff stone is sung. The road goes down from here — into the hours where the sun is.')],
     town: { townId: 'edfu', name: 'Edfu', description: 'A quarry town under the great cliffs.' },
     biome: 'desert',
-    soundscape: 'high_pass',
+    soundscape: 'desert',
     cache: { name: 'Quarrymen’s Cache', description: 'Tools and silver left when the quarrymen fled.', reward: { resources: { gold: 700, wood: 5 }, artifactIds: ['scribes_papyrus_sandals'] } },
     pass: {
       name: 'Cliff Road',
@@ -313,7 +313,7 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
     victory: [SESHET('The records are clear: the barque is held at the eleventh hour, in a hall the Lector has built inside the night. And he has a king — a vizier who crowned himself in the dusk.')],
     town: { townId: 'per_djehuty', name: 'Per-Djehuty', description: 'A marsh town of scribes on the edge of the flood.' },
     biome: 'jungle',
-    soundscape: 'coast',
+    soundscape: 'desert',
     wanderer: {
       name: 'A Scribe on a Reed Boat',
       description: 'A scribe with an ibis-headed staff poles a reed boat along the bank.',
@@ -393,7 +393,7 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
     victory: [SESHET('The stela is broken and the north is free of his crown. Paser has nothing left but the Lector’s promises. Neither do we — except that we know where the barque is.')],
     town: { townId: 'tjebu', name: 'Tjebu', description: 'A town on the river road north, loyal to the old hymns.' },
     biome: 'desert',
-    soundscape: 'coast',
+    soundscape: 'desert',
     gold: { name: 'Gold Mine', description: 'An unowned mine.', guard: { label: 'Mine boars', army: [['tusked_boar', 10]], reward: { resources: { gold: 500 } }, battlefield: 'open_field' } },
     event: {
       name: 'Oasis of the Old Well',
@@ -459,7 +459,7 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
     victory: [SESHET('The bennu fly. Tonight the sun went down in a blaze, and I saw the road it takes — down, through the hours, to the hall where the barque is held.')],
     town: { townId: 'iunu', name: 'Iunu', description: 'The sun’s own city, dark for the first time in its history.' },
     biome: 'desert',
-    soundscape: 'high_pass',
+    soundscape: 'desert',
     north: {
       name: 'Golem Steps',
       description: 'The northern steps up to the rookery, held by golems.',

@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 5,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8772
+ ],
+ "pixelsPerHex": 164.598,
+ "cutFrom": "sheet.creature.norse.tier2.upgraded.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 97.984,
+  "guideIdleFraction": 0.46,
+  "observedIdleFraction": 0.7727,
+  "worldScaleMultiplier": 0.5953
+ }
+}

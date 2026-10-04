@@ -7,6 +7,7 @@ import { scenarioMission } from '@pr/rules';
  */
 import type { ContentCatalog, GameEvent, MatchState } from '@pr/rules';
 import type { BattleCue, BattleCueKind } from '@pr/presentation';
+import { FX_SOUNDS, giftFxKind, spellLook } from '@pr/presentation/core';
 import type { ScreenId } from '../app/store';
 
 export const MUSIC = {
@@ -23,13 +24,25 @@ export const AMBIENCE = {
 
 export const STINGERS = { victory: 'stinger.victory', defeat: 'stinger.defeat', levelUp: 'stinger.levelup', beacon: 'stinger.beacon' } as const;
 
-/** Every soundscape a mission may name; each needs music.explore.* and amb.* entries. */
-export const SOUNDSCAPES = ['coast', 'high_pass', 'storm_plateau'] as const;
+/**
+ * Every soundscape a mission may name; each needs music.explore.* and amb.* entries.
+ * coast / high_pass / storm_plateau: The Three Beacons; fjord: The Winter Oath;
+ * desert, shrine, glen, jungle: the Egyptian, Japanese, Celtic and Mesoamerican campaigns.
+ */
+export const SOUNDSCAPES = ['coast', 'high_pass', 'storm_plateau', 'fjord', 'desert', 'shrine', 'glen', 'jungle'] as const;
 export const DEFAULT_SOUNDSCAPE = 'coast';
 
-export const UI_SOUNDS = ['ui.click', 'ui.open', 'ui.close', 'ui.confirm', 'ui.error', 'ui.coins', 'ui.build', 'ui.recruit', 'ui.endday', 'ui.newday', 'ui.newweek', 'ui.pickup', 'ui.capture', 'ui.divine', 'ui.objective', 'sfx.steps'] as const;
+export const UI_SOUNDS = [
+  'ui.click', 'ui.open', 'ui.close', 'ui.confirm', 'ui.error', 'ui.coins', 'ui.build', 'ui.recruit', 'ui.endday', 'ui.newday', 'ui.newweek', 'ui.pickup', 'ui.capture', 'ui.divine', 'ui.objective', 'sfx.steps',
+  // The spellbook, the town's building pop-up and its actions.
+  'ui.book_open', 'ui.book_close', 'ui.book_page', 'ui.popup', 'ui.town_action',
+] as const;
+
+/** Spells and Favor: one sound per look family (fxLooks.FX_SOUNDS), plus the gathering of a cast. */
+export const MAGIC_SOUNDS: readonly string[] = ['magic.cast', ...FX_SOUNDS.map((s) => `magic.${s}`)];
 
 const CUE_SOUND: Record<BattleCueKind, string> = {
+  cast: 'magic.cast',
   march: 'combat.march',
   flight: 'combat.flight',
   swing: 'combat.swing',
@@ -66,10 +79,12 @@ export const REQUIRED_SOUND_IDS: readonly string[] = [
   ...Object.values(STINGERS),
   ...UI_SOUNDS,
   ...COMBAT_SOUNDS,
+  ...MAGIC_SOUNDS,
 ];
 
 export function soundForCue(cue: BattleCue): string {
   if (cue.kind === 'impact' && cue.heavy) return 'combat.hit_heavy';
+  if (cue.magic) return `magic.${cue.magic}`;
   return CUE_SOUND[cue.kind];
 }
 
@@ -193,17 +208,33 @@ export function soundsForEvents(catalog: ContentCatalog, state: MatchState, me: 
         break;
       }
       case 'GodSelected':
-      case 'OfferingMade':
-      case 'DivineGiftReceived':
         if (e.playerId === me) add('ui.divine');
+        break;
+      case 'OfferingMade':
+        if (e.playerId === me) add('magic.holy');
+        break;
+      case 'DivineGiftReceived': {
+        if (e.playerId !== me) break;
+        const grant = catalog.divineGifts?.[e.giftId]?.grant;
+        add(grant && giftFxKind(grant) === 'coins' ? 'magic.coins' : 'magic.bless');
+        break;
+      }
+      case 'InterventionInvoked':
+        // The miracle's card rises now; its light (and sound) follows when the card closes.
+        if (e.playerId === me && catalog.interventions?.[e.interventionId]?.context === 'adventure') add('ui.divine');
         break;
       case 'HeroTeleported':
         if (e.viaSiteId && ownsHero(state, e.heroId, me)) add('ui.divine');
         break;
       case 'SpellsLearned':
-      case 'AdventureSpellCast':
         if (ownsHero(state, e.heroId, me)) add('ui.divine');
         break;
+      case 'AdventureSpellCast': {
+        if (!ownsHero(state, e.heroId, me)) break;
+        const spell = catalog.spells[e.spellId];
+        add(spell ? `magic.${spellLook(spell).sound}` : 'ui.divine');
+        break;
+      }
       // --- Map sites and neutral reactions (proposed 2026-10-02) ---
       case 'LearningStoneUsed':
       case 'ShrineSpellLearned':

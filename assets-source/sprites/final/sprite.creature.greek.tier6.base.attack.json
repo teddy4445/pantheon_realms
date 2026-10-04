@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 6,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8762
+ ],
+ "pixelsPerHex": 98.453,
+ "cutFrom": "sheet.creature.greek.tier6.base.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 80.013,
+  "guideIdleFraction": 0.75,
+  "observedIdleFraction": 0.9228,
+  "worldScaleMultiplier": 0.8127
+ }
+}

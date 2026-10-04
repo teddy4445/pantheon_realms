@@ -59,6 +59,39 @@ describe('battle cues', () => {
   });
 });
 
+describe('magic and Favor sounds', () => {
+  const d = GameDriver.mission('skirmish_twin_harbors', { matchId: 'audio-magic' });
+  const me = 'player';
+  const hero = Object.values(d.state.heroes).find((h) => h.ownerId === me)!;
+  const town = Object.values(d.state.towns).find((t) => t.ownerId === me)!;
+  it('a spell’s cue carries its look’s sound family; the cast gathers with its own sound', () => {
+    expect(soundForCue({ kind: 'spell', magic: 'thunder' })).toBe('magic.thunder');
+    expect(soundForCue({ kind: 'bless', magic: 'holy' })).toBe('magic.holy');
+    expect(soundForCue({ kind: 'cast' })).toBe('magic.cast');
+    expect(soundForCue({ kind: 'spell' })).toBe('combat.spell');
+  });
+  it('map spells sound like their look; gifts and offerings like what rises from the Temple', () => {
+    expect(soundsForEvents(d.catalog, d.state, me, [ev({ kind: 'AdventureSpellCast', heroId: hero.id, spellId: 'far_sight', center: hero.position, radius: 2, untilDay: 2 })])).toEqual(['magic.reveal']);
+    expect(soundsForEvents(d.catalog, d.state, me, [ev({ kind: 'AdventureSpellCast', heroId: hero.id, spellId: 'homecoming', center: hero.position, radius: 0, untilDay: 2 })])).toEqual(['magic.teleport']);
+    expect(soundsForEvents(d.catalog, d.state, me, [ev({ kind: 'DivineGiftReceived', playerId: me, townId: town.id, giftId: 'temple_treasury', heroId: null, favor: 4, artifactId: null, xp: 0, recruits: 0 })])).toEqual(['magic.coins']);
+    expect(soundsForEvents(d.catalog, d.state, me, [ev({ kind: 'DivineGiftReceived', playerId: me, townId: town.id, giftId: 'anointing', heroId: hero.id, favor: 4, artifactId: null, xp: 500, recruits: 0 })])).toEqual(['magic.bless']);
+    expect(soundsForEvents(d.catalog, d.state, me, [ev({ kind: 'OfferingMade', playerId: me, townId: town.id, favor: 3, creatures: 5 })])).toEqual(['magic.holy']);
+    expect(soundsForEvents(d.catalog, d.state, me, [ev({ kind: 'OfferingMade', playerId: 'someone-else', townId: town.id, favor: 3, creatures: 5 })])).toEqual([]);
+  });
+  it('every campaign after The Three Beacons has a soundscape of its own', () => {
+    const scapes = new Map<string, Set<string>>();
+    for (const m of Object.values(d.catalog.missions)) {
+      const camp = Object.values(d.catalog.campaigns).find((c) => c.missionIds.includes(m.id));
+      if (!camp || !m.soundscape) continue;
+      scapes.set(camp.id, (scapes.get(camp.id) ?? new Set()).add(m.soundscape));
+    }
+    const own = [...scapes.entries()].map(([id, s]) => [id, [...s].filter((x) => !['coast', 'high_pass', 'storm_plateau'].includes(x))] as const);
+    expect(own.filter(([, s]) => s.length > 0).length).toBeGreaterThanOrEqual(5);
+    const three = [...scapes.entries()].find(([id]) => id.includes('beacon'));
+    if (three) expect([...three[1]].every((x) => ['coast', 'high_pass', 'storm_plateau'].includes(x))).toBe(true);
+  });
+});
+
 describe('audio preferences', () => {
   it('schema 1 "Effects" volume carries over to the interface and combat buses', () => {
     const p = sanitizePreferences({ schemaVersion: 1, masterVolume: 70, effectsVolume: 35 });

@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 5,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8762
+ ],
+ "pixelsPerHex": 112.322,
+ "cutFrom": "sheet.creature.egyptian.tier5.base.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 80.013,
+  "guideIdleFraction": 0.48,
+  "observedIdleFraction": 0.6738,
+  "worldScaleMultiplier": 0.7124
+ }
+}

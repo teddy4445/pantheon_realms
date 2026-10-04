@@ -31,6 +31,7 @@ import {
   KEY_COLOR_HEX,
   KEY_COLOR_LABEL,
   type ContentCatalog,
+  type GameEvent,
   type HeroState,
   type HexCoord,
   type MatchState,
@@ -41,7 +42,7 @@ import {
   isTownTile,
   axialDistance,
 } from '@pr/rules';
-import { biomeTerrainCss } from '@pr/presentation/core';
+import { biomeTerrainCss, miracleLook, spellLook } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { adventureCursor } from '../app/cursorContext';
@@ -49,7 +50,8 @@ import { cursorCss } from '../assets/cursors';
 import { newWeekBannerArt } from '../assets/momentArt';
 import { weeklyEventOf } from '../app/moments';
 import type { AppStore } from '../app/store';
-import { adventurePlaybackFactor } from '../app/preferences';
+import { adventurePlaybackFactor, reducedMotion } from '../app/preferences';
+import { Burst } from '../components/burst';
 import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
@@ -513,6 +515,8 @@ export function AdventureScreen() {
   }, [store.prefs.minimap]);
   const [pinned, setPinned] = useState<HexCoord | null>(null);
   const [dayBanner, setDayBanner] = useState<string | null>(null);
+  /** The coin shower over the Gold counter (Tithe of the Faithful, the Feathered Serpent's gift). */
+  const [coins, setCoins] = useState<{ key: number; x: number; y: number } | null>(null);
   /** Adventure spell awaiting a target tile (Divine Sight). */
   const [casting, setCasting] = useState<string | null>(null);
   const ctrl = useRef<AdventureSceneController | null>(null);
@@ -598,13 +602,16 @@ export function AdventureScreen() {
           if (mine) store.audio?.heroSteps(false);
         }
       }
-      // Teleports without a walk before them (the Recall spell).
+      // Teleports without a walk before them (the Recall spell: Homecoming's column of light).
       for (const [i, t] of teleports.entries()) {
         if (played.has(i) || t.kind !== 'HeroTeleported') continue;
         const hero = store.session?.state.heroes[t.heroId];
         if (hero?.ownerId !== store.session?.humanPlayerId) continue;
-        await c.playHeroTeleport(t.heroId, t.to, adventurePlaybackFactor(store.prefs, source === 'ai'), true);
+        const cast = events.find((e) => e.kind === 'AdventureSpellCast' && e.heroId === t.heroId);
+        const spell = cast && cast.kind === 'AdventureSpellCast' ? catalog.spells[cast.spellId] : undefined;
+        await c.playHeroTeleport(t.heroId, t.to, adventurePlaybackFactor(store.prefs, source === 'ai'), true, spell ? { look: spellLook(spell), id: `fx.spell.${spell.id}` } : undefined);
       }
+      await playMagic(c, events, source);
       const blocked = events.find((e) => e.kind === 'PortalBlocked');
       if (blocked && blocked.kind === 'PortalBlocked' && store.session?.state.heroes[blocked.heroId]?.ownerId === store.session?.humanPlayerId) {
         store.toast('The far side of the portal is blocked: a hero stands on its twin.', 'info');
@@ -613,6 +620,51 @@ export function AdventureScreen() {
       if (started && started.kind === 'BattleStarted') await prepareBeforeBattle(c, started.battleId, source);
       afterMoves(moves);
     });
+    /**
+     * Map spells and the player's own map miracles (presentation only): the
+     * fog-lifting ring, wind or motes on heroes, light over a town, coins over
+     * the treasury. A miracle's effect follows its painted card.
+     */
+    async function playMagic(c: AdventureSceneController, events: readonly GameEvent[], source: string) {
+      const session = store.session;
+      if (!session) return;
+      const st = session.state;
+      const me = session.humanPlayerId;
+      const factor = adventurePlaybackFactor(store.prefs, source === 'ai');
+      for (const e of events) {
+        if (e.kind === 'AdventureSpellCast') {
+          const spell = catalog.spells[e.spellId];
+          if (!spell || st.heroes[e.heroId]?.ownerId !== me || spell.effect.type === 'recall') continue;
+          const look = spellLook(spell);
+          const id = `fx.spell.${spell.id}`;
+          await c.playMapFx(spell.effect.type === 'reveal_radius' ? { look, id, caster: e.heroId, area: { center: e.center, radius: e.radius } } : { look, id, caster: e.heroId, heroIds: [e.heroId] }, factor);
+        } else if (e.kind === 'InterventionInvoked' && e.playerId === me) {
+          const def = catalog.interventions?.[e.interventionId];
+          if (!def || def.context !== 'adventure') continue;
+          if (factor > 0) await store.whenMiracleCardsClosed();
+          const look = miracleLook(def);
+          const id = `fx.miracle.${def.id}`;
+          store.audio?.effect(`magic.${look.sound}`);
+          const fx = def.effect;
+          if (fx.type === 'restore_movement' || fx.type === 'restore_mana') {
+            const heroIds = Object.values(st.heroes)
+              .filter((h) => h.ownerId === me && h.status === 'active' && !h.monster)
+              .map((h) => h.id);
+            await c.playMapFx({ look, id, heroIds }, factor);
+          } else if (fx.type === 'town_growth') {
+            const town = e.targetTownId ? st.towns[e.targetTownId] : undefined;
+            if (town) await c.playMapFx({ look, id, towns: [town.coord] }, factor);
+          } else if (fx.type === 'grant_resources') {
+            if (factor > 0 && !reducedMotion(store.prefs)) {
+              const r = document.querySelector('[data-testid="res-gold"]')?.getBoundingClientRect();
+              if (r) setCoins({ key: Date.now(), x: r.left + r.width / 2, y: r.top + r.height / 2 });
+            }
+            const capital = Object.values(st.towns).find((t) => t.ownerId === me);
+            await c.playMapFx({ look, id, ...(capital ? { towns: [capital.coord] } : {}) }, factor);
+          }
+        }
+      }
+    }
     /**
      * Readiness beat: the attacking mounted hero has stopped on its approach tile; it
      * faces the opponent and holds its readiness pose once. The battlefield opens
@@ -671,7 +723,7 @@ export function AdventureScreen() {
     (c: AdventureSceneController | null) => {
       ctrl.current = c;
       projectors.adventure = c ? (q, r) => toPage(c.projectHex({ q, r })) : undefined;
-      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose() } : undefined;
+      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose(), fx: () => c.fxDebug() } : undefined;
       if (c) {
         c.update(viewRef.current);
         const focus = store.focusRequest ?? selectedRef.current?.position ?? null;
@@ -958,6 +1010,7 @@ export function AdventureScreen() {
           {dayBanner}
         </div>
       ) : null}
+      {coins ? <Burst key={coins.key} kind="coins" className="burst--resbar" style={{ left: coins.x, top: coins.y }} onDone={() => setCoins(null)} /> : null}
 
       <aside className="adv-left">
         <Panel className="adv-list" label="Heroes">

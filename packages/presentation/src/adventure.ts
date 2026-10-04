@@ -27,6 +27,8 @@ import { SpriteFigure } from './figure';
 import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
 import { loadTexture } from './textures';
 import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
+import { FxPainter, type FxTarget } from './fx';
+import type { FxLook } from './fxLooks';
 
 /** Nominal map time per hex step (ms, before the Adventure animation speed setting). */
 const STEP_MS = 210;
@@ -177,6 +179,11 @@ export class AdventureSceneController implements SceneController {
   private readonly objects = new Container();
   private readonly fog = new Graphics();
   private readonly effects = new Container();
+  /** Whole-view moments (screen pixels, over the map). */
+  private readonly screenLayer = new Container();
+  private readonly painter: FxPainter;
+  /** The last magic effects played (asset ID prefixes; read-only diagnostics). */
+  private fxLog: string[] = [];
   private map: WorldMapDefinition | null = null;
   private mapKey = '';
   private terrainArts = new Map<Terrain, EnvironmentArt>();
@@ -215,7 +222,8 @@ export class AdventureSceneController implements SceneController {
     this.engine = engine;
     this.canvas = canvas;
     this.cb = cb;
-    this.root.addChild(this.world);
+    this.root.addChild(this.world, this.screenLayer);
+    this.painter = new FxPainter(this.effects, this.tweens, R, S, { layer: this.screenLayer, size: () => this.view });
     this.ground.addChild(this.selectRing, this.pathLayer, this.trailLayer, this.hover);
     this.objects.sortableChildren = true;
     this.world.addChild(this.backdrop, this.terrain, this.roads, this.grid, this.reach, this.ground, this.objects, this.fog, this.effects);
@@ -858,14 +866,26 @@ export class AdventureSceneController implements SceneController {
     e.root.scale.set(1);
   }
 
-  /** Playback for a teleport that had no walk before it (the Recall spell). */
-  async playHeroTeleport(heroId: string, to: HexCoord, speed: number, follow: boolean): Promise<void> {
+  /**
+   * Playback for a teleport that had no walk before it (the Recall spell). With
+   * a look (Homecoming), a column of light lifts the hero away and sets it down
+   * (`<fxId>.depart` / `.arrive` strips when delivered).
+   */
+  async playHeroTeleport(heroId: string, to: HexCoord, speed: number, follow: boolean, fx?: { look: FxLook; id: string }): Promise<void> {
     const e = this.heroes.get(heroId);
     if (!e) return;
     e.locked += 1;
     this.tweens.speed = speed;
     try {
-      await this.playTeleport(e, to, speed, follow);
+      if (fx && speed > 0) {
+        this.logFx(fx.id);
+        const column = { ...fx.look, impact: 'pillar' as const };
+        const depart = this.painter.impact(column, this.heroTarget(e), `${fx.id}.depart`);
+        await this.tweens.wait(260);
+        await this.playTeleport(e, to, speed, follow);
+        await depart;
+        await this.painter.impact(column, this.heroTarget(e), `${fx.id}.arrive`);
+      } else await this.playTeleport(e, to, speed, follow);
     } finally {
       e.locked -= 1;
       if (e.locked === 0) {
@@ -873,6 +893,53 @@ export class AdventureSceneController implements SceneController {
         this.releaseArrival(heroId);
       }
     }
+  }
+
+  private heroTarget(e: HeroEntry): FxTarget {
+    return { x: e.root.x, y: e.root.y, height: Math.max(R * 1.2, e.figure.height * 0.85), width: 1, facing: 1 };
+  }
+
+  private logFx(id: string): void {
+    this.fxLog = [...this.fxLog.slice(-19), id];
+  }
+
+  /** The magic effects played most recently (read-only diagnostics for tests). */
+  fxDebug(): readonly string[] {
+    return this.fxLog;
+  }
+
+  /**
+   * A map spell or miracle (never changes state): the sigil on the casting
+   * hero, then a ring spreading over the chosen tiles (the fog lifts in it),
+   * light on heroes (wind, mist, motes) or on towns (growth, gifts). Heroes
+   * out of view are skipped; a town miracle brings its town into view.
+   */
+  async playMapFx(
+    fx: { look: FxLook; id: string; caster?: string; area?: { center: HexCoord; radius: number }; heroIds?: readonly string[]; towns?: readonly HexCoord[] },
+    speed: number,
+  ): Promise<void> {
+    if (speed <= 0 || this.disposed) return;
+    this.tweens.speed = speed;
+    this.logFx(fx.id);
+    const { look, id } = fx;
+    const caster = fx.caster ? this.heroes.get(fx.caster) : undefined;
+    if (caster && caster.root.visible) await this.painter.cast(look, { x: caster.root.x, y: caster.root.y }, `${id}.cast`);
+    const jobs: Promise<void>[] = [this.painter.screenFx(look.screen, look.school, 1, `${id}.screen`)];
+    if (fx.area) jobs.push(this.painter.area(look, this.hexCenter(fx.area.center), (fx.area.radius + 0.5) * HEX_W, `${id}.area`));
+    (fx.heroIds ?? []).forEach((hid, i) => {
+      const e = this.heroes.get(hid);
+      if (!e || !e.root.visible) return;
+      jobs.push(this.tweens.wait(i * 90).then(() => this.painter.impact(look, this.heroTarget(e), `${id}.impact`)));
+    });
+    const towns = fx.towns ?? [];
+    if (towns.length === 1) this.focus(towns[0]!, true);
+    towns.forEach((c) => {
+      const p = this.hexCenter(c);
+      const at: FxTarget = { x: p.x, y: p.y + R * S * 0.3, height: R * 2.2, width: 1.6, facing: 1 };
+      jobs.push(this.painter.impact(look, at, `${id}.impact`));
+      if (look.impact !== 'coins' && look.impact !== 'motes') jobs.push(this.painter.impact({ ...look, impact: 'motes' }, at));
+    });
+    await Promise.all(jobs);
   }
 
   /**

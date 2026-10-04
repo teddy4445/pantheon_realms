@@ -1,0 +1,17 @@
+{
+ "frames": 3,
+ "fps": 8,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8772
+ ],
+ "pixelsPerHex": 156.135,
+ "cutFrom": "sheet.creature.neutral.brigand.upgraded.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 97.984,
+  "guideIdleFraction": 0.56,
+  "observedIdleFraction": 0.8923,
+  "worldScaleMultiplier": 0.6276
+ }
+}

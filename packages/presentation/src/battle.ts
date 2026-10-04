@@ -25,6 +25,8 @@ import { SpriteFigure } from './figure';
 import { creatureSprites, spriteManifest, type EffectDefinition, type StaticSpriteDefinition } from './sprites';
 import { loadStrip, loadTexture } from './textures';
 import { colorOf, groundShadow, stillHeight, stillSprite } from './staticSprites';
+import { FxPainter, StatusAura, type FxTarget } from './fx';
+import type { FxLook, FxSound, StatusOverlay } from './fxLooks';
 
 /** Hex radius in board pixels before the fit-to-view scale. */
 const RB = 40;
@@ -46,6 +48,8 @@ export interface BattleStackView {
   readonly active: boolean;
   readonly label: string;
   readonly labelColor: string;
+  /** Status overlays to show on the stack (fxLooks.statusOverlays of its statuses). */
+  readonly statuses?: readonly StatusOverlay[];
 }
 
 export interface SiegeStructureView {
@@ -83,6 +87,8 @@ export interface BattleView {
   readonly siege: SiegeView | null;
   /** Deployment zone cells to shade while a side arranges its army. */
   readonly zone: readonly BattleCell[];
+  /** Reduced motion: status overlays hold still. */
+  readonly calm?: boolean;
 }
 
 /**
@@ -98,6 +104,7 @@ export type BattleCueKind =
   | 'shot'
   | 'arrow-hit'
   | 'death'
+  | 'cast'
   | 'spell'
   | 'heal'
   | 'bless'
@@ -117,10 +124,26 @@ export interface BattleCue {
   readonly kind: BattleCueKind;
   /** The blow killed creatures (a heavier sound). */
   readonly heavy?: boolean;
+  /** Spells and miracles: the sound family of their look (`magic.<sound>`). */
+  readonly magic?: FxSound;
 }
 
-/** How a battle spell looks (the interface maps a spell's effect type to one of these). */
-export type SpellLook = 'damage' | 'area' | 'heal' | 'buff' | 'curse';
+/** How a battle spell looks (fxLooks.spellLook), with the word shown when it neither hurts nor heals. */
+export interface BattleSpellFx extends FxLook {
+  readonly label?: string;
+  /** Aimed at the enemy (its word is shown in the curse colour). */
+  readonly hostile?: boolean;
+}
+
+/** How a battle miracle looks, which side invoked it and what it did. */
+export interface BattleMiracleFx {
+  readonly look: FxLook;
+  readonly side: 'attacker' | 'defender';
+  /** A smite's damage. */
+  readonly damage?: number;
+  /** The word shown over the army (status miracles). */
+  readonly label?: string;
+}
 
 export interface BattleCallbacks {
   /** `offset`: pointer position inside the cell, in hex radii (x right, y down, foreshortened like the board). */
@@ -128,8 +151,10 @@ export interface BattleCallbacks {
   onCellHover(c: BattleCell | null, offset: { x: number; y: number }): void;
   /** Optional: presentation cues timed with playback (sound). */
   onCue?(cue: BattleCue): void;
-  /** Optional: the look of a spell's effect (default: from its damage/heal numbers). */
-  spellLook?(spellId: string): SpellLook | null;
+  /** Optional: how a spell looks (default: from its damage/heal numbers). */
+  spellFx?(spellId: string): BattleSpellFx | null;
+  /** Optional: how a divine intervention looks in this battle (null: not shown). */
+  miracleFx?(interventionId: string, playerId: string): BattleMiracleFx | null;
 }
 
 interface StackEntry {
@@ -148,6 +173,11 @@ interface StackEntry {
   seed: number;
   /** The fallen lie where they died (owner request 2026-10-03). */
   down: boolean;
+  /** Status overlays: drawn, and the set currently shown (it follows the view after spell playback). */
+  aura: StatusAura;
+  shownStatuses: readonly StatusOverlay[];
+  /** Frames until a status change from a newer view is shown (lets playback claim it first). */
+  auraDelay: number;
 }
 
 const ARCHETYPE_GROUND: Record<string, string> = {
@@ -184,6 +214,14 @@ export class BattleSceneController implements SceneController {
   private readonly objects = new Container();
   private readonly fx = new Container();
   private readonly floats = new Container();
+  /** Whole-field moments (screen pixels, over the board). */
+  private readonly screenLayer = new Container();
+  private readonly painter: FxPainter;
+  private calm = false;
+  /** A battle heal's total, shown by the miracle that follows it in the same batch. */
+  private pendingHeal: { side: string; healed: number } | null = null;
+  /** The last magic effects played (asset ID prefixes; read-only diagnostics). */
+  private fxLog: string[] = [];
   private boardKey = '';
   private highlightKey = '';
   private stacks = new Map<string, StackEntry>();
@@ -213,10 +251,11 @@ export class BattleSceneController implements SceneController {
     this.cb = cb;
     this.objects.sortableChildren = true;
     this.board.addChild(this.backdrop, this.cells, this.grid, this.highlight, this.hover, this.activeRing, this.objects, this.fx, this.floats);
-    this.root.addChild(this.board);
+    this.root.addChild(this.board, this.screenLayer);
     this.hover.visible = false;
     this.activeRing.visible = false;
     this.view = { width: engine.width, height: engine.height };
+    this.painter = new FxPainter(this.fx, this.tweens, RB, S, { layer: this.screenLayer, size: () => this.view });
     const on = (type: string, fn: (e: Event) => void) => {
       canvas.addEventListener(type, fn, { passive: type !== 'wheel' && type !== 'contextmenu' });
       this.listeners.push([type, fn]);
@@ -418,9 +457,12 @@ export class BattleSceneController implements SceneController {
     base.ellipse(0, 0, HEX_W * 0.4 * w, HEX_W * 0.4 * S * 0.62).fill({ color: sideCol, alpha: 0.5 }).stroke({ width: 2, color: sideCol, alpha: 0.95 });
     if (v.side === 'defender') base.ellipse(0, 0, HEX_W * 0.22 * w, HEX_W * 0.22 * S * 0.62).fill({ color: 0x14141a, alpha: 0.5 });
     root.addChild(base);
+    const aura = new StatusAura(RB, S);
+    root.addChild(aura.back);
     const figure = new SpriteFigure({ set: creatureSprites(v.creatureId), hexWidth: HEX_W, accent: colorOf(v.accent) });
     figure.mirror = v.facing === -1;
     root.addChild(figure.view);
+    root.addChild(aura.front);
     // Count badge at the front foot.
     const badge = new Container();
     const badgeBg = new Graphics();
@@ -444,6 +486,9 @@ export class BattleSceneController implements SceneController {
       key: `${v.creatureId ?? ''}|${v.side}|${v.footprint}`,
       seed: v.id.length * 1.7 + v.anchor.row,
       down: false,
+      aura,
+      shownStatuses: [],
+      auraDelay: 0,
     };
     this.setBadge(e, v.label, v.labelColor);
     this.place(e, v.anchor);
@@ -451,6 +496,7 @@ export class BattleSceneController implements SceneController {
     figure.setLoop('idle');
     // A stack already dead (a battle loaded from a save) lies where it fell.
     if (!v.alive) this.layDown(e);
+    else this.applyAura(e);
     return e;
   }
 
@@ -476,6 +522,19 @@ export class BattleSceneController implements SceneController {
     if (e.figure.has('death')) e.figure.holdLast('death');
     else this.fallenPose(e, 1);
     e.root.zIndex = e.root.y - 2;
+    e.shownStatuses = [];
+    e.aura.clear();
+  }
+
+  /** Show the stack's current statuses (after any spell that set them has played). */
+  private applyAura(e: StackEntry): void {
+    e.auraDelay = 0;
+    e.shownStatuses = e.down || !e.view.alive ? [] : (e.view.statuses ?? []);
+    this.refreshAura(e);
+  }
+
+  private refreshAura(e: StackEntry): void {
+    e.aura.set(e.shownStatuses, Math.max(RB * 0.9, e.figure.height * 0.85), e.view.footprint === 2 ? 1.7 : 1, e.view.facing);
   }
 
   /** Fallback death pose (no death strip): tipped over backwards and a little dimmed. */
@@ -512,7 +571,9 @@ export class BattleSceneController implements SceneController {
         if (e.locked === 0) e.snapIn = 3;
       }
       const died = !v.alive && e.view.alive;
+      const statusesChanged = (v.statuses ?? []).join(',') !== e.shownStatuses.join(',');
       e.view = v;
+      if (statusesChanged && e.locked === 0 && e.auraDelay === 0) e.auraDelay = 3;
       this.setBadge(e, v.label, v.labelColor);
       e.badge.visible = v.alive;
       if (v.alive && e.down && e.locked === 0) {
@@ -521,6 +582,7 @@ export class BattleSceneController implements SceneController {
         e.base.visible = true;
         e.figure.rest();
         e.figure.setLoop('idle');
+        this.applyAura(e);
       }
       // Died without playback (instant speed): lie down now; otherwise the death playback does it.
       if (died && e.locked === 0) this.layDown(e);
@@ -554,6 +616,7 @@ export class BattleSceneController implements SceneController {
       else if (this.structuresLocked === 0) this.structureSnapIn = 3;
     }
     this.grid.visible = view.grid;
+    this.calm = !!view.calm;
     if (view.highlightKey !== this.highlightKey) {
       this.buildHighlights(view);
       this.highlightKey = view.highlightKey;
@@ -760,11 +823,16 @@ export class BattleSceneController implements SceneController {
     e.badge.visible = true;
     e.figure.rest();
     if (!this.celebrating.has(e)) e.figure.setLoop('idle');
+    this.applyAura(e);
   }
 
-  /** Visualise one batch of committed events. Resolves when playback is finished. */
-  async play(events: readonly GameEvent[], speed: number): Promise<void> {
-    this.tweens.speed = speed;
+  /**
+   * Keep the stacks (and fortifications) these events touch as they are drawn
+   * now, so a newer view does not show the outcome before its playback. Returns
+   * the release. Used by `play`, and by the interface to hold a battle miracle's
+   * targets while its painted card is up.
+   */
+  hold(events: readonly GameEvent[]): () => void {
     const touched = new Set<StackEntry>();
     const lockOnce = (e: StackEntry | undefined) => {
       if (e && !touched.has(e)) {
@@ -782,29 +850,47 @@ export class BattleSceneController implements SceneController {
       } else if (ev.kind === 'SiegeStructureDamaged') {
         structures = true;
         if (ev.attackerId) lockOnce(this.stacks.get(ev.attackerId));
+      } else if (ev.kind === 'BattleSpellCast') {
+        // The spell's targets keep their old look (and their old statuses) until it lands.
+        for (const v of this.victims(this.stacks.get(ev.targetId), this.spellLookOf(ev).scope)) lockOnce(v);
+      } else if (ev.kind === 'InterventionInvoked') {
+        const m = this.miracleOf(ev.interventionId, ev.playerId);
+        if (m) for (const v of this.miracleVictims(m, ev.targetStackId)) lockOnce(v);
       }
     }
     if (structures) {
       this.structuresLocked += 1;
       this.structureSnapIn = 0;
     }
+    let released = false;
+    return () => {
+      if (released) return;
+      released = true;
+      for (const e of touched) this.unlock(e);
+      if (structures) {
+        this.structuresLocked = Math.max(0, this.structuresLocked - 1);
+        if (this.structuresLocked === 0) this.syncStructures();
+      }
+    };
+  }
+
+  /** Visualise one batch of committed events. Resolves when playback is finished. */
+  async play(events: readonly GameEvent[], speed: number): Promise<void> {
+    this.tweens.speed = speed;
+    const release = this.hold(events);
     try {
       for (const ev of events) {
         if (this.tweens.speed === 0) break;
         await this.playEvent(ev, this.tweens.speed);
       }
     } finally {
-      for (const e of touched) this.unlock(e);
-      if (structures) {
-        this.structuresLocked = Math.max(0, this.structuresLocked - 1);
-        if (this.structuresLocked === 0) this.syncStructures();
-      }
+      release();
     }
   }
 
-  private cue(kind: BattleCueKind, heavy?: boolean): void {
+  private cue(kind: BattleCueKind, heavy?: boolean, magic?: FxSound): void {
     try {
-      this.cb.onCue?.(heavy === undefined ? { kind } : { kind, heavy });
+      this.cb.onCue?.({ kind, ...(heavy === undefined ? {} : { heavy }), ...(magic ? { magic } : {}) });
     } catch {
       // A cosmetic listener must never break playback.
     }
@@ -950,18 +1036,13 @@ export class BattleSceneController implements SceneController {
         else await this.die(t);
         return;
       }
-      case 'BattleSpellCast': {
-        const t = this.stacks.get(ev.targetId);
-        if (!t) return;
-        const look: SpellLook = this.cb.spellLook?.(ev.spellId) ?? (ev.healed > 0 ? 'heal' : ev.damage > 0 ? 'damage' : 'buff');
-        this.cue(look === 'heal' ? 'heal' : ev.damage > 0 ? 'spell' : 'bless');
-        const tint = look === 'heal' ? 0x9be58a : look === 'damage' || look === 'area' ? 0x7fb2ff : look === 'curse' ? 0xb07ad8 : 0xf5e4b7;
-        await this.effect(`spell.${look}`, { x: t.root.x, y: t.root.y }, { flash: tint, scale: look === 'area' ? 1.4 : 1 });
-        const txt = ev.healed > 0 ? `+${ev.healed} HP` : ev.damage > 0 ? `−${ev.damage}` : look === 'curse' ? 'Cursed' : 'Blessed';
-        void this.floatText(this.headOf(t), txt, ev.healed > 0 ? '#9be58a' : ev.damage > 0 ? '#9cc4ff' : look === 'curse' ? '#d7b0ff' : '#f5e4b7', speed);
-        if (ev.damage > 0) await this.flinch(t);
+      case 'BattleSpellCast':
+        return this.playSpell(ev, speed);
+      case 'BattleStacksHealed':
+        this.pendingHeal = { side: ev.side, healed: ev.healed };
         return;
-      }
+      case 'InterventionInvoked':
+        return this.playMiracle(ev, speed);
       case 'BattleAbilityUsed': {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
@@ -1087,6 +1168,148 @@ export class BattleSceneController implements SceneController {
     }
   }
 
+  // ------------------------------------------------------------------ magic
+
+  private spellLookOf(ev: { spellId: string; damage: number; healed: number }): BattleSpellFx {
+    let look: BattleSpellFx | null = null;
+    try {
+      look = this.cb.spellFx?.(ev.spellId) ?? null;
+    } catch {
+      look = null;
+    }
+    if (look) return look;
+    const heal = ev.healed > 0;
+    const hurt = ev.damage > 0;
+    return { school: heal ? 'heal' : hurt ? 'strike' : 'bless', travel: hurt ? 'bolt' : 'none', impact: heal ? 'heal' : hurt ? 'sparks' : 'glyph', screen: 'none', scope: 'single', sound: heal ? 'heal' : hurt ? 'strike' : 'bless' };
+  }
+
+  private miracleOf(interventionId: string, playerId: string): BattleMiracleFx | null {
+    try {
+      return this.cb.miracleFx?.(interventionId, playerId) ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** The cells a stack stands on, in unsquashed board pixels (neighbours are exactly one hex width apart). */
+  private flatCells(e: StackEntry): { x: number; y: number }[] {
+    const a = e.view.anchor;
+    const cells = e.view.footprint === 2 ? [a, { col: a.col - e.view.facing, row: a.row }] : [a];
+    return cells.map((c) => cellPoint(c, RB, 1));
+  }
+
+  /** Who a spell lands on: the target; the target and the stacks of its side beside it; or that whole side. */
+  private victims(target: StackEntry | undefined, scope: FxLook['scope']): StackEntry[] {
+    if (!target) return [];
+    if (scope === 'single') return [target];
+    const side = [...this.stacks.values()].filter((e) => e !== target && e.view.side === target.view.side && !e.down);
+    if (scope === 'army') return [target, ...side.sort((a, b) => a.root.x - b.root.x)];
+    const mine = this.flatCells(target);
+    return [target, ...side.filter((e) => this.flatCells(e).some((p) => mine.some((q) => Math.hypot(p.x - q.x, p.y - q.y) < HEX_W * 1.1)))];
+  }
+
+  private miracleVictims(m: BattleMiracleFx, targetId: string | null): StackEntry[] {
+    const t = targetId ? this.stacks.get(targetId) : undefined;
+    if (t) return this.victims(t, m.look.scope === 'army' ? 'army' : 'single');
+    return [...this.stacks.values()].filter((e) => e.view.side === m.side && !e.down).sort((a, b) => a.root.x - b.root.x);
+  }
+
+  /** Where a side's commander casts from: its banner corner above the far end of its deployment edge. */
+  private casterPoint(side: 'attacker' | 'defender'): { x: number; y: number } {
+    const c = this.cellXY({ col: side === 'attacker' ? 0 : this.cols - 1, row: 0 });
+    return { x: c.x + (side === 'attacker' ? -RB * 0.4 : RB * 0.4), y: c.y - RB * 1.25 };
+  }
+
+  private targetOf(e: StackEntry): FxTarget {
+    return { x: e.root.x, y: e.root.y, height: Math.max(RB * 0.9, e.figure.height * 0.85), width: e.view.footprint === 2 ? 1.7 : 1, facing: e.view.facing };
+  }
+
+  private logFx(id: string): void {
+    this.fxLog = [...this.fxLog.slice(-19), id];
+  }
+
+  /** A battle spell: the sigil at the commander's corner, its flight, where it lands on each stack it touches, then the numbers. */
+  private async playSpell(ev: Extract<GameEvent, { kind: 'BattleSpellCast' }>, speed: number): Promise<void> {
+    const t = this.stacks.get(ev.targetId);
+    if (!t) return;
+    const look = this.spellLookOf(ev);
+    const id = `fx.spell.${ev.spellId}`;
+    this.logFx(id);
+    const victims = this.victims(t, look.scope);
+    const dir = ev.side === 'attacker' ? 1 : -1;
+    const from = this.casterPoint(ev.side);
+    this.cue('cast');
+    await this.painter.cast(look, from, `${id}.cast`);
+    const screen = this.painter.screenFx(look.screen, look.school, dir, `${id}.screen`);
+    if (look.travel !== 'none' && look.travel !== 'sky' && look.scope !== 'army') await this.painter.travel(look, from, this.chestOf(t), `${id}.travel`, dir === -1);
+    this.cue(ev.healed > 0 ? 'heal' : ev.damage > 0 ? 'spell' : 'bless', undefined, look.sound);
+    const per = victims.length > 1 && ev.damage > 0 && ev.damage % victims.length === 0 ? ev.damage / victims.length : null;
+    const gap = look.scope === 'army' ? 110 : 70;
+    const react = async (v: StackEntry, i: number) => {
+      await this.tweens.wait(i * gap);
+      if (look.travel === 'sky') await this.painter.travel(look, from, this.chestOf(v), `${id}.travel`);
+      const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
+      await this.tweens.wait(200);
+      let text: string | null = null;
+      let color = '#f5e4b7';
+      if (ev.healed > 0) {
+        if (i === 0) text = `+${ev.healed} HP`;
+        color = '#9be58a';
+      } else if (ev.damage > 0) {
+        text = per !== null ? `−${per}` : i === 0 ? `−${ev.damage}` : null;
+        color = '#9cc4ff';
+      } else if (i === 0) {
+        text = look.label ?? (look.hostile ? 'Cursed' : 'Blessed');
+        color = look.hostile ? '#d7b0ff' : '#f5e4b7';
+      }
+      if (text) void this.floatText(this.headOf(v), text, color, speed);
+      if (ev.damage > 0) {
+        if (v.view.alive) await this.flinch(v);
+        else if (!v.down) await this.die(v);
+      }
+      await hit;
+    };
+    await Promise.all([...victims.map(react), screen]);
+  }
+
+  /** A battle miracle: the moment over the field, then light (or a smite) on each stack it touches. */
+  private async playMiracle(ev: Extract<GameEvent, { kind: 'InterventionInvoked' }>, speed: number): Promise<void> {
+    const m = this.miracleOf(ev.interventionId, ev.playerId);
+    const heal = this.pendingHeal;
+    this.pendingHeal = null;
+    if (!m) return;
+    const look = m.look;
+    const id = `fx.miracle.${ev.interventionId}`;
+    this.logFx(id);
+    const victims = this.miracleVictims(m, ev.targetStackId);
+    const dir = m.side === 'attacker' ? 1 : -1;
+    const healed = heal && heal.side === m.side ? heal.healed : 0;
+    const screen = this.painter.screenFx(look.screen, look.school, dir, `${id}.screen`);
+    await this.tweens.wait(look.screen === 'none' ? 0 : 280);
+    this.cue(healed > 0 ? 'heal' : m.damage ? 'spell' : 'bless', undefined, look.sound);
+    const react = async (v: StackEntry, i: number) => {
+      await this.tweens.wait(i * 110);
+      if (look.travel === 'sky') await this.painter.travel(look, { x: v.root.x, y: v.root.y - RB * 8 }, this.chestOf(v), `${id}.travel`);
+      const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
+      await this.tweens.wait(220);
+      if (m.damage) {
+        void this.floatText(this.headOf(v), `−${m.damage}`, '#ff8a70', speed);
+        if (v.view.alive) await this.flinch(v);
+        else if (!v.down) await this.die(v);
+      } else if (i === 0) {
+        const text = healed > 0 ? `+${healed} HP` : m.label;
+        if (text) void this.floatText(this.headOf(v), text, healed > 0 ? '#9be58a' : '#f5e4b7', speed);
+      }
+      await hit;
+    };
+    await Promise.all([...victims.map(react), screen]);
+  }
+
+  /** The magic effects played most recently (read-only diagnostics for tests). */
+  fxDebug(): readonly string[] {
+    return this.fxLog;
+  }
+
   /** Defending: the strip, or a crouch behind the shield when only a still exists. */
   private async defendPose(e: StackEntry, k: number): Promise<void> {
     const f = e.figure;
@@ -1156,8 +1379,8 @@ export class BattleSceneController implements SceneController {
   }
 
   /** Read-only state of every stack figure (tests and diagnostics): where it is drawn and how. */
-  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean }> {
-    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean }> = {};
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[] }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[] }> = {};
     const z = this.board.scale.x;
     for (const [id, e] of this.stacks) {
       out[id] = {
@@ -1170,6 +1393,7 @@ export class BattleSceneController implements SceneController {
         sprite: e.figure.status,
         down: e.down,
         visible: e.root.visible,
+        overlays: e.aura.kinds,
       };
     }
     return out;
@@ -1194,6 +1418,11 @@ export class BattleSceneController implements SceneController {
       if (e.locked === 0 && e.snapIn > 0 && --e.snapIn === 0) this.snap(e);
       if (e.down) continue;
       if (motion || e.locked > 0) e.figure.tick(dt);
+      if (e.locked === 0 && e.auraDelay > 0 && --e.auraDelay === 0) this.applyAura(e);
+      if (e.shownStatuses.length > 0) {
+        this.refreshAura(e);
+        if (motion && !this.calm) e.aura.update(this.time + e.seed * 1000);
+      }
       if (e.locked === 0 && this.celebrating.has(e) && !e.figure.has('victory')) {
         // Winners keep cheering (a little hop) until the result opens.
         const t = this.time / 1000 + e.seed * 0.37;

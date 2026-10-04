@@ -656,6 +656,418 @@
       "status": "placeholder",
       "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
       "maxVoices": 1
+    },
+    {
+      "id": "music.explore.fjord",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/placeholder/music_explore_fjord.ogg"
+      ],
+      "gain": 0.85,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "music.explore.desert",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/placeholder/music_explore_desert.ogg"
+      ],
+      "gain": 0.85,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "music.explore.shrine",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/placeholder/music_explore_shrine.ogg"
+      ],
+      "gain": 0.85,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "music.explore.glen",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/placeholder/music_explore_glen.ogg"
+      ],
+      "gain": 0.85,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "music.explore.jungle",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/placeholder/music_explore_jungle.ogg"
+      ],
+      "gain": 0.85,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "amb.fjord",
+      "role": "ambience",
+      "bus": "ambience",
+      "files": [
+        "audio/placeholder/amb_fjord.ogg"
+      ],
+      "gain": 1.0,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "amb.desert",
+      "role": "ambience",
+      "bus": "ambience",
+      "files": [
+        "audio/placeholder/amb_desert.ogg"
+      ],
+      "gain": 1.0,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "amb.shrine",
+      "role": "ambience",
+      "bus": "ambience",
+      "files": [
+        "audio/placeholder/amb_shrine.ogg"
+      ],
+      "gain": 1.0,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "amb.glen",
+      "role": "ambience",
+      "bus": "ambience",
+      "files": [
+        "audio/placeholder/amb_glen.ogg"
+      ],
+      "gain": 1.0,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "amb.jungle",
+      "role": "ambience",
+      "bus": "ambience",
+      "files": [
+        "audio/placeholder/amb_jungle.ogg"
+      ],
+      "gain": 1.0,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio."
+    },
+    {
+      "id": "ui.book_open",
+      "role": "effect",
+      "bus": "interface",
+      "files": [
+        "audio/placeholder/ui_book_open.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 150
+    },
+    {
+      "id": "ui.book_close",
+      "role": "effect",
+      "bus": "interface",
+      "files": [
+        "audio/placeholder/ui_book_close.ogg"
+      ],
+      "gain": 0.45,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 150
+    },
+    {
+      "id": "ui.book_page",
+      "role": "effect",
+      "bus": "interface",
+      "files": [
+        "audio/placeholder/ui_book_page.ogg"
+      ],
+      "gain": 0.45,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 90,
+      "pitchJitterCents": 80
+    },
+    {
+      "id": "ui.popup",
+      "role": "effect",
+      "bus": "interface",
+      "files": [
+        "audio/placeholder/ui_popup.ogg"
+      ],
+      "gain": 0.4,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 100,
+      "pitchJitterCents": 40
+    },
+    {
+      "id": "ui.town_action",
+      "role": "effect",
+      "bus": "interface",
+      "files": [
+        "audio/placeholder/ui_town_action.ogg"
+      ],
+      "gain": 0.45,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 150
+    },
+    {
+      "id": "magic.cast",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_cast.ogg"
+      ],
+      "gain": 0.45,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 150
+    },
+    {
+      "id": "magic.strike",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_strike.ogg"
+      ],
+      "gain": 0.55,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 2,
+      "pitchJitterCents": 60
+    },
+    {
+      "id": "magic.thunder",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_thunder.ogg"
+      ],
+      "gain": 0.65,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "intensity": "strong",
+      "maxVoices": 2
+    },
+    {
+      "id": "magic.fire",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_fire.ogg"
+      ],
+      "gain": 0.6,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 2
+    },
+    {
+      "id": "magic.heal",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_heal.ogg"
+      ],
+      "gain": 0.55,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.bless",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_bless.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.curse",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_curse.ogg"
+      ],
+      "gain": 0.55,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.wind",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_wind.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.frost",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_frost.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.nature",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_nature.ogg"
+      ],
+      "gain": 0.55,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.swarm",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_swarm.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.water",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_water.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.shadow",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_shadow.ogg"
+      ],
+      "gain": 0.55,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.holy",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_holy.ogg"
+      ],
+      "gain": 0.55,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 600
+    },
+    {
+      "id": "magic.smite",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_smite.ogg"
+      ],
+      "gain": 0.7,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "intensity": "strong",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.reveal",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_reveal.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.teleport",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_teleport.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1
+    },
+    {
+      "id": "magic.coins",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_coins.ogg"
+      ],
+      "gain": 0.5,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 300
+    },
+    {
+      "id": "magic.horn",
+      "role": "effect",
+      "bus": "combat",
+      "files": [
+        "audio/placeholder/magic_horn.ogg"
+      ],
+      "gain": 0.4,
+      "status": "placeholder",
+      "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
+      "maxVoices": 1,
+      "cooldownMs": 800
     }
   ]
 }

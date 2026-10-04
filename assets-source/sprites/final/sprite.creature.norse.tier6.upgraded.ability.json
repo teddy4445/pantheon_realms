@@ -1,0 +1,18 @@
+{
+ "frames": 6,
+ "fps": 6,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8775
+ ],
+ "pixelsPerHex": 114.441,
+ "cutFrom": "sheet.creature.norse.tier6.upgraded.part2.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 98.929,
+  "guideIdleFraction": 0.76,
+  "observedIdleFraction": 0.8792,
+  "worldScaleMultiplier": 0.8645
+ },
+ "assemblyNote": "Ward recovers to clean generated anticipation frame2 to preserve a single hammer."
+}

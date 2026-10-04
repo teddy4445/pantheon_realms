@@ -1,0 +1,18 @@
+{
+ "frames": 6,
+ "fps": 6,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8768
+ ],
+ "pixelsPerHex": 144.022,
+ "cutFrom": "sheet.creature.norse.tier4.upgraded.part1.png",
+ "assemblyNote": "Attack follow-through holds generated impact frame4 to preserve spear.",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 113.043,
+  "guideIdleFraction": 0.64,
+  "observedIdleFraction": 0.8154,
+  "worldScaleMultiplier": 0.7849
+ }
+}

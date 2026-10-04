@@ -61,8 +61,8 @@ export const projectors: {
 
 /** Read-only view readouts for the ?e2e inspector (map avatar state, camera). Never mutate. */
 export const inspectors: {
-  adventure?: { heroes: () => unknown; camera: () => unknown };
-  battle?: { stacks: () => unknown };
+  adventure?: { heroes: () => unknown; camera: () => unknown; fx: () => unknown };
+  battle?: { stacks: () => unknown; fx: () => unknown };
 } = {};
 
 /** Convert a canvas-local point to page coordinates. */

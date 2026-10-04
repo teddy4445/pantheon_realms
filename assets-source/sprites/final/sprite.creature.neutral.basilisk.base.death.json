@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 5,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8762
+ ],
+ "pixelsPerHex": 105.66,
+ "cutFrom": "sheet.creature.neutral.basilisk.base.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 80.013,
+  "guideIdleFraction": 0.67,
+  "observedIdleFraction": 0.8848,
+  "worldScaleMultiplier": 0.7573
+ }
+}

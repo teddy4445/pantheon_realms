@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { buildCatalog } from '@pr/content';
 import { inspect } from './helpers';
 
 test('main menu: honest Continue, no fake Quit, encyclopedia and bestiary viewer', async ({ page }) => {
@@ -110,7 +111,13 @@ test('every delivered final icon and creature portrait is served and decodes; un
   await page.getByTestId('menu-encyclopedia').click();
   await expect(page.getByTestId('codex-hoplite').locator('.portrait img')).toHaveAttribute('src', /creature\.greek\.tier1\.base\.portrait\.webp$/);
   await expect(page.getByTestId('codex-japanese_kitsune').locator('.portrait img')).toHaveAttribute('src', /creature\.japanese\.tier1\.base\.portrait\.webp$/);
-  // Not delivered (the Nine-Tailed Kitsune is an unfinished draft): the generated stand-in stays.
-  await expect(page.getByTestId('codex-japanese_nine_tailed_kitsune').locator('.portrait img')).toHaveCount(0);
-  await expect(page.getByTestId('codex-japanese_nine_tailed_kitsune').locator('.portrait svg')).toHaveCount(1);
+  // Forms whose portrait is not delivered keep the generated stand-in; once every form's portrait is
+  // delivered (the owner's import of 2026-10-03), every creature card shows its painting.
+  const forms = Object.keys(buildCatalog().creatures).length;
+  const delivered = entries.filter(([id]) => /^creature\..*\.portrait$/.test(id)).length;
+  if (delivered >= forms) {
+    for (const id of ['japanese_nine_tailed_kitsune', 'celtic_pooka', 'mesoamerican_stone_colossus']) await expect(page.getByTestId(`codex-${id}`).locator('.portrait img')).toHaveCount(1);
+  } else {
+    await expect(page.locator('[data-testid^="codex-"] .portrait svg').first()).toBeVisible();
+  }
 });

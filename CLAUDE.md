@@ -97,6 +97,11 @@ placeholder is an art drop + `npm run sprites:cut` + `npm run sprites:import`,
 never a code change.
 Keep `packages/presentation/src/hexmath.ts` as the only screen↔hex
 transform, so sprite sizes never change which hex a click selects.
+Magic and Favor effects are drawn by code from the looks in
+`packages/presentation/src/fxLooks.ts` (painted by `fx.ts`) until strips are
+delivered under the `fx.*` asset IDs listed in `VFX_MAGIC_AND_FAVORS.md`; a
+new spell or miracle gets a look from its effect type, so add a table entry
+only to refine it.
 `GPT6_2D_CONTENT_GENERATION.md` is the production queue for the remaining
 art, as *sheets* (many sprites per image: one per creature form, one per map
 hero, grouped objects and effects); regenerate it with `npm run sprites:queue`

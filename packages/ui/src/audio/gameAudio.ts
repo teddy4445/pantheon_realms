@@ -19,7 +19,7 @@ import type { GameEvent } from '@pr/rules';
 import soundManifest from '../../../../assets-runtime/audio/manifest.json';
 import { battlePlaybackFactor, adventurePlaybackFactor, type Preferences } from '../app/preferences';
 import type { AppStore } from '../app/store';
-import { COMBAT_SOUNDS, REQUIRED_SOUND_IDS, STINGERS, UI_SOUNDS, soundForCue, soundsForEvents, soundscapeFor, summaryCue } from './sounds';
+import { COMBAT_SOUNDS, MAGIC_SOUNDS, REQUIRED_SOUND_IDS, STINGERS, UI_SOUNDS, soundForCue, soundsForEvents, soundscapeFor, summaryCue } from './sounds';
 
 export const SOUND_MANIFEST = soundManifest as SoundManifest;
 
@@ -56,6 +56,7 @@ export class GameAudio {
   private lastScreenId = '';
   private lastToast = 0;
   private overlayCount = 0;
+  private topOverlay: string | null = null;
   private sessionWarmed = false;
   private wantMusic: string | null | undefined = undefined;
   private wantAmbience: string | null | undefined = undefined;
@@ -158,7 +159,7 @@ export class GameAudio {
 
     if (session && !this.sessionWarmed) {
       this.sessionWarmed = true;
-      whenIdle(() => this.director.warm([...COMBAT_SOUNDS, ...Object.values(STINGERS)]), 4000);
+      whenIdle(() => this.director.warm([...COMBAT_SOUNDS, ...MAGIC_SOUNDS, ...Object.values(STINGERS)]), 4000);
     }
     if (!session) this.sessionWarmed = false;
 
@@ -174,10 +175,13 @@ export class GameAudio {
       }
     }
 
+    // Dialogs open and close with a soft whoosh; the spellbook with its own leather-and-paper sound.
+    const top = store.overlays[store.overlays.length - 1]?.kind ?? null;
     const overlays = store.overlays.length;
-    if (overlays > this.overlayCount) this.director.play('ui.open');
-    else if (overlays < this.overlayCount) this.director.play('ui.close');
+    if (overlays > this.overlayCount) this.director.play(top === 'spellbook' ? 'ui.book_open' : 'ui.open');
+    else if (overlays < this.overlayCount) this.director.play(this.topOverlay === 'spellbook' ? 'ui.book_close' : 'ui.close');
     this.overlayCount = overlays;
+    this.topOverlay = top;
 
     const last = store.toasts[store.toasts.length - 1];
     if (last && last.id > this.lastToast) {
@@ -202,6 +206,11 @@ export class GameAudio {
   /** Battle scene playback cue (see BattleSceneController callbacks). */
   battleCue(cue: BattleCue): void {
     this.director.play(soundForCue(cue));
+  }
+
+  /** A sound that goes with something the interface shows (a page turned, a pop-up, a map miracle's light). */
+  effect(id: string): void {
+    this.director.play(id);
   }
 
   /** Footsteps while the player's hero walks on the adventure map (animated moves only). */

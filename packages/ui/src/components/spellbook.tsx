@@ -10,6 +10,7 @@
 import { useState } from 'react';
 import type { ContentCatalog, SpellDefinition } from '@pr/rules';
 import type { SpellCaster, SpellCastRequest } from '../app/store';
+import { useStore } from '../app/context';
 import { Button, Modal } from './kit';
 import { Emblem, SpellIcon } from './art';
 
@@ -28,8 +29,18 @@ export function SpellBook({
   /** Casting mode: where the book is opened from, and each known spell's state; picking one calls `onCast`. */
   cast?: SpellCastRequest;
 }) {
-  const [use, setUse] = useState<Use>(cast?.context ?? 'all');
-  const [tier, setTier] = useState<number>(0);
+  const store = useStore();
+  const [use, setUseState] = useState<Use>(cast?.context ?? 'all');
+  const [tier, setTierState] = useState<number>(0);
+  // Turning to another section of the book: a page turns.
+  const setUse = (u: Use) => {
+    if (u !== use) store.audio?.effect('ui.book_page');
+    setUseState(u);
+  };
+  const setTier = (t: number) => {
+    if (t !== tier) store.audio?.effect('ui.book_page');
+    setTierState(t);
+  };
   const known = hero.knownSpellIds.map((id) => catalog.spells[id]).filter((sp): sp is SpellDefinition => !!sp);
   const tiers = [...new Set(Object.values(catalog.spells).map((sp) => sp.tier))].sort((a, b) => a - b);
   const shown = known.filter((sp) => (use === 'all' || sp.context === use) && (tier === 0 || sp.tier === tier)).sort((a, b) => a.tier - b.tier || (a.name < b.name ? -1 : 1));

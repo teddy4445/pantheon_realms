@@ -40,7 +40,7 @@ AI never mutates state directly — each of those paths goes through
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
 | `@pr/platform` | `SaveRepository` / `PreferencesStore` (preferences and the separate high-score `records` store) / window + quit contracts; browser (IndexedDB/localStorage), desktop (preload bridge) and memory adapters | contain rules |
-| `@pr/presentation` | PixiJS 2D views: one long-lived `EngineHost` (one Pixi renderer and canvas); the Adventure Map, Tactical Battle and Unit Detail viewer controllers; `SpriteFigure` sprite animation (loops on the frame clock, one-shots on the tween clock); the sprite manifest types, animation vocabulary, fallback chain and `requiredAnimations`; battle playback cues for sound. `@pr/presentation/core` is its Pixi-free part (sprite manifest lookup, hex↔screen transforms, palette, environment art keys, graphics presets) | decide legality or change state |
+| `@pr/presentation` | PixiJS 2D views: one long-lived `EngineHost` (one Pixi renderer and canvas); the Adventure Map, Tactical Battle and Unit Detail viewer controllers; `SpriteFigure` sprite animation (loops on the frame clock, one-shots on the tween clock); the sprite manifest types, animation vocabulary, fallback chain and `requiredAnimations`; battle playback cues for sound; code-drawn magic effects and status overlays (`fx.ts`). `@pr/presentation/core` is its Pixi-free part (sprite manifest lookup, hex↔screen transforms, palette, environment art keys, graphics presets, the looks of magic and Favor `fxLooks.ts`) | decide legality or change state |
 | `@pr/audio` | Web Audio mixer: sound manifest types and validation, buses (music, ambience, interface, combat, voice), music/ambience crossfades, stinger ducking, voice limits and cooldowns, the "Calmer sound" policy | read or change game state; fetch anything that is not bundled |
 | `@pr/ui` | React app shell, 21 screens, dialogs (incl. the story dialogue window, hot-seat hand-over, camps, map events, interventions), view helpers, preferences (incl. key bindings and tips), high-score records, save-slot policy, asset manifest (art by asset ID + the sprite manifest), which sound plays when (`audio/`) | edit `MatchState` (it dispatches commands) |
 | `@pr/testing` | Headless `GameDriver` for scripted playthroughs | bypass validation |
@@ -414,6 +414,28 @@ mirror them. A missing optional animation falls back (`shoot`→`attack`,
 down. Replacing a placeholder is an art drop + `npm run sprites:import`
 (`ASSET_PIPELINE.md` §1); no view code changes.
 
+**Magic and Favor effects** (2026-10-03). `fxLooks.ts` (core, no Pixi) gives
+every spell, divine intervention and divine gift a *look* — colour school,
+travel (none, bolt, orb, arrow, swarm, wisps, sky strike), impact, a moment
+over the whole field, reach (one stack; the target and the stacks beside it;
+the whole army) and a sound family — from its effect type, refined per ID by
+the `SPELL_LOOKS` / `MIRACLE_LOOKS` tables (presentation data; new content
+gets a look automatically). `fx.ts` paints them with Pixi shapes and
+particles on the view's tween clock (`FxPainter`: cast sigil, travel, impact,
+map area ring, screen moment) and draws the looping status overlays on each
+battle stack (`StatusAura`, one shape per status, still when ambient motion is
+off or motion is reduced). Before each phase the painter looks for a delivered
+strip under the phase's asset ID (`fx.spell.<id>.<phase>`,
+`fx.miracle.<id>.<phase>`, `fx.status.<name>`) and plays it instead. The battle
+view holds the stacks a spell or miracle reaches (`hold(events)`) so a newer
+view does not show their new statuses before the effect lands; the Battle
+presenter holds them while a miracle's painted card is up
+(`AppStore.whenMiracleCardsClosed`) and plays the light after it. The Adventure
+presenter plays map spells (fog-lifting ring, wind on the hero, Homecoming's
+column of light) and the player's own map miracles; the town screen shows a
+CSS burst from the Temple for gifts and offerings (`components/burst.tsx`).
+Read-only diagnostics: `fxDebug()` on both views (`__prFx` under `?e2e`).
+
 Playback runs after the rules committed the result. Speed 0 (instant or
 reduced motion) completes synchronously and cannot change outcomes. Screens
 register *presenters* with the `AppStore`; the AI pacing loop waits for the
@@ -435,8 +457,11 @@ the screen and the mission's `soundscape` (presentation data on the mission
 definition, never read by the rules); a presenter plays the player's own
 committed actions, the calendar and stingers without delaying the
 presentation queue; the battle scene emits `BattleCue`s timed with its
-animation (one summary sound per action when playback is instant); buttons
-click, dialogs open and close, errors sound once. Every sound accompanies
+animation (one summary sound per action when playback is instant; a spell's
+cue carries its look's sound family, `magic.<family>`); buttons click, dialogs
+open and close (the spellbook with its own sounds, and a page turn when its
+filter changes), the town's building pop-up and actions have theirs, errors
+sound once. Every sound accompanies
 something already on screen, so no information is carried by sound alone,
 and a missing device or an undecodable file only means silence. Browsers
 start audio after the first click; the desktop app starts it at launch.

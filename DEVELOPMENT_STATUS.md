@@ -1,12 +1,103 @@
 # Development Status
 
-_Last updated: 2026-10-03 · **owner interface pass, third round** (14 requests; below) · **app 0.9.0** (Windows installer with the 2D migration, built for play-testing) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
+_Last updated: 2026-10-03 · **app 0.10.0** (Windows installer for play-testing) with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.4`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 2_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## Magic and Favor effects, new sounds, app 0.10.0 (owner requests 1, 7 and 6, 2026-10-03)
+
+All presentation (no rule, content value or save change; the content
+change is presentation data: the missions' `soundscape`). Everything new is a
+**placeholder** until final art and audio are delivered.
+
+**1 — Code-drawn magic and Favor effects** (`VFX_MAGIC_AND_FAVORS.md`):
+
+* `packages/presentation/src/fxLooks.ts` (core, no Pixi): a *look* for every
+  spell (54), divine intervention (14) and divine gift (6) — colour school
+  (28 palettes), travel, impact (23 kinds), whole-field moment (8), reach and
+  sound family — from its effect type, refined per ID; new content gets one
+  automatically. `fx.ts` paints them (sigil, bolt / orb / arrow / swarm /
+  wisps / sky strike, the impacts, map rings, field moments) on the view's
+  tween clock, so instant playback and Skip finish them at once.
+* **Battle:** each spell gathers at its commander's banner corner, travels,
+  lands on every stack it reaches (target; target and the stacks beside it
+  for area spells; the whole side for army spells, with the field moment),
+  then the numbers — split per stack when the total divides evenly — or the
+  effect's word ("Attack −3", "Blessed"). Battle miracles play after their
+  painted card closes (the view holds the stacks meanwhile), then the light,
+  dome, banner or smite on each stack; a smite shows its damage.
+* **Status overlays:** each status leaves a looping overlay with its own shape
+  (rising or falling chevrons, a studded ground ring, a broken ring, wind
+  arcs, violet haze, gold sparkles, a grey cloud with a crow, a shield, a
+  dome); they appear when the spell lands and stay still on Low quality and
+  under Reduce motion.
+* **Map:** the sigil on the casting hero; Far Sight / Clear Skies / Divine
+  Sight / Eye of Horus spread a ring over the chosen tile; Fleet Foot and
+  Wings of Hermes wind round the hero; Homecoming lifts the hero away in a
+  column of light and sets it down at the town. The player's own map
+  miracles: wind or mist on every hero, motes over heroes or the chosen
+  town, coins over the capital and over the Gold counter.
+* **Town:** gifts and offerings rise from the Temple (coins, timber and stone,
+  crystals, light; Blessed Brood lights each dwelling) — CSS bursts.
+* Every phase first looks for a delivered strip under its asset ID
+  (`fx.spell.<id>.<phase>`, `fx.miracle.<id>.<phase>`, `fx.status.<name>`,
+  `fx.gift.<id>`, `fx.offering.rise`) and plays that instead. Not drawn yet:
+  the two map `aura` loops (a trail while Fleet Foot / Wings of Hermes last).
+
+**7 — Sounds** (34 new IDs, 86 in all; **synthesized in code**: the free sound
+sites and generation services were not reachable from the development
+environment — blocked by its network policy — so nothing was downloaded and
+no service was used):
+
+* Spellbook: `ui.book_open`, `ui.book_close`, `ui.book_page` (a filter
+  change); town: `ui.popup` (a building's pop-up), `ui.town_action` (market,
+  tavern, temple, merchant).
+* Magic: `magic.cast` and one sound per look family (`magic.strike`,
+  `thunder`, `fire`, `heal`, `bless`, `curse`, `wind`, `frost`, `nature`,
+  `swarm`, `water`, `shadow`, `holy`, `smite`, `reveal`, `teleport`,
+  `coins`, `horn`) for battle spells and miracles, map spells and miracles,
+  gifts and offerings.
+* Soundscapes (music + ambience loops): `fjord` (The Winter Oath), `desert`
+  (Egyptian campaign), `shrine` (Japanese), `glen` (Celtic), `jungle`
+  (Mesoamerican) — new modes (hijaz, two pentatonics), instruments (reed,
+  bamboo flute, tin whistle, clay flute, koto, harp) and drum patterns.
+  Each of those campaigns now uses its own soundscape and keeps
+  `storm_plateau` for its darkest missions; The Three Beacons is unchanged.
+* Loudness checked by decoding every new file (RMS/peak alongside the
+  existing ones: music −17.6 to −19.3 dB RMS, effects −16 to −27 dB). Not
+  listened to by a person yet.
+
+**6 — 0.10.0 installer** (version bumped in `package.json`,
+`apps/desktop/package.json`, `package-lock.json`; content still
+`content-0.8.0`, so saves load).
+
+| Command | Result |
+|---|---|
+| `npm run check` | pass — boundaries, type-check, 33 files / **326** unit tests (new: `presentation/test/fxLooks.test.ts`, magic and soundscape cases in `ui/test/audio.test.ts`) |
+| `python3 tools/audio/make_placeholders.py --only <34 IDs>` | wrote the 34 files; the first 52 manifest entries unchanged |
+| `npm run vfx:list` | regenerated `VFX_MAGIC_AND_FAVORS.md` (status text updated) |
+| `npm run build` | pass (start-up script 1,730.94 KB / 433.31 KB gzip) |
+| Full Playwright suite (`npx playwright test`), first on the build before the owner's art came in | 136 tests: **94 passed**, 42 skipped (opt-in review sweeps), 0 failed (39.7 min) |
+| New `tests/e2e/round12.spec.ts` (Lightning, Blessing's overlay, Shield of the Gods after its card, Far Sight and Fleet Foot, Tithe's coin shower, a Temple gift) | 6 / 6 pass |
+| Re-run of `round9`–`round12` + `bigMoments` on the build with the last effect fixes (overlay rings moved outside the stack's rings, delivered gift strips, magic sounds pre-loaded) | 25 / 25 pass |
+| Full Playwright suite again, on the final build (with the owner's art) | 136 tests: 93 passed, 42 skipped, **1 failed** — `menu.spec.ts` expected the Nine-Tailed Kitsune portrait to be missing; the owner's import delivered every creature portrait, so the check now picks an undelivered form only while one exists. Re-run `menu` 4 / 4, `sprites2d` 4 / 4 (its silhouette check was updated the same way) |
+| Owner's art commit `f36fd19` ("fix screens": bundle 14 plus the owner's own art import) brought into the build | the 409 runtime files it changed (21 creature forms with final sprites, new creature portraits, re-encoded icons, both manifests) taken at their committed versions; the owner's source sheets and reference views stay only in the owner's folder; uncommitted art in the owner's working tree (an in-progress Oni re-cut and 292 strips the working-tree sprite manifest names) is **not** in this installer |
+| `sprites2d.spec.ts` after that import | its silhouette check now picks a creature still drawn as a silhouette (Celtic Pooka has final sprites now) |
+| `npm run desktop:build` + `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.10.0-x64.exe` (242,224,482 bytes, SHA-256 `53dd8839671fee86704c802b65fa8c27d9183e1b55896f8968489472b8e10f1d`) |
+| Payload check (7-Zip) | `app-64.7z` extracts byte-identical to `win-unpacked`; `app.asar` 134.9 MB, 1,702 entries, packaged version 0.10.0, 94 sound files (86 IDs), 170 final creature strips; no `.glb`/`.gltf`/`.blend`, Babylon, `assets-source/`, source maps, tools or MCP servers |
+| `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` in a network namespace with only loopback (`unshare -n`) | **DESKTOP SMOKE OK** (packaged: `isPackaged`, DevTools refused; 468 sprite files, map on WebGL, saves, records, 255 painted-art files, 338 interface images, 86 sounds, audio running) |
+| Copied to the owner's `installer\` folder | in 13 parts of 20 MB, joined on the computer; SHA-256 matches |
+
+**Not run on Windows; unsigned** (SmartScreen: More info → Run anyway).
+
+Known limits: the effects are placeholders drawn with shapes and particles;
+in the software-rendered test browser they were checked frame by frame from
+screenshots, not at speed on a GPU. Map miracles invoked from the Pantheon
+screen (not the map) play no map effect (the map is not on screen).
 
 ## Owner interface pass of 2026-10-03, third round (14 requests)
 

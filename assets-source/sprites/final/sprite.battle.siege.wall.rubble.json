@@ -1,0 +1,15 @@
+{
+ "frames": 1,
+ "anchor": [
+  0.4929,
+  0.9198
+ ],
+ "pixelsPerHex": 320.0,
+ "cutFrom": "sheet.battle.siege.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 112.969,
+  "guideWidthFraction": null,
+  "targetWidthHexes": 1.0,
+  "alphaWidthPixels": 320
+ }
+}

@@ -52,7 +52,10 @@ import {
   type TownState,
 } from '@pr/rules';
 import { resources } from '@pr/rules';
+import { giftFxKind, type TownFxKind } from '@pr/presentation/core';
 import { useStore } from '../app/context';
+import { reducedMotion } from '../app/preferences';
+import { Burst } from '../components/burst';
 import type { AppStore } from '../app/store';
 import { Button, Chip, Modal, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, BuildingArt, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
@@ -593,8 +596,44 @@ export function TownScreen() {
   const town = townId ? state.towns[townId] : undefined;
   // The building pop-up is not restored on return (from recruitment, say): the town opens clean.
   const [selected, setSelected] = useState<string | null>(null);
-  const [modal, setModal] = useState<'market' | 'tavern' | 'offering' | 'merchant' | 'gifts' | null>(null);
+  const [modal, setModalState] = useState<'market' | 'tavern' | 'offering' | 'merchant' | 'gifts' | null>(null);
+  /** Town actions (market, tavern, temple, merchant) open with their own sound. */
+  const setModal = (m: 'market' | 'tavern' | 'offering' | 'merchant' | 'gifts' | null) => {
+    if (m) store.audio?.effect('ui.town_action');
+    setModalState(m);
+  };
   const archetype = town ? catalog.townArchetypes[town.archetypeId] : undefined;
+  // Favor at the Temple: gifts and offerings rise from it (VFX_MAGIC_AND_FAVORS.md; placeholder bursts).
+  const [bursts, setBursts] = useState<{ key: number; kind: TownFxKind; slotId: string; stripId?: string }[]>([]);
+  const burstSeq = useRef(0);
+  useEffect(
+    () =>
+      store.registerPresenter(async (events) => {
+        const st = store.session?.state;
+        const me = store.session?.humanPlayerId;
+        const t = townId ? st?.towns[townId] : undefined;
+        const arch = t ? catalog.townArchetypes[t.archetypeId] : undefined;
+        if (!t || !arch || reducedMotion(store.prefs)) return;
+        const temple = arch.slots.find((x) => x.role === 'pantheon_temple');
+        const add: { kind: TownFxKind; slotId: string; stripId?: string }[] = [];
+        for (const e of events) {
+          if ((e.kind !== 'DivineGiftReceived' && e.kind !== 'OfferingMade') || e.playerId !== me || e.townId !== t.id) continue;
+          const grant = e.kind === 'DivineGiftReceived' ? catalog.divineGifts?.[e.giftId]?.grant : undefined;
+          const kind: TownFxKind = e.kind === 'OfferingMade' ? 'offering' : grant ? giftFxKind(grant) : 'coins';
+          if (temple) add.push({ kind, slotId: temple.id, stripId: e.kind === 'OfferingMade' ? 'fx.offering.rise' : `fx.gift.${e.giftId}` });
+          if (grant?.type === 'recruits') {
+            // Light runs to each dwelling whose pool grew.
+            for (const x of arch.slots) {
+              const fam = familyForSlot(catalog, x);
+              const tier = fam ? catalog.families[fam]?.tier : undefined;
+              if (tier !== undefined && tier <= grant.maxTier && (t.buildings[x.id] ?? 0) > 0) add.push({ kind: 'brood', slotId: x.id });
+            }
+          }
+        }
+        if (add.length) setBursts((b) => [...b, ...add.map((a) => ({ ...a, key: ++burstSeq.current }))]);
+      }),
+    [store, catalog, townId],
+  );
   const slots = useMemo(() => [...(archetype?.slots ?? [])].sort((a, b) => a.placement.layer - b.placement.layer || a.placement.y - b.placement.y), [archetype]);
   // Esc closes the building pop-up before it leaves the town.
   const selectedRef = useRef(selected);
@@ -629,7 +668,10 @@ export function TownScreen() {
   const income = townDailyIncome(catalog, town);
   const growth = townGrowthMultiplier(catalog, town);
   const usedToday = town.buildUsedDay === state.day;
-  const setSlot = (id: string | null) => setSelected(id);
+  const setSlot = (id: string | null) => {
+    if (id && id !== selected) store.audio?.effect('ui.popup');
+    setSelected(id);
+  };
   const build = () => {
     if (!next || !quote?.legal) return;
     store.confirm(`Build ${next.name}?`, next.summary, 'Build', () => {
@@ -722,6 +764,12 @@ export function TownScreen() {
                 </span>
               </button>
             );
+          })}
+
+          {bursts.map((b) => {
+            const at = archetype.slots.find((x) => x.id === b.slotId)?.placement;
+            if (!at) return null;
+            return <Burst key={b.key} kind={b.kind} {...(b.stripId ? { stripId: b.stripId } : {})} className="town-burst" scale={b.kind === 'brood' ? 0.6 : 1} style={{ left: `${at.x}%`, top: `${Math.max(8, at.y - at.width * 0.6)}%` }} onDone={() => setBursts((list) => list.filter((x) => x.key !== b.key))} />;
           })}
 
           {/* Town economy: a compact panel on the painting's top edge, over open sky. */}

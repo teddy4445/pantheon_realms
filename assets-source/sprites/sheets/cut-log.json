@@ -563,5 +563,1201 @@
    "assets-source/sprites/final/sprite.map.site.relay.png",
    "assets-source/sprites/final/sprite.map.site.watchtower.png"
   ]
+ },
+ "sheet.map.locations.2": {
+  "sha256": "1c822aaf2217c60ab0437af19bcfed6f491c511110f80f80d57cfc123c184a48",
+  "outputs": [
+   "assets-source/sprites/final/sprite.map.decor.grass.png",
+   "assets-source/sprites/final/sprite.map.decor.mountain.png",
+   "assets-source/sprites/final/sprite.map.decor.pine.png",
+   "assets-source/sprites/final/sprite.map.decor.rock.png",
+   "assets-source/sprites/final/sprite.map.decor.shrub.png",
+   "assets-source/sprites/final/sprite.map.decor.tree.png",
+   "assets-source/sprites/final/sprite.map.site.event_site.png",
+   "assets-source/sprites/final/sprite.map.site.key_tent.png",
+   "assets-source/sprites/final/sprite.map.site.learning_stone.png",
+   "assets-source/sprites/final/sprite.map.site.portal.png",
+   "assets-source/sprites/final/sprite.map.site.prison.png",
+   "assets-source/sprites/final/sprite.map.site.quest_hut.png",
+   "assets-source/sprites/final/sprite.map.site.relic.png",
+   "assets-source/sprites/final/sprite.map.site.skill_trainer.png",
+   "assets-source/sprites/final/sprite.map.site.spell_shrine.png",
+   "assets-source/sprites/final/sprite.map.site.windmill.png"
+  ]
+ },
+ "sheet.battle.obstacles": {
+  "sha256": "8f784d2e494f35f555f6c6d5c2a5d295a4507fcad55023363b641309658a0f8d",
+  "outputs": [
+   "assets-source/sprites/final/sprite.battle.obstacle.boulder.png",
+   "assets-source/sprites/final/sprite.battle.obstacle.column.png",
+   "assets-source/sprites/final/sprite.battle.obstacle.log.png",
+   "assets-source/sprites/final/sprite.battle.obstacle.rock.png",
+   "assets-source/sprites/final/sprite.battle.obstacle.stone_circle.png",
+   "assets-source/sprites/final/sprite.battle.obstacle.stump.png",
+   "assets-source/sprites/final/sprite.battle.obstacle.tree.png"
+  ]
+ },
+ "sheet.battle.siege": {
+  "sha256": "e26c607d5a0f8845ea3be9770d278087547e73eab104f16cb5483a02810bf88d",
+  "outputs": [
+   "assets-source/sprites/final/sprite.battle.siege.gate.damaged.png",
+   "assets-source/sprites/final/sprite.battle.siege.gate.intact.png",
+   "assets-source/sprites/final/sprite.battle.siege.gate.rubble.png",
+   "assets-source/sprites/final/sprite.battle.siege.keep.damaged.png",
+   "assets-source/sprites/final/sprite.battle.siege.keep.intact.png",
+   "assets-source/sprites/final/sprite.battle.siege.keep.rubble.png",
+   "assets-source/sprites/final/sprite.battle.siege.tower.damaged.png",
+   "assets-source/sprites/final/sprite.battle.siege.tower.intact.png",
+   "assets-source/sprites/final/sprite.battle.siege.tower.rubble.png",
+   "assets-source/sprites/final/sprite.battle.siege.wall.damaged.png",
+   "assets-source/sprites/final/sprite.battle.siege.wall.intact.png",
+   "assets-source/sprites/final/sprite.battle.siege.wall.rubble.png"
+  ]
+ },
+ "sheet.fx": {
+  "sha256": "ad93500cf875515dc9286666215799e62ca1a75aaf7b3bc1cc7f80182c8e68a1",
+  "outputs": [
+   "assets-source/sprites/final/sprite.battle.projectile.arrow.png",
+   "assets-source/sprites/final/sprite.battle.projectile.stone.png",
+   "assets-source/sprites/final/sprite.fx.impact.png",
+   "assets-source/sprites/final/sprite.fx.morale.down.png",
+   "assets-source/sprites/final/sprite.fx.morale.up.png",
+   "assets-source/sprites/final/sprite.fx.spell.area.png",
+   "assets-source/sprites/final/sprite.fx.spell.buff.png",
+   "assets-source/sprites/final/sprite.fx.spell.curse.png",
+   "assets-source/sprites/final/sprite.fx.spell.damage.png",
+   "assets-source/sprites/final/sprite.fx.spell.heal.png",
+   "assets-source/sprites/final/sprite.fx.ward.png"
+  ]
+ },
+ "sheet.creature.japanese.tier5.base": {
+  "sha256": "2219eb6628cef4d5d88e3e241b3712279835332779783a4f857a41ec95a89a19",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.base.death.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.base.move.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.base.victory.png"
+  ]
+ },
+ "sheet.creature.japanese.tier5.upgraded": {
+  "sha256": "8d7e670025375c8e6100b2b046e5c80c78235ad74dfb86536f43f5bc369d2b90",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.ability.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier5.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.japanese.tier6.base": {
+  "sha256": "d35ac0db25b82a8db83d0de68c4bd6ac241050638cb0ef6d4ee234687d8121a9",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.death.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.move.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.base.victory.png"
+  ]
+ },
+ "sheet.creature.japanese.tier6.upgraded": {
+  "sha256": "80904a6b1ed4a928623736ec72461c9bbf2f79289c84d763d1b0b72dd802d12d",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier6.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.japanese.tier7.base": {
+  "sha256": "fbf57ab12475c8ec6b1509c3a5437d0b2cb53b4689a3dea9d3feccdaead0a64b",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.base.death.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.base.move.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.base.victory.png"
+  ]
+ },
+ "sheet.creature.japanese.tier7.upgraded": {
+  "sha256": "a36685175fbac72733c2f5c99f33dc191c3ac58d5ec21102f99419a061f5251e",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.japanese.tier7.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier1.base": {
+  "sha256": "b67d55063dbe46886ee1b2c557e71986b77561306a9407d81021e5b35c9339c7",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.base.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.base.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.base.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier2.base": {
+  "sha256": "3d755545abc9327306b9b5ac45ecc474764f3da785e15b66aeaf4c50ab6a2519",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.base.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.base.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.base.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier2.upgraded": {
+  "sha256": "58e95771afc60f4a4ea9334887ca82dd1ae227c9f75bba5342e563cfe253265a",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier2.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier1.upgraded": {
+  "sha256": "d2503b604ae4b18c6ee0d196bb1d55cc856746a8859c84fabe27e0481cf13dbe",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier1.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier3.base": {
+  "sha256": "1e9d65265913a64fd63a33b28a0d7f170edc3e946b26930c54993318fc79516f",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.base.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier3.upgraded": {
+  "sha256": "a50f3fa0e32382c32c4e80e3337867038973a1c119b9cd43875e629fa1ae193c",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier3.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier4.base": {
+  "sha256": "1138e0b5f7e2e72ccf6a5153b6c5e1b355eff43df5f1db927b3b45f63768b39a",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.base.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.base.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.base.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier4.upgraded": {
+  "sha256": "3ada2981897c5fe1827926f1de482652bde1ed4c6fce045b3b3a7f1ccaab482b",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier4.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier5.base": {
+  "sha256": "cb4f2caf3cb11f1f71133f5309024766b950059ce313fae8d9b83f0f7ba11ff7",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.fly.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.landing.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.base.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier5.upgraded": {
+  "sha256": "139c11544ef4652679b23dd4764e207ee423bc323857739a6bbfffa322ff51cb",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier5.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier6.base": {
+  "sha256": "3abfff68149852f68dd332dd4e3a23e3f94b8beda973c92b3d16ec41e75fd118",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.base.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier6.upgraded": {
+  "sha256": "53d7b6b0eea9f68574e57afac20afa53b225d5b21a22f27da0464205558e5898",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier6.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier7.base": {
+  "sha256": "4dc8d2c5bd75761183e9d5da58246e1477e10e39824472d460b581d09fea4cb2",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.base.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.base.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.base.victory.png"
+  ]
+ },
+ "sheet.creature.mesoamerican.tier7.upgraded": {
+  "sha256": "3548dd94aeeddc00eee51c1b972e05bc56cc9982999e600efe7297ef9a0219d2",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.mesoamerican.tier7.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.brigand.base": {
+  "sha256": "4884103495be23d832b68d3d36943cc84c80be383de9206dcd65f50eab6f5f83",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.brigand.upgraded": {
+  "sha256": "0e390bb46c6e82ec1bf316ae1ee8956e1582ca9abca530ecbc68f425e73b3723",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.brigand.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.wild_boar.base": {
+  "sha256": "044b42a6878422f5d2145d4440f05f8aeeacd4ec4495a01555f9cf848e5021ac",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.wild_boar.upgraded": {
+  "sha256": "910d5f31d79a6a86eb3967df985314f6325f2645dd688dac67ebec5d0f9ba9bb",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wild_boar.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.hill_slinger.base": {
+  "sha256": "300411ee708d308b55674eb71cfdcb0409c75b9aa932084cb0bc343511fa2143",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.hill_slinger.upgraded": {
+  "sha256": "ba0b7782e47c5ffe7262b360f3947601f4214b3c72b22f2d0daecb70fc8484fd",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.neutral.hill_slinger.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.clay_golem.base": {
+  "sha256": "abaafa29986d49bf1448c0e647d0fcdfd86a0878dd037e9dfe1ffdbdd84fb29b",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.clay_golem.upgraded": {
+  "sha256": "cbee500d96a5d72a9f8c8e8bb05f0f56621711f8e2f8aae557071e1e8f430029",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.clay_golem.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.centaur.base": {
+  "sha256": "3adbb226632e8653e75fcab109ab2dadbcb24059268d44613dda2730a3844df6",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.centaur.upgraded": {
+  "sha256": "2c645ebff83f31228dd29bdbb6db6bf8c33d21c92fe3aa2f903e1c538c651411",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.centaur.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.wyvern.base": {
+  "sha256": "9b30d04f23b00b8414ce8e77c08c11eedbe517db403e6cd96c5b58e521b51c10",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.fly.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.landing.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.wyvern.upgraded": {
+  "sha256": "0135b5207f702285e6aede548b3ccd3fb680eef81f503357565c1ef664e00e06",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.neutral.wyvern.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.ogre.base": {
+  "sha256": "d78d507f2a324d2fec426497ed3567df506eb7e226312e893f90579d04255809",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.ogre.upgraded": {
+  "sha256": "cf8c63d64c61a3c5783141ed972aa362b9961276a68f748e87c3091051eb331a",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.ogre.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.basilisk.base": {
+  "sha256": "dd16d203ce3c7a20481fca9c1c7c5cbed9b6165ab0e4a52ee2522b2dc2756233",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.basilisk.upgraded": {
+  "sha256": "2d8050bc5fec0a7ccf165b0269feb0a3462c139375327a5b0d620173b537bed4",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.basilisk.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.elder_drake.base": {
+  "sha256": "669c26e898c36f08644bbf637d0aeb8c3d015fa19ab7ef2a8cfcc9fcc3bbea0e",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.fly.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.landing.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.base.victory.png"
+  ]
+ },
+ "sheet.creature.neutral.elder_drake.upgraded": {
+  "sha256": "b8988c8dbd29d57e8b44599f215732a0d7b35b33a21eac1276f8a13e29352e04",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.neutral.elder_drake.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier1.base": {
+  "sha256": "797391577a28d99cd94738a7a2447f3858bf17bb9f41b33a1e9fc4e34723c615",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier1.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.base.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.base.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.base.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier1.upgraded": {
+  "sha256": "be054abcd2538c760fe036279c41449f085b17e592f2012b4e8cd2adaaca13d6",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier1.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier1.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier2.base": {
+  "sha256": "80835ee05f6d89871932a7930a1a9ac98a7404732aa40c2b2487d3ff9a4e0fb6",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.base.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier2.upgraded": {
+  "sha256": "a849f79a84aae7943ab06c98edfdf8ed5dc3a350bf004b65b86ab217f1de39de",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier2.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier3.base": {
+  "sha256": "8267c7f13f3dbdceb710d66e895c3666cee3f854b72de927f9351390e287be47",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.fly.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.landing.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.base.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier3.upgraded": {
+  "sha256": "d6a8f5ccb0fb516a8da4da7b6230831f8e7458942aaa3d9991e8f8706fe3d483",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier3.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier4.base": {
+  "sha256": "2e09474692e0132ced972770242dcc5b1a1979003af25cfad017c52d3c8437b1",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier4.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.base.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.base.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.base.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier4.upgraded": {
+  "sha256": "ab18390bfcc9f2f2d0f95ea3e32c5882cc891d81d5277d1ff63457e4a51d2655",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier4.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier4.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier5.base": {
+  "sha256": "dc09ba2e96b22cc0f20acd73b562dacd474d42ecf81c26ce78e61878fba25202",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.base.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier5.upgraded": {
+  "sha256": "2992bf15e48967612cb7b52fecf26a59b75e4c8f596505246ccbae82ca4ca02e",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.ability.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier5.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier6.base": {
+  "sha256": "b9778c8bd07c5c92f49d2eca6c893f205b886a3922c0a6793d48be031bc92a3a",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier6.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.base.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.base.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.base.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier6.upgraded": {
+  "sha256": "19a4a6673c706b14cf213de5e58604056cf2dbcd07fecbc370cdd44b5705664c",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier6.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier6.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier7.base": {
+  "sha256": "c97b6485b35a17472bfa1a10c9d7b62bb21cae125af442a0c04f89727ae87ea8",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.ability.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.base.victory.png"
+  ]
+ },
+ "sheet.creature.greek.tier7.upgraded": {
+  "sha256": "b45a8cd86248de548fe89161ed63893312277701d868d78664dbce02f620db59",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.ability.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.greek.tier7.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier1.base": {
+  "sha256": "35d596bdebb3cae6e74114debbea8b4254ff0523564953152c3f72886a92e52c",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier1.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.base.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.base.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.base.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier1.upgraded": {
+  "sha256": "f4d2c05407161603a0d1ef80be036524c35862e9db6d493e6b79889692a96804",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier1.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier1.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier2.base": {
+  "sha256": "0f22b2129a2ededfa0bd7b1a07659c76583b02578ca6457a8c6cabc6d4e1840b",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier2.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.base.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.base.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.base.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier2.upgraded": {
+  "sha256": "55430a9853d37f70ee841a51af5cd53fffdda310e11ab1c42fb2103ed546894e",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier2.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier2.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier3.base": {
+  "sha256": "679e0ae852c8ecfe9fdff19ca25898eeb1d0d3cbfdac46209827e173b37607e4",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier3.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.base.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.base.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.base.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier3.upgraded": {
+  "sha256": "88f7515fbb13d96159a3e88689e230a569d5ed20905c93c02d1853da31e0f10e",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier3.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier3.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier4.base": {
+  "sha256": "128d83287a5b985c828ad8ad041abe65edb05022c0c2cb0ad14f1de84e4c0464",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.fly.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.landing.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.base.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier4.upgraded": {
+  "sha256": "a97b8549ce667a44aa5b850e74a0ba73ffe014045bcf2ead30ebbf0ee765de6a",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier4.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier5.base": {
+  "sha256": "3e12be4c7f2b1211b6b7c51d2fe42bac426c12f2d2924e64bb0ab08ba5cdeee4",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.base.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier5.upgraded": {
+  "sha256": "ea289fb8371f63807c39551d3964aac3fcae2c9a3ddcff309ac27e4aeffdf8cb",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier5.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier6.base": {
+  "sha256": "410d1af19ed0661ded9eefe36b6516a09d1674ef995011c382bc224dfc7aaec8",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier6.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.base.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.base.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.base.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier6.upgraded": {
+  "sha256": "384fbe6d5f74564b3b2b10d9d059039f04083b6d861b4d5fc198e4ba528956ff",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.ability.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier6.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier7.base": {
+  "sha256": "e7164cced3d9ca93e16c9a3eab08817ca6bcf154418500d776e588a24cc4b612",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier7.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.base.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.base.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.base.victory.png"
+  ]
+ },
+ "sheet.creature.norse.tier7.upgraded": {
+  "sha256": "8b34fd455c83f46b84ab9ea8e1d145f36aa0e8d0697181228dfff21c8398d3c0",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.norse.tier7.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.norse.tier7.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier1.base": {
+  "sha256": "39b81352dc6d040f39f223f3ae6cb08dc393a5322a9681043e76775b143f0870",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.base.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.base.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.base.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier1.upgraded": {
+  "sha256": "30b49886a8933d05e8397f6bf4783e3cf44d4518cc04e1fcd21f9970422a0254",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier1.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier2.base": {
+  "sha256": "13b0d100b4a2af4b21e0fc4dc09e52883fd742e2752695f1377c8ceb828b63d0",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.base.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier2.upgraded": {
+  "sha256": "1f71bc3e24f316f107fcb491117b788634792c2063914dabdeedea4e476c4f86",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier2.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier3.base": {
+  "sha256": "92ca3c7fff164fc0b2e99804a5fb4e30f573c534a5df15338a5151e11fed02d8",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.base.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.base.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.base.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier3.upgraded": {
+  "sha256": "536c02717d663edc718a1f29ecc7889f16aa9bec3ab26e62737cb9f0eccd1e8c",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier3.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier4.base": {
+  "sha256": "f52ab74f4d825523f428cbc234ea0fd5cfb9d3a7c2b57b2c1059e3944da71085",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.base.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.base.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.base.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier4.upgraded": {
+  "sha256": "42f79238c25446b254f7a8a88048a5e594f35d8d19a13de4e125e42a84c879c0",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier4.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier5.base": {
+  "sha256": "815aeefab3503b3c9489afe5f50924fb3fdef5484498ebd8e74bb67eb0d5e79a",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.base.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.base.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.base.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier5.upgraded": {
+  "sha256": "3308ced6da4b1debdb4b87441a1158e7e1bb376a1891cf33ccc3d57d45ad827f",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier5.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier6.base": {
+  "sha256": "a9970c689efe7beecc07a1ed806569af25c29e9a5b1e4687fe935a7c7eacea64",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.fly.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.landing.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.base.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier6.upgraded": {
+  "sha256": "29c16db700c48fa4f55f2721bdf06bfb2c5d7fe66b99a361f1804bcc7f4b432c",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.fly.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.landing.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.takeoff.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier6.upgraded.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier7.base": {
+  "sha256": "b828dcb8ecb533d31c406b04b017d52c5379706c901120ffbca73bdac222b029",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.ability.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.shoot.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.base.victory.png"
+  ]
+ },
+ "sheet.creature.egyptian.tier7.upgraded": {
+  "sha256": "9643a842cb48f07f2aab7a2542d778a40985b575414bb3fb4995e911027c57a2",
+  "outputs": [
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.ability.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.attack.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.death.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.defend.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.hit.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.idle.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.move.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.shoot.png",
+   "assets-source/sprites/final/sprite.creature.egyptian.tier7.upgraded.victory.png"
+  ]
+ },
+ "sheet.hero.greek": {
+  "sha256": "a8f35c0bf4327568028d85863410ac1357935ccb8fb8043c08fbc949982ef3bc",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.greek.idle.e.png",
+   "assets-source/sprites/final/sprite.hero.greek.idle.n.png",
+   "assets-source/sprites/final/sprite.hero.greek.idle.ne.png",
+   "assets-source/sprites/final/sprite.hero.greek.idle.s.png",
+   "assets-source/sprites/final/sprite.hero.greek.idle.se.png",
+   "assets-source/sprites/final/sprite.hero.greek.walk.e.png",
+   "assets-source/sprites/final/sprite.hero.greek.walk.n.png",
+   "assets-source/sprites/final/sprite.hero.greek.walk.ne.png",
+   "assets-source/sprites/final/sprite.hero.greek.walk.s.png",
+   "assets-source/sprites/final/sprite.hero.greek.walk.se.png"
+  ]
+ },
+ "sheet.hero.norse": {
+  "sha256": "0b0ea8f9e88d57c443d224b2acb730e637a09734d9389b497408086d45a68bf7",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.norse.idle.e.png",
+   "assets-source/sprites/final/sprite.hero.norse.idle.n.png",
+   "assets-source/sprites/final/sprite.hero.norse.idle.ne.png",
+   "assets-source/sprites/final/sprite.hero.norse.idle.s.png",
+   "assets-source/sprites/final/sprite.hero.norse.idle.se.png",
+   "assets-source/sprites/final/sprite.hero.norse.walk.e.png",
+   "assets-source/sprites/final/sprite.hero.norse.walk.n.png",
+   "assets-source/sprites/final/sprite.hero.norse.walk.ne.png",
+   "assets-source/sprites/final/sprite.hero.norse.walk.s.png",
+   "assets-source/sprites/final/sprite.hero.norse.walk.se.png"
+  ]
+ },
+ "sheet.hero.egyptian": {
+  "sha256": "98551a05bd7cda92d1a98855fd5c3bfc662b15943e975223bec0b6f2ce52e1e7",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.egyptian.idle.e.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.idle.n.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.idle.ne.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.idle.s.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.idle.se.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.walk.e.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.walk.n.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.walk.ne.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.walk.s.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.walk.se.png"
+  ]
+ },
+ "sheet.hero.japanese": {
+  "sha256": "8c1bc1ea82bc5952a1afcecc4f93f48a5bda776e328bc8c48b6431ee1973d710",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.japanese.idle.e.png",
+   "assets-source/sprites/final/sprite.hero.japanese.idle.n.png",
+   "assets-source/sprites/final/sprite.hero.japanese.idle.ne.png",
+   "assets-source/sprites/final/sprite.hero.japanese.idle.s.png",
+   "assets-source/sprites/final/sprite.hero.japanese.idle.se.png",
+   "assets-source/sprites/final/sprite.hero.japanese.walk.e.png",
+   "assets-source/sprites/final/sprite.hero.japanese.walk.n.png",
+   "assets-source/sprites/final/sprite.hero.japanese.walk.ne.png",
+   "assets-source/sprites/final/sprite.hero.japanese.walk.s.png",
+   "assets-source/sprites/final/sprite.hero.japanese.walk.se.png"
+  ]
+ },
+ "sheet.hero.celtic": {
+  "sha256": "6c3bca8c6251d7fe4ce92e147502f2b1673fa8f93f2d0f0579365dd04c59fd0f",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.celtic.idle.e.png",
+   "assets-source/sprites/final/sprite.hero.celtic.idle.n.png",
+   "assets-source/sprites/final/sprite.hero.celtic.idle.ne.png",
+   "assets-source/sprites/final/sprite.hero.celtic.idle.s.png",
+   "assets-source/sprites/final/sprite.hero.celtic.idle.se.png",
+   "assets-source/sprites/final/sprite.hero.celtic.walk.e.png",
+   "assets-source/sprites/final/sprite.hero.celtic.walk.n.png",
+   "assets-source/sprites/final/sprite.hero.celtic.walk.ne.png",
+   "assets-source/sprites/final/sprite.hero.celtic.walk.s.png",
+   "assets-source/sprites/final/sprite.hero.celtic.walk.se.png"
+  ]
+ },
+ "sheet.hero.mesoamerican": {
+  "sha256": "af6eec748abedad479473804499c016fa561401671e9fd36e72f0b7d4fd576b9",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.mesoamerican.idle.e.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.idle.n.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.idle.ne.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.idle.s.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.idle.se.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.walk.e.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.walk.n.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.walk.ne.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.walk.s.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.walk.se.png"
+  ]
+ },
+ "sheet.hero.figures": {
+  "sha256": "d78763ae5e8e1861f8f76eb73e17216e75554ef23a1eb9395afc3cc8c0d10c67",
+  "outputs": [
+   "assets-source/sprites/final/sprite.hero.celtic.figure.png",
+   "assets-source/sprites/final/sprite.hero.egyptian.figure.png",
+   "assets-source/sprites/final/sprite.hero.greek.figure.png",
+   "assets-source/sprites/final/sprite.hero.japanese.figure.png",
+   "assets-source/sprites/final/sprite.hero.mesoamerican.figure.png",
+   "assets-source/sprites/final/sprite.hero.norse.figure.png"
+  ]
  }
 }

@@ -1,0 +1,18 @@
+{
+ "frames": 6,
+ "fps": 4,
+ "loop": true,
+ "anchor": [
+  0.5,
+  0.8762
+ ],
+ "pixelsPerHex": 103.398,
+ "cutFrom": "sheet.creature.greek.tier4.base.png",
+ "assemblyNote": "Victory frames 3 and 4 reuse generated frames 2 and 5 as held poses, preserving complete single lances after source-tip artifacts.",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 80.013,
+  "guideIdleFraction": 0.73,
+  "observedIdleFraction": 0.9434,
+  "worldScaleMultiplier": 0.7738
+ }
+}

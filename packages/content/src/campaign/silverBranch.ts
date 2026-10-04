@@ -91,7 +91,7 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
     victory: [ORLA('The fire caught. The cattle went out between the flames this morning. But only here — over the hills the dark half holds.')],
     town: { townId: 'dun_caill', name: 'Dún Caill', description: 'Orla’s hillfort by the hazel grove.' },
     biome: 'moor',
-    soundscape: 'high_pass',
+    soundscape: 'glen',
     barrier: 'water',
     event: {
       name: 'The Hawthorn Well',
@@ -146,7 +146,7 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
     victory: [SADB('Two fires lit. The bards say the next is at the loch of the water-horses, and the water-horses have stopped coming to the shore.')],
     town: { townId: 'dun_bera', name: 'Dún Bera', description: 'A farming fort on the river.' },
     biome: 'moor',
-    soundscape: 'coast',
+    soundscape: 'glen',
     barrier: 'water',
     lookout: { name: 'Hill of the Watchers', description: 'From the top, the land beyond the river lies open.' },
     event: {
@@ -226,7 +226,7 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
     victory: [ORLA('The covenant holds, a god rides with us and the hill fire is lit. The road goes west from here — to the sea.')],
     town: { townId: 'rath_eala', name: 'Ráth Eala', description: 'A ringfort above the loch.' },
     biome: 'high_pass',
-    soundscape: 'high_pass',
+    soundscape: 'glen',
     cache: { name: 'Bards’ Hoard', description: 'A bard’s chest hidden in a rock cleft.', reward: { resources: { gold: 700, wood: 5 }, artifactIds: ['ogham_staves'] } },
     pass: {
       name: 'Hill Road',
@@ -312,7 +312,7 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
     victory: [ORLA('The sea-folk saw it: the branch, broken, carried into a mound in the east by the Withered King himself. And a usurper on the high seat at the ford keeps the road to it.')],
     town: { townId: 'inis_ron', name: 'Inis Rón', description: 'A seal-island fort at the edge of the western sea.' },
     biome: 'coast',
-    soundscape: 'coast',
+    soundscape: 'glen',
     wanderer: {
       name: 'A Bard by the Shore',
       description: 'A bard sitting on an upturned boat, tuning a harp.',
@@ -392,7 +392,7 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
     victory: [ORLA('The stone is overturned and the land is free of his kingship. The road east to the mound is open.')],
     town: { townId: 'dun_ard', name: 'Dún Ard', description: 'A hillfort on the river road, loyal to the old fires.' },
     biome: 'temperate',
-    soundscape: 'coast',
+    soundscape: 'glen',
     gold: { name: 'Gold Mine', description: 'An unowned mine.', guard: { label: 'Mine boars', army: [['tusked_boar', 10]], reward: { resources: { gold: 500 } }, battlefield: 'open_field' } },
     event: {
       name: 'The Salmon Pool',
@@ -458,7 +458,7 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
     victory: [ORLA('The stags are belling. Tonight, from the edge of the wood, I saw the mound in the east — and the summer stone and the winter stone on either side of the road to it.')],
     town: { townId: 'coill_dubh', name: 'Coill Dubh', description: 'A fort on the edge of the deep wood.' },
     biome: 'moor',
-    soundscape: 'high_pass',
+    soundscape: 'glen',
     north: {
       name: 'Cairn Steps',
       description: 'The northern way into the wood, held by cairn-men.',

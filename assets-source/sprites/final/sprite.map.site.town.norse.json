@@ -4,6 +4,12 @@
   0.5011,
   0.9148
  ],
- "pixelsPerHex": 242.539,
- "cutFrom": "sheet.map.towns.png"
+ "pixelsPerHex": 282.107,
+ "cutFrom": "sheet.map.towns.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 242.539,
+  "guideWidthFraction": 0.82,
+  "targetWidthHexes": 1.4994285714285713,
+  "alphaWidthPixels": 423
+ }
 }

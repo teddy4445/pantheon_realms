@@ -42,15 +42,15 @@ import {
   interventionsFor,
   quoteIntervention,
 } from '@pr/rules';
-import type { BattleSceneController, BattleView, SpellLook } from '@pr/presentation';
+import type { BattleMiracleFx, BattleSceneController, BattleSpellFx, BattleView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { battleCursor } from '../app/cursorContext';
 import { battleLogLines } from '../app/battleLog';
 import { cursorCss } from '../assets/cursors';
-import { battlePlaybackFactor } from '../app/preferences';
+import { battlePlaybackFactor, reducedMotion } from '../app/preferences';
 import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
-import { cellPoint } from '@pr/presentation/core';
+import { cellPoint, miracleLook, spellLook, statusOverlays } from '@pr/presentation/core';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
 import { CreaturePortrait } from '../components/art';
 import { Icon } from '../assets/icons';
@@ -90,25 +90,43 @@ function effectChips(fx: BattleSideEffects | null): { key: string; text: string;
   return out;
 }
 
-/** How a battle spell's effect looks on the battlefield (presentation only; from the spell's effect data). */
-function spellLookOf(effect: SpellEffect | undefined): SpellLook | null {
-  if (!effect) return null;
+/** The word a spell that neither hurts nor heals leaves over its target (presentation only; from its effect data). */
+function spellWord(name: string, effect: SpellEffect): string {
   switch (effect.type) {
-    case 'direct_damage':
-      return 'damage';
-    case 'area_damage':
-    case 'mass_damage':
-      return 'area';
-    case 'heal_front':
-    case 'mass_heal':
-      return 'heal';
-    case 'min_damage_roll':
-      return 'curse';
+    case 'attack_bonus':
+      return `Attack ${effect.amount > 0 ? '+' : '−'}${Math.abs(effect.amount)}`;
+    case 'defense_bonus':
+      return `Defense ${effect.amount > 0 ? '+' : '−'}${Math.abs(effect.amount)}`;
     case 'speed_bonus':
-      return effect.amount < 0 ? 'curse' : 'buff';
+      return `Speed ${effect.amount > 0 ? '+' : '−'}${Math.abs(effect.amount)}`;
+    case 'mass_bonus':
+      return `${name}: ${effect.stat[0]!.toUpperCase()}${effect.stat.slice(1)} ${effect.amount > 0 ? '+' : '−'}${Math.abs(effect.amount)}`;
+    case 'max_damage_roll':
+      return 'Blessed';
+    case 'min_damage_roll':
+      return 'Cursed';
     default:
-      return 'buff';
+      return name;
   }
+}
+
+/** How a battle spell looks on the battlefield (presentation only; fxLooks + the spell's data). */
+function spellFxOf(catalog: ContentCatalog, spellId: string): BattleSpellFx | null {
+  const spell = catalog.spells[spellId];
+  if (!spell) return null;
+  return { ...spellLook(spell), label: spellWord(spell.name, spell.effect), hostile: spell.target === 'enemy_stack' || spell.target === 'enemy_army' };
+}
+
+/** How a divine intervention looks in this battle, and whose side called it (null: a map miracle). */
+function miracleFxOf(catalog: ContentCatalog, state: MatchState | undefined, interventionId: string, playerId: string): BattleMiracleFx | null {
+  const def = catalog.interventions?.[interventionId];
+  const battle = state?.battle;
+  if (!def || def.context !== 'battle' || !battle) return null;
+  const side = battle.sides.attacker.playerId === playerId ? 'attacker' : battle.sides.defender.playerId === playerId ? 'defender' : null;
+  if (!side) return null;
+  const e = def.effect;
+  const label = e.type === 'battle_status' ? `${def.name}: ${e.stat[0]!.toUpperCase()}${e.stat.slice(1)} +${e.amount}` : def.name;
+  return { look: miracleLook(def), side, label, ...(e.type === 'battle_smite' ? { damage: e.damage } : {}) };
 }
 
 function buildView(
@@ -146,6 +164,7 @@ function buildView(
       active: deploySide ? deploySel === s.id : battle.activeStackId === s.id,
       label,
       labelColor: s.side === 'attacker' ? '#dbe8ff' : '#ffd9d2',
+      statuses: statusOverlays(s.statuses),
     };
   });
   let moves: BattleCell[] = [];
@@ -275,10 +294,11 @@ export function BattleScreen() {
     [catalog, state, la, mode, hover, store.prefs.unitLabels, store.prefs.hexOverlay, battle, deploySel, deploySide],
   );
 
+  const calm = reducedMotion(store.prefs);
   useEffect(() => {
     // After the battle ended the board keeps what the final playback showed.
-    if (built && !ended) ctrl.current?.update(built.view);
-  }, [built, ended]);
+    if (built && !ended) ctrl.current?.update({ ...built.view, calm });
+  }, [built, ended, calm]);
   // The controller can arrive after the first render (the 2D layer loads on demand).
   const builtRef = useRef(built);
   builtRef.current = built;
@@ -302,7 +322,19 @@ export function BattleScreen() {
       // so events published before this screen opened (the first round) are in it too.
       force((n) => n + 1);
       const c = ctrl.current;
-      if (c && events.some((e) => e.kind.startsWith('Battle'))) await c.play(events, battlePlaybackFactor(store.prefs));
+      const factor = battlePlaybackFactor(store.prefs);
+      // A miracle's light falls once its painted card has been seen; its targets keep their look meanwhile.
+      if (c && factor > 0 && events.some((e) => e.kind === 'InterventionInvoked')) {
+        const release = c.hold(events);
+        try {
+          await store.whenMiracleCardsClosed();
+          await c.play(events, battlePlaybackFactor(store.prefs));
+        } finally {
+          release();
+        }
+        return;
+      }
+      if (c && events.some((e) => e.kind.startsWith('Battle') || e.kind === 'InterventionInvoked')) await c.play(events, factor);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store, catalog, battleId]);
@@ -405,15 +437,16 @@ export function BattleScreen() {
         onCellClick: (c, b, o) => clickRef.current(c, b, o),
         onCellHover: (c, o) => setHover(c ? { cell: c, offset: o } : null),
         onCue: (cue) => store.audio?.battleCue(cue),
-        spellLook: (spellId) => spellLookOf(catalog.spells[spellId]?.effect),
+        spellFx: (spellId) => spellFxOf(catalog, spellId),
+        miracleFx: (interventionId, playerId) => miracleFxOf(catalog, store.session?.state.battle ? store.session.state : (lastLive.current ?? undefined), interventionId, playerId),
       }),
     [],
   );
   const onController = useCallback((c: BattleSceneController | null) => {
     ctrl.current = c;
     projectors.battle = c ? (col, row) => toPage(c.projectCell({ col, row })) : undefined;
-    inspectors.battle = c ? { stacks: () => c.stackDebug() } : undefined;
-    if (c && builtRef.current) c.update(builtRef.current.view);
+    inspectors.battle = c ? { stacks: () => c.stackDebug(), fx: () => c.fxDebug() } : undefined;
+    if (c && builtRef.current) c.update({ ...builtRef.current.view, calm: reducedMotion(store.prefs) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

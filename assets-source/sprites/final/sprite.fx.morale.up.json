@@ -1,0 +1,13 @@
+{
+  "frames": 6,
+  "fps": 14,
+  "loop": false,
+  "anchor": [
+    0.5,
+    0.8087
+  ],
+  "pixelsPerHex": 143.0,
+  "cutFrom": "sheet.fx.part2.png",
+  "additive": true,
+  "anchorCalibration": "Median luminous ground-contact peak of frames 2\u20134; fixed across the animation."
+}

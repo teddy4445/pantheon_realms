@@ -1,0 +1,18 @@
+{
+ "frames": 6,
+ "fps": 4,
+ "loop": true,
+ "anchor": [
+  0.5,
+  0.8762
+ ],
+ "pixelsPerHex": 98.453,
+ "cutFrom": "sheet.creature.greek.tier6.base.png",
+ "assemblyNote": "Victory frame 1 uses generated idle frame 1 to retain the axe in its initial ready pose.",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 80.013,
+  "guideIdleFraction": 0.75,
+  "observedIdleFraction": 0.9228,
+  "worldScaleMultiplier": 0.8127
+ }
+}

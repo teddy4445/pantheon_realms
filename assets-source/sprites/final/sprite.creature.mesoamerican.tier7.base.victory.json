@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 4,
+ "loop": true,
+ "anchor": [
+  0.5,
+  0.8771
+ ],
+ "pixelsPerHex": 95.467,
+ "cutFrom": "sheet.creature.mesoamerican.tier7.base.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 74.133,
+  "guideIdleFraction": 0.75,
+  "observedIdleFraction": 0.9658,
+  "worldScaleMultiplier": 0.7765
+ }
+}

@@ -91,7 +91,7 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
     victory: [AKANE('The great lantern burns, and one by one the little ones are catching. But only here. Beyond the mountains the road is still dark.')],
     town: { townId: 'kagaribi', name: 'Kagaribi', description: 'Akane’s shrine-town, famous for its festival lanterns.' },
     biome: 'autumn',
-    soundscape: 'high_pass',
+    soundscape: 'shrine',
     barrier: 'water',
     event: {
       name: 'Abandoned Tea House',
@@ -146,7 +146,7 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
     victory: [GENZO('Two lanterns lit. Now the old monks say the Crow Monastery on the high pass has stopped ringing its bell. That is where the road climbs next.')],
     town: { townId: 'mizuhara', name: 'Mizuhara', description: 'A village of rice terraces on the river.' },
     biome: 'autumn',
-    soundscape: 'coast',
+    soundscape: 'shrine',
     barrier: 'water',
     lookout: { name: 'Pagoda of Five Roofs', description: 'From its top roof, the land beyond the river lies open.' },
     event: {
@@ -226,7 +226,7 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
     victory: [AKANE('The bell rings, a kami walks with us and the mountain road is lit. From here the road goes down to the sea.')],
     town: { townId: 'kumoyama', name: 'Kumoyama', description: 'A mountain town below the Crow Monastery.' },
     biome: 'high_pass',
-    soundscape: 'high_pass',
+    soundscape: 'shrine',
     cache: { name: 'Pilgrims’ Storehouse', description: 'Rice and silver left by pilgrims who turned back.', reward: { resources: { gold: 700, wood: 5 }, artifactIds: ['omamori_charm'] } },
     pass: {
       name: 'Mountain Road',
@@ -312,7 +312,7 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
     victory: [AKANE('The mirrors showed me: a palace at the end of the road, where the last torii stands. And a lord of iron between here and there, who fences the wandering dead into his army.')],
     town: { townId: 'shiogama', name: 'Shiogama', description: 'A salt-makers’ harbour on the Spirit Sea.' },
     biome: 'coast',
-    soundscape: 'coast',
+    soundscape: 'shrine',
     wanderer: {
       name: 'A Wandering Monk',
       description: 'A monk in a basket hat, playing a flute on the shore.',
@@ -392,7 +392,7 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
     victory: [AKANE('The Lantern of Oaths is out and the dead he bound are walking home. Kurogane has nothing left but the Lantern-Eater’s promises.')],
     town: { townId: 'akashi', name: 'Akashi', description: 'A river town on the road north, loyal to the shrines.' },
     biome: 'temperate',
-    soundscape: 'coast',
+    soundscape: 'shrine',
     gold: { name: 'Gold Mine', description: 'An unowned mine.', guard: { label: 'Mine boars', army: [['tusked_boar', 10]], reward: { resources: { gold: 500 } }, battlefield: 'open_field' } },
     event: {
       name: 'Hot Spring',
@@ -458,7 +458,7 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
     victory: [AKANE('The kirin walk again. Tonight I saw the last part of the road from the meadow — the sun stone, the moon stone and the last torii between them.')],
     town: { townId: 'takamori', name: 'Takamori', description: 'A high town on the edge of the kirin meadows.' },
     biome: 'high_pass',
-    soundscape: 'high_pass',
+    soundscape: 'shrine',
     north: {
       name: 'Haniwa Steps',
       description: 'The northern steps to the meadow, held by clay figures.',

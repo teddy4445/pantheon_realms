@@ -454,6 +454,30 @@ export class AppStore {
     if (weeks.length) void this.whenIdle().then(() => add(weeks));
   }
 
+  /**
+   * Resolves once no miracle card is showing or waiting (a miracle's effect on
+   * the battlefield or the map plays after its card). Resolves at once when
+   * there is none — miracle cards exist only where their art is delivered.
+   */
+  whenMiracleCardsClosed(): Promise<void> {
+    return new Promise((resolve) => {
+      let timer: ReturnType<typeof setTimeout> | null = null;
+      const check = () => {
+        if (this.moments.some((m) => m.kind === 'miracle')) return;
+        done();
+      };
+      const done = () => {
+        this.listeners.delete(check);
+        if (timer) clearTimeout(timer);
+        resolve();
+      };
+      this.listeners.add(check);
+      // Never hold playback indefinitely (a card left open in a hidden window).
+      timer = setTimeout(done, 20000);
+      check();
+    });
+  }
+
   dismissMoment(key: string): void {
     if (!this.moments.some((m) => m.key === key)) return;
     this.moments = this.moments.filter((m) => m.key !== key);

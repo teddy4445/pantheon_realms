@@ -1,0 +1,15 @@
+{
+ "frames": 1,
+ "anchor": [
+  0.5,
+  0.9283
+ ],
+ "pixelsPerHex": 507.552,
+ "cutFrom": "sheet.battle.obstacles.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 207.923,
+  "guideWidthFraction": 0.23,
+  "targetWidthHexes": 0.49059,
+  "alphaWidthPixels": 249
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "frames": 6,
+ "fps": 6,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.877
+ ],
+ "pixelsPerHex": 123.323,
+ "cutFrom": "sheet.creature.neutral.wyvern.base.part1.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 96.364,
+  "guideIdleFraction": 0.61,
+  "observedIdleFraction": 0.7807,
+  "worldScaleMultiplier": 0.7814
+ }
+}

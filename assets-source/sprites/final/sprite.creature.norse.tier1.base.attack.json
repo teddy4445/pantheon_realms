@@ -1,0 +1,18 @@
+{
+ "frames": 6,
+ "fps": 6,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8772
+ ],
+ "pixelsPerHex": 156.813,
+ "cutFrom": "sheet.creature.norse.tier1.base.png",
+ "assemblyNote": "Attack recovery uses generated idle ready pose to remove duplicated shield.",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 97.984,
+  "guideIdleFraction": 0.58,
+  "observedIdleFraction": 0.9282,
+  "worldScaleMultiplier": 0.6248
+ }
+}

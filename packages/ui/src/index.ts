@@ -104,6 +104,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
     (g as { __prCamera?: () => unknown }).__prCamera = () => inspectors.adventure?.camera() ?? null;
     // Read-only: where each battle stack's sprite is drawn, its facing and animation.
     (g as { __prBattle?: () => unknown }).__prBattle = () => inspectors.battle?.stacks() ?? null;
+    // Read-only: the magic effects the views played most recently (asset ID prefixes).
+    (g as { __prFx?: () => unknown }).__prFx = () => ({ battle: inspectors.battle?.fx() ?? null, adventure: inspectors.adventure?.fx() ?? null });
   }
   return store;
 }

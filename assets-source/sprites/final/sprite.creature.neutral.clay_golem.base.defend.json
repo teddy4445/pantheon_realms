@@ -1,0 +1,17 @@
+{
+ "frames": 3,
+ "fps": 8,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.879
+ ],
+ "pixelsPerHex": 124.402,
+ "cutFrom": "sheet.creature.neutral.clay_golem.base.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 96.591,
+  "guideIdleFraction": 0.76,
+  "observedIdleFraction": 0.9788,
+  "worldScaleMultiplier": 0.7764
+ }
+}

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 import { cellPoint } from '@pr/presentation/core';
 import { inspect, waitFor } from './helpers';
@@ -23,6 +24,12 @@ interface StackDebug {
   down: boolean;
   visible: boolean;
 }
+/** A creature form still drawn as a procedural silhouette (the list shrinks as final sprites arrive). */
+const SILHOUETTE = (() => {
+  const m = JSON.parse(readFileSync('assets-runtime/sprites/manifest.json', 'utf8')) as { creatures: Record<string, { status: string; provenance: string }> };
+  return Object.entries(m.creatures).find(([, c]) => c.status === 'placeholder' && c.provenance.startsWith('Procedural silhouette'))?.[0] ?? null;
+})();
+
 const stacks = (page: Page): Promise<Record<string, StackDebug> | null> => page.evaluate(() => (globalThis as unknown as { __prBattle: () => Record<string, StackDebug> | null }).__prBattle());
 const project = (page: Page, col: number, row: number) => page.evaluate(([c, r]) => (globalThis as unknown as { __prProject: (k: string, a: number, b: number) => { x: number; y: number } | null }).__prProject('battle', c!, r!), [col, row]);
 
@@ -54,9 +61,10 @@ test('bestiary: the animated 2D viewer plays the states this creature has, switc
   await expect(page.locator('.screen-header__title')).toHaveText('Veteran Peltast');
   await expect(page.getByTestId('viewer-sprite-status')).toHaveText('Placeholder sprites');
   // A form without a reference view yet: an animated silhouette with its own strips.
+  expect(SILHOUETTE, 'a creature still drawn as a silhouette').not.toBeNull();
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-encyclopedia').click();
-  await page.getByTestId('codex-celtic_pooka').click();
+  await page.getByTestId(`codex-${SILHOUETTE}`).click();
   await expect(page.getByTestId('viewer-sprite-status')).toHaveText('Placeholder sprites', { timeout: 20_000 });
   for (const s of ['idle', 'move', 'attack', 'defend', 'hit', 'death', 'victory']) await expect(page.getByTestId(`anim-${s}`)).toHaveAttribute('data-own', 'yes');
   await page.getByTestId('anim-attack').click();

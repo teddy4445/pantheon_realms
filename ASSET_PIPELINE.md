@@ -207,6 +207,18 @@ readable; final strips are never tinted. Map avatars may carry
 manifest is written by the tools (§7); edit it by hand only to fix an
 anchor, and then re-run `npm run check`.
 
+**Magic and Favor effects** (2026-10-03) are drawn by code until strips are
+delivered: every spell, miracle and divine gift has a *look*
+(`packages/presentation/src/fxLooks.ts`) that `fx.ts` paints — sigil, flight,
+impact, field moment, status overlays — and the town's gift bursts are CSS
+(`packages/ui/src/components/burst.tsx`). Before each phase the views look up
+the phase's asset ID in `effects` (`fx.spell.<id>.<phase>`,
+`fx.miracle.<id>.<phase>`, `fx.status.<name>`; the list with phases, frame
+counts and looks is `VFX_MAGIC_AND_FAVORS.md`) and play that strip instead, so
+a delivery is an `effects` entry and no code change. The older generic
+`spell.damage` … `spell.curse` placeholder strips are no longer used for
+spells (`impact`, `ward`, `morale.*` still are).
+
 ## 6. Image rules and budgets
 
 * Transparent background, clean edges (no halo of the generation
@@ -348,6 +360,14 @@ entry's `files`, `status: "final"` and `provenance`. No code changes.
 | `intensity: "strong"` | Thunder, crashes: softened by **Calmer sound**. |
 | `maxVoices`, `cooldownMs`, `pitchJitterCents` | Limits on overlapping copies and repeats; small random pitch variation. |
 
+The 34 sounds added on 2026-10-03 (the five campaign soundscapes' music and
+ambience, the spellbook and town sounds, and the magic families) are, like
+the first 52, **original placeholders synthesized in code** (no recordings,
+samples or downloads: free sound sites and generation services were not
+reachable from the development environment) and are appended to the
+generator's catalogue, so the earlier files keep their seeds. Regenerate only
+some IDs with `python3 tools/audio/make_placeholders.py --only id,id`.
+
 Files: Ogg Vorbis (`.ogg`), 44.1 kHz; music and ambience stereo, effects
 mono. Loops must loop seamlessly (no silence at either end). Keep editable
 masters and source provenance outside the runtime folder. Test decoding in
@@ -357,16 +377,31 @@ file in the manifest. Never reference a URL: files must be bundled.
 Sound IDs by use (the full list is `REQUIRED_SOUND_IDS` in
 `packages/ui/src/audio/sounds.ts`, and a unit test fails if one is missing):
 
-* Music: `music.menu`, `music.explore.<soundscape>` (`coast`, `high_pass`,
-  `storm_plateau` — each mission names its soundscape), `music.battle`,
-  `music.resolution`.
+* Music: `music.menu`, `music.explore.<soundscape>`, `music.battle`,
+  `music.resolution`. Each mission names its soundscape: `coast`,
+  `high_pass`, `storm_plateau` (The Three Beacons, and every campaign's
+  darkest missions), `fjord` (The Winter Oath), `desert` (the Egyptian
+  campaign), `shrine` (Japanese), `glen` (Celtic), `jungle` (Mesoamerican) —
+  the last five added 2026-10-03.
 * Stingers: `stinger.victory`, `stinger.defeat`, `stinger.levelup`,
   `stinger.beacon`.
 * Ambience: `amb.<soundscape>`, `amb.battlefield`.
 * Interface: `ui.click`, `ui.open`, `ui.close`, `ui.confirm`, `ui.error`,
   `ui.coins`, `ui.build`, `ui.recruit`, `ui.endday`, `ui.newday`,
   `ui.newweek`, `ui.pickup`, `ui.capture`, `ui.divine`, `ui.objective`,
-  `sfx.steps` (loop).
+  `sfx.steps` (loop); the spellbook `ui.book_open`, `ui.book_close`,
+  `ui.book_page` (changing its filter); the town's building pop-up
+  `ui.popup` and its actions (market, tavern, temple, merchant)
+  `ui.town_action`.
+* Magic and Favor (2026-10-03): `magic.cast` when a battle spell gathers at
+  the commander's corner, then one sound per look family
+  (`packages/presentation/src/fxLooks.ts` `FX_SOUNDS`): `magic.strike`,
+  `magic.thunder`, `magic.fire`, `magic.heal`, `magic.bless`, `magic.curse`,
+  `magic.wind`, `magic.frost`, `magic.nature`, `magic.swarm`, `magic.water`,
+  `magic.shadow`, `magic.holy`, `magic.smite`, `magic.reveal`,
+  `magic.teleport`, `magic.coins`, `magic.horn`. Each spell, miracle, gift and
+  the offering picks its family from its look, so a final sound per family
+  covers all of them; a sound per spell can be added later as a new ID.
 * Combat: `combat.start`, `combat.march`, `combat.flight`, `combat.swing`,
   `combat.hit`, `combat.hit_heavy`, `combat.shot`, `combat.arrow_hit`,
   `combat.death`, `combat.spell`, `combat.heal`, `combat.ward`,

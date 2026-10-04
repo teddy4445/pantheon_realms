@@ -1,0 +1,15 @@
+{
+ "frames": 1,
+ "anchor": [
+  0.5016,
+  0.9116
+ ],
+ "pixelsPerHex": 302.273,
+ "cutFrom": "sheet.map.locations.2.png",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 171.445,
+  "guideWidthFraction": 0.55,
+  "targetWidthHexes": 1.0057142857142858,
+  "alphaWidthPixels": 304
+ }
+}

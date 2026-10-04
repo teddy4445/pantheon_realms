@@ -1,0 +1,18 @@
+{
+ "frames": 3,
+ "fps": 10,
+ "loop": false,
+ "anchor": [
+  0.5,
+  0.8772
+ ],
+ "pixelsPerHex": 146.027,
+ "cutFrom": "sheet.creature.norse.tier1.upgraded.png",
+ "assemblyNote": "First hit recoil holds generated hit frame2 to preserve a complete axe.",
+ "scaleCalibration": {
+  "sourcePixelsPerHex": 97.984,
+  "guideIdleFraction": 0.61,
+  "observedIdleFraction": 0.9091,
+  "worldScaleMultiplier": 0.671
+ }
+}
