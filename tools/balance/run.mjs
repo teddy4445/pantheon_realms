@@ -17,6 +17,7 @@
  *   --out DIR         report folder (default: balance-reports/)
  *   --quick           seeds 4, matches 1
  *   --no-signatures   army/escort/tier duels without pantheon signatures (troops only)
+ *   --no-temperaments skirmish/random matches with every AI empire playing the same (neutral) way
  *   --empires 2,3     empire counts for the random suite (default both)
  *
  * Writes <out>/balance-<timestamp>.md (readable report) and .json (raw results).
@@ -35,7 +36,7 @@ const PANTHEONS = ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamer
 const NAMES = { greek: 'Greek', norse: 'Norse', egyptian: 'Egyptian', japanese: 'Japanese', celtic: 'Celtic', mesoamerican: 'Mesoamerican' };
 
 function parseArgs(argv) {
-  const o = { suites: [], seeds: 12, matches: 3, pantheons: PANTHEONS, maxDay: 40, jobs: Math.min(8, Math.max(1, cpus().length)), out: join(ROOT, 'balance-reports'), signatures: true };
+  const o = { suites: [], seeds: 12, matches: 3, pantheons: PANTHEONS, maxDay: 40, jobs: Math.min(8, Math.max(1, cpus().length)), out: join(ROOT, 'balance-reports'), signatures: true, temperaments: true };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
@@ -47,6 +48,7 @@ function parseArgs(argv) {
     else if (a === '--jobs') o.jobs = Number(next());
     else if (a === '--out') o.out = resolve(next());
     else if (a === '--no-signatures') o.signatures = false;
+    else if (a === '--no-temperaments') o.temperaments = false;
     else if (a === '--empires') o.empires = next().split(',').map(Number);
     else if (a === '--quick') {
       o.seeds = 4;
@@ -64,7 +66,7 @@ function parseArgs(argv) {
 function runShard(opts, shard, shards, outDir) {
   const require = createRequire(import.meta.url);
   const vitest = join(dirname(require.resolve('vitest/package.json')), 'vitest.mjs');
-  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, empires: opts.empires, shard, shards, outDir }) };
+  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, temperaments: opts.temperaments, empires: opts.empires, shard, shards, outDir }) };
   return new Promise((ok, fail) => {
     const child = spawn(process.execPath, [vitest, 'run', '--config', 'tools/balance/vitest.config.ts', 'tools/balance/balance.measure.ts'], { cwd: ROOT, env, stdio: ['ignore', 'pipe', 'pipe'] });
     let err = '';
@@ -105,7 +107,7 @@ function render(opts, results, seconds, contentVersion) {
   const out = [];
   out.push(`# Balance report — ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC`);
   out.push('');
-  out.push(`Content \`${contentVersion}\` · suites: ${opts.suites.join(', ')} · duel seeds ${opts.seeds} per direction · skirmish matches ${opts.matches} per ordered pairing and first-mover order · day cap ${opts.maxDay} · duels ${opts.signatures ? 'with' : 'without'} pantheon signatures · ${opts.jobs} worker(s) · ${(seconds / 60).toFixed(1)} min.`);
+  out.push(`Content \`${contentVersion}\` · suites: ${opts.suites.join(', ')} · duel seeds ${opts.seeds} per direction · skirmish matches ${opts.matches} per ordered pairing and first-mover order · day cap ${opts.maxDay} · duels ${opts.signatures ? 'with' : 'without'} pantheon signatures · AI temperaments ${opts.temperaments ? 'on' : 'off'} · ${opts.jobs} worker(s) · ${(seconds / 60).toFixed(1)} min.`);
   out.push('');
   out.push('All numbers are **AI-vs-AI measurements** with the shipped tactical and strategic AI (both sides the same AI), not playtest verdicts. Scores are the row pantheon\'s win rate against the column pantheon; side-neutral: every duel is fought in both directions and every skirmish pairing is played from both towns with both first movers. ⚠ marks averages outside 0.35–0.65.');
   out.push('');

@@ -24,7 +24,9 @@ test('menu music starts after the first click and every sound file decodes', asy
   // Default levels: master 80%, music 60% (perceptual curve).
   expect(a.busGains.music).toBeCloseTo(0.8 ** 2 * 0.6 ** 2, 3);
   expect(a.recent).toContain('ui.click');
-  // Decode every file in this browser (the director reports any that fail).
+  // Decode every file in this browser (the director reports any that fail); the map playlists'
+  // long tracks are streamed in the game, so they are checked the same way (a media element
+  // reads their length) instead of being decoded whole.
   const failed = await page.evaluate(async () => {
     const m = await (await fetch('./audio/manifest.json')).json();
     const ctx = new AudioContext();
@@ -32,7 +34,18 @@ test('menu music starts after the first click and every sound file decodes', asy
     for (const s of m.sounds)
       for (const f of s.files) {
         try {
-          await ctx.decodeAudioData(await (await fetch(`./${f}`)).arrayBuffer());
+          if (s.playlist) {
+            const el = new Audio();
+            el.preload = 'metadata';
+            const d = await new Promise<number>((ok, fail) => {
+              el.addEventListener('loadedmetadata', () => ok(el.duration));
+              el.addEventListener('error', () => fail(new Error('stream')));
+              el.src = `./${f}`;
+            });
+            if (!(d > 60)) bad.push(`${f} (${d} s)`);
+            el.removeAttribute('src');
+            el.load();
+          } else await ctx.decodeAudioData(await (await fetch(`./${f}`)).arrayBuffer());
         } catch {
           bad.push(f);
         }
@@ -47,7 +60,7 @@ test('Settings: volumes preview live, Mute all silences every bus, leaving resto
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-settings').click();
   await page.getByRole('tab', { name: 'Audio' }).click();
-  await expect(page.getByText(/temporary placeholders/)).toBeVisible();
+  await expect(page.getByTestId('audio-status-note')).toContainText('The map music is final');
   await page.getByLabel('Music volume').fill('100');
   await waitFor(page, (s) => Math.abs((s as unknown as { audio: { busGains: { music: number } } }).audio.busGains.music - 0.64) < 0.01, 'music preview at 100%');
   await page.getByRole('switch', { name: 'Mute all' }).click();
@@ -61,11 +74,14 @@ test('Settings: volumes preview live, Mute all silences every bus, leaving resto
   expect((restored as unknown as { audio: { busGains: { music: number } } }).audio.busGains.music).toBeCloseTo(0.2304, 3);
 });
 
-test('the campaign map plays its soundscape', async ({ page }) => {
+test('the campaign map plays the Greek playlist, streamed, over the mission soundscape’s ambience', async ({ page }) => {
   await startCampaign(page);
   await page.mouse.click(5, 5);
-  const s = await waitFor(page, (x) => (x as unknown as { audio: { music: string | null } }).audio.music === 'music.explore.coast', 'coast music');
-  expect((s as unknown as { audio: { ambience: string } }).audio.ambience).toBe('amb.coast');
+  const s = await waitFor(page, (x) => (x as unknown as { audio: { music: string | null; musicFile: string | null } }).audio.music === 'music.map.greek', 'Greek map music', 30_000);
+  const a = (s as unknown as { audio: { ambience: string; musicFile: string; failed: string[] } }).audio;
+  expect(a.ambience).toBe('amb.coast');
+  expect(a.musicFile).toMatch(/^audio\/music\/greek\/.+\.ogg$/);
+  expect(a.failed.filter((f) => f.startsWith('audio/music/'))).toEqual([]);
 });
 
 test('battle: war horn, battle music, and combat sounds follow the playback', async ({ page }) => {

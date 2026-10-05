@@ -26,6 +26,7 @@ import { resolveAsset } from '../../../packages/ui/src/assets/manifest';
 import { ABILITY_GLYPH } from '../../../packages/ui/src/components/badges';
 import { BRIEFS, EFFECT_VISUAL, MARKERS, STYLE } from './briefs';
 import { GOD_ICONS } from '../briefs/godIcons';
+import { CLIMATE_ICON_DRAW } from '../briefs/climateIcons';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const OUT = join(ROOT, 'assets-source', 'icons');
@@ -288,7 +289,7 @@ it('writes the icon inventory', () => {
     name: set.name,
     group: 'Artifact set',
     where: 'Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia',
-    current: { type: 'procedural', note: 'text only today' },
+    current: artFile(`icon.set.${set.id}`) ?? { type: 'procedural', note: 'text only today' },
     brief: `Emblem for the ${set.name}: the ${set.pieceIds.length} pieces (${set.pieceIds.map((p) => c.artifacts[p]?.name ?? p).join(', ')}) arranged as one badge.`,
     details: `${set.summary} ${set.bonuses.map((b) => b.summary).join('; ')}`,
     priority: 'later' as const,
@@ -335,6 +336,19 @@ it('writes the icon inventory', () => {
   }));
   sections.push({ id: 'god-icons', title: 'God-card icons', intro: 'Price, advantage and choice icons for the god cards (Brief 8 part B). The card layout that uses them is built once they are delivered.', size: '256 × 256 px PNG, transparent (shown at 20–32 px)', rows: godIcons });
 
+  // --- 7c. Climate icons (climate rules, proposed 2026-10-04; GPT6_BRIEF_12): the battle chip and the encounter line
+  const climateIcons: Row[] = Object.values(c.climates ?? {}).map((r) => ({
+    assetId: r.iconAssetId,
+    name: r.name,
+    group: `Climate · ${r.id.replace(/_/g, ' ')}`,
+    where: 'Battle (climate chip in the round box); encounter dialog (the battle’s weather)',
+    current: artFile(r.iconAssetId) ?? { type: 'procedural', note: 'interface glyph stand-in in the chip' },
+    brief: `${r.name}: ${r.summary.replace(/^[^:]*:\s*/, '')} Draw: ${CLIMATE_ICON_DRAW[r.id] ?? 'the weather of this climate'}.`,
+    details: 'Skirmish feature (climate rules); both armies alike',
+    priority: 'now' as const,
+  }));
+  sections.push({ id: 'climate-icons', title: 'Climate icons', intro: 'One icon per climate rule (skirmish feature): the battle chip and the encounter line show it beside the weather’s name. Until delivered the chip shows an interface glyph.', size: '128 × 128 px PNG, transparent (shown at 18–24 px)', rows: climateIcons });
+
   // --- 8. Creature abilities (proposed IDs)
   const abilities: Row[] = Object.values(c.abilities)
     .filter((ab) => ab.implementationStatus === 'implemented')
@@ -343,7 +357,7 @@ it('writes the icon inventory', () => {
       name: ab.name,
       group: `Ability · ${ab.activation}`,
       where: 'Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia',
-      current: { type: 'procedural', note: 'text chip today' },
+      current: artFile(`icon.ability.${ab.id}`) ?? { type: 'procedural', note: 'text chip today' },
       brief: `${ab.name}: ${ab.summary}`,
       details: ab.exactRule,
       priority: 'later' as const,
@@ -387,15 +401,17 @@ it('writes the icon inventory', () => {
   const heroPortraits = new Set(Object.values(c.heroes).map((h) => h.portraitAssetId));
   for (const [id, speaker] of [...speakers].sort()) {
     if (heroPortraits.has(id)) continue;
+    // The dialogue window shows the painted bust when there is one; the square portrait is only its fallback.
+    const bust = resolveAsset(id.replace(/\.portrait$/, '.bust')).url;
     portraits.push({
       assetId: id,
       name: speaker,
       group: 'Story portrait',
-      pantheon: id.split('.')[1] ? pantheonName(c, id.split('.')[1]) : undefined,
-      where: 'Story scenes and briefings (dialogue window)',
-      current: artFile(id) ?? { type: 'procedural', note: 'generated placeholder bust' },
+      pantheon: id.split('.')[1] && c.pantheons[id.split('.')[1]!] ? pantheonName(c, id.split('.')[1]!) : undefined,
+      where: bust ? 'Fallback only: the dialogue window shows the painted bust' : 'Story scenes and briefings (dialogue window)',
+      current: artFile(id) ?? { type: 'procedural', note: bust ? 'painted bust in the dialogue window; generated square stand-in elsewhere' : 'generated placeholder bust' },
       brief: `${speaker} — story character (see the campaign documents).`,
-      priority: 'now' as const,
+      priority: bust ? ('later' as const) : ('now' as const),
     });
   }
   for (const g of Object.values(c.gods)) {

@@ -24,6 +24,8 @@ import { COMING_SOON_CAMPAIGNS, ENTITLEMENTS, TEMPLATES, THREE_BEACONS, THREE_BE
 import { WINTER_OATH, WINTER_OATH_ENTITLEMENTS, WINTER_OATH_MISSIONS, WINTER_OATH_TEMPLATES } from './campaign/winterOath';
 import { ARC_CAMPAIGN_HEROES, buildArcCampaigns } from './campaign/arcCampaigns';
 import { SKIRMISH_KITS, SKIRMISH_MISSIONS, SKIRMISH_SCENARIOS, SKIRMISH_TEMPLATES } from './skirmish/skirmish';
+import { CLIMATE_RULES } from './common/climates';
+import { AI_TEMPERAMENTS } from './common/temperaments';
 import { ARTIFACT_SETS, DIFFICULTIES, DIVINE_GIFTS, EXPANDED_SKILLS, EXPANDED_SPELLS, INTERVENTIONS, MAP_EVENT_TEMPLATES, SET_ARTIFACTS, WEEKLY_EVENTS } from './common/expanded';
 import { ARCANA_ARTIFACTS, ARCANA_SETS, ARCANA_SPELLS, EXISTING_LORE } from './common/arcana';
 import { validateCatalog } from './validation/validators';
@@ -86,6 +88,8 @@ export function buildCatalog(): ContentCatalog {
     difficulties: index(DIFFICULTIES, 'difficulty'),
     interventions: index(INTERVENTIONS, 'intervention'),
     divineGifts: index(DIVINE_GIFTS, 'divine gift'),
+    climates: index(CLIMATE_RULES, 'climate rule'),
+    aiTemperaments: index(AI_TEMPERAMENTS, 'AI temperament'),
     weeklyEvents: index(WEEKLY_EVENTS, 'weekly event'),
     skirmishKits: Object.fromEntries(SKIRMISH_KITS.map((k) => [k.pantheonId, k])),
     mapEventTemplates: index(MAP_EVENT_TEMPLATES, 'map event'),

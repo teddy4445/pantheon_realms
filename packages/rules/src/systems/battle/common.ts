@@ -115,8 +115,27 @@ function aspectMod(catalog: ContentCatalog, stack: BattleStackState, stat: 'atta
   return shapeshiftRule(catalog, stack.creatureId)?.[stat] ?? 0;
 }
 
-/** creature_stat effects of the stack's side that match this creature (tier/ability filters). */
+/** creature_stat effects of the stack's side that match this creature (tier/ability filters), plus the climate's (both sides). */
 function sideStatMod(catalog: ContentCatalog, battle: BattleState | undefined, stack: BattleStackState, stat: 'attack' | 'defense' | 'speed'): number {
+  return sideOnlyStatMod(catalog, battle, stack, stat) + climateStatMod(catalog, battle, stack, stat);
+}
+
+/** The battle climate's creature_stat effects that match this creature (scenario feature `climateRules`). */
+export function climateStatMod(catalog: ContentCatalog, battle: BattleState | undefined, stack: BattleStackState, stat: 'attack' | 'defense' | 'speed'): number {
+  const list = battle?.climate?.creatureStats;
+  if (!list || list.length === 0) return 0;
+  let n = 0;
+  for (const e of list) {
+    if (e.stat !== stat) continue;
+    const rules = abilityRules(catalog, stack.creatureId);
+    if (e.ability !== undefined && !rules.some((r) => r.type === e.ability)) continue;
+    if (e.withoutAbility !== undefined && rules.some((r) => r.type === e.withoutAbility)) continue;
+    n += e.amount;
+  }
+  return n;
+}
+
+function sideOnlyStatMod(catalog: ContentCatalog, battle: BattleState | undefined, stack: BattleStackState, stat: 'attack' | 'defense' | 'speed'): number {
   const fx = battle?.sides[stack.side].effects;
   if (!fx || fx.creatureStats.length === 0) return 0;
   const def = catalog.creatures[stack.creatureId];
@@ -204,15 +223,17 @@ export function canRetaliate(catalog: ContentCatalog, stack: BattleStackState): 
   return allowance === 'unlimited' || stack.retaliationsUsed < allowance;
 }
 
-/** Shooting range in hexes (0 for creatures that do not shoot). */
-export function shootingRange(catalog: ContentCatalog, creatureId: CreatureId): number {
-  return statsOf(catalog, creatureId).range ?? 0;
+/** Shooting range in hexes (0 for creatures that do not shoot); in a battle, with its climate's change (never below 1). */
+export function shootingRange(catalog: ContentCatalog, creatureId: CreatureId, battle?: BattleState): number {
+  const base = statsOf(catalog, creatureId).range ?? 0;
+  const mod = battle?.climate?.rangeMod ?? 0;
+  return base > 0 && mod !== 0 ? Math.max(1, base + mod) : base;
 }
 
-/** Whether a shooter's target lies within its range (nearest cells of the two stacks). */
-export function inShootingRange(catalog: ContentCatalog, shooter: BattleStackState, target: BattleStackState): boolean {
+/** Whether a shooter's target lies within its range (nearest cells of the two stacks; the battle's climate counts). */
+export function inShootingRange(catalog: ContentCatalog, shooter: BattleStackState, target: BattleStackState, battle?: BattleState): boolean {
   const dist = Math.min(...stackCells(catalog, shooter).flatMap((x) => stackCells(catalog, target).map((y) => cellDistance(x, y))));
-  return dist <= shootingRange(catalog, shooter.creatureId);
+  return dist <= shootingRange(catalog, shooter.creatureId, battle);
 }
 
 export function isShooter(catalog: ContentCatalog, creatureId: CreatureId): boolean {

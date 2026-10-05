@@ -1,12 +1,150 @@
 # Development Status
 
-_Last updated: 2026-10-04 · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.5`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
+_Last updated: 2026-10-05 · **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.5`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## Map music, climate rules, AI temperaments, the god commitment, Brief 12 and the visual-completion delivery (owner requests, 2026-10-04)
+
+Five owner requests and one delivery, in the cloud copy and the owner's
+folder (bundle 19, hash-checked; not committed, not yet in a Windows installer).
+
+* **Map music per pantheon (final audio, licensed).** 30 royalty-free tracks
+  from Pixabay under the **Pixabay Content License (no attribution
+  required)**, five per pantheon, downloaded with the owner's approval; only
+  tracks not marked AI-generated and without a YouTube Content ID claim were
+  taken. `tools/audio/import_music.py` converts them (two-pass EBU R128 to
+  −16 LUFS, true peak ≤ −1.5 dBTP, Ogg Vorbis q2, 44.1 kHz stereo) into
+  `assets-runtime/audio/music/<pantheon>/` and registers `music.map.<pantheon>`
+  (status **final**, provenance with each title, author and page; the list is
+  `assets-source/audio/music/tracks.json`). Measured: 157.8 minutes, 104.4 MB
+  (Greek 25.2 min, Norse 26.8, Egyptian 20.4, Japanese 35.5, Celtic 20.1,
+  Mesoamerican 29.7). The adventure map, town and hero screens play the
+  **viewing player's** pantheon playlist: a random first track, then the
+  others in order with a crossfade, streamed through a media element (never
+  decoded whole); a file that fails is skipped, and silence never blocks play.
+  Without an entry the mission's soundscape music plays as before. Battle,
+  menu and the remaining music stay placeholders (Settings says which).
+* **Climate rules (skirmish and random maps only; `climateRules`).** Nine
+  biomes carry a battle climate (`catalog.climates`): Harvest wind (+1 Speed
+  for fliers), Salt spray (shooters −3 range), Scorching sand (−1 Speed
+  without Flight), Icy spray (−1 Defense), Thin air (shooters +2 range, fliers
+  −1 Speed), Dense canopy (shooters −4 range, fliers −1 Speed), Fog (shooters
+  −6 range), Thunderstorm (fliers −2 Speed), Biting cold (−1 Attack). Both
+  armies alike; the encounter dialog names it and the battle shows a chip with
+  the sentence as tooltip. The random-map setup can turn it off. Campaigns
+  keep it off. Icons are interface glyphs until Brief 12 part C is delivered.
+* **AI temperaments (skirmish and random maps only; `aiTemperaments`).** Each
+  AI empire plays its pantheon's way — a change to the AI's choices, never to
+  a rule (`packages/content/src/common/temperaments.ts`,
+  `packages/ai/src/temperament.ts`): Greek **Strategists** (neutral), Norse
+  **Raiders** (attacks at a lower strength margin, values rival heroes, towns
+  and mines 1.3×, one extra hero, favours military buildings), Egyptian
+  **Builders** (economy and defense buildings first, attacks later), Japanese
+  **Disciplined** (elite dwellings first), Celtic **Mystics** (Mage Guild
+  first, a little more weight on casters and magic skills), Mesoamerican
+  **Devout** (keeps making Temple offerings from garrisons once its gods are
+  chosen). The setup names the rival's temperament; the random-map setup lists
+  one per AI seat and has a "Pantheon temperaments" switch. The Three Beacons
+  stays neutral (checked by a unit test). Values are proposals, tuned by
+  AI-vs-AI runs, not playtested.
+* **The god commitment.** The confirmation dialog shows the god's blessing and
+  price icon rows (each token keeps its sentence as tooltip and screen-reader
+  text) and the gods the choice shuts out; the patron panel carries its role
+  and permanence icons. When the command succeeds the card glows, rays turn
+  behind the portrait and a seal lands on it (about 1.5 s, once, after the
+  rule result; nothing under reduced motion). The burst is the Anointing
+  gift's strip until `fx.god.commit` is delivered (Brief 12 part F).
+* **GPT-6 Brief 12 — every visual still missing**
+  (`assets-source/art/briefs/GPT6_BRIEF_12_REMAINING_VISUALS.md`,
+  `npm run art:brief12`, generated from the game): A 84 creature dwellings
+  (34 of today's crops show a different building), B 42 town services, C 9
+  climate icons, D 8 random-map site markers, E 6 sharper town backgrounds
+  (optional), F the commitment effect (optional) — 14 sheets, 143 cells, with
+  cut layouts in `assets-source/sprites/sheet-layouts.brief12.json` and town
+  layout guides (`assets-source/art/briefs/guides/town.<pantheon>.layout.png`)
+  that outline every plot. It takes this round's delivery into account (the
+  Workshop treasures, set emblems, ability badges, the Herald and the twelve
+  paintings are listed as delivered).
+* **The visual-completion delivery** (`visual-completion-2026-10-04`): 33
+  icons (9 Workshop treasures, 14 creature-ability badges, 10 artifact-set
+  emblems) → `assets-source/icons/final` and `npm run icons:import -- --new`
+  (only the 33 new files and manifest entries; every other icon byte-identical
+  to the owner's); the Herald's bust → `assets-source/art/final` and
+  `npm run art:import` (`assets-runtime/art/busts/story.herald.bust.webp`,
+  768 × 1152, kind `bust`, alphaBox [0.036, 0.011, 0.967, 1.0]; the content
+  keeps `story.herald.portrait` as fallback; the importer's self-test now
+  recognises the name, 12/12); the twelve quieter opening paintings →
+  `assets-source/ui/backgrounds` and `prepare_ui_art.py` (12 WebP and 12
+  manifest entries, one new: `menu.background.mesoamerican-battle`; branding,
+  cursors and icons unchanged; the eleven old paintings stay archived in
+  `backgrounds-old` and are not imported). No rule, balance, save or existing
+  asset ID changed; no runtime code refers to the delivery folder.
+* **Importer fixes.** `art:import` used to delete runtime art whose master was
+  not in the checkout (54 battlefield files in the cloud copy; restored from
+  the owner's folder before anything was delivered): it now keeps them unless
+  `-- --prune`. `icons:import` re-encodes and re-dates every icon; `-- --new`
+  imports only icons not yet registered.
+
+**Measured AI-vs-AI skirmish win rates** (Twin Harbors, both sides AI, average
+against the other five; ⚠ band 0.35–0.65):
+
+| Pantheon | Temperaments on (288 matches) | Off (216 matches) |
+|---|---|---|
+| Greek | 0.44 | 0.49 |
+| Norse | 0.45 | 0.40 |
+| Egyptian | 0.47 | 0.55 |
+| Japanese | 0.47 | 0.46 |
+| Celtic | 0.63 | 0.63 |
+| Mesoamerican | 0.54 | 0.47 |
+
+With temperaments on: west town 0.45, first mover 0.47. The first tuning made
+Celtic 0.73–0.78 and Mesoamerican 0.22–0.31; ablations traced these to the
+magic-skill weight and to building the Temple early, which were cut back
+(final: Mystics' magic weight 1.1; Devout's faith weight 1.25, which only
+tips close build choices).
+Celtic stays at the band's edge with temperaments off too (an existing
+imbalance, not this round's).
+
+**Code changes:** rules definitions (`AITemperamentDefinition`,
+`ScenarioFeatures.aiTemperaments`, `catalog.aiTemperaments`; climates in the
+battle setup), content (`climates.ts`, `temperaments.ts`, validators,
+feature defaults), mapgen option, AI (`temperament.ts`, `strategic.ts`,
+`services.ts`, `growth.ts`), audio (`playlist` entries, streamed playlists in
+`director.ts`), UI (`sounds.ts`, `gameAudio.ts`, Settings note,
+`components/temperament.tsx`, Setup, RandomSetup, Pantheon commit dialog and
+moment, ClimateChip, styles), tools (`import_music.py`,
+`make_placeholders.py` keeps final entries, `import_story_art.py`,
+`import_icons.py --new`, `prepare_ui_art.py` provenance, `brief12.measure.ts`,
+`town_guides.py`, `inventory.measure.ts`, balance `--no-temperaments`). New
+tests: `ai/test/temperament.test.ts` (8), audio playlist tests, the pantheon
+music test, `round19.spec.ts` (4), `round19b.spec.ts` (4); `audio.spec.ts`
+now expects `music.map.greek` on the campaign map.
+
+| Command | Result |
+|---|---|
+| `npm run check` | boundaries + type-check OK; 40 files / 365 tests passed |
+| `npm run build` | OK; start-up script 2,008.34 KB / 466.70 KB gzip (before: 1,976.57 / 459.42 — the manifests grew); `dist` 363 MB (the music is 104 MB of it) |
+| `node tools/perf/load-time.mjs` | local: menu 219 ms, first scene 960 ms; web profile: menu 440 ms, first scene 1,009 ms (before: 194 / 910 and 448 / 1,153) |
+| `npm run balance -- skirmish --matches 4 --jobs 2` / `npm run balance -- skirmish random --matches 3 --jobs 2 --no-temperaments` (reports in a scratch folder, not kept in the repository) | the table above (2.5 and 5.4 min) |
+| `npx playwright test tests/e2e/round19.spec.ts tests/e2e/round19b.spec.ts` | 8 passed: fog on the moor (encounter line, battle chip, range −6), temperaments in both setups and the switch, the commit dialog and moment (none under reduced motion), the nine treasures and set badges (active and inactive) on the hero screen, the ability badges with their names (retaliation and the four shapeshift forms are eight different pictures), the Herald's bust in the Eastharbor briefing (768 px wide), and over each of the 12 paintings at 1280 × 720 (the desktop window's minimum) and 1280 × 800: the logo, the four menu buttons, Continue disabled with its reason, New Game focused, Load hovered; no drift under reduced motion |
+| Playwright, every spec (`--grep-invert zz-`, 102 tests) | 100 passed, 2 failed in 40.9 min — both in `round19b.spec.ts` and test-side: the hero-screen icons and the Herald's bust were read before the busy machine had decoded them (`complete` false, `naturalWidth` 0). The checks now wait for the pictures (up to 15 s), and the menu check also asserts the disabled Continue and New Game's keyboard focus; `round19b.spec.ts` re-run: 4 / 4 passed (4.0 min) |
+| `python3 tools/assets/import_story_art.py --self-test` | 12 / 12 |
+| `npm run desktop:build` + `npx electron-builder --config electron-builder.json --linux dir --x64` (no Windows installer this round) | OK; `app.asar` 373.5 MB, 3,225 entries: the 30 music files, the Herald's bust, the 12 paintings (with `opening-mesoamerican-battle.webp`), the 33 new icons and both manifests, byte-equal to `assets-runtime` (six spot-checked by hash); no `assets-source`, tools, MCP servers, Playwright or source maps |
+| Packaged offline smoke (`unshare -n`, loopback only; `PR_SMOKE_EXE=…/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs`) | DESKTOP SMOKE OK: map on WebGL, saves and records written, 1,218 sprite files, 382 painted pictures, 532 interface images, 92 sounds (86 + the six map playlists), packaged without DevTools |
+
+Known limits: I chose the tracks from their pages and measured them; I did not
+listen to them, so three of them picked for variety (Temple of the Heights,
+Herr Mannelig, Spirit Tribe) may be livelier than the rest — remove a track by
+deleting its line in `tracks.json` and running
+`import_music.py --register-only`. The music adds about 104 MB to the
+installer. The menu paintings were checked in SwiftShader screenshots (all 24 looked
+at), not by a person on a real screen. The climate icons, site markers and the
+commitment strip are stand-ins until Brief 12 is delivered.
 
 ## Gods, heroes, town levels and map-hero animations in the game (owner delivery of briefs 8–11, 2026-10-04)
 

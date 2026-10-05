@@ -16,6 +16,7 @@ import { reject, type Tx } from '../../engine/tx';
 import { applyDefenderSelection, autoDefenderPicks, deploymentZone, finishSetup, placeStacks, type DeployEntry } from './deployment';
 import { buildSiege, townFortificationLevel } from './siege';
 import { battleSideEffects } from '../../resolvers/effects';
+import { battleClimate } from './climate';
 import { scenarioMission } from '../../resolvers/scenario';
 
 export interface EncounterRequest {
@@ -266,6 +267,8 @@ export function startBattle(tx: Tx, req: EncounterRequest): BattleState {
     activeIsBonus: false,
     status: 'active',
     layoutSeed: tx.state.rng.layout,
+    // The map climate's rule for both sides (scenario feature climateRules), fixed for this battle.
+    climate: battleClimate(tx.catalog, tx.state),
   };
   if (siegeTown) {
     // Sieges use the fixed wall layout and no random obstacles.

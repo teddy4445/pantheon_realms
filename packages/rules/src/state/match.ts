@@ -492,6 +492,19 @@ export interface BattleState {
   status: 'active' | 'ended';
   /** Encounter-specific seed label for the tactical layout stream (not the combat stream). */
   layoutSeed: number;
+  /** The map climate's battle rule for both sides (scenario feature `climateRules`); absent or null = none. */
+  climate?: BattleClimateState | null;
+}
+
+/** A climate's battle rule as it was when the battle began (saved with the battle). */
+export interface BattleClimateState {
+  /** The biome / climate rule ID. */
+  id: string;
+  name: string;
+  summary: string;
+  creatureStats: { stat: 'attack' | 'defense' | 'speed'; amount: number; ability?: string; withoutAbility?: string }[];
+  /** Added to every shooter's range (never below 1). */
+  rangeMod: number;
 }
 
 export interface BattleCasualtyLine {

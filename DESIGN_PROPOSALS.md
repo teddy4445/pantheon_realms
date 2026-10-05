@@ -1020,3 +1020,92 @@ pantheons (historical or legendary figures, dignified; see the content's
 2. Neutrals: with joining rarer, should the join price drop?
 3. Six empires: the Huge map gives each empire about the land of a Large
    four-empire map; is that enough room?
+
+## Group 1.0 — owner requests of 2026-10-04 (evening; proposed values)
+
+The owner asked for climates that matter, rivals that play differently by
+pantheon, more use of the god-card icons, and map music per pantheon. The
+values below are proposed and unplaytested; the AI-vs-AI measurements are in
+DEVELOPMENT_STATUS.md.
+
+### 38. Climate rules (scenario feature `climateRules`)
+
+One small battle rule per map climate, the same for both armies
+(`content/src/common/climates.ts`, effect types `creature_stat` and
+`shooting_range`; the battle keeps its own copy of the rule, so a save keeps
+the battle it began):
+
+| Climate | Weather | Rule |
+|---|---|---|
+| autumn | Harvest wind | flyers +1 Speed |
+| coast | Salt spray | shooting range −3 |
+| desert | Scorching sand | creatures without Flight −1 Speed |
+| fjord | Icy spray | every creature −1 Defense |
+| high_pass | Thin air | shooting range +2; flyers −1 Speed |
+| jungle | Dense canopy | shooting range −4; flyers −1 Speed |
+| moor | Fog | shooting range −6 |
+| storm_plateau | Thunderstorm | flyers −2 Speed |
+| tundra | Biting cold | every creature −1 Attack |
+
+Temperate maps have none. On in skirmishes and random maps (a switch in the
+random-map setup), off in The Three Beacons and the campaigns. The encounter
+dialog names the weather and the battle shows a chip with it (icons ordered in
+Brief 12). A shooter's range never falls below 1.
+
+### 39. Pantheon temperaments for AI rivals (scenario feature `aiTemperaments`)
+
+Each pantheon's AI rival plays in its own way (`content/src/common/temperaments.ts`,
+`ai/src/temperament.ts`). A temperament changes only the AI's choices — never
+a rule, price or statistic — and the difficulty still sets the strength
+margins, which the temperament scales (never below 1: the AI never attacks an
+army it judges stronger).
+
+| Pantheon | Temperament | What changes |
+|---|---|---|
+| Greek | Strategists | nothing (the neutral reference) |
+| Norse | Raiders | margins ×0.88, rival heroes, towns and mines worth ×1.3, one extra hero, troops ×1.25 and comforts ×0.9 in the build order, magic ×0.85 |
+| Egyptian | Builders | margins ×1.12, raiding ×0.85, economy and walls ×1.4 in the build order |
+| Japanese | Disciplined | dwelling upgrades and the Training Academy ×1.5 in the build order |
+| Celtic | Mystics | the Mage Guild ×1.35 in the build order; magic skills and spellcasters ×1.1 |
+| Mesoamerican | Devout | once its gods are chosen it keeps offering garrison creatures (never a hero's army) up to 15 Favor for miracles and gifts; the Temple ×1.25 in the build order (it only tips close choices: an early Temple measured 0.29 for the Mesoamericans) |
+
+A favoured kind of building also gains a fixed bonus (1,500 per point of
+weight above 1), so a preference shows even for buildings the base score values
+little (walls, Temple). On in skirmishes and random maps (a switch in the
+random-map setup), off in the campaigns. The setup screens name the rival's
+temperament. First tuning (2026-10-04): stronger Mystics (magic skills ×1.5)
+and Devout (offerings from heroes too, Temple ×1.6, raiding ×1.1) moved the
+Twin Harbors averages to Celtic 0.73–0.78 and Mesoamerican 0.22–0.31; the
+values above are the softened ones. Ablations (Greek, Celtic, Mesoamerican, 6
+matches per pairing) traced the Celtic jump to the magic weight on skills and
+hiring (×1.3: Celtic 0.83) rather than the Mage Guild (Celtic 0.61), and the
+Mesoamerican drop to the early Temple (×1.4: 0.24–0.29) rather than the
+offerings (0.46).
+
+### 40. God commitment
+
+The commitment dialog shows the god with its icon rows (blessings, price) and
+the gods of the same choice it shuts out for good; the patron panel and the
+committed list carry the role icons. When the commitment is made, the god's
+card shows a short moment (rays, the Anointing burst, the committed seal;
+1.7 s, none under Reduce motion); a dedicated `fx.god.commit` strip replaces
+the burst when delivered (Brief 12).
+
+### 41. Map music per pantheon
+
+On the adventure map, town and hero screens the viewing player's pantheon
+plays its own playlist (`music.map.<pantheon>`): five long royalty-free tracks
+per pantheon (Pixabay Content License, no attribution required; chosen from
+tracks that are neither AI-generated nor registered with YouTube Content ID),
+streamed one after another with a crossfade instead of decoded whole. The
+mission's soundscape keeps its ambience; battles and menus keep their music.
+Without a playlist the map falls back to the soundscape music.
+
+### Open questions for the owner (group 1.0)
+
+1. Climate rules in campaigns: should a campaign mission opt in (fog in a
+   moor mission, sand in the desert campaign)?
+2. Temperaments in campaigns: should campaign rivals get their pantheon's
+   temperament too?
+3. Music: keep five tracks per pantheon, or trim the two 16-minute meditations
+   (Japanese, Mesoamerican) to save about 20 MB?

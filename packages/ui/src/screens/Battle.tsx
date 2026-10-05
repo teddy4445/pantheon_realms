@@ -54,6 +54,7 @@ import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from
 import { cellPoint, miracleLook, spellLook, statusOverlays } from '@pr/presentation/core';
 import { Button, Chip, Panel, Bar, Modal } from '../components/kit';
 import { CreaturePortrait, HeroPortrait } from '../components/art';
+import { ClimateChip } from '../components/climate';
 import { Icon } from '../assets/icons';
 import { MiracleBook, type MiracleOption } from '../components/miraclebook';
 
@@ -432,7 +433,7 @@ export function BattleScreen() {
       if (hb.attackFrom) act({ kind: 'BattleMelee', stackId: legal.stackId, targetId: occ.id, from: hb.attackFrom });
       else {
         const me = b?.stacks[legal.stackId];
-        const range = me ? shootingRange(catalog, me.creatureId) : 0;
+        const range = me ? shootingRange(catalog, me.creatureId, b ?? undefined) : 0;
         const outOfRange = !!me && range > 0 && me.shotsRemaining > 0 && legal.shootBlockedReason === null;
         store.toast(outOfRange ? `Out of range: ${stackDistance(catalog, me!, occ)} hexes away (range ${range})` : (legal.shootBlockedReason ?? 'That enemy cannot be reached this turn'), 'error');
       }
@@ -622,6 +623,7 @@ export function BattleScreen() {
           <div className="battle-round__label">{battle.phase === 'deployment' ? 'Deployment' : battle.phase === 'selection' ? 'Defenders' : 'Round'}</div>
           <div className="battle-round__n num">{battle.round || '—'}</div>
           <div className="faint small">{battle.phase === 'waiting' ? 'Waiting phase' : battle.encounter.label}</div>
+          {battle.climate ? <ClimateChip climate={battle.climate} /> : null}
         </div>
         <div className="battle-side battle-side--def" style={{ ['--side' as string]: def.color }}>
           {commanderPortrait(def.side)}

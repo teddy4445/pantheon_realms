@@ -1629,10 +1629,14 @@ def main():
         if s.pitch_jitter:
             e['pitchJitterCents'] = s.pitch_jitter
         entries.append(e)
+    # Final audio (e.g. the map music of tools/audio/import_music.py) keeps its entries (2026-10-04).
+    previous = json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else {'sounds': []}
+    finals = {e['id']: e for e in previous.get('sounds', []) if e.get('status') == 'final'}
+    entries = [finals.pop(e['id'], e) for e in entries] + list(finals.values())
     manifest = {
         'schema': 'pantheon-realms-sound-manifest',
         'schemaVersion': 1,
-        'note': 'All sounds are temporary placeholders synthesized by tools/audio/make_placeholders.py. Replace a file (same path) or change its entry to use final audio; set status to "final".',
+        'note': 'Sound IDs -> files. The placeholders are synthesized by tools/audio/make_placeholders.py (status "placeholder"); final audio (status "final", e.g. the map music of tools/audio/import_music.py) keeps its entries when the placeholders are regenerated.',
         'sounds': entries,
     }
     with open(MANIFEST, 'w') as f:

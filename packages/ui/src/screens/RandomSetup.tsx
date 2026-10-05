@@ -36,6 +36,7 @@ import { Button, Panel, SectionTitle, Segmented, TextInput, Toggle } from '../co
 import { Emblem } from '../components/art';
 import { ScreenHeader } from '../components/game';
 import { DifficultyPicker } from './Setup';
+import { TemperamentNote } from '../components/temperament';
 
 const SEAT_COLORS = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b', '#8a4fc2', '#1f9fa6'];
 const MAX_SEATS = SKIRMISH_MAX_EMPIRES;
@@ -79,6 +80,8 @@ export function RandomSetupScreen() {
   const [roads, setRoads] = useState<RoadDensity>('full');
   const [revealMap, setRevealMap] = useState(false);
   const [portals, setPortals] = useState(true);
+  const [climateRules, setClimateRules] = useState(true);
+  const [aiTemperaments, setAiTemperaments] = useState(true);
   const [rotating, setRotating] = useState(true);
   const [difficulty, setDifficulty] = useState('normal');
   const [seats, setSeats] = useState<SeatDraft[]>(() =>
@@ -106,6 +109,8 @@ export function RandomSetupScreen() {
     roads,
     revealMap,
     portals,
+    climateRules,
+    aiTemperaments,
     ...(turnOrder ? { turnOrder } : {}),
   };
   const optionsKey = JSON.stringify(options);
@@ -257,6 +262,10 @@ export function RandomSetupScreen() {
                   <Toggle checked={portals} onChange={setPortals} label="Two-way portals" />
                   <span className="small">Two-way portals link the empires’ outer lands: a shortcut to a rival — and a back door for them.</span>
                 </div>
+                <div className="row gap setting-block__details">
+                  <Toggle checked={climateRules} onChange={setClimateRules} label="Climate rules" />
+                  <span className="small">Climate rules — the map’s weather changes every battle a little, for both sides alike: fog shortens shots, sand slows the ground troops, storms keep flyers low.</span>
+                </div>
               </div>
             </div>
 
@@ -325,6 +334,15 @@ export function RandomSetupScreen() {
                 </div>
               ) : null}
               {anyAi ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : null}
+              {anyAi ? (
+                <div className="setting-block">
+                  <div className="setting-block__label">AI rivals</div>
+                  <div className="row gap">
+                    <Toggle checked={aiTemperaments} onChange={setAiTemperaments} label="Pantheon temperaments" />
+                    <span className="small">Pantheon temperaments — each AI empire plays in its pantheon’s way: Norse raid, Egyptians build, Celts study magic. Only the AI’s choices change, never a rule.</span>
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             <SectionTitle>Empires</SectionTitle>
@@ -367,7 +385,15 @@ export function RandomSetupScreen() {
                           </select>
                         </div>
                       ) : (
-                        <div className="small dim">AI empire · no patron (as in other skirmishes)</div>
+                        <div className="small dim">
+                          AI empire · no patron (as in other skirmishes)
+                          {aiTemperaments ? (
+                            <>
+                              {' · '}
+                              <TemperamentNote catalog={catalog} pantheonId={s.pantheonId} testId={`seat-${i}-temperament`} />
+                            </>
+                          ) : null}
+                        </div>
                       )}
                     </div>
                   </div>

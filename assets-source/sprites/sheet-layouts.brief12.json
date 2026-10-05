@@ -1,0 +1,1260 @@
+{
+ "schema": "pantheon-realms-sheets-1",
+ "generated": "2026-10-04",
+ "note": "Written by npm run art:brief12 (GPT6_BRIEF_12); read by npm run sprites:cut with sheet-layouts.json. Rows and columns count from 0.",
+ "sheets": {
+  "sheet.town.greek.dwellings": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.greek.dwelling.tier1.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier1.base.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.greek.dwelling.tier1.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier1.upgraded.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.greek.dwelling.tier2.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier2.base.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.greek.dwelling.tier2.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier2.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.greek.dwelling.tier3.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier3.base.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.greek.dwelling.tier3.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier3.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.greek.dwelling.tier4.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier4.base.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "town.greek.dwelling.tier4.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier4.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.greek.dwelling.tier5.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier5.base.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.greek.dwelling.tier5.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier5.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.greek.dwelling.tier6.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier6.base.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "town.greek.dwelling.tier6.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier6.upgraded.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.greek.dwelling.tier7.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier7.base.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.greek.dwelling.tier7.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.dwelling.tier7.upgraded.png"
+    }
+   ],
+   "file": "sheet.town.greek.dwellings.png"
+  },
+  "sheet.town.norse.dwellings": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.norse.dwelling.tier1.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier1.base.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.norse.dwelling.tier1.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier1.upgraded.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.norse.dwelling.tier2.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier2.base.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.norse.dwelling.tier2.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier2.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.norse.dwelling.tier3.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier3.base.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.norse.dwelling.tier3.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier3.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.norse.dwelling.tier4.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier4.base.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "town.norse.dwelling.tier4.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier4.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.norse.dwelling.tier5.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier5.base.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.norse.dwelling.tier5.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier5.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.norse.dwelling.tier6.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier6.base.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "town.norse.dwelling.tier6.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier6.upgraded.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.norse.dwelling.tier7.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier7.base.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.norse.dwelling.tier7.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.dwelling.tier7.upgraded.png"
+    }
+   ],
+   "file": "sheet.town.norse.dwellings.png"
+  },
+  "sheet.town.egyptian.dwellings": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.egyptian.dwelling.tier1.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier1.base.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.egyptian.dwelling.tier1.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier1.upgraded.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.egyptian.dwelling.tier2.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier2.base.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.egyptian.dwelling.tier2.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier2.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.egyptian.dwelling.tier3.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier3.base.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.egyptian.dwelling.tier3.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier3.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.egyptian.dwelling.tier4.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier4.base.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "town.egyptian.dwelling.tier4.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier4.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.egyptian.dwelling.tier5.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier5.base.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.egyptian.dwelling.tier5.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier5.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.egyptian.dwelling.tier6.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier6.base.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "town.egyptian.dwelling.tier6.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier6.upgraded.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.egyptian.dwelling.tier7.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier7.base.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.egyptian.dwelling.tier7.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.dwelling.tier7.upgraded.png"
+    }
+   ],
+   "file": "sheet.town.egyptian.dwellings.png"
+  },
+  "sheet.town.japanese.dwellings": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.japanese.dwelling.tier1.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier1.base.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.japanese.dwelling.tier1.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier1.upgraded.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.japanese.dwelling.tier2.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier2.base.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.japanese.dwelling.tier2.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier2.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.japanese.dwelling.tier3.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier3.base.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.japanese.dwelling.tier3.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier3.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.japanese.dwelling.tier4.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier4.base.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "town.japanese.dwelling.tier4.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier4.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.japanese.dwelling.tier5.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier5.base.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.japanese.dwelling.tier5.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier5.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.japanese.dwelling.tier6.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier6.base.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "town.japanese.dwelling.tier6.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier6.upgraded.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.japanese.dwelling.tier7.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier7.base.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.japanese.dwelling.tier7.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.dwelling.tier7.upgraded.png"
+    }
+   ],
+   "file": "sheet.town.japanese.dwellings.png"
+  },
+  "sheet.town.celtic.dwellings": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.celtic.dwelling.tier1.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier1.base.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.celtic.dwelling.tier1.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier1.upgraded.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.celtic.dwelling.tier2.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier2.base.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.celtic.dwelling.tier2.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier2.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.celtic.dwelling.tier3.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier3.base.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.celtic.dwelling.tier3.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier3.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.celtic.dwelling.tier4.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier4.base.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "town.celtic.dwelling.tier4.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier4.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.celtic.dwelling.tier5.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier5.base.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.celtic.dwelling.tier5.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier5.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.celtic.dwelling.tier6.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier6.base.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "town.celtic.dwelling.tier6.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier6.upgraded.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.celtic.dwelling.tier7.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier7.base.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.celtic.dwelling.tier7.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.dwelling.tier7.upgraded.png"
+    }
+   ],
+   "file": "sheet.town.celtic.dwellings.png"
+  },
+  "sheet.town.mesoamerican.dwellings": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 4,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    1536
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.mesoamerican.dwelling.tier1.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier1.base.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.mesoamerican.dwelling.tier1.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier1.upgraded.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.mesoamerican.dwelling.tier2.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier2.base.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.mesoamerican.dwelling.tier2.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier2.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.mesoamerican.dwelling.tier3.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier3.base.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.mesoamerican.dwelling.tier3.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier3.upgraded.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.mesoamerican.dwelling.tier4.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier4.base.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "town.mesoamerican.dwelling.tier4.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier4.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "town.mesoamerican.dwelling.tier5.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier5.base.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "town.mesoamerican.dwelling.tier5.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier5.upgraded.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "town.mesoamerican.dwelling.tier6.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier6.base.png"
+    },
+    {
+     "row": 2,
+     "col": 3,
+     "name": "town.mesoamerican.dwelling.tier6.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier6.upgraded.png"
+    },
+    {
+     "row": 3,
+     "col": 0,
+     "name": "town.mesoamerican.dwelling.tier7.base",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier7.base.png"
+    },
+    {
+     "row": 3,
+     "col": 1,
+     "name": "town.mesoamerican.dwelling.tier7.upgraded",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.dwelling.tier7.upgraded.png"
+    }
+   ],
+   "file": "sheet.town.mesoamerican.dwellings.png"
+  },
+  "sheet.town.greek.services": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    768
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.greek.support.tavern.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.tavern.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.greek.support.marketplace.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.marketplace.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.greek.support.resource_depot.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.resource_depot.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.greek.support.workshop.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.workshop.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.greek.support.training_academy.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.training_academy.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.greek.support.watchtower.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.watchtower.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.greek.support.artifact_merchant.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.greek.support.artifact_merchant.l1.png"
+    }
+   ],
+   "file": "sheet.town.greek.services.png"
+  },
+  "sheet.town.norse.services": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    768
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.norse.support.tavern.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.tavern.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.norse.support.marketplace.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.marketplace.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.norse.support.resource_depot.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.resource_depot.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.norse.support.workshop.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.workshop.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.norse.support.training_academy.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.training_academy.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.norse.support.watchtower.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.watchtower.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.norse.support.artifact_merchant.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.norse.support.artifact_merchant.l1.png"
+    }
+   ],
+   "file": "sheet.town.norse.services.png"
+  },
+  "sheet.town.egyptian.services": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    768
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.egyptian.support.tavern.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.tavern.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.egyptian.support.marketplace.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.marketplace.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.egyptian.support.resource_depot.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.resource_depot.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.egyptian.support.workshop.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.workshop.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.egyptian.support.training_academy.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.training_academy.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.egyptian.support.watchtower.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.watchtower.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.egyptian.support.artifact_merchant.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.egyptian.support.artifact_merchant.l1.png"
+    }
+   ],
+   "file": "sheet.town.egyptian.services.png"
+  },
+  "sheet.town.japanese.services": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    768
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.japanese.support.tavern.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.tavern.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.japanese.support.marketplace.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.marketplace.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.japanese.support.resource_depot.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.resource_depot.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.japanese.support.workshop.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.workshop.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.japanese.support.training_academy.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.training_academy.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.japanese.support.watchtower.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.watchtower.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.japanese.support.artifact_merchant.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.japanese.support.artifact_merchant.l1.png"
+    }
+   ],
+   "file": "sheet.town.japanese.services.png"
+  },
+  "sheet.town.celtic.services": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    768
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.celtic.support.tavern.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.tavern.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.celtic.support.marketplace.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.marketplace.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.celtic.support.resource_depot.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.resource_depot.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.celtic.support.workshop.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.workshop.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.celtic.support.training_academy.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.training_academy.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.celtic.support.watchtower.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.watchtower.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.celtic.support.artifact_merchant.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.celtic.support.artifact_merchant.l1.png"
+    }
+   ],
+   "file": "sheet.town.celtic.services.png"
+  },
+  "sheet.town.mesoamerican.services": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1536,
+    768
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "town.mesoamerican.support.tavern.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.tavern.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "town.mesoamerican.support.marketplace.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.marketplace.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "town.mesoamerican.support.resource_depot.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.resource_depot.l1.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "town.mesoamerican.support.workshop.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.workshop.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "town.mesoamerican.support.training_academy.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.training_academy.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "town.mesoamerican.support.watchtower.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.watchtower.l1.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "town.mesoamerican.support.artifact_merchant.l1",
+     "kind": "figure",
+     "out": "assets-source/art/final/town.mesoamerican.support.artifact_merchant.l1.png"
+    }
+   ],
+   "file": "sheet.town.mesoamerican.services.png"
+  },
+  "sheet.icons.climate": {
+   "group": "G12",
+   "target": "items",
+   "cols": 3,
+   "rows": 3,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    768,
+    768
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "icon.climate.autumn",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.autumn.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "icon.climate.coast",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.coast.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "icon.climate.desert",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.desert.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "icon.climate.fjord",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.fjord.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "icon.climate.high_pass",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.high_pass.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "icon.climate.jungle",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.jungle.png"
+    },
+    {
+     "row": 2,
+     "col": 0,
+     "name": "icon.climate.moor",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.moor.png"
+    },
+    {
+     "row": 2,
+     "col": 1,
+     "name": "icon.climate.storm_plateau",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.storm_plateau.png"
+    },
+    {
+     "row": 2,
+     "col": 2,
+     "name": "icon.climate.tundra",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.climate.tundra.png"
+    }
+   ],
+   "file": "sheet.icons.climate.png"
+  },
+  "sheet.icons.sitemarkers": {
+   "group": "G12",
+   "target": "items",
+   "cols": 4,
+   "rows": 2,
+   "cellHexes": [
+    1,
+    1
+   ],
+   "size": [
+    1024,
+    512
+   ],
+   "background": "transparent",
+   "cells": [
+    {
+     "row": 0,
+     "col": 0,
+     "name": "icon.marker.learning-stone",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.learning-stone.png"
+    },
+    {
+     "row": 0,
+     "col": 1,
+     "name": "icon.marker.spell-shrine",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.spell-shrine.png"
+    },
+    {
+     "row": 0,
+     "col": 2,
+     "name": "icon.marker.skill-trainer",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.skill-trainer.png"
+    },
+    {
+     "row": 0,
+     "col": 3,
+     "name": "icon.marker.quest-hut",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.quest-hut.png"
+    },
+    {
+     "row": 1,
+     "col": 0,
+     "name": "icon.marker.key-tent",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.key-tent.png"
+    },
+    {
+     "row": 1,
+     "col": 1,
+     "name": "icon.marker.key-gate",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.key-gate.png"
+    },
+    {
+     "row": 1,
+     "col": 2,
+     "name": "icon.marker.windmill",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.windmill.png"
+    },
+    {
+     "row": 1,
+     "col": 3,
+     "name": "icon.marker.prison",
+     "kind": "figure",
+     "out": "assets-source/icons/final/icon.marker.prison.png"
+    }
+   ],
+   "file": "sheet.icons.sitemarkers.png"
+  }
+ }
+}

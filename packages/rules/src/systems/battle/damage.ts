@@ -101,7 +101,7 @@ export function strikeFactors(
   }
   if (ctx.mode === 'shot') {
     const dist = stackDistance(catalog, attacker, target);
-    const range = shootingRange(catalog, attacker.creatureId);
+    const range = shootingRange(catalog, attacker.creatureId, battle);
     if (dist * 2 > range) {
       multipliers.push([combat.longRangeFactor.numerator, combat.longRangeFactor.denominator]);
       notes.push(`Far half of range ${range} (x${combat.longRangeFactor.numerator}/${combat.longRangeFactor.denominator})`);

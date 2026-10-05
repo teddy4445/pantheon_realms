@@ -878,6 +878,18 @@
     1.0
    ]
   },
+  "story.herald.bust": {
+   "file": "art/busts/story.herald.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0361,
+    0.0111,
+    0.9668,
+    1.0
+   ]
+  },
   "intervention.blessing_of_the_nile.card": {
    "file": "art/miracles/intervention.blessing_of_the_nile.card.webp",
    "kind": "miracle",

@@ -8,6 +8,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   abilityRules,
+  climateRuleFor,
   quoteNeutralReaction,
   armyStacks,
   campaignEpilogueLines,
@@ -30,6 +31,7 @@ import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle } from '../components/kit';
 import { ArtifactIcon, CreaturePortrait, HeroPortrait, MissionThumb, SceneArt, briefingArt, speakerSides } from '../components/art';
+import { ClimateChip } from '../components/climate';
 import { DialogueStage, useProtagonist } from './Story';
 import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { Icon } from '../assets/icons';
@@ -306,6 +308,7 @@ function ConfirmDialog({ o }: { o: Extract<Overlay, { kind: 'confirm' }> }) {
       }
     >
       <p>{o.body}</p>
+      {o.content ?? null}
       {o.detail?.length ? (
         <ul className="bullets small">
           {o.detail.map((d) => (
@@ -703,6 +706,8 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
   const reward = site?.guard?.reward;
   // Much weaker neutrals join for free or flee (scenario feature; proposed 2026-10-02).
   const reaction = hero ? quoteNeutralReaction(catalog, state, heroId, dest) : null;
+  // The battle would take place under the map's climate rule (scenario feature climateRules).
+  const climate = climateRuleFor(catalog, state);
   const attack = () => {
     store.closeOverlay();
     store.dispatch({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true });
@@ -754,6 +759,11 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
         {hero?.name} will engage {enemyHero ? `${enemyHero.name}’s army` : `the ${label.toLowerCase()}`}
         {site ? ` at ${site.name}` : ''}. A checkpoint is saved before the battle begins.
       </p>
+      {climate ? (
+        <p className="small encounter-climate" data-testid="encounter-climate">
+          <ClimateChip climate={climate} testId="encounter-climate-chip" /> {climate.summary.slice(climate.name.length + 2)} Both armies alike.
+        </p>
+      ) : null}
       <div className="encounter-versus">
         <section className="encounter-side encounter-side--mine" aria-label="Your army">
           <header className="encounter-side__head">

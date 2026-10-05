@@ -106,8 +106,8 @@ export function legalActions(catalog: ContentCatalog, state: MatchState): Battle
     if (stack.shotsRemaining <= 0) shootBlockedReason = 'No ammunition left';
     else if (isAdjacentToEnemy(catalog, battle, stack)) shootBlockedReason = 'Engaged by an adjacent enemy';
     else {
-      shootTargets = enemies.filter((e) => inShootingRange(catalog, stack, e)).map((e) => e.id);
-      if (shootTargets.length === 0) shootBlockedReason = `No enemy within range (${shootingRange(catalog, stack.creatureId)} hexes)`;
+      shootTargets = enemies.filter((e) => inShootingRange(catalog, stack, e, battle)).map((e) => e.id);
+      if (shootTargets.length === 0) shootBlockedReason = `No enemy within range (${shootingRange(catalog, stack.creatureId, battle)} hexes)`;
     }
   }
   const side = battle.sides[stack.side];
@@ -288,7 +288,7 @@ export function commitBattleShoot(tx: Tx, stackId: BattleStackId, targetId: Batt
   if (!isShooter(tx.catalog, stack.creatureId)) reject('illegal_action', 'This creature cannot shoot');
   if (stack.shotsRemaining <= 0) reject('illegal_action', 'No ammunition left');
   if (isAdjacentToEnemy(tx.catalog, battle, stack)) reject('illegal_action', 'Cannot shoot while engaged by an adjacent enemy');
-  if (!inShootingRange(tx.catalog, stack, target)) reject('illegal_target', `Out of range: this creature shoots up to ${shootingRange(tx.catalog, stack.creatureId)} hexes`);
+  if (!inShootingRange(tx.catalog, stack, target, battle)) reject('illegal_target', `Out of range: this creature shoots up to ${shootingRange(tx.catalog, stack.creatureId, battle)} hexes`);
   stack.shotsRemaining -= 1;
   strike(tx, battle, stack, target, 'shot', 0);
   finishActivation(tx, battle, stack, true);

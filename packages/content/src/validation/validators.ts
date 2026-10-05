@@ -569,6 +569,55 @@ function assetReferenceValidator(c: ContentCatalog, push: Push): void {
   }
 }
 
+/** Climate rules: keyed by a biome the maps use, known stats and ability types, small amounts (proposed 2026-10-04). */
+function climateValidator(c: ContentCatalog, push: Push): void {
+  const biomes = new Set(Object.values(c.mapTemplates).map((t) => t.biome));
+  const abilityTypes = new Set(Object.values(c.abilities).map((a) => a.rule.type as string));
+  for (const [id, r] of Object.entries(c.climates ?? {})) {
+    if (r.id !== id) push(`climate ${id}: id mismatch`);
+    if (!biomes.has(r.id as never) && r.id !== 'temperate') push(`climate ${id}: no map uses this biome`);
+    if (!r.summary.startsWith(r.name)) push(`climate ${id}: the summary must open with its name`);
+    for (const e of r.effects) {
+      if (e.type === 'creature_stat') {
+        if (!['attack', 'defense', 'speed'].includes(e.stat)) push(`climate ${id}: unknown stat ${e.stat}`);
+        if (e.ability && !abilityTypes.has(e.ability)) push(`climate ${id}: no creature has an ability of type ${e.ability}`);
+        if (e.withoutAbility && !abilityTypes.has(e.withoutAbility)) push(`climate ${id}: no creature has an ability of type ${e.withoutAbility}`);
+        if (e.amount === 0 || Math.abs(e.amount) > 2) push(`climate ${id}: a climate changes a stat by 1 or 2`);
+      } else if (e.type === 'shooting_range') {
+        if (e.amount === 0 || Math.abs(e.amount) > 6) push(`climate ${id}: a climate changes shooting range by 1 to 6 hexes`);
+      }
+    }
+  }
+}
+
+/**
+ * AI temperaments (proposed 2026-10-04): one per playable pantheon, small
+ * weights, margins that never let the AI attack an army it judges stronger.
+ */
+function temperamentValidator(c: ContentCatalog, push: Push): void {
+  const all = c.aiTemperaments ?? {};
+  for (const [id, t] of Object.entries(all)) {
+    if (t.id !== id) push(`temperament ${id}: id mismatch`);
+    if (!c.pantheons[id]) push(`temperament ${id}: no pantheon with this id`);
+    if (!t.name || !t.summary) push(`temperament ${id}: needs a name and a summary`);
+    if (t.boldness < 0.8 || t.boldness > 1.25) push(`temperament ${id}: boldness outside 0.8–1.25`);
+    if (t.aggression < 0.7 || t.aggression > 1.5) push(`temperament ${id}: aggression outside 0.7–1.5`);
+    if (!Number.isInteger(t.extraHeroes) || Math.abs(t.extraHeroes) > 1) push(`temperament ${id}: extraHeroes must be −1, 0 or 1`);
+    for (const [f, w] of Object.entries(t.build)) {
+      if (!['economy', 'military', 'elite', 'defense', 'magic', 'faith'].includes(f)) push(`temperament ${id}: unknown build focus ${f}`);
+      if ((w ?? 1) < 0.5 || (w ?? 1) > 2) push(`temperament ${id}: build weight ${f} outside 0.5–2`);
+    }
+    if (t.magic < 0.5 || t.magic > 2) push(`temperament ${id}: magic weight outside 0.5–2`);
+    if (t.faith < 0.5 || t.faith > 2) push(`temperament ${id}: faith weight outside 0.5–2`);
+    for (const d of Object.values(c.difficulties)) {
+      if (d.ai.heroAttackMargin * t.boldness < 0.9) push(`temperament ${id}: with ${d.id} it would attack heroes well below even strength`);
+    }
+  }
+  if (Object.keys(all).length > 0) {
+    for (const p of Object.values(c.pantheons)) if (p.playability === 'playable' && !all[p.id]) push(`pantheon ${p.id}: playable but has no AI temperament`);
+  }
+}
+
 export const VALIDATORS: Readonly<Record<string, (c: ContentCatalog, push: Push) => void>> = {
   CreatureRosterValidator: creatureRosterValidator,
   CreatureUpgradeValidator: creatureUpgradeValidator,
@@ -581,6 +630,8 @@ export const VALIDATORS: Readonly<Record<string, (c: ContentCatalog, push: Push)
   CampaignValidator: campaignValidator,
   ExpandedContentValidator: expandedContentValidator,
   AssetReferenceValidator: assetReferenceValidator,
+  ClimateValidator: climateValidator,
+  TemperamentValidator: temperamentValidator,
 };
 
 export function validateCatalog(c: ContentCatalog): ValidationReport {

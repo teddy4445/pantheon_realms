@@ -1,7 +1,7 @@
 {
   "schema": "pantheon-realms-sound-manifest",
   "schemaVersion": 1,
-  "note": "All sounds are temporary placeholders synthesized by tools/audio/make_placeholders.py. Replace a file (same path) or change its entry to use final audio; set status to \"final\".",
+  "note": "Sound IDs -> files. The placeholders are synthesized by tools/audio/make_placeholders.py (status \"placeholder\"); final audio (status \"final\", e.g. the map music of tools/audio/import_music.py) keeps its entries when the placeholders are regenerated.",
   "sounds": [
     {
       "id": "music.menu",
@@ -1068,6 +1068,102 @@
       "provenance": "Temporary placeholder synthesized by tools/audio/make_placeholders.py (no recordings); replace with final audio.",
       "maxVoices": 1,
       "cooldownMs": 800
+    },
+    {
+      "id": "music.map.greek",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/music/greek/rising-sun-on-ancient-stones.ogg",
+        "audio/music/greek/oedipus-at-colonus-part-b.ogg",
+        "audio/music/greek/king-oedipus-part-f.ogg",
+        "audio/music/greek/king-oedipus-part-g.ogg",
+        "audio/music/greek/emotional-and-inspiring-background-music.ogg"
+      ],
+      "gain": 0.85,
+      "playlist": true,
+      "status": "final",
+      "provenance": "Royalty-free tracks from Pixabay under the Pixabay Content License (no attribution required), chosen and downloaded with the owner’s approval on 2026-10-04; converted by tools/audio/import_music.py. “Rising Sun on Ancient Stones” by NaturesEye (https://pixabay.com/music/modern-classical-rising-sun-on-ancient-stones-381423/); “Oedipus at Colonus Part B” by TheFealdoProject (https://pixabay.com/music/main-title-oedipus-at-colonus-part-b-113597/); “King Oedipus Part F” by TheFealdoProject (https://pixabay.com/music/drama-scene-king-oedipus-part-f-336267/); “King Oedipus Part G” by TheFealdoProject (https://pixabay.com/music/electronic-king-oedipus-part-g-336268/); “Emotional and Inspiring Background Music” by OB-LIX (https://pixabay.com/music/beautiful-plays-emotional-and-inspiring-background-music-110369/)."
+    },
+    {
+      "id": "music.map.norse",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/music/norse/spaekona.ogg",
+        "audio/music/norse/beata.ogg",
+        "audio/music/norse/alban-elfed-the-gathering.ogg",
+        "audio/music/norse/the-gift.ogg",
+        "audio/music/norse/herr-mannelig.ogg"
+      ],
+      "gain": 0.85,
+      "playlist": true,
+      "status": "final",
+      "provenance": "Royalty-free tracks from Pixabay under the Pixabay Content License (no attribution required), chosen and downloaded with the owner’s approval on 2026-10-04; converted by tools/audio/import_music.py. “Spaekona - Viking Background Music” by OB-LIX (https://pixabay.com/music/main-title-spaekona-viking-background-music-109374/); “Beata | Dark Pagan - Norse Background Music” by OB-LIX (https://pixabay.com/music/build-up-scenes-beata-dark-pagan-norse-background-music-129817/); “Alban Elfed The Gathering - Dark Fantasy Background Music” by OB-LIX (https://pixabay.com/music/main-title-alban-elfed-the-gathering-dark-fantasy-background-music-110594/); “The Gift | Pagan - Norse Background Music” by OB-LIX (https://pixabay.com/music/main-title-the-gift-pagan-norse-background-music-117479/); “Herr Mannelig - Epic and mystic Nordic Music - Swedish Ballad” by JuliusH (https://pixabay.com/music/beats-herr-mannelig-epic-and-mystic-nordic-music-swedish-ballad-1949/)."
+    },
+    {
+      "id": "music.map.egyptian",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/music/egyptian/a-desert-tale.ogg",
+        "audio/music/egyptian/princess-of-enchanted-dryland.ogg",
+        "audio/music/egyptian/fading-light-of-the-faiyum.ogg",
+        "audio/music/egyptian/sand-dunes.ogg",
+        "audio/music/egyptian/desert-voices.ogg"
+      ],
+      "gain": 0.85,
+      "playlist": true,
+      "status": "final",
+      "provenance": "Royalty-free tracks from Pixabay under the Pixabay Content License (no attribution required), chosen and downloaded with the owner’s approval on 2026-10-04; converted by tools/audio/import_music.py. “A Desert Tale - Ethnic & Fantasy Background Music” by OB-LIX (https://pixabay.com/music/adventure-a-desert-tale-ethnic-amp-fantasy-background-music-109862/); “Princess of Enchanted Dryland - World, Ethnic Background Music” by OB-LIX (https://pixabay.com/music/build-up-scenes-princess-of-enchanted-dryland-world-ethnic-background-music-110367/); “Fading Light of the Faiyum - Ancient Egyptian Arabic Ney Flute” by ArizonaGuide (https://pixabay.com/music/world-fading-light-of-the-faiyum-ancient-egyptian-arabic-ney-flute-176523/); “Sand Dunes - World & Ethnic Background Music” by OB-LIX (https://pixabay.com/music/world-sand-dunes-world-amp-ethnic-background-music-ob-lix-112515/); “Desert Voices” by ArtSlop_Flodur (https://pixabay.com/music/world-desert-voices-11468/)."
+    },
+    {
+      "id": "music.map.japanese",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/music/japanese/the-shinning-moon-princess.ogg",
+        "audio/music/japanese/a-meditation-in-a-japanese-water-garden.ogg",
+        "audio/music/japanese/rising-sun-over-tokyo.ogg",
+        "audio/music/japanese/temple-of-the-heights.ogg",
+        "audio/music/japanese/winter-in-tokyo-cinematic-score.ogg"
+      ],
+      "gain": 0.85,
+      "playlist": true,
+      "status": "final",
+      "provenance": "Royalty-free tracks from Pixabay under the Pixabay Content License (no attribution required), chosen and downloaded with the owner’s approval on 2026-10-04; converted by tools/audio/import_music.py. “The Shinning Moon Princess - World, Ethnic & Fantasy Music” by OB-LIX (https://pixabay.com/music/main-title-the-shinning-moon-princess-world-ethnic-amp-fantasy-music-112198/); “A Meditation in a Japanese Water Garden” by NaturesEye (https://pixabay.com/music/meditationspiritual-a-meditation-in-a-japanese-water-garden-11658/); “Rising Sun Over Tokyo” by NaturesEye (https://pixabay.com/music/ambient-rising-sun-over-tokyo-336612/); “Temple of the Heights” by Rockot (https://pixabay.com/music/beats-temple-of-the-heights-253174/); “Winter in Tokyo - Cinematic Score” by NaturesEye (https://pixabay.com/music/modern-classical-winter-in-tokyo-cinematic-score-179182/)."
+    },
+    {
+      "id": "music.map.celtic",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/music/celtic/with-a-celtic-heart.ogg",
+        "audio/music/celtic/avalon.ogg",
+        "audio/music/celtic/the-crying-princess.ogg",
+        "audio/music/celtic/gwyl-canol-hydref.ogg",
+        "audio/music/celtic/solas-a-gheamhraidh-light-of-winter.ogg"
+      ],
+      "gain": 0.85,
+      "playlist": true,
+      "status": "final",
+      "provenance": "Royalty-free tracks from Pixabay under the Pixabay Content License (no attribution required), chosen and downloaded with the owner’s approval on 2026-10-04; converted by tools/audio/import_music.py. “With a Celtic Heart” by NaturesEye (https://pixabay.com/music/ambient-with-a-celtic-heart-8656/); “Avalon - Mystically Fantasy Chill Out Music” by JuliusH (https://pixabay.com/music/main-title-avalon-mystically-fantasy-chill-out-music-7487/); “The Crying Princess” by OB-LIX (https://pixabay.com/music/main-title-the-crying-princess-109861/); “Gwyl Canol Hydref - World, Ethnic & Fantasy Background Music” by OB-LIX (https://pixabay.com/music/main-title-gwyl-canol-hydref-world-ethnic-amp-fantasy-background-music-110593/); “Solas a' Gheamhraidh (Light of Winter)” by NaturesEye (https://pixabay.com/music/solo-instruments-solas-ax27-gheamhraidh-light-of-winter-461159/)."
+    },
+    {
+      "id": "music.map.mesoamerican",
+      "role": "music",
+      "bus": "music",
+      "files": [
+        "audio/music/mesoamerican/ik.ogg",
+        "audio/music/mesoamerican/man.ogg",
+        "audio/music/mesoamerican/jungle-sunrise-meditation.ogg",
+        "audio/music/mesoamerican/ben.ogg",
+        "audio/music/mesoamerican/spirit-tribe-soundtrack.ogg"
+      ],
+      "gain": 0.85,
+      "playlist": true,
+      "status": "final",
+      "provenance": "Royalty-free tracks from Pixabay under the Pixabay Content License (no attribution required), chosen and downloaded with the owner’s approval on 2026-10-04; converted by tools/audio/import_music.py. “Ik” by THE4MHZ (https://pixabay.com/music/ambient-ik-13661/); “Man” by THE4MHZ (https://pixabay.com/music/ambient-man-13658/); “Jungle Sunrise Meditation” by NaturesEye (https://pixabay.com/music/meditationspiritual-jungle-sunrise-meditation-110556/); “Ben” by THE4MHZ (https://pixabay.com/music/ambient-ben-13859/); “Spirit tribe (Soundtrack)” by Miyagisama (https://pixabay.com/music/beats-miyagisama-spirit-tribe-soundtrack-10238/)."
     }
   ]
 }

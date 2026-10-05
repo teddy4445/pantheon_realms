@@ -736,7 +736,7 @@
           "assetId": "icon.ui.map",
           "name": "map",
           "group": "Interface",
-          "where": "New game / setup",
+          "where": "New game / setup; components/climate.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.map.png",
@@ -2183,13 +2183,13 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.defense.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.artifact.boiled_leather_jerkin.png",
+            "status": "final"
           },
           "brief": "Boiled-leather Jerkin — draw the object alone, three-quarter view. Ox-hide boiled in wax until it is hard as wood.",
           "details": "treasure · +1 commander Defense. · expanded content",
           "lore": "Ox-hide boiled in wax until it is hard as wood. It turns a glancing blade and costs a week’s wages.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.lacquered_oyoroi",
@@ -2359,13 +2359,13 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.movement.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.artifact.waxed_travel_cloak.png",
+            "status": "final"
           },
           "brief": "Waxed Travel Cloak — draw the object alone, three-quarter view. Wool rubbed with beeswax so the rain runs off.",
           "details": "treasure · +5% daily land movement. · expanded content",
           "lore": "Wool rubbed with beeswax so the rain runs off. A dry rider rides longer.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.wayfarer_cloak",
@@ -2519,13 +2519,13 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.power.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.artifact.copper_circlet.png",
+            "status": "final"
           },
           "brief": "Copper Circlet — draw the object alone, three-quarter view. A plain band hammered from one sheet of copper.",
           "details": "treasure · +1 commander Knowledge. · expanded content",
           "lore": "A plain band hammered from one sheet of copper. Students wear it to keep their hair — and, they say, their thoughts — in place.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.phalanx_helm",
@@ -2823,7 +2823,7 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
+            "file": "assets-runtime/ui/icons/final/icon.artifact.scholars_oil_lamp.png",
             "status": "final"
           },
           "brief": "Scholar’s Oil Lamp — draw the object alone, three-quarter view. A small clay lamp for reading at night.",
@@ -2903,7 +2903,7 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
+            "file": "assets-runtime/ui/icons/final/icon.artifact.watchmans_lantern.png",
             "status": "final"
           },
           "brief": "Watchman’s Lantern — draw the object alone, three-quarter view. A horn-paned lantern with a hood that throws its light forward.",
@@ -2999,13 +2999,13 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.speed.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.artifact.woven_saddle_blanket.png",
+            "status": "final"
           },
           "brief": "Woven Saddle Blanket — draw the object alone, three-quarter view. Thick wool in the colours of the weaver’s village.",
           "details": "treasure · +5% daily land movement. · expanded content",
           "lore": "Thick wool in the colours of the weaver’s village. A horse that does not chafe walks an extra hour.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.champion_torc",
@@ -3031,13 +3031,13 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.luck.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.artifact.clay_votive_amulet.png",
+            "status": "final"
           },
           "brief": "Clay Votive Amulet — draw the object alone, three-quarter view. A thumb-sized figure of the household god, fired in a potter’s kiln and blessed at the town shrine.",
           "details": "treasure · +1 morale. · expanded content",
           "lore": "A thumb-sized figure of the household god, fired in a potter’s kiln and blessed at the town shrine. Soldiers touch it before every charge.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.heart_scarab",
@@ -3159,13 +3159,13 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.knowledge.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.artifact.bronze_seal_ring.png",
+            "status": "final"
           },
           "brief": "Bronze Seal Ring — draw the object alone, three-quarter view. A signet cut with a spiral.",
           "details": "treasure · +1 commander Spell Power. · expanded content",
           "lore": "A signet cut with a spiral. Pressed into wax it seals a letter; pressed into a palm before a spell, its owner swears, it seals the spell tighter.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.draupnir_echo",
@@ -3447,13 +3447,13 @@
           "where": "Hero screen (paper doll, backpack); Artifact merchant; Battle result loot; Encounter reward preview; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.attack.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.artifact.iron_shod_spear.png",
+            "status": "final"
           },
           "brief": "Iron-shod Spear — draw the object alone, three-quarter view. Ash shaft, iron point, a smith’s mark on the socket.",
           "details": "treasure · +1 commander Attack. · expanded content",
           "lore": "Ash shaft, iron point, a smith’s mark on the socket. The first weapon of every militia and the last one a veteran gives up.",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.artifact.khopesh_of_set",
@@ -3597,8 +3597,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.panoply_of_the_phalanx.png",
+            "status": "final"
           },
           "brief": "Emblem for the Panoply of the Phalanx: the 3 pieces (Phalanx Spear, Phalanx Aspis, Crested Helm) arranged as one badge.",
           "details": "Spear, shield and helm of a front-rank commander. 2 pieces: +1 morale; 3 pieces: every creature +2 Defense in battle",
@@ -3610,8 +3611,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.regalia_of_the_sun_king.png",
+            "status": "final"
           },
           "brief": "Emblem for the Regalia of the Sun King: the 3 pieces (Sun Diadem, Sun Scepter, Sun Signet) arranged as one badge.",
           "details": "Crown, scepter and ring of a priest-king. 2 pieces: +3 mana at dawn; 3 pieces: +25% spell damage",
@@ -3623,8 +3625,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.wayfarers_kit.png",
+            "status": "final"
           },
           "brief": "Emblem for the Wayfarer’s Kit: the 3 pieces (Wayfarer’s Boots, Wayfarer’s Cloak, Star Compass) arranged as one badge.",
           "details": "Boots, cloak and compass of a tireless traveller. 2 pieces: +10% daily land movement; 3 pieces: +300 Gold per day (trade on the road)",
@@ -3636,8 +3639,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.relics_of_the_fallen_champion.png",
+            "status": "final"
           },
           "brief": "Emblem for the Relics of the Fallen Champion: the 3 pieces (Champion’s Blade, Champion’s Torc, Champion’s Banner) arranged as one badge.",
           "details": "Blade, torc and banner of a champion whose name is forgotten. 2 pieces: +20% battle experience; 3 pieces: every creature +2 Attack in battle",
@@ -3649,8 +3653,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.gear_of_perseus.png",
+            "status": "final"
           },
           "brief": "Emblem for the Gear of Perseus: the 4 pieces (Harpe of Perseus, Polished Bronze Shield, Cap of Darkness, Kibisis) arranged as one badge.",
           "details": "Sickle-sword, mirror shield, cap of darkness and satchel of the hero who slew the Gorgon. 2 pieces: +10% daily land movement; 4 pieces: flying creatures +2 Attack; +15% battle experience",
@@ -3662,8 +3667,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.arms_of_the_einherjar.png",
+            "status": "final"
           },
           "brief": "Emblem for the Arms of the Einherjar: the 4 pieces (Rune-marked Sword, Shieldmaiden’s Round Shield, Mail of the Einherjar, Valkyrie’s Horn) arranged as one badge.",
           "details": "Sword, shield, mail and horn of the warriors chosen for the hall of the slain. 2 pieces: +1 morale; 4 pieces: every creature +1 Attack and +1 Defense in battle",
@@ -3675,8 +3681,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.regalia_of_the_two_lands.png",
+            "status": "final"
           },
           "brief": "Emblem for the Regalia of the Two Lands: the 3 pieces (Nemes of Ra, Khopesh of Set, Scarab-scale Corselet) arranged as one badge.",
           "details": "Headcloth, blade and corselet of a king of the river and the desert. 2 pieces: +2 mana at dawn; 3 pieces: after a won battle each stack regains 10% of its losses",
@@ -3688,8 +3695,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.treasures_of_takamagahara.png",
+            "status": "final"
           },
           "brief": "Emblem for the Treasures of Takamagahara: the 3 pieces (Dragon Kabuto, String of Magatama, Lacquered Ō-yoroi) arranged as one badge.",
           "details": "Helmet, jewels and armour from the high plain of heaven. 2 pieces: +1 Luck; 3 pieces: tier 1–4 creatures +1 Speed in battle",
@@ -3701,8 +3709,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.treasures_of_the_tuatha.png",
+            "status": "final"
           },
           "brief": "Emblem for the Treasures of the Tuatha Dé: the 3 pieces (Spear of Lugh, Cauldron of Plenty, Stone of Fál) arranged as one badge.",
           "details": "The spear, the cauldron and the stone the gods brought to Ireland. 2 pieces: +1 morale; 3 pieces: every creature +2 Defense in battle; +1 Luck",
@@ -3714,8 +3723,9 @@
           "group": "Artifact set",
           "where": "Hero screen (set badge on worn and packed pieces, set status); Item card; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text only today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.set.gifts_of_the_feathered_serpent.png",
+            "status": "final"
           },
           "brief": "Emblem for the Gifts of the Feathered Serpent: the 3 pieces (Quetzal War Crown, Jade Pectoral, Eagle Chimalli) arranged as one badge.",
           "details": "Crown, pectoral and shield blessed by the wind god who brought maize and books. 2 pieces: +1 Luck; 3 pieces: +20% spell damage",
@@ -4486,6 +4496,131 @@
       ]
     },
     {
+      "id": "climate-icons",
+      "title": "Climate icons",
+      "intro": "One icon per climate rule (skirmish feature): the battle chip and the encounter line show it beside the weather’s name. Until delivered the chip shows an interface glyph.",
+      "size": "128 × 128 px PNG, transparent (shown at 18–24 px)",
+      "rows": [
+        {
+          "assetId": "icon.climate.autumn",
+          "name": "Harvest wind",
+          "group": "Climate · autumn",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Harvest wind: every flying creature has +1 Speed in battle. Draw: a gust of wind drawn as a curling golden stream carrying three red-gold leaves and one long feather.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.coast",
+          "name": "Salt spray",
+          "group": "Climate · coast",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Salt spray: every shooter’s range is 3 hexes shorter in battle. Draw: a breaking sea wave throwing white spray over a single arrow that falls short.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.desert",
+          "name": "Scorching sand",
+          "group": "Climate · desert",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Scorching sand: every creature without Flight has −1 Speed in battle. Draw: a blazing white-gold sun over two rippled sand dunes, a faint heat shimmer between them.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.fjord",
+          "name": "Icy spray",
+          "group": "Climate · fjord",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Icy spray: every creature has −1 Defense in battle. Draw: a jagged blue-white ice shard with frozen droplets around it and frost creeping over a round shield rim.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.high_pass",
+          "name": "Thin air",
+          "group": "Climate · high pass",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Thin air: every shooter’s range is 2 hexes longer and every flying creature has −1 Speed in battle. Draw: a snowy mountain peak with thin cloud wisps and an arrow flying high above it.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.jungle",
+          "name": "Dense canopy",
+          "group": "Climate · jungle",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Dense canopy: every shooter’s range is 4 hexes shorter and every flying creature has −1 Speed in battle. Draw: broad dark-green jungle leaves and hanging vines closing over like a roof.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.moor",
+          "name": "Fog",
+          "group": "Climate · moor",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Fog: every shooter’s range is 6 hexes shorter in battle. Draw: a pale grey bank of fog swallowing the lower half of a lone standing stone.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.storm_plateau",
+          "name": "Thunderstorm",
+          "group": "Climate · storm plateau",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Thunderstorm: every flying creature has −2 Speed in battle. Draw: a dark thundercloud with one bright lightning bolt and slanting rain.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        },
+        {
+          "assetId": "icon.climate.tundra",
+          "name": "Biting cold",
+          "group": "Climate · tundra",
+          "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
+          "current": {
+            "type": "procedural",
+            "note": "interface glyph stand-in in the chip"
+          },
+          "brief": "Biting cold: every creature has −1 Attack in battle. Draw: a large six-pointed snowflake crystal in front of a frosted sword hilt.",
+          "details": "Skirmish feature (climate rules); both armies alike",
+          "priority": "now"
+        }
+      ]
+    },
+    {
       "id": "abilities",
       "title": "Creature abilities",
       "intro": "Ability badges on army slots, creature details and the Encyclopedia, next to the ability name. Until delivered the badge is the nearest interface glyph (temporary).",
@@ -4497,8 +4632,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.charge_guard.png",
+            "status": "final"
           },
           "brief": "Charge Guard: Braced shields blunt a cavalry charge.",
           "details": "Ignore the attacker's charge bonus against this stack.",
@@ -4510,8 +4646,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.shooter.png",
+            "status": "final"
           },
           "brief": "Shooter: Can make stationary ranged attacks.",
           "details": "Enables the stationary Shoot action; one ammunition per shot.",
@@ -4523,8 +4660,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.flight.png",
+            "status": "final"
           },
           "brief": "Flight: Flies over obstacles and other stacks.",
           "details": "May cross blocked or occupied cells within its Speed.",
@@ -4536,8 +4674,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.retaliation_2.png",
+            "status": "final"
           },
           "brief": "Double Retaliation: Answers two melee attacks each round.",
           "details": "Two eligible retaliations each round.",
@@ -4549,8 +4688,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.retaliation_unlimited.png",
+            "status": "final"
           },
           "brief": "Unlimited Retaliation: Answers every melee attack.",
           "details": "No retaliation-count limit.",
@@ -4562,8 +4702,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.charge.png",
+            "status": "final"
           },
           "brief": "Charge: Hits harder after a long approach.",
           "details": "+5% damage per hex traversed on the shortest legal approach, capped at +25%.",
@@ -4575,8 +4716,9 @@
           "group": "Ability · active",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.family_ward.png",
+            "status": "final"
           },
           "brief": "Ward: Places a protective ward on a friendly stack.",
           "details": "Spend the activation: a friendly stack gains +3 Defense through the current and next round.",
@@ -4588,8 +4730,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.unyielding.png",
+            "status": "final"
           },
           "brief": "Unyielding: Steady under pressure.",
           "details": "Effective morale is at least +1, before the +3 cap.",
@@ -4601,8 +4744,9 @@
           "group": "Ability · active",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.wall_breaker.png",
+            "status": "final"
           },
           "brief": "Wall Breaker: Can target fortifications in a siege.",
           "details": "Attacking a town: spend the activation and one shot to remove 1 structure HP from an intact wall, gate, tower or keep. No troop attack that activation.",
@@ -4614,8 +4758,9 @@
           "group": "Ability · active",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.shapeshift_hare.png",
+            "status": "final"
           },
           "brief": "Shapeshift (Hare): Slips into a hare’s shape to outrun the line.",
           "details": "Spend the activation to take the Hare aspect (-1 Defense, +2 Speed) or return to the normal aspect. With the Shapeshifting rite the change is free at the start of the activation, once per activation.",
@@ -4627,8 +4772,9 @@
           "group": "Ability · active",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.shapeshift_waterhorse.png",
+            "status": "final"
           },
           "brief": "Shapeshift (Water-horse): Becomes the drowning horse of the loch.",
           "details": "Spend the activation to take the Water-horse aspect (+2 Attack, -2 Defense) or return to the normal aspect. With the Shapeshifting rite the change is free at the start of the activation, once per activation.",
@@ -4640,8 +4786,9 @@
           "group": "Ability · active",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.shapeshift_sealskin.png",
+            "status": "final"
           },
           "brief": "Shapeshift (Seal-skin): Pulls on the seal-skin and sets like a rock.",
           "details": "Spend the activation to take the Seal-skin aspect (+3 Defense, -2 Speed) or return to the normal aspect. With the Shapeshifting rite the change is free at the start of the activation, once per activation.",
@@ -4653,8 +4800,9 @@
           "group": "Ability · active",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.shapeshift_rut.png",
+            "status": "final"
           },
           "brief": "Shapeshift (Rut): The antlers lower; the forest charges.",
           "details": "Spend the activation to take the Rut aspect (+3 Attack, -3 Defense) or return to the normal aspect. With the Shapeshifting rite the change is free at the start of the activation, once per activation.",
@@ -4666,8 +4814,9 @@
           "group": "Ability · passive",
           "where": "Ability badges on army slots (hero, town, battle); Creature detail; Battle stack info; Encyclopedia",
           "current": {
-            "type": "procedural",
-            "note": "text chip today"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.ability.no_melee_penalty.png",
+            "status": "final"
           },
           "brief": "No Melee Penalty: Fights at full strength up close.",
           "details": "Do not apply the shooter's 0.5 melee penalty.",
@@ -5990,208 +6139,207 @@
           "name": "Cathal",
           "group": "Story portrait",
           "pantheon": "Celtic",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Cathal — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.celtic.sadb.portrait",
           "name": "Sadb",
           "group": "Story portrait",
           "pantheon": "Celtic",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Sadb — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.nebet.portrait",
           "name": "Nebet",
           "group": "Story portrait",
           "pantheon": "Egyptian",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Nebet — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.egyptian.pawah.portrait",
           "name": "Pawah",
           "group": "Story portrait",
           "pantheon": "Egyptian",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Pawah — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.ione.portrait",
           "name": "Ione",
           "group": "Story portrait",
           "pantheon": "Greek",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Ione — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.greek.thaleia.portrait",
           "name": "Thaleia",
           "group": "Story portrait",
           "pantheon": "Greek",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Thaleia — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.genzo.portrait",
           "name": "Genzo",
           "group": "Story portrait",
           "pantheon": "Japanese",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Genzo — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.japanese.shiro.portrait",
           "name": "Shiro",
           "group": "Story portrait",
           "pantheon": "Japanese",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Shiro — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.chimal.portrait",
           "name": "Chimal",
           "group": "Story portrait",
           "pantheon": "Mesoamerican",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Chimal — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.mesoamerican.xoco.portrait",
           "name": "Grandmother Xoco",
           "group": "Story portrait",
           "pantheon": "Mesoamerican",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Grandmother Xoco — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.eydis.portrait",
           "name": "Eydis",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Eydis — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.jokul.portrait",
           "name": "Jökul",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Jökul — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.skeggi.portrait",
           "name": "Skeggi",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Skeggi — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.svanhild.portrait",
           "name": "Svanhild",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Svanhild — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "hero.norse.troll_wife.portrait",
           "name": "The Troll-wife",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "The Troll-wife — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "story.herald.portrait",
           "name": "Herald",
           "group": "Story portrait",
-          "pantheon": "herald",
-          "where": "Story scenes and briefings (dialogue window)",
+          "where": "Fallback only: the dialogue window shows the painted bust",
           "current": {
             "type": "procedural",
-            "note": "generated placeholder bust"
+            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
           },
           "brief": "Herald — story character (see the campaign documents).",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "god.greek.zeus.portrait",

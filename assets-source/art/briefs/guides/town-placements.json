@@ -1,0 +1,905 @@
+{
+ "note": "Town locations (x = centre, y = foot line, width — percent of the 4:3 scene), from the content catalog; drawn by tools/assets/briefs/town_guides.py.",
+ "towns": [
+  {
+   "pantheon": "greek",
+   "background": "placeholders/town/greek/background.jpg",
+   "slots": [
+    {
+     "id": "civic_hall",
+     "label": "Civic Hall",
+     "x": 51,
+     "y": 38,
+     "width": 18,
+     "kind": "support"
+    },
+    {
+     "id": "pantheon_temple",
+     "label": "Pantheon Temple",
+     "x": 47.5,
+     "y": 23,
+     "width": 14,
+     "kind": "support"
+    },
+    {
+     "id": "mage_guild",
+     "label": "Mage Guild / Sanctum",
+     "x": 63.5,
+     "y": 29,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "watchtower",
+     "label": "Watchtower / Observatory",
+     "x": 92,
+     "y": 27,
+     "width": 8,
+     "kind": "support"
+    },
+    {
+     "id": "artifact_merchant",
+     "label": "Artifact Merchant",
+     "x": 75,
+     "y": 39,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "tavern",
+     "label": "Tavern / Heroes’ Lodge",
+     "x": 30,
+     "y": 43.5,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "marketplace",
+     "label": "Marketplace",
+     "x": 51,
+     "y": 75,
+     "width": 14,
+     "kind": "support"
+    },
+    {
+     "id": "training_academy",
+     "label": "Training Academy",
+     "x": 78,
+     "y": 57.5,
+     "width": 14,
+     "kind": "support"
+    },
+    {
+     "id": "workshop",
+     "label": "Workshop",
+     "x": 21,
+     "y": 74.5,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "resource_depot",
+     "label": "Resource Depot",
+     "x": 33,
+     "y": 75.5,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "fortifications",
+     "label": "Fortifications / Gatehouse",
+     "x": 51,
+     "y": 98,
+     "width": 22,
+     "kind": "support"
+    },
+    {
+     "id": "dwelling_t1",
+     "label": "Tier 1 — Barracks",
+     "x": 67,
+     "y": 74.5,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t2",
+     "label": "Tier 2 — Peltast Range",
+     "x": 82,
+     "y": 74.5,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t3",
+     "label": "Tier 3 — Griffin Aerie",
+     "x": 89,
+     "y": 46,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t4",
+     "label": "Tier 4 — Training Court",
+     "x": 26,
+     "y": 34,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t5",
+     "label": "Tier 5 — House of Adepts",
+     "x": 19.5,
+     "y": 56,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t6",
+     "label": "Tier 6 — Labyrinth",
+     "x": 90.5,
+     "y": 64,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t7",
+     "label": "Tier 7 — Thunder Quarry",
+     "x": 8,
+     "y": 67,
+     "width": 12,
+     "kind": "dwelling"
+    }
+   ]
+  },
+  {
+   "pantheon": "norse",
+   "background": "placeholders/town/norse/background.jpg",
+   "slots": [
+    {
+     "id": "civic_hall",
+     "label": "Civic Hall",
+     "x": 55,
+     "y": 47,
+     "width": 17,
+     "kind": "support"
+    },
+    {
+     "id": "pantheon_temple",
+     "label": "Pantheon Temple (Hof)",
+     "x": 60,
+     "y": 21.5,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "mage_guild",
+     "label": "Rune Circle",
+     "x": 82,
+     "y": 21,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "watchtower",
+     "label": "Watchtower / Observatory",
+     "x": 33,
+     "y": 35.5,
+     "width": 8,
+     "kind": "support"
+    },
+    {
+     "id": "artifact_merchant",
+     "label": "Artifact Merchant",
+     "x": 82,
+     "y": 31,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "tavern",
+     "label": "Mead Hall / Heroes’ Lodge",
+     "x": 36,
+     "y": 42,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "marketplace",
+     "label": "Trading Post",
+     "x": 52,
+     "y": 71,
+     "width": 14,
+     "kind": "support"
+    },
+    {
+     "id": "training_academy",
+     "label": "Training Ground",
+     "x": 71,
+     "y": 43,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "workshop",
+     "label": "Workshop",
+     "x": 40,
+     "y": 55.5,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "resource_depot",
+     "label": "Storehouse",
+     "x": 22.5,
+     "y": 55.5,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "fortifications",
+     "label": "Fortifications / Gatehouse",
+     "x": 52,
+     "y": 97,
+     "width": 22,
+     "kind": "support"
+    },
+    {
+     "id": "dwelling_t1",
+     "label": "Tier 1 — Draugr Barrow",
+     "x": 26,
+     "y": 72,
+     "width": 14,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t2",
+     "label": "Tier 2 — Wolf Den",
+     "x": 78,
+     "y": 72,
+     "width": 14,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t3",
+     "label": "Tier 3 — Troll Cave",
+     "x": 66,
+     "y": 56.5,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t4",
+     "label": "Tier 4 — Valkyrie Aerie",
+     "x": 51,
+     "y": 31,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t5",
+     "label": "Tier 5 — Lindworm Roost",
+     "x": 86,
+     "y": 53.5,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t6",
+     "label": "Tier 6 — Jotunn Camp",
+     "x": 11,
+     "y": 47,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t7",
+     "label": "Tier 7 — Serpent Lair",
+     "x": 88,
+     "y": 93,
+     "width": 14,
+     "kind": "dwelling"
+    }
+   ]
+  },
+  {
+   "pantheon": "egyptian",
+   "background": "placeholders/town/egyptian/background.jpg",
+   "slots": [
+    {
+     "id": "civic_hall",
+     "label": "Civic Hall",
+     "x": 53,
+     "y": 56,
+     "width": 17,
+     "kind": "support"
+    },
+    {
+     "id": "pantheon_temple",
+     "label": "Pantheon Temple (Temple of the Sun)",
+     "x": 55,
+     "y": 27,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "mage_guild",
+     "label": "House of Life",
+     "x": 83,
+     "y": 18.5,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "watchtower",
+     "label": "Watchtower / Observatory",
+     "x": 85,
+     "y": 31,
+     "width": 9,
+     "kind": "support"
+    },
+    {
+     "id": "artifact_merchant",
+     "label": "Artifact Merchant",
+     "x": 89,
+     "y": 42,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "tavern",
+     "label": "Caravan House / Heroes’ Lodge",
+     "x": 32,
+     "y": 50,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "marketplace",
+     "label": "Bazaar",
+     "x": 53,
+     "y": 42,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "training_academy",
+     "label": "Training Academy",
+     "x": 76,
+     "y": 50,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "workshop",
+     "label": "Workshop",
+     "x": 16,
+     "y": 35.5,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "resource_depot",
+     "label": "Granary",
+     "x": 9,
+     "y": 44.5,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "fortifications",
+     "label": "Fortifications / Gatehouse",
+     "x": 52,
+     "y": 88,
+     "width": 22,
+     "kind": "support"
+    },
+    {
+     "id": "dwelling_t1",
+     "label": "Tier 1 — Scarab Burrow",
+     "x": 8,
+     "y": 56,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t2",
+     "label": "Tier 2 — Jackal Kennels",
+     "x": 18,
+     "y": 80,
+     "width": 14,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t3",
+     "label": "Tier 3 — Ushabti Workshop",
+     "x": 84,
+     "y": 81,
+     "width": 14,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t4",
+     "label": "Tier 4 — Sphinx Terrace",
+     "x": 91,
+     "y": 59,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t5",
+     "label": "Tier 5 — Crocodile Pens",
+     "x": 32,
+     "y": 26,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t6",
+     "label": "Tier 6 — Bennu Aerie",
+     "x": 75,
+     "y": 63,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t7",
+     "label": "Tier 7 — Colossus Quarry",
+     "x": 27,
+     "y": 63,
+     "width": 11,
+     "kind": "dwelling"
+    }
+   ]
+  },
+  {
+   "pantheon": "japanese",
+   "background": "placeholders/town/japanese/background.jpg",
+   "slots": [
+    {
+     "id": "civic_hall",
+     "label": "Civic Hall",
+     "x": 51,
+     "y": 62,
+     "width": 17,
+     "kind": "support"
+    },
+    {
+     "id": "pantheon_temple",
+     "label": "Pantheon Temple (Shrine)",
+     "x": 20,
+     "y": 24,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "mage_guild",
+     "label": "Onmyō Hall",
+     "x": 91,
+     "y": 32,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "watchtower",
+     "label": "Watchtower / Observatory",
+     "x": 37,
+     "y": 30.5,
+     "width": 8,
+     "kind": "support"
+    },
+    {
+     "id": "artifact_merchant",
+     "label": "Artifact Merchant",
+     "x": 90,
+     "y": 50,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "tavern",
+     "label": "Teahouse / Heroes’ Lodge",
+     "x": 26,
+     "y": 52,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "marketplace",
+     "label": "Market Street",
+     "x": 57,
+     "y": 44,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "training_academy",
+     "label": "Training Academy",
+     "x": 69,
+     "y": 49,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "workshop",
+     "label": "Workshop",
+     "x": 33,
+     "y": 40,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "resource_depot",
+     "label": "Storehouse",
+     "x": 12,
+     "y": 40,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "fortifications",
+     "label": "Fortifications / Gatehouse",
+     "x": 54,
+     "y": 80,
+     "width": 17,
+     "kind": "support"
+    },
+    {
+     "id": "dwelling_t1",
+     "label": "Tier 1 — Kitsune Grove",
+     "x": 13,
+     "y": 61,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t2",
+     "label": "Tier 2 — Kappa Pond",
+     "x": 30,
+     "y": 76,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t3",
+     "label": "Tier 3 — Tengu Nest",
+     "x": 85,
+     "y": 65,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t4",
+     "label": "Tier 4 — Oni Quarry",
+     "x": 81,
+     "y": 77.5,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t5",
+     "label": "Tier 5 — Spider Hollow",
+     "x": 77,
+     "y": 89,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t6",
+     "label": "Tier 6 — Kirin Pavilion",
+     "x": 67,
+     "y": 34,
+     "width": 10,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t7",
+     "label": "Tier 7 — Orochi Sanctuary",
+     "x": 40,
+     "y": 95,
+     "width": 14,
+     "kind": "dwelling"
+    }
+   ]
+  },
+  {
+   "pantheon": "celtic",
+   "background": "placeholders/town/celtic/background.jpg",
+   "slots": [
+    {
+     "id": "civic_hall",
+     "label": "Civic Hall",
+     "x": 51,
+     "y": 81,
+     "width": 17,
+     "kind": "support"
+    },
+    {
+     "id": "pantheon_temple",
+     "label": "Pantheon Temple (Nemeton)",
+     "x": 52,
+     "y": 52,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "mage_guild",
+     "label": "Druid Grove",
+     "x": 13,
+     "y": 28,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "watchtower",
+     "label": "Watchtower / Observatory",
+     "x": 89,
+     "y": 29,
+     "width": 8,
+     "kind": "support"
+    },
+    {
+     "id": "artifact_merchant",
+     "label": "Artifact Merchant",
+     "x": 92,
+     "y": 47,
+     "width": 10,
+     "kind": "support"
+    },
+    {
+     "id": "tavern",
+     "label": "Mead House / Heroes’ Lodge",
+     "x": 26,
+     "y": 55,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "marketplace",
+     "label": "Fair Green",
+     "x": 33,
+     "y": 43,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "training_academy",
+     "label": "Training Academy",
+     "x": 79,
+     "y": 56,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "workshop",
+     "label": "Workshop",
+     "x": 12,
+     "y": 44,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "resource_depot",
+     "label": "Stores",
+     "x": 36,
+     "y": 28,
+     "width": 10,
+     "kind": "support"
+    },
+    {
+     "id": "fortifications",
+     "label": "Fortifications / Gatehouse",
+     "x": 52,
+     "y": 99,
+     "width": 20,
+     "kind": "support"
+    },
+    {
+     "id": "dwelling_t1",
+     "label": "Tier 1 — Pooka Warren",
+     "x": 27,
+     "y": 70,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t2",
+     "label": "Tier 2 — Hound Kennel",
+     "x": 11,
+     "y": 70,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t3",
+     "label": "Tier 3 — Kelpie Loch",
+     "x": 74,
+     "y": 70,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t4",
+     "label": "Tier 4 — Banshee Cairn",
+     "x": 82,
+     "y": 42,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t5",
+     "label": "Tier 5 — Selkie Cove",
+     "x": 89,
+     "y": 70,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t6",
+     "label": "Tier 6 — Stag Grove",
+     "x": 65,
+     "y": 36,
+     "width": 9,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t7",
+     "label": "Tier 7 — Fomorian Hold",
+     "x": 86,
+     "y": 93,
+     "width": 14,
+     "kind": "dwelling"
+    }
+   ]
+  },
+  {
+   "pantheon": "mesoamerican",
+   "background": "placeholders/town/mesoamerican/background.jpg",
+   "slots": [
+    {
+     "id": "civic_hall",
+     "label": "Civic Hall",
+     "x": 51,
+     "y": 59,
+     "width": 17,
+     "kind": "support"
+    },
+    {
+     "id": "pantheon_temple",
+     "label": "Pantheon Temple (Pyramid)",
+     "x": 50,
+     "y": 33.5,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "mage_guild",
+     "label": "House of the Codex",
+     "x": 91,
+     "y": 24,
+     "width": 10,
+     "kind": "support"
+    },
+    {
+     "id": "watchtower",
+     "label": "Watchtower / Observatory",
+     "x": 12,
+     "y": 21,
+     "width": 8,
+     "kind": "support"
+    },
+    {
+     "id": "artifact_merchant",
+     "label": "Artifact Merchant",
+     "x": 86,
+     "y": 42,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "tavern",
+     "label": "Traveller’s House / Heroes’ Lodge",
+     "x": 28,
+     "y": 51,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "marketplace",
+     "label": "Tianguis Market",
+     "x": 72,
+     "y": 51,
+     "width": 13,
+     "kind": "support"
+    },
+    {
+     "id": "training_academy",
+     "label": "Training Academy",
+     "x": 86,
+     "y": 61,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "workshop",
+     "label": "Workshop",
+     "x": 15,
+     "y": 41,
+     "width": 12,
+     "kind": "support"
+    },
+    {
+     "id": "resource_depot",
+     "label": "Storehouse",
+     "x": 24,
+     "y": 31,
+     "width": 11,
+     "kind": "support"
+    },
+    {
+     "id": "fortifications",
+     "label": "Fortifications / Gatehouse",
+     "x": 51,
+     "y": 99,
+     "width": 20,
+     "kind": "support"
+    },
+    {
+     "id": "dwelling_t1",
+     "label": "Tier 1 — Serpent Nest",
+     "x": 78,
+     "y": 32,
+     "width": 11,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t2",
+     "label": "Tier 2 — Jaguar Prowl",
+     "x": 15,
+     "y": 61,
+     "width": 12,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t3",
+     "label": "Tier 3 — Eagle Aerie",
+     "x": 19,
+     "y": 83,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t4",
+     "label": "Tier 4 — Cenote Pool",
+     "x": 82,
+     "y": 84,
+     "width": 13,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t5",
+     "label": "Tier 5 — Bat Cave",
+     "x": 51,
+     "y": 82,
+     "width": 14,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t6",
+     "label": "Tier 6 — Fire Serpent Sanctum",
+     "x": 31,
+     "y": 73,
+     "width": 10,
+     "kind": "dwelling"
+    },
+    {
+     "id": "dwelling_t7",
+     "label": "Tier 7 — Colossus Quarry",
+     "x": 70,
+     "y": 73,
+     "width": 11,
+     "kind": "dwelling"
+    }
+   ]
+  }
+ ]
+}

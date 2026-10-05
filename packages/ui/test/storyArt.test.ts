@@ -51,7 +51,7 @@ const allLines = (): DialogueLine[] => {
 describe('story art runtime files', () => {
   it('every registered file exists with its registered size; paths stay inside assets-runtime', () => {
     const entries = Object.entries(manifest.assets).filter(([, a]) => STORY_KINDS.includes(a.kind));
-    expect(entries.length).toBe(35 + 6 + 6 + 11 + 40 + 40);
+    expect(entries.length).toBe(36 + 6 + 6 + 11 + 40 + 40);
     for (const [id, a] of entries) {
       expect(a.file.startsWith('art/'), `${id}: ${a.file}`).toBe(true);
       expect(a.file).not.toMatch(/\.\.|assets-source|\.codex|blannder|:\\|^\//i);
@@ -78,17 +78,19 @@ describe('story art runtime files', () => {
 });
 
 describe('story art wiring', () => {
-  it('all 35 dialogue busts belong to speakers, and every story speaker with a portrait of their own has one', () => {
+  it('all 36 dialogue busts belong to speakers, and every story speaker has one (the Herald’s own since 2026-10-04)', () => {
     const busts = Object.keys(manifest.assets).filter((k) => manifest.assets[k]!.kind === 'bust');
-    expect(busts).toHaveLength(35);
+    expect(busts).toHaveLength(36);
     const lines = allLines();
     const used = new Set(lines.map((l) => speakerBust(l)?.id).filter(Boolean));
     for (const b of busts) expect(used.has(b), `${b} is spoken by someone`).toBe(true);
-    // Every named story speaker (not the skirmish herald) shows a bust.
-    const missing = [...new Set(lines.filter((l) => l.speaker !== 'Herald' && !speakerBust(l)).map((l) => `${l.speaker} (${l.portraitAssetId})`))];
+    // Every story speaker shows a bust.
+    const missing = [...new Set(lines.filter((l) => !speakerBust(l)).map((l) => `${l.speaker} (${l.portraitAssetId})`))];
     expect(missing).toEqual([]);
-    // The herald borrows no one's face.
-    expect(lines.filter((l) => l.speaker === 'Herald').every((l) => speakerBust(l) === null)).toBe(true);
+    // The herald has its own bust (an ordinary messenger), through the same .portrait → .bust route; it borrows no hero's face.
+    const herald = lines.filter((l) => l.speaker === 'Herald');
+    expect(herald.length).toBeGreaterThan(0);
+    expect(herald.every((l) => l.portraitAssetId === 'story.herald.portrait' && speakerBust(l)?.id === 'story.herald.bust')).toBe(true);
   });
 
   it('six campaign covers and their cards', () => {

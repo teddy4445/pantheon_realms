@@ -10,6 +10,7 @@
     "menu.background.greek-landscape",
     "menu.background.japanese-battle",
     "menu.background.japanese-landscape",
+    "menu.background.mesoamerican-battle",
     "menu.background.mesoamerican-landscape",
     "menu.background.norse-battle",
     "menu.background.norse-landscape"
@@ -567,77 +568,84 @@
     "menu.background.celtic-battle": {
       "file": "ui/backgrounds/opening-celtic-battle.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (celtic battle).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (celtic battle).",
       "width": 1672,
       "height": 941
     },
     "menu.background.celtic-landscape": {
       "file": "ui/backgrounds/opening-celtic-landscape.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (celtic landscape).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (celtic landscape).",
       "width": 1672,
       "height": 941
     },
     "menu.background.egyptian-battle": {
       "file": "ui/backgrounds/opening-egyptian-battle.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (egyptian battle).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (egyptian battle).",
       "width": 1672,
       "height": 941
     },
     "menu.background.egyptian-landscape": {
       "file": "ui/backgrounds/opening-egyptian-landscape.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (egyptian landscape).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (egyptian landscape).",
       "width": 1672,
       "height": 941
     },
     "menu.background.greek-battle": {
       "file": "ui/backgrounds/opening-greek-battle.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (greek battle).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (greek battle).",
       "width": 1672,
       "height": 941
     },
     "menu.background.greek-landscape": {
       "file": "ui/backgrounds/opening-greek-landscape.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (greek landscape).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (greek landscape).",
       "width": 1672,
       "height": 941
     },
     "menu.background.japanese-battle": {
       "file": "ui/backgrounds/opening-japanese-battle.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (japanese battle).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (japanese battle).",
       "width": 1672,
       "height": 941
     },
     "menu.background.japanese-landscape": {
       "file": "ui/backgrounds/opening-japanese-landscape.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (japanese landscape).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (japanese landscape).",
+      "width": 1672,
+      "height": 941
+    },
+    "menu.background.mesoamerican-battle": {
+      "file": "ui/backgrounds/opening-mesoamerican-battle.webp",
+      "status": "placeholder",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (mesoamerican battle).",
       "width": 1672,
       "height": 941
     },
     "menu.background.mesoamerican-landscape": {
       "file": "ui/backgrounds/opening-mesoamerican-landscape.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (mesoamerican landscape).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (mesoamerican landscape).",
       "width": 1672,
       "height": 941
     },
     "menu.background.norse-battle": {
       "file": "ui/backgrounds/opening-norse-battle.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (norse battle).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (norse battle).",
       "width": 1672,
       "height": 941
     },
     "menu.background.norse-landscape": {
       "file": "ui/backgrounds/opening-norse-landscape.webp",
       "status": "placeholder",
-      "provenance": "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID. Opening-screen background (norse landscape).",
+      "provenance": "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID. Opening-screen background (norse landscape).",
       "width": 1672,
       "height": 941
     },

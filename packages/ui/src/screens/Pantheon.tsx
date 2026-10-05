@@ -4,7 +4,7 @@
  * quoteGodSelection; committing is a permanent SelectGod command after an
  * explicit divine-choice confirmation. Covenants are assigned to towns here.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { quoteCovenantAssignment, quoteGodSelection, type GodDefinition, interventionsFor } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel, SectionTitle } from '../components/kit';
@@ -13,7 +13,8 @@ import { ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
 import { humanPlayer } from '../app/view';
 import { InterventionList } from '../dialogs/WorldDialogs';
-import { GodBenefits, GodCardIcon, GodPrice, GodState, PermanentNote } from '../components/godIcons';
+import { GodBenefits, GodCardIcon, GodCommitFx, GodCommitPreview, GodPrice, GodState, PermanentNote } from '../components/godIcons';
+import { reducedMotion } from '../app/preferences';
 
 const STATE_CHIP: Record<string, { text: string; tone: 'ok' | 'warn' | 'bad' | 'info' | 'muted' }> = {
   selected: { text: 'Committed', tone: 'ok' },
@@ -43,7 +44,7 @@ export function PantheonScreen() {
   });
 
   const commit = (god: GodDefinition) => {
-    const excluded = god.exclusivityGroup ? gods.filter((g) => g.id !== god.id && g.exclusivityGroup === god.exclusivityGroup).map((g) => g.name) : [];
+    const excluded = god.exclusivityGroup ? gods.filter((g) => g.id !== god.id && g.exclusivityGroup === god.exclusivityGroup) : [];
     store.confirm(
       `Commit to ${god.name}?`,
       'Divine commitments are permanent for this playthrough.',
@@ -51,9 +52,22 @@ export function PantheonScreen() {
       () => {
         if (!store.dispatch({ kind: 'SelectGod', godId: god.id })) store.toast(`${god.name} now favors you`, 'success');
       },
-      { detail: [...god.benefitSummary, god.favorCost ? `Costs ${god.favorCost} Favor` : 'No Favor cost', ...(excluded.length ? [`Permanently excludes: ${excluded.join(', ')}`] : [])] },
+      // The same icon rows as the card; every token keeps its sentence as tooltip and screen-reader text.
+      { content: <GodCommitPreview catalog={catalog} god={god} excluded={excluded} /> },
     );
   };
+  // The god accepts: a short moment on its card once the commitment is committed (not under reduced motion).
+  const [celebrate, setCelebrate] = useState<{ godId: string; key: number } | null>(null);
+  useEffect(
+    () =>
+      store.registerPresenter(async (events) => {
+        const me = store.session?.humanPlayerId;
+        const e = events.find((x) => x.kind === 'GodSelected' && x.playerId === me);
+        if (!e || e.kind !== 'GodSelected' || reducedMotion(store.prefs)) return;
+        setCelebrate({ godId: e.godId, key: Date.now() });
+      }),
+    [store],
+  );
 
   return (
     <div className="screen pantheon-screen" style={{ ['--faction' as string]: pantheon.theme.accent }}>
@@ -64,6 +78,11 @@ export function PantheonScreen() {
             <div className="patron">
               <GodPortrait catalog={catalog} godId={patron.id} size="9rem" />
               <div>
+                <span className="chip god-chip" title="Your patron god, from the start; a patron cannot be changed">
+                  <GodCardIcon id="icon.god.patron" fallback="star" />
+                  Patron
+                  <GodCardIcon id="icon.god.permanent" fallback="lock" />
+                </span>
                 <div className="patron__name">{patron.name}</div>
                 <div className="dim">{patron.domain}</div>
                 {patron.quote ? <blockquote className="quote">“{patron.quote}”</blockquote> : null}
@@ -113,7 +132,8 @@ export function PantheonScreen() {
               const q = quoteGodSelection(catalog, state, player.id, g.id);
               const chip = STATE_CHIP[q.state]!;
               return (
-                <div key={g.id} className={`god-card panel ${q.state === 'selected' ? 'is-selected' : ''} ${q.state === 'undesigned' ? 'is-disabled' : ''}`} data-testid={`god-${g.id}`}>
+                <div key={g.id} className={`god-card panel ${q.state === 'selected' ? 'is-selected' : ''} ${q.state === 'undesigned' ? 'is-disabled' : ''} ${celebrate?.godId === g.id ? 'is-celebrating' : ''}`} data-testid={`god-${g.id}`}>
+                  {celebrate?.godId === g.id ? <GodCommitFx key={celebrate.key} onDone={() => setCelebrate(null)} /> : null}
                   <GodPortrait catalog={catalog} godId={g.id} size="5.5rem" locked={q.state === 'undesigned' || q.state === 'excluded'} />
                   <div className="god-card__name">{g.name}</div>
                   <div className="god-card__domain">{g.domain}</div>
@@ -192,8 +212,9 @@ export function PantheonScreen() {
           <SectionTitle>Committed</SectionTitle>
           <div className="row gap wrap">
             {[player.pantheon.patronGodId, ...player.pantheon.minorGodIds].filter(Boolean).map((g) => (
-              <span key={g!} className="god-pill">
+              <span key={g!} className="god-pill" title={g === player.pantheon.patronGodId ? 'Patron' : 'Committed (permanent)'}>
                 <GodPortrait catalog={catalog} godId={g!} size="2rem" /> {catalog.gods[g!]?.name}
+                <GodCardIcon id={g === player.pantheon.patronGodId ? 'icon.god.patron' : 'icon.god.committed'} fallback="check" />
               </span>
             ))}
           </div>

@@ -41,6 +41,10 @@ OUT = RUNTIME / "ui"
 DESKTOP = ROOT / "apps" / "desktop" / "build-resources"
 
 PROVENANCE = "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID."
+# The quieter opening paintings (delivery visual-completion-2026-10-04): a subdued centre behind the
+# menu, gods and architecture at the edges. The earlier versions are archived, unused, in
+# assets-source/ui/backgrounds-old/ (never read by this script).
+BACKGROUND_PROVENANCE = "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID."
 
 MENU_ICONS = {
     # asset id suffix -> source file (mapped by meaning from the owner's init_icon set)
@@ -226,9 +230,9 @@ def main() -> int:
         return 1
     assets: dict[str, dict] = {}
 
-    def reg(asset_id: str, path: Path, note: str, **extra) -> None:
+    def reg(asset_id: str, path: Path, note: str, provenance: str = PROVENANCE, **extra) -> None:
         rel = path.relative_to(RUNTIME).as_posix()
-        assets[asset_id] = {"file": rel, "status": "placeholder", "provenance": f"{PROVENANCE} {note}".strip(), **extra}
+        assets[asset_id] = {"file": rel, "status": "placeholder", "provenance": f"{provenance} {note}".strip(), **extra}
 
     # Backgrounds -------------------------------------------------------------------
     backgrounds = sorted((SRC / "backgrounds").glob("opening-*.png"))
@@ -241,7 +245,7 @@ def main() -> int:
         out = OUT / "backgrounds" / f"{src.stem}.webp"
         save_webp(img, out, 80)
         aid = f"menu.background.{name}"
-        reg(aid, out, f"Opening-screen background ({name.replace('-', ' ')}).", width=img.width, height=img.height)
+        reg(aid, out, f"Opening-screen background ({name.replace('-', ' ')}).", provenance=BACKGROUND_PROVENANCE, width=img.width, height=img.height)
         bg_ids.append(aid)
 
     # Branding ----------------------------------------------------------------------

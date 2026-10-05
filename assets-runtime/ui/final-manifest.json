@@ -970,6 +970,62 @@
       "file": "ui/icons/final/hero.norse.ulfhild.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.norse.ulfhild.portrait.png."
     },
+    "icon.ability.charge": {
+      "file": "ui/icons/final/icon.ability.charge.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.charge.png."
+    },
+    "icon.ability.charge_guard": {
+      "file": "ui/icons/final/icon.ability.charge_guard.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.charge_guard.png."
+    },
+    "icon.ability.family_ward": {
+      "file": "ui/icons/final/icon.ability.family_ward.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.family_ward.png."
+    },
+    "icon.ability.flight": {
+      "file": "ui/icons/final/icon.ability.flight.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.flight.png."
+    },
+    "icon.ability.no_melee_penalty": {
+      "file": "ui/icons/final/icon.ability.no_melee_penalty.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.no_melee_penalty.png."
+    },
+    "icon.ability.retaliation_2": {
+      "file": "ui/icons/final/icon.ability.retaliation_2.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.retaliation_2.png."
+    },
+    "icon.ability.retaliation_unlimited": {
+      "file": "ui/icons/final/icon.ability.retaliation_unlimited.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.retaliation_unlimited.png."
+    },
+    "icon.ability.shapeshift_hare": {
+      "file": "ui/icons/final/icon.ability.shapeshift_hare.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.shapeshift_hare.png."
+    },
+    "icon.ability.shapeshift_rut": {
+      "file": "ui/icons/final/icon.ability.shapeshift_rut.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.shapeshift_rut.png."
+    },
+    "icon.ability.shapeshift_sealskin": {
+      "file": "ui/icons/final/icon.ability.shapeshift_sealskin.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.shapeshift_sealskin.png."
+    },
+    "icon.ability.shapeshift_waterhorse": {
+      "file": "ui/icons/final/icon.ability.shapeshift_waterhorse.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.shapeshift_waterhorse.png."
+    },
+    "icon.ability.shooter": {
+      "file": "ui/icons/final/icon.ability.shooter.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.shooter.png."
+    },
+    "icon.ability.unyielding": {
+      "file": "ui/icons/final/icon.ability.unyielding.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.unyielding.png."
+    },
+    "icon.ability.wall_breaker": {
+      "file": "ui/icons/final/icon.ability.wall_breaker.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.wall_breaker.png."
+    },
     "icon.artifact.andvaris_ring": {
       "file": "ui/icons/final/icon.artifact.andvaris_ring.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.andvaris_ring.png."
@@ -982,6 +1038,10 @@
       "file": "ui/icons/final/icon.artifact.boar_crest_helm.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.boar_crest_helm.png."
     },
+    "icon.artifact.boiled_leather_jerkin": {
+      "file": "ui/icons/final/icon.artifact.boiled_leather_jerkin.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.boiled_leather_jerkin.png."
+    },
     "icon.artifact.boots_of_the_long_road": {
       "file": "ui/icons/final/icon.artifact.boots_of_the_long_road.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.boots_of_the_long_road.png."
@@ -993,6 +1053,10 @@
     "icon.artifact.bronze_buckler": {
       "file": "ui/icons/final/icon.artifact.bronze_buckler.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.bronze_buckler.png."
+    },
+    "icon.artifact.bronze_seal_ring": {
+      "file": "ui/icons/final/icon.artifact.bronze_seal_ring.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.bronze_seal_ring.png."
     },
     "icon.artifact.bronze_spear": {
       "file": "ui/icons/final/icon.artifact.bronze_spear.png",
@@ -1021,6 +1085,14 @@
     "icon.artifact.champion_torc": {
       "file": "ui/icons/final/icon.artifact.champion_torc.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.champion_torc.png."
+    },
+    "icon.artifact.clay_votive_amulet": {
+      "file": "ui/icons/final/icon.artifact.clay_votive_amulet.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.clay_votive_amulet.png."
+    },
+    "icon.artifact.copper_circlet": {
+      "file": "ui/icons/final/icon.artifact.copper_circlet.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.copper_circlet.png."
     },
     "icon.artifact.cornucopia": {
       "file": "ui/icons/final/icon.artifact.cornucopia.png",
@@ -1069,6 +1141,10 @@
     "icon.artifact.hippeis_barding": {
       "file": "ui/icons/final/icon.artifact.hippeis_barding.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.hippeis_barding.png."
+    },
+    "icon.artifact.iron_shod_spear": {
+      "file": "ui/icons/final/icon.artifact.iron_shod_spear.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.iron_shod_spear.png."
     },
     "icon.artifact.jade_pectoral": {
       "file": "ui/icons/final/icon.artifact.jade_pectoral.png",
@@ -1174,6 +1250,10 @@
       "file": "ui/icons/final/icon.artifact.scarab_scale_corselet.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.scarab_scale_corselet.png."
     },
+    "icon.artifact.scholars_oil_lamp": {
+      "file": "ui/icons/final/icon.artifact.scholars_oil_lamp.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.scholars_oil_lamp.png."
+    },
     "icon.artifact.scribes_papyrus_sandals": {
       "file": "ui/icons/final/icon.artifact.scribes_papyrus_sandals.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.scribes_papyrus_sandals.png."
@@ -1266,6 +1346,14 @@
       "file": "ui/icons/final/icon.artifact.watchers_ring.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.watchers_ring.png."
     },
+    "icon.artifact.watchmans_lantern": {
+      "file": "ui/icons/final/icon.artifact.watchmans_lantern.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.watchmans_lantern.png."
+    },
+    "icon.artifact.waxed_travel_cloak": {
+      "file": "ui/icons/final/icon.artifact.waxed_travel_cloak.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.waxed_travel_cloak.png."
+    },
     "icon.artifact.wayfarer_boots": {
       "file": "ui/icons/final/icon.artifact.wayfarer_boots.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.wayfarer_boots.png."
@@ -1285,6 +1373,10 @@
     "icon.artifact.winged_sandals": {
       "file": "ui/icons/final/icon.artifact.winged_sandals.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.winged_sandals.png."
+    },
+    "icon.artifact.woven_saddle_blanket": {
+      "file": "ui/icons/final/icon.artifact.woven_saddle_blanket.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.artifact.woven_saddle_blanket.png."
     },
     "icon.bless.armies": {
       "file": "ui/icons/final/icon.bless.armies.png",
@@ -1369,6 +1461,46 @@
     "icon.req.temple": {
       "file": "ui/icons/final/icon.req.temple.png",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.req.temple.png."
+    },
+    "icon.set.arms_of_the_einherjar": {
+      "file": "ui/icons/final/icon.set.arms_of_the_einherjar.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.arms_of_the_einherjar.png."
+    },
+    "icon.set.gear_of_perseus": {
+      "file": "ui/icons/final/icon.set.gear_of_perseus.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.gear_of_perseus.png."
+    },
+    "icon.set.gifts_of_the_feathered_serpent": {
+      "file": "ui/icons/final/icon.set.gifts_of_the_feathered_serpent.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.gifts_of_the_feathered_serpent.png."
+    },
+    "icon.set.panoply_of_the_phalanx": {
+      "file": "ui/icons/final/icon.set.panoply_of_the_phalanx.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.panoply_of_the_phalanx.png."
+    },
+    "icon.set.regalia_of_the_sun_king": {
+      "file": "ui/icons/final/icon.set.regalia_of_the_sun_king.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.regalia_of_the_sun_king.png."
+    },
+    "icon.set.regalia_of_the_two_lands": {
+      "file": "ui/icons/final/icon.set.regalia_of_the_two_lands.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.regalia_of_the_two_lands.png."
+    },
+    "icon.set.relics_of_the_fallen_champion": {
+      "file": "ui/icons/final/icon.set.relics_of_the_fallen_champion.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.relics_of_the_fallen_champion.png."
+    },
+    "icon.set.treasures_of_takamagahara": {
+      "file": "ui/icons/final/icon.set.treasures_of_takamagahara.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.treasures_of_takamagahara.png."
+    },
+    "icon.set.treasures_of_the_tuatha": {
+      "file": "ui/icons/final/icon.set.treasures_of_the_tuatha.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.treasures_of_the_tuatha.png."
+    },
+    "icon.set.wayfarers_kit": {
+      "file": "ui/icons/final/icon.set.wayfarers_kit.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.set.wayfarers_kit.png."
     },
     "icon.skill.archery": {
       "file": "ui/icons/final/icon.skill.archery.png",

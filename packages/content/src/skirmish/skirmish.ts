@@ -325,7 +325,7 @@ function twinHarbors(id: string, playerPantheon: string, rivalPantheon: string):
 }
 
 /** Skirmish scenarios enable the proposed expansions (pantheon skills and spells, sets, events, interventions). */
-export const SKIRMISH_FEATURES = { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true } as const;
+export const SKIRMISH_FEATURES = { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true } as const;
 
 /** Mission ID for a pantheon pairing (Greek vs. Greek keeps the original ID). */
 export function skirmishMissionId(playerPantheon: string, rivalPantheon: string): string {

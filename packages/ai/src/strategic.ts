@@ -50,13 +50,15 @@ import { buildReserve, heroPower, hireReserve, weekPlan } from './assessment';
 import { campCandidates, godCandidates, interventionCandidates,
   giftCandidates, mapEventCandidates, offeringCandidates, siteCandidates, trainingCandidates } from './services';
 import { equipCandidates, levelUpCandidates, merchantCandidates, movementSpellCandidate, recallSpellCandidate, scoutingSpellCandidate, specialtyHireValue } from './growth';
+import { aiPersonalityFor, aiTemperamentFor, temperBuildScore } from './temperament';
+import type { AITemperamentDefinition } from '@pr/rules';
 
 /**
  * Data-driven build scoring (works for any pantheon's town tree): income first,
  * then new dwellings by tier, growth, hiring/market access and prerequisites
  * that unlock many other buildings. Heuristic, not a proven build order.
  */
-function buildScore(catalog: ContentCatalog, buildingId: string, heroCount: number): number {
+function buildScore(catalog: ContentCatalog, buildingId: string, heroCount: number, temperament?: AITemperamentDefinition): number {
   const def = catalog.buildings[buildingId];
   if (!def) return 0;
   let score = 0;
@@ -81,6 +83,9 @@ function buildScore(catalog: ContentCatalog, buildingId: string, heroCount: numb
     if (other.requirements.some((r) => r.type === 'has_building' && r.buildingId === buildingId)) unlocks++;
   }
   score += unlocks * 380;
+  // Temperament (scenario feature aiTemperaments): weights by kind of building, plus a
+  // bonus for favoured kinds the score above values little (walls, Temple).
+  if (temperament) score = temperBuildScore(catalog, buildingId, temperament, score);
   const gold = def.cost.gold ?? 0;
   return score / (1 + gold / 6000);
 }
@@ -88,21 +93,15 @@ function buildScore(catalog: ContentCatalog, buildingId: string, heroCount: numb
 const HIRE_RESERVE_GOLD = 3000;
 
 /**
- * Strength margins and hero target by skirmish difficulty (catalog data). The
- * defaults are the Normal values, used whenever no difficulty applies (campaign).
+ * Tavern preference: the specialty's value, plus or minus a spellcaster's
+ * worth for a temperament that favours (or neglects) magic.
  */
-export interface AIPersonality {
-  readonly heroAttackMargin: number;
-  readonly guardMargin: number;
-  readonly siegeMargin: number;
-  readonly targetHeroes: number;
-}
-
-const DEFAULT_PERSONALITY: AIPersonality = { heroAttackMargin: 1.2, guardMargin: 1.3, siegeMargin: 1.25, targetHeroes: 3 };
-
-export function aiPersonality(catalog: ContentCatalog, state: MatchState): AIPersonality {
-  const id = state.scenario.difficultyId;
-  return (id ? catalog.difficulties?.[id]?.ai : undefined) ?? DEFAULT_PERSONALITY;
+function hireValue(catalog: ContentCatalog, definitionId: string, pantheonId: string, temperament: AITemperamentDefinition): number {
+  const base = specialtyHireValue(catalog, definitionId, pantheonId);
+  if (temperament.magic === 1) return base;
+  const def = catalog.heroes[definitionId];
+  const caster = !!def && !!catalog.heroClasses[def.classId]?.startsWithSpellbook;
+  return caster ? base + (temperament.magic - 1) * 20 : base;
 }
 
 /** An enemy hero within this many hexes of a town counts as a threat to it. */
@@ -172,7 +171,9 @@ interface Target {
 function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): Target[] {
   const out: Target[] = [];
   const mission = requireScenarioMission(catalog, belief);
-  const persona = aiPersonality(catalog, belief);
+  const persona = aiPersonalityFor(catalog, belief, playerId);
+  // Temperament: rival heroes, towns and mines are worth more (or less) to raiders.
+  const raid = aiTemperamentFor(catalog, belief, playerId).aggression;
   const holdRelic = mission.victoryCondition?.type === 'hold_site' ? mission.victoryCondition.siteId : null;
   const wallet = belief.players[playerId]?.wallet;
   const myStrength = heroStrength(catalog, belief, hero);
@@ -193,13 +194,13 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
         if (!st.claimed) out.push({ coord: def.coord, value: 700 + (def.kind.reward.resources?.gold ?? 0), encounter: false, label: def.name });
         break;
       case 'resource_site':
-        if (st.owner !== playerId) out.push({ coord: def.coord, value: def.kind.resource === 'gold' ? 2500 : 1200, encounter: false, label: def.name });
+        if (st.owner !== playerId) out.push({ coord: def.coord, value: (def.kind.resource === 'gold' ? 2500 : 1200) * (st.owner ? raid : 1), encounter: false, label: def.name });
         break;
       case 'town': {
         const town = belief.towns[def.kind.townId];
         if (!town || town.ownerId === playerId) break;
         // An empire's last town ends it: worth half again as much (ownership is public).
-        const last = !!town.ownerId && Object.values(belief.towns).filter((x) => x.ownerId === town.ownerId).length <= 1 ? 1.5 : 1;
+        const last = (!!town.ownerId && Object.values(belief.towns).filter((x) => x.ownerId === town.ownerId).length <= 1 ? 1.5 : 1) * (town.ownerId ? raid : 1);
         if (!visible.has(cellIndex(belief.world.map, town.coord))) {
           // Garrison unknown: approach (the real move is refused if it would start an unplanned
           // siege) only when strong enough for a typical garrison — half a week of the town's
@@ -284,7 +285,7 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
     if (townCoords.has(hexKey(enemy.position))) continue; // visiting a town: evaluated as a siege above
     const theirs = heroStrength(catalog, belief, enemy);
     const margin = enemy.monster ? Math.max(persona.guardMargin, HERO_ATTACK_MARGIN) : persona.heroAttackMargin;
-    const value = enemy.monster ? 900 + (enemy.monster.bounty.gold ?? 0) + theirs * 0.2 : 3000 + theirs * 0.5;
+    const value = enemy.monster ? 900 + (enemy.monster.bounty.gold ?? 0) + theirs * 0.2 : (3000 + theirs * 0.5) * raid;
     if (myStrength >= theirs * margin) out.push({ coord: enemy.position, value, encounter: true, label: enemy.name, fights: theirs, enemyHeroId: enemy.id });
   }
   return out;
@@ -608,7 +609,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         const eff = effectiveAttributes(catalog, belief, visitor);
         const own: StackSpec[] = visitor.army.slots.filter((x): x is NonNullable<typeof x> => !!x).map((x) => ({ creatureId: x.creatureId, count: x.count }));
         const mine = armyStrength(catalog, [...own, ...garrison], { attack: eff.attack.total, defense: eff.defense.total });
-        return near.some((e) => heroStrength(catalog, belief, e) * aiPersonality(catalog, belief).heroAttackMargin > mine);
+        return near.some((e) => heroStrength(catalog, belief, e) * aiPersonalityFor(catalog, belief, playerId).heroAttackMargin > mine);
       })
       .map((t) => t.id),
   );
@@ -620,6 +621,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
   const canHireSomewhere = playerTowns(belief, playerId).some((t) => (obs.hireRoster[t.id] ?? []).length > 0);
   const saving = belief.scenario.heroHiringEnabled && strategic.length === 0 && canHireSomewhere && player.wallet.gold < hireCost;
 
+  const temperament = aiTemperamentFor(catalog, belief, playerId);
   if (player.role !== 'scripted_hostile') {
     // Divine commitments and equipment first: they only ever help.
     out.push(...godCandidates(catalog, belief, playerId));
@@ -640,7 +642,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         const options = townSlots(catalog, town)
           .map((slot) => slot.chain[town.buildings[slot.id] ?? 0])
           .filter((x): x is string => !!x)
-          .map((b) => ({ b, score: buildScore(catalog, b, myHeroes.length) }))
+          .map((b) => ({ b, score: buildScore(catalog, b, myHeroes.length, temperament) }))
           .sort((x, y) => y.score - x.score || (x.b < y.b ? -1 : 1));
         for (const { b } of options) {
           const q = quoteConstruction(catalog, belief, playerId, town.id, b);
@@ -651,12 +653,12 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         }
       }
       // Hire: returning heroes first, then new candidates, while keeping a reserve.
-      if (myHeroes.length < aiPersonality(catalog, belief).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : hireReserve(plan, HIRE_RESERVE_GOLD))) {
+      if (myHeroes.length < aiPersonalityFor(catalog, belief, playerId).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : hireReserve(plan, HIRE_RESERVE_GOLD))) {
         // Returning heroes first (they keep their levels), then new recruits by specialty value.
         const roster = [...(obs.hireRoster[town.id] ?? [])].sort(
           (a, b) =>
             Number(!!b.returningHeroId) - Number(!!a.returningHeroId) ||
-            specialtyHireValue(catalog, b.definitionId, player.pantheonId) - specialtyHireValue(catalog, a.definitionId, player.pantheonId) ||
+            hireValue(catalog, b.definitionId, player.pantheonId, temperament) - hireValue(catalog, a.definitionId, player.pantheonId, temperament) ||
             (a.definitionId < b.definitionId ? -1 : 1),
         );
         for (const option of roster) {

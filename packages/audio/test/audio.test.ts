@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { AudioDirector, busGain, intensityGain, mayStart, sliderGain, validateSoundManifest, voiceLimit, type AudioLevels, type SoundDefinition, type SoundManifest } from '../src';
+import { AudioDirector, busGain, intensityGain, mayStart, nextPlaylistIndex, sliderGain, validateSoundManifest, voiceLimit, type AudioLevels, type SoundDefinition, type SoundManifest } from '../src';
 import { REQUIRED_SOUND_IDS, SOUNDSCAPES, MUSIC, AMBIENCE } from '../../ui/src/audio/sounds';
 import { loadCatalog } from '@pr/content';
 
@@ -24,10 +24,35 @@ describe('sound manifest', () => {
       }
   });
 
-  it('marks every file as a placeholder with provenance (none is presented as final)', () => {
+  it('marks every file as a placeholder with provenance, except the final map music with its sources', () => {
     for (const s of manifest.sounds) {
+      if (s.status === 'final') {
+        // Only the map music is final (2026-10-04): royalty-free tracks with their pages and licence.
+        expect(s.id).toMatch(/^music\.map\./);
+        expect(s.playlist).toBe(true);
+        expect(s.provenance).toMatch(/Pixabay Content License/);
+        expect(s.provenance).toMatch(/https:\/\/pixabay\.com\/music\//);
+        continue;
+      }
       expect(s.status).toBe('placeholder');
       expect(s.provenance).toMatch(/placeholder/i);
+    }
+  });
+
+  it('every pantheon has a map playlist of long tracks listed with title, author, page and licence', () => {
+    const tracks = (JSON.parse(readFileSync(path.join(root, 'assets-source/audio/music/tracks.json'), 'utf8')) as { tracks: { pantheon: string; file: string; title: string; author: string; page: string; license: string; durationSeconds: number }[] }).tracks;
+    const catalog = loadCatalog();
+    for (const p of catalog.pantheonOrder) {
+      const entry = manifest.sounds.find((s) => s.id === MUSIC.map(p));
+      expect(entry, p).toBeDefined();
+      expect(entry!.files.length, p).toBeGreaterThanOrEqual(3);
+      const mine = tracks.filter((t) => t.pantheon === p);
+      expect(entry!.files).toEqual(mine.map((t) => t.file));
+      for (const t of mine) {
+        expect(t.title && t.author && t.page.startsWith('https://pixabay.com/music/'), t.file).toBeTruthy();
+        expect(t.license).toMatch(/no attribution required/);
+        expect(t.durationSeconds, t.file).toBeGreaterThanOrEqual(170);
+      }
     }
   });
 
@@ -145,11 +170,44 @@ class FakeSource extends FakeNode {
     this.stopped = true;
   }
 }
+/** A streamed track: fires its listeners when the test says so. */
+class FakeMedia {
+  src = '';
+  preload = '';
+  duration = NaN;
+  currentTime = 0;
+  paused = true;
+  playCalls = 0;
+  refuse = false;
+  private readonly listeners = new Map<string, (() => void)[]>();
+  addEventListener(type: string, fn: () => void) {
+    this.listeners.set(type, [...(this.listeners.get(type) ?? []), fn]);
+  }
+  emit(type: string) {
+    for (const fn of this.listeners.get(type) ?? []) fn();
+  }
+  play() {
+    this.playCalls++;
+    if (this.refuse) return Promise.reject(new Error('NotAllowedError'));
+    this.paused = false;
+    return Promise.resolve();
+  }
+  pause() {
+    this.paused = true;
+  }
+  removeAttribute(name: string) {
+    if (name === 'src') this.src = '';
+  }
+  load() {}
+}
 class FakeContext {
   state: 'suspended' | 'running' | 'closed' = 'suspended';
   currentTime = 0;
   destination = new FakeNode();
   sources: FakeSource[] = [];
+  createMediaElementSource() {
+    return new FakeNode();
+  }
   createGain() {
     return new FakeNode();
   }
@@ -243,6 +301,97 @@ describe('AudioDirector', () => {
     expect(d.status().focused).toBe(false);
     d.setFocus(false, false);
     expect(d.status().focused).toBe(true);
+  });
+
+  it('streams a music playlist track after track, crossfading near each end and wrapping around', async () => {
+    const list: SoundDefinition = { id: 'music.map.test', role: 'music', bus: 'music', files: ['music/a.ogg', 'music/b.ogg', 'music/c.ogg'], gain: 0.8, playlist: true, status: 'final', provenance: 'test' };
+    const ctx = new FakeContext();
+    const media: FakeMedia[] = [];
+    const d = new AudioDirector({
+      manifest: { ...manifest, sounds: [...manifest.sounds, list] },
+      resolveUrl: (f) => `/${f}`,
+      createContext: () => ctx as unknown as AudioContext,
+      createMediaElement: () => {
+        const m = new FakeMedia();
+        media.push(m);
+        return m as unknown as HTMLMediaElement;
+      },
+      pickStart: () => 1,
+      fadeMs: 1000,
+    });
+    d.setLevels(LEVELS);
+    d.setMusic('music.map.test');
+    // Streamed, not decoded: no buffer source, one media element on the chosen first track.
+    expect(ctx.sources.length).toBe(0);
+    expect(media.length).toBe(1);
+    expect(media[0]!.src).toBe('/music/b.ogg');
+    expect(d.status()).toMatchObject({ music: 'music.map.test', musicFile: 'music/b.ogg' });
+    // Mid-track: nothing happens.
+    media[0]!.duration = 200;
+    media[0]!.currentTime = 100;
+    media[0]!.emit('timeupdate');
+    expect(media.length).toBe(1);
+    // Within the fade of the end: the next track starts (crossfade) — once.
+    media[0]!.currentTime = 199.5;
+    media[0]!.emit('timeupdate');
+    media[0]!.emit('ended');
+    expect(media.length).toBe(2);
+    expect(media[1]!.src).toBe('/music/c.ogg');
+    expect(d.status().musicFile).toBe('music/c.ogg');
+    // The last track wraps to the first.
+    media[1]!.emit('ended');
+    expect(media[2]!.src).toBe('/music/a.ogg');
+    // The same music again is not restarted.
+    d.setMusic('music.map.test');
+    expect(media.length).toBe(3);
+    // Another scene: the playlist stops advancing.
+    d.setMusic('music.battle');
+    media[2]!.emit('ended');
+    expect(media.length).toBe(3);
+    await tick();
+  });
+
+  it('skips a playlist track that fails, goes silent when every track fails, and retries a refused start on unlock', async () => {
+    const list: SoundDefinition = { id: 'music.map.test', role: 'music', bus: 'music', files: ['music/a.ogg', 'music/b.ogg'], gain: 1, playlist: true, status: 'final', provenance: 'test' };
+    const ctx = new FakeContext();
+    const media: FakeMedia[] = [];
+    const d = new AudioDirector({
+      manifest: { ...manifest, sounds: [...manifest.sounds, list] },
+      resolveUrl: (f) => f,
+      createContext: () => ctx as unknown as AudioContext,
+      createMediaElement: () => {
+        const m = new FakeMedia();
+        m.refuse = media.length === 0;
+        media.push(m);
+        return m as unknown as HTMLMediaElement;
+      },
+      pickStart: () => 0,
+    });
+    d.setLevels(LEVELS);
+    d.setMusic('music.map.test');
+    await tick();
+    // Refused before any interaction: played again on unlock.
+    expect(media[0]!.playCalls).toBe(1);
+    media[0]!.refuse = false;
+    d.unlock();
+    await tick();
+    expect(media[0]!.playCalls).toBe(2);
+    // A broken file is reported and skipped …
+    media[0]!.emit('error');
+    expect(d.status().failed).toContain('music/a.ogg');
+    expect(d.status().musicFile).toBe('music/b.ogg');
+    // … and when the other one fails too, the music goes silent instead of looping on errors.
+    media[1]!.emit('error');
+    expect(d.status().music).toBeNull();
+    expect(media.length).toBe(2);
+  });
+
+  it('only music may be a playlist; the next index wraps', () => {
+    const bad: SoundManifest = { ...manifest, sounds: [{ id: 'amb.x', role: 'ambience', bus: 'ambience', files: ['a.ogg'], gain: 1, playlist: true, status: 'placeholder', provenance: 'x' }] };
+    expect(validateSoundManifest(bad)).toContain('amb.x: only music can be a playlist');
+    expect(nextPlaylistIndex(3, 0)).toBe(1);
+    expect(nextPlaylistIndex(3, 2)).toBe(0);
+    expect(nextPlaylistIndex(1, 0)).toBe(0);
   });
 
   it('bus gains follow the levels and mute', () => {

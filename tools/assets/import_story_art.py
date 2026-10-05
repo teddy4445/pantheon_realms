@@ -11,6 +11,7 @@ packages/ui/src/assets/manifest.ts).
 
 Story art (Brief 1):
   hero.<pantheon>.<character>.bust.png   -> art/busts/<id>.webp        (alpha kept)
+  story.herald.bust.png                  -> art/busts/<id>.webp        (the Herald, delivered 2026-10-04)
   campaign.<campaign>.cover.png          -> art/covers/<id>.webp
                                           + art/cards/campaign.<campaign>.thumbnail.webp (640 x 360 card)
   ending.<campaign>.<ending>.png         -> art/endings/<id>.webp
@@ -33,6 +34,11 @@ Town building levels (Brief 10, cut from the level sheets by `npm run sprites:cu
   town.<pantheon>.support.<location>.l<N>.png -> art/town/<id>.webp, at most 512 px, transparency
                                             kept; the town shows level N of that building with it
                                             (until then every level uses the one location image)
+Town art still missing (Brief 12, cut from its sheets by `npm run sprites:cut`):
+  town.<pantheon>.dwelling.tier<N>.(base|upgraded).png -> art/town/<id>.webp, at most 512 px,
+                                            transparency kept; replaces the cropped concept art
+  town.<pantheon>.background.png          -> art/town/<id>.webp, opaque, native size up to 2048 wide
+                                            (4:3; the locations keep their places on it)
 
 Rules: the sources are never modified; nothing is ever upscaled (derivatives
 are the native size or smaller, aspect ratio kept); dialogue portraits keep
@@ -47,6 +53,12 @@ delivered masters and do not settle the briefs' exact-size exports.
 Terrain and sky are drawn with a mirrored repeat until their seams are verified:
 list verified asset IDs (one per line) in assets-source/art/seamless-verified.txt
 and re-run to switch them to a plain repeat.
+
+Usage: python3 tools/assets/import_story_art.py [--prune] [--self-test]
+  --prune      also remove runtime files (and entries) whose source is not in
+               assets-source/art/final/ — by default they are kept, so a checkout
+               without every master never drops delivered art
+  --self-test  check the name recognition only (no files touched)
 
 Needs: Pillow with WebP support.
 """
@@ -78,6 +90,7 @@ BANNER_MAX_W = 1536        # level-up and new-week banners: at most 1536 wide (t
 
 PATTERNS = [
     ('bust', re.compile(r'^hero\.[a-z]+\.[a-z_]+\.bust$')),
+    ('bust', re.compile(r'^story\.herald\.bust$')),   # the Herald (skirmish briefings), an ordinary messenger
     ('cover', re.compile(r'^campaign\.[a-z_]+\.cover$')),
     ('ending', re.compile(r'^ending\.[a-z_]+\.[a-z_]+$')),
     ('mission', re.compile(r'^mission\.[a-z_]+\.(m\d\d|twin_harbors|random)\.thumbnail$')),
@@ -88,7 +101,10 @@ PATTERNS = [
     ('splash', re.compile(r'^splash\.[a-z]+\.(victory|defeat)$')),
     ('banner', re.compile(r'^banner\.(level_up\.[a-z]+|new_week|week\.[a-z_]+)$')),
     ('building', re.compile(r'^town\.[a-z]+\.support\.[a-z_]+\.l\d$')),
+    ('building', re.compile(r'^town\.[a-z]+\.dwelling\.tier[1-7]\.(base|upgraded)$')),
+    ('background', re.compile(r'^town\.[a-z]+\.background$')),
 ]
+TOWN_BG_MAX_W = 2048       # town backgrounds: native size up to 2048 wide (Brief 12: 2048 x 1536)
 BUILDING_MAX = 512         # town building level art: at most 512 px on the long side (shown at ~150–300 px)
 
 # The brief's nominal plaque (about 60 % x 45 %, centred) when it cannot be measured.
@@ -204,14 +220,39 @@ def card(img):
     return cropped.resize(CARD, Image.LANCZOS), (x, y, cw, ch)
 
 
+def self_test():
+    """Name recognition (no files touched): every painted-art kind, the Herald's bust, and names that are refused."""
+    cases = {
+        'hero.greek.thaleia.bust': 'bust',
+        'story.herald.bust': 'bust',
+        'campaign.three_beacons.cover': 'cover',
+        'terrain.moor.forest': 'terrain',
+        'battlefield.grove.ground.moor': 'battlefield',
+        'town.greek.support.civic_hall.l2': 'building',
+        'town.norse.dwelling.tier7.upgraded': 'building',
+        'town.celtic.background': 'background',
+        'story.herald.portrait': None,
+        'story.someone.bust': None,
+        'town.greek.dwelling.tier8.base': None,
+        'icon.set.wayfarers_kit': None,
+    }
+    bad = [f'{k}: {kind_of(k)} (expected {v})' for k, v in cases.items() if kind_of(k) != v]
+    for b in bad:
+        print('self-test FAILED:', b)
+    print(f'self-test: {len(cases) - len(bad)} / {len(cases)} names recognised as expected')
+    return 1 if bad else 0
+
+
 def main():
+    if '--self-test' in sys.argv:
+        return self_test()
     if not os.path.isdir(SRC):
         print(f'missing {SRC}', file=sys.stderr)
         return 1
     files = sorted(f for f in os.listdir(SRC) if f.lower().endswith('.png'))
     assets = {}
     warnings = []
-    counts = {'bust': 0, 'cover': 0, 'ending': 0, 'mission': 0, 'terrain': 0, 'battlefield': 0, 'sky': 0, 'miracle': 0, 'splash': 0, 'banner': 0, 'building': 0}
+    counts = {'bust': 0, 'cover': 0, 'ending': 0, 'mission': 0, 'terrain': 0, 'battlefield': 0, 'sky': 0, 'miracle': 0, 'splash': 0, 'banner': 0, 'building': 0, 'background': 0}
     today = date.today().isoformat()
     verified = seamless_verified()
     for f in files:
@@ -225,7 +266,7 @@ def main():
         src.load()
         sw, sh = src.size
         source = {'file': f'assets-source/art/final/{f}', 'width': sw, 'height': sh, 'sha256': sha256(path)}
-        brief = 'ground and sky art (GPT6_BRIEF_2)' if kind in ('terrain', 'battlefield', 'sky') else 'big-moment art (GPT6_BRIEF_3)' if kind in ('miracle', 'splash', 'banner') else 'town building level art (GPT6_BRIEF_10)' if kind == 'building' else 'story art (GPT6_BRIEF_1)'
+        brief = 'ground and sky art (GPT6_BRIEF_2)' if kind in ('terrain', 'battlefield', 'sky') else 'big-moment art (GPT6_BRIEF_3)' if kind in ('miracle', 'splash', 'banner') else ('town art (GPT6_BRIEF_12)' if '.dwelling.' in asset_id or kind == 'background' else 'town building level art (GPT6_BRIEF_10)') if kind in ('building', 'background') else 'story art (GPT6_BRIEF_1)'
         note = f'Owner-delivered {brief}, imported {today}; source {sw} x {sh}'
         if kind == 'building':
             if src.mode != 'RGBA':
@@ -238,6 +279,18 @@ def main():
             save_webp(im, out, 86, alpha_quality=90)
             assets[asset_id] = {'file': rel(out), 'kind': 'building', 'width': im.width, 'height': im.height, 'source': source, 'provenance': f'{note}; {im.width} x {im.height}, transparency kept.'}
             counts['building'] += 1
+            continue
+        if kind == 'background':
+            im = src.convert('RGB')
+            if abs(im.width / im.height - 4 / 3) > 0.02:
+                warnings.append(f'{f}: {im.width} x {im.height} is not 4:3 — the town locations are placed on a 4:3 scene')
+            if im.width > TOWN_BG_MAX_W:
+                k = TOWN_BG_MAX_W / im.width
+                im = im.resize((TOWN_BG_MAX_W, max(1, round(im.height * k))), Image.LANCZOS)
+            out = os.path.join(OUT, 'town', f'{asset_id}.webp')
+            save_webp(im, out, 86)
+            assets[asset_id] = {'file': rel(out), 'kind': 'background', 'width': im.width, 'height': im.height, 'source': source, 'provenance': f'{note}; {im.width} x {im.height}.'}
+            counts['background'] += 1
             continue
         if kind in ('miracle', 'splash', 'banner'):
             if kind == 'banner':
@@ -358,8 +411,22 @@ def main():
                     save_webp(small, out_c, 78)
                     assets[card_id] = {'file': rel(out_c), 'kind': 'card', 'width': CARD[0], 'height': CARD[1], 'crop': list(crop), 'source': source, 'provenance': f'{note}; {CARD[0]} x {CARD[1]} campaign card from the cover (centred 16:9 crop).'}
         counts[kind] += 1
-    # Remove runtime files no longer produced (a source was removed or renamed).
+    # Runtime files no longer produced (a source was removed, renamed — or is simply not in this
+    # checkout's assets-source/art/final/): kept with their manifest entries unless --prune is given,
+    # so a checkout without every master never silently drops delivered art (2026-10-04).
+    prune = '--prune' in sys.argv
     produced = {os.path.normpath(os.path.join(RUNTIME, a['file'])) for a in assets.values()}
+    previous = json.load(open(MANIFEST, encoding='utf-8')).get('assets', {}) if os.path.exists(MANIFEST) else {}
+    kept = 0
+    for asset_id, entry in previous.items():
+        p = os.path.normpath(os.path.join(RUNTIME, entry['file']))
+        if asset_id in assets or p in produced or not os.path.exists(p) or prune:
+            continue
+        assets[asset_id] = dict(entry)
+        produced.add(p)
+        kept += 1
+    if kept:
+        warnings.append(f'{kept} runtime file(s) without a source in assets-source/art/final/ kept as they are (run with --prune to remove them)')
     for folder in ('busts', 'covers', 'endings', 'missions', 'cards', 'terrain', 'battle', 'sky', 'miracles', 'splashes', 'banners', 'town'):
         d = os.path.join(OUT, folder)
         if not os.path.isdir(d):
@@ -367,7 +434,10 @@ def main():
         for name in os.listdir(d):
             p = os.path.normpath(os.path.join(d, name))
             if p not in produced:
-                os.remove(p)
+                if prune:
+                    os.remove(p)
+                else:
+                    warnings.append(f'{os.path.relpath(p, ROOT)}: not produced and not in the manifest — left in place (--prune removes it)')
     os.makedirs(OUT, exist_ok=True)
     # The game reads the compact manifest (it is part of the start-up bundle); sources,
     # hashes, crops and notes go to the import report next to the sources.
@@ -391,7 +461,7 @@ def main():
     total = sum(os.path.getsize(os.path.join(RUNTIME, a['file'])) for a in assets.values())
     print(f"painted art: {counts['bust']} busts, {counts['cover']} covers, {counts['ending']} endings, {counts['mission']} mission pictures, "
           f"{counts['terrain']} terrain, {counts['battlefield']} battlefields, {counts['sky']} skies, "
-          f"{counts['miracle']} miracle cards, {counts['splash']} splashes, {counts['banner']} banners, {counts['building']} town building levels -> {len(assets)} runtime files, {total / 1e6:.1f} MB")
+          f"{counts['miracle']} miracle cards, {counts['splash']} splashes, {counts['banner']} banners, {counts['building']} town buildings, {counts['background']} town backgrounds -> {len(assets)} runtime files, {total / 1e6:.1f} MB")
     return 0
 
 

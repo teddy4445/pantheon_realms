@@ -17,6 +17,16 @@ describe('music and ambience by context', () => {
     expect(soundscapeFor({ ...base, screen: 'battle-result' }).music).toBeNull();
     expect(soundscapeFor({ ...base, screen: 'adventure', soundscape: null }).music).toBe('music.explore.coast');
   });
+  it('maps play the viewing player’s pantheon music where the manifest has it, else the soundscape’s', () => {
+    const has = (id: string) => id === 'music.map.norse';
+    expect(soundscapeFor({ ...base, screen: 'adventure', pantheonId: 'norse', has })).toEqual({ music: 'music.map.norse', ambience: 'amb.high_pass' });
+    expect(soundscapeFor({ ...base, screen: 'town', pantheonId: 'norse', has }).music).toBe('music.map.norse');
+    // No entry for this pantheon yet: the mission's soundscape music.
+    expect(soundscapeFor({ ...base, screen: 'adventure', pantheonId: 'celtic', has }).music).toBe('music.explore.high_pass');
+    // Battles and menus keep their own music.
+    expect(soundscapeFor({ ...base, screen: 'battle', pantheonId: 'norse', has }).music).toBe('music.battle');
+    expect(soundscapeFor({ ...base, screen: 'main-menu', inSession: false, pantheonId: 'norse', has }).music).toBe('music.menu');
+  });
   it('the debrief plays the resolution theme; a failed mission is silent', () => {
     expect(soundscapeFor({ ...base, screen: 'adventure', overlays: ['debrief'] }).music).toBe('music.resolution');
     expect(soundscapeFor({ ...base, screen: 'adventure', overlays: ['mission-failed'] })).toEqual({ music: null, ambience: null });

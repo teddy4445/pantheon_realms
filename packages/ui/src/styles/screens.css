@@ -187,6 +187,9 @@ code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.78rem
 .pantheon-card__note { margin-top: auto; font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
 .rival-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; padding: 0 1.6rem 0.7rem; }
 .rival-picker__label { font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-200); margin-right: 0.3rem; }
+.rival-temperament { margin: -0.3rem 0 0.7rem; padding: 0 1.6rem; }
+.temperament-note { color: inherit; }
+.temperament-note__name { color: var(--gold-200); font-weight: 600; }
 .rival-chip { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.7rem 0.15rem 0.2rem; border-radius: 999px; cursor: var(--cur-pointer, pointer); font: inherit; font-size: 0.88rem; color: var(--text); background: linear-gradient(180deg, color-mix(in srgb, var(--faction) 18%, #0b1626), #070e1a); border: 1px solid rgba(194, 154, 82, 0.35); }
 .rival-chip.is-selected { border-color: #e06050; box-shadow: 0 0 0 1px #e06050 inset, 0 0 10px rgba(224, 96, 80, 0.35); }
 .roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.5rem; }
@@ -1043,3 +1046,34 @@ button.tome-spell:disabled { cursor: var(--cur-default, default); }
 .god-permanent { display: inline-flex; align-items: center; gap: 0.3rem; }
 .god-permanent .god-ico { width: 1.15rem; height: 1.15rem; }
 .codex-card .god-row { justify-content: flex-start; margin-top: 0.3rem; }
+
+/* The commitment dialog's god summary (icon rows), and the moment a god accepts. */
+.god-commit { display: flex; flex-direction: column; gap: 0.55rem; margin: 0.4rem 0 0.2rem; }
+.god-commit__head { display: flex; align-items: center; gap: 0.8rem; }
+.god-commit__who { display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+.god-commit__who .god-row { justify-content: flex-start; }
+.god-commit__name { font-family: var(--font-display); font-size: 1.25rem; color: var(--gold-200); }
+.god-commit .god-row--benefits { justify-content: flex-start; }
+.god-commit__excludes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+.god-commit__label { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--danger); }
+.god-commit__label .god-ico { width: 1.15rem; height: 1.15rem; }
+.god-pill .god-ico { width: 1rem; height: 1rem; }
+.patron .god-chip { margin-bottom: 0.2rem; }
+.patron .god-row { justify-content: flex-start; }
+.god-card { position: relative; }
+.god-card.is-celebrating { animation: god-accept-glow 1.6s ease-out; }
+.god-commit-fx { position: absolute; inset: 0; pointer-events: none; z-index: 3; overflow: visible; }
+.god-commit-fx__burst { left: 50%; top: 4rem; }
+.god-commit-fx__rays { position: absolute; left: 50%; top: 3.6rem; width: 13rem; height: 13rem; margin: -6.5rem 0 0 -6.5rem; border-radius: 50%; background: repeating-conic-gradient(from 0deg, rgba(255, 233, 160, 0.38) 0deg 6deg, transparent 6deg 22deg); -webkit-mask: radial-gradient(circle, #000 18%, transparent 68%); mask: radial-gradient(circle, #000 18%, transparent 68%); opacity: 0; animation: god-accept-rays 1.5s ease-out forwards; }
+.god-commit-fx__seal { position: absolute; right: 0.7rem; top: 0.7rem; width: 2.6rem; height: 2.6rem; opacity: 0; animation: god-accept-seal 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.35s forwards; }
+.god-commit-fx__seal .god-ico { width: 100%; height: 100%; }
+@keyframes god-accept-glow { 0% { box-shadow: var(--shadow-panel); } 25% { box-shadow: var(--shadow-panel), 0 0 0 2px var(--gold-300), 0 0 34px 6px rgba(255, 220, 130, 0.65); } 100% { box-shadow: var(--shadow-panel), var(--glow-gold); } }
+@keyframes god-accept-rays { 0% { opacity: 0; transform: scale(0.4) rotate(0deg); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.15) rotate(40deg); } }
+@keyframes god-accept-seal { 0% { opacity: 0; transform: scale(2.4) rotate(-25deg); } 70% { opacity: 1; transform: scale(0.92) rotate(4deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+:root[data-motion='reduced'] .god-commit-fx { display: none; }
+:root[data-motion='reduced'] .god-card.is-celebrating { animation: none; }
+
+/* Battle climate (climate rules): a chip in the round box and in the encounter dialog. */
+.climate-chip { display: inline-flex; align-items: center; gap: 0.25rem; cursor: var(--cur-default, default); }
+.climate-chip__icon { width: 1.05rem; height: 1.05rem; object-fit: contain; flex: none; }
+.battle-round .climate-chip { margin-top: 0.2rem; font-size: 0.72rem; }

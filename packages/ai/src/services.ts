@@ -34,6 +34,7 @@ import {
   type OfferingLine,
   type PlayerId, heroInTown,
 } from '@pr/rules';
+import { aiTemperamentFor, faithFavorGoal } from './temperament';
 
 /** Rough value of a blessing for an AI empire (higher is better). */
 export function effectScore(e: EffectDefinition): number {
@@ -79,7 +80,7 @@ export function godCandidates(catalog: ContentCatalog, belief: MatchState, playe
   return gods.slice(0, 1).map(({ g }) => ({ kind: 'SelectGod', godId: g }));
 }
 
-/** Favor still needed for the cheapest uncommitted designed god group (0 when none is left). */
+/** Favor still needed for the dearest uncommitted designed god group (0 when none is left). */
 function favorNeeded(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): number {
   const player = belief.players[playerId]!;
   const committedGroups = new Set(player.pantheon.minorGodIds.map((g) => catalog.gods[g]?.exclusivityGroup));
@@ -94,6 +95,12 @@ function favorNeeded(catalog: ContentCatalog, belief: MatchState, playerId: Play
   return Math.max(0, need);
 }
 
+/** A devout temperament (faith above 1) keeps a Favor goal for miracles and gifts once its gods are chosen. */
+function faithNeeded(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): number {
+  const player = belief.players[playerId]!;
+  return Math.max(0, faithFavorGoal(aiTemperamentFor(catalog, belief, playerId)) - player.wallet.favor);
+}
+
 /**
  * Temple offering when Favor is still needed: the lowest-tier garrison stacks
  * first, then the visiting hero's lowest-tier stack (never its last creature),
@@ -102,7 +109,9 @@ function favorNeeded(catalog: ContentCatalog, belief: MatchState, playerId: Play
 export function offeringCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, threatened: ReadonlySet<string>): CommandPayload[] {
   const rule = offeringRule(catalog, belief, playerId);
   if (!rule) return [];
-  const need = favorNeeded(catalog, belief, playerId);
+  const forGods = favorNeeded(catalog, belief, playerId);
+  // Beyond its gods a devout empire offers only from town garrisons, never from a hero's army.
+  const need = Math.max(forGods, faithNeeded(catalog, belief, playerId));
   if (need <= 0) return [];
   const out: CommandPayload[] = [];
   for (const town of playerTowns(belief, playerId)) {
@@ -116,7 +125,7 @@ export function offeringCandidates(catalog: ContentCatalog, belief: MatchState, 
       if (c.tier <= 3) pool.push({ line: { army: { kind: 'garrison', townId: town.id }, slot }, count: s.count, unit: c.cost?.gold ?? 0, tier: c.tier, keep: 0 });
     });
     const visitor = Object.values(belief.heroes).find((h) => h.ownerId === playerId && h.status === 'active' && heroInTown(catalog, belief, h, town.id));
-    if (visitor) {
+    if (visitor && forGods > 0) {
       visitor.army.slots.forEach((s, slot) => {
         if (!s) return;
         const c = catalog.creatures[s.creatureId]!;

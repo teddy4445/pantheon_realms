@@ -31,7 +31,10 @@ decisions they settle.
   pantheon or god can use. Site kinds (e.g. the two-way `portal`) and
   objective conditions are shared data too.
 * Skirmish-only features stay behind `ScenarioFeatures` / `scope: 'expanded'`;
-  The Three Beacons keeps them off (The Winter Oath and the four arc campaigns turn expanded content on). Story scenes are data on the mission and
+  The Three Beacons keeps them off (The Winter Oath and the four arc campaigns turn expanded content on).
+  Climate rules (`climateRules`) and AI temperaments (`aiTemperaments`) are on in
+  skirmishes and random maps only; a temperament changes the AI's choices,
+  never a rule. Story scenes are data on the mission and
   never change play.
 * Six pantheons, seven tiers, one family per tier, exactly base + one upgrade;
   18 town locations (7 dwellings + 11 support). Gods per pantheon are
@@ -67,7 +70,8 @@ PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a nod
 npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run after any value change
 npm run balance -- random --matches 4   # random-map seat fairness only
 node tools/perf/load-time.mjs [dist]          # start-up + first-scene load times (after npm run build)
-python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg)
+python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg); keeps "final" entries
+python3 tools/audio/import_music.py --from <folder with pixabay-<id>.mp3>   # map music per pantheon (assets-source/audio/music/tracks.json) → Ogg + music.map.<pantheon> playlists
 npm run sprites:plan          # content plan (forms, animations, sites, battlefields) → assets-source/sprites/content-plan.json
 npm run sprites:placeholders  # regenerate labelled placeholder sprites + assets-runtime/sprites/manifest.json (keeps final entries)
 npm run sprites:cut -- --only <sheet>  # cut ONE GPT-6 sheet from assets-source/sprites/sheets/ into single files (layouts: sheet-layouts*.json; previews in sheets/_preview/); never re-cut the delivered sheets; --self-test checks the cutter
@@ -77,10 +81,12 @@ npm run vfx:list              # regenerate VFX_MAGIC_AND_FAVORS.md (spell, mirac
 python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
 npm run icons:catalog    # regenerate ICON_CATALOG.md + assets-source/icons/ICON_CATALOG.xlsx/.csv from the game
-npm run icons:import     # register final icons dropped into assets-source/icons/final/ (named by asset ID)
+npm run icons:import     # register final icons dropped into assets-source/icons/final/ (named by asset ID); `-- --new` imports only icons not yet registered (a full run re-encodes and re-dates every icon)
 npm run cursors:import   # mouse cursors from assets-source/ui/cursors/ (Brief 7, 128 px, named by cursor ID) → 32 px + hotspots in assets-runtime/ui/cursors/
-npm run art:import       # painted art from assets-source/art/final/ → assets-runtime/art/ (story art, terrain, battlefields, skies, miracle cards, splashes, banners; never upscales)
+npm run art:import       # painted art from assets-source/art/final/ → assets-runtime/art/ (story art incl. the Herald, terrain, battlefields, skies, miracle cards, splashes, banners, town levels, dwellings, town backgrounds; never upscales; keeps runtime art whose master is not in this checkout unless `-- --prune`; `-- --self-test` checks the names)
 npm run art:briefs       # regenerate GPT-6 briefs 8–11 (god portraits + god-card icons, hero portraits, town building levels, map-hero prepare/cast) + assets-source/sprites/sheet-layouts.briefs.json
+npm run art:brief12      # GPT-6 Brief 12: every visual still missing, from the game (dwellings, services, climate icons, site markers, town backgrounds, fx.god.commit) + sheet-layouts.brief12.json + town layout guides
+npm run balance -- skirmish --no-temperaments   # the same matches with every AI empire playing the neutral way (compare with the default)
 ```
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and

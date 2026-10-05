@@ -15,6 +15,8 @@ export const MUSIC = {
   battle: 'music.battle',
   resolution: 'music.resolution',
   explore: (soundscape: string) => `music.explore.${soundscape}`,
+  /** Map music by the viewing player's pantheon (a playlist of long tracks); falls back to the soundscape's music. */
+  map: (pantheonId: string) => `music.map.${pantheonId}`,
 } as const;
 
 export const AMBIENCE = {
@@ -123,6 +125,10 @@ export interface SoundContext {
   readonly overlays: readonly string[];
   readonly inSession: boolean;
   readonly soundscape: string | null;
+  /** The viewing player's pantheon: its map music plays where the manifest has it. */
+  readonly pantheonId?: string | null;
+  /** Whether the manifest has a sound (map music falls back to the soundscape's music without it). */
+  readonly has?: (id: string) => boolean;
 }
 
 const MENU_SCREENS: ReadonlySet<ScreenId> = new Set(['main-menu', 'game-mode', 'scenario-select', 'pantheon-select']);
@@ -135,7 +141,9 @@ export function soundscapeFor(ctx: SoundContext): { music: string | null; ambien
   if (ctx.screen === 'battle') return { music: MUSIC.battle, ambience: AMBIENCE.battlefield };
   // The result screen lets the victory or defeat stinger speak over the battlefield air.
   if (ctx.screen === 'battle-result') return { music: null, ambience: AMBIENCE.battlefield };
-  return { music: MUSIC.explore(scape), ambience: AMBIENCE.of(scape) };
+  // Map, town and hero screens: the pantheon's own music; the mission's soundscape keeps its ambience.
+  const own = ctx.pantheonId ? MUSIC.map(ctx.pantheonId) : null;
+  return { music: own && ctx.has?.(own) ? own : MUSIC.explore(scape), ambience: AMBIENCE.of(scape) };
 }
 
 // ---------------------------------------------------------------------------

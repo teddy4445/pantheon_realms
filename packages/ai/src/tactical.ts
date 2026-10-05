@@ -247,7 +247,7 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
     // A shooter with ammunition but no enemy in range steps only as far as it must
     // to bring one into range, away from enemy reach, never into contact; when no
     // cell in range can be reached this turn it holds while enemy troops approach.
-    const range = isShooter(catalog, stack.creatureId) && stack.shotsRemaining > 0 ? shootingRange(catalog, stack.creatureId) : 0;
+    const range = isShooter(catalog, stack.creatureId) && stack.shotsRemaining > 0 ? shootingRange(catalog, stack.creatureId, battle) : 0;
     for (const to of actions.moves) {
       const cells = stackCells(catalog, stack, to);
       let nearest = Number.POSITIVE_INFINITY;
@@ -268,7 +268,7 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
     }
     const mv = best(moveChoices);
     // Hold only while no enemy shooter can hit this stack where it stands.
-    const underFire = enemies.some((e) => isShooter(catalog, e.creatureId) && e.shotsRemaining > 0 && inShootingRange(catalog, e, stack));
+    const underFire = enemies.some((e) => isShooter(catalog, e.creatureId) && e.shotsRemaining > 0 && inShootingRange(catalog, e, stack, battle));
     if (mv && range > 0 && moveChoices[0]!.score < IN_RANGE_MOVE - 50 && melee.length > 0 && !field && !underFire) return { kind: 'BattleDefend', stackId: stack.id };
     if (mv) return mv;
   }

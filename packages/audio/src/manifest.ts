@@ -30,6 +30,13 @@ export interface SoundDefinition {
   readonly cooldownMs?: number;
   /** Random pitch variation in cents (±), for repeated effects. */
   readonly pitchJitterCents?: number;
+  /**
+   * Music only: the files are a playlist — played one after another from a
+   * random first track, each streamed from disk instead of decoded whole (long
+   * tracks), with a crossfade into the next. Without it, several files are
+   * variants: one is picked at random and looped.
+   */
+  readonly playlist?: boolean;
   readonly status: 'placeholder' | 'final';
   readonly provenance: string;
 }
@@ -69,9 +76,15 @@ export function validateSoundManifest(m: SoundManifest, required: readonly strin
     if (s.maxVoices !== undefined && !(Number.isInteger(s.maxVoices) && s.maxVoices >= 1)) issues.push(`${s.id}: maxVoices must be a positive integer`);
     if (s.cooldownMs !== undefined && !(s.cooldownMs >= 0)) issues.push(`${s.id}: cooldownMs must be ≥ 0`);
     if (!s.provenance) issues.push(`${s.id}: provenance is required`);
+    if (s.playlist && s.role !== 'music') issues.push(`${s.id}: only music can be a playlist`);
   }
   for (const id of required) if (!seen.has(id)) issues.push(`missing required sound "${id}"`);
   return issues;
+}
+
+/** The playlist's track after `index` (wraps around; a one-track playlist repeats). */
+export function nextPlaylistIndex(length: number, index: number): number {
+  return length <= 0 ? 0 : (index + 1) % length;
 }
 
 // ---------------------------------------------------------------------------

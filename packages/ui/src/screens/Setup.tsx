@@ -17,6 +17,7 @@ import { CampaignThumb, Emblem, GodPortrait, HeroPortrait, MissionThumb, Creatur
 import { resolveArt } from '../assets/manifest';
 import { ScreenHeader, StatusChip } from '../components/game';
 import { Icon } from '../assets/icons';
+import { TemperamentNote } from '../components/temperament';
 
 /**
  * A chosen campaign's painted cover behind the setup screens (campaign
@@ -379,6 +380,12 @@ export function PantheonSelectScreen() {
         })}
       </div>
       {rivalOptions.length ? <RivalPicker options={rivalOptions} rival={rival} onPick={setRival} human={rivalCtl === 'human'} /> : null}
+      {rivalOptions.length && isSkirmish && rivalCtl === 'ai' && variant && catalog.missions[variant.missionId]?.features?.aiTemperaments === true ? (
+        <p className="rival-temperament">
+          <span className="dim small">As an AI rival, {catalog.pantheons[rival]?.name ?? rival} plays as </span>
+          <TemperamentNote catalog={catalog} pantheonId={rival} />
+        </p>
+      ) : null}
       {isSkirmish ? (
         <div className="match-settings" data-testid="match-settings">
           <div className="setting-block">

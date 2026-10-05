@@ -19,6 +19,7 @@ import { DEFAULT_PREFERENCES, applyPreferences, adventurePlaybackFactor, battleP
 const FINAL_BLOW_BEAT_MS = 1200;
 /** Screens a pending level-up opens over by itself (not the battle, its result or the menus). */
 const LEVEL_UP_FROM: readonly ScreenId[] = ['adventure', 'town', 'hero', 'recruitment', 'pantheon', 'journal'];
+import type { ReactNode } from 'react';
 import type { GameAudio } from '../audio/gameAudio';
 import { campaignEndingArtId } from '../assets/storyArt';
 import { momentsFromEvents, type Moment } from './moments';
@@ -91,7 +92,7 @@ export interface SpellCastRequest {
 export type Overlay =
   | { kind: 'pause' }
   | { kind: 'save-load'; mode: 'save' | 'load' }
-  | { kind: 'confirm'; title: string; body: string; confirmLabel: string; danger?: boolean; onConfirm: () => void; detail?: string[] }
+  | { kind: 'confirm'; title: string; body: string; confirmLabel: string; danger?: boolean; onConfirm: () => void; detail?: string[]; content?: ReactNode }
   | { kind: 'briefing' }
   | { kind: 'debrief' }
   | { kind: 'mission-failed' }
@@ -309,7 +310,7 @@ export class AppStore {
     this.checkLevelUp();
   }
 
-  confirm(title: string, body: string, confirmLabel: string, onConfirm: () => void, opts: { danger?: boolean; detail?: string[] } = {}): void {
+  confirm(title: string, body: string, confirmLabel: string, onConfirm: () => void, opts: { danger?: boolean; detail?: string[]; content?: ReactNode } = {}): void {
     this.openOverlay({ kind: 'confirm', title, body, confirmLabel, onConfirm, ...opts });
   }
 

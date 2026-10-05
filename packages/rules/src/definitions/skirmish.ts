@@ -135,6 +135,69 @@ export type DivineGiftGrant =
  * both gods are chosen (owner request 2026-10-03). One gift per town with a
  * Temple per world week; scenarios with divine interventions only.
  */
+/**
+ * One battle effect of a climate (proposed 2026-10-04, owner request "climates
+ * that matter"). It applies to both sides alike, so it favours armies built
+ * for the ground rather than either player.
+ */
+export type ClimateEffectDefinition =
+  /** Battle Attack, Defense or Speed of every creature that has (`ability`) or lacks (`withoutAbility`) an ability of that rule type, e.g. 'flight' or 'shooter'. */
+  | { readonly type: 'creature_stat'; readonly stat: 'attack' | 'defense' | 'speed'; readonly amount: number; readonly ability?: string; readonly withoutAbility?: string }
+  /** Shooting range of every shooter, in hexes (never below 1). */
+  | { readonly type: 'shooting_range'; readonly amount: number };
+
+/**
+ * A climate's battle rule, keyed by the map biome (`MapTemplateDefinition.biome`).
+ * Scenario feature `climateRules` (skirmishes only; The Three Beacons and the
+ * campaigns keep it off). A climate without an entry, or with no effects, changes nothing.
+ */
+export interface ClimateRuleDefinition {
+  /** The biome it applies to (e.g. 'moor'). */
+  readonly id: string;
+  /** Short name of the weather (e.g. "Fog"). */
+  readonly name: string;
+  /** The exact rule in one sentence (the battle chip's tooltip). */
+  readonly summary: string;
+  readonly effects: readonly ClimateEffectDefinition[];
+  /** Interface icon (`icon.climate.<biome>`; a glyph stands in until delivered). */
+  readonly iconAssetId: AssetId;
+}
+
+/** Kinds of town building an AI temperament can favour (see `AITemperamentDefinition.build`). */
+export type AIBuildFocus = 'economy' | 'military' | 'elite' | 'defense' | 'magic' | 'faith';
+
+/**
+ * How a pantheon's AI rival plays (owner request 2026-10-04, "Pantheon AI
+ * personalities"; proposed, unplaytested values). Scenario feature
+ * `aiTemperaments` (skirmishes; The Three Beacons and the campaigns keep it
+ * off). It changes only the AI's choices — never a rule, price or statistic —
+ * and every weight of 1 means "as every other rival". The difficulty still
+ * sets the strength margins; the temperament scales them.
+ */
+export interface AITemperamentDefinition {
+  /** The pantheon it belongs to (one temperament per pantheon). */
+  readonly id: PantheonId;
+  /** Short name (e.g. "Raiders"). */
+  readonly name: string;
+  /** One sentence for setup and the Encyclopedia. */
+  readonly summary: string;
+  /**
+   * Multiplies the difficulty's strength margins (attack a hero, a guard, a
+   * town): below 1 attacks at smaller advantages. The result never falls below 1.
+   */
+  readonly boldness: number;
+  /** Multiplies the value of attacking rival heroes and towns and taking rival mines. */
+  readonly aggression: number;
+  /** Heroes kept beyond the difficulty's target (may be negative; at least one hero). */
+  readonly extraHeroes: number;
+  /** Build-choice weights by kind of building (1 or absent = neutral). */
+  readonly build: Readonly<Partial<Record<AIBuildFocus, number>>>;
+  /** Weight of magic in level-up choices and hiring (1 = neutral). */
+  readonly magic: number;
+  /** Above 1: keeps making Temple offerings after its god choices, for miracles and gifts. */
+  readonly faith: number;
+}
+
 export interface DivineGiftDefinition {
   readonly id: string;
   readonly name: string;

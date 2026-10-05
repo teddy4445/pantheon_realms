@@ -5,12 +5,14 @@
  *          -> [music only: stinger duck] -> master -> focus -> limiter -> speakers
  *
  * Music and ambience are single looping tracks that crossfade when the scene
- * changes; effects are one-shots with per-sound voice limits and cooldowns.
+ * changes; a music playlist (long tracks) is streamed through media elements
+ * instead, one track after another with a crossfade between them. Effects are
+ * one-shots with per-sound voice limits and cooldowns.
  * Everything is loaded from bundled files on first use and cached. When audio
  * is unavailable (no Web Audio, a failed device, a file that will not decode)
  * the director stays silent and reports why; gameplay never waits for it.
  */
-import { BUSES, SILENT_LEVELS, busGain, intensityGain, isLooping, mayStart, type AudioLevels, type BusId, type SoundDefinition, type SoundManifest } from './manifest';
+import { BUSES, SILENT_LEVELS, busGain, intensityGain, isLooping, mayStart, nextPlaylistIndex, type AudioLevels, type BusId, type SoundDefinition, type SoundManifest } from './manifest';
 
 export interface AudioDirectorOptions {
   readonly manifest: SoundManifest;
@@ -22,6 +24,10 @@ export interface AudioDirectorOptions {
   readonly load?: (url: string) => Promise<ArrayBuffer>;
   /** Crossfade length for music and ambience changes. */
   readonly fadeMs?: number;
+  /** Create a streaming media element for a playlist track (null = cannot stream). Defaults to `new Audio()`. */
+  readonly createMediaElement?: () => HTMLMediaElement | null;
+  /** Pick the first track of a playlist (0 ≤ result < length). Defaults to random. */
+  readonly pickStart?: (length: number) => number;
 }
 
 export interface AudioStatus {
@@ -30,6 +36,8 @@ export interface AudioStatus {
   readonly reason: string | null;
   readonly state: AudioContextState | 'unavailable';
   readonly music: string | null;
+  /** The file the music is playing now (a playlist's current track). */
+  readonly musicFile: string | null;
   readonly ambience: string | null;
   readonly loops: readonly string[];
   readonly failed: readonly string[];
@@ -45,8 +53,23 @@ type Channel = 'music' | 'ambience';
 
 interface Track {
   readonly id: string;
-  readonly src: AudioBufferSourceNode;
+  readonly file: string;
   readonly gain: GainNode;
+  /** Decoded, looping track. */
+  readonly src?: AudioBufferSourceNode;
+  /** Streamed playlist track. */
+  readonly el?: HTMLMediaElement;
+  readonly node?: MediaElementAudioSourceNode;
+}
+
+/** A music playlist in progress: its definition and the index of the current track. */
+interface Playlist {
+  readonly def: SoundDefinition;
+  index: number;
+  /** Tracks that failed in a row (all failed: stay silent). */
+  failures: number;
+  /** Set once the next track has been started for the current one. */
+  advanced: boolean;
 }
 
 const RECENT = 16;
@@ -55,6 +78,11 @@ function defaultContext(): AudioContext | null {
   const w = globalThis as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext };
   const Ctor = w.AudioContext ?? w.webkitAudioContext;
   return Ctor ? new Ctor({ latencyHint: 'interactive' }) : null;
+}
+
+function defaultMediaElement(): HTMLMediaElement | null {
+  const w = globalThis as { Audio?: typeof Audio };
+  return w.Audio ? new w.Audio() : null;
 }
 
 async function defaultLoad(url: string): Promise<ArrayBuffer> {
@@ -80,6 +108,9 @@ export class AudioDirector {
   private readonly tracks: Record<Channel, Track | null> = { music: null, ambience: null };
   private readonly wanted: Record<Channel, string | null> = { music: null, ambience: null };
   private readonly loops = new Map<string, Track>();
+  private playlist: Playlist | null = null;
+  /** A streamed track whose play() the browser refused before the first interaction (retried on unlock). */
+  private blocked: HTMLMediaElement | null = null;
   private levels: AudioLevels = SILENT_LEVELS;
   private focused = true;
   private muteOnFocusLoss = true;
@@ -135,6 +166,11 @@ export class AudioDirector {
   /** Browsers start audio suspended until the player interacts; call from a click or key press. */
   unlock(): void {
     if (this.ctx && this.ctx.state === 'suspended') void this.ctx.resume().catch(() => undefined);
+    const el = this.blocked;
+    if (el) {
+      this.blocked = null;
+      void Promise.resolve(el.play()).catch(() => undefined);
+    }
   }
 
   setLevels(levels: AudioLevels): void {
@@ -258,17 +294,90 @@ export class AudioDirector {
     if (!ctx) return;
     this.fadeOut(this.tracks[ch]);
     this.tracks[ch] = null;
+    if (ch === 'music') this.playlist = null;
     const def = id ? this.defs.get(id) : undefined;
     if (!id || !def) return;
+    if (ch === 'music' && def.playlist) {
+      const start = Math.min(def.files.length - 1, Math.max(0, Math.floor((this.opts.pickStart ?? ((n) => Math.random() * n))(def.files.length))));
+      this.playlist = { def, index: start, failures: 0, advanced: false };
+      this.tracks.music = this.streamTrack(this.playlist);
+      return;
+    }
     const file = this.pick(def);
     void this.buffer(file).then((buf) => {
       if (!buf || this.wanted[ch] !== id || this.tracks[ch]) return;
-      this.tracks[ch] = this.startTrack(def, buf, this.buses[def.bus]);
+      this.tracks[ch] = this.startTrack(def, buf, this.buses[def.bus], file);
       this.evict(ch, file);
     });
   }
 
-  private startTrack(def: SoundDefinition, buf: AudioBuffer, bus: GainNode): Track {
+  /**
+   * Start the playlist's current track as a streamed media element through the
+   * music bus. Shortly before it ends the next track starts and the two
+   * crossfade; a track that fails is reported and skipped (all failed: silence).
+   */
+  private streamTrack(list: Playlist): Track | null {
+    const ctx = this.ctx!;
+    const def = list.def;
+    const file = def.files[list.index]!;
+    let el: HTMLMediaElement | null = null;
+    let node: MediaElementAudioSourceNode | null = null;
+    try {
+      el = (this.opts.createMediaElement ?? defaultMediaElement)();
+      if (el) node = ctx.createMediaElementSource(el);
+    } catch (e) {
+      this.failed.set(file, e instanceof Error ? e.message : String(e));
+      el = null;
+    }
+    if (!el || !node) {
+      if (!this.failed.has(file)) this.failed.set(file, 'streaming is not available');
+      return null;
+    }
+    const gain = ctx.createGain();
+    const target = def.gain * intensityGain(def, this.levels.reduced);
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(target, ctx.currentTime + this.fadeS);
+    node.connect(gain).connect(this.buses[def.bus]);
+    const track: Track = { id: def.id, file, gain, el, node };
+    list.advanced = false;
+    const advance = () => {
+      if (this.playlist !== list || list.advanced || this.tracks.music !== track) return;
+      list.advanced = true;
+      list.index = nextPlaylistIndex(def.files.length, list.index);
+      this.fadeOut(track);
+      this.tracks.music = this.streamTrack(list);
+    };
+    el.addEventListener('timeupdate', () => {
+      const d = el!.duration;
+      if (Number.isFinite(d) && d > this.fadeS * 2 && d - el!.currentTime <= this.fadeS) advance();
+    });
+    el.addEventListener('ended', advance);
+    el.addEventListener('playing', () => {
+      if (this.playlist === list) list.failures = 0;
+    });
+    el.addEventListener('error', () => {
+      this.failed.set(file, 'could not be streamed');
+      console.warn(`[audio] ${file} could not be streamed — skipping to the next track`);
+      if (this.playlist !== list || this.tracks.music !== track) return;
+      list.failures++;
+      if (list.failures >= def.files.length) {
+        this.fadeOut(track);
+        this.tracks.music = null;
+        this.playlist = null;
+        return;
+      }
+      advance();
+    });
+    el.preload = 'auto';
+    el.src = this.opts.resolveUrl(file);
+    void Promise.resolve(el.play()).catch(() => {
+      // Refused before the first interaction (autoplay policy): retried on unlock().
+      if (this.tracks.music === track) this.blocked = el;
+    });
+    return track;
+  }
+
+  private startTrack(def: SoundDefinition, buf: AudioBuffer, bus: GainNode, file: string): Track {
     const ctx = this.ctx!;
     const src = ctx.createBufferSource();
     src.buffer = buf;
@@ -279,7 +388,7 @@ export class AudioDirector {
     gain.gain.linearRampToValueAtTime(target, ctx.currentTime + this.fadeS);
     src.connect(gain).connect(bus);
     src.start();
-    return { id: def.id, src, gain };
+    return { id: def.id, file, src, gain };
   }
 
   private fadeOut(t: Track | null): void {
@@ -289,8 +398,22 @@ export class AudioDirector {
     t.gain.gain.cancelScheduledValues(now);
     t.gain.gain.setValueAtTime(t.gain.gain.value, now);
     t.gain.gain.linearRampToValueAtTime(0, now + this.fadeS);
-    t.src.stop(now + this.fadeS + 0.05);
-    t.src.onended = () => t.gain.disconnect();
+    if (t.src) {
+      t.src.stop(now + this.fadeS + 0.05);
+      t.src.onended = () => t.gain.disconnect();
+    }
+    if (t.el) {
+      const el = t.el;
+      if (this.blocked === el) this.blocked = null;
+      // Stop streaming after the fade and release the file.
+      setTimeout(() => {
+        el.pause();
+        el.removeAttribute('src');
+        el.load();
+        t.node?.disconnect();
+        t.gain.disconnect();
+      }, this.fadeS * 1000 + 100);
+    }
   }
 
   /** Keep decoded memory bounded: long tracks other than the current one are dropped. */
@@ -323,7 +446,7 @@ export class AudioDirector {
     gain.gain.linearRampToValueAtTime(def.gain * intensityGain(def, this.levels.reduced), ctx.currentTime + 0.08);
     src.connect(gain).connect(this.buses[def.bus]);
     src.start();
-    this.loops.set(key, { id, src, gain });
+    this.loops.set(key, { id, file, src, gain });
   }
 
   stopLoop(key: string): void {
@@ -335,8 +458,8 @@ export class AudioDirector {
     t.gain.gain.cancelScheduledValues(now);
     t.gain.gain.setValueAtTime(t.gain.gain.value, now);
     t.gain.gain.linearRampToValueAtTime(0, now + 0.15);
-    t.src.stop(now + 0.2);
-    t.src.onended = () => t.gain.disconnect();
+    t.src?.stop(now + 0.2);
+    if (t.src) t.src.onended = () => t.gain.disconnect();
   }
 
   /** Warm the decoded cache for effects so their first use is on time. */
@@ -359,6 +482,7 @@ export class AudioDirector {
       reason: this.reason,
       state: this.ctx ? this.ctx.state : 'unavailable',
       music: this.tracks.music?.id ?? null,
+      musicFile: this.tracks.music?.file ?? null,
       ambience: this.tracks.ambience?.id ?? null,
       loops: [...this.loops.values()].map((t) => t.id),
       failed: [...this.failed.keys()],
@@ -371,10 +495,13 @@ export class AudioDirector {
 
   dispose(): void {
     for (const ch of ['music', 'ambience'] as const) {
-      this.tracks[ch]?.src.stop();
+      const t = this.tracks[ch];
+      t?.src?.stop();
+      t?.el?.pause();
       this.tracks[ch] = null;
     }
-    for (const t of this.loops.values()) t.src.stop();
+    this.playlist = null;
+    for (const t of this.loops.values()) t.src?.stop();
     this.loops.clear();
     void this.ctx?.close().catch(() => undefined);
     this.ctx = null;

@@ -41,6 +41,11 @@ export function soundsArePlaceholders(): boolean {
   return SOUND_MANIFEST.sounds.every((s) => s.status === 'placeholder');
 }
 
+/** Whether some sounds are final while others are still placeholders (e.g. the map music of 2026-10-04). */
+export function someSoundsArePlaceholders(): boolean {
+  return SOUND_MANIFEST.sounds.some((s) => s.status === 'placeholder') && SOUND_MANIFEST.sounds.some((s) => s.status === 'final');
+}
+
 /** Run `fn` when the page is idle (at the latest after `timeoutMs`). */
 function whenIdle(fn: () => void, timeoutMs: number): void {
   if (typeof requestIdleCallback === 'function') requestIdleCallback(() => fn(), { timeout: timeoutMs });
@@ -145,6 +150,8 @@ export class GameAudio {
       overlays: store.overlays.map((o) => o.kind),
       inSession: !!session,
       soundscape: mission?.soundscape ?? null,
+      pantheonId: session ? (session.state.players[session.humanPlayerId]?.pantheonId ?? null) : null,
+      has: (id) => this.director.has(id),
     });
     // Loading and decoding tracks competes with building the map or battle for the CPU and the
     // network, so music changes and the combat pre-load wait until the page is idle.

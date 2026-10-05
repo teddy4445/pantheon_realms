@@ -35,6 +35,7 @@ import {
   type HexCoord, heroInTown, townGate,
 } from '@pr/rules';
 import { armyStrength } from './evaluation';
+import { aiTemperamentFor, isMagicEffect } from './temperament';
 
 // ---------------------------------------------------------------------------
 // Effect values (shared by skills, artifacts and set bonuses)
@@ -121,7 +122,7 @@ function shooterShare(catalog: ContentCatalog, hero: HeroState): number {
  * shooters, offense with melee troops) and its magic (wisdom and mana need a
  * spellbook).
  */
-export function skillOfferValue(catalog: ContentCatalog, hero: HeroState, offer: SkillOffer): number {
+export function skillOfferValue(catalog: ContentCatalog, hero: HeroState, offer: SkillOffer, magicWeight = 1): number {
   const skill = catalog.skills[offer.skillId];
   if (!skill) return 0;
   const from = offer.kind === 'upgrade' ? offer.fromRank : 0;
@@ -152,7 +153,7 @@ export function skillOfferValue(catalog: ContentCatalog, hero: HeroState, offer:
       v = 8 * gain(r.luckByRank);
       break;
     case 'wisdom':
-      v = (spellbook ? 10 : 2) * gain(r.maxSpellTierByRank);
+      v = (spellbook ? 10 : 2) * gain(r.maxSpellTierByRank) * magicWeight;
       break;
     case 'scouting':
       v = 3 * gain(r.radiusByRank);
@@ -162,8 +163,10 @@ export function skillOfferValue(catalog: ContentCatalog, hero: HeroState, offer:
       break;
     case 'effects': {
       const ctx = { spellbook };
-      const now = from > 0 ? sumEffects(r.effectsByRank[from - 1] ?? [], ctx) : 0;
-      v = sumEffects(r.effectsByRank[to - 1] ?? [], ctx) - now;
+      // Magic effects (spell power, knowledge, mana, spell damage) weighed by the temperament.
+      const weighed = (effects: readonly EffectDefinition[]) => effects.reduce((n, e) => n + effectValue(e, ctx) * (isMagicEffect(e) ? magicWeight : 1), 0);
+      const now = from > 0 ? weighed(r.effectsByRank[from - 1] ?? []) : 0;
+      v = weighed(r.effectsByRank[to - 1] ?? []) - now;
       break;
     }
   }
@@ -174,6 +177,7 @@ export function skillOfferValue(catalog: ContentCatalog, hero: HeroState, offer:
 /** Pending level-ups of this empire's heroes, each answered with its best-valued offer. */
 export function levelUpCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): CommandPayload[] {
   const out: CommandPayload[] = [];
+  const magic = aiTemperamentFor(catalog, belief, playerId).magic;
   for (const d of belief.pendingDecisions) {
     const hero = belief.heroes[d.heroId];
     if (!hero || hero.ownerId !== playerId) continue;
@@ -184,7 +188,7 @@ export function levelUpCandidates(catalog: ContentCatalog, belief: MatchState, p
     let best = 0;
     let bestV = -Infinity;
     d.offers.forEach((o, i) => {
-      const v = skillOfferValue(catalog, hero, o);
+      const v = skillOfferValue(catalog, hero, o, magic);
       if (v > bestV) {
         bestV = v;
         best = i;

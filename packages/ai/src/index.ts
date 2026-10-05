@@ -3,5 +3,6 @@ export * from './observation';
 export * from './evaluation';
 export * from './tactical';
 export * from './strategic';
+export * from './temperament';
 export * from './growth';
 export * from './controller';

@@ -61,5 +61,6 @@ export * from './systems/battle/factory';
 export * from './systems/battle/resolution';
 export * from './systems/battle/siege';
 export * from './systems/battle/deployment';
+export * from './systems/battle/climate';
 
 export * from './factories/entities';

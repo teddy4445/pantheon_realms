@@ -141,6 +141,10 @@ export interface ScenarioFeatures {
   readonly heroSpecialties?: boolean;
   /** Much weaker neutral guards and wandering monsters join or flee instead of fighting (proposed 2026-10-02). */
   readonly neutralReactions?: boolean;
+  /** The map's climate changes battles a little, for both sides alike (proposed 2026-10-04; absent = off). */
+  readonly climateRules?: boolean;
+  /** AI rivals play by their pantheon's temperament (proposed 2026-10-04; absent = off). */
+  readonly aiTemperaments?: boolean;
 }
 
 export const NO_SCENARIO_FEATURES: ScenarioFeatures = { expandedContent: false, weeklyEvents: false, interventions: false };

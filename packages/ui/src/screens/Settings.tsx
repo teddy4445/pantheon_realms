@@ -10,7 +10,7 @@ import { useStore } from '../app/context';
 import { DEFAULT_PREFERENCES, type Preferences } from '../app/preferences';
 import { Button, Chip, Panel, Tabs, Toggle } from '../components/kit';
 import { ScreenHeader } from '../components/game';
-import { soundsArePlaceholders } from '../audio/gameAudio';
+import { someSoundsArePlaceholders, soundsArePlaceholders } from '../audio/gameAudio';
 import { classifyGraphics } from '@pr/presentation/core';
 import { probeGraphics } from '../app/graphicsProbe';
 
@@ -234,6 +234,11 @@ export function SettingsScreen() {
           {tab === 'audio' ? (
             <>
               {soundsArePlaceholders() ? <p className="note">The music and sounds in this build are temporary placeholders generated for testing. Final recordings will replace them without changing these settings.</p> : null}
+              {someSoundsArePlaceholders() ? (
+                <p className="note" data-testid="audio-status-note">
+                  The map music is final: royalty-free tracks, a playlist for each pantheon. The other music and the sounds in this build are temporary placeholders generated for testing; final recordings will replace them without changing these settings.
+                </p>
+              ) : null}
               {audio && !audio.available ? <p className="note warn">Audio is unavailable here ({audio.reason ?? 'no audio device'}). The game plays silently.</p> : null}
               {(
                 [

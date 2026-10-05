@@ -26,7 +26,7 @@ import type {
 } from '../ids';
 import type { CampaignDefinition, MissionDefinition, SkirmishScenarioDefinition } from './campaign';
 import type { AbilityDefinition, CreatureDefinition, CreatureFamilyDefinition, LoreDefinition } from './creatures';
-import type { DifficultyDefinition, DivineGiftDefinition, InterventionDefinition, MapEventTemplateDefinition, SkirmishKitDefinition, WeeklyEventDefinition } from './skirmish';
+import type { ClimateRuleDefinition, AITemperamentDefinition, DifficultyDefinition, DivineGiftDefinition, InterventionDefinition, MapEventTemplateDefinition, SkirmishKitDefinition, WeeklyEventDefinition } from './skirmish';
 import type {
   ArtifactDefinition,
   ArtifactSetDefinition,
@@ -71,6 +71,10 @@ export interface ContentCatalog {
   readonly interventions: Readonly<Record<string, InterventionDefinition>>;
   /** Temple gifts bought with Favor (absent in older catalogs). */
   readonly divineGifts?: Readonly<Record<string, DivineGiftDefinition>>;
+  /** Battle rules of each climate (scenario feature `climateRules`; proposed 2026-10-04). */
+  readonly climates?: Readonly<Record<string, ClimateRuleDefinition>>;
+  /** How each pantheon's AI rival plays (scenario feature `aiTemperaments`; proposed 2026-10-04). */
+  readonly aiTemperaments?: Readonly<Record<string, AITemperamentDefinition>>;
   readonly weeklyEvents: Readonly<Record<string, WeeklyEventDefinition>>;
   /** Per-pantheon skirmish starting kits (random maps). */
   readonly skirmishKits: Readonly<Record<PantheonId, SkirmishKitDefinition>>;

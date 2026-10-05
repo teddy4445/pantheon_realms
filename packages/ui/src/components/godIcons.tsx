@@ -6,11 +6,13 @@
  * as screen-reader text, so nothing the sentences said is lost. Values come only
  * from the god definition and `quoteGodSelection`; nothing here changes a rule.
  */
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import type { ContentCatalog, EffectDefinition, GodDefinition, GodQuote, RequirementDefinition } from '@pr/rules';
 import { resolveAsset } from '../assets/manifest';
+import { spriteManifest } from '@pr/presentation/core';
 import { Icon, type IconName } from '../assets/icons';
-import { SpellIcon } from './art';
+import { GodPortrait, SpellIcon } from './art';
+import { Burst } from './burst';
 
 /** A delivered god-card icon (`icon.bless.*`, `icon.req.*`, `icon.god.*`), else a glyph stand-in. */
 export function GodCardIcon({ id, fallback }: { id: string; fallback: IconName }) {
@@ -275,5 +277,70 @@ export function PermanentNote({ children }: { children: ReactNode }) {
       <GodCardIcon id="icon.god.permanent" fallback="lock" />
       <span>{children}</span>
     </span>
+  );
+}
+
+/**
+ * The commitment dialog's body: who the god is, what the blessing gives and
+ * costs (icon rows), the gods of the same choice it shuts out for good, and
+ * that the choice is permanent.
+ */
+export function GodCommitPreview({ catalog, god, excluded }: { catalog: ContentCatalog; god: GodDefinition; excluded: readonly GodDefinition[] }) {
+  return (
+    <div className="god-commit" data-testid="god-commit-preview">
+      <div className="god-commit__head">
+        <GodPortrait catalog={catalog} godId={god.id} size="4.6rem" />
+        <div className="god-commit__who">
+          <div className="god-commit__name">{god.name}</div>
+          <div className="dim small">{god.domain}</div>
+          <GodPrice catalog={catalog} god={god} />
+        </div>
+      </div>
+      <GodBenefits catalog={catalog} god={god} />
+      {excluded.length ? (
+        <div className="god-commit__excludes" data-testid="god-commit-excludes">
+          <span className="god-commit__label">
+            <GodCardIcon id="icon.god.excluded" fallback="lock" />
+            Shuts out for good
+          </span>
+          {excluded.map((x) => (
+            <span key={x.id} className="god-pill small">
+              <GodPortrait catalog={catalog} godId={x.id} size="1.6rem" /> {x.name}
+            </span>
+          ))}
+        </div>
+      ) : null}
+      <PermanentNote>This choice cannot be undone in this playthrough.</PermanentNote>
+    </div>
+  );
+}
+
+/** The commitment strip: a dedicated `fx.god.commit` when delivered, else the Anointing gift's golden burst. */
+export function godCommitStrip(): string | undefined {
+  const fx = spriteManifest().effects;
+  return fx['fx.god.commit'] ? 'fx.god.commit' : fx['fx.gift.anointing'] ? 'fx.gift.anointing' : undefined;
+}
+
+/**
+ * The moment a god accepts the commitment (shown on its card, once): the
+ * golden burst over the portrait, the committed seal pressed onto the card and
+ * a short glow. Presentation only; the caller leaves it out under reduced motion.
+ */
+export function GodCommitFx({ onDone }: { onDone: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onDone, 1700);
+    return () => clearTimeout(t);
+    // One timer per celebration.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const strip = godCommitStrip();
+  return (
+    <div className="god-commit-fx" aria-hidden="true" data-testid="god-commit-fx">
+      <span className="god-commit-fx__rays" />
+      <Burst kind="anoint" {...(strip ? { stripId: strip } : {})} className="god-commit-fx__burst" scale={0.9} />
+      <span className="god-commit-fx__seal">
+        <GodCardIcon id="icon.god.committed" fallback="check" />
+      </span>
+    </div>
   );
 }

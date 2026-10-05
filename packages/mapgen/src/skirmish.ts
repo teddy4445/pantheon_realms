@@ -150,6 +150,10 @@ export interface SkirmishGenOptions {
   readonly turnOrder?: 'fixed' | 'rotating';
   /** Scenario features (default: all on, as in other skirmishes). */
   readonly features?: ScenarioFeatures;
+  /** The map's climate changes battles a little for both sides (default on; ignored when `features` is given). */
+  readonly climateRules?: boolean;
+  /** AI rivals play by their pantheon's temperament (default on; ignored when `features` is given). */
+  readonly aiTemperaments?: boolean;
 }
 
 export interface GeneratedSkirmish {
@@ -615,7 +619,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const treasure: TreasureLevel = opts.treasure ?? 'normal';
   const wealth: StartWealth = opts.startWealth ?? 'normal';
   const roadsSetting: RoadDensity = opts.roads ?? 'full';
-  const features = opts.features ?? { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true };
+  const features = opts.features ?? { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: opts.climateRules ?? true, aiTemperaments: opts.aiTemperaments ?? true };
   const seed = opts.seed >>> 0;
   const Rh = SKIRMISH_SIZE_RADIUS[opts.size];
   // Square maps (owner request 2026-10-04): 2·Rh+1 rows of 2·Rh+1 hexes (odd rows staggered

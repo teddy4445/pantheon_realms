@@ -149,6 +149,8 @@ export interface SkirmishOptions {
   /** Which town's owner takes the first turn of every day. Default: west. */
   readonly firstMover?: 'west' | 'east';
   readonly maxDay?: number;
+  /** Pantheon AI temperaments (default on, as in the game). */
+  readonly temperaments?: boolean;
 }
 
 export interface SkirmishResult {
@@ -184,6 +186,7 @@ export function playSkirmish(catalog: ContentCatalog, o: SkirmishOptions): Skirm
   const d = new GameDriver(match, catalog);
   const s: MatchState = structuredClone(d.state);
   for (const p of Object.values(s.players)) if (p.controller === 'human') p.controller = 'ai';
+  if (o.temperaments === false) (s.scenario as { features?: Record<string, unknown> }).features = { ...(s.scenario.features ?? {}), aiTemperaments: false };
   const eastId = s.towns['eastharbor']!.ownerId!;
   const firstMover = o.firstMover ?? 'west';
   if (firstMover === 'east') {
@@ -263,6 +266,8 @@ export interface RandomOptions {
   readonly empires: 2 | 3;
   readonly seed: number;
   readonly maxDay?: number;
+  /** Pantheon AI temperaments (default on, as in the game). */
+  readonly temperaments?: boolean;
 }
 
 export interface RandomResult {
@@ -287,6 +292,7 @@ export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomRes
     seats: Array.from({ length: o.empires }, () => ({ pantheonId: o.pantheon, controller: 'ai' as const })),
     victory: { type: 'elimination' },
     monsters: 'few',
+    aiTemperaments: o.temperaments !== false,
   });
   const { match } = createGeneratedMatch(catalog, g, { matchId: `rand-${o.pantheon}-${o.empires}-${o.seed}` });
   const d = new GameDriver(match, catalog);

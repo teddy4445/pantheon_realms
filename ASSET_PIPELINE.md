@@ -401,9 +401,33 @@ paths, then the rest (the queue in `GPT6_2D_CONTENT_GENERATION.md` follows it).
 ## 10. Sound and music (replacing the placeholders)
 
 Every sound the game plays is a **sound ID** in
-`assets-runtime/audio/manifest.json`; code never names a file. Today every
-entry is a placeholder synthesized by `tools/audio/make_placeholders.py`
-(status `placeholder`, shown as such in Settings → Audio).
+`assets-runtime/audio/manifest.json`; code never names a file. Every entry is
+a placeholder synthesized by `tools/audio/make_placeholders.py` (status
+`placeholder`, shown as such in Settings → Audio) **except the map music per
+pantheon** (status `final`, below); regenerating the placeholders keeps the
+final entries.
+
+### Map music per pantheon (2026-10-04)
+
+On the adventure map, town and hero screens the viewing player's pantheon plays
+its playlist `music.map.<pantheon>` (`packages/ui/src/audio/sounds.ts`); the
+mission's soundscape keeps its ambience, and a pantheon without a playlist
+falls back to `music.explore.<soundscape>`. A playlist entry (`"playlist":
+true`, role `music`) lists several long tracks: the director streams them
+through a media element one after another (a random first track, then in
+order, wrapping), crossfading near each end, instead of decoding a whole
+track into memory; a file that fails is reported and skipped, and when every
+file fails the music goes silent.
+
+The tracks are royalty-free Pixabay tracks under the Pixabay Content License
+(no attribution required; not to be sold or redistributed on their own),
+chosen with the owner (only tracks that are neither AI-generated nor registered
+with YouTube Content ID) and listed with title, author, page and licence in
+`assets-source/audio/music/tracks.json`. `python3 tools/audio/import_music.py
+--from <folder with pixabay-<id>.mp3>` converts them (Ogg Vorbis quality 2,
+44.1 kHz stereo, two-pass EBU R128 loudness to −16 LUFS, true peak ≤ −1.5 dBTP)
+into `assets-runtime/audio/music/<pantheon>/` and registers the playlists; a
+new track is a row in `tracks.json` and a rerun.
 
 To deliver final audio for an ID, either overwrite the file at the same path
 (`assets-runtime/audio/placeholder/<name>.ogg`) or, better, add the file
@@ -471,7 +495,11 @@ Sound IDs by use (the full list is `REQUIRED_SOUND_IDS` in
 ## 11. Interface art (opening screen, branding, icons)
 
 The interface art is owner-supplied (AI-generated visual references delivered
-on 2026-10-01). Sources live in `assets-source/ui/`; the runtime files are
+on 2026-10-01; the twelve opening paintings were replaced on 2026-10-04 by
+quieter versions — a subdued centre behind the menu, gods and architecture at
+the edges, one battle-eve and one landscape per pantheon, the Mesoamerican
+battle painting new — and the earlier eleven are archived, unused, in
+`assets-source/ui/backgrounds-old/`, which the script never reads). Sources live in `assets-source/ui/`; the runtime files are
 **generated** by `python3 tools/assets/prepare_ui_art.py` (Pillow, numpy,
 scipy) and listed with provenance in `assets-runtime/ui/manifest.json`.
 Code refers to asset IDs only, so final art replaces a file without screen
@@ -748,6 +776,38 @@ blessing keep their sentences.
 | Victory / defeat splashes | 12 | 1920 × 1080 | `splash.<pantheon>.victory`, `splash.<pantheon>.defeat` |
 | Level-up banners (transparent) | 6 | 1536 × 512 | `banner.level_up.<pantheon>` |
 | New-week banners (transparent) | 9 | 1536 × 512 | `banner.new_week`, `banner.week.<weeklyEventId>` |
+
+### Visual completion delivery (2026-10-04): icons, the Herald, opening paintings
+
+* **33 icons** (`assets-source/icons/final/`): the nine Workshop treasures
+  (128 px), the ten artifact-set emblems (96 px; the set badge keeps its
+  active state from the game, not the picture) and the fourteen
+  creature-ability badges (64 px), imported with `npm run icons:import --
+  --new` so the icons already imported keep their files and entries byte for
+  byte. `SetBadge`, `AbilityBadge` and the artifact icons resolve them by ID;
+  tooltips and screen-reader labels are unchanged.
+* **The Herald's dialogue bust** (`story.herald.bust`, 768 × 1152 with
+  transparency): the importer recognises this one name besides
+  `hero.<pantheon>.<character>.bust`; the Twin Harbors briefing and victory
+  keep `story.herald.portrait`, which the dialogue window maps to the bust.
+* **Twelve quieter opening paintings** (§11).
+* The art importer now **keeps** runtime art whose master is not in the
+  checkout's `assets-source/art/final/` (with a warning) unless run with
+  `--prune`: the cloud copy, which lacks the 54 climate battlefield masters,
+  used to delete their runtime files on every run.
+
+### Brief 12: the visuals still missing
+
+`npm run art:brief12` writes `assets-source/art/briefs/GPT6_BRIEF_12_REMAINING_VISUALS.md`
+from the game itself — what still shows a crop, a stand-in, a placeholder or a
+glyph — with its sheet layouts (`assets-source/sprites/sheet-layouts.brief12.json`)
+and town layout guides (`assets-source/art/briefs/guides/`). On 2026-10-04 it
+lists: 84 dwelling cutouts (34 of today's crops show another building), 42
+service cutouts, 9 climate icons, 8 map markers of the random-map sites, an
+optional sharper repaint of the six town backgrounds and an optional
+`fx.god.commit` strip. The importer takes the new town art by name:
+`town.<pantheon>.dwelling.tier<N>.<base|upgraded>` (≤ 512 px, transparency
+kept) and `town.<pantheon>.background` (opaque, 4:3, ≤ 2048 px wide).
 
 ### Story art in the game (first delivery, 2026-10-02)
 

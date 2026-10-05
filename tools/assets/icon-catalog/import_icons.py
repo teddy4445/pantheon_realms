@@ -14,6 +14,11 @@ Icons with transparency stay PNG. Fully opaque pictures — the painted creature
 god and hero portraits, which have their own backgrounds — are written as WebP
 (quality 88): about a sixth of the PNG size at the same 256 px.
 
+Usage: python3 tools/assets/icon-catalog/import_icons.py [--new]
+  --new   import only icons that are not registered yet (or whose runtime file is missing);
+          every icon already imported keeps its file and manifest entry byte for byte
+          (re-importing everything re-encodes the files and re-dates every entry).
+
 Needs: Pillow.
 """
 import json
@@ -47,8 +52,11 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     files = sorted(f for f in os.listdir(SRC) if f.lower().endswith('.png')) if os.path.isdir(SRC) else []
     imported, warnings = 0, []
+    only_new = '--new' in sys.argv
     for f in files:
         asset_id = f[:-4]
+        if only_new and asset_id in assets and os.path.exists(os.path.join(ROOT, 'assets-runtime', assets[asset_id]['file'])):
+            continue
         if asset_id not in size_of:
             warnings.append(f'{f}: not an asset ID in the icon catalog (imported anyway — check the name)')
         w, h = size_of.get(asset_id, (256, 256))
