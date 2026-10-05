@@ -50,20 +50,11 @@ export function axialDistance(a: HexCoord, b: HexCoord): number {
   return (Math.abs(dq) + Math.abs(dr) + Math.abs(dq + dr)) / 2;
 }
 
-export function areAxialNeighbors(a: HexCoord, b: HexCoord): boolean {
-  return axialDistance(a, b) === 1;
-}
-
 /** Undirected edge key with endpoints in (q, r) order so both directions match. */
 export function edgeKey(a: HexCoord, b: HexCoord): string {
   const first = a.q < b.q || (a.q === b.q && a.r <= b.r) ? a : b;
   const second = first === a ? b : a;
   return `${hexKey(first)}|${hexKey(second)}`;
-}
-
-/** Pointy-top display transform (presentation only; floating point). */
-export function axialToWorld(c: HexCoord, radius: number): { x: number; z: number } {
-  return { x: Math.sqrt(3) * radius * (c.q + c.r / 2), z: 1.5 * radius * c.r };
 }
 
 // ---------------------------------------------------------------------------
@@ -147,11 +138,4 @@ export function footprintDistance(a: readonly BattleCell[], b: readonly BattleCe
   let best = Number.POSITIVE_INFINITY;
   for (const x of a) for (const y of b) best = Math.min(best, cellDistance(x, y));
   return best;
-}
-
-/** Pointy-top odd-r display transform for the battle board (presentation only). */
-export function cellToWorld(c: BattleCell, radius: number): { x: number; z: number } {
-  const x = Math.sqrt(3) * radius * (c.col + 0.5 * (c.row & 1));
-  const z = 1.5 * radius * c.row;
-  return { x, z };
 }

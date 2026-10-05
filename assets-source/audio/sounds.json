@@ -1,0 +1,1990 @@
+{
+  "note": "Final music and sound effects (owner request 2026-10-05: menu theme, battle music per pantheon, siege music, victory and defeat pieces, real effects for weapons, spells, building and the interface). Every source is from Pixabay, not marked AI-generated and without a YouTube Content ID registration at selection time. Converted by tools/audio/import_sounds.py.",
+  "licenseNote": "Pixabay Content License (https://pixabay.com/service/license-summary/): free use in a game, no attribution required; not to be sold or redistributed on its own. Chosen and downloaded with the owner’s approval on 2026-10-05.",
+  "retire": [
+    "music.explore.coast",
+    "music.explore.high_pass",
+    "music.explore.storm_plateau",
+    "music.explore.fjord",
+    "music.explore.desert",
+    "music.explore.shrine",
+    "music.explore.glen",
+    "music.explore.jungle"
+  ],
+  "sounds": [
+    {
+      "id": "music.menu",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.85,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 111168,
+          "file": "audio/music/menu/orchestra-fantasy.ogg"
+        },
+        {
+          "pixabayId": 111727,
+          "file": "audio/music/menu/the-dragon-and-the-elf.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.battle.greek",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 123469,
+          "file": "audio/music/battle/greek/epic-battle.ogg"
+        },
+        {
+          "pixabayId": 206855,
+          "file": "audio/music/battle/greek/battle-hymn.ogg"
+        },
+        {
+          "pixabayId": 189998,
+          "file": "audio/music/battle/greek/battle-hymn-ii.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.battle.norse",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 109867,
+          "file": "audio/music/battle/norse/where-the-brave-may-live-forever.ogg"
+        },
+        {
+          "pixabayId": 110366,
+          "file": "audio/music/battle/norse/hall-of-the-slain.ogg"
+        },
+        {
+          "pixabayId": 110364,
+          "file": "audio/music/battle/norse/skjaldm-r-norse.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.battle.egyptian",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 116118,
+          "file": "audio/music/battle/egyptian/eyes-of-the-desert.ogg"
+        },
+        {
+          "pixabayId": 165178,
+          "file": "audio/music/battle/egyptian/rhythms-of-the-orient.ogg"
+        },
+        {
+          "pixabayId": 171728,
+          "file": "audio/music/battle/egyptian/epic-orchestral-drums.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.battle.japanese",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 179961,
+          "file": "audio/music/battle/japanese/an-emperor-s-demand.ogg"
+        },
+        {
+          "pixabayId": 36914,
+          "file": "audio/music/battle/japanese/my-sensei-at-their-max.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.battle.celtic",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 114207,
+          "file": "audio/music/battle/celtic/the-enchantress-dark.ogg"
+        },
+        {
+          "pixabayId": 109865,
+          "file": "audio/music/battle/celtic/langh-s-burning.ogg"
+        },
+        {
+          "pixabayId": 4238,
+          "file": "audio/music/battle/celtic/the-virgin.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.battle.mesoamerican",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 197516,
+          "file": "audio/music/battle/mesoamerican/magical-ritual-shaman-amazonian-indians.ogg"
+        },
+        {
+          "pixabayId": 216819,
+          "file": "audio/music/battle/mesoamerican/epic-drums.ogg"
+        },
+        {
+          "pixabayId": 14292,
+          "file": "audio/music/battle/mesoamerican/jungle-music.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.siege",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 113256,
+          "file": "audio/music/siege/prepare-to-die-part-1.ogg"
+        },
+        {
+          "pixabayId": 115596,
+          "file": "audio/music/siege/the-battle-of-coalitions.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.resolution",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.85,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 179917,
+          "file": "audio/music/resolution/unbreakable-spirit-inside.ogg"
+        },
+        {
+          "pixabayId": 170961,
+          "file": "audio/music/resolution/ceremonious.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music.battle",
+      "role": "music",
+      "bus": "music",
+      "gain": 0.8,
+      "playlist": true,
+      "tracks": [
+        {
+          "pixabayId": 123469,
+          "file": "audio/music/battle/greek/epic-battle.ogg"
+        },
+        {
+          "pixabayId": 109867,
+          "file": "audio/music/battle/norse/where-the-brave-may-live-forever.ogg"
+        },
+        {
+          "pixabayId": 116118,
+          "file": "audio/music/battle/egyptian/eyes-of-the-desert.ogg"
+        },
+        {
+          "pixabayId": 179961,
+          "file": "audio/music/battle/japanese/an-emperor-s-demand.ogg"
+        },
+        {
+          "pixabayId": 114207,
+          "file": "audio/music/battle/celtic/the-enchantress-dark.ogg"
+        },
+        {
+          "pixabayId": 197516,
+          "file": "audio/music/battle/mesoamerican/magical-ritual-shaman-amazonian-indians.ogg"
+        }
+      ]
+    },
+    {
+      "id": "stinger.victory",
+      "role": "stinger",
+      "bus": "music",
+      "tracks": [
+        {
+          "pixabayId": 6826,
+          "file": "audio/stingers/stinger_victory.ogg"
+        }
+      ]
+    },
+    {
+      "id": "stinger.defeat",
+      "role": "stinger",
+      "bus": "music",
+      "tracks": [
+        {
+          "pixabayId": 159310,
+          "file": "audio/stingers/stinger_defeat.ogg"
+        }
+      ]
+    },
+    {
+      "id": "stinger.levelup",
+      "role": "stinger",
+      "bus": "music",
+      "tracks": [
+        {
+          "pixabayId": 191997,
+          "file": "audio/stingers/stinger_levelup.ogg"
+        }
+      ]
+    },
+    {
+      "id": "stinger.beacon",
+      "role": "stinger",
+      "bus": "music",
+      "tracks": [
+        {
+          "pixabayId": 176435,
+          "file": "audio/stingers/stinger_beacon.ogg"
+        }
+      ]
+    },
+    {
+      "id": "ui.click",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 124476,
+          "file": "audio/sfx/ui_click.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.open",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 172689,
+          "file": "audio/sfx/ui_open.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.close",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 172688,
+          "file": "audio/sfx/ui_close.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.confirm",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 124464,
+          "file": "audio/sfx/ui_confirm.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.error",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 126627,
+          "file": "audio/sfx/ui_error.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.coins",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 229314,
+          "file": "audio/sfx/ui_coins.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.build",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 38478,
+          "file": "audio/sfx/ui_build.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.recruit",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 44724,
+          "file": "audio/sfx/ui_recruit.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.endday",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 6298,
+          "file": "audio/sfx/ui_endday.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "ui.newday",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 364473,
+          "file": "audio/sfx/ui_newday.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.newweek",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 144755,
+          "file": "audio/sfx/ui_newweek.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "ui.pickup",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 6904,
+          "file": "audio/sfx/ui_pickup.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.capture",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 39306,
+          "file": "audio/sfx/ui_capture.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.divine",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 101441,
+          "file": "audio/sfx/ui_divine.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "ui.objective",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 144751,
+          "file": "audio/sfx/ui_objective.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "sfx.steps",
+      "role": "loop",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 123782,
+          "file": "audio/sfx/sfx_steps.ogg"
+        }
+      ]
+    },
+    {
+      "id": "ui.book_open",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 499646,
+          "file": "audio/sfx/ui_book_open.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.book_close",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 48184,
+          "file": "audio/sfx/ui_book_close.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.book_page",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 92381,
+          "file": "audio/sfx/ui_book_page.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.popup",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 39222,
+          "file": "audio/sfx/ui_popup.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "ui.town_action",
+      "role": "effect",
+      "bus": "interface",
+      "tracks": [
+        {
+          "pixabayId": 188054,
+          "file": "audio/sfx/ui_town_action.ogg",
+          "maxSeconds": 2.0
+        }
+      ]
+    },
+    {
+      "id": "combat.start",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 77565,
+          "file": "audio/sfx/combat_start.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "combat.march",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 362053,
+          "file": "audio/sfx/combat_march.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.flight",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 6143,
+          "file": "audio/sfx/combat_flight.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.swing",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 185432,
+          "file": "audio/sfx/combat_swing_1.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 14784,
+          "file": "audio/sfx/combat_swing_2.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 393845,
+          "file": "audio/sfx/combat_swing_3.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.hit",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 393847,
+          "file": "audio/sfx/combat_hit_1.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 393839,
+          "file": "audio/sfx/combat_hit_2.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 266309,
+          "file": "audio/sfx/combat_hit_3.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.hit_heavy",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 291047,
+          "file": "audio/sfx/combat_hit_heavy_1.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 393843,
+          "file": "audio/sfx/combat_hit_heavy_2.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.shot",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 306041,
+          "file": "audio/sfx/combat_shot_1.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 85040,
+          "file": "audio/sfx/combat_shot_2.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.arrow_hit",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 146418,
+          "file": "audio/sfx/combat_arrow_hit_1.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 146419,
+          "file": "audio/sfx/combat_arrow_hit_2.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.death",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 123078,
+          "file": "audio/sfx/combat_death_1.ogg",
+          "maxSeconds": 3.0
+        },
+        {
+          "pixabayId": 186763,
+          "file": "audio/sfx/combat_death_2.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.spell",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 229208,
+          "file": "audio/sfx/combat_spell.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.heal",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 115095,
+          "file": "audio/sfx/combat_heal.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.ward",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 250240,
+          "file": "audio/sfx/combat_ward.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.defend",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 6963,
+          "file": "audio/sfx/combat_defend.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.morale_up",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 250239,
+          "file": "audio/sfx/combat_morale_up.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.morale_down",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 6763,
+          "file": "audio/sfx/combat_morale_down.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.shapeshift",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 211685,
+          "file": "audio/sfx/combat_shapeshift.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.recovery",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 46004,
+          "file": "audio/sfx/combat_recovery.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.catapult",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 161021,
+          "file": "audio/sfx/combat_catapult.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.stone_hit",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 109593,
+          "file": "audio/sfx/combat_stone_hit.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.breach",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 6129,
+          "file": "audio/sfx/combat_breach.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "combat.turret",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 306040,
+          "file": "audio/sfx/combat_turret.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "combat.moat",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 199583,
+          "file": "audio/sfx/combat_moat.ogg",
+          "maxSeconds": 3.0
+        }
+      ]
+    },
+    {
+      "id": "magic.cast",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 190272,
+          "file": "audio/sfx/magic_cast.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.strike",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 228342,
+          "file": "audio/sfx/magic_strike.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.thunder",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 7932,
+          "file": "audio/sfx/magic_thunder.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "magic.fire",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 179125,
+          "file": "audio/sfx/magic_fire.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.heal",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 36672,
+          "file": "audio/sfx/magic_heal.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.bless",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 278824,
+          "file": "audio/sfx/magic_bless.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.curse",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 47178,
+          "file": "audio/sfx/magic_curse.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.wind",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 141288,
+          "file": "audio/sfx/magic_wind.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.frost",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 98676,
+          "file": "audio/sfx/magic_frost.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.nature",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 242245,
+          "file": "audio/sfx/magic_nature.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.swarm",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 98657,
+          "file": "audio/sfx/magic_swarm.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "magic.water",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 185332,
+          "file": "audio/sfx/magic_water.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.shadow",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 194554,
+          "file": "audio/sfx/magic_shadow.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.holy",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 6116,
+          "file": "audio/sfx/magic_holy.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "magic.smite",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 6012,
+          "file": "audio/sfx/magic_smite.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.reveal",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 244951,
+          "file": "audio/sfx/magic_reveal.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.teleport",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 90137,
+          "file": "audio/sfx/magic_teleport.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.coins",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 183893,
+          "file": "audio/sfx/magic_coins.ogg",
+          "maxSeconds": 3.5
+        }
+      ]
+    },
+    {
+      "id": "magic.horn",
+      "role": "effect",
+      "bus": "combat",
+      "tracks": [
+        {
+          "pixabayId": 77565,
+          "file": "audio/sfx/magic_horn.ogg",
+          "maxSeconds": 5.0
+        }
+      ]
+    },
+    {
+      "id": "amb.coast",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 5932,
+          "file": "audio/ambience/amb_coast.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.high_pass",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 14720,
+          "file": "audio/ambience/amb_high_pass.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.storm_plateau",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 106800,
+          "file": "audio/ambience/amb_storm_plateau.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.battlefield",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 14499,
+          "file": "audio/ambience/amb_battlefield.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.fjord",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 6195,
+          "file": "audio/ambience/amb_fjord.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.desert",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 350417,
+          "file": "audio/ambience/amb_desert.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.shrine",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 201930,
+          "file": "audio/ambience/amb_shrine.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.glen",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 127411,
+          "file": "audio/ambience/amb_glen.ogg"
+        }
+      ]
+    },
+    {
+      "id": "amb.jungle",
+      "role": "ambience",
+      "bus": "ambience",
+      "tracks": [
+        {
+          "pixabayId": 6293,
+          "file": "audio/ambience/amb_jungle.ogg"
+        }
+      ]
+    }
+  ],
+  "sources": {
+    "4238": {
+      "title": "The Virgin - Medieval Music",
+      "author": "JuliusH",
+      "page": "https://pixabay.com/music/folk-the-virgin-medieval-music-4238/",
+      "durationSeconds": 95,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "5932": {
+      "title": "Sea and Seagull, wave",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-sea-and-seagull-wave-5932/",
+      "durationSeconds": 70,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6012": {
+      "title": "Magic Smite",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-magic-smite-6012/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6116": {
+      "title": "Short Choir",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/musical-short-choir-6116/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6129": {
+      "title": "Rocks",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-rocks-6129/",
+      "durationSeconds": 6,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6143": {
+      "title": "Light Wing Flap",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-light-wing-flap-6143/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6195": {
+      "title": "Wind__Artic__Cold",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-wind-artic-cold-6195/",
+      "durationSeconds": 59,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6293": {
+      "title": "Rain Sound and Rainforest",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-rain-sound-and-rainforest-6293/",
+      "durationSeconds": 240,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6298": {
+      "title": "Old Church Bell",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/city-old-church-bell-6298/",
+      "durationSeconds": 4,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6763": {
+      "title": "male sigh",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/people-male-sigh-6763/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6826": {
+      "title": "Medieval Fanfare",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/musical-medieval-fanfare-6826/",
+      "durationSeconds": 7,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6904": {
+      "title": "Item Equip",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-item-equip-6904/",
+      "durationSeconds": 0,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "6963": {
+      "title": "shield guard",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-shield-guard-6963/",
+      "durationSeconds": 0,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "7932": {
+      "title": "Loud Thunder",
+      "author": "BlenderTimer",
+      "page": "https://pixabay.com/sound-effects/nature-loud-thunder-7932/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "14292": {
+      "title": "Jungle Music",
+      "author": "KamaleshSiddu",
+      "page": "https://pixabay.com/music/main-title-jungle-music-14292/",
+      "durationSeconds": 155,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "14499": {
+      "title": "Howling Wind",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-howling-wind-14499/",
+      "durationSeconds": 59,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "14720": {
+      "title": "Wind ambience",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-wind-ambience-14720/",
+      "durationSeconds": 176,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "14784": {
+      "title": "Clean fast Swoosh.aiff",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-clean-fast-swooshaiff-14784/",
+      "durationSeconds": 0,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "36672": {
+      "title": "084373_Heal",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-084373-heal-36672/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "36914": {
+      "title": "My Sensei At Their Max",
+      "author": "AmethystMusic",
+      "page": "https://pixabay.com/music/main-title-my-sensei-at-their-max-36914/",
+      "durationSeconds": 109,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "38478": {
+      "title": "Hitting nails with Hammer",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-hitting-nails-with-hammer-38478/",
+      "durationSeconds": 4,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "39222": {
+      "title": "pop",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-pop-39222/",
+      "durationSeconds": 0,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "39306": {
+      "title": "flapping",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-flapping-39306/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "44724": {
+      "title": "Draw sword#1",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-draw-sword1-44724/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "46004": {
+      "title": "healpop",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-healpop-46004/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "47178": {
+      "title": "Dark Magic Loop",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-dark-magic-loop-47178/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "48184": {
+      "title": "Book Closing",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/household-book-closing-48184/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "77565": {
+      "title": "medieval horn by kris klavenes .wav.",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/musical-medieval-horn-by-kris-klavenes-wav-77565/",
+      "durationSeconds": 8,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "85040": {
+      "title": "Bow_release",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-bow-release-85040/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "90137": {
+      "title": "teleport",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-teleport-90137/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "92381": {
+      "title": "Book Turn Page 2",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-book-turn-page-2-92381/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "98657": {
+      "title": "Bees swarming",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-bees-swarming-98657/",
+      "durationSeconds": 5,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "98676": {
+      "title": "Breaking ice",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/nature-breaking-ice-98676/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "101441": {
+      "title": "Haaaa Epiphany Choir",
+      "author": "freesound_community",
+      "page": "https://pixabay.com/sound-effects/musical-haaaa-epiphany-choir-101441/",
+      "durationSeconds": 4,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "106800": {
+      "title": "Epic storm. Thunder, rain,wind,waves. (no loops)",
+      "author": "Placidplace",
+      "page": "https://pixabay.com/sound-effects/epic-storm-thunder-rainwindwaves-no-loops-106800/",
+      "durationSeconds": 155,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "109593": {
+      "title": "STONE DEBRIS",
+      "author": "Liecio",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-stone-debris-109593/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "109865": {
+      "title": "langhús burning - Viking Background Music",
+      "author": "OB-LIX",
+      "page": "https://pixabay.com/music/build-up-scenes-langh%C3%BAs-burning-viking-background-music-109865/",
+      "durationSeconds": 265,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "109867": {
+      "title": "Where The Brave May Live Forever - Viking Background Music",
+      "author": "OB-LIX",
+      "page": "https://pixabay.com/music/main-title-where-the-brave-may-live-forever-viking-background-music-109867/",
+      "durationSeconds": 273,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "110364": {
+      "title": "Skjaldmær  Norse - Viking Background Music",
+      "author": "OB-LIX",
+      "page": "https://pixabay.com/music/build-up-scenes-skjaldm%C3%A6r-norse-viking-background-music-110364/",
+      "durationSeconds": 179,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "110366": {
+      "title": "Hall of the Slain - Norse - Viking Background Music",
+      "author": "OB-LIX",
+      "page": "https://pixabay.com/music/build-up-scenes-hall-of-the-slain-norse-viking-background-music-110366/",
+      "durationSeconds": 212,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "111168": {
+      "title": "Orchestra Fantasy",
+      "author": "LiteSaturation",
+      "page": "https://pixabay.com/music/main-title-orchestra-fantasy-111168/",
+      "durationSeconds": 120,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "111727": {
+      "title": "The Dragon and the Elf | Fantasy & Adventure Background Music",
+      "author": "OB-LIX",
+      "page": "https://pixabay.com/music/build-up-scenes-the-dragon-and-the-elf-fantasy-ampamp-adventure-background-music-111727/",
+      "durationSeconds": 230,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "113256": {
+      "title": "Prepare to Die Part 1  | War Background Music",
+      "author": "OB-LIX",
+      "page": "https://pixabay.com/music/build-up-scenes-prepare-to-die-part-1-war-background-music-113256/",
+      "durationSeconds": 368,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "114207": {
+      "title": "The Enchantress Dark - Celtic Background Music",
+      "author": "OB-LIX",
+      "page": "https://pixabay.com/music/main-title-the-enchantress-dark-celtic-background-music-114207/",
+      "durationSeconds": 281,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "115095": {
+      "title": "Sound Effect: Twinkle/Sparkle",
+      "author": "ShidenBeatsMusic",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-sound-effect-twinklesparkle-115095/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "115596": {
+      "title": "The Battle of Coalitions",
+      "author": "TheFealdoProject",
+      "page": "https://pixabay.com/music/build-up-scenes-the-battle-of-coalitions-115596/",
+      "durationSeconds": 348,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "116118": {
+      "title": "Eyes Of The Desert",
+      "author": "DSTechnician",
+      "page": "https://pixabay.com/music/world-eyes-of-the-desert-116118/",
+      "durationSeconds": 110,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "123078": {
+      "title": "Male Death Scream",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/people-male-death-scream-123078/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "123469": {
+      "title": "Epic Battle - Francisco Samuel",
+      "author": "Francis_Samuel",
+      "page": "https://pixabay.com/music/main-title-epic-battle-francisco-samuel-123469/",
+      "durationSeconds": 158,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "123782": {
+      "title": "Horse Walking",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/nature-horse-walking-123782/",
+      "durationSeconds": 8,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "124464": {
+      "title": "Interface",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-interface-124464/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "124476": {
+      "title": "Interface Click",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-interface-click-124476/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "126627": {
+      "title": "Error",
+      "author": "u_31vnwfmzt6",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-error-126627/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "127411": {
+      "title": "Birds Singing | Calm River | Nature Ambient Sound",
+      "author": "SoundsForYou",
+      "page": "https://pixabay.com/sound-effects/nature-birds-singing-calm-river-nature-ambient-sound-127411/",
+      "durationSeconds": 180,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "141288": {
+      "title": "Wind Whoosh",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/nature-wind-whoosh-141288/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "144751": {
+      "title": "Game Bonus",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-game-bonus-144751/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "144755": {
+      "title": "Brass Fanfare",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-brass-fanfare-144755/",
+      "durationSeconds": 4,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "146418": {
+      "title": "Arrow Wood Impact",
+      "author": "DennisH18",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-arrow-wood-impact-146418/",
+      "durationSeconds": 0,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "146419": {
+      "title": "Arrow Body Impact",
+      "author": "DennisH18",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-arrow-body-impact-146419/",
+      "durationSeconds": 0,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "159310": {
+      "title": "Dramatic Sorrow Piano (15s)",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/musical-dramatic-sorrow-piano-15s-159310/",
+      "durationSeconds": 15,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "161021": {
+      "title": "Whoosh Cinematic",
+      "author": "LordSonny",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-whoosh-cinematic-161021/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "165178": {
+      "title": "Rhythms Of The Orient",
+      "author": "PineAppleMusic",
+      "page": "https://pixabay.com/music/world-rhythms-of-the-orient-165178/",
+      "durationSeconds": 145,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "170961": {
+      "title": "Ceremonious (Awards)",
+      "author": "Diamond_Tunes",
+      "page": "https://pixabay.com/music/main-title-ceremonious-awards-170961/",
+      "durationSeconds": 88,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "171728": {
+      "title": "Epic Orchestral Drums",
+      "author": "Playsound",
+      "page": "https://pixabay.com/music/build-up-scenes-epic-orchestral-drums-171728/",
+      "durationSeconds": 97,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "172688": {
+      "title": "Handle Paper Foley 1",
+      "author": "floraphonic",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-handle-paper-foley-1-172688/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "172689": {
+      "title": "Handle Paper Foley 2",
+      "author": "floraphonic",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-handle-paper-foley-2-172689/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "176435": {
+      "title": "Intense Transitions Torch Whoosh",
+      "author": "BryanSantosBreton",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-intense-transitions-torch-whoosh-176435/",
+      "durationSeconds": 4,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "179125": {
+      "title": "Fireball Whoosh 1",
+      "author": "floraphonic",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-fireball-whoosh-1-179125/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "179917": {
+      "title": "Unbreakable Spirit Inside (This Is Epic)",
+      "author": "Diamond_Tunes",
+      "page": "https://pixabay.com/music/main-title-unbreakable-spirit-inside-this-is-epic-179917/",
+      "durationSeconds": 189,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "179961": {
+      "title": "An Emperor's Demand (Japan Percussion For)",
+      "author": "Diamond_Tunes",
+      "page": "https://pixabay.com/music/world-an-emperorx27s-demand-japan-percussion-for-179961/",
+      "durationSeconds": 99,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "183893": {
+      "title": "Coin Donation 6",
+      "author": "floraphonic",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-coin-donation-6-183893/",
+      "durationSeconds": 4,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "185332": {
+      "title": "Liquid Whoosh 3",
+      "author": "floraphonic",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-liquid-whoosh-3-185332/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "185432": {
+      "title": "Sword Slash and Swing",
+      "author": "DavidDumaisAudio",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-sword-slash-and-swing-185432/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "186763": {
+      "title": "Man death scream",
+      "author": "u_r7cny11q7r",
+      "page": "https://pixabay.com/sound-effects/people-man-death-scream-186763/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "188054": {
+      "title": "Store Entrance Bell",
+      "author": "DavidDumaisAudio",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-store-entrance-bell-188054/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "189998": {
+      "title": "Battle Hymn II (Epic Version)",
+      "author": "oliver_dee",
+      "page": "https://pixabay.com/music/main-title-battle-hymn-ii-epic-version-189998/",
+      "durationSeconds": 230,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "190272": {
+      "title": "Magical Spell Cast",
+      "author": "DavidDumaisAudio",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-magical-spell-cast-190272/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "191997": {
+      "title": "Level Up",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-level-up-191997/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "194554": {
+      "title": "Long Whoosh",
+      "author": "LordSonny",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-long-whoosh-194554/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "197516": {
+      "title": "Magical Ritual Shaman Amazonian Indians",
+      "author": "Denis-Pavlov-Music",
+      "page": "https://pixabay.com/music/world-magical-ritual-shaman-amazonian-indians-197516/",
+      "durationSeconds": 137,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "199583": {
+      "title": "Water Splash",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-water-splash-199583/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "201930": {
+      "title": "The Sound Of A Mountain Stream _Nature Sound",
+      "author": "NickyPe",
+      "page": "https://pixabay.com/sound-effects/nature-the-sound-of-a-mountain-stream-nature-sound-201930/",
+      "durationSeconds": 42,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "206855": {
+      "title": "Battle Hymn",
+      "author": "oliver_dee",
+      "page": "https://pixabay.com/music/main-title-battle-hymn-206855/",
+      "durationSeconds": 225,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "211685": {
+      "title": "Transitional Swipe 3",
+      "author": "floraphonic",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-transitional-swipe-3-211685/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "216819": {
+      "title": "Epic Drums",
+      "author": "Playsound",
+      "page": "https://pixabay.com/music/upbeat-epic-drums-216819/",
+      "durationSeconds": 99,
+      "kind": "music",
+      "downloaded": "2026-10-05"
+    },
+    "228342": {
+      "title": "Elemental Magic Spell Impact Outgoing",
+      "author": "RescopicSound",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-elemental-magic-spell-impact-outgoing-228342/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "229208": {
+      "title": "Spell Casting",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-spell-casting-229208/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "229314": {
+      "title": "Coin Drop",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-coin-drop-229314/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "242245": {
+      "title": "Magic Spell 03",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-magic-spell-03-242245/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "244951": {
+      "title": "Magic Twinkle",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-magic-twinkle-244951/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "250239": {
+      "title": "Human Roar",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/people-human-roar-250239/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "250240": {
+      "title": "Magic Spell 02",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-magic-spell-02-250240/",
+      "durationSeconds": 3,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "266309": {
+      "title": "Hit Flesh 02",
+      "author": "u_xjrmmgxfru",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-hit-flesh-02-266309/",
+      "durationSeconds": 0,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "278824": {
+      "title": "Magic Spell",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-magic-spell-278824/",
+      "durationSeconds": 5,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "291047": {
+      "title": "Impact Thud",
+      "author": "Universfield",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-impact-thud-291047/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "306040": {
+      "title": "Arrow Swish_03",
+      "author": "DJARTMUSIC",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-arrow-swish-03-306040/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "306041": {
+      "title": "Arrow Twang_01",
+      "author": "DJARTMUSIC",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-arrow-twang-01-306041/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "350417": {
+      "title": "Desert wind 2",
+      "author": "TanwerAman",
+      "page": "https://pixabay.com/sound-effects/nature-desert-wind-2-350417/",
+      "durationSeconds": 32,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "362053": {
+      "title": "Footsteps Male",
+      "author": "u_xg7ssi08yr",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-footsteps-male-362053/",
+      "durationSeconds": 4,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "364473": {
+      "title": "Rooster Crowing",
+      "author": "DRAGON-STUDIO",
+      "page": "https://pixabay.com/sound-effects/nature-rooster-crowing-364473/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "393839": {
+      "title": "Violent Sword Slice",
+      "author": "DRAGON-STUDIO",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-violent-sword-slice-393839/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "393843": {
+      "title": "Armor Impact from Sword",
+      "author": "DRAGON-STUDIO",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-armor-impact-from-sword-393843/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "393845": {
+      "title": "Sword Slice 2",
+      "author": "DRAGON-STUDIO",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-sword-slice-2-393845/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "393847": {
+      "title": "Sword Slice",
+      "author": "DRAGON-STUDIO",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-sword-slice-393847/",
+      "durationSeconds": 2,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    },
+    "499646": {
+      "title": "Flipping Book Page",
+      "author": "DRAGON-STUDIO",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-flipping-book-page-499646/",
+      "durationSeconds": 1,
+      "kind": "sound-effect",
+      "downloaded": "2026-10-05"
+    }
+  }
+}

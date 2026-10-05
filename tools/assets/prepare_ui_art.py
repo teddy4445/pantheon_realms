@@ -42,8 +42,8 @@ DESKTOP = ROOT / "apps" / "desktop" / "build-resources"
 
 PROVENANCE = "Owner-supplied UI art (AI-generated visual reference, delivered 2026-10-01); replaceable by asset ID."
 # The quieter opening paintings (delivery visual-completion-2026-10-04): a subdued centre behind the
-# menu, gods and architecture at the edges. The earlier versions are archived, unused, in
-# assets-source/ui/backgrounds-old/ (never read by this script).
+# menu, gods and architecture at the edges. (The earlier versions were removed in the release
+# clean-up of 2026-10-05; git history keeps them.)
 BACKGROUND_PROVENANCE = "Owner-supplied opening painting (AI-generated, quieter version delivered 2026-10-04); replaceable by asset ID."
 
 MENU_ICONS = {

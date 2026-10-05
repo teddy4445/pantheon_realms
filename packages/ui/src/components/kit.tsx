@@ -2,7 +2,7 @@
  * Core UI kit: panels, buttons, tabs, chips, stats, quantity selector, toggles.
  * Presentational only — no game rules, no state mutation.
  */
-import { useEffect, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
 import { Icon, type IconName } from '../assets/icons';
 
 export function Panel({
@@ -150,18 +150,6 @@ export function Rule() {
   return <div className="ornament-rule" />;
 }
 
-export function StatRow({ icon, label, value, hint, up }: { icon?: IconName; label: string; value: ReactNode; hint?: string; up?: boolean }) {
-  return (
-    <>
-      {icon ? <Icon name={icon} className="stats__icon" style={{ color: 'var(--gold-400)' }} /> : <span />}
-      <span className="stats__label" title={hint}>
-        {label}
-      </span>
-      <span className={`stats__value ${up ? 'stats__value--up' : ''}`}>{value}</span>
-    </>
-  );
-}
-
 export function QuantitySelector({ value, max, onChange, min = 0, label }: { value: number; max: number; min?: number; onChange: (n: number) => void; label: string }) {
   const clamp = (n: number) => Math.max(min, Math.min(max, n));
   return (
@@ -194,31 +182,6 @@ export function Bar({ value, max, kind, label }: { value: number; max: number; k
       <div className={`bar__fill ${kind ? `bar__fill--${kind}` : ''}`} style={{ width: `${pct}%` }} />
     </div>
   );
-}
-
-/** Hover/focus tooltip with delay; content is supplementary (never the only source of key info). */
-export function useTooltip(delay = 450) {
-  const [tip, setTip] = useState<{ x: number; y: number; content: ReactNode } | null>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => void (timer.current && clearTimeout(timer.current)), []);
-  const bind = (content: ReactNode) => ({
-    onMouseEnter: (e: React.MouseEvent) => {
-      const { clientX, clientY } = e;
-      if (timer.current) clearTimeout(timer.current);
-      timer.current = setTimeout(() => setTip({ x: clientX, y: clientY, content }), delay);
-    },
-    onMouseMove: (e: React.MouseEvent) => setTip((t) => (t ? { ...t, x: e.clientX, y: e.clientY } : t)),
-    onMouseLeave: () => {
-      if (timer.current) clearTimeout(timer.current);
-      setTip(null);
-    },
-  });
-  const node = tip ? (
-    <div className="tooltip panel" style={{ left: Math.min(tip.x + 16, window.innerWidth - 360), top: Math.min(tip.y + 18, window.innerHeight - 160) }}>
-      {tip.content}
-    </div>
-  ) : null;
-  return { bind, node };
 }
 
 /**

@@ -254,6 +254,26 @@ function buildingTreeValidator(c: ContentCatalog, push: Push): void {
     state.set(id, 2);
   };
   for (const id of edges.keys()) visit(id, []);
+  // A creature dwelling never needs a dwelling of a higher tier, directly or through other
+  // buildings (owner request 2026-10-05: each dwelling can be built before the more advanced ones).
+  const tierOf = (id: string): number | null => {
+    const b = c.buildings[id];
+    return b?.dwelling ? (c.families[b.dwelling.familyId]?.tier ?? null) : null;
+  };
+  for (const b of Object.values(c.buildings)) {
+    const own = tierOf(b.id);
+    if (own === null) continue;
+    const seen = new Set<string>();
+    const stack = [...(edges.get(b.id) ?? [])];
+    while (stack.length) {
+      const d = stack.pop()!;
+      if (seen.has(d)) continue;
+      seen.add(d);
+      const t = tierOf(d);
+      if (t !== null && t > own) push(`${b.id} (tier ${own}) requires ${d} (tier ${t}): a dwelling must not need a more advanced dwelling`);
+      stack.push(...(edges.get(d) ?? []));
+    }
+  }
 }
 
 function pantheonValidator(c: ContentCatalog, push: Push): void {
@@ -618,6 +638,42 @@ function temperamentValidator(c: ContentCatalog, push: Push): void {
   }
 }
 
+/**
+ * Authored skirmish maps (2026-10-05): the document is a playable custom map —
+ * IDs, empires, one town each, known creatures, spells, skills, artifacts and
+ * heroes. Reachability, symmetry and compilation are checked by the map tests
+ * (packages/campaign/test/skirmishMaps.test.ts), which can use the map compiler.
+ */
+function skirmishMapValidator(c: ContentCatalog, push: Push): void {
+  const orders = new Set<number>();
+  for (const [id, m] of Object.entries(c.skirmishMaps ?? {})) {
+    if (m.id !== id) push(`skirmish map ${id}: id mismatch`);
+    if (orders.has(m.order)) push(`skirmish map ${id}: duplicate order ${m.order}`);
+    orders.add(m.order);
+    if (!m.name || !m.tagline || !m.summary || m.highlights.length === 0) push(`skirmish map ${id}: needs a name, tagline, summary and highlights`);
+    if (m.thumbnailAssetId !== `mission.skirmish.${id}.thumbnail`) push(`skirmish map ${id}: thumbnail must be mission.skirmish.${id}.thumbnail`);
+    const d = m.map;
+    if (d.format !== 'pantheon-realms-map' || d.version !== 1) push(`skirmish map ${id}: not a version-1 map document`);
+    if (d.terrain.length !== d.width * d.height) push(`skirmish map ${id}: terrain size mismatch`);
+    if (d.players.length < 2 || d.players.length > 6) push(`skirmish map ${id}: needs 2–6 empires`);
+    d.players.forEach((p, i) => {
+      if (!c.skirmishKits[p.pantheonId]) push(`skirmish map ${id}: empire ${i + 1} pantheon ${p.pantheonId} has no skirmish kit`);
+      if (d.sites.filter((s) => s.kind === 'town' && s.owner === i).length !== 1) push(`skirmish map ${id}: empire ${i + 1} needs exactly one town`);
+    });
+    const ids = new Set<string>();
+    for (const s of d.sites) {
+      if (ids.has(s.id)) push(`skirmish map ${id}: duplicate site ${s.id}`);
+      ids.add(s.id);
+      for (const g of s.guard ? [s.guard, ...(s.guard.more ?? [])] : []) if (!c.creatures[g.creatureId]) push(`skirmish map ${id}: ${s.id} guard ${g.creatureId} unknown`);
+      if (s.creatureId && !c.creatures[s.creatureId]) push(`skirmish map ${id}: ${s.id} creature ${s.creatureId} unknown`);
+      if (s.spellId && !c.spells[s.spellId]) push(`skirmish map ${id}: ${s.id} spell ${s.spellId} unknown`);
+      if (s.skillId && !c.skills[s.skillId]) push(`skirmish map ${id}: ${s.id} skill ${s.skillId} unknown`);
+      if (s.heroId && !c.heroes[s.heroId]) push(`skirmish map ${id}: ${s.id} hero ${s.heroId} unknown`);
+      if (s.reward?.artifactId && !c.artifacts[s.reward.artifactId]) push(`skirmish map ${id}: ${s.id} artifact ${s.reward.artifactId} unknown`);
+    }
+  }
+}
+
 export const VALIDATORS: Readonly<Record<string, (c: ContentCatalog, push: Push) => void>> = {
   CreatureRosterValidator: creatureRosterValidator,
   CreatureUpgradeValidator: creatureUpgradeValidator,
@@ -632,6 +688,7 @@ export const VALIDATORS: Readonly<Record<string, (c: ContentCatalog, push: Push)
   AssetReferenceValidator: assetReferenceValidator,
   ClimateValidator: climateValidator,
   TemperamentValidator: temperamentValidator,
+  SkirmishMapValidator: skirmishMapValidator,
 };
 
 export function validateCatalog(c: ContentCatalog): ValidationReport {

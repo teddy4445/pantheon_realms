@@ -21,6 +21,7 @@ export * from './definitions/world';
 export * from './definitions/campaign';
 export * from './definitions/rulesProfile';
 export * from './definitions/skirmish';
+export * from './definitions/customMap';
 export * from './definitions/catalog';
 
 export * from './state/match';

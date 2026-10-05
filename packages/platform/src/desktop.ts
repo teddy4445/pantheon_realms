@@ -2,7 +2,7 @@
  * Desktop adapters: thin wrappers over the narrow Electron preload bridge.
  * All filesystem work happens in the main process after argument validation.
  */
-import { assertSaveId, type DesktopBridge, type PlatformServices, type SaveRepository, type StorageAvailability, type StoredSave } from './contracts';
+import { assertSaveId, type DesktopBridge, type MapFiles, type PlatformServices, type SaveRepository, type StorageAvailability, type StoredSave } from './contracts';
 
 export class ElectronSaveRepository implements SaveRepository {
   readonly kind = 'desktop' as const;
@@ -52,11 +52,38 @@ export class ElectronSaveRepository implements SaveRepository {
   }
 }
 
+/** Custom maps on desktop: files in the app's data folder (`maps/<id>.prmap.json`) via the bridge. */
+export class ElectronMapFiles implements MapFiles {
+  constructor(private readonly bridge: DesktopBridge) {}
+  list() {
+    return this.bridge.listMaps();
+  }
+  read(id: string) {
+    assertSaveId(id);
+    return this.bridge.readMap(id);
+  }
+  write(id: string, text: string) {
+    assertSaveId(id);
+    return this.bridge.writeMap(id, text);
+  }
+  remove(id: string) {
+    assertSaveId(id);
+    return this.bridge.deleteMap(id);
+  }
+  exportFile(text: string, suggestedName: string) {
+    return this.bridge.exportMap(text, suggestedName);
+  }
+  importFile() {
+    return this.bridge.importMap();
+  }
+}
+
 export function createDesktopPlatform(bridge: DesktopBridge): PlatformServices {
   return {
     kind: 'desktop',
     appVersion: bridge.appVersion,
     saves: new ElectronSaveRepository(bridge),
+    maps: new ElectronMapFiles(bridge),
     preferences: { load: () => bridge.readPreferences(), save: (t) => bridge.writePreferences(t) },
     records: { load: () => bridge.readRecords(), save: (t) => bridge.writeRecords(t) },
     canQuit: true,

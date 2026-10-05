@@ -42,8 +42,10 @@ export type ScreenId =
   | 'settings'
   | 'unit-detail'
   | 'random-setup'
+  | 'map-setup'
   | 'summary'
-  | 'high-scores';
+  | 'high-scores'
+  | 'map-editor';
 
 export const SCREEN_CODES: Record<ScreenId, string> = {
   'main-menu': 'S01',
@@ -65,6 +67,8 @@ export const SCREEN_CODES: Record<ScreenId, string> = {
   'random-setup': 'S19',
   summary: 'S20',
   'high-scores': 'S21',
+  'map-editor': 'S22',
+  'map-setup': 'S23',
 };
 
 export interface ScreenEntry {
@@ -151,6 +155,8 @@ export interface SetupDraft {
   campaignId: string | null;
   /** Skirmish scenario (its variants decide the mission for a pantheon pairing). */
   scenarioId?: string | null;
+  /** Authored skirmish map (catalog `skirmishMaps`), set up on S23. */
+  skirmishMapId?: string | null;
   missionId: string | null;
   pantheonId: string | null;
   /** Skirmish only: the AI rival's pantheon. */

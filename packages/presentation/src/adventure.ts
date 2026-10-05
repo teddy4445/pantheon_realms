@@ -19,7 +19,7 @@ import { TERRAIN_BY_CODE, TERRAIN_CODES, type HexCoord, type Terrain, type World
 import { buildDecor, deriveStreams } from '@pr/mapgen';
 import type { EngineHost, SceneController } from './engineHost';
 import { MAP_SQUASH, SQRT3, axialPoint, directionOf, hexPolygon, pointAxial, pointAxialFraction, type MapDirection } from './hexmath';
-import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, ROAD_COLOR, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
+import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
 import { TweenPlayer, linear } from './tween';
 import { TERRAIN_TEXTURE_WORLD, terrainArt, type EnvironmentArt } from './environmentArt';
 import { graphicsProfile } from './graphics';
@@ -28,6 +28,7 @@ import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, ty
 import { loadStrip, loadTexture, stripFrames } from './textures';
 import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
 import { FxPainter, type FxTarget } from './fx';
+import { PLANK_COLOR, marksAlong, offsetRun, roadRuns, roadStyleFor, smoothRun, type RoadPoint } from './roads';
 import type { FxLook } from './fxLooks';
 
 /**
@@ -174,12 +175,13 @@ const GROUND_TYPES: readonly Terrain[] = ['plains', 'forest', 'rough', 'marsh', 
 export class AdventureSceneController implements SceneController {
   readonly root = new Container();
   readonly tweens = new TweenPlayer();
-  private readonly engine: EngineHost;
   private readonly canvas: HTMLCanvasElement;
   private readonly cb: AdventureCallbacks;
   private readonly world = new Container();
   private readonly backdrop = new Container();
   private readonly terrain = new Graphics();
+  /** The blended ground (one picture with soft transitions between ground types) once its textures are in. */
+  private readonly terrainBlend = new Container();
   private readonly roads = new Graphics();
   private readonly grid = new Graphics();
   private readonly reach = new Graphics();
@@ -191,6 +193,9 @@ export class AdventureSceneController implements SceneController {
   private readonly selectRing = new Graphics();
   private readonly objects = new Container();
   private readonly fog = new Graphics();
+  /** Soft-edged fog (one low-resolution picture, redrawn when the fog changes). */
+  private readonly fogSoft = new Container();
+  private fogCanvas: { canvas: HTMLCanvasElement; texture: Texture; sprite: Sprite; k: number; map: WorldMapDefinition } | null = null;
   private readonly effects = new Container();
   /** Whole-view moments (screen pixels, over the map). */
   private readonly screenLayer = new Container();
@@ -206,7 +211,6 @@ export class AdventureSceneController implements SceneController {
   private pathKey = '';
   private gridMode: AdventureView['grid'] = 'always';
   private explored: readonly number[] = [];
-  private visibleSet: ReadonlySet<number> = new Set();
   private decorByTile = new Map<number, Container[]>();
   private heroes = new Map<string, HeroEntry>();
   private sites = new Map<string, SiteEntry>();
@@ -222,7 +226,6 @@ export class AdventureSceneController implements SceneController {
   private lastSites: readonly AdventureSiteView[] = [];
   private down: { x: number; y: number; button: number; tx: number; ty: number; dragging: boolean } | null = null;
   private lastHover = '';
-  private hoverHex: HexCoord | null = null;
   /** Camera: the world point at the view's centre, and the zoom. */
   private cam = { x: 0, y: 0, zoom: ZOOM_DEFAULT };
   private camGoal: { x: number; y: number } | null = null;
@@ -232,14 +235,13 @@ export class AdventureSceneController implements SceneController {
   private readonly listeners: [string, EventListener][] = [];
 
   constructor(engine: EngineHost, canvas: HTMLCanvasElement, cb: AdventureCallbacks) {
-    this.engine = engine;
     this.canvas = canvas;
     this.cb = cb;
     this.root.addChild(this.world, this.screenLayer);
     this.painter = new FxPainter(this.effects, this.tweens, R, S, { layer: this.screenLayer, size: () => this.view });
     this.ground.addChild(this.selectRing, this.pathLayer, this.trailLayer, this.hover);
     this.objects.sortableChildren = true;
-    this.world.addChild(this.backdrop, this.terrain, this.roads, this.grid, this.reach, this.ground, this.objects, this.fog, this.effects);
+    this.world.addChild(this.backdrop, this.terrain, this.terrainBlend, this.roads, this.grid, this.reach, this.ground, this.objects, this.fog, this.fogSoft, this.effects);
     this.hover.visible = false;
     this.selectRing.visible = false;
     this.view = { width: engine.width, height: engine.height };
@@ -339,7 +341,14 @@ export class AdventureSceneController implements SceneController {
     this.drawTerrain();
     this.buildBackdrop(map);
     this.buildDecor(map);
-    // Painted ground replaces the flat colours as each texture arrives.
+    // Painted ground replaces the flat colours as each texture arrives; once all have
+    // arrived (or failed) the ground is blended into one picture with soft transitions.
+    let pending = this.terrainArts.size;
+    const settled = () => {
+      pending -= 1;
+      if (pending === 0 && !this.disposed && this.map === map) this.blendTerrain();
+    };
+    if (pending === 0) this.blendTerrain();
     for (const [t, art] of this.terrainArts) {
       void loadTexture(art.url).then(
         (tex) => {
@@ -349,8 +358,9 @@ export class AdventureSceneController implements SceneController {
           tex.source.style.update();
           this.terrainTextures.set(t, tex);
           this.drawTerrain();
+          settled();
         },
-        () => undefined,
+        () => settled(),
       );
     }
     // Centre the camera on the map initially.
@@ -370,6 +380,114 @@ export class AdventureSceneController implements SceneController {
     const span = TERRAIN_TEXTURE_WORLD * R;
     p.setTransform(new Matrix().scale(span / tex.width, (span * S) / tex.height));
     return p;
+  }
+
+  /**
+   * Soft ground (owner request 2026-10-05: a map that looks less like tiles). Each
+   * ground type is painted where it lies with a blurred edge, over the plains, into
+   * one picture at reduced resolution: colours and textures fade into each other
+   * across a third of a hex instead of meeting at hex edges. Only the map's outer
+   * edge stays a hex outline. Without a 2D canvas (tests) the tile drawing stays.
+   */
+  private blendTerrain(): void {
+    const map = this.map;
+    for (const c of this.terrainBlend.removeChildren()) c.destroy({ children: true, texture: true, textureSource: true });
+    this.terrain.visible = true;
+    if (!map || typeof document === 'undefined' || !graphicsProfile().softGround) return;
+    const b = this.mapBounds(map);
+    const k = Math.min(0.55, 4096 / Math.max(1, b.maxX - b.minX), 4096 / Math.max(1, b.maxY - b.minY));
+    const W = Math.max(1, Math.ceil((b.maxX - b.minX) * k));
+    const H = Math.max(1, Math.ceil((b.maxY - b.minY) * k));
+    const canvas = (w: number, h: number) => {
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      return c;
+    };
+    const out = canvas(W, H);
+    const ctx = out.getContext('2d');
+    if (!ctx) return;
+    const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
+    const cells = (want: (t: Terrain) => boolean, grow: number, c2: CanvasRenderingContext2D) => {
+      c2.beginPath();
+      for (let r = 0; r < map.height; r++)
+        for (let q = 0; q < map.width; q++) {
+          const t = this.terrainOf(map, r * map.width + q);
+          if (t === 'void' || !want(t)) continue;
+          const { x, y } = this.hexCenter({ q, r });
+          const poly = hexPolygon((x - b.minX) * k, (y - b.minY) * k, R * k * grow, S);
+          c2.moveTo(poly[0]!, poly[1]!);
+          for (let i = 2; i < poly.length; i += 2) c2.lineTo(poly[i]!, poly[i + 1]!);
+          c2.closePath();
+        }
+      c2.fill();
+    };
+    /** The fill of a ground type: its painting (mirrored tiles where it is not seamless) or its flat colour. */
+    const fillOf = (t: Terrain): string | CanvasPattern => {
+      const tex = this.terrainTextures.get(t);
+      const img = tex?.source.resource as CanvasImageSource | undefined;
+      if (tex && img) {
+        let tile: CanvasImageSource = img;
+        const mirror = this.terrainArts.get(t)?.wrap !== 'repeat';
+        if (mirror) {
+          const m = canvas(tex.width * 2, tex.height * 2);
+          const mc = m.getContext('2d')!;
+          for (const [sx, sy] of [[1, 1], [-1, 1], [1, -1], [-1, -1]] as const) {
+            mc.setTransform(sx, 0, 0, sy, sx < 0 ? tex.width * 2 : 0, sy < 0 ? tex.height * 2 : 0);
+            mc.drawImage(img, 0, 0, tex.width, tex.height);
+          }
+          tile = m;
+        }
+        const pat = ctx.createPattern(tile, 'repeat');
+        if (pat) {
+          const span = TERRAIN_TEXTURE_WORLD * R;
+          pat.setTransform(new DOMMatrix([(span / tex.width) * k, 0, 0, ((span * S) / tex.height) * k, -b.minX * k, -b.minY * k]));
+          return pat;
+        }
+      }
+      const base = biomeTerrainRgb(t, map.biome);
+      const c = (v: number) => Math.round(Math.max(0, Math.min(1, v)) * 255);
+      return `rgb(${c(base[0] * tint[0])}, ${c(base[1] * tint[1])}, ${c(base[2] * tint[2])})`;
+    };
+    // Plains under everything, then each ground type with a soft edge.
+    ctx.fillStyle = fillOf('plains');
+    cells(() => true, 1.02, ctx);
+    const blur = Math.max(2, HEX_W * k * 0.3);
+    for (const t of ['marsh', 'rough', 'forest', 'water', 'mountain'] as const) {
+      if (![...map.terrain].includes(TERRAIN_CODES[t])) continue;
+      const mask = canvas(W, H);
+      const mc = mask.getContext('2d')!;
+      mc.fillStyle = '#fff';
+      cells((x) => x === t, 1.08, mc);
+      const soft = canvas(W, H);
+      const sc = soft.getContext('2d')!;
+      sc.filter = `blur(${blur.toFixed(1)}px)`;
+      sc.drawImage(mask, 0, 0);
+      sc.filter = 'none';
+      // Twice over: a lone tile stays solid in its middle; only its rim fades.
+      sc.globalCompositeOperation = 'lighter';
+      sc.drawImage(soft, 0, 0);
+      const layer = canvas(W, H);
+      const lc = layer.getContext('2d')!;
+      lc.fillStyle = fillOf(t);
+      lc.fillRect(0, 0, W, H);
+      lc.globalCompositeOperation = 'destination-in';
+      lc.drawImage(soft, 0, 0);
+      ctx.drawImage(layer, 0, 0);
+    }
+    // The map's outer edge stays crisp (the black around the map shows no smear).
+    const edge = canvas(W, H);
+    const ec = edge.getContext('2d')!;
+    ec.fillStyle = '#fff';
+    cells(() => true, 1.0, ec);
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.drawImage(edge, 0, 0);
+    ctx.globalCompositeOperation = 'source-over';
+    const sprite = new Sprite(Texture.from(out));
+    sprite.position.set(b.minX, b.minY);
+    sprite.scale.set(1 / k);
+    this.terrainBlend.addChild(sprite);
+    this.terrain.visible = false;
   }
 
   private drawTerrain(): void {
@@ -461,12 +579,14 @@ export class AdventureSceneController implements SceneController {
     const map = this.map;
     if (!map) return;
     this.explored = explored;
-    this.visibleSet = visible;
     const fog = this.fog;
     const grid = this.grid;
     fog.clear();
     grid.clear();
     const unknown = hexToRgb(UNKNOWN_COLOR);
+    // Soft fog (2026-10-05): the edges of the unknown and of what is out of sight fade over a
+    // fraction of a hex instead of following hex outlines; tile drawing stays without a canvas.
+    const soft = this.drawSoftFog(map, explored, visible, unknown);
     for (let i = 0; i < map.width * map.height; i++) {
       const q = i % map.width;
       const r = Math.floor(i / map.width);
@@ -477,31 +597,130 @@ export class AdventureSceneController implements SceneController {
       const { x, y } = this.hexCenter({ q, r });
       if (!known) {
         // Unexplored ground is plain black, like the space around the map (owner request 2026-10-04).
-        fog.poly(hexPolygon(x, y, R * 1.03, S)).fill({ color: rgbOf(unknown[0], unknown[1], unknown[2]) });
+        if (!soft) fog.poly(hexPolygon(x, y, R * 1.03, S)).fill({ color: rgbOf(unknown[0], unknown[1], unknown[2]) });
       } else {
         // Remembered tiles: shaded whole hexes meeting edge to edge (no darker seams between tiles).
-        if (!vis) fog.poly(hexPolygon(x, y, R, S)).fill({ color: 0x000000, alpha: 0.42 });
+        if (!vis && !soft) fog.poly(hexPolygon(x, y, R, S)).fill({ color: 0x000000, alpha: 0.42 });
         if (this.gridMode === 'always') grid.poly(hexPolygon(x, y, R * 0.985, S));
       }
     }
     if (this.gridMode === 'always') grid.stroke({ width: 1.1, color: 0x0d121a, alpha: 0.42 });
-    // Roads only over explored tiles, dimmer where neither end is in sight.
-    const roads = this.roads;
-    roads.clear();
-    const road = colorOf(ROAD_COLOR);
-    const edges: { a: { x: number; y: number }; b: { x: number; y: number }; dim: boolean }[] = [];
+    // Roads only over explored tiles (the fog above dims what is out of sight).
+    this.drawRoads(map, explored);
+  }
+
+  private drawSoftFog(map: WorldMapDefinition, explored: readonly number[], visible: ReadonlySet<number>, unknown: readonly number[]): boolean {
+    if (typeof document === 'undefined' || !graphicsProfile().softGround) return false;
+    const b = this.mapBounds(map);
+    const pad = HEX_W;
+    let fc = this.fogCanvas;
+    if (!fc || fc.map !== map) {
+      if (fc) fc.sprite.destroy({ texture: true, textureSource: true });
+      const k = Math.min(0.3, 2048 / Math.max(1, b.maxX - b.minX + pad * 2), 2048 / Math.max(1, b.maxY - b.minY + pad * 2));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.ceil((b.maxX - b.minX + pad * 2) * k);
+      canvas.height = Math.ceil((b.maxY - b.minY + pad * 2) * k);
+      const texture = Texture.from(canvas);
+      const sprite = new Sprite(texture);
+      sprite.position.set(b.minX - pad, b.minY - pad);
+      sprite.scale.set(1 / k);
+      this.fogSoft.addChild(sprite);
+      fc = this.fogCanvas = { canvas, texture, sprite, k, map };
+    }
+    const ctx = fc.canvas.getContext('2d');
+    if (!ctx) return false;
+    const k = fc.k;
+    ctx.clearRect(0, 0, fc.canvas.width, fc.canvas.height);
+    const path = (want: (i: number) => boolean, grow: number) => {
+      ctx.beginPath();
+      for (let i = 0; i < map.width * map.height; i++) {
+        if (this.terrainOf(map, i) === 'void' || !want(i)) continue;
+        const { x, y } = this.hexCenter({ q: i % map.width, r: Math.floor(i / map.width) });
+        const poly = hexPolygon((x - b.minX + pad) * k, (y - b.minY + pad) * k, R * k * grow, S);
+        ctx.moveTo(poly[0]!, poly[1]!);
+        for (let j = 2; j < poly.length; j += 2) ctx.lineTo(poly[j]!, poly[j + 1]!);
+        ctx.closePath();
+      }
+    };
+    const px = (v: number) => `${Math.max(1, v * k).toFixed(1)}px`;
+    ctx.filter = `blur(${px(HEX_W * 0.22)})`;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.42)';
+    path((i) => explored[i] === 1 && !visible.has(i), 1.04);
+    ctx.fill();
+    // The unknown, grown a little so its fade never shows the ground beneath it.
+    ctx.filter = `blur(${px(HEX_W * 0.16)})`;
+    ctx.fillStyle = `rgb(${Math.round(unknown[0]! * 255)}, ${Math.round(unknown[1]! * 255)}, ${Math.round(unknown[2]! * 255)})`;
+    path((i) => explored[i] !== 1, 1.28);
+    ctx.fill();
+    ctx.filter = 'none';
+    fc.texture.source.update();
+    return true;
+  }
+
+  /**
+   * Roads as rounded runs between junctions, in the style of the map's climate
+   * (`roads.ts`): a dark verge, the road, its worn middle and ruts, flagstones or
+   * cobbles — and planks where the road crosses a marsh.
+   */
+  private drawRoads(map: WorldMapDefinition, explored: readonly number[]): void {
+    const g = this.roads;
+    g.clear();
+    const edges: [string, string][] = [];
     for (const k of map.roads) {
       const [a, b] = k.split('|');
       const [aq, ar] = a!.split(',').map(Number);
       const [bq, br] = b!.split(',').map(Number);
-      const ia = ar! * map.width + aq!;
-      const ib = br! * map.width + bq!;
-      if (explored[ia] !== 1 || explored[ib] !== 1) continue;
-      edges.push({ a: this.hexCenter({ q: aq!, r: ar! }), b: this.hexCenter({ q: bq!, r: br! }), dim: !(visible.has(ia) || visible.has(ib)) });
+      if (explored[ar! * map.width + aq!] !== 1 || explored[br! * map.width + bq!] !== 1) continue;
+      edges.push([a!, b!]);
     }
-    for (const e of edges) roads.moveTo(e.a.x, e.a.y).lineTo(e.b.x, e.b.y);
-    roads.stroke({ width: R * 0.36, color: 0x3b2f1c, alpha: 0.45, cap: 'round', join: 'round' });
-    for (const e of edges) roads.moveTo(e.a.x, e.a.y).lineTo(e.b.x, e.b.y).stroke({ width: R * 0.24, color: road, alpha: e.dim ? 0.62 : 1, cap: 'round', join: 'round' });
+    if (edges.length === 0) return;
+    const style = roadStyleFor(map.biome);
+    const point = (key: string) => {
+      const [q, r] = key.split(',').map(Number);
+      return this.hexCenter({ q: q!, r: r! });
+    };
+    const runs = roadRuns(edges).map((run) => smoothRun(run.map(point), 3));
+    const line = (pts: readonly RoadPoint[]) => {
+      g.moveTo(pts[0]!.x, pts[0]!.y);
+      for (let i = 1; i < pts.length; i++) g.lineTo(pts[i]!.x, pts[i]!.y);
+    };
+    for (const pts of runs) line(pts);
+    g.stroke({ width: R * 0.46, color: style.edge, alpha: 0.55, cap: 'round', join: 'round' });
+    for (const pts of runs) line(pts);
+    g.stroke({ width: R * 0.32, color: style.body, alpha: 1, cap: 'round', join: 'round' });
+    for (const pts of runs) line(pts);
+    g.stroke({ width: R * 0.13, color: style.light, alpha: 0.38, cap: 'round', join: 'round' });
+    // Details by the land: ruts, flagstone joints or cobbles.
+    if (style.detail === 'ruts') {
+      for (const pts of runs) for (const side of [-1, 1]) line(offsetRun(pts, side * R * 0.085));
+      g.stroke({ width: 1.4, color: style.mark, alpha: 0.5, cap: 'round', join: 'round' });
+    } else {
+      runs.forEach((pts, n) => {
+        for (const m of marksAlong(pts, style.detail === 'flags' ? R * 0.2 : R * 0.13, n * 3.7)) {
+          if (style.detail === 'flags') {
+            g.moveTo(m.x - m.dy * R * 0.15, m.y + m.dx * R * 0.15).lineTo(m.x + m.dy * R * 0.15, m.y - m.dx * R * 0.15);
+          } else {
+            for (const side of [-0.08, 0.08]) g.circle(m.x - m.dy * R * side + m.dx * (side > 0 ? R * 0.06 : 0), m.y + m.dx * R * side + m.dy * (side > 0 ? R * 0.06 : 0), R * 0.045);
+          }
+        }
+      });
+      if (style.detail === 'flags') g.stroke({ width: 1.2, color: style.mark, alpha: 0.5 });
+      else g.fill({ color: style.mark, alpha: 0.45 });
+    }
+    // Boardwalks: planks across the road wherever it runs over marsh.
+    const marsh = (x: number, y: number) => {
+      const c = pointAxial(x, y, R, S);
+      return c.q >= 0 && c.r >= 0 && c.q < map.width && c.r < map.height && this.terrainOf(map, c.r * map.width + c.q) === 'marsh';
+    };
+    let planks = false;
+    runs.forEach((pts, n) => {
+      for (const m of marksAlong(pts, R * 0.12, n * 1.3)) {
+        if (!marsh(m.x, m.y)) continue;
+        planks = true;
+        g.moveTo(m.x - m.dy * R * 0.2, m.y + m.dx * R * 0.2).lineTo(m.x + m.dy * R * 0.2, m.y - m.dx * R * 0.2);
+      }
+    });
+    if (planks) g.stroke({ width: R * 0.075, color: PLANK_COLOR, alpha: 0.95, cap: 'butt' });
   }
 
   private buildReach(tiles: readonly HexCoord[] | null): void {
@@ -1242,7 +1461,6 @@ export class AdventureSceneController implements SceneController {
   }
 
   private setHover(c: HexCoord | null): void {
-    this.hoverHex = c;
     const g = this.hover;
     g.clear();
     if (!c || !this.isExplored(c) || this.gridMode === 'off' || (this.map && this.terrainOf(this.map, c.r * this.map.width + c.q) === 'void')) {

@@ -12,8 +12,8 @@ import type { HexCoord } from '../core/hex';
 import type { ContentCatalog } from '../definitions/catalog';
 import type { SpellDefinition } from '../definitions/pantheons';
 import type { HeroState, MatchState, TownState } from '../state/match';
-import { axialDistance, hexEquals } from '../core/hex';
-import { cellIndex, cellsWithin, heroAt, inMap, heroInTown, townVisitor, townGate } from '../resolvers/world';
+import { axialDistance } from '../core/hex';
+import { cellIndex, inMap, heroInTown, townVisitor, townGate } from '../resolvers/world';
 import { heroVisionRadius } from '../resolvers/heroes';
 import { reject, type Tx } from '../engine/tx';
 import { revealAround } from './adventure';
@@ -119,17 +119,6 @@ export function commitCastAdventureSpell(tx: Tx, heroId: HeroId, spellId: SpellI
   }
   revealAround(tx, hero.ownerId, [target], q.radius);
   tx.emit({ kind: 'AdventureSpellCast', heroId, spellId, center: { q: target.q, r: target.r }, radius: q.radius, untilDay });
-}
-
-/** Cells lit by a player's active temporary reveals (Divine Sight) on the current day. */
-export function temporaryVisionCells(state: MatchState, playerId: PlayerId): HexCoord[] {
-  const fog = state.fog[playerId];
-  const out: HexCoord[] = [];
-  for (const r of fog?.temporaryReveals ?? []) {
-    if (r.untilDay <= state.day) continue;
-    out.push(...cellsWithin(state.world.map, r.center, r.radius));
-  }
-  return out;
 }
 
 /** Dawn cleanup: drop expired temporary vision. */

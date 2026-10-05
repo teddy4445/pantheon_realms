@@ -8,6 +8,19 @@ import { loadCatalog } from '@pr/content';
 const root = path.resolve(__dirname, '../../..');
 const manifest = JSON.parse(readFileSync(path.join(root, 'assets-runtime/audio/manifest.json'), 'utf8')) as SoundManifest;
 
+/**
+ * The director tests need two decoded, looping music entries; the shipped menu and battle
+ * music are streamed playlists (2026-10-05), so the tests give them one file each.
+ */
+const loopManifest: SoundManifest = {
+  ...manifest,
+  sounds: manifest.sounds.map((s) => {
+    if (s.id !== 'music.menu' && s.id !== 'music.battle') return s;
+    const { playlist: _p, ...rest } = s;
+    return { ...rest, files: [s.id === 'music.menu' ? 'audio/music_menu.ogg' : 'audio/music_battle.ogg'] };
+  }),
+};
+
 const LEVELS: AudioLevels = { master: 100, music: 50, ambience: 100, interface: 80, combat: 0, voice: 100, muted: false, reduced: false };
 
 describe('sound manifest', () => {
@@ -24,19 +37,46 @@ describe('sound manifest', () => {
       }
   });
 
-  it('marks every file as a placeholder with provenance, except the final map music with its sources', () => {
+  it('final sounds name their Pixabay sources and licence; the rest are labelled placeholders', () => {
     for (const s of manifest.sounds) {
       if (s.status === 'final') {
-        // Only the map music is final (2026-10-04): royalty-free tracks with their pages and licence.
-        expect(s.id).toMatch(/^music\.map\./);
-        expect(s.playlist).toBe(true);
-        expect(s.provenance).toMatch(/Pixabay Content License/);
-        expect(s.provenance).toMatch(/https:\/\/pixabay\.com\/music\//);
+        // Royalty-free tracks and effects (2026-10-04 map music; 2026-10-05 the rest) with their pages and licence.
+        expect(s.provenance, s.id).toMatch(/Pixabay Content License/);
+        expect(s.provenance, s.id).toMatch(/https:\/\/pixabay\.com\/(music|sound-effects)\//);
+        if (s.role === 'music') expect(s.playlist, s.id).toBe(true);
         continue;
       }
       expect(s.status).toBe('placeholder');
       expect(s.provenance).toMatch(/placeholder/i);
     }
+  });
+
+  it('the final sounds of 2026-10-05 match their source list: battle music per pantheon, siege, menu, results, stingers, effects, ambience loops', () => {
+    const spec = JSON.parse(readFileSync(path.join(root, 'assets-source/audio/sounds.json'), 'utf8')) as {
+      sounds: { id: string; role: string; tracks: { pixabayId: number; file: string }[] }[];
+      sources: Record<string, { title: string; author: string; page: string }>;
+      licenseNote: string;
+    };
+    expect(spec.licenseNote).toMatch(/no attribution required/);
+    const catalog = loadCatalog();
+    for (const p of catalog.pantheonOrder) {
+      const e = manifest.sounds.find((s) => s.id === MUSIC.battleOf(p));
+      expect(e?.status, p).toBe('final');
+      expect(e!.files.length, p).toBeGreaterThanOrEqual(2);
+    }
+    for (const id of [MUSIC.menu, MUSIC.siege, MUSIC.resolution, 'stinger.victory', 'stinger.defeat']) expect(manifest.sounds.find((s) => s.id === id)?.status, id).toBe('final');
+    for (const s of spec.sounds) {
+      const e = manifest.sounds.find((x) => x.id === s.id);
+      expect(e?.status, s.id).toBe('final');
+      expect(e!.files).toEqual(s.tracks.map((t) => t.file));
+      for (const t of s.tracks) {
+        const src = spec.sources[String(t.pixabayId)];
+        expect(src?.title && src.author && /^https:\/\/pixabay\.com\//.test(src.page), `${s.id} ${t.pixabayId}`).toBeTruthy();
+      }
+    }
+    // Every sound the game plays is final.
+    const left = manifest.sounds.filter((s) => s.status !== 'final').map((s) => s.id);
+    expect(left, left.join(', ')).toEqual([]);
   });
 
   it('every pantheon has a map playlist of long tracks listed with title, author, page and licence', () => {
@@ -56,13 +96,12 @@ describe('sound manifest', () => {
     }
   });
 
-  it('has music and ambience for every mission soundscape', () => {
+  it('has ambience for every mission soundscape', () => {
     const catalog = loadCatalog();
     const ids = new Set(manifest.sounds.map((s) => s.id));
     for (const m of Object.values(catalog.missions)) {
       expect(m.soundscape, m.id).toBeDefined();
       expect(SOUNDSCAPES as readonly string[]).toContain(m.soundscape);
-      expect(ids.has(MUSIC.explore(m.soundscape!))).toBe(true);
       expect(ids.has(AMBIENCE.of(m.soundscape!))).toBe(true);
     }
   });
@@ -234,7 +273,7 @@ const tick = () => new Promise((r) => setTimeout(r, 0));
 function director(fail: string[] = []) {
   const ctx = new FakeContext();
   const d = new AudioDirector({
-    manifest,
+    manifest: loopManifest,
     resolveUrl: (f) => f,
     createContext: () => ctx as unknown as AudioContext,
     load: async (url) => (fail.some((f) => url.includes(f)) ? new Uint8Array([0]).buffer : new Uint8Array([1]).buffer),
@@ -308,7 +347,7 @@ describe('AudioDirector', () => {
     const ctx = new FakeContext();
     const media: FakeMedia[] = [];
     const d = new AudioDirector({
-      manifest: { ...manifest, sounds: [...manifest.sounds, list] },
+      manifest: { ...loopManifest, sounds: [...loopManifest.sounds, list] },
       resolveUrl: (f) => `/${f}`,
       createContext: () => ctx as unknown as AudioContext,
       createMediaElement: () => {

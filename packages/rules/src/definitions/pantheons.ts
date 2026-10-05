@@ -216,7 +216,6 @@ export interface SpellDefinition {
  * for the mounted heroes. Rings and miscellaneous items have several positions.
  */
 export type ArtifactSlot = 'head' | 'neck' | 'cape' | 'weapon' | 'shield' | 'armor' | 'ring' | 'feet' | 'mount' | 'misc';
-export const ARTIFACT_SLOTS: readonly ArtifactSlot[] = ['head', 'neck', 'cape', 'weapon', 'shield', 'armor', 'ring', 'feet', 'mount', 'misc'];
 
 export type ArtifactRarity = 'treasure' | 'minor' | 'major' | 'relic';
 

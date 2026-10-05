@@ -23,6 +23,7 @@ import { NORSE_GODS, NORSE_HERO_CLASSES, NORSE_HEROES, NORSE_PANTHEON } from './
 import { COMING_SOON_CAMPAIGNS, ENTITLEMENTS, TEMPLATES, THREE_BEACONS, THREE_BEACONS_MISSIONS } from './campaign/threeBeacons';
 import { WINTER_OATH, WINTER_OATH_ENTITLEMENTS, WINTER_OATH_MISSIONS, WINTER_OATH_TEMPLATES } from './campaign/winterOath';
 import { ARC_CAMPAIGN_HEROES, buildArcCampaigns } from './campaign/arcCampaigns';
+import { SKIRMISH_MAPS } from './skirmish/maps';
 import { SKIRMISH_KITS, SKIRMISH_MISSIONS, SKIRMISH_SCENARIOS, SKIRMISH_TEMPLATES } from './skirmish/skirmish';
 import { CLIMATE_RULES } from './common/climates';
 import { AI_TEMPERAMENTS } from './common/temperaments';
@@ -97,6 +98,7 @@ export function buildCatalog(): ContentCatalog {
     campaigns: index([THREE_BEACONS, WINTER_OATH, ...arc.campaigns, ...COMING_SOON_CAMPAIGNS], 'campaign'),
     missions: index([...THREE_BEACONS_MISSIONS, ...WINTER_OATH_MISSIONS, ...arc.missions, ...SKIRMISH_MISSIONS], 'mission'),
     skirmishes: index(SKIRMISH_SCENARIOS, 'skirmish'),
+    skirmishMaps: index(SKIRMISH_MAPS, 'skirmish map'),
     mapTemplates: index([...TEMPLATES, ...WINTER_OATH_TEMPLATES, ...arc.templates, ...SKIRMISH_TEMPLATES], 'map template'),
     pantheonOrder: ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'],
   };

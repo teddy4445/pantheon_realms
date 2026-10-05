@@ -35,10 +35,6 @@ export function cellIndex(map: WorldMapDefinition, c: HexCoord): number {
   return c.r * map.width + c.q;
 }
 
-export function hasRoad(map: WorldMapDefinition, a: HexCoord, b: HexCoord): boolean {
-  return roadSet(map).has(edgeKey(a, b));
-}
-
 const roadCache = new WeakMap<WorldMapDefinition, Set<string>>();
 export function roadSet(map: WorldMapDefinition): Set<string> {
   let s = roadCache.get(map);
@@ -482,16 +478,6 @@ export function visibleCells(catalog: ContentCatalog, state: MatchState, playerI
     for (const c of cellsWithin(map, r.center, r.radius)) out.add(cellIndex(map, c));
   }
   return out;
-}
-
-export function isVisibleTo(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, c: HexCoord): boolean {
-  return visibleCells(catalog, state, playerId).has(cellIndex(state.world.map, c));
-}
-
-export function isExploredBy(state: MatchState, playerId: PlayerId, c: HexCoord): boolean {
-  const fog = state.fog[playerId];
-  if (!fog) return true;
-  return fog.explored[cellIndex(state.world.map, c)] === 1;
 }
 
 export { axialDistance };

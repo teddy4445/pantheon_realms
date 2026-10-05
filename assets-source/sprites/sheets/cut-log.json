@@ -2171,5 +2171,218 @@
    "assets-source/sprites/final/sprite.hero.mesoamerican.prepare.s.png",
    "assets-source/sprites/final/sprite.hero.mesoamerican.prepare.se.png"
   ]
+ },
+ "sheet.town.greek.services": {
+  "sha256": "3c89f57f31c1fe46e21019f46b7b1184fbb0296f9e04ece8d598a4dadb9125ce",
+  "outputs": [
+   "assets-source/art/final/town.greek.support.artifact_merchant.l1.png",
+   "assets-source/art/final/town.greek.support.marketplace.l1.png",
+   "assets-source/art/final/town.greek.support.resource_depot.l1.png",
+   "assets-source/art/final/town.greek.support.tavern.l1.png",
+   "assets-source/art/final/town.greek.support.training_academy.l1.png",
+   "assets-source/art/final/town.greek.support.watchtower.l1.png",
+   "assets-source/art/final/town.greek.support.workshop.l1.png"
+  ]
+ },
+ "sheet.town.norse.services": {
+  "sha256": "45c658e91db900f465388e1e7ec0ba5d6de767ac17bd125d1c4f8efcb62d3ae9",
+  "outputs": [
+   "assets-source/art/final/town.norse.support.artifact_merchant.l1.png",
+   "assets-source/art/final/town.norse.support.marketplace.l1.png",
+   "assets-source/art/final/town.norse.support.resource_depot.l1.png",
+   "assets-source/art/final/town.norse.support.tavern.l1.png",
+   "assets-source/art/final/town.norse.support.training_academy.l1.png",
+   "assets-source/art/final/town.norse.support.watchtower.l1.png",
+   "assets-source/art/final/town.norse.support.workshop.l1.png"
+  ]
+ },
+ "sheet.town.egyptian.services": {
+  "sha256": "009f4d799d60233fb16c5816bee65799f6ab89bb71467323c199c23df4ed1064",
+  "outputs": [
+   "assets-source/art/final/town.egyptian.support.artifact_merchant.l1.png",
+   "assets-source/art/final/town.egyptian.support.marketplace.l1.png",
+   "assets-source/art/final/town.egyptian.support.resource_depot.l1.png",
+   "assets-source/art/final/town.egyptian.support.tavern.l1.png",
+   "assets-source/art/final/town.egyptian.support.training_academy.l1.png",
+   "assets-source/art/final/town.egyptian.support.watchtower.l1.png",
+   "assets-source/art/final/town.egyptian.support.workshop.l1.png"
+  ]
+ },
+ "sheet.town.greek.dwellings": {
+  "sha256": "39250c5d29f874c25d4531681516a613827395409a734a0096f6d972da5325c6",
+  "outputs": [
+   "assets-source/art/final/town.greek.dwelling.tier1.base.png",
+   "assets-source/art/final/town.greek.dwelling.tier1.upgraded.png",
+   "assets-source/art/final/town.greek.dwelling.tier2.base.png",
+   "assets-source/art/final/town.greek.dwelling.tier2.upgraded.png",
+   "assets-source/art/final/town.greek.dwelling.tier3.base.png",
+   "assets-source/art/final/town.greek.dwelling.tier3.upgraded.png",
+   "assets-source/art/final/town.greek.dwelling.tier4.base.png",
+   "assets-source/art/final/town.greek.dwelling.tier4.upgraded.png",
+   "assets-source/art/final/town.greek.dwelling.tier5.base.png",
+   "assets-source/art/final/town.greek.dwelling.tier5.upgraded.png",
+   "assets-source/art/final/town.greek.dwelling.tier6.base.png",
+   "assets-source/art/final/town.greek.dwelling.tier6.upgraded.png",
+   "assets-source/art/final/town.greek.dwelling.tier7.base.png",
+   "assets-source/art/final/town.greek.dwelling.tier7.upgraded.png"
+  ]
+ },
+ "sheet.town.norse.dwellings": {
+  "sha256": "b8f6321f89b13446ee6f6aaabb0a9a062db2ca8daf8212c2ad2b27c6532b899b",
+  "outputs": [
+   "assets-source/art/final/town.norse.dwelling.tier1.base.png",
+   "assets-source/art/final/town.norse.dwelling.tier1.upgraded.png",
+   "assets-source/art/final/town.norse.dwelling.tier2.base.png",
+   "assets-source/art/final/town.norse.dwelling.tier2.upgraded.png",
+   "assets-source/art/final/town.norse.dwelling.tier3.base.png",
+   "assets-source/art/final/town.norse.dwelling.tier3.upgraded.png",
+   "assets-source/art/final/town.norse.dwelling.tier4.base.png",
+   "assets-source/art/final/town.norse.dwelling.tier4.upgraded.png",
+   "assets-source/art/final/town.norse.dwelling.tier5.base.png",
+   "assets-source/art/final/town.norse.dwelling.tier5.upgraded.png",
+   "assets-source/art/final/town.norse.dwelling.tier6.base.png",
+   "assets-source/art/final/town.norse.dwelling.tier6.upgraded.png",
+   "assets-source/art/final/town.norse.dwelling.tier7.base.png",
+   "assets-source/art/final/town.norse.dwelling.tier7.upgraded.png"
+  ]
+ },
+ "sheet.town.egyptian.dwellings": {
+  "sha256": "698fcd7b79112ac52e4b5b4fdf0507c12b3908245dc337bee3b1605cc6c0aa8e",
+  "outputs": [
+   "assets-source/art/final/town.egyptian.dwelling.tier1.base.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier1.upgraded.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier2.base.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier2.upgraded.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier3.base.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier3.upgraded.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier4.base.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier4.upgraded.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier5.base.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier5.upgraded.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier6.base.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier6.upgraded.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier7.base.png",
+   "assets-source/art/final/town.egyptian.dwelling.tier7.upgraded.png"
+  ]
+ },
+ "sheet.town.japanese.dwellings": {
+  "sha256": "b96adc6b4b2fa7bf4d7218fc5c274379a6276d8c7c04d036117be2cbd67084e5",
+  "outputs": [
+   "assets-source/art/final/town.japanese.dwelling.tier1.base.png",
+   "assets-source/art/final/town.japanese.dwelling.tier1.upgraded.png",
+   "assets-source/art/final/town.japanese.dwelling.tier2.base.png",
+   "assets-source/art/final/town.japanese.dwelling.tier2.upgraded.png",
+   "assets-source/art/final/town.japanese.dwelling.tier3.base.png",
+   "assets-source/art/final/town.japanese.dwelling.tier3.upgraded.png",
+   "assets-source/art/final/town.japanese.dwelling.tier4.base.png",
+   "assets-source/art/final/town.japanese.dwelling.tier4.upgraded.png",
+   "assets-source/art/final/town.japanese.dwelling.tier5.base.png",
+   "assets-source/art/final/town.japanese.dwelling.tier5.upgraded.png",
+   "assets-source/art/final/town.japanese.dwelling.tier6.base.png",
+   "assets-source/art/final/town.japanese.dwelling.tier6.upgraded.png",
+   "assets-source/art/final/town.japanese.dwelling.tier7.base.png",
+   "assets-source/art/final/town.japanese.dwelling.tier7.upgraded.png"
+  ]
+ },
+ "sheet.town.celtic.dwellings": {
+  "sha256": "31ca226a40b5bdec5f64fd4b626d9e26da781044310e6507527d8c8afc12d1b8",
+  "outputs": [
+   "assets-source/art/final/town.celtic.dwelling.tier1.base.png",
+   "assets-source/art/final/town.celtic.dwelling.tier1.upgraded.png",
+   "assets-source/art/final/town.celtic.dwelling.tier2.base.png",
+   "assets-source/art/final/town.celtic.dwelling.tier2.upgraded.png",
+   "assets-source/art/final/town.celtic.dwelling.tier3.base.png",
+   "assets-source/art/final/town.celtic.dwelling.tier3.upgraded.png",
+   "assets-source/art/final/town.celtic.dwelling.tier4.base.png",
+   "assets-source/art/final/town.celtic.dwelling.tier4.upgraded.png",
+   "assets-source/art/final/town.celtic.dwelling.tier5.base.png",
+   "assets-source/art/final/town.celtic.dwelling.tier5.upgraded.png",
+   "assets-source/art/final/town.celtic.dwelling.tier6.base.png",
+   "assets-source/art/final/town.celtic.dwelling.tier6.upgraded.png",
+   "assets-source/art/final/town.celtic.dwelling.tier7.base.png",
+   "assets-source/art/final/town.celtic.dwelling.tier7.upgraded.png"
+  ]
+ },
+ "sheet.town.mesoamerican.dwellings": {
+  "sha256": "ee2ac0189798d48f281ef538a2e26ae6a1f8f02c316aa254827fd86b7ecfdcf1",
+  "outputs": [
+   "assets-source/art/final/town.mesoamerican.dwelling.tier1.base.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier1.upgraded.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier2.base.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier2.upgraded.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier3.base.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier3.upgraded.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier4.base.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier4.upgraded.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier5.base.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier5.upgraded.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier6.base.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier6.upgraded.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier7.base.png",
+   "assets-source/art/final/town.mesoamerican.dwelling.tier7.upgraded.png"
+  ]
+ },
+ "sheet.town.japanese.services": {
+  "sha256": "c6f37dc7314e16048b15b3e8a4528f2a4e5f8817870cff5e52ab97a654175bc3",
+  "outputs": [
+   "assets-source/art/final/town.japanese.support.artifact_merchant.l1.png",
+   "assets-source/art/final/town.japanese.support.marketplace.l1.png",
+   "assets-source/art/final/town.japanese.support.resource_depot.l1.png",
+   "assets-source/art/final/town.japanese.support.tavern.l1.png",
+   "assets-source/art/final/town.japanese.support.training_academy.l1.png",
+   "assets-source/art/final/town.japanese.support.watchtower.l1.png",
+   "assets-source/art/final/town.japanese.support.workshop.l1.png"
+  ]
+ },
+ "sheet.town.celtic.services": {
+  "sha256": "9d68d9aff2bdff07282bbfa31c255e929f5dd41cf1cf31959938c0b6628d94ae",
+  "outputs": [
+   "assets-source/art/final/town.celtic.support.artifact_merchant.l1.png",
+   "assets-source/art/final/town.celtic.support.marketplace.l1.png",
+   "assets-source/art/final/town.celtic.support.resource_depot.l1.png",
+   "assets-source/art/final/town.celtic.support.tavern.l1.png",
+   "assets-source/art/final/town.celtic.support.training_academy.l1.png",
+   "assets-source/art/final/town.celtic.support.watchtower.l1.png",
+   "assets-source/art/final/town.celtic.support.workshop.l1.png"
+  ]
+ },
+ "sheet.town.mesoamerican.services": {
+  "sha256": "cf7c38eb1924a52f2cbf06e0054060693b3a3d224b0110cbf344d1ed92faf57f",
+  "outputs": [
+   "assets-source/art/final/town.mesoamerican.support.artifact_merchant.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.marketplace.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.resource_depot.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.tavern.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.training_academy.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.watchtower.l1.png",
+   "assets-source/art/final/town.mesoamerican.support.workshop.l1.png"
+  ]
+ },
+ "sheet.icons.climate": {
+  "sha256": "966589b24d2e14a9d85b7e2c496c53859d0461210bac2be303b3aaa4d781cc65",
+  "outputs": [
+   "assets-source/icons/final/icon.climate.autumn.png",
+   "assets-source/icons/final/icon.climate.coast.png",
+   "assets-source/icons/final/icon.climate.desert.png",
+   "assets-source/icons/final/icon.climate.fjord.png",
+   "assets-source/icons/final/icon.climate.high_pass.png",
+   "assets-source/icons/final/icon.climate.jungle.png",
+   "assets-source/icons/final/icon.climate.moor.png",
+   "assets-source/icons/final/icon.climate.storm_plateau.png",
+   "assets-source/icons/final/icon.climate.tundra.png"
+  ]
+ },
+ "sheet.icons.sitemarkers": {
+  "sha256": "f0abe5017ba7337f57e453104f2f117f48b7bd94ac0fcccf5234d8a7c25402c1",
+  "outputs": [
+   "assets-source/icons/final/icon.marker.key-gate.png",
+   "assets-source/icons/final/icon.marker.key-tent.png",
+   "assets-source/icons/final/icon.marker.learning-stone.png",
+   "assets-source/icons/final/icon.marker.prison.png",
+   "assets-source/icons/final/icon.marker.quest-hut.png",
+   "assets-source/icons/final/icon.marker.skill-trainer.png",
+   "assets-source/icons/final/icon.marker.spell-shrine.png",
+   "assets-source/icons/final/icon.marker.windmill.png"
+  ]
  }
 }

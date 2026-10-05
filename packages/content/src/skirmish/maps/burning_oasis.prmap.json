@@ -1,0 +1,684 @@
+{
+ "format": "pantheon-realms-map",
+ "version": 1,
+ "name": "The Burning Oasis",
+ "description": "Four empires in the corners of a burning desert. Between each pair of neighbours lies an oasis with gold or crystal and a creature camp; in the middle, ringed by red rock, the Burning Shrine. Hold it seven days, or conquer.",
+ "author": "Pantheon Realms",
+ "width": 63,
+ "height": 36,
+ "terrain": "vvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvmmppppprrpppprrrppppppppppppppprrrpppprrpppppmvvvvvvvvvvvvvvvvvmppppprrrpppppppppprpppppprpppppppppprrrpppppmvvvvvvvvvvvvvvvvmmfffprrrrppppppppprppfpfpprppppppppprrrrpfffmvvvvvvvvvvvvvvvvvmffffprmmpppppppppppppwwpppppppppppppmmrpffffmvvvvvvvvvvvvvvvvmmfffpppmpppppppppppppwwwpppppppppppppmpppfffmvvvvvvvvvvvvvvvvvmpppppppppppppppppppppwwpppppppppppppppppppppmvvvvvvvvvvvvvvvvmmppppppppmprpppppppppfffppppppppprpmppppppppmvvvvvvvvvvvvvvvvvmppppppppprrpppppppppppppppppppppprrpppppppppmvvvvvvvvvvvvvvvvmmmpppppppprppppppppmpppppmpppppppprppppppppmmvvvvvvvvvvvvvvvvvmmmmppppppppppppppmmmmmmmmmmppppppppppppppmmmmvvvvvvvvvvvvvvvvmmmmpppppppppppppppmmmmpmmmmpppppppppppppppmmmvvvvvvvvvvvvvvvvvmmmpppprpppppppppppmprrrrpmppppppppppprppppmmmvvvvvvvvvvvvvvvvmmpppppprrpppppppmppppprpppppmppppppprrppppppmvvvvvvvvvvvvvvvvvmppppppprpppppppmmpprprrprppmmppppppprpppppppmvvvvvvvvvvvvvvvvmmpppffpppppppmpmmmpppppppppmmmpmpppppppffpppmvvvvvvvvvvvvvvvvvmpppwwfppppprrrmmmppppppppppmmmrrrpppppfwwpppmvvvvvvvvvvvvvvvvmmppwwwfpppprrrrmmprppppppprpmmrrrrppppfwwwppmvvvvvvvvvvvvvvvvvmpppwwfppppprrrmmmppppppppppmmmrrrpppppfwwpppmvvvvvvvvvvvvvvvvmmpppffpppppppmpmmmpppppppppmmmpmpppppppffpppmvvvvvvvvvvvvvvvvvmppppppprpppppppmmpprprrprppmmppppppprpppppppmvvvvvvvvvvvvvvvvmmpppppprrpppppppmppppprpppppmppppppprrppppppmvvvvvvvvvvvvvvvvvmmmpppprpppppppppppmprrrrpmppppppppppprppppmmmvvvvvvvvvvvvvvvvmmmmpppppppppppppppmmmmpmmmmpppppppppppppppmmmvvvvvvvvvvvvvvvvvmmmmppppppppppppppmmmmmmmmmmppppppppppppppmmmmvvvvvvvvvvvvvvvvmmmpppppppprppppppppmpppppmpppppppprppppppppmmvvvvvvvvvvvvvvvvvmppppppppprrpppppppppppppppppppppprrpppppppppmvvvvvvvvvvvvvvvvmmppppppppmprpppppppppfffppppppppprpmppppppppmvvvvvvvvvvvvvvvvvmpppppppppppppppppppppwwpppppppppppppppppppppmvvvvvvvvvvvvvvvvmmfffpppmpppppppppppppwwwpppppppppppppmpppfffmvvvvvvvvvvvvvvvvvmffffprmmpppppppppppppwwpppppppppppppmmrpffffmvvvvvvvvvvvvvvvvmmfffprrrrppppppppprppfpfpprppppppppprrrrpfffmvvvvvvvvvvvvvvvvvmppppprrrpppppppppprpppppprpppppppppprrrpppppmvvvvvvvvvvvvvvvvmmppppprrpppprrrppppppppppppppprrrpppprrpppppmvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvv",
+ "roads": [
+  "10,29|11,29",
+  "11,18|11,19",
+  "11,18|12,17",
+  "11,19|11,20",
+  "11,20|11,21",
+  "11,21|11,22",
+  "11,22|11,23",
+  "11,22|12,21",
+  "11,23|11,24",
+  "11,24|11,25",
+  "11,25|11,26",
+  "11,26|11,27",
+  "11,27|11,28",
+  "11,28|11,29",
+  "11,29|12,29",
+  "12,17|13,16",
+  "12,29|13,29",
+  "13,16|14,15",
+  "13,29|14,29",
+  "13,30|14,29",
+  "14,15|15,14",
+  "14,29|14,30",
+  "14,29|15,29",
+  "14,30|14,31",
+  "14,31|14,32",
+  "14,32|14,33",
+  "14,33|15,33",
+  "15,14|15,15",
+  "15,14|16,13",
+  "15,29|16,29",
+  "15,33|16,33",
+  "16,13|17,12",
+  "16,29|17,28",
+  "16,33|17,33",
+  "17,12|18,11",
+  "17,28|18,27",
+  "17,28|18,28",
+  "18,11|19,10",
+  "18,28|19,28",
+  "19,10|20,9",
+  "19,28|20,27",
+  "19,28|20,28",
+  "19,6|20,6",
+  "20,27|21,26",
+  "20,28|20,29",
+  "20,29|21,29",
+  "20,6|21,6",
+  "20,9|21,8",
+  "21,26|22,25",
+  "21,29|22,29",
+  "21,6|21,7",
+  "21,7|22,7",
+  "21,8|22,7",
+  "22,25|23,24",
+  "22,29|22,30",
+  "22,29|23,29",
+  "22,30|22,31",
+  "22,31|22,32",
+  "22,32|23,32",
+  "22,7|23,7",
+  "23,24|24,23",
+  "23,32|24,32",
+  "23,7|24,7",
+  "24,23|25,22",
+  "24,32|25,32",
+  "24,7|25,7",
+  "25,22|26,22",
+  "25,32|26,32",
+  "25,6|25,7",
+  "25,7|26,6",
+  "25,7|26,7",
+  "26,22|27,22",
+  "26,32|27,31",
+  "26,6|27,5",
+  "26,7|27,7",
+  "27,22|28,21",
+  "27,31|28,30",
+  "27,5|28,4",
+  "27,7|27,8",
+  "27,8|27,9",
+  "27,8|28,8",
+  "28,21|29,20",
+  "28,29|29,29",
+  "28,30|29,29",
+  "28,4|29,3",
+  "28,8|29,8",
+  "29,10|29,11",
+  "29,11|29,12",
+  "29,12|29,13",
+  "29,13|29,14",
+  "29,14|30,14",
+  "29,20|30,19",
+  "29,29|30,29",
+  "29,3|30,3",
+  "29,8|29,9",
+  "29,8|30,8",
+  "29,9|29,10",
+  "30,14|31,14",
+  "30,19|31,18",
+  "30,29|31,29",
+  "30,33|31,33",
+  "30,3|31,3",
+  "30,8|31,7",
+  "31,14|31,15",
+  "31,15|31,16",
+  "31,16|31,17",
+  "31,17|31,18",
+  "31,18|31,19",
+  "31,18|32,17",
+  "31,19|31,20",
+  "31,20|31,21",
+  "31,21|31,22",
+  "31,22|32,22",
+  "31,29|32,28",
+  "31,33|32,33",
+  "31,3|32,3",
+  "31,7|32,7",
+  "32,17|33,16",
+  "32,22|33,22",
+  "32,28|33,28",
+  "32,33|33,33",
+  "32,7|33,7",
+  "33,16|34,15",
+  "33,22|33,23",
+  "33,23|33,24",
+  "33,24|33,25",
+  "33,25|33,26",
+  "33,26|33,27",
+  "33,27|33,28",
+  "33,28|34,28",
+  "33,33|34,32",
+  "33,7|34,6",
+  "33,7|34,7",
+  "34,15|35,14",
+  "34,28|35,28",
+  "34,32|35,31",
+  "34,6|35,5",
+  "35,14|36,14",
+  "35,27|35,28",
+  "35,28|35,29",
+  "35,29|36,29",
+  "35,31|36,30",
+  "35,5|36,4",
+  "36,14|37,14",
+  "36,29|37,29",
+  "36,30|37,29",
+  "36,4|37,4",
+  "37,14|38,13",
+  "37,29|37,30",
+  "37,29|38,29",
+  "37,4|38,4",
+  "38,13|39,12",
+  "38,29|39,29",
+  "38,4|39,4",
+  "39,12|40,11",
+  "39,29|40,29",
+  "39,4|40,4",
+  "39,7|40,7",
+  "40,11|41,10",
+  "40,29|41,28",
+  "40,29|41,29",
+  "40,4|40,5",
+  "40,5|40,6",
+  "40,6|40,7",
+  "40,7|41,7",
+  "41,10|42,9",
+  "41,28|42,27",
+  "41,29|41,30",
+  "41,30|42,30",
+  "41,7|42,7",
+  "42,27|43,26",
+  "42,30|43,30",
+  "42,7|42,8",
+  "42,8|43,8",
+  "42,9|43,8",
+  "43,26|44,25",
+  "43,8|44,8",
+  "44,25|45,24",
+  "44,8|45,8",
+  "44,9|45,8",
+  "45,24|46,23",
+  "45,3|46,3",
+  "45,8|46,7",
+  "46,23|47,22",
+  "46,3|47,3",
+  "46,7|47,7",
+  "47,21|47,22",
+  "47,22|48,21",
+  "47,3|48,3",
+  "47,7|48,7",
+  "48,21|49,20",
+  "48,3|48,4",
+  "48,4|48,5",
+  "48,5|48,6",
+  "48,6|48,7",
+  "48,7|49,6",
+  "48,7|49,7",
+  "49,20|50,19",
+  "49,7|50,7",
+  "50,15|51,14",
+  "50,19|51,18",
+  "50,7|51,7",
+  "51,10|51,11",
+  "51,11|51,12",
+  "51,12|51,13",
+  "51,13|51,14",
+  "51,14|51,15",
+  "51,15|51,16",
+  "51,16|51,17",
+  "51,17|51,18",
+  "51,7|51,8",
+  "51,7|52,7",
+  "51,8|51,9",
+  "51,9|51,10",
+  "52,7|53,6",
+  "53,6|54,6",
+  "54,6|55,6",
+  "7,30|8,30",
+  "8,30|9,30",
+  "9,30|10,29"
+ ],
+ "biome": "desert",
+ "players": [
+  {
+   "pantheonId": "egyptian"
+  },
+  {
+   "pantheonId": "mesoamerican"
+  },
+  {
+   "pantheonId": "greek"
+  },
+  {
+   "pantheonId": "norse"
+  }
+ ],
+ "sites": [
+  {
+   "id": "art_1",
+   "kind": "artifact",
+   "q": 25,
+   "r": 13,
+   "reward": {
+    "artifactId": "winged_sandals"
+   },
+   "guard": {
+    "creatureId": "clay_golem",
+    "count": 8,
+    "label": "Sand golems"
+   }
+  },
+  {
+   "id": "art_2",
+   "kind": "artifact",
+   "q": 42,
+   "r": 13,
+   "reward": {
+    "artifactId": "winged_sandals"
+   },
+   "guard": {
+    "creatureId": "clay_golem",
+    "count": 8,
+    "label": "Sand golems"
+   }
+  },
+  {
+   "id": "art_3",
+   "kind": "artifact",
+   "q": 37,
+   "r": 23,
+   "reward": {
+    "artifactId": "winged_sandals"
+   },
+   "guard": {
+    "creatureId": "clay_golem",
+    "count": 8,
+    "label": "Sand golems"
+   }
+  },
+  {
+   "id": "art_4",
+   "kind": "artifact",
+   "q": 20,
+   "r": 23,
+   "reward": {
+    "artifactId": "winged_sandals"
+   },
+   "guard": {
+    "creatureId": "clay_golem",
+    "count": 8,
+    "label": "Sand golems"
+   }
+  },
+  {
+   "id": "cache_1",
+   "kind": "resource_cache",
+   "q": 15,
+   "r": 10
+  },
+  {
+   "id": "cache_2",
+   "kind": "resource_cache",
+   "q": 55,
+   "r": 10
+  },
+  {
+   "id": "cache_3",
+   "kind": "resource_cache",
+   "q": 47,
+   "r": 26
+  },
+  {
+   "id": "cache_4",
+   "kind": "resource_cache",
+   "q": 7,
+   "r": 26
+  },
+  {
+   "id": "chest_1",
+   "kind": "treasure_chest",
+   "q": 20,
+   "r": 2
+  },
+  {
+   "id": "chest_2",
+   "kind": "treasure_chest",
+   "q": 58,
+   "r": 2
+  },
+  {
+   "id": "chest_3",
+   "kind": "treasure_chest",
+   "q": 42,
+   "r": 34
+  },
+  {
+   "id": "chest_4",
+   "kind": "treasure_chest",
+   "q": 4,
+   "r": 34
+  },
+  {
+   "id": "oasis_camp_n_1",
+   "kind": "creature_camp",
+   "q": 38,
+   "r": 4,
+   "creatureId": "wyvern",
+   "name": "Wyvern Roost"
+  },
+  {
+   "id": "oasis_camp_n_3",
+   "kind": "creature_camp",
+   "q": 24,
+   "r": 32,
+   "creatureId": "wyvern",
+   "name": "Wyvern Roost"
+  },
+  {
+   "id": "oasis_camp_w_1",
+   "kind": "creature_camp",
+   "q": 11,
+   "r": 18,
+   "creatureId": "centaur",
+   "name": "Centaur Camp"
+  },
+  {
+   "id": "oasis_camp_w_2",
+   "kind": "creature_camp",
+   "q": 51,
+   "r": 18,
+   "creatureId": "centaur",
+   "name": "Centaur Camp"
+  },
+  {
+   "id": "oasis_crystal_1",
+   "kind": "crystal_deposit",
+   "q": 15,
+   "r": 15,
+   "name": "Oasis Crystal",
+   "guard": {
+    "creatureId": "hill_slinger",
+    "count": 14,
+    "label": "Oasis raiders"
+   }
+  },
+  {
+   "id": "oasis_crystal_2",
+   "kind": "crystal_deposit",
+   "q": 50,
+   "r": 15,
+   "name": "Oasis Crystal",
+   "guard": {
+    "creatureId": "hill_slinger",
+    "count": 14,
+    "label": "Oasis raiders"
+   }
+  },
+  {
+   "id": "oasis_crystal_3",
+   "kind": "crystal_deposit",
+   "q": 47,
+   "r": 21,
+   "name": "Oasis Crystal",
+   "guard": {
+    "creatureId": "hill_slinger",
+    "count": 14,
+    "label": "Oasis raiders"
+   }
+  },
+  {
+   "id": "oasis_crystal_4",
+   "kind": "crystal_deposit",
+   "q": 12,
+   "r": 21,
+   "name": "Oasis Crystal",
+   "guard": {
+    "creatureId": "hill_slinger",
+    "count": 14,
+    "label": "Oasis raiders"
+   }
+  },
+  {
+   "id": "oasis_gold_1",
+   "kind": "gold_mine",
+   "q": 34,
+   "r": 7,
+   "name": "Oasis Gold Mine",
+   "guard": {
+    "creatureId": "egyptian_ushabti",
+    "count": 11,
+    "label": "Oasis wardens"
+   }
+  },
+  {
+   "id": "oasis_gold_2",
+   "kind": "gold_mine",
+   "q": 39,
+   "r": 7,
+   "name": "Oasis Gold Mine",
+   "guard": {
+    "creatureId": "egyptian_ushabti",
+    "count": 11,
+    "label": "Oasis wardens"
+   }
+  },
+  {
+   "id": "oasis_gold_3",
+   "kind": "gold_mine",
+   "q": 28,
+   "r": 29,
+   "name": "Oasis Gold Mine",
+   "guard": {
+    "creatureId": "egyptian_ushabti",
+    "count": 11,
+    "label": "Oasis wardens"
+   }
+  },
+  {
+   "id": "oasis_gold_4",
+   "kind": "gold_mine",
+   "q": 23,
+   "r": 29,
+   "name": "Oasis Gold Mine",
+   "guard": {
+    "creatureId": "egyptian_ushabti",
+    "count": 11,
+    "label": "Oasis wardens"
+   }
+  },
+  {
+   "id": "quarry_1",
+   "kind": "quarry",
+   "q": 32,
+   "r": 3
+  },
+  {
+   "id": "quarry_2",
+   "kind": "quarry",
+   "q": 45,
+   "r": 3
+  },
+  {
+   "id": "quarry_3",
+   "kind": "quarry",
+   "q": 30,
+   "r": 33
+  },
+  {
+   "id": "quarry_4",
+   "kind": "quarry",
+   "q": 17,
+   "r": 33
+  },
+  {
+   "id": "relic",
+   "kind": "relic",
+   "q": 31,
+   "r": 18,
+   "name": "The Burning Shrine",
+   "guard": {
+    "creatureId": "basilisk",
+    "count": 5,
+    "more": [
+     {
+      "creatureId": "ogre",
+      "count": 8
+     }
+    ],
+    "label": "Shrine wardens"
+   }
+  },
+  {
+   "id": "sawmill_1",
+   "kind": "sawmill",
+   "q": 19,
+   "r": 6
+  },
+  {
+   "id": "sawmill_2",
+   "kind": "sawmill",
+   "q": 55,
+   "r": 6
+  },
+  {
+   "id": "sawmill_3",
+   "kind": "sawmill",
+   "q": 43,
+   "r": 30
+  },
+  {
+   "id": "sawmill_4",
+   "kind": "sawmill",
+   "q": 7,
+   "r": 30
+  },
+  {
+   "id": "shrine_1",
+   "kind": "spell_shrine",
+   "q": 30,
+   "r": 7,
+   "spellId": "veil"
+  },
+  {
+   "id": "shrine_2",
+   "kind": "spell_shrine",
+   "q": 43,
+   "r": 7,
+   "spellId": "veil"
+  },
+  {
+   "id": "shrine_3",
+   "kind": "spell_shrine",
+   "q": 32,
+   "r": 29,
+   "spellId": "veil"
+  },
+  {
+   "id": "shrine_4",
+   "kind": "spell_shrine",
+   "q": 19,
+   "r": 29,
+   "spellId": "veil"
+  },
+  {
+   "id": "stone_1",
+   "kind": "learning_stone",
+   "q": 20,
+   "r": 10
+  },
+  {
+   "id": "stone_2",
+   "kind": "learning_stone",
+   "q": 50,
+   "r": 10
+  },
+  {
+   "id": "stone_3",
+   "kind": "learning_stone",
+   "q": 42,
+   "r": 26
+  },
+  {
+   "id": "stone_4",
+   "kind": "learning_stone",
+   "q": 12,
+   "r": 26
+  },
+  {
+   "id": "town_1",
+   "kind": "town",
+   "q": 25,
+   "r": 6,
+   "owner": 0
+  },
+  {
+   "id": "town_2",
+   "kind": "town",
+   "q": 49,
+   "r": 6,
+   "owner": 1
+  },
+  {
+   "id": "town_3",
+   "kind": "town",
+   "q": 37,
+   "r": 30,
+   "owner": 2
+  },
+  {
+   "id": "town_4",
+   "kind": "town",
+   "q": 13,
+   "r": 30,
+   "owner": 3
+  },
+  {
+   "id": "trainer_1",
+   "kind": "skill_trainer",
+   "q": 19,
+   "r": 13,
+   "skillId": "logistics"
+  },
+  {
+   "id": "trainer_2",
+   "kind": "skill_trainer",
+   "q": 48,
+   "r": 13,
+   "skillId": "logistics"
+  },
+  {
+   "id": "trainer_3",
+   "kind": "skill_trainer",
+   "q": 43,
+   "r": 23,
+   "skillId": "logistics"
+  },
+  {
+   "id": "trainer_4",
+   "kind": "skill_trainer",
+   "q": 14,
+   "r": 23,
+   "skillId": "logistics"
+  },
+  {
+   "id": "windmill_1",
+   "kind": "windmill",
+   "q": 27,
+   "r": 9
+  },
+  {
+   "id": "windmill_2",
+   "kind": "windmill",
+   "q": 44,
+   "r": 9
+  },
+  {
+   "id": "windmill_3",
+   "kind": "windmill",
+   "q": 35,
+   "r": 27
+  },
+  {
+   "id": "windmill_4",
+   "kind": "windmill",
+   "q": 18,
+   "r": 27
+  }
+ ],
+ "victory": {
+  "type": "hold_relic",
+  "days": 7
+ },
+ "startWealth": "normal"
+}

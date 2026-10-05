@@ -8,7 +8,7 @@
  * slot, including six new sets. All of it is 'expanded' content: skirmish,
  * random maps and The Winter Oath use it; The Three Beacons keeps it off.
  * Every entry carries `lore` — a short in-world story used by the encyclopedia
- * and by the icon brief in ICON_CATALOG.md. Nothing here is read by name in the
+ * and by the icon brief (`npm run icons:catalog`). Nothing here is read by name in the
  * rules: effects use the shared vocabulary.
  */
 import type { ArtifactDefinition, ArtifactRarity, ArtifactSetDefinition, EffectDefinition, SpellDefinition } from '@pr/rules';

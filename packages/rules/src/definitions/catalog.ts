@@ -26,6 +26,7 @@ import type {
 } from '../ids';
 import type { CampaignDefinition, MissionDefinition, SkirmishScenarioDefinition } from './campaign';
 import type { AbilityDefinition, CreatureDefinition, CreatureFamilyDefinition, LoreDefinition } from './creatures';
+import type { SkirmishMapDefinition } from './customMap';
 import type { ClimateRuleDefinition, AITemperamentDefinition, DifficultyDefinition, DivineGiftDefinition, InterventionDefinition, MapEventTemplateDefinition, SkirmishKitDefinition, WeeklyEventDefinition } from './skirmish';
 import type {
   ArtifactDefinition,
@@ -84,6 +85,8 @@ export interface ContentCatalog {
   readonly campaigns: Readonly<Record<CampaignId, CampaignDefinition>>;
   readonly missions: Readonly<Record<MissionId, MissionDefinition>>;
   readonly skirmishes: Readonly<Record<ScenarioId, SkirmishScenarioDefinition>>;
+  /** Authored skirmish maps (custom map documents; absent in older catalogs). */
+  readonly skirmishMaps?: Readonly<Record<string, SkirmishMapDefinition>>;
   readonly mapTemplates: Readonly<Record<MapTemplateId, MapTemplateDefinition>>;
   /** Display order for pantheon selection and encyclopedia filters. */
   readonly pantheonOrder: readonly PantheonId[];
@@ -108,7 +111,6 @@ export const getAbility = (c: ContentCatalog, id: AbilityId) => lookup('ability'
 export const getBuilding = (c: ContentCatalog, id: BuildingId) => lookup('building', c.buildings, id);
 export const getTownArchetype = (c: ContentCatalog, id: TownArchetypeId) => lookup('town archetype', c.townArchetypes, id);
 export const getGod = (c: ContentCatalog, id: GodId) => lookup('god', c.gods, id);
-export const getHeroDefinition = (c: ContentCatalog, id: HeroDefinitionId) => lookup('hero', c.heroes, id);
 export const getHeroClass = (c: ContentCatalog, id: HeroClassId) => lookup('hero class', c.heroClasses, id);
 export const getSkill = (c: ContentCatalog, id: SkillId) => lookup('skill', c.skills, id);
 export const getSpell = (c: ContentCatalog, id: SpellId) => lookup('spell', c.spells, id);
@@ -117,8 +119,6 @@ export const getEntitlement = (c: ContentCatalog, id: EntitlementId) => lookup('
 export const getMission = (c: ContentCatalog, id: MissionId) => lookup('mission', c.missions, id);
 export const getCampaign = (c: ContentCatalog, id: CampaignId) => lookup('campaign', c.campaigns, id);
 export const getMapTemplate = (c: ContentCatalog, id: MapTemplateId) => lookup('map template', c.mapTemplates, id);
-export const getPantheon = (c: ContentCatalog, id: PantheonId) => lookup('pantheon', c.pantheons, id);
-export const getLore = (c: ContentCatalog, id: LoreId) => lookup('lore entry', c.lore, id);
 
 /** Stats are mandatory for any creature that can appear in play. */
 export function requireStats(c: ContentCatalog, id: CreatureId) {

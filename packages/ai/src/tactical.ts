@@ -11,7 +11,6 @@ import {
   cellDistance,
   cellKey,
   effectiveSpeed,
-  isAlive,
   legalActions,
   opposing,
   previewStrike,
@@ -327,10 +326,6 @@ function groundDistanceField(catalog: ContentCatalog, battle: BattleState, stack
     frontier = next;
   }
   return dist;
-}
-
-export function battleIsLive(state: MatchState): boolean {
-  return !!state.battle && state.battle.status === 'active' && Object.values(state.battle.stacks).some(isAlive);
 }
 
 /** Battle interventions for AI-controlled empires (never for a human side on auto-combat). */

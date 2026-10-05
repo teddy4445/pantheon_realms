@@ -44,7 +44,7 @@ describe('UI art manifest', () => {
   it('resolves every asset ID the interface names', () => {
     const named = new Set([...idsIn(src('assets/icons.tsx')), ...idsIn(src('components/art.tsx')), ...idsIn(src('screens/Journal.tsx')), ...idsIn(src('screens/MainMenu.tsx'))]);
     expect(named.size).toBeGreaterThan(40);
-    // Markers still to be delivered (ICON_CATALOG.md) name their stand-in: `ownMarker('<wanted>', '<existing>')`.
+    // Markers still to be delivered (`npm run icons:catalog`) name their stand-in: `ownMarker('<wanted>', '<existing>')`.
     const pending = [...src('components/art.tsx').matchAll(/ownMarker\('([^']+)', '([^']+)'\)/g)];
     expect(pending.length).toBeGreaterThanOrEqual(8);
     for (const [, wanted, fallback] of pending) {
@@ -65,7 +65,7 @@ describe('UI art manifest', () => {
 });
 
 /**
- * Final art delivered by asset ID (ICON_CATALOG.md, `npm run icons:import`): every
+ * Final art delivered by asset ID (`npm run icons:catalog`, `npm run icons:import`): every
  * source PNG in assets-source/icons/final/ is registered, every registration points
  * at a bundled file of its section's size (or a little smaller, never enlarged) — an RGBA PNG for icons with transparency,
  * a WebP for opaque paintings (creature, god and hero portraits) — and every ID is a catalog asset ID.
@@ -81,8 +81,10 @@ describe('final art manifest', () => {
   for (const s of inventory.sections) {
     // As the importer reads it: a size at the start of the section's text, else 256 px
     // (the illustrations section says "emblems 256 px; thumbnails 640 × 360 px").
+    // The interface section's main-menu icons are larger ("menu icons 192 px").
     const m = /^\s*(\d+)\s*[×x]\s*(\d+)/.exec(s.size);
-    for (const r of s.rows) sizeOf.set(r.assetId, m ? Number(m[1]) : 256);
+    const menu = /menu icons (\d+)\s*px/.exec(s.size);
+    for (const r of s.rows) sizeOf.set(r.assetId, menu && r.assetId.startsWith('icon.menu.') ? Number(menu[1]) : m ? Number(m[1]) : 256);
   }
   const sourceDir = path.join(root, 'assets-source/icons/final');
   const sources = existsSync(sourceDir) ? readdirSync(sourceDir).filter((f) => f.endsWith('.png')).map((f) => f.slice(0, -4)) : [];

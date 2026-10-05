@@ -31,6 +31,10 @@ File names (one image each; strips are N equal frames left to right):
   sprite.map.decor.<kind>.png                256 x 256, ground at 95 %, one hex = 280 px
   sprite.battle.obstacle.<kind>.png          512 x 512, ground at 92 %, one hex = 240 px
   sprite.battle.siege.<kind>.<state>.png     512 x 512 (keep 768 x 768), ground at 95 %
+  sprite.battle.siege.<wall|gate|tower>.<state>.<pantheon>.png  512 x 512, footprint centre at 68 % (Brief 15:
+        one pantheon's pieces on the straight wall line; keep.<state>.<pantheon> 768 x 768 at 95 %)
+  sprite.battle.siege.catapult.intact.png    512 x 512, ground at 95 % (the attackers' catapult, Brief 15)
+  sprite.fx.siege.catapult.throw.png         frames 512 x 512, ground at 95 %, drawn normally (not additive)
   sprite.battle.projectile.<kind>.png        128 x 32, centred, pointing right
   sprite.fx.<effect>.png                     frames 256 x 256, centred at 62 %
         the nine shared battle effects keep their short IDs (sprite.fx.impact.png →
@@ -91,7 +95,7 @@ def effect_entry(entry: dict, key: str, over: dict) -> dict:
         **entry,
         "loop": bool(over.get("loop", False)),
         "provenance": "GPT-6 effect strip." if legacy else "Magic and Favor VFX phase (VFX_MAGIC_AND_FAVORS.md), imported by `npm run sprites:import` with its full asset ID.",
-        "additive": bool(over.get("additive", True)),
+        "additive": bool(over.get("additive", not key.startswith("fx.siege."))),
     }
 
 HERO_DIRS_NEEDED = {"e", "ne", "n", "s", "se"}  # the game mirrors e, ne, se for w, nw, sw
@@ -108,6 +112,11 @@ SPEC = {
     "keep": ((768, 768), (0.5, 0.95), 240, 0.5),
     "projectile": ((128, 32), (0.5, 0.5), 240, 0.5),
     "fx": ((256, 256), (0.5, 0.62), 240, 0.5),
+    # Brief 15 (2026-10-05): a pantheon's wall, gate and tower pieces stand on one straight wall
+    # line and join the pieces above and below (footprint centre at 68 %); the catapult's throw
+    # strip has the catapult still's framing (ground at 95 %) and is drawn normally (not additive).
+    "wallpiece": ((512, 512), (0.5, 0.68), 240, 0.5),
+    "siegefx": ((512, 512), (0.5, 0.95), 240, 0.5),
 }
 
 
@@ -185,13 +194,14 @@ def main(argv: list[str] | None = None) -> int:
         elif name.startswith("battle.siege."):
             key = name.removeprefix("battle.siege.")
             target = ("siege", key)
-            kind = "keep" if key.startswith("keep.") else "siege"
+            pieces = key.split(".")
+            kind = "keep" if key.startswith("keep.") else "wallpiece" if len(pieces) == 3 and pieces[0] in ("wall", "gate", "tower") else "siege"
         elif name.startswith("battle.projectile."):
             target = ("projectiles", name.removeprefix("battle.projectile."))
             kind = "projectile"
         elif parts[0] == "fx":
             target = ("effects", effect_key(name))
-            kind = "fx"
+            kind = "siegefx" if name.startswith("fx.siege.") else "fx"
         else:
             problems.append(f"{src.name}: name does not match any sprite family")
             continue

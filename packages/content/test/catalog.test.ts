@@ -154,4 +154,15 @@ describe('Twin Harbors fairness', () => {
       expect(ca.startsWithSpellbook).toBe(cb.startsWithSpellbook);
     }
   });
+  it('every dwelling can be built before the more advanced ones (owner request 2026-10-05)', () => {
+    const req = (id: string) => catalog.buildings[id]!.requirements.flatMap((r) => (r.type === 'has_building' ? [r.buildingId] : []));
+    // The Greek griffin aerie (tier 3) follows the peltast range (tier 2) and the first temple, not the training court (tier 4).
+    expect(req('griffin_aerie').sort()).toEqual(['peltast_range', 'temple_1']);
+    expect(req('norse_troll_cave').sort()).toEqual(['norse_hof_1', 'norse_wolf_den']);
+    expect(req('egyptian_dwelling_t3_l1').sort()).toEqual(['egyptian_dwelling_t2_l1', 'egyptian_pantheon_temple_l1']);
+    // The validator refuses a dwelling that needs a higher tier.
+    const broken = { ...catalog, buildings: { ...catalog.buildings, griffin_aerie: { ...catalog.buildings['griffin_aerie']!, requirements: [{ type: 'has_building' as const, buildingId: 'training_court' }] } } };
+    expect(validateCatalog(broken).issues.map((i) => i.message)).toContain('griffin_aerie (tier 3) requires training_court (tier 4): a dwelling must not need a more advanced dwelling');
+  });
 });
+

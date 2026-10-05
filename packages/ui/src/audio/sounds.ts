@@ -13,11 +13,17 @@ import type { ScreenId } from '../app/store';
 export const MUSIC = {
   menu: 'music.menu',
   battle: 'music.battle',
+  /** Battle music by the viewing player's pantheon (a playlist); falls back to music.battle. */
+  battleOf: (pantheonId: string) => `music.battle.${pantheonId}`,
+  /** Any battle at a town's walls. */
+  siege: 'music.siege',
   resolution: 'music.resolution',
-  explore: (soundscape: string) => `music.explore.${soundscape}`,
-  /** Map music by the viewing player's pantheon (a playlist of long tracks); falls back to the soundscape's music. */
+  /** Map music by the viewing player's pantheon (a playlist of long tracks); falls back to DEFAULT_MAP_MUSIC. */
   map: (pantheonId: string) => `music.map.${pantheonId}`,
 } as const;
+
+/** Map music when there is no viewing pantheon or the manifest lacks its playlist. */
+export const DEFAULT_MAP_MUSIC = MUSIC.map('greek');
 
 export const AMBIENCE = {
   battlefield: 'amb.battlefield',
@@ -27,7 +33,7 @@ export const AMBIENCE = {
 export const STINGERS = { victory: 'stinger.victory', defeat: 'stinger.defeat', levelUp: 'stinger.levelup', beacon: 'stinger.beacon' } as const;
 
 /**
- * Every soundscape a mission may name; each needs music.explore.* and amb.* entries.
+ * Every soundscape a mission may name; each needs an amb.* entry (the music follows the pantheon).
  * coast / high_pass / storm_plateau: The Three Beacons; fjord: The Winter Oath;
  * desert, shrine, glen, jungle: the Egyptian, Japanese, Celtic and Mesoamerican campaigns.
  */
@@ -75,7 +81,7 @@ export const REQUIRED_SOUND_IDS: readonly string[] = [
   MUSIC.menu,
   MUSIC.battle,
   MUSIC.resolution,
-  ...SOUNDSCAPES.map(MUSIC.explore),
+  DEFAULT_MAP_MUSIC,
   ...SOUNDSCAPES.map(AMBIENCE.of),
   AMBIENCE.battlefield,
   ...Object.values(STINGERS),
@@ -129,21 +135,27 @@ export interface SoundContext {
   readonly pantheonId?: string | null;
   /** Whether the manifest has a sound (map music falls back to the soundscape's music without it). */
   readonly has?: (id: string) => boolean;
+  /** The battle on screen is a siege (its own music where the manifest has it). */
+  readonly siege?: boolean;
 }
 
-const MENU_SCREENS: ReadonlySet<ScreenId> = new Set(['main-menu', 'game-mode', 'scenario-select', 'pantheon-select']);
+const MENU_SCREENS: ReadonlySet<ScreenId> = new Set(['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'map-editor']);
 
 export function soundscapeFor(ctx: SoundContext): { music: string | null; ambience: string | null } {
   const scape = ctx.soundscape ?? DEFAULT_SOUNDSCAPE;
   if (ctx.overlays.includes('debrief') || ctx.overlays.includes('campaign-complete')) return { music: MUSIC.resolution, ambience: null };
   if (ctx.overlays.includes('mission-failed')) return { music: null, ambience: null };
   if (!ctx.inSession || MENU_SCREENS.has(ctx.screen)) return { music: MUSIC.menu, ambience: null };
-  if (ctx.screen === 'battle') return { music: MUSIC.battle, ambience: AMBIENCE.battlefield };
+  if (ctx.screen === 'battle') {
+    const own = ctx.pantheonId ? MUSIC.battleOf(ctx.pantheonId) : null;
+    const music = ctx.siege && ctx.has?.(MUSIC.siege) ? MUSIC.siege : own && ctx.has?.(own) ? own : MUSIC.battle;
+    return { music, ambience: AMBIENCE.battlefield };
+  }
   // The result screen lets the victory or defeat stinger speak over the battlefield air.
   if (ctx.screen === 'battle-result') return { music: null, ambience: AMBIENCE.battlefield };
   // Map, town and hero screens: the pantheon's own music; the mission's soundscape keeps its ambience.
   const own = ctx.pantheonId ? MUSIC.map(ctx.pantheonId) : null;
-  return { music: own && ctx.has?.(own) ? own : MUSIC.explore(scape), ambience: AMBIENCE.of(scape) };
+  return { music: own && ctx.has?.(own) ? own : DEFAULT_MAP_MUSIC, ambience: AMBIENCE.of(scape) };
 }
 
 // ---------------------------------------------------------------------------

@@ -6,8 +6,7 @@
  *
  *   assets-source/sprites/content-plan.json
  *
- * The placeholder generator (`make_sprite_placeholders.py`) and the GPT-6
- * production queue (`build_gpt6_queue.py`) both read this file, so the list of
+ * The GPT-6 production queue (`build_gpt6_queue.py`) reads this file, so the list of
  * animations requested for a creature always follows its gameplay content
  * (shooter → shoot, flight → takeoff/fly/landing, an active ability → ability,
  * a battle spell caster → cast), never the artwork.

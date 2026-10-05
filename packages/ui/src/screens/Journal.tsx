@@ -10,7 +10,7 @@ import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, object
 import { useStore } from '../app/context';
 import { HINTS } from '../app/hints';
 import { Button, Chip, Panel, Tabs } from '../components/kit';
-import { MarkerIcon, SpeakerPortrait, HeroPortrait } from '../components/art';
+import { MarkerIcon, SpeakerPortrait } from '../components/art';
 import { resolveAsset } from '../assets/manifest';
 import { ScreenHeader } from '../components/game';
 import { Icon, type IconName } from '../assets/icons';

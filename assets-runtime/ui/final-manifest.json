@@ -1026,6 +1026,30 @@
       "file": "ui/icons/final/icon.ability.wall_breaker.png",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.ability.wall_breaker.png."
     },
+    "icon.action.ability": {
+      "file": "ui/icons/final/icon.action.ability.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.action.ability.png."
+    },
+    "icon.action.defend": {
+      "file": "ui/icons/final/icon.action.defend.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.action.defend.png."
+    },
+    "icon.action.retreat": {
+      "file": "ui/icons/final/icon.action.retreat.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.action.retreat.png."
+    },
+    "icon.action.spell": {
+      "file": "ui/icons/final/icon.action.spell.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.action.spell.png."
+    },
+    "icon.action.surrender": {
+      "file": "ui/icons/final/icon.action.surrender.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.action.surrender.png."
+    },
+    "icon.action.wait": {
+      "file": "ui/icons/final/icon.action.wait.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.action.wait.png."
+    },
     "icon.artifact.andvaris_ring": {
       "file": "ui/icons/final/icon.artifact.andvaris_ring.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.artifact.andvaris_ring.png."
@@ -1422,6 +1446,90 @@
       "file": "ui/icons/final/icon.bless.spell_unlock.png",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.bless.spell_unlock.png."
     },
+    "icon.climate.autumn": {
+      "file": "ui/icons/final/icon.climate.autumn.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.autumn.png."
+    },
+    "icon.climate.coast": {
+      "file": "ui/icons/final/icon.climate.coast.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.coast.png."
+    },
+    "icon.climate.desert": {
+      "file": "ui/icons/final/icon.climate.desert.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.desert.png."
+    },
+    "icon.climate.fjord": {
+      "file": "ui/icons/final/icon.climate.fjord.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.fjord.png."
+    },
+    "icon.climate.high_pass": {
+      "file": "ui/icons/final/icon.climate.high_pass.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.high_pass.png."
+    },
+    "icon.climate.jungle": {
+      "file": "ui/icons/final/icon.climate.jungle.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.jungle.png."
+    },
+    "icon.climate.moor": {
+      "file": "ui/icons/final/icon.climate.moor.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.moor.png."
+    },
+    "icon.climate.storm_plateau": {
+      "file": "ui/icons/final/icon.climate.storm_plateau.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.storm_plateau.png."
+    },
+    "icon.climate.tundra": {
+      "file": "ui/icons/final/icon.climate.tundra.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.climate.tundra.png."
+    },
+    "icon.fx.arrow": {
+      "file": "ui/icons/final/icon.fx.arrow.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.arrow.png."
+    },
+    "icon.fx.burning": {
+      "file": "ui/icons/final/icon.fx.burning.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.burning.png."
+    },
+    "icon.fx.death": {
+      "file": "ui/icons/final/icon.fx.death.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.death.png."
+    },
+    "icon.fx.divine": {
+      "file": "ui/icons/final/icon.fx.divine.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.divine.png."
+    },
+    "icon.fx.frost": {
+      "file": "ui/icons/final/icon.fx.frost.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.frost.png."
+    },
+    "icon.fx.healing": {
+      "file": "ui/icons/final/icon.fx.healing.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.healing.png."
+    },
+    "icon.fx.lightning": {
+      "file": "ui/icons/final/icon.fx.lightning.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.lightning.png."
+    },
+    "icon.fx.poison": {
+      "file": "ui/icons/final/icon.fx.poison.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.poison.png."
+    },
+    "icon.fx.shadow": {
+      "file": "ui/icons/final/icon.fx.shadow.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.shadow.png."
+    },
+    "icon.fx.shield": {
+      "file": "ui/icons/final/icon.fx.shield.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.shield.png."
+    },
+    "icon.fx.strike": {
+      "file": "ui/icons/final/icon.fx.strike.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.strike.png."
+    },
+    "icon.fx.summon": {
+      "file": "ui/icons/final/icon.fx.summon.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.fx.summon.png."
+    },
     "icon.god.committed": {
       "file": "ui/icons/final/icon.god.committed.png",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.god.committed.png."
@@ -1446,6 +1554,218 @@
       "file": "ui/icons/final/icon.god.second_choice.png",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.god.second_choice.png."
     },
+    "icon.intervention.blessing_of_the_nile": {
+      "file": "ui/icons/final/icon.intervention.blessing_of_the_nile.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.blessing_of_the_nile.png."
+    },
+    "icon.intervention.bountiful_harvest": {
+      "file": "ui/icons/final/icon.intervention.bountiful_harvest.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.bountiful_harvest.png."
+    },
+    "icon.intervention.favorable_winds": {
+      "file": "ui/icons/final/icon.intervention.favorable_winds.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.favorable_winds.png."
+    },
+    "icon.intervention.gift_of_the_feathered_serpent": {
+      "file": "ui/icons/final/icon.intervention.gift_of_the_feathered_serpent.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.gift_of_the_feathered_serpent.png."
+    },
+    "icon.intervention.inspiration": {
+      "file": "ui/icons/final/icon.intervention.inspiration.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.inspiration.png."
+    },
+    "icon.intervention.mending_light": {
+      "file": "ui/icons/final/icon.intervention.mending_light.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.mending_light.png."
+    },
+    "icon.intervention.mists_of_the_sidhe": {
+      "file": "ui/icons/final/icon.intervention.mists_of_the_sidhe.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.mists_of_the_sidhe.png."
+    },
+    "icon.intervention.rally_the_faithful": {
+      "file": "ui/icons/final/icon.intervention.rally_the_faithful.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.rally_the_faithful.png."
+    },
+    "icon.intervention.ride_of_the_valkyries": {
+      "file": "ui/icons/final/icon.intervention.ride_of_the_valkyries.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.ride_of_the_valkyries.png."
+    },
+    "icon.intervention.shield_of_the_gods": {
+      "file": "ui/icons/final/icon.intervention.shield_of_the_gods.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.shield_of_the_gods.png."
+    },
+    "icon.intervention.thunderbolt_of_zeus": {
+      "file": "ui/icons/final/icon.intervention.thunderbolt_of_zeus.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.thunderbolt_of_zeus.png."
+    },
+    "icon.intervention.tithe_of_the_faithful": {
+      "file": "ui/icons/final/icon.intervention.tithe_of_the_faithful.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.tithe_of_the_faithful.png."
+    },
+    "icon.intervention.ward_of_the_kami": {
+      "file": "ui/icons/final/icon.intervention.ward_of_the_kami.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.ward_of_the_kami.png."
+    },
+    "icon.intervention.wrath_from_above": {
+      "file": "ui/icons/final/icon.intervention.wrath_from_above.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.intervention.wrath_from_above.png."
+    },
+    "icon.marker.artifact": {
+      "file": "ui/icons/final/icon.marker.artifact.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.artifact.png."
+    },
+    "icon.marker.check": {
+      "file": "ui/icons/final/icon.marker.check.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.check.png."
+    },
+    "icon.marker.chest": {
+      "file": "ui/icons/final/icon.marker.chest.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.chest.png."
+    },
+    "icon.marker.creature": {
+      "file": "ui/icons/final/icon.marker.creature.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.creature.png."
+    },
+    "icon.marker.crystal": {
+      "file": "ui/icons/final/icon.marker.crystal.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.crystal.png."
+    },
+    "icon.marker.gold": {
+      "file": "ui/icons/final/icon.marker.gold.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.gold.png."
+    },
+    "icon.marker.hostile-town": {
+      "file": "ui/icons/final/icon.marker.hostile-town.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.hostile-town.png."
+    },
+    "icon.marker.key-gate": {
+      "file": "ui/icons/final/icon.marker.key-gate.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.key-gate.png."
+    },
+    "icon.marker.key-tent": {
+      "file": "ui/icons/final/icon.marker.key-tent.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.key-tent.png."
+    },
+    "icon.marker.learning-stone": {
+      "file": "ui/icons/final/icon.marker.learning-stone.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.learning-stone.png."
+    },
+    "icon.marker.locked": {
+      "file": "ui/icons/final/icon.marker.locked.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.locked.png."
+    },
+    "icon.marker.mine": {
+      "file": "ui/icons/final/icon.marker.mine.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.mine.png."
+    },
+    "icon.marker.neutral-town": {
+      "file": "ui/icons/final/icon.marker.neutral-town.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.neutral-town.png."
+    },
+    "icon.marker.portal": {
+      "file": "ui/icons/final/icon.marker.portal.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.portal.png."
+    },
+    "icon.marker.prison": {
+      "file": "ui/icons/final/icon.marker.prison.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.prison.png."
+    },
+    "icon.marker.quarry": {
+      "file": "ui/icons/final/icon.marker.quarry.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.quarry.png."
+    },
+    "icon.marker.quest": {
+      "file": "ui/icons/final/icon.marker.quest.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.quest.png."
+    },
+    "icon.marker.quest-hut": {
+      "file": "ui/icons/final/icon.marker.quest-hut.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.quest-hut.png."
+    },
+    "icon.marker.question": {
+      "file": "ui/icons/final/icon.marker.question.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.question.png."
+    },
+    "icon.marker.sawmill": {
+      "file": "ui/icons/final/icon.marker.sawmill.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.sawmill.png."
+    },
+    "icon.marker.shrine": {
+      "file": "ui/icons/final/icon.marker.shrine.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.shrine.png."
+    },
+    "icon.marker.skill-trainer": {
+      "file": "ui/icons/final/icon.marker.skill-trainer.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.skill-trainer.png."
+    },
+    "icon.marker.spell-shrine": {
+      "file": "ui/icons/final/icon.marker.spell-shrine.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.spell-shrine.png."
+    },
+    "icon.marker.stone": {
+      "file": "ui/icons/final/icon.marker.stone.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.stone.png."
+    },
+    "icon.marker.story": {
+      "file": "ui/icons/final/icon.marker.story.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.story.png."
+    },
+    "icon.marker.town": {
+      "file": "ui/icons/final/icon.marker.town.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.town.png."
+    },
+    "icon.marker.unknown": {
+      "file": "ui/icons/final/icon.marker.unknown.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.unknown.png."
+    },
+    "icon.marker.watchtower": {
+      "file": "ui/icons/final/icon.marker.watchtower.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.watchtower.png."
+    },
+    "icon.marker.windmill": {
+      "file": "ui/icons/final/icon.marker.windmill.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-05 from assets-source/icons/final/icon.marker.windmill.png."
+    },
+    "icon.marker.wood": {
+      "file": "ui/icons/final/icon.marker.wood.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.wood.png."
+    },
+    "icon.menu.campaign": {
+      "file": "ui/icons/final/icon.menu.campaign.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.campaign.png."
+    },
+    "icon.menu.continue": {
+      "file": "ui/icons/final/icon.menu.continue.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.continue.png."
+    },
+    "icon.menu.credits": {
+      "file": "ui/icons/final/icon.menu.credits.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.credits.png."
+    },
+    "icon.menu.encyclopedia": {
+      "file": "ui/icons/final/icon.menu.encyclopedia.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.encyclopedia.png."
+    },
+    "icon.menu.load-game": {
+      "file": "ui/icons/final/icon.menu.load-game.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.load-game.png."
+    },
+    "icon.menu.new-game": {
+      "file": "ui/icons/final/icon.menu.new-game.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.new-game.png."
+    },
+    "icon.menu.quit": {
+      "file": "ui/icons/final/icon.menu.quit.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.quit.png."
+    },
+    "icon.menu.settings": {
+      "file": "ui/icons/final/icon.menu.settings.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.settings.png."
+    },
+    "icon.menu.skirmish": {
+      "file": "ui/icons/final/icon.menu.skirmish.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.menu.skirmish.png."
+    },
     "icon.req.after_first": {
       "file": "ui/icons/final/icon.req.after_first.png",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.req.after_first.png."
@@ -1461,6 +1781,26 @@
     "icon.req.temple": {
       "file": "ui/icons/final/icon.req.temple.png",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/icon.req.temple.png."
+    },
+    "icon.res.crystal": {
+      "file": "ui/icons/final/icon.res.crystal.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.res.crystal.png."
+    },
+    "icon.res.favor": {
+      "file": "ui/icons/final/icon.res.favor.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.res.favor.png."
+    },
+    "icon.res.gold": {
+      "file": "ui/icons/final/icon.res.gold.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.res.gold.png."
+    },
+    "icon.res.stone": {
+      "file": "ui/icons/final/icon.res.stone.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.res.stone.png."
+    },
+    "icon.res.wood": {
+      "file": "ui/icons/final/icon.res.wood.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.res.wood.png."
     },
     "icon.set.arms_of_the_einherjar": {
       "file": "ui/icons/final/icon.set.arms_of_the_einherjar.png",
@@ -1786,6 +2126,102 @@
       "file": "ui/icons/final/icon.spell.yata_mirror.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.spell.yata_mirror.png."
     },
+    "icon.stat.attack": {
+      "file": "ui/icons/final/icon.stat.attack.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.attack.png."
+    },
+    "icon.stat.damage": {
+      "file": "ui/icons/final/icon.stat.damage.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.damage.png."
+    },
+    "icon.stat.defense": {
+      "file": "ui/icons/final/icon.stat.defense.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.defense.png."
+    },
+    "icon.stat.hp": {
+      "file": "ui/icons/final/icon.stat.hp.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.hp.png."
+    },
+    "icon.stat.knowledge": {
+      "file": "ui/icons/final/icon.stat.knowledge.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.knowledge.png."
+    },
+    "icon.stat.luck": {
+      "file": "ui/icons/final/icon.stat.luck.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.luck.png."
+    },
+    "icon.stat.mana": {
+      "file": "ui/icons/final/icon.stat.mana.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.mana.png."
+    },
+    "icon.stat.morale": {
+      "file": "ui/icons/final/icon.stat.morale.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.morale.png."
+    },
+    "icon.stat.movement": {
+      "file": "ui/icons/final/icon.stat.movement.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.movement.png."
+    },
+    "icon.stat.power": {
+      "file": "ui/icons/final/icon.stat.power.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.power.png."
+    },
+    "icon.stat.range": {
+      "file": "ui/icons/final/icon.stat.range.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.range.png."
+    },
+    "icon.stat.shots": {
+      "file": "ui/icons/final/icon.stat.shots.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.shots.png."
+    },
+    "icon.stat.speed": {
+      "file": "ui/icons/final/icon.stat.speed.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.speed.png."
+    },
+    "icon.stat.vision": {
+      "file": "ui/icons/final/icon.stat.vision.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.vision.png."
+    },
+    "icon.stat.xp": {
+      "file": "ui/icons/final/icon.stat.xp.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.stat.xp.png."
+    },
+    "icon.status.buff": {
+      "file": "ui/icons/final/icon.status.buff.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.buff.png."
+    },
+    "icon.status.burning": {
+      "file": "ui/icons/final/icon.status.burning.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.burning.png."
+    },
+    "icon.status.debuff": {
+      "file": "ui/icons/final/icon.status.debuff.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.debuff.png."
+    },
+    "icon.status.frozen": {
+      "file": "ui/icons/final/icon.status.frozen.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.frozen.png."
+    },
+    "icon.status.heal": {
+      "file": "ui/icons/final/icon.status.heal.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.heal.png."
+    },
+    "icon.status.poison": {
+      "file": "ui/icons/final/icon.status.poison.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.poison.png."
+    },
+    "icon.status.stun": {
+      "file": "ui/icons/final/icon.status.stun.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.stun.png."
+    },
+    "icon.status.weaken": {
+      "file": "ui/icons/final/icon.status.weaken.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.status.weaken.png."
+    },
+    "icon.time.day": {
+      "file": "ui/icons/final/icon.time.day.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.time.day.png."
+    },
     "icon.ui.auto": {
       "file": "ui/icons/final/icon.ui.auto.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.auto.png."
@@ -1897,6 +2333,14 @@
     "icon.ui.upgrade": {
       "file": "ui/icons/final/icon.ui.upgrade.png",
       "provenance": "Owner-delivered final art, imported 2026-10-03 from assets-source/icons/final/icon.ui.upgrade.png."
+    },
+    "icon.world.hero": {
+      "file": "ui/icons/final/icon.world.hero.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.world.hero.png."
+    },
+    "icon.world.town": {
+      "file": "ui/icons/final/icon.world.town.png",
+      "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.world.town.png."
     }
   }
 }

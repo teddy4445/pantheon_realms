@@ -280,6 +280,78 @@
    "average": "#6E613D",
    "edge": "#5D533F"
   },
+  "battlefield.beacon_clearing.ground.autumn": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#99622A",
+   "edge": "#805230"
+  },
+  "battlefield.beacon_clearing.ground.coast": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9E8C5C",
+   "edge": "#837554"
+  },
+  "battlefield.beacon_clearing.ground.desert": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B38C4E",
+   "edge": "#896E48"
+  },
+  "battlefield.beacon_clearing.ground.fjord": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#717371",
+   "edge": "#696866"
+  },
+  "battlefield.beacon_clearing.ground.high_pass": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#6D6F45",
+   "edge": "#616046"
+  },
+  "battlefield.beacon_clearing.ground.jungle": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#595224",
+   "edge": "#514D2B"
+  },
+  "battlefield.beacon_clearing.ground.moor": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1420,
+   "height": 1108,
+   "average": "#665333",
+   "edge": "#604E3A"
+  },
+  "battlefield.beacon_clearing.ground.storm_plateau": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#615C39",
+   "edge": "#5C5540"
+  },
+  "battlefield.beacon_clearing.ground.tundra": {
+   "file": "art/battle/battlefield.beacon_clearing.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A3A4A9",
+   "edge": "#807D7F"
+  },
   "battlefield.coast_road.ground": {
    "file": "art/battle/battlefield.coast_road.ground.webp",
    "kind": "battlefield",
@@ -287,6 +359,78 @@
    "height": 1108,
    "average": "#8B7F55",
    "edge": "#4D777E"
+  },
+  "battlefield.coast_road.ground.autumn": {
+   "file": "art/battle/battlefield.coast_road.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9F7445",
+   "edge": "#4D767D"
+  },
+  "battlefield.coast_road.ground.coast": {
+   "file": "art/battle/battlefield.coast_road.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#988C60",
+   "edge": "#528188"
+  },
+  "battlefield.coast_road.ground.desert": {
+   "file": "art/battle/battlefield.coast_road.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B8965C",
+   "edge": "#547D7A"
+  },
+  "battlefield.coast_road.ground.fjord": {
+   "file": "art/battle/battlefield.coast_road.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#7A7E7C",
+   "edge": "#446774"
+  },
+  "battlefield.coast_road.ground.high_pass": {
+   "file": "art/battle/battlefield.coast_road.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6B7049",
+   "edge": "#42727C"
+  },
+  "battlefield.coast_road.ground.jungle": {
+   "file": "art/battle/battlefield.coast_road.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#635F32",
+   "edge": "#437579"
+  },
+  "battlefield.coast_road.ground.moor": {
+   "file": "art/battle/battlefield.coast_road.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#685E41",
+   "edge": "#447178"
+  },
+  "battlefield.coast_road.ground.storm_plateau": {
+   "file": "art/battle/battlefield.coast_road.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#606244",
+   "edge": "#456571"
+  },
+  "battlefield.coast_road.ground.tundra": {
+   "file": "art/battle/battlefield.coast_road.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A2A9B2",
+   "edge": "#567B8C"
   },
   "battlefield.grove.ground": {
    "file": "art/battle/battlefield.grove.ground.webp",
@@ -296,6 +440,78 @@
    "average": "#5E682A",
    "edge": "#3A5022"
   },
+  "battlefield.grove.ground.autumn": {
+   "file": "art/battle/battlefield.grove.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1420,
+   "height": 1108,
+   "average": "#94571F",
+   "edge": "#873E10"
+  },
+  "battlefield.grove.ground.coast": {
+   "file": "art/battle/battlefield.grove.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#887E4D",
+   "edge": "#565A31"
+  },
+  "battlefield.grove.ground.desert": {
+   "file": "art/battle/battlefield.grove.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A2803C",
+   "edge": "#786326"
+  },
+  "battlefield.grove.ground.fjord": {
+   "file": "art/battle/battlefield.grove.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#6C716E",
+   "edge": "#4B5352"
+  },
+  "battlefield.grove.ground.high_pass": {
+   "file": "art/battle/battlefield.grove.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#5E6B34",
+   "edge": "#3E5625"
+  },
+  "battlefield.grove.ground.jungle": {
+   "file": "art/battle/battlefield.grove.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#4F541E",
+   "edge": "#334916"
+  },
+  "battlefield.grove.ground.moor": {
+   "file": "art/battle/battlefield.grove.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#58522E",
+   "edge": "#424826"
+  },
+  "battlefield.grove.ground.storm_plateau": {
+   "file": "art/battle/battlefield.grove.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#595C35",
+   "edge": "#3F4A29"
+  },
+  "battlefield.grove.ground.tundra": {
+   "file": "art/battle/battlefield.grove.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#949BA5",
+   "edge": "#656E79"
+  },
   "battlefield.open_field.ground": {
    "file": "art/battle/battlefield.open_field.ground.webp",
    "kind": "battlefield",
@@ -303,6 +519,78 @@
    "height": 1108,
    "average": "#7C7B37",
    "edge": "#726F37"
+  },
+  "battlefield.open_field.ground.autumn": {
+   "file": "art/battle/battlefield.open_field.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A16A27",
+   "edge": "#986128"
+  },
+  "battlefield.open_field.ground.coast": {
+   "file": "art/battle/battlefield.open_field.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9D894D",
+   "edge": "#8B7B43"
+  },
+  "battlefield.open_field.ground.desert": {
+   "file": "art/battle/battlefield.open_field.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B98C49",
+   "edge": "#A17B41"
+  },
+  "battlefield.open_field.ground.fjord": {
+   "file": "art/battle/battlefield.open_field.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#7D8181",
+   "edge": "#777C7E"
+  },
+  "battlefield.open_field.ground.high_pass": {
+   "file": "art/battle/battlefield.open_field.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#70723B",
+   "edge": "#71703B"
+  },
+  "battlefield.open_field.ground.jungle": {
+   "file": "art/battle/battlefield.open_field.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#5E5821",
+   "edge": "#575723"
+  },
+  "battlefield.open_field.ground.moor": {
+   "file": "art/battle/battlefield.open_field.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6A5831",
+   "edge": "#6B5835"
+  },
+  "battlefield.open_field.ground.storm_plateau": {
+   "file": "art/battle/battlefield.open_field.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#646037",
+   "edge": "#5D5736"
+  },
+  "battlefield.open_field.ground.tundra": {
+   "file": "art/battle/battlefield.open_field.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#AAACB3",
+   "edge": "#93959B"
   },
   "battlefield.plateau.ground": {
    "file": "art/battle/battlefield.plateau.ground.webp",
@@ -312,6 +600,78 @@
    "average": "#6A6441",
    "edge": "#33383A"
   },
+  "battlefield.plateau.ground.autumn": {
+   "file": "art/battle/battlefield.plateau.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#956838",
+   "edge": "#443F3E"
+  },
+  "battlefield.plateau.ground.coast": {
+   "file": "art/battle/battlefield.plateau.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#9B8A5D",
+   "edge": "#444845"
+  },
+  "battlefield.plateau.ground.desert": {
+   "file": "art/battle/battlefield.plateau.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#B98F4E",
+   "edge": "#604A35"
+  },
+  "battlefield.plateau.ground.fjord": {
+   "file": "art/battle/battlefield.plateau.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#747877",
+   "edge": "#384750"
+  },
+  "battlefield.plateau.ground.high_pass": {
+   "file": "art/battle/battlefield.plateau.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6C6D48",
+   "edge": "#3C4546"
+  },
+  "battlefield.plateau.ground.jungle": {
+   "file": "art/battle/battlefield.plateau.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#585426",
+   "edge": "#31392D"
+  },
+  "battlefield.plateau.ground.moor": {
+   "file": "art/battle/battlefield.plateau.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#605538",
+   "edge": "#373A3C"
+  },
+  "battlefield.plateau.ground.storm_plateau": {
+   "file": "art/battle/battlefield.plateau.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#5B5C3D",
+   "edge": "#30383B"
+  },
+  "battlefield.plateau.ground.tundra": {
+   "file": "art/battle/battlefield.plateau.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A7AAB1",
+   "edge": "#4C5562"
+  },
   "battlefield.ridge_pass.ground": {
    "file": "art/battle/battlefield.ridge_pass.ground.webp",
    "kind": "battlefield",
@@ -319,6 +679,78 @@
    "height": 1108,
    "average": "#676554",
    "edge": "#5F5F50"
+  },
+  "battlefield.ridge_pass.ground.autumn": {
+   "file": "art/battle/battlefield.ridge_pass.ground.autumn.webp",
+   "kind": "battlefield",
+   "width": 1420,
+   "height": 1108,
+   "average": "#935F33",
+   "edge": "#91582E"
+  },
+  "battlefield.ridge_pass.ground.coast": {
+   "file": "art/battle/battlefield.ridge_pass.ground.coast.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#8A7E56",
+   "edge": "#817851"
+  },
+  "battlefield.ridge_pass.ground.desert": {
+   "file": "art/battle/battlefield.ridge_pass.ground.desert.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A17D47",
+   "edge": "#A17E46"
+  },
+  "battlefield.ridge_pass.ground.fjord": {
+   "file": "art/battle/battlefield.ridge_pass.ground.fjord.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#6A6E6C",
+   "edge": "#656A68"
+  },
+  "battlefield.ridge_pass.ground.high_pass": {
+   "file": "art/battle/battlefield.ridge_pass.ground.high_pass.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#676844",
+   "edge": "#626442"
+  },
+  "battlefield.ridge_pass.ground.jungle": {
+   "file": "art/battle/battlefield.ridge_pass.ground.jungle.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#575124",
+   "edge": "#4C4C20"
+  },
+  "battlefield.ridge_pass.ground.moor": {
+   "file": "art/battle/battlefield.ridge_pass.ground.moor.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#605337",
+   "edge": "#5E5135"
+  },
+  "battlefield.ridge_pass.ground.storm_plateau": {
+   "file": "art/battle/battlefield.ridge_pass.ground.storm_plateau.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#55533D",
+   "edge": "#54523B"
+  },
+  "battlefield.ridge_pass.ground.tundra": {
+   "file": "art/battle/battlefield.ridge_pass.ground.tundra.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#9498A3",
+   "edge": "#868C96"
   },
   "campaign.lantern_road.cover": {
    "file": "art/covers/campaign.lantern_road.cover.webp",
@@ -875,18 +1307,6 @@
     0.0,
     0.0195,
     1.0,
-    1.0
-   ]
-  },
-  "story.herald.bust": {
-   "file": "art/busts/story.herald.bust.webp",
-   "kind": "bust",
-   "width": 768,
-   "height": 1152,
-   "alphaBox": [
-    0.0361,
-    0.0111,
-    0.9668,
     1.0
    ]
   },
@@ -1626,6 +2046,18 @@
    "width": 1672,
    "height": 941
   },
+  "story.herald.bust": {
+   "file": "art/busts/story.herald.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0361,
+    0.0111,
+    0.9668,
+    1.0
+   ]
+  },
   "terrain.autumn.forest": {
    "file": "art/terrain/terrain.autumn.forest.webp",
    "kind": "terrain",
@@ -2106,437 +2538,95 @@
    "wrap": "mirror",
    "average": "#6A879E"
   },
-  "battlefield.beacon_clearing.ground.autumn": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.autumn.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#99622A",
-   "edge": "#805230"
+  "town.celtic.dwelling.tier1.base": {
+   "file": "art/town/town.celtic.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 435,
+   "height": 435
   },
-  "battlefield.beacon_clearing.ground.coast": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.coast.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#9E8C5C",
-   "edge": "#837554"
+  "town.celtic.dwelling.tier1.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 473,
+   "height": 473
   },
-  "battlefield.beacon_clearing.ground.desert": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.desert.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#B38C4E",
-   "edge": "#896E48"
+  "town.celtic.dwelling.tier2.base": {
+   "file": "art/town/town.celtic.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 449,
+   "height": 449
   },
-  "battlefield.beacon_clearing.ground.fjord": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.fjord.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#717371",
-   "edge": "#696866"
+  "town.celtic.dwelling.tier2.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 481,
+   "height": 481
   },
-  "battlefield.beacon_clearing.ground.high_pass": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.high_pass.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1109,
-   "average": "#6D6F45",
-   "edge": "#616046"
+  "town.celtic.dwelling.tier3.base": {
+   "file": "art/town/town.celtic.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 437,
+   "height": 437
   },
-  "battlefield.beacon_clearing.ground.jungle": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.jungle.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#595224",
-   "edge": "#514D2B"
+  "town.celtic.dwelling.tier3.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 470,
+   "height": 470
   },
-  "battlefield.beacon_clearing.ground.moor": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.moor.webp",
-   "kind": "battlefield",
-   "width": 1420,
-   "height": 1108,
-   "average": "#665333",
-   "edge": "#604E3A"
+  "town.celtic.dwelling.tier4.base": {
+   "file": "art/town/town.celtic.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 441,
+   "height": 441
   },
-  "battlefield.beacon_clearing.ground.storm_plateau": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.storm_plateau.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#615C39",
-   "edge": "#5C5540"
+  "town.celtic.dwelling.tier4.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 478,
+   "height": 478
   },
-  "battlefield.beacon_clearing.ground.tundra": {
-   "file": "art/battle/battlefield.beacon_clearing.ground.tundra.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#A3A4A9",
-   "edge": "#807D7F"
+  "town.celtic.dwelling.tier5.base": {
+   "file": "art/town/town.celtic.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 434,
+   "height": 434
   },
-  "battlefield.coast_road.ground.autumn": {
-   "file": "art/battle/battlefield.coast_road.ground.autumn.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#9F7445",
-   "edge": "#4D767D"
+  "town.celtic.dwelling.tier5.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 474,
+   "height": 474
   },
-  "battlefield.coast_road.ground.coast": {
-   "file": "art/battle/battlefield.coast_road.ground.coast.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#988C60",
-   "edge": "#528188"
+  "town.celtic.dwelling.tier6.base": {
+   "file": "art/town/town.celtic.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 438,
+   "height": 438
   },
-  "battlefield.coast_road.ground.desert": {
-   "file": "art/battle/battlefield.coast_road.ground.desert.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#B8965C",
-   "edge": "#547D7A"
+  "town.celtic.dwelling.tier6.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 477,
+   "height": 477
   },
-  "battlefield.coast_road.ground.fjord": {
-   "file": "art/battle/battlefield.coast_road.ground.fjord.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#7A7E7C",
-   "edge": "#446774"
+  "town.celtic.dwelling.tier7.base": {
+   "file": "art/town/town.celtic.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455
   },
-  "battlefield.coast_road.ground.high_pass": {
-   "file": "art/battle/battlefield.coast_road.ground.high_pass.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#6B7049",
-   "edge": "#42727C"
+  "town.celtic.dwelling.tier7.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512
   },
-  "battlefield.coast_road.ground.jungle": {
-   "file": "art/battle/battlefield.coast_road.ground.jungle.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#635F32",
-   "edge": "#437579"
-  },
-  "battlefield.coast_road.ground.moor": {
-   "file": "art/battle/battlefield.coast_road.ground.moor.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#685E41",
-   "edge": "#447178"
-  },
-  "battlefield.coast_road.ground.storm_plateau": {
-   "file": "art/battle/battlefield.coast_road.ground.storm_plateau.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#606244",
-   "edge": "#456571"
-  },
-  "battlefield.coast_road.ground.tundra": {
-   "file": "art/battle/battlefield.coast_road.ground.tundra.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#A2A9B2",
-   "edge": "#567B8C"
-  },
-  "battlefield.grove.ground.autumn": {
-   "file": "art/battle/battlefield.grove.ground.autumn.webp",
-   "kind": "battlefield",
-   "width": 1420,
-   "height": 1108,
-   "average": "#94571F",
-   "edge": "#873E10"
-  },
-  "battlefield.grove.ground.coast": {
-   "file": "art/battle/battlefield.grove.ground.coast.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#887E4D",
-   "edge": "#565A31"
-  },
-  "battlefield.grove.ground.desert": {
-   "file": "art/battle/battlefield.grove.ground.desert.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#A2803C",
-   "edge": "#786326"
-  },
-  "battlefield.grove.ground.fjord": {
-   "file": "art/battle/battlefield.grove.ground.fjord.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1109,
-   "average": "#6C716E",
-   "edge": "#4B5352"
-  },
-  "battlefield.grove.ground.high_pass": {
-   "file": "art/battle/battlefield.grove.ground.high_pass.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#5E6B34",
-   "edge": "#3E5625"
-  },
-  "battlefield.grove.ground.jungle": {
-   "file": "art/battle/battlefield.grove.ground.jungle.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#4F541E",
-   "edge": "#334916"
-  },
-  "battlefield.grove.ground.moor": {
-   "file": "art/battle/battlefield.grove.ground.moor.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#58522E",
-   "edge": "#424826"
-  },
-  "battlefield.grove.ground.storm_plateau": {
-   "file": "art/battle/battlefield.grove.ground.storm_plateau.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#595C35",
-   "edge": "#3F4A29"
-  },
-  "battlefield.grove.ground.tundra": {
-   "file": "art/battle/battlefield.grove.ground.tundra.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#949BA5",
-   "edge": "#656E79"
-  },
-  "battlefield.open_field.ground.autumn": {
-   "file": "art/battle/battlefield.open_field.ground.autumn.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#A16A27",
-   "edge": "#986128"
-  },
-  "battlefield.open_field.ground.coast": {
-   "file": "art/battle/battlefield.open_field.ground.coast.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#9D894D",
-   "edge": "#8B7B43"
-  },
-  "battlefield.open_field.ground.desert": {
-   "file": "art/battle/battlefield.open_field.ground.desert.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#B98C49",
-   "edge": "#A17B41"
-  },
-  "battlefield.open_field.ground.fjord": {
-   "file": "art/battle/battlefield.open_field.ground.fjord.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#7D8181",
-   "edge": "#777C7E"
-  },
-  "battlefield.open_field.ground.high_pass": {
-   "file": "art/battle/battlefield.open_field.ground.high_pass.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#70723B",
-   "edge": "#71703B"
-  },
-  "battlefield.open_field.ground.jungle": {
-   "file": "art/battle/battlefield.open_field.ground.jungle.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#5E5821",
-   "edge": "#575723"
-  },
-  "battlefield.open_field.ground.moor": {
-   "file": "art/battle/battlefield.open_field.ground.moor.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#6A5831",
-   "edge": "#6B5835"
-  },
-  "battlefield.open_field.ground.storm_plateau": {
-   "file": "art/battle/battlefield.open_field.ground.storm_plateau.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#646037",
-   "edge": "#5D5736"
-  },
-  "battlefield.open_field.ground.tundra": {
-   "file": "art/battle/battlefield.open_field.ground.tundra.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#AAACB3",
-   "edge": "#93959B"
-  },
-  "battlefield.plateau.ground.autumn": {
-   "file": "art/battle/battlefield.plateau.ground.autumn.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1109,
-   "average": "#956838",
-   "edge": "#443F3E"
-  },
-  "battlefield.plateau.ground.coast": {
-   "file": "art/battle/battlefield.plateau.ground.coast.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1109,
-   "average": "#9B8A5D",
-   "edge": "#444845"
-  },
-  "battlefield.plateau.ground.desert": {
-   "file": "art/battle/battlefield.plateau.ground.desert.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#B98F4E",
-   "edge": "#604A35"
-  },
-  "battlefield.plateau.ground.fjord": {
-   "file": "art/battle/battlefield.plateau.ground.fjord.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#747877",
-   "edge": "#384750"
-  },
-  "battlefield.plateau.ground.high_pass": {
-   "file": "art/battle/battlefield.plateau.ground.high_pass.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#6C6D48",
-   "edge": "#3C4546"
-  },
-  "battlefield.plateau.ground.jungle": {
-   "file": "art/battle/battlefield.plateau.ground.jungle.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#585426",
-   "edge": "#31392D"
-  },
-  "battlefield.plateau.ground.moor": {
-   "file": "art/battle/battlefield.plateau.ground.moor.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#605538",
-   "edge": "#373A3C"
-  },
-  "battlefield.plateau.ground.storm_plateau": {
-   "file": "art/battle/battlefield.plateau.ground.storm_plateau.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#5B5C3D",
-   "edge": "#30383B"
-  },
-  "battlefield.plateau.ground.tundra": {
-   "file": "art/battle/battlefield.plateau.ground.tundra.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#A7AAB1",
-   "edge": "#4C5562"
-  },
-  "battlefield.ridge_pass.ground.autumn": {
-   "file": "art/battle/battlefield.ridge_pass.ground.autumn.webp",
-   "kind": "battlefield",
-   "width": 1420,
-   "height": 1108,
-   "average": "#935F33",
-   "edge": "#91582E"
-  },
-  "battlefield.ridge_pass.ground.coast": {
-   "file": "art/battle/battlefield.ridge_pass.ground.coast.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#8A7E56",
-   "edge": "#817851"
-  },
-  "battlefield.ridge_pass.ground.desert": {
-   "file": "art/battle/battlefield.ridge_pass.ground.desert.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#A17D47",
-   "edge": "#A17E46"
-  },
-  "battlefield.ridge_pass.ground.fjord": {
-   "file": "art/battle/battlefield.ridge_pass.ground.fjord.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#6A6E6C",
-   "edge": "#656A68"
-  },
-  "battlefield.ridge_pass.ground.high_pass": {
-   "file": "art/battle/battlefield.ridge_pass.ground.high_pass.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#676844",
-   "edge": "#626442"
-  },
-  "battlefield.ridge_pass.ground.jungle": {
-   "file": "art/battle/battlefield.ridge_pass.ground.jungle.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#575124",
-   "edge": "#4C4C20"
-  },
-  "battlefield.ridge_pass.ground.moor": {
-   "file": "art/battle/battlefield.ridge_pass.ground.moor.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#605337",
-   "edge": "#5E5135"
-  },
-  "battlefield.ridge_pass.ground.storm_plateau": {
-   "file": "art/battle/battlefield.ridge_pass.ground.storm_plateau.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#55533D",
-   "edge": "#54523B"
-  },
-  "battlefield.ridge_pass.ground.tundra": {
-   "file": "art/battle/battlefield.ridge_pass.ground.tundra.webp",
-   "kind": "battlefield",
-   "width": 1419,
-   "height": 1108,
-   "average": "#9498A3",
-   "edge": "#868C96"
+  "town.celtic.support.artifact_merchant.l1": {
+   "file": "art/town/town.celtic.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 503,
+   "height": 503
   },
   "town.celtic.support.civic_hall.l1": {
    "file": "art/town/town.celtic.support.civic_hall.l1.webp",
@@ -2598,6 +2688,12 @@
    "width": 320,
    "height": 320
   },
+  "town.celtic.support.marketplace.l1": {
+   "file": "art/town/town.celtic.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 479,
+   "height": 479
+  },
   "town.celtic.support.pantheon_temple.l1": {
    "file": "art/town/town.celtic.support.pantheon_temple.l1.webp",
    "kind": "building",
@@ -2609,6 +2705,126 @@
    "kind": "building",
    "width": 320,
    "height": 320
+  },
+  "town.celtic.support.resource_depot.l1": {
+   "file": "art/town/town.celtic.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 466,
+   "height": 466
+  },
+  "town.celtic.support.tavern.l1": {
+   "file": "art/town/town.celtic.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 481,
+   "height": 481
+  },
+  "town.celtic.support.training_academy.l1": {
+   "file": "art/town/town.celtic.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 496,
+   "height": 496
+  },
+  "town.celtic.support.watchtower.l1": {
+   "file": "art/town/town.celtic.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 448,
+   "height": 448
+  },
+  "town.celtic.support.workshop.l1": {
+   "file": "art/town/town.celtic.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 479,
+   "height": 479
+  },
+  "town.egyptian.dwelling.tier1.base": {
+   "file": "art/town/town.egyptian.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 403,
+   "height": 403
+  },
+  "town.egyptian.dwelling.tier1.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 470,
+   "height": 470
+  },
+  "town.egyptian.dwelling.tier2.base": {
+   "file": "art/town/town.egyptian.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 421,
+   "height": 421
+  },
+  "town.egyptian.dwelling.tier2.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 490,
+   "height": 490
+  },
+  "town.egyptian.dwelling.tier3.base": {
+   "file": "art/town/town.egyptian.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 437,
+   "height": 437
+  },
+  "town.egyptian.dwelling.tier3.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 510,
+   "height": 510
+  },
+  "town.egyptian.dwelling.tier4.base": {
+   "file": "art/town/town.egyptian.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 424,
+   "height": 424
+  },
+  "town.egyptian.dwelling.tier4.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 493,
+   "height": 493
+  },
+  "town.egyptian.dwelling.tier5.base": {
+   "file": "art/town/town.egyptian.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 440,
+   "height": 440
+  },
+  "town.egyptian.dwelling.tier5.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 498,
+   "height": 498
+  },
+  "town.egyptian.dwelling.tier6.base": {
+   "file": "art/town/town.egyptian.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 402,
+   "height": 402
+  },
+  "town.egyptian.dwelling.tier6.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 486,
+   "height": 486
+  },
+  "town.egyptian.dwelling.tier7.base": {
+   "file": "art/town/town.egyptian.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 448,
+   "height": 448
+  },
+  "town.egyptian.dwelling.tier7.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512
+  },
+  "town.egyptian.support.artifact_merchant.l1": {
+   "file": "art/town/town.egyptian.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 453,
+   "height": 453
   },
   "town.egyptian.support.civic_hall.l1": {
    "file": "art/town/town.egyptian.support.civic_hall.l1.webp",
@@ -2670,6 +2886,12 @@
    "width": 320,
    "height": 320
   },
+  "town.egyptian.support.marketplace.l1": {
+   "file": "art/town/town.egyptian.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 434,
+   "height": 434
+  },
   "town.egyptian.support.pantheon_temple.l1": {
    "file": "art/town/town.egyptian.support.pantheon_temple.l1.webp",
    "kind": "building",
@@ -2681,6 +2903,126 @@
    "kind": "building",
    "width": 320,
    "height": 320
+  },
+  "town.egyptian.support.resource_depot.l1": {
+   "file": "art/town/town.egyptian.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 444,
+   "height": 444
+  },
+  "town.egyptian.support.tavern.l1": {
+   "file": "art/town/town.egyptian.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 447,
+   "height": 447
+  },
+  "town.egyptian.support.training_academy.l1": {
+   "file": "art/town/town.egyptian.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457
+  },
+  "town.egyptian.support.watchtower.l1": {
+   "file": "art/town/town.egyptian.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 448,
+   "height": 448
+  },
+  "town.egyptian.support.workshop.l1": {
+   "file": "art/town/town.egyptian.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 443,
+   "height": 443
+  },
+  "town.greek.dwelling.tier1.base": {
+   "file": "art/town/town.greek.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 419,
+   "height": 419
+  },
+  "town.greek.dwelling.tier1.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 464,
+   "height": 464
+  },
+  "town.greek.dwelling.tier2.base": {
+   "file": "art/town/town.greek.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 422,
+   "height": 422
+  },
+  "town.greek.dwelling.tier2.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460
+  },
+  "town.greek.dwelling.tier3.base": {
+   "file": "art/town/town.greek.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 421,
+   "height": 421
+  },
+  "town.greek.dwelling.tier3.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456
+  },
+  "town.greek.dwelling.tier4.base": {
+   "file": "art/town/town.greek.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 446,
+   "height": 446
+  },
+  "town.greek.dwelling.tier4.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 466,
+   "height": 466
+  },
+  "town.greek.dwelling.tier5.base": {
+   "file": "art/town/town.greek.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 419,
+   "height": 419
+  },
+  "town.greek.dwelling.tier5.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460
+  },
+  "town.greek.dwelling.tier6.base": {
+   "file": "art/town/town.greek.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 423,
+   "height": 423
+  },
+  "town.greek.dwelling.tier6.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 476,
+   "height": 476
+  },
+  "town.greek.dwelling.tier7.base": {
+   "file": "art/town/town.greek.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460
+  },
+  "town.greek.dwelling.tier7.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512
+  },
+  "town.greek.support.artifact_merchant.l1": {
+   "file": "art/town/town.greek.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512
   },
   "town.greek.support.civic_hall.l1": {
    "file": "art/town/town.greek.support.civic_hall.l1.webp",
@@ -2742,6 +3084,12 @@
    "width": 320,
    "height": 320
   },
+  "town.greek.support.marketplace.l1": {
+   "file": "art/town/town.greek.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 478,
+   "height": 478
+  },
   "town.greek.support.pantheon_temple.l1": {
    "file": "art/town/town.greek.support.pantheon_temple.l1.webp",
    "kind": "building",
@@ -2753,6 +3101,126 @@
    "kind": "building",
    "width": 320,
    "height": 320
+  },
+  "town.greek.support.resource_depot.l1": {
+   "file": "art/town/town.greek.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 479,
+   "height": 479
+  },
+  "town.greek.support.tavern.l1": {
+   "file": "art/town/town.greek.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 453,
+   "height": 453
+  },
+  "town.greek.support.training_academy.l1": {
+   "file": "art/town/town.greek.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 492,
+   "height": 492
+  },
+  "town.greek.support.watchtower.l1": {
+   "file": "art/town/town.greek.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 444,
+   "height": 444
+  },
+  "town.greek.support.workshop.l1": {
+   "file": "art/town/town.greek.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 436,
+   "height": 436
+  },
+  "town.japanese.dwelling.tier1.base": {
+   "file": "art/town/town.japanese.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 398,
+   "height": 398
+  },
+  "town.japanese.dwelling.tier1.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 475,
+   "height": 475
+  },
+  "town.japanese.dwelling.tier2.base": {
+   "file": "art/town/town.japanese.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 402,
+   "height": 402
+  },
+  "town.japanese.dwelling.tier2.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 492,
+   "height": 492
+  },
+  "town.japanese.dwelling.tier3.base": {
+   "file": "art/town/town.japanese.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 411,
+   "height": 411
+  },
+  "town.japanese.dwelling.tier3.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 468,
+   "height": 468
+  },
+  "town.japanese.dwelling.tier4.base": {
+   "file": "art/town/town.japanese.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 429,
+   "height": 429
+  },
+  "town.japanese.dwelling.tier4.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 486,
+   "height": 486
+  },
+  "town.japanese.dwelling.tier5.base": {
+   "file": "art/town/town.japanese.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 434,
+   "height": 434
+  },
+  "town.japanese.dwelling.tier5.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 476,
+   "height": 476
+  },
+  "town.japanese.dwelling.tier6.base": {
+   "file": "art/town/town.japanese.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456
+  },
+  "town.japanese.dwelling.tier6.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 452,
+   "height": 452
+  },
+  "town.japanese.dwelling.tier7.base": {
+   "file": "art/town/town.japanese.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455
+  },
+  "town.japanese.dwelling.tier7.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512
+  },
+  "town.japanese.support.artifact_merchant.l1": {
+   "file": "art/town/town.japanese.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 468,
+   "height": 468
   },
   "town.japanese.support.civic_hall.l1": {
    "file": "art/town/town.japanese.support.civic_hall.l1.webp",
@@ -2814,6 +3282,12 @@
    "width": 320,
    "height": 320
   },
+  "town.japanese.support.marketplace.l1": {
+   "file": "art/town/town.japanese.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 466,
+   "height": 466
+  },
   "town.japanese.support.pantheon_temple.l1": {
    "file": "art/town/town.japanese.support.pantheon_temple.l1.webp",
    "kind": "building",
@@ -2825,6 +3299,126 @@
    "kind": "building",
    "width": 320,
    "height": 320
+  },
+  "town.japanese.support.resource_depot.l1": {
+   "file": "art/town/town.japanese.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 467,
+   "height": 467
+  },
+  "town.japanese.support.tavern.l1": {
+   "file": "art/town/town.japanese.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460
+  },
+  "town.japanese.support.training_academy.l1": {
+   "file": "art/town/town.japanese.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 478,
+   "height": 478
+  },
+  "town.japanese.support.watchtower.l1": {
+   "file": "art/town/town.japanese.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457
+  },
+  "town.japanese.support.workshop.l1": {
+   "file": "art/town/town.japanese.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 459,
+   "height": 459
+  },
+  "town.mesoamerican.dwelling.tier1.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 381,
+   "height": 381
+  },
+  "town.mesoamerican.dwelling.tier1.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 430,
+   "height": 430
+  },
+  "town.mesoamerican.dwelling.tier2.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 387,
+   "height": 387
+  },
+  "town.mesoamerican.dwelling.tier2.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 459,
+   "height": 459
+  },
+  "town.mesoamerican.dwelling.tier3.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 398,
+   "height": 398
+  },
+  "town.mesoamerican.dwelling.tier3.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 474,
+   "height": 474
+  },
+  "town.mesoamerican.dwelling.tier4.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 402,
+   "height": 402
+  },
+  "town.mesoamerican.dwelling.tier4.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 470,
+   "height": 470
+  },
+  "town.mesoamerican.dwelling.tier5.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456
+  },
+  "town.mesoamerican.dwelling.tier5.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 487,
+   "height": 487
+  },
+  "town.mesoamerican.dwelling.tier6.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 435,
+   "height": 435
+  },
+  "town.mesoamerican.dwelling.tier6.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 475,
+   "height": 475
+  },
+  "town.mesoamerican.dwelling.tier7.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 442,
+   "height": 442
+  },
+  "town.mesoamerican.dwelling.tier7.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 495,
+   "height": 495
+  },
+  "town.mesoamerican.support.artifact_merchant.l1": {
+   "file": "art/town/town.mesoamerican.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 474,
+   "height": 474
   },
   "town.mesoamerican.support.civic_hall.l1": {
    "file": "art/town/town.mesoamerican.support.civic_hall.l1.webp",
@@ -2886,6 +3480,12 @@
    "width": 320,
    "height": 320
   },
+  "town.mesoamerican.support.marketplace.l1": {
+   "file": "art/town/town.mesoamerican.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 473,
+   "height": 473
+  },
   "town.mesoamerican.support.pantheon_temple.l1": {
    "file": "art/town/town.mesoamerican.support.pantheon_temple.l1.webp",
    "kind": "building",
@@ -2897,6 +3497,126 @@
    "kind": "building",
    "width": 320,
    "height": 320
+  },
+  "town.mesoamerican.support.resource_depot.l1": {
+   "file": "art/town/town.mesoamerican.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456
+  },
+  "town.mesoamerican.support.tavern.l1": {
+   "file": "art/town/town.mesoamerican.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 452,
+   "height": 452
+  },
+  "town.mesoamerican.support.training_academy.l1": {
+   "file": "art/town/town.mesoamerican.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457
+  },
+  "town.mesoamerican.support.watchtower.l1": {
+   "file": "art/town/town.mesoamerican.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463
+  },
+  "town.mesoamerican.support.workshop.l1": {
+   "file": "art/town/town.mesoamerican.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455
+  },
+  "town.norse.dwelling.tier1.base": {
+   "file": "art/town/town.norse.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 407,
+   "height": 407
+  },
+  "town.norse.dwelling.tier1.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463
+  },
+  "town.norse.dwelling.tier2.base": {
+   "file": "art/town/town.norse.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 437,
+   "height": 437
+  },
+  "town.norse.dwelling.tier2.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457
+  },
+  "town.norse.dwelling.tier3.base": {
+   "file": "art/town/town.norse.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 441,
+   "height": 441
+  },
+  "town.norse.dwelling.tier3.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 484,
+   "height": 484
+  },
+  "town.norse.dwelling.tier4.base": {
+   "file": "art/town/town.norse.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457
+  },
+  "town.norse.dwelling.tier4.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 476,
+   "height": 476
+  },
+  "town.norse.dwelling.tier5.base": {
+   "file": "art/town/town.norse.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 441,
+   "height": 441
+  },
+  "town.norse.dwelling.tier5.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455
+  },
+  "town.norse.dwelling.tier6.base": {
+   "file": "art/town/town.norse.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 425,
+   "height": 425
+  },
+  "town.norse.dwelling.tier6.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 459,
+   "height": 459
+  },
+  "town.norse.dwelling.tier7.base": {
+   "file": "art/town/town.norse.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463
+  },
+  "town.norse.dwelling.tier7.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 488,
+   "height": 488
+  },
+  "town.norse.support.artifact_merchant.l1": {
+   "file": "art/town/town.norse.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 445,
+   "height": 445
   },
   "town.norse.support.civic_hall.l1": {
    "file": "art/town/town.norse.support.civic_hall.l1.webp",
@@ -2958,6 +3678,12 @@
    "width": 320,
    "height": 320
   },
+  "town.norse.support.marketplace.l1": {
+   "file": "art/town/town.norse.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 440,
+   "height": 440
+  },
   "town.norse.support.pantheon_temple.l1": {
    "file": "art/town/town.norse.support.pantheon_temple.l1.webp",
    "kind": "building",
@@ -2969,6 +3695,36 @@
    "kind": "building",
    "width": 320,
    "height": 320
+  },
+  "town.norse.support.resource_depot.l1": {
+   "file": "art/town/town.norse.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 451,
+   "height": 451
+  },
+  "town.norse.support.tavern.l1": {
+   "file": "art/town/town.norse.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 473,
+   "height": 473
+  },
+  "town.norse.support.training_academy.l1": {
+   "file": "art/town/town.norse.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463
+  },
+  "town.norse.support.watchtower.l1": {
+   "file": "art/town/town.norse.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 425,
+   "height": 425
+  },
+  "town.norse.support.workshop.l1": {
+   "file": "art/town/town.norse.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 453,
+   "height": 453
   }
  }
 }

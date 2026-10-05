@@ -36,7 +36,6 @@ import { DialogueStage, useProtagonist } from './Story';
 import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { Icon } from '../assets/icons';
 import { DialogueLines } from '../screens/Journal';
-import { resolveAsset } from '../assets/manifest';
 import { relativeTime } from '../app/view';
 import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog } from './WorldDialogs';
 import { SpellBook } from '../components/spellbook';

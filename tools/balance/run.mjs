@@ -6,11 +6,14 @@
  *   npm run balance -- skirmish --matches 4 # one suite, more matches
  *   npm run balance -- armies tiers --seeds 20 --jobs 4
  *   npm run balance -- --quick              # small smoke run (minutes)
+ *   npm run balance -- random1v1 --matches 20  # every pairing one against one on generated maps
+ *   npm run balance -- maps --matches 2        # the authored skirmish maps, each line-up from every seat
  *
  * Options:
- *   <suite...>        skirmish | armies | starts | tiers | random (default: all)
+ *   <suite...>        skirmish | armies | starts | tiers | random | random1v1 | maps (default: all)
  *   --seeds N         seeded duels per direction for armies/starts/tiers (default 12)
- *   --matches N       seeded matches per ordered pairing and first-mover order (default 3)
+ *   --matches N       seeded matches per ordered pairing and first-mover order (default 3);
+ *                     random1v1: maps per pairing, each played from both seats
  *   --pantheons a,b   subset of pantheons (default: all six)
  *   --max-day N       skirmish day cap (default 40)
  *   --jobs N          parallel worker processes (default: CPU count, max 8)
@@ -19,6 +22,10 @@
  *   --no-signatures   army/escort/tier duels without pantheon signatures (troops only)
  *   --no-temperaments skirmish/random matches with every AI empire playing the same (neutral) way
  *   --empires 2,3     empire counts for the random suite (default both)
+ *   --sizes a,b       map sizes for random1v1 (default small)
+ *   --map-types a,b   map types for random1v1 (default: all six, in turn)
+ *   --focus a,b       random1v1: only the pairings that include one of these pantheons
+ *   --maps a,b        maps: only these skirmish maps (frostgate, burning_oasis, circle_of_gates, barrows, golden_fords, six_thrones)
  *
  * Writes <out>/balance-<timestamp>.md (readable report) and .json (raw results).
  * Every number is an AI-vs-AI measurement with the shipped AI, not a playtest.
@@ -31,7 +38,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SUITES = ['skirmish', 'armies', 'starts', 'tiers', 'random'];
+const SUITES = ['skirmish', 'armies', 'starts', 'tiers', 'random', 'random1v1', 'maps'];
 const PANTHEONS = ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'];
 const NAMES = { greek: 'Greek', norse: 'Norse', egyptian: 'Egyptian', japanese: 'Japanese', celtic: 'Celtic', mesoamerican: 'Mesoamerican' };
 
@@ -50,6 +57,10 @@ function parseArgs(argv) {
     else if (a === '--no-signatures') o.signatures = false;
     else if (a === '--no-temperaments') o.temperaments = false;
     else if (a === '--empires') o.empires = next().split(',').map(Number);
+    else if (a === '--sizes') o.sizes = next().split(',');
+    else if (a === '--map-types') o.mapTypes = next().split(',');
+    else if (a === '--focus') o.focus = next().split(',');
+    else if (a === '--maps') o.maps = next().split(',');
     else if (a === '--quick') {
       o.seeds = 4;
       o.matches = 1;
@@ -66,7 +77,7 @@ function parseArgs(argv) {
 function runShard(opts, shard, shards, outDir) {
   const require = createRequire(import.meta.url);
   const vitest = join(dirname(require.resolve('vitest/package.json')), 'vitest.mjs');
-  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, temperaments: opts.temperaments, empires: opts.empires, shard, shards, outDir }) };
+  const env = { ...process.env, BALANCE_OPTS: JSON.stringify({ suites: opts.suites, seeds: opts.seeds, matches: opts.matches, pantheons: opts.pantheons, maxDay: opts.maxDay, signatures: opts.signatures, temperaments: opts.temperaments, empires: opts.empires, sizes: opts.sizes, mapTypes: opts.mapTypes, focus: opts.focus, maps: opts.maps, shard, shards, outDir }) };
   return new Promise((ok, fail) => {
     const child = spawn(process.execPath, [vitest, 'run', '--config', 'tools/balance/vitest.config.ts', 'tools/balance/balance.measure.ts'], { cwd: ROOT, env, stdio: ['ignore', 'pipe', 'pipe'] });
     let err = '';
@@ -187,6 +198,98 @@ function render(opts, results, seconds, contentVersion) {
     if (three.length) {
       const first = [0, 1, 2].map((s) => three.filter((r) => r.knockedOut[0].seat === s).length);
       out.push(`Three empires — first seat knocked out (seat 1, 2, 3): ${first.join(', ')} of ${three.length} matches with a knock-out.`);
+      out.push('');
+    }
+  }
+
+  const mapRuns = results.filter((r) => r.map);
+  if (mapRuns.length) {
+    out.push('## Authored skirmish maps (each line-up played from every seat, all AI)');
+    out.push('');
+    out.push('Every pantheon line-up is played once from each seat (the seats rotate), so pantheon strength cancels out and the seat scores show the map and the turn order. Even = 1/N per seat. A match undecided at the day cap counts for a seat at least 25% stronger in armies than every other seat, else a draw split evenly.');
+    out.push('');
+    out.push('| Map | Empires | Matches | Decided (by the shrine) | Mean decisive day | Seat scores (1, 2, …) | First knock-out (mean day) | Battles per match |');
+    out.push('|---|---|---|---|---|---|---|---|');
+    const ids = [...new Set(mapRuns.map((r) => r.job.mapId))];
+    for (const id of ids) {
+      const rs = mapRuns.filter((r) => r.job.mapId === id).map((r) => r.map);
+      const n = rs[0].empires;
+      const dec = rs.filter((x) => x.winnerSeat !== null);
+      const hold = dec.filter((x) => x.holdWin).length;
+      const score = Array.from({ length: n }, () => 0);
+      for (const x of rs) {
+        if (x.winnerSeat !== null) score[x.winnerSeat] += 1;
+        else if (x.pointsSeat !== null) score[x.pointsSeat] += 1;
+        else for (let i = 0; i < n; i++) score[i] += 1 / n;
+      }
+      const ko = rs.filter((x) => (x.knockedOut ?? []).length > 0);
+      const koDay = ko.reduce((a, x) => a + x.knockedOut[0].day, 0) / Math.max(1, ko.length);
+      const day = dec.reduce((a, x) => a + x.day, 0) / Math.max(1, dec.length);
+      const battles = rs.reduce((a, x) => a + x.battles, 0) / rs.length;
+      out.push(`| ${id} | ${n} | ${rs.length} | ${dec.length} (${hold}) | ${dec.length ? day.toFixed(1) : '—'} | ${score.map((v) => pct(v / rs.length)).join(', ')} | ${ko.length ? `${ko.length} matches, day ${koDay.toFixed(1)}` : '—'} | ${battles.toFixed(1)} |`);
+    }
+    out.push('');
+  }
+
+  const duels = results.filter((r) => r.duel1v1);
+  if (duels.length) {
+    out.push('## Random maps, one against one (every pairing, both seats)');
+    out.push('');
+    const types = [...new Set(duels.map((r) => r.job.mapType))];
+    const sizes = [...new Set(duels.map((r) => r.job.size))];
+    out.push(`Generated maps (${sizes.join(', ')}; types ${types.join(', ')}), few wandering monsters, last empire standing. Each map is played twice, once from each seat, so the map and the first move cancel out. A match undecided at the day cap counts for a side at least 25% stronger in armies, else a draw (half a win each).`);
+    out.push('');
+    // Points for the job's side a (seat 1) and side b (seat 2).
+    const ptsA = (r) => {
+      const x = r.duel1v1;
+      if (x.winnerSeat !== null) return x.winnerSeat === 0 ? 1 : 0;
+      return x.pointsSeat === 0 ? 1 : x.pointsSeat === 1 ? 0 : 0.5;
+    };
+    const decided = duels.filter((r) => r.duel1v1.winnerSeat !== null);
+    const seat1 = duels.reduce((n, r) => n + ptsA(r), 0) / duels.length;
+    const draws = duels.filter((r) => r.duel1v1.winnerSeat === null && r.duel1v1.pointsSeat === null).length;
+    out.push(`${duels.length} matches · ${decided.length} decided by elimination (mean day ${(decided.reduce((a, r) => a + r.duel1v1.day, 0) / Math.max(1, decided.length)).toFixed(1)}) · ${duels.length - decided.length - draws} scored on army strength at the day cap · ${draws} draws · **first seat score ${pct(seat1)}** (0.50 = no seat advantage).`);
+    out.push('');
+    const cell = new Map();
+    const add = (k, v) => {
+      const c = cell.get(k) ?? { s: 0, n: 0 };
+      c.s += v;
+      c.n += 1;
+      cell.set(k, c);
+    };
+    for (const r of duels) {
+      const a = ptsA(r);
+      add(`${r.job.a}|${r.job.b}`, a);
+      add(`${r.job.b}|${r.job.a}`, 1 - a);
+      add(`${r.job.a}|@${r.job.mapType}`, a);
+      add(`${r.job.b}|@${r.job.mapType}`, 1 - a);
+    }
+    out.push(matrixTable(P, (a, b) => {
+      const c = cell.get(`${a}|${b}`);
+      return c ? c.s / c.n : null;
+    }));
+    out.push('');
+    const avgOf = (p) => {
+      const vals = P.filter((q) => q !== p).map((q) => cell.get(`${p}|${q}`)).filter(Boolean);
+      return vals.reduce((a, c) => a + c.s / c.n, 0) / Math.max(1, vals.length);
+    };
+    const nOf = (p) => P.filter((q) => q !== p).reduce((n, q) => n + (cell.get(`${p}|${q}`)?.n ?? 0), 0);
+    out.push('| Pantheon | Matches | Average score | Target 0.45–0.55 |');
+    out.push('|---|---|---|---|');
+    for (const p of P) {
+      const v = avgOf(p);
+      out.push(`| ${NAMES[p]} | ${nOf(p)} | ${pct(v)} | ${v >= 0.45 && v <= 0.55 ? 'yes' : '**no**'} |`);
+    }
+    out.push('');
+    if (types.length > 1) {
+      out.push('By map type (each pantheon\'s score on that type, all opponents):');
+      out.push('');
+      out.push(`| Map type | ${P.map((p) => NAMES[p]).join(' | ')} |`);
+      out.push(`|---|${P.map(() => '---').join('|')}|`);
+      for (const t of types) out.push(`| ${t} | ${P.map((p) => {
+        const c = cell.get(`${p}|@${t}`);
+        return c ? pct(c.s / c.n) : '—';
+      }).join(' | ')} |`);
       out.push('');
     }
   }

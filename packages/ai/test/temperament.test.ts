@@ -79,9 +79,9 @@ describe('AI temperaments (content data)', () => {
     hard.scenario = { ...hard.scenario, difficultyId: 'hard' };
     const p = aiPersonalityFor(d.catalog, hard, 'rival');
     for (const m of [p.heroAttackMargin, p.guardMargin, p.siegeMargin]) expect(m).toBeGreaterThanOrEqual(1);
-    // Builders are more careful.
+    // Builders keep the difficulty's margins (boldness 1 since the 2026-10-05 balance pass); only their build order and raiding differ.
     const e = GameDriver.mission(mission('greek', 'egyptian'));
-    expect(aiPersonalityFor(e.catalog, e.state, 'rival').siegeMargin).toBeGreaterThan(aiPersonality(e.catalog, e.state).siegeMargin);
+    expect(aiPersonalityFor(e.catalog, e.state, 'rival').siegeMargin).toBe(aiPersonality(e.catalog, e.state).siegeMargin);
   });
 
   it('classifies buildings by their effects and dwellings (data, not IDs)', () => {
@@ -117,19 +117,22 @@ describe('AI temperaments (choices)', () => {
     rivalHero.position = { q: east.q - 3, r: east.r + 1 };
     playerHero.position = { q: east.q - 5, r: east.r + 1 };
     s.activePlayerId = 'rival';
-    // Size the player's army so the rival is ~12% stronger: above the Raiders' margin, below the even one.
+    // Size the player's army so the rival is stronger by a margin between the Raiders' and the even one.
+    const even = aiPersonality(d.catalog, s).heroAttackMargin;
+    const bold = aiPersonalityFor(d.catalog, s, 'rival').heroAttackMargin;
+    const target = (even + bold) / 2;
+    // A large rival army, so one hoplite more or less moves the ratio by well under the margin gap.
+    for (const slot of rivalHero.army.slots) if (slot) slot.count *= 8;
     const mine = heroPower(d.catalog, s, rivalHero);
     const hoplites = (n: number) => [{ stackId: 'p0', creatureId: 'hoplite', count: n }, null, null, null, null, null, null];
     let n = 1;
-    while (n < 400) {
+    while (n < 4000) {
       playerHero.army.slots = hoplites(n + 1) as never;
-      if (mine / heroPower(d.catalog, s, playerHero) < 1.12) break;
+      if (mine / heroPower(d.catalog, s, playerHero) < target) break;
       n++;
     }
     playerHero.army.slots = hoplites(n) as never;
     const ratio = mine / heroPower(d.catalog, s, playerHero);
-    const even = aiPersonality(d.catalog, s).heroAttackMargin;
-    const bold = aiPersonalityFor(d.catalog, s, 'rival').heroAttackMargin;
     expect(ratio).toBeGreaterThanOrEqual(bold);
     expect(ratio).toBeLessThan(even);
     const attack = (c: CommandPayload) => c.kind === 'MoveHero' && c.heroId === rivalHero.id && c.destination.q === playerHero.position.q && c.destination.r === playerHero.position.r;

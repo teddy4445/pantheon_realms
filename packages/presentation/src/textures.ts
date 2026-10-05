@@ -32,11 +32,6 @@ export function loadTexture(url: string): Promise<Texture> {
   return p;
 }
 
-/** A texture already loaded (never starts a load). */
-export function loadedTexture(url: string): Texture | null {
-  return ready.get(url) ?? null;
-}
-
 /** Load a manifest file (path relative to the application root). */
 export function loadFile(file: string): Promise<Texture> {
   return loadTexture(spriteUrl(file));

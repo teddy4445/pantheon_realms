@@ -193,7 +193,7 @@ const KITS: Record<string, SideKit> = {
   // 21 + 8 (was 20 + 8): with shooting ranges (2026-10-02) the Jackal Guardians lost
   // some long-range damage; one more Sacred Scarab brings the escort duels back to even.
   egyptian: kitSide(EGYPTIAN_SPEC, 'egyptian_city', [21, 8]),
-  japanese: kitSide(JAPANESE_SPEC, 'japanese_castle_town', [21, 8]),
+  japanese: kitSide(JAPANESE_SPEC, 'japanese_castle_town', [23, 8]),
   celtic: kitSide(CELTIC_SPEC, 'celtic_hillfort', [22, 7]),
   mesoamerican: kitSide(MESOAMERICAN_SPEC, 'mesoamerican_city', [24, 6]),
 };
@@ -379,6 +379,21 @@ const EXTRA_LEADERS: Record<string, readonly { definitionId: string; portrait: s
   ],
 };
 
+/*
+ * Random maps: every empire's first leader has the same kind of specialty, +250 Gold a
+ * day (2026-10-05, from the one-against-one random-map balance runs: three pantheons led
+ * with an income specialty and three with a creature specialty, which favoured the first
+ * three on long random maps). The other leaders follow in their usual order.
+ */
+const RANDOM_MAP_FIRST_LEADER: Record<string, { definitionId: string; portrait: string }> = {
+  greek: { definitionId: 'odysseus', portrait: 'hero.greek.odysseus.portrait' },
+  norse: { definitionId: 'norse_ragnar', portrait: 'hero.norse.ragnar.portrait' },
+  egyptian: { definitionId: 'egyptian_hatshepsut', portrait: 'hero.egyptian.hatshepsut.portrait' },
+  japanese: { definitionId: 'japanese_yamato_takeru', portrait: 'hero.japanese.yamato_takeru.portrait' },
+  celtic: { definitionId: 'celtic_medb', portrait: 'hero.celtic.medb.portrait' },
+  mesoamerican: { definitionId: 'mesoamerican_nezahualcoyotl', portrait: 'hero.mesoamerican.nezahualcoyotl.portrait' },
+};
+
 const TOWN_NAMES: Record<string, readonly string[]> = {
   greek: ['Myrtos', 'Kalliste', 'Thera', 'Aigina', 'Delos', 'Korinna'],
   norse: ['Hrafnheim', 'Skjoldvik', 'Isafjord', 'Grimsby', 'Ulfsstad', 'Vargholm'],
@@ -400,11 +415,15 @@ export const SKIRMISH_KITS: readonly SkirmishKitDefinition[] = SKIRMISH_PANTHEON
     population: kit.population,
     covenants: kit.covenants,
     army: kit.army,
-    leaders: [
-      { definitionId: lead.player.definitionId, classId, portraitAssetId: lead.player.portrait },
-      { definitionId: lead.rival.definitionId, classId, portraitAssetId: lead.rival.portrait },
-      ...(EXTRA_LEADERS[pid] ?? []).map((x) => ({ definitionId: x.definitionId, classId, portraitAssetId: x.portrait })),
-    ],
+    leaders: (() => {
+      const first = RANDOM_MAP_FIRST_LEADER[pid];
+      const rest = [
+        { definitionId: lead.player.definitionId, classId, portraitAssetId: lead.player.portrait },
+        { definitionId: lead.rival.definitionId, classId, portraitAssetId: lead.rival.portrait },
+        ...(EXTRA_LEADERS[pid] ?? []).map((x) => ({ definitionId: x.definitionId, classId, portraitAssetId: x.portrait })),
+      ];
+      return first ? [{ definitionId: first.definitionId, classId, portraitAssetId: first.portrait }, ...rest.filter((l) => l.definitionId !== first.definitionId)] : rest;
+    })(),
     leaderAttributes: STRATEGOS.attributes,
     leaderSkills: STRATEGOS.skills,
     townNames: TOWN_NAMES[pid] ?? [],

@@ -142,8 +142,6 @@ export type GameEventPayload =
   | { kind: 'NeutralsJoined'; heroId: HeroId; siteId: SiteId | null; monsterHeroId: HeroId | null; stacks: { creatureId: CreatureId; count: number }[] }
   | { kind: 'NeutralsFled'; heroId: HeroId; siteId: SiteId | null; monsterHeroId: HeroId | null };
 
-export type GameEventKind = GameEventPayload['kind'];
-
 export type GameEvent = GameEventPayload & {
   readonly eventId: EventId;
   readonly revision: number;

@@ -4,7 +4,7 @@
  * Browser storage is quota-limited and may be evicted; the UI distinguishes
  * "storage unavailable" from "no saves" and offers file export/import.
  */
-import { assertSaveId, type PlatformServices, type PreferencesStore, type SaveRepository, type StorageAvailability, type StoredSave, type WindowMode } from './contracts';
+import { assertSaveId, SAVE_ID_PATTERN, type MapFiles, type PlatformServices, type PreferencesStore, type SaveRepository, type StorageAvailability, type StoredSave, type WindowMode } from './contracts';
 
 const DB_NAME = 'pantheon-realms';
 const STORE = 'saves';
@@ -138,31 +138,80 @@ export class LocalPreferencesStore implements PreferencesStore {
   }
 }
 
-/** In-memory repository used when browser storage is denied, and in tests. */
-export class MemorySaveRepository implements SaveRepository {
-  readonly kind = 'memory' as const;
-  private readonly data = new Map<string, string>();
-  async availability(): Promise<StorageAvailability> {
-    return { ok: true };
+const MAPS_KEY = 'pantheon-realms.maps.v1';
+
+function downloadText(text: string, fileName: string): void {
+  const blob = new Blob([text], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+function pickTextFile(): Promise<string | null> {
+  return new Promise((resolve) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json,application/json';
+    input.onchange = () => {
+      const file = input.files?.[0];
+      if (!file || file.size > 4 * 1024 * 1024) return resolve(null);
+      file
+        .text()
+        .then(resolve)
+        .catch(() => resolve(null));
+    };
+    input.click();
+  });
+}
+
+/** Custom maps in the browser: a small library in local storage (maps are a few kilobytes). */
+export class BrowserMapFiles implements MapFiles {
+  constructor(private readonly key: string = MAPS_KEY) {}
+  private all(): Record<string, string> {
+    try {
+      const raw = localStorage.getItem(this.key);
+      const parsed = raw ? (JSON.parse(raw) as unknown) : {};
+      return parsed && typeof parsed === 'object' ? (parsed as Record<string, string>) : {};
+    } catch {
+      return {};
+    }
   }
-  async list(): Promise<StoredSave[]> {
-    return [...this.data.entries()].map(([id, text]) => ({ id, text, bytes: text.length }));
+  private put(all: Record<string, string>): void {
+    localStorage.setItem(this.key, JSON.stringify(all));
+  }
+  async list() {
+    return Object.entries(this.all())
+      .filter(([id, t]) => SAVE_ID_PATTERN.test(id) && typeof t === 'string')
+      .map(([id, t]) => ({ id, bytes: t.length }))
+      .sort((a, b) => (a.id < b.id ? -1 : 1));
   }
   async read(id: string) {
-    return this.data.get(id) ?? null;
+    assertSaveId(id);
+    return this.all()[id] ?? null;
   }
   async write(id: string, text: string) {
     assertSaveId(id);
-    this.data.set(id, text);
+    const all = this.all();
+    all[id] = text;
+    this.put(all);
   }
   async remove(id: string) {
-    this.data.delete(id);
+    assertSaveId(id);
+    const all = this.all();
+    delete all[id];
+    this.put(all);
   }
-  async exportSave() {
-    return false;
+  async exportFile(text: string, suggestedName: string) {
+    downloadText(text, `${suggestedName.replace(/[^A-Za-z0-9 _-]/g, '').slice(0, 48) || 'map'}.prmap.json`);
+    return true;
   }
-  async importSave() {
-    return null;
+  importFile() {
+    return pickTextFile();
   }
 }
 
@@ -172,6 +221,7 @@ export function createBrowserPlatform(appVersion: string): PlatformServices {
     kind: 'browser',
     appVersion,
     saves: new BrowserSaveRepository(),
+    maps: new BrowserMapFiles(),
     preferences: new LocalPreferencesStore(),
     records: new LocalPreferencesStore(RECORDS_KEY),
     canQuit: false,

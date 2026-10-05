@@ -33,7 +33,6 @@ import {
   type BattleSideEffects,
   type BattleCell,
   type BattleLegalActions,
-  type BattleState,
   type ContentCatalog,
   type DamagePreview,
   type GameEvent,
@@ -235,7 +234,7 @@ function buildView(
     const sel = deploySel ? battle.stacks[deploySel] : undefined;
     if (sel) moves = deploymentAnchors(catalog, battle, sel);
   }
-  const siege = battle.siege && battle.siege.level > 0 ? { structures: battle.siege.structures, moat: battle.siege.moat, wallCol: battle.siege.wallCol } : null;
+  const siege = battle.siege && battle.siege.level > 0 ? { structures: battle.siege.structures, moat: battle.siege.moat, wallCol: battle.siege.wallCol, pantheonId: state.towns[battle.siege.townId]?.pantheonId ?? null } : null;
   const highlightKey = `${deploySel ?? ''}|${zone.length}|${state.revision}|${mode.kind}|${'spellId' in mode ? mode.spellId : 'abilityId' in mode ? mode.abilityId : ''}|${path?.map(cellKey).join(';') ?? ''}|${attackFrom ? cellKey(attackFrom) : ''}|${la?.stackId ?? ''}`;
   return {
     view: { battleId: battle.battleId, cols: battle.cols, rows: battle.rows, obstacles: battle.obstacles, archetype: battle.archetype, climate: state.world.map.biome, stacks, moves, targets, path, attackFrom, highlightKey, grid, siege, zone },

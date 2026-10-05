@@ -3,7 +3,7 @@
  * `@pr/presentation/core`). Every spell, divine intervention and divine gift
  * gets a look: a colour school, how it travels, what it does where it lands,
  * whether the whole field changes for a moment, and which sound family goes
- * with it. The looks follow VFX_MAGIC_AND_FAVORS.md; the code-drawn effects in
+ * with it. The looks follow the VFX list (`npm run vfx:list`); the code-drawn effects in
  * `fx.ts` draw them until effect strips are delivered under the same asset IDs
  * (`fx.spell.<id>.<phase>`, `fx.miracle.<id>.<phase>`, `fx.status.<name>`).
  *
@@ -154,7 +154,7 @@ export function defaultSpellLook(effect: EffectLike, target: string): FxLook {
   }
 }
 
-/** Named spells: the look from VFX_MAGIC_AND_FAVORS.md (only what differs from the default). */
+/** Named spells: the look from the VFX list (only what differs from the default). */
 export const SPELL_LOOKS: Readonly<Record<string, Partial<FxLook>>> = {
   // Shared
   spark: { school: 'strike', travel: 'bolt', impact: 'sparks' },

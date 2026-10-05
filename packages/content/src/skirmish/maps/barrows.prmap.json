@@ -1,0 +1,530 @@
+{
+ "format": "pantheon-realms-map",
+ "version": 1,
+ "name": "Barrows of the Lost Kings",
+ "description": "A fog-bound moor of burial mounds. Captive heroes wait in the barrows, hermits pay for deeds, and two sealed hoards open only for the amber and the violet keys. Gold is scarce: each side has one mine.",
+ "author": "Pantheon Realms",
+ "width": 52,
+ "height": 30,
+ "terrain": "vvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvmmmpsssrrrrrrrpfffffppprsspfppppwwwwwmvvvvvvvvvvvvvvmmprrrrrpppprppffffprrrmmmpfffffwwwwwmvvvvvvvvvvvvvmmmprrrrrppmmssppffpprrmppmpsfffwwwwwmvvvvvvvvvvvvvvmmpfrrrprprmssswwfffffmpppmssfppwwwwfmvvvvvvvvvvvvvmmmffrppppsssfssmwwfffpmppmppppppwwffmvvvvvvvvvvvvvvmmffpwpppsssssswwwwrrrppmmpppppppwpppmvvvvvvvvvvvvvmmmpmpppppssssrppwwrrrrppffffppppppppmvvvvvvvvvvvvvvmmpmpprprsssssrwwwrrprppffffppprrprppmvvvvvvvvvvvvvmmmfpprrrppppssrmwwrrrrpfffppfpprrrfpmvvvvvvvvvvvvvvmmppppssspppssspwwwrrrfssssspspppprmpmvvvvvvvvvvvvvmmmfpppssfpppsrrpppppffssspsssppppfppmvvvvvvvvvvvvvvmmpfpprsffpprrrrrpppffmssmmssspppffffmvvvvvvvvvvvvvmmmpppprrppprrpprsppppssrrsssmpprrpppmvvvvvvvvvvvvvvmmsppfrrpppfrrrrrppppprrrrrfppprrfppsmvvvvvvvvvvvvvmmmppprrppmsssrrssppppsrpprrppprrppppmvvvvvvvvvvvvvvmmffffpppsssmmssmffppprrrrrppffsrppfpmvvvvvvvvvvvvvmmmppfppppssspsssffppppprrspppfsspppfmvvvvvvvvvvvvvvmmpmrppppspsssssfrrrwwwpssspppsssppppmvvvvvvvvvvvvvmmmpfrrrppfppfffprrrrwwmrsspppprrrppfmvvvvvvvvvvvvvvmmpprprrpppffffpprprrwwwrsssssrprppmpmvvvvvvvvvvvvvmmmppppppppffffpprrrrwwpprsssspppppmpmvvvvvvvvvvvvvvmmpppwpppppppmmpprrrwwwwsssssspppwpffmvvvvvvvvvvvvvmmmffwwppppppmppmpfffwwmssfssspppprffmvvvvvvvvvvvvvvmmfwwwwppfssmpppmfffffwwsssmrprprrrfpmvvvvvvvvvvvvvmmmwwwwwfffspmppmrrppffppssmmpprrrrrpmvvvvvvvvvvvvvvmmwwwwwfffffpmmmrrrpffffpprpppprrrrrpmvvvvvvvvvvvvvmmmwwwwwppppfpssrpppfffffprrrrrrrssspmvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvv",
+ "roads": [
+  "10,16|11,15",
+  "11,15|12,14",
+  "12,11|13,10",
+  "12,14|13,13",
+  "13,10|14,9",
+  "13,13|13,14",
+  "13,13|14,12",
+  "14,12|15,11",
+  "14,9|15,8",
+  "15,11|16,10",
+  "15,16|16,15",
+  "15,8|16,8",
+  "16,10|17,9",
+  "16,15|17,14",
+  "16,8|17,8",
+  "17,14|18,13",
+  "17,8|18,8",
+  "17,9|18,8",
+  "18,10|18,11",
+  "18,11|18,12",
+  "18,12|18,13",
+  "18,13|19,13",
+  "18,7|18,8",
+  "18,8|18,9",
+  "18,8|19,7",
+  "18,9|18,10",
+  "19,13|20,13",
+  "19,7|20,6",
+  "20,13|21,13",
+  "20,6|21,5",
+  "21,13|21,14",
+  "21,14|21,15",
+  "21,14|22,14",
+  "21,15|22,15",
+  "21,5|22,4",
+  "22,15|23,15",
+  "22,4|23,3",
+  "23,15|24,15",
+  "23,3|24,2",
+  "23,3|24,3",
+  "24,15|25,15",
+  "24,26|25,26",
+  "24,2|25,2",
+  "25,15|26,15",
+  "25,26|25,27",
+  "25,27|25,28",
+  "25,28|26,28",
+  "25,2|26,2",
+  "26,15|27,15",
+  "26,28|27,28",
+  "26,2|27,2",
+  "27,15|28,15",
+  "27,28|28,28",
+  "27,2|27,3",
+  "27,3|27,4",
+  "27,4|28,4",
+  "28,15|29,15",
+  "28,27|29,27",
+  "28,28|29,27",
+  "29,15|30,15",
+  "29,27|30,26",
+  "30,15|31,15",
+  "30,16|31,16",
+  "30,26|31,25",
+  "31,15|31,16",
+  "31,16|31,17",
+  "31,17|32,17",
+  "31,25|32,24",
+  "32,17|33,17",
+  "32,24|33,23",
+  "33,17|34,17",
+  "33,23|34,22",
+  "34,17|34,18",
+  "34,17|35,16",
+  "34,18|34,19",
+  "34,19|34,20",
+  "34,20|34,21",
+  "34,21|34,22",
+  "34,22|34,23",
+  "34,22|35,21",
+  "34,22|35,22",
+  "35,16|36,15",
+  "35,21|36,20",
+  "35,22|36,22",
+  "36,15|37,14",
+  "36,20|37,19",
+  "36,22|37,22",
+  "37,19|38,18",
+  "37,22|38,21",
+  "38,18|39,17",
+  "38,21|39,20",
+  "39,16|39,17",
+  "39,17|40,16",
+  "39,20|40,19",
+  "40,16|41,15",
+  "41,15|42,14",
+  "42,14|43,13",
+  "43,12|43,13",
+  "9,17|10,16",
+  "9,17|9,18"
+ ],
+ "biome": "moor",
+ "players": [
+  {
+   "pantheonId": "celtic"
+  },
+  {
+   "pantheonId": "norse"
+  }
+ ],
+ "sites": [
+  {
+   "id": "barrow_1",
+   "kind": "prison",
+   "q": 22,
+   "r": 14,
+   "owner": 0,
+   "level": 5,
+   "name": "Barrow of the Lost Thane",
+   "guard": {
+    "creatureId": "norse_draugr",
+    "count": 26,
+    "label": "Barrow-wights"
+   },
+   "text": "A captive hero of your own people is held in the barrow. Beat the wights, free them; they join you at level 5."
+  },
+  {
+   "id": "barrow_2",
+   "kind": "prison",
+   "q": 30,
+   "r": 16,
+   "owner": 1,
+   "level": 5,
+   "name": "Barrow of the Lost Thane",
+   "guard": {
+    "creatureId": "norse_draugr",
+    "count": 26,
+    "label": "Barrow-wights"
+   },
+   "text": "A captive hero of your own people is held in the barrow. Beat the wights, free them; they join you at level 5."
+  },
+  {
+   "id": "cache_1",
+   "kind": "resource_cache",
+   "q": 20,
+   "r": 20
+  },
+  {
+   "id": "cache_2",
+   "kind": "resource_cache",
+   "q": 32,
+   "r": 10
+  },
+  {
+   "id": "camp_1",
+   "kind": "creature_camp",
+   "q": 15,
+   "r": 16,
+   "creatureId": "celtic_cu_sith",
+   "name": "Hound Kennels"
+  },
+  {
+   "id": "camp_2",
+   "kind": "creature_camp",
+   "q": 37,
+   "r": 14,
+   "creatureId": "celtic_cu_sith",
+   "name": "Hound Kennels"
+  },
+  {
+   "id": "chest_1",
+   "kind": "treasure_chest",
+   "q": 15,
+   "r": 4
+  },
+  {
+   "id": "chest_2",
+   "kind": "treasure_chest",
+   "q": 37,
+   "r": 26
+  },
+  {
+   "id": "crown",
+   "kind": "artifact",
+   "q": 26,
+   "r": 15,
+   "name": "Crown of the Barrow King",
+   "reward": {
+    "artifactRarity": "relic"
+   },
+   "guard": {
+    "creatureId": "basilisk",
+    "count": 5,
+    "more": [
+     {
+      "creatureId": "norse_draugr",
+      "count": 20
+     }
+    ],
+    "label": "The Barrow King’s court"
+   }
+  },
+  {
+   "id": "crystal_1",
+   "kind": "crystal_deposit",
+   "q": 9,
+   "r": 18,
+   "guard": {
+    "creatureId": "brigand",
+    "count": 22,
+    "label": "Bog brigands"
+   }
+  },
+  {
+   "id": "crystal_2",
+   "kind": "crystal_deposit",
+   "q": 43,
+   "r": 12,
+   "guard": {
+    "creatureId": "brigand",
+    "count": 22,
+    "label": "Bog brigands"
+   }
+  },
+  {
+   "id": "gold_1",
+   "kind": "gold_mine",
+   "q": 28,
+   "r": 4,
+   "name": "Barrow Gold Mine",
+   "guard": {
+    "creatureId": "ogre",
+    "count": 7,
+    "label": "Mound ogres"
+   }
+  },
+  {
+   "id": "gold_2",
+   "kind": "gold_mine",
+   "q": 24,
+   "r": 26,
+   "name": "Barrow Gold Mine",
+   "guard": {
+    "creatureId": "ogre",
+    "count": 7,
+    "label": "Mound ogres"
+   }
+  },
+  {
+   "id": "hut_defeat_1",
+   "kind": "quest_hut",
+   "q": 15,
+   "r": 19,
+   "name": "Mourner’s Hut",
+   "quest": {
+    "type": "defeat",
+    "siteId": "barrow_1"
+   },
+   "reward": {
+    "artifactId": "band_of_insight",
+    "xp": 1000
+   }
+  },
+  {
+   "id": "hut_defeat_2",
+   "kind": "quest_hut",
+   "q": 37,
+   "r": 11,
+   "name": "Mourner’s Hut",
+   "quest": {
+    "type": "defeat",
+    "siteId": "barrow_2"
+   },
+   "reward": {
+    "artifactId": "band_of_insight",
+    "xp": 1000
+   }
+  },
+  {
+   "id": "hut_deliver_1",
+   "kind": "quest_hut",
+   "q": 26,
+   "r": 8,
+   "name": "Grave-digger’s Hut",
+   "quest": {
+    "type": "deliver",
+    "wood": 8,
+    "stone": 8
+   },
+   "reward": {
+    "gold": 2500
+   }
+  },
+  {
+   "id": "hut_deliver_2",
+   "kind": "quest_hut",
+   "q": 26,
+   "r": 22,
+   "name": "Grave-digger’s Hut",
+   "quest": {
+    "type": "deliver",
+    "wood": 8,
+    "stone": 8
+   },
+   "reward": {
+    "gold": 2500
+   }
+  },
+  {
+   "id": "king_1",
+   "kind": "prison",
+   "q": 30,
+   "r": 9,
+   "level": 7,
+   "name": "Barrow of the Lost King",
+   "guard": {
+    "creatureId": "norse_deathless_draugr",
+    "count": 30,
+    "more": [
+     {
+      "creatureId": "celtic_banshee",
+      "count": 4
+     }
+    ],
+    "label": "The king’s deathless guard"
+   }
+  },
+  {
+   "id": "king_2",
+   "kind": "prison",
+   "q": 22,
+   "r": 21,
+   "level": 7,
+   "name": "Barrow of the Lost King",
+   "guard": {
+    "creatureId": "norse_deathless_draugr",
+    "count": 30,
+    "more": [
+     {
+      "creatureId": "celtic_banshee",
+      "count": 4
+     }
+    ],
+    "label": "The king’s deathless guard"
+   }
+  },
+  {
+   "id": "quarry_1",
+   "kind": "quarry",
+   "q": 24,
+   "r": 3
+  },
+  {
+   "id": "quarry_2",
+   "kind": "quarry",
+   "q": 28,
+   "r": 27
+  },
+  {
+   "id": "sawmill_1",
+   "kind": "sawmill",
+   "q": 12,
+   "r": 11
+  },
+  {
+   "id": "sawmill_2",
+   "kind": "sawmill",
+   "q": 40,
+   "r": 19
+  },
+  {
+   "id": "shrine_1",
+   "kind": "spell_shrine",
+   "q": 9,
+   "r": 21,
+   "spellId": "veil"
+  },
+  {
+   "id": "shrine_2",
+   "kind": "spell_shrine",
+   "q": 43,
+   "r": 9,
+   "spellId": "veil"
+  },
+  {
+   "id": "stone_1",
+   "kind": "learning_stone",
+   "q": 21,
+   "r": 10
+  },
+  {
+   "id": "stone_2",
+   "kind": "learning_stone",
+   "q": 31,
+   "r": 20
+  },
+  {
+   "id": "tent_1",
+   "kind": "key_tent",
+   "q": 13,
+   "r": 8,
+   "color": "amber"
+  },
+  {
+   "id": "tent_2",
+   "kind": "key_tent",
+   "q": 39,
+   "r": 22,
+   "color": "violet"
+  },
+  {
+   "id": "tower_1",
+   "kind": "watchtower",
+   "q": 18,
+   "r": 18,
+   "radius": 10,
+   "name": "Tor Watchtower",
+   "text": "From the tor the fog thins: every site within 10 hexes shows on your map."
+  },
+  {
+   "id": "tower_2",
+   "kind": "watchtower",
+   "q": 34,
+   "r": 12,
+   "radius": 10,
+   "name": "Tor Watchtower",
+   "text": "From the tor the fog thins: every site within 10 hexes shows on your map."
+  },
+  {
+   "id": "town_1",
+   "kind": "town",
+   "q": 18,
+   "r": 7,
+   "owner": 0
+  },
+  {
+   "id": "town_2",
+   "kind": "town",
+   "q": 34,
+   "r": 23,
+   "owner": 1
+  },
+  {
+   "id": "vault_art_1",
+   "kind": "artifact",
+   "q": 36,
+   "r": 5,
+   "name": "The Lost King’s Hoard",
+   "reward": {
+    "artifactRarity": "major",
+    "gold": 2000
+   },
+   "guard": {
+    "creatureId": "basilisk",
+    "count": 3,
+    "label": "Hoard basilisks"
+   }
+  },
+  {
+   "id": "vault_art_2",
+   "kind": "artifact",
+   "q": 16,
+   "r": 25,
+   "name": "The Lost King’s Hoard",
+   "reward": {
+    "artifactRarity": "major",
+    "gold": 2000
+   },
+   "guard": {
+    "creatureId": "basilisk",
+    "count": 3,
+    "label": "Hoard basilisks"
+   }
+  },
+  {
+   "id": "vault_chest_1",
+   "kind": "treasure_chest",
+   "q": 37,
+   "r": 5
+  },
+  {
+   "id": "vault_chest_2",
+   "kind": "treasure_chest",
+   "q": 15,
+   "r": 25
+  },
+  {
+   "id": "vault_gate_1",
+   "kind": "key_gate",
+   "q": 34,
+   "r": 7,
+   "color": "amber",
+   "name": "Amber Barrow Gate"
+  },
+  {
+   "id": "vault_gate_2",
+   "kind": "key_gate",
+   "q": 18,
+   "r": 23,
+   "color": "violet",
+   "name": "Violet Barrow Gate"
+  },
+  {
+   "id": "windmill_1",
+   "kind": "windmill",
+   "q": 13,
+   "r": 14
+  },
+  {
+   "id": "windmill_2",
+   "kind": "windmill",
+   "q": 39,
+   "r": 16
+  }
+ ],
+ "victory": {
+  "type": "elimination"
+ },
+ "startWealth": "normal"
+}

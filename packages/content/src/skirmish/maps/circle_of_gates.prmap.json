@@ -1,0 +1,633 @@
+{
+ "format": "pantheon-realms-map",
+ "version": 1,
+ "name": "The Circle of Gates",
+ "description": "Three high valleys round a peak sanctum. A ring of portals links them: each home gate opens behind the next empire’s town, so every rival is one step from your back door — and you from theirs.",
+ "author": "Pantheon Realms",
+ "width": 74,
+ "height": 42,
+ "terrain": "vvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmpfmfmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmpppmfppppmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmrrffppppppppppmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmrrrfpppppppprrmppmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmffrrmppppppprrrmpppmffmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmppfpffppppppppprmppmpppmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmrrppppprrrrpppppprpmmpppmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmrpppppppfrrpppppprppppppppmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmprppppppffffpppmpppppppppppmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmpppppppfffpppppppprffpppppppmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmppppppffpppppppppffffppppmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmpppmfpfpppppppppfffmppmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmpmmmmppppppppmmpmmppppppmpmmmmpmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmpppmmpmmppppmmmppmmmppppmmpmmpppmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmppppppmmmmrmmmmmpmmmmmpmmmmpppprrmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmpppppmmmmmmmmmmppmmmmmmmmmpppppprmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmppppppmppmmmmmmmmpmmmmmmmmppppppprmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmfpppppffpppmmmmmppppmmmmmrppmppppppmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmfpppppffppmmmmmpppppmmmmmppfppppppfmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmppfffppmmmmppppppmmmmpppffpppffmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmppmppffppmmmmpppppppmmmmpfffpppprrmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmpppppprpppmmmmppppppmmmmpppffppfrrrmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmppmrrppppmmmpppppppppmmmpppffrfmrrmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmrppppppmpppmppppmpppmpppfrrppffmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmprrpppmpppppmmmmmmmmmpppppfrrpppfmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmpprrpppppppmmmmmmmmmmmmppppprppppmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmppprpppppppmmmmmmmmmmmpppppppppppmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmppppppppppppmmmmmmmmppppppppppppmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmpppppppfpppppmmmmmpppppmppppppppmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmffpppprrfppfpprmmpppppppppppppmfmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmpppprrfffpppmmmppffrpppprppfmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmfppppprfffffppmmppfffprpprpppfmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmpppppprppfpmpmmmpfffpprrrrppmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmppppfpppppppmmmmfppppmmrppmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmffmfppppppppppppppmppmppmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmfrrpppppppmmpppppmpppmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmrrrfpppppmmmpppppmppmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmrrfppppppmmppppppmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmfprprpmmmpppppfmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmrrppmmpppmpfmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvvvvvvv",
+ "roads": [
+  "20,27|21,27",
+  "20,33|21,32",
+  "21,22|22,22",
+  "21,27|22,27",
+  "21,32|22,31",
+  "22,22|23,22",
+  "22,27|23,27",
+  "22,30|22,31",
+  "22,30|23,29",
+  "22,31|22,32",
+  "22,32|22,33",
+  "22,33|22,34",
+  "22,34|22,35",
+  "22,35|22,36",
+  "23,22|24,22",
+  "23,27|24,27",
+  "23,28|24,28",
+  "23,29|24,28",
+  "24,22|24,23",
+  "24,23|24,24",
+  "24,24|24,25",
+  "24,24|25,23",
+  "24,25|24,26",
+  "24,25|25,24",
+  "24,26|24,27",
+  "24,27|24,28",
+  "24,28|25,28",
+  "25,19|25,20",
+  "25,19|26,18",
+  "25,20|25,21",
+  "25,21|25,22",
+  "25,22|25,23",
+  "25,24|26,23",
+  "25,28|26,28",
+  "26,18|27,17",
+  "26,28|26,29",
+  "26,28|27,27",
+  "26,29|26,30",
+  "26,29|27,29",
+  "27,17|28,16",
+  "27,27|28,26",
+  "27,29|27,30",
+  "27,30|27,31",
+  "27,31|28,31",
+  "27,35|28,35",
+  "28,16|29,15",
+  "28,26|29,25",
+  "28,35|29,35",
+  "29,15|30,14",
+  "29,25|30,25",
+  "29,35|30,35",
+  "30,14|31,13",
+  "30,25|31,24",
+  "30,35|31,35",
+  "31,13|32,12",
+  "31,35|32,35",
+  "32,12|33,11",
+  "32,35|33,35",
+  "33,35|34,35",
+  "34,35|35,35",
+  "35,35|36,34",
+  "36,12|37,11",
+  "36,34|37,33",
+  "37,11|38,11",
+  "37,33|38,32",
+  "37,6|38,6",
+  "38,11|39,11",
+  "38,32|39,31",
+  "38,33|38,34",
+  "38,33|39,32",
+  "38,34|38,35",
+  "38,35|38,36",
+  "38,6|39,6",
+  "39,10|40,10",
+  "39,11|40,10",
+  "39,30|40,30",
+  "39,31|40,31",
+  "39,32|40,31",
+  "39,6|40,6",
+  "40,10|41,10",
+  "40,14|40,15",
+  "40,14|41,13",
+  "40,24|41,24",
+  "40,30|41,30",
+  "40,31|41,30",
+  "40,6|41,6",
+  "41,10|41,11",
+  "41,10|42,9",
+  "41,11|41,12",
+  "41,12|41,13",
+  "41,24|41,25",
+  "41,25|42,25",
+  "41,30|42,29",
+  "41,6|42,6",
+  "42,25|43,25",
+  "42,29|43,28",
+  "42,4|42,5",
+  "42,5|42,6",
+  "42,6|43,6",
+  "42,9|43,8",
+  "43,25|44,25",
+  "43,28|43,29",
+  "43,28|44,27",
+  "43,29|43,30",
+  "43,30|43,31",
+  "43,31|43,32",
+  "43,6|43,7",
+  "43,7|43,8",
+  "43,8|44,7",
+  "43,8|44,8",
+  "44,25|44,26",
+  "44,25|45,24",
+  "44,26|44,27",
+  "44,27|44,28",
+  "44,27|45,27",
+  "44,8|45,7",
+  "44,8|45,8",
+  "45,23|45,24",
+  "45,23|46,22",
+  "45,24|46,23",
+  "45,27|46,27",
+  "45,7|46,6",
+  "45,8|46,8",
+  "46,22|47,21",
+  "46,27|47,26",
+  "46,6|47,5",
+  "46,8|46,9",
+  "46,8|47,8",
+  "46,9|46,10",
+  "47,20|47,21",
+  "47,26|48,25",
+  "47,26|48,26",
+  "47,5|48,4",
+  "47,8|47,9",
+  "47,8|48,8",
+  "47,9|48,9",
+  "48,25|49,24",
+  "48,26|49,26",
+  "48,8|49,8",
+  "48,9|49,9",
+  "49,24|50,23",
+  "49,8|50,7",
+  "49,9|50,9",
+  "50,23|51,22",
+  "50,7|51,6",
+  "50,9|51,9",
+  "51,10|51,11",
+  "51,11|51,12",
+  "51,12|51,13",
+  "51,13|51,14",
+  "51,14|51,15",
+  "51,15|51,16",
+  "51,16|51,17",
+  "51,22|52,21",
+  "51,6|52,5",
+  "51,9|51,10"
+ ],
+ "biome": "high_pass",
+ "players": [
+  {
+   "pantheonId": "japanese"
+  },
+  {
+   "pantheonId": "greek"
+  },
+  {
+   "pantheonId": "celtic"
+  }
+ ],
+ "sites": [
+  {
+   "id": "back_portal_1",
+   "kind": "portal",
+   "q": 52,
+   "r": 5,
+   "twinId": "home_portal_3",
+   "name": "Gate of the Circle"
+  },
+  {
+   "id": "back_portal_2",
+   "kind": "portal",
+   "q": 38,
+   "r": 36,
+   "twinId": "home_portal_1",
+   "name": "Gate of the Circle"
+  },
+  {
+   "id": "back_portal_3",
+   "kind": "portal",
+   "q": 21,
+   "r": 22,
+   "twinId": "home_portal_2",
+   "name": "Gate of the Circle"
+  },
+  {
+   "id": "cache_1",
+   "kind": "resource_cache",
+   "q": 32,
+   "r": 8
+  },
+  {
+   "id": "cache_2",
+   "kind": "resource_cache",
+   "q": 55,
+   "r": 16
+  },
+  {
+   "id": "cache_3",
+   "kind": "resource_cache",
+   "q": 24,
+   "r": 39
+  },
+  {
+   "id": "camp_1",
+   "kind": "creature_camp",
+   "q": 33,
+   "r": 11,
+   "creatureId": "centaur",
+   "name": "Centaur Camp"
+  },
+  {
+   "id": "camp_2",
+   "kind": "creature_camp",
+   "q": 51,
+   "r": 17,
+   "creatureId": "centaur",
+   "name": "Centaur Camp"
+  },
+  {
+   "id": "camp_3",
+   "kind": "creature_camp",
+   "q": 27,
+   "r": 35,
+   "creatureId": "centaur",
+   "name": "Centaur Camp"
+  },
+  {
+   "id": "chest_1",
+   "kind": "treasure_chest",
+   "q": 46,
+   "r": 3
+  },
+  {
+   "id": "chest_2",
+   "kind": "treasure_chest",
+   "q": 46,
+   "r": 30
+  },
+  {
+   "id": "chest_3",
+   "kind": "treasure_chest",
+   "q": 19,
+   "r": 30
+  },
+  {
+   "id": "crystal_1",
+   "kind": "crystal_deposit",
+   "q": 46,
+   "r": 10,
+   "guard": {
+    "creatureId": "hill_slinger",
+    "count": 14,
+    "label": "Cliff slingers"
+   }
+  },
+  {
+   "id": "crystal_2",
+   "kind": "crystal_deposit",
+   "q": 39,
+   "r": 30,
+   "guard": {
+    "creatureId": "hill_slinger",
+    "count": 14,
+    "label": "Cliff slingers"
+   }
+  },
+  {
+   "id": "crystal_3",
+   "kind": "crystal_deposit",
+   "q": 26,
+   "r": 23,
+   "guard": {
+    "creatureId": "hill_slinger",
+    "count": 14,
+    "label": "Cliff slingers"
+   }
+  },
+  {
+   "id": "gold_1",
+   "kind": "gold_mine",
+   "q": 39,
+   "r": 10,
+   "guard": {
+    "creatureId": "wild_boar",
+    "count": 22,
+    "label": "Mountain boars"
+   }
+  },
+  {
+   "id": "gold_2",
+   "kind": "gold_mine",
+   "q": 46,
+   "r": 23,
+   "guard": {
+    "creatureId": "wild_boar",
+    "count": 22,
+    "label": "Mountain boars"
+   }
+  },
+  {
+   "id": "gold_3",
+   "kind": "gold_mine",
+   "q": 26,
+   "r": 30,
+   "guard": {
+    "creatureId": "wild_boar",
+    "count": 22,
+    "label": "Mountain boars"
+   }
+  },
+  {
+   "id": "home_portal_1",
+   "kind": "portal",
+   "q": 36,
+   "r": 12,
+   "twinId": "back_portal_2",
+   "name": "Gate of the Circle"
+  },
+  {
+   "id": "home_portal_2",
+   "kind": "portal",
+   "q": 47,
+   "r": 20,
+   "twinId": "back_portal_3",
+   "name": "Gate of the Circle"
+  },
+  {
+   "id": "home_portal_3",
+   "kind": "portal",
+   "q": 28,
+   "r": 31,
+   "twinId": "back_portal_1",
+   "name": "Gate of the Circle"
+  },
+  {
+   "id": "path_guard_1",
+   "kind": "monster",
+   "q": 40,
+   "r": 15,
+   "name": "Summit Path",
+   "guard": {
+    "creatureId": "wyvern",
+    "count": 7,
+    "more": [
+     {
+      "creatureId": "centaur",
+      "count": 6
+     }
+    ],
+    "label": "Summit wyverns"
+   }
+  },
+  {
+   "id": "path_guard_2",
+   "kind": "monster",
+   "q": 40,
+   "r": 24,
+   "name": "Summit Path",
+   "guard": {
+    "creatureId": "wyvern",
+    "count": 7,
+    "more": [
+     {
+      "creatureId": "centaur",
+      "count": 6
+     }
+    ],
+    "label": "Summit wyverns"
+   }
+  },
+  {
+   "id": "path_guard_3",
+   "kind": "monster",
+   "q": 31,
+   "r": 24,
+   "name": "Summit Path",
+   "guard": {
+    "creatureId": "wyvern",
+    "count": 7,
+    "more": [
+     {
+      "creatureId": "centaur",
+      "count": 6
+     }
+    ],
+    "label": "Summit wyverns"
+   }
+  },
+  {
+   "id": "quarry_1",
+   "kind": "quarry",
+   "q": 51,
+   "r": 11
+  },
+  {
+   "id": "quarry_2",
+   "kind": "quarry",
+   "q": 33,
+   "r": 35
+  },
+  {
+   "id": "quarry_3",
+   "kind": "quarry",
+   "q": 27,
+   "r": 17
+  },
+  {
+   "id": "ridge_guard_1",
+   "kind": "monster",
+   "q": 51,
+   "r": 14,
+   "name": "Ridge Crossing",
+   "guard": {
+    "creatureId": "ogre",
+    "count": 6,
+    "label": "Ridge ogres"
+   }
+  },
+  {
+   "id": "ridge_guard_2",
+   "kind": "monster",
+   "q": 30,
+   "r": 35,
+   "name": "Ridge Crossing",
+   "guard": {
+    "creatureId": "ogre",
+    "count": 6,
+    "label": "Ridge ogres"
+   }
+  },
+  {
+   "id": "ridge_guard_3",
+   "kind": "monster",
+   "q": 30,
+   "r": 14,
+   "name": "Ridge Crossing",
+   "guard": {
+    "creatureId": "ogre",
+    "count": 6,
+    "label": "Ridge ogres"
+   }
+  },
+  {
+   "id": "sanctum_shrine_1",
+   "kind": "spell_shrine",
+   "q": 39,
+   "r": 20,
+   "spellId": "divine_sight"
+  },
+  {
+   "id": "sanctum_shrine_2",
+   "kind": "spell_shrine",
+   "q": 36,
+   "r": 23,
+   "spellId": "mend"
+  },
+  {
+   "id": "sanctum_shrine_3",
+   "kind": "spell_shrine",
+   "q": 36,
+   "r": 20,
+   "spellId": "veil"
+  },
+  {
+   "id": "sawmill_1",
+   "kind": "sawmill",
+   "q": 37,
+   "r": 6
+  },
+  {
+   "id": "sawmill_2",
+   "kind": "sawmill",
+   "q": 52,
+   "r": 21
+  },
+  {
+   "id": "sawmill_3",
+   "kind": "sawmill",
+   "q": 22,
+   "r": 36
+  },
+  {
+   "id": "stone_1",
+   "kind": "learning_stone",
+   "q": 48,
+   "r": 4
+  },
+  {
+   "id": "stone_2",
+   "kind": "learning_stone",
+   "q": 43,
+   "r": 32
+  },
+  {
+   "id": "stone_3",
+   "kind": "learning_stone",
+   "q": 20,
+   "r": 27
+  },
+  {
+   "id": "summit",
+   "kind": "artifact",
+   "q": 37,
+   "r": 21,
+   "name": "Crown of the Summit",
+   "reward": {
+    "artifactId": "crown_of_counsel",
+    "gold": 1500
+   },
+   "text": "An ancient crown left on the summit stone, where the three paths meet."
+  },
+  {
+   "id": "terrace_guard_1",
+   "kind": "monster",
+   "q": 50,
+   "r": 7,
+   "name": "Gate Terrace",
+   "guard": {
+    "creatureId": "centaur",
+    "count": 13,
+    "label": "Gate wardens"
+   }
+  },
+  {
+   "id": "terrace_guard_2",
+   "kind": "monster",
+   "q": 38,
+   "r": 34,
+   "name": "Gate Terrace",
+   "guard": {
+    "creatureId": "centaur",
+    "count": 13,
+    "label": "Gate wardens"
+   }
+  },
+  {
+   "id": "terrace_guard_3",
+   "kind": "monster",
+   "q": 23,
+   "r": 22,
+   "name": "Gate Terrace",
+   "guard": {
+    "creatureId": "centaur",
+    "count": 13,
+    "label": "Gate wardens"
+   }
+  },
+  {
+   "id": "town_1",
+   "kind": "town",
+   "q": 44,
+   "r": 7,
+   "owner": 0
+  },
+  {
+   "id": "town_2",
+   "kind": "town",
+   "q": 44,
+   "r": 28,
+   "owner": 1
+  },
+  {
+   "id": "town_3",
+   "kind": "town",
+   "q": 23,
+   "r": 28,
+   "owner": 2
+  },
+  {
+   "id": "trainer_1",
+   "kind": "skill_trainer",
+   "q": 47,
+   "r": 13,
+   "skillId": "scouting"
+  },
+  {
+   "id": "trainer_2",
+   "kind": "skill_trainer",
+   "q": 35,
+   "r": 31,
+   "skillId": "scouting"
+  },
+  {
+   "id": "trainer_3",
+   "kind": "skill_trainer",
+   "q": 29,
+   "r": 19,
+   "skillId": "scouting"
+  },
+  {
+   "id": "windmill_1",
+   "kind": "windmill",
+   "q": 42,
+   "r": 4
+  },
+  {
+   "id": "windmill_2",
+   "kind": "windmill",
+   "q": 49,
+   "r": 26
+  },
+  {
+   "id": "windmill_3",
+   "kind": "windmill",
+   "q": 20,
+   "r": 33
+  }
+ ],
+ "victory": {
+  "type": "elimination"
+ },
+ "startWealth": "normal"
+}

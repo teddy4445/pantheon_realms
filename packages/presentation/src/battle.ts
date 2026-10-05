@@ -32,6 +32,11 @@ import type { FxLook, FxSound, StatusOverlay } from './fxLooks';
 const RB = 40;
 const S = BATTLE_SQUASH;
 const HEX_W = SQRT3 * RB;
+/** Drawn size of a projectile against its art's scale: arrows a third (owner request 2026-10-05; the art spans 1.4 hexes). */
+const PROJECTILE_SIZE: Readonly<Record<string, number>> = { arrow: 1 / 3 };
+/** The drawn catapult's arm: lying back at rest, upright against the crossbar when it throws. */
+const CATAPULT_REST = Math.PI * 1.04;
+const CATAPULT_FIRE = Math.PI * 1.55;
 
 export interface BattleStackView {
   readonly id: string;
@@ -64,6 +69,8 @@ export interface SiegeView {
   readonly structures: readonly SiegeStructureView[];
   readonly moat: readonly BattleCell[];
   readonly wallCol: number;
+  /** The defending town's pantheon: its own fortification art and siege battlefield when delivered (Brief 15). */
+  readonly pantheonId?: string | null;
 }
 
 export interface BattleView {
@@ -286,8 +293,14 @@ export class BattleSceneController implements SceneController {
   private boardRect(): { x0: number; y0: number; x1: number; y1: number } {
     const last = cellPoint({ col: this.cols - 1, row: 1 }, RB, S);
     const bottom = cellPoint({ col: 0, row: this.rows - 1 }, RB, S);
-    return { x0: -HEX_W / 2, y0: -RB * S - RB * 1.6, x1: last.x + HEX_W / 2, y1: bottom.y + RB * S + RB * 0.35 };
+    // A siege also shows the attackers' catapult west of the field and the keep east of it.
+    const west = this.siegeLayout ? HEX_W * 1.5 : 0;
+    const east = this.siegeLayout ? HEX_W * 1.1 : 0;
+    return { x0: -HEX_W / 2 - west, y0: -RB * S - RB * 1.6, x1: last.x + HEX_W / 2 + east, y1: bottom.y + RB * S + RB * 0.35 };
   }
+
+  /** A siege board (fortifications present): the frame makes room for the catapult and the keep. */
+  private siegeLayout = false;
 
   /** Screen margins kept clear for the battle HUD (top bar and turn order, bottom action bar). */
   private insets = { top: 112, bottom: 82, left: 16, right: 16 };
@@ -329,7 +342,7 @@ export class BattleSceneController implements SceneController {
     const ground = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
     const plain = new Graphics().rect(-4000, -3000, 9000, 7000).fill({ color: ground });
     this.backdrop.addChild(plain);
-    const art = graphicsProfile().paintedGround ? battlefieldArt(view.archetype, view.climate) : null;
+    const art = graphicsProfile().paintedGround ? this.siegeGround(view) ?? battlefieldArt(view.archetype, view.climate) : null;
     if (!art) return;
     const first = this.cellXY({ col: 0, row: 0 });
     const last = this.cellXY({ col: view.cols - 1, row: view.rows - 1 });
@@ -362,10 +375,12 @@ export class BattleSceneController implements SceneController {
   private buildBoard(view: BattleView): void {
     this.cols = view.cols;
     this.rows = view.rows;
+    this.siegeLayout = !!view.siege && view.siege.structures.length > 0;
     this.layout();
     this.buildBackdrop(view);
     const moat = new Set((view.siege?.moat ?? []).map((c) => `${c.col}:${c.row}`));
-    const painted = graphicsProfile().paintedGround && !!battlefieldArt(view.archetype, view.climate);
+    const siegeArt = graphicsProfile().paintedGround && !!this.siegeGround(view);
+    const painted = graphicsProfile().paintedGround && (siegeArt || !!battlefieldArt(view.archetype, view.climate));
     const base = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
     const g = this.cells;
     g.clear();
@@ -375,7 +390,8 @@ export class BattleSceneController implements SceneController {
         const { x, y } = this.cellXY({ col, row });
         const poly = hexPolygon(x, y, RB * 0.975, S);
         const inMoat = moat.has(`${col}:${row}`);
-        const inTown = !!view.siege && view.siege.structures.length > 0 && col > view.siege.wallCol;
+        // A painted siege battlefield shows the town's streets itself; otherwise the town is drawn as paving.
+        const inTown = !!view.siege && view.siege.structures.length > 0 && col > view.siege.wallCol && !siegeArt;
         const deploy = col < 2 || col >= view.cols - 2;
         if (inMoat) g.poly(poly).fill({ color: 0x2e5871, alpha: 0.9 });
         else if (inTown) g.poly(poly).fill({ color: 0x8c8474, alpha: painted ? 0.55 : 1 });
@@ -410,6 +426,99 @@ export class BattleSceneController implements SceneController {
       this.objects.addChild(root);
       this.obstacleSprites.push(root);
     });
+    this.catapult?.root.destroy({ children: true });
+    this.catapult = this.siegeLayout ? this.buildCatapult() : null;
+  }
+
+  // ------------------------------------------------------------------ the attackers' catapult (sieges)
+
+  /**
+   * The siege catapult west of the field (owner request 2026-10-05: a catapult that
+   * visibly throws). A delivered still `siege.catapult.intact` (and its throw strip
+   * `fx.siege.catapult.throw`) replace the drawn onager without a code change.
+   */
+  private catapult: { root: Container; arm: Container | null; stone: Graphics | null; still: Sprite | null } | null = null;
+
+  private catapultPos(): { x: number; y: number } {
+    const c = this.cellXY({ col: -1, row: Math.floor(this.rows / 2) });
+    return { x: c.x - HEX_W * 0.25, y: c.y + RB * S * 0.35 };
+  }
+
+  private buildCatapult(): { root: Container; arm: Container | null; stone: Graphics | null; still: Sprite | null } {
+    const at = this.catapultPos();
+    const root = new Container();
+    root.position.set(at.x, at.y);
+    root.zIndex = root.y;
+    if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.6, HEX_W * 0.18, 0.34));
+    this.objects.addChild(root);
+    const def = spriteManifest().siege['catapult.intact'];
+    if (def) {
+      const still = stillSprite(def, HEX_W, 1.2);
+      root.addChild(still);
+      return { root, arm: null, stone: null, still };
+    }
+    const u = RB;
+    const wood = 0x7a5230;
+    const dark = 0x3b2614;
+    const iron = 0x4a4a50;
+    const frame = new Graphics();
+    // Base beams and the two uprights with the padded crossbar the arm strikes.
+    frame.rect(-0.85 * u, -0.5 * u, 1.7 * u, 0.18 * u).fill({ color: wood }).stroke({ width: 2, color: dark });
+    frame.poly([0.05 * u, -0.5 * u, 0.3 * u, -1.3 * u, 0.42 * u, -1.3 * u, 0.55 * u, -0.5 * u]).fill({ color: wood }).stroke({ width: 2, color: dark });
+    frame.rect(0.12 * u, -1.42 * u, 0.5 * u, 0.14 * u).fill({ color: 0x9a6b3c }).stroke({ width: 2, color: dark });
+    frame.rect(-0.85 * u, -0.5 * u, 0.12 * u, 0.18 * u).fill({ color: iron });
+    frame.rect(0.73 * u, -0.5 * u, 0.12 * u, 0.18 * u).fill({ color: iron });
+    for (const wx of [-0.55, 0.55]) {
+      frame.circle(wx * u, -0.2 * u, 0.22 * u).fill({ color: 0x5c3d22 }).stroke({ width: 2, color: dark });
+      frame.circle(wx * u, -0.2 * u, 0.06 * u).fill({ color: iron });
+    }
+    // The throwing arm turns on its axle; at rest it lies back over the frame.
+    const arm = new Container();
+    arm.position.set(0.2 * u, -0.62 * u);
+    const beam = new Graphics();
+    beam.rect(0, -0.06 * u, 1.25 * u, 0.12 * u).fill({ color: 0x8a5d33 }).stroke({ width: 2, color: dark });
+    beam.ellipse(1.28 * u, 0, 0.16 * u, 0.1 * u).fill({ color: 0x5c3d22 }).stroke({ width: 2, color: dark });
+    beam.circle(0, 0, 0.09 * u).fill({ color: iron });
+    const stone = new Graphics();
+    stone.circle(1.28 * u, -0.08 * u, 0.12 * u).fill({ color: 0x8d8678 }).stroke({ width: 1.5, color: 0x3b3833 });
+    arm.addChild(beam, stone);
+    arm.rotation = CATAPULT_REST;
+    const machine = new Container();
+    machine.scale.set(1.3);
+    machine.addChild(frame, arm);
+    root.addChild(machine);
+    return { root, arm, stone, still: null };
+  }
+
+  /** The catapult throws: the arm swings up against the crossbar and lets the stone go. Returns where it left the cup. */
+  private async throwCatapult(): Promise<{ x: number; y: number }> {
+    const c = this.catapult;
+    const top = this.catapultPos();
+    if (!c) return { x: top.x, y: top.y - RB * 1.6 };
+    if (c.still) {
+      const fx = spriteManifest().effects['fx.siege.catapult.throw'];
+      if (fx) {
+        c.still.alpha = 0;
+        await this.effect('fx.siege.catapult.throw', { x: top.x, y: top.y }, { scale: 1.2 });
+        c.still.alpha = 1;
+      }
+      return { x: top.x + HEX_W * 0.3, y: top.y - RB * 1.6 };
+    }
+    const arm = c.arm!;
+    const u = RB;
+    await this.tweens.tween(240, (t) => (arm.rotation = CATAPULT_REST - 0.12 * t), easeOut);
+    const from = arm.rotation;
+    await this.tweens.tween(170, (t) => (arm.rotation = from + (CATAPULT_FIRE - from) * t * t), linear);
+    const k = 1.3; // the drawn machine's scale
+    const cup = { x: c.root.x + (arm.x + Math.cos(arm.rotation) * 1.28 * u) * k, y: c.root.y + (arm.y + Math.sin(arm.rotation) * 1.28 * u) * k };
+    if (c.stone) c.stone.visible = false;
+    // The arm settles back while the stone flies; a new stone is loaded.
+    void this.tweens
+      .tween(700, (t) => (arm.rotation = CATAPULT_FIRE + (CATAPULT_REST - CATAPULT_FIRE) * t), easeInOut)
+      .then(() => {
+        if (c.stone && !c.stone.destroyed) c.stone.visible = true;
+      });
+    return cup;
   }
 
   private buildHighlights(view: BattleView): void {
@@ -648,7 +757,7 @@ export class BattleSceneController implements SceneController {
     let x = 0;
     let y = 0;
     for (const c of st.cells) {
-      const w = this.cellXY(c);
+      const w = this.wallPoint(c.col, c.row);
       x += w.x;
       y += w.y;
     }
@@ -664,7 +773,26 @@ export class BattleSceneController implements SceneController {
   private siegeDef(st: SiegeStructureView, hp: number): StaticSpriteDefinition | null {
     const all = spriteManifest().siege;
     const state = hp <= 0 ? 'rubble' : hp < st.maxHp ? 'damaged' : 'intact';
-    return all[`${st.kind}.${state}`] ?? all[`${st.kind}.intact`] ?? null;
+    const p = this.siegeView?.pantheonId;
+    // The defending pantheon's own fortification (Brief 15) when delivered, else the shared one.
+    return (p ? all[`${st.kind}.${state}.${p}`] : undefined) ?? all[`${st.kind}.${state}`] ?? all[`${st.kind}.intact`] ?? null;
+  }
+
+  /** A siege battlefield painting of the defending pantheon (`battlefield.siege.ground.<pantheon>`, Brief 15), if delivered. */
+  private siegeGround(view: BattleView): ReturnType<typeof battlefieldArt> {
+    if (!view.siege || view.siege.structures.length === 0) return null;
+    return battlefieldArt('siege', view.siege.pantheonId ?? null);
+  }
+
+  /**
+   * Where a wall, gate or tower piece of row `row` stands: the wall column zig-zags
+   * between rows, so pieces stand on one straight line halfway between its cells
+   * and join into a continuous wall (owner report 2026-10-05).
+   */
+  private wallPoint(col: number, row: number): { x: number; y: number } {
+    const c = this.cellXY({ col, row });
+    const even = this.cellXY({ col, row: 0 });
+    return { x: even.x + HEX_W * 0.25, y: c.y };
   }
 
   /** Draw every structure at its shown HP (intact, damaged or rubble). */
@@ -681,7 +809,7 @@ export class BattleSceneController implements SceneController {
     for (const st of view.structures) {
       const hp = this.shownHp.get(st.id) ?? st.hp;
       const def = this.siegeDef(st, hp);
-      const spots = st.kind === 'keep' || st.cells.length === 0 ? [this.structurePos(st)] : st.cells.map((c) => this.cellXY(c));
+      const spots = st.kind === 'keep' || st.cells.length === 0 ? [this.structurePos(st)] : st.cells.map((c) => this.wallPoint(c.col, c.row));
       for (const p of spots) {
         // Pieces join the depth-sorted objects so creatures pass in front and behind correctly.
         const piece = new Container();
@@ -751,7 +879,7 @@ export class BattleSceneController implements SceneController {
 
   private async projectile(from: { x: number; y: number }, to: { x: number; y: number }, kind: string): Promise<void> {
     const def = spriteManifest().projectiles[kind] ?? null;
-    const p = stillSprite(def, HEX_W);
+    const p = stillSprite(def, HEX_W, PROJECTILE_SIZE[kind] ?? 1);
     if (!def) {
       const g = new Graphics().rect(-RB * 0.3, -1.5, RB * 0.6, 3).fill({ color: 0xd8c08a });
       p.addChild(g);
@@ -925,10 +1053,11 @@ export class BattleSceneController implements SceneController {
   }
 
   /** Being hit: the strip, or a flinch and flash when only a still exists. */
-  private async flinch(e: StackEntry): Promise<void> {
+  private async flinch(e: StackEntry, killed = false): Promise<void> {
     e.hitPlays += 1;
     const f = e.figure;
-    const strip = f.playOnce('hit', this.tweens, { minMs: 320 });
+    // A killing blow shows the whole hit strip before the fall (owner request 2026-10-05).
+    const strip = f.playOnce('hit', this.tweens, { minMs: killed ? 420 : 320 });
     // Recoil away from where the figure faces (it may have turned toward its attacker).
     const back = f.mirror ? 1 : -1;
     const own = f.has('hit');
@@ -954,8 +1083,9 @@ export class BattleSceneController implements SceneController {
    */
   private async sufferBlow(e: StackEntry, killed: boolean): Promise<void> {
     if (e.down) return;
-    await this.flinch(e);
+    await this.flinch(e, killed);
     if (killed) {
+      await this.tweens.wait(90);
       this.cue('death');
       await this.die(e);
     }
@@ -995,6 +1125,7 @@ export class BattleSceneController implements SceneController {
         this.cue(ev.flying ? 'flight' : 'march');
         const v = e.view;
         const f = e.figure;
+        const start = e.shownAnchor;
         let from = this.groupPosition(e.shownAnchor, v.footprint, v.facing);
         const last = ev.path[ev.path.length - 1]!;
         const dest = this.groupPosition(last, v.footprint, v.facing);
@@ -1036,6 +1167,10 @@ export class BattleSceneController implements SceneController {
           f.pose.y = 0;
         }
         e.shownAnchor = last;
+        // Remember the move even if no newer view arrives (the battle's final blow: the
+        // board keeps the last view), so unlocking the stack does not snap it back to
+        // where it stood before (owner report 2026-10-05).
+        if (e.view.anchor.col === start.col && e.view.anchor.row === start.row) e.view = { ...e.view, anchor: last };
         f.setLoop('idle');
         return;
       }
@@ -1062,8 +1197,8 @@ export class BattleSceneController implements SceneController {
         } else {
           this.cue('swing');
           await this.strike(a, t, 'attack', retaliation ? 0.85 : 1);
+          // No burst over the target (owner request 2026-10-05): its hit strip shows the blow.
           this.cue('impact', heavy);
-          void this.effect('impact', this.chestOf(t), { flash: 0xfff1c8, scale: 0.8 });
         }
         const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
         void this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed);
@@ -1129,9 +1264,9 @@ export class BattleSceneController implements SceneController {
         const top = this.structureTop(st);
         const to = { x: top.x, y: top.y + RB * 0.4 };
         if (ev.source === 'catapult') {
-          const left = this.cellXY({ col: 0, row: 5 });
           this.cue('catapult');
-          await this.projectile({ x: left.x - RB * 3, y: left.y - RB }, to, 'stone');
+          const cup = await this.throwCatapult();
+          await this.projectile(cup, to, 'stone');
         } else {
           const a = ev.attackerId ? this.stacks.get(ev.attackerId) : undefined;
           if (a)

@@ -32,8 +32,8 @@ export const HINTS: Readonly<Record<string, HintDefinition>> = {
   },
   troop_training: {
     id: 'troop_training',
-    title: 'Training troops',
-    text: 'Once the upgraded dwelling stands, troops in town can be trained for the price difference. Training uses no population — recruiting does.',
+    title: 'Upgrading troops',
+    text: 'Once the upgraded dwelling stands, troops in town can be upgraded for the price difference. Upgrading uses no population — recruiting does.',
   },
   battle_losses: {
     id: 'battle_losses',

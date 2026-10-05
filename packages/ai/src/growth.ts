@@ -13,7 +13,6 @@ import {
   adventureSpellsOf,
   cellIndex,
   equipSlotsFor,
-  hexEquals,
   maxMana,
   playerTowns,
   quoteAdventureSpell,

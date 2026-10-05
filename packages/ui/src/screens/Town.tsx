@@ -13,7 +13,6 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
 import {
   ARTIFACT_SLOT_LABEL,
-  RESOURCE_KEYS,
   RESOURCE_LABELS,
   activeBuildingInSlot,
   hireOptions,
@@ -697,7 +696,7 @@ export function TownScreen() {
     setModalState(m);
   };
   const archetype = town ? catalog.townArchetypes[town.archetypeId] : undefined;
-  // Favor at the Temple: gifts and offerings rise from it (VFX_MAGIC_AND_FAVORS.md; placeholder bursts).
+  // Favor at the Temple: gifts and offerings rise from it (the VFX list's gift and offering strips).
   const [bursts, setBursts] = useState<{ key: number; kind: TownFxKind; slotId: string; stripId?: string }[]>([]);
   // The same effect, smaller, where the gift lands: the resource counters, the Favor counter, the visiting hero.
   const [pins, setPins] = useState<{ key: number; kind: TownFxKind; stripId: string; x: number; y: number }[]>([]);

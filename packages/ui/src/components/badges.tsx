@@ -1,7 +1,7 @@
 /**
  * Set and ability badges (owner request 2026-10-02). Each badge shows the final
  * icon once it is delivered under its asset ID (`icon.set.<setId>`,
- * `icon.ability.<abilityId>` — see ICON_CATALOG.md and `npm run icons:import`);
+ * `icon.ability.<abilityId>` — see `npm run icons:catalog` and `npm run icons:import`);
  * until then a clearly temporary stand-in: a gem in a colour derived from the
  * set, or the interface glyph closest to the ability's rule.
  */

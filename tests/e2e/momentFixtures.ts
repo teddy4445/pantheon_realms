@@ -1,6 +1,6 @@
 /**
- * Fixtures and probes for the big-moment UI tests (bigMoments.spec.ts and the
- * opt-in review sweep zz-moments-review.spec.ts). Saves are ordinary save
+ * Fixtures and probes for the big-moment UI tests (bigMoments.spec.ts and
+ * others). Saves are ordinary save
  * files built headlessly and imported through Load → Import; the probe only
  * observes the page (a MutationObserver), it never changes game state.
  */

@@ -7,7 +7,6 @@
  * Each payout carries an idempotency key; reloading never repeats it.
  */
 import { expireTemporaryVision } from './magic';
-import { hexEquals } from '../core/hex';
 import { addResources, resources, type ResourceBundle } from '../core/resources';
 import type { MatchState } from '../state/match';
 import { dawnManaRegen, heroEffects, maxMana, movementBudget } from '../resolvers/heroes';
@@ -163,8 +162,4 @@ export function processDawn(tx: Tx): void {
   // Step 5: relics count another day held; the day's statistics are recorded.
   advanceRelics(tx);
   recordDayStats(catalog, state, (id) => incomeToday[id] ?? resources());
-}
-
-export function isFirstDayOfWeek(state: MatchState, daysPerWeek = 7): boolean {
-  return state.day > 1 && (state.day - 1) % daysPerWeek === 0;
 }

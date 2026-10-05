@@ -18,7 +18,7 @@ import {
   type ResourceBundle,
   type ResourceKey,
 } from '../core/resources';
-import { getBuilding, getCreature, getFamily, requireStats, type ContentCatalog } from '../definitions/catalog';
+import { getBuilding, getCreature, getFamily, type ContentCatalog } from '../definitions/catalog';
 import type { BuildingDefinition } from '../definitions/towns';
 import type { RecruitDestination } from '../commands/commands';
 import type { ArmyRef, MatchState, TownState } from '../state/match';
@@ -31,7 +31,6 @@ import {
   townHasEffect,
 } from '../resolvers/town';
 import { placementSlot, resolveArmy, armyRefLabel } from '../resolvers/army';
-import { hexEquals } from '../core/hex';
 import { movementBudget } from '../resolvers/heroes';
 import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { bumpTotal } from './stats';
@@ -548,8 +547,4 @@ export function commitTransfer(tx: Tx, from: ArmyRef, fromSlot: number, to: Army
   });
   if (from.kind === 'hero') clampMovement(tx, from.heroId);
   if (to.kind === 'hero') clampMovement(tx, to.heroId);
-}
-
-export function creatureUnitCost(catalog: ContentCatalog, creatureId: CreatureId): ResourceBundle {
-  return resources(requireStats(catalog, creatureId).cost);
 }

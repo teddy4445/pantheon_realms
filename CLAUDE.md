@@ -17,8 +17,8 @@ decisions they settle.
 * Stack: TypeScript rules + AI, React UI, PixiJS 2D (Adventure Map, Tactical
   Battle, sprite animation, Unit Detail viewer), Electron desktop, browser
   build from the same core. Do not substitute engines. The 2D migration
-  (`2D_MIGRATION_AUDIT.md`, 2026-10-03) deleted the obsolete Babylon.js 3D
-  layer; do not reintroduce 3D code, GLB/glTF assets or Blender steps.
+  (2026-10-03) deleted the obsolete Babylon.js 3D layer; do not reintroduce
+  3D code, GLB/glTF assets or Blender steps.
 * All game state changes go through `processCommand`. React, Pixi views,
   animation callbacks and the AI never mutate `MatchState`; animation never
   decides an outcome (instant and normal playback give identical results).
@@ -69,25 +69,38 @@ xvfb-run -a node tools/desktop-smoke.mjs   # headless desktop smoke (after deskt
 PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs  # packaged-layout smoke
 npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run after any value change
 npm run balance -- random --matches 4   # random-map seat fairness only
+npm run balance -- random1v1 --matches 30   # every pantheon pairing on random maps, both seats (nine layouts; --map-types, --sizes, --focus); target: each pantheon 0.45–0.55
 node tools/perf/load-time.mjs [dist]          # start-up + first-scene load times (after npm run build)
 python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg); keeps "final" entries
 python3 tools/audio/import_music.py --from <folder with pixabay-<id>.mp3>   # map music per pantheon (assets-source/audio/music/tracks.json) → Ogg + music.map.<pantheon> playlists
+python3 tools/audio/import_sounds.py --from <folder with pixabay-<id>.mp3>  # menu, battle (per pantheon), siege, resolution music, stingers, effects, ambience (assets-source/audio/sounds.json) → Ogg, level-matched, manifest "final"
 npm run sprites:plan          # content plan (forms, animations, sites, battlefields) → assets-source/sprites/content-plan.json
-npm run sprites:placeholders  # regenerate labelled placeholder sprites + assets-runtime/sprites/manifest.json (keeps final entries)
 npm run sprites:cut -- --only <sheet>  # cut ONE GPT-6 sheet from assets-source/sprites/sheets/ into single files (layouts: sheet-layouts*.json; previews in sheets/_preview/); never re-cut the delivered sheets; --self-test checks the cutter
 npm run sprites:import        # final sprites from assets-source/sprites/final/ (cut files or single files) → manifest status "final"
-npm run sprites:queue         # regenerate GPT6_2D_CONTENT_GENERATION.md + sheet-layouts.json from the manifest's gaps (not over the owner's delivered guide)
-npm run vfx:list              # regenerate VFX_MAGIC_AND_FAVORS.md (spell, miracle, gift VFX still to make; looks in tools/assets/vfx/briefs.ts)
-python3 tools/assets/prepare_placeholders.py  # re-crop town placeholders from "support images/"
+npm run sprites:queue         # writes GPT6_2D_CONTENT_GENERATION.md + sheet-layouts.json for sprites still missing (new content only; overwrites sheet-layouts.json)
+npm run vfx:list              # writes VFX_MAGIC_AND_FAVORS.md (spell, miracle, gift VFX still to make; looks in tools/assets/vfx/briefs.ts)
 python3 tools/assets/prepare_ui_art.py        # regenerate opening-screen art, icons, app icon from assets-source/ui/
-npm run icons:catalog    # regenerate ICON_CATALOG.md + assets-source/icons/ICON_CATALOG.xlsx/.csv from the game
+npm run icons:catalog    # icon inventory check + writes ICON_CATALOG.md + assets-source/icons/ICON_CATALOG.xlsx/.csv (a production list; not kept once delivered)
 npm run icons:import     # register final icons dropped into assets-source/icons/final/ (named by asset ID); `-- --new` imports only icons not yet registered (a full run re-encodes and re-dates every icon)
 npm run cursors:import   # mouse cursors from assets-source/ui/cursors/ (Brief 7, 128 px, named by cursor ID) → 32 px + hotspots in assets-runtime/ui/cursors/
 npm run art:import       # painted art from assets-source/art/final/ → assets-runtime/art/ (story art incl. the Herald, terrain, battlefields, skies, miracle cards, splashes, banners, town levels, dwellings, town backgrounds; never upscales; keeps runtime art whose master is not in this checkout unless `-- --prune`; `-- --self-test` checks the names)
-npm run art:briefs       # regenerate GPT-6 briefs 8–11 (god portraits + god-card icons, hero portraits, town building levels, map-hero prepare/cast) + assets-source/sprites/sheet-layouts.briefs.json
+npm run art:briefs       # (delivered; writes the documents again only when needed) GPT-6 briefs 8–11 (god portraits + god-card icons, hero portraits, town building levels, map-hero prepare/cast) + assets-source/sprites/sheet-layouts.briefs.json
 npm run art:brief12      # GPT-6 Brief 12: every visual still missing, from the game (dwellings, services, climate icons, site markers, town backgrounds, fx.god.commit) + sheet-layouts.brief12.json + town layout guides
 npm run balance -- skirmish --no-temperaments   # the same matches with every AI empire playing the neutral way (compare with the default)
+npm run balance -- maps --matches 2   # the six authored skirmish maps, each pantheon line-up from every seat (--maps a,b)
+npm run maps:build       # writes the authored skirmish maps (packages/content/src/skirmish/maps/*.prmap.json) from tools/maps/maps.ts, checked, + layout guides for Brief 14
+npm run art:siege-guide  # the siege layout guide for GPT-6 Brief 15 (assets-source/art/briefs/guides/siege.layout.png)
 ```
+
+Authored skirmish maps (2026-10-05): six custom map documents in
+`packages/content/src/skirmish/maps/` (catalog `skirmishMaps`), designed for
+one empire in `tools/maps/maps.ts` and copied by exact hex symmetry; edit the
+design and run `npm run maps:build`, never the JSON. The custom map types
+live in `@pr/rules` (`definitions/customMap.ts`). Their pictures are GPT-6
+Brief 14 (`assets-source/art/briefs/GPT6_BRIEF_14_SKIRMISH_MAPS.md`); siege art
+(each pantheon's walls, gates, towers, keep, siege battlefield, the catapult)
+is Brief 15 (`GPT6_BRIEF_15_SIEGES.md`). A dwelling never requires a dwelling
+of a higher tier (owner decision 2026-10-05; `BuildingTreeValidator`).
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and
 provenance in `assets-runtime/ui/` (ASSET_PIPELINE.md §11). The visual
@@ -104,22 +117,31 @@ placeholder is an art drop + `npm run sprites:cut` + `npm run sprites:import`,
 never a code change.
 Keep `packages/presentation/src/hexmath.ts` as the only screen↔hex
 transform, so sprite sizes never change which hex a click selects.
-Magic and Favor effects play the delivered strips under the full `fx.*`
-asset IDs of `VFX_MAGIC_AND_FAVORS.md` (all 177 delivered 2026-10-04); a phase
+Magic and Favor effects play the delivered strips under their full `fx.*`
+asset IDs (all 177 delivered 2026-10-04, plus `fx.god.commit` from Brief 12); a phase
 without a strip — e.g. a new spell or miracle — is drawn by code from the looks
 in `packages/presentation/src/fxLooks.ts` (painted by `fx.ts`; a new spell gets
 a look from its effect type, so add a table entry only to refine it). The
 importer keeps full `fx.*` IDs and sidecar loops (`import_sprites.py
 --self-test`).
-`GPT6_2D_CONTENT_GENERATION.md` is the guide the owner's sprite delivery
-(commit 071968c: all 140 sheets, 1,097 files) was made from; keep it as
-delivered — do not regenerate it, or `sheet-layouts.json`, over the delivery.
 The delivered final PNGs and JSON sidecars in `assets-source/sprites/final/`
 are authoritative (some strips carry held-frame repairs and reviewed
-component cuts): never re-cut all sheets; cut a new or corrected sheet alone
-with `npm run sprites:cut -- --only <sheet>`. The briefs 8–11 under
-`assets-source/art/briefs/` (`npm run art:briefs`) and `VFX_MAGIC_AND_FAVORS.md`
-were delivered on 2026-10-04 (ASSET_PIPELINE.md §5, §12, §13); the god cards
+component cuts). The sheets they were cut from were removed in the release
+clean-up of 2026-10-05 (git history keeps them; the production lists
+`GPT6_2D_CONTENT_GENERATION.md`, `VFX_MAGIC_AND_FAVORS.md` and `ICON_CATALOG.md`
+too); only the Brief 12 sheets remain in `assets-source/sprites/sheets/`. A new or
+corrected sheet is cut alone with `npm run sprites:cut -- --only <sheet>` —
+never an unrestricted re-cut. Briefs 1–11 were delivered and their documents
+removed; Brief 12 (`assets-source/art/briefs/GPT6_BRIEF_12_REMAINING_VISUALS.md`,
+town layout guides in `briefs/guides/`) was delivered on 2026-10-05 except the
+optional town-background repaints, so the town backgrounds are still the
+cropped concept placeholders in `assets-runtime/placeholders/`. What GPT-6 can
+still make is in `assets-source/art/briefs/GPT6_BRIEF_13_RELEASE_POLISH.md`
+Part A (the six town backgrounds); its 94 icons (Parts B–E) were delivered and
+imported on 2026-10-05 (the main-menu icons are 192 px, the rest 96 px;
+`tests/e2e/brief13.spec.ts`). Three concept crops the brief did not list are
+still shown: `icon.marker.hero` and `icon.marker.enemy-hero` (tile panel over a
+hero) and `icon.marker.encounter` (a failed objective in the Journal). The god cards
 show their blessings, price and state as icon rows (`components/godIcons.tsx`)
 whose tooltips keep the content's sentences.
 

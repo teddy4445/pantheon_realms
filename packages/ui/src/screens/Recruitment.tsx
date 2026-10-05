@@ -18,6 +18,7 @@ import { Button, Chip, Panel, QuantitySelector, SectionTitle } from '../componen
 import { CreaturePortrait } from '../components/art';
 import { CostList, CreatureStats, ScreenHeader } from '../components/game';
 import { heroesInTown, humanPlayer } from '../app/view';
+import { Icon } from '../assets/icons';
 
 function TrainingHint() {
   const store = useStore();
@@ -86,7 +87,7 @@ export function RecruitmentScreen() {
   );
   return (
     <div className="screen recruit-screen">
-      <ScreenHeader title={`Recruit — ${town.name}`} subtitle="Base and upgraded forms of a family share one weekly pool" />
+      <ScreenHeader title={`Recruit — ${town.name}`} />
       <div className="recruit-layout">
         <Panel title="Dwellings" className="recruit-tiers" bodyClassName="scroll">
           {dwellings.map((slot) => {
@@ -126,7 +127,22 @@ export function RecruitmentScreen() {
           })}
         </Panel>
 
-        <Panel title={def ? def.name : 'Choose a creature'} className="recruit-detail" bodyClassName="scroll">
+        <Panel
+          title={
+            def ? (
+              <span className="title-with-icon">
+                <button type="button" className="icon-link" onClick={() => store.goto('unit-detail', { creatureId: def.id })} aria-label={`Bestiary entry: ${def.name}`} title="Bestiary entry" data-testid="recruit-bestiary">
+                  <Icon name="bestiary" />
+                </button>
+                {def.name}
+              </span>
+            ) : (
+              'Choose a creature'
+            )
+          }
+          className="recruit-detail"
+          bodyClassName="scroll"
+        >
           {def ? (
             <>
               <div className="recruit-detail__top">
@@ -134,9 +150,6 @@ export function RecruitmentScreen() {
                 <div>
                   <div className="dim">{def.roleLabel}</div>
                   <CreatureStats def={def} />
-                  <Button size="small" variant="ghost" icon="bestiary" onClick={() => store.goto('unit-detail', { creatureId: def.id })}>
-                    Bestiary entry
-                  </Button>
                 </div>
               </div>
               {abilityRules(catalog, def.id).length || def.abilityIds.length ? (
@@ -190,9 +203,9 @@ export function RecruitmentScreen() {
           )}
         </Panel>
 
-        <Panel title="Train (upgrade) troops" className="recruit-upgrades" bodyClassName="scroll">
-          <p className="dim small">Training pays the price difference and uses no population. It requires the upgraded dwelling in this town.</p>
-          {upgradeRows.length === 0 ? <p className="dim small">No base-form stacks here to train.</p> : <TrainingHint />}
+        <Panel title="Upgrade troops" className="recruit-upgrades" bodyClassName="scroll">
+          <p className="dim small">Upgrading pays the price difference and uses no population. It requires the upgraded dwelling in this town.</p>
+          {upgradeRows.length === 0 ? <p className="dim small">No base-form stacks here to upgrade.</p> : <TrainingHint />}
           {upgradeRows.map((row) => (
             <UpgradeRow key={`${row.army.label}-${row.slot}`} townId={town.id} armyRef={row.army.ref} armyLabel={row.army.label} slot={row.slot} />
           ))}
@@ -229,7 +242,7 @@ function UpgradeRow({ townId, armyRef, armyLabel, slot }: { townId: string; army
           <div className="faint small">{armyLabel}</div>
         </div>
       </div>
-      <QuantitySelector label={`Train ${from.pluralName}`} value={q} min={1} max={max} onChange={setQty} />
+      <QuantitySelector label={`Upgrade ${from.pluralName}`} value={q} min={1} max={max} onChange={setQty} />
       <div className="row between">
         <CostList cost={quote.totalCost} wallet={state.players[playerId]?.wallet} />
         <Button
@@ -238,11 +251,11 @@ function UpgradeRow({ townId, armyRef, armyLabel, slot }: { townId: string; army
           disabled={!quote.legal}
           disabledReason={quote.reason}
           onClick={() => {
-            if (!store.dispatch({ kind: 'UpgradeStack', townId, army: armyRef, slot, quantity: q })) store.toast(`Trained ${q} ${to.pluralName}`, 'success');
+            if (!store.dispatch({ kind: 'UpgradeStack', townId, army: armyRef, slot, quantity: q })) store.toast(`Upgraded ${q} ${to.pluralName}`, 'success');
           }}
           data-testid={`train-${from.id}`}
         >
-          Train {q}
+          Upgrade {q}
         </Button>
       </div>
       {!quote.legal ? <div className="warn small">{quote.reason}</div> : null}

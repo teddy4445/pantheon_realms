@@ -608,17 +608,8 @@ NEW_DRUMS = {
 
 TRACKS = [
     Track('music_menu', root=50, mode='dorian', bpm=70, beats=4, bars=16, chords=[0, 6, 3, 0, 0, 4, 6, 3], seed=11, lyre='arp', lead='flute', lead_from=4, drums='soft', pad_bright=0.35, wet=0.4),
-    Track('music_explore_coast', root=57, mode='aeolian', bpm=84, beats=3, bars=24, chords=[0, 5, 2, 6, 0, 3, 4, 0], seed=21, lyre='arp', lead='flute', lead_from=8, drums='none', pad_bright=0.3, wet=0.38),
-    Track('music_explore_high_pass', root=52, mode='dorian', bpm=64, beats=4, bars=12, chords=[0, 0, 6, 3, 0, 4], seed=31, lyre='sparse', lead='flute', lead_from=2, drums='none', drone=True, pad_bright=0.2, wet=0.5),
-    Track('music_explore_storm_plateau', root=50, mode='phrygian', bpm=74, beats=4, bars=16, chords=[0, 1, 0, 6, 0, 1, 3, 1], seed=41, lyre='ostinato', lead='flute', lead_from=8, drums='storm', drone=True, pad_bright=0.25, wet=0.42),
     Track('music_battle', root=52, mode='phrygian', bpm=112, beats=4, bars=16, chords=[0, 1, 0, 6, 0, 1, 3, 4], seed=51, lyre='ostinato', lead='horn', lead_from=4, drums='battle', pad_bright=0.45, wet=0.3, level_db=-19.0),
     Track('music_resolution', root=55, mode='ionian', bpm=68, beats=4, bars=12, chords=[0, 3, 4, 0, 5, 3, 1, 4, 0, 3, 4, 0], seed=61, lyre='arp', lead='flute', lead_from=2, drums='none', pad_bright=0.45, wet=0.45),
-    # Campaign soundscapes (2026-10-03): Norse fjords, the Egyptian river desert, a Japanese shrine, a Celtic glen, a Mesoamerican jungle.
-    Track('music_explore_fjord', root=50, mode='aeolian', bpm=60, beats=4, bars=12, chords=[0, 5, 3, 6, 0, 3, 4, 0], seed=91, lyre='sparse', lead='horn', lead_from=4, drums='deep', drone=True, pad_bright=0.18, wet=0.55),
-    Track('music_explore_desert', root=52, mode='hijaz', bpm=88, beats=4, bars=16, chords=[0, 0, 1, 0, 6, 0, 1, 0], seed=125, lyre='ostinato', lead='reed', lead_from=4, drums='darbuka', drone=True, pad_bright=0.3, wet=0.35),
-    Track('music_explore_shrine', root=50, mode='miyako', bpm=62, beats=4, bars=12, chords=[0, 0, 3, 0, 2, 0], seed=106, lyre='koto', lead='shaku', lead_from=2, drums='taiko', pad_bright=0.22, wet=0.5),
-    Track('music_explore_glen', root=55, mode='mixolydian', bpm=100, beats=3, bars=24, chords=[0, 0, 6, 0, 3, 0, 6, 4], seed=110, lyre='harp', lead='whistle', lead_from=4, drums='bodhran', pad_bright=0.4, wet=0.36),
-    Track('music_explore_jungle', root=57, mode='minpent', bpm=92, beats=4, bars=16, chords=[0, 0, 2, 0, 3, 2, 0, 0], seed=95, lyre='sparse', lead='ocarina', lead_from=4, drums='log', pad_bright=0.28, wet=0.3),
 ]
 
 # --------------------------------------------------------------------------- stingers
@@ -1485,11 +1476,8 @@ def music(tr: Track):
 CATALOGUE = [
     # Music (production/04 §7 minimum set) and stingers
     S('music.menu', 'music', 'music', music(TRACKS[0]), gain=0.9, stereo=True, quality=3),
-    S('music.explore.coast', 'music', 'music', music(TRACKS[1]), gain=0.85, stereo=True, quality=3),
-    S('music.explore.high_pass', 'music', 'music', music(TRACKS[2]), gain=0.85, stereo=True, quality=3),
-    S('music.explore.storm_plateau', 'music', 'music', music(TRACKS[3]), gain=0.85, stereo=True, quality=3),
-    S('music.battle', 'music', 'music', music(TRACKS[4]), gain=0.8, stereo=True, quality=3),
-    S('music.resolution', 'music', 'music', music(TRACKS[5]), gain=0.9, stereo=True, quality=3),
+    S('music.battle', 'music', 'music', music(TRACKS[1]), gain=0.8, stereo=True, quality=3),
+    S('music.resolution', 'music', 'music', music(TRACKS[2]), gain=0.9, stereo=True, quality=3),
     S('stinger.victory', 'stinger', 'music', lambda r: stinger_victory(), stereo=True, cooldown_ms=4000, max_voices=1),
     S('stinger.defeat', 'stinger', 'music', lambda r: stinger_defeat(), stereo=True, cooldown_ms=4000, max_voices=1),
     S('stinger.levelup', 'stinger', 'music', lambda r: stinger_levelup(), stereo=True, cooldown_ms=2500, max_voices=1),
@@ -1541,11 +1529,6 @@ CATALOGUE = [
     S('combat.moat', 'effect', 'combat', sfx_moat, gain=0.55, max_voices=1),
     # --- Added 2026-10-03 (appended so earlier sounds keep their seeds) ---
     # Campaign soundscapes: The Winter Oath (fjord), the Egyptian (desert), Japanese (shrine), Celtic (glen) and Mesoamerican (jungle) campaigns.
-    S('music.explore.fjord', 'music', 'music', music(TRACKS[6]), gain=0.85, stereo=True, quality=3),
-    S('music.explore.desert', 'music', 'music', music(TRACKS[7]), gain=0.85, stereo=True, quality=3),
-    S('music.explore.shrine', 'music', 'music', music(TRACKS[8]), gain=0.85, stereo=True, quality=3),
-    S('music.explore.glen', 'music', 'music', music(TRACKS[9]), gain=0.85, stereo=True, quality=3),
-    S('music.explore.jungle', 'music', 'music', music(TRACKS[10]), gain=0.85, stereo=True, quality=3),
     S('amb.fjord', 'ambience', 'ambience', lambda r: amb_fjord(), stereo=True, quality=2),
     S('amb.desert', 'ambience', 'ambience', lambda r: amb_desert(), stereo=True, quality=2),
     S('amb.shrine', 'ambience', 'ambience', lambda r: amb_shrine(), stereo=True, quality=2),
@@ -1598,6 +1581,9 @@ def main():
     args = ap.parse_args()
     only = set(filter(None, args.only.split(',')))
     os.makedirs(OUT_DIR, exist_ok=True)
+    # Final audio (tools/audio/import_music.py, import_sounds.py) keeps its entries and needs no placeholder file.
+    previous = json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else {'sounds': []}
+    final_ids = {e['id'] for e in previous.get('sounds', []) if e.get('status') == 'final'}
     entries = []
     for i, s in enumerate(CATALOGUE):
         base = s.id.replace('.', '_')
@@ -1606,7 +1592,7 @@ def main():
             name = f'{base}.ogg' if s.variants == 1 else f'{base}_{v + 1}.ogg'
             rel = f'audio/placeholder/{name}'
             files.append(rel)
-            if only and s.id not in only:
+            if (only and s.id not in only) or s.id in final_ids:
                 continue
             rng = np.random.default_rng(1000 + i * 17 + v)
             sig = s.make(rng)
@@ -1630,7 +1616,6 @@ def main():
             e['pitchJitterCents'] = s.pitch_jitter
         entries.append(e)
     # Final audio (e.g. the map music of tools/audio/import_music.py) keeps its entries (2026-10-04).
-    previous = json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else {'sounds': []}
     finals = {e['id']: e for e in previous.get('sounds', []) if e.get('status') == 'final'}
     entries = [finals.pop(e['id'], e) for e in entries] + list(finals.values())
     manifest = {

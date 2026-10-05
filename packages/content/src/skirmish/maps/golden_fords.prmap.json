@@ -1,0 +1,518 @@
+{
+ "format": "pantheon-realms-map",
+ "version": 1,
+ "name": "The Golden Fords",
+ "description": "A rich autumn valley between two rivers. Three guarded fords cross each river into the fields between them, full of mines and mills. Twice the usual treasury and a revealed map: a fast, open game.",
+ "author": "Pantheon Realms",
+ "width": 52,
+ "height": 30,
+ "terrain": "vvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvmmmppppppffpppwwppppppppffwwppfppppfpmvvvvvvvvvvvvvvmmppppppffpppwwpppppppppfwwppffprppfrmvvvvvvvvvvvvvmmmppppppfppppwwppppppppffwwppfprrpppmvvvvvvvvvvvvvvmmprrrrppppppwwppppppppppwwppppprppppmvvvvvvvvvvvvvmmmrrrpppppppwwfpppppppppwwppppprrpppmvvvvvvvvvvvvvvmmprrppppppppppppppppppppppppppprpppfmvvvvvvvvvvvvvmmmppppppfpppwwppppppppppwwffpppppppfmvvvvvvvvvvvvvvmmpffpppffppwwpppppfppppwwffppppppfffmvvvvvvvvvvvvvmmmpfpppppppwwppppppppppwwfffppppppffmvvvvvvvvvvvvvvmmppppppppppwwfpppppppppwwfffpppppfffmvvvvvvvvvvvvvmmmprrrrrrppwwffppppppppwwpffprrpffppmvvvvvvvvvvvvvvmmpprrprrpppwwppppppppppwwfffrrfpfffpmvvvvvvvvvvvvvmmmpfppppffffwwppppppppppwwffffppppffmvvvvvvvvvvvvvvmmpffpppffffpppppppppppppppffffpppffpmvvvvvvvvvvvvvmmmffppppffffwwppppppppppwwffffppppfpmvvvvvvvvvvvvvvmmpfffpfrrfffwwppppppppppwwppprrprrppmvvvvvvvvvvvvvmmmppffprrpffpwwppppppppffwwpprrrrrrpmvvvvvvvvvvvvvvmmfffpppppfffwwpppppppppfwwppppppppppmvvvvvvvvvvvvvmmmffppppppfffwwppppppppppwwpppppppfpmvvvvvvvvvvvvvvmmfffppppppffwwppppfpppppwwppffpppffpmvvvvvvvvvvvvvmmmfpppppppffwwppppppppppwwpppfppppppmvvvvvvvvvvvvvvmmfppprppppppppppppppppppppppppppprrpmvvvvvvvvvvvvvmmmppprrpppppwwpppppppppfwwppppppprrrmvvvvvvvvvvvvvvmmpppprpppppwwppppppppppwwpppppprrrrpmvvvvvvvvvvvvvmmmppprrpfppwwffppppppppwwppppfppppppmvvvvvvvvvvvvvvmmrfpprpffppwwfpppppppppwwpppffppppppmvvvvvvvvvvvvvmmmpfppppfppwwffppppppppwwpppffppppppmvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvv",
+ "roads": [
+  "10,19|11,18",
+  "11,18|11,19",
+  "11,18|12,17",
+  "11,19|11,20",
+  "11,20|11,21",
+  "11,21|11,22",
+  "11,22|11,23",
+  "11,23|11,24",
+  "11,23|12,23",
+  "11,24|11,25",
+  "12,17|13,16",
+  "12,23|13,23",
+  "13,15|14,15",
+  "13,16|14,15",
+  "13,23|14,23",
+  "14,10|14,11",
+  "14,11|14,12",
+  "14,12|14,13",
+  "14,12|15,11",
+  "14,13|14,14",
+  "14,14|14,15",
+  "14,15|15,14",
+  "14,15|15,15",
+  "14,23|15,23",
+  "14,8|14,9",
+  "14,9|14,10",
+  "15,11|16,10",
+  "15,14|16,13",
+  "15,15|16,15",
+  "15,23|16,23",
+  "16,10|17,9",
+  "16,13|17,12",
+  "16,13|17,13",
+  "16,15|17,15",
+  "16,23|17,23",
+  "17,12|18,11",
+  "17,13|18,12",
+  "17,15|18,15",
+  "17,23|18,23",
+  "17,9|18,8",
+  "18,11|19,10",
+  "18,12|19,11",
+  "18,15|19,15",
+  "18,8|19,7",
+  "19,10|20,9",
+  "19,15|20,15",
+  "19,7|20,6",
+  "20,15|21,15",
+  "20,6|21,5",
+  "20,9|21,8",
+  "21,15|22,15",
+  "21,8|22,7",
+  "22,15|23,14",
+  "22,15|23,15",
+  "22,7|23,7",
+  "23,14|24,13",
+  "23,15|24,15",
+  "23,7|24,7",
+  "24,15|25,15",
+  "24,7|25,7",
+  "25,15|26,15",
+  "25,21|25,22",
+  "25,22|25,23",
+  "25,23|26,23",
+  "25,7|26,7",
+  "26,15|27,15",
+  "26,23|27,23",
+  "26,7|27,7",
+  "27,15|28,15",
+  "27,23|28,23",
+  "27,7|27,8",
+  "27,8|27,9",
+  "28,15|29,15",
+  "28,17|29,16",
+  "28,23|29,23",
+  "29,15|30,15",
+  "29,16|30,15",
+  "29,23|30,23",
+  "30,15|31,15",
+  "30,23|31,22",
+  "31,15|32,15",
+  "31,22|32,21",
+  "31,25|32,24",
+  "32,15|33,15",
+  "32,21|33,20",
+  "32,24|33,23",
+  "33,15|34,15",
+  "33,19|34,18",
+  "33,20|34,19",
+  "33,23|34,22",
+  "34,15|35,15",
+  "34,18|35,17",
+  "34,19|35,18",
+  "34,22|35,21",
+  "34,7|35,7",
+  "35,15|36,15",
+  "35,17|36,17",
+  "35,18|36,17",
+  "35,21|36,20",
+  "35,7|36,7",
+  "36,15|37,15",
+  "36,17|37,16",
+  "36,20|37,19",
+  "36,7|37,7",
+  "37,15|38,15",
+  "37,16|38,15",
+  "37,19|38,18",
+  "37,7|38,7",
+  "38,15|38,16",
+  "38,15|39,14",
+  "38,15|39,15",
+  "38,16|38,17",
+  "38,17|38,18",
+  "38,18|38,19",
+  "38,19|38,20",
+  "38,20|38,21",
+  "38,21|38,22",
+  "38,7|39,7",
+  "39,14|40,13",
+  "39,7|40,7",
+  "40,13|41,12",
+  "40,7|41,7",
+  "41,10|41,11",
+  "41,11|41,12",
+  "41,12|42,11",
+  "41,5|41,6",
+  "41,6|41,7",
+  "41,7|41,8",
+  "41,8|41,9",
+  "41,9|41,10",
+  "42,11|43,10",
+  "43,10|44,9",
+  "44,9|45,8",
+  "7,22|8,21",
+  "8,21|9,20",
+  "9,20|10,19"
+ ],
+ "biome": "autumn",
+ "players": [
+  {
+   "pantheonId": "greek"
+  },
+  {
+   "pantheonId": "egyptian"
+  }
+ ],
+ "sites": [
+  {
+   "id": "camp_1",
+   "kind": "creature_camp",
+   "q": 9,
+   "r": 18,
+   "creatureId": "hill_slinger",
+   "name": "Slingers’ Lodge"
+  },
+  {
+   "id": "camp_2",
+   "kind": "creature_camp",
+   "q": 43,
+   "r": 12,
+   "creatureId": "hill_slinger",
+   "name": "Slingers’ Lodge"
+  },
+  {
+   "id": "chest_1",
+   "kind": "treasure_chest",
+   "q": 5,
+   "r": 26
+  },
+  {
+   "id": "chest_2",
+   "kind": "treasure_chest",
+   "q": 47,
+   "r": 4
+  },
+  {
+   "id": "crystal_1",
+   "kind": "crystal_deposit",
+   "q": 11,
+   "r": 25,
+   "guard": {
+    "creatureId": "brigand",
+    "count": 20,
+    "label": "Hedge brigands"
+   }
+  },
+  {
+   "id": "crystal_2",
+   "kind": "crystal_deposit",
+   "q": 41,
+   "r": 5,
+   "guard": {
+    "creatureId": "brigand",
+    "count": 20,
+    "label": "Hedge brigands"
+   }
+  },
+  {
+   "id": "ford_c_1",
+   "kind": "monster",
+   "q": 20,
+   "r": 15,
+   "name": "Golden Ford",
+   "guard": {
+    "creatureId": "centaur",
+    "count": 13,
+    "label": "Ford keepers"
+   }
+  },
+  {
+   "id": "ford_c_2",
+   "kind": "monster",
+   "q": 32,
+   "r": 15,
+   "name": "Golden Ford",
+   "guard": {
+    "creatureId": "centaur",
+    "count": 13,
+    "label": "Ford keepers"
+   }
+  },
+  {
+   "id": "ford_n_1",
+   "kind": "monster",
+   "q": 24,
+   "r": 7,
+   "name": "North Ford",
+   "guard": {
+    "creatureId": "brigand",
+    "count": 40,
+    "label": "Ford brigands"
+   }
+  },
+  {
+   "id": "ford_n_2",
+   "kind": "monster",
+   "q": 28,
+   "r": 23,
+   "name": "North Ford",
+   "guard": {
+    "creatureId": "brigand",
+    "count": 40,
+    "label": "Ford brigands"
+   }
+  },
+  {
+   "id": "ford_s_1",
+   "kind": "monster",
+   "q": 16,
+   "r": 23,
+   "name": "South Ford",
+   "guard": {
+    "creatureId": "wild_boar",
+    "count": 22,
+    "label": "River boars"
+   }
+  },
+  {
+   "id": "ford_s_2",
+   "kind": "monster",
+   "q": 36,
+   "r": 7,
+   "name": "South Ford",
+   "guard": {
+    "creatureId": "wild_boar",
+    "count": 22,
+    "label": "River boars"
+   }
+  },
+  {
+   "id": "gold_1",
+   "kind": "gold_mine",
+   "q": 21,
+   "r": 5
+  },
+  {
+   "id": "gold_2",
+   "kind": "gold_mine",
+   "q": 31,
+   "r": 25
+  },
+  {
+   "id": "horn",
+   "kind": "artifact",
+   "q": 26,
+   "r": 15,
+   "name": "The Horn of Plenty",
+   "reward": {
+    "artifactId": "cornucopia"
+   },
+   "guard": {
+    "creatureId": "basilisk",
+    "count": 4,
+    "more": [
+     {
+      "creatureId": "ogre",
+      "count": 6
+     }
+    ],
+    "label": "Keepers of the Horn"
+   },
+   "text": "The Horn of Plenty rests on the harvest altar between the rivers, watched by its keepers."
+  },
+  {
+   "id": "mid_camp_1",
+   "kind": "creature_camp",
+   "q": 24,
+   "r": 13,
+   "creatureId": "centaur",
+   "name": "Centaur Camp"
+  },
+  {
+   "id": "mid_camp_2",
+   "kind": "creature_camp",
+   "q": 28,
+   "r": 17,
+   "creatureId": "centaur",
+   "name": "Centaur Camp"
+  },
+  {
+   "id": "mid_chest_1",
+   "kind": "treasure_chest",
+   "q": 25,
+   "r": 20,
+   "guard": {
+    "creatureId": "wild_boar",
+    "count": 12,
+    "label": "Orchard boars"
+   }
+  },
+  {
+   "id": "mid_chest_2",
+   "kind": "treasure_chest",
+   "q": 27,
+   "r": 10,
+   "guard": {
+    "creatureId": "wild_boar",
+    "count": 12,
+    "label": "Orchard boars"
+   }
+  },
+  {
+   "id": "mid_crystal_1",
+   "kind": "crystal_deposit",
+   "q": 19,
+   "r": 24,
+   "guard": {
+    "creatureId": "clay_golem",
+    "count": 9,
+    "label": "Clay golems"
+   }
+  },
+  {
+   "id": "mid_crystal_2",
+   "kind": "crystal_deposit",
+   "q": 33,
+   "r": 6,
+   "guard": {
+    "creatureId": "clay_golem",
+    "count": 9,
+    "label": "Clay golems"
+   }
+  },
+  {
+   "id": "mid_gold_1",
+   "kind": "gold_mine",
+   "q": 27,
+   "r": 9,
+   "name": "Golden Mine",
+   "guard": {
+    "creatureId": "ogre",
+    "count": 7,
+    "label": "Mine ogres"
+   }
+  },
+  {
+   "id": "mid_gold_2",
+   "kind": "gold_mine",
+   "q": 25,
+   "r": 21,
+   "name": "Golden Mine",
+   "guard": {
+    "creatureId": "ogre",
+    "count": 7,
+    "label": "Mine ogres"
+   }
+  },
+  {
+   "id": "mid_mill_1",
+   "kind": "windmill",
+   "q": 29,
+   "r": 4,
+   "name": "Golden Mill"
+  },
+  {
+   "id": "mid_mill_2",
+   "kind": "windmill",
+   "q": 23,
+   "r": 26,
+   "name": "Golden Mill"
+  },
+  {
+   "id": "mid_sawmill_1",
+   "kind": "sawmill",
+   "q": 22,
+   "r": 18
+  },
+  {
+   "id": "mid_sawmill_2",
+   "kind": "sawmill",
+   "q": 30,
+   "r": 12
+  },
+  {
+   "id": "mid_stone_1",
+   "kind": "learning_stone",
+   "q": 33,
+   "r": 5
+  },
+  {
+   "id": "mid_stone_2",
+   "kind": "learning_stone",
+   "q": 19,
+   "r": 25
+  },
+  {
+   "id": "quarry_1",
+   "kind": "quarry",
+   "q": 7,
+   "r": 22
+  },
+  {
+   "id": "quarry_2",
+   "kind": "quarry",
+   "q": 45,
+   "r": 8
+  },
+  {
+   "id": "sawmill_1",
+   "kind": "sawmill",
+   "q": 14,
+   "r": 8
+  },
+  {
+   "id": "sawmill_2",
+   "kind": "sawmill",
+   "q": 38,
+   "r": 22
+  },
+  {
+   "id": "shrine_1",
+   "kind": "spell_shrine",
+   "q": 11,
+   "r": 12,
+   "spellId": "blessing"
+  },
+  {
+   "id": "shrine_2",
+   "kind": "spell_shrine",
+   "q": 41,
+   "r": 18,
+   "spellId": "blessing"
+  },
+  {
+   "id": "stone_1",
+   "kind": "learning_stone",
+   "q": 14,
+   "r": 20
+  },
+  {
+   "id": "stone_2",
+   "kind": "learning_stone",
+   "q": 38,
+   "r": 10
+  },
+  {
+   "id": "town_1",
+   "kind": "town",
+   "q": 13,
+   "r": 15,
+   "owner": 0
+  },
+  {
+   "id": "town_2",
+   "kind": "town",
+   "q": 39,
+   "r": 15,
+   "owner": 1
+  },
+  {
+   "id": "windmill_1",
+   "kind": "windmill",
+   "q": 19,
+   "r": 11
+  },
+  {
+   "id": "windmill_2",
+   "kind": "windmill",
+   "q": 33,
+   "r": 19
+  }
+ ],
+ "victory": {
+  "type": "elimination"
+ },
+ "startWealth": "high",
+ "revealMap": true
+}

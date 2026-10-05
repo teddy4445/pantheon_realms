@@ -27,6 +27,18 @@ export interface SaveRepository {
   importSave(): Promise<string | null>;
 }
 
+/** The player's custom maps (map editor, 2026-10-05): a small library plus file export/import. */
+export interface MapFiles {
+  list(): Promise<{ id: string; bytes: number }[]>;
+  read(id: string): Promise<string | null>;
+  write(id: string, text: string): Promise<void>;
+  remove(id: string): Promise<void>;
+  /** Save a map to a user-chosen file (a download in the browser). */
+  exportFile(text: string, suggestedName: string): Promise<boolean>;
+  /** Pick a map file; returns its text for validation (untrusted), or null when cancelled. */
+  importFile(): Promise<string | null>;
+}
+
 export interface PreferencesStore {
   load(): Promise<string | null>;
   save(text: string): Promise<void>;
@@ -38,6 +50,8 @@ export interface PlatformServices {
   readonly kind: 'browser' | 'desktop';
   readonly appVersion: string;
   readonly saves: SaveRepository;
+  /** Custom maps made in the map editor. */
+  readonly maps: MapFiles;
   readonly preferences: PreferencesStore;
   /** Player records (high-score table), kept apart from saves and preferences. */
   readonly records: PreferencesStore;
@@ -58,6 +72,12 @@ export interface DesktopBridge {
   deleteSave(id: string): Promise<void>;
   exportSave(id: string, suggestedName: string): Promise<boolean>;
   importSave(): Promise<string | null>;
+  listMaps(): Promise<{ id: string; bytes: number }[]>;
+  readMap(id: string): Promise<string | null>;
+  writeMap(id: string, text: string): Promise<void>;
+  deleteMap(id: string): Promise<void>;
+  exportMap(text: string, suggestedName: string): Promise<boolean>;
+  importMap(): Promise<string | null>;
   readPreferences(): Promise<string | null>;
   writePreferences(text: string): Promise<void>;
   readRecords(): Promise<string | null>;

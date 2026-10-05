@@ -18508,6 +18508,22 @@
    "status": "final",
    "provenance": "Generated magic/Favor VFX phase, imported with full fx asset ID.",
    "additive": false
+  },
+  "fx.god.commit": {
+   "file": "sprites/final/effects/fx.god.commit.webp",
+   "frames": 10,
+   "frameWidth": 128,
+   "frameHeight": 128,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.62
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Magic and Favor VFX phase (VFX_MAGIC_AND_FAVORS.md), imported by `npm run sprites:import` with its full asset ID.",
+   "additive": false
   }
  }
 }

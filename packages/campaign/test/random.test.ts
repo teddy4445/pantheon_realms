@@ -144,6 +144,10 @@ describe('random map types and settings (generator 0.2)', () => {
         [3, 'medium', 11],
         [4, 'large', 29],
       ] as const) {
+        if (t.maxEmpires && n > t.maxEmpires) {
+          expect(() => createRandomSkirmish(catalog, opts(n, size, seed, { mapType: t.id }))).toThrow();
+          continue;
+        }
         const g = createRandomSkirmish(catalog, opts(n, size, seed, { mapType: t.id }));
         for (const c of g.checks) expect(c.pass, `${t.id} ${n}/${size}: ${c.id}: ${c.detail}`).toBe(true);
         expect(validateGeneratedMission(catalog, g.mission).issues).toEqual([]);
@@ -152,8 +156,8 @@ describe('random map types and settings (generator 0.2)', () => {
     });
   }
 
-  it('highlands and crossroads keep the center behind guarded openings (SKM-6)', () => {
-    for (const mapType of ['highlands', 'crossroads'] as const) {
+  it('highlands, crossroads and the central valley keep the center behind guarded openings (SKM-6)', () => {
+    for (const mapType of ['highlands', 'crossroads', 'central_valley'] as const) {
       const g = createRandomSkirmish(catalog, opts(2, 'medium', 8, { mapType }));
       const skm6 = g.checks.find((c) => c.id === 'SKM-6');
       expect(skm6?.pass, skm6?.detail).toBe(true);

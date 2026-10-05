@@ -17,6 +17,8 @@ Story art (Brief 1):
   ending.<campaign>.<ending>.png         -> art/endings/<id>.webp
   mission.<campaign>.<mNN>.thumbnail.png -> art/missions/mission.<campaign>.<mNN>.briefing.webp (briefing art)
                                           + art/cards/<id>.webp (640 x 360 card)
+  mission.skirmish.<map>.thumbnail.png   -> the same pair for an authored skirmish map (Brief 14: the
+                                            picture in the skirmish list and the map's detail panel)
 Ground and sky (Brief 2):
   terrain.<climate>.<ground>.png         -> art/terrain/<id>.webp, at most 1024 x 1024 (a power of two
                                             for mipmaps), with its average colour and wrap mode
@@ -94,6 +96,7 @@ PATTERNS = [
     ('cover', re.compile(r'^campaign\.[a-z_]+\.cover$')),
     ('ending', re.compile(r'^ending\.[a-z_]+\.[a-z_]+$')),
     ('mission', re.compile(r'^mission\.[a-z_]+\.(m\d\d|twin_harbors|random)\.thumbnail$')),
+    ('mission', re.compile(r'^mission\.skirmish\.[a-z_]+\.thumbnail$')),   # authored skirmish maps (Brief 14)
     ('terrain', re.compile(r'^terrain\.[a-z_]+\.(plains|forest|rough|marsh|mountain|water)$')),
     ('battlefield', re.compile(r'^battlefield\.[a-z_]+\.ground(\.[a-z_]+)?$')),
     ('sky', re.compile(r'^sky\.[a-z_]+$')),
@@ -231,6 +234,9 @@ def self_test():
         'town.greek.support.civic_hall.l2': 'building',
         'town.norse.dwelling.tier7.upgraded': 'building',
         'town.celtic.background': 'background',
+        'mission.skirmish.frostgate.thumbnail': 'mission',
+        'mission.skirmish.six_thrones.thumbnail': 'mission',
+        'mission.skirmish.frostgate.briefing': None,
         'story.herald.portrait': None,
         'story.someone.bust': None,
         'town.greek.dwelling.tier8.base': None,

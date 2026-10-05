@@ -7,8 +7,9 @@
  */
 import { GameDriver } from '@pr/testing';
 import { armyStrength, runAITurn } from '@pr/ai';
-import { createGeneratedMatch, createMissionMatch, createRandomSkirmish } from '@pr/campaign';
+import { compileSkirmishMap, createGeneratedMatch, createMissionMatch, createRandomSkirmish, type GeneratedScenario } from '@pr/campaign';
 import type { ContentCatalog, MatchState } from '@pr/rules';
+import type { SkirmishMapSize, SkirmishMapType } from '@pr/mapgen';
 
 export type Army = { creatureId: string; count: number }[];
 
@@ -268,6 +269,11 @@ export interface RandomOptions {
   readonly maxDay?: number;
   /** Pantheon AI temperaments (default on, as in the game). */
   readonly temperaments?: boolean;
+  /** One pantheon per seat instead of `pantheon` everywhere (the one-against-one suite). */
+  readonly seatPantheons?: readonly string[];
+  /** Map type (default continental) and size (default small). */
+  readonly mapType?: SkirmishMapType;
+  readonly size?: SkirmishMapSize;
 }
 
 export interface RandomResult {
@@ -282,19 +288,38 @@ export interface RandomResult {
   readonly knockedOut: readonly { readonly seat: number; readonly day: number }[];
   readonly day: number;
   readonly battles: number;
+  /** Per seat on the morning of day 15 (diagnostics for tuning): army strength, building levels, gods, gold, heroes. */
+  readonly snapshot?: readonly { readonly army: number; readonly buildings: number; readonly gods: readonly string[]; readonly gold: number; readonly heroes: number; readonly towns: number }[];
 }
 
 /** One all-AI match on a generated symmetric map (small, few monsters, last empire standing). */
 export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomResult {
+  const seatPantheons = o.seatPantheons ?? Array.from({ length: o.empires }, () => o.pantheon);
   const g = createRandomSkirmish(catalog, {
     seed: 8000 + o.seed,
-    size: 'small',
-    seats: Array.from({ length: o.empires }, () => ({ pantheonId: o.pantheon, controller: 'ai' as const })),
+    size: o.size ?? 'small',
+    mapType: o.mapType,
+    seats: seatPantheons.map((pantheonId) => ({ pantheonId, controller: 'ai' as const })),
     victory: { type: 'elimination' },
     monsters: 'few',
     aiTemperaments: o.temperaments !== false,
   });
-  const { match } = createGeneratedMatch(catalog, g, { matchId: `rand-${o.pantheon}-${o.empires}-${o.seed}` });
+  return playGenerated(catalog, g, `rand-${seatPantheons.join('-')}-${o.mapType ?? 'continental'}-${o.seed}`, { pantheon: o.pantheon, empires: o.empires, seed: o.seed, maxDay: o.maxDay });
+}
+
+/** One all-AI match on an authored skirmish map (catalog `skirmishMaps`), one pantheon per seat. */
+export function playMap(catalog: ContentCatalog, o: { readonly mapId: string; readonly seatPantheons: readonly string[]; readonly seed: number; readonly maxDay?: number }): RandomResult & { readonly holdWin: boolean } {
+  const g = compileSkirmishMap(
+    catalog,
+    o.mapId,
+    o.seatPantheons.map((pantheonId) => ({ pantheonId, controller: 'ai' as const })),
+  );
+  const r = playGenerated(catalog, g, `map-${o.mapId}-${o.seatPantheons.join('-')}-${o.seed}`, { pantheon: o.seatPantheons[0]!, empires: o.seatPantheons.length, seed: o.seed, maxDay: o.maxDay });
+  return { ...r, holdWin: r.holdWin ?? false };
+}
+
+function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, matchId: string, o: { pantheon: string; empires: number; seed: number; maxDay?: number }): RandomResult & { holdWin?: boolean } {
+  const { match } = createGeneratedMatch(catalog, g, { matchId });
   const d = new GameDriver(match, catalog);
   const maxDay = o.maxDay ?? 40;
   let battles = 0;
@@ -304,7 +329,27 @@ export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomRes
   const seats = [g.mission.player.playerId, ...(g.mission.rivals ?? []).map((r) => r.playerId)];
   const knockedOut: { seat: number; day: number }[] = [];
   const present = (id: string) => Object.values(d.state.towns).some((t) => t.ownerId === id) || Object.values(d.state.heroes).some((h) => h.ownerId === id && h.status === 'active');
+  const strengthOf = (id: string) => {
+    let total = 0;
+    for (const h of Object.values(d.state.heroes)) if (h.ownerId === id && h.status === 'active') total += armyStrength(catalog, h.army.slots.map((x) => (x ? { creatureId: x.creatureId, count: x.count } : null)));
+    for (const t of Object.values(d.state.towns)) if (t.ownerId === id) total += armyStrength(catalog, t.garrison.slots.map((x) => (x ? { creatureId: x.creatureId, count: x.count } : null)));
+    return total;
+  };
+  let snapshot: RandomResult['snapshot'];
   for (let i = 0; i < 4000 && d.state.outcome.status === 'running' && d.state.day <= maxDay; i++) {
+    if (!snapshot && d.state.day >= 15)
+      snapshot = seats.map((id) => {
+        const p = d.state.players[id]!;
+        const towns = Object.values(d.state.towns).filter((t) => t.ownerId === id);
+        return {
+          army: Math.round(strengthOf(id)),
+          buildings: towns.reduce((n, t) => n + Object.values(t.buildings).reduce((a, b) => a + b, 0), 0),
+          gods: [p.pantheon.patronGodId ?? '', ...p.pantheon.minorGodIds].filter(Boolean),
+          gold: p.wallet.gold ?? 0,
+          heroes: Object.values(d.state.heroes).filter((h) => h.ownerId === id && h.status === 'active').length,
+          towns: towns.length,
+        };
+      });
     d.state = runAITurn(catalog, d.state, { onEvents });
     if (d.state.battle) d.autoBattle(8000);
     seats.forEach((id, s) => {
@@ -323,5 +368,7 @@ export function playRandom(catalog: ContentCatalog, o: RandomOptions): RandomRes
     const order = strength.map((v, i) => [v, i] as const).sort((a, b) => b[0] - a[0]);
     if (order.length > 1 && order[0]![0] >= order[1]![0] * 1.25) pointsSeat = order[0]![1];
   }
-  return { pantheon: o.pantheon, empires: o.empires, seed: o.seed, winnerSeat: w ? seats.indexOf(w) : null, pointsSeat, knockedOut, day: d.state.day, battles };
+  // A hold-the-shrine win: the winner still had rivals standing.
+  const holdWin = !!w && seats.some((id) => id !== w && present(id));
+  return { pantheon: o.pantheon, empires: o.empires, seed: o.seed, winnerSeat: w ? seats.indexOf(w) : null, pointsSeat, knockedOut, day: d.state.day, battles, snapshot, holdWin };
 }

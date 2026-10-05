@@ -158,6 +158,7 @@ describe('hero specialties', () => {
   it('resource specialists add their daily income while in play', () => {
     const d = driverFor(FULL_SEED);
     const h = d.state.heroes[leader(d.state).id]!;
+    h.definitionId = 'perseus'; // a spell specialist (the random-map leader may already be Odysseus)
     const before = projectedIncome({ catalog, state: d.state }, 'player').gold;
     h.definitionId = 'odysseus';
     expect(projectedIncome({ catalog, state: d.state }, 'player').gold).toBe(before + 250);

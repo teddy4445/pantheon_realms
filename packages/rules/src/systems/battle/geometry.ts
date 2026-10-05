@@ -5,7 +5,6 @@
  * legal at every step (ground) or at the landing (flight). Distances use the
  * minimum distance between occupied cells.
  */
-import type { BattleStackId } from '../../ids';
 import { cellDistance, cellKey, cellNeighbors, footprintDistance, type BattleCell } from '../../core/hex';
 import type { ContentCatalog } from '../../definitions/catalog';
 import type { BattleStackState, BattleState } from '../../state/match';
@@ -117,10 +116,6 @@ export function meleeOptions(
     if (footprintDistance(stackCells(catalog, stack, node.cell), targetCells) === 1) out.push({ from: node.cell, distance: node.dist });
   }
   return out.sort((a, b) => a.distance - b.distance || a.from.row - b.from.row || a.from.col - b.from.col);
-}
-
-export function stackById(battle: BattleState, id: BattleStackId): BattleStackState | undefined {
-  return battle.stacks[id];
 }
 
 /** Minimum occupied-cell distance between two stacks. */

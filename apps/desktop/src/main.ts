@@ -51,6 +51,24 @@ function savesDir(): string {
   return path.join(app.getPath('userData'), 'saves');
 }
 
+function mapsDir(): string {
+  return path.join(app.getPath('userData'), 'maps');
+}
+
+/** Custom maps are small JSON documents; anything larger is not a map. */
+const MAX_MAP_BYTES = 4 * 1024 * 1024;
+
+function mapFile(id: unknown): string {
+  if (typeof id !== 'string' || !SAVE_ID.test(id)) throw new Error('Invalid map identifier');
+  return path.join(mapsDir(), `${id}.prmap.json`);
+}
+
+function requireMapText(text: unknown): string {
+  if (typeof text !== 'string') throw new Error('Invalid payload');
+  if (Buffer.byteLength(text, 'utf8') > MAX_MAP_BYTES) throw new Error('Map too large');
+  return text;
+}
+
 function prefsFile(): string {
   return path.join(app.getPath('userData'), 'preferences.json');
 }
@@ -154,6 +172,48 @@ function registerIpc(): void {
     const st = await fs.stat(file);
     if (st.size > MAX_SAVE_BYTES) throw new Error('File too large');
     return fs.readFile(file, 'utf8'); // validated as untrusted data by the renderer's SaveValidator
+  });
+  // Custom maps (map editor): a library in the app's data folder plus file export/import.
+  handle('pr:listMaps', async () => {
+    await fs.mkdir(mapsDir(), { recursive: true });
+    const out: { id: string; bytes: number }[] = [];
+    for (const n of await fs.readdir(mapsDir())) {
+      if (!n.endsWith('.prmap.json')) continue;
+      const id = n.slice(0, -'.prmap.json'.length);
+      if (!SAVE_ID.test(id)) continue;
+      const st = await fs.stat(path.join(mapsDir(), n));
+      out.push({ id, bytes: st.size });
+    }
+    return out.sort((a, b) => (a.id < b.id ? -1 : 1));
+  });
+  handle('pr:readMap', async (id) => {
+    try {
+      return await fs.readFile(mapFile(id), 'utf8');
+    } catch {
+      return null;
+    }
+  });
+  handle('pr:writeMap', async (id, text) => atomicWrite(mapFile(id), requireMapText(text)));
+  handle('pr:deleteMap', async (id) => {
+    const file = mapFile(id);
+    await fs.rm(file, { force: true });
+    await fs.rm(`${file}.bak`, { force: true });
+  });
+  handle('pr:exportMap', async (text, suggested) => {
+    const body = requireMapText(text);
+    const name = typeof suggested === 'string' ? suggested.replace(/[^A-Za-z0-9 _-]/g, '').slice(0, 64) || 'map' : 'map';
+    const res = await dialog.showSaveDialog(mainWindow!, { defaultPath: `${name}.prmap.json`, filters: [{ name: 'Pantheon Realms map', extensions: ['json'] }] });
+    if (res.canceled || !res.filePath) return false;
+    await fs.writeFile(res.filePath, body, 'utf8');
+    return true;
+  });
+  handle('pr:importMap', async () => {
+    const res = await dialog.showOpenDialog(mainWindow!, { properties: ['openFile'], filters: [{ name: 'Pantheon Realms map', extensions: ['json'] }] });
+    const file = res.filePaths[0];
+    if (res.canceled || !file) return null;
+    const st = await fs.stat(file);
+    if (st.size > MAX_MAP_BYTES) throw new Error('File too large');
+    return fs.readFile(file, 'utf8'); // validated as untrusted data by the renderer (parseCustomMap)
   });
   handle('pr:readPreferences', async () => {
     try {

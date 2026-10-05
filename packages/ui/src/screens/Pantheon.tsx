@@ -71,7 +71,7 @@ export function PantheonScreen() {
 
   return (
     <div className="screen pantheon-screen" style={{ ['--faction' as string]: pantheon.theme.accent }}>
-      <ScreenHeader title={`${pantheon.name} Pantheon`} subtitle={`${pantheon.epithet} · ${gods.length} gods · Favor ${player.wallet.favor}`} />
+      <ScreenHeader title={`${pantheon.name} Pantheon`} />
       <div className="pantheon-layout">
         <Panel title="Patron" className="pantheon-patron">
           {patron ? (
@@ -92,6 +92,20 @@ export function PantheonScreen() {
           ) : (
             <p className="dim">No patron.</p>
           )}
+          {pantheon.signature ? (
+            <div className="signature panel" data-testid="signature">
+              <div className="row gap wrap">
+                <strong>Signature: {pantheon.signature.name}</strong>
+                <span className="dim small">{pantheon.signature.summary}</span>
+                {state.scenario.signatureMechanics ? null : <Chip tone="muted">Not used in this campaign</Chip>}
+              </div>
+              <ul className="bullets small">
+                {pantheon.signature.rules.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           <div className="row gap">
             <Emblem catalog={catalog} pantheonId={pantheon.id} size="2.4rem" />
             <div className="small">
@@ -101,20 +115,6 @@ export function PantheonScreen() {
         </Panel>
 
         <Panel title="Gods" className="pantheon-gods" bodyClassName="scroll">
-          {pantheon.signature ? (
-            <div className="signature panel" data-testid="signature">
-              <div className="row gap wrap">
-                <strong>Signature: {pantheon.signature.name}</strong>
-                <span className="dim small">{pantheon.signature.summary}</span>
-                {state.scenario.signatureMechanics ? <Chip tone="info">Proposed · active here</Chip> : <Chip tone="muted">Not used in this campaign</Chip>}
-              </div>
-              <ul className="bullets small">
-                {pantheon.signature.rules.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
           <div className="god-choices small" data-testid="god-choices">
             {choiceRows.map(({ group, god }) => (
               <div key={group} className="god-choices__row">
@@ -128,35 +128,37 @@ export function PantheonScreen() {
             <PermanentNote>Each choice is permanent and excludes the other gods of that choice.</PermanentNote>
           </div>
           <div className="god-grid god-grid--wide">
-            {gods.map((g) => {
-              const q = quoteGodSelection(catalog, state, player.id, g.id);
-              const chip = STATE_CHIP[q.state]!;
-              return (
-                <div key={g.id} className={`god-card panel ${q.state === 'selected' ? 'is-selected' : ''} ${q.state === 'undesigned' ? 'is-disabled' : ''} ${celebrate?.godId === g.id ? 'is-celebrating' : ''}`} data-testid={`god-${g.id}`}>
-                  {celebrate?.godId === g.id ? <GodCommitFx key={celebrate.key} onDone={() => setCelebrate(null)} /> : null}
-                  <GodPortrait catalog={catalog} godId={g.id} size="5.5rem" locked={q.state === 'undesigned' || q.state === 'excluded'} />
-                  <div className="god-card__name">{g.name}</div>
-                  <div className="god-card__domain">{g.domain}</div>
-                  <GodState god={g} quote={q} stateText={chip.text} stateTone={chip.tone} />
-                  {g.benefitSummary.length ? <GodBenefits catalog={catalog} god={g} /> : <StatusChip status={g.implementationStatus} />}
-                  {q.state !== 'selected' && q.state !== 'excluded' ? <GodPrice catalog={catalog} god={g} quote={q} /> : null}
-                  {q.missing.length ? (
-                    <ul className="bullets small danger-list">
-                      {q.missing.map((m) => (
-                        <li key={m}>{m}</li>
-                      ))}
-                    </ul>
-                  ) : q.reason && q.state !== 'selected' && q.state !== 'undesigned' ? (
-                    <div className="small warn">{q.reason}</div>
-                  ) : null}
-                  {g.role === 'minor' && q.state !== 'selected' && q.state !== 'excluded' ? (
-                    <Button variant="primary" size="small" disabled={!q.legal} disabledReason={q.reason} onClick={() => commit(g)}>
-                      Commit
-                    </Button>
-                  ) : null}
-                </div>
-              );
-            })}
+            {gods
+              .filter((g) => g.role !== 'patron')
+              .map((g) => {
+                const q = quoteGodSelection(catalog, state, player.id, g.id);
+                const chip = STATE_CHIP[q.state]!;
+                return (
+                  <div key={g.id} className={`god-card panel ${q.state === 'selected' ? 'is-selected' : ''} ${q.state === 'undesigned' ? 'is-disabled' : ''} ${celebrate?.godId === g.id ? 'is-celebrating' : ''}`} data-testid={`god-${g.id}`}>
+                    {celebrate?.godId === g.id ? <GodCommitFx key={celebrate.key} onDone={() => setCelebrate(null)} /> : null}
+                    <GodPortrait catalog={catalog} godId={g.id} size="5.5rem" locked={q.state === 'undesigned' || q.state === 'excluded'} />
+                    <div className="god-card__name">{g.name}</div>
+                    <div className="god-card__domain">{g.domain}</div>
+                    <GodState god={g} quote={q} stateText={chip.text} stateTone={chip.tone} />
+                    {g.benefitSummary.length ? <GodBenefits catalog={catalog} god={g} /> : <StatusChip status={g.implementationStatus} />}
+                    {q.state !== 'selected' && q.state !== 'excluded' ? <GodPrice catalog={catalog} god={g} quote={q} /> : null}
+                    {q.missing.length ? (
+                      <ul className="bullets small danger-list">
+                        {q.missing.map((m) => (
+                          <li key={m}>{m}</li>
+                        ))}
+                      </ul>
+                    ) : q.reason && q.state !== 'selected' && q.state !== 'undesigned' ? (
+                      <div className="small warn">{q.reason}</div>
+                    ) : null}
+                    {g.role === 'minor' && q.state !== 'selected' && q.state !== 'excluded' ? (
+                      <Button variant="primary" size="small" disabled={!q.legal} disabledReason={q.reason} onClick={() => commit(g)}>
+                        Commit
+                      </Button>
+                    ) : null}
+                  </div>
+                );
+              })}
           </div>
         </Panel>
 

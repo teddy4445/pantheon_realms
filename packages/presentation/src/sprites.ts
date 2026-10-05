@@ -37,7 +37,6 @@ export type SiteArchetype = (typeof SITE_ARCHETYPES)[number];
 
 /** Map-avatar animation names (directive §16 D: 8 directions, idle and walk). */
 export const HERO_MAP_ANIMATIONS = ['idle', 'walk'] as const;
-export type HeroMapAnimation = (typeof HERO_MAP_ANIMATIONS)[number];
 
 export type SpriteStatus = 'final' | 'placeholder';
 

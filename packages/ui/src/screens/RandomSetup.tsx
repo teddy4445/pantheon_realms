@@ -1,6 +1,7 @@
 /**
  * S19 Random Map setup (proposed): map type (Continental, Highlands, Lake Isle,
- * Wild Forest, Marshlands, Crossroads — after Age of Mythology's map scripts
+ * Wild Forest, Marshlands, Crossroads, Archipelago, Twin Continents (two empires),
+ * Central Valley — after Age of Mythology's map scripts
  * and Heroes 3's zone templates), size up to Huge (square maps), two to six
  * seats (each AI or human — several humans play hot-seat on this computer;
  * four or more need a large or huge map), victory condition, guard strength,
@@ -16,6 +17,7 @@ import { useState } from 'react';
 import {
   createRandomSkirmish,
   skirmishSizeAllows,
+  skirmishTypeAllows,
   SKIRMISH_MAP_TYPES,
   SKIRMISH_MAX_EMPIRES,
   SKIRMISH_SIZE_LABEL,
@@ -30,13 +32,12 @@ import {
   type StartWealth,
   type TreasureLevel,
 } from '@pr/session';
-import { RESOURCE_KEYS, RESOURCE_LABELS, type ContentCatalog } from '@pr/rules';
+import { RESOURCE_KEYS, RESOURCE_LABELS } from '@pr/rules';
 import { useStore } from '../app/context';
-import { Button, Panel, SectionTitle, Segmented, TextInput, Toggle } from '../components/kit';
-import { Emblem } from '../components/art';
+import { Button, Panel, SectionTitle, Segmented, Toggle } from '../components/kit';
 import { ScreenHeader } from '../components/game';
 import { DifficultyPicker } from './Setup';
-import { TemperamentNote } from '../components/temperament';
+import { SeatRow, patchSeat, patronsOf, type SeatDraft } from '../components/seats';
 
 const SEAT_COLORS = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b', '#8a4fc2', '#1f9fa6'];
 const MAX_SEATS = SKIRMISH_MAX_EMPIRES;
@@ -47,17 +48,6 @@ function wealthText(w: StartWealth): string {
   const lead = w === 'low' ? 'Half the usual treasury' : w === 'high' ? 'Twice the usual treasury' : 'The usual treasury';
   const tail = w === 'low' ? ' A slower, leaner opening.' : w === 'high' ? ' A fast opening: more buildings and troops in the first week.' : '';
   return `${lead} for every empire: ${parts.join(', ')}.${tail}`;
-}
-
-interface SeatDraft {
-  pantheonId: string;
-  controller: 'human' | 'ai';
-  name: string;
-  godId: string | null;
-}
-
-function patronsOf(catalog: ContentCatalog, pantheonId: string): string[] {
-  return (catalog.pantheons[pantheonId]?.godIds ?? []).filter((g) => catalog.gods[g]?.role === 'patron' && catalog.gods[g]?.implementationStatus === 'implemented');
 }
 
 function newSeed(): number {
@@ -118,15 +108,7 @@ export function RandomSetupScreen() {
   const [failure, setFailure] = useState<{ key: string; text: string } | null>(null);
   const error = failure && failure.key === optionsKey ? failure.text : null;
 
-  const setSeat = (i: number, patch: Partial<SeatDraft>) =>
-    setSeats((list) =>
-      list.map((s, k) => {
-        if (k !== i) return s;
-        const next = { ...s, ...patch };
-        if (patch.pantheonId && patch.pantheonId !== s.pantheonId) next.godId = patronsOf(catalog, patch.pantheonId)[0] ?? null;
-        return next;
-      }),
-    );
+  const setSeat = (i: number, patch: Partial<SeatDraft>) => setSeats((list) => list.map((s, k) => (k === i ? patchSeat(catalog, s, patch) : s)));
 
   const reason = !sizeOk
     ? 'Four or more empires need a large or huge map'
@@ -174,12 +156,26 @@ export function RandomSetupScreen() {
               <div className="setting-block">
                 <div className="setting-block__label">Map type</div>
                 <div className="map-type-grid" role="radiogroup" aria-label="Map type" data-testid="random-type">
-                  {SKIRMISH_MAP_TYPES.map((t) => (
-                    <button key={t.id} type="button" role="radio" aria-checked={mapType === t.id} className={`map-type ${mapType === t.id ? 'is-selected' : ''}`} onClick={() => setMapType(t.id)} data-testid={`random-type-${t.id}`} title={`Learns from ${t.inspiredBy}`}>
-                      <span className="map-type__name">{t.label}</span>
-                      <span className="map-type__text">{t.summary}</span>
-                    </button>
-                  ))}
+                  {SKIRMISH_MAP_TYPES.map((t) => {
+                    const allowed = skirmishTypeAllows(t.id, count);
+                    return (
+                      <button
+                        key={t.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={mapType === t.id}
+                        aria-disabled={!allowed}
+                        disabled={!allowed}
+                        className={`map-type ${mapType === t.id ? 'is-selected' : ''}`}
+                        onClick={() => setMapType(t.id)}
+                        data-testid={`random-type-${t.id}`}
+                        title={allowed ? `Learns from ${t.inspiredBy}` : `For ${t.maxEmpires} empires`}
+                      >
+                        <span className="map-type__name">{t.label}</span>
+                        <span className="map-type__text">{t.summary}{allowed ? '' : ` (For ${t.maxEmpires} empires.)`}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -281,6 +277,7 @@ export function RandomSetupScreen() {
                     const n = Number(v);
                     setCount(n);
                     if (!skirmishSizeAllows(size, n)) setSize('large');
+                    if (!skirmishTypeAllows(mapType, n)) setMapType('continental');
                   }}
                   testId="random-count"
                 />
@@ -347,58 +344,9 @@ export function RandomSetupScreen() {
 
             <SectionTitle>Empires</SectionTitle>
             <div className="random-setup__seats">
-              {active.map((s, i) => {
-                const patrons = patronsOf(catalog, s.pantheonId);
-                return (
-                  <div key={i} className="seat-row" style={{ ['--seat' as string]: SEAT_COLORS[i] }} data-testid={`seat-${i}`}>
-                    <span className="seat-row__swatch" aria-hidden="true" />
-                    <Emblem catalog={catalog} pantheonId={s.pantheonId} size="2.6rem" />
-                    <div className="seat-row__fields">
-                      <div className="row gap wrap">
-                        <select className="select" value={s.pantheonId} aria-label={`Seat ${i + 1} pantheon`} onChange={(e) => setSeat(i, { pantheonId: e.target.value })} data-testid={`seat-${i}-pantheon`}>
-                          {playable.map((id) => (
-                            <option key={id} value={id}>
-                              {catalog.pantheons[id]?.name}
-                            </option>
-                          ))}
-                        </select>
-                        <Segmented
-                          label={`Seat ${i + 1} controller`}
-                          value={s.controller}
-                          options={[
-                            { id: 'human', label: 'Human' },
-                            { id: 'ai', label: 'AI' },
-                          ]}
-                          onChange={(v) => setSeat(i, { controller: v })}
-                          testId={`seat-${i}-controller`}
-                        />
-                      </div>
-                      {s.controller === 'human' ? (
-                        <div className="row gap wrap">
-                          <TextInput label={`Seat ${i + 1} name`} value={s.name} onChange={(v) => setSeat(i, { name: v })} testId={`seat-${i}-name`} />
-                          <select className="select" value={s.godId ?? ''} aria-label={`Seat ${i + 1} patron god`} onChange={(e) => setSeat(i, { godId: e.target.value || null })} data-testid={`seat-${i}-patron`}>
-                            {patrons.map((g) => (
-                              <option key={g} value={g}>
-                                Patron: {catalog.gods[g]?.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      ) : (
-                        <div className="small dim">
-                          AI empire · no patron (as in other skirmishes)
-                          {aiTemperaments ? (
-                            <>
-                              {' · '}
-                              <TemperamentNote catalog={catalog} pantheonId={s.pantheonId} testId={`seat-${i}-temperament`} />
-                            </>
-                          ) : null}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
+              {active.map((s, i) => (
+                <SeatRow key={i} catalog={catalog} index={i} seat={s} color={SEAT_COLORS[i]!} pantheons={playable} temperaments={aiTemperaments} onChange={(patch) => setSeat(i, patch)} />
+              ))}
             </div>
             {humans > 1 ? <p className="note small">Hot-seat: {humans} players share this computer and take turns. The map is hidden at every hand-over.</p> : null}
           </div>

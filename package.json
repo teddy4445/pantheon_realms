@@ -1,7 +1,7 @@
 {
   "name": "pantheon-realms",
   "private": true,
-  "version": "0.11.0",
+  "version": "0.13.1",
   "description": "Pantheon Realms — turn-based mythological strategy (TypeScript rules, React UI, PixiJS 2D, Electron).",
   "type": "module",
   "workspaces": [
@@ -29,10 +29,11 @@
     "vfx:list": "vitest run --config tools/assets/vfx/vitest.config.ts",
     "art:briefs": "vitest run --config tools/assets/briefs/vitest.config.ts tools/assets/briefs/art-briefs.measure.ts",
     "art:brief12": "vitest run --config tools/assets/briefs/vitest.config.ts tools/assets/briefs/brief12.measure.ts && python3 tools/assets/briefs/town_guides.py",
-    "sprites:placeholders": "python3 tools/assets/sprites/make_sprite_placeholders.py",
     "sprites:cut": "python3 tools/assets/sprites/cut_sheets.py",
     "sprites:import": "python3 tools/assets/sprites/import_sprites.py",
-    "sprites:queue": "python3 tools/assets/sprites/build_gpt6_queue.py"
+    "sprites:queue": "python3 tools/assets/sprites/build_gpt6_queue.py",
+    "maps:build": "vitest run --config tools/maps/vitest.config.ts tools/maps/build.author.ts && python3 tools/maps/layout_guides.py",
+    "art:siege-guide": "python3 tools/assets/briefs/siege_guide.py"
   },
   "devDependencies": {
     "@playwright/test": "1.56.0",

@@ -41,7 +41,7 @@ export function soundsArePlaceholders(): boolean {
   return SOUND_MANIFEST.sounds.every((s) => s.status === 'placeholder');
 }
 
-/** Whether some sounds are final while others are still placeholders (e.g. the map music of 2026-10-04). */
+/** Whether some sounds are final while others are still placeholders (none since 2026-10-05; kept for new sound IDs). */
 export function someSoundsArePlaceholders(): boolean {
   return SOUND_MANIFEST.sounds.some((s) => s.status === 'placeholder') && SOUND_MANIFEST.sounds.some((s) => s.status === 'final');
 }
@@ -152,6 +152,7 @@ export class GameAudio {
       soundscape: mission?.soundscape ?? null,
       pantheonId: session ? (session.state.players[session.humanPlayerId]?.pantheonId ?? null) : null,
       has: (id) => this.director.has(id),
+      siege: !!session?.state.battle?.siege,
     });
     // Loading and decoding tracks competes with building the map or battle for the CPU and the
     // network, so music changes and the combat pre-load wait until the page is idle.
@@ -166,7 +167,9 @@ export class GameAudio {
 
     if (session && !this.sessionWarmed) {
       this.sessionWarmed = true;
-      whenIdle(() => this.director.warm([...COMBAT_SOUNDS, ...MAGIC_SOUNDS, ...Object.values(STINGERS)]), 4000);
+      // The recordings (2026-10-05) are larger than the old synthesized files: decode them only
+      // after the first map or battle frame has had its time (a few seconds), then when idle.
+      setTimeout(() => whenIdle(() => this.director.warm([...COMBAT_SOUNDS, ...MAGIC_SOUNDS, ...Object.values(STINGERS)]), 4000), 5000);
     }
     if (!session) this.sessionWarmed = false;
 

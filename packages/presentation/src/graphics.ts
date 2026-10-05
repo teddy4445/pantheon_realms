@@ -23,6 +23,8 @@ export interface GraphicsProfile {
   readonly shadows: boolean;
   /** Painted ground, sea, sky and battlefield art (off: the plain procedural colours). */
   readonly paintedGround: boolean;
+  /** Ground types fade into each other on the adventure map (one blended picture at load). */
+  readonly softGround: boolean;
   /** Map decoration kept: 'all', 'no-grass' (no grass tufts or shrubs), 'sparse' (trees and rocks thinned by half). */
   readonly decor: 'all' | 'no-grass' | 'sparse';
   /** Small ambient animations (idle loops on the map and battlefield, beacon glows, cheering). */
@@ -34,9 +36,9 @@ export interface GraphicsProfile {
 }
 
 export const GRAPHICS_PRESETS: Readonly<Record<GraphicsQuality, GraphicsProfile>> = {
-  high: { quality: 'high', maxPixelRatio: 2, renderScale: 1, antialias: true, shadows: true, paintedGround: true, decor: 'all', ambientMotion: true, effects: 'full', frameCap: 0 },
-  medium: { quality: 'medium', maxPixelRatio: 1, renderScale: 1, antialias: true, shadows: true, paintedGround: true, decor: 'no-grass', ambientMotion: true, effects: 'full', frameCap: 60 },
-  low: { quality: 'low', maxPixelRatio: 1, renderScale: 0.7, antialias: false, shadows: false, paintedGround: false, decor: 'sparse', ambientMotion: false, effects: 'simple', frameCap: 30 },
+  high: { quality: 'high', maxPixelRatio: 2, renderScale: 1, antialias: true, shadows: true, paintedGround: true, softGround: true, decor: 'all', ambientMotion: true, effects: 'full', frameCap: 0 },
+  medium: { quality: 'medium', maxPixelRatio: 1, renderScale: 1, antialias: true, shadows: true, paintedGround: true, softGround: true, decor: 'no-grass', ambientMotion: true, effects: 'full', frameCap: 60 },
+  low: { quality: 'low', maxPixelRatio: 1, renderScale: 0.7, antialias: false, shadows: false, paintedGround: false, softGround: true, decor: 'sparse', ambientMotion: false, effects: 'simple', frameCap: 30 },
 };
 
 let active: GraphicsProfile = GRAPHICS_PRESETS.high;

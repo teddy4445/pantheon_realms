@@ -6,7 +6,7 @@
  * the final edge as the battle begins (heroes/05 "Adventure movement").
  */
 import type { HeroId, PlayerId, SiteId } from '../ids';
-import { hexEquals, hexKey, type HexCoord } from '../core/hex';
+import { hexEquals, type HexCoord } from '../core/hex';
 import { canAfford, resources, type ResourceBundle } from '../core/resources';
 import type { ContentCatalog } from '../definitions/catalog';
 import type { SiteDefinition } from '../definitions/world';
@@ -305,8 +305,4 @@ export function updateGates(tx: Tx): void {
       tx.emit({ kind: 'GateOpened', siteId: def.id });
     }
   }
-}
-
-export function siteKeyAt(coord: HexCoord): string {
-  return hexKey(coord);
 }

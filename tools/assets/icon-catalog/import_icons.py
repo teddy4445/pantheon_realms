@@ -36,7 +36,11 @@ MANIFEST = os.path.join(ROOT, 'assets-runtime', 'ui', 'final-manifest.json')
 INVENTORY = os.path.join(ROOT, 'assets-source', 'icons', 'icon-inventory.json')
 
 
-def target_size(size_text):
+def target_size(size_text, asset_id=''):
+    # The interface section's main-menu icons are larger ("menu icons 192 px").
+    menu = re.search(r'menu icons (\d+)\s*px', size_text or '')
+    if menu and asset_id.startswith('icon.menu.'):
+        return (int(menu.group(1)), int(menu.group(1)))
     m = re.match(r'\s*(\d+)\s*[×x]\s*(\d+)', size_text or '')
     return (int(m.group(1)), int(m.group(2))) if m else (256, 256)
 
@@ -46,7 +50,7 @@ def main():
     size_of = {}
     for s in inv['sections']:
         for r in s['rows']:
-            size_of[r['assetId']] = target_size(s['size'])
+            size_of[r['assetId']] = target_size(s['size'], r['assetId'])
     manifest = json.load(open(MANIFEST, encoding='utf-8'))
     assets = manifest.setdefault('assets', {})
     os.makedirs(OUT_DIR, exist_ok=True)

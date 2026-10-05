@@ -759,30 +759,6 @@
   background: linear-gradient(180deg, rgba(7, 14, 26, 0.4), rgba(23, 45, 75, 0.35));
 }
 
-.tooltip {
-  position: fixed;
-  z-index: 90;
-  max-width: 22rem;
-  padding: 0.5rem 0.75rem;
-  pointer-events: none;
-  font-size: 0.85rem;
-  border-color: var(--gold-400);
-  animation: fade-in var(--motion-fast) ease-out;
-}
-.tooltip .panel__corner {
-  width: 0.7rem;
-  height: 0.7rem;
-}
-.tooltip__title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  color: var(--gold-300);
-  font-size: 0.9rem;
-  margin-bottom: 0.25rem;
-  padding-bottom: 0.2rem;
-  border-bottom: 1px solid rgba(194, 154, 82, 0.35);
-}
-
 .toasts {
   position: fixed;
   z-index: 80;
@@ -1088,6 +1064,10 @@ input[type='radio']:disabled {
 
 /* Map-marker art next to a site name (adventure side panel). */
 .marker-icon { display: block; flex: none; object-fit: contain; }
+/* Key tent and gate markers: the key colour multiplied onto the icon's light surfaces, inside the marker only (isolated; never blended with the map below). */
+.marker-icon--tinted { position: relative; isolation: isolate; }
+.marker-icon--tinted > .marker-icon { width: 100% !important; height: 100% !important; }
+.marker-icon__tint { position: absolute; inset: 0; -webkit-mask-position: center; mask-position: center; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; mix-blend-mode: multiply; pointer-events: none; }
 
 /* ============================================================
    Story dialogue window (portraits, subtitles, Backlog, Continue)
@@ -1183,7 +1163,6 @@ input[type='radio']:disabled {
 .shortcut-table th { text-align: left; font-weight: 400; color: var(--text); }
 
 /* Small emblem used for branding in dialogs and screen chrome. */
-.brand-emblem { display: block; width: 3.4rem; height: 3.4rem; object-fit: contain; margin: 0 auto 0.4rem; background: radial-gradient(circle, rgba(234, 208, 143, 0.16), transparent 68%); }
 
 /* Spell slots: round gold-rimmed socket with the spell (or effect-family) art. */
 .spell-socket { display: inline-grid; place-items: center; flex: none; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 50% 35%, #1d3557, #05090f 75%); border: 1px solid var(--gold-400); box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), inset 0 0 0 2px rgba(5, 9, 15, 0.7), 0 2px 5px rgba(0, 0, 0, 0.6); }
@@ -1412,3 +1391,12 @@ input[type='radio']:disabled {
 /* Mission/campaign victory: every action on one line (owner request 2026-10-04). */
 .debrief-actions { display: flex; flex-wrap: nowrap; align-items: center; gap: 0.6rem; width: 100%; }
 .debrief-actions .btn { white-space: nowrap; flex: none; }
+
+/* A small icon-only link beside a title (e.g. the bestiary entry beside a creature's name), as tall as the text. */
+.title-with-icon { display: inline-flex; align-items: center; gap: 0.4em; }
+.icon-link { display: inline-flex; align-items: center; justify-content: center; width: 1.15em; height: 1.15em; padding: 0; border: 0; background: none; color: var(--gold-300); cursor: pointer; border-radius: 3px; }
+.icon-link svg, .icon-link img { width: 100%; height: 100%; }
+.icon-link:hover { color: var(--gold-100, #fff1d0); filter: drop-shadow(0 0 4px rgba(255, 210, 120, 0.6)); }
+.icon-link:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 2px; }
+.favor-cost { display: inline-flex; align-items: center; gap: 0.25em; }
+.favor-cost .inline-icon { width: 1.05em; height: 1.05em; }

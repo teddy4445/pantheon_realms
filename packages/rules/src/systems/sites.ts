@@ -28,10 +28,6 @@ import { worldWeek } from './services';
 
 type Kind<T extends SiteDefinition['kind']['type']> = Extract<SiteDefinition['kind'], { type: T }>;
 
-export function playerHasKey(state: MatchState, playerId: PlayerId, color: string): boolean {
-  return state.players[playerId]?.keys?.includes(color) === true;
-}
-
 function refuse(tx: Tx, siteId: SiteId, heroId: HeroId, reason: string): void {
   tx.emit({ kind: 'SiteRefused', siteId, heroId, reason });
 }

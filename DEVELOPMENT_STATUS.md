@@ -1,12 +1,542 @@
 # Development Status
 
-_Last updated: 2026-10-05 · **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.5`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
+_Last updated: 2026-10-05 · **app 0.13.1** (Windows installer for play-testing): **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.6`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## Brief 13 icons in the game; app 0.13.1 (owner delivery, 2026-10-05)
+
+The owner delivered Parts B–E of GPT-6 Brief 13: **94 icons** (38 interface
+icons, 22 map markers, 20 effect and status icons, 14 divine interventions),
+prepared in a separate delivery folder with a scoped import helper
+(`import_brief13.py`, a dry run unless `--apply`). **Part A, the six town
+backgrounds, was not part of it and is still open.**
+
+**Import.** The delivery was checked first: 94 masters (1254 × 1254 RGBA) and
+94 runtime PNGs (96 × 96; the nine main-menu icons 192 × 192, as the brief's
+interface section asks), every SHA-256 matching the delivery's manifest, every
+runtime file transparent RGBA. The helper was read before use: it copies only
+the 94 masters into `assets-source/icons/final/` and the 94 runtime files into
+`assets-runtime/ui/icons/final/`, merges their 94 entries into
+`assets-runtime/ui/final-manifest.json` without touching any other, and backs
+up the previous manifest. It was run with `python3 -B` (nothing written into
+the delivery folder), dry run first, in the cloud copy and then in the owner's
+folder: 94 registrations, 188 copies, 491 other entries kept; afterwards 585
+entries, the 491 earlier ones equal as JSON values, the top-level fields
+unchanged. The manifest is byte-identical in both places (SHA-256
+`6dd864cb…0c7e`) and all 188 files hash as delivered in both. The game's own
+importer was not used: its full run re-encodes and re-dates every icon, and
+the delivered runtime files are what it makes (same Lanczos downscale, PNG with
+alpha) except that it would have shrunk the menu icons to 96 px. The helper's
+backup of the old manifest stays in the owner's folder
+(`assets-source/icons/import-backups/brief13-20261005-190251-073589/`, not
+tracked; in the cloud copy it was moved out of the repository).
+
+**Code.** None for the art: each file is found by its asset ID, and final art
+takes precedence over the concept crops (which stay in `assets-runtime/ui/icons/`
+as the fallback). Two tool fixes so that 192-px menu icons are expected: the
+final-art unit test (`packages/ui/test/uiArt.test.ts`, which failed on its
+first run with the delivery) and `npm run icons:import` now read the interface
+section's "menu icons 192 px" for `icon.menu.*`; both read 96 px before.
+
+**Icon inventory** (`npm run icons:catalog`): 843 entries in 14 sections, **827
+final art**, 16 procedural (hero and Herald portraits that are a generated
+square outside the dialogue window); `icon-inventory.json` updated. The
+Markdown, CSV and XLSX production lists it also writes were not kept (removed
+in the release clean-up as finished lists).
+
+**Where they show** (`tests/e2e/brief13.spec.ts`, new, **4/4 passed**: on every
+visited screen no replaced crop is drawn and every icon image decodes;
+screenshots `test-results/b13-*.png` checked by eye): main menu and New Game;
+resource bar and costs at 24 px, the day counter, the hero and town tabs; the
+tile panel over the player's own town (blue banner), a hostile town (red) and
+a neutral town (grey), sawmill, quarry, crystal deposit, gold mine, a supply
+cache and a claimed one (check); hero statistics; a building's costs; the
+Pantheon screen; the miracle book on the map and in battle; the Journal; the
+Encyclopedia; the battle action bar (Spell disabled and greyed) and the stack's
+statistics. 44 of the 94 were on those screens. The rest, and why:
+
+* the other 12 markers — on maps with those sites (artifact, creature camp,
+  portal, shrine, watchtower, gates and so on); Twin Harbors has none;
+* `icon.action.ability` and `icon.action.surrender` — a stack with an active
+  ability, a battle against a hero; Quit — the desktop build only (its
+  screenshot shows it); Credits — no screen yet;
+* the 20 effect and status icons — stand-ins for a spell without its own icon
+  (every spell has one) or not used yet, as the brief said;
+* **the 14 intervention icons — no screen shows them today**: the miracle book
+  shows each miracle's painted card (all 14 delivered), and the owner's fix of
+  2026-10-05 removed the icon before each miracle's name on the Pantheon page.
+  They are registered under the interventions' `iconAssetId` and appear wherever
+  a card is missing; the layout was not changed to show them.
+
+All 94 were also composited on the game's dark panel and on the miracle book's
+parchment at 24 and 48 px: clean edges, no fringe.
+
+**Still concept crops on screen** (not in Brief 13 — the inventory step lists
+them as unused files although the code shows them): `icon.marker.hero` and
+`icon.marker.enemy-hero` (tile panel over a hero) and `icon.marker.encounter`
+(a failed objective in the Journal).
+
+### Verification (commands actually run)
+
+| Command | Result |
+|---|---|
+| `python3 -B import_brief13.py --project <checkout>` then `--apply` (cloud copy, owner's folder) | dry run and apply as above; manifests identical, 188/188 file hashes as delivered |
+| `npm run check` | boundaries OK, type-check clean, **397/397** unit tests in 43 files |
+| `npm run icons:catalog` | 843 entries, 827 final, 16 procedural |
+| `npx playwright test tests/e2e/brief13.spec.ts` | **4/4 passed** |
+| `npx playwright test tests/e2e/features.spec.ts tests/e2e/heroscreen.spec.ts tests/e2e/mapSites.spec.ts tests/e2e/menu.spec.ts tests/e2e/round19.spec.ts` | **22/22 passed** |
+| `npm run build` + `npm run desktop:build` + (in `apps/desktop`) `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` | **built** `Pantheon-Realms-Setup-0.13.1-x64.exe`, 517,555,335 bytes, SHA-256 `6575636defca3018d5ef65717b041d63dafbc2952b1cd4585811b645c87cf7b3`; `app.asar` 411.8 MB, 2,955 entries (0.13.0 plus the 94 icons; `dist/`, `package.json`, `renderer/` only) |
+| `7z x` of the installer's `app-64.7z` | its `app.asar` is byte-identical to `win-unpacked` |
+| `unshare -n` (no network) + `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` | **DESKTOP SMOKE OK**: 1,219 sprites, 508 paintings, **643** interface images (549 before), 91 sounds, the map drawn with WebGL, the menu with the new icons and v0.13.1 |
+
+App version **0.13.1** (art only; content `content-0.8.0`, saves of 0.12.0 and
+0.13.0 load). Unsigned; **not run on Windows** here. Not checked: the icons on
+real displays at other scalings, and the markers of sites Twin Harbors lacks
+inside the running game.
+
+**Delivery.** Bundle 22 (`apply_sync.py`, not committed) wrote the 10 changed
+files (one new) into the owner's folder with 0 problems, their old versions
+measured there first. The 0.13.1 installer was copied to the owner's
+`installer\` folder in 25 parts and joined there (SHA-256 checked:
+`6575636d…f7b3`).
+
+## Six skirmish maps and the owner's ten fixes; app 0.13.0 (owner requests, 2026-10-05)
+
+### Six authored skirmish maps (proposed)
+
+Owner request: "suggest 4 new skirmish maps", then "suggest 2 more and build
+all of them … have a file for GPT 6 to generate the images we need for the
+skirmish picking window".
+
+| Map | Empires | Size | Climate | Goal | What shapes it |
+|---|---|---|---|---|---|
+| Frostgate | 2 | 38 × 30 | fjord (Icy spray) | conquest | one pass through the ridge, shut by twin crimson key gates; each empire's crimson key on its own glacier island, reached by portal, guarded by 8 wyverns |
+| The Burning Oasis | 4 | 46 × 36 | desert (Scorching sand) | hold the shrine 7 days, or conquest | four corners; between each pair of neighbours an oasis (gold mines north and south, crystal east and west, a creature camp in each); the Burning Shrine in a ring of red rock with one opening toward each empire |
+| The Circle of Gates | 3 | 54 × 42 | high pass (Thin air) | conquest | three valleys round a peak sanctum (three spell shrines, the Crown of the Summit), guarded paths and ridge crossings; a ring of portals: each home gate opens on a walled terrace behind the next empire's town (guarded), each back gate leads to the previous empire's home |
+| Barrows of the Lost Kings | 2 | 38 × 30 | moor (fog) | conquest | prisons (a level-5 hero of your own pantheon behind barrow-wights; a level-7 veteran in the King's Barrow), two quest huts, amber and violet key vaults with a major artifact, a relic in the middle, one gold mine per side |
+| The Golden Fords | 2 | 38 × 30 | autumn (Harvest wind) | conquest | two rivers with three guarded fords each; the rich middle (mines, mill, camp, the Horn of Plenty); twice the usual treasury; revealed map |
+| The Six Thrones | 6 | 68 × 56 | coast | hold the shrine 10 days, or conquest | one island in six wedges between ridges with one guarded pass to each neighbour and one guarded path to the central shrine |
+
+**How they are made.** Each map is a custom map document (the editor's
+`*.prmap.json`) written by `npm run maps:build` from `tools/maps/maps.ts`:
+designed for empire 1 and copied to the others by exact hex-grid symmetries
+(half turn; turns of 120° or 60°; mirror and half turn for four), so every
+empire's ground, sites and distances are the same. Scattered ground (woods,
+dunes, bogs) reads the copy of each tile in empire 1's part of the map, so its
+density does not pile up with the number of copies. The build checks the
+editor's validation, exact symmetry of the ground, one road into every town
+and each map's promises (e.g. Frostgate's pass is shut without the key, the
+Circle's land is shut without portals) and prints distances: towns are 26
+(Frostgate), 24/26/36 (Oasis), 17/17 (Circle), 32 (Barrows), 26 (Fords) and
+20/36/40 (Six Thrones) steps apart, the same for every empire. Layout guides
+for the brief: `assets-source/art/briefs/guides/skirmish.<map>.layout.png`.
+
+**Format and rules.** The custom map types moved to `@pr/rules`
+(`definitions/customMap.ts`, re-exported by `@pr/mapgen`) so content carries
+the maps (`packages/content/src/skirmish/maps/`, catalog `skirmishMaps`,
+`SkirmishMapValidator`). The format gained six site kinds the rules already
+had — key tent and key gate (colour), prison (level, hero or the nearest
+empire's pantheon), quest hut (bring resources or beat a named guard; reward
+Gold, experience, artifact), watchtower (range) and artifact (named, or a
+rarity picked deterministically per map) — plus guards of several stacks with
+a label and a reward. The map editor places and edits all of them and opens a
+copy of any skirmish map. `compileSkirmishMap(catalog, mapId, seats)` compiles
+a map for the chosen pantheons; the mission is an ordinary generated mission
+(saves embed it).
+
+**AI fixes found on the way** (all maps, random maps too): a hero now routes
+through a known portal to a target it cannot reach on foot at all (it used to
+consider portals only for far targets, so a hero that took a portal to an
+island stayed there), and a hero standing on a portal steps off and back on to
+use it again.
+
+**Screens.** New Game → Skirmish lists the six maps after Twin Harbors with a
+picture (the drawn layout until Brief 14 arrives), the detail panel gives the
+facts (empires, size, goal, climate, treasury, revealed map) and the layout;
+**Set Up Empires** opens S23 (one seat per empire: pantheon, human or AI, name,
+patron; difficulty), and Start opens the adventure map. A delivered painting
+also becomes the screen's backdrop when its map is selected.
+
+**Measured** (AI against AI, `npm run balance -- maps`, each pantheon line-up
+played from every seat, day cap 45; small samples, not playtest verdicts):
+
+| Map | Matches | Decided (by the shrine) | Mean decisive day | Seat scores |
+|---|---|---|---|---|
+| Frostgate (after the islet guard was eased to 8 wyverns) | 6 | 5 (0) | 29.4 | 0.50, 0.50 |
+| The Burning Oasis | 8 | 5 (2) | 28.8 | 0.25, 0.13, 0.25, 0.38 |
+| The Circle of Gates (before the guarded terrace) | 6 | 6 (0) | 32.5 | 0.50, 0.17, 0.33 |
+| Barrows of the Lost Kings | 6 | 3 (0) | 21.7 | 0.50, 0.50 |
+| The Golden Fords (after the ford guards were raised) | 6 | 5 (0) | 34.4 | 0.33, 0.67 |
+| The Six Thrones | 12 | 5 (5) | 37.4 | 0.04, 0.29, 0.38, 0.21, 0.04, 0.04 |
+
+The maps are symmetric by construction, so seat differences come from the
+turn order and the AI; the samples are far too small to tune on. Early
+knock-outs (days 5–8) happen on the open maps (Oasis, Fords before the guard
+change) when a neighbour's first army finds a town with an empty garrison.
+Frostgate's first version stranded both AI leaders on their islands (the
+portal fix above) and lost heroes to a drake the AI underrates (one big unit
+reads weaker than it fights); the islet now holds wyverns.
+
+**GPT-6 Brief 14** (`assets-source/art/briefs/GPT6_BRIEF_14_SKIRMISH_MAPS.md`):
+six 1920 × 1080 paintings, `mission.skirmish.<map>.thumbnail.png`, with prompts
+and the layout guides; `npm run art:import` makes the card and keeps the full
+picture (the importer recognises `mission.skirmish.<map>.thumbnail`).
+
+### The owner's ten fixes (2026-10-05)
+
+1. **Roads** are joined into runs between junctions, rounded (corner cutting)
+   and drawn in the land's style (`presentation/src/roads.ts`): rutted dirt on
+   grass (by climate: brown, golden, sandy, peat, red earth), sandstone flags
+   in the desert, packed snow in the north, cobbles in the mountains, plank
+   boardwalks over marsh. Code only; no road art needed.
+2. **Pantheon page:** no subtitle; the signature under the patron's text on the
+   left (its "Proposed · active here" chip removed); only first- and
+   second-choice gods in the list; miracles show their price as the number and
+   the Favor icon, without the icon before the name or the explanation line.
+3. **Recruit page:** no subtitle; "Upgrade troops" (button and hint too); the
+   bestiary entry is a book icon beside the creature's name.
+4. **Adventure map:** End Day starts level with the hero list; a town that can
+   still build today shows a hammer icon instead of the "Build" tag.
+5. **Soft ground:** the ground is painted once per map into one picture in which
+   each ground type fades into the next over a third of a hex (the map's outer
+   edge stays crisp); the fog's edges fade the same way. Setting
+   `softGround` (on at every quality level).
+6. **Dwellings:** the tier-3 dwelling now needs the tier-2 dwelling and the first
+   temple (Greek Griffin Aerie: Peltast Range + Temple I; Norse Troll Cave:
+   Wolf Den + Hof I; the other four pantheons follow the Greek tree), never the
+   tier-4 one; the content validator refuses any dwelling that needs a higher
+   tier. **Owner decision; changes The Three Beacons' town too.**
+7. **Battle:** no burst over a struck creature; a killing blow shows the whole
+   hit strip, a pause, then the death; a creature that moved and won the last
+   fight of a battle no longer jumps back to where it started (the final view
+   never arrives, so its move is now remembered).
+8. **Result screen:** the Won/Lost tags are gone.
+9. **GPT-6 Brief 15** (`GPT6_BRIEF_15_SIEGES.md`, guide `guides/siege.layout.png`):
+   each pantheon's wall, gate, tower and keep in three states, a siege
+   battlefield per pantheon with the town's streets, and the catapult with a
+   throw strip. The game already looks them up (`<kind>.<state>.<pantheon>`,
+   `battlefield.siege.ground.<pantheon>`, `catapult.intact`,
+   `fx.siege.catapult.throw`; the importer knows the names). Wall pieces now
+   stand on one straight line between the zig-zagging cells of the wall column.
+10. **Siege:** a catapult stands west of the field and throws (its arm whips up
+    and the stone leaves the cup; drawn by code until Brief 15); arrows are
+    drawn at a third of their size.
+
+### Verification (commands actually run)
+
+* `npm run maps:build` — six maps, all checks green.
+* `npm run check` — boundaries, type-check, **397/397** unit tests (new:
+  skirmish maps 18, roads 3, dwelling order 1).
+* `npm run balance -- maps --matches 2` and `-- maps --maps frostgate,golden_fords,barrows --matches 3` (above).
+* `npx playwright test` (the whole suite, the final build, Chromium +
+  SwiftShader, one worker) — **112/112 passed** in 55.0 min, among them the
+  new `skirmishMaps.spec.ts` (3: the six cards with picture, facts and layout;
+  Frostgate's two seats to the adventure map; The Six Thrones' six seats and
+  hold-the-shrine goal) and `campaign.spec.ts` with the "Upgrade" button.
+* Screenshots checked by eye (cloud build): soft ground and fog, the roads by
+  land (desert flags, moor planks), the pantheon and recruit pages, End Day
+  level with the hero list, the town's hammer icon, the drawn catapult in a
+  siege, the smaller arrows.
+* `node tools/perf/load-time.mjs` (3-run medians, SwiftShader): local menu
+  **207 ms**, first scene **913 ms**; web 474 / 910 ms (0.12.0: 229 / 879 and
+  467 / 885 ms). The soft ground is painted once per map after its textures
+  settle.
+
+### App 0.13.0 (Windows installer for play-testing)
+
+| Command | Result |
+|---|---|
+| `npm run build` + `npm run desktop:build` + (in `apps/desktop`) `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.13.0-x64.exe`, 515,839,545 bytes, SHA-256 `ca044e0f28c891e98a00ca007a6820705286e47b36aa87c0c7c4572dd2cfabb1`; `app.asar` 410.0 MB, 2,861 entries (`dist/`, `package.json`, `renderer/` only: no development tools, MCP servers, sources, tests, source maps, briefs or map-authoring tools) |
+| `7z x` of the installer's `app-64.7z` | its `app.asar` is byte-identical to `win-unpacked` |
+| `unshare -n` (no network; loopback only) + `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` | **DESKTOP SMOKE OK**: `prgame://app/index.html`, saves and records written, 1,219 sprites, 508 paintings, 549 interface images, the custom cursor, 91 sounds (6 decoded at the menu, context running), the adventure map drawn with WebGL (soft ground and fog visible in its screenshot), packaged without dev tools |
+
+App version **0.13.0**; content stays `content-0.8.0`, so 0.12.0 saves load
+(a town in such a save keeps what it has built; the new dwelling
+requirements apply to what it builds next).
+Unsigned (Windows SmartScreen will ask once); **not run on Windows** here.
+
+Not checked: a run on Windows itself, a human play-test of the six maps and
+of the battle and road changes, and the GPT-6 art of Briefs 14 and 15 (not
+painted yet: the skirmish cards show the drawn layout, the siege the shared
+wall set and the code-drawn catapult).
+
+**Delivery.** Bundle 21 (`apply_sync.py`, not committed) wrote 73 files (30
+new) into the owner's folder with 0 problems; the old versions of the 43
+changed files were first measured there with `git hash-object` (one, this
+file, held the bundle 20 delivery note written after that bundle). The
+installer was copied to the owner's `installer\` folder in 25 parts and
+joined there (SHA-256 checked: `ca044e0f…abb1`); the 0.12.0 installer stays
+beside it.
+
+## Release round: pantheon balance, final sounds, three map layouts, the map editor, Brief 12, the clean-up and app 0.12.0 (owner requests, 2026-10-05)
+
+Seven owner requests and one delivery, in the cloud copy and the owner's
+folder (bundle 20, hash-checked; not committed).
+
+### Pantheon balance on random maps (target: every pantheon 0.45–0.55)
+
+A new balance suite, `random1v1` (`npm run balance -- random1v1 --matches N`;
+`--map-types`, `--sizes`, `--focus`), plays every pairing of the six pantheons
+on generated small maps, each map twice (once from each seat, so the map and
+the first move cancel out), the map types in turn, few wandering monsters,
+last empire standing, day cap 40. A match still open at the cap counts for a
+side at least 25% stronger in armies, else half a win each. The report gives
+the matrix, each pantheon's average against the other five with a "Target
+0.45–0.55" column, the score by map type and the first seat's score; a day-15
+snapshot per seat (army strength, buildings, gods, gold, heroes, towns) is
+kept for diagnosis. AI-vs-AI measurements with the shipped AI, not playtest
+verdicts.
+
+Measured (commands actually run, 2 workers):
+
+| Run | Content | Maps | Greek | Norse | Egyptian | Japanese | Celtic | Mesoamerican |
+|---|---|---|---|---|---|---|---|---|
+| `random1v1 --matches 20 --map-types continental,highlands,lake_isle,wild_forest,marshlands,crossroads` | before this round | 600 | 0.55 | 0.46 | **0.62** | **0.42** | 0.47 | 0.50 |
+| same | Japanese and Egyptian creatures, leaders (below) | 600 | 0.53 | **0.42** | **0.65** | **0.43** | 0.50 | 0.48 |
+| same, `--matches 12 --no-temperaments` | same | 360 | 0.55 | 0.52 | 0.51 | 0.53 | 0.45 | 0.44 |
+| `random1v1 --matches 24` (all nine layouts) | Raiders and Builders softened, tier-7 Health | 720 | 0.55 | 0.51 | **0.64** | **0.39** | 0.46 | 0.46 |
+| `random1v1 --matches 12 --focus japanese,egyptian` | Builders and Disciplined softer still | 216 | 0.50 | 0.52 | **0.58** | **0.41** | 0.48 | 0.52 |
+| same, `--focus japanese`, Disciplined neutral | (experiment) | 120 | — | — | — | 0.49 | — | — |
+| `random1v1 --matches 24` (all nine layouts) | Builders and Disciplined near neutral | 720 | 0.56 | 0.54 | 0.54 | **0.40** | 0.47 | 0.49 |
+| `random1v1 --matches 24 --focus japanese`, merged with the run above | **final**: Kappa Speed 5/6, Kirin and Jorogumo Health | **720** | **0.57** | **0.51** | **0.53** | **0.47** | **0.45** | **0.47** |
+| `random1v1 --matches 24 --focus greek,celtic`, merged (experiment, reverted) | Glory +15%, Selkie Speed 6 | 720 | 0.58 | 0.52 | 0.54 | 0.45 | 0.43 | 0.48 |
+
+The finding: once the creatures were close, the remaining gaps came from the
+**AI temperaments**, not from the pantheons. Played the neutral way, the six
+pantheons scored 0.44–0.55; with the first temperament weights the Egyptian
+Builders (wider attack margin, economy and walls ×1.4) won 0.62–0.65 and the
+Norse Raiders (attacking at smaller margins) and Japanese Disciplined
+(upgrading dwellings first) lost. The temperaments keep their habits with
+smaller weights (`packages/content/src/common/temperaments.ts`): Raiders
+boldness 0.95 (was 0.88), raid value ×1.15 (1.3), military ×1.15 (1.25),
+economy ×0.95 (0.9), magic 0.9 (0.85), still one extra hero; Builders
+boldness 1 (1.12), raid value ×0.95 (0.85), economy and defense ×1.1 (1.4);
+Disciplined elite ×1.05 (1.5, then 1.2). Their summaries say what they still
+do. A Japan-only experiment with a fully neutral temperament scored 0.49
+(120 matches) against 0.41 with a Disciplined of boldness 1.06 and elite ×1.05 — so even small weights move
+the AI's strength by pantheon; the temperament checks belong in every
+balance run. Content changes (proposed values, DESIGN_PROPOSALS.md item 42):
+
+* Japanese creatures were the weakest for their price at almost every tier
+  (same-tier duels): River Elder Kappa, Tengu, Great Tengu, Oni, Jorogumo,
+  Queen Jorogumo, Kirin, Celestial Kirin, Orochi and Imperial Orochi gain a
+  little Attack, Defense, Health or damage; the tier-4 and tier-6 prices match
+  the other pantheons (350/450 and 1,000/1,250 Gold); the skirmish escort is
+  23 Kitsune (was 21).
+* Egyptian outliers a little weaker: Royal Ushabti (Defense 11, Health 32),
+  Crocodile Beast (Attack 11, Health 34), Anubian Warden (Defense 4), Desert
+  Colossus (Health 214).
+* Japanese, second pass: Kappa Speed 5 (was 4), River Elder Kappa 6 (5),
+  Kirin Health 90 (84), Celestial Kirin 104 (97), Jorogumo 38 (36), Queen
+  Jorogumo 44 (42).
+* Tier 7: Stone Colossus Health 255 (was 240), Sun Colossus 298 (280),
+  Fomorian Giant 260 (250), Ancient Fomorian 312 (300).
+* Random maps: every empire's first leader has the same kind of specialty
+  (+250 Gold a day: Odysseus, Ragnar, Hatshepsut, Yamato Takeru, Medb,
+  Nezahualcoyotl).
+* The Afterlife signature stays at 20% (10% and 15% were tried; no
+  measurable difference).
+
+Content stays `content-0.8.0` (values changed without a version bump), so
+0.11.0 saves still load and play on with the new values. Noise: 240 matches
+give each average a standard error of about 0.03; the per-pairing cells (48
+matches) about 0.07.
+
+**Result (final content, 720 matches on all nine layouts, both seats):**
+Norse 0.51, Egyptian 0.53, Japanese 0.47 and Mesoamerican 0.47 are inside
+0.45–0.55; **Greek 0.57 is above it and Celtic 0.45 (0.446) at its lower
+edge**. The owner stopped the tuning here (2026-10-05: "good enough"). The
+last experiment — Glory +15% XP and Selkie Speed 6 — measured Greek 0.58 and
+Celtic 0.43, no better within the noise, and was reverted, so the shipped
+values are the ones measured as final. The first seat scored 0.47 (623
+matches decided by elimination, mean day 21.3; 79 on army strength at the
+cap; 18 draws).
+
+| Layout | Greek | Norse | Egyptian | Japanese | Celtic | Mesoamerican |
+|---|---|---|---|---|---|---|
+| continental | 0.60 | 0.60 | 0.67 | 0.35 | 0.38 | 0.41 |
+| highlands | 0.58 | 0.48 | 0.55 | 0.46 | 0.31 | 0.62 |
+| lake_isle | 0.44 | 0.68 | 0.68 | 0.44 | 0.46 | 0.25 |
+| wild_forest | 0.48 | 0.63 | 0.36 | 0.62 | 0.46 | 0.46 |
+| marshlands | 0.60 | 0.50 | 0.54 | 0.46 | 0.46 | 0.43 |
+| crossroads | 0.47 | 0.48 | 0.50 | 0.38 | 0.57 | 0.61 |
+| archipelago | 0.50 | 0.54 | 0.62 | 0.50 | 0.46 | 0.38 |
+| twin_continents | 0.75 | 0.27 | 0.52 | 0.54 | 0.39 | 0.54 |
+| central_valley | 0.77 | 0.41 | 0.32 | 0.44 | 0.50 | 0.55 |
+
+(80 matches per cell; standard error about 0.06.) The merged run is honest
+only because the later runs changed one pantheon's units at a time: the
+Japanese re-run replaced every Japanese pairing of the 720-match run with
+the same maps and seeds, and the pairings without Japan are untouched by
+Japanese values. A run of 720 took 37–93 minutes with two workers.
+
+### Final music and sounds (Pixabay, with the owner's approval)
+
+Every sound the game plays is now a recording (status **final**; the
+manifest holds 91 entries, none a placeholder). 105 sources from Pixabay
+under the **Pixabay Content License (no attribution required)**, chosen with
+the owner's approval: only items not marked AI-generated and without a
+YouTube Content ID registration at selection time. The list — every sound ID,
+the tracks it uses, each source's title, author, page and licence — is
+`assets-source/audio/sounds.json`; `tools/audio/import_sounds.py --from <dir>`
+converts and registers them (CLAUDE.md):
+
+* **Music** (two-pass EBU R128 to −16 LUFS as the map music, Ogg q2,
+  streamed): a menu theme (two tracks), battle music by the viewing player's
+  pantheon (`music.battle.<pantheon>`: three tracks each, two for the
+  Japanese), siege music for any battle at a town's walls (`music.siege`, two
+  tracks), mission-results music (two tracks); `music.battle` (the first
+  track of each pantheon) stays as the fallback. 23 files, 70.4 minutes.
+* **Stingers** (victory 7.7 s, defeat 15 s, level-up, beacon) and **effects**
+  (61 sound IDs: interface, building and recruiting, the day and week, combat
+  blows, shots, deaths, sieges, spells and Favor): leading and trailing
+  silence trimmed, cut to each sound's length limit, loudness matched to the
+  placeholder it replaced so the mix keeps its balance, Ogg q3–q4. Several
+  combat sounds have two or three variants.
+* **Ambience** (nine soundscapes and the battlefield): seamless loops of at
+  most 60 s (equal-power crossfade of the end into the start), level-matched.
+
+The downloads came through the built-in browser; 75 waited as `.tmp` files
+until the owner approved them in chat, and each of the 106 downloaded files
+was identified by its SHA-256 against the Pixabay CDN copy (two approved files
+carried another item's name; one track, Japanese battle music “Joushitai”,
+never downloaded and was dropped from the playlist). Audio total in the game
+161 MB (map music 104 MB).
+
+The adventure map's old "soundscape" music (`music.explore.*`, eight
+synthesized loops that only played when a pantheon had no playlist) is
+retired: the map plays the viewing player's pantheon playlist, else the Greek
+one; the soundscapes keep their ambience. `tools/audio/make_placeholders.py`
+no longer makes them; `sounds.json` lists them under `retire`.
+
+### Three more random-map layouts (`pr-skirmishgen-0.6`)
+
+Archipelago (every region an island; straits, a lagoon around the central
+isle crossed by one sandbar per empire, the open sea along the rim; twin
+portals cross the straits), Twin Continents (two empires; a strait splits
+the land, the central island is the only land bridge, twin portals cross the
+water) and Central Valley (a valley ringed by ridges with two guarded passes
+per empire; inside, a guarded gold mine and crystal deposit per empire
+besides the central prize). The older six layouts draw the same maps from the
+same seed as before (noise label kept at 0.5). The setup offers nine layouts
+and disables Twin Continents for more than two empires. Unit tests: every
+layout generates for two to six empires where allowed, connected and
+symmetric (SKM tests); `tests/e2e/round20.spec.ts` **passed** (nine layout
+cards, Twin Continents disabled at three empires, an Archipelago map starts
+with more than 100 water cells and over 20 sites).
+
+### Map editor (S22)
+
+New Game → **Map Editor** (`packages/ui/src/screens/MapEditor.tsx`, document
+model `packages/mapgen/src/custom.ts`): paint the six grounds with brush 1–3,
+lay or remove roads, place towns (one per empire), mines, treasure chests,
+supply caches, learning stones, spell shrines, skill trainers, windmills,
+creature camps, twin portals (in pairs), monsters and the Shrine of the First
+Flame, each guardable with a chosen creature and count; set two to six
+empires and their pantheons, the land, the victory goal (last empire standing
+or hold the shrine), starting wealth and a revealed map. Undo and redo;
+Escape asks before leaving unsaved work. The Check tab lists what keeps the
+map from being played (no town for an empire, a site on water or mountains,
+a site nobody can reach, a lone portal, a missing shrine). Maps live in a map
+library (desktop: `<userData>/maps/<id>.prmap.json`, 4 MB cap, IPC
+`pr:listMaps` / `readMap` / `writeMap` / `deleteMap` / `exportMap` /
+`importMap`; browser: local storage) and export or import as `*.prmap.json`
+(untrusted files are validated before use). Play compiles the map into an
+ordinary generated mission (seats, patron gods, difficulty), so a custom game
+saves and loads like a random map. Measured: `packages/campaign/test/customMap.test.ts`
+5/5; `tests/e2e/mapEditor.spec.ts` **2/2 passed** (paint, road, both towns, a
+guarded mine and a portal pair → "Ready to play"; guard edited; saved,
+reopened from the library; exported file checked; played to the adventure
+map; a damaged file refused with its reason; Escape asks first).
+
+### Brief 12 visuals (owner delivery, 2026-10-05)
+
+The owner's checkout already held the delivery (84 dwelling and 42 service
+cutouts, 9 climate icons, 8 site markers, `fx.god.commit`; imported there by
+the delivery's own steps); the cloud copy took the same runtime files and
+manifests from it. Checked here through the real screens
+(`tests/e2e/brief12.spec.ts`, **4/4 passed**): all 18 locations of every
+pantheon's town show delivered art with base and upgraded dwellings (12
+screenshots, every slot from `art/town/`); the nine battle climate chips show
+their own icon with the rule as tooltip; the tile panel shows each of the
+eight random-map site markers. The key tent and key gate markers are now
+tinted with their key's colour in the tile panel (their light surfaces were
+painted for it; `MarkerIcon` `tint`, isolated in the marker), as the map
+sprites already were. The god commitment plays the new strip once and not
+under reduced motion (`round19.spec.ts` 4/4). Still placeholders: the six
+town backgrounds (Part E was not painted) and the neutral map hero.
+
+### Release clean-up (owner choices of 2026-10-05)
+
+Removed from the working tree (git history keeps everything; 973 files):
+the 221 GPT-6 sheets already cut into final strips (the 20 Brief 12 sheets,
+`README.md` and `cut-log.json` stay), the 234 creature reference views, 303
+old placeholder sprites in `assets-runtime/sprites/` that the manifest no
+longer pointed at, 150 town-building placeholder crops replaced by Brief 12
+(the six backgrounds and the menu fallback stay), `assets-source/ui/backgrounds-old/`
+(11), `support images/` (33 concept boards), the brief documents 1–11, the
+finished production lists `GPT6_2D_CONTENT_GENERATION.md`,
+`VFX_MAGIC_AND_FAVORS.md`, `ICON_CATALOG.md` (+ `.xlsx`, `.csv`) and
+`2D_MIGRATION_AUDIT.md`, the two placeholder generators
+(`tools/assets/sprites/make_sprite_placeholders.py` with `npm run
+sprites:placeholders`, `tools/assets/prepare_placeholders.py`) and the
+finished review sweep `tests/e2e/zz-moments-review.spec.ts`. In the code: 55
+exported functions and constants nothing used (among them two 3D-era hex
+transforms, in-memory storage adapters, an unused hero-figure lookup and
+four UI components with their CSS), 21 unused imports and three unused
+fields; `tsconfig.base.json` now sets `noUnusedLocals`, so the type-check
+keeps it that way. No source file was unreachable (import-graph audit from
+every entry point). Kept: the six final hero figures in the sprite manifest
+(no screen shows them now; removing final art was not asked), node_modules
+and the local build output (the owner had no preference).
+
+### App 0.12.0 (Windows installer for play-testing)
+
+| Command | Result |
+|---|---|
+| `npm run build` + `npm run desktop:build` + `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` (Linux + Wine) | **built** `Pantheon-Realms-Setup-0.12.0-x64.exe`, 515,818,606 bytes, SHA-256 `7ea20e7060f533fce8cd691c59a2ccc7b65ffd0ec970324fbbd645270dd31935`; `app.asar` 409.9 MB, 2,861 entries (`dist/`, `package.json`, `renderer/` only: no development tools, MCP servers, sources, tests, source maps, briefs or 3D files) |
+| `7z x` of the installer's `app-64.7z` | its `app.asar` is byte-identical to `win-unpacked` |
+| `unshare -n` (no network) + `PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs` | **DESKTOP SMOKE OK**: `prgame://app/index.html`, saves and records written, 1,219 sprites, 508 paintings, 549 interface images, the custom cursor, 91 sounds (6 decoded at the menu, context running), the adventure map drawn with WebGL, packaged without dev tools |
+
+Why it is larger than 0.11.0 (290.7 MB): the deliveries of 2026-10-04 and
+10-05 that were not yet in an installer — the 177 magic and Favor strips, the
+map heroes' `prepare`/`cast` strips, 134 god and hero portraits, the town
+building levels and the Brief 12 buildings (art 112 MB, sprites 104 MB) —
+and the final sounds (audio 161 MB, of which the map music is 104 MB).
+App version **0.12.0**; content stays `content-0.8.0`, so 0.11.0 saves load.
+Unsigned (Windows SmartScreen will ask once); **not run on Windows** here.
+
+### Verification
+
+| Command | Result |
+|---|---|
+| `npm run check` | boundaries OK, type-check clean (now with `noUnusedLocals`), **375/375** unit tests in 41 files |
+| `npx playwright test` (every spec except `audio.spec.ts`, the build of mid-round, Chromium + SwiftShader, two balance workers on the same two CPUs) | **103 passed, 2 failed** of 105 in 1.4 h: the Japanese pantheon test still expected the old 21-Kitsune escort (now 23; fixed, rerun **passed**), and `round19b`'s twelve-painting sweep ran out of time under the CPU load (rerun alone **4/4 passed**) |
+| `npx playwright test tests/e2e/audio.spec.ts` (final sounds) | **4/4 passed**: every sound file in the manifest decodes in Chromium; the menu, the Greek map playlist with the coast ambience (the test now waits for the decoded ambience too), Settings volumes and mute, and in battle the war horn, `music.battle.greek` and combat sounds |
+| `npx playwright test tests/e2e/brief12.spec.ts tests/e2e/round19.spec.ts tests/e2e/mapEditor.spec.ts tests/e2e/round20.spec.ts` | **4/4, 4/4, 2/2, 1/1 passed** (sections above) |
+| `npx playwright test tests/e2e/pantheons.spec.ts tests/e2e/battles.spec.ts` (final content) | **10/10 passed** |
+| `node tools/perf/load-time.mjs` (3-run medians, SwiftShader) | first measurement with the recordings: local menu 245 ms, first scene **1,500 ms**; web 464 / 1,400 ms. The combat and magic sounds (now real recordings) were decoded during the first map frame; they now wait 5 s and then for an idle moment (`gameAudio.ts`; a sound needed earlier loads on first use). Again: local **229 / 879 ms**, web **467 / 885 ms** (before this round 219 / 960 and 440 / 1,009) |
+| `python3 tools/audio/import_sounds.py --from <identified files>` | 85 sound IDs converted and registered, manifest 91 entries all `final`; the 73 effects and stingers converted again with their trailing silence trimmed at the same matched level (e.g. `ui.click` 1.52 → 0.55 s, same active RMS) |
+
+Not checked: a run on Windows itself (the installer is unsigned and was
+only built and unpacked here), a human play-test of the new values, and the
+map editor and the new layouts on real hardware.
+
+**Delivery.** Bundle 20 (hash-checked against HEAD `9eaea29` plus the
+owner's Brief 12 working tree; `apply_sync.py`, not committed) wrote 214 files
+and removed the 1,067 approved files (the clean-up above and the 94 audio
+placeholders the recordings replaced); one file had changed on the owner's
+computer since HEAD (`assets-source/icons/ICON_CATALOG.xlsx`, rewritten by the
+Brief 12 import) and was removed with the owner's current version checked.
+The installer was copied to the owner's `installer\` folder in 26 parts and
+joined there (SHA-256 checked: `7ea20e70…1935`). The 106 Pixabay downloads in
+the owner's Downloads folder were deleted after conversion, as the owner
+asked; their sources stay listed in `assets-source/audio/sounds.json`.
 
 ## Map music, climate rules, AI temperaments, the god commitment, Brief 12 and the visual-completion delivery (owner requests, 2026-10-04)
 

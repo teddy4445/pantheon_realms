@@ -1109,3 +1109,115 @@ Without a playlist the map falls back to the soundscape music.
    temperament too?
 3. Music: keep five tracks per pantheon, or trim the two 16-minute meditations
    (Japanese, Mesoamerican) to save about 20 MB?
+
+## Group 1.1 — owner requests of 2026-10-05 (proposed values)
+
+The owner asked for pantheon balance on random maps (every pantheon's average
+win rate against the others between 45% and 55%), final music and sounds,
+three more random-map layouts, a scenario editor, a cleaner project and a new
+installer. Values are proposed and unplaytested; the AI-vs-AI measurements are
+in DEVELOPMENT_STATUS.md.
+
+### 42. Random-map balance, one against one
+
+A new balance suite, `random1v1` (`npm run balance -- random1v1 --matches N`),
+plays every pairing of the six pantheons on generated small maps — each map
+twice, once from each seat, the map types taken in turn — and reports each
+pantheon's average score against the other five (a match undecided at day 40
+counts for a side at least 25% stronger in armies, else half a win each).
+Same-tier duels (`tiers`) found the content causes; a run with the AI
+temperaments off found the rest: the first temperament weights made the AI
+itself stronger or weaker by pantheon. The changes:
+
+* Japanese creatures: Kappa Speed 5 (was 4; the River Elder Kappa Speed 6
+  with a little more Attack and Health), Tengu, Oni, Jorogumo, Kirin and Orochi (both forms) gain a
+  little Attack, Defense, Health or damage; the tier-4 and tier-6 prices match
+  the other pantheons (350/450 and 1,000/1,250 Gold); the skirmish escort is
+  23 Kitsune (was 21).
+* Egyptian creatures: Royal Ushabti (Defense 11, Health 32), Crocodile Beast
+  (Attack 11, Health 34), Anubian Warden (Defense 4) and Desert Colossus
+  (Health 214) are a little weaker.
+* Tier 7: Stone Colossus and Sun Colossus (Health 255/298), Fomorian Giant and
+  Ancient Fomorian (260/312) a little sturdier.
+* Random maps: every empire's first leader now has the same kind of specialty
+  (+250 Gold a day: Odysseus, Ragnar, Hatshepsut, Yamato Takeru, Medb,
+  Nezahualcoyotl); before, three pantheons led with an income specialty and
+  three with a creature specialty.
+* AI temperaments keep their habits with small weights: Raiders boldness 0.95,
+  raid value ×1.15, military ×1.15, economy ×0.95, one extra hero; Builders
+  economy and walls ×1.1, raid value ×0.95; Disciplined dwelling upgrades
+  ×1.05 (Mystics and Devout unchanged).
+
+Measured with the final values (720 matches on all nine layouts): Greek 0.57,
+Norse 0.51, Egyptian 0.53, Japanese 0.47, Celtic 0.45 (0.446), Mesoamerican
+0.47 — four inside 0.45–0.55, Greek above and Celtic at the lower edge, where
+the owner stopped the tuning. Glory at +15% and a faster Selkie were tried
+last and reverted (no better within the noise).
+
+### 43. Three more random-map layouts (`pr-skirmishgen-0.6`)
+
+* **Archipelago** — every region an island: straits where two regions meet, a
+  lagoon around the central isle crossed by one sandbar per empire, the open
+  sea along the rim; twin portals cross the straits.
+* **Twin Continents** (two empires) — a strait splits the land; the central
+  island with the contested mine or shrine is the only land bridge, and twin
+  portals cross the water.
+* **Central Valley** — a wide fertile valley ringed by ridges with two guarded
+  passes per empire; inside, a guarded gold mine and crystal deposit per empire
+  besides the central prize.
+
+The older layouts draw the same maps from the same seed as before (the noise
+label stays at 0.5). The setup disables Twin Continents for more than two
+empires.
+
+### 44. Map editor (S22)
+
+New Game → Map Editor: paint the six grounds (brush 1–3), lay or remove roads,
+place towns (one per empire), mines, treasure chests, supply caches, learning
+stones, spell shrines, skill trainers, windmills, creature camps, twin portals
+(in pairs), monsters and the Shrine of the First Flame; guard any of them with
+a chosen creature and count; choose two to six empires and their pantheons,
+the land (biome), the victory goal (last empire standing or hold the shrine),
+starting wealth and a revealed map. A check lists what keeps the map from
+being played (no town, a site on water, a site nobody can reach, a lone
+portal, a missing shrine). Maps are saved in a map library (the app's data
+folder on desktop, browser storage on the web) and exported or imported as
+`*.prmap.json` files (`@pr/mapgen` custom.ts: a plain document; untrusted
+files are checked before use). Play compiles the map into an ordinary
+generated mission, so a custom game saves and loads like a random map.
+
+### 45. Final music and sounds
+
+Every sound the game plays comes from Pixabay (Pixabay Content License, no
+attribution required; nothing marked AI-generated or registered with YouTube
+Content ID): a menu theme (two tracks), battle music per pantheon (three
+tracks each, two for the Japanese; by the viewing player's pantheon), siege
+music (two tracks),
+music for the mission results, victory and defeat pieces, and real effects
+for weapons, spells, building, the interface and the nine ambience loops
+(`assets-source/audio/sounds.json`, `tools/audio/import_sounds.py`).
+
+The map's old soundscape music (eight synthesized `music.explore.*` loops,
+heard only when a pantheon had no playlist) is retired; the soundscapes keep
+their ambience, and a missing playlist falls back to the Greek one.
+
+### 46. Six authored skirmish maps
+
+Frostgate (2), The Burning Oasis (4, hold the shrine 7 days), The Circle of
+Gates (3), Barrows of the Lost Kings (2), The Golden Fords (2, rich and
+revealed) and The Six Thrones (6, hold the shrine 10 days) — custom map
+documents built by `npm run maps:build` with exact symmetry (DEVELOPMENT_STATUS.md
+has the table and the AI measurements). Proposals, not settled: guard sizes
+(passes 1,500–2,600 Gold of creatures, vaults about 3,000–5,000, the shrines
+about 8,000–9,000), the islet and terrace guards, prison levels (5 and 7), the
+Golden Fords' double treasury and the Six Thrones' island size (about 250 open
+tiles per empire). Seats are chosen at setup (any pantheon in any seat, human
+or AI); the maps never change a rule.
+
+### 47. Roads, ground and fog (presentation only)
+
+Roads follow the land (rutted dirt, desert flags, packed snow, mountain
+cobbles, marsh planks) and turn in curves; ground types fade into each other
+and the fog's edges fade. Owner decision 2026-10-05 for the dwelling order:
+a dwelling never needs a dwelling of a higher tier (tier 3 now needs tier 2 and
+the first temple in every pantheon, including The Three Beacons).

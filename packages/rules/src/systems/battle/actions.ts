@@ -79,10 +79,6 @@ export interface BattleLegalActions {
   readonly castAvailable: boolean;
 }
 
-export function sideController(state: MatchState, battle: BattleState, side: BattleSideId): PlayerId | null {
-  return battle.sides[side].playerId ?? null;
-}
-
 export function commanderMana(state: MatchState, side: BattleSideState): number {
   const heroId = side.commander?.heroId;
   if (heroId && state.heroes[heroId]) return state.heroes[heroId]!.mana;
@@ -142,7 +138,6 @@ export function legalActions(catalog: ContentCatalog, state: MatchState): Battle
     else structureTargets = intact;
   }
   const spells = spellOptions(catalog, state, battle, stack.side);
-  const opponent = battle.sides[opposing(stack.side)];
   const surrenderCost = surrenderPrice(catalog, battle, stack.side);
   const townDefender = battle.encounter.kind === 'town_siege' && stack.side === 'defender';
   return {

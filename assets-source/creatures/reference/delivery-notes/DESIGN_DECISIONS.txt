@@ -1,7 +1,0 @@
-EGYPTIAN BODY-PLAN CONFLICTS
-
-The source brief states that pantheon boards take precedence where the written description disagrees. It also requests one skeleton per base/upgraded family.
-The Egyptian board conflicts with the latter requirement for tier 2 (quadruped Jackal Guardian -> humanoid Anubian Warden) and tier 5 (quadruped Crocodile Beast -> upright Sobek Warbeast).
-An optional clarification was sent to the user, recommending shared written body plans. No answer had arrived when generation continued. The stated default was to follow the board's explicit precedence rule.
-Tier 2 therefore follows the board, retaining shared jackal head identity and materials but requiring separate skeletons. Tier 5 also follows the board: four-legged Crocodile Beast and upright Sobek Warbeast, requiring separate skeletons.
-This is an unresolved source-brief conflict, not a claim that these pairs can use one skeleton.

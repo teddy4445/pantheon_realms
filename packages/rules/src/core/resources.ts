@@ -88,11 +88,6 @@ export function shortfall(wallet: ResourceCost, cost: ResourceCost): ResourceBun
   };
 }
 
-export function isZeroResources(a: ResourceCost): boolean {
-  const r = resources(a);
-  return RESOURCE_KEYS.every((k) => r[k] === 0);
-}
-
 /** Largest integer n such that n * unit is affordable (unit must be non-zero somewhere). */
 export function maxAffordable(wallet: ResourceCost, unit: ResourceCost): number {
   const w = resources(wallet);
@@ -102,10 +97,4 @@ export function maxAffordable(wallet: ResourceCost, unit: ResourceCost): number 
     if (u[k] > 0) best = Math.min(best, Math.floor(w[k] / u[k]));
   }
   return best === Number.POSITIVE_INFINITY ? Number.MAX_SAFE_INTEGER : best;
-}
-
-export function formatResources(a: ResourceCost): string {
-  const r = resources(a);
-  const parts = RESOURCE_KEYS.filter((k) => r[k] !== 0).map((k) => `${r[k].toLocaleString('en-US')} ${RESOURCE_LABELS[k]}`);
-  return parts.length === 0 ? 'Free' : parts.join(', ');
 }

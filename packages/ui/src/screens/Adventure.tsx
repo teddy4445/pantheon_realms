@@ -56,7 +56,7 @@ import { Burst } from '../components/burst';
 import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
-import { HeroPortrait, MarkerIcon, siteMarkerAsset } from '../components/art';
+import { HeroPortrait, MarkerIcon, siteMarkerAsset, siteMarkerTint } from '../components/art';
 import { ArmyPreview, ResourceBar } from '../components/game';
 import { Icon } from '../assets/icons';
 import {
@@ -330,15 +330,16 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
     <div className="tile-info">
       <div className="tile-info__head">
         {site ? (
-          <MarkerIcon
-            assetId={siteMarkerAsset(site.def.kind, {
+          (() => {
+            const assetId = siteMarkerAsset(site.def.kind, {
               owner: (() => {
                 const o = site.def.kind.type === 'town' ? state.towns[site.def.kind.townId]?.ownerId : site.state.owner;
                 return o ? (o === playerId ? 'self' : 'other') : null;
               })(),
               done: siteDone(site.def.kind.type, site.state),
-            })}
-          />
+            });
+            return <MarkerIcon assetId={assetId} tint={siteMarkerTint(site.def.kind as { type: string; color?: string }, assetId, KEY_COLOR_HEX)} />;
+          })()
         ) : other ? (
           <MarkerIcon assetId={other.ownerId === playerId ? 'icon.marker.hero' : 'icon.marker.enemy-hero'} />
         ) : null}
@@ -1060,7 +1061,11 @@ export function AdventureScreen() {
               <button key={t.id} type="button" className="town-tab" onClick={() => store.goto('town', { townId: t.id })} onContextMenu={(e) => { e.preventDefault(); ctrl.current?.focus(t.coord); }} data-testid={`town-tab-${t.id}`}>
                 <Icon name="town" />
                 <span>{t.name}</span>
-                {t.buildUsedDay !== state.day ? <Chip tone="ok" title="A building can be constructed today">Build</Chip> : null}
+                {t.buildUsedDay !== state.day ? (
+                  <span className="town-tab__badge" title="A building can be constructed today" aria-label="A building can be constructed today" data-testid={`town-build-${t.id}`}>
+                    <Icon name="build" />
+                  </span>
+                ) : null}
               </button>
             ))}
         </Panel>

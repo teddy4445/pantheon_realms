@@ -23,8 +23,10 @@ import { UnitDetailScreen } from '../screens/UnitDetail';
 import { OverlayLayer } from '../dialogs/Overlays';
 import { HintPanel, StoryLayer } from '../dialogs/Story';
 import { MomentLayer } from '../components/moments';
+import { MapSetupScreen } from '../screens/MapSetup';
 import { RandomSetupScreen } from '../screens/RandomSetup';
 import { SummaryScreen, HighScoresScreen } from '../screens/Summary';
+import { MapEditorScreen } from '../screens/MapEditor';
 import { matches } from './keys';
 
 const SCREENS: Record<ScreenId, ComponentType> = {
@@ -45,11 +47,13 @@ const SCREENS: Record<ScreenId, ComponentType> = {
   settings: SettingsScreen,
   'unit-detail': UnitDetailScreen,
   'random-setup': RandomSetupScreen,
+  'map-setup': MapSetupScreen,
   summary: SummaryScreen,
   'high-scores': HighScoresScreen,
+  'map-editor': MapEditorScreen,
 };
 
-const IN_GAME_BACKABLE: ScreenId[] = ['hero', 'town', 'recruitment', 'pantheon', 'journal', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'random-setup', 'high-scores'];
+const IN_GAME_BACKABLE: ScreenId[] = ['hero', 'town', 'recruitment', 'pantheon', 'journal', 'encyclopedia', 'settings', 'unit-detail', 'game-mode', 'scenario-select', 'pantheon-select', 'random-setup', 'map-setup', 'high-scores'];
 
 /** Mandatory flow overlays: Escape does not dismiss them. */
 const STICKY_OVERLAYS = new Set(['mission-failed', 'debrief', 'campaign-complete', 'game-over', 'handoff']);
@@ -112,7 +116,7 @@ function Router() {
   const store = useStore();
   const entry = store.screen;
   const Screen = SCREENS[entry.id];
-  const needsSession = !['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'encyclopedia', 'settings', 'unit-detail', 'random-setup', 'high-scores'].includes(entry.id);
+  const needsSession = !['main-menu', 'game-mode', 'scenario-select', 'pantheon-select', 'encyclopedia', 'settings', 'unit-detail', 'random-setup', 'map-setup', 'high-scores', 'map-editor'].includes(entry.id);
   if (needsSession && !store.session) {
     return <MainMenuScreen />;
   }

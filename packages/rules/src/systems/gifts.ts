@@ -11,7 +11,6 @@
  */
 import { heroInTown } from '../resolvers/world';
 import type { ArtifactId, HeroId, PlayerId, TownId } from '../ids';
-import { hexEquals } from '../core/hex';
 import { canAfford, resources } from '../core/resources';
 import { RngCursor, seedFromLabel } from '../core/rng';
 import type { ContentCatalog } from '../definitions/catalog';

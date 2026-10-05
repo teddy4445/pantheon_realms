@@ -9,15 +9,14 @@ core. Content presentation uses high-resolution 2D backgrounds, sprites,
 atlases, portraits, UI art and animation strips. Gameplay state changes only
 through validated commands; presentation never defines gameplay outcomes.
 
-> **Development build.** The architecture, screens and game logic are real.
-> Delivered art is in (story pictures, ground and sky paintings, big moments,
-> 43 creature portraits, icons, cursors, pantheon emblems); every battle
-> sprite, map avatar and map object is still a **labelled placeholder**
-> (`assets-runtime/sprites/manifest.json`, `status: "placeholder"`) waiting
-> for the art in [`GPT6_2D_CONTENT_GENERATION.md`](GPT6_2D_CONTENT_GENERATION.md),
-> and town pictures are crops of the owner's boards. Music and sounds are
-> temporary placeholders synthesized by a script; final recordings replace
-> them by file. See [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md).
+> **Play-test build.** The architecture, screens and game logic are real.
+> The art is final (GPT-6 paintings, creature and hero animation strips, map
+> objects, effects, icons, cursors, town buildings), except the six town
+> backgrounds, which are still crops of the owner's concept boards and the
+> neutral map hero's silhouette. Music and sound effects are royalty-free
+> Pixabay recordings (`assets-source/audio/`). Balance values are proposed
+> and measured by AI-vs-AI runs, not yet play-tested. See
+> [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md).
 
 ## Playable now
 
@@ -126,9 +125,4 @@ tools              boundary lint, desktop smoke test, load-time measurement, bal
   names, frame sizes, anchors, facing, animation names, import and
   validation), painted art, icons, cursors, and how to replace the
   placeholder sounds.
-* [`GPT6_2D_CONTENT_GENERATION.md`](GPT6_2D_CONTENT_GENERATION.md) — the exact
-  production queue for the remaining 2D art: 140 sheets (many sprites per
-  image), each with its layout and prompt.
-* [`2D_MIGRATION_AUDIT.md`](2D_MIGRATION_AUDIT.md) — what the 2D migration
-  kept, adapted, removed and still misses.
 * `docs/` — the owner's design, content, campaign and production documents.

@@ -223,12 +223,6 @@ export function StatusChip({ status }: { status: string }) {
   return <Chip>{status}</Chip>;
 }
 
-export function BalanceChip({ status }: { status: string }) {
-  if (status === 'proposed_unplaytested') return <Chip tone="warn" title="Proposed values — not yet playtested">Balance: proposed</Chip>;
-  if (status === 'approved') return <Chip tone="ok">Balance: approved</Chip>;
-  return null;
-}
-
 export function CreatureStats({ def, compare }: { def: CreatureDefinition; compare?: CreatureDefinition }) {
   const s = def.stats;
   if (!s) return <p className="dim">Statistics are not designed for this preparation creature yet.</p>;
@@ -251,19 +245,5 @@ export function CreatureStats({ def, compare }: { def: CreatureDefinition; compa
       {s.shots > 0 && s.range ? row('range', 'Range', `${s.range} hexes (full damage up to ${Math.floor(s.range / 2)})`, c?.range, s.range) : null}
       {row('info', 'Size', s.footprint === 2 ? 'Two hexes' : 'One hex')}
     </div>
-  );
-}
-
-export function CreatureChip({ catalog, creatureId, count, onClick }: { catalog: ContentCatalog; creatureId: string; count?: number; onClick?: () => void }) {
-  const def = catalog.creatures[creatureId];
-  if (!def) return null;
-  return (
-    <button type="button" className="creature-chip" onClick={onClick} disabled={!onClick}>
-      <CreaturePortrait catalog={catalog} creatureId={creatureId} size="2.2rem" />
-      <span>
-        {count !== undefined ? <strong className="num">{count} </strong> : null}
-        {count === 1 || count === undefined ? def.name : def.pluralName}
-      </span>
-    </button>
   );
 }

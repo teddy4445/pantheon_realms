@@ -205,7 +205,6 @@ export type QuestHutQuest =
 
 /** Key colours of key tents and gates (HoMM3 border guards). */
 export type KeyColor = 'azure' | 'crimson' | 'emerald' | 'amber' | 'violet' | 'ivory';
-export const KEY_COLORS: readonly KeyColor[] = ['azure', 'crimson', 'emerald', 'amber', 'violet', 'ivory'];
 export const KEY_COLOR_LABEL: Readonly<Record<KeyColor, string>> = { azure: 'Azure', crimson: 'Crimson', emerald: 'Emerald', amber: 'Amber', violet: 'Violet', ivory: 'Ivory' };
 export const KEY_COLOR_HEX: Readonly<Record<KeyColor, string>> = { azure: '#3b8fe0', crimson: '#c0392b', emerald: '#2e9e5b', amber: '#d9a21b', violet: '#8e5bd6', ivory: '#e8e2cf' };
 

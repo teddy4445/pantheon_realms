@@ -5,10 +5,7 @@
  */
 import {
   KEY_COLOR_LABEL,
-  RESOURCE_KEYS,
   dayOfWeek,
-  heroAt,
-  missionSite,
   terrainAt,
   weekOf,
   type ContentCatalog,
@@ -155,37 +152,11 @@ export function terrainLabel(state: MatchState, c: HexCoord): string {
   return TERRAIN_LABEL[terrainAt(state.world.map, c)] ?? 'Unknown';
 }
 
-/** Coarse, clearly-labeled estimate (heuristic, not a battle prediction). */
-export function threatLabel(catalog: ContentCatalog, mine: number, theirs: number): { text: string; tone: 'ok' | 'warn' | 'bad' | 'info' } {
-  if (theirs <= 0) return { text: 'No resistance', tone: 'ok' };
-  const r = mine / theirs;
-  void catalog;
-  if (r >= 2) return { text: 'Weak opposition', tone: 'ok' };
-  if (r >= 1.2) return { text: 'You look stronger', tone: 'ok' };
-  if (r >= 0.85) return { text: 'Even match', tone: 'warn' };
-  if (r >= 0.5) return { text: 'Stronger than you', tone: 'bad' };
-  return { text: 'Deadly', tone: 'bad' };
-}
-
 export function heroStrength(catalog: ContentCatalog, hero: HeroState): number {
   return armyStrength(catalog, hero.army.slots.map((s) => (s ? { creatureId: s.creatureId, count: s.count } : null)), {
     attack: hero.attributes.attack,
     defense: hero.attributes.defense,
   });
-}
-
-export function guardStrength(catalog: ContentCatalog, state: MatchState, siteId: string): number {
-  const def = missionSite(catalog, state, siteId);
-  const st = state.world.sites[siteId];
-  const army = st?.guard ?? def?.guard?.army ?? [];
-  const cmd = def?.guard?.commander;
-  return armyStrength(catalog, army, cmd ? { attack: cmd.attributes.attack, defense: cmd.attributes.defense } : { attack: 0, defense: 0 });
-}
-
-/** Rough defender strength of a besieged town: garrison, visiting hero, and a wall factor (display heuristic). */
-export function siegeStrength(catalog: ContentCatalog, town: TownState, visitor: HeroState | undefined, level: number): number {
-  const garrison = armyStrength(catalog, town.garrison.slots.map((s) => (s ? { creatureId: s.creatureId, count: s.count } : null)));
-  return (garrison + (visitor ? heroStrength(catalog, visitor) : 0)) * (1 + 0.25 * level);
 }
 
 /**
@@ -194,14 +165,6 @@ export function siegeStrength(catalog: ContentCatalog, town: TownState, visitor:
  */
 export function dailyIncome(catalog: ContentCatalog, state: MatchState, playerId: string): ResourceBundle {
   return projectedIncome({ catalog, state }, playerId);
-}
-
-export function hasAnyResources(b: ResourceBundle): boolean {
-  return RESOURCE_KEYS.some((k) => b[k] !== 0);
-}
-
-export function heroOnTile(state: MatchState, c: HexCoord): HeroState | undefined {
-  return heroAt(state, c);
 }
 
 export function formatNumber(n: number): string {

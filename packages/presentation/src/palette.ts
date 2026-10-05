@@ -69,14 +69,11 @@ export function biomeTerrainCss(t: Terrain, biome: string): string {
 }
 
 export const UNKNOWN_COLOR = '#000000';
-export const ROAD_COLOR = '#cdb57c';
-export const SEA_COLOR = '#0c1d31';
 export const HIGHLIGHT_REACH = '#4fc3d6';
 export const PATH_TODAY = '#8fe07a';
 export const PATH_LATER = '#e6b755';
 export const PATH_ENCOUNTER = '#e0573f';
 export const SELECT_RING = '#f1d48a';
-export const NEUTRAL_COLOR = '#9a9a9a';
 
 export function hexToRgb(hex: string): [number, number, number] {
   const h = hex.replace('#', '');

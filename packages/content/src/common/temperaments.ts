@@ -9,6 +9,12 @@
  * take, whether to keep praying — never a rule, price or statistic. Weights of
  * 1 (or absent) mean "as every other rival"; the Greek temperament is the
  * neutral reference.
+ *
+ * 2026-10-05 (random-map balance, one against one): the first weights made the
+ * AI itself stronger or weaker by pantheon — Builders won 0.65, Raiders 0.42,
+ * Disciplined 0.43 against the rest, while the same pantheons played the
+ * neutral way scored 0.44–0.55. The weights are now small enough to keep each
+ * rival's habits without changing its strength (DEVELOPMENT_STATUS.md).
  */
 import type { AITemperamentDefinition } from '@pr/rules';
 
@@ -28,32 +34,32 @@ export const AI_TEMPERAMENTS: readonly AITemperamentDefinition[] = [
     id: 'norse',
     name: 'Raiders',
     summary: 'Attacks at smaller advantages, keeps an extra hero on the road and raises troops before comforts.',
-    boldness: 0.88,
-    aggression: 1.3,
+    boldness: 0.95,
+    aggression: 1.15,
     extraHeroes: 1,
-    build: { military: 1.25, economy: 0.9 },
-    magic: 0.85,
+    build: { military: 1.15, economy: 0.95 },
+    magic: 0.9,
     faith: 1,
   },
   {
     id: 'egyptian',
     name: 'Builders',
-    summary: 'Builds its economy and walls first and fights only with a wider margin.',
-    boldness: 1.12,
-    aggression: 0.85,
+    summary: 'Leans toward its economy and walls in close build choices and raids a little less.',
+    boldness: 1,
+    aggression: 0.95,
     extraHeroes: 0,
-    build: { economy: 1.4, defense: 1.4 },
+    build: { economy: 1.1, defense: 1.1 },
     magic: 1,
     faith: 1,
   },
   {
     id: 'japanese',
     name: 'Disciplined',
-    summary: 'Upgrades its dwellings and trains its heroes before raising new ones.',
+    summary: 'Upgrades its dwellings first in close build choices.',
     boldness: 1,
     aggression: 1,
     extraHeroes: 0,
-    build: { elite: 1.5 },
+    build: { elite: 1.05 },
     magic: 1,
     faith: 1,
   },

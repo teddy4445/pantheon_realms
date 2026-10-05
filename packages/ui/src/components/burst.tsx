@@ -1,7 +1,7 @@
 /**
  * Interface bursts for Favor on the town screen and the resource bar: coins
  * tossed up, timber and stone tumbling out, crystals rising, motes of light
- * (VFX_MAGIC_AND_FAVORS.md, divine gifts and the Temple offering). CSS
+ * (the VFX list, divine gifts and the Temple offering). CSS
  * transforms and opacity only (no filters over the game); the caller leaves
  * them out under reduced motion. A delivered `fx.gift.*` / `fx.offering.*`
  * strip (2026-10-04) plays instead of the drawn pieces.

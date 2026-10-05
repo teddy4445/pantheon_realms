@@ -46,6 +46,13 @@
  * whose corners are mountain wilds; the stored array's cells outside the square
  * are `void` (drawn black).
  *
+ * 0.6 (owner request 2026-10-05): three more layouts — archipelago (every region an
+ * island: straits between regions, a lagoon around the central isle crossed by one
+ * sandbar per empire, portals across the straits), twin continents (two empires; a
+ * strait splits the land and the central island is the only land bridge) and central
+ * valley (a wide valley of mines ringed by ridges, two guarded passes per empire).
+ * The existing types are unchanged.
+ *
  * Output is DATA: a WorldMapDefinition and a full MissionDefinition (which the
  * match embeds), plus cosmetic decor and a validation report. Content (kits,
  * creatures, events, artifacts by rarity) comes from the catalog; nothing here
@@ -79,7 +86,9 @@ import {
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
 
-export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.5';
+export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.6';
+/** Seeds the terrain noise and site choices (unchanged since 0.5, so a seed keeps its map). */
+const SKIRMISH_NOISE_LABEL = 'pr-skirmishgen-0.5';
 export const RANDOM_TEMPLATE_ID = 'random_skirmish';
 
 export type SkirmishMapSize = 'small' | 'medium' | 'large' | 'huge';
@@ -88,7 +97,7 @@ export type SkirmishMapSize = 'small' | 'medium' | 'large' | 'huge';
 export const SKIRMISH_SIZE_RADIUS: Readonly<Record<SkirmishMapSize, number>> = { small: 14, medium: 17, large: 21, huge: 25 };
 export const SKIRMISH_SIZE_LABEL: Readonly<Record<SkirmishMapSize, string>> = { small: 'Small', medium: 'Medium', large: 'Large', huge: 'Huge' };
 
-export type SkirmishMapType = 'continental' | 'highlands' | 'lake_isle' | 'wild_forest' | 'marshlands' | 'crossroads';
+export type SkirmishMapType = 'continental' | 'highlands' | 'lake_isle' | 'wild_forest' | 'marshlands' | 'crossroads' | 'archipelago' | 'twin_continents' | 'central_valley';
 
 export interface SkirmishMapTypeInfo {
   readonly id: SkirmishMapType;
@@ -96,6 +105,8 @@ export interface SkirmishMapTypeInfo {
   readonly summary: string;
   /** The classic map this type learns from (credits only). */
   readonly inspiredBy: string;
+  /** Most empires the layout supports (absent = every count). */
+  readonly maxEmpires?: number;
 }
 
 export const SKIRMISH_MAP_TYPES: readonly SkirmishMapTypeInfo[] = [
@@ -105,7 +116,17 @@ export const SKIRMISH_MAP_TYPES: readonly SkirmishMapTypeInfo[] = [
   { id: 'wild_forest', label: 'Wild Forest', summary: 'Deep forest everywhere; travel is slow and roads are lifelines. Clearings hold the treasures.', inspiredBy: 'Age of Mythology “Alfheim”' },
   { id: 'marshlands', label: 'Marshlands', summary: 'Fens and black pools split the land. The paths between them are worth fighting for.', inspiredBy: 'Age of Mythology “Marsh”' },
   { id: 'crossroads', label: 'Crossroads', summary: 'Peaks ring a rich center that can be entered only through one strongly guarded gate per empire.', inspiredBy: 'HoMM3 “Jebus Cross”' },
+  // 2026-10-05 (owner request: islands, two continents joined by portals, a contested central valley).
+  { id: 'archipelago', label: 'Archipelago', summary: 'Every empire rules its own island. A sandbar leads to the central isle; twin portals cross the straits.', inspiredBy: 'Age of Mythology “Archipelago”' },
+  { id: 'twin_continents', label: 'Twin Continents', summary: 'A strait splits the world in two. The only land bridge runs through the contested center; twin portals cross the water.', inspiredBy: 'HoMM3 two-continent maps', maxEmpires: 2 },
+  { id: 'central_valley', label: 'Central Valley', summary: 'A rich valley of mines lies below a ring of ridges, reached through two guarded passes per empire.', inspiredBy: 'Age of Mythology “Valley of the Kings” and HoMM3 rich-center templates' },
 ];
+
+/** Whether a map type can be played with this many empires (Twin Continents is for two). */
+export function skirmishTypeAllows(mapType: SkirmishMapType, empires: number): boolean {
+  const info = SKIRMISH_MAP_TYPES.find((t) => t.id === mapType);
+  return !info?.maxEmpires || empires <= info.maxEmpires;
+}
 
 export type GuardStrength = 'weak' | 'normal' | 'strong';
 export type TreasureLevel = 'scarce' | 'normal' | 'rich';
@@ -247,7 +268,9 @@ interface BuildCtx {
   readonly scope: ScenarioFeatures;
 }
 
-const PALETTE = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b', '#8a4fc2', '#1f9fa6'];
+/** Player colours by seat (random and custom maps). */
+export const SKIRMISH_PLAYER_COLORS = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b', '#8a4fc2', '#1f9fa6'] as const;
+const PALETTE = SKIRMISH_PLAYER_COLORS;
 /** Every empire's starting treasury at normal wealth (scaled by WEALTH_PERCENT). */
 export const SKIRMISH_START_WALLET: ResourceCost = { gold: 10000, wood: 20, stone: 20, crystal: 10, favor: 10 };
 const START_WALLET = SKIRMISH_START_WALLET;
@@ -615,6 +638,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   if (!skirmishSizeAllows(opts.size, n)) throw new SkirmishGenerationError('Four or more empires need a large or huge map');
   for (const s of opts.seats) if (!catalog.skirmishKits?.[s.pantheonId]) throw new SkirmishGenerationError(`No skirmish kit for ${s.pantheonId}`);
   const mapType: SkirmishMapType = opts.mapType ?? 'continental';
+  if (!skirmishTypeAllows(mapType, n)) throw new SkirmishGenerationError(`${mapType} maps are for at most ${SKIRMISH_MAP_TYPES.find((t) => t.id === mapType)?.maxEmpires} empires`);
   const guards: GuardStrength = opts.guards ?? 'normal';
   const treasure: TreasureLevel = opts.treasure ?? 'normal';
   const wealth: StartWealth = opts.startWealth ?? 'normal';
@@ -645,7 +669,8 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const nearestTown = Math.min(...geomTowns.slice(1).map((t) => axialDistance(A, t)));
   const homeR = Math.max(4, Math.min(Math.round(R * 0.45), Math.floor((nearestTown - 1) / 2) - 1));
   const ringK = homeR + 1;
-  const tag = `${SKIRMISH_GENERATOR_VERSION}|${seed}|${mapType}`;
+  // The noise label stays at 0.5 so the older map types draw the same maps from the same seed.
+  const tag = `${SKIRMISH_NOISE_LABEL}|${seed}|${mapType}`;
 
   // --- Terrain: symmetric value noise (one sample per symmetry orbit) -------
   const orbitKey = (c: HexCoord) => geom.map((g) => hexKey(g(c))).sort()[0]!;
@@ -745,6 +770,46 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       if (d > 2 && d <= lakeR && !causeway.has(hexKey(c))) hardCell(c, 'water');
     }
     for (let k = 3; k <= lakeR; k++) for (const g of group) terrain.set(hexKey(g({ q: k, r: 0 })), 'plains');
+  } else if (mapType === 'archipelago') {
+    // Every region is an island: straits run where two regions meet, a lagoon rings the
+    // central isle and the open sea lies along the rim. One sandbar per empire crosses the
+    // lagoon (the line from the center toward its town); portals cross the straits.
+    centerR = Math.max(3, Math.round(Rh * 0.2));
+    const lagoon = centerR + 2;
+    for (const c of cellsRel) {
+      if (!inside(c)) continue;
+      const d = relDist(c);
+      if (d <= centerR) continue;
+      const ds = geomTowns.map((t) => axialDistance(c, t)).sort((a, b) => a - b);
+      if (ds[1]! - ds[0]! <= 2 || d <= lagoon || d >= Rh - 1) hardCell(c, 'water');
+    }
+    for (let k = centerR + 1; k <= lagoon + 1; k++)
+      for (const g of group) {
+        const c = g({ q: k, r: 0 });
+        terrain.set(hexKey(c), 'plains');
+        hard.delete(hexKey(c));
+      }
+  } else if (mapType === 'twin_continents') {
+    // Two empires: a strait along the line between them splits the land. The central island
+    // (the contested mine or shrine) touches both shores and is the only land bridge.
+    centerR = Math.max(3, Math.round(Rh * 0.18));
+    const B = geomTowns[1]!;
+    for (const c of cellsRel) {
+      if (!inside(c) || relDist(c) <= centerR) continue;
+      if (Math.abs(axialDistance(c, A) - axialDistance(c, B)) <= 1) hardCell(c, 'water');
+    }
+  } else if (mapType === 'central_valley') {
+    // A wide fertile valley around the center, ringed by ridges with two guarded passes per empire.
+    centerR = Math.max(5, Math.round(Rh * 0.42));
+    const ring = cellsRel.filter((c) => relDist(c) === centerR);
+    const mine = ring.filter((c) => inRegionA(c)).sort((a, b) => axialDistance(a, A) - axialDistance(b, A) || (hexKey(a) < hexKey(b) ? -1 : 1));
+    const first = mine[0]!;
+    const second = mine.filter((c) => axialDistance(c, first) >= 4).sort((a, b) => axialDistance(a, A) - axialDistance(b, A) || (hexKey(a) < hexKey(b) ? -1 : 1))[0] ?? null;
+    const openings = [first, ...(second ? [second] : [])];
+    const keys = new Set(openings.flatMap((o) => group.map((g) => hexKey(g(o)))));
+    for (const c of ring) if (!keys.has(hexKey(c))) hardCell(c, 'mountain');
+    for (const c of cellsRel) if (relDist(c) < centerR && relDist(c) > 2 && (tAt(c) === 'mountain' || tAt(c) === 'rough')) terrain.set(hexKey(c), smooth(c, 'veg') > 0.6 ? 'forest' : 'plains');
+    for (const o of openings) gates.push({ pos: o, kind: 'pass' });
   }
   // Clear the towns and the center.
   for (const c of cellsRel) {
@@ -796,6 +861,17 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       .filter((c) => relDist(c) === centerR - 2 && axialDistance(c, g0) <= 3 && !hard.has(hexKey(c)))
       .sort((a, b) => axialDistance(a, g0) - axialDistance(b, g0) || (hexKey(a) < hexKey(b) ? -1 : 1));
     if (cand[0] && relDist(cand[0]) >= 2) inner.push(cand[0]);
+  }
+  // Central Valley: one guarded gold mine and one crystal deposit per empire inside the ridges.
+  const valley: HexCoord[] = [];
+  if (mapType === 'central_valley') {
+    const busy = () => [...valley, ...gates.map((g) => g.pos)];
+    for (let k = 0; k < 2; k++) {
+      const cands = regionA
+        .filter((c) => relDist(c) >= 3 && relDist(c) <= centerR - 2 && !hard.has(hexKey(c)) && busy().every((b) => axialDistance(b, c) >= 3))
+        .sort((a, b) => (hexKey(a) < hexKey(b) ? -1 : 1));
+      if (cands.length > 0) valley.push(cands[rng.nextInt(cands.length)]!);
+    }
   }
   // Wandering monsters' homes (also in region A, outside the home zone).
   const monsterCount = opts.monsters === 'none' ? 0 : opts.monsters === 'few' ? 1 : 2;
@@ -865,7 +941,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   // two hexes around, away from every other site) and copied by symmetry like the rest.
   let pocket: { treasury: HexCoord; gate: HexCoord } | null = null;
   {
-    const busy = [...chosen.map((x) => x.pos), ...monsterHomes, ...portalBase, ...inner, ...gates.map((g) => g.pos)];
+    const busy = [...chosen.map((x) => x.pos), ...monsterHomes, ...portalBase, ...inner, ...valley, ...gates.map((g) => g.pos)];
     const cands = regionA.filter((c) => {
       const d = axialDistance(c, A);
       if (d < Math.min(homeR, 5) || d > R + 3 || relDist(c) < centerR + 3 || relDist(c) > Rh - 3) return false;
@@ -906,6 +982,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     }
   }
   for (const c of inner) clearOrbit(c);
+  for (const c of valley) clearOrbit(c);
   for (const h of monsterHomes) clearOrbit(h);
 
   // --- Reachability repair: carve through non-structural mountains/pools so every site connects ---
@@ -953,7 +1030,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       k = c ? hexKey(c) : '';
     }
   };
-  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...monsterHomes, ...gates.map((g) => g.pos), ...portalBase, ...(pocket ? [pocket.gate, pocket.treasury] : [])];
+  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...valley, ...monsterHomes, ...gates.map((g) => g.pos), ...portalBase, ...(pocket ? [pocket.gate, pocket.treasury] : [])];
   for (let pass = 0; pass < 3; pass++) {
     const reach = reachFrom(A);
     const missing = targets.filter((t) => !reach.has(hexKey(t)));
@@ -1143,6 +1220,17 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       sites.push({ id, anchorId: id, coord: abs(g(inner[0]!)), ...built });
     });
   }
+  // The Central Valley's mines (a gold mine and a crystal deposit per empire, guarded).
+  valley.forEach((pos, vi) => {
+    const built: Omit<SiteDefinition, 'id' | 'anchorId' | 'coord'> =
+      vi === 0
+        ? { ...resourceSite('gold_mine', 750), name: 'Valley Gold Mine', guard: guard(ctx, 'Valley guards', 3400, 3, 4, { resources: loot(ctx, { gold: 600 }) }, 'open_field') }
+        : { ...resourceSite('crystal_deposit', 1), name: 'Valley Crystal Deposit', guard: guard(ctx, 'Valley guards', 2600, 2, 4, { resources: loot(ctx, { crystal: 2 }) }, 'open_field') };
+    group.forEach((g, i) => {
+      const id = `${vi === 0 ? 'valley_gold' : 'valley_crystal'}_${i + 1}`;
+      sites.push({ id, anchorId: id, coord: abs(g(pos)), ...built });
+    });
+  });
   // Contested center (with a relic-class artifact on rich maps and at the Crossroads).
   const victory = opts.victory;
   const centerRelic = treasure === 'rich' || mapType === 'crossroads' ? pickArtifact(ctx, ['relic']) : null;
@@ -1318,7 +1406,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     terrain: terrainStr,
     roads,
     logicalHash: hashValue({ templateId: RANDOM_TEMPLATE_ID, width: W, height: H, terrain: terrainStr, roads }),
-    biome: mapType === 'highlands' ? 'high_pass' : mapType === 'crossroads' ? 'storm_plateau' : mapType === 'lake_isle' || mapType === 'marshlands' ? 'coast' : 'temperate',
+    biome: mapType === 'highlands' ? 'high_pass' : mapType === 'crossroads' ? 'storm_plateau' : mapType === 'lake_isle' || mapType === 'marshlands' || mapType === 'archipelago' || mapType === 'twin_continents' ? 'coast' : 'temperate',
   };
   const checks = validateSkirmishMap(map, mission, mapType);
   const failed = checks.filter((c) => !c.pass);
@@ -1392,7 +1480,7 @@ export function validateSkirmishMap(map: WorldMapDefinition, mission: MissionDef
   });
   checks.push({ id: 'SKM-5', pass: ownCosts.every((c) => c === ownCosts[0]), detail: 'every empire’s own sites cost the same to reach' });
   // The map type is real: walls only open at their guarded passes or gates.
-  if ((mapType === 'highlands' || mapType === 'crossroads') && centerSite) {
+  if ((mapType === 'highlands' || mapType === 'crossroads' || mapType === 'central_valley') && centerSite) {
     const openings = mission.sites.filter((s) => s.kind.type === 'crossing' && !!s.guard);
     const blocked = new Set(openings.map((s) => hexKey(s.coord)));
     const sealed = towns.every((t) => !travelCosts(map, t.coord, blocked).has(hexKey(centerSite.coord)));

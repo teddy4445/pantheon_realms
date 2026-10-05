@@ -24,8 +24,8 @@
           "where": "Costs and rewards (every screen); Resource bar (adventure, town); components/godIcons.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.gold.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.res.gold.png",
+            "status": "final"
           },
           "brief": "Gold — a small stack of thick gold coins.",
           "priority": "later"
@@ -37,8 +37,8 @@
           "where": "Costs and rewards (every screen); Resource bar (adventure, town)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.wood.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.res.wood.png",
+            "status": "final"
           },
           "brief": "Wood — a bundle of three cut logs tied with rope.",
           "priority": "later"
@@ -50,8 +50,8 @@
           "where": "Costs and rewards (every screen); Resource bar (adventure, town)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.stone.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.res.stone.png",
+            "status": "final"
           },
           "brief": "Stone — two squared, quarried stone blocks.",
           "priority": "later"
@@ -63,8 +63,8 @@
           "where": "Costs and rewards (every screen); Resource bar (adventure, town)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.crystal.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.res.crystal.png",
+            "status": "final"
           },
           "brief": "Crystal — a cluster of glowing violet-blue crystals.",
           "priority": "later"
@@ -76,8 +76,8 @@
           "where": "Adventure map; Battle; Costs and rewards (every screen); Map dialogs (camps, events, sites); Pantheon; Resource bar (adventure, town); Town; components/godIcons.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.res.favor.png",
+            "status": "final"
           },
           "brief": "Favor — a radiant laurel around a small sacred flame (divine favor).",
           "priority": "later"
@@ -89,8 +89,8 @@
           "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Dialogs (briefing, debrief, pause, save/load, encounters); Encyclopedia; Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.attack.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.attack.png",
+            "status": "final"
           },
           "brief": "Attack — a sword blade pointing up-right.",
           "priority": "later"
@@ -128,8 +128,8 @@
           "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Encyclopedia; Hero screen",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.defense.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.defense.png",
+            "status": "final"
           },
           "brief": "Defense — a round shield with a boss.",
           "priority": "later"
@@ -141,8 +141,8 @@
           "where": "Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.hp.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.hp.png",
+            "status": "final"
           },
           "brief": "Health — a heart with a small cross.",
           "priority": "later"
@@ -154,8 +154,8 @@
           "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Battle; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.damage.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.damage.png",
+            "status": "final"
           },
           "brief": "Damage — a jagged impact burst on a blade edge.",
           "priority": "later"
@@ -167,8 +167,8 @@
           "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Encyclopedia",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.speed.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.speed.png",
+            "status": "final"
           },
           "brief": "Speed — a winged boot.",
           "priority": "later"
@@ -180,8 +180,8 @@
           "where": "Battle",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.shots.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.shots.png",
+            "status": "final"
           },
           "brief": "Shots — a quiver with arrows.",
           "priority": "later"
@@ -193,8 +193,8 @@
           "where": "Battle",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.range.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.range.png",
+            "status": "final"
           },
           "brief": "Shooting range — a drawn bow with a dotted arc ending in a small target.",
           "priority": "later"
@@ -219,8 +219,8 @@
           "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.movement.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.movement.png",
+            "status": "final"
           },
           "brief": "Movement — a boot print on a path.",
           "priority": "later"
@@ -232,8 +232,8 @@
           "where": "Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.mana.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.mana.png",
+            "status": "final"
           },
           "brief": "Mana — a blue droplet of light.",
           "priority": "later"
@@ -245,8 +245,8 @@
           "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Hero screen",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.morale.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.morale.png",
+            "status": "final"
           },
           "brief": "Morale — a raised banner with a laurel.",
           "priority": "later"
@@ -258,8 +258,8 @@
           "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.luck.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.luck.png",
+            "status": "final"
           },
           "brief": "Luck — a four-leaf clover on a coin.",
           "priority": "later"
@@ -271,8 +271,8 @@
           "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.power.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.power.png",
+            "status": "final"
           },
           "brief": "Spell power — an open hand with a star of light.",
           "priority": "later"
@@ -284,8 +284,8 @@
           "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.knowledge.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.knowledge.png",
+            "status": "final"
           },
           "brief": "Knowledge — an open scroll with a quill.",
           "priority": "later"
@@ -297,8 +297,8 @@
           "where": "Hero screen; Town",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.xp.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.xp.png",
+            "status": "final"
           },
           "brief": "Experience — a star with a small plus sign.",
           "priority": "later"
@@ -310,8 +310,8 @@
           "where": "Adventure map",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/world.hero.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.world.hero.png",
+            "status": "final"
           },
           "brief": "Hero — a helmeted bust in profile.",
           "priority": "later"
@@ -323,8 +323,8 @@
           "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Town; components/godIcons.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/world.town.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.world.town.png",
+            "status": "final"
           },
           "brief": "Town — a walled town with a gate and two towers.",
           "priority": "later"
@@ -362,8 +362,8 @@
           "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Encyclopedia; Main menu; Recruitment",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-encyclopedia.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.encyclopedia.png",
+            "status": "final"
           },
           "brief": "Encyclopedia — an open book with a creature silhouette.",
           "priority": "later"
@@ -388,8 +388,8 @@
           "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Main menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-settings.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.settings.png",
+            "status": "final"
           },
           "brief": "Settings — a gear wheel.",
           "priority": "later"
@@ -398,7 +398,7 @@
           "assetId": "icon.ui.save",
           "name": "save",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters)",
+          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); screens/MapEditor.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.save.png",
@@ -411,11 +411,11 @@
           "assetId": "icon.menu.load-game",
           "name": "load",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Main menu",
+          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Main menu; screens/MapEditor.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-load-game.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.load-game.png",
+            "status": "final"
           },
           "brief": "Load — a tray with an arrow lifting out.",
           "priority": "later"
@@ -427,8 +427,8 @@
           "where": "Adventure map; Shared game widgets (resource bar, costs, stat blocks); Town",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/time.day.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.time.day.png",
+            "status": "final"
           },
           "brief": "Day / end of turn — an hourglass.",
           "priority": "later"
@@ -437,7 +437,7 @@
           "assetId": "icon.ui.back",
           "name": "back",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); New game / setup; Results / high scores; Shared game widgets (resource bar, costs, stat blocks)",
+          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); New game / setup; Results / high scores; Shared game widgets (resource bar, costs, stat blocks); screens/MapSetup.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.back.png",
@@ -450,7 +450,7 @@
           "assetId": "icon.ui.close",
           "name": "close",
           "group": "Interface",
-          "where": "Adventure map; Battle; Journal; Shared controls (every screen); Town",
+          "where": "Adventure map; Battle; Journal; Shared controls (every screen); Town; screens/MapEditor.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.close.png",
@@ -463,7 +463,7 @@
           "assetId": "icon.ui.play",
           "name": "play",
           "group": "Interface",
-          "where": "Battle; Creature detail; Dialogs (briefing, debrief, pause, save/load, encounters); Random map setup",
+          "where": "Battle; Creature detail; Dialogs (briefing, debrief, pause, save/load, encounters); Random map setup; screens/MapEditor.tsx; screens/MapSetup.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.play.png",
@@ -505,8 +505,8 @@
           "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Main menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-continue.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.continue.png",
+            "status": "final"
           },
           "brief": "Continue — a double chevron pointing right.",
           "priority": "later"
@@ -518,8 +518,8 @@
           "where": "Dialogs (briefing, debrief, pause, save/load, encounters); Main menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-new-game.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.new-game.png",
+            "status": "final"
           },
           "brief": "New game — a four-point star.",
           "priority": "later"
@@ -531,8 +531,8 @@
           "where": "New game / setup",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-campaign.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.campaign.png",
+            "status": "final"
           },
           "brief": "Campaign — a map with a dotted route.",
           "priority": "later"
@@ -544,8 +544,8 @@
           "where": "New game / setup",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-skirmish.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.skirmish.png",
+            "status": "final"
           },
           "brief": "Skirmish — two crossed swords.",
           "priority": "later"
@@ -557,8 +557,8 @@
           "where": "Main menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-quit.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.quit.png",
+            "status": "final"
           },
           "brief": "Quit — a door with an arrow leaving it.",
           "priority": "later"
@@ -570,8 +570,8 @@
           "where": "(not shown on any screen yet)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/icons/menu-credits.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.menu.credits.png",
+            "status": "final"
           },
           "brief": "Credits — a laurel wreath around a small “i” mark (no letters if possible: a quill instead).",
           "priority": "later"
@@ -583,8 +583,8 @@
           "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Battle",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/action.defend.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.action.defend.png",
+            "status": "final"
           },
           "brief": "Defend (battle action) — a shield raised in front of a figure.",
           "priority": "later"
@@ -596,8 +596,8 @@
           "where": "Battle",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/action.wait.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.action.wait.png",
+            "status": "final"
           },
           "brief": "Wait (battle action) — a small hourglass beside a raised hand.",
           "priority": "later"
@@ -609,8 +609,8 @@
           "where": "Battle; Dialogs (briefing, debrief, pause, save/load, encounters)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/action.retreat.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.action.retreat.png",
+            "status": "final"
           },
           "brief": "Retreat — a banner turned backwards with an arrow.",
           "priority": "later"
@@ -622,8 +622,8 @@
           "where": "Adventure map; Battle; Hero screen; Town",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/action.spell.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.action.spell.png",
+            "status": "final"
           },
           "brief": "Cast a spell — an open spellbook with a spark above it.",
           "priority": "later"
@@ -726,8 +726,8 @@
           "where": "Adventure map; Hero screen; Journal; components/godIcons.tsx",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/stat.vision.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.stat.vision.png",
+            "status": "final"
           },
           "brief": "Vision — an open eye.",
           "priority": "later"
@@ -736,7 +736,7 @@
           "assetId": "icon.ui.map",
           "name": "map",
           "group": "Interface",
-          "where": "New game / setup; components/climate.tsx",
+          "where": "New game / setup; components/climate.tsx; screens/MapEditor.tsx; screens/MapSetup.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.map.png",
@@ -762,7 +762,7 @@
           "assetId": "icon.ui.star",
           "name": "star",
           "group": "Interface",
-          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Journal; Results / high scores; Shared art widgets; components/godIcons.tsx",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Journal; Results / high scores; Shared art widgets; components/godIcons.tsx; screens/MapEditor.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
@@ -778,8 +778,8 @@
           "where": "Battle",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/action.ability.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.action.ability.png",
+            "status": "final"
           },
           "brief": "Ability — a burst of light around a hand.",
           "priority": "later"
@@ -791,8 +791,8 @@
           "where": "Battle",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/action.surrender.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.action.surrender.png",
+            "status": "final"
           },
           "brief": "Surrender — a white flag.",
           "priority": "later"
@@ -801,7 +801,7 @@
           "assetId": "icon.ui.build",
           "name": "build",
           "group": "Interface",
-          "where": "Town",
+          "where": "Adventure map; New game / setup; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.build.png",
@@ -890,8 +890,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.town.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.town.png",
+            "status": "final"
           },
           "brief": "A small walled town with your banner.",
           "details": "A town you own",
@@ -904,8 +904,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.hostile-town.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.hostile-town.png",
+            "status": "final"
           },
           "brief": "A walled town under a red banner.",
           "details": "A town owned by another empire",
@@ -918,8 +918,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.neutral-town.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.neutral-town.png",
+            "status": "final"
           },
           "brief": "A walled town with a grey banner.",
           "details": "An unowned town",
@@ -932,8 +932,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.sawmill.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.sawmill.png",
+            "status": "final"
           },
           "brief": "A saw blade over a log.",
           "details": "Sawmill (wood mine)",
@@ -946,8 +946,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.quarry.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.quarry.png",
+            "status": "final"
           },
           "brief": "A pick against a stone block.",
           "details": "Quarry (stone mine)",
@@ -960,8 +960,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.crystal.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.crystal.png",
+            "status": "final"
           },
           "brief": "A single crystal shard.",
           "details": "Crystal deposit, or a pickup of crystal only",
@@ -974,8 +974,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.mine.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.mine.png",
+            "status": "final"
           },
           "brief": "A mine entrance with a cart of gold.",
           "details": "Gold mine",
@@ -988,8 +988,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.gold.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.gold.png",
+            "status": "final"
           },
           "brief": "A small heap of coins.",
           "details": "A pickup of gold only",
@@ -1002,8 +1002,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.wood.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.wood.png",
+            "status": "final"
           },
           "brief": "A pile of logs.",
           "details": "A pickup of wood only",
@@ -1016,8 +1016,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.stone.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.stone.png",
+            "status": "final"
           },
           "brief": "A pile of stones.",
           "details": "A pickup of stone only",
@@ -1030,8 +1030,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.chest.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.chest.png",
+            "status": "final"
           },
           "brief": "A treasure chest.",
           "details": "A pickup with mixed rewards",
@@ -1044,8 +1044,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.artifact.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.artifact.png",
+            "status": "final"
           },
           "brief": "A glowing relic on a plinth.",
           "details": "A pickup that holds an artifact",
@@ -1058,8 +1058,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.watchtower.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.watchtower.png",
+            "status": "final"
           },
           "brief": "A tall wooden lookout tower.",
           "details": "Watchtower / lookout",
@@ -1072,8 +1072,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.locked.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.locked.png",
+            "status": "final"
           },
           "brief": "A closed gate with a padlock.",
           "details": "A crossing or gate not yet opened",
@@ -1086,8 +1086,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.quest.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.quest.png",
+            "status": "final"
           },
           "brief": "A scroll with a seal.",
           "details": "A story landmark (nest, refuge, ruin)",
@@ -1100,8 +1100,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.story.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.story.png",
+            "status": "final"
           },
           "brief": "A stone beacon with a flame.",
           "details": "A beacon, rune-stone or relay to activate",
@@ -1114,8 +1114,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.creature.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.creature.png",
+            "status": "final"
           },
           "brief": "A tent with a creature’s paw print.",
           "details": "A camp that sells creatures",
@@ -1128,8 +1128,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.question.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.question.png",
+            "status": "final"
           },
           "brief": "A question mark made of light over a road.",
           "details": "A one-time choice not yet taken",
@@ -1142,8 +1142,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.shrine.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.shrine.png",
+            "status": "final"
           },
           "brief": "A small shrine with a flame.",
           "details": "The hold-the-relic shrine",
@@ -1156,8 +1156,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.portal.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.portal.png",
+            "status": "final"
           },
           "brief": "An arch of standing stones around a violet veil.",
           "details": "A two-way portal (random maps; a hero who stops on it steps out of its twin)",
@@ -1169,8 +1169,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.learning-stone.png",
+            "status": "final"
           },
           "brief": "A carved standing stone with a glowing rune.",
           "details": "A standing stone that grants experience once per hero (random maps)",
@@ -1182,8 +1183,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.spell-shrine.png",
+            "status": "final"
           },
           "brief": "A small open shrine with a floating spell scroll.",
           "details": "A shrine that teaches one spell to heroes with a spellbook (random maps)",
@@ -1195,8 +1197,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.skill-trainer.png",
+            "status": "final"
           },
           "brief": "A training post with crossed practice staves.",
           "details": "A mentor who teaches or improves one skill (random maps)",
@@ -1208,8 +1211,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.quest-hut.png",
+            "status": "final"
           },
           "brief": "A thatched hut with a hanging notice scroll.",
           "details": "A hut that rewards bringing resources or defeating a guard (random maps)",
@@ -1221,8 +1225,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.key-tent.png",
+            "status": "final"
           },
           "brief": "A small pointed tent with a key on its flap; light neutral colours so it can be tinted.",
           "details": "A coloured tent that gives its colour’s key (the marker is tinted by key colour)",
@@ -1234,8 +1239,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.key-gate.png",
+            "status": "final"
           },
           "brief": "A barred gate with a keyhole seal; light neutral colours so it can be tinted.",
           "details": "A coloured gate that opens for players holding the matching key (tinted by key colour)",
@@ -1247,8 +1253,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.windmill.png",
+            "status": "final"
           },
           "brief": "A small windmill with a sack at its door.",
           "details": "A windmill whose stores refill each week (random maps)",
@@ -1260,8 +1267,9 @@
           "group": "Map marker",
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
-            "type": "procedural",
-            "note": "no art"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.prison.png",
+            "status": "final"
           },
           "brief": "A stone cell door with iron bars.",
           "details": "A prison holding a captive hero (random maps)",
@@ -1274,8 +1282,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.check.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.check.png",
+            "status": "final"
           },
           "brief": "A check mark in a ring.",
           "details": "A site already cleared, visited or activated",
@@ -1288,8 +1296,8 @@
           "where": "Adventure map tile panel; Journal objectives",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/marker.unknown.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.marker.unknown.png",
+            "status": "final"
           },
           "brief": "A question mark.",
           "details": "Anything else",
@@ -4010,8 +4018,8 @@
           "where": "Pantheon screen — interventions",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.favorable_winds.png",
+            "status": "final"
           },
           "brief": "Favorable Winds: Every hero of yours regains half a day’s movement.",
           "details": "8 Favor · target none",
@@ -4025,8 +4033,8 @@
           "where": "Pantheon screen — interventions",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.bountiful_harvest.png",
+            "status": "final"
           },
           "brief": "Bountiful Harvest: The chosen town gains 4 recruits for every tier 1–3 creature family it houses.",
           "details": "10 Favor · target own town",
@@ -4040,8 +4048,8 @@
           "where": "Pantheon screen — interventions",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.tithe_of_the_faithful.png",
+            "status": "final"
           },
           "brief": "Tithe of the Faithful: +1,500 Gold at once.",
           "details": "6 Favor · target none",
@@ -4055,8 +4063,8 @@
           "where": "Pantheon screen — interventions",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.inspiration.png",
+            "status": "final"
           },
           "brief": "Inspiration: Every hero of yours regains 15 mana (never above its maximum).",
           "details": "5 Favor · target none",
@@ -4070,8 +4078,8 @@
           "where": "Battle — divine intervention menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.rally_the_faithful.png",
+            "status": "final"
           },
           "brief": "Rally the Faithful: Every friendly stack +2 Attack through the current and next round.",
           "details": "8 Favor · target none",
@@ -4085,8 +4093,8 @@
           "where": "Battle — divine intervention menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.shield_of_the_gods.png",
+            "status": "final"
           },
           "brief": "Shield of the Gods: Every friendly stack +3 Defense through the current and next round.",
           "details": "8 Favor · target none",
@@ -4100,8 +4108,8 @@
           "where": "Battle — divine intervention menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.mending_light.png",
+            "status": "final"
           },
           "brief": "Mending Light: The front creature of every friendly stack heals up to 30 HP (no resurrection).",
           "details": "6 Favor · target none",
@@ -4115,8 +4123,8 @@
           "where": "Battle — divine intervention menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.wrath_from_above.png",
+            "status": "final"
           },
           "brief": "Wrath from Above: One enemy stack takes 120 damage.",
           "details": "10 Favor · target enemy stack",
@@ -4130,8 +4138,8 @@
           "where": "Battle — divine intervention menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.thunderbolt_of_zeus.png",
+            "status": "final"
           },
           "brief": "Thunderbolt of Zeus: One enemy stack takes 200 damage.",
           "details": "14 Favor · target enemy stack",
@@ -4145,8 +4153,8 @@
           "where": "Battle — divine intervention menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.ride_of_the_valkyries.png",
+            "status": "final"
           },
           "brief": "Ride of the Valkyries: Every friendly stack +2 Speed through the current and next round.",
           "details": "8 Favor · target none",
@@ -4160,8 +4168,8 @@
           "where": "Pantheon screen — interventions",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.blessing_of_the_nile.png",
+            "status": "final"
           },
           "brief": "Blessing of the Nile: The chosen town gains 3 recruits for every tier 1–5 creature family it houses.",
           "details": "12 Favor · target own town",
@@ -4175,8 +4183,8 @@
           "where": "Battle — divine intervention menu",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.ward_of_the_kami.png",
+            "status": "final"
           },
           "brief": "Ward of the Kami: Every friendly stack +4 Defense through the current and next two rounds.",
           "details": "12 Favor · target none",
@@ -4190,8 +4198,8 @@
           "where": "Pantheon screen — interventions",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.mists_of_the_sidhe.png",
+            "status": "final"
           },
           "brief": "Mists of the Sídhe: Every hero of yours regains a full day’s movement.",
           "details": "12 Favor · target none",
@@ -4205,8 +4213,8 @@
           "where": "Pantheon screen — interventions",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/res.favor.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.intervention.gift_of_the_feathered_serpent.png",
+            "status": "final"
           },
           "brief": "Gift of the Feathered Serpent: +1,000 Gold and +3 Crystal at once.",
           "details": "10 Favor · target none",
@@ -4507,12 +4515,13 @@
           "group": "Climate · autumn",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.autumn.png",
+            "status": "final"
           },
           "brief": "Harvest wind: every flying creature has +1 Speed in battle. Draw: a gust of wind drawn as a curling golden stream carrying three red-gold leaves and one long feather.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.coast",
@@ -4520,12 +4529,13 @@
           "group": "Climate · coast",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.coast.png",
+            "status": "final"
           },
           "brief": "Salt spray: every shooter’s range is 3 hexes shorter in battle. Draw: a breaking sea wave throwing white spray over a single arrow that falls short.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.desert",
@@ -4533,12 +4543,13 @@
           "group": "Climate · desert",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.desert.png",
+            "status": "final"
           },
           "brief": "Scorching sand: every creature without Flight has −1 Speed in battle. Draw: a blazing white-gold sun over two rippled sand dunes, a faint heat shimmer between them.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.fjord",
@@ -4546,12 +4557,13 @@
           "group": "Climate · fjord",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.fjord.png",
+            "status": "final"
           },
           "brief": "Icy spray: every creature has −1 Defense in battle. Draw: a jagged blue-white ice shard with frozen droplets around it and frost creeping over a round shield rim.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.high_pass",
@@ -4559,12 +4571,13 @@
           "group": "Climate · high pass",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.high_pass.png",
+            "status": "final"
           },
           "brief": "Thin air: every shooter’s range is 2 hexes longer and every flying creature has −1 Speed in battle. Draw: a snowy mountain peak with thin cloud wisps and an arrow flying high above it.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.jungle",
@@ -4572,12 +4585,13 @@
           "group": "Climate · jungle",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.jungle.png",
+            "status": "final"
           },
           "brief": "Dense canopy: every shooter’s range is 4 hexes shorter and every flying creature has −1 Speed in battle. Draw: broad dark-green jungle leaves and hanging vines closing over like a roof.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.moor",
@@ -4585,12 +4599,13 @@
           "group": "Climate · moor",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.moor.png",
+            "status": "final"
           },
           "brief": "Fog: every shooter’s range is 6 hexes shorter in battle. Draw: a pale grey bank of fog swallowing the lower half of a lone standing stone.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.storm_plateau",
@@ -4598,12 +4613,13 @@
           "group": "Climate · storm plateau",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.storm_plateau.png",
+            "status": "final"
           },
           "brief": "Thunderstorm: every flying creature has −2 Speed in battle. Draw: a dark thundercloud with one bright lightning bolt and slanting rain.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         },
         {
           "assetId": "icon.climate.tundra",
@@ -4611,12 +4627,13 @@
           "group": "Climate · tundra",
           "where": "Battle (climate chip in the round box); encounter dialog (the battle’s weather)",
           "current": {
-            "type": "procedural",
-            "note": "interface glyph stand-in in the chip"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.climate.tundra.png",
+            "status": "final"
           },
           "brief": "Biting cold: every creature has −1 Attack in battle. Draw: a large six-pointed snowflake crystal in front of a frosted sword hilt.",
           "details": "Skirmish feature (climate rules); both armies alike",
-          "priority": "now"
+          "priority": "later"
         }
       ]
     },
@@ -4837,8 +4854,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.arrow.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.arrow.png",
+            "status": "final"
           },
           "brief": "Effect: arrow volley.",
           "priority": "later"
@@ -4850,8 +4867,8 @@
           "where": "Spell fallback for effects: area_damage, mass_damage",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.burning.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.burning.png",
+            "status": "final"
           },
           "brief": "Effect: fire / burning.",
           "priority": "later"
@@ -4863,8 +4880,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.death.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.death.png",
+            "status": "final"
           },
           "brief": "Effect: death (skull wreathed in smoke).",
           "priority": "later"
@@ -4876,8 +4893,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.divine.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.divine.png",
+            "status": "final"
           },
           "brief": "Effect: divine light.",
           "priority": "later"
@@ -4889,8 +4906,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.frost.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.frost.png",
+            "status": "final"
           },
           "brief": "Effect: frost (snowflake on ice).",
           "priority": "later"
@@ -4902,8 +4919,8 @@
           "where": "Spell fallback for effects: heal_front, mass_heal",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.healing.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.healing.png",
+            "status": "final"
           },
           "brief": "Effect: healing (green-gold motes rising).",
           "priority": "later"
@@ -4915,8 +4932,8 @@
           "where": "Spell fallback for effects: direct_damage",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.lightning.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.lightning.png",
+            "status": "final"
           },
           "brief": "Effect: lightning bolt.",
           "priority": "later"
@@ -4928,8 +4945,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.poison.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.poison.png",
+            "status": "final"
           },
           "brief": "Effect: poison (green drop).",
           "priority": "later"
@@ -4941,8 +4958,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.shadow.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.shadow.png",
+            "status": "final"
           },
           "brief": "Effect: shadow (dark smoke).",
           "priority": "later"
@@ -4954,8 +4971,8 @@
           "where": "Spell fallback for effects: defense_bonus, ranged_mitigation, melee_mitigation",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.shield.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.shield.png",
+            "status": "final"
           },
           "brief": "Effect: protective shield of light.",
           "priority": "later"
@@ -4967,8 +4984,8 @@
           "where": "Spell fallback for effects: max_damage_roll",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.strike.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.strike.png",
+            "status": "final"
           },
           "brief": "Effect: heavy strike (impact star).",
           "priority": "later"
@@ -4980,8 +4997,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/fx.summon.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.fx.summon.png",
+            "status": "final"
           },
           "brief": "Effect: summoning circle.",
           "priority": "later"
@@ -4993,8 +5010,8 @@
           "where": "Spell fallback for effects: attack_bonus, mass_bonus",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.buff.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.buff.png",
+            "status": "final"
           },
           "brief": "Status: blessed / strengthened (up arrow glow).",
           "priority": "later"
@@ -5006,8 +5023,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.burning.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.burning.png",
+            "status": "final"
           },
           "brief": "Status: burning.",
           "priority": "later"
@@ -5019,8 +5036,8 @@
           "where": "Spell fallback for effects: min_damage_roll",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.debuff.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.debuff.png",
+            "status": "final"
           },
           "brief": "Status: cursed / weakened (down arrow glow).",
           "priority": "later"
@@ -5032,8 +5049,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.frozen.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.frozen.png",
+            "status": "final"
           },
           "brief": "Status: frozen.",
           "priority": "later"
@@ -5045,8 +5062,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.heal.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.heal.png",
+            "status": "final"
           },
           "brief": "Status: regenerating.",
           "priority": "later"
@@ -5058,8 +5075,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.poison.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.poison.png",
+            "status": "final"
           },
           "brief": "Status: poisoned.",
           "priority": "later"
@@ -5071,8 +5088,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.stun.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.stun.png",
+            "status": "final"
           },
           "brief": "Status: stunned (stars).",
           "priority": "later"
@@ -5084,8 +5101,8 @@
           "where": "Available, not used yet",
           "current": {
             "type": "art",
-            "file": "assets-runtime/ui/icons/status.weaken.png",
-            "status": "placeholder"
+            "file": "assets-runtime/ui/icons/final/icon.status.weaken.png",
+            "status": "final"
           },
           "brief": "Status: weakened (cracked shield).",
           "priority": "later"
@@ -8772,8 +8789,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.tavern.l1.webp",
+            "status": "final"
           },
           "brief": "Tavern: Hire eligible heroes. Prerequisite for the Town Hall.",
           "priority": "later"
@@ -8785,8 +8803,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.marketplace.l1.webp",
+            "status": "final"
           },
           "brief": "Marketplace: Sell resources for Gold or buy them with Gold.",
           "priority": "later"
@@ -8798,8 +8817,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.resource_depot.l1.webp",
+            "status": "final"
           },
           "brief": "Resource Depot: +1 Wood and +1 Stone per day.",
           "priority": "later"
@@ -8811,8 +8831,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.workshop.l1.webp",
+            "status": "final"
           },
           "brief": "Workshop: Military prerequisite (Training Court, City Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
@@ -8936,8 +8957,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.training_academy.l1.webp",
+            "status": "final"
           },
           "brief": "Training Academy: Once per week, each visiting hero may train: 1,000 Gold for 500 experience.",
           "priority": "later"
@@ -8949,8 +8971,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.watchtower.l1.webp",
+            "status": "final"
           },
           "brief": "Watchtower: The town sees 8 hexes around it (3 without a Watchtower).",
           "priority": "later"
@@ -8962,8 +8985,9 @@
           "pantheon": "Greek",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.greek.support.artifact_merchant.l1.webp",
+            "status": "final"
           },
           "brief": "Artifact Merchant: Sells four artifacts to visiting heroes; the stock changes every week.",
           "priority": "later"
@@ -8976,8 +9000,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier1.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier1.base.webp",
+            "status": "final"
           },
           "brief": "Barracks: Recruit Hoplites. 14 per week.",
           "priority": "later"
@@ -8990,8 +9014,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier1.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier1.upgraded.webp",
+            "status": "final"
           },
           "brief": "Veteran Barracks: Also recruit and train Veteran Hoplites. Shares the Hoplite pool.",
           "priority": "later"
@@ -9004,8 +9028,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier2.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier2.base.webp",
+            "status": "final"
           },
           "brief": "Peltast Range: Recruit Peltasts. 9 per week.",
           "priority": "later"
@@ -9018,8 +9042,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier2.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier2.upgraded.webp",
+            "status": "final"
           },
           "brief": "Veteran Range: Also recruit and train Veteran Peltasts.",
           "priority": "later"
@@ -9032,8 +9056,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier3.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier3.base.webp",
+            "status": "final"
           },
           "brief": "Griffin Aerie: Recruit Griffins. 7 per week. Requires an assigned Griffin covenant.",
           "priority": "later"
@@ -9046,8 +9070,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier3.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier3.upgraded.webp",
+            "status": "final"
           },
           "brief": "Windcrest Aerie: Also recruit and train Windcrest Griffins.",
           "priority": "later"
@@ -9060,8 +9084,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier4.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier4.base.webp",
+            "status": "final"
           },
           "brief": "Training Court: Recruit Cavalry. 4 per week.",
           "priority": "later"
@@ -9074,8 +9098,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier4.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier4.upgraded.webp",
+            "status": "final"
           },
           "brief": "Companion Court: Also recruit and train Companion Cavalry.",
           "priority": "later"
@@ -9088,8 +9112,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier5.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier5.base.webp",
+            "status": "final"
           },
           "brief": "House of Adepts: Recruit Temple Adepts. 3 per week.",
           "priority": "later"
@@ -9102,8 +9126,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier5.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier5.upgraded.webp",
+            "status": "final"
           },
           "brief": "House of Seers: Also recruit and train Temple Seers.",
           "priority": "later"
@@ -9116,8 +9140,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier6.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier6.base.webp",
+            "status": "final"
           },
           "brief": "Labyrinth: Recruit Minotaurs. 2 per week. Requires an assigned Minotaur covenant.",
           "priority": "later"
@@ -9130,8 +9154,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier6.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier6.upgraded.webp",
+            "status": "final"
           },
           "brief": "Warden Labyrinth: Also recruit and train Labyrinth Wardens.",
           "priority": "later"
@@ -9144,8 +9168,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier7.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier7.base.webp",
+            "status": "final"
           },
           "brief": "Thunder Quarry: Recruit Cyclopes. 1 per week. Requires an assigned Cyclops covenant.",
           "priority": "later"
@@ -9158,8 +9182,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/greek/dwelling.tier7.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.greek.dwelling.tier7.upgraded.webp",
+            "status": "final"
           },
           "brief": "Storm Forge: Also recruit and train Stormforged Cyclopes.",
           "priority": "later"
@@ -9227,8 +9251,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.tavern.l1.webp",
+            "status": "final"
           },
           "brief": "Mead Hall: Hire eligible heroes. Prerequisite for the Jarl’s Hall.",
           "priority": "later"
@@ -9240,8 +9265,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.marketplace.l1.webp",
+            "status": "final"
           },
           "brief": "Trading Post: Sell resources for Gold or buy them with Gold.",
           "priority": "later"
@@ -9253,8 +9279,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.resource_depot.l1.webp",
+            "status": "final"
           },
           "brief": "Storehouse: +1 Wood and +1 Stone per day.",
           "priority": "later"
@@ -9266,8 +9293,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.workshop.l1.webp",
+            "status": "final"
           },
           "brief": "Workshop: Military prerequisite (Valkyrie Aerie, High Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
@@ -9391,8 +9419,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.training_academy.l1.webp",
+            "status": "final"
           },
           "brief": "Training Ground: Once per week, each visiting hero may train: 1,000 Gold for 500 experience.",
           "priority": "later"
@@ -9404,8 +9433,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.watchtower.l1.webp",
+            "status": "final"
           },
           "brief": "Watchtower: The town sees 8 hexes around it (3 without a Watchtower).",
           "priority": "later"
@@ -9417,8 +9447,9 @@
           "pantheon": "Norse",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.norse.support.artifact_merchant.l1.webp",
+            "status": "final"
           },
           "brief": "Rune Merchant: Sells four artifacts to visiting heroes; the stock changes every week.",
           "priority": "later"
@@ -9431,8 +9462,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier1.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier1.base.webp",
+            "status": "final"
           },
           "brief": "Draugr Barrow: Recruit Draugar. 14 per week.",
           "priority": "later"
@@ -9445,8 +9476,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier1.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier1.upgraded.webp",
+            "status": "final"
           },
           "brief": "Deathless Barrow: Also recruit and train Deathless Draugar. Shares the Draugr pool.",
           "priority": "later"
@@ -9459,8 +9490,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier2.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier2.base.webp",
+            "status": "final"
           },
           "brief": "Wolf Den: Recruit Frost Wolves. 9 per week.",
           "priority": "later"
@@ -9473,8 +9504,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier2.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier2.upgraded.webp",
+            "status": "final"
           },
           "brief": "Fenrir Den: Also recruit and train Fenrir Wolves.",
           "priority": "later"
@@ -9487,8 +9518,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier3.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier3.base.webp",
+            "status": "final"
           },
           "brief": "Troll Cave: Recruit Frost Trolls. 6 per week. Requires an assigned Frost Troll covenant.",
           "priority": "later"
@@ -9501,8 +9532,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier3.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier3.upgraded.webp",
+            "status": "final"
           },
           "brief": "Ancient Troll Cave: Also recruit and train Ancient Frost Trolls.",
           "priority": "later"
@@ -9515,8 +9546,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier4.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier4.base.webp",
+            "status": "final"
           },
           "brief": "Valkyrie Aerie: Recruit Valkyries. 4 per week.",
           "priority": "later"
@@ -9529,8 +9560,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier4.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier4.upgraded.webp",
+            "status": "final"
           },
           "brief": "Hall of the Chosen: Also recruit and train Battle Valkyries.",
           "priority": "later"
@@ -9543,8 +9574,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier5.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier5.base.webp",
+            "status": "final"
           },
           "brief": "Lindworm Roost: Recruit Lindworms. 3 per week.",
           "priority": "later"
@@ -9557,8 +9588,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier5.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier5.upgraded.webp",
+            "status": "final"
           },
           "brief": "Storm Roost: Also recruit and train Storm Lindworms.",
           "priority": "later"
@@ -9571,8 +9602,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier6.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier6.base.webp",
+            "status": "final"
           },
           "brief": "Jotunn Camp: Recruit Jotnar. 2 per week. Requires an assigned Jotunn covenant.",
           "priority": "later"
@@ -9585,8 +9616,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier6.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier6.upgraded.webp",
+            "status": "final"
           },
           "brief": "Rune Hall of the Giants: Also recruit and train Runic Jotnar.",
           "priority": "later"
@@ -9599,8 +9630,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier7.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier7.base.webp",
+            "status": "final"
           },
           "brief": "Serpent Lair: Recruit Nidhogg Wyrms. 1 per week. Requires an assigned Nidhogg Wyrm covenant.",
           "priority": "later"
@@ -9613,8 +9644,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/norse/dwelling.tier7.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.norse.dwelling.tier7.upgraded.webp",
+            "status": "final"
           },
           "brief": "World-Serpent Lair: Also recruit and train World-Serpent Wyrms.",
           "priority": "later"
@@ -9682,8 +9713,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.tavern.l1.webp",
+            "status": "final"
           },
           "brief": "Caravan House: Hire eligible heroes. Prerequisite for the Governor's Palace.",
           "priority": "later"
@@ -9695,8 +9727,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.marketplace.l1.webp",
+            "status": "final"
           },
           "brief": "Bazaar: Sell resources for Gold or buy them with Gold.",
           "priority": "later"
@@ -9708,8 +9741,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.resource_depot.l1.webp",
+            "status": "final"
           },
           "brief": "Granary: +1 Wood and +1 Stone per day.",
           "priority": "later"
@@ -9721,8 +9755,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.workshop.l1.webp",
+            "status": "final"
           },
           "brief": "Workshop: Military prerequisite (Sphinx Terrace, Vizier's Palace). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
@@ -9846,8 +9881,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.training_academy.l1.webp",
+            "status": "final"
           },
           "brief": "Training Grounds: Once per week, each visiting hero may train: 1,000 Gold for 500 experience.",
           "priority": "later"
@@ -9859,8 +9895,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.watchtower.l1.webp",
+            "status": "final"
           },
           "brief": "Obelisk Watch: The town sees 8 hexes around it (3 without a Watchtower).",
           "priority": "later"
@@ -9872,8 +9909,9 @@
           "pantheon": "Egyptian",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.egyptian.support.artifact_merchant.l1.webp",
+            "status": "final"
           },
           "brief": "Treasury Merchant: Sells four artifacts to visiting heroes; the stock changes every week.",
           "priority": "later"
@@ -9886,8 +9924,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier1.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier1.base.webp",
+            "status": "final"
           },
           "brief": "Scarab Burrow: Recruit Sacred Scarabs. 14 per week.",
           "priority": "later"
@@ -9900,8 +9938,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier1.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier1.upgraded.webp",
+            "status": "final"
           },
           "brief": "Solar Burrow: Also recruit and train Solar Scarabs. Shares the Sacred Scarab pool.",
           "priority": "later"
@@ -9914,8 +9952,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier2.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier2.base.webp",
+            "status": "final"
           },
           "brief": "Jackal Kennels: Recruit Jackal Guardians. 9 per week.",
           "priority": "later"
@@ -9928,8 +9966,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier2.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier2.upgraded.webp",
+            "status": "final"
           },
           "brief": "Hall of Anubis: Also recruit and train Anubian Wardens. Shares the Jackal Guardian pool.",
           "priority": "later"
@@ -9942,8 +9980,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier3.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier3.base.webp",
+            "status": "final"
           },
           "brief": "Ushabti Workshop: Recruit Ushabti. 7 per week. Requires an assigned Ushabti covenant.",
           "priority": "later"
@@ -9956,8 +9994,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier3.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier3.upgraded.webp",
+            "status": "final"
           },
           "brief": "Royal Tomb Workshop: Also recruit and train Royal Ushabti. Shares the Ushabti pool.",
           "priority": "later"
@@ -9970,8 +10008,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier4.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier4.base.webp",
+            "status": "final"
           },
           "brief": "Sphinx Terrace: Recruit Sphinxes. 4 per week.",
           "priority": "later"
@@ -9984,8 +10022,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier4.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier4.upgraded.webp",
+            "status": "final"
           },
           "brief": "Sphinx Bastion: Also recruit and train Great Sphinxes. Shares the Sphinx pool.",
           "priority": "later"
@@ -9998,8 +10036,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier5.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier5.base.webp",
+            "status": "final"
           },
           "brief": "Crocodile Pens: Recruit Crocodile Beasts. 3 per week.",
           "priority": "later"
@@ -10012,8 +10050,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier5.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier5.upgraded.webp",
+            "status": "final"
           },
           "brief": "Temple of Sobek: Also recruit and train Sobek Warbeasts. Shares the Crocodile Beast pool.",
           "priority": "later"
@@ -10026,8 +10064,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier6.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier6.base.webp",
+            "status": "final"
           },
           "brief": "Bennu Aerie: Recruit Bennu. 2 per week. Requires an assigned Bennu covenant.",
           "priority": "later"
@@ -10040,8 +10078,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier6.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier6.upgraded.webp",
+            "status": "final"
           },
           "brief": "Radiant Aerie: Also recruit and train Radiant Bennu. Shares the Bennu pool.",
           "priority": "later"
@@ -10054,8 +10092,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier7.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier7.base.webp",
+            "status": "final"
           },
           "brief": "Colossus Quarry: Recruit Desert Colossi. 1 per week. Requires an assigned Desert Colossus covenant.",
           "priority": "later"
@@ -10068,8 +10106,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/egyptian/dwelling.tier7.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.egyptian.dwelling.tier7.upgraded.webp",
+            "status": "final"
           },
           "brief": "Divine Foundry: Also recruit and train Divine Colossi. Shares the Desert Colossus pool.",
           "priority": "later"
@@ -10137,8 +10175,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.tavern.l1.webp",
+            "status": "final"
           },
           "brief": "Teahouse: Hire eligible heroes. Prerequisite for the Magistrate's Hall.",
           "priority": "later"
@@ -10150,8 +10189,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.marketplace.l1.webp",
+            "status": "final"
           },
           "brief": "Market Street: Sell resources for Gold or buy them with Gold.",
           "priority": "later"
@@ -10163,8 +10203,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.resource_depot.l1.webp",
+            "status": "final"
           },
           "brief": "Storehouse: +1 Wood and +1 Stone per day.",
           "priority": "later"
@@ -10176,8 +10217,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.workshop.l1.webp",
+            "status": "final"
           },
           "brief": "Workshop: Military prerequisite (Oni Quarry, Daimyo's Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
@@ -10301,8 +10343,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.training_academy.l1.webp",
+            "status": "final"
           },
           "brief": "Dojo: Once per week, each visiting hero may train: 1,000 Gold for 500 experience.",
           "priority": "later"
@@ -10314,8 +10357,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.watchtower.l1.webp",
+            "status": "final"
           },
           "brief": "Watch Pagoda: The town sees 8 hexes around it (3 without a Watchtower).",
           "priority": "later"
@@ -10327,8 +10371,9 @@
           "pantheon": "Japanese",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.japanese.support.artifact_merchant.l1.webp",
+            "status": "final"
           },
           "brief": "Curio Shop: Sells four artifacts to visiting heroes; the stock changes every week.",
           "priority": "later"
@@ -10341,8 +10386,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier1.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier1.base.webp",
+            "status": "final"
           },
           "brief": "Kitsune Grove: Recruit Kitsune. 14 per week.",
           "priority": "later"
@@ -10355,8 +10400,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier1.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier1.upgraded.webp",
+            "status": "final"
           },
           "brief": "Nine-Tail Shrine: Also recruit and train Nine-Tailed Kitsune. Shares the Kitsune pool.",
           "priority": "later"
@@ -10369,8 +10414,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier2.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier2.base.webp",
+            "status": "final"
           },
           "brief": "Kappa Pond: Recruit Kappa. 9 per week.",
           "priority": "later"
@@ -10383,8 +10428,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier2.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier2.upgraded.webp",
+            "status": "final"
           },
           "brief": "Elder's Pond: Also recruit and train River Elder Kappa. Shares the Kappa pool.",
           "priority": "later"
@@ -10397,8 +10442,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier3.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier3.base.webp",
+            "status": "final"
           },
           "brief": "Tengu Nest: Recruit Tengu. 7 per week. Requires an assigned Tengu covenant.",
           "priority": "later"
@@ -10411,8 +10456,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier3.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier3.upgraded.webp",
+            "status": "final"
           },
           "brief": "Great Tengu Peak: Also recruit and train Great Tengu. Shares the Tengu pool.",
           "priority": "later"
@@ -10425,8 +10470,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier4.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier4.base.webp",
+            "status": "final"
           },
           "brief": "Oni Quarry: Recruit Oni. 4 per week.",
           "priority": "later"
@@ -10439,8 +10484,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier4.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier4.upgraded.webp",
+            "status": "final"
           },
           "brief": "Warlord's Fortress: Also recruit and train Oni Warlords. Shares the Oni pool.",
           "priority": "later"
@@ -10453,8 +10498,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier5.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier5.base.webp",
+            "status": "final"
           },
           "brief": "Spider Hollow: Recruit Jorogumo. 3 per week.",
           "priority": "later"
@@ -10467,8 +10512,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier5.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier5.upgraded.webp",
+            "status": "final"
           },
           "brief": "Queen's Web: Also recruit and train Queen Jorogumo. Shares the Jorogumo pool.",
           "priority": "later"
@@ -10481,8 +10526,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier6.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier6.base.webp",
+            "status": "final"
           },
           "brief": "Kirin Pavilion: Recruit Kirin. 2 per week. Requires an assigned Kirin covenant.",
           "priority": "later"
@@ -10495,8 +10540,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier6.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier6.upgraded.webp",
+            "status": "final"
           },
           "brief": "Celestial Pavilion: Also recruit and train Celestial Kirin. Shares the Kirin pool.",
           "priority": "later"
@@ -10509,8 +10554,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier7.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier7.base.webp",
+            "status": "final"
           },
           "brief": "Orochi Sanctuary: Recruit Orochi. 1 per week. Requires an assigned Orochi covenant.",
           "priority": "later"
@@ -10523,8 +10568,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/japanese/dwelling.tier7.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.japanese.dwelling.tier7.upgraded.webp",
+            "status": "final"
           },
           "brief": "Imperial Sanctuary: Also recruit and train Imperial Orochi. Shares the Orochi pool.",
           "priority": "later"
@@ -10592,8 +10637,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.tavern.l1.webp",
+            "status": "final"
           },
           "brief": "Mead House: Hire eligible heroes. Prerequisite for the Chieftain's Hall.",
           "priority": "later"
@@ -10605,8 +10651,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.marketplace.l1.webp",
+            "status": "final"
           },
           "brief": "Fair Green: Sell resources for Gold or buy them with Gold.",
           "priority": "later"
@@ -10618,8 +10665,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.resource_depot.l1.webp",
+            "status": "final"
           },
           "brief": "Stores: +1 Wood and +1 Stone per day.",
           "priority": "later"
@@ -10631,8 +10679,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.workshop.l1.webp",
+            "status": "final"
           },
           "brief": "Workshop: Military prerequisite (Banshee Cairn, High King's Hall). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
@@ -10756,8 +10805,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.training_academy.l1.webp",
+            "status": "final"
           },
           "brief": "Fianna Camp: Once per week, each visiting hero may train: 1,000 Gold for 500 experience.",
           "priority": "later"
@@ -10769,8 +10819,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.watchtower.l1.webp",
+            "status": "final"
           },
           "brief": "Beacon Hill: The town sees 8 hexes around it (3 without a Watchtower).",
           "priority": "later"
@@ -10782,8 +10833,9 @@
           "pantheon": "Celtic",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.celtic.support.artifact_merchant.l1.webp",
+            "status": "final"
           },
           "brief": "Torc Trader: Sells four artifacts to visiting heroes; the stock changes every week.",
           "priority": "later"
@@ -10796,8 +10848,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier1.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier1.base.webp",
+            "status": "final"
           },
           "brief": "Pooka Warren: Recruit Pooka. 14 per week.",
           "priority": "later"
@@ -10810,8 +10862,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier1.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier1.upgraded.webp",
+            "status": "final"
           },
           "brief": "Elder Warren: Also recruit and train Elder Pooka. Shares the Pooka pool.",
           "priority": "later"
@@ -10824,8 +10876,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier2.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier2.base.webp",
+            "status": "final"
           },
           "brief": "Hound Kennel: Recruit Cu Sith. 9 per week.",
           "priority": "later"
@@ -10838,8 +10890,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier2.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier2.upgraded.webp",
+            "status": "final"
           },
           "brief": "Great Hound Kennel: Also recruit and train Great Cu Sith. Shares the Cu Sith pool.",
           "priority": "later"
@@ -10852,8 +10904,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier3.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier3.base.webp",
+            "status": "final"
           },
           "brief": "Kelpie Loch: Recruit Kelpies. 7 per week. Requires an assigned Kelpie covenant.",
           "priority": "later"
@@ -10866,8 +10918,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier3.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier3.upgraded.webp",
+            "status": "final"
           },
           "brief": "Dread Loch: Also recruit and train Dread Kelpies. Shares the Kelpie pool.",
           "priority": "later"
@@ -10880,8 +10932,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier4.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier4.base.webp",
+            "status": "final"
           },
           "brief": "Banshee Cairn: Recruit Banshees. 4 per week.",
           "priority": "later"
@@ -10894,8 +10946,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier4.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier4.upgraded.webp",
+            "status": "final"
           },
           "brief": "Keening Cairn: Also recruit and train Battle Banshees. Shares the Banshee pool.",
           "priority": "later"
@@ -10908,8 +10960,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier5.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier5.base.webp",
+            "status": "final"
           },
           "brief": "Selkie Cove: Recruit Selkies. 3 per week.",
           "priority": "later"
@@ -10922,8 +10974,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier5.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier5.upgraded.webp",
+            "status": "final"
           },
           "brief": "Storm Cove: Also recruit and train Storm Selkies. Shares the Selkie pool.",
           "priority": "later"
@@ -10936,8 +10988,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier6.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier6.base.webp",
+            "status": "final"
           },
           "brief": "Stag Grove: Recruit Horned Stag Spirits. 2 per week. Requires an assigned Horned Stag Spirit covenant.",
           "priority": "later"
@@ -10950,8 +11002,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier6.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier6.upgraded.webp",
+            "status": "final"
           },
           "brief": "Great Stag Grove: Also recruit and train Great Stag Spirits. Shares the Horned Stag Spirit pool.",
           "priority": "later"
@@ -10964,8 +11016,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier7.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier7.base.webp",
+            "status": "final"
           },
           "brief": "Fomorian Hold: Recruit Fomorian Giants. 1 per week. Requires an assigned Fomorian Giant covenant.",
           "priority": "later"
@@ -10978,8 +11030,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/celtic/dwelling.tier7.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.celtic.dwelling.tier7.upgraded.webp",
+            "status": "final"
           },
           "brief": "Ancient Hold: Also recruit and train Ancient Fomorians. Shares the Fomorian Giant pool.",
           "priority": "later"
@@ -11047,8 +11099,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.tavern.l1.webp",
+            "status": "final"
           },
           "brief": "Traveller's House: Hire eligible heroes. Prerequisite for the Tecpan.",
           "priority": "later"
@@ -11060,8 +11113,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.marketplace.l1.webp",
+            "status": "final"
           },
           "brief": "Tianguis Market: Sell resources for Gold or buy them with Gold.",
           "priority": "later"
@@ -11073,8 +11127,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.resource_depot.l1.webp",
+            "status": "final"
           },
           "brief": "Storehouse: +1 Wood and +1 Stone per day.",
           "priority": "later"
@@ -11086,8 +11141,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.workshop.l1.webp",
+            "status": "final"
           },
           "brief": "Workshop: Military prerequisite (Cenote Pool, Great Palace). Sells four tier-1 items each week where the scenario has them; each one once a week.",
           "priority": "later"
@@ -11211,8 +11267,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.training_academy.l1.webp",
+            "status": "final"
           },
           "brief": "Warrior House: Once per week, each visiting hero may train: 1,000 Gold for 500 experience.",
           "priority": "later"
@@ -11224,8 +11281,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.watchtower.l1.webp",
+            "status": "final"
           },
           "brief": "Observatory: The town sees 8 hexes around it (3 without a Watchtower).",
           "priority": "later"
@@ -11237,8 +11295,9 @@
           "pantheon": "Mesoamerican",
           "where": "Town screen (location art and build cards)",
           "current": {
-            "type": "procedural",
-            "note": "none"
+            "type": "art",
+            "file": "assets-runtime/art/town/town.mesoamerican.support.artifact_merchant.l1.webp",
+            "status": "final"
           },
           "brief": "Jade Merchant: Sells four artifacts to visiting heroes; the stock changes every week.",
           "priority": "later"
@@ -11251,8 +11310,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier1.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier1.base.webp",
+            "status": "final"
           },
           "brief": "Serpent Nest: Recruit Feathered Serpents. 14 per week.",
           "priority": "later"
@@ -11265,8 +11324,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier1.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier1.upgraded.webp",
+            "status": "final"
           },
           "brief": "Celestial Nest: Also recruit and train Celestial Feathered Serpents. Shares the Feathered Serpent pool.",
           "priority": "later"
@@ -11279,8 +11338,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier2.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier2.base.webp",
+            "status": "final"
           },
           "brief": "Jaguar Prowl: Recruit Jaguar Spirits. 9 per week.",
           "priority": "later"
@@ -11293,8 +11352,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier2.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier2.upgraded.webp",
+            "status": "final"
           },
           "brief": "Sun Jaguar Temple: Also recruit and train Sun Jaguars. Shares the Jaguar Spirit pool.",
           "priority": "later"
@@ -11307,8 +11366,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier3.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier3.base.webp",
+            "status": "final"
           },
           "brief": "Eagle Aerie: Recruit Eagle Warrior Spirits. 7 per week. Requires an assigned Eagle Warrior Spirit covenant.",
           "priority": "later"
@@ -11321,8 +11380,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier3.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier3.upgraded.webp",
+            "status": "final"
           },
           "brief": "Solar Eagle House: Also recruit and train Solar Eagle Warriors. Shares the Eagle Warrior Spirit pool.",
           "priority": "later"
@@ -11335,8 +11394,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier4.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier4.base.webp",
+            "status": "final"
           },
           "brief": "Cenote Pool: Recruit Cenote Crocodiles. 4 per week.",
           "priority": "later"
@@ -11349,8 +11408,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier4.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier4.upgraded.webp",
+            "status": "final"
           },
           "brief": "Temple Cenote: Also recruit and train Temple Crocodiles. Shares the Cenote Crocodile pool.",
           "priority": "later"
@@ -11363,8 +11422,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier5.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier5.base.webp",
+            "status": "final"
           },
           "brief": "Bat Cave: Recruit Camazotz. 3 per week.",
           "priority": "later"
@@ -11377,8 +11436,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier5.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier5.upgraded.webp",
+            "status": "final"
           },
           "brief": "Blood Moon Cave: Also recruit and train Blood Moon Camazotz. Shares the Camazotz pool.",
           "priority": "later"
@@ -11391,8 +11450,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier6.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier6.base.webp",
+            "status": "final"
           },
           "brief": "Fire Serpent Sanctum: Recruit Xiuhcoatl. 2 per week. Requires an assigned Xiuhcoatl covenant.",
           "priority": "later"
@@ -11405,8 +11464,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier6.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier6.upgraded.webp",
+            "status": "final"
           },
           "brief": "Divine Sanctum: Also recruit and train Divine Xiuhcoatl. Shares the Xiuhcoatl pool.",
           "priority": "later"
@@ -11419,8 +11478,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier7.base.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier7.base.webp",
+            "status": "final"
           },
           "brief": "Colossus Quarry: Recruit Stone Colossi. 1 per week. Requires an assigned Stone Colossus covenant.",
           "priority": "later"
@@ -11433,8 +11492,8 @@
           "where": "Town screen (location art and build cards)",
           "current": {
             "type": "art",
-            "file": "assets-runtime/placeholders/town/mesoamerican/dwelling.tier7.upgraded.png",
-            "status": "placeholder"
+            "file": "assets-runtime/art/town/town.mesoamerican.dwelling.tier7.upgraded.webp",
+            "status": "final"
           },
           "brief": "Sun Colossus Altar: Also recruit and train Sun Colossi. Shares the Stone Colossus pool.",
           "priority": "later"

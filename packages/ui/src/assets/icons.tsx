@@ -227,7 +227,7 @@ export const ICON_NAMES = Object.keys(PATHS) as IconName[];
 
 /** URL of the icon art for a name, or null when the icon is an SVG glyph. */
 export function iconArt(name: IconName): string | null {
-  // Names without art in the pack take delivered final art under `icon.ui.<name>` (ICON_CATALOG.md).
+  // Names without art in the pack take delivered final art under `icon.ui.<name>` (`npm run icons:catalog`).
   return resolveAsset(ICON_ART[name] ?? `icon.ui.${name}`).url;
 }
 

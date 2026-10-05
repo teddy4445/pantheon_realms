@@ -14,7 +14,7 @@ import uiArtManifest from '../../../../assets-runtime/ui/manifest.json';
 import finalArtManifest from '../../../../assets-runtime/ui/final-manifest.json';
 import storyArtManifest from '../../../../assets-runtime/art/manifest.json';
 import spriteManifestFile from '../../../../assets-runtime/sprites/manifest.json';
-import { registerEnvironmentArt, registerSpriteManifest, spriteManifest, type EnvironmentArt, type SpriteManifest } from '@pr/presentation/core';
+import { registerEnvironmentArt, registerSpriteManifest, type EnvironmentArt, type SpriteManifest } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
 
@@ -34,7 +34,7 @@ const PLACEHOLDERS: ManifestFile['assets'] = { ...(placeholderManifest as Manife
 /**
  * Final production assets, registered as they are delivered: drop a PNG named by
  * its asset ID into assets-source/icons/final/ and run `npm run icons:import`
- * (writes assets-runtime/ui/final-manifest.json). See ICON_CATALOG.md.
+ * (writes assets-runtime/ui/final-manifest.json). See `npm run icons:catalog`.
  */
 const FINAL: Record<string, { file: string; provenance: string }> = { ...(finalArtManifest as unknown as { assets: Record<string, { file: string; provenance: string }> }).assets };
 
@@ -153,10 +153,6 @@ export function resolveBuildingArt(artAssetId: string): AssetRecord {
   return resolveAsset(generic);
 }
 
-export function listKnownAssets(): AssetRecord[] {
-  return Object.keys({ ...PLACEHOLDERS, ...FINAL }).map(resolveAsset);
-}
-
 // ---------------------------------------------------------------------------
 // 2D sprites — assets-runtime/sprites/manifest.json (written by the placeholder
 // generator and by `npm run sprites:import`; ASSET_PIPELINE.md §1). Creature
@@ -166,11 +162,3 @@ export function listKnownAssets(): AssetRecord[] {
 // ---------------------------------------------------------------------------
 
 registerSpriteManifest(spriteManifestFile as unknown as SpriteManifest, (file) => `./${file}`);
-
-/** The pantheon's large mounted-hero still for the hero screen (null when none is registered). */
-export function heroFigureArt(pantheonId: string | null | undefined): { url: string; width: number; height: number; status: string } | null {
-  const m = spriteManifest();
-  const h = (pantheonId && m.heroes[pantheonId]) || m.heroes['neutral'];
-  if (!h?.figure) return null;
-  return { url: `./${h.figure.file}`, width: h.figure.width, height: h.figure.height, status: h.figure.status };
-}

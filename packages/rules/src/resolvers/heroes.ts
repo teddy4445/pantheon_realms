@@ -124,10 +124,6 @@ export function effectiveAttributes(catalog: ContentCatalog, state: MatchState, 
   return { attack: make('attack'), defense: make('defense'), power: make('power'), knowledge: make('knowledge') };
 }
 
-export function skillRank(hero: HeroState, skillId: SkillId): number {
-  return hero.skills.find((s) => s.skillId === skillId)?.rank ?? 0;
-}
-
 /** Look up a skill's rank value by rule type (skills are data; IDs are not hard-coded). */
 export function skillValue(catalog: ContentCatalog, hero: { skills: readonly { skillId: SkillId; rank: number }[] }, type: SkillRule['type']): number {
   for (const s of hero.skills) {
@@ -221,12 +217,4 @@ export function dawnManaRegen(catalog: ContentCatalog, state: MatchState, hero: 
 export function maxSpellTierLearnable(catalog: ContentCatalog, hero: HeroState): number {
   // Tiers 1-2 need no Wisdom; Wisdom I/II/III allows tiers 3/4/5.
   return Math.max(2, skillValue(catalog, hero, 'wisdom'));
-}
-
-export function armyStackCount(hero: HeroState): number {
-  return hero.army.slots.filter((s) => s !== null).length;
-}
-
-export function armyTotalCreatures(hero: HeroState): number {
-  return hero.army.slots.reduce((n, s) => n + (s?.count ?? 0), 0);
 }

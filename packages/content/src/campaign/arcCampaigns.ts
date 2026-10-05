@@ -13,9 +13,6 @@ import { buildNewFire, NEW_FIRE_HEROES } from './newFire';
 
 export const ARC_CAMPAIGN_HEROES: readonly HeroDefinition[] = [...TWELFTH_HOUR_HEROES, ...LANTERN_ROAD_HEROES, ...SILVER_BRANCH_HEROES, ...NEW_FIRE_HEROES];
 
-/** Campaign IDs in menu order (after The Three Beacons and The Winter Oath). */
-export const ARC_CAMPAIGN_IDS = ['twelfth_hour', 'lantern_road', 'silver_branch', 'new_fire'] as const;
-
 export function buildArcCampaigns(
   names: ArcCampaignContext['names'],
   familyOf: ArcCampaignContext['familyOf'],

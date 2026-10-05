@@ -99,7 +99,7 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   await waitFor(page, (x) => (x.state.mission.counters['recruited:hoplite'] ?? 0) >= 8, 'recruit counter');
   const row = page.locator('.upgrade-row').first();
   await row.getByRole('button', { name: 'Max' }).click();
-  await row.getByRole('button', { name: /^Train \d+/ }).click();
+  await row.getByRole('button', { name: /^Upgrade \d+/ }).click();
   let s = await waitFor(page, (x) => (x.state.mission.counters['trained:hoplite'] ?? 0) >= 10, 'trained counter');
   expect(s.state.mission.objectives.m01_recruit.status).toBe('completed');
   expect(s.state.mission.objectives.m01_upgrade.status).toBe('completed');

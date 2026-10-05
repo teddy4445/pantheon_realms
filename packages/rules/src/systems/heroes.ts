@@ -5,9 +5,9 @@
  * from the saved progression stream and persisted, so reopening never rerolls.
  */
 import type { ArtifactId, ArtifactInstanceId, DecisionId, HeroId, SkillId, TownId } from '../ids';
-import { hexEquals, type HexCoord } from '../core/hex';
+import { type HexCoord } from '../core/hex';
 import { resources } from '../core/resources';
-import { getArtifact, getHeroClass, getSpell, type ContentCatalog } from '../definitions/catalog';
+import { getArtifact, getHeroClass, type ContentCatalog } from '../definitions/catalog';
 import { levelForXp } from '../definitions/rulesProfile';
 import { EQUIP_SLOT_KIND, equipSlotsFor, freeEquipSlot, type EquipSlot } from '../definitions/pantheons';
 import type { HeroState, LevelUpDecision, MatchState, SkillOffer, TownState } from '../state/match';
@@ -195,10 +195,6 @@ export function learnSpellsAtTown(tx: Tx, hero: HeroState, town: TownState): voi
     learned.push(spell.id);
   }
   if (learned.length > 0) tx.emit({ kind: 'SpellsLearned', heroId: hero.id, spellIds: learned });
-}
-
-export function spellName(catalog: ContentCatalog, id: string): string {
-  return getSpell(catalog, id).name;
 }
 
 // ---------------------------------------------------------------------------

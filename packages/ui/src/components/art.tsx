@@ -252,7 +252,7 @@ export function siteMarkerAsset(
       return 'icon.marker.shrine';
     case 'portal':
       return 'icon.marker.portal';
-    // Sites added 2026-10-02: their own marker once delivered (ICON_CATALOG.md), else the nearest existing one.
+    // Sites added 2026-10-02: their own marker once delivered (`npm run icons:catalog`), else the nearest existing one.
     case 'learning_stone':
       return ownMarker('icon.marker.learning-stone', 'icon.marker.story');
     case 'spell_shrine':
@@ -281,17 +281,26 @@ function ownMarker(assetId: string, fallback: string): string {
   return resolveAsset(assetId).url ? assetId : fallback;
 }
 
-export function MarkerIcon({ assetId, label, size = '2rem' }: { assetId: string; label?: string; size?: string }) {
+export function MarkerIcon({ assetId, label, size = '2rem', tint }: { assetId: string; label?: string; size?: string; tint?: string }) {
   const rec = resolveAsset(assetId);
   if (!rec.url) return null;
-  return <img className="marker-icon" src={rec.url} alt={label ?? ''} aria-hidden={label ? undefined : true} style={{ width: size, height: size }} draggable={false} />;
+  const img = <img className="marker-icon" src={rec.url} alt={label ?? ''} aria-hidden={label ? undefined : true} style={{ width: size, height: size }} draggable={false} />;
+  if (!tint) return img;
+  // Key tents and gates (Brief 12): light neutral surfaces multiplied by the key's colour, as on the map.
+  // The mask is set inline so its relative URL resolves against the page, like the image's.
+  const mask = `url("${rec.url}")`;
+  return (
+    <span className="marker-icon marker-icon--tinted" style={{ width: size, height: size }}>
+      {img}
+      <span className="marker-icon__tint" aria-hidden="true" style={{ background: tint, WebkitMaskImage: mask, maskImage: mask }} />
+    </span>
+  );
 }
 
-/** The Pantheon Realms emblem (small branding in dialogs); nothing when the file is missing. */
-export function BrandEmblem({ size }: { size?: string }) {
-  const rec = resolveAsset('brand.emblem');
-  if (!rec.url) return null;
-  return <img className="brand-emblem" src={rec.url} alt="" aria-hidden="true" draggable={false} style={size ? { width: size, height: size } : undefined} />;
+/** The key colour a key tent or gate marker is tinted with (only on its own delivered marker). */
+export function siteMarkerTint(kind: { type: string; color?: string }, assetId: string, colors: Readonly<Record<string, string>>): string | undefined {
+  if ((kind.type === 'key_tent' || kind.type === 'key_gate') && kind.color && (assetId === 'icon.marker.key-tent' || assetId === 'icon.marker.key-gate')) return colors[kind.color];
+  return undefined;
 }
 
 /** Spell art in a round socket: the spell's own icon when delivered, else the effect-family icon. */
@@ -324,7 +333,7 @@ export function SpellIcon({ iconAssetId, effectType, size = '2.4rem' }: { iconAs
   );
 }
 
-/** Fallback glyph per artifact kind until the item's own icon is delivered (ICON_CATALOG.md). */
+/** Fallback glyph per artifact kind until the item's own icon is delivered (`npm run icons:catalog`). */
 export const ARTIFACT_KIND_GLYPH: Record<string, IconName> = {
   head: 'power',
   neck: 'luck',

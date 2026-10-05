@@ -1,6 +1,6 @@
 /**
  * Every magic and Favor strip in the sprite manifest (the delivery of
- * 2026-10-04: VFX_MAGIC_AND_FAVORS.md) has a moment in the game that plays it:
+ * 2026-10-04, the VFX list of `npm run vfx:list`) has a moment in the game that plays it:
  * a strip whose phase the game never asks for would be art the player never
  * sees. The phases each view asks for follow the content's looks (fxLooks.ts)
  * and the hooks in battle.ts, adventure.ts and the town screen.
@@ -43,6 +43,8 @@ function requested(): Set<string> {
   for (const k of STATUS_OVERLAYS) out.add(`fx.status.${k}`);
   for (const g of Object.values(catalog.divineGifts ?? {})) out.add(`fx.gift.${g.id}`);
   out.add('fx.offering.rise').add('fx.offering.favor');
+  // GodCommitFx in the Pantheon UI asks for this dedicated strip when delivered.
+  out.add('fx.god.commit');
   return out;
 }
 

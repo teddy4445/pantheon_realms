@@ -75,7 +75,7 @@ const DWELLINGS: B[] = [
     { id: 'norse_wolf_den', name: 'Wolf Den', slot: '', level: 1, cost: { gold: 1000, wood: 5, stone: 5 }, req: [has('norse_barrow')], fx: access('norse_frost_wolf'), summary: 'Recruit Frost Wolves. 9 per week.', art: '' },
     { id: 'norse_wolf_den_up', name: 'Fenrir Den', slot: '', level: 2, cost: { gold: 1000, wood: 5, stone: 5 }, fx: access('norse_frost_wolf', 'norse_fenrir_wolf'), summary: 'Also recruit and train Fenrir Wolves.', art: '' }),
   ...dwell(3, 'norse_frost_troll',
-    { id: 'norse_troll_cave', name: 'Troll Cave', slot: '', level: 1, cost: { gold: 2000, wood: 5, stone: 5 }, req: [has('norse_valkyrie_aerie'), covenant('norse_frost_troll')], fx: access('norse_frost_troll'), summary: 'Recruit Frost Trolls. 6 per week. Requires an assigned Frost Troll covenant.', art: '' },
+    { id: 'norse_troll_cave', name: 'Troll Cave', slot: '', level: 1, cost: { gold: 2000, wood: 5, stone: 5 }, req: [has('norse_wolf_den'), has('norse_hof_1'), covenant('norse_frost_troll')], fx: access('norse_frost_troll'), summary: 'Recruit Frost Trolls. 6 per week. Requires an assigned Frost Troll covenant.', art: '' },
     { id: 'norse_troll_cave_up', name: 'Ancient Troll Cave', slot: '', level: 2, cost: { gold: 1500, stone: 5, crystal: 1 }, fx: access('norse_frost_troll', 'norse_ancient_frost_troll'), summary: 'Also recruit and train Ancient Frost Trolls.', art: '' }),
   ...dwell(4, 'norse_valkyrie',
     { id: 'norse_valkyrie_aerie', name: 'Valkyrie Aerie', slot: '', level: 1, cost: { gold: 2000, wood: 5, stone: 5 }, req: [has('norse_barrow'), has('norse_smithy')], fx: access('norse_valkyrie'), summary: 'Recruit Valkyries. 4 per week.', art: '' },

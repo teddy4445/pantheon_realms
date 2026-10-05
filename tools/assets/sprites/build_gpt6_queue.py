@@ -106,7 +106,7 @@ HERO_DIRS = ["e", "ne", "n", "s", "se"]  # w, nw, sw are the game's mirror image
 HERO_FRAMES = {"idle": 4, "walk": 6}
 HERO_FPS = {"idle": 3, "walk": 8}
 DIR_TEXT = {"e": "east — facing right, side-on", "ne": "north-east — facing right and away from the viewer", "n": "north — walking away from the viewer (we see the back)", "s": "south — walking toward the viewer (we see the front)", "se": "south-east — facing right and toward the viewer"}
-# Body heights in hex widths (the same table as make_sprite_placeholders.py).
+# Body heights in hex widths (per body type).
 BODY_HEIGHT = {
     "humanoid_spear": 1.2, "humanoid_thrower": 1.15, "humanoid_caster": 1.2, "centaur": 1.4, "griffin": 1.3,
     "rider": 1.5, "bull_biped": 1.45, "giant": 1.85, "beast": 0.95, "serpent": 1.3, "winged_humanoid": 1.35,

@@ -81,10 +81,6 @@ export function intactStructures(battle: BattleState): SiegeStructureState[] {
   return (battle.siege?.structures ?? []).filter((s) => s.hp > 0);
 }
 
-export function isMoatCell(battle: BattleState, c: BattleCell): boolean {
-  return !!battle.siege?.moat.some((m) => m.col === c.col && m.row === c.row);
-}
-
 export function touchesMoat(battle: BattleState, cells: readonly BattleCell[]): boolean {
   if (!battle.siege || battle.siege.moat.length === 0) return false;
   const keys = new Set(battle.siege.moat.map(cellKey));

@@ -10,7 +10,7 @@ import type { HexCoord } from '../core/hex';
 import { getBuilding, getHeroClass, getTownArchetype, type ContentCatalog } from '../definitions/catalog';
 import type { HeroAttribute } from '../definitions/logic';
 import type { StackSpec } from '../definitions/world';
-import type { ArmyState, HeroState, MatchState, TownState } from '../state/match';
+import type { ArmyState, HeroState, TownState } from '../state/match';
 import { ARMY_SLOT_COUNT } from '../state/match';
 
 export function armyFromSpecs(specs: readonly StackSpec[], idPrefix: string): ArmyState {
@@ -105,8 +105,4 @@ export function createTownState(catalog: ContentCatalog, setup: TownSetup): Town
     lastOfferingWeek: 0,
     merchant: null,
   };
-}
-
-export function emptyFog(state: Pick<MatchState, 'world'>): { explored: number[] } {
-  return { explored: new Array(state.world.map.width * state.world.map.height).fill(0) };
 }

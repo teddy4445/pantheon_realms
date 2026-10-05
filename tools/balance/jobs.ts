@@ -3,10 +3,11 @@
  * across processes (`--jobs`). Each job returns plain JSON.
  */
 import type { ContentCatalog } from '@pr/rules';
-import { playRandom, playSkirmish, rosterArmy, startingArmy, symmetricScore, type Army, type RandomResult, type SkirmishResult } from './lib';
+import { SKIRMISH_MAP_TYPES, type SkirmishMapSize, type SkirmishMapType } from '@pr/mapgen';
+import { playMap, playRandom, playSkirmish, rosterArmy, startingArmy, symmetricScore, type Army, type RandomResult, type SkirmishResult } from './lib';
 
-export type Suite = 'skirmish' | 'armies' | 'starts' | 'tiers' | 'random';
-export const ALL_SUITES: readonly Suite[] = ['skirmish', 'armies', 'starts', 'tiers', 'random'];
+export type Suite = 'skirmish' | 'armies' | 'starts' | 'tiers' | 'random' | 'random1v1' | 'maps';
+export const ALL_SUITES: readonly Suite[] = ['skirmish', 'armies', 'starts', 'tiers', 'random', 'random1v1', 'maps'];
 
 export interface BalanceOptions {
   readonly suites: readonly Suite[];
@@ -22,6 +23,14 @@ export interface BalanceOptions {
   readonly empires?: readonly (2 | 3)[];
   /** Pantheon AI temperaments in skirmish/random matches (default on, as in the game). */
   readonly temperaments?: boolean;
+  /** Map sizes for the one-against-one random suite (default small). */
+  readonly sizes?: readonly SkirmishMapSize[];
+  /** Map types for the one-against-one random suite (default: every type, in turn). */
+  readonly mapTypes?: readonly SkirmishMapType[];
+  /** random1v1: only the pairings that include one of these pantheons (a quicker check while tuning them). */
+  readonly focus?: readonly string[];
+  /** maps: only these authored skirmish maps (default: all). */
+  readonly maps?: readonly string[];
 }
 
 export type Job =
@@ -29,11 +38,15 @@ export type Job =
   | { readonly suite: 'armies'; readonly weeks: number; readonly form: 'base' | 'upgraded'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
   | { readonly suite: 'starts'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
   | { readonly suite: 'tiers'; readonly tier: number; readonly form: 'base' | 'upgraded'; readonly a: string; readonly b: string; readonly seeds: number; readonly signatures: boolean }
-  | { readonly suite: 'random'; readonly pantheon: string; readonly empires: 2 | 3; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean };
+  | { readonly suite: 'random'; readonly pantheon: string; readonly empires: 2 | 3; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean }
+  | { readonly suite: 'random1v1'; readonly a: string; readonly b: string; readonly mapType: SkirmishMapType; readonly size: SkirmishMapSize; readonly seed: number; readonly maxDay: number; readonly temperaments?: boolean }
+  | { readonly suite: 'maps'; readonly mapId: string; readonly seats: readonly string[]; readonly seed: number; readonly maxDay: number };
 
 export type JobResult =
   | { readonly job: Job; readonly skirmish: SkirmishResult }
   | { readonly job: Job; readonly random: RandomResult }
+  | { readonly job: Job; readonly duel1v1: RandomResult }
+  | { readonly job: Job; readonly map: RandomResult & { readonly holdWin: boolean } }
   | { readonly job: Job; readonly score: number; readonly labels?: { readonly a: string; readonly b: string } };
 
 /** Gold budget per tier for the same-tier duels (multiples of the Greek unit's price). */
@@ -66,7 +79,39 @@ export function buildJobs(catalog: ContentCatalog, o: BalanceOptions): Job[] {
     // pantheons used to measure five maps, not thirty (2026-10-02).
     for (const pantheon of P) for (const empires of o.empires ?? ([2, 3] as const)) for (let seed = 0; seed < o.matches; seed++) jobs.push({ suite: 'random', pantheon, empires, seed: P.indexOf(pantheon) * 100 + seed, maxDay: o.maxDay, temperaments: o.temperaments !== false });
   }
-  void catalog;
+  if (o.suites.includes('random1v1')) {
+    // One against one on generated maps: every pairing, each map played from both seats (so
+    // the map and the first move cancel out), the map types taken in turn, a new map per match.
+    const types = o.mapTypes?.length ? o.mapTypes : SKIRMISH_MAP_TYPES.map((t) => t.id);
+    const sizes = o.sizes?.length ? o.sizes : (['small'] as const);
+    pairs.forEach(([a, b], k) => {
+      if (o.focus?.length && !o.focus.includes(a) && !o.focus.includes(b)) return;
+      for (let m = 0; m < o.matches; m++) {
+        const mapType = types[(m + k) % types.length]!;
+        const size = sizes[m % sizes.length]!;
+        const seed = 20000 + k * 1000 + m;
+        for (const [x, y] of [
+          [a, b],
+          [b, a],
+        ] as const)
+          jobs.push({ suite: 'random1v1', a: x, b: y, mapType, size, seed, maxDay: o.maxDay, temperaments: o.temperaments !== false });
+      }
+    });
+  }
+  if (o.suites.includes('maps')) {
+    // Authored skirmish maps: each pantheon line-up played from every seat (the seats rotate),
+    // so pantheon strength cancels out and what is left is the map and the turn order.
+    const maps = Object.values(catalog.skirmishMaps ?? {})
+      .filter((m) => !o.maps?.length || o.maps.includes(m.id))
+      .sort((a, b) => a.order - b.order);
+    for (const m of maps) {
+      const n = m.map.players.length;
+      for (let k = 0; k < o.matches; k++) {
+        const lineup = Array.from({ length: n }, (_, i) => P[(k + i) % P.length]!);
+        for (let r = 0; r < n; r++) jobs.push({ suite: 'maps', mapId: m.id, seats: lineup.map((_, i) => lineup[(i + r) % n]!), seed: k * 10 + r, maxDay: o.maxDay });
+      }
+    }
+  }
   return jobs;
 }
 
@@ -91,6 +136,10 @@ export function runJob(catalog: ContentCatalog, job: Job): JobResult {
       return { job, score: symmetricScore(startingArmy(catalog, job.a), startingArmy(catalog, job.b), job.seeds, sidesOf(job)) };
     case 'random':
       return { job, random: playRandom(catalog, { pantheon: job.pantheon, empires: job.empires, seed: job.seed, maxDay: job.maxDay, temperaments: job.temperaments }) };
+    case 'random1v1':
+      return { job, duel1v1: playRandom(catalog, { pantheon: job.a, empires: 2, seatPantheons: [job.a, job.b], mapType: job.mapType, size: job.size, seed: job.seed, maxDay: job.maxDay, temperaments: job.temperaments }) };
+    case 'maps':
+      return { job, map: playMap(catalog, { mapId: job.mapId, seatPantheons: job.seats, seed: job.seed, maxDay: job.maxDay }) };
     case 'tiers': {
       const a = tierArmy(catalog, job.a, job.tier, job.form);
       const b = tierArmy(catalog, job.b, job.tier, job.form);

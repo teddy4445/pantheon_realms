@@ -4,7 +4,7 @@ import { approachTile, importAndLoad, slots, writeSave } from './fixtures';
 import { GameDriver } from '@pr/testing';
 
 /**
- * Sound through the real screens: the placeholder files decode in the browser,
+ * Sound through the real screens: every sound file decodes in the browser,
  * music follows the screen, Settings volumes and mute reach the mixer, and
  * battle playback produces combat sounds. The read-only ?e2e inspector reports
  * the mixer's status; nothing here can play or change anything.
@@ -60,7 +60,8 @@ test('Settings: volumes preview live, Mute all silences every bus, leaving resto
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-settings').click();
   await page.getByRole('tab', { name: 'Audio' }).click();
-  await expect(page.getByTestId('audio-status-note')).toContainText('The map music is final');
+  // Every sound is final (2026-10-05): no placeholder note.
+  await expect(page.getByTestId('audio-status-note')).toHaveCount(0);
   await page.getByLabel('Music volume').fill('100');
   await waitFor(page, (s) => Math.abs((s as unknown as { audio: { busGains: { music: number } } }).audio.busGains.music - 0.64) < 0.01, 'music preview at 100%');
   await page.getByRole('switch', { name: 'Mute all' }).click();
@@ -77,14 +78,15 @@ test('Settings: volumes preview live, Mute all silences every bus, leaving resto
 test('the campaign map plays the Greek playlist, streamed, over the mission soundscape’s ambience', async ({ page }) => {
   await startCampaign(page);
   await page.mouse.click(5, 5);
-  const s = await waitFor(page, (x) => (x as unknown as { audio: { music: string | null; musicFile: string | null } }).audio.music === 'music.map.greek', 'Greek map music', 30_000);
+  // The music streams at once; the ambience loop starts once its recording is decoded.
+  const s = await waitFor(page, (x) => { const a = (x as unknown as { audio: { music: string | null; ambience: string | null } }).audio; return a.music === 'music.map.greek' && a.ambience !== null; }, 'Greek map music and ambience', 30_000);
   const a = (s as unknown as { audio: { ambience: string; musicFile: string; failed: string[] } }).audio;
   expect(a.ambience).toBe('amb.coast');
   expect(a.musicFile).toMatch(/^audio\/music\/greek\/.+\.ogg$/);
   expect(a.failed.filter((f) => f.startsWith('audio/music/'))).toEqual([]);
 });
 
-test('battle: war horn, battle music, and combat sounds follow the playback', async ({ page }) => {
+test('battle: war horn, the pantheon’s battle music, and combat sounds follow the playback', async ({ page }) => {
   const d = GameDriver.mission('skirmish_twin_harbors', { matchId: 'e2e-audio-battle' });
   for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
   const hero = d.state.heroes['alexios']!;
@@ -100,7 +102,7 @@ test('battle: war horn, battle music, and combat sounds follow the playback', as
   await importAndLoad(page, file);
   await waitFor(page, (x) => x.screen === 'battle', 'battle screen');
   await page.mouse.click(5, 5); // a click lets the browser start audio
-  await waitFor(page, (x) => (x as unknown as { audio: { music: string | null } }).audio.music === 'music.battle', 'battle music');
+  await waitFor(page, (x) => (x as unknown as { audio: { music: string | null } }).audio.music === 'music.battle.greek', 'Greek battle music');
   // Let auto-combat play a few actions at normal speed.
   await page.getByTestId('battle-auto').click();
   const s = await waitFor(

@@ -108,8 +108,3 @@ export class RngCursor {
     return this.nextInt(denominator) < numerator;
   }
 }
-
-/** Separate, never-saved cosmetic generator for presentation (idle offsets, decor wobble). */
-export function cosmeticRng(label: string): RngCursor {
-  return new RngCursor(seedFromLabel(`cosmetic|${label}`));
-}

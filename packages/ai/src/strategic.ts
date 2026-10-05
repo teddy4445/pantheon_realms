@@ -13,6 +13,7 @@
  */
 import {
   axialDistance,
+  axialNeighbors,
   cellIndex,
   cellsWithin,
   parseHexKey,
@@ -352,19 +353,33 @@ function strengthAfter(mine: number, enemy: number): number {
 
 /**
  * Portals this empire has used (so it knows where they lead), with their exits not
- * blocked by a visible hero: the entry this hero reaches most cheaply, if any.
+ * blocked by a visible hero: the entry this hero reaches most cheaply, if any. A
+ * hero standing on a portal (just arrived through it) uses it again by stepping
+ * off and back on: `stepOff` is that first step (2026-10-05 — heroes that took a
+ * portal to a dead-end island used to stay there for the rest of the match).
  */
-function nearestKnownPortal(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): { entry: HexCoord; exit: HexCoord; cost: number } | null {
+function nearestKnownPortal(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): { entry: HexCoord; exit: HexCoord; cost: number; stepOff?: HexCoord } | null {
   const mission = requireScenarioMission(catalog, belief);
-  let best: { entry: HexCoord; exit: HexCoord; cost: number } | null = null;
+  let best: { entry: HexCoord; exit: HexCoord; cost: number; stepOff?: HexCoord } | null = null;
   for (const def of mission.sites) {
     if (def.kind.type !== 'portal') continue;
     const exitId = def.kind.exitSiteId;
     const st = belief.world.sites[def.id];
     if (!st || !st.visitedBy.includes(playerId)) continue;
     const exit = mission.sites.find((s) => s.id === exitId);
-    if (!exit || hexEquals(hero.position, def.coord)) continue;
-    if (Object.values(belief.heroes).some((h) => h.status === 'active' && hexEquals(h.position, exit.coord))) continue;
+    if (!exit) continue;
+    if (Object.values(belief.heroes).some((h) => h.status === 'active' && h.id !== hero.id && hexEquals(h.position, exit.coord))) continue;
+    if (hexEquals(hero.position, def.coord)) {
+      // Step onto a free neighbouring tile; the next move steps back on.
+      let off: { c: HexCoord; cost: number } | null = null;
+      for (const n of axialNeighbors(def.coord)) {
+        const q = quoteMovement(catalog, belief, hero.id, n);
+        if (!q.reachable || q.endsInEncounter || q.path.length !== 1) continue;
+        if (!off || q.totalCost < off.cost || (q.totalCost === off.cost && hexKey(n) < hexKey(off.c))) off = { c: n, cost: q.totalCost };
+      }
+      if (off && (!best || off.cost * 2 < best.cost)) best = { entry: def.coord, exit: exit.coord, cost: off.cost * 2, stepOff: off.c };
+      continue;
+    }
     const q = quoteMovement(catalog, belief, hero.id, def.coord);
     if (!q.reachable || q.endsInEncounter) continue;
     if (!best || q.totalCost < best.cost) best = { entry: def.coord, exit: exit.coord, cost: q.totalCost };
@@ -392,12 +407,13 @@ function movementCandidates(catalog: ContentCatalog, belief: MatchState, playerI
   const fromExit = portal ? { ...belief, heroes: { ...belief.heroes, [hero.id]: { ...hero, position: portal.exit } } } : null;
   for (const t of heroTargets(catalog, belief, playerId, hero)) {
     const q = quoteMovement(catalog, belief, hero.id, t.coord);
-    if (portal && fromExit && q.totalCost > hero.movementPoints) {
+    // Through the portal when the target is far — or cannot be reached on foot at all (an island).
+    if (portal && fromExit && (!q.reachable || q.totalCost > hero.movementPoints)) {
       const after = quoteMovement(catalog, fromExit, hero.id, t.coord);
       const via = portal.cost + after.totalCost;
       if (after.reachable && (!q.reachable || via < q.totalCost * 0.75)) {
         const days = Math.max(1, Math.ceil(via / Math.max(1, hero.movementPoints)));
-        scored.push({ score: (t.value / (1 + via / 800) / days) * 0.95, key: `portal:${hexKey(t.coord)}`, payload: { kind: 'MoveHero', heroId: hero.id, destination: portal.entry } });
+        scored.push({ score: (t.value / (1 + via / 800) / days) * 0.95, key: `portal:${hexKey(t.coord)}`, payload: { kind: 'MoveHero', heroId: hero.id, destination: portal.stepOff ?? portal.entry } });
         continue;
       }
     }

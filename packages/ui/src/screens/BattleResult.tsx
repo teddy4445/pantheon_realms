@@ -82,9 +82,6 @@ export function BattleResultScreen() {
             { side: r.defender, key: 'defender' as const },
           ].map(({ side, key }) => (
             <Panel key={key} title={`${side.name}${r.playerSide === key ? ' (you)' : ''}`} className="result-side" bodyClassName="scroll">
-              <div className="row gap">
-                <Chip tone={r.winner === key ? 'ok' : 'bad'}>{r.winner === key ? 'Won' : 'Lost'}</Chip>
-              </div>
               <table className="table">
                 <thead>
                   <tr>

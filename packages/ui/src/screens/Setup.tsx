@@ -10,14 +10,15 @@
  * Content not yet playable is shown honestly as unavailable.
  */
 import { useState, type CSSProperties } from 'react';
-import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, GodDefinition, PantheonDefinition } from '@pr/rules';
+import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, PantheonDefinition, SkirmishMapDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
-import { Button, Chip, Panel, SectionTitle, Rule, Segmented, TextInput } from '../components/kit';
+import { Button, Panel, SectionTitle, Segmented, TextInput } from '../components/kit';
 import { CampaignThumb, Emblem, GodPortrait, HeroPortrait, MissionThumb, CreaturePortrait, SpeakerPortrait } from '../components/art';
-import { resolveArt } from '../assets/manifest';
-import { ScreenHeader, StatusChip } from '../components/game';
+import { resolveArt, resolveAsset } from '../assets/manifest';
+import { ScreenHeader } from '../components/game';
 import { Icon } from '../assets/icons';
 import { TemperamentNote } from '../components/temperament';
+import { MapPreview, SkirmishMapThumb } from '../components/mapPreview';
 
 /**
  * A chosen campaign's painted cover behind the setup screens (campaign
@@ -41,7 +42,11 @@ export function defaultPatron(catalog: ContentCatalog, pantheonId: string | null
 
 export function GameModeScreen() {
   const store = useStore();
-  const pick = (mode: 'campaign' | 'skirmish' | 'random') => {
+  const pick = (mode: 'campaign' | 'skirmish' | 'random' | 'editor') => {
+    if (mode === 'editor') {
+      store.goto('map-editor');
+      return;
+    }
     if (mode === 'random') {
       store.resetSetup('skirmish');
       store.goto('random-setup');
@@ -53,12 +58,13 @@ export function GameModeScreen() {
   const modes = [
     { id: 'campaign' as const, icon: 'campaign' as const, title: 'Campaign', text: 'Story missions with a persistent hero: The Three Beacons (three Greek missions) and The Winter Oath (seven Norse missions).' },
     { id: 'skirmish' as const, icon: 'skirmish' as const, title: 'Skirmish', text: 'An authored map against the AI or a second player on this computer (hot-seat). All six pantheons, three difficulties.' },
-    { id: 'random' as const, icon: 'map' as const, title: 'Random Map', text: 'A new fair map every time: two to four empires, AI or hot-seat seats, and a choice of victory condition.' },
+    { id: 'random' as const, icon: 'map' as const, title: 'Random Map', text: 'A new fair map every time: nine layouts, two to six empires, AI or hot-seat seats, and a choice of victory condition.' },
+    { id: 'editor' as const, icon: 'build' as const, title: 'Map Editor', text: 'Make your own map — ground, roads, towns, mines, treasures and the goal — save it as a map file, and play it.' },
   ];
   return (
     <div className="setup-screen">
       <ScreenHeader title="New Game" />
-      <div className="mode-grid mode-grid--3 mode-grid--large">
+      <div className="mode-grid mode-grid--4 mode-grid--large">
         {modes.map((m) => (
           <button key={m.id} type="button" className="mode-card panel" onClick={() => pick(m.id)} data-testid={`mode-${m.id}`}>
             <Icon name={m.icon} className="mode-card__icon" />
@@ -134,17 +140,79 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
   );
 }
 
+const BIOME_LABEL: Readonly<Record<string, string>> = { temperate: 'Temperate', autumn: 'Autumn', coast: 'Coast', desert: 'Desert', fjord: 'Fjord', high_pass: 'High pass', jungle: 'Jungle', moor: 'Moor', storm_plateau: 'Storm plateau', tundra: 'Tundra' };
+
+/** The facts of an authored skirmish map, from its document. */
+export function skirmishMapFacts(catalog: ContentCatalog, def: SkirmishMapDefinition): { label: string; value: string }[] {
+  const d = def.map;
+  const cells = [...d.terrain].filter((c) => c !== 'v').length;
+  const size = cells < 900 ? 'Medium' : cells < 1800 ? 'Large' : 'Huge';
+  const climate = catalog.climates?.[d.biome ?? ''];
+  return [
+    { label: 'Empires', value: String(d.players.length) },
+    { label: 'Size', value: `${size} (${cells.toLocaleString('en-US')} hexes)` },
+    { label: 'Victory', value: d.victory.type === 'hold_relic' ? `Hold the shrine ${d.victory.days} days, or conquer` : 'Last empire standing' },
+    { label: 'Climate', value: climate ? `${climate.name} — ${climate.summary}` : (BIOME_LABEL[d.biome ?? 'temperate'] ?? 'Temperate') },
+    { label: 'Treasury', value: d.startWealth === 'high' ? 'Twice the usual' : d.startWealth === 'low' ? 'Half the usual' : 'The usual' },
+    { label: 'Map', value: d.revealMap ? 'Revealed from the start' : 'Hidden until explored' },
+  ];
+}
+
+function SkirmishMapDetail({ def }: { def: SkirmishMapDefinition }) {
+  const store = useStore();
+  const catalog = store.catalog;
+  const hasArt = !!resolveAsset(def.thumbnailAssetId).url;
+  return (
+    <Panel title={def.name} className="setup-detail" headerIcon="map" bodyClassName="scroll">
+      {/* The painting once delivered (Brief 14); until then the drawn layout below is the picture. */}
+      <div className={`map-detail__art ${hasArt ? '' : 'is-empty'}`} data-testid="skirmish-map-detail">
+        {hasArt ? <SkirmishMapThumb doc={def.map} assetId={def.thumbnailAssetId} large style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} /> : null}
+      </div>
+      <div className="tagline">{def.tagline}</div>
+      <p>{def.summary}</p>
+      <ul className="bullets">
+        {def.highlights.map((h) => (
+          <li key={h}>{h}</li>
+        ))}
+      </ul>
+      <div className="map-detail__split">
+        <dl className="map-detail__facts">
+          {skirmishMapFacts(catalog, def).map((f) => (
+            <div key={f.label} className="map-detail__fact">
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <figure className="map-detail__layout">
+          <MapPreview doc={def.map} style={{ width: '100%', height: 'auto' }} label={`${def.name} — layout`} />
+          <figcaption className="small faint">Layout: towns in their seat colours, the shrine, portals, key gates and guarded passes.</figcaption>
+        </figure>
+      </div>
+      <p className="small dim">Every empire’s lands are laid out alike — mirrored or turned — so no seat starts with better ground. Values are proposed and measured only in AI-against-AI games.</p>
+    </Panel>
+  );
+}
+
 export function ScenarioSelectScreen() {
   const store = useStore();
   const catalog = store.catalog;
   const mode = store.setup.mode ?? 'campaign';
   const campaigns = Object.values(catalog.campaigns);
   const skirmishes = Object.values(catalog.skirmishes);
+  const maps = Object.values(catalog.skirmishMaps ?? {}).sort((a, b) => a.order - b.order);
   const [selected, setSelected] = useState<string>(mode === 'campaign' ? (campaigns.find((c) => c.status === 'playable')?.id ?? '') : (skirmishes[0]?.id ?? ''));
   const campaign = mode === 'campaign' ? catalog.campaigns[selected] : undefined;
   const skirmish = mode === 'skirmish' ? catalog.skirmishes[selected] : undefined;
-  const playable = campaign ? campaign.status === 'playable' : skirmish ? skirmish.status === 'playable' : false;
+  // Authored skirmish maps are listed after the scenarios (selection key `map:<id>`).
+  const map = mode === 'skirmish' && selected.startsWith('map:') ? catalog.skirmishMaps?.[selected.slice(4)] : undefined;
+  const playable = campaign ? campaign.status === 'playable' : skirmish ? skirmish.status === 'playable' : !!map;
   const next = () => {
+    if (map) {
+      store.setup = { ...store.setup, mode: 'skirmish', campaignId: null, scenarioId: null, missionId: null, skirmishMapId: map.id, pantheonId: null, rivalPantheonId: null, godId: null };
+      store.goto('map-setup');
+      return;
+    }
     if (campaign) {
       // A campaign is played with its own pantheon and patron: straight to the briefing.
       const godId = defaultPatron(catalog, campaign.pantheonId, campaign);
@@ -169,8 +237,11 @@ export function ScenarioSelectScreen() {
     store.goto('pantheon-select');
   };
   const skMission = skirmish ? catalog.missions[skirmish.missionId] : undefined;
+  // A selected skirmish map's painting (Brief 14) behind the list, like a campaign's cover.
+  const mapArt = map ? resolveArt(map.thumbnailAssetId.replace(/\.thumbnail$/, '.briefing')) : null;
+  const backdrop = mapArt ? { className: 'setup-screen setup-screen--cover', style: { ['--app-art' as string]: `url("${mapArt.url}")` } } : campaignBackdrop(mode === 'campaign' ? selected : null);
   return (
-    <div {...campaignBackdrop(mode === 'campaign' ? selected : null)}>
+    <div {...backdrop}>
       <ScreenHeader title={mode === 'campaign' ? 'Choose a Campaign' : 'Choose a Scenario'} />
       <div className="setup-split">
         <Panel title={mode === 'campaign' ? 'Campaigns' : 'Scenarios'} className="setup-list" bodyClassName="scroll">
@@ -186,8 +257,23 @@ export function ScenarioSelectScreen() {
               {c.status !== 'playable' ? <div className="list-card__meta dim">Not available yet</div> : null}
             </button>
           ))}
+          {mode === 'skirmish' && maps.length ? (
+            <>
+              <SectionTitle>Skirmish maps</SectionTitle>
+              {maps.map((m) => (
+                <button key={m.id} type="button" className={`list-card ${selected === `map:${m.id}` ? 'is-selected' : ''}`} onClick={() => setSelected(`map:${m.id}`)} data-testid={`skirmish-map-${m.id}`}>
+                  <SkirmishMapThumb doc={m.map} assetId={m.thumbnailAssetId} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
+                  <div className="list-card__title">{m.name}</div>
+                  <div className="list-card__meta">
+                    {m.map.players.length} empires · {m.tagline}
+                  </div>
+                </button>
+              ))}
+            </>
+          ) : null}
         </Panel>
         {campaign ? <CampaignDetail c={campaign} /> : null}
+        {map ? <SkirmishMapDetail def={map} /> : null}
         {skirmish && skMission ? (
           <Panel title={skirmish.name} className="setup-detail" headerIcon="skirmish" bodyClassName="scroll">
             <div className="setup-detail__lead">
@@ -220,6 +306,10 @@ export function ScenarioSelectScreen() {
         {campaign ? (
           <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-begin">
             Begin — Mission Briefing
+          </Button>
+        ) : map ? (
+          <Button variant="primary" size="large" onClick={next} data-testid="setup-next">
+            Set Up Empires
           </Button>
         ) : (
           <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-next">

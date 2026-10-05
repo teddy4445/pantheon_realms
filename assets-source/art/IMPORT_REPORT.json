@@ -1,17 +1,21 @@
 {
- "imported": "2026-10-02",
- "warnings": [],
+ "imported": "2026-10-05",
+ "warnings": [
+  "382 runtime file(s) without a source in assets-source/art/final/ kept as they are (run with --prune to remove them)"
+ ],
  "counts": {
-  "bust": 35,
-  "cover": 6,
-  "ending": 11,
-  "mission": 40,
-  "terrain": 60,
-  "battlefield": 6,
-  "sky": 10,
-  "miracle": 14,
-  "splash": 12,
-  "banner": 15
+  "bust": 0,
+  "cover": 0,
+  "ending": 0,
+  "mission": 0,
+  "terrain": 0,
+  "battlefield": 0,
+  "sky": 0,
+  "miracle": 0,
+  "splash": 0,
+  "banner": 0,
+  "building": 126,
+  "background": 0
  },
  "assets": {
   "banner.level_up.celtic": {
@@ -4181,6 +4185,1645 @@
     "sha256": "0ef48eb3f824463c5cbf48e67a1e5c9d8d11837cf2bde54e7c0333433b0932fd"
    },
    "provenance": "Owner-delivered ground and sky art (GPT6_BRIEF_2), imported 2026-10-02; source 1254 x 1254; reduced to 1024 x 1024; seams NOT verified (mirrored repeat)."
+  },
+  "town.celtic.dwelling.tier1.base": {
+   "file": "art/town/town.celtic.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 435,
+   "height": 435,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier1.base.png",
+    "width": 435,
+    "height": 435,
+    "sha256": "844e13a5b2dbeaaf0f77e28565124783c29a6fd8533e11fc6583fc6ed5539a4a"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 435 x 435; 435 x 435, transparency kept."
+  },
+  "town.celtic.dwelling.tier1.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 473,
+   "height": 473,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier1.upgraded.png",
+    "width": 473,
+    "height": 473,
+    "sha256": "46984123f189be415e92d676499e61224a3d83101b75e71737f32239e3dc2178"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 473 x 473; 473 x 473, transparency kept."
+  },
+  "town.celtic.dwelling.tier2.base": {
+   "file": "art/town/town.celtic.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 449,
+   "height": 449,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier2.base.png",
+    "width": 449,
+    "height": 449,
+    "sha256": "1319680c8c374f15f1c12e959599e5ea97b2afb5d1146030f9358f8d46c10f1c"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 449 x 449; 449 x 449, transparency kept."
+  },
+  "town.celtic.dwelling.tier2.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 481,
+   "height": 481,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier2.upgraded.png",
+    "width": 481,
+    "height": 481,
+    "sha256": "fac42733042f77ed6dff39b681df6c006731206221e9727b1b7335cf02c33e6a"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 481 x 481; 481 x 481, transparency kept."
+  },
+  "town.celtic.dwelling.tier3.base": {
+   "file": "art/town/town.celtic.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 437,
+   "height": 437,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier3.base.png",
+    "width": 437,
+    "height": 437,
+    "sha256": "45dd00e0ced735bb85bf4b78a3f8cfc55ffe33db001991fe01893f7238ec5c2e"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 437 x 437; 437 x 437, transparency kept."
+  },
+  "town.celtic.dwelling.tier3.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 470,
+   "height": 470,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier3.upgraded.png",
+    "width": 470,
+    "height": 470,
+    "sha256": "40e598ef275d874a3a35601c0e42d2dac43e4cbc1e4617b36764d32d50a3dd65"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 470 x 470; 470 x 470, transparency kept."
+  },
+  "town.celtic.dwelling.tier4.base": {
+   "file": "art/town/town.celtic.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 441,
+   "height": 441,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier4.base.png",
+    "width": 441,
+    "height": 441,
+    "sha256": "01c97a6199b53c388cf9c39b6ad2aed8ab381da5c7f364018249d033c1d8a3b6"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 441 x 441; 441 x 441, transparency kept."
+  },
+  "town.celtic.dwelling.tier4.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 478,
+   "height": 478,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier4.upgraded.png",
+    "width": 478,
+    "height": 478,
+    "sha256": "0079fc0c6f28b3a4bde3f9a331f0c615bc5af74dfc87ffd42b214948c561d00a"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 478 x 478; 478 x 478, transparency kept."
+  },
+  "town.celtic.dwelling.tier5.base": {
+   "file": "art/town/town.celtic.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 434,
+   "height": 434,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier5.base.png",
+    "width": 434,
+    "height": 434,
+    "sha256": "911d19419f77c78192a64153fcf4dd494d737b581676145edabad5a955413c3b"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 434 x 434; 434 x 434, transparency kept."
+  },
+  "town.celtic.dwelling.tier5.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 474,
+   "height": 474,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier5.upgraded.png",
+    "width": 474,
+    "height": 474,
+    "sha256": "e7be75a6d1b8b4e28c1c98bd91f21890f4c7262d482c00e8447dff37ac232ee2"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 474 x 474; 474 x 474, transparency kept."
+  },
+  "town.celtic.dwelling.tier6.base": {
+   "file": "art/town/town.celtic.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 438,
+   "height": 438,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier6.base.png",
+    "width": 438,
+    "height": 438,
+    "sha256": "f0d1aa5f6e3da96c7cd97c858b77ccd41277962abecc3fc5c82d4c7567d41ec2"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 438 x 438; 438 x 438, transparency kept."
+  },
+  "town.celtic.dwelling.tier6.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 477,
+   "height": 477,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier6.upgraded.png",
+    "width": 477,
+    "height": 477,
+    "sha256": "2d1444514637807f593823b840c1dad011a26bb0083dcaaafed9b394d663a140"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 477 x 477; 477 x 477, transparency kept."
+  },
+  "town.celtic.dwelling.tier7.base": {
+   "file": "art/town/town.celtic.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier7.base.png",
+    "width": 455,
+    "height": 455,
+    "sha256": "a68e181327d45463cca70dd734bd9c184b28cb4860432089a588b28dbb4db949"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 455 x 455; 455 x 455, transparency kept."
+  },
+  "town.celtic.dwelling.tier7.upgraded": {
+   "file": "art/town/town.celtic.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.dwelling.tier7.upgraded.png",
+    "width": 519,
+    "height": 519,
+    "sha256": "993f5dd37cb82de9615f85217b7338a62a0994c4e2a0789f47f3dc3536a47836"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 519 x 519; 512 x 512, transparency kept."
+  },
+  "town.celtic.support.artifact_merchant.l1": {
+   "file": "art/town/town.celtic.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 503,
+   "height": 503,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.support.artifact_merchant.l1.png",
+    "width": 503,
+    "height": 503,
+    "sha256": "bbcf930279f0c3218c5fa7960b24450c55bbfd979dbad1c902ce5ee9f8da3fb0"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 503 x 503; 503 x 503, transparency kept."
+  },
+  "town.celtic.support.marketplace.l1": {
+   "file": "art/town/town.celtic.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 479,
+   "height": 479,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.support.marketplace.l1.png",
+    "width": 479,
+    "height": 479,
+    "sha256": "fa69d1f5a7a436a81f0f7a3771fd58cd03ec04f719595fddf9af0a35542b4c26"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 479 x 479; 479 x 479, transparency kept."
+  },
+  "town.celtic.support.resource_depot.l1": {
+   "file": "art/town/town.celtic.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 466,
+   "height": 466,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.support.resource_depot.l1.png",
+    "width": 466,
+    "height": 466,
+    "sha256": "72c9dc4caf835b106c7a66e7ce951efe5268185d7890b7b3071c48f6b0fae164"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 466 x 466; 466 x 466, transparency kept."
+  },
+  "town.celtic.support.tavern.l1": {
+   "file": "art/town/town.celtic.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 481,
+   "height": 481,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.support.tavern.l1.png",
+    "width": 481,
+    "height": 481,
+    "sha256": "f51aa98b54f58a12f164fe6b6a72688dbbf02eda23536c2e7be7742f3825d205"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 481 x 481; 481 x 481, transparency kept."
+  },
+  "town.celtic.support.training_academy.l1": {
+   "file": "art/town/town.celtic.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 496,
+   "height": 496,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.support.training_academy.l1.png",
+    "width": 496,
+    "height": 496,
+    "sha256": "2d3919400ce6c38b40609b624c3afd1c97ba6918b4555d48046b4129e60c154d"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 496 x 496; 496 x 496, transparency kept."
+  },
+  "town.celtic.support.watchtower.l1": {
+   "file": "art/town/town.celtic.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 448,
+   "height": 448,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.support.watchtower.l1.png",
+    "width": 448,
+    "height": 448,
+    "sha256": "f90259f460657c696743e2af707b49f70325985464952feae0fd4cfbd53b3942"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 448 x 448; 448 x 448, transparency kept."
+  },
+  "town.celtic.support.workshop.l1": {
+   "file": "art/town/town.celtic.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 479,
+   "height": 479,
+   "source": {
+    "file": "assets-source/art/final/town.celtic.support.workshop.l1.png",
+    "width": 479,
+    "height": 479,
+    "sha256": "709ba9465ab199889d067d739d9f70f9bd0b7e5a3c4cef6b7cf5298587e0381f"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 479 x 479; 479 x 479, transparency kept."
+  },
+  "town.egyptian.dwelling.tier1.base": {
+   "file": "art/town/town.egyptian.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 403,
+   "height": 403,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier1.base.png",
+    "width": 403,
+    "height": 403,
+    "sha256": "9465e22a666c4d8284610b781bcb02ec935e95efacd81bac6b8660deb61168ae"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 403 x 403; 403 x 403, transparency kept."
+  },
+  "town.egyptian.dwelling.tier1.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 470,
+   "height": 470,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier1.upgraded.png",
+    "width": 470,
+    "height": 470,
+    "sha256": "819a78fdf4d65a49bd31037cda9387834016de7e920470c708b46dc1224ac795"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 470 x 470; 470 x 470, transparency kept."
+  },
+  "town.egyptian.dwelling.tier2.base": {
+   "file": "art/town/town.egyptian.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 421,
+   "height": 421,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier2.base.png",
+    "width": 421,
+    "height": 421,
+    "sha256": "a639959ca2b79e72e3fb8716785c1297c9d2cad1669969c0b44b63075b2c90f6"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 421 x 421; 421 x 421, transparency kept."
+  },
+  "town.egyptian.dwelling.tier2.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 490,
+   "height": 490,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier2.upgraded.png",
+    "width": 490,
+    "height": 490,
+    "sha256": "c770bca87420b33d1d48dc82f0c1d6b5e60a3e0232fb6787654cd114f5151e58"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 490 x 490; 490 x 490, transparency kept."
+  },
+  "town.egyptian.dwelling.tier3.base": {
+   "file": "art/town/town.egyptian.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 437,
+   "height": 437,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier3.base.png",
+    "width": 437,
+    "height": 437,
+    "sha256": "cb930f4e9ef2a792342d5c19b839674cc2a8ff074a4fdc384643ca763bc81c7e"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 437 x 437; 437 x 437, transparency kept."
+  },
+  "town.egyptian.dwelling.tier3.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 510,
+   "height": 510,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier3.upgraded.png",
+    "width": 510,
+    "height": 510,
+    "sha256": "a10b6d29280940700d0101ed2c34e1fe3191d569790d797d13d8281aa59a9bc0"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 510 x 510; 510 x 510, transparency kept."
+  },
+  "town.egyptian.dwelling.tier4.base": {
+   "file": "art/town/town.egyptian.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 424,
+   "height": 424,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier4.base.png",
+    "width": 424,
+    "height": 424,
+    "sha256": "879c7f131ddade3906036f625938b753f64324da22da9b1a346108377f454965"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 424 x 424; 424 x 424, transparency kept."
+  },
+  "town.egyptian.dwelling.tier4.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 493,
+   "height": 493,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier4.upgraded.png",
+    "width": 493,
+    "height": 493,
+    "sha256": "a3af9b169a4851ed1673d0d7a177dfb75143f2adb652a0da75fec783ccae89dc"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 493 x 493; 493 x 493, transparency kept."
+  },
+  "town.egyptian.dwelling.tier5.base": {
+   "file": "art/town/town.egyptian.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 440,
+   "height": 440,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier5.base.png",
+    "width": 440,
+    "height": 440,
+    "sha256": "a0d5252e95bac78b1826af70b508f1dd68c76091dd8a7c1f9d41ea7e8e9fafc3"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 440 x 440; 440 x 440, transparency kept."
+  },
+  "town.egyptian.dwelling.tier5.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 498,
+   "height": 498,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier5.upgraded.png",
+    "width": 498,
+    "height": 498,
+    "sha256": "bd5b44ddef4ab287ad8e9e766aebe9303e8793a318cf399c3ba7182579fe47c5"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 498 x 498; 498 x 498, transparency kept."
+  },
+  "town.egyptian.dwelling.tier6.base": {
+   "file": "art/town/town.egyptian.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 402,
+   "height": 402,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier6.base.png",
+    "width": 402,
+    "height": 402,
+    "sha256": "c27733866f411a2f002f198cc7db13e2b9a9bbd989fac8fe2efdc79595f4c5e0"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 402 x 402; 402 x 402, transparency kept."
+  },
+  "town.egyptian.dwelling.tier6.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 486,
+   "height": 486,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier6.upgraded.png",
+    "width": 486,
+    "height": 486,
+    "sha256": "115e37ea0d947fa29a7febe5869c170b8947fcdd515186d71874892a3c6f26f1"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 486 x 486; 486 x 486, transparency kept."
+  },
+  "town.egyptian.dwelling.tier7.base": {
+   "file": "art/town/town.egyptian.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 448,
+   "height": 448,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier7.base.png",
+    "width": 448,
+    "height": 448,
+    "sha256": "af92bb021b74190f3c946ced5920611e6e6f07a9e5622c68e8d20ab58f892aa4"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 448 x 448; 448 x 448, transparency kept."
+  },
+  "town.egyptian.dwelling.tier7.upgraded": {
+   "file": "art/town/town.egyptian.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.dwelling.tier7.upgraded.png",
+    "width": 576,
+    "height": 576,
+    "sha256": "cb445ca312330a32e1ad52a6948ea1224b6b80fb05b43703397ef25b2f712a04"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 576 x 576; 512 x 512, transparency kept."
+  },
+  "town.egyptian.support.artifact_merchant.l1": {
+   "file": "art/town/town.egyptian.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 453,
+   "height": 453,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.support.artifact_merchant.l1.png",
+    "width": 453,
+    "height": 453,
+    "sha256": "14e3dc9c3256a852907caa5dbc1bd930842baded38fe0d6a231bb32a44b53956"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 453 x 453; 453 x 453, transparency kept."
+  },
+  "town.egyptian.support.marketplace.l1": {
+   "file": "art/town/town.egyptian.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 434,
+   "height": 434,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.support.marketplace.l1.png",
+    "width": 434,
+    "height": 434,
+    "sha256": "b3de8c21ca4f2e1bce1c143defe93bfb896f9b5331721bbec0f8c037d0f5d4e4"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 434 x 434; 434 x 434, transparency kept."
+  },
+  "town.egyptian.support.resource_depot.l1": {
+   "file": "art/town/town.egyptian.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 444,
+   "height": 444,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.support.resource_depot.l1.png",
+    "width": 444,
+    "height": 444,
+    "sha256": "4dae8bf6f0f9ebf1bdf864660381fc81203359d589cf8dd426f403cd6a5a36c3"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 444 x 444; 444 x 444, transparency kept."
+  },
+  "town.egyptian.support.tavern.l1": {
+   "file": "art/town/town.egyptian.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 447,
+   "height": 447,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.support.tavern.l1.png",
+    "width": 447,
+    "height": 447,
+    "sha256": "f752b61113d5f0809230df59ab3ef7a24f49128e064f7e73188d50dd5451f52d"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 447 x 447; 447 x 447, transparency kept."
+  },
+  "town.egyptian.support.training_academy.l1": {
+   "file": "art/town/town.egyptian.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.support.training_academy.l1.png",
+    "width": 457,
+    "height": 457,
+    "sha256": "bcc89558412893a26dd8cb436382486ea85ba2ba836faafd041c1afc812c2cb6"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 457 x 457; 457 x 457, transparency kept."
+  },
+  "town.egyptian.support.watchtower.l1": {
+   "file": "art/town/town.egyptian.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 448,
+   "height": 448,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.support.watchtower.l1.png",
+    "width": 448,
+    "height": 448,
+    "sha256": "1c61563596f45295b0fe16949bc529c44d3511d68147e683a84c2b1732420e23"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 448 x 448; 448 x 448, transparency kept."
+  },
+  "town.egyptian.support.workshop.l1": {
+   "file": "art/town/town.egyptian.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 443,
+   "height": 443,
+   "source": {
+    "file": "assets-source/art/final/town.egyptian.support.workshop.l1.png",
+    "width": 443,
+    "height": 443,
+    "sha256": "ce0bfd9a5b33a90cae70d0b0e79f6afc536f7893855961b69544e971f6e064d1"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 443 x 443; 443 x 443, transparency kept."
+  },
+  "town.greek.dwelling.tier1.base": {
+   "file": "art/town/town.greek.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 419,
+   "height": 419,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier1.base.png",
+    "width": 419,
+    "height": 419,
+    "sha256": "508572ad8089dffe2f946eea5fa7840bf8a35a68178324b9222c44776e700b73"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 419 x 419; 419 x 419, transparency kept."
+  },
+  "town.greek.dwelling.tier1.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 464,
+   "height": 464,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier1.upgraded.png",
+    "width": 464,
+    "height": 464,
+    "sha256": "711af160ad4f36bb5ccd829843f1a7a4d2b869954045e89290d2f4c5fefc51f0"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 464 x 464; 464 x 464, transparency kept."
+  },
+  "town.greek.dwelling.tier2.base": {
+   "file": "art/town/town.greek.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 422,
+   "height": 422,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier2.base.png",
+    "width": 422,
+    "height": 422,
+    "sha256": "7395af95a4553e591055156d0a15a820a8ab43d65d790763272f04674994b113"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 422 x 422; 422 x 422, transparency kept."
+  },
+  "town.greek.dwelling.tier2.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier2.upgraded.png",
+    "width": 460,
+    "height": 460,
+    "sha256": "ae3e8ebfc4ed1baa8eddcf5ac304aee13167feb91f45b7fafdcb19661c535305"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 460 x 460; 460 x 460, transparency kept."
+  },
+  "town.greek.dwelling.tier3.base": {
+   "file": "art/town/town.greek.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 421,
+   "height": 421,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier3.base.png",
+    "width": 421,
+    "height": 421,
+    "sha256": "6f51d9da6958f95a764428a64f4d57d931f882693f27a76a729f5c0a27a76835"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 421 x 421; 421 x 421, transparency kept."
+  },
+  "town.greek.dwelling.tier3.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier3.upgraded.png",
+    "width": 456,
+    "height": 456,
+    "sha256": "89d46e02da8a7f8fa8fd15ea2731358bfd9e65bad2f8180f0a4a40901599e325"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 456 x 456; 456 x 456, transparency kept."
+  },
+  "town.greek.dwelling.tier4.base": {
+   "file": "art/town/town.greek.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 446,
+   "height": 446,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier4.base.png",
+    "width": 446,
+    "height": 446,
+    "sha256": "87e595a871d567c3bc2cf0b289f4ce58270b57cd488ada2db730531f796211ce"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 446 x 446; 446 x 446, transparency kept."
+  },
+  "town.greek.dwelling.tier4.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 466,
+   "height": 466,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier4.upgraded.png",
+    "width": 466,
+    "height": 466,
+    "sha256": "c2bd36b647a9cdcde6e7a8c95ca7b29799560d0d14e1db59282abd3bff585ec4"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 466 x 466; 466 x 466, transparency kept."
+  },
+  "town.greek.dwelling.tier5.base": {
+   "file": "art/town/town.greek.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 419,
+   "height": 419,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier5.base.png",
+    "width": 419,
+    "height": 419,
+    "sha256": "e2b350eba5092d06ba38192c68129c89f9b959d8873421442f8f86e741170c95"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 419 x 419; 419 x 419, transparency kept."
+  },
+  "town.greek.dwelling.tier5.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier5.upgraded.png",
+    "width": 460,
+    "height": 460,
+    "sha256": "a63ce02e5ed97fdea65c18c506ecd59e75d6bc7ddcdccdb19c523f6441bfa44c"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 460 x 460; 460 x 460, transparency kept."
+  },
+  "town.greek.dwelling.tier6.base": {
+   "file": "art/town/town.greek.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 423,
+   "height": 423,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier6.base.png",
+    "width": 423,
+    "height": 423,
+    "sha256": "7dc8d70c4adb4addb82ef95e58b229ae3c189290bc82115a9c2e2eb33290f258"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 423 x 423; 423 x 423, transparency kept."
+  },
+  "town.greek.dwelling.tier6.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 476,
+   "height": 476,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier6.upgraded.png",
+    "width": 476,
+    "height": 476,
+    "sha256": "ff9b70884c138eb09cbffd35938e9320a6ad258637659d211d704fd4bfd31df3"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 476 x 476; 476 x 476, transparency kept."
+  },
+  "town.greek.dwelling.tier7.base": {
+   "file": "art/town/town.greek.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier7.base.png",
+    "width": 460,
+    "height": 460,
+    "sha256": "8a002d1bb7b5b34a3bb85c3ac40dbb7e14ad08b1f6cb78c91d1db1a8f4ba2b48"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 460 x 460; 460 x 460, transparency kept."
+  },
+  "town.greek.dwelling.tier7.upgraded": {
+   "file": "art/town/town.greek.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512,
+   "source": {
+    "file": "assets-source/art/final/town.greek.dwelling.tier7.upgraded.png",
+    "width": 512,
+    "height": 512,
+    "sha256": "e6da4cc0a42693cd2b4abc6f8a71a06e1020a66ee6fc82e0226b81a6b86896d4"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 512 x 512; 512 x 512, transparency kept."
+  },
+  "town.greek.support.artifact_merchant.l1": {
+   "file": "art/town/town.greek.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512,
+   "source": {
+    "file": "assets-source/art/final/town.greek.support.artifact_merchant.l1.png",
+    "width": 528,
+    "height": 528,
+    "sha256": "581f842fc151fd7cc7463851763c78940118ee19133b550998d241da2446cd71"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 528 x 528; 512 x 512, transparency kept."
+  },
+  "town.greek.support.marketplace.l1": {
+   "file": "art/town/town.greek.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 478,
+   "height": 478,
+   "source": {
+    "file": "assets-source/art/final/town.greek.support.marketplace.l1.png",
+    "width": 478,
+    "height": 478,
+    "sha256": "9f7c7fd0083289d8f7b0fa08e95492ab3b210a600a78b2e24aac880f4ccaa584"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 478 x 478; 478 x 478, transparency kept."
+  },
+  "town.greek.support.resource_depot.l1": {
+   "file": "art/town/town.greek.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 479,
+   "height": 479,
+   "source": {
+    "file": "assets-source/art/final/town.greek.support.resource_depot.l1.png",
+    "width": 479,
+    "height": 479,
+    "sha256": "ee025945f2a1267445ec8b9ae2e7fb036ba834c515fb7f456caa93b94612af63"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 479 x 479; 479 x 479, transparency kept."
+  },
+  "town.greek.support.tavern.l1": {
+   "file": "art/town/town.greek.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 453,
+   "height": 453,
+   "source": {
+    "file": "assets-source/art/final/town.greek.support.tavern.l1.png",
+    "width": 453,
+    "height": 453,
+    "sha256": "f909836c9fe734babb8e5f05be50dd27ab16619d7bed3acc7102d0af5c92d9eb"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 453 x 453; 453 x 453, transparency kept."
+  },
+  "town.greek.support.training_academy.l1": {
+   "file": "art/town/town.greek.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 492,
+   "height": 492,
+   "source": {
+    "file": "assets-source/art/final/town.greek.support.training_academy.l1.png",
+    "width": 492,
+    "height": 492,
+    "sha256": "678db10afe6fd0bedffb6594a74731beebd3cd3c8aac566174f0dee8b7febefd"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 492 x 492; 492 x 492, transparency kept."
+  },
+  "town.greek.support.watchtower.l1": {
+   "file": "art/town/town.greek.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 444,
+   "height": 444,
+   "source": {
+    "file": "assets-source/art/final/town.greek.support.watchtower.l1.png",
+    "width": 444,
+    "height": 444,
+    "sha256": "f1fe5ad44c5c5e0bec044e3efb818a1866a1e73c7fa4510f11cbbd7d6a921048"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 444 x 444; 444 x 444, transparency kept."
+  },
+  "town.greek.support.workshop.l1": {
+   "file": "art/town/town.greek.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 436,
+   "height": 436,
+   "source": {
+    "file": "assets-source/art/final/town.greek.support.workshop.l1.png",
+    "width": 436,
+    "height": 436,
+    "sha256": "ae86f956f1be7a0df719c9d13d19d860939140a03e4096886341818fe74ade9d"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 436 x 436; 436 x 436, transparency kept."
+  },
+  "town.japanese.dwelling.tier1.base": {
+   "file": "art/town/town.japanese.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 398,
+   "height": 398,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier1.base.png",
+    "width": 398,
+    "height": 398,
+    "sha256": "8fb31b58fac29a98fdc5900824d68b8ffada152f88d54a1c44f5c3d2dbeb53cb"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 398 x 398; 398 x 398, transparency kept."
+  },
+  "town.japanese.dwelling.tier1.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 475,
+   "height": 475,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier1.upgraded.png",
+    "width": 475,
+    "height": 475,
+    "sha256": "8e0188b6da3bd63fd3689479e1c767a15665f5afd337b97f7f9b9540bc94349e"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 475 x 475; 475 x 475, transparency kept."
+  },
+  "town.japanese.dwelling.tier2.base": {
+   "file": "art/town/town.japanese.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 402,
+   "height": 402,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier2.base.png",
+    "width": 402,
+    "height": 402,
+    "sha256": "3fa1b31946655aec934e4174526c252ff524e69fba467eb0cd1362acb46a2926"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 402 x 402; 402 x 402, transparency kept."
+  },
+  "town.japanese.dwelling.tier2.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 492,
+   "height": 492,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier2.upgraded.png",
+    "width": 492,
+    "height": 492,
+    "sha256": "7255a828574a29d2e2b3a889f94016da1a1a98ef9e8c3591c5d533e0419833f4"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 492 x 492; 492 x 492, transparency kept."
+  },
+  "town.japanese.dwelling.tier3.base": {
+   "file": "art/town/town.japanese.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 411,
+   "height": 411,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier3.base.png",
+    "width": 411,
+    "height": 411,
+    "sha256": "152032bcf15ce34004c0b7ffcc16f8b35e34c0e1b2e746c973358d1156c6e360"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 411 x 411; 411 x 411, transparency kept."
+  },
+  "town.japanese.dwelling.tier3.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 468,
+   "height": 468,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier3.upgraded.png",
+    "width": 468,
+    "height": 468,
+    "sha256": "b6625416c6ffee534a3973281be39c8f67c641431e990e8d4bad8492dbd3c225"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 468 x 468; 468 x 468, transparency kept."
+  },
+  "town.japanese.dwelling.tier4.base": {
+   "file": "art/town/town.japanese.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 429,
+   "height": 429,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier4.base.png",
+    "width": 429,
+    "height": 429,
+    "sha256": "db1a189ca537d3c4f492890222e859f13cbd426cea8d2a2a5c02ebfefed62048"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 429 x 429; 429 x 429, transparency kept."
+  },
+  "town.japanese.dwelling.tier4.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 486,
+   "height": 486,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier4.upgraded.png",
+    "width": 486,
+    "height": 486,
+    "sha256": "735b13152e6981a357f27b43f27db6ccfae8faafd260ee75b577842db9e7c2fd"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 486 x 486; 486 x 486, transparency kept."
+  },
+  "town.japanese.dwelling.tier5.base": {
+   "file": "art/town/town.japanese.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 434,
+   "height": 434,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier5.base.png",
+    "width": 434,
+    "height": 434,
+    "sha256": "d0bf07ad579eaaa60fd9e2d8a3329392b66b598df5e012280779d82e61134853"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 434 x 434; 434 x 434, transparency kept."
+  },
+  "town.japanese.dwelling.tier5.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 476,
+   "height": 476,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier5.upgraded.png",
+    "width": 476,
+    "height": 476,
+    "sha256": "8e0e9b64635c6a2edb90db4b96ed65f212c148ac62ab41e9a924106923cacd9c"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 476 x 476; 476 x 476, transparency kept."
+  },
+  "town.japanese.dwelling.tier6.base": {
+   "file": "art/town/town.japanese.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier6.base.png",
+    "width": 456,
+    "height": 456,
+    "sha256": "5ba46bcb42feab22a493f3c312ae4b1781b8901a606731a70032322e51a54290"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 456 x 456; 456 x 456, transparency kept."
+  },
+  "town.japanese.dwelling.tier6.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 452,
+   "height": 452,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier6.upgraded.png",
+    "width": 452,
+    "height": 452,
+    "sha256": "7c214804732edd8607eab60e36a5932cf69092d8d06faa9ffb73e01ef6387d32"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 452 x 452; 452 x 452, transparency kept."
+  },
+  "town.japanese.dwelling.tier7.base": {
+   "file": "art/town/town.japanese.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier7.base.png",
+    "width": 455,
+    "height": 455,
+    "sha256": "bd78c25c3bada662a8ebc7d8e670671db7df908feb38b0f6edf1010c5edf2a13"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 455 x 455; 455 x 455, transparency kept."
+  },
+  "town.japanese.dwelling.tier7.upgraded": {
+   "file": "art/town/town.japanese.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 512,
+   "height": 512,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.dwelling.tier7.upgraded.png",
+    "width": 526,
+    "height": 526,
+    "sha256": "19f27e045f2efc0f64d8b326f9ac5b14a7fbb67db4d6e8cf1050a00934f2eeff"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 526 x 526; 512 x 512, transparency kept."
+  },
+  "town.japanese.support.artifact_merchant.l1": {
+   "file": "art/town/town.japanese.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 468,
+   "height": 468,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.support.artifact_merchant.l1.png",
+    "width": 468,
+    "height": 468,
+    "sha256": "8b8cf216dbd4c2c22997d650bb87f631f450d3b2bbc911961bb6acec4fac1212"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 468 x 468; 468 x 468, transparency kept."
+  },
+  "town.japanese.support.marketplace.l1": {
+   "file": "art/town/town.japanese.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 466,
+   "height": 466,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.support.marketplace.l1.png",
+    "width": 466,
+    "height": 466,
+    "sha256": "21a96fe8c9240cba342eef32d4d9145728c7a847f604221383c53faa86d2f079"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 466 x 466; 466 x 466, transparency kept."
+  },
+  "town.japanese.support.resource_depot.l1": {
+   "file": "art/town/town.japanese.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 467,
+   "height": 467,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.support.resource_depot.l1.png",
+    "width": 467,
+    "height": 467,
+    "sha256": "99dde4b10c6525ae704df5182780ebdc225c8316d5dd7942e0ad634a541cb884"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 467 x 467; 467 x 467, transparency kept."
+  },
+  "town.japanese.support.tavern.l1": {
+   "file": "art/town/town.japanese.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 460,
+   "height": 460,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.support.tavern.l1.png",
+    "width": 460,
+    "height": 460,
+    "sha256": "0a7d84fb64f0ef34d448c0c5b10fab472e6cfe710b1c18f960d577a0ee7dd1dc"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 460 x 460; 460 x 460, transparency kept."
+  },
+  "town.japanese.support.training_academy.l1": {
+   "file": "art/town/town.japanese.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 478,
+   "height": 478,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.support.training_academy.l1.png",
+    "width": 478,
+    "height": 478,
+    "sha256": "424b1c8fbd4a3a7d7fd653e2f449ba4c049645ec2a810cbdeca2dfd9a8c4c47c"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 478 x 478; 478 x 478, transparency kept."
+  },
+  "town.japanese.support.watchtower.l1": {
+   "file": "art/town/town.japanese.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.support.watchtower.l1.png",
+    "width": 457,
+    "height": 457,
+    "sha256": "392c71f8235b1c93d35dafef08602f6fb9272e421bbcd47c9784f1586f0d3961"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 457 x 457; 457 x 457, transparency kept."
+  },
+  "town.japanese.support.workshop.l1": {
+   "file": "art/town/town.japanese.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 459,
+   "height": 459,
+   "source": {
+    "file": "assets-source/art/final/town.japanese.support.workshop.l1.png",
+    "width": 459,
+    "height": 459,
+    "sha256": "13baba4c375cd36f0a88cfc383755f11192d6f210d5e494c580ea9e8a4ba6776"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 459 x 459; 459 x 459, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier1.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 381,
+   "height": 381,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier1.base.png",
+    "width": 381,
+    "height": 381,
+    "sha256": "b0012eb57779d4dcfd672a3751da6229a74cecb50a20022c2d9c1977cda17eff"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 381 x 381; 381 x 381, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier1.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 430,
+   "height": 430,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier1.upgraded.png",
+    "width": 430,
+    "height": 430,
+    "sha256": "51fbc09ff1fd5c0376846ad1adc6b1a3233d72fc7cf6b5538c181307b1be3440"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 430 x 430; 430 x 430, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier2.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 387,
+   "height": 387,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier2.base.png",
+    "width": 387,
+    "height": 387,
+    "sha256": "600c48170c4ab018439a3e16533c737a17f30b937211b4314e1abc6a98c4c907"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 387 x 387; 387 x 387, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier2.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 459,
+   "height": 459,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier2.upgraded.png",
+    "width": 459,
+    "height": 459,
+    "sha256": "e295b2712ff61f2693eb9c08c8fcef4d3ad250df9ca9cac167d256debcb566b7"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 459 x 459; 459 x 459, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier3.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 398,
+   "height": 398,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier3.base.png",
+    "width": 398,
+    "height": 398,
+    "sha256": "9a59ee0f6c8a2d7230857910de6a0a8d74119bc420029ce6121de0bb422ded57"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 398 x 398; 398 x 398, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier3.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 474,
+   "height": 474,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier3.upgraded.png",
+    "width": 474,
+    "height": 474,
+    "sha256": "154a45767e2feb6212793ef63724258e6acdd265082d798333b10459f5177f18"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 474 x 474; 474 x 474, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier4.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 402,
+   "height": 402,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier4.base.png",
+    "width": 402,
+    "height": 402,
+    "sha256": "e084d2df9c3c02fafca7a9a139bae8bcb55ece62f1fb8760563a16a3ad9e940d"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 402 x 402; 402 x 402, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier4.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 470,
+   "height": 470,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier4.upgraded.png",
+    "width": 470,
+    "height": 470,
+    "sha256": "e50c434b0920656f606301c9c50c463bcdfbd1182560af36702c78abf026080c"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 470 x 470; 470 x 470, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier5.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier5.base.png",
+    "width": 456,
+    "height": 456,
+    "sha256": "78a633e377801ddf7bf3dcc79b8e4a2316707a2f6995364ae4d3296e2f7f001c"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 456 x 456; 456 x 456, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier5.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 487,
+   "height": 487,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier5.upgraded.png",
+    "width": 487,
+    "height": 487,
+    "sha256": "eeb7f39c5641a1df23abd41a102cc5fc0f0bf35e4604776567b95866cc4a86cb"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 487 x 487; 487 x 487, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier6.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 435,
+   "height": 435,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier6.base.png",
+    "width": 435,
+    "height": 435,
+    "sha256": "e53729671086c50af401cdbd8755ce58da45bf6e566591881555a6e184d59350"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 435 x 435; 435 x 435, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier6.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 475,
+   "height": 475,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier6.upgraded.png",
+    "width": 475,
+    "height": 475,
+    "sha256": "966eb263865900967f2914896933083e0e92fcdc26cb63d992de708c0ea1e979"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 475 x 475; 475 x 475, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier7.base": {
+   "file": "art/town/town.mesoamerican.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 442,
+   "height": 442,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier7.base.png",
+    "width": 442,
+    "height": 442,
+    "sha256": "54fb5ac930a059a865d68887f9caf0d374f49712cdb4af1ac4b2210494a44650"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 442 x 442; 442 x 442, transparency kept."
+  },
+  "town.mesoamerican.dwelling.tier7.upgraded": {
+   "file": "art/town/town.mesoamerican.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 495,
+   "height": 495,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.dwelling.tier7.upgraded.png",
+    "width": 495,
+    "height": 495,
+    "sha256": "a7e4658fb13a215bd35c2e32d90e9b8f32b7eadc00dbe908a88a3147c78ab1b2"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 495 x 495; 495 x 495, transparency kept."
+  },
+  "town.mesoamerican.support.artifact_merchant.l1": {
+   "file": "art/town/town.mesoamerican.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 474,
+   "height": 474,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.support.artifact_merchant.l1.png",
+    "width": 474,
+    "height": 474,
+    "sha256": "8e66a8025d4ca07ce7485f633c1b510621edfd50c4b29f31ed1f12bc441258d0"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 474 x 474; 474 x 474, transparency kept."
+  },
+  "town.mesoamerican.support.marketplace.l1": {
+   "file": "art/town/town.mesoamerican.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 473,
+   "height": 473,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.support.marketplace.l1.png",
+    "width": 473,
+    "height": 473,
+    "sha256": "019f6cf2d427a9d0dd40055f53e70c51c652b1d20fb7952dbda701bcde3af299"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 473 x 473; 473 x 473, transparency kept."
+  },
+  "town.mesoamerican.support.resource_depot.l1": {
+   "file": "art/town/town.mesoamerican.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 456,
+   "height": 456,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.support.resource_depot.l1.png",
+    "width": 456,
+    "height": 456,
+    "sha256": "1c21d65a5fb68b3f3c6890a10bf5c0a7a21a26826526a45c99ac0b02645df54f"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 456 x 456; 456 x 456, transparency kept."
+  },
+  "town.mesoamerican.support.tavern.l1": {
+   "file": "art/town/town.mesoamerican.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 452,
+   "height": 452,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.support.tavern.l1.png",
+    "width": 452,
+    "height": 452,
+    "sha256": "de3a425e99ad6a28d18267f8fb0f7e63945f48b5cba0d42e2c3c82418160aabc"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 452 x 452; 452 x 452, transparency kept."
+  },
+  "town.mesoamerican.support.training_academy.l1": {
+   "file": "art/town/town.mesoamerican.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.support.training_academy.l1.png",
+    "width": 457,
+    "height": 457,
+    "sha256": "e5be82397e3acae2d9b2ab7911985a3a2eb310d9155ac6fe33b9d4a17c0ef6a1"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 457 x 457; 457 x 457, transparency kept."
+  },
+  "town.mesoamerican.support.watchtower.l1": {
+   "file": "art/town/town.mesoamerican.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.support.watchtower.l1.png",
+    "width": 463,
+    "height": 463,
+    "sha256": "ce2923a54556fee194901db2df4d4817d0e67664c5462d22a5b8362af2b8caa3"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 463 x 463; 463 x 463, transparency kept."
+  },
+  "town.mesoamerican.support.workshop.l1": {
+   "file": "art/town/town.mesoamerican.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455,
+   "source": {
+    "file": "assets-source/art/final/town.mesoamerican.support.workshop.l1.png",
+    "width": 455,
+    "height": 455,
+    "sha256": "ff3a99b7fbb7fde0b6dcd8295d1761e4cb89bda2a6caa7ca21b480028a682e6e"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 455 x 455; 455 x 455, transparency kept."
+  },
+  "town.norse.dwelling.tier1.base": {
+   "file": "art/town/town.norse.dwelling.tier1.base.webp",
+   "kind": "building",
+   "width": 407,
+   "height": 407,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier1.base.png",
+    "width": 407,
+    "height": 407,
+    "sha256": "283da9841dec4259cc43d118c71962ea2f0d433b40d9818b8d7b0ffebbcc31f8"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 407 x 407; 407 x 407, transparency kept."
+  },
+  "town.norse.dwelling.tier1.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier1.upgraded.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier1.upgraded.png",
+    "width": 463,
+    "height": 463,
+    "sha256": "9d172ed728514a63b275d1bde931ff56d9e9b4b0affb9c7ddf5b4477a73cb2fb"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 463 x 463; 463 x 463, transparency kept."
+  },
+  "town.norse.dwelling.tier2.base": {
+   "file": "art/town/town.norse.dwelling.tier2.base.webp",
+   "kind": "building",
+   "width": 437,
+   "height": 437,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier2.base.png",
+    "width": 437,
+    "height": 437,
+    "sha256": "de1daf02b23cebcb526b20061361545835f018f502418d4396eb94c2357a4719"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 437 x 437; 437 x 437, transparency kept."
+  },
+  "town.norse.dwelling.tier2.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier2.upgraded.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier2.upgraded.png",
+    "width": 457,
+    "height": 457,
+    "sha256": "e256793acdcc26fd26cfd7dd8aff09b08a4cf9111cdf90a0d8776b129697f197"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 457 x 457; 457 x 457, transparency kept."
+  },
+  "town.norse.dwelling.tier3.base": {
+   "file": "art/town/town.norse.dwelling.tier3.base.webp",
+   "kind": "building",
+   "width": 441,
+   "height": 441,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier3.base.png",
+    "width": 441,
+    "height": 441,
+    "sha256": "ed73d9f6f7e6446e9b521e9d3257d3baf9f67079ff560444365ed64d842a70df"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 441 x 441; 441 x 441, transparency kept."
+  },
+  "town.norse.dwelling.tier3.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier3.upgraded.webp",
+   "kind": "building",
+   "width": 484,
+   "height": 484,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier3.upgraded.png",
+    "width": 484,
+    "height": 484,
+    "sha256": "d1d321cd33e48183271697f600ab87224e782b9e9d51c409929c2ff780c871c8"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 484 x 484; 484 x 484, transparency kept."
+  },
+  "town.norse.dwelling.tier4.base": {
+   "file": "art/town/town.norse.dwelling.tier4.base.webp",
+   "kind": "building",
+   "width": 457,
+   "height": 457,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier4.base.png",
+    "width": 457,
+    "height": 457,
+    "sha256": "fe6df0ac0aa0b2276172e91b9c1696571529861b5365572bfafdc5a660cd296b"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 457 x 457; 457 x 457, transparency kept."
+  },
+  "town.norse.dwelling.tier4.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier4.upgraded.webp",
+   "kind": "building",
+   "width": 476,
+   "height": 476,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier4.upgraded.png",
+    "width": 476,
+    "height": 476,
+    "sha256": "d5e22630b32aafec27257835bbf930ed427d890884374dd1fe9f149d3affe8dd"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 476 x 476; 476 x 476, transparency kept."
+  },
+  "town.norse.dwelling.tier5.base": {
+   "file": "art/town/town.norse.dwelling.tier5.base.webp",
+   "kind": "building",
+   "width": 441,
+   "height": 441,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier5.base.png",
+    "width": 441,
+    "height": 441,
+    "sha256": "69cd91d60ba2bb5bbbc648f973dfe2cb4d2661f2d54b25dcf342e45498228047"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 441 x 441; 441 x 441, transparency kept."
+  },
+  "town.norse.dwelling.tier5.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier5.upgraded.webp",
+   "kind": "building",
+   "width": 455,
+   "height": 455,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier5.upgraded.png",
+    "width": 455,
+    "height": 455,
+    "sha256": "0d5ae2a666d347b3a01999f48330cdeaef1ccdd1208c304683ea025f0696e146"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 455 x 455; 455 x 455, transparency kept."
+  },
+  "town.norse.dwelling.tier6.base": {
+   "file": "art/town/town.norse.dwelling.tier6.base.webp",
+   "kind": "building",
+   "width": 425,
+   "height": 425,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier6.base.png",
+    "width": 425,
+    "height": 425,
+    "sha256": "367f828ab2f31e34af7aa7537db0b4c8d211057812bf4c04c8b5cb161a0ff9fb"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 425 x 425; 425 x 425, transparency kept."
+  },
+  "town.norse.dwelling.tier6.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier6.upgraded.webp",
+   "kind": "building",
+   "width": 459,
+   "height": 459,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier6.upgraded.png",
+    "width": 459,
+    "height": 459,
+    "sha256": "4494375d1d4fd045195793607a8f899256a01071064d799041b1cc3c783183fa"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 459 x 459; 459 x 459, transparency kept."
+  },
+  "town.norse.dwelling.tier7.base": {
+   "file": "art/town/town.norse.dwelling.tier7.base.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier7.base.png",
+    "width": 463,
+    "height": 463,
+    "sha256": "2becfd5d1c1762eb0a3b7db90dea0ce2a2eb330825f372ec8094c428adf0a24c"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 463 x 463; 463 x 463, transparency kept."
+  },
+  "town.norse.dwelling.tier7.upgraded": {
+   "file": "art/town/town.norse.dwelling.tier7.upgraded.webp",
+   "kind": "building",
+   "width": 488,
+   "height": 488,
+   "source": {
+    "file": "assets-source/art/final/town.norse.dwelling.tier7.upgraded.png",
+    "width": 488,
+    "height": 488,
+    "sha256": "b71aaa7074ab292a15e65e1acc15733be44b830dcfdd5c4ee5db89b5de67ea80"
+   },
+   "provenance": "Owner-delivered town art (GPT6_BRIEF_12), imported 2026-10-05; source 488 x 488; 488 x 488, transparency kept."
+  },
+  "town.norse.support.artifact_merchant.l1": {
+   "file": "art/town/town.norse.support.artifact_merchant.l1.webp",
+   "kind": "building",
+   "width": 445,
+   "height": 445,
+   "source": {
+    "file": "assets-source/art/final/town.norse.support.artifact_merchant.l1.png",
+    "width": 445,
+    "height": 445,
+    "sha256": "b66dd0dd98d02ae2e766fb9c8b0e0b9bcb928835d1482a19964f3ba52a438f78"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 445 x 445; 445 x 445, transparency kept."
+  },
+  "town.norse.support.marketplace.l1": {
+   "file": "art/town/town.norse.support.marketplace.l1.webp",
+   "kind": "building",
+   "width": 440,
+   "height": 440,
+   "source": {
+    "file": "assets-source/art/final/town.norse.support.marketplace.l1.png",
+    "width": 440,
+    "height": 440,
+    "sha256": "604136e850cdd157078ba57c77995175fef5ecd7548c6908032bff889ae4ad96"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 440 x 440; 440 x 440, transparency kept."
+  },
+  "town.norse.support.resource_depot.l1": {
+   "file": "art/town/town.norse.support.resource_depot.l1.webp",
+   "kind": "building",
+   "width": 451,
+   "height": 451,
+   "source": {
+    "file": "assets-source/art/final/town.norse.support.resource_depot.l1.png",
+    "width": 451,
+    "height": 451,
+    "sha256": "f722f8ea7652bd29bf988f030472943bab0a8a56e9ad68471d03448604be78dd"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 451 x 451; 451 x 451, transparency kept."
+  },
+  "town.norse.support.tavern.l1": {
+   "file": "art/town/town.norse.support.tavern.l1.webp",
+   "kind": "building",
+   "width": 473,
+   "height": 473,
+   "source": {
+    "file": "assets-source/art/final/town.norse.support.tavern.l1.png",
+    "width": 473,
+    "height": 473,
+    "sha256": "79a945667bf43384e712f0aac4f49013a7773d916f46359e354476cbd8da4647"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 473 x 473; 473 x 473, transparency kept."
+  },
+  "town.norse.support.training_academy.l1": {
+   "file": "art/town/town.norse.support.training_academy.l1.webp",
+   "kind": "building",
+   "width": 463,
+   "height": 463,
+   "source": {
+    "file": "assets-source/art/final/town.norse.support.training_academy.l1.png",
+    "width": 463,
+    "height": 463,
+    "sha256": "32e160ac40d0756f979a2deb17436bd4c3da81a3838c1ec3af31e2d8694ac3d8"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 463 x 463; 463 x 463, transparency kept."
+  },
+  "town.norse.support.watchtower.l1": {
+   "file": "art/town/town.norse.support.watchtower.l1.webp",
+   "kind": "building",
+   "width": 425,
+   "height": 425,
+   "source": {
+    "file": "assets-source/art/final/town.norse.support.watchtower.l1.png",
+    "width": 425,
+    "height": 425,
+    "sha256": "2d004724b7dddb34e793156a70c7b3d24ee55c82d4774fb5106b5ed99c0210f3"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 425 x 425; 425 x 425, transparency kept."
+  },
+  "town.norse.support.workshop.l1": {
+   "file": "art/town/town.norse.support.workshop.l1.webp",
+   "kind": "building",
+   "width": 453,
+   "height": 453,
+   "source": {
+    "file": "assets-source/art/final/town.norse.support.workshop.l1.png",
+    "width": 453,
+    "height": 453,
+    "sha256": "f3e4c37a865da468378909d3e555a7136aaecaea2006d6679db828729cc5e16a"
+   },
+   "provenance": "Owner-delivered town building level art (GPT6_BRIEF_10), imported 2026-10-05; source 453 x 453; 453 x 453, transparency kept."
   }
- }
+ },
+ "scope": "Imported 126 Brief 12 town assets. Prior import records preserved; retained runtime-only entries are not represented as new imports."
 }

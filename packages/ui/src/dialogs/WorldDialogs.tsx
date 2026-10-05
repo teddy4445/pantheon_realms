@@ -340,10 +340,14 @@ function InterventionCard({ def, onInvoke, quote }: { def: InterventionDefinitio
   return (
     <div className={`intervention panel ${quote.legal ? '' : 'is-disabled'}`} data-testid={`intervention-${def.id}`}>
       <div className="row gap">
-        <Icon name="favor" className="inline-icon" />
         <strong>{def.name}</strong>
         <span className="grow" />
-        <Chip tone="info">{def.favorCost} Favor</Chip>
+        <Chip tone="info">
+          <span className="favor-cost" title={`${def.favorCost} Favor`} aria-label={`${def.favorCost} Favor`}>
+            {def.favorCost}
+            <Icon name="favor" className="inline-icon" />
+          </span>
+        </Chip>
         <Chip>{def.context === 'battle' ? 'In battle' : 'On the map'}</Chip>
       </div>
       <div className="small">{def.summary}</div>
@@ -373,9 +377,7 @@ export function InterventionList({ adventure }: { adventure: boolean }) {
   if (list.length === 0) return <p className="dim">Divine interventions are not part of this scenario.</p>;
   return (
     <div className="intervention-list">
-      <p className="small dim">
-        Spend Favor on a miracle — at most one per week, on the map or in battle. {used ? <strong className="warn">Already invoked this week.</strong> : null} You have {state.players[playerId]?.wallet.favor ?? 0} Favor.
-      </p>
+      {used ? <p className="small warn">Already invoked this week.</p> : null}
       {list.some((d) => d.context === 'adventure' && d.target === 'own_town') && towns.length > 1 ? (
         <label className="row gap small">
           Town for town miracles:
