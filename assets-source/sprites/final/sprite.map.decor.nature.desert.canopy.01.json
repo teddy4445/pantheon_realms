@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 430.645,
+  "sourceSheet": "sheet.nature.desert.flora_rocks.png",
+  "sourceRect": [
+    0,
+    0,
+    389,
+    401
+  ],
+  "role": "canopy"
+}

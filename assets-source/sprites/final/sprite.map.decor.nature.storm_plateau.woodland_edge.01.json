@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 543.75,
+  "sourceSheet": "sheet.nature.storm_plateau.ground_edges.png",
+  "sourceRect": [
+    0,
+    375,
+    375,
+    753
+  ],
+  "role": "woodland_edge"
+}

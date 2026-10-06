@@ -9,6 +9,7 @@
 import {
   NEUTRAL_PLAYER_ID,
   processCommand,
+  withSharedPaths,
   type CommandPayload,
   type ContentCatalog,
   type GameCommand,
@@ -88,7 +89,9 @@ export function stepStrategicAI(catalog: ContentCatalog, state: MatchState, trie
   const ctx = { catalog };
   const playerId = state.activePlayerId;
   const obs = buildObservation(catalog, state, playerId);
-  const candidates = strategicCandidates(catalog, obs);
+  // One route search per hero for all the destinations it weighs (identical routes; the
+  // observation is not changed while the candidates are built).
+  const candidates = withSharedPaths(() => strategicCandidates(catalog, obs));
   for (const payload of candidates) {
     const key = JSON.stringify(payload);
     if (payload.kind !== 'EndTurn' && tried.has(key)) continue;

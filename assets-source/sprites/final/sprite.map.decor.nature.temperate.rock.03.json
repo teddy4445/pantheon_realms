@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 604.444,
+  "sourceSheet": "sheet.nature.temperate.flora_rocks.png",
+  "sourceRect": [
+    724,
+    843,
+    1086,
+    1131
+  ],
+  "role": "rock"
+}

@@ -42,7 +42,7 @@ import {
   interventionUsedThisWeek,
   quoteIntervention,
 } from '@pr/rules';
-import type { BattleMiracleFx, BattleSceneController, BattleSpellFx, BattleView } from '@pr/presentation';
+import type { BattleMiracleFx, BattleSceneController, BattleSpellFx, BattleStackMark, BattleView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { battleCursor } from '../app/cursorContext';
 import { battleLogLines } from '../app/battleLog';
@@ -56,6 +56,8 @@ import { CreaturePortrait, HeroPortrait } from '../components/art';
 import { ClimateChip } from '../components/climate';
 import { Icon } from '../assets/icons';
 import { MiracleBook, type MiracleOption } from '../components/miraclebook';
+import { stackMarks } from '../app/stackMarks';
+import { resolveAsset } from '../assets/manifest';
 
 type Mode =
   | { kind: 'normal' }
@@ -68,6 +70,19 @@ type Mode =
   | { kind: 'intervention'; interventionId: string };
 
 const NEUTRAL_ACCENT = '#8a3b32';
+
+/** A stack's marks as small icons with their meaning (the same icons as over its count on the board). */
+function MarkRow({ marks, testId }: { marks: readonly BattleStackMark[]; testId?: string }) {
+  if (marks.length === 0) return null;
+  return (
+    <span className="stack-marks" aria-label="Effects" data-testid={testId}>
+      {marks.map((m) => {
+        const url = resolveAsset(m.icon).url;
+        return url ? <img key={m.icon} src={url} alt={m.label} title={m.label} className="stack-marks__icon" draggable={false} /> : null;
+      })}
+    </span>
+  );
+}
 
 function breakdownTitle(label: string, b: { base: number; commander: number; statuses: number; aspect: number; effects: number; fury?: number; total: number }): string {
   const parts = [`base ${b.base}`];
@@ -167,6 +182,7 @@ function buildView(
       label,
       labelColor: s.side === 'attacker' ? '#dbe8ff' : '#ffd9d2',
       statuses: statusOverlays(s.statuses),
+      marks: stackMarks(catalog, s, battle.round),
     };
   });
   let moves: BattleCell[] = [];
@@ -456,6 +472,7 @@ export function BattleScreen() {
         onCellHover: (c, o) => setHover(c ? { cell: c, offset: o } : null),
         onCue: (cue) => store.audio?.battleCue(cue),
         spellFx: (spellId) => spellFxOf(catalog, spellId),
+        iconUrl: (assetId) => resolveAsset(assetId).url,
         miracleFx: (interventionId, playerId) => miracleFxOf(catalog, store.session?.state.battle ? store.session.state : (lastLive.current ?? undefined), interventionId, playerId),
       }),
     [],
@@ -463,7 +480,7 @@ export function BattleScreen() {
   const onController = useCallback((c: BattleSceneController | null) => {
     ctrl.current = c;
     projectors.battle = c ? (col, row) => toPage(c.projectCell({ col, row })) : undefined;
-    inspectors.battle = c ? { stacks: () => c.stackDebug(), fx: () => c.fxDebug() } : undefined;
+    inspectors.battle = c ? { stacks: () => c.stackDebug(), fx: () => c.fxDebug(), obstacles: () => c.obstacleDebug() } : undefined;
     if (c && builtRef.current) c.update({ ...builtRef.current.view, calm: reducedMotion(store.prefs) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -676,6 +693,7 @@ export function BattleScreen() {
         <div className="battle-preview panel" role="status">
           <div className="battle-preview__title">
             {preview.label}: {activeDef?.pluralName} → {catalog.creatures[hoverStack.creatureId]?.pluralName} ({aliveCount(catalog, hoverStack)})
+            <MarkRow marks={stackMarks(catalog, hoverStack, battle.round)} testId="target-marks" />
           </div>
           <PreviewLine label="Expected" p={preview.main} />
           {preview.ret ? <PreviewLine label="Retaliation (if they survive)" p={preview.ret} /> : preview.label === 'Melee' ? <div className="faint small">No retaliation expected.</div> : null}
@@ -720,6 +738,7 @@ export function BattleScreen() {
                   </span>
                 ) : null}
               </div>
+              <MarkRow marks={stackMarks(catalog, active, battle.round)} testId="active-marks" />
               <Bar value={frontHp(catalog, active)} max={activeDef.stats?.hp ?? 1} kind="hp" label="Front creature health" />
             </div>
           </div>

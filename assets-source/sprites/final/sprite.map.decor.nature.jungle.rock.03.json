@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 604.444,
+  "sourceSheet": "sheet.nature.jungle.flora_rocks.png",
+  "sourceRect": [
+    726,
+    803,
+    1086,
+    1106
+  ],
+  "role": "rock"
+}

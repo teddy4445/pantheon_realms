@@ -2,6 +2,8 @@
 
 _Written 2026-10-05 after the owner's play-test: the roads should look like real, designed roads, different for each kind of land — a straight, every bend and every possible crossing, for each road type. Today the game draws its roads by code (smoothed lines with ruts, flagstone joints or cobbles). This brief asks for painted road tiles: one tile per hex, chosen by the directions the road leaves that hex. The game already reads these sheets: when they arrive, `npm run roads:import` is the only step._
 
+_Status 2026-10-06: **delivered and in the game** — all 15 sheets. The dirt track was reviewed in the game first and approved by the owner; cobble, sand, snow and boardwalk followed (in-game acceptance not yet recorded; some width, texture and colour joins remain visible)._
+
 ## At a glance
 
 | What | Sheets | Size | Priority |

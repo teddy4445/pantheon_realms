@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 548.837,
+  "sourceSheet": "sheet.nature.autumn.ground_edges.png",
+  "sourceRect": [
+    724,
+    1055,
+    1086,
+    1448
+  ],
+  "role": "wet_edge"
+}

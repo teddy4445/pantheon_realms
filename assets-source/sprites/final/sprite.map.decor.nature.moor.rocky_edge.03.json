@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 543.75,
+  "sourceSheet": "sheet.nature.moor.ground_edges.png",
+  "sourceRect": [
+    724,
+    728,
+    1086,
+    1078
+  ],
+  "role": "rocky_edge"
+}

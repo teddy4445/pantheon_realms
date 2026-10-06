@@ -168,7 +168,9 @@ test('moving plays walk on that hero only, faces the travel direction and return
   await clickHex(page, dest.q, dest.r); // preview
   await startSampling(page);
   await clickHex(page, dest.q, dest.r); // commit
-  await waitFor(page, (s) => s.state.heroes[lead.id].position.q === dest.q && s.state.heroes[lead.id].position.r === dest.r && !s.busy, 'hero moved', 15_000);
+  // The emulated GPU draws a frame in about 0.4 s and the game clock advances at most 0.1 s per frame, so a
+  // four-step walk plays in slow motion here (about 17 s with the nature scenery on the map).
+  await waitFor(page, (s) => s.state.heroes[lead.id].position.q === dest.q && s.state.heroes[lead.id].position.r === dest.r && !s.busy, 'hero moved', 45_000);
   await page.waitForTimeout(400);
   const samples = (await stopSampling(page)).filter((s) => s.h && s.cam);
 

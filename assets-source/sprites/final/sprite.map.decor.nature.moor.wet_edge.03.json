@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 632.558,
+  "sourceSheet": "sheet.nature.moor.ground_edges.png",
+  "sourceRect": [
+    724,
+    1078,
+    1086,
+    1448
+  ],
+  "role": "wet_edge"
+}

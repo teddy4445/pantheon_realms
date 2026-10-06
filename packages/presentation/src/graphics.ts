@@ -35,8 +35,82 @@ export interface GraphicsProfile {
   readonly frameCap: number;
 }
 
+let adaptive = true;
+
+/**
+ * Adaptive resolution (Settings → Display; on by default): the engine draws
+ * fewer pixels while frames run slower than about 34 per second, and returns
+ * to the preset's resolution when they are fast again (`engineHost.ts`).
+ */
+export function adaptiveResolution(): boolean {
+  return adaptive;
+}
+
+export function setAdaptiveResolution(on: boolean): void {
+  adaptive = on;
+}
+
+/** Adaptive resolution: what the engine keeps between its two-second judgements. */
+export interface AdaptState {
+  /** Fraction of the preset's resolution drawn (1 = all of it). */
+  readonly scale: number;
+  readonly lastChange: number;
+  readonly lastRaise: number;
+  /** A scale found too slow soon after a step up, not tried again until `ceilingUntil`. */
+  readonly ceiling: number;
+  readonly ceilingUntil: number;
+}
+
+export const ADAPT_START: AdaptState = { scale: 1, lastChange: -Infinity, lastRaise: -Infinity, ceiling: 1, ceilingUntil: 0 };
+/** Resolution steps of 85 %, to 60 % of the preset's at least; a step is judged for six seconds. */
+export const ADAPT_STEP = 0.85;
+export const ADAPT_MIN_SCALE = 0.6;
+const ADAPT_SETTLE_MS = 6000;
+
+/**
+ * One judgement of adaptive resolution over the last window of frames: their
+ * mean time (ms) and the share of the window the main thread spent in long
+ * tasks (game logic, the interface — a lower resolution would not help those).
+ * Too slow (under about 34 frames per second, or clearly under a lower frame
+ * cap) while drawing: one step down. At the cap again (within 10 %) and settled:
+ * one step back up, unless that step proved too slow a minute ago or less.
+ */
+export function adaptResolutionStep(s: AdaptState, w: { now: number; meanMs: number; busyShare: number; frameCap: number }): AdaptState {
+  const cap = w.frameCap > 0 ? w.frameCap : 60;
+  const slow = Math.max(1000 / 34, (1000 / cap) * 1.12);
+  if (w.meanMs > slow && w.busyShare < 0.25 && s.scale > ADAPT_MIN_SCALE + 1e-6) {
+    const tooHigh = w.now - s.lastRaise < ADAPT_SETTLE_MS;
+    return {
+      scale: Math.max(ADAPT_MIN_SCALE, s.scale * ADAPT_STEP),
+      lastChange: w.now,
+      lastRaise: s.lastRaise,
+      ceiling: tooHigh ? s.scale - 1e-6 : s.ceiling,
+      ceilingUntil: tooHigh ? w.now + 60_000 : s.ceilingUntil,
+    };
+  }
+  if (w.meanMs < (1000 / Math.min(cap, 60)) * 1.1 && s.scale < 1 && w.now - s.lastChange > ADAPT_SETTLE_MS) {
+    const next = Math.min(1, s.scale / ADAPT_STEP);
+    if (w.now < s.ceilingUntil && next > s.ceiling) return s;
+    return { ...s, scale: next, lastChange: w.now, lastRaise: w.now };
+  }
+  return s;
+}
+
+/**
+ * Frame-rate cap: whether a display frame at `now` is drawn, and when the next
+ * one is due. Due times advance by the cap's period (not from the frame drawn),
+ * so a display whose rate is not a multiple of the cap (144 Hz, cap 60) still
+ * averages the cap; 1 ms of slack. Returns null when the frame is skipped.
+ */
+export function frameDue(now: number, nextDue: number, frameCap: number): number | null {
+  if (frameCap <= 0) return nextDue;
+  if (now < nextDue - 1) return null;
+  const period = 1000 / frameCap;
+  return Math.max(nextDue, now - period) + period;
+}
+
 export const GRAPHICS_PRESETS: Readonly<Record<GraphicsQuality, GraphicsProfile>> = {
-  high: { quality: 'high', maxPixelRatio: 2, renderScale: 1, antialias: true, shadows: true, paintedGround: true, softGround: true, decor: 'all', ambientMotion: true, effects: 'full', frameCap: 0 },
+  high: { quality: 'high', maxPixelRatio: 2, renderScale: 1, antialias: true, shadows: true, paintedGround: true, softGround: true, decor: 'all', ambientMotion: true, effects: 'full', frameCap: 60 },
   medium: { quality: 'medium', maxPixelRatio: 1, renderScale: 1, antialias: true, shadows: true, paintedGround: true, softGround: true, decor: 'no-grass', ambientMotion: true, effects: 'full', frameCap: 60 },
   low: { quality: 'low', maxPixelRatio: 1, renderScale: 0.7, antialias: false, shadows: false, paintedGround: false, softGround: true, decor: 'sparse', ambientMotion: false, effects: 'simple', frameCap: 30 },
 };

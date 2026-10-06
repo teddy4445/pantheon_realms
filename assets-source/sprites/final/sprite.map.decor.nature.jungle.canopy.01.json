@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 330.645,
+  "sourceSheet": "sheet.nature.jungle.flora_rocks.png",
+  "sourceRect": [
+    0,
+    0,
+    377,
+    490
+  ],
+  "role": "canopy"
+}

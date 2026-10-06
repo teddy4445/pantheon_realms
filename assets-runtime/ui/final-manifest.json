@@ -682,6 +682,10 @@
       "file": "ui/icons/final/hero.celtic.boudicca.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.celtic.boudicca.portrait.png."
     },
+    "hero.celtic.cathal.portrait": {
+      "file": "ui/icons/final/hero.celtic.cathal.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.celtic.cathal.portrait.png."
+    },
     "hero.celtic.ciar.portrait": {
       "file": "ui/icons/final/hero.celtic.ciar.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.celtic.ciar.portrait.png."
@@ -721,6 +725,10 @@
     "hero.celtic.orla.portrait": {
       "file": "ui/icons/final/hero.celtic.orla.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.celtic.orla.portrait.png."
+    },
+    "hero.celtic.sadb.portrait": {
+      "file": "ui/icons/final/hero.celtic.sadb.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.celtic.sadb.portrait.png."
     },
     "hero.celtic.scathach.portrait": {
       "file": "ui/icons/final/hero.celtic.scathach.portrait.webp",
@@ -762,6 +770,10 @@
       "file": "ui/icons/final/hero.egyptian.iti.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.egyptian.iti.portrait.png."
     },
+    "hero.egyptian.nebet.portrait": {
+      "file": "ui/icons/final/hero.egyptian.nebet.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.egyptian.nebet.portrait.png."
+    },
     "hero.egyptian.nefertiti.portrait": {
       "file": "ui/icons/final/hero.egyptian.nefertiti.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.egyptian.nefertiti.portrait.png."
@@ -769,6 +781,10 @@
     "hero.egyptian.paser.portrait": {
       "file": "ui/icons/final/hero.egyptian.paser.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.egyptian.paser.portrait.png."
+    },
+    "hero.egyptian.pawah.portrait": {
+      "file": "ui/icons/final/hero.egyptian.pawah.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.egyptian.pawah.portrait.png."
     },
     "hero.egyptian.peseshet.portrait": {
       "file": "ui/icons/final/hero.egyptian.peseshet.portrait.webp",
@@ -802,6 +818,10 @@
       "file": "ui/icons/final/hero.greek.heracles.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.heracles.portrait.png."
     },
+    "hero.greek.ione.portrait": {
+      "file": "ui/icons/final/hero.greek.ione.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.greek.ione.portrait.png."
+    },
     "hero.greek.melas.portrait": {
       "file": "ui/icons/final/hero.greek.melas.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.melas.portrait.png."
@@ -818,6 +838,10 @@
       "file": "ui/icons/final/hero.greek.scout_captain.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.scout_captain.portrait.png."
     },
+    "hero.greek.thaleia.portrait": {
+      "file": "ui/icons/final/hero.greek.thaleia.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.greek.thaleia.portrait.png."
+    },
     "hero.japanese.abe_no_seimei.portrait": {
       "file": "ui/icons/final/hero.japanese.abe_no_seimei.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.japanese.abe_no_seimei.portrait.png."
@@ -829,6 +853,10 @@
     "hero.japanese.benkei.portrait": {
       "file": "ui/icons/final/hero.japanese.benkei.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.japanese.benkei.portrait.png."
+    },
+    "hero.japanese.genzo.portrait": {
+      "file": "ui/icons/final/hero.japanese.genzo.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.japanese.genzo.portrait.png."
     },
     "hero.japanese.gonryo.portrait": {
       "file": "ui/icons/final/hero.japanese.gonryo.portrait.webp",
@@ -858,6 +886,10 @@
       "file": "ui/icons/final/hero.japanese.oboro.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.japanese.oboro.portrait.png."
     },
+    "hero.japanese.shiro.portrait": {
+      "file": "ui/icons/final/hero.japanese.shiro.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.japanese.shiro.portrait.png."
+    },
     "hero.japanese.tomoe_gozen.portrait": {
       "file": "ui/icons/final/hero.japanese.tomoe_gozen.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.japanese.tomoe_gozen.portrait.png."
@@ -881,6 +913,10 @@
     "hero.mesoamerican.chilam_balam.portrait": {
       "file": "ui/icons/final/hero.mesoamerican.chilam_balam.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.mesoamerican.chilam_balam.portrait.png."
+    },
+    "hero.mesoamerican.chimal.portrait": {
+      "file": "ui/icons/final/hero.mesoamerican.chimal.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.mesoamerican.chimal.portrait.png."
     },
     "hero.mesoamerican.eight_deer_jaguar_claw.portrait": {
       "file": "ui/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.webp",
@@ -930,6 +966,10 @@
       "file": "ui/icons/final/hero.mesoamerican.xbalanque.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.mesoamerican.xbalanque.portrait.png."
     },
+    "hero.mesoamerican.xoco.portrait": {
+      "file": "ui/icons/final/hero.mesoamerican.xoco.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.mesoamerican.xoco.portrait.png."
+    },
     "hero.norse.barrow_captain.portrait": {
       "file": "ui/icons/final/hero.norse.barrow_captain.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.norse.barrow_captain.portrait.png."
@@ -941,6 +981,10 @@
     "hero.norse.brynhild.portrait": {
       "file": "ui/icons/final/hero.norse.brynhild.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.norse.brynhild.portrait.png."
+    },
+    "hero.norse.eydis.portrait": {
+      "file": "ui/icons/final/hero.norse.eydis.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.norse.eydis.portrait.png."
     },
     "hero.norse.grey_jarl.portrait": {
       "file": "ui/icons/final/hero.norse.grey_jarl.portrait.webp",
@@ -954,6 +998,10 @@
       "file": "ui/icons/final/hero.norse.hrafn.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.norse.hrafn.portrait.png."
     },
+    "hero.norse.jokul.portrait": {
+      "file": "ui/icons/final/hero.norse.jokul.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.norse.jokul.portrait.png."
+    },
     "hero.norse.lagertha.portrait": {
       "file": "ui/icons/final/hero.norse.lagertha.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.norse.lagertha.portrait.png."
@@ -965,6 +1013,18 @@
     "hero.norse.sigurd.portrait": {
       "file": "ui/icons/final/hero.norse.sigurd.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.norse.sigurd.portrait.png."
+    },
+    "hero.norse.skeggi.portrait": {
+      "file": "ui/icons/final/hero.norse.skeggi.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.norse.skeggi.portrait.png."
+    },
+    "hero.norse.svanhild.portrait": {
+      "file": "ui/icons/final/hero.norse.svanhild.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.norse.svanhild.portrait.png."
+    },
+    "hero.norse.troll_wife.portrait": {
+      "file": "ui/icons/final/hero.norse.troll_wife.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.norse.troll_wife.portrait.png."
     },
     "hero.norse.ulfhild.portrait": {
       "file": "ui/icons/final/hero.norse.ulfhild.portrait.webp",
@@ -1630,9 +1690,21 @@
       "file": "ui/icons/final/icon.marker.crystal.png",
       "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.crystal.png."
     },
+    "icon.marker.encounter": {
+      "file": "ui/icons/final/icon.marker.encounter.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/icon.marker.encounter.png."
+    },
+    "icon.marker.enemy-hero": {
+      "file": "ui/icons/final/icon.marker.enemy-hero.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/icon.marker.enemy-hero.png."
+    },
     "icon.marker.gold": {
       "file": "ui/icons/final/icon.marker.gold.png",
       "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.marker.gold.png."
+    },
+    "icon.marker.hero": {
+      "file": "ui/icons/final/icon.marker.hero.png",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/icon.marker.hero.png."
     },
     "icon.marker.hostile-town": {
       "file": "ui/icons/final/icon.marker.hostile-town.png",
@@ -2341,6 +2413,10 @@
     "icon.world.town": {
       "file": "ui/icons/final/icon.world.town.png",
       "provenance": "Owner-delivered Brief 13 final art, generated 2026-10-05; master: assets-source/icons/final/icon.world.town.png."
+    },
+    "story.herald.portrait": {
+      "file": "ui/icons/final/story.herald.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/story.herald.portrait.png."
     }
   }
 }

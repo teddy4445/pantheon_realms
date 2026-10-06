@@ -1,0 +1,79 @@
+{
+ "schema": "pantheon-realms-ground-edges-1",
+ "note": "Written by tools/assets/briefs/ground_guides.py. Layout of the ground-transition sheets (GPT-6 Brief 17): one column per hex edge, one row per variant.",
+ "cell": 256,
+ "cols": 6,
+ "rows": 3,
+ "hexWidth": 224,
+ "squash": 0.84,
+ "dirs": [
+  "e",
+  "se",
+  "sw",
+  "w",
+  "nw",
+  "ne"
+ ],
+ "maxDepth": 0.45,
+ "characters": {
+  "meadow": {
+   "ground": "plains",
+   "depth": [
+    0.25,
+    0.4
+   ]
+  },
+  "woodland": {
+   "ground": "forest",
+   "depth": [
+    0.25,
+    0.45
+   ]
+  },
+  "rocky": {
+   "ground": "rough",
+   "depth": [
+    0.2,
+    0.4
+   ]
+  },
+  "boggy": {
+   "ground": "marsh",
+   "depth": [
+    0.25,
+    0.4
+   ]
+  },
+  "scree": {
+   "ground": "mountain",
+   "depth": [
+    0.3,
+    0.45
+   ]
+  },
+  "shore": {
+   "ground": "any land into water",
+   "depth": [
+    0.15,
+    0.35
+   ]
+  }
+ },
+ "priority": [
+  "water",
+  "marsh",
+  "plains",
+  "rough",
+  "forest",
+  "mountain"
+ ],
+ "files": {
+  "meadow": "sheet.ground.meadow.png",
+  "woodland": "sheet.ground.woodland.png",
+  "rocky": "sheet.ground.rocky.png",
+  "boggy": "sheet.ground.boggy.png",
+  "scree": "sheet.ground.scree.png",
+  "shore": "sheet.ground.shore.png",
+  "foam": "sheet.ground.shore.foam.png"
+ }
+}

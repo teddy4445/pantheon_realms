@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 566.667,
+  "sourceSheet": "sheet.nature.temperate.ground_edges.png",
+  "sourceRect": [
+    0,
+    727,
+    362,
+    1059
+  ],
+  "role": "rocky_edge"
+}

@@ -109,7 +109,7 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
     <Panel title={c.name} className="setup-detail" bodyClassName="scroll" headerIcon="campaign">
       <div className="setup-detail__lead">
         {catalog.heroes[c.heroDefinitionId] ? (
-          <SpeakerPortrait catalog={catalog} line={{ speaker: catalog.heroes[c.heroDefinitionId]!.name, portraitAssetId: catalog.heroes[c.heroDefinitionId]!.portraitAssetId }} size="6rem" />
+          <SpeakerPortrait catalog={catalog} line={{ speaker: catalog.heroes[c.heroDefinitionId]!.name, portraitAssetId: catalog.heroes[c.heroDefinitionId]!.portraitAssetId }} size="6rem" bustFirst />
         ) : (
           <HeroPortrait catalog={catalog} definitionId={c.heroDefinitionId} size="6rem" />
         )}

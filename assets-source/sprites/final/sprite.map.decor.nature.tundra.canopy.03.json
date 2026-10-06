@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 438.71,
+  "sourceSheet": "sheet.nature.tundra.flora_rocks.png",
+  "sourceRect": [
+    724,
+    0,
+    1086,
+    365
+  ],
+  "role": "canopy"
+}

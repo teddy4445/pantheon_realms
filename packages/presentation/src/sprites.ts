@@ -116,6 +116,44 @@ export interface SpriteManifest {
   readonly effects: Readonly<Record<string, EffectDefinition>>;
   /** Painted road sheets (GPT-6 Brief 16), keyed `<road type>.<a|b|c>`; written by `npm run roads:import`. */
   readonly roads?: Readonly<Record<string, RoadSheetDefinition>>;
+  /** Painted ground transitions (GPT-6 Brief 17): traced edge masks and the shore foam atlas; written by `npm run ground:import`. */
+  readonly ground?: {
+    readonly edges?: GroundEdgesDefinition;
+    readonly foam?: GroundFoamDefinition;
+  };
+}
+
+/** The traced ground-transition masks (`edges.json`), one per ground character. */
+export interface GroundEdgesDefinition {
+  readonly file: string;
+  readonly status: 'final' | 'placeholder';
+  readonly characters: readonly string[];
+  readonly provenance: string;
+}
+
+/** The shore foam atlas: the shore mask sheet's layout, transparent. */
+export interface GroundFoamDefinition {
+  readonly file: string;
+  readonly status: 'final' | 'placeholder';
+  readonly width: number;
+  readonly height: number;
+  readonly cell: number;
+  readonly cols: number;
+  readonly rows: number;
+  readonly hexWidth: number;
+  readonly provenance: string;
+}
+
+/**
+ * Contents of `edges.json`: per character, six edges (e, se, sw, w, nw, ne), each a list of
+ * variants, each a list of outlines `[level index, flat x,y points in hex widths around the hex centre]`.
+ */
+export interface GroundEdgesData {
+  readonly schema: 'pantheon-realms-ground-edges-1';
+  readonly hexWidth: number;
+  readonly levels: readonly { readonly level: number; readonly alpha: number }[];
+  readonly priority: readonly string[];
+  readonly characters: Readonly<Record<string, readonly (readonly (readonly (readonly [number, readonly number[]])[])[])[]>>;
 }
 
 /** One road sheet: `cols` × `rows` cells of `cell` px, each a hex `hexWidth` px wide, in `roadTileOrder()`. */

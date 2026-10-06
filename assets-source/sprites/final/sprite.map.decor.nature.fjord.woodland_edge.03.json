@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 529.167,
+  "sourceSheet": "sheet.nature.fjord.ground_edges.png",
+  "sourceRect": [
+    724,
+    362,
+    1086,
+    734
+  ],
+  "role": "woodland_edge"
+}

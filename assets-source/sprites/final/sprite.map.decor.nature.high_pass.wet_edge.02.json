@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 604.651,
+  "sourceSheet": "sheet.nature.high_pass.ground_edges.png",
+  "sourceRect": [
+    362,
+    1086,
+    724,
+    1448
+  ],
+  "role": "wet_edge"
+}

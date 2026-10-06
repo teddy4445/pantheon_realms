@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 286.316,
+  "sourceSheet": "sheet.nature.marine_frozen.png",
+  "sourceRect": [
+    362,
+    420,
+    724,
+    741
+  ],
+  "role": "islet"
+}

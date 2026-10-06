@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 488.462,
+  "sourceSheet": "sheet.nature.fjord.flora_rocks.png",
+  "sourceRect": [
+    732,
+    1086,
+    1086,
+    1448
+  ],
+  "role": "deadwood"
+}

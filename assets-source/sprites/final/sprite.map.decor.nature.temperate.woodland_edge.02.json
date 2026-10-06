@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 537.5,
+  "sourceSheet": "sheet.nature.temperate.ground_edges.png",
+  "sourceRect": [
+    362,
+    362,
+    724,
+    727
+  ],
+  "role": "woodland_edge"
+}

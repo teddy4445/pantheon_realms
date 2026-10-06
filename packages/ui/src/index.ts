@@ -29,7 +29,7 @@ import { App } from './app/App';
 import { AppStore } from './app/store';
 import { applyPreferences, loadPreferences } from './app/preferences';
 import { probeGraphics } from './app/graphicsProbe';
-import { inspectors, preloadPresentation, projectors } from './scene/SceneHost';
+import { engineFrameStats, inspectors, preloadPresentation, projectors } from './scene/SceneHost';
 import { GameAudio } from './audio/gameAudio';
 
 export { AppStore } from './app/store';
@@ -106,6 +106,24 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
     (g as { __prBattle?: () => unknown }).__prBattle = () => inspectors.battle?.stacks() ?? null;
     // Read-only: the magic effects the views played most recently (asset ID prefixes).
     (g as { __prFx?: () => unknown }).__prFx = () => ({ battle: inspectors.battle?.fx() ?? null, adventure: inspectors.adventure?.fx() ?? null });
+    // Read-only: how the map draws the borders between grounds (painted, softened or crisp).
+    (g as { __prGround?: () => unknown }).__prGround = () => inspectors.adventure?.ground() ?? null;
+    // Read-only: the map's nature scenery (counts per role, IDs, water bodies) and the battle's obstacle stills.
+    (g as { __prScenery?: () => unknown }).__prScenery = () => ({ map: inspectors.adventure?.scenery() ?? null, battle: inspectors.battle?.obstacles?.() ?? null });
+    // Read-only: the renderer's frame timing (frame rate, slow frames since the view opened).
+    (g as { __prFrames?: (since?: number) => unknown }).__prFrames = (since?: number) => engineFrameStats(since);
+    // Read-only and light (no copy of the state): where play stands, for tests that poll while measuring frames.
+    (g as { __prScreen?: () => unknown }).__prScreen = () => ({
+      screen: store.screen.id,
+      overlays: store.overlays.map((o) => o.kind),
+      story: store.story.length,
+      busy: store.presentationBusy,
+      humanTurn: store.session?.isHumanTurn() ?? false,
+      day: store.session?.state.day ?? 0,
+      revision: store.session?.state.revision ?? 0,
+      battle: !!store.session?.state.battle,
+      battlePhase: store.session?.state.battle?.phase ?? null,
+    });
   }
   return store;
 }

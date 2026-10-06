@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 586.667,
+  "sourceSheet": "sheet.nature.storm_plateau.flora_rocks.png",
+  "sourceRect": [
+    724,
+    724,
+    1086,
+    1086
+  ],
+  "role": "rock"
+}

@@ -5,7 +5,7 @@
  * a preset (software renderers always Low).
  */
 import { describe, expect, it } from 'vitest';
-import { GRAPHICS_PRESETS, classifyGraphics, graphicsProfile, renderResolution, onGraphicsChange, setGraphicsQuality, type GraphicsProbeResult } from '../src/graphics';
+import { ADAPT_MIN_SCALE, ADAPT_START, GRAPHICS_PRESETS, adaptResolutionStep, classifyGraphics, frameDue, graphicsProfile, renderResolution, onGraphicsChange, setGraphicsQuality, type AdaptState, type GraphicsProbeResult } from '../src/graphics';
 
 const probe = (over: Partial<GraphicsProbeResult>): GraphicsProbeResult => ({ webgl2: true, renderer: 'ANGLE (NVIDIA GeForce)', msPerPass: 2, cores: 8, memoryGb: 16, ...over });
 
@@ -60,5 +60,61 @@ describe('automatic pick', () => {
     expect(classifyGraphics(probe({ cores: 2 }))).toBe('medium');
     expect(classifyGraphics(probe({ memoryGb: 2 }))).toBe('medium');
     expect(classifyGraphics(probe({ memoryGb: null }))).toBe('high');
+  });
+});
+
+describe('frame-rate cap (2026-10-06)', () => {
+  /** Frames drawn per second on a display of `hz` with a cap, over ten seconds. */
+  const drawn = (hz: number, cap: number) => {
+    let due = 0;
+    let n = 0;
+    for (let i = 0; i < hz * 10; i++) {
+      const next = frameDue((i * 1000) / hz, due, cap);
+      if (next !== null) {
+        due = next;
+        n++;
+      }
+    }
+    return n / 10;
+  };
+  it('averages the cap on displays whose rate is not a multiple of it, and every frame without a cap', () => {
+    expect(drawn(60, 60)).toBeCloseTo(60, 0);
+    expect(drawn(60, 30)).toBeCloseTo(30, 0);
+    expect(drawn(144, 60)).toBeGreaterThan(55);
+    expect(drawn(144, 60)).toBeLessThanOrEqual(61);
+    expect(drawn(120, 60)).toBeCloseTo(60, 0);
+    expect(drawn(75, 60)).toBeGreaterThan(55);
+    expect(drawn(144, 0)).toBe(144);
+  });
+  it('High is capped at 60 frames per second (laptops with fast displays need not draw more)', () => {
+    expect(GRAPHICS_PRESETS.high.frameCap).toBe(60);
+  });
+});
+
+describe('adaptive resolution (2026-10-06)', () => {
+  const judge = (s: AdaptState, now: number, meanMs: number, busyShare = 0, frameCap = 60) => adaptResolutionStep(s, { now, meanMs, busyShare, frameCap });
+  it('steps down while frames run under ~34 per second, never below 60 %', () => {
+    let s = ADAPT_START;
+    for (let t = 2000; t <= 40_000; t += 2000) s = judge(s, t, 45);
+    expect(s.scale).toBeCloseTo(ADAPT_MIN_SCALE);
+    expect(judge(ADAPT_START, 2000, 25).scale).toBe(1);
+  });
+  it('does not step down while the main thread was held by game logic (a lower resolution would not help)', () => {
+    expect(judge(ADAPT_START, 2000, 60, 0.5).scale).toBe(1);
+  });
+  it('a 30-frame cap (Low) is not mistaken for slow frames', () => {
+    expect(judge(ADAPT_START, 2000, 34, 0, 30).scale).toBe(1);
+    expect(judge(ADAPT_START, 2000, 40, 0, 30).scale).toBeLessThan(1);
+  });
+  it('steps back up when frames are at the cap again and settled; a step that proves too slow is held off for a minute', () => {
+    let s = judge(ADAPT_START, 2000, 45);
+    expect(s.scale).toBeCloseTo(0.85);
+    expect(judge(s, 4000, 16.7).scale).toBeCloseTo(0.85); // not settled yet
+    s = judge(s, 10_000, 16.7);
+    expect(s.scale).toBeCloseTo(1);
+    s = judge(s, 12_000, 45); // too slow right after the step up
+    expect(s.scale).toBeCloseTo(0.85);
+    expect(judge(s, 30_000, 16.7).scale).toBeCloseTo(0.85); // held off
+    expect(judge(s, 80_000, 16.7).scale).toBeCloseTo(1); // tried again after a minute
   });
 });

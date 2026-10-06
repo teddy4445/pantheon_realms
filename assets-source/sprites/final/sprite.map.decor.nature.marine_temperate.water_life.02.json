@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 604.762,
+  "sourceSheet": "sheet.nature.marine_temperate.png",
+  "sourceRect": [
+    369,
+    1086,
+    723,
+    1448
+  ],
+  "role": "water_life"
+}

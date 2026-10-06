@@ -17,6 +17,7 @@
 import { Container, FillPattern, Graphics, Matrix, Rectangle, Sprite, Texture, type FillStyle } from 'pixi.js';
 import { TERRAIN_BY_CODE, TERRAIN_CODES, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
+import { planNatureSceneryCached, type NatureItem, type NaturePlan } from './nature';
 import type { EngineHost, SceneController } from './engineHost';
 import { MAP_SQUASH, SQRT3, axialPoint, directionOf, hexPolygon, pointAxial, pointAxialFraction, type MapDirection } from './hexmath';
 import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
@@ -24,12 +25,13 @@ import { TweenPlayer, linear } from './tween';
 import { TERRAIN_TEXTURE_WORLD, terrainArt, type EnvironmentArt } from './environmentArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
-import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type EffectDefinition, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
+import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type EffectDefinition, type GroundEdgesData, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
 import { loadStrip, loadTexture, stripFrames } from './textures';
 import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
 import { FxPainter, type FxTarget } from './fx';
 import { PLANK_COLOR, ROAD_PARTS, ROAD_STEP, marksAlong, offsetRun, roadRuns, roadStyleFor, roadTileSlot, roadTypeFor, smoothRun, type RoadPoint, type RoadType } from './roads';
 import type { FxLook } from './fxLooks';
+import { groundEdgesComplete, groundEdgesUsable, groundPieceOutlines, planGroundEdges, type GroundEdgePiece } from './groundEdges';
 
 /**
  * Nominal map time per hex step (ms, before the Adventure animation speed
@@ -175,16 +177,44 @@ type GroundFill = FillStyle;
 /** The axial step to the neighbour across edge k of a pointy-top hex (corners k and k+1 of `hexPolygon`). */
 const NEIGHBOUR_STEP = ROAD_STEP;
 
+/** A short fingerprint of a list of tile numbers or flags (FNV-1a): equal lists, equal keys. */
+function tileMaskKey(values: readonly number[]): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < values.length; i++) {
+    h ^= values[i]! & 0xffff;
+    h = Math.imul(h, 0x01000193);
+    h ^= values[i]! >>> 16;
+    h = Math.imul(h, 0x01000193);
+  }
+  return `${values.length}:${(h >>> 0).toString(36)}`;
+}
+
 export class AdventureSceneController implements SceneController {
   readonly root = new Container();
   readonly tweens = new TweenPlayer();
   private readonly canvas: HTMLCanvasElement;
   private readonly cb: AdventureCallbacks;
   private readonly world = new Container();
-  private readonly backdrop = new Container();
+  /** Around the map there is only black (owner request 2026-10-04: no sea, no sky panorama past the north edge); the map's own water tiles still show. */
+  readonly background = 0x000000;
+  /** The ground (painted terrain, borders, roads, grid): redrawn only when the map or the explored area changes. */
+  private readonly groundLayer = new Container();
+  /** Reach, path, hover and selection marks over the ground. */
+  private readonly marks = new Container();
+  private readonly fogLayer = new Container();
   private readonly terrain = new Graphics();
   /** The blended ground (one picture with soft transitions between ground types) once its textures are in. */
   private readonly terrainBlend = new Graphics();
+  /** Shore foam over water hexes (GPT-6 Brief 17 Part B), drawn with the painted ground transitions. */
+  private readonly groundFoam = new Container();
+  /** The traced transition masks (`edges.json`), once loaded; 'failed' keeps the softened edges for this view. */
+  private groundEdges: GroundEdgesData | null = null;
+  private groundEdgesState: 'idle' | 'loading' | 'failed' = 'idle';
+  private groundFoamTex: Texture | null = null;
+  private groundFoamState: 'idle' | 'loading' | 'failed' = 'idle';
+  private readonly foamFrames = new Map<string, Texture>();
+  private groundMode: { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number } = { edges: 'crisp', pieces: 0, foam: 0 };
+  private terrainQueued = false;
   private readonly roads = new Graphics();
   /** Painted road tiles (GPT-6 Brief 16), when every road type the map needs is delivered. */
   private readonly roadTiles = new Container();
@@ -195,8 +225,8 @@ export class AdventureSceneController implements SceneController {
   private readonly reach = new Graphics();
   private readonly ground = new Container();
   private readonly pathLayer = new Graphics();
-  /** The route a moving hero still has to walk (drawn during movement playback, cleared step by step). */
-  private readonly trailLayer = new Graphics();
+  /** The route a moving hero still has to walk (drawn once per walk, one piece per step; passed pieces are hidden). */
+  private readonly trailLayer = new Container();
   private readonly hover = new Graphics();
   private readonly selectRing = new Graphics();
   private readonly objects = new Container();
@@ -215,11 +245,15 @@ export class AdventureSceneController implements SceneController {
   private terrainArts = new Map<Terrain, EnvironmentArt>();
   private terrainTextures = new Map<Terrain, Texture>();
   private fogKey = '';
+  private exploredKey = '';
+  private visibleKey = '';
   private reachKey = '';
   private pathKey = '';
   private gridMode: AdventureView['grid'] = 'always';
   private explored: readonly number[] = [];
   private decorByTile = new Map<number, Container[]>();
+  /** The nature plan the map was dressed with (read-only diagnostics). */
+  private naturePlan: NaturePlan | null = null;
   private heroes = new Map<string, HeroEntry>();
   private sites = new Map<string, SiteEntry>();
   private selectedHero: string | null = null;
@@ -248,8 +282,22 @@ export class AdventureSceneController implements SceneController {
     this.root.addChild(this.world, this.screenLayer);
     this.painter = new FxPainter(this.effects, this.tweens, R, S, { layer: this.screenLayer, size: () => this.view });
     this.ground.addChild(this.selectRing, this.pathLayer, this.trailLayer, this.hover);
+    // The hover outline is one hex drawn once and moved to the tile under the pointer.
+    this.hover.poly(hexPolygon(0, 0, R * 0.97, S)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
     this.objects.sortableChildren = true;
-    this.world.addChild(this.backdrop, this.terrain, this.terrainBlend, this.roads, this.roadTiles, this.grid, this.reach, this.ground, this.objects, this.fog, this.fogSoft, this.effects);
+    this.groundLayer.addChild(this.terrain, this.terrainBlend, this.groundFoam, this.roads, this.roadTiles, this.grid);
+    this.marks.addChild(this.reach, this.ground);
+    this.fogLayer.addChild(this.fog, this.fogSoft);
+    this.world.addChild(this.groundLayer, this.marks, this.objects, this.fogLayer, this.effects);
+    // Render groups (2026-10-06 frame-rate work): moving the camera changes one
+    // transform on the GPU instead of every vertex, and the animated heroes and
+    // guards re-send only the objects layer each frame, never the ground or fog.
+    this.world.enableRenderGroup();
+    // Drawn shapes that change (the reach after each command, a route, the trail during a walk) each sit in a
+    // small group of their own: redrawing one never re-sends the others.
+    for (const layer of [this.groundLayer, this.marks, this.reach, this.pathLayer, this.trailLayer, this.objects, this.fogLayer, this.effects]) layer.enableRenderGroup();
+    // The selection ring is drawn once; its pulse is a scale.
+    this.selectRing.ellipse(0, 0, HEX_W * 0.44, HEX_W * 0.44 * S * 0.5).stroke({ width: 3, color: colorOf(SELECT_RING), alpha: 0.95 });
     this.hover.visible = false;
     this.selectRing.visible = false;
     this.view = { width: engine.width, height: engine.height };
@@ -276,14 +324,25 @@ export class AdventureSceneController implements SceneController {
     this.calm = !!view.calm;
     const key = `${view.map.templateId}|${view.map.logicalHash}`;
     if (key !== this.mapKey) {
-      this.buildMap(view.map);
+      this.buildMap(view.map, view.sites);
       this.mapKey = key;
       this.fogKey = '';
+      this.exploredKey = '';
+      this.visibleKey = '';
     }
     if (view.fogKey !== this.fogKey || view.grid !== this.gridMode) {
-      this.gridMode = view.grid;
-      this.applyFog(view.explored, view.visible);
       this.fogKey = view.fogKey;
+      // The view's key changes with every command: redraw only what the fog itself changed
+      // (the explored area: grid, roads and decor; what is in sight: the shading).
+      const ek = `${tileMaskKey(view.explored)}|${view.grid}`;
+      const vk = tileMaskKey([...view.visible].sort((a, b) => a - b));
+      if (ek !== this.exploredKey || vk !== this.visibleKey) {
+        const explored = ek !== this.exploredKey;
+        this.exploredKey = ek;
+        this.visibleKey = vk;
+        this.gridMode = view.grid;
+        this.applyFog(view.explored, view.visible, explored);
+      }
     }
     if (view.reachKey !== this.reachKey) {
       this.buildReach(view.reachable);
@@ -333,7 +392,7 @@ export class AdventureSceneController implements SceneController {
   private bounds: { minX: number; maxX: number; minY: number; maxY: number } | null = null;
   private boundsFor: WorldMapDefinition | null = null;
 
-  private buildMap(map: WorldMapDefinition): void {
+  private buildMap(map: WorldMapDefinition, sites: readonly AdventureSiteView[] = []): void {
     for (const s of this.sites.values()) this.disposeSite(s);
     this.sites.clear();
     for (const list of this.decorByTile.values()) for (const d of list) d.destroy({ children: true });
@@ -347,18 +406,18 @@ export class AdventureSceneController implements SceneController {
       if (a) this.terrainArts.set(t, a);
     }
     this.drawTerrain();
-    this.buildBackdrop(map);
-    this.buildDecor(map);
+    this.buildDecor(map, sites);
     // Painted ground replaces the flat colours as each texture arrives.
     for (const [t, art] of this.terrainArts) {
-      void loadTexture(art.url).then(
+      // A ground painting spans about two tiles: drawn 5–20 times smaller than its pixels, so with mipmaps.
+      void loadTexture(art.url, { mipmaps: true }).then(
         (tex) => {
           if (this.disposed || this.map !== map) return;
           tex.source.style.addressModeU = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
           tex.source.style.addressModeV = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
           tex.source.style.update();
           this.terrainTextures.set(t, tex);
-          this.drawTerrain();
+          this.queueTerrain();
         },
         () => undefined,
       );
@@ -387,6 +446,8 @@ export class AdventureSceneController implements SceneController {
     const g = this.terrain;
     g.clear();
     this.terrainBlend.clear();
+    for (const c of this.groundFoam.removeChildren()) c.destroy();
+    this.groundMode = { edges: 'crisp', pieces: 0, foam: 0 };
     if (!map) return;
     const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
     const patterns = new Map<Terrain, FillPattern | null>();
@@ -406,7 +467,127 @@ export class AdventureSceneController implements SceneController {
         g.poly(hexPolygon(x, y, R * 1.012, S)).fill(fillOf(t, 1));
       }
     }
-    if (graphicsProfile().softGround) this.featherGroundEdges(map, fillOf);
+    if (graphicsProfile().softGround && !this.paintGroundEdges(map, fillOf)) {
+      this.featherGroundEdges(map, fillOf);
+      this.groundMode = { edges: 'softened', pieces: 0, foam: 0 };
+    }
+  }
+
+  /** Redraw the ground once, after the textures or outlines arriving together. */
+  private queueTerrain(): void {
+    if (this.terrainQueued) return;
+    this.terrainQueued = true;
+    setTimeout(() => {
+      this.terrainQueued = false;
+      if (!this.disposed) this.drawTerrain();
+    }, 0);
+  }
+
+  /**
+   * Painted ground transitions (GPT-6 Brief 17, `groundEdges.ts`): where two grounds
+   * meet, the higher one reaches into the lower one's hex in the shape of its
+   * character's mask (meadow, woodland, rocky, boggy, scree; any land into water
+   * as a shore), filled with the reaching ground's own painting at the three
+   * outline levels (a soft rim, a solid core); the shore foam lies over the water
+   * hex in the matching cell. Used only once all six mask sheets are imported and
+   * their outlines loaded; returns false until then, and the softened hex edges
+   * are drawn instead.
+   */
+  private paintGroundEdges(map: WorldMapDefinition, fillOf: (t: Terrain, alpha: number) => GroundFill): boolean {
+    const def = spriteManifest().ground?.edges;
+    if (!def || !groundEdgesComplete(def)) return false;
+    const data = this.groundEdges;
+    if (!data) {
+      if (this.groundEdgesState === 'idle' && typeof fetch === 'function') {
+        this.groundEdgesState = 'loading';
+        fetch(spriteUrl(def.file))
+          .then((res) => (res.ok ? (res.json() as Promise<unknown>) : Promise.reject(new Error(String(res.status)))))
+          .then(
+            (json) => {
+              if (!groundEdgesUsable(json as GroundEdgesData)) {
+                this.groundEdgesState = 'failed';
+                return;
+              }
+              this.groundEdges = json as GroundEdgesData;
+              this.groundEdgesState = 'idle';
+              if (!this.disposed && this.map) this.queueTerrain();
+            },
+            () => {
+              this.groundEdgesState = 'failed';
+            },
+          );
+      }
+      return false;
+    }
+    const rows = data.characters['shore']?.[0]?.length ?? 3;
+    const pieces = planGroundEdges(map.width, map.height, (q, r) => this.terrainOf(map, r * map.width + q), NEIGHBOUR_STEP, rows);
+    // One fill per reaching ground and outline level, outer (faint) levels first.
+    const batches = new Map<string, { from: Terrain; level: number; polys: number[][] }>();
+    for (const p of pieces) {
+      const c = this.hexCenter({ q: p.q, r: p.r });
+      for (const o of groundPieceOutlines(data, p, c.x, c.y, HEX_W)) {
+        const key = `${o.level}|${p.from}`;
+        let b = batches.get(key);
+        if (!b) batches.set(key, (b = { from: p.from, level: o.level, polys: [] }));
+        b.polys.push(o.points);
+      }
+    }
+    const g = this.terrainBlend;
+    for (const b of [...batches.values()].sort((x, y) => x.level - y.level)) {
+      const alpha = data.levels[b.level]?.alpha ?? 1;
+      for (const poly of b.polys) g.poly(poly);
+      g.fill(fillOf(b.from, alpha));
+    }
+    const foam = this.drawGroundFoam(map, pieces);
+    this.groundMode = { edges: 'painted', pieces: pieces.length, foam };
+    return true;
+  }
+
+  /** The surf line over every water hex a shore reaches into, in the shore mask's cell (Brief 17 Part B). */
+  private drawGroundFoam(map: WorldMapDefinition, pieces: readonly GroundEdgePiece[]): number {
+    const def = spriteManifest().ground?.foam;
+    if (!def) return 0;
+    const tex = this.groundFoamTex;
+    if (!tex) {
+      if (this.groundFoamState === 'idle') {
+        this.groundFoamState = 'loading';
+        loadTexture(spriteUrl(def.file)).then(
+          (t) => {
+            this.groundFoamTex = t;
+            this.groundFoamState = 'idle';
+            if (!this.disposed && this.map === map) this.queueTerrain();
+          },
+          () => {
+            this.groundFoamState = 'failed';
+          },
+        );
+      }
+      return 0;
+    }
+    let n = 0;
+    for (const p of pieces) {
+      if (p.character !== 'shore') continue;
+      const row = p.variant % def.rows;
+      const key = `${p.k}|${row}`;
+      let frame = this.foamFrames.get(key);
+      if (!frame) {
+        frame = new Texture({ source: tex.source, frame: new Rectangle(p.k * def.cell, row * def.cell, def.cell, def.cell) });
+        this.foamFrames.set(key, frame);
+      }
+      const sp = new Sprite(frame);
+      sp.anchor.set(0.5);
+      const { x, y } = this.hexCenter({ q: p.q, r: p.r });
+      sp.position.set(x, y);
+      sp.scale.set(HEX_W / def.hexWidth);
+      this.groundFoam.addChild(sp);
+      n++;
+    }
+    return n;
+  }
+
+  /** How the ground borders and roads are drawn right now (read-only diagnostics for tests): painted road tiles drawn, if any. */
+  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number } {
+    return { ...this.groundMode, roadTiles: this.roadTiles.children.length };
   }
 
   /**
@@ -462,17 +643,6 @@ export class AdventureSceneController implements SceneController {
     }
   }
 
-  /**
-   * Around the map there is only black (owner request 2026-10-04: no sea, no
-   * sky panorama past the north edge). The map's own water tiles still show.
-   */
-  private buildBackdrop(map: WorldMapDefinition): void {
-    for (const c of this.backdrop.removeChildren()) c.destroy();
-    const b = this.mapBounds(map);
-    const margin = 40 * R;
-    this.backdrop.addChild(new Graphics().rect(b.minX - margin, b.minY - margin, b.maxX - b.minX + margin * 2, b.maxY - b.minY + margin * 2).fill({ color: 0x000000 }));
-  }
-
   private decorSprite(kind: string, size: number, mirror: boolean): Container | null {
     const def = spriteManifest().decor[kind] ?? null;
     if (!def) return null;
@@ -484,13 +654,44 @@ export class AdventureSceneController implements SceneController {
     return c;
   }
 
-  private buildDecor(map: WorldMapDefinition): void {
+  /**
+   * Map scenery. Climates with nature art (all ten) are dressed by
+   * `planNatureScenery` (owner delivery 2026-10-06): the climate's plants, rocks
+   * and mountains per terrain, clumps along the borders between grounds and
+   * sparse rocks, islets, boats and wildlife on water whose kind is known — all
+   * presentation, placed once per map from stable hashes. A map whose climate
+   * has none keeps the generic decoration of the map generator.
+   */
+  private buildDecor(map: WorldMapDefinition, sites: readonly AdventureSiteView[] = []): void {
     const push = (i: number, c: Container) => {
       this.objects.addChild(c);
       const list = this.decorByTile.get(i) ?? [];
       list.push(c);
       this.decorByTile.set(i, list);
     };
+    const decorDefs = spriteManifest().decor;
+    const plan = planNatureSceneryCached(map, {
+      sites: sites.map((v) => v.coord),
+      towns: sites.filter((v) => v.archetype === 'town').map((v) => v.coord),
+      available: (id) => !!decorDefs[id],
+      decor: graphicsProfile().decor,
+      artKey: String(Object.keys(decorDefs).length),
+    });
+    this.naturePlan = plan;
+    if (plan.supported) {
+      for (const it of plan.items) {
+        const c = this.natureSprite(it);
+        if (!c) continue;
+        const q = it.tile % map.width;
+        const r = (it.tile - q) / map.width;
+        const { x, y } = this.hexCenter({ q, r });
+        // Mountains stand a little below the centre so the painting covers the hex (as before).
+        c.position.set(x + it.dx * R, y + it.dy * R + (it.kind === 'mountain' ? R * S * 0.55 : 0));
+        c.zIndex = c.y;
+        push(it.tile, c);
+      }
+      return;
+    }
     for (let r = 0; r < map.height; r++) {
       for (let q = 0; q < map.width; q++) {
         const i = r * map.width + q;
@@ -520,14 +721,85 @@ export class AdventureSceneController implements SceneController {
     }
   }
 
-  private applyFog(explored: readonly number[], visible: ReadonlySet<number>): void {
+  /** One nature still, upright and never mirrored (painted light stays on its side); a soft shadow under trees and rocks. */
+  private natureSprite(it: NatureItem): Container | null {
+    const def = spriteManifest().decor[it.id] ?? null;
+    if (!def) return null;
+    const c = new Container();
+    // Shadows only where they read (trees and rocks), kept small: on a huge map the shadow quads cost the
+    // emulated GPU more than the scenery itself (measured 2026-10-06).
+    const shadowed = it.role === 'canopy' || it.role === 'rock';
+    if (graphicsProfile().shadows && shadowed) {
+      // The stills are trimmed to their painted pixels: the shadow follows the visible width.
+      const w = (def.width / def.pixelsPerHex) * HEX_W * it.scale;
+      c.addChild(groundShadow(w * 0.36, w * 0.13, 0.22));
+    }
+    c.addChild(stillSprite(def, HEX_W, it.scale));
+    return c;
+  }
+
+  /** What the map is dressed with (read-only diagnostics for tests): counts per role and kind, the IDs used and the water bodies. */
+  sceneryDebug(): {
+    climate: string;
+    nature: boolean;
+    items: number;
+    drawn: number;
+    byRole: Record<string, number>;
+    byKind: Record<string, number>;
+    /** Pieces shown now (explored tiles) and any shown on a tile not explored (should be none). */
+    shown: number;
+    shownUnexplored: number;
+    ids: string[];
+    water: { kind: string | null; area: number; boundary: boolean; maxClearance: number }[];
+    waterItems: { id: string; tile: number; body: string | null; area: number }[];
+  } {
+    const plan = this.naturePlan;
+    const byRole: Record<string, number> = {};
+    const byKind: Record<string, number> = {};
+    let drawn = 0;
+    let shown = 0;
+    let shownUnexplored = 0;
+    for (const [tile, list] of this.decorByTile) {
+      drawn += list.length;
+      for (const c of list) {
+        if (!c.visible) continue;
+        shown += 1;
+        if (this.explored[tile] !== 1) shownUnexplored += 1;
+      }
+    }
+    for (const it of plan?.items ?? []) {
+      byRole[it.role] = (byRole[it.role] ?? 0) + 1;
+      byKind[it.kind] = (byKind[it.kind] ?? 0) + 1;
+    }
+    return {
+      climate: plan?.climate ?? '',
+      nature: !!plan?.supported,
+      items: plan?.items.length ?? 0,
+      drawn,
+      byRole,
+      byKind,
+      shown,
+      shownUnexplored,
+      ids: [...new Set((plan?.items ?? []).map((it) => it.id))].sort(),
+      water: (plan?.water.components ?? []).map((c) => ({ kind: c.kind, area: c.area, boundary: c.boundary, maxClearance: c.maxClearance })),
+      waterItems: (plan?.items ?? [])
+        .filter((it) => it.kind === 'water')
+        .map((it) => {
+          const c = plan!.water.components[plan!.water.componentOf[it.tile]!]!;
+          return { id: it.id, tile: it.tile, body: c.kind, area: c.area };
+        }),
+    };
+  }
+
+  /** Draw the fog; with `explored` also what follows the explored area (grid, roads, decor). */
+  private applyFog(explored: readonly number[], visible: ReadonlySet<number>, full = true): void {
     const map = this.map;
     if (!map) return;
     this.explored = explored;
     const fog = this.fog;
     const grid = this.grid;
     fog.clear();
-    grid.clear();
+    if (full) grid.clear();
     const unknown = hexToRgb(UNKNOWN_COLOR);
     // Soft fog (2026-10-05): the edges of the unknown and of what is out of sight fade over a
     // fraction of a hex instead of following hex outlines; tile drawing stays without a canvas.
@@ -538,7 +810,7 @@ export class AdventureSceneController implements SceneController {
       if (this.terrainOf(map, i) === 'void') continue;
       const known = explored[i] === 1;
       const vis = visible.has(i);
-      for (const d of this.decorByTile.get(i) ?? []) d.visible = known;
+      if (full) for (const d of this.decorByTile.get(i) ?? []) d.visible = known;
       const { x, y } = this.hexCenter({ q, r });
       if (!known) {
         // Unexplored ground is plain black, like the space around the map (owner request 2026-10-04).
@@ -546,9 +818,10 @@ export class AdventureSceneController implements SceneController {
       } else {
         // Remembered tiles: shaded whole hexes meeting edge to edge (no darker seams between tiles).
         if (!vis && !soft) fog.poly(hexPolygon(x, y, R, S)).fill({ color: 0x000000, alpha: 0.42 });
-        if (this.gridMode === 'always') grid.poly(hexPolygon(x, y, R * 0.985, S));
+        if (full && this.gridMode === 'always') grid.poly(hexPolygon(x, y, R * 0.985, S));
       }
     }
+    if (!full) return;
     if (this.gridMode === 'always') grid.stroke({ width: 1.1, color: 0x0d121a, alpha: 0.42 });
     // Roads only over explored tiles (the fog above dims what is out of sight).
     this.drawRoads(map, explored);
@@ -561,7 +834,8 @@ export class AdventureSceneController implements SceneController {
     let fc = this.fogCanvas;
     if (!fc || fc.map !== map) {
       if (fc) fc.sprite.destroy({ texture: true, textureSource: true });
-      const k = Math.min(0.3, 2048 / Math.max(1, b.maxX - b.minX + pad * 2), 2048 / Math.max(1, b.maxY - b.minY + pad * 2));
+      // At most 1536 pixels across (a huge map): the picture is blurred anyway, and it is redrawn and re-sent to the GPU when the fog changes.
+      const k = Math.min(0.3, 1536 / Math.max(1, b.maxX - b.minX + pad * 2), 1536 / Math.max(1, b.maxY - b.minY + pad * 2));
       const canvas = document.createElement('canvas');
       canvas.width = Math.ceil((b.maxX - b.minX + pad * 2) * k);
       canvas.height = Math.ceil((b.maxY - b.minY + pad * 2) * k);
@@ -1052,7 +1326,7 @@ export class AdventureSceneController implements SceneController {
       if (speed > 0) this.setClip(e, 'walk');
       const bob = e.figure.resolve(e.monster ? 'move' : 'walk')?.fallback !== false;
       // The route stays on the ground ahead of the hero and is cleared tile by tile as it walks.
-      if (trail && speed > 0) this.drawTrail(path, 0);
+      if (trail && speed > 0) this.drawTrail(path);
       for (const [n, step] of path.entries()) {
         const a = this.hexCenter(from);
         const b = this.hexCenter(step);
@@ -1071,12 +1345,16 @@ export class AdventureSceneController implements SceneController {
           linear,
         );
         from = step;
-        if (trail && speed > 0) this.drawTrail(path, n + 1);
+        // The piece of route just walked disappears.
+        if (trail && speed > 0) {
+          const piece = this.trailLayer.children[n];
+          if (piece) piece.visible = false;
+        }
       }
       e.figure.pose.y = 0;
       if (teleportTo) await this.playTeleport(e, teleportTo, speed, follow);
     } finally {
-      if (trail) this.trailLayer.clear();
+      if (trail) for (const c of this.trailLayer.removeChildren()) c.destroy();
       e.locked -= 1;
       if (e.locked === 0) {
         this.placeHero(e, e.coord);
@@ -1087,26 +1365,28 @@ export class AdventureSceneController implements SceneController {
     }
   }
 
-  /** The part of a walked route from step `from` on: dots, and the end marker at its last tile. */
-  private drawTrail(path: readonly HexCoord[], from: number): void {
-    const g = this.trailLayer;
-    g.clear();
+  /**
+   * A walked route: one piece per step (the dot at that step's tile and the line on
+   * to the next; the end marker at the last tile), hidden one by one as the hero
+   * passes them — drawn once per walk instead of once per step.
+   */
+  private drawTrail(path: readonly HexCoord[]): void {
+    for (const c of this.trailLayer.removeChildren()) c.destroy();
     const col = colorOf(PATH_TODAY);
     const dark = 0x0f141f;
     const last = path.length - 1;
-    for (let i = Math.max(0, from); i <= last; i++) {
+    for (let i = 0; i <= last; i++) {
+      const g = new Graphics();
       const p = this.hexCenter(path[i]!);
       if (i < last) {
         const q = this.hexCenter(path[i + 1]!);
         g.moveTo(p.x, p.y).lineTo(q.x, q.y).stroke({ width: R * 0.12, color: col, alpha: 0.9, cap: 'round' });
-      }
-    }
-    for (let i = Math.max(0, from); i <= last; i++) {
-      const p = this.hexCenter(path[i]!);
-      if (i === last) {
+        g.ellipse(p.x, p.y, R * 0.14, R * 0.14 * S).fill({ color: col });
+      } else {
         g.ellipse(p.x, p.y, R * 0.3, R * 0.3 * S).fill({ color: col });
         g.ellipse(p.x, p.y, R * 0.18, R * 0.18 * S).fill({ color: dark });
-      } else g.ellipse(p.x, p.y, R * 0.14, R * 0.14 * S).fill({ color: col });
+      }
+      this.trailLayer.addChild(g);
     }
   }
 
@@ -1178,10 +1458,11 @@ export class AdventureSceneController implements SceneController {
    * A map spell or miracle (never changes state): the sigil on the casting
    * hero, then a ring spreading over the chosen tiles (the fog lifts in it),
    * light on heroes (wind, mist, motes) or on towns (growth, gifts). Heroes
-   * out of view are skipped; a town miracle brings its town into view.
+   * out of view are skipped; a town miracle brings its town into view. `icon`
+   * (a runtime URL, e.g. the miracle's Brief 13 icon) rises over each one.
    */
   async playMapFx(
-    fx: { look: FxLook; id: string; caster?: string; area?: { center: HexCoord; radius: number }; heroIds?: readonly string[]; towns?: readonly HexCoord[] },
+    fx: { look: FxLook; id: string; caster?: string; area?: { center: HexCoord; radius: number }; heroIds?: readonly string[]; towns?: readonly HexCoord[]; icon?: string | null },
     speed: number,
   ): Promise<void> {
     if (speed <= 0 || this.disposed) return;
@@ -1201,6 +1482,7 @@ export class AdventureSceneController implements SceneController {
       const e = this.heroes.get(hid);
       if (!e || !e.root.visible) return;
       jobs.push(this.tweens.wait(i * 90).then(() => this.painter.impact(look, this.heroTarget(e), `${id}.impact`)));
+      if (fx.icon) jobs.push(this.tweens.wait(i * 90 + 250).then(() => this.riseIcon(fx.icon!, { x: e.root.x, y: e.root.y - this.heroTarget(e).height })));
     });
     const towns = fx.towns ?? [];
     if (towns.length === 1) this.focus(towns[0]!, true);
@@ -1209,8 +1491,31 @@ export class AdventureSceneController implements SceneController {
       const at: FxTarget = { x: p.x, y: p.y + R * S * 0.3, height: R * 2.2, width: 1.6, facing: 1 };
       jobs.push(this.painter.impact(look, at, `${id}.impact`));
       if (look.impact !== 'coins' && look.impact !== 'motes') jobs.push(this.painter.impact({ ...look, impact: 'motes' }, at));
+      if (fx.icon) jobs.push(this.tweens.wait(250).then(() => this.riseIcon(fx.icon!, { x: p.x, y: p.y - R * 2.2 })));
     });
     await Promise.all(jobs);
+  }
+
+  /** An icon rising and fading over a point (presentation only; skipped when it does not load in time). */
+  private async riseIcon(url: string, at: { x: number; y: number }): Promise<void> {
+    const tex = await Promise.race([loadTexture(url, { urgent: true }).catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), 1500))]);
+    if (!tex || this.disposed) return;
+    const sp = new Sprite(tex);
+    sp.anchor.set(0.5, 1);
+    const size = R * 1.25;
+    sp.scale.set(size / Math.max(1, tex.width));
+    sp.position.set(at.x, at.y);
+    sp.alpha = 0;
+    this.effects.addChild(sp);
+    await this.tweens.tween(
+      1300,
+      (k) => {
+        sp.y = at.y - k * R * 0.9;
+        sp.alpha = k < 0.15 ? k / 0.15 : k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3;
+      },
+      linear,
+    );
+    sp.destroy();
   }
 
   /**
@@ -1474,13 +1779,12 @@ export class AdventureSceneController implements SceneController {
 
   private setHover(c: HexCoord | null): void {
     const g = this.hover;
-    g.clear();
     if (!c || !this.isExplored(c) || this.gridMode === 'off' || (this.map && this.terrainOf(this.map, c.r * this.map.width + c.q) === 'void')) {
       g.visible = false;
       return;
     }
     const { x, y } = this.hexCenter(c);
-    g.poly(hexPolygon(x, y, R * 0.97, S)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
+    g.position.set(x, y);
     g.visible = true;
   }
 
@@ -1530,9 +1834,7 @@ export class AdventureSceneController implements SceneController {
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;
     const ring = this.selectRing;
     if (sel && sel.root.visible) {
-      ring.clear();
-      const pulse = 1 + Math.sin(this.time / 260) * 0.04;
-      ring.ellipse(0, 0, HEX_W * 0.44 * pulse, HEX_W * 0.44 * pulse * S * 0.5).stroke({ width: 3, color: colorOf(SELECT_RING), alpha: 0.95 });
+      ring.scale.set(1 + Math.sin(this.time / 260) * 0.04);
       ring.position.set(sel.root.x, sel.root.y);
       ring.visible = true;
     } else ring.visible = false;

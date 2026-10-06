@@ -121,8 +121,21 @@ export function StoryBust({ art, side, name }: { art: StoryArtRecord; side: Spea
   );
 }
 
-/** A bust in a small 2:3 slot for dialogue lists (contain fit), else the square portrait. */
-export function SpeakerPortrait({ catalog, line, size = '3.4rem' }: { catalog: ContentCatalog; line: { readonly speaker: string; readonly portraitAssetId: string }; size?: string }) {
+/**
+ * The speaker's small portrait in dialogue lists and the dialogue box: the
+ * delivered square portrait (Brief 17 painted one for each story character that
+ * had only a bust), else the bust in a small 2:3 slot (contain fit), else the
+ * hero or story portrait.
+ */
+export function SpeakerPortrait({ catalog, line, size = '3.4rem', bustFirst = false }: { catalog: ContentCatalog; line: { readonly speaker: string; readonly portraitAssetId: string }; size?: string; /** The bust even when a square portrait exists (the campaign cards of the setup screen). */ bustFirst?: boolean }) {
+  const square = resolveAsset(line.portraitAssetId);
+  if (!bustFirst && square.status === 'final' && square.url) {
+    return (
+      <span className="portrait" style={{ width: size, height: size }} title={line.speaker}>
+        <img src={square.url} alt={`${line.speaker} portrait`} draggable={false} data-asset={line.portraitAssetId} />
+      </span>
+    );
+  }
   const bust = speakerBust(line);
   if (bust) {
     return (

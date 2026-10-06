@@ -2658,6 +2658,30 @@
    "wrap": "mirror",
    "average": "#6A879E"
   },
+  "town.celtic.background.l1": {
+   "file": "art/town/town.celtic.background.l1.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.celtic.background.l2": {
+   "file": "art/town/town.celtic.background.l2.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.celtic.background.l3": {
+   "file": "art/town/town.celtic.background.l3.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.celtic.background.l4": {
+   "file": "art/town/town.celtic.background.l4.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
   "town.celtic.dwelling.tier1.base": {
    "file": "art/town/town.celtic.dwelling.tier1.base.webp",
    "kind": "building",
@@ -2855,6 +2879,30 @@
    "kind": "building",
    "width": 479,
    "height": 479
+  },
+  "town.egyptian.background.l1": {
+   "file": "art/town/town.egyptian.background.l1.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.egyptian.background.l2": {
+   "file": "art/town/town.egyptian.background.l2.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.egyptian.background.l3": {
+   "file": "art/town/town.egyptian.background.l3.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.egyptian.background.l4": {
+   "file": "art/town/town.egyptian.background.l4.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
   },
   "town.egyptian.dwelling.tier1.base": {
    "file": "art/town/town.egyptian.dwelling.tier1.base.webp",
@@ -3054,6 +3102,30 @@
    "width": 443,
    "height": 443
   },
+  "town.greek.background.l1": {
+   "file": "art/town/town.greek.background.l1.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.greek.background.l2": {
+   "file": "art/town/town.greek.background.l2.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.greek.background.l3": {
+   "file": "art/town/town.greek.background.l3.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.greek.background.l4": {
+   "file": "art/town/town.greek.background.l4.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
   "town.greek.dwelling.tier1.base": {
    "file": "art/town/town.greek.dwelling.tier1.base.webp",
    "kind": "building",
@@ -3251,6 +3323,30 @@
    "kind": "building",
    "width": 436,
    "height": 436
+  },
+  "town.japanese.background.l1": {
+   "file": "art/town/town.japanese.background.l1.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.japanese.background.l2": {
+   "file": "art/town/town.japanese.background.l2.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.japanese.background.l3": {
+   "file": "art/town/town.japanese.background.l3.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.japanese.background.l4": {
+   "file": "art/town/town.japanese.background.l4.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
   },
   "town.japanese.dwelling.tier1.base": {
    "file": "art/town/town.japanese.dwelling.tier1.base.webp",
@@ -3450,6 +3546,30 @@
    "width": 459,
    "height": 459
   },
+  "town.mesoamerican.background.l1": {
+   "file": "art/town/town.mesoamerican.background.l1.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.mesoamerican.background.l2": {
+   "file": "art/town/town.mesoamerican.background.l2.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.mesoamerican.background.l3": {
+   "file": "art/town/town.mesoamerican.background.l3.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.mesoamerican.background.l4": {
+   "file": "art/town/town.mesoamerican.background.l4.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
   "town.mesoamerican.dwelling.tier1.base": {
    "file": "art/town/town.mesoamerican.dwelling.tier1.base.webp",
    "kind": "building",
@@ -3647,6 +3767,30 @@
    "kind": "building",
    "width": 455,
    "height": 455
+  },
+  "town.norse.background.l1": {
+   "file": "art/town/town.norse.background.l1.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.norse.background.l2": {
+   "file": "art/town/town.norse.background.l2.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.norse.background.l3": {
+   "file": "art/town/town.norse.background.l3.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
+  },
+  "town.norse.background.l4": {
+   "file": "art/town/town.norse.background.l4.webp",
+   "kind": "background",
+   "width": 1448,
+   "height": 1086
   },
   "town.norse.dwelling.tier1.base": {
    "file": "art/town/town.norse.dwelling.tier1.base.webp",

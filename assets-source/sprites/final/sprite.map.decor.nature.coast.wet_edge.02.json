@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 565.116,
+  "sourceSheet": "sheet.nature.coast.ground_edges.png",
+  "sourceRect": [
+    362,
+    1058,
+    726,
+    1448
+  ],
+  "role": "wet_edge"
+}

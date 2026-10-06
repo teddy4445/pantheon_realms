@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 320.968,
+  "sourceSheet": "sheet.nature.autumn.flora_rocks.png",
+  "sourceRect": [
+    362,
+    0,
+    714,
+    472
+  ],
+  "role": "canopy"
+}

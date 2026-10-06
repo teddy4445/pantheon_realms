@@ -43,10 +43,10 @@ import {
   questHutProgress,
   quoteNeutralReaction,
   worldWeek,
-  dayOfWeek, heroInTown, townGate,
+  dayOfWeek, heroInTown, townGate, HIRE_STARTING_TROOPS,
 } from '@pr/rules';
 import type { AIObservation } from './observation';
-import { armyStrength } from './evaluation';
+import { armyStrength, fightingStrength } from './evaluation';
 import { buildReserve, heroPower, hireReserve, weekPlan } from './assessment';
 import { campCandidates, godCandidates, interventionCandidates,
   giftCandidates, mapEventCandidates, offeringCandidates, siteCandidates, trainingCandidates } from './services';
@@ -113,6 +113,115 @@ const HERO_ATTACK_MARGIN = 1.2;
 const DANGER_MARGIN = 1.0;
 
 /**
+ * Home guard (owner request 2026-10-06: "the computer leaves its towns empty").
+ * A hero visiting a town leaves this share of the strength there (its army
+ * and the garrison together) in the garrison: the lowest tiers first, so a
+ * scout or a secondary hero can no longer walk into an empty town, and a main
+ * army has to fight its way in (the maps balance runs of 2026-10-05 saw towns
+ * lost on days 5–8 to the first army that found an empty garrison). A
+ * temperament that favours defence (build weight) keeps more, an aggressive
+ * one less (10–30 %). Days 1–3 keep nothing back (the first days decide the
+ * expansion), the rest of week 1 half the share. Proposed values.
+ */
+const HOME_GUARD_SHARE = 0.2;
+const HOME_GUARD_FROM_DAY = 4;
+const HOME_GUARD_FULL_DAY = 8;
+/** A visible enemy hero this close to a town (about two days' march) raises its guard (homeGuardTransfers). */
+const GUARD_THREAT_RADIUS = 16;
+
+export function homeGuardShare(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): number {
+  if (belief.day < HOME_GUARD_FROM_DAY) return 0;
+  const t = aiTemperamentFor(catalog, belief, playerId);
+  const share = Math.max(0.1, Math.min(0.3, (HOME_GUARD_SHARE * (t.build.defense ?? 1)) / Math.max(0.5, t.aggression)));
+  return belief.day < HOME_GUARD_FULL_DAY ? share / 2 : share;
+}
+
+type Slot = { creatureId: string; count: number } | null | undefined;
+/** Plain heuristic strength (linear in count, so splitting a stack between hero and town changes nothing). */
+const plainOf = (catalog: ContentCatalog, slots: readonly Slot[]) => armyStrength(catalog, slots.filter((x): x is NonNullable<Slot> => !!x && x.count > 0).map((x) => ({ creatureId: x.creatureId, count: x.count })));
+
+/**
+ * The army of a hero fresh from a rival's Tavern (its town's tier-1 escort, public
+ * rules data): the cheapest raider that could walk into one of our towns. The
+ * strongest such escort among the rival empires.
+ */
+function raiderPrior(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId): number {
+  let best = 0;
+  for (const [id, p] of Object.entries(belief.players)) {
+    if (id === playerId || p.eliminated) continue;
+    const fam = catalog.pantheons[p.pantheonId]?.roster[0];
+    const creatureId = fam ? catalog.families[fam.familyId]?.baseCreatureId : undefined;
+    if (creatureId) best = Math.max(best, armyStrength(catalog, [{ creatureId, count: HIRE_STARTING_TROOPS }]));
+  }
+  return best;
+}
+
+/** The strength a town keeps when `heroSlots` visit it: `share` of the hero's army and the garrison together. */
+function homeGuardTarget(catalog: ContentCatalog, share: number, heroSlots: readonly Slot[], garrison: readonly Slot[]): number {
+  return share > 0 ? share * plainOf(catalog, [...heroSlots, ...garrison]) : 0;
+}
+
+/**
+ * The visiting hero's moves between its army and the garrison: take the
+ * garrison's stacks (highest tier first) while what stays home is still worth
+ * the guard (a partial stack when only part can go), then, if the garrison is
+ * short of its guard, leave the hero's lowest-tier creatures there (shooters
+ * first among equals) — never the hero's last creature.
+ *
+ * `threat`: the strongest visible enemy hero within about two days' march of
+ * the town (the visitor being strong enough not to be held inside), and from
+ * day 4 at least a rival's fresh Tavern hero (`raiderPrior`). The guard then
+ * grows to hold the walls against that hero alone (its strength over the
+ * walls' factor, at most 60 % of the strength there): heroes used to leave a
+ * town behind with a fifth of the strength, and a rival's ten-creature hero
+ * walked in two days later (maps balance trace, The Burning Oasis, 2026-10-06).
+ */
+function homeGuardTransfers(catalog: ContentCatalog, town: MatchState['towns'][string], visitor: HeroState, share: number, nearThreat = 0): CommandPayload[] {
+  const out: CommandPayload[] = [];
+  const heroSlots = visitor.army.slots;
+  const gSlots = town.garrison.slots;
+  const walls = 1 + 0.25 * townFortificationLevel(catalog, town);
+  const combined = plainOf(catalog, [...heroSlots, ...gSlots]);
+  const target = Math.max(homeGuardTarget(catalog, share, heroSlots, gSlots), Math.min(0.6 * combined, nearThreat / walls));
+  const per = (id: string) => armyStrength(catalog, [{ creatureId: id, count: 1 }]);
+  const tier = (id: string) => catalog.creatures[id]?.tier ?? 0;
+  let kept = plainOf(catalog, gSlots);
+  const order = gSlots.map((s, i) => ({ s, i })).flatMap((x) => (x.s && x.s.count > 0 ? [{ s: x.s as { creatureId: string; count: number }, i: x.i }] : [])).sort((a, b) => tier(b.s.creatureId) - tier(a.s.creatureId) || a.i - b.i);
+  for (const { s, i } of order) {
+    const merge = heroSlots.findIndex((x) => x?.creatureId === s.creatureId);
+    const empty = heroSlots.findIndex((x) => !x);
+    const to = merge >= 0 ? merge : empty;
+    if (to < 0) continue;
+    const unit = per(s.creatureId);
+    const spare = unit > 0 ? Math.floor((kept - target) / unit + 1e-9) : s.count;
+    const qty = Math.min(s.count, Math.max(0, spare));
+    if (qty <= 0) continue;
+    out.push({ kind: 'TransferStack', from: { kind: 'garrison', townId: town.id }, fromSlot: i, to: { kind: 'hero', heroId: visitor.id }, toSlot: to, quantity: qty });
+    kept -= qty * unit;
+  }
+  if (target > 0 && kept < target - 1e-6) {
+    const heroCreatures = heroSlots.reduce((n, x) => n + (x?.count ?? 0), 0);
+    const leave = heroSlots
+      .map((s, j) => ({ s, j }))
+      .flatMap((x) => (x.s && x.s.count > 0 ? [{ s: x.s as { creatureId: string; count: number }, j: x.j }] : []))
+      .sort((a, b) => tier(a.s.creatureId) - tier(b.s.creatureId) || Number(!!catalog.creatures[b.s.creatureId]?.stats?.shots) - Number(!!catalog.creatures[a.s.creatureId]?.stats?.shots) || a.j - b.j);
+    for (const { s, j } of leave) {
+      const merge = gSlots.findIndex((x) => x?.creatureId === s.creatureId);
+      const empty = gSlots.findIndex((x) => !x || x.count <= 0);
+      const to = merge >= 0 ? merge : empty;
+      if (to < 0) continue;
+      const unit = per(s.creatureId);
+      const need = unit > 0 ? Math.ceil((target - kept) / unit - 1e-9) : 0;
+      const qty = Math.min(need, s.count, heroCreatures - 1);
+      if (qty <= 0) continue;
+      out.push({ kind: 'TransferStack', from: { kind: 'hero', heroId: visitor.id }, fromSlot: j, to: { kind: 'garrison', townId: town.id }, toSlot: to, quantity: qty });
+      break;
+    }
+  }
+  return out;
+}
+
+/**
  * Tie-break for equally scored moves: a hash of the empire and the option key.
  * Ordering ties by the key alone (its coordinates) made empires on opposite
  * sides of a mirrored map prefer different directions — the west explored
@@ -147,7 +256,7 @@ function unseenGarrisonPrior(catalog: ContentCatalog, belief: MatchState, panthe
     if (fam && fam.tier <= 5) week.push({ creatureId: fam.baseCreatureId, count: fam.baseGrowth });
   }
   const weeks = Math.min(8, Math.max(1, Math.ceil(belief.day / 7)));
-  return 0.5 * armyStrength(catalog, week) * weeks;
+  return 0.5 * fightingStrength(catalog, week) * weeks;
 }
 
 function withinRegion(hero: HeroState, c: HexCoord): boolean {
@@ -183,7 +292,7 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
     const st = belief.world.sites[def.id];
     if (!st) continue; // unknown to this player
     if (def.guard && !st.cleared) {
-      const guardStr = armyStrength(catalog, st.guard ?? def.guard.army, def.guard.commander ? { attack: def.guard.commander.attributes.attack, defense: def.guard.commander.attributes.defense } : undefined);
+      const guardStr = fightingStrength(catalog, st.guard ?? def.guard.army, def.guard.commander ? { attack: def.guard.commander.attributes.attack, defense: def.guard.commander.attributes.defense } : undefined);
       if (myStrength >= guardStr * persona.guardMargin) {
         const reward = def.guard.reward.resources?.gold ?? 0;
         out.push({ coord: def.coord, value: 600 + reward + guardStr * 0.2, encounter: true, label: def.name, fights: guardStr });
@@ -218,7 +327,7 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
           break;
         }
         // Siege: walls, keep and towers favour the defender; demand a clear margin.
-        const defense = armyStrength(catalog, garrison) + (visitor ? heroStrength(catalog, belief, visitor) : 0);
+        const defense = fightingStrength(catalog, garrison) + (visitor ? heroStrength(catalog, belief, visitor) : 0);
         const walls = 1 + 0.25 * townFortificationLevel(catalog, town);
         if (myStrength >= defense * walls * persona.siegeMargin) {
           out.push({ coord: def.coord, value: (8000 + defense * 0.3) * last, encounter: true, label: `Siege of ${town.name}`, town: true });
@@ -441,9 +550,13 @@ function movementCandidates(catalog: ContentCatalog, belief: MatchState, playerI
   const plan = weekPlan(catalog, belief, playerId);
   const reserve = buildReserve(plan, 1500);
   const earlyGrowthWeek = plan.growthBonus > 0 && dayOfWeek(belief.day, catalog.rulesProfile.daysPerWeek) <= 3;
+  const guardShare = homeGuardShare(catalog, belief, playerId);
   for (const home of playerTowns(belief, playerId)) {
     if (heroInTown(catalog, belief, hero, home.id)) continue;
-    const garrison = armyStrength(catalog, home.garrison.slots.map((s) => (s && s.count > 0 ? { creatureId: s.creatureId, count: s.count } : null)));
+    // Only what the hero may take counts: the home guard stays (homeGuardTransfers).
+    const plainGarrison = plainOf(catalog, home.garrison.slots);
+    const takeable = plainGarrison > 0 ? Math.max(0, plainGarrison - homeGuardTarget(catalog, guardShare, hero.army.slots, home.garrison.slots)) / plainGarrison : 0;
+    const garrison = takeable * fightingStrength(catalog, home.garrison.slots.map((s) => (s && s.count > 0 ? { creatureId: s.creatureId, count: s.count } : null)));
     const recruits = gold >= reserve && Object.values(home.population).some((n) => n > 0);
     if (garrison < Math.max(150, mine * 0.2) && !recruits) continue;
     const q = quoteMovement(catalog, belief, hero.id, home.coord);
@@ -624,7 +737,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         const garrison: StackSpec[] = t.garrison.slots.filter((x): x is NonNullable<typeof x> => !!x && x.count > 0).map((x) => ({ creatureId: x.creatureId, count: x.count }));
         const eff = effectiveAttributes(catalog, belief, visitor);
         const own: StackSpec[] = visitor.army.slots.filter((x): x is NonNullable<typeof x> => !!x).map((x) => ({ creatureId: x.creatureId, count: x.count }));
-        const mine = armyStrength(catalog, [...own, ...garrison], { attack: eff.attack.total, defense: eff.defense.total });
+        const mine = fightingStrength(catalog, [...own, ...garrison], { attack: eff.attack.total, defense: eff.defense.total });
         return near.some((e) => heroStrength(catalog, belief, e) * aiPersonalityFor(catalog, belief, playerId).heroAttackMargin > mine);
       })
       .map((t) => t.id),
@@ -699,15 +812,12 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
           if (q.legal) out.push({ kind: 'RecruitUnits', townId: town.id, creatureId: c.id, quantity: qty, destination: dest });
         }
       }
-      // Reinforce: move garrison stacks into a visiting hero (not while the town is threatened).
+      // Reinforce: move garrison stacks into a visiting hero (not while the town is threatened),
+      // keeping the home guard in the garrison (from week 2).
       if (visitor && !underThreat) {
-        town.garrison.slots.forEach((s, i) => {
-          if (!s) return;
-          const merge = visitor.army.slots.findIndex((x) => x?.creatureId === s.creatureId);
-          const empty = visitor.army.slots.findIndex((x) => !x);
-          const to = merge >= 0 ? merge : empty;
-          if (to >= 0) out.push({ kind: 'TransferStack', from: { kind: 'garrison', townId: town.id }, fromSlot: i, to: { kind: 'hero', heroId: visitor.id }, toSlot: to, quantity: s.count });
-        });
+        const seen = enemies.filter((e) => axialDistance(e.position, town.coord) <= GUARD_THREAT_RADIUS).map((e) => heroStrength(catalog, belief, e));
+        const nearThreat = Math.max(0, ...seen, belief.day >= HOME_GUARD_FROM_DAY ? raiderPrior(catalog, belief, playerId) : 0);
+        out.push(...homeGuardTransfers(catalog, town, visitor, homeGuardShare(catalog, belief, playerId), nearThreat));
       }
     }
   }

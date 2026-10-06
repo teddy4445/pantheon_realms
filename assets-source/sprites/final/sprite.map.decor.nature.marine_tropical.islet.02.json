@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 265.263,
+  "sourceSheet": "sheet.nature.marine_tropical.png",
+  "sourceRect": [
+    362,
+    362,
+    724,
+    724
+  ],
+  "role": "islet"
+}

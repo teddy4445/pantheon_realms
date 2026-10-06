@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 535.714,
+  "sourceSheet": "sheet.nature.marine_tropical.png",
+  "sourceRect": [
+    724,
+    1086,
+    1086,
+    1448
+  ],
+  "role": "water_life"
+}

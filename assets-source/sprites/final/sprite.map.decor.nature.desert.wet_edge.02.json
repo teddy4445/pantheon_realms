@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 527.907,
+  "sourceSheet": "sheet.nature.desert.ground_edges.png",
+  "sourceRect": [
+    363,
+    1035,
+    724,
+    1448
+  ],
+  "role": "wet_edge"
+}

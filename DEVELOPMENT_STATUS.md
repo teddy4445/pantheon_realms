@@ -1,12 +1,598 @@
 # Development Status
 
-_Last updated: 2026-10-06 · **app 0.13.2** (Windows installer for play-testing): **the ground crisp again** (only the edges between grounds slightly softened), **GPT-6 Brief 16** (painted road tiles: five road types × every way a road crosses a hex; the game reads them already) and **Briefs 14 and 15 in the game** (six skirmish-map paintings, each pantheon's walls, gate, towers, keep and siege battlefield, the catapult's throw; below the asked resolutions, accepted) (below) · before it, **app 0.13.1**: **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.6`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
+_Last updated: 2026-10-06 · **app 0.13.5** (Windows installer for play-testing): **climate-aware nature scenery** (318 painted stills: each climate's trees, shrubs, rocks, deadwood, mountains and border clumps on the map, sea, lake and river scenery, battle obstacles in the map's climate) and **the hero screen's new equipment figure** (below) · before it, **app 0.13.4**: **the frame rate on the map and in battle** (the map, the battle and their figures in PixiJS render groups — a map frame sent 2.1 MB to the GPU, now 8 KB —, pictures decoded off the main thread, the fog redrawn only when it changes, the movement range and the computer's routes without their spikes, High capped at 60 frames per second, adaptive resolution and a frame-rate readout in Settings → Display; the frame rate on the owner's laptop is a target until measured there) and **GPT-6 Brief 17 in the game** (painted ground transitions and shore foam, 24 town backgrounds by town-hall level, the three markers, the neutral map hero, 16 story portraits) (below) · before it, **app 0.13.3**: **GPT-6 Brief 17**, the last art request (ground transitions and shore foam — the map is ready for them —, the town backgrounds, the last stand-in markers, the neutral map hero, 16 story portraits), **the status, action and miracle icons in battle** (marks over each stack, icons before the floating words, miracle icons on the map), **a steadier AI** (a lone big creature judged at its real strength; a home guard in every town) and **all five road types of Brief 16 in the game** (dirt approved by the owner; cobble, sand, snow and boardwalk awaiting in-game acceptance) (below) · before it, **app 0.13.2**: **the ground crisp again** (only the edges between grounds slightly softened), **GPT-6 Brief 16** (painted road tiles: five road types × every way a road crosses a hex; the game reads them already) and **Briefs 14 and 15 in the game** (six skirmish-map paintings, each pantheon's walls, gate, towers, keep and siege battlefield, the catapult's throw; below the asked resolutions, accepted) (below) · before it, **app 0.13.1**: **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.6`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## Climate-aware nature scenery and the hero equipment figure; app 0.13.5 (owner deliveries, 2026-10-06)
+
+Owner deliveries: "Pantheon Realms — climate-aware nature expansion" (318
+painted stills in `blannder_models\nature-expansion-2026-10-06`, with an
+ecology policy and a reference selector), then "replace the hero equipment
+screen's body diagram with the second, simpler schematic image"
+(`blannder_models\hero-equipment-panel-2026-10-06`). Both folders were only
+read.
+
+### The nature scenery
+
+**Delivery in the game.** The 318 PNGs and their 318 JSON sidecars were
+copied into `assets-source/sprites/final/` (`cp -n`: no existing file
+replaced; SHA-256 equal to the delivery's `CHECKSUMS.sha256` on the owner's
+computer and in the cloud copy), `data/nature-policy.json` into
+`packages/presentation/src/nature-policy.json`; `npm run sprites:import --
+--only sprite.map.decor.nature.` registered **318 `decor` keys
+`nature.<climate|water profile>.<role>.0N`**, 0 problems, every runtime file
+decoding at its listed size, no other manifest entry changed. The importer now
+trims these stills to their painted pixels (alpha above 4/255; the cells carry
+a wide transparent margin and a faint fringe) with the anchor kept on the same
+picture point (`import_sprites.py --self-test` checks it): 41 % of the frame
+area on average.
+
+**The selector** (`packages/presentation/src/nature.ts`) is the delivery's
+`tools/nature-selector.mjs` in TypeScript (same hash, same picks): the
+delivery's own 3,425 checks pass on the port (`presentation/test/nature.test.ts`),
+and a comparison run against the reference module gave identical answers in
+about 327,000 cases (land, borders, water, battle obstacles, every climate);
+the delivery's `node tools/test-selector.mjs` itself: 3,425 passed.
+
+**On the map** (`planNatureScenery`, drawn by `adventure.ts`; presentation
+only — stable hashes of the map seed, the tile and the slot; no game RNG, no
+change to the state, the logical map or its hash; tested):
+
+* Climate first, terrain second: `map.biome` picks the family, the hex's
+  terrain the role (policy weights), density from the policy × the climate's
+  multiplier (desert 0.42, tundra 0.4 … jungle 1.15). Forests hold at most two
+  big canopies, a third item is low dressing; plains on a road stay bare;
+  items stand toward a border no road crosses, off the hero's spot; map
+  locations and town entrances stay clear.
+* Every mountain tile carries one of its climate's three mountains (a
+  neighbour's variant avoided where possible); the tile stays impassable as
+  before.
+* Borders between grounds: each border planned once (lower tile first), 30 %
+  of them, at most two clumps a tile, none where a road crosses — woodland
+  clumps on the forest side, rocky ones on the rough or mountain side, wet
+  plants on the marsh side and on the land bank of lakes and rivers; on a sea
+  shore salt-marsh plants only on coast and jungle maps (the mangrove), rocky
+  clumps elsewhere — never desert papyrus on a beach. The Brief 17 ground masks
+  stay underneath.
+* Water: `classifyWater` sorts each body into sea, lake or river from its
+  shape (the map formats carry no water-body data): never touching the map's
+  edge → a lake (a river when long and one ring wide); touching the edge and
+  one ring wide → a river; touching the edge, 24+ tiles and two rings wide →
+  the sea on coast and fjord maps, elsewhere only when it is also 15 % of the
+  map; else unknown (nothing drawn). The sea takes its climate's profile
+  (temperate, tropical or frozen), lakes and rivers freshwater. Per tile at most
+  one piece by the policy's rates, three hexes apart, a budget per body; boats
+  need 12 tiles of water, whales and dolphins 40 and two rings, no lilies on
+  rivers or in the cold; the tundra's pack-ice water carries no boats and
+  nothing swimming. Bridges, roads into water and locations by the water stay
+  clear. In the shipped content the sea occurs on The Three Beacons 1, The
+  Winter Oath 1 and 4, the four arc campaigns' fourth missions and random
+  archipelagos; the campaigns' water barriers are rivers; Lake Isle has lakes.
+* Graphics quality: Medium and Low leave out the low dressing (groundcover,
+  shrubs, the three kinds of border clumps), Low also every other tree and
+  rock and the boats and wildlife; mountains always stay. Fog as before: a
+  piece shows once its tile is explored. Only the climate's own pictures load,
+  and a picture is shown only after the engine has sent it to the GPU (see
+  below). The plan is remembered for the last map, so the map built again after
+  a battle does not plan again.
+
+**In battle** (`battle.ts`, `battleObstacleId`): each obstacle cell the rules
+placed shows the map climate's rock, deadwood or tree (the policy's weights
+for the battlefield), drawn about 0.9 hex across; the generic columns and
+standing stones stay; sieges unchanged. A missing still falls back to the
+neutral boulder or rock, then a drawn grey stone — never the first picture in
+the list. The board is rebuilt when the climate changes. Not added: cosmetic
+dressing and mountains beyond the board, and the optional bobbing of boats.
+
+**Frame rate with the scenery** (`tests/perf/frames.spec.ts`, each frame waited
+for, 1280 × 720): main-thread time per frame while panning, zooming and walking
+0.7–1.1 ms (0.13.4: 0.5–0.9), huge map panning 0.76 ms; data sent to the GPU
+while panning 11–31 KB a frame (unchanged); two draw calls more. Emulated GPU
+time: map 335–409 ms, huge map 556 ms; with the scenery hidden (a temporary
+switch, removed) 385 and 490 ms — the scenery adds about a tenth on the map and
+a seventh on a huge map. Those scenery-hidden numbers are above the 285–325 ms
+recorded for 0.13.4, which were measured before Brief 17's painted ground
+transitions were switched on; that difference was not broken down further.
+The emulator's run-to-run spread is about ±30 ms. Not added: culling of
+off-screen scenery — it sits in the objects' render group, costs nothing on the
+main thread while still, and Pixi's culling would rebuild the group's draw list
+during every pan.
+
+A picture is now handed to a sprite only once the engine has sent it to the GPU
+(`textures.ts` `markUploaded`; at most 1.5 s of waiting): before, a map's
+hundred new scenery pictures were all sent in its first frames. Full test game
+(`fullgame.spec.ts`, run `nature135b`, the same game as for 0.13.4):
+
+| What was on screen | Frames | Main-thread time per frame: mean / longest | Longest other main-thread work |
+|---|---|---|---|
+| The map, the player's turn | 1,052 | 1.10 / 59 ms | Continue on the battle result 67 ms (the map is built again; 96 ms before the plan was remembered, 61 ms in 0.13.4); clicking a tile ≤ 29 ms |
+| The map, the computer's turn | 85 | 1.32 / 7.1 ms | the computer's steps ≤ 37 ms |
+| The battle | 408 | 1.18 / 74 ms | nothing over 10 ms |
+
+Frames over 16 ms of main-thread work: four, all where a view opens — the map
+(37 ms), the map after the battle (32 and 59 ms), the battle's first second
+(74 ms). The laptop's frame rate stays a target until measured there.
+
+Review screenshots (`tests/e2e/nature.spec.ts`, test-results/nature-*): every
+climate on an archipelago with a close-up where most grounds meet; water: a
+temperate lake, moor ponds, a jungle sea, a fjord sea, an autumn river; the
+same map reloaded (identical), Medium and Low, fog; battlefields — all six in
+desert, tundra and jungle, one each in the other seven climates.
+
+### The hero equipment figure
+
+`hero-equipment-schematic-v2.png` (1122 × 1402, SHA-256 `537a129a…`; the
+simpler schematic, not the bronze figure) was copied to
+`assets-runtime/ui/` and `assets-source/ui/` on both sides and is used as
+delivered (`HERO_EQUIPMENT_SCHEMATIC = './ui/hero-equipment-schematic-v2.png'`
+in `ui/src/assets/manifest.ts`). In `Hero.tsx` an `<img>` replaces the drawn
+SVG body inside `.h3-doll__stage`: empty alt text, `aria-hidden`, not
+draggable, `pointer-events: none`, `object-fit: cover`, the 4:5 stage kept.
+The fifteen slots and the spellbook stay separate buttons over it at the
+handoff's centres (the neck at 20 % instead of 19 %, clear of the head box at
+the smallest stage); the boxes are 13 % of the stage wide (2.3–3.5 rem) with
+an opaque navy fill, a gold border, a visible keyboard focus ring and the
+hover, picked and drop-target states as before. Drag and drop, tooltips, set
+badges, the inventory, the mount slot and the spellbook are unchanged. The
+narrow layout (windows under 1100 px) was squeezing the equipment and
+inventory plates into strips; the column now scrolls with each plate whole.
+
+Checked (`tests/e2e/heroschematic.spec.ts`): at 1280 × 720, 1366 × 768,
+1600 × 900, 1920 × 1080 and 1024 × 768, with an empty and a fully equipped
+hero — the picture is the delivered file, decorative and full-stage at 4:5;
+all sixteen controls lie inside the stage, none overlaps another, each takes
+the click at its own centre; equipping by click, unequipping by double-click,
+dragging a ring backpack → left → right → backpack, a drop on the figure
+ignored, equipping by keyboard (Enter) with the focus ring shown, the
+spellbook opening; and the existing `heroscreen.spec.ts`.
+
+### Verification of 0.13.5 (commands actually run)
+
+| Command (cloud copy of the project) | Result |
+|---|---|
+| `node tools/test-selector.mjs` (the delivery's own checks, run from a copy of the delivery) | 3,425 checks passed |
+| a temporary comparison test: `makeNatureSelector` (TypeScript) against the delivery's `nature-selector.mjs` | identical in about 327,000 cases; removed afterwards |
+| `npm run sprites:import -- --only sprite.map.decor.nature.` | 318 imported, 0 problems; 318 `decor` keys equal to the policy's IDs, every file decodes at its size, no other manifest entry changed |
+| `python3 tools/assets/sprites/import_sprites.py --self-test` | passed (incl. the new trim case: the visible block keeps its place relative to the anchor within a pixel) |
+| `npm run check` (boundaries, type-check, unit tests) | passed: **448 / 448** tests in 50 files (new: `presentation/test/nature.test.ts`, 17 tests — the delivery's checks, water kinds, every climate's own art, determinism and an untouched map, freshwater and ice rules, road/site/town clearances, qualities, missing art, neighbour variety, battle obstacles, the remembered plan) |
+| `tests/perf/frames.spec.ts` (`PERF_GPU=1`; with a temporary switch hiding scenery kinds, removed) and `tests/perf/fullgame.spec.ts` (`PERF_GPU=1 PERF_DPR=0.5 PERF_DAYS=7`, runs `nature135`, `nature135b`) | the tables above |
+| `npx playwright test` (all 141 UI tests, release build, run alone) | **139 / 141**. The two failures, both from the new picture queue: `sprites2d.spec.ts` playback (an animation strip waited behind a hundred scenery pictures — strips, effects and icons now go first; then **passed**) and `heroes.spec.ts` walk (the walk took 17 s here, the emulator's frames being slower with the scenery, against a 15 s wait; the wait raised to 45 s, every walking check unchanged; then **passed**) |
+| `npx playwright test` on the final build: `heroes.spec.ts`, `sprites2d.spec.ts`, then `battles`, `bigMoments`, `brief17`, `framerate`, `nature` | heroes 5 / 6 (the walk; rerun alone with the longer wait: passed), sprites2d 4 / 4; then **21 passed, 0 failed** — the run was stopped there to deliver (the nature battlefields, rounds 3, 10, 11, 12 and the siege were not rerun after the queue order change; they passed in the full run just before it) |
+| `tests/e2e/heroschematic.spec.ts`, `tests/e2e/heroscreen.spec.ts` | 3 / 3 and 3 / 3 (also within the full run) |
+| `npm run build`, `npm run desktop:build`, `electron-builder --win nsis --x64 --linux dir --x64` | `Pantheon-Realms-Setup-0.13.5-x64.exe`, 549,142,187 bytes, SHA-256 `fa841bbf8d16dfc2add329b585b775a938ab846ceb9d1b0926c29350c99c19df` (unsigned, not run on Windows); the packed app equals the build file for file (3,247 files incl. the 318 scenery stills and the equipment figure; only `package.json` rewritten by the packer; nothing from `tools/` or test servers) |
+| packaged payload check, offline packaged smoke (`unshare -n`) | OK with networking off: the map draws (WebGL), 1,629 sprite entries (318 more), 550 painted pictures and 662 interface images resolve, saves and records written, sounds decode, packaged without developer tools |
+
+Not measured here: the frame rate on the owner's laptop; the scenery, the battle obstacles and the equipment figure judged in play by the owner.
+
+**Delivery.** The nature sources (318 PNGs and 318 sidecars) and the
+equipment figure were copied into the owner's folder from the delivery folders
+(SHA-256 checked there); bundle 26 (`apply_sync.py`, not committed) then wrote
+344 files (323 new) with 0 problems, the old versions checked there first. The
+0.13.5 installer was copied to the owner's `installer\` folder in 27 parts and
+joined there (SHA-256 checked: `fa841bbf…19df`).
+
+## The frame rate on the map and in battle; app 0.13.4 (owner request, 2026-10-06)
+
+Owner request: "it feels like the frame-rate of the map and battle are really
+bad — do some analysis about the framerate and consider optimizations to
+ensure it is above 30 in the high graphic settings without dropping below for
+a full test-game". Where it is worst: "everywhere, always"; the computer: a
+laptop with built-in graphics.
+
+**What can be measured here.** This container has no GPU: WebGL runs on
+SwiftShader (the GPU emulated on 2 processor cores). Its frame rates say
+nothing about a laptop's graphics chip, and its compositor misbehaves under
+load (measured: once a few frames fall behind, Chrome's compositor thread
+spins at 90–100 % of a core and starves the emulator; the frame rate of the
+map or a battle then collapses whatever is drawn). What *is* measured here and
+carries over: the main-thread (processor) time each frame costs, how much
+data each frame sends to the GPU, the long tasks of game logic and interface,
+and the emulated GPU time per frame with each frame waited for (`?gputime`, a
+one-pixel read-back), compared between layers and resolutions. **The frame
+rate on the owner's laptop is a target until measured there** — Settings →
+Display → Frame rate (new, below) shows it.
+
+### What made it slow (measured before the changes)
+
+Benchmark `tests/perf/frames.spec.ts` (new), High, 1280 × 720, Twin Harbors
+fully explored, a huge random map with six empires, a battle of two full
+armies:
+
+| Scenario | Data sent to the GPU per frame | Main thread (CPU profile) |
+|---|---|---|
+| Map, idle | **2,149 KB** (vertices and indices, every frame) | 96 % in `bufferSubData` |
+| Map, panning | 2,150 KB | 97 % in `bufferSubData` |
+| Huge map, idle | 343 KB; 7,338 display objects | — |
+| Battle, idle | 96 KB; 45 draw calls | 95 % in `bufferSubData` |
+| Battle, auto-combat | — | 90 % in `texImage2D`; the slowest frame **10.7 s** |
+
+The causes, found in the code:
+
+* **The whole map was one render group** (PixiJS 8 re-sends a group's entire
+  vertex buffer when anything in it changes), and *something always changed*:
+  the selected hero's ring was cleared and redrawn every frame (which also
+  rebuilds the group's draw list), the idle figures animate, and moving the
+  camera moved every vertex. Each frame re-packed and re-sent ~80,000
+  vertices — 60,000 of them the **soft shadows** (four tessellated ellipses
+  under every tree, rock, site and figure). The battle had the same shape
+  (the active stack's ring redrawn every frame).
+* **Pictures were decoded and sent to the GPU the first time a frame showed
+  them** — a creature's first attack, a spell's first strip — on the main
+  thread, inside that frame.
+* The **fog** was redrawn after every command (keyed by the state's revision),
+  with the grid, the roads (all road tiles destroyed and created again) and a
+  2048-pixel blurred fog picture re-sent to the GPU.
+* The **movement range** (`reachableTiles`) sorted its whole frontier for every
+  tile it settled (quadratic), after every command; the **computer players**
+  ran one route search per destination they weighed (dozens per decision) —
+  huge map: median 6.5 ms, p95 30 ms, the longest **65 ms** per step, between
+  the map's frames.
+* The **minimap frame** was polled into the map screen's own state: panning
+  re-rendered the whole map screen every 150 ms. Every battle-screen update
+  redrew all count badges (a new text picture each). High had **no frame cap**
+  (a 120/144 Hz laptop panel draws 2–2.4× the frames, and the chip heats and
+  slows).
+
+### What changed
+
+* **Render groups** (`adventure.ts`, `battle.ts`): the camera is one group
+  transform; the ground (terrain, borders, roads, grid), the reach, the route,
+  the walk's trail, the objects, the fog and the effects each sit in their own
+  group, so a change re-sends only its own layer. The black around the map and
+  the plain ground around the battlefield are the renderer's background
+  colour (one full-screen fill less). The selection and active-stack rings
+  are drawn once and pulse by scale; the hover outline is drawn once and
+  moved; a walk's trail is drawn once per walk and hidden step by step;
+  battle badges are redrawn only when the count or its colour changes.
+* **Shadows** are one shared soft-disc picture (four vertices each instead of
+  ~130), drawn the same (`staticSprites.ts`).
+* **Pictures** (`textures.ts`): decoded off the main thread
+  (`createImageBitmap`, the old image path as fallback) and sent to the GPU by
+  the engine a few per frame within 4 ms, before a frame needs them; the
+  ground paintings (drawn 5–20 times smaller than their pixels) with mipmaps.
+* **Fog** redrawn only when the explored or visible tiles actually change (the
+  grid, roads and decoration only when the explored ones do); the soft-fog
+  picture at most 1,536 pixels across.
+* **Rules** (`world.ts`, results unchanged — tests compare them tile by tile
+  with the old searches): the movement range from a heap; `withSharedPaths`
+  lets the computer player read one route tree per hero per decision.
+* **Interface**: the minimap holds its own frame state (panning redraws only
+  the minimap's frame).
+* **High: 60 frames per second at most**, with a cap that averages 60 on a
+  144 Hz panel (`frameDue`). **Adaptive resolution** (Settings → Display, on
+  by default): while frames run slower than about 34 per second for two
+  seconds of drawing — not while game logic held the thread — the view draws
+  85 % of the pixels per step, down to 60 %; back up when frames are at the
+  cap again (a step that proves too slow is not retried for a minute;
+  `adaptResolutionStep`). **Frame rate** readout (Settings → Display, off by
+  default): frames per second, the slowest recent frame, frames slower than
+  1/30 s since the view opened, and the resolution when lowered.
+
+### Measured after the changes
+
+Benchmark `tests/perf/frames.spec.ts`, same scenes, High, 1280 × 720:
+
+| Scenario | Data sent to the GPU per frame (before → after) | Draw calls | Frame rate in the emulator, idle (before → after) |
+|---|---|---|---|
+| Map, idle | 2,149 KB → **8 KB** | 6 → 7 | 2.2–5.4 → **60** (the cap) |
+| Huge map, idle | 343 KB → **4 KB** | 10–12 → 11 | 13.6 → **59.5** |
+| Battle, idle | 96 KB → **6 KB** | 45 → **27** | 14 → **52** |
+| Battle, auto-combat | slowest frame 10.7 s → 0.58 s (emulator) | 44 → 26 | — |
+
+Main-thread time per frame, each frame waited for (`?gputime`, so the time is
+the processor's alone): map idle, panning, zooming, a hero walking **0.5–0.9
+ms**; huge map panning 0.85 ms; battle idle 0.74 ms, auto-combat **1.9 ms**.
+Before, the same frames re-packed and re-sent 2.1 MB each (the CPU profile:
+96–97 % of the main thread in `bufferSubData`).
+
+Emulated GPU time per frame (SwiftShader, serialized, 1280 × 720): map
+285–325 ms, battle 174–238 ms in every scenario — panning, zooming and walking
+add no GPU work any more. It follows the pixels drawn: 75 % resolution → 62 %
+of the time, 50 % → 37 % (so adaptive resolution helps a slow graphics chip
+almost in proportion). Where it goes on the map (layers hidden one at a time):
+the ground ~49 %, the soft-fog picture ~28 %, the reach overlay ~19 % (the
+benchmark hero has 3,000 movement points: the whole map), the objects ~14 %,
+the road tiles ~6 %. A real integrated GPU draws such a frame in a few
+milliseconds; how many on the owner's laptop is not known here.
+
+The computer player's decision steps (Node, AI-against-AI step timer; the same
+seeds and days, the same decisions — identical step counts):
+
+| Map | Before (median / p95 / longest) | After |
+|---|---|---|
+| Twin Harbors, 19 days (171 steps) | 4.5 / 16.6 / **45.7 ms** | 4.9 / 12.8 / **19.7 ms** |
+| Huge random map, six empires, 16 days (742 steps) | 6.0 / 27.5 / **52.0 ms** | 5.4 / 11.8 / **19.9 ms** |
+
+Before, 4.3 of 6.3 s went into route searches, one per destination weighed;
+now one per hero and decision. Tests compare every route of every hero to every
+tile of Twin Harbors (fogged and explored) and of a huge map, alone and shared:
+identical; the movement range likewise, entry for entry and in order.
+
+A full test game (`tests/perf/fullgame.spec.ts`, new): Twin Harbors, seven
+days, played through the screens — the hero marches east along the road, the
+player pans and zooms each day, ends the day and watches the rival's turn; on
+day 2 the gold mine's guard is fought (auto-combat, normal speed). Each frame
+waited for (`?gputime`), drawn at half resolution so the emulator keeps up;
+long animation frames attributed to their scripts. The release build of this
+delivery (run `final2`, 4.9 minutes of play):
+
+| What was on screen | Frames | Main-thread time per frame: mean / longest | Longest other main-thread work |
+|---|---|---|---|
+| The map, the player's turn | 1,074 | 0.89 / 43.6 ms | **Continue** on the battle result 61 ms (the map is built again) and a picture's load handler 33 ms right after it; clicking a tile ≤ 24 ms; timers ≤ 22 ms |
+| The map, the computer's turn | 70 | 0.91 / 4.9 ms | the computer's steps (timers) ≤ 27 ms |
+| The battle | 430 | 0.97 / 38 ms | nothing over 8 ms |
+
+Frames with more than 16 ms of main-thread work in the whole game: **three**,
+each where a view opens — the battle's first second (38 ms) and the map's
+first two seconds after the battle (43.5 and 43.6 ms: the map is built again
+and its pictures go back to the GPU). Three runs of the same game gave 29.9,
+71.9 and 43.6 ms as the longest frame, always at such a change of view; the
+timed log places the 57–61 ms click on the result's Continue. Outside those
+moments nothing on the main thread came near 1/30 s. Still open: the map is
+rebuilt after every battle (keeping it alive through the battle would remove
+that hitch); the emulator's own frame rate (4–14 fps here) says nothing about
+the laptop.
+
+Start-up is not part of these numbers. Under the benchmark's uncapped
+settings (`--disable-frame-rate-limit`) the first WebGL context of a run waited
+12–455 s for the emulated GPU process (CPU profile: `getContext`); with the
+normal test settings (vsync) the same import and load measured one 0.6 s and
+one 1.0 s task (creating the WebGL context, building the map) in the emulator.
+
+## GPT-6 Brief 17 delivered: the final visuals in the game (owner delivery, 2026-10-06)
+
+Owner delivery `blannder_models\brief17-final-visuals-2026-10-06` (read
+only): 70 PNGs and 20 animation sidecars, checked against its
+`ASSET_MANIFEST.json` (SHA-256 of all 70 equal on the owner's computer and in
+the cloud copy), copied into the game's `assets-source` (`cp -n`: no existing
+file replaced; only PNGs and the hero sidecars — no masters, prompts,
+references or QA composites). The owner widened Part C from six town
+backgrounds to **24**: four per pantheon, one per town-hall level.
+
+| Part | Delivered | In the game |
+|---|---|---|
+| A, B | six ground-transition masks (meadow, woodland, rocky, boggy, scree, shore), 1536 × 768, and the shore foam | `npm run ground:import`: 6 mask sheets, foam yes, **0 problems** → `sprites/final/ground/edges.json` (traced outlines) and `foam.webp`. The map now draws **painted transitions** (`__prGround().edges = 'painted'`) instead of the softened hex edges |
+| C | 24 town backgrounds `town.<pantheon>.background.l1–l4`, **1448 × 1086** (4:3; below the asked 2048 × 1536, nothing enlarged) | `npm run art:import` (background pattern extended to `.l1`–`.l4`): 24 added, no other entry changed. **Code**: `townBackground()` (`ui/src/assets/manifest.ts`) picks the stage of the town hall (`civic_hall`): none/0 → stage 1, above 4 → stage 4, a missing stage → stage 1, then the old single painting. Buildings stay overlays at their places on every stage |
+| D | markers `icon.marker.hero`, `icon.marker.enemy-hero`, `icon.marker.encounter` | `npm run icons:import -- --new` (96 px). Already wired: the tile panel over your / another empire's hero; a failed objective in the Journal |
+| E | the neutral map hero: idle (4), walk (6), prepare (6), cast (6) × E, NE, N, S, SE (W, NW, SW mirrored), 320 px frames, anchor 0.88, 150 px per hex | `npm run sprites:import -- --only sprite.hero.neutral.`: 20 strips, 0 problems; stored at 192 px frames, 90 px per hex (the same scale, as the pantheon heroes are stored), fps 3/8/6/6, idle and walk loop, prepare and cast once. Shown for a hero without a pantheon (none in the current content; checked with a test fixture). The existing readiness beat and cast playback are unchanged (presentation only) |
+| F | 16 story portraits (Cathal, Sadb, Nebet, Pawah, Ione, Thaleia, Genzo, Shiro, Chimal, Xoco, Eydis, Jökul, Skeggi, Svanhild, the Troll-wife, the Herald) | `icons:import -- --new` (256 px WebP). **Code**: `SpeakerPortrait` shows the delivered square portrait in the dialogue box and the Journal's dialogue lists (the painted busts still stand beside the box; on a small window, where the bust has no room beside the box, the box shows the square portrait instead of the bust; the setup screen's campaign cards keep their busts) |
+
+Review notes (measured from the files, not judged in play):
+
+* **The neutral hero is drawn about 26 % taller than the six pantheon heroes**
+  at the declared 150 px per hex (idle E: 1.62 hex widths tall against
+  1.28–1.29). Kept as delivered; a sidecar value of about 189 px per hex would
+  match them (re-import with `sprites:import -- --only sprite.hero.neutral.`).
+* Its walk N and NE strips shift sideways between two frames (about a tenth of
+  a hex) — the small frame-to-frame changes the handoff names.
+* Town backgrounds are the delivery's native 1448 × 1086, as disclosed.
+
+Review screenshots (`tests/e2e/brief17art.spec.ts`, test-results/b17a-*): all
+24 town stages with buildings of mixed levels (stage 1 with every building
+complete, stage 4 with every building at its first level), the ground of all
+ten climates with a close-up of a coast, both hero markers, the failed
+objective, the Journal story of ten missions (all 16 portraits) and the
+Troll-wife's scene in the dialogue box, the neutral hero on the map; and a
+frame sheet of its four actions at map scale with the ground line.
+
+### Verification of 0.13.4 (commands actually run, both parts)
+
+| Command (cloud copy of the project) | Result |
+|---|---|
+| `npm run check` (boundaries, type-check, unit tests) | passed: **431 / 431** tests in 49 files (new: `rules/test/reach.test.ts` — movement range and shared routes equal to the old searches tile by tile; `presentation/test/graphics.test.ts` — frame cap and adaptive resolution; `ui/test/brief17.test.ts`; town-stage cases in `ui/test/townArt.test.ts`) |
+| `npx playwright test --config playwright.perf.config.ts tests/perf/frames.spec.ts` (`PERF_GPU=1`, `PERF_ONLY`, `PERF_DPR`), before and after each change | the frame tables above |
+| `PR_NO_MINIFY=1 npm run build` + `tests/perf/profile.spec.ts` (main-thread CPU profiles; release build rebuilt afterwards) | the "before" profiles above (`bufferSubData`, `texImage2D`) |
+| `PERF_LABEL=final2 PERF_GPU=1 PERF_DPR=0.5 PERF_DAYS=7 npx playwright test --config playwright.perf.config.ts tests/perf/fullgame.spec.ts` (release build; two more runs `dpr05-sync`, `final`) | the full-game table above |
+| AI step timer (a temporary `tools/balance` script, Node; removed before delivery) | the computer-player table above |
+| `python3 tools/assets/import_story_art.py --self-test` | 19 / 19 (the `.l1`–`.l4` stages; `.l0`, `.l5` refused) |
+| `npm run ground:import`, `npm run art:import`, `npm run icons:import -- --new`, `npm run sprites:import -- --only sprite.hero.neutral.` | 0 problems each; the manifests' other entries unchanged |
+| `npx playwright test` (all 134 UI tests, release build, run alone) | **133 / 134**; the one failure was `storyArt.spec.ts` (small window) still expecting the bust inside the dialogue box, which now shows the delivered square portrait (Brief 17) — the test was updated and `storyArt.spec.ts` then passed **3 / 3**. Includes `brief17art.spec.ts` (towns, ground of ten climates, markers, portraits, neutral hero), `brief17.spec.ts` and `framerate.spec.ts` (Settings toggles, the readout) |
+| `npm run build`, `npm run desktop:build`, `electron-builder --win nsis --x64 --linux dir --x64` | `Pantheon-Realms-Setup-0.13.4-x64.exe`, 546,666,105 bytes, SHA-256 `cd4e3538bce5b2c2587a33b9f215bb4e51557b8331d90463c4cd37db105fa5b5` (unsigned, not run on Windows); the packed app equals the build file for file (2,928 files; only `package.json` rewritten by the packer; nothing from `tools/` or test servers) |
+| packaged payload check, offline packaged smoke (`unshare -n`, `PR_SMOKE_EXE=…/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs`) | OK with networking off: the map draws (WebGL), 1,311 sprite entries, 550 painted pictures and 662 interface images resolve, saves and records written, sounds decode, packaged without developer tools |
+
+Not measured here: the frame rate on the owner's laptop (Settings → Display → Frame rate shows it); the delivered art judged in play by the owner.
+
+**Delivery.** The Brief 17 sources (70 PNGs and the 20 hero sidecars) were
+copied into the owner's folder from the delivery folder (SHA-256 checked
+there); bundle 25 (`apply_sync.py`, not committed) then wrote 111 files (73
+new) with 0 problems, the old versions measured there first. The 0.13.4
+installer was copied to the owner's `installer\` folder in 27 parts and joined
+there (SHA-256 checked: `cd4e3538…a5b5`).
+
+## Brief 17 (the final visuals), delivered art shown in battle, a steadier AI, all five road types; app 0.13.3 (owner requests, 2026-10-06)
+
+Owner requests: "give me the full visuals brief for GPT 6 — include everything
+so this will be the last time we are using GPT 6 for content"; then: ground
+transitions, town backgrounds, the leftover stand-ins, the delivered miracle
+and status icons that no screen showed, "the computer leaves its towns empty",
+"the computer misjudges one big creature"; then the owner's road
+deliveries (Brief 16): the dirt track for review, then — approved — the other
+four road types.
+
+### GPT-6 Brief 17: the final visuals
+
+`assets-source/art/briefs/GPT6_BRIEF_17_FINAL_VISUALS.md` (project doc
+`gpt6-brief-17-final-visuals.md`; copied to the owner's folder ahead of this
+delivery with its guides). From an audit of every manifest, the icon inventory
+and the screens: **A** ground transitions — six black-and-white mask sheets
+(meadow, woodland, rocky, boggy, scree, shore; one column per hex edge, three
+variants), **B** the shore foam, **C** the six town backgrounds repainted
+sharper (was Brief 13 Part A), **D** the three markers still cut from the
+concept pack (`icon.marker.hero`, `icon.marker.enemy-hero`,
+`icon.marker.encounter`), **E** the neutral map hero (20 strips), **F** 16
+story-character portraits; §8 lists what is final. The guides come from the
+game's hex geometry (`npm run art:ground-guides`); every part enters by an
+existing import command (ASSET_PIPELINE.md §16). Nothing of Brief 17 is
+painted yet.
+
+**Game side, ready for the delivery.** `npm run ground:import`
+(`tools/assets/ground/import_ground.py`) checks each mask against the guide,
+clips it to its hex and traces it at three grey levels into outlines
+(`assets-runtime/sprites/final/ground/edges.json`) and writes the foam atlas;
+nothing is written while a sheet has a problem unless `--keep-going`. The map
+(`groundEdges.ts`, `paintGroundEdges` in `adventure.ts`) lets the higher ground
+reach into the lower one's hex — water < marsh < plains < rough < forest <
+mountain, any land into water as a shore — in its character's shape, filled
+with the reaching ground's own painting (opacities 0.35, 0.5, 1: a soft rim and
+a solid core), one of three variants per hex and edge, and lays the surf over
+the water hex in the matching cell. Only when all six sheets are imported;
+until then the softened hex edges of 0.13.2 stay. Checked with synthetic masks
+made from the guides (imported into the runtime, drawn on archipelago and
+continental random maps: shorelines with foam, rocky and woodland borders),
+then removed again — the shipped manifest has no `ground` entry.
+
+### Delivered art now shown: status, action and miracle icons in battle
+
+The 14 miracle icons and most status icons of Brief 13 were registered but
+no screen showed them. Now (presentation only; no rule changed):
+
+* **Marks over each stack's count** (`ui/src/app/stackMarks.ts` →
+  `BattleStackView.marks`, drawn by `battle.ts`): defending
+  (`icon.action.defend`), waited (`icon.action.wait`), its Shapeshift aspect
+  (`icon.fx.summon`), and every running status — a miracle's with the
+  miracle's own icon, a spell's or ability's with its kind's: Attack up/down
+  `status.buff`/`status.debuff`, Defense up/down `fx.shield`/`status.weaken`,
+  Speed up/down `stat.speed`/`status.frozen`, maximum/minimum damage
+  `fx.divine`/`fx.shadow`, melee/ranged ward `fx.shield`/`fx.arrow`. Up to five
+  icons on dark gold-rimmed discs; they appear when the spell or miracle lands,
+  like the status glow. The active stack's card and the attack preview list the
+  same marks with their meaning (alt text and tooltip: "Rally the Faithful:
+  Attack +2 (2 rounds left)").
+* **Icons before the floating words**: Defend, Wait, Ward, Lucky, morale
+  (`stat.morale`) and a faltering stack (`status.stun`), healing
+  (`status.heal`), damage spells by their look (`status.burning`,
+  `status.frozen`, `fx.lightning`, `fx.shadow`, `status.poison` for blight and
+  swarm spells — a picture of the damage, no damage over time), and a
+  miracle's word or smite with the miracle's icon.
+* **Map miracles**: the miracle's icon rises over the heroes or the town it
+  touches (Favorable Winds, Bountiful Harvest, Tithe, Inspiration, Blessing of
+  the Nile, Mists of the Sidhe, Gift of the Feathered Serpent).
+
+Shown now: all 14 `icon.intervention.*` and `status.buff`, `status.debuff`,
+`status.weaken`, `status.frozen`, `status.heal`, `status.burning`,
+`status.stun`, `status.poison`. The book of Favor keeps its painted cards
+(the owner's choice: no icon before miracle names).
+
+### The AI: one big creature, and a home guard
+
+**One big creature.** Measured with duels (four seeds per point, six
+pantheons, a mixed tier-1–4 army attacking): a lone tier-7 creature held off
+armies of **2.1–2.8×** its strength by the shared heuristic (two tier-6: 1.7–1.9;
+an equal-strength stack of tier-2 creatures 1.2–1.7; a mixed guard 0.9–1.0). A
+stack's damage falls only as whole creatures die, so a single creature hits
+at full force to its last hit point. The strategic AI now judges every army
+by `fightingStrength`: the shared heuristic per stack × (n + 1) / n for n
+creatures (twice for one, half again for two, about 1 for big stacks); the
+same duels then break even at 1.2–1.45 for a lone tier 7, in line with other
+single-stack guards, which the AI's margins (1.3 for guards) cover. Its own
+heroes are judged the same way (`heroPower`). The shared heuristic in the
+rules is unchanged (the neutral join/flee rule uses it).
+
+**Home guard** (`homeGuardTransfers` in `strategic.ts`). A hero visiting a
+town takes the garrison's stacks highest tier first but leaves a guard, and
+leaves its own lowest tiers (shooters first among equals) when the garrison is
+short: from day 8, **20 %** of the strength there (hero and garrison; 10–30 %
+by temperament: more with a defensive build weight, less when aggressive),
+days 4–7 half that, days 1–3 nothing. The guard grows to hold the walls
+against the strongest visible enemy hero within 16 hexes and, from day 4,
+against a rival's fresh Tavern hero (ten tier-1 creatures) — at most 60 % of
+the strength there. A hero no longer walks home for a garrison it may not
+take. Found with a day-by-day trace of a Burning Oasis match: a town left with
+a fifth of the strength fell on day 7 to a rival's ten-creature hero; with the
+guard it holds.
+
+**Measured** (AI against AI, the same commands before and after; small
+samples, not playtest verdicts):
+
+`npm run balance -- maps --matches 2` (each pantheon line-up from every seat,
+day cap 40):
+
+| Map | Matches | Decided (by the shrine), before → after | First knock-out, before → after (matches, mean day) | Seat scores after |
+|---|---|---|---|---|
+| Frostgate | 4 | 3 (0) → 2 (0) | 3, day 26.3 → 2, day 29.5 | 0.13, 0.88 (before 0.50, 0.50) |
+| The Burning Oasis | 8 | 5 (2) → 4 (3) | 8, day 7.8 → 7, day 10.1 | 0.25, 0.13, 0.25, 0.38 |
+| The Circle of Gates | 6 | 2 (0) → 2 (0) | 5, day 15.0 → 6, day 22.2 | 0.17, 0.33, 0.50 |
+| Barrows of the Lost Kings | 4 | 1 (0) → 0 | 1, day 30.0 → none | 0.25, 0.75 |
+| The Golden Fords | 4 | 2 (0) → 2 (0) | 2, day 30.0 → 2, day 26.0 | 0.63, 0.38 |
+| The Six Thrones | 12 | 1 (1) → 0 | 12, day 13.7 → 11, day 22.1 | 0.19, 0.03, 0.28, 0.19, 0.19, 0.11 |
+
+`npm run balance -- random --matches 4` (small random maps, every seat the
+same pantheon): two empires 23 of 24 decided, mean day 21.8, seats 0.50/0.50 →
+19 of 24, day 22.1, seats 0.48/0.52; three empires 20 of 24 decided, day 28.6,
+seats 0.46/0.29/0.25 → 13 of 24, day 28.2, seats **0.38/0.33/0.29** (even
+0.33).
+
+Towns now fall later (the first empire is knocked out 2–8 days later on the
+four- to six-empire maps) and fewer matches end before the day cap; the
+three-empire random maps came closer to even seats. Four matches per
+two-empire map are far too few to read seat scores from (Frostgate's 0.13/0.88
+is two decided matches). The "before" runs used the 0.13.2 AI sources with
+everything else equal (run in the same session; reports kept outside the
+repository).
+
+### The road brief (16): all five road types in the game
+
+Two owner deliveries from `blannder_models\brief16-roads-2026-10-06` (read
+only). **First the dirt track**, for review: only the three selected sheets
+copied into `assets-source/sprites/final/` on both sides, `npm run
+roads:import -- --dry-run` (0 problems), then the import; checked in the game
+on Twin Harbors at play zoom and close up. The owner approved the dirt stage
+and delivered the rest. **Then cobble, sand, snow and boardwalk** (12 sheets;
+the delivery's handoff lists 1,890 edge checks passed and says some joins stay
+visible): copied the same way (none existed before; all 15 SHA-256 values equal
+to the delivery's `asset-manifest.json` on both sides), dry run over all 15 (0
+problems), import — 15 WebP atlases, manifest `roads` with 15 entries, no other
+entry changed. The importer gained `--only <text>` and `--note <text>`; the
+notes record the state: dirt "approved by the owner after the in-game review",
+the other four "in-game acceptance not yet recorded". Masters, proofs, guides
+and the delivery's own runtime files were not copied.
+
+In the game every map now draws painted roads (a map draws them when all three
+sheets of every road type it needs are in, else the code roads — now only a
+fallback). `tests/e2e/brief16.spec.ts`: on Twin Harbors (dirt), The Three
+Beacons M02 (cobble), The Winter Oath M1 (snow) and The Twelfth Hour M1 (sand)
+every road hex draws its tile and only that type's three atlases load; Twin
+Harbors with six straight road hexes turned to marsh and rough ground draws
+boardwalk and cobbles between the dirt. Screenshots at play zoom and close up
+(`test-results/b16-*.png`, checked by eye): the tiles join through straights,
+bends and crossings; at close zoom some joins show the steps in width and
+texture the delivery notes, and a change of road type (dirt to boardwalk to
+cobbles) is a hard cut at the hex edge. **Acceptance of cobble, sand, snow and
+boardwalk in the game is the owner's to record.**
+
+### Verification (commands actually run)
+
+| Command | Result |
+|---|---|
+| `npm run check` | boundaries OK, type-check clean, **415/415** unit tests in 47 files (new: painted ground transitions, 4 — who reaches into whom, variants, the plan, the outline lookup; stack marks, 4 — every status kind has a delivered icon, miracles use their own, order and merging; the AI, 6 — the few-creatures factor, no attack on a lone tier 7 with 1.5× plain strength but with 3.2×, the home guard by week, the lowest tiers left behind, the guard raised by a visible enemy) |
+| `python3 tools/assets/ground/import_ground.py --self-test`, `python3 tools/assets/roads/import_roads.py --self-test` | both passed |
+| `npm run roads:import -- --dry-run` (15 sheets), then the imports with `--note` | 0 problems; complete road types: boardwalk, cobble, dirt, sand, snow |
+| `npx playwright test` (whole suite, one worker) | **122/124 passed** in 1.4 h. Failed: the first `brief16.spec.ts` (the test's own fault: its second load found the first save; rewritten for the complete road set) and `round11.spec.ts` "the Spell button opens the casting book" (the button never settled in time under load; **passed** when rerun alone, 24 s) |
+| `npx playwright test tests/e2e/brief16.spec.ts tests/e2e/brief17.spec.ts` (after the full road set) | **7/7 passed**: dirt, cobble, snow and sand maps draw every road hex as a painted tile with only their own atlases loaded, the marsh/rough stretch draws boardwalk and cobbles; battle marks over defending, waiting, blessed, cursed and slowed stacks and a miracle's own icon, the marks on the stack card, a miracle invoked in battle marking its army; the map's ground borders `softened` |
+| `npm run balance -- maps --matches 2`, `npm run balance -- random --matches 4` | before and after, above |
+| `npm run build` + `npm run desktop:build` + (in `apps/desktop`) `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` | **built** `Pantheon-Realms-Setup-0.13.3-x64.exe`, 530,144,312 bytes, SHA-256 `4bea4be7201770222e08f0c0546a06640a40accafc98c6a080a0f350c32b6abc`; `app.asar` 424.4 MB, 3,063 entries (0.13.2 plus the 15 road atlases; `dist/`, `package.json`, `renderer/` only) |
+| `7z x` of the installer's `app-64.7z` | its `app.asar` is byte-identical to `win-unpacked` |
+| `unshare -n` (no network) + packaged smoke (`tools/desktop-smoke.mjs`) | **DESKTOP SMOKE OK**: 1,293 sprites, 526 paintings, 643 interface images, 91 sounds, the map drawn with WebGL — The Three Beacons M01 with its painted dirt roads |
+
+App version **0.13.3**; content `content-0.8.0` (saves of 0.12.0–0.13.2
+load). Unsigned; **not run on Windows** here. Not checked: a human play-test
+of the AI changes, of the cobble, sand, snow and boardwalk roads and of the
+battle marks; Brief 17's art (not painted yet). The before/after balance
+reports and the trace scripts stay outside the repository.
+
+**Delivery.** The owner's 15 road sheets were copied into the owner's folder
+from the delivery folder (SHA-256 checked there), and the Brief 17 brief, its
+three ground guides and `ground-edges.json` ahead of the rest; bundle 24
+(`apply_sync.py`, not committed) then wrote 50 files (24 new) with 0 problems,
+the old versions measured there first (the three guides had arrived
+re-encoded — same pixels — and were replaced byte for byte). The 0.13.3
+installer was copied to the owner's `installer\` folder in 27 parts and joined
+there (SHA-256 checked: `4bea4be7…6abc`).
 
 ## Ground edges, the road brief (16), Briefs 14 and 15 in the game; app 0.13.2 (owner requests, 2026-10-05)
 

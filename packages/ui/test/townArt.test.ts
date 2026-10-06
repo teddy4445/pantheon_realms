@@ -10,7 +10,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildCatalog } from '@pr/content';
-import { resolveAsset, resolveBuildingArt } from '../src/assets/manifest';
+import { resolveAsset, resolveBuildingArt, townBackground, type AssetRecord } from '../src/assets/manifest';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const catalog = buildCatalog();
@@ -49,5 +49,31 @@ describe('town presentation (2D background + building overlays)', () => {
         }
       }
     }
+  });
+});
+
+describe('town painting by town hall level (Brief 17, 2026-10-06)', () => {
+  const archetypes = Object.values(catalog.townArchetypes);
+
+  it('every pantheon has its four stages on disk; levels 0–1 show the first, 2–4 their own, above 4 the fourth', () => {
+    for (const a of archetypes) {
+      const stage = (lv: number | undefined) => townBackground(a.backgroundAssetId, lv).id;
+      for (const n of [1, 2, 3, 4]) expect(onDisk(resolveAsset(`${a.backgroundAssetId}.l${n}`).url), `${a.backgroundAssetId}.l${n}`).toBe(true);
+      expect(stage(undefined)).toBe(`${a.backgroundAssetId}.l1`);
+      expect(stage(0)).toBe(`${a.backgroundAssetId}.l1`);
+      expect(stage(1)).toBe(`${a.backgroundAssetId}.l1`);
+      expect(stage(2)).toBe(`${a.backgroundAssetId}.l2`);
+      expect(stage(3)).toBe(`${a.backgroundAssetId}.l3`);
+      expect(stage(4)).toBe(`${a.backgroundAssetId}.l4`);
+      expect(stage(7)).toBe(`${a.backgroundAssetId}.l4`);
+    }
+  });
+
+  it('a stage not delivered falls back to the first stage, then to the single painting', () => {
+    const rec = (id: string, url: string | null): AssetRecord => ({ id, status: url ? 'final' : 'procedural', url, provenance: '' });
+    const only = (ids: string[]) => (id: string) => rec(id, ids.includes(id) ? `./${id}.webp` : null);
+    expect(townBackground('town.x.background', 3, only(['town.x.background.l1', 'town.x.background'])).id).toBe('town.x.background.l1');
+    expect(townBackground('town.x.background', 3, only(['town.x.background'])).id).toBe('town.x.background');
+    expect(townBackground('town.x.background', 2, only(['town.x.background.l2', 'town.x.background.l1'])).id).toBe('town.x.background.l2');
   });
 });

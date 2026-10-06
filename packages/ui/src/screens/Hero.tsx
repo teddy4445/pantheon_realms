@@ -48,7 +48,7 @@ import { Bar, Button, Chip, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, ScreenHeader } from '../components/game';
 import { Icon, type IconName } from '../assets/icons';
-import { resolveAsset } from '../assets/manifest';
+import { HERO_EQUIPMENT_SCHEMATIC, resolveAsset } from '../assets/manifest';
 import { humanPlayer, playerHeroes, townAtHero } from '../app/view';
 
 const ATTR: Record<string, { label: string; icon: IconName; hint: string }> = {
@@ -61,20 +61,21 @@ const ATTR: Record<string, { label: string; icon: IconName; hint: string }> = {
 const RANK = ['', 'Basic', 'Advanced', 'Expert'];
 
 /**
- * Slot boxes on the schematic body (percent of the 4:5 stage, which matches the
- * drawing's 400 × 500 view box): each worn slot sits on its body part; the five
+ * Slot boxes on the schematic figure (percent of the 4:5 stage, which matches
+ * the delivered picture, 1122 × 1402): each worn slot sits on its body part —
+ * the weapon and shield at the forearms, the rings at the hands — the five
  * accessories stand in the two side columns; the mount bottom left, the
- * spellbook bottom right.
+ * spellbook bottom right (owner delivery 2026-10-06, its suggested centres).
  */
 const DOLL: Record<EquipSlot, { x: number; y: number }> = {
-  head: { x: 50, y: 8 },
+  head: { x: 50, y: 9 },
   neck: { x: 50, y: 20 },
   cape: { x: 32, y: 25 },
-  armor: { x: 50, y: 36 },
-  weapon: { x: 28, y: 49 },
-  shield: { x: 72, y: 49 },
-  ring_left: { x: 26, y: 63 },
-  ring_right: { x: 74, y: 63 },
+  armor: { x: 50, y: 33 },
+  weapon: { x: 26, y: 38 },
+  shield: { x: 74, y: 38 },
+  ring_left: { x: 26, y: 51 },
+  ring_right: { x: 74, y: 51 },
   feet: { x: 50, y: 91 },
   mount: { x: 9, y: 91 },
   misc_1: { x: 9, y: 20 },
@@ -83,6 +84,8 @@ const DOLL: Record<EquipSlot, { x: number; y: number }> = {
   misc_4: { x: 91, y: 20 },
   misc_5: { x: 91, y: 37 },
 };
+/** Where the spellbook button stands (bottom right). */
+const BOOK = { x: 91, y: 91 };
 
 type Picked = { from: 'doll'; slot: EquipSlot } | { from: 'pack'; instanceId: string } | null;
 
@@ -268,65 +271,6 @@ export function ArmyEditor({ hero }: { hero: HeroState }) {
         ) : null}
       </div>
     </div>
-  );
-}
-
-/** The schematic body behind the slot boxes (a drawing, not the hero's art). */
-function BodySchematic() {
-  return (
-    <svg className="h3-body" viewBox="0 0 400 500" aria-hidden="true" data-testid="hero-body">
-      <defs>
-        <radialGradient id="h3-body-glow" cx="50%" cy="46%" r="52%">
-          <stop offset="0" stopColor="rgba(62, 120, 190, 0.32)" />
-          <stop offset="1" stopColor="rgba(5, 9, 15, 0)" />
-        </radialGradient>
-        <linearGradient id="h3-body-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#21416a" />
-          <stop offset="0.55" stopColor="#15294a" />
-          <stop offset="1" stopColor="#0c1830" />
-        </linearGradient>
-        <filter id="h3-body-outline" x="-10%" y="-10%" width="120%" height="120%">
-          <feMorphology in="SourceAlpha" operator="dilate" radius="1.6" result="grown" />
-          <feFlood floodColor="#d8b56c" result="gold" />
-          <feComposite in="gold" in2="grown" operator="in" result="rim" />
-          <feGaussianBlur in="rim" stdDeviation="3.5" result="glow" />
-          <feMerge>
-            <feMergeNode in="glow" />
-            <feMergeNode in="rim" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-      <rect x="0" y="0" width="400" height="500" fill="url(#h3-body-glow)" />
-      <g className="h3-body__guides">
-        <circle cx="200" cy="250" r="196" />
-        <circle cx="200" cy="250" r="150" />
-        <line x1="200" y1="4" x2="200" y2="496" />
-        <line x1="4" y1="250" x2="396" y2="250" />
-        {[60, 120, 180, 320, 380, 440].map((y) => (
-          <line key={y} x1="192" y1={y} x2="208" y2={y} />
-        ))}
-      </g>
-      <g className="h3-body__figure" filter="url(#h3-body-outline)">
-        <ellipse cx="200" cy="42" rx="24" ry="29" />
-        <path d="M188 64 L212 64 L215 94 L185 94 Z" />
-        <path d="M142 96 Q200 82 258 96 Q272 104 270 130 L262 196 Q258 226 250 248 L150 248 Q142 226 138 196 L130 130 Q128 104 142 96 Z" />
-        <path d="M142 98 Q124 104 120 128 L106 232 Q104 246 112 250 Q122 252 124 240 L144 150 Z" />
-        <path d="M258 98 Q276 104 280 128 L294 232 Q296 246 288 250 Q278 252 276 240 L256 150 Z" />
-        <circle cx="114" cy="248" r="11" />
-        <circle cx="286" cy="248" r="11" />
-        <path d="M150 244 L250 244 L246 300 L236 450 Q236 460 226 460 L214 460 L204 300 L196 300 L186 460 L174 460 Q164 460 164 450 L154 300 Z" />
-        <path d="M168 456 L188 456 Q194 472 186 476 L156 476 Q150 468 168 456 Z" />
-        <path d="M232 456 L212 456 Q206 472 214 476 L244 476 Q250 468 232 456 Z" />
-      </g>
-      <g className="h3-body__lines">
-        <path d="M176 100 Q200 116 224 100" />
-        <line x1="200" y1="112" x2="200" y2="238" strokeDasharray="4 6" />
-        <path d="M146 222 Q200 232 254 222" />
-        <path d="M160 168 Q178 176 196 168 M204 168 Q222 176 240 168" />
-        <path d="M172 360 Q180 364 188 360 M212 360 Q220 364 228 360" />
-      </g>
-    </svg>
   );
 }
 
@@ -577,7 +521,8 @@ export function HeroScreen() {
         {/* ---------------- centre: the schematic body with its slot boxes ---------------- */}
         <section className="h3-doll plate" aria-label="Equipment">
           <div className="h3-doll__stage">
-            <BodySchematic />
+            {/* The schematic figure (a neutral drawing, not the hero's look): decorative, never in the way of a click or a drag. */}
+            <img className="h3-body" src={HERO_EQUIPMENT_SCHEMATIC} alt="" aria-hidden="true" draggable={false} data-testid="hero-body" />
             {EQUIP_SLOTS.map((slot) => {
               const inst = hero.equipment[slot];
               const art = inst ? catalog.artifacts[inst.artifactId] : undefined;
@@ -616,7 +561,7 @@ export function HeroScreen() {
             <button
               type="button"
               className={`h3-slot h3-book ${hero.spellbook ? 'is-filled' : 'is-missing'}`}
-              style={{ left: '91%', top: '91%' }}
+              style={{ left: `${BOOK.x}%`, top: `${BOOK.y}%` }}
               onClick={() => store.openOverlay({ kind: 'spellbook', heroId: hero.id })}
               title={hero.spellbook ? 'Open the spellbook' : 'No spellbook (buy one at a Sanctum)'}
               aria-label="Spellbook"

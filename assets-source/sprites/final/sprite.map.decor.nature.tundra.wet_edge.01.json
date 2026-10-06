@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 609.302,
+  "sourceSheet": "sheet.nature.tundra.ground_edges.png",
+  "sourceRect": [
+    0,
+    1081,
+    370,
+    1448
+  ],
+  "role": "wet_edge"
+}

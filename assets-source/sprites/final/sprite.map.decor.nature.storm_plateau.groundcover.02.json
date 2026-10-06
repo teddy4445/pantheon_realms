@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 863.333,
+  "sourceSheet": "sheet.nature.storm_plateau.ground_edges.png",
+  "sourceRect": [
+    369,
+    0,
+    724,
+    375
+  ],
+  "role": "groundcover"
+}

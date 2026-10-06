@@ -59,7 +59,7 @@ import type { AppStore } from '../app/store';
 import { Button, Chip, Modal, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, BuildingArt, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, CostList, ScreenHeader } from '../components/game';
-import { resolveAsset } from '../assets/manifest';
+import { townBackground } from '../assets/manifest';
 import { Icon, type IconName } from '../assets/icons';
 import { heroStory, heroesInTown, humanPlayer } from '../app/view';
 
@@ -766,7 +766,8 @@ export function TownScreen() {
       </div>
     );
   }
-  const bg = resolveAsset(archetype.backgroundAssetId);
+  // The town's painting follows its town hall (Brief 17: four stages per pantheon; `townBackground`).
+  const bg = townBackground(archetype.backgroundAssetId, town.buildings['civic_hall']);
   const mine = town.ownerId === player.id;
   const visiting = heroesInTown(catalog, state, town).filter((h) => h.ownerId === player.id);
   const slot = selected ? archetype.slots.find((s) => s.id === selected) : undefined;

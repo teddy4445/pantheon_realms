@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 355.556,
+  "sourceSheet": "sheet.nature.marine_frozen.png",
+  "sourceRect": [
+    724,
+    741,
+    1086,
+    1089
+  ],
+  "role": "boat"
+}

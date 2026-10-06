@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 906.667,
+  "sourceSheet": "sheet.nature.jungle.ground_edges.png",
+  "sourceRect": [
+    724,
+    0,
+    1086,
+    362
+  ],
+  "role": "groundcover"
+}

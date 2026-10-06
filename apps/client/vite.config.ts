@@ -21,6 +21,8 @@ export default defineConfig({
     target: 'es2022',
     chunkSizeWarningLimit: 9000,
     sourcemap: false,
+    // PR_NO_MINIFY=1: readable function names for CPU profiles (tests/perf); never for a release.
+    ...(process.env.PR_NO_MINIFY ? { minify: false } : {}),
     // The preload helper gets its own group so the start-up chunk never has to import the
     // renderer chunk to reach it (groups pull in their dependencies by default).
     ...(fewChunks

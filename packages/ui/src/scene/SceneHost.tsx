@@ -13,7 +13,7 @@
  * asynchronously and must push their latest view when it arrives.
  */
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import type { ControllerFactory, EngineHost, SceneController } from '@pr/presentation';
+import type { ControllerFactory, EngineHost, FrameStats, SceneController } from '@pr/presentation';
 
 export type Presentation = typeof import('@pr/presentation');
 type EngineOf = Parameters<ControllerFactory<SceneController>>[0];
@@ -61,8 +61,8 @@ export const projectors: {
 
 /** Read-only view readouts for the ?e2e inspector (map avatar state, camera). Never mutate. */
 export const inspectors: {
-  adventure?: { heroes: () => unknown; camera: () => unknown; fx: () => unknown };
-  battle?: { stacks: () => unknown; fx: () => unknown };
+  adventure?: { heroes: () => unknown; camera: () => unknown; fx: () => unknown; ground: () => unknown; scenery: () => unknown };
+  battle?: { stacks: () => unknown; fx: () => unknown; obstacles?: () => unknown };
 } = {};
 
 /** Convert a canvas-local point to page coordinates. */
@@ -79,7 +79,11 @@ let hostLoad: Promise<EngineHost | null> | null = null;
 function getEngineHost(p: Presentation): Promise<EngineHost | null> {
   if (host || hostError) return Promise.resolve(host);
   hostLoad ??= p.EngineHost.create().then(
-    (h) => (host = h),
+    (h) => {
+      // Benchmark: `?gputime` waits for the GPU after each frame to time it (costs frame rate; never set by the game).
+      if (typeof location !== 'undefined' && new URLSearchParams(location.search).has('gputime')) h.measureGpu = true;
+      return (host = h);
+    },
     (e: unknown) => {
       hostError = e instanceof Error ? e.message : 'WebGL is unavailable';
       return null;
@@ -90,6 +94,11 @@ function getEngineHost(p: Presentation): Promise<EngineHost | null> {
 
 export function engineError(): string | null {
   return hostError;
+}
+
+/** Frame timing of the renderer (frame-rate readout, benchmark); null before the first map, battle or bestiary. */
+export function engineFrameStats(since?: number): (FrameStats & { objects: number; renderables: number }) | null {
+  return host ? { ...host.frameStats(since), ...host.sceneCounts() } : null;
 }
 
 export function SceneViewport<T extends SceneController>({
@@ -167,12 +176,45 @@ export function SceneViewport<T extends SceneController>({
   );
 }
 
-/** Global notice when the GPU context is lost (the engine restores automatically when possible). */
-export function SceneHostLayer() {
+/**
+ * Global notice when the GPU context is lost (the engine restores automatically
+ * when possible), and the frame-rate readout over the map and battle when
+ * Settings → Display → Frame rate is on.
+ */
+export function SceneHostLayer({ showFrameRate = false }: { showFrameRate?: boolean }) {
   const [lost, setLost] = useState(false);
   useEffect(() => {
     const t = setInterval(() => setLost(!!host?.contextLost), 1000);
     return () => clearInterval(t);
   }, []);
-  return lost ? <div className="scene-lost panel">Graphics context lost — waiting for the GPU to recover…</div> : null;
+  return (
+    <>
+      {lost ? <div className="scene-lost panel">Graphics context lost — waiting for the GPU to recover…</div> : null}
+      {showFrameRate ? <FrameRateReadout /> : null}
+    </>
+  );
+}
+
+/**
+ * Frames per second over the last four seconds, the slowest frame among them,
+ * and how many frames since the view opened took longer than 1/30 s.
+ */
+function FrameRateReadout() {
+  const [s, setS] = useState<FrameStats | null>(null);
+  useEffect(() => {
+    const t = setInterval(() => setS(host?.current ? host.frameStats() : null), 500);
+    return () => clearInterval(t);
+  }, []);
+  if (!s || s.total === 0) return null;
+  const low = s.fps > 0 && s.fps < 30;
+  return (
+    <div className={`frame-rate${low ? ' frame-rate--low' : ''}`} data-testid="frame-rate" aria-hidden="true">
+      <strong>{Math.round(s.fps)} fps</strong>
+      <span>slowest {Math.round(s.worstMs)} ms</span>
+      <span>
+        below 30 fps: {s.slow} of {s.total.toLocaleString('en-GB')}
+      </span>
+      {s.resolutionScale < 0.999 ? <span>resolution {Math.round(s.resolutionScale * 100)} %</span> : null}
+    </div>
+  );
 }

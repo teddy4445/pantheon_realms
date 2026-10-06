@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 222.321,
+  "sourceSheet": "sheet.nature.mountains.01.png",
+  "sourceRect": [
+    1048,
+    512,
+    1536,
+    1024
+  ],
+  "role": "mountain"
+}

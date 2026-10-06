@@ -2,7 +2,7 @@
  * Small helpers shared by the 2D views: still sprites from the manifest
  * (loaded in the background, drawn once ready), soft ground shadows, colours.
  */
-import { Graphics, Sprite, Texture } from 'pixi.js';
+import { Graphics, Sprite, Texture, type Container } from 'pixi.js';
 import type { StaticSpriteDefinition } from './sprites';
 import { loadFile } from './textures';
 
@@ -30,8 +30,43 @@ export function stillHeight(def: StaticSpriteDefinition | null, hexWidth: number
   return def.height * def.anchor[1] * (hexWidth / def.pixelsPerHex) * size;
 }
 
+let shadowTexture: Texture | null | undefined;
+
+/**
+ * The shared shadow picture: a soft black disc whose falloff matches the four
+ * stacked ellipses the shadows used to be drawn with (radii 1, 0.82, 0.64 and
+ * 0.46, a quarter of the darkness each), smoothed. One small texture for every
+ * shadow: four vertices each instead of about 130 (2026-10-06 frame-rate work).
+ */
+function shadowPicture(): Texture | null {
+  if (shadowTexture !== undefined) return shadowTexture;
+  shadowTexture = null;
+  if (typeof document === 'undefined') return null;
+  const size = 64;
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  if (!ctx) return null;
+  const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  for (const [at, a] of [[0, 1], [0.46, 1], [0.55, 0.875], [0.64, 0.75], [0.73, 0.625], [0.82, 0.5], [0.92, 0.3], [1, 0]] as const) g.addColorStop(at, `rgba(0, 0, 0, ${a})`);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+  shadowTexture = Texture.from(c);
+  return shadowTexture;
+}
+
 /** A soft elliptical ground shadow centred on (0, 0). */
-export function groundShadow(rx: number, ry: number, alpha = 0.32): Graphics {
+export function groundShadow(rx: number, ry: number, alpha = 0.32): Container {
+  const tex = shadowPicture();
+  if (tex) {
+    const s = new Sprite(tex);
+    s.anchor.set(0.5);
+    s.width = rx * 2;
+    s.height = ry * 2;
+    s.alpha = alpha;
+    return s;
+  }
+  // No canvas (tests outside a browser): the drawn shadow.
   const g = new Graphics();
   for (let i = 0; i < 4; i++) {
     const k = 1 - i * 0.18;

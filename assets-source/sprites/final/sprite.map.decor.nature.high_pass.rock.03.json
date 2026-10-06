@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 602.222,
+  "sourceSheet": "sheet.nature.high_pass.flora_rocks.png",
+  "sourceRect": [
+    724,
+    746,
+    1086,
+    1093
+  ],
+  "role": "rock"
+}

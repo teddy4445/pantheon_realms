@@ -3,7 +3,7 @@
  * separately from match saves. Never changes match rules.
  */
 import type { PreferencesStore } from '@pr/platform';
-import { setGraphicsQuality } from '@pr/presentation/core';
+import { setAdaptiveResolution, setGraphicsQuality } from '@pr/presentation/core';
 import { applyInterfaceCursors } from '../assets/cursors';
 
 export const PREFERENCES_SCHEMA_VERSION = 3;
@@ -42,6 +42,10 @@ export interface Preferences {
   readonly graphicsTested: boolean;
   /** Context mouse cursors (the game's own; off: the system pointer). */
   readonly gameCursors: boolean;
+  /** A small frame-rate readout over the map and battle (frames per second, slow frames). */
+  readonly showFrameRate: boolean;
+  /** Draw fewer pixels while frames run slow (graphics.ts `adaptiveResolution`). */
+  readonly adaptiveResolution: boolean;
   // Audio (temporary generated sounds in this build; production/04 §7 buses)
   readonly masterVolume: number;
   readonly musicVolume: number;
@@ -86,6 +90,8 @@ export const DEFAULT_PREFERENCES: Preferences = {
   graphicsQuality: 'high',
   graphicsTested: false,
   gameCursors: true,
+  showFrameRate: false,
+  adaptiveResolution: true,
   masterVolume: 80,
   musicVolume: 60,
   ambienceVolume: 60,
@@ -145,6 +151,7 @@ export function applyPreferences(p: Preferences): void {
   root.dataset.contrast = p.highContrast ? 'high' : 'normal';
   applyInterfaceCursors(p.gameCursors);
   setGraphicsQuality(p.graphicsQuality);
+  setAdaptiveResolution(p.adaptiveResolution);
 }
 
 export async function loadPreferences(store: PreferencesStore): Promise<{ prefs: Preferences; error: string | null }> {

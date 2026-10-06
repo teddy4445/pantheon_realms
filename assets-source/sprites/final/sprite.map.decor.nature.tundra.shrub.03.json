@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 697.222,
+  "sourceSheet": "sheet.nature.tundra.flora_rocks.png",
+  "sourceRect": [
+    724,
+    365,
+    1086,
+    724
+  ],
+  "role": "shrub"
+}

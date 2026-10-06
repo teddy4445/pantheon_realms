@@ -401,14 +401,15 @@ it('writes the icon inventory', () => {
   const heroPortraits = new Set(Object.values(c.heroes).map((h) => h.portraitAssetId));
   for (const [id, speaker] of [...speakers].sort()) {
     if (heroPortraits.has(id)) continue;
-    // The dialogue window shows the painted bust when there is one; the square portrait is only its fallback.
+    // The dialogue window shows the painted bust beside the box; the square portrait (Brief 17) is the small
+    // portrait in the box and in the Journal's dialogue lists.
     const bust = resolveAsset(id.replace(/\.portrait$/, '.bust')).url;
     portraits.push({
       assetId: id,
       name: speaker,
       group: 'Story portrait',
       pantheon: id.split('.')[1] && c.pantheons[id.split('.')[1]!] ? pantheonName(c, id.split('.')[1]!) : undefined,
-      where: bust ? 'Fallback only: the dialogue window shows the painted bust' : 'Story scenes and briefings (dialogue window)',
+      where: bust ? 'The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)' : 'Story scenes and briefings (dialogue window)',
       current: artFile(id) ?? { type: 'procedural', note: bust ? 'painted bust in the dialogue window; generated square stand-in elsewhere' : 'generated placeholder bust' },
       brief: `${speaker} — story character (see the campaign documents).`,
       priority: bust ? ('later' as const) : ('now' as const),

@@ -139,6 +139,25 @@ def runtime_strip(img: Image.Image, fw: int, fh: int, k: float) -> tuple[Image.I
     return out, rw, rh
 
 
+def trim_still(img: Image.Image, anchor: tuple[float, float], pad: int = 2) -> tuple[Image.Image, tuple[float, float]]:
+    """Crop a single-frame still to its visible pixels (plus `pad`), keeping the anchor on the same picture point.
+
+    The nature scenery (2026-10-06) is painted inside 320 px cells with a wide transparent margin;
+    drawn as is, every map tree and rock would cost the GPU its whole empty square.
+    """
+    # Pixels at alpha 4/255 or less (a faint fringe from the cut) are invisible on the map: left out.
+    box = img.getchannel("A").point(lambda a: 255 if a > 4 else 0).getbbox()
+    if not box:
+        return img, anchor
+    x0, y0 = max(0, box[0] - pad), max(0, box[1] - pad)
+    x1, y1 = min(img.width, box[2] + pad), min(img.height, box[3] + pad)
+    if (x0, y0, x1, y1) == (0, 0, img.width, img.height):
+        return img, anchor
+    out = img.crop((x0, y0, x1, y1))
+    ax, ay = anchor[0] * img.width, anchor[1] * img.height
+    return out, (round((ax - x0) / out.width, 5), round((ay - y0) / out.height, 5))
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
@@ -247,6 +266,10 @@ def main(argv: list[str] | None = None) -> int:
         frames = img.width // fw
         path = OUT / "/".join(target[:-1]) / f"{target[-1]}.webp" if target[0] in ("creatures", "heroes") else OUT / target[0] / f"{target[-1]}.webp"
         anchor = tuple(over.get("anchor", anchor))
+        if target[0] == "decor" and target[1].startswith("nature.") and frames == 1:
+            # Nature scenery: trimmed to its visible pixels (same place, same size on screen; less to draw).
+            strip, anchor = trim_still(strip, (anchor[0], anchor[1]))
+            rw, rh = strip.width, strip.height
         entry = {
             "file": path.relative_to(RUNTIME).as_posix(),
             "frames": frames,
@@ -311,7 +334,7 @@ def self_test() -> int:
         MANIFEST = RUNTIME / "sprites" / "manifest.json"
         MANIFEST.parent.mkdir(parents=True)
         keep = {"file": "sprites/final/effects/keep.webp", "frames": 1, "status": "final"}
-        MANIFEST.write_text(json.dumps({"effects": {"fx.spell.other.cast": keep}, "creatures": {}, "heroes": {}}))
+        MANIFEST.write_text(json.dumps({"effects": {"fx.spell.other.cast": keep}, "creatures": {}, "heroes": {}, "decor": {}}))
 
         def strip(name: str, frames: int, side: dict | None) -> None:
             fw = fh = 128
@@ -355,6 +378,34 @@ def self_test() -> int:
                 fails.append(f"stripped ID {wrong!r} registered (the fx. prefix was lost)")
         if eff.get("fx.spell.other.cast") != keep:
             fails.append("an unrelated effect entry was changed")
+        # Nature stills are trimmed to their visible pixels; the anchor stays on the same ground point.
+        (SRC / "sprite.map.decor.nature.test.rock.01.json").write_text(json.dumps({"frames": 1, "anchor": [0.5, 0.88125], "pixelsPerHex": 280}))
+        rock = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
+        rpx = rock.load()
+        for y in range(200, 282):
+            for x in range(100, 220):
+                rpx[x, y] = (120, 110, 100, 255)
+        rock.save(SRC / "sprite.map.decor.nature.test.rock.01.png")
+        if main(["--only", "sprite.map.decor.nature.", "--src", str(SRC)]) != 0:
+            fails.append("nature still import failed")
+        d = json.loads(MANIFEST.read_text()).get("decor", {}).get("nature.test.rock.01")
+        if not d:
+            fails.append("nature still not registered")
+        else:
+            k = d["pixelsPerHex"] / 280
+            if not (d["width"] < 320 * k * 0.5 and d["height"] < 320 * k * 0.4):
+                fails.append(f"nature still not trimmed: {d['width']} x {d['height']}")
+            # The visible block sits at the same place relative to the anchor as in the untrimmed frame.
+            full, fw_, fh_ = runtime_strip(rock, 320, 320, k)
+            bu = full.getchannel("A").point(lambda a: 255 if a > 8 else 0).getbbox()
+            au = (0.5 * fw_, 0.88125 * fh_)
+            tr = Image.open(RUNTIME / d["file"]).convert("RGBA")
+            bt = tr.getchannel("A").point(lambda a: 255 if a > 8 else 0).getbbox()
+            at = (d["anchor"][0] * tr.width, d["anchor"][1] * tr.height)
+            off_u = (bu[0] - au[0], bu[1] - au[1], bu[2] - au[0], bu[3] - au[1])
+            off_t = (bt[0] - at[0], bt[1] - at[1], bt[2] - at[0], bt[3] - at[1])
+            if max(abs(a - b) for a, b in zip(off_u, off_t)) > 1.01:
+                fails.append(f"nature still anchor moved: {off_u} != {off_t}")
         # --only skips the rest.
         strip("fx.spell.skipped.cast", 6, {"fps": 10})
         main(["--only", "fx.gift.", "--src", str(SRC)])

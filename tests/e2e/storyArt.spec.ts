@@ -53,11 +53,12 @@ for (const size of SIZES) {
     await expect(art).toBeVisible();
     expect(await art.getAttribute('src')).toContain('mission.three_beacons.m01.briefing.webp');
     const bust = page.getByTestId('story-bust');
-    // Wide windows: the bust stands beside the box; small ones: it sits in the box (no room beside the objectives).
+    // Wide windows: the bust stands beside the box; small ones (no room beside the objectives): the box shows the
+    // speaker's small portrait — the square one delivered with Brief 17 (2026-10-06), the bust where there is none.
     const wide = size.name === 'large';
     const shown = wide ? bust : page.locator('.briefing-scene .story-box__mini img');
     await expect(shown).toBeVisible();
-    expect(await shown.getAttribute('src')).toContain('hero.greek.thaleia.bust.webp');
+    expect(await shown.getAttribute('src')).toContain(wide ? 'hero.greek.thaleia.bust.webp' : 'hero.greek.thaleia.portrait.webp');
     expect(await bust.getAttribute('data-side')).toBe('right');
     expect(await bust.getAttribute('style')).toContain('scaleX(-1)');
     if (wide) expect(await bust.evaluate((e) => getComputedStyle(e).transform)).toMatch(/matrix\(-1/);
@@ -73,7 +74,7 @@ for (const size of SIZES) {
     await page.screenshot({ path: `test-results/story-briefing-thaleia-${size.name}.png` });
     await page.getByTestId('briefing-next').click();
     await expect(bust).toHaveAttribute('src', /hero\.greek\.alexios\.bust\.webp/);
-    if (!wide) await expect(shown).toHaveAttribute('src', /hero\.greek\.alexios\.bust\.webp/);
+    if (!wide) await expect(shown).toHaveAttribute('src', /hero\.greek\.alexios\.portrait\.webp/);
     expect(await bust.getAttribute('data-side')).toBe('left');
     expect(await bust.getAttribute('style')).not.toContain('scaleX(-1)');
     await page.waitForTimeout(400);

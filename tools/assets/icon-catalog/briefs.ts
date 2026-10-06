@@ -157,4 +157,8 @@ export const MARKERS: readonly { readonly assetId: string; readonly name: string
   { assetId: 'icon.marker.prison', name: 'Prison', when: 'A prison holding a captive hero (random maps)', brief: 'A stone cell door with iron bars.' },
   { assetId: 'icon.marker.check', name: 'Done', when: 'A site already cleared, visited or activated', brief: 'A check mark in a ring.' },
   { assetId: 'icon.marker.unknown', name: 'Unknown', when: 'Anything else', brief: 'A question mark.' },
+  // Shown in the tile panel over a hero and in the Journal (GPT-6 Brief 17).
+  { assetId: 'icon.marker.hero', name: 'Your hero', when: 'The tile panel over one of your heroes', brief: 'A plumed hero’s helmet with a blue plume over crossed reins.' },
+  { assetId: 'icon.marker.enemy-hero', name: 'Enemy hero', when: 'The tile panel over another empire’s hero', brief: 'A plumed hero’s helmet with a red plume over crossed reins.' },
+  { assetId: 'icon.marker.encounter', name: 'Failed objective', when: 'A failed objective in the Journal', brief: 'A torn banner on a broken spear.' },
 ];

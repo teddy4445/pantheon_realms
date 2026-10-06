@@ -1090,3 +1090,75 @@ water; desert flagstones, snow road or cobbles by climate, cobbles on rough
 ground; else dirt) and uses the painted tiles once all three sheets of every
 road type the map needs are imported; otherwise it keeps the code-drawn roads
 (`roads.ts`), so a map never mixes the two.
+
+**Delivered (2026-10-06):** all 15 sheets from the owner's delivery — the dirt
+track first (reviewed in the game and approved by the owner), then cobble,
+sand, snow and boardwalk (in-game acceptance not yet recorded; the delivery
+notes width, texture and colour steps at some joins). Imported with `npm run
+roads:import` (`--only <text>` imports matching sheets only; `--note <text>`
+is added to their provenance, which records the review state). Every map now
+draws painted roads; the code-drawn roads remain the fallback for a map whose
+road types are missing.
+
+## 16. Brief 17 (2026-10-06): the final visuals
+
+`assets-source/art/briefs/GPT6_BRIEF_17_FINAL_VISUALS.md` (project doc
+`gpt6-brief-17-final-visuals.md`) listed everything still drawn as a stand-in;
+§8 of the brief lists what is final. **Delivered and imported on 2026-10-06**
+(app 0.13.4; DEVELOPMENT_STATUS.md). Every part enters by an existing command:
+
+| Part | Source | Command | Runtime |
+|---|---|---|---|
+| A ground transitions | `assets-source/sprites/final/sheet.ground.<meadow\|woodland\|rocky\|boggy\|scree\|shore>.png` (6 × 3 cells of 256 px, black and white masks) | `npm run ground:import` | `sprites/final/ground/edges.json` (outlines), manifest `ground.edges` |
+| B shore foam | `sheet.ground.shore.foam.png` (same layout, transparent) | `npm run ground:import` | `sprites/final/ground/foam.webp`, manifest `ground.foam` |
+| C town backgrounds | `assets-source/art/final/town.<pantheon>.background.l1`–`.l4.png` (4:3; one per town-hall level — the delivery widened the six single paintings to 24) | `npm run art:import` | `art/town/…`; the town screen picks the stage from the `civic_hall` level (`townBackground()`), a missing stage → `.l1` → the unsuffixed ID (the concept crop) |
+| D markers, F portraits | `assets-source/icons/final/<id>.png` | `npm run icons:import -- --new` | `ui/icons/final/` |
+| E neutral map hero | `assets-source/sprites/final/sprite.hero.neutral.<anim>.<dir>.png` | `npm run sprites:import -- --only sprite.hero.neutral.` | `sprites/final/heroes/neutral/` |
+
+**Ground transitions.** Guides from the game's hex geometry: `npm run
+art:ground-guides` (`tools/assets/briefs/ground_guides.py`) writes
+`guides/ground.edges.layout.png`, `guides/ground.shore.layout.png`,
+`guides/ground.join-example.png` and `assets-source/sprites/ground-edges.json`
+(cell layout, characters, priority). Column = the hex edge (e, se, sw, w, nw,
+ne), row = a variant. `npm run ground:import`
+(`tools/assets/ground/import_ground.py`; `--dry-run`, `--self-test`,
+`--keep-going`) checks each mask (white along its edge, nothing on the other
+edges, nothing beyond the band), clips it to the hex and traces it at three
+grey levels into outlines (hex-width units); nothing is written while a sheet
+has a problem unless `--keep-going`. The map (`paintGroundEdges` in
+`adventure.ts`, planning in `groundEdges.ts`) lets the higher ground reach into
+the lower one's hex (water < marsh < plains < rough < forest < mountain; any
+land into water as the shore), fills the outlines with the reaching ground's
+own painting at opacities 0.35 / 0.5 / 1, picks one of the three variants per
+hex and edge, and lays the foam over the water hex in the matching cell. It
+does so only when all six mask sheets are imported (and `softGround` is on);
+until then it keeps the softened hex edges. Read-only check: `__prGround()`
+under `?e2e` reports `painted`, `softened` or `crisp`.
+
+## 17. Nature scenery and the hero equipment figure (2026-10-06)
+
+**Nature scenery** (owner delivery `nature-expansion-2026-10-06`): 106
+families × three variants — ten climates × canopy, shrub, rock, deadwood,
+groundcover, woodland/rocky/wet border clumps and mountains; four water
+profiles (`marine_temperate`, `marine_tropical`, `marine_frozen`,
+`freshwater`) × water rocks, islets, boats and water life.
+
+| Step | Where |
+|---|---|
+| Sources (320 × 320 RGBA + single-frame sidecar) | `assets-source/sprites/final/sprite.map.decor.nature.<climate>.<role>.0N.png` / `.json` |
+| Import | `npm run sprites:import -- --only sprite.map.decor.nature.` → `assets-runtime/sprites/final/decor/nature.*.webp`, manifest `decor["nature.…"]`; trimmed to the painted pixels (alpha above 4/255), anchor kept on the same picture point |
+| Placement rules | `packages/presentation/src/nature-policy.json` (the delivery's `data/nature-policy.json`, unchanged): role weights per terrain and battlefield, densities, climate multipliers, sea profiles, water limits |
+| Selector and map plan | `packages/presentation/src/nature.ts` (`makeNatureSelector`, `classifyWater`, `planNatureScenery`, `battleObstacleId`) |
+
+A new climate needs its stills under the same names and its ID in the
+policy's `climates`; a still that is not imported is skipped on the map (a
+mountain falls back to the generic `mountain`, a battle obstacle to the
+neutral boulder). The delivery's `tools/test-selector.mjs` checks are part of
+`presentation/test/nature.test.ts`.
+
+**Hero equipment figure** (owner delivery `hero-equipment-panel-2026-10-06`):
+`assets-source/ui/hero-equipment-schematic-v2.png`, used as delivered from
+`assets-runtime/ui/hero-equipment-schematic-v2.png` (1122 × 1402, 4:5) behind
+the hero screen's slot buttons. Replacing it is a file of the same name and
+shape; the slot centres are `DOLL` in `ui/src/screens/Hero.tsx`.
+

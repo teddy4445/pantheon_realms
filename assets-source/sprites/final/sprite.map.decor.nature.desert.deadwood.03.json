@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 423.077,
+  "sourceSheet": "sheet.nature.desert.flora_rocks.png",
+  "sourceRect": [
+    764,
+    1086,
+    1086,
+    1448
+  ],
+  "role": "deadwood"
+}

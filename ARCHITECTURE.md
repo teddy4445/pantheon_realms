@@ -40,7 +40,7 @@ AI never mutates state directly — each of those paths goes through
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
 | `@pr/platform` | `SaveRepository` / `PreferencesStore` (preferences and the separate high-score `records` store) / window + quit contracts; browser (IndexedDB/localStorage), desktop (preload bridge) and memory adapters | contain rules |
-| `@pr/presentation` | PixiJS 2D views: one long-lived `EngineHost` (one Pixi renderer and canvas); the Adventure Map, Tactical Battle and Unit Detail viewer controllers; `SpriteFigure` sprite animation (loops on the frame clock, one-shots on the tween clock); the sprite manifest types, animation vocabulary, fallback chain and `requiredAnimations`; battle playback cues for sound; code-drawn magic effects and status overlays (`fx.ts`). `@pr/presentation/core` is its Pixi-free part (sprite manifest lookup, hex↔screen transforms, palette, environment art keys, graphics presets, the looks of magic and Favor `fxLooks.ts`) | decide legality or change state |
+| `@pr/presentation` | PixiJS 2D views: one long-lived `EngineHost` (one Pixi renderer and canvas); the Adventure Map, Tactical Battle and Unit Detail viewer controllers; `SpriteFigure` sprite animation (loops on the frame clock, one-shots on the tween clock); the sprite manifest types, animation vocabulary, fallback chain and `requiredAnimations`; battle playback cues for sound; code-drawn magic effects and status overlays (`fx.ts`); the climate-aware nature scenery (`nature.ts` with `nature-policy.json`: the map's plants, rocks, mountains, border clumps and water scenery, and the battle obstacles' stills, from stable hashes — presentation only). `@pr/presentation/core` is its Pixi-free part (sprite manifest lookup, hex↔screen transforms, palette, environment art keys, graphics presets, the looks of magic and Favor `fxLooks.ts`) | decide legality or change state |
 | `@pr/audio` | Web Audio mixer: sound manifest types and validation, buses (music, ambience, interface, combat, voice), music/ambience crossfades, stinger ducking, voice limits and cooldowns, the "Calmer sound" policy | read or change game state; fetch anything that is not bundled |
 | `@pr/ui` | React app shell, 21 screens, dialogs (incl. the story dialogue window, hot-seat hand-over, camps, map events, interventions), view helpers, preferences (incl. key bindings and tips), high-score records, save-slot policy, asset manifest (art by asset ID + the sprite manifest), which sound plays when (`audio/`) | edit `MatchState` (it dispatches commands) |
 | `@pr/testing` | Headless `GameDriver` for scripted playthroughs | bypass validation |
@@ -372,11 +372,18 @@ when one arrives. Sprite strips are fetched when a view first needs them
 measures start-up and first-scene times.
 
 A single `EngineHost` owns one Pixi renderer (WebGL) and canvas, its own
-frame loop (capped by the graphics preset) and context-loss handling; screens
-mount it into their viewport and ask for a scene controller:
+frame loop (capped by the graphics preset; High 60 fps), context-loss
+handling, adaptive resolution (`graphics.ts adaptResolutionStep`: fewer pixels
+while frames run under ~34 per second), the GPU upload queue for loaded
+pictures (`textures.ts`: decoded off the main thread, a few sent per frame)
+and the frame counters behind the frame-rate readout; screens mount it into
+their viewport and ask for a scene controller. Both controllers keep their
+layers in Pixi render groups (2026-10-06): the camera is one group transform,
+and a layer that changes (animated figures, the reach after a command, a
+walk's trail) re-sends only its own group.
 
-* `AdventureSceneController` — 2D layers, back to front: backdrop (sea, sky
-  above the north edge), painted terrain (the delivered ground paintings as
+* `AdventureSceneController` — 2D layers, back to front (black behind the
+  map is the renderer's background colour): painted terrain (the delivered ground paintings as
   repeating fills in map space), roads, optional hex grid, reachable
   overlay, ground markers (selection ring, route preview — dots, then an X
   for a battle — and hover), objects depth-sorted by screen *y* (map

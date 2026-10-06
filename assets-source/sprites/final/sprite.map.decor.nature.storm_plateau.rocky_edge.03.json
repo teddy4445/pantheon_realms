@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 566.667,
+  "sourceSheet": "sheet.nature.storm_plateau.ground_edges.png",
+  "sourceRect": [
+    724,
+    753,
+    1086,
+    1086
+  ],
+  "role": "rocky_edge"
+}

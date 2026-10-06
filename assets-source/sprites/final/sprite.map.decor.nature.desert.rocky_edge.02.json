@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 566.667,
+  "sourceSheet": "sheet.nature.desert.ground_edges.png",
+  "sourceRect": [
+    362,
+    724,
+    724,
+    1035
+  ],
+  "role": "rocky_edge"
+}

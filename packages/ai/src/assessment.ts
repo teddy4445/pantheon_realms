@@ -32,6 +32,7 @@ import {
   type MatchState,
   type PlayerId,
 } from '@pr/rules';
+import { fewCreaturesFactor } from './evaluation';
 
 type StatEffect = Extract<EffectDefinition, { type: 'creature_stat' }>;
 
@@ -45,7 +46,7 @@ function statApplies(catalog: ContentCatalog, e: StatEffect, creatureId: string)
   return true;
 }
 
-/** Fighting power of a hero's army as the AI judges it (comparable to `armyStrength` for guards and garrisons). */
+/** Fighting power of a hero's army as the AI judges it (comparable to `fightingStrength` for guards and garrisons). */
 export function heroPower(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
   const eff = effectiveAttributes(catalog, state, hero);
   const fx = [...heroEffects(catalog, hero, state), ...divineEffects(catalog, state, hero)];
@@ -65,7 +66,8 @@ export function heroPower(catalog: ContentCatalog, state: MatchState, hero: Hero
       else if (e.stat === 'defense') def += e.amount;
       else speed += e.amount;
     }
-    const base = armyStrength(catalog, [{ creatureId: s.creatureId, count: s.count }], { attack: atk, defense: def });
+    // A stack of few creatures keeps its full damage longer (see `fewCreaturesFactor`).
+    const base = armyStrength(catalog, [{ creatureId: s.creatureId, count: s.count }], { attack: atk, defense: def }) * fewCreaturesFactor(s.count);
     const dmgPct = isShooter(catalog, s.creatureId) ? archery : offense;
     // Strength is sqrt(offense × durability): a damage bonus or a damage cut counts at its square root.
     total += base * Math.sqrt(1 + dmgPct / 100) * Math.sqrt(100 / (100 - armorer)) * (1 + 0.03 * speed);

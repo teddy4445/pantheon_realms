@@ -140,11 +140,17 @@ function Toasts() {
   );
 }
 
+/** The renderer's notices and, when switched on in Settings, the frame-rate readout. */
+function SceneLayer() {
+  const store = useStore();
+  return <SceneHostLayer showFrameRate={store.prefs.showFrameRate} />;
+}
+
 function Shell({ store }: { store: AppStore }) {
   useGlobalKeys(store);
   return (
     <>
-      <SceneHostLayer />
+      <SceneLayer />
       <Router />
       <OverlayLayer />
       <MomentLayer />

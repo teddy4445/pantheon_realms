@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 686.111,
+  "sourceSheet": "sheet.nature.temperate.flora_rocks.png",
+  "sourceRect": [
+    724,
+    477,
+    1086,
+    843
+  ],
+  "role": "shrub"
+}

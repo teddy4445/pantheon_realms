@@ -46,6 +46,16 @@ decisions they settle.
   (no Pixi there); the PixiJS views load on demand through
   `ui/src/scene/SceneHost.tsx` (the boundary lint enforces this). Measure with
   `node tools/perf/load-time.mjs` after changes that touch start-up.
+* Frame rate (2026-10-06): the map and battle views keep their layers in
+  PixiJS render groups (`enableRenderGroup`), so the camera and the animated
+  figures never re-send the ground; never redraw a `Graphics` every frame
+  (animate it by transform), redraw keyed shapes and texts only when they
+  change, and load pictures through `textures.ts` (decoded off the main
+  thread, sent to the GPU between frames, handed to a sprite only once sent). High is capped at 60 fps; adaptive
+  resolution (Settings → Display) lowers the drawn pixels while frames run
+  slow. In this container the GPU is SwiftShader: compare main-thread time per
+  frame and uploads (`tests/perf`, `?gputime`), not frame rates; the owner
+  measures the frame rate with Settings → Display → Frame rate.
 * Sound is referenced by sound ID only (`assets-runtime/audio/manifest.json`);
   every sound must accompany something shown on screen, and silence must
   never block play.
@@ -71,6 +81,9 @@ npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run
 npm run balance -- random --matches 4   # random-map seat fairness only
 npm run balance -- random1v1 --matches 30   # every pantheon pairing on random maps, both seats (nine layouts; --map-types, --sizes, --focus); target: each pantheon 0.45–0.55
 node tools/perf/load-time.mjs [dist]          # start-up + first-scene load times (after npm run build)
+npx playwright test --config playwright.perf.config.ts tests/perf/frames.spec.ts    # frame timing per scenario (map idle/pan/zoom/walk, huge map, battle); PERF_GPU=1 (?gputime: GPU wait timed apart from main-thread time), PERF_DPR, PERF_ONLY=a,b, PERF_LABEL → test-results/perf/<label>.json
+npx playwright test --config playwright.perf.config.ts tests/perf/fullgame.spec.ts  # a full test game frame by frame (map, the computer's turns, a battle) + long tasks; PERF_DAYS, PERF_GPU=1, PERF_DPR=0.5
+PR_NO_MINIFY=1 npm run build && npx playwright test --config playwright.perf.config.ts tests/perf/profile.spec.ts  # main-thread CPU profiles (readable names; rebuild without PR_NO_MINIFY afterwards)
 python3 tools/audio/make_placeholders.py      # regenerate placeholder music/sounds + audio manifest (numpy, scipy, ffmpeg); keeps "final" entries
 python3 tools/audio/import_music.py --from <folder with pixabay-<id>.mp3>   # map music per pantheon (assets-source/audio/music/tracks.json) → Ogg + music.map.<pantheon> playlists
 python3 tools/audio/import_sounds.py --from <folder with pixabay-<id>.mp3>  # menu, battle (per pantheon), siege, resolution music, stingers, effects, ambience (assets-source/audio/sounds.json) → Ogg, level-matched, manifest "final"
@@ -91,7 +104,9 @@ npm run balance -- maps --matches 2   # the six authored skirmish maps, each pan
 npm run maps:build       # writes the authored skirmish maps (packages/content/src/skirmish/maps/*.prmap.json) from tools/maps/maps.ts, checked, + layout guides for Brief 14
 npm run art:siege-guide  # the siege layout guide for GPT-6 Brief 15 (assets-source/art/briefs/guides/siege.layout.png)
 npm run art:road-guides  # GPT-6 Brief 16 road guides (guides/road.<a|b|c>.layout.png, road.join-example.png) + assets-source/sprites/road-tiles.json, from the game's hex geometry
-npm run roads:import     # painted road sheets (assets-source/sprites/final/sheet.road.<type>.<a|b|c>.png) → assets-runtime/sprites/final/roads/ + sprite manifest `roads`; `-- --self-test`
+npm run roads:import     # painted road sheets (assets-source/sprites/final/sheet.road.<type>.<a|b|c>.png) → assets-runtime/sprites/final/roads/ + sprite manifest `roads`; `-- --dry-run`, `-- --only dirt`, `-- --note "<review status>"`, `-- --self-test`
+npm run art:ground-guides  # GPT-6 Brief 17 ground-transition guides (guides/ground.<edges|shore>.layout.png, ground.join-example.png) + assets-source/sprites/ground-edges.json
+npm run ground:import    # Brief 17 Parts A/B: sheet.ground.<character>.png masks + sheet.ground.shore.foam.png → assets-runtime/sprites/final/ground/ (edges.json, foam.webp) + manifest `ground`; `-- --dry-run`, `-- --keep-going`, `-- --self-test`
 ```
 
 Authored skirmish maps (2026-10-05): six custom map documents in
@@ -106,8 +121,43 @@ the asked resolutions (accepted by the owner; never enlarged); the siege
 paintings are aligned on screen by `SIEGE_GROUND_SHIFT`. Painted roads are
 Brief 16 (`GPT6_BRIEF_16_ROADS.md`, five road types × three sheets, one tile per
 hex connection pattern); the map keeps its code-drawn roads until every road
-type a map needs is imported (`npm run roads:import`). A dwelling never requires a dwelling
+type a map needs is imported (`npm run roads:import`); all five road types were
+delivered and imported on 2026-10-06 (dirt approved by the owner after its
+review; the other four await in-game acceptance), so every map draws painted roads. A dwelling never requires a dwelling
 of a higher tier (owner decision 2026-10-05; `BuildingTreeValidator`).
+
+**GPT-6 Brief 17** (`assets-source/art/briefs/GPT6_BRIEF_17_FINAL_VISUALS.md`,
+2026-10-06) is the last art request: ground transitions (six mask sheets) and
+shore foam, the six town backgrounds (was Brief 13 Part A), the three markers
+still cut from the concept pack, the neutral map hero and 16 story portraits
+(ASSET_PIPELINE.md §16). It was delivered and imported on 2026-10-06 (app
+0.13.4; the owner widened Part C to **24** town backgrounds,
+`town.<pantheon>.background.l1`–`l4`, one per town-hall level, native
+1448 × 1086): the town screen picks the stage from the `civic_hall` level
+(`townBackground()` in `ui/src/assets/manifest.ts`; a missing stage falls back
+to `.l1`, then the unsuffixed ID), and the dialogue box shows the delivered
+square story portraits beside the painted busts. The map draws painted ground
+transitions only when all six mask sheets are imported (`groundEdges.ts`,
+`paintGroundEdges`), else the softened hex edges. Battle stacks carry the Brief 13 status, action and miracle
+icons over their count (`ui/src/app/stackMarks.ts` → `BattleStackView.marks`;
+presentation only). The strategic AI judges a stack of few creatures by
+`fightingStrength` ((n + 1) / n on the shared heuristic, which stays unchanged
+for the neutral-reaction rule) and keeps a home guard in its towns
+(`homeGuardTransfers`).
+
+**Nature scenery** (owner delivery 2026-10-06, app 0.13.5; ASSET_PIPELINE.md
+§17): 318 climate stills, `decor` IDs `nature.<climate|water profile>.<role>.0N`
+(`npm run sprites:import -- --only sprite.map.decor.nature.`; the importer trims
+them to their painted pixels). `packages/presentation/src/nature.ts` — the
+delivery's reference selector in TypeScript, its `nature-policy.json` beside
+it — plans the map's scenery once per map (climate first, terrain second;
+border clumps; sea, lake or river by shape in `classifyWater`) from stable
+hashes, presentation only; battle obstacles show the climate's rock, deadwood
+or tree (`battleObstacleId`), the generic columns and standing stones stay.
+Never pick scenery from a pantheon or a ground colour; unknown water kinds get
+nothing. Read-only check: `__prScenery()` under `?e2e`. The hero screen's
+equipment figure is the delivered `assets-runtime/ui/hero-equipment-schematic-v2.png`
+(`HERO_EQUIPMENT_SCHEMATIC`), a decorative `<img>` behind the slot buttons.
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and
 provenance in `assets-runtime/ui/` (ASSET_PIPELINE.md §11). The visual
@@ -141,14 +191,13 @@ corrected sheet is cut alone with `npm run sprites:cut -- --only <sheet>` —
 never an unrestricted re-cut. Briefs 1–11 were delivered and their documents
 removed; Brief 12 (`assets-source/art/briefs/GPT6_BRIEF_12_REMAINING_VISUALS.md`,
 town layout guides in `briefs/guides/`) was delivered on 2026-10-05 except the
-optional town-background repaints, so the town backgrounds are still the
-cropped concept placeholders in `assets-runtime/placeholders/`. What GPT-6 can
-still make is in `assets-source/art/briefs/GPT6_BRIEF_13_RELEASE_POLISH.md`
-Part A (the six town backgrounds); its 94 icons (Parts B–E) were delivered and
-imported on 2026-10-05 (the main-menu icons are 192 px, the rest 96 px;
-`tests/e2e/brief13.spec.ts`). Three concept crops the brief did not list are
-still shown: `icon.marker.hero` and `icon.marker.enemy-hero` (tile panel over a
-hero) and `icon.marker.encounter` (a failed objective in the Journal). The god cards
+optional town-background repaints (the town backgrounds came with Brief 17).
+Brief 13's 94
+icons (Parts B–E) were delivered and imported on 2026-10-05 (the main-menu
+icons are 192 px, the rest 96 px; `tests/e2e/brief13.spec.ts`); its Part A (the
+six town backgrounds) and the three concept crops it did not list
+(`icon.marker.hero`, `icon.marker.enemy-hero`, `icon.marker.encounter`) became
+Parts C and D of Brief 17. The god cards
 show their blessings, price and state as icon rows (`components/godIcons.tsx`)
 whose tooltips keep the content's sentences.
 

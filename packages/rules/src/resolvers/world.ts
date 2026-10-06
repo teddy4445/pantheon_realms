@@ -315,6 +315,97 @@ export interface PathResult {
   readonly reason: string | null;
 }
 
+interface PathTree {
+  readonly dist: Map<string, number>;
+  readonly prev: Map<string, string>;
+  readonly coords: Map<string, HexCoord>;
+}
+
+/**
+ * Dijkstra from the hero's tile, settling the lowest (distance, key) first — the
+ * same order as the earlier full scan (ties broken by the smaller key), so routes
+ * are unchanged; a binary heap with lazy deletion makes it fast enough for the
+ * larger random maps. Only the start tile and 'open' tiles are passed through;
+ * other enterable tiles (a site, an encounter) end a route. With `destKey` the
+ * search stops once that tile is settled; without it, it covers every tile the
+ * hero can reach (the shared tree below).
+ */
+function searchPaths(catalog: ContentCatalog, state: MatchState, heroId: HeroId, destKey: string | null): PathTree {
+  const hero = state.heroes[heroId]!;
+  const map = state.world.map;
+  const fog = state.fog[hero.ownerId];
+  const explored = (c: HexCoord) => !fog || fog.explored[cellIndex(map, c)] === 1;
+  const occupancy = heroOccupancy(state, heroId);
+  const startKey = hexKey(hero.position);
+  const dist = new Map<string, number>([[startKey, 0]]);
+  const prev = new Map<string, string>();
+  const coords = new Map<string, HexCoord>([[startKey, hero.position]]);
+  const done = new Set<string>();
+  const heap = new KeyHeap();
+  heap.push(0, startKey);
+  for (;;) {
+    const top = heap.pop();
+    if (!top) break;
+    const [bestDist, bestKey] = top;
+    if (done.has(bestKey) || bestDist !== dist.get(bestKey)) continue;
+    if (bestKey === destKey) break;
+    done.add(bestKey);
+    const cur = coords.get(bestKey)!;
+    // Only the start tile and 'open' tiles may be passed through.
+    if (bestKey !== startKey && tileRole(catalog, state, hero.ownerId, cur, heroId, occupancy) !== 'open') continue;
+    for (const n of axialNeighbors(cur)) {
+      if (!inMap(map, n) || !explored(n)) continue;
+      const role = tileRole(catalog, state, hero.ownerId, n, heroId, occupancy);
+      if (role === 'blocked') continue;
+      const nKey = hexKey(n);
+      // A tile that is not open ends a route: only as the destination (a single search), or as a
+      // leaf of the shared tree (recorded, never passed through — so the routes to every other
+      // tile are the same as a single search's).
+      if (role !== 'open' && destKey !== null && nKey !== destKey) continue;
+      const c = edgeCost(catalog, map, cur, n);
+      if (c === null) continue;
+      const nd = bestDist + c;
+      const old = dist.get(nKey);
+      if (old === undefined || nd < old) {
+        dist.set(nKey, nd);
+        prev.set(nKey, bestKey);
+        coords.set(nKey, n);
+        heap.push(nd, nKey);
+      }
+    }
+  }
+  return { dist, prev, coords };
+}
+
+/** Shared route trees while `withSharedPaths` runs: one search per (state, hero) instead of one per destination. */
+let pathMemo: WeakMap<MatchState, Map<HeroId, PathTree>> | null = null;
+
+function sharedPathTree(catalog: ContentCatalog, state: MatchState, heroId: HeroId, memo: WeakMap<MatchState, Map<HeroId, PathTree>>): PathTree {
+  let byHero = memo.get(state);
+  if (!byHero) memo.set(state, (byHero = new Map()));
+  let tree = byHero.get(heroId);
+  if (!tree) byHero.set(heroId, (tree = searchPaths(catalog, state, heroId, null)));
+  return tree;
+}
+
+/**
+ * Run `fn` with route searches shared: every `findHeroPath` (and `quoteMovement`)
+ * for the same state object and hero inside `fn` reads one search over the
+ * whole reachable map instead of searching again per destination — the computer
+ * players quote dozens of destinations per decision (2026-10-06 frame-rate work:
+ * their turns run between the map's frames). The routes are identical. The
+ * states read inside `fn` must not be changed while it runs.
+ */
+export function withSharedPaths<T>(fn: () => T): T {
+  const outer = pathMemo;
+  pathMemo = outer ?? new WeakMap();
+  try {
+    return fn();
+  } finally {
+    pathMemo = outer;
+  }
+}
+
 /**
  * Shortest legal path for a hero. Unknown (never explored) tiles are not used by
  * the pathfinder, so routes never leak hidden terrain.
@@ -343,43 +434,8 @@ export function findHeroPath(catalog: ContentCatalog, state: MatchState, heroId:
 
   const startKey = hexKey(hero.position);
   const destKey = hexKey(dest);
-  const dist = new Map<string, number>([[startKey, 0]]);
-  const prev = new Map<string, string>();
-  const coords = new Map<string, HexCoord>([[startKey, hero.position]]);
-  const done = new Set<string>();
-  // Dijkstra settling the lowest (distance, key) first — the same order as the earlier
-  // full scan (ties broken by the smaller key), so routes are unchanged; a binary heap
-  // with lazy deletion makes it fast enough for the larger random maps.
-  const heap = new KeyHeap();
-  heap.push(0, startKey);
-  for (;;) {
-    const top = heap.pop();
-    if (!top) break;
-    const [bestDist, bestKey] = top;
-    if (done.has(bestKey) || bestDist !== dist.get(bestKey)) continue;
-    if (bestKey === destKey) break;
-    done.add(bestKey);
-    const cur = coords.get(bestKey)!;
-    // Only the start tile and 'open' tiles may be passed through.
-    if (bestKey !== startKey && tileRole(catalog, state, hero.ownerId, cur, heroId, occupancy) !== 'open') continue;
-    for (const n of axialNeighbors(cur)) {
-      if (!inMap(map, n) || !explored(n)) continue;
-      const role = tileRole(catalog, state, hero.ownerId, n, heroId, occupancy);
-      if (role === 'blocked') continue;
-      const nKey = hexKey(n);
-      if (role !== 'open' && nKey !== destKey) continue;
-      const c = edgeCost(catalog, map, cur, n);
-      if (c === null) continue;
-      const nd = bestDist + c;
-      const old = dist.get(nKey);
-      if (old === undefined || nd < old) {
-        dist.set(nKey, nd);
-        prev.set(nKey, bestKey);
-        coords.set(nKey, n);
-        heap.push(nd, nKey);
-      }
-    }
-  }
+  const shared = pathMemo ? sharedPathTree(catalog, state, heroId, pathMemo) : null;
+  const { dist, prev, coords } = shared ?? searchPaths(catalog, state, heroId, destKey);
   const total = dist.get(destKey);
   if (total === undefined) return fail('No known route');
   const path: HexCoord[] = [];
@@ -418,12 +474,19 @@ export function reachableTiles(catalog: ContentCatalog, state: MatchState, heroI
   const startKey = hexKey(hero.position);
   const dist = new Map<string, number>([[startKey, 0]]);
   const coords = new Map<string, HexCoord>([[startKey, hero.position]]);
-  const frontier: string[] = [startKey];
-  while (frontier.length > 0) {
-    frontier.sort((a, b) => (dist.get(a)! - dist.get(b)! || (a < b ? -1 : 1)));
-    const key = frontier.shift()!;
+  // Tiles are settled lowest (distance, key) first, as the earlier sorted frontier did, so
+  // the result (and its order) is unchanged; the heap makes it fast enough to run after
+  // every command on the larger maps (2026-10-06 frame-rate work).
+  const heap = new KeyHeap();
+  heap.push(0, startKey);
+  const done = new Set<string>();
+  for (;;) {
+    const top = heap.pop();
+    if (!top) break;
+    const [d, key] = top;
+    if (done.has(key) || d !== dist.get(key)) continue;
+    done.add(key);
     const cur = coords.get(key)!;
-    const d = dist.get(key)!;
     if (key !== startKey && tileRole(catalog, state, hero.ownerId, cur, heroId, occupancy) !== 'open') continue;
     for (const n of axialNeighbors(cur)) {
       if (!inMap(map, n)) continue;
@@ -439,7 +502,7 @@ export function reachableTiles(catalog: ContentCatalog, state: MatchState, heroI
       if (old === undefined || nd < old) {
         dist.set(nk, nd);
         coords.set(nk, n);
-        if (!frontier.includes(nk)) frontier.push(nk);
+        heap.push(nd, nk);
       }
     }
   }

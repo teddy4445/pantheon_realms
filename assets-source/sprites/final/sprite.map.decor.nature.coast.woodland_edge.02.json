@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 541.667,
+  "sourceSheet": "sheet.nature.coast.ground_edges.png",
+  "sourceRect": [
+    370,
+    376,
+    724,
+    730
+  ],
+  "role": "woodland_edge"
+}

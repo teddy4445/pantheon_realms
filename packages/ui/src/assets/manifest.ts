@@ -145,12 +145,35 @@ export function menuFrameInterior(): { left: number; right: number; top: number;
   return UI_ART.assets['menu.frame']?.interior ?? { left: 0.25, right: 0.25, top: 0.22, bottom: 0.15 };
 }
 
+/**
+ * The hero screen's equipment figure: a neutral schematic body on navy (owner
+ * delivery 2026-10-06, `hero-equipment-schematic-v2.png`, 1122 × 1402, kept as
+ * delivered in `assets-runtime/ui/`, its source in `assets-source/ui/`). The
+ * slot boxes stand over it; it is never the hero's look.
+ */
+export const HERO_EQUIPMENT_SCHEMATIC = './ui/hero-equipment-schematic-v2.png';
+
 /** Building art: exact level asset first, then the location's generic placeholder. */
 export function resolveBuildingArt(artAssetId: string): AssetRecord {
   const exact = resolveAsset(artAssetId);
   if (exact.url) return exact;
   const generic = artAssetId.replace(/\.l\d+$/, '');
   return resolveAsset(generic);
+}
+
+/**
+ * A town's painting for its town hall level (Brief 17, owner request
+ * 2026-10-06: four stages per pantheon, `<background>.l1`–`.l4`). No hall or
+ * level 0 shows the first stage, above 4 the fourth; a stage not delivered
+ * falls back to the first, then to the single painting. Buildings stay overlays
+ * at their own places on every stage.
+ */
+export function townBackground(backgroundAssetId: string, civicHallLevel: number | undefined, resolve: (id: string) => AssetRecord = resolveAsset): AssetRecord {
+  const level = Math.max(1, Math.min(4, Math.floor(civicHallLevel ?? 1) || 1));
+  const staged = resolve(`${backgroundAssetId}.l${level}`);
+  if (staged.url) return staged;
+  const first = resolve(`${backgroundAssetId}.l1`);
+  return first.url ? first : resolve(backgroundAssetId);
 }
 
 // ---------------------------------------------------------------------------

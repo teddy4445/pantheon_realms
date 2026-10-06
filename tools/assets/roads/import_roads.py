@@ -86,7 +86,7 @@ def clip_to_hex(img: Image.Image, cell: int, cols: int, rows: int, r: float, s: 
     return out
 
 
-def run(src: Path, out_dir: Path, manifest_path: Path, layout_path: Path, dry: bool) -> int:
+def run(src: Path, out_dir: Path, manifest_path: Path, layout_path: Path, dry: bool, note: str = '', only: str = '') -> int:
     lay = json.loads(layout_path.read_text(encoding='utf-8'))
     cell, cols, rows, hex_w, s = lay['cell'], lay['cols'], lay['rows'], lay['hexWidth'], lay['squash']
     r = hex_w / math.sqrt(3)
@@ -97,7 +97,7 @@ def run(src: Path, out_dir: Path, manifest_path: Path, layout_path: Path, dry: b
     for t in TYPES:
         for p in PARTS:
             f = src / f'sheet.road.{t}.{p}.png'
-            if not f.exists():
+            if not f.exists() or (only and only not in f.name):
                 continue
             img = Image.open(f)
             if img.mode != 'RGBA' or img.getchannel('A').getextrema()[0] == 255:
@@ -130,7 +130,7 @@ def run(src: Path, out_dir: Path, manifest_path: Path, layout_path: Path, dry: b
                     'cols': cols,
                     'rows': rows,
                     'hexWidth': hex_w,
-                    'provenance': f'GPT-6 Brief 16 road sheet {f.name}, imported by `npm run roads:import`.',
+                    'provenance': f'GPT-6 Brief 16 road sheet {f.name}, imported by `npm run roads:import`.' + (f' {note}' if note else ''),
                 }
             imported += 1
     if not dry and imported:
@@ -177,10 +177,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description='Import painted road sheets (GPT-6 Brief 16).')
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--self-test', action='store_true')
+    ap.add_argument('--note', default='', help='appended to the provenance of the sheets imported (e.g. a review status)')
+    ap.add_argument('--only', default='', help='import only sheets whose name contains this text (e.g. dirt)')
     a = ap.parse_args()
     if a.self_test:
         return self_test()
-    return run(SRC, OUT, MANIFEST, LAYOUT, a.dry_run)
+    return run(SRC, OUT, MANIFEST, LAYOUT, a.dry_run, a.note, a.only)
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ import { probeGraphics } from '../app/graphicsProbe';
 
 /** What each preset changes (values in `@pr/presentation/core` graphics.ts). */
 const GRAPHICS_HINT: Record<Preferences['graphicsQuality'], string> = {
-  high: 'Full resolution on sharp screens, soft ground shadows, all map decoration, painted ground and sky, full spell effects, idle animations, no frame cap.',
+  high: 'Full resolution on sharp screens, soft ground shadows, all map decoration, painted ground and sky, full spell effects, idle animations, 60 frames per second at most.',
   medium: 'Standard resolution, soft ground shadows, no grass tufts, painted ground and sky, full spell effects, 60 frames per second at most.',
   low: 'Reduced resolution, no shadows or anti-aliasing, sparse map decoration, plain ground colours, simple effect flashes, still figures between actions, 30 frames per second at most.',
 };
@@ -225,6 +225,12 @@ export function SettingsScreen() {
                     Test again
                   </Button>
                 </div>
+              </Field>
+              <Field label="Adaptive resolution" hint="Keeps the map and battle moving smoothly on a slower graphics chip: while frames run slower than about 34 per second the view draws fewer pixels (down to 60 %), and returns to full resolution when they are fast again">
+                <Toggle label="Adaptive resolution" checked={draft.adaptiveResolution} onChange={(v) => set('adaptiveResolution', v)} />
+              </Field>
+              <Field label="Frame rate" hint="A small readout over the map and battle: frames per second, the slowest recent frame, and the frames slower than 1/30 s since the view opened">
+                <Toggle label="Frame rate" checked={draft.showFrameRate} onChange={(v) => set('showFrameRate', v)} />
               </Field>
               <p className="note" data-testid="graphics-note">
                 {probe ? `${probe}. ` : ''}Resolution and frame rate change at once; shadows, detail and painted ground from the next map or battle view; anti-aliasing at the next start.

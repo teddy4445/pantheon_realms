@@ -1302,6 +1302,48 @@
           "brief": "A question mark.",
           "details": "Anything else",
           "priority": "later"
+        },
+        {
+          "assetId": "icon.marker.hero",
+          "name": "Your hero",
+          "group": "Map marker",
+          "where": "Adventure map tile panel; Journal objectives",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.hero.png",
+            "status": "final"
+          },
+          "brief": "A plumed hero’s helmet with a blue plume over crossed reins.",
+          "details": "The tile panel over one of your heroes",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.marker.enemy-hero",
+          "name": "Enemy hero",
+          "group": "Map marker",
+          "where": "Adventure map tile panel; Journal objectives",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.enemy-hero.png",
+            "status": "final"
+          },
+          "brief": "A plumed hero’s helmet with a red plume over crossed reins.",
+          "details": "The tile panel over another empire’s hero",
+          "priority": "later"
+        },
+        {
+          "assetId": "icon.marker.encounter",
+          "name": "Failed objective",
+          "group": "Map marker",
+          "where": "Adventure map tile panel; Journal objectives",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/icon.marker.encounter.png",
+            "status": "final"
+          },
+          "brief": "A torn banner on a broken spear.",
+          "details": "A failed objective in the Journal",
+          "priority": "later"
         }
       ]
     },
@@ -6156,10 +6198,11 @@
           "name": "Cathal",
           "group": "Story portrait",
           "pantheon": "Celtic",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.cathal.portrait.webp",
+            "status": "final"
           },
           "brief": "Cathal — story character (see the campaign documents).",
           "priority": "later"
@@ -6169,10 +6212,11 @@
           "name": "Sadb",
           "group": "Story portrait",
           "pantheon": "Celtic",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.celtic.sadb.portrait.webp",
+            "status": "final"
           },
           "brief": "Sadb — story character (see the campaign documents).",
           "priority": "later"
@@ -6182,10 +6226,11 @@
           "name": "Nebet",
           "group": "Story portrait",
           "pantheon": "Egyptian",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.nebet.portrait.webp",
+            "status": "final"
           },
           "brief": "Nebet — story character (see the campaign documents).",
           "priority": "later"
@@ -6195,10 +6240,11 @@
           "name": "Pawah",
           "group": "Story portrait",
           "pantheon": "Egyptian",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.egyptian.pawah.portrait.webp",
+            "status": "final"
           },
           "brief": "Pawah — story character (see the campaign documents).",
           "priority": "later"
@@ -6208,10 +6254,11 @@
           "name": "Ione",
           "group": "Story portrait",
           "pantheon": "Greek",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.ione.portrait.webp",
+            "status": "final"
           },
           "brief": "Ione — story character (see the campaign documents).",
           "priority": "later"
@@ -6221,10 +6268,11 @@
           "name": "Thaleia",
           "group": "Story portrait",
           "pantheon": "Greek",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.thaleia.portrait.webp",
+            "status": "final"
           },
           "brief": "Thaleia — story character (see the campaign documents).",
           "priority": "later"
@@ -6234,10 +6282,11 @@
           "name": "Genzo",
           "group": "Story portrait",
           "pantheon": "Japanese",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.genzo.portrait.webp",
+            "status": "final"
           },
           "brief": "Genzo — story character (see the campaign documents).",
           "priority": "later"
@@ -6247,10 +6296,11 @@
           "name": "Shiro",
           "group": "Story portrait",
           "pantheon": "Japanese",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.japanese.shiro.portrait.webp",
+            "status": "final"
           },
           "brief": "Shiro — story character (see the campaign documents).",
           "priority": "later"
@@ -6260,10 +6310,11 @@
           "name": "Chimal",
           "group": "Story portrait",
           "pantheon": "Mesoamerican",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.chimal.portrait.webp",
+            "status": "final"
           },
           "brief": "Chimal — story character (see the campaign documents).",
           "priority": "later"
@@ -6273,10 +6324,11 @@
           "name": "Grandmother Xoco",
           "group": "Story portrait",
           "pantheon": "Mesoamerican",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.mesoamerican.xoco.portrait.webp",
+            "status": "final"
           },
           "brief": "Grandmother Xoco — story character (see the campaign documents).",
           "priority": "later"
@@ -6286,10 +6338,11 @@
           "name": "Eydis",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.eydis.portrait.webp",
+            "status": "final"
           },
           "brief": "Eydis — story character (see the campaign documents).",
           "priority": "later"
@@ -6299,10 +6352,11 @@
           "name": "Jökul",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.jokul.portrait.webp",
+            "status": "final"
           },
           "brief": "Jökul — story character (see the campaign documents).",
           "priority": "later"
@@ -6312,10 +6366,11 @@
           "name": "Skeggi",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.skeggi.portrait.webp",
+            "status": "final"
           },
           "brief": "Skeggi — story character (see the campaign documents).",
           "priority": "later"
@@ -6325,10 +6380,11 @@
           "name": "Svanhild",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.svanhild.portrait.webp",
+            "status": "final"
           },
           "brief": "Svanhild — story character (see the campaign documents).",
           "priority": "later"
@@ -6338,10 +6394,11 @@
           "name": "The Troll-wife",
           "group": "Story portrait",
           "pantheon": "Norse",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.norse.troll_wife.portrait.webp",
+            "status": "final"
           },
           "brief": "The Troll-wife — story character (see the campaign documents).",
           "priority": "later"
@@ -6350,10 +6407,11 @@
           "assetId": "story.herald.portrait",
           "name": "Herald",
           "group": "Story portrait",
-          "where": "Fallback only: the dialogue window shows the painted bust",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
           "current": {
-            "type": "procedural",
-            "note": "painted bust in the dialogue window; generated square stand-in elsewhere"
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/story.herald.portrait.webp",
+            "status": "final"
           },
           "brief": "Herald — story character (see the campaign documents).",
           "priority": "later"
@@ -12079,9 +12137,6 @@
     "icon.attr.defense",
     "icon.attr.knowledge",
     "icon.attr.power",
-    "icon.marker.encounter",
-    "icon.marker.enemy-hero",
-    "icon.marker.hero",
     "icon.stat.accuracy",
     "icon.stat.crit",
     "icon.stat.evasion",

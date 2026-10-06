@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 560.417,
+  "sourceSheet": "sheet.nature.high_pass.ground_edges.png",
+  "sourceRect": [
+    724,
+    724,
+    1086,
+    1086
+  ],
+  "role": "rocky_edge"
+}

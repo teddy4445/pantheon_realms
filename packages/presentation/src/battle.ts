@@ -26,12 +26,30 @@ import { creatureSprites, spriteManifest, type EffectDefinition, type StaticSpri
 import { loadStrip, loadTexture } from './textures';
 import { colorOf, groundShadow, stillHeight, stillSprite } from './staticSprites';
 import { FxPainter, StatusAura, type FxTarget } from './fx';
+import { battleObstacleId } from './nature';
 import type { FxLook, FxSound, StatusOverlay } from './fxLooks';
 
 /** Hex radius in board pixels before the fit-to-view scale. */
 const RB = 40;
 const S = BATTLE_SQUASH;
 const HEX_W = SQRT3 * RB;
+/** The status icon beside a damage spell's number, by its look's school (Brief 13 art; others show none). */
+const SPELL_HURT_ICON: Partial<Record<FxLook['school'], string>> = {
+  fire: 'icon.status.burning',
+  hearth: 'icon.status.burning',
+  obsidian: 'icon.status.burning',
+  frost: 'icon.status.frozen',
+  strike: 'icon.fx.lightning',
+  storm: 'icon.fx.lightning',
+  shadow: 'icon.fx.shadow',
+  curse: 'icon.fx.shadow',
+  blight: 'icon.status.poison',
+  swarm: 'icon.status.poison',
+};
+const FLOAT_ICONS = ['icon.stat.luck', 'icon.fx.shield', 'icon.action.defend', 'icon.action.wait', 'icon.stat.morale', 'icon.status.stun', 'icon.status.heal', ...new Set(Object.values(SPELL_HURT_ICON))];
+/** Stack marks: at most this many icons over a count badge, each a disc of this radius (board px). */
+const MAX_MARKS = 5;
+const MARK_R = 12;
 /** Drawn size of a projectile against its art's scale: arrows a third (owner request 2026-10-05; the art spans 1.4 hexes). */
 const PROJECTILE_SIZE: Readonly<Record<string, number>> = { arrow: 1 / 3 };
 /** The drawn catapult's arm: lying back at rest, upright against the crossbar when it throws. */
@@ -63,6 +81,16 @@ export interface BattleStackView {
   readonly labelColor: string;
   /** Status overlays to show on the stack (fxLooks.statusOverlays of its statuses). */
   readonly statuses?: readonly StatusOverlay[];
+  /** Small icons over the count badge: what affects the stack right now (defending, waiting, aspect, statuses). */
+  readonly marks?: readonly BattleStackMark[];
+}
+
+/** One icon over a stack's count (the Brief 13 status, action and miracle icons). Presentation only. */
+export interface BattleStackMark {
+  /** Interface icon asset ID, resolved by `BattleCallbacks.iconUrl`; a mark without a delivered icon is left out. */
+  readonly icon: string;
+  /** What it means (the screen shows the same marks with this text). */
+  readonly label: string;
 }
 
 export interface SiegeStructureView {
@@ -168,6 +196,8 @@ export interface BattleCallbacks {
   onCue?(cue: BattleCue): void;
   /** Optional: how a spell looks (default: from its damage/heal numbers). */
   spellFx?(spellId: string): BattleSpellFx | null;
+  /** Optional: the runtime URL of an interface icon (stack marks and the icons beside floating words); null when not delivered. */
+  iconUrl?(assetId: string): string | null;
   /** Optional: how a divine intervention looks in this battle (null: not shown). */
   miracleFx?(interventionId: string, playerId: string): BattleMiracleFx | null;
 }
@@ -180,7 +210,12 @@ interface StackEntry {
   badge: Container;
   badgeText: Text;
   badgeBg: Graphics;
+  /** The count and colour the badge was last drawn with. */
+  badgeKey: string;
   badgeOffset: { x: number; y: number };
+  /** Status, action and miracle icons in a row over the count badge (follow the statuses' timing). */
+  marks: Container;
+  shownMarks: string;
   view: BattleStackView;
   shownAnchor: BattleCell;
   prevAnchor: BattleCell;
@@ -209,7 +244,22 @@ const ARCHETYPE_GROUND: Record<string, string> = {
   open_field: '#7e8a4f',
 };
 
-/** Obstacle stills per battlefield (manifest `obstacles` IDs); any missing ID falls back to the first that exists. */
+/**
+ * Generic obstacle stills per battlefield (manifest `obstacles` IDs): kept for the
+ * authored columns and standing stones, and on a battlefield without a known
+ * climate. Elsewhere the climate's own rock, deadwood or tree stands on the cell
+ * (`battleObstacleId`, nature delivery 2026-10-06). A missing still is replaced
+ * by a neutral boulder or rock, else a drawn stone — never an unrelated picture.
+ */
+/** Generic kinds kept on every battlefield (authored pieces, not natural rocks). */
+const AUTHORED_OBSTACLES = new Set(['column', 'stone_circle']);
+/**
+ * Width in battle hexes a climate obstacle is drawn at (its visible picture: the
+ * importer trims the stills to their painted pixels), about the generic
+ * obstacles' 0.9 hex.
+ */
+const NATURE_OBSTACLE_WIDTH: Readonly<Record<string, number>> = { canopy: 0.9, rock: 0.88, deadwood: 0.93 };
+
 const OBSTACLE_KINDS: Record<string, readonly string[]> = {
   coast_road: ['rock', 'boulder', 'log'],
   ridge_pass: ['boulder', 'rock', 'rock'],
@@ -219,13 +269,27 @@ const OBSTACLE_KINDS: Record<string, readonly string[]> = {
   open_field: ['rock', 'tree', 'log'],
 };
 
+/** Two 0xrrggbb colours multiplied channel by channel (a tint). */
+function multiplyRgb(a: number, b: number): number {
+  const ch = (s: number) => Math.round((((a >> s) & 255) * ((b >> s) & 255)) / 255) << s;
+  return ch(16) | ch(8) | ch(0);
+}
+
 export class BattleSceneController implements SceneController {
   readonly root = new Container();
   readonly tweens = new TweenPlayer();
   private readonly canvas: HTMLCanvasElement;
   private readonly cb: BattleCallbacks;
   private readonly board = new Container();
+  /** The battlefield (painting, cells, grid): redrawn only when the board changes. */
+  private readonly field = new Container();
+  /** Highlights, hover and the active stack's ring. */
+  private readonly marks = new Container();
   private readonly backdrop = new Container();
+  /** The width (hexes) the active ring was drawn for; its pulse is a scale. */
+  private ringWidth = 0;
+  /** The ground colour around the painted field (behind everything). */
+  background = 0x7e8a4f;
   private readonly cells = new Graphics();
   private readonly grid = new Graphics();
   private readonly highlight = new Graphics();
@@ -248,6 +312,7 @@ export class BattleSceneController implements SceneController {
   private highlightKey = '';
   private stacks = new Map<string, StackEntry>();
   private obstacleSprites: Container[] = [];
+  private obstacleLog: { col: number; row: number; id: string; source: 'nature' | 'generic' | 'marker' }[] = [];
   private lastHover = '';
   private time = 0;
   private cols = 15;
@@ -267,15 +332,27 @@ export class BattleSceneController implements SceneController {
   /** Winners cheering after the battle was won (until the screen closes). */
   private celebrating = new Set<StackEntry>();
   private extraTweens: TweenPlayer[] = [];
+  /** Interface icons loaded for stack marks and floating words, by URL; a newly loaded one redraws the marks. */
+  private readonly iconTextures = new Map<string, Texture>();
+  private readonly iconLoading = new Set<string>();
+  private marksDirty = false;
 
   constructor(engine: EngineHost, canvas: HTMLCanvasElement, cb: BattleCallbacks) {
     this.canvas = canvas;
     this.cb = cb;
     this.objects.sortableChildren = true;
     this.badges.sortableChildren = true;
-    this.board.addChild(this.backdrop, this.cells, this.grid, this.highlight, this.hover, this.activeRing, this.objects, this.badges, this.fx, this.floats);
+    this.field.addChild(this.backdrop, this.cells, this.grid);
+    this.marks.addChild(this.highlight, this.hover, this.activeRing);
+    this.board.addChild(this.field, this.marks, this.objects, this.badges, this.fx, this.floats);
     this.root.addChild(this.board, this.screenLayer);
+    // Render groups (2026-10-06 frame-rate work): the animated stacks, their
+    // count badges and the effects re-send only their own layer each frame, never
+    // the battlefield; zooming changes one transform on the GPU.
+    this.board.enableRenderGroup();
+    for (const layer of [this.field, this.marks, this.highlight, this.objects, this.badges, this.fx, this.floats]) layer.enableRenderGroup();
     this.hover.visible = false;
+    this.hover.poly(hexPolygon(0, 0, RB * 0.95, S)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
     this.activeRing.visible = false;
     this.view = { width: engine.width, height: engine.height };
     this.painter = new FxPainter(this.fx, this.tweens, RB, S, { layer: this.screenLayer, size: () => this.view });
@@ -347,9 +424,8 @@ export class BattleSceneController implements SceneController {
    */
   private buildBackdrop(view: BattleView): void {
     for (const c of this.backdrop.removeChildren()) c.destroy();
-    const ground = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
-    const plain = new Graphics().rect(-4000, -3000, 9000, 7000).fill({ color: ground });
-    this.backdrop.addChild(plain);
+    // The plain ground around the painting is the renderer's background colour (no full-screen rectangle to fill).
+    this.background = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
     const siegeArt = graphicsProfile().paintedGround ? this.siegeGround(view) : null;
     const art = siegeArt ?? (graphicsProfile().paintedGround ? battlefieldArt(view.archetype, view.climate) : null);
     if (!art) return;
@@ -368,7 +444,7 @@ export class BattleSceneController implements SceneController {
     const cx = (minX + maxX) / 2;
     const cy = (minY + maxY) / 2;
     const battleId = view.battleId;
-    if (art.edge) plain.tint = colorOf(art.edge);
+    if (art.edge) this.background = multiplyRgb(this.background, colorOf(art.edge));
     void loadTexture(art.url).then(
       (tex) => {
         if (this.disposed || !this.boardKey.startsWith(battleId)) return;
@@ -383,6 +459,8 @@ export class BattleSceneController implements SceneController {
   }
 
   private buildBoard(view: BattleView): void {
+    // The icons that stand before floating words load with the board, so the first one shows.
+    for (const id of FLOAT_ICONS) this.iconTexture(id);
     this.cols = view.cols;
     this.rows = view.rows;
     this.siegeLayout = !!view.siege && view.siege.structures.length > 0;
@@ -421,18 +499,35 @@ export class BattleSceneController implements SceneController {
     this.obstacleSprites = [];
     const kinds = OBSTACLE_KINDS[view.archetype] ?? OBSTACLE_KINDS['open_field']!;
     const all = spriteManifest().obstacles;
-    const anyDef = Object.values(all)[0] ?? null;
+    const decor = spriteManifest().decor;
+    const neutral: StaticSpriteDefinition | null = all['boulder'] ?? all['rock'] ?? null;
+    this.obstacleLog = [];
+    const chosen: { c: BattleCell; id: string }[] = [];
     view.obstacles.forEach((c, i) => {
       const kind = kinds[(c.col * 7 + c.row * 3 + i) % kinds.length]!;
-      const def: StaticSpriteDefinition | null = all[kind] ?? anyDef;
+      const used = chosen.filter((o) => Math.abs(o.c.col - c.col) + Math.abs(o.c.row - c.row) <= 2).map((o) => o.id);
+      const natureId = AUTHORED_OBSTACLES.has(kind) ? null : battleObstacleId(view.climate, view.archetype, c, null, view.battleId, (id) => !!decor[id], used);
+      const natureDef = natureId ? (decor[natureId] ?? null) : null;
+      const def: StaticSpriteDefinition | null = natureDef ?? all[kind] ?? neutral;
       const { x, y } = this.cellXY(c);
       const root = new Container();
       root.position.set(x, y + RB * S * 0.35);
       root.zIndex = root.y;
       if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.42, HEX_W * 0.16, 0.34));
-      const s = stillSprite(def, HEX_W);
-      if ((c.col + c.row) % 2 === 1) s.scale.x *= -1;
-      root.addChild(s);
+      if (def) {
+        let size = 1;
+        if (natureDef) {
+          const role = natureId!.split('.')[2] ?? 'rock';
+          size = (NATURE_OBSTACLE_WIDTH[role] ?? 1) / Math.max(0.05, natureDef.width / natureDef.pixelsPerHex);
+          size *= 0.94 + 0.12 * ((tileNoise(c.col, c.row) + 1) / 2);
+        }
+        const s = stillSprite(def, HEX_W, size);
+        // Generic stills alternate sides; the climate's paintings stay as painted (their light).
+        if (!natureDef && (c.col + c.row) % 2 === 1) s.scale.x *= -1;
+        root.addChild(s);
+      } else root.addChild(this.drawnStone());
+      chosen.push({ c, id: natureId ?? kind });
+      this.obstacleLog.push({ col: c.col, row: c.row, id: natureDef ? natureId! : def ? (all[kind] ? kind : 'neutral') : 'marker', source: natureDef ? 'nature' : def ? 'generic' : 'marker' });
       this.objects.addChild(root);
       this.obstacleSprites.push(root);
     });
@@ -610,7 +705,8 @@ export class BattleSceneController implements SceneController {
     const badgeBg = new Graphics();
     const badgeText = new Text({ text: v.label, style: { fontFamily: 'Inter, sans-serif', fontSize: 15, fontWeight: '700', fill: v.labelColor } });
     badgeText.anchor.set(0.5);
-    badge.addChild(badgeBg, badgeText);
+    const marks = new Container();
+    badge.addChild(badgeBg, badgeText, marks);
     const badgeOffset = { x: v.facing * HEX_W * 0.34 * w, y: RB * S * 0.28 };
     this.badges.addChild(badge);
     const e: StackEntry = {
@@ -620,7 +716,10 @@ export class BattleSceneController implements SceneController {
       badge,
       badgeText,
       badgeBg,
+      badgeKey: '',
       badgeOffset,
+      marks,
+      shownMarks: '',
       view: v,
       shownAnchor: v.anchor,
       prevAnchor: v.anchor,
@@ -646,8 +745,12 @@ export class BattleSceneController implements SceneController {
   }
 
   private setBadge(e: StackEntry, label: string, color: string): void {
+    // Redrawn only when the count or its colour changes (each redraw renders the number again and re-sends it to the GPU).
+    const key = `${label}|${color}|${e.view.side}`;
+    if (key === e.badgeKey) return;
+    e.badgeKey = key;
     if (e.badgeText.text !== label) e.badgeText.text = label;
-    e.badgeText.style.fill = color;
+    if (e.badgeText.style.fill !== color) e.badgeText.style.fill = color;
     const w = Math.max(22, e.badgeText.width + 10);
     e.badgeBg.clear();
     e.badgeBg.roundRect(-w / 2, -10, w, 20, 5).fill({ color: e.view.side === 'attacker' ? 0x16284a : 0x4a1a16, alpha: 0.92 }).stroke({ width: 1.2, color: 0xc29a52, alpha: 0.9 });
@@ -669,13 +772,68 @@ export class BattleSceneController implements SceneController {
     e.root.zIndex = e.root.y - 2;
     e.shownStatuses = [];
     e.aura.clear();
+    this.refreshMarks(e);
   }
 
   /** Show the stack's current statuses (after any spell that set them has played). */
   private applyAura(e: StackEntry): void {
     e.auraDelay = 0;
     e.shownStatuses = e.down || !e.view.alive ? [] : (e.view.statuses ?? []);
+    e.shownMarks = '';
     this.refreshAura(e);
+    this.refreshMarks(e);
+  }
+
+  /** An interface icon's texture, or null while it loads (or when it is not delivered). */
+  private iconTexture(assetId: string): Texture | null {
+    const url = this.cb.iconUrl?.(assetId) ?? null;
+    if (!url) return null;
+    const tex = this.iconTextures.get(url);
+    if (tex) return tex;
+    if (!this.iconLoading.has(url)) {
+      this.iconLoading.add(url);
+      loadTexture(url).then(
+        (t) => {
+          this.iconTextures.set(url, t);
+          this.marksDirty = true;
+        },
+        () => undefined,
+      );
+    }
+    return null;
+  }
+
+  /**
+   * The row of small icons over the count badge (statuses, defending, waiting,
+   * aspect; Brief 13 art): up to five, centred above the badge, each on a dark
+   * disc with a gold rim. Icons still loading are added when they arrive.
+   */
+  private refreshMarks(e: StackEntry): void {
+    const list = e.down || !e.view.alive ? [] : (e.view.marks ?? []);
+    const ready: { icon: string; tex: Texture }[] = [];
+    let pending = false;
+    for (const m of list) {
+      if (ready.length >= MAX_MARKS) break;
+      const tex = this.iconTexture(m.icon);
+      if (tex) ready.push({ icon: m.icon, tex });
+      else if (this.cb.iconUrl?.(m.icon)) pending = true;
+    }
+    const key = ready.map((r) => r.icon).join(',') + (pending ? '…' : '');
+    if (key === e.shownMarks) return;
+    e.shownMarks = key;
+    for (const c of e.marks.removeChildren()) c.destroy({ children: true });
+    const step = MARK_R * 2 + 3;
+    ready.forEach((r, i) => {
+      const m = new Container();
+      const disc = new Graphics();
+      disc.circle(0, 0, MARK_R).fill({ color: 0x10131a, alpha: 0.88 }).stroke({ width: 1.2, color: 0xc29a52, alpha: 0.95 });
+      const sp = new Sprite(r.tex);
+      sp.anchor.set(0.5);
+      sp.scale.set((MARK_R * 1.9) / Math.max(1, r.tex.width));
+      m.addChild(disc, sp);
+      m.position.set((i - (ready.length - 1) / 2) * step, -10 - 3 - MARK_R);
+      e.marks.addChild(m);
+    });
   }
 
   private refreshAura(e: StackEntry): void {
@@ -717,7 +875,8 @@ export class BattleSceneController implements SceneController {
         if (e.locked === 0) e.snapIn = 3;
       }
       const died = !v.alive && e.view.alive;
-      const statusesChanged = (v.statuses ?? []).join(',') !== e.shownStatuses.join(',');
+      const marksOf = (x: BattleStackView) => (x.marks ?? []).map((m) => m.icon).join(',');
+      const statusesChanged = (v.statuses ?? []).join(',') !== e.shownStatuses.join(',') || marksOf(v) !== marksOf(e.view);
       e.view = v;
       if (statusesChanged && e.locked === 0 && e.auraDelay === 0) e.auraDelay = 3;
       this.setBadge(e, v.label, v.labelColor);
@@ -744,7 +903,7 @@ export class BattleSceneController implements SceneController {
   }
 
   update(view: BattleView): void {
-    const bk = `${view.battleId}|${view.obstacles.length}|${view.siege?.moat.length ?? -1}|${view.siege?.structures.length ?? -1}`;
+    const bk = `${view.battleId}|${view.climate ?? ''}|${view.obstacles.length}|${view.siege?.moat.length ?? -1}|${view.siege?.structures.length ?? -1}`;
     if (bk !== this.boardKey) {
       for (const e of this.stacks.values()) this.disposeStack(e);
       this.stacks.clear();
@@ -872,9 +1031,23 @@ export class BattleSceneController implements SceneController {
 
   // ------------------------------------------------------------------ playback helpers
 
-  private floatText(at: { x: number; y: number }, text: string, color: string, speed: number): Promise<void> {
-    const t = new Text({ text, style: { fontFamily: 'Inter, sans-serif', fontSize: 22, fontWeight: '700', fill: color, stroke: { color: '#10131a', width: 4 } } });
-    t.anchor.set(0.5, 1);
+  /** A word rising over a stack; `icon` (an interface icon asset ID) stands before it when delivered and loaded. */
+  private floatText(at: { x: number; y: number }, text: string, color: string, speed: number, icon?: string): Promise<void> {
+    const t = new Container();
+    const word = new Text({ text, style: { fontFamily: 'Inter, sans-serif', fontSize: 22, fontWeight: '700', fill: color, stroke: { color: '#10131a', width: 4 } } });
+    word.anchor.set(0.5, 1);
+    t.addChild(word);
+    const tex = icon ? this.iconTexture(icon) : null;
+    if (tex) {
+      const size = 26;
+      const sp = new Sprite(tex);
+      sp.anchor.set(0.5, 1);
+      sp.scale.set(size / Math.max(1, tex.width));
+      word.x = (size + 4) / 2;
+      sp.x = word.x - word.width / 2 - 4 - size / 2;
+      sp.y = 1;
+      t.addChildAt(sp, 0);
+    }
     t.position.set(at.x, at.y);
     this.floats.addChild(t);
     const tw = new TweenPlayer();
@@ -890,7 +1063,7 @@ export class BattleSceneController implements SceneController {
         linear,
       )
       .then(() => {
-        t.destroy();
+        t.destroy({ children: true });
         this.extraTweens = this.extraTweens.filter((x) => x !== tw);
       });
   }
@@ -1227,7 +1400,7 @@ export class BattleSceneController implements SceneController {
           this.cue('impact', heavy);
         }
         const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
-        void this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed);
+        void this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed, ev.luck ? 'icon.stat.luck' : undefined);
         await this.sufferBlow(t, ev.targetRemaining <= 0);
         a.figure.mirror = a.view.facing === -1;
         if (!t.down) t.figure.mirror = t.view.facing === -1;
@@ -1244,7 +1417,7 @@ export class BattleSceneController implements SceneController {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
         this.cue('ward');
-        void this.floatText(this.headOf(e), 'Ward!', '#9fe8ff', speed);
+        void this.floatText(this.headOf(e), 'Ward!', '#9fe8ff', speed, 'icon.fx.shield');
         void this.effect('ward', { x: e.root.x, y: e.root.y }, { flash: 0x9fe8ff });
         if (e.figure.has('ability')) await e.figure.playOnce('ability', this.tweens);
         else await this.defendPose(e, 0.7);
@@ -1254,14 +1427,14 @@ export class BattleSceneController implements SceneController {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
         this.cue('defend');
-        void this.floatText(this.headOf(e), 'Defend', '#cfe3ff', speed);
+        void this.floatText(this.headOf(e), 'Defend', '#cfe3ff', speed, 'icon.action.defend');
         await this.defendPose(e, 0.8);
         return;
       }
       case 'BattleStackWaited': {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
-        await this.floatText(this.headOf(e), 'Wait', '#e6d7b0', speed * 0.6);
+        await this.floatText(this.headOf(e), 'Wait', '#e6d7b0', speed * 0.6, 'icon.action.wait');
         return;
       }
       case 'BattleMorale': {
@@ -1269,7 +1442,7 @@ export class BattleSceneController implements SceneController {
         if (!e) return;
         this.cue(ev.positive ? 'morale-up' : 'morale-down');
         void this.effect(ev.positive ? 'morale.up' : 'morale.down', { x: e.root.x, y: e.root.y }, { flash: ev.positive ? 0xf5e4b7 : 0xff9d8a });
-        await this.floatText(this.headOf(e), ev.positive ? 'Morale! Acts again' : 'Falters — skips turn', ev.positive ? '#f5e4b7' : '#ff9d8a', speed * 0.8);
+        await this.floatText(this.headOf(e), ev.positive ? 'Morale! Acts again' : 'Falters — skips turn', ev.positive ? '#f5e4b7' : '#ff9d8a', speed * 0.8, ev.positive ? 'icon.stat.morale' : 'icon.status.stun');
         return;
       }
       case 'BattleStackDestroyed': {
@@ -1448,17 +1621,20 @@ export class BattleSceneController implements SceneController {
       await this.tweens.wait(200);
       let text: string | null = null;
       let color = '#f5e4b7';
+      let icon: string | undefined;
       if (ev.healed > 0) {
         if (i === 0) text = `+${ev.healed} HP`;
         color = '#9be58a';
+        icon = 'icon.status.heal';
       } else if (ev.damage > 0) {
         text = per !== null ? `−${per}` : i === 0 ? `−${ev.damage}` : null;
         color = '#9cc4ff';
+        icon = SPELL_HURT_ICON[look.school];
       } else if (i === 0) {
         text = look.label ?? (look.hostile ? 'Cursed' : 'Blessed');
         color = look.hostile ? '#d7b0ff' : '#f5e4b7';
       }
-      if (text) void this.floatText(this.headOf(v), text, color, speed);
+      if (text) void this.floatText(this.headOf(v), text, color, speed, icon);
       if (ev.damage > 0) await this.sufferBlow(v, !v.view.alive);
       await hit;
     };
@@ -1486,12 +1662,14 @@ export class BattleSceneController implements SceneController {
       if (look.travel === 'sky') await this.painter.travel(look, { x: v.root.x, y: v.root.y - RB * 8 }, this.chestOf(v), `${id}.travel`);
       const hit = this.painter.impact(look, this.targetOf(v), `${id}.impact`);
       await this.tweens.wait(220);
+      // The miracle's own icon (Brief 13) stands before its word.
+      const icon = `icon.intervention.${ev.interventionId}`;
       if (m.damage) {
-        void this.floatText(this.headOf(v), `−${m.damage}`, '#ff8a70', speed);
+        void this.floatText(this.headOf(v), `−${m.damage}`, '#ff8a70', speed, icon);
         await this.sufferBlow(v, !v.view.alive);
       } else if (i === 0) {
         const text = healed > 0 ? `+${healed} HP` : m.label;
-        if (text) void this.floatText(this.headOf(v), text, healed > 0 ? '#9be58a' : '#f5e4b7', speed);
+        if (text) void this.floatText(this.headOf(v), text, healed > 0 ? '#9be58a' : '#f5e4b7', speed, icon);
       }
       await hit;
     };
@@ -1501,6 +1679,8 @@ export class BattleSceneController implements SceneController {
   /** Start loading an effect's delivered strips (e.g. a miracle's, while its painted card is up). Presentation only. */
   preloadFx(id: string): void {
     this.painter.preload(id);
+    // A miracle's icon stands before its word over the stacks.
+    if (id.startsWith('fx.miracle.')) this.iconTexture(`icon.intervention.${id.slice('fx.miracle.'.length)}`);
   }
 
   /** The magic effects played most recently (read-only diagnostics for tests). */
@@ -1548,11 +1728,11 @@ export class BattleSceneController implements SceneController {
     const key = hit ? `${hit.cell.col}:${hit.cell.row}:${Math.sign(hit.offset.x)}:${Math.sign(hit.offset.y)}:${Math.round(Math.atan2(hit.offset.y, hit.offset.x) / (Math.PI / 3))}` : '';
     if (key === this.lastHover) return;
     this.lastHover = key;
+    // One hex outline drawn once, moved to the cell under the pointer.
     const g = this.hover;
-    g.clear();
     if (hit) {
       const w = this.cellXY(hit.cell);
-      g.poly(hexPolygon(w.x, w.y, RB * 0.95, S)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
+      g.position.set(w.x, w.y);
       g.visible = true;
     } else g.visible = false;
     this.cb.onCellHover(hit?.cell ?? null, hit?.offset ?? { x: 0, y: 0 });
@@ -1577,8 +1757,21 @@ export class BattleSceneController implements SceneController {
   }
 
   /** Read-only state of every stack figure (tests and diagnostics): where it is drawn and how. */
-  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; deaths: number; hits: number }> {
-    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; deaths: number; hits: number }> = {};
+  /** The still drawn on each obstacle cell (read-only diagnostics for tests). */
+  obstacleDebug(): { col: number; row: number; id: string; source: 'nature' | 'generic' | 'marker' }[] {
+    return this.obstacleLog.map((o) => ({ ...o }));
+  }
+
+  /** A plain grey stone for a blocked cell whose still is missing (never hidden). */
+  private drawnStone(): Graphics {
+    const g = new Graphics();
+    g.ellipse(0, -HEX_W * 0.16, HEX_W * 0.32, HEX_W * 0.2).fill({ color: 0x77736b });
+    g.ellipse(-HEX_W * 0.06, -HEX_W * 0.22, HEX_W * 0.16, HEX_W * 0.09).fill({ color: 0x938e84 });
+    return g;
+  }
+
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number }> = {};
     const z = this.board.scale.x;
     for (const [id, e] of this.stacks) {
       out[id] = {
@@ -1592,6 +1785,7 @@ export class BattleSceneController implements SceneController {
         down: e.down,
         visible: e.root.visible,
         overlays: e.aura.kinds,
+        marks: e.shownMarks ? e.shownMarks.replace('…', '').split(',').filter(Boolean) : [],
         deaths: e.deathPlays,
         hits: e.hitPlays,
       };
@@ -1614,6 +1808,10 @@ export class BattleSceneController implements SceneController {
     if (this.structureSnapIn > 0 && --this.structureSnapIn === 0 && this.structuresLocked === 0) this.syncStructures();
     for (const tw of this.extraTweens) tw.tick(dt);
     const motion = graphicsProfile().ambientMotion;
+    if (this.marksDirty) {
+      this.marksDirty = false;
+      for (const e of this.stacks.values()) if (e.locked === 0 && e.auraDelay === 0) this.refreshMarks(e);
+    }
     for (const e of this.stacks.values()) {
       if (e.locked === 0 && e.snapIn > 0 && --e.snapIn === 0) this.snap(e);
       e.badge.position.set(e.root.x + e.badgeOffset.x, e.root.y + e.badgeOffset.y);
@@ -1636,9 +1834,13 @@ export class BattleSceneController implements SceneController {
     const ring = this.activeRing;
     if (a && a.locked === 0 && a.view.alive) {
       const w = a.view.footprint === 2 ? 1.7 : 1;
-      const pulse = 1 + Math.sin(this.time / 220) * 0.05;
-      ring.clear();
-      ring.ellipse(0, 0, HEX_W * 0.48 * w * pulse, HEX_W * 0.48 * S * 0.62 * pulse).stroke({ width: 3, color: 0xf1d48a, alpha: 0.95 });
+      // Drawn once per width; the pulse is a scale (redrawing it every frame re-sent the whole layer).
+      if (w !== this.ringWidth) {
+        this.ringWidth = w;
+        ring.clear();
+        ring.ellipse(0, 0, HEX_W * 0.48 * w, HEX_W * 0.48 * S * 0.62).stroke({ width: 3, color: 0xf1d48a, alpha: 0.95 });
+      }
+      ring.scale.set(1 + Math.sin(this.time / 220) * 0.05);
       ring.position.set(a.root.x, a.root.y);
       ring.visible = true;
     } else ring.visible = false;

@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 390.323,
+  "sourceSheet": "sheet.nature.marine_frozen.png",
+  "sourceRect": [
+    724,
+    0,
+    1086,
+    420
+  ],
+  "role": "water_rock"
+}

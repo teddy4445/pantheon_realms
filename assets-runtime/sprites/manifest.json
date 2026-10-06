@@ -14673,35 +14673,354 @@
    }
   },
   "neutral": {
-   "status": "placeholder",
-   "provenance": "Procedural rider silhouette tinted with the owner's colour (heroes without a pantheon avatar).",
+   "status": "final",
+   "provenance": "GPT-6 mounted-hero sheet (idle and walk in five directions, mirrored for the other three), imported by `npm run sprites:import`.",
    "facing": "right",
-   "pixelsPerHex": 105.93,
-   "tint": "accent",
+   "pixelsPerHex": 90.0,
    "animations": {
     "idle": {
-     "file": "sprites/heroes/neutral/idle.webp",
+     "file": "sprites/final/heroes/neutral/idle/e.webp",
      "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
-     "fps": 4,
+     "frameWidth": 192,
+     "frameHeight": 192,
+     "fps": 3,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.88
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/neutral/idle/e.webp",
+       "frames": 4,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 3,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/neutral/idle/n.webp",
+       "frames": 4,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 3,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/neutral/idle/ne.webp",
+       "frames": 4,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 3,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/neutral/idle/s.webp",
+       "frames": 4,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 3,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/neutral/idle/se.webp",
+       "frames": 4,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 3,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
     },
     "walk": {
-     "file": "sprites/heroes/neutral/move.webp",
-     "frames": 4,
-     "frameWidth": 320,
-     "frameHeight": 224,
+     "file": "sprites/final/heroes/neutral/walk/e.webp",
+     "frames": 6,
+     "frameWidth": 192,
+     "frameHeight": 192,
      "fps": 8,
      "loop": true,
      "anchor": [
       0.5,
-      0.9286
-     ]
+      0.88
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/neutral/walk/e.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 8,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/neutral/walk/n.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 8,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/neutral/walk/ne.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 8,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/neutral/walk/s.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 8,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/neutral/walk/se.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 8,
+       "loop": true,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "cast": {
+     "file": "sprites/final/heroes/neutral/cast/e.webp",
+     "frames": 6,
+     "frameWidth": 192,
+     "frameHeight": 192,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.88
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/neutral/cast/e.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/neutral/cast/n.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/neutral/cast/ne.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/neutral/cast/s.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/neutral/cast/se.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
+    },
+    "prepare": {
+     "file": "sprites/final/heroes/neutral/prepare/e.webp",
+     "frames": 6,
+     "frameWidth": 192,
+     "frameHeight": 192,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.88
+     ],
+     "pixelsPerHex": 90.0,
+     "status": "final",
+     "directions": {
+      "e": {
+       "file": "sprites/final/heroes/neutral/prepare/e.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "n": {
+       "file": "sprites/final/heroes/neutral/prepare/n.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "ne": {
+       "file": "sprites/final/heroes/neutral/prepare/ne.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "s": {
+       "file": "sprites/final/heroes/neutral/prepare/s.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      },
+      "se": {
+       "file": "sprites/final/heroes/neutral/prepare/se.webp",
+       "frames": 6,
+       "frameWidth": 192,
+       "frameHeight": 192,
+       "fps": 6,
+       "loop": false,
+       "anchor": [
+        0.5,
+        0.88
+       ],
+       "pixelsPerHex": 90.0,
+       "status": "final"
+      }
+     }
     }
    }
   }
@@ -15271,6 +15590,3822 @@
    "status": "final",
    "width": 152,
    "height": 134,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.canopy.01": {
+   "file": "sprites/final/decor/nature.autumn.canopy.01.webp",
+   "anchor": [
+    0.48718,
+    0.98438
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 78,
+   "height": 104,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.canopy.02": {
+   "file": "sprites/final/decor/nature.autumn.canopy.02.webp",
+   "anchor": [
+    0.51765,
+    0.98438
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 85,
+   "height": 104,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.canopy.03": {
+   "file": "sprites/final/decor/nature.autumn.canopy.03.webp",
+   "anchor": [
+    0.50562,
+    0.99008
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 89,
+   "height": 92,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.deadwood.01": {
+   "file": "sprites/final/decor/nature.autumn.deadwood.01.webp",
+   "anchor": [
+    0.47183,
+    1.14469
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 71,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.deadwood.02": {
+   "file": "sprites/final/decor/nature.autumn.deadwood.02.webp",
+   "anchor": [
+    0.4863,
+    1.19051
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 73,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.deadwood.03": {
+   "file": "sprites/final/decor/nature.autumn.deadwood.03.webp",
+   "anchor": [
+    0.49315,
+    1.13852
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 73,
+   "height": 49,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.groundcover.01": {
+   "file": "sprites/final/decor/nature.autumn.groundcover.01.webp",
+   "anchor": [
+    0.47674,
+    0.97359
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 40,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.groundcover.02": {
+   "file": "sprites/final/decor/nature.autumn.groundcover.02.webp",
+   "anchor": [
+    0.47561,
+    1.00549
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 33,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.groundcover.03": {
+   "file": "sprites/final/decor/nature.autumn.groundcover.03.webp",
+   "anchor": [
+    0.47436,
+    0.96228
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 39,
+   "height": 28,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.mountain.01": {
+   "file": "sprites/final/decor/nature.autumn.mountain.01.webp",
+   "anchor": [
+    0.48052,
+    1.12273
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 154,
+   "height": 132,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.mountain.02": {
+   "file": "sprites/final/decor/nature.autumn.mountain.02.webp",
+   "anchor": [
+    0.49688,
+    1.16694
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 160,
+   "height": 114,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.mountain.03": {
+   "file": "sprites/final/decor/nature.autumn.mountain.03.webp",
+   "anchor": [
+    0.50625,
+    1.09731
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 160,
+   "height": 144,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.rock.01": {
+   "file": "sprites/final/decor/nature.autumn.rock.01.webp",
+   "anchor": [
+    0.47541,
+    0.95937
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.rock.02": {
+   "file": "sprites/final/decor/nature.autumn.rock.02.webp",
+   "anchor": [
+    0.48276,
+    0.96114
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 58,
+   "height": 46,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.rock.03": {
+   "file": "sprites/final/decor/nature.autumn.rock.03.webp",
+   "anchor": [
+    0.5,
+    0.97684
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 66,
+   "height": 34,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.autumn.rocky_edge.01.webp",
+   "anchor": [
+    0.45385,
+    1.03174
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.autumn.rocky_edge.02.webp",
+   "anchor": [
+    0.46212,
+    1.05456
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 66,
+   "height": 48,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.autumn.rocky_edge.03.webp",
+   "anchor": [
+    0.475,
+    1.06349
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 57,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.shrub.01": {
+   "file": "sprites/final/decor/nature.autumn.shrub.01.webp",
+   "anchor": [
+    0.47872,
+    0.97604
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 47,
+   "height": 42,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.shrub.02": {
+   "file": "sprites/final/decor/nature.autumn.shrub.02.webp",
+   "anchor": [
+    0.5,
+    0.94984
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 47,
+   "height": 40,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.shrub.03": {
+   "file": "sprites/final/decor/nature.autumn.shrub.03.webp",
+   "anchor": [
+    0.49038,
+    0.95107
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 52,
+   "height": 41,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.wet_edge.01": {
+   "file": "sprites/final/decor/nature.autumn.wet_edge.01.webp",
+   "anchor": [
+    0.4661,
+    1.12302
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 60,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.wet_edge.02": {
+   "file": "sprites/final/decor/nature.autumn.wet_edge.02.webp",
+   "anchor": [
+    0.45833,
+    1.14473
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.wet_edge.03": {
+   "file": "sprites/final/decor/nature.autumn.wet_edge.03.webp",
+   "anchor": [
+    0.48214,
+    1.13771
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 56,
+   "height": 60,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.autumn.woodland_edge.01.webp",
+   "anchor": [
+    0.46875,
+    0.99696
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 70,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.autumn.woodland_edge.02.webp",
+   "anchor": [
+    0.45082,
+    1.00211
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 68,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.autumn.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.autumn.woodland_edge.03.webp",
+   "anchor": [
+    0.48438,
+    0.99621
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.canopy.01": {
+   "file": "sprites/final/decor/nature.coast.canopy.01.webp",
+   "anchor": [
+    0.49153,
+    1.01455
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.canopy.02": {
+   "file": "sprites/final/decor/nature.coast.canopy.02.webp",
+   "anchor": [
+    0.47222,
+    1.09641
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 54,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.canopy.03": {
+   "file": "sprites/final/decor/nature.coast.canopy.03.webp",
+   "anchor": [
+    0.4386,
+    1.05292
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 60,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.deadwood.01": {
+   "file": "sprites/final/decor/nature.coast.deadwood.01.webp",
+   "anchor": [
+    0.51695,
+    1.44003
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 42,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.deadwood.02": {
+   "file": "sprites/final/decor/nature.coast.deadwood.02.webp",
+   "anchor": [
+    0.43878,
+    1.52661
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 49,
+   "height": 35,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.deadwood.03": {
+   "file": "sprites/final/decor/nature.coast.deadwood.03.webp",
+   "anchor": [
+    0.42157,
+    1.20387
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 51,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.groundcover.01": {
+   "file": "sprites/final/decor/nature.coast.groundcover.01.webp",
+   "anchor": [
+    0.46512,
+    0.96469
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 40,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.groundcover.02": {
+   "file": "sprites/final/decor/nature.coast.groundcover.02.webp",
+   "anchor": [
+    0.5125,
+    0.96228
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 40,
+   "height": 28,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.groundcover.03": {
+   "file": "sprites/final/decor/nature.coast.groundcover.03.webp",
+   "anchor": [
+    0.51136,
+    0.93728
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 29,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.mountain.01": {
+   "file": "sprites/final/decor/nature.coast.mountain.01.webp",
+   "anchor": [
+    0.48052,
+    1.00119
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 154,
+   "height": 126,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.mountain.02": {
+   "file": "sprites/final/decor/nature.coast.mountain.02.webp",
+   "anchor": [
+    0.49045,
+    0.99292
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 157,
+   "height": 120,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.mountain.03": {
+   "file": "sprites/final/decor/nature.coast.mountain.03.webp",
+   "anchor": [
+    0.48701,
+    1.00858
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 154,
+   "height": 134,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.rock.01": {
+   "file": "sprites/final/decor/nature.coast.rock.01.webp",
+   "anchor": [
+    0.55,
+    1.30019
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 50,
+   "height": 33,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.rock.02": {
+   "file": "sprites/final/decor/nature.coast.rock.02.webp",
+   "anchor": [
+    0.5,
+    1.20912
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 37,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.rock.03": {
+   "file": "sprites/final/decor/nature.coast.rock.03.webp",
+   "anchor": [
+    0.44444,
+    1.20449
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 45,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.coast.rocky_edge.01.webp",
+   "anchor": [
+    0.49286,
+    0.97122
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 70,
+   "height": 48,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.coast.rocky_edge.02.webp",
+   "anchor": [
+    0.5,
+    0.99189
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.coast.rocky_edge.03.webp",
+   "anchor": [
+    0.5,
+    0.99222
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 49,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.shrub.01": {
+   "file": "sprites/final/decor/nature.coast.shrub.01.webp",
+   "anchor": [
+    0.52439,
+    1.14763
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 29,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.shrub.02": {
+   "file": "sprites/final/decor/nature.coast.shrub.02.webp",
+   "anchor": [
+    0.48649,
+    1.26845
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 37,
+   "height": 21,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.shrub.03": {
+   "file": "sprites/final/decor/nature.coast.shrub.03.webp",
+   "anchor": [
+    0.44872,
+    1.06913
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 39,
+   "height": 33,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.wet_edge.01": {
+   "file": "sprites/final/decor/nature.coast.wet_edge.01.webp",
+   "anchor": [
+    0.47368,
+    1.15179
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.wet_edge.02": {
+   "file": "sprites/final/decor/nature.coast.wet_edge.02.webp",
+   "anchor": [
+    0.475,
+    1.15121
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 57,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.wet_edge.03": {
+   "file": "sprites/final/decor/nature.coast.wet_edge.03.webp",
+   "anchor": [
+    0.5,
+    1.16328
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 55,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.coast.woodland_edge.01.webp",
+   "anchor": [
+    0.47794,
+    0.97842
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 64,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.coast.woodland_edge.02.webp",
+   "anchor": [
+    0.5,
+    0.98443
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 69,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.coast.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.coast.woodland_edge.03.webp",
+   "anchor": [
+    0.5,
+    0.94865
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.canopy.01": {
+   "file": "sprites/final/decor/nature.desert.canopy.01.webp",
+   "anchor": [
+    0.48276,
+    1.00855
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 87,
+   "height": 76,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.canopy.02": {
+   "file": "sprites/final/decor/nature.desert.canopy.02.webp",
+   "anchor": [
+    0.50556,
+    0.97979
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 90,
+   "height": 103,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.canopy.03": {
+   "file": "sprites/final/decor/nature.desert.canopy.03.webp",
+   "anchor": [
+    0.50562,
+    0.9766
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 89,
+   "height": 78,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.deadwood.01": {
+   "file": "sprites/final/decor/nature.desert.deadwood.01.webp",
+   "anchor": [
+    0.47973,
+    1.23708
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 74,
+   "height": 45,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.deadwood.02": {
+   "file": "sprites/final/decor/nature.desert.deadwood.02.webp",
+   "anchor": [
+    0.48649,
+    1.20824
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 74,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.deadwood.03": {
+   "file": "sprites/final/decor/nature.desert.deadwood.03.webp",
+   "anchor": [
+    0.49315,
+    1.11849
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 73,
+   "height": 71,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.groundcover.01": {
+   "file": "sprites/final/decor/nature.desert.groundcover.01.webp",
+   "anchor": [
+    0.46429,
+    0.94948
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 42,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.groundcover.02": {
+   "file": "sprites/final/decor/nature.desert.groundcover.02.webp",
+   "anchor": [
+    0.5119,
+    0.94728
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 42,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.groundcover.03": {
+   "file": "sprites/final/decor/nature.desert.groundcover.03.webp",
+   "anchor": [
+    0.5122,
+    0.97159
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 33,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.mountain.01": {
+   "file": "sprites/final/decor/nature.desert.mountain.01.webp",
+   "anchor": [
+    0.49045,
+    1.04393
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 157,
+   "height": 140,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.mountain.02": {
+   "file": "sprites/final/decor/nature.desert.mountain.02.webp",
+   "anchor": [
+    0.49045,
+    1.01734
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 157,
+   "height": 124,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.mountain.03": {
+   "file": "sprites/final/decor/nature.desert.mountain.03.webp",
+   "anchor": [
+    0.5,
+    1.07806
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 153,
+   "height": 145,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.rock.01": {
+   "file": "sprites/final/decor/nature.desert.rock.01.webp",
+   "anchor": [
+    0.48438,
+    0.98486
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.rock.02": {
+   "file": "sprites/final/decor/nature.desert.rock.02.webp",
+   "anchor": [
+    0.51613,
+    0.9675
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.rock.03": {
+   "file": "sprites/final/decor/nature.desert.rock.03.webp",
+   "anchor": [
+    0.50769,
+    0.98288
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 46,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.desert.rocky_edge.01.webp",
+   "anchor": [
+    0.44737,
+    1.11309
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 32,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.desert.rocky_edge.02.webp",
+   "anchor": [
+    0.50758,
+    1.01237
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 66,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.desert.rocky_edge.03.webp",
+   "anchor": [
+    0.50735,
+    0.97292
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.shrub.01": {
+   "file": "sprites/final/decor/nature.desert.shrub.01.webp",
+   "anchor": [
+    0.49038,
+    0.96727
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 52,
+   "height": 38,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.shrub.02": {
+   "file": "sprites/final/decor/nature.desert.shrub.02.webp",
+   "anchor": [
+    0.49,
+    0.9544
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 50,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.shrub.03": {
+   "file": "sprites/final/decor/nature.desert.shrub.03.webp",
+   "anchor": [
+    0.50943,
+    0.93437
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 53,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.wet_edge.01": {
+   "file": "sprites/final/decor/nature.desert.wet_edge.01.webp",
+   "anchor": [
+    0.45763,
+    1.14795
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.wet_edge.02": {
+   "file": "sprites/final/decor/nature.desert.wet_edge.02.webp",
+   "anchor": [
+    0.50862,
+    1.12961
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 58,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.wet_edge.03": {
+   "file": "sprites/final/decor/nature.desert.wet_edge.03.webp",
+   "anchor": [
+    0.48333,
+    1.11615
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 65,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.desert.woodland_edge.01.webp",
+   "anchor": [
+    0.44531,
+    1.01049
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 59,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.desert.woodland_edge.02.webp",
+   "anchor": [
+    0.50769,
+    1.01654
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 65,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.desert.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.desert.woodland_edge.03.webp",
+   "anchor": [
+    0.49254,
+    1.0303
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 59,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.canopy.01": {
+   "file": "sprites/final/decor/nature.fjord.canopy.01.webp",
+   "anchor": [
+    0.46212,
+    0.98119
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 66,
+   "height": 108,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.canopy.02": {
+   "file": "sprites/final/decor/nature.fjord.canopy.02.webp",
+   "anchor": [
+    0.48295,
+    0.9841
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 88,
+   "height": 101,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.canopy.03": {
+   "file": "sprites/final/decor/nature.fjord.canopy.03.webp",
+   "anchor": [
+    0.45139,
+    0.98872
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 72,
+   "height": 108,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.deadwood.01": {
+   "file": "sprites/final/decor/nature.fjord.deadwood.01.webp",
+   "anchor": [
+    0.48649,
+    1.11526
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 74,
+   "height": 68,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.deadwood.02": {
+   "file": "sprites/final/decor/nature.fjord.deadwood.02.webp",
+   "anchor": [
+    0.44286,
+    1.18839
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 70,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.deadwood.03": {
+   "file": "sprites/final/decor/nature.fjord.deadwood.03.webp",
+   "anchor": [
+    0.50746,
+    1.21716
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.groundcover.01": {
+   "file": "sprites/final/decor/nature.fjord.groundcover.01.webp",
+   "anchor": [
+    0.48837,
+    1.02357
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 35,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.groundcover.02": {
+   "file": "sprites/final/decor/nature.fjord.groundcover.02.webp",
+   "anchor": [
+    0.5,
+    1.00503
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.groundcover.03": {
+   "file": "sprites/final/decor/nature.fjord.groundcover.03.webp",
+   "anchor": [
+    0.4881,
+    1.03371
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 42,
+   "height": 28,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.mountain.01": {
+   "file": "sprites/final/decor/nature.fjord.mountain.01.webp",
+   "anchor": [
+    0.49682,
+    1.04493
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 157,
+   "height": 138,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.mountain.02": {
+   "file": "sprites/final/decor/nature.fjord.mountain.02.webp",
+   "anchor": [
+    0.49675,
+    1.05043
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 154,
+   "height": 130,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.mountain.03": {
+   "file": "sprites/final/decor/nature.fjord.mountain.03.webp",
+   "anchor": [
+    0.50316,
+    1.05005
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 158,
+   "height": 131,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.rock.01": {
+   "file": "sprites/final/decor/nature.fjord.rock.01.webp",
+   "anchor": [
+    0.47619,
+    0.98486
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.rock.02": {
+   "file": "sprites/final/decor/nature.fjord.rock.02.webp",
+   "anchor": [
+    0.46825,
+    1.0395
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.rock.03": {
+   "file": "sprites/final/decor/nature.fjord.rock.03.webp",
+   "anchor": [
+    0.47458,
+    1.04917
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 45,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.fjord.rocky_edge.01.webp",
+   "anchor": [
+    0.49219,
+    1.05177
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 46,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.fjord.rocky_edge.02.webp",
+   "anchor": [
+    0.5,
+    0.98895
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.fjord.rocky_edge.03.webp",
+   "anchor": [
+    0.5,
+    0.98227
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 70,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.shrub.01": {
+   "file": "sprites/final/decor/nature.fjord.shrub.01.webp",
+   "anchor": [
+    0.49074,
+    0.97352
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 54,
+   "height": 38,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.shrub.02": {
+   "file": "sprites/final/decor/nature.fjord.shrub.02.webp",
+   "anchor": [
+    0.45,
+    0.94427
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 50,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.shrub.03": {
+   "file": "sprites/final/decor/nature.fjord.shrub.03.webp",
+   "anchor": [
+    0.46739,
+    0.94427
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 46,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.wet_edge.01": {
+   "file": "sprites/final/decor/nature.fjord.wet_edge.01.webp",
+   "anchor": [
+    0.48276,
+    1.09477
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 58,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.wet_edge.02": {
+   "file": "sprites/final/decor/nature.fjord.wet_edge.02.webp",
+   "anchor": [
+    0.51667,
+    1.06178
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.wet_edge.03": {
+   "file": "sprites/final/decor/nature.fjord.wet_edge.03.webp",
+   "anchor": [
+    0.5,
+    1.08993
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 54,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.fjord.woodland_edge.01.webp",
+   "anchor": [
+    0.48361,
+    0.97051
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 71,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.fjord.woodland_edge.02.webp",
+   "anchor": [
+    0.5,
+    0.97051
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 71,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.fjord.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.fjord.woodland_edge.03.webp",
+   "anchor": [
+    0.50735,
+    0.9982
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.boat.01": {
+   "file": "sprites/final/decor/nature.freshwater.boat.01.webp",
+   "anchor": [
+    0.47423,
+    1.04146
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 97,
+   "height": 79,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.boat.02": {
+   "file": "sprites/final/decor/nature.freshwater.boat.02.webp",
+   "anchor": [
+    0.47872,
+    1.05937
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 94,
+   "height": 72,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.boat.03": {
+   "file": "sprites/final/decor/nature.freshwater.boat.03.webp",
+   "anchor": [
+    0.47368,
+    1.08635
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 95,
+   "height": 76,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.islet.01": {
+   "file": "sprites/final/decor/nature.freshwater.islet.01.webp",
+   "anchor": [
+    0.46774,
+    1.14007
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 124,
+   "height": 68,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.islet.02": {
+   "file": "sprites/final/decor/nature.freshwater.islet.02.webp",
+   "anchor": [
+    0.5,
+    1.03234
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 122,
+   "height": 109,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.islet.03": {
+   "file": "sprites/final/decor/nature.freshwater.islet.03.webp",
+   "anchor": [
+    0.5,
+    1.06417
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 130,
+   "height": 75,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.water_life.01": {
+   "file": "sprites/final/decor/nature.freshwater.water_life.01.webp",
+   "anchor": [
+    0.48333,
+    1.31806
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.water_life.02": {
+   "file": "sprites/final/decor/nature.freshwater.water_life.02.webp",
+   "anchor": [
+    0.48214,
+    1.32714
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 56,
+   "height": 35,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.water_life.03": {
+   "file": "sprites/final/decor/nature.freshwater.water_life.03.webp",
+   "anchor": [
+    0.5,
+    1.28446
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.water_rock.01": {
+   "file": "sprites/final/decor/nature.freshwater.water_rock.01.webp",
+   "anchor": [
+    0.47647,
+    1.05313
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 85,
+   "height": 62,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.water_rock.02": {
+   "file": "sprites/final/decor/nature.freshwater.water_rock.02.webp",
+   "anchor": [
+    0.47561,
+    1.03
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 82,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.freshwater.water_rock.03": {
+   "file": "sprites/final/decor/nature.freshwater.water_rock.03.webp",
+   "anchor": [
+    0.50595,
+    1.09219
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 84,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.canopy.01": {
+   "file": "sprites/final/decor/nature.high_pass.canopy.01.webp",
+   "anchor": [
+    0.47561,
+    1.00649
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 82,
+   "height": 79,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.canopy.02": {
+   "file": "sprites/final/decor/nature.high_pass.canopy.02.webp",
+   "anchor": [
+    0.46711,
+    0.98219
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 76,
+   "height": 93,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.canopy.03": {
+   "file": "sprites/final/decor/nature.high_pass.canopy.03.webp",
+   "anchor": [
+    0.5,
+    0.97695
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 90,
+   "height": 77,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.deadwood.01": {
+   "file": "sprites/final/decor/nature.high_pass.deadwood.01.webp",
+   "anchor": [
+    0.46575,
+    1.13153
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 73,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.deadwood.02": {
+   "file": "sprites/final/decor/nature.high_pass.deadwood.02.webp",
+   "anchor": [
+    0.47973,
+    1.09945
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 74,
+   "height": 57,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.deadwood.03": {
+   "file": "sprites/final/decor/nature.high_pass.deadwood.03.webp",
+   "anchor": [
+    0.43846,
+    1.06218
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 59,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.groundcover.01": {
+   "file": "sprites/final/decor/nature.high_pass.groundcover.01.webp",
+   "anchor": [
+    0.5,
+    1.02949
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 32,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.groundcover.02": {
+   "file": "sprites/final/decor/nature.high_pass.groundcover.02.webp",
+   "anchor": [
+    0.5,
+    1.04219
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 28,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.groundcover.03": {
+   "file": "sprites/final/decor/nature.high_pass.groundcover.03.webp",
+   "anchor": [
+    0.4875,
+    1.04375
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 40,
+   "height": 27,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.mountain.01": {
+   "file": "sprites/final/decor/nature.high_pass.mountain.01.webp",
+   "anchor": [
+    0.49351,
+    1.09104
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 154,
+   "height": 134,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.mountain.02": {
+   "file": "sprites/final/decor/nature.high_pass.mountain.02.webp",
+   "anchor": [
+    0.5,
+    1.14821
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 159,
+   "height": 122,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.mountain.03": {
+   "file": "sprites/final/decor/nature.high_pass.mountain.03.webp",
+   "anchor": [
+    0.5,
+    1.00112
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 158,
+   "height": 134,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.rock.01": {
+   "file": "sprites/final/decor/nature.high_pass.rock.01.webp",
+   "anchor": [
+    0.49231,
+    0.96495
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.rock.02": {
+   "file": "sprites/final/decor/nature.high_pass.rock.02.webp",
+   "anchor": [
+    0.46667,
+    0.96627
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.rock.03": {
+   "file": "sprites/final/decor/nature.high_pass.rock.03.webp",
+   "anchor": [
+    0.49206,
+    0.96028
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 45,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.high_pass.rocky_edge.01.webp",
+   "anchor": [
+    0.49254,
+    1.03901
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 58,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.high_pass.rocky_edge.02.webp",
+   "anchor": [
+    0.48438,
+    1.09688
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.high_pass.rocky_edge.03.webp",
+   "anchor": [
+    0.49231,
+    1.0375
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 40,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.shrub.01": {
+   "file": "sprites/final/decor/nature.high_pass.shrub.01.webp",
+   "anchor": [
+    0.48113,
+    0.96855
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 53,
+   "height": 32,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.shrub.02": {
+   "file": "sprites/final/decor/nature.high_pass.shrub.02.webp",
+   "anchor": [
+    0.5,
+    0.97125
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 49,
+   "height": 35,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.shrub.03": {
+   "file": "sprites/final/decor/nature.high_pass.shrub.03.webp",
+   "anchor": [
+    0.49057,
+    0.9375
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 53,
+   "height": 34,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.wet_edge.01": {
+   "file": "sprites/final/decor/nature.high_pass.wet_edge.01.webp",
+   "anchor": [
+    0.5,
+    1.11722
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.wet_edge.02": {
+   "file": "sprites/final/decor/nature.high_pass.wet_edge.02.webp",
+   "anchor": [
+    0.50877,
+    1.09835
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.wet_edge.03": {
+   "file": "sprites/final/decor/nature.high_pass.wet_edge.03.webp",
+   "anchor": [
+    0.49107,
+    1.11498
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 56,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.high_pass.woodland_edge.01.webp",
+   "anchor": [
+    0.50725,
+    1.01193
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 69,
+   "height": 66,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.high_pass.woodland_edge.02.webp",
+   "anchor": [
+    0.5,
+    1.0208
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.high_pass.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.high_pass.woodland_edge.03.webp",
+   "anchor": [
+    0.47761,
+    1.01486
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.canopy.01": {
+   "file": "sprites/final/decor/nature.jungle.canopy.01.webp",
+   "anchor": [
+    0.47647,
+    0.98186
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 85,
+   "height": 112,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.canopy.02": {
+   "file": "sprites/final/decor/nature.jungle.canopy.02.webp",
+   "anchor": [
+    0.48276,
+    0.99052
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 87,
+   "height": 116,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.canopy.03": {
+   "file": "sprites/final/decor/nature.jungle.canopy.03.webp",
+   "anchor": [
+    0.48824,
+    0.98755
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 85,
+   "height": 117,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.deadwood.01": {
+   "file": "sprites/final/decor/nature.jungle.deadwood.01.webp",
+   "anchor": [
+    0.47297,
+    1.01486
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 74,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.deadwood.02": {
+   "file": "sprites/final/decor/nature.jungle.deadwood.02.webp",
+   "anchor": [
+    0.46575,
+    1.12121
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 73,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.deadwood.03": {
+   "file": "sprites/final/decor/nature.jungle.deadwood.03.webp",
+   "anchor": [
+    0.47887,
+    0.98075
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 71,
+   "height": 63,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.groundcover.01": {
+   "file": "sprites/final/decor/nature.jungle.groundcover.01.webp",
+   "anchor": [
+    0.48864,
+    0.97661
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 35,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.groundcover.02": {
+   "file": "sprites/final/decor/nature.jungle.groundcover.02.webp",
+   "anchor": [
+    0.5,
+    1.04073
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 29,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.groundcover.03": {
+   "file": "sprites/final/decor/nature.jungle.groundcover.03.webp",
+   "anchor": [
+    0.5,
+    1.03691
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 45,
+   "height": 32,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.mountain.01": {
+   "file": "sprites/final/decor/nature.jungle.mountain.01.webp",
+   "anchor": [
+    0.51,
+    1.05
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 100,
+   "height": 103,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.mountain.02": {
+   "file": "sprites/final/decor/nature.jungle.mountain.02.webp",
+   "anchor": [
+    0.49558,
+    1.08763
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 113,
+   "height": 93,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.mountain.03": {
+   "file": "sprites/final/decor/nature.jungle.mountain.03.webp",
+   "anchor": [
+    0.44545,
+    1.20995
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 110,
+   "height": 108,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.rock.01": {
+   "file": "sprites/final/decor/nature.jungle.rock.01.webp",
+   "anchor": [
+    0.46875,
+    0.98456
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.rock.02": {
+   "file": "sprites/final/decor/nature.jungle.rock.02.webp",
+   "anchor": [
+    0.44262,
+    0.98568
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.rock.03": {
+   "file": "sprites/final/decor/nature.jungle.rock.03.webp",
+   "anchor": [
+    0.5,
+    0.96276
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 66,
+   "height": 48,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.jungle.rocky_edge.01.webp",
+   "anchor": [
+    0.49265,
+    1.05572
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.jungle.rocky_edge.02.webp",
+   "anchor": [
+    0.5,
+    1.01167
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 69,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.jungle.rocky_edge.03.webp",
+   "anchor": [
+    0.47794,
+    1.01167
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.shrub.01": {
+   "file": "sprites/final/decor/nature.jungle.shrub.01.webp",
+   "anchor": [
+    0.48113,
+    0.95223
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 53,
+   "height": 42,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.shrub.02": {
+   "file": "sprites/final/decor/nature.jungle.shrub.02.webp",
+   "anchor": [
+    0.48113,
+    0.95223
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 53,
+   "height": 42,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.shrub.03": {
+   "file": "sprites/final/decor/nature.jungle.shrub.03.webp",
+   "anchor": [
+    0.49,
+    0.95542
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 50,
+   "height": 45,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.wet_edge.01": {
+   "file": "sprites/final/decor/nature.jungle.wet_edge.01.webp",
+   "anchor": [
+    0.48246,
+    1.05837
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 62,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.wet_edge.02": {
+   "file": "sprites/final/decor/nature.jungle.wet_edge.02.webp",
+   "anchor": [
+    0.49167,
+    1.07572
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.wet_edge.03": {
+   "file": "sprites/final/decor/nature.jungle.wet_edge.03.webp",
+   "anchor": [
+    0.51613,
+    1.1149
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.jungle.woodland_edge.01.webp",
+   "anchor": [
+    0.5,
+    1.02793
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 70,
+   "height": 64,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.jungle.woodland_edge.02.webp",
+   "anchor": [
+    0.5,
+    1.05395
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 68,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.jungle.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.jungle.woodland_edge.03.webp",
+   "anchor": [
+    0.49265,
+    1.06046
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.boat.01": {
+   "file": "sprites/final/decor/nature.marine_frozen.boat.01.webp",
+   "anchor": [
+    0.46703,
+    0.97803
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 91,
+   "height": 97,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.boat.02": {
+   "file": "sprites/final/decor/nature.marine_frozen.boat.02.webp",
+   "anchor": [
+    0.46196,
+    0.99846
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 92,
+   "height": 85,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.boat.03": {
+   "file": "sprites/final/decor/nature.marine_frozen.boat.03.webp",
+   "anchor": [
+    0.46237,
+    1.11729
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 93,
+   "height": 60,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.islet.01": {
+   "file": "sprites/final/decor/nature.marine_frozen.islet.01.webp",
+   "anchor": [
+    0.528,
+    1.03257
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 125,
+   "height": 76,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.islet.02": {
+   "file": "sprites/final/decor/nature.marine_frozen.islet.02.webp",
+   "anchor": [
+    0.472,
+    1.0543
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 125,
+   "height": 64,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.islet.03": {
+   "file": "sprites/final/decor/nature.marine_frozen.islet.03.webp",
+   "anchor": [
+    0.47244,
+    0.98247
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 127,
+   "height": 87,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.water_life.01": {
+   "file": "sprites/final/decor/nature.marine_frozen.water_life.01.webp",
+   "anchor": [
+    0.46552,
+    1.14659
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 58,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.water_life.02": {
+   "file": "sprites/final/decor/nature.marine_frozen.water_life.02.webp",
+   "anchor": [
+    0.49138,
+    1.05971
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 58,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.water_life.03": {
+   "file": "sprites/final/decor/nature.marine_frozen.water_life.03.webp",
+   "anchor": [
+    0.49138,
+    1.10187
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 58,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.water_rock.01": {
+   "file": "sprites/final/decor/nature.marine_frozen.water_rock.01.webp",
+   "anchor": [
+    0.46429,
+    0.98125
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 84,
+   "height": 92,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.water_rock.02": {
+   "file": "sprites/final/decor/nature.marine_frozen.water_rock.02.webp",
+   "anchor": [
+    0.47368,
+    1.01795
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 76,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_frozen.water_rock.03": {
+   "file": "sprites/final/decor/nature.marine_frozen.water_rock.03.webp",
+   "anchor": [
+    0.48824,
+    0.98028
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 85,
+   "height": 84,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.boat.01": {
+   "file": "sprites/final/decor/nature.marine_temperate.boat.01.webp",
+   "anchor": [
+    0.45312,
+    0.99616
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 96,
+   "height": 96,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.boat.02": {
+   "file": "sprites/final/decor/nature.marine_temperate.boat.02.webp",
+   "anchor": [
+    0.4899,
+    0.9894
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 99,
+   "height": 102,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.boat.03": {
+   "file": "sprites/final/decor/nature.marine_temperate.boat.03.webp",
+   "anchor": [
+    0.5049,
+    1.08906
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 102,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.islet.01": {
+   "file": "sprites/final/decor/nature.marine_temperate.islet.01.webp",
+   "anchor": [
+    0.5,
+    1.08172
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 132,
+   "height": 67,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.islet.02": {
+   "file": "sprites/final/decor/nature.marine_temperate.islet.02.webp",
+   "anchor": [
+    0.5,
+    0.9836
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 124,
+   "height": 93,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.islet.03": {
+   "file": "sprites/final/decor/nature.marine_temperate.islet.03.webp",
+   "anchor": [
+    0.50758,
+    0.98094
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 132,
+   "height": 80,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.water_life.01": {
+   "file": "sprites/final/decor/nature.marine_temperate.water_life.01.webp",
+   "anchor": [
+    0.48361,
+    1.01612
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.water_life.02": {
+   "file": "sprites/final/decor/nature.marine_temperate.water_life.02.webp",
+   "anchor": [
+    0.5,
+    1.15929
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.water_life.03": {
+   "file": "sprites/final/decor/nature.marine_temperate.water_life.03.webp",
+   "anchor": [
+    0.51639,
+    1.04105
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.water_rock.01": {
+   "file": "sprites/final/decor/nature.marine_temperate.water_rock.01.webp",
+   "anchor": [
+    0.48101,
+    0.9942
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 79,
+   "height": 84,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.water_rock.02": {
+   "file": "sprites/final/decor/nature.marine_temperate.water_rock.02.webp",
+   "anchor": [
+    0.5,
+    0.98003
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 86,
+   "height": 77,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_temperate.water_rock.03": {
+   "file": "sprites/final/decor/nature.marine_temperate.water_rock.03.webp",
+   "anchor": [
+    0.51149,
+    0.99375
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 87,
+   "height": 59,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.boat.01": {
+   "file": "sprites/final/decor/nature.marine_tropical.boat.01.webp",
+   "anchor": [
+    0.57317,
+    1.06801
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 82,
+   "height": 93,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.boat.02": {
+   "file": "sprites/final/decor/nature.marine_tropical.boat.02.webp",
+   "anchor": [
+    0.45522,
+    1.14304
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 62,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.boat.03": {
+   "file": "sprites/final/decor/nature.marine_tropical.boat.03.webp",
+   "anchor": [
+    0.43125,
+    1.17943
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 80,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.islet.01": {
+   "file": "sprites/final/decor/nature.marine_tropical.islet.01.webp",
+   "anchor": [
+    0.53182,
+    1.02345
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 110,
+   "height": 109,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.islet.02": {
+   "file": "sprites/final/decor/nature.marine_tropical.islet.02.webp",
+   "anchor": [
+    0.46569,
+    1.04441
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 102,
+   "height": 66,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.islet.03": {
+   "file": "sprites/final/decor/nature.marine_tropical.islet.03.webp",
+   "anchor": [
+    0.45714,
+    1.02837
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 105,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.water_life.01": {
+   "file": "sprites/final/decor/nature.marine_tropical.water_life.01.webp",
+   "anchor": [
+    0.46591,
+    1.26918
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 29,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.water_life.02": {
+   "file": "sprites/final/decor/nature.marine_tropical.water_life.02.webp",
+   "anchor": [
+    0.39583,
+    1.12019
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 48,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.water_life.03": {
+   "file": "sprites/final/decor/nature.marine_tropical.water_life.03.webp",
+   "anchor": [
+    0.5,
+    1.10388
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 60,
+   "height": 58,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.water_rock.01": {
+   "file": "sprites/final/decor/nature.marine_tropical.water_rock.01.webp",
+   "anchor": [
+    0.49265,
+    0.98913
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 65,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.water_rock.02": {
+   "file": "sprites/final/decor/nature.marine_tropical.water_rock.02.webp",
+   "anchor": [
+    0.43548,
+    0.99744
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.marine_tropical.water_rock.03": {
+   "file": "sprites/final/decor/nature.marine_tropical.water_rock.03.webp",
+   "anchor": [
+    0.45775,
+    0.98842
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 71,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.canopy.01": {
+   "file": "sprites/final/decor/nature.moor.canopy.01.webp",
+   "anchor": [
+    0.50617,
+    0.9947
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 81,
+   "height": 92,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.canopy.02": {
+   "file": "sprites/final/decor/nature.moor.canopy.02.webp",
+   "anchor": [
+    0.48864,
+    0.97925
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 88,
+   "height": 97,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.canopy.03": {
+   "file": "sprites/final/decor/nature.moor.canopy.03.webp",
+   "anchor": [
+    0.4939,
+    0.99608
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 82,
+   "height": 94,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.deadwood.01": {
+   "file": "sprites/final/decor/nature.moor.deadwood.01.webp",
+   "anchor": [
+    0.49333,
+    1.23772
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 75,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.deadwood.02": {
+   "file": "sprites/final/decor/nature.moor.deadwood.02.webp",
+   "anchor": [
+    0.47945,
+    1.09564
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 73,
+   "height": 66,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.deadwood.03": {
+   "file": "sprites/final/decor/nature.moor.deadwood.03.webp",
+   "anchor": [
+    0.4863,
+    1.171
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 73,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.groundcover.01": {
+   "file": "sprites/final/decor/nature.moor.groundcover.01.webp",
+   "anchor": [
+    0.5,
+    0.96699
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 32,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.groundcover.02": {
+   "file": "sprites/final/decor/nature.moor.groundcover.02.webp",
+   "anchor": [
+    0.5,
+    0.97901
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.groundcover.03": {
+   "file": "sprites/final/decor/nature.moor.groundcover.03.webp",
+   "anchor": [
+    0.48864,
+    0.97177
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 29,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.mountain.01": {
+   "file": "sprites/final/decor/nature.moor.mountain.01.webp",
+   "anchor": [
+    0.5678,
+    1.1615
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 118,
+   "height": 100,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.mountain.02": {
+   "file": "sprites/final/decor/nature.moor.mountain.02.webp",
+   "anchor": [
+    0.57037,
+    1.32141
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 135,
+   "height": 87,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.mountain.03": {
+   "file": "sprites/final/decor/nature.moor.mountain.03.webp",
+   "anchor": [
+    0.41322,
+    1.23348
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 121,
+   "height": 112,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.rock.01": {
+   "file": "sprites/final/decor/nature.moor.rock.01.webp",
+   "anchor": [
+    0.5,
+    1.15236
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 45,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.rock.02": {
+   "file": "sprites/final/decor/nature.moor.rock.02.webp",
+   "anchor": [
+    0.5,
+    1.07713
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.rock.03": {
+   "file": "sprites/final/decor/nature.moor.rock.03.webp",
+   "anchor": [
+    0.49194,
+    1.16267
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.moor.rocky_edge.01.webp",
+   "anchor": [
+    0.46923,
+    1.03765
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 43,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.moor.rocky_edge.02.webp",
+   "anchor": [
+    0.5,
+    1.02727
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.moor.rocky_edge.03.webp",
+   "anchor": [
+    0.5,
+    0.95959
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 43,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.shrub.01": {
+   "file": "sprites/final/decor/nature.moor.shrub.01.webp",
+   "anchor": [
+    0.5,
+    0.96951
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 49,
+   "height": 33,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.shrub.02": {
+   "file": "sprites/final/decor/nature.moor.shrub.02.webp",
+   "anchor": [
+    0.5,
+    0.94427
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 51,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.shrub.03": {
+   "file": "sprites/final/decor/nature.moor.shrub.03.webp",
+   "anchor": [
+    0.48039,
+    0.94984
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 51,
+   "height": 40,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.wet_edge.01": {
+   "file": "sprites/final/decor/nature.moor.wet_edge.01.webp",
+   "anchor": [
+    0.49123,
+    1.09213
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 54,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.wet_edge.02": {
+   "file": "sprites/final/decor/nature.moor.wet_edge.02.webp",
+   "anchor": [
+    0.49091,
+    1.08432
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 55,
+   "height": 59,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.wet_edge.03": {
+   "file": "sprites/final/decor/nature.moor.wet_edge.03.webp",
+   "anchor": [
+    0.51639,
+    0.99082
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.moor.woodland_edge.01.webp",
+   "anchor": [
+    0.48507,
+    0.97821
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 72,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.moor.woodland_edge.02.webp",
+   "anchor": [
+    0.48182,
+    0.98481
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 55,
+   "height": 72,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.moor.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.moor.woodland_edge.03.webp",
+   "anchor": [
+    0.49275,
+    0.95288
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 69,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.canopy.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.canopy.01.webp",
+   "anchor": [
+    0.47917,
+    0.9737
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 72,
+   "height": 72,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.canopy.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.canopy.02.webp",
+   "anchor": [
+    0.4,
+    0.96922
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 45,
+   "height": 67,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.canopy.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.canopy.03.webp",
+   "anchor": [
+    0.40741,
+    0.97303
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 54,
+   "height": 57,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.deadwood.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.deadwood.01.webp",
+   "anchor": [
+    0.66667,
+    1.07979
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 54,
+   "height": 60,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.deadwood.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.deadwood.02.webp",
+   "anchor": [
+    0.42105,
+    1.2225
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 35,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.deadwood.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.deadwood.03.webp",
+   "anchor": [
+    0.32653,
+    1.34077
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 49,
+   "height": 42,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.groundcover.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.groundcover.01.webp",
+   "anchor": [
+    0.48864,
+    0.97271
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 30,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.groundcover.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.groundcover.02.webp",
+   "anchor": [
+    0.48837,
+    0.9621
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 31,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.groundcover.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.groundcover.03.webp",
+   "anchor": [
+    0.48837,
+    0.94562
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 40,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.mountain.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.mountain.01.webp",
+   "anchor": [
+    0.5,
+    1.25691
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 112,
+   "height": 94,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.mountain.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.mountain.02.webp",
+   "anchor": [
+    0.48246,
+    1.40407
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 114,
+   "height": 89,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.mountain.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.mountain.03.webp",
+   "anchor": [
+    0.45909,
+    1.25542
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 110,
+   "height": 98,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.rock.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.rock.01.webp",
+   "anchor": [
+    0.59615,
+    1.17449
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 52,
+   "height": 49,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.rock.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.rock.02.webp",
+   "anchor": [
+    0.45455,
+    1.19929
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 35,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.rock.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.rock.03.webp",
+   "anchor": [
+    0.34783,
+    1.18355
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 46,
+   "height": 38,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.rocky_edge.01.webp",
+   "anchor": [
+    0.47015,
+    1.03444
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.rocky_edge.02.webp",
+   "anchor": [
+    0.48413,
+    1.01237
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.rocky_edge.03.webp",
+   "anchor": [
+    0.50735,
+    0.97619
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 58,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.shrub.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.shrub.01.webp",
+   "anchor": [
+    0.52439,
+    0.95975
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 25,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.shrub.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.shrub.02.webp",
+   "anchor": [
+    0.43056,
+    0.99978
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 36,
+   "height": 28,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.shrub.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.shrub.03.webp",
+   "anchor": [
+    0.40789,
+    1.10496
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 38,
+   "height": 29,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.wet_edge.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.wet_edge.01.webp",
+   "anchor": [
+    0.47458,
+    1.10425
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.wet_edge.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.wet_edge.02.webp",
+   "anchor": [
+    0.5,
+    1.10221
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.wet_edge.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.wet_edge.03.webp",
+   "anchor": [
+    0.5082,
+    1.11947
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 52,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.storm_plateau.woodland_edge.01.webp",
+   "anchor": [
+    0.47761,
+    0.96841
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.storm_plateau.woodland_edge.02.webp",
+   "anchor": [
+    0.46154,
+    0.99018
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 70,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.storm_plateau.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.storm_plateau.woodland_edge.03.webp",
+   "anchor": [
+    0.49254,
+    0.99621
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.canopy.01": {
+   "file": "sprites/final/decor/nature.temperate.canopy.01.webp",
+   "anchor": [
+    0.47701,
+    0.98479
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 87,
+   "height": 99,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.canopy.02": {
+   "file": "sprites/final/decor/nature.temperate.canopy.02.webp",
+   "anchor": [
+    0.47015,
+    0.99292
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 67,
+   "height": 105,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.canopy.03": {
+   "file": "sprites/final/decor/nature.temperate.canopy.03.webp",
+   "anchor": [
+    0.51176,
+    0.98345
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 85,
+   "height": 91,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.deadwood.01": {
+   "file": "sprites/final/decor/nature.temperate.deadwood.01.webp",
+   "anchor": [
+    0.45833,
+    1.16555
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 72,
+   "height": 41,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.deadwood.02": {
+   "file": "sprites/final/decor/nature.temperate.deadwood.02.webp",
+   "anchor": [
+    0.42188,
+    1.15692
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.deadwood.03": {
+   "file": "sprites/final/decor/nature.temperate.deadwood.03.webp",
+   "anchor": [
+    0.45312,
+    1.14159
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.groundcover.01": {
+   "file": "sprites/final/decor/nature.temperate.groundcover.01.webp",
+   "anchor": [
+    0.48684,
+    0.9983
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 38,
+   "height": 33,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.groundcover.02": {
+   "file": "sprites/final/decor/nature.temperate.groundcover.02.webp",
+   "anchor": [
+    0.5,
+    1.00566
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 32,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.groundcover.03": {
+   "file": "sprites/final/decor/nature.temperate.groundcover.03.webp",
+   "anchor": [
+    0.4878,
+    0.99551
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.mountain.01": {
+   "file": "sprites/final/decor/nature.temperate.mountain.01.webp",
+   "anchor": [
+    0.48039,
+    1.01551
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 153,
+   "height": 131,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.mountain.02": {
+   "file": "sprites/final/decor/nature.temperate.mountain.02.webp",
+   "anchor": [
+    0.4902,
+    1.00376
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 153,
+   "height": 143,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.mountain.03": {
+   "file": "sprites/final/decor/nature.temperate.mountain.03.webp",
+   "anchor": [
+    0.50955,
+    0.98687
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 157,
+   "height": 119,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.rock.01": {
+   "file": "sprites/final/decor/nature.temperate.rock.01.webp",
+   "anchor": [
+    0.5,
+    0.95531
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 40,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.rock.02": {
+   "file": "sprites/final/decor/nature.temperate.rock.02.webp",
+   "anchor": [
+    0.49123,
+    0.96028
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 45,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.rock.03": {
+   "file": "sprites/final/decor/nature.temperate.rock.03.webp",
+   "anchor": [
+    0.48387,
+    0.94414
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 32,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.temperate.rocky_edge.01.webp",
+   "anchor": [
+    0.49194,
+    0.99237
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 50,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.temperate.rocky_edge.02.webp",
+   "anchor": [
+    0.46923,
+    0.99153
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 45,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.temperate.rocky_edge.03.webp",
+   "anchor": [
+    0.49194,
+    0.99281
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 53,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.shrub.01": {
+   "file": "sprites/final/decor/nature.temperate.shrub.01.webp",
+   "anchor": [
+    0.49057,
+    0.96172
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 53,
+   "height": 48,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.shrub.02": {
+   "file": "sprites/final/decor/nature.temperate.shrub.02.webp",
+   "anchor": [
+    0.48958,
+    0.95997
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 48,
+   "height": 37,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.shrub.03": {
+   "file": "sprites/final/decor/nature.temperate.shrub.03.webp",
+   "anchor": [
+    0.5,
+    0.95355
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 53,
+   "height": 37,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.wet_edge.01": {
+   "file": "sprites/final/decor/nature.temperate.wet_edge.01.webp",
+   "anchor": [
+    0.45455,
+    1.00348
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 55,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.wet_edge.02": {
+   "file": "sprites/final/decor/nature.temperate.wet_edge.02.webp",
+   "anchor": [
+    0.47368,
+    1.11607
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 56,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.wet_edge.03": {
+   "file": "sprites/final/decor/nature.temperate.wet_edge.03.webp",
+   "anchor": [
+    0.49123,
+    1.01152
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 64,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.temperate.woodland_edge.01.webp",
+   "anchor": [
+    0.46825,
+    0.9727
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 68,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.temperate.woodland_edge.02.webp",
+   "anchor": [
+    0.49074,
+    0.9727
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 54,
+   "height": 68,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.temperate.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.temperate.woodland_edge.03.webp",
+   "anchor": [
+    0.48246,
+    1.0151
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 60,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.canopy.01": {
+   "file": "sprites/final/decor/nature.tundra.canopy.01.webp",
+   "anchor": [
+    0.47794,
+    0.98842
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 61,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.canopy.02": {
+   "file": "sprites/final/decor/nature.tundra.canopy.02.webp",
+   "anchor": [
+    0.43939,
+    0.99779
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 66,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.canopy.03": {
+   "file": "sprites/final/decor/nature.tundra.canopy.03.webp",
+   "anchor": [
+    0.375,
+    0.96893
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 56,
+   "height": 68,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.deadwood.01": {
+   "file": "sprites/final/decor/nature.tundra.deadwood.01.webp",
+   "anchor": [
+    0.54839,
+    1.36279
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 43,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.deadwood.02": {
+   "file": "sprites/final/decor/nature.tundra.deadwood.02.webp",
+   "anchor": [
+    0.4386,
+    1.19972
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 57,
+   "height": 44,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.deadwood.03": {
+   "file": "sprites/final/decor/nature.tundra.deadwood.03.webp",
+   "anchor": [
+    0.32609,
+    1.30082
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 46,
+   "height": 46,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.groundcover.01": {
+   "file": "sprites/final/decor/nature.tundra.groundcover.01.webp",
+   "anchor": [
+    0.47727,
+    0.94423
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 44,
+   "height": 39,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.groundcover.02": {
+   "file": "sprites/final/decor/nature.tundra.groundcover.02.webp",
+   "anchor": [
+    0.4881,
+    0.95214
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 42,
+   "height": 38,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.groundcover.03": {
+   "file": "sprites/final/decor/nature.tundra.groundcover.03.webp",
+   "anchor": [
+    0.5,
+    0.97519
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 33,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.mountain.01": {
+   "file": "sprites/final/decor/nature.tundra.mountain.01.webp",
+   "anchor": [
+    0.48344,
+    1.3033
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 151,
+   "height": 106,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.mountain.02": {
+   "file": "sprites/final/decor/nature.tundra.mountain.02.webp",
+   "anchor": [
+    0.45946,
+    1.06082
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 148,
+   "height": 134,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.mountain.03": {
+   "file": "sprites/final/decor/nature.tundra.mountain.03.webp",
+   "anchor": [
+    0.50314,
+    1.00009
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 159,
+   "height": 133,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.rock.01": {
+   "file": "sprites/final/decor/nature.tundra.rock.01.webp",
+   "anchor": [
+    0.56122,
+    1.0567
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 49,
+   "height": 42,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.rock.02": {
+   "file": "sprites/final/decor/nature.tundra.rock.02.webp",
+   "anchor": [
+    0.44898,
+    1.04826
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 49,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.rock.03": {
+   "file": "sprites/final/decor/nature.tundra.rock.03.webp",
+   "anchor": [
+    0.41489,
+    1.05156
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 47,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.rocky_edge.01": {
+   "file": "sprites/final/decor/nature.tundra.rocky_edge.01.webp",
+   "anchor": [
+    0.47794,
+    1.02511
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 68,
+   "height": 55,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.rocky_edge.02": {
+   "file": "sprites/final/decor/nature.tundra.rocky_edge.02.webp",
+   "anchor": [
+    0.5,
+    1.07351
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 59,
+   "height": 46,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.rocky_edge.03": {
+   "file": "sprites/final/decor/nature.tundra.rocky_edge.03.webp",
+   "anchor": [
+    0.5,
+    1.02939
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 69,
+   "height": 47,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.shrub.01": {
+   "file": "sprites/final/decor/nature.tundra.shrub.01.webp",
+   "anchor": [
+    0.56977,
+    1.01526
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 43,
+   "height": 34,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.shrub.02": {
+   "file": "sprites/final/decor/nature.tundra.shrub.02.webp",
+   "anchor": [
+    0.43902,
+    0.95673
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 41,
+   "height": 26,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.shrub.03": {
+   "file": "sprites/final/decor/nature.tundra.shrub.03.webp",
+   "anchor": [
+    0.41026,
+    0.98333
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 39,
+   "height": 36,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.wet_edge.01": {
+   "file": "sprites/final/decor/nature.tundra.wet_edge.01.webp",
+   "anchor": [
+    0.48387,
+    1.06299
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 62,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.wet_edge.02": {
+   "file": "sprites/final/decor/nature.tundra.wet_edge.02.webp",
+   "anchor": [
+    0.50862,
+    1.10097
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 58,
+   "height": 58,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.wet_edge.03": {
+   "file": "sprites/final/decor/nature.tundra.wet_edge.03.webp",
+   "anchor": [
+    0.48361,
+    1.04857
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 61,
+   "height": 48,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.woodland_edge.01": {
+   "file": "sprites/final/decor/nature.tundra.woodland_edge.01.webp",
+   "anchor": [
+    0.46154,
+    1.06397
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 65,
+   "height": 51,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.woodland_edge.02": {
+   "file": "sprites/final/decor/nature.tundra.woodland_edge.02.webp",
+   "anchor": [
+    0.5,
+    0.98951
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 63,
+   "height": 59,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "nature.tundra.woodland_edge.03": {
+   "file": "sprites/final/decor/nature.tundra.woodland_edge.03.webp",
+   "anchor": [
+    0.46875,
+    1.0153
+   ],
+   "pixelsPerHex": 140.0,
+   "status": "final",
+   "width": 64,
+   "height": 67,
    "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
   }
  },
@@ -19416,6 +23551,199 @@
    "status": "final",
    "provenance": "Siege art (GPT-6 Brief 15), imported by `npm run sprites:import` with its full asset ID.",
    "additive": false
+  }
+ },
+ "roads": {
+  "dirt.a": {
+   "file": "sprites/final/roads/road.dirt.a.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.dirt.a.png, imported by `npm run roads:import`. The owner approved the dirt stage on 2026-10-06 after the in-game review."
+  },
+  "dirt.b": {
+   "file": "sprites/final/roads/road.dirt.b.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.dirt.b.png, imported by `npm run roads:import`. The owner approved the dirt stage on 2026-10-06 after the in-game review."
+  },
+  "dirt.c": {
+   "file": "sprites/final/roads/road.dirt.c.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.dirt.c.png, imported by `npm run roads:import`. The owner approved the dirt stage on 2026-10-06 after the in-game review."
+  },
+  "cobble.a": {
+   "file": "sprites/final/roads/road.cobble.a.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.cobble.a.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "cobble.b": {
+   "file": "sprites/final/roads/road.cobble.b.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.cobble.b.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "cobble.c": {
+   "file": "sprites/final/roads/road.cobble.c.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.cobble.c.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "sand.a": {
+   "file": "sprites/final/roads/road.sand.a.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.sand.a.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "sand.b": {
+   "file": "sprites/final/roads/road.sand.b.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.sand.b.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "sand.c": {
+   "file": "sprites/final/roads/road.sand.c.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.sand.c.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "snow.a": {
+   "file": "sprites/final/roads/road.snow.a.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.snow.a.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "snow.b": {
+   "file": "sprites/final/roads/road.snow.b.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.snow.b.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "snow.c": {
+   "file": "sprites/final/roads/road.snow.c.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.snow.c.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "boardwalk.a": {
+   "file": "sprites/final/roads/road.boardwalk.a.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.boardwalk.a.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "boardwalk.b": {
+   "file": "sprites/final/roads/road.boardwalk.b.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.boardwalk.b.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  },
+  "boardwalk.c": {
+   "file": "sprites/final/roads/road.boardwalk.c.webp",
+   "status": "final",
+   "width": 1792,
+   "height": 768,
+   "cell": 256,
+   "cols": 7,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 16 road sheet sheet.road.boardwalk.c.png, imported by `npm run roads:import`. Delivered 2026-10-06 with the full set; the owner has not yet recorded in-game acceptance (some width, texture and colour joins remain visible)."
+  }
+ },
+ "ground": {
+  "edges": {
+   "file": "sprites/final/ground/edges.json",
+   "status": "final",
+   "characters": [
+    "boggy",
+    "meadow",
+    "rocky",
+    "scree",
+    "shore",
+    "woodland"
+   ],
+   "provenance": "GPT-6 Brief 17 ground-transition masks, traced by `npm run ground:import`."
+  },
+  "foam": {
+   "file": "sprites/final/ground/foam.webp",
+   "status": "final",
+   "width": 1536,
+   "height": 768,
+   "cell": 256,
+   "cols": 6,
+   "rows": 3,
+   "hexWidth": 224,
+   "provenance": "GPT-6 Brief 17 shore foam, imported by `npm run ground:import`."
   }
  }
 }

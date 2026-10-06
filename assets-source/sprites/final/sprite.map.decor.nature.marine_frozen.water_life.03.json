@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 597.619,
+  "sourceSheet": "sheet.nature.marine_frozen.png",
+  "sourceRect": [
+    724,
+    1089,
+    1086,
+    1448
+  ],
+  "role": "water_life"
+}

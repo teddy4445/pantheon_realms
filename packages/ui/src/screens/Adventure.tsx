@@ -59,6 +59,7 @@ import { Button, Chip, Bar, Panel } from '../components/kit';
 import { HeroPortrait, MarkerIcon, siteMarkerAsset, siteMarkerTint } from '../components/art';
 import { ArmyPreview, ResourceBar } from '../components/game';
 import { Icon } from '../assets/icons';
+import { resolveAsset } from '../assets/manifest';
 import {
   dailyIncome,
   dayLabel,
@@ -210,8 +211,28 @@ function buildView(
 // Minimap
 // ---------------------------------------------------------------------------
 
-function Minimap({ catalog, state, playerId, onPick, frame }: { catalog: ContentCatalog; state: MatchState; playerId: string; onPick: (c: HexCoord) => void; frame?: readonly { q: number; r: number }[] | null }) {
+function Minimap({ catalog, state, playerId, onPick, footprint }: { catalog: ContentCatalog; state: MatchState; playerId: string; onPick: (c: HexCoord) => void; footprint: () => readonly { q: number; r: number }[] | null }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  /**
+   * The camera's ground footprint (polled: the camera moves in the render loop).
+   * Held here, so panning redraws only the minimap's frame, not the whole map screen
+   * (2026-10-06 frame-rate work).
+   */
+  const [frame, setFrame] = useState<readonly { q: number; r: number }[] | null>(null);
+  const read = useRef(footprint);
+  read.current = footprint;
+  useEffect(() => {
+    let last = '';
+    const t = setInterval(() => {
+      const f = read.current();
+      const key = f ? f.map((p) => `${p.q.toFixed(2)},${p.r.toFixed(2)}`).join(';') : '';
+      if (key !== last) {
+        last = key;
+        setFrame(f);
+      }
+    }, 150);
+    return () => clearInterval(t);
+  }, []);
   const map = state.world.map;
   const cell = 7;
   // Only the map's own cells (a square random map's void cells are left out).
@@ -516,21 +537,6 @@ export function AdventureScreen() {
   const [target, setTarget] = useState<HexCoord | null>(null);
   const [hover, setHover] = useState<HexCoord | null>(null);
   const [dragging, setDragging] = useState(false);
-  /** The camera's ground footprint for the minimap frame (polled; the camera moves in the render loop). */
-  const [viewFrame, setViewFrame] = useState<{ q: number; r: number }[] | null>(null);
-  useEffect(() => {
-    if (!store.prefs.minimap) return;
-    let last = '';
-    const t = setInterval(() => {
-      const f = ctrl.current?.viewFootprint() ?? null;
-      const key = f ? f.map((p) => `${p.q.toFixed(2)},${p.r.toFixed(2)}`).join(';') : '';
-      if (key !== last) {
-        last = key;
-        setViewFrame(f);
-      }
-    }, 150);
-    return () => clearInterval(t);
-  }, [store.prefs.minimap]);
   const [pinned, setPinned] = useState<HexCoord | null>(null);
   const [dayBanner, setDayBanner] = useState<string | null>(null);
   /** The coin shower over the Gold counter (Tithe of the Faithful, the Feathered Serpent's gift). */
@@ -671,23 +677,25 @@ export function AdventureScreen() {
           if (factor > 0) await store.whenMiracleCardsClosed();
           const look = miracleLook(def);
           const id = `fx.miracle.${def.id}`;
+          // The miracle's own icon (Brief 13) rises over the heroes or town it touches.
+          const icon = resolveAsset(`icon.intervention.${def.id}`).url;
           store.audio?.effect(`magic.${look.sound}`);
           const fx = def.effect;
           if (fx.type === 'restore_movement' || fx.type === 'restore_mana') {
             const heroIds = Object.values(st.heroes)
               .filter((h) => h.ownerId === me && h.status === 'active' && !h.monster)
               .map((h) => h.id);
-            await c.playMapFx({ look, id, heroIds }, factor);
+            await c.playMapFx({ look, id, heroIds, icon }, factor);
           } else if (fx.type === 'town_growth') {
             const town = e.targetTownId ? st.towns[e.targetTownId] : undefined;
-            if (town) await c.playMapFx({ look, id, towns: [town.coord] }, factor);
+            if (town) await c.playMapFx({ look, id, towns: [town.coord], icon }, factor);
           } else if (fx.type === 'grant_resources') {
             if (factor > 0 && !reducedMotion(store.prefs)) {
               const r = document.querySelector('[data-testid="res-gold"]')?.getBoundingClientRect();
               if (r) setCoins({ key: Date.now(), x: r.left + r.width / 2, y: r.top + r.height / 2 });
             }
             const capital = Object.values(st.towns).find((t) => t.ownerId === me);
-            await c.playMapFx({ look, id, ...(capital ? { towns: [capital.coord] } : {}) }, factor);
+            await c.playMapFx({ look, id, icon, ...(capital ? { towns: [capital.coord] } : {}) }, factor);
           }
         }
       }
@@ -750,7 +758,7 @@ export function AdventureScreen() {
     (c: AdventureSceneController | null) => {
       ctrl.current = c;
       projectors.adventure = c ? (q, r) => toPage(c.projectHex({ q, r })) : undefined;
-      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose(), fx: () => c.fxDebug() } : undefined;
+      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose(), fx: () => c.fxDebug(), ground: () => c.groundDebug(), scenery: () => c.sceneryDebug() } : undefined;
       if (c) {
         c.update(viewRef.current);
         const focus = store.focusRequest ?? selectedRef.current?.position ?? null;
@@ -1072,7 +1080,7 @@ export function AdventureScreen() {
       </aside>
       {store.prefs.minimap ? (
         <Panel className="adv-minimap">
-          <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} frame={viewFrame} />
+          <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} footprint={() => ctrl.current?.viewFootprint() ?? null} />
         </Panel>
       ) : null}
 

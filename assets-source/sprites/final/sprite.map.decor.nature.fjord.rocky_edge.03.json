@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 535.417,
+  "sourceSheet": "sheet.nature.fjord.ground_edges.png",
+  "sourceRect": [
+    724,
+    734,
+    1086,
+    1086
+  ],
+  "role": "rocky_edge"
+}

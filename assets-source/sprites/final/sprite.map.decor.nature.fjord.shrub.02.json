@@ -1,0 +1,16 @@
+{
+  "frames": 1,
+  "anchor": [
+    0.5,
+    0.88125
+  ],
+  "pixelsPerHex": 755.556,
+  "sourceSheet": "sheet.nature.fjord.flora_rocks.png",
+  "sourceRect": [
+    368,
+    458,
+    732,
+    753
+  ],
+  "role": "shrub"
+}

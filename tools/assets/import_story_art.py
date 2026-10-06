@@ -105,7 +105,7 @@ PATTERNS = [
     ('banner', re.compile(r'^banner\.(level_up\.[a-z]+|new_week|week\.[a-z_]+)$')),
     ('building', re.compile(r'^town\.[a-z]+\.support\.[a-z_]+\.l\d$')),
     ('building', re.compile(r'^town\.[a-z]+\.dwelling\.tier[1-7]\.(base|upgraded)$')),
-    ('background', re.compile(r'^town\.[a-z]+\.background$')),
+    ('background', re.compile(r'^town\.[a-z]+\.background(?:\.l[1-4])?$')),
 ]
 TOWN_BG_MAX_W = 2048       # town backgrounds: native size up to 2048 wide (Brief 12: 2048 x 1536)
 BUILDING_MAX = 512         # town building level art: at most 512 px on the long side (shown at ~150–300 px)
@@ -234,6 +234,10 @@ def self_test():
         'town.greek.support.civic_hall.l2': 'building',
         'town.norse.dwelling.tier7.upgraded': 'building',
         'town.celtic.background': 'background',
+        'town.norse.background.l1': 'background',
+        'town.mesoamerican.background.l4': 'background',
+        'town.greek.background.l5': None,
+        'town.greek.background.l0': None,
         'mission.skirmish.frostgate.thumbnail': 'mission',
         'mission.skirmish.six_thrones.thumbnail': 'mission',
         'mission.skirmish.frostgate.briefing': None,
