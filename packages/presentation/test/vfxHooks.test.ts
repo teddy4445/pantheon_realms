@@ -45,6 +45,8 @@ function requested(): Set<string> {
   out.add('fx.offering.rise').add('fx.offering.favor');
   // GodCommitFx in the Pantheon UI asks for this dedicated strip when delivered.
   out.add('fx.god.commit');
+  // The siege catapult's throw (Brief 15), played in place of its still at each shot.
+  out.add('fx.siege.catapult.throw');
   return out;
 }
 

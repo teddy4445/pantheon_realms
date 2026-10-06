@@ -1,7 +1,7 @@
 {
   "name": "pantheon-realms",
   "private": true,
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "Pantheon Realms — turn-based mythological strategy (TypeScript rules, React UI, PixiJS 2D, Electron).",
   "type": "module",
   "workspaces": [
@@ -33,7 +33,9 @@
     "sprites:import": "python3 tools/assets/sprites/import_sprites.py",
     "sprites:queue": "python3 tools/assets/sprites/build_gpt6_queue.py",
     "maps:build": "vitest run --config tools/maps/vitest.config.ts tools/maps/build.author.ts && python3 tools/maps/layout_guides.py",
-    "art:siege-guide": "python3 tools/assets/briefs/siege_guide.py"
+    "art:siege-guide": "python3 tools/assets/briefs/siege_guide.py",
+    "art:road-guides": "python3 tools/assets/briefs/road_guides.py",
+    "roads:import": "python3 tools/assets/roads/import_roads.py"
   },
   "devDependencies": {
     "@playwright/test": "1.56.0",

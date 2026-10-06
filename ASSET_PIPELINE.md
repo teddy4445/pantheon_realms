@@ -1045,9 +1045,48 @@ siege battlefield and falls back to the shared set; wall, gate and tower
 pieces stand on one straight line halfway between the zig-zagging cells of
 the wall column.
 
-**Roads and ground (code only).** Roads are drawn by `presentation/src/roads.ts`
-(runs between junctions, rounded, styled by climate, planks over marsh); the
-adventure ground is blended once per map into one picture with soft
-transitions (`softGround`), and the fog's edges fade likewise. No art is
-needed for either.
+**Delivered 2026-10-05** (owner delivery, imported with the importers above; no
+upscaling): the six map paintings and 72 + 1 siege stills, the throw strip and
+six siege battlefields. **Accepted resolution exception** (the owner's choice:
+"deliver native paintings and clearly document resolution shortfalls"): the
+map paintings are native 1672 × 941 (Six Thrones 1672 × 940), below the
+brief's 1920 × 1080; the siege battlefields are native 1419 × 1108 (Celtic
+1419 × 1109), below 4096 × 3200 — they look softer stretched over the field.
+Each siege painting's ditch and crossing were painted a little off the design
+positions; the battle view shifts each one on screen (`SIEGE_GROUND_SHIFT` in
+`presentation/src/environmentArt.ts`, measured per file) so the ditch lies
+under the moat cells and the crossing on the gate row; the board never moves.
+The throw strip plays once per catapult shot in place of the still (same
+frame, anchor and scale); the stone leaves the cup at frame 5 (index 4).
 
+**Ground edges (code only).** The adventure map draws each ground type's
+painting crisply per hex; where two grounds meet, each reaches a sixth of a
+hex into the other in three fading steps (`featherGroundEdges`, setting
+`softGround`). The fog's edges fade over a fraction of a hex.
+
+## 15. Brief 16 (2026-10-05): painted road tiles
+
+`assets-source/art/briefs/GPT6_BRIEF_16_ROADS.md`: five road types (dirt
+track, cobbled road, desert flagstones, snow road, plank boardwalk) × three
+sheets (a: ends, straights, bends; b: three-way crossings and the six-way; c:
+four- and five-way) = 15 sheets of 7 × 3 cells (256 × 256 px; the hex 224 px
+wide, foreshortened to 84 %), one cell per hex connection pattern — all 63.
+Guides and the cell order come from the game's own geometry: `npm run
+art:road-guides` (`tools/assets/briefs/road_guides.py`) writes
+`guides/road.<a|b|c>.layout.png`, `guides/road.join-example.png` and
+`assets-source/sprites/road-tiles.json` (kept equal to `roadTileOrder()` in
+`presentation/src/roads.ts` by a unit test).
+
+| Source in `assets-source/sprites/final/` | Runtime | Manifest (`roads`) |
+|---|---|---|
+| `sheet.road.<type>.<a\|b\|c>.png` (1792 × 768, or an exact larger multiple) | `sprites/final/roads/road.<type>.<part>.webp` | `<type>.<part>`: file, cell, cols, rows, hexWidth |
+
+`npm run roads:import` (`tools/assets/roads/import_roads.py`, `--self-test`,
+`--dry-run`) checks every cell against the guide (the road reaches each
+connected edge at its middle and no other), clips each tile to its hex and
+writes one WebP atlas per sheet. The adventure map picks a tile per road hex
+by its connections and its land (`roadTypeFor`: boardwalk over marsh and
+water; desert flagstones, snow road or cobbles by climate, cobbles on rough
+ground; else dirt) and uses the painted tiles once all three sheets of every
+road type the map needs are imported; otherwise it keeps the code-drawn roads
+(`roads.ts`), so a map never mixes the two.

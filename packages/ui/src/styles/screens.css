@@ -729,7 +729,7 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 /* Authored skirmish maps (2026-10-05): list cards, the detail panel and S23 seat setup. */
 .map-preview { display: block; border-radius: var(--radius-s); box-shadow: inset 0 0 0 1px rgba(194, 154, 82, 0.35); image-rendering: auto; }
 .map-detail__art.is-empty { display: none; }
-.map-detail__art { max-width: 46rem; margin: 0 auto 0.7rem; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 0 0 1px rgba(194, 154, 82, 0.45), 0 6px 18px rgba(0, 0, 0, 0.45); }
+.map-detail__art { max-width: min(46rem, calc(38vh * 16 / 9)); margin: 0 auto 0.7rem; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 0 0 1px rgba(194, 154, 82, 0.45), 0 6px 18px rgba(0, 0, 0, 0.45); }
 .map-detail__split { display: grid; grid-template-columns: minmax(16rem, 2fr) minmax(16rem, 3fr); gap: 1rem 1.4rem; align-items: start; margin: 0.6rem 0; }
 .map-detail__facts { display: grid; gap: 0.35rem; margin: 0.4rem 0; }
 .map-detail__fact { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.6rem; align-items: baseline; }

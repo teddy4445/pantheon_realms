@@ -15504,6 +15504,882 @@
    "width": 208,
    "height": 200,
    "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "catapult.intact": {
+   "file": "sprites/final/siege/catapult.intact.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.damaged.celtic": {
+   "file": "sprites/final/siege/gate.damaged.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.damaged.egyptian": {
+   "file": "sprites/final/siege/gate.damaged.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.damaged.greek": {
+   "file": "sprites/final/siege/gate.damaged.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.damaged.japanese": {
+   "file": "sprites/final/siege/gate.damaged.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.damaged.mesoamerican": {
+   "file": "sprites/final/siege/gate.damaged.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.damaged.norse": {
+   "file": "sprites/final/siege/gate.damaged.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.intact.celtic": {
+   "file": "sprites/final/siege/gate.intact.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.intact.egyptian": {
+   "file": "sprites/final/siege/gate.intact.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.intact.greek": {
+   "file": "sprites/final/siege/gate.intact.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.intact.japanese": {
+   "file": "sprites/final/siege/gate.intact.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.intact.mesoamerican": {
+   "file": "sprites/final/siege/gate.intact.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.intact.norse": {
+   "file": "sprites/final/siege/gate.intact.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.rubble.celtic": {
+   "file": "sprites/final/siege/gate.rubble.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.rubble.egyptian": {
+   "file": "sprites/final/siege/gate.rubble.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.rubble.greek": {
+   "file": "sprites/final/siege/gate.rubble.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.rubble.japanese": {
+   "file": "sprites/final/siege/gate.rubble.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.rubble.mesoamerican": {
+   "file": "sprites/final/siege/gate.rubble.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "gate.rubble.norse": {
+   "file": "sprites/final/siege/gate.rubble.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.damaged.celtic": {
+   "file": "sprites/final/siege/keep.damaged.celtic.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.damaged.egyptian": {
+   "file": "sprites/final/siege/keep.damaged.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.damaged.greek": {
+   "file": "sprites/final/siege/keep.damaged.greek.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.damaged.japanese": {
+   "file": "sprites/final/siege/keep.damaged.japanese.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.damaged.mesoamerican": {
+   "file": "sprites/final/siege/keep.damaged.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.damaged.norse": {
+   "file": "sprites/final/siege/keep.damaged.norse.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.intact.celtic": {
+   "file": "sprites/final/siege/keep.intact.celtic.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.intact.egyptian": {
+   "file": "sprites/final/siege/keep.intact.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.intact.greek": {
+   "file": "sprites/final/siege/keep.intact.greek.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.intact.japanese": {
+   "file": "sprites/final/siege/keep.intact.japanese.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.intact.mesoamerican": {
+   "file": "sprites/final/siege/keep.intact.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.intact.norse": {
+   "file": "sprites/final/siege/keep.intact.norse.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.rubble.celtic": {
+   "file": "sprites/final/siege/keep.rubble.celtic.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.rubble.egyptian": {
+   "file": "sprites/final/siege/keep.rubble.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.rubble.greek": {
+   "file": "sprites/final/siege/keep.rubble.greek.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.rubble.japanese": {
+   "file": "sprites/final/siege/keep.rubble.japanese.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.rubble.mesoamerican": {
+   "file": "sprites/final/siege/keep.rubble.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "keep.rubble.norse": {
+   "file": "sprites/final/siege/keep.rubble.norse.webp",
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 384,
+   "height": 384,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.damaged.celtic": {
+   "file": "sprites/final/siege/tower.damaged.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.damaged.egyptian": {
+   "file": "sprites/final/siege/tower.damaged.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.damaged.greek": {
+   "file": "sprites/final/siege/tower.damaged.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.damaged.japanese": {
+   "file": "sprites/final/siege/tower.damaged.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.damaged.mesoamerican": {
+   "file": "sprites/final/siege/tower.damaged.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.damaged.norse": {
+   "file": "sprites/final/siege/tower.damaged.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.intact.celtic": {
+   "file": "sprites/final/siege/tower.intact.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.intact.egyptian": {
+   "file": "sprites/final/siege/tower.intact.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.intact.greek": {
+   "file": "sprites/final/siege/tower.intact.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.intact.japanese": {
+   "file": "sprites/final/siege/tower.intact.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.intact.mesoamerican": {
+   "file": "sprites/final/siege/tower.intact.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.intact.norse": {
+   "file": "sprites/final/siege/tower.intact.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.rubble.celtic": {
+   "file": "sprites/final/siege/tower.rubble.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.rubble.egyptian": {
+   "file": "sprites/final/siege/tower.rubble.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.rubble.greek": {
+   "file": "sprites/final/siege/tower.rubble.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.rubble.japanese": {
+   "file": "sprites/final/siege/tower.rubble.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.rubble.mesoamerican": {
+   "file": "sprites/final/siege/tower.rubble.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "tower.rubble.norse": {
+   "file": "sprites/final/siege/tower.rubble.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.damaged.celtic": {
+   "file": "sprites/final/siege/wall.damaged.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.damaged.egyptian": {
+   "file": "sprites/final/siege/wall.damaged.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.damaged.greek": {
+   "file": "sprites/final/siege/wall.damaged.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.damaged.japanese": {
+   "file": "sprites/final/siege/wall.damaged.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.damaged.mesoamerican": {
+   "file": "sprites/final/siege/wall.damaged.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.damaged.norse": {
+   "file": "sprites/final/siege/wall.damaged.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.intact.celtic": {
+   "file": "sprites/final/siege/wall.intact.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.intact.egyptian": {
+   "file": "sprites/final/siege/wall.intact.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.intact.greek": {
+   "file": "sprites/final/siege/wall.intact.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.intact.japanese": {
+   "file": "sprites/final/siege/wall.intact.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.intact.mesoamerican": {
+   "file": "sprites/final/siege/wall.intact.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.intact.norse": {
+   "file": "sprites/final/siege/wall.intact.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.rubble.celtic": {
+   "file": "sprites/final/siege/wall.rubble.celtic.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.rubble.egyptian": {
+   "file": "sprites/final/siege/wall.rubble.egyptian.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.rubble.greek": {
+   "file": "sprites/final/siege/wall.rubble.greek.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.rubble.japanese": {
+   "file": "sprites/final/siege/wall.rubble.japanese.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.rubble.mesoamerican": {
+   "file": "sprites/final/siege/wall.rubble.mesoamerican.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
+  },
+  "wall.rubble.norse": {
+   "file": "sprites/final/siege/wall.rubble.norse.webp",
+   "anchor": [
+    0.5,
+    0.68
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "width": 256,
+   "height": 256,
+   "provenance": "GPT-6 final art, imported by `npm run sprites:import`."
   }
  },
  "projectiles": {
@@ -18523,6 +19399,22 @@
    "pixelsPerHex": 120.0,
    "status": "final",
    "provenance": "Magic and Favor VFX phase (VFX_MAGIC_AND_FAVORS.md), imported by `npm run sprites:import` with its full asset ID.",
+   "additive": false
+  },
+  "fx.siege.catapult.throw": {
+   "file": "sprites/final/effects/fx.siege.catapult.throw.webp",
+   "frames": 8,
+   "frameWidth": 256,
+   "frameHeight": 256,
+   "fps": 12,
+   "loop": false,
+   "anchor": [
+    0.5,
+    0.95
+   ],
+   "pixelsPerHex": 120.0,
+   "status": "final",
+   "provenance": "Siege art (GPT-6 Brief 15), imported by `npm run sprites:import` with its full asset ID.",
    "additive": false
   }
  }

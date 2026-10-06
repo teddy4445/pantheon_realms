@@ -2,6 +2,9 @@
 
 _Written 2026-10-05 after the owner's play-test: the walls, watchtowers and town in siege battles look poor, and the catapult needs a visible throw. Today one shared set of twelve small stills (front-facing wall blocks stacked in a column) serves every town. This brief asks for each pantheon's own fortification, a painted siege battlefield per pantheon with the town's streets, and the attackers' catapult with a throwing animation. The game already looks these files up by name: when they arrive, the siege shows them without a code change._
 
+
+**Status (2026-10-05): delivered and in the game** — Parts A–C (the catapult and its throw, 72 fortification pieces, six siege battlefields). Accepted resolution exception: the battlefields are native 1419 × 1108 (Celtic 1419 × 1109), below the 4096 × 3200 asked; not enlarged. Each painting's ditch and crossing are aligned on screen by a measured shift (`SIEGE_GROUND_SHIFT`, ASSET_PIPELINE.md §14).
+
 ## At a glance
 
 | Part | What | Files | Size | Priority |

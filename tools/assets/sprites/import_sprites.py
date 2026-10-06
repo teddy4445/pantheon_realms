@@ -94,7 +94,7 @@ def effect_entry(entry: dict, key: str, over: dict) -> dict:
     return {
         **entry,
         "loop": bool(over.get("loop", False)),
-        "provenance": "GPT-6 effect strip." if legacy else "Magic and Favor VFX phase (VFX_MAGIC_AND_FAVORS.md), imported by `npm run sprites:import` with its full asset ID.",
+        "provenance": "GPT-6 effect strip." if legacy else "Siege art (GPT-6 Brief 15), imported by `npm run sprites:import` with its full asset ID." if key.startswith("fx.siege.") else "Magic and Favor VFX phase (VFX_MAGIC_AND_FAVORS.md), imported by `npm run sprites:import` with its full asset ID.",
         "additive": bool(over.get("additive", not key.startswith("fx.siege."))),
     }
 

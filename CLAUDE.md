@@ -90,6 +90,8 @@ npm run balance -- skirmish --no-temperaments   # the same matches with every AI
 npm run balance -- maps --matches 2   # the six authored skirmish maps, each pantheon line-up from every seat (--maps a,b)
 npm run maps:build       # writes the authored skirmish maps (packages/content/src/skirmish/maps/*.prmap.json) from tools/maps/maps.ts, checked, + layout guides for Brief 14
 npm run art:siege-guide  # the siege layout guide for GPT-6 Brief 15 (assets-source/art/briefs/guides/siege.layout.png)
+npm run art:road-guides  # GPT-6 Brief 16 road guides (guides/road.<a|b|c>.layout.png, road.join-example.png) + assets-source/sprites/road-tiles.json, from the game's hex geometry
+npm run roads:import     # painted road sheets (assets-source/sprites/final/sheet.road.<type>.<a|b|c>.png) → assets-runtime/sprites/final/roads/ + sprite manifest `roads`; `-- --self-test`
 ```
 
 Authored skirmish maps (2026-10-05): six custom map documents in
@@ -99,7 +101,12 @@ design and run `npm run maps:build`, never the JSON. The custom map types
 live in `@pr/rules` (`definitions/customMap.ts`). Their pictures are GPT-6
 Brief 14 (`assets-source/art/briefs/GPT6_BRIEF_14_SKIRMISH_MAPS.md`); siege art
 (each pantheon's walls, gates, towers, keep, siege battlefield, the catapult)
-is Brief 15 (`GPT6_BRIEF_15_SIEGES.md`). A dwelling never requires a dwelling
+is Brief 15 (`GPT6_BRIEF_15_SIEGES.md`). Both were delivered on 2026-10-05 below
+the asked resolutions (accepted by the owner; never enlarged); the siege
+paintings are aligned on screen by `SIEGE_GROUND_SHIFT`. Painted roads are
+Brief 16 (`GPT6_BRIEF_16_ROADS.md`, five road types × three sheets, one tile per
+hex connection pattern); the map keeps its code-drawn roads until every road
+type a map needs is imported (`npm run roads:import`). A dwelling never requires a dwelling
 of a higher tier (owner decision 2026-10-05; `BuildingTreeValidator`).
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and

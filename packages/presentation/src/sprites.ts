@@ -114,6 +114,21 @@ export interface SpriteManifest {
   readonly siege: Readonly<Record<string, StaticSpriteDefinition>>;
   readonly projectiles: Readonly<Record<string, StaticSpriteDefinition>>;
   readonly effects: Readonly<Record<string, EffectDefinition>>;
+  /** Painted road sheets (GPT-6 Brief 16), keyed `<road type>.<a|b|c>`; written by `npm run roads:import`. */
+  readonly roads?: Readonly<Record<string, RoadSheetDefinition>>;
+}
+
+/** One road sheet: `cols` × `rows` cells of `cell` px, each a hex `hexWidth` px wide, in `roadTileOrder()`. */
+export interface RoadSheetDefinition {
+  readonly file: string;
+  readonly status: 'final' | 'placeholder';
+  readonly width: number;
+  readonly height: number;
+  readonly cell: number;
+  readonly cols: number;
+  readonly rows: number;
+  readonly hexWidth: number;
+  readonly provenance: string;
 }
 
 const EMPTY: SpriteManifest = { schema: 'pantheon-realms-sprites-1', creatures: {}, heroes: {}, sites: {}, decor: {}, obstacles: {}, siege: {}, projectiles: {}, effects: {} };

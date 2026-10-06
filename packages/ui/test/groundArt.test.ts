@@ -63,7 +63,7 @@ describe('ground and sky art', () => {
 
   it('the 54 climate paintings exist at their registered sizes, in the proportions of the 4096 × 3200 layout', () => {
     const art = JSON.parse(readFileSync(path.join(runtime, 'art/manifest.json'), 'utf8')) as { assets: Record<string, Entry> };
-    const variants = Object.entries(art.assets).filter(([id]) => /^battlefield\.[a-z_]+\.ground\.[a-z_]+$/.test(id));
+    const variants = Object.entries(art.assets).filter(([id]) => /^battlefield\.[a-z_]+\.ground\.[a-z_]+$/.test(id) && !id.startsWith('battlefield.siege.'));
     expect(variants).toHaveLength(54);
     for (const [id, a] of variants) {
       expect(a.kind, id).toBe('battlefield');
@@ -74,19 +74,36 @@ describe('ground and sky art', () => {
     }
   });
 
+  it('the six siege battlefields (Brief 15) are registered per pantheon, in the layout\'s proportions, never enlarged', () => {
+    const art = JSON.parse(readFileSync(path.join(runtime, 'art/manifest.json'), 'utf8')) as { assets: Record<string, Entry> };
+    for (const p of ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican']) {
+      const id = `battlefield.siege.ground.${p}`;
+      const a = art.assets[id];
+      expect(a, id).toBeTruthy();
+      expect(a!.kind).toBe('battlefield');
+      expect(webpSize(path.join(runtime, a!.file)), a!.file).toEqual([a!.width, a!.height]);
+      // Delivered below the brief's 4096 x 3200 (accepted resolution exception); the game stretches them over the same layout.
+      expect(Math.abs(a!.width / a!.height - 4096 / 3200), id).toBeLessThan(0.01);
+      expect(a!.width).toBeLessThanOrEqual(report.assets[id]!.source!.width);
+    }
+  });
+
   it('runtime files exist at their registered sizes, inside assets-runtime, never upscaled', () => {
     const entries = Object.entries(report.assets).filter(([, a]) => ['terrain', 'battlefield', 'sky'].includes(a.kind));
-    expect(entries).toHaveLength(76);
+    // 60 terrains, 10 skies, 6 battlefields, their 54 climate variants and the 6 siege battlefields (Brief 15).
+    expect(entries).toHaveLength(60 + 10 + 6 + 54 + 6);
     for (const [id, a] of entries) {
       expect(a.file.startsWith('art/'), id).toBe(true);
       const file = path.join(runtime, a.file);
       expect(existsSync(file), a.file).toBe(true);
       expect(webpSize(file), a.file).toEqual([a.width, a.height]);
+      if (a.kind === 'terrain') expect([a.width, a.height]).toEqual([1024, 1024]);
+      // Runtime files whose master is not in this checkout are listed without a source (the importer keeps them as they are).
+      if (!a.source) continue;
       expect(a.width).toBeLessThanOrEqual(a.source!.width);
       expect(a.height).toBeLessThanOrEqual(a.source!.height);
       expect(Math.abs(a.width / a.height - a.source!.width / a.source!.height)).toBeLessThan(0.01);
       expect(a.source!.file.startsWith('assets-source/art/final/')).toBe(true);
-      if (a.kind === 'terrain') expect([a.width, a.height]).toEqual([1024, 1024]);
     }
   });
 

@@ -1,0 +1,474 @@
+{
+ "schema": "pantheon-realms-road-tiles-1",
+ "note": "Written by tools/assets/briefs/road_guides.py. Cell order of the road sheets (GPT-6 Brief 16); keep equal to roadTileOrder() in packages/presentation/src/roads.ts.",
+ "cell": 256,
+ "cols": 7,
+ "rows": 3,
+ "hexWidth": 224,
+ "squash": 0.84,
+ "dirs": [
+  "e",
+  "se",
+  "sw",
+  "w",
+  "nw",
+  "ne"
+ ],
+ "surface": [
+  0.32,
+  0.68
+ ],
+ "verge": [
+  0.25,
+  0.75
+ ],
+ "parts": {
+  "a": [
+   {
+    "index": 0,
+    "col": 0,
+    "row": 0,
+    "mask": 1,
+    "name": "e"
+   },
+   {
+    "index": 1,
+    "col": 1,
+    "row": 0,
+    "mask": 2,
+    "name": "se"
+   },
+   {
+    "index": 2,
+    "col": 2,
+    "row": 0,
+    "mask": 4,
+    "name": "sw"
+   },
+   {
+    "index": 3,
+    "col": 3,
+    "row": 0,
+    "mask": 8,
+    "name": "w"
+   },
+   {
+    "index": 4,
+    "col": 4,
+    "row": 0,
+    "mask": 16,
+    "name": "nw"
+   },
+   {
+    "index": 5,
+    "col": 5,
+    "row": 0,
+    "mask": 32,
+    "name": "ne"
+   },
+   {
+    "index": 6,
+    "col": 6,
+    "row": 0,
+    "mask": 9,
+    "name": "e-w"
+   },
+   {
+    "index": 7,
+    "col": 0,
+    "row": 1,
+    "mask": 18,
+    "name": "se-nw"
+   },
+   {
+    "index": 8,
+    "col": 1,
+    "row": 1,
+    "mask": 36,
+    "name": "sw-ne"
+   },
+   {
+    "index": 9,
+    "col": 2,
+    "row": 1,
+    "mask": 5,
+    "name": "e-sw"
+   },
+   {
+    "index": 10,
+    "col": 3,
+    "row": 1,
+    "mask": 10,
+    "name": "se-w"
+   },
+   {
+    "index": 11,
+    "col": 4,
+    "row": 1,
+    "mask": 20,
+    "name": "sw-nw"
+   },
+   {
+    "index": 12,
+    "col": 5,
+    "row": 1,
+    "mask": 40,
+    "name": "w-ne"
+   },
+   {
+    "index": 13,
+    "col": 6,
+    "row": 1,
+    "mask": 17,
+    "name": "e-nw"
+   },
+   {
+    "index": 14,
+    "col": 0,
+    "row": 2,
+    "mask": 34,
+    "name": "se-ne"
+   },
+   {
+    "index": 15,
+    "col": 1,
+    "row": 2,
+    "mask": 3,
+    "name": "e-se"
+   },
+   {
+    "index": 16,
+    "col": 2,
+    "row": 2,
+    "mask": 6,
+    "name": "se-sw"
+   },
+   {
+    "index": 17,
+    "col": 3,
+    "row": 2,
+    "mask": 12,
+    "name": "sw-w"
+   },
+   {
+    "index": 18,
+    "col": 4,
+    "row": 2,
+    "mask": 24,
+    "name": "w-nw"
+   },
+   {
+    "index": 19,
+    "col": 5,
+    "row": 2,
+    "mask": 48,
+    "name": "nw-ne"
+   },
+   {
+    "index": 20,
+    "col": 6,
+    "row": 2,
+    "mask": 33,
+    "name": "e-ne"
+   }
+  ],
+  "b": [
+   {
+    "index": 0,
+    "col": 0,
+    "row": 0,
+    "mask": 21,
+    "name": "e-sw-nw"
+   },
+   {
+    "index": 1,
+    "col": 1,
+    "row": 0,
+    "mask": 42,
+    "name": "se-w-ne"
+   },
+   {
+    "index": 2,
+    "col": 2,
+    "row": 0,
+    "mask": 11,
+    "name": "e-se-w"
+   },
+   {
+    "index": 3,
+    "col": 3,
+    "row": 0,
+    "mask": 22,
+    "name": "se-sw-nw"
+   },
+   {
+    "index": 4,
+    "col": 4,
+    "row": 0,
+    "mask": 44,
+    "name": "sw-w-ne"
+   },
+   {
+    "index": 5,
+    "col": 5,
+    "row": 0,
+    "mask": 25,
+    "name": "e-w-nw"
+   },
+   {
+    "index": 6,
+    "col": 6,
+    "row": 0,
+    "mask": 50,
+    "name": "se-nw-ne"
+   },
+   {
+    "index": 7,
+    "col": 0,
+    "row": 1,
+    "mask": 37,
+    "name": "e-sw-ne"
+   },
+   {
+    "index": 8,
+    "col": 1,
+    "row": 1,
+    "mask": 19,
+    "name": "e-se-nw"
+   },
+   {
+    "index": 9,
+    "col": 2,
+    "row": 1,
+    "mask": 38,
+    "name": "se-sw-ne"
+   },
+   {
+    "index": 10,
+    "col": 3,
+    "row": 1,
+    "mask": 13,
+    "name": "e-sw-w"
+   },
+   {
+    "index": 11,
+    "col": 4,
+    "row": 1,
+    "mask": 26,
+    "name": "se-w-nw"
+   },
+   {
+    "index": 12,
+    "col": 5,
+    "row": 1,
+    "mask": 52,
+    "name": "sw-nw-ne"
+   },
+   {
+    "index": 13,
+    "col": 6,
+    "row": 1,
+    "mask": 41,
+    "name": "e-w-ne"
+   },
+   {
+    "index": 14,
+    "col": 0,
+    "row": 2,
+    "mask": 7,
+    "name": "e-se-sw"
+   },
+   {
+    "index": 15,
+    "col": 1,
+    "row": 2,
+    "mask": 14,
+    "name": "se-sw-w"
+   },
+   {
+    "index": 16,
+    "col": 2,
+    "row": 2,
+    "mask": 28,
+    "name": "sw-w-nw"
+   },
+   {
+    "index": 17,
+    "col": 3,
+    "row": 2,
+    "mask": 56,
+    "name": "w-nw-ne"
+   },
+   {
+    "index": 18,
+    "col": 4,
+    "row": 2,
+    "mask": 49,
+    "name": "e-nw-ne"
+   },
+   {
+    "index": 19,
+    "col": 5,
+    "row": 2,
+    "mask": 35,
+    "name": "e-se-ne"
+   },
+   {
+    "index": 20,
+    "col": 6,
+    "row": 2,
+    "mask": 63,
+    "name": "e-se-sw-w-nw-ne"
+   }
+  ],
+  "c": [
+   {
+    "index": 0,
+    "col": 0,
+    "row": 0,
+    "mask": 54,
+    "name": "se-sw-nw-ne"
+   },
+   {
+    "index": 1,
+    "col": 1,
+    "row": 0,
+    "mask": 45,
+    "name": "e-sw-w-ne"
+   },
+   {
+    "index": 2,
+    "col": 2,
+    "row": 0,
+    "mask": 27,
+    "name": "e-se-w-nw"
+   },
+   {
+    "index": 3,
+    "col": 3,
+    "row": 0,
+    "mask": 58,
+    "name": "se-w-nw-ne"
+   },
+   {
+    "index": 4,
+    "col": 4,
+    "row": 0,
+    "mask": 53,
+    "name": "e-sw-nw-ne"
+   },
+   {
+    "index": 5,
+    "col": 5,
+    "row": 0,
+    "mask": 43,
+    "name": "e-se-w-ne"
+   },
+   {
+    "index": 6,
+    "col": 6,
+    "row": 0,
+    "mask": 23,
+    "name": "e-se-sw-nw"
+   },
+   {
+    "index": 7,
+    "col": 0,
+    "row": 1,
+    "mask": 46,
+    "name": "se-sw-w-ne"
+   },
+   {
+    "index": 8,
+    "col": 1,
+    "row": 1,
+    "mask": 29,
+    "name": "e-sw-w-nw"
+   },
+   {
+    "index": 9,
+    "col": 2,
+    "row": 1,
+    "mask": 60,
+    "name": "sw-w-nw-ne"
+   },
+   {
+    "index": 10,
+    "col": 3,
+    "row": 1,
+    "mask": 57,
+    "name": "e-w-nw-ne"
+   },
+   {
+    "index": 11,
+    "col": 4,
+    "row": 1,
+    "mask": 51,
+    "name": "e-se-nw-ne"
+   },
+   {
+    "index": 12,
+    "col": 5,
+    "row": 1,
+    "mask": 39,
+    "name": "e-se-sw-ne"
+   },
+   {
+    "index": 13,
+    "col": 6,
+    "row": 1,
+    "mask": 15,
+    "name": "e-se-sw-w"
+   },
+   {
+    "index": 14,
+    "col": 0,
+    "row": 2,
+    "mask": 30,
+    "name": "se-sw-w-nw"
+   },
+   {
+    "index": 15,
+    "col": 1,
+    "row": 2,
+    "mask": 62,
+    "name": "se-sw-w-nw-ne"
+   },
+   {
+    "index": 16,
+    "col": 2,
+    "row": 2,
+    "mask": 61,
+    "name": "e-sw-w-nw-ne"
+   },
+   {
+    "index": 17,
+    "col": 3,
+    "row": 2,
+    "mask": 59,
+    "name": "e-se-w-nw-ne"
+   },
+   {
+    "index": 18,
+    "col": 4,
+    "row": 2,
+    "mask": 55,
+    "name": "e-se-sw-nw-ne"
+   },
+   {
+    "index": 19,
+    "col": 5,
+    "row": 2,
+    "mask": 47,
+    "name": "e-se-sw-w-ne"
+   },
+   {
+    "index": 20,
+    "col": 6,
+    "row": 2,
+    "mask": 31,
+    "name": "e-se-sw-w-nw"
+   }
+  ]
+ }
+}

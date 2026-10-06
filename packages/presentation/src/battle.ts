@@ -19,7 +19,7 @@ import type { EngineHost, SceneController } from './engineHost';
 import { BATTLE_SQUASH, SQRT3, cellPoint, hexPolygon, pointCell } from './hexmath';
 import { tileNoise } from './palette';
 import { TweenPlayer, easeInOut, easeOut, linear } from './tween';
-import { BATTLEFIELD_LAYOUT, battlefieldArt } from './environmentArt';
+import { BATTLEFIELD_LAYOUT, SIEGE_GROUND_SHIFT, battlefieldArt } from './environmentArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
 import { creatureSprites, spriteManifest, type EffectDefinition, type StaticSpriteDefinition } from './sprites';
@@ -37,6 +37,14 @@ const PROJECTILE_SIZE: Readonly<Record<string, number>> = { arrow: 1 / 3 };
 /** The drawn catapult's arm: lying back at rest, upright against the crossbar when it throws. */
 const CATAPULT_REST = Math.PI * 1.04;
 const CATAPULT_FIRE = Math.PI * 1.55;
+/** The painted catapult (Brief 15) is drawn at this size; its still and throw strip share one frame, anchor and scale. */
+const CATAPULT_SPRITE_SCALE = 1.2;
+/**
+ * The delivered throw strip lets the stone go in frame 5 (index 4, 1/3 s at 12 fps);
+ * there the empty cup stands at this point of the frame (fractions of its width
+ * and height, measured on the strip). The game's stone starts there.
+ */
+const CATAPULT_RELEASE = { frame: 4, x: 0.584, y: 0.215 } as const;
 
 export interface BattleStackView {
   readonly id: string;
@@ -295,7 +303,7 @@ export class BattleSceneController implements SceneController {
     const bottom = cellPoint({ col: 0, row: this.rows - 1 }, RB, S);
     // A siege also shows the attackers' catapult west of the field and the keep east of it.
     const west = this.siegeLayout ? HEX_W * 1.5 : 0;
-    const east = this.siegeLayout ? HEX_W * 1.1 : 0;
+    const east = this.siegeLayout ? HEX_W * 2 : 0;
     return { x0: -HEX_W / 2 - west, y0: -RB * S - RB * 1.6, x1: last.x + HEX_W / 2 + east, y1: bottom.y + RB * S + RB * 0.35 };
   }
 
@@ -342,8 +350,10 @@ export class BattleSceneController implements SceneController {
     const ground = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
     const plain = new Graphics().rect(-4000, -3000, 9000, 7000).fill({ color: ground });
     this.backdrop.addChild(plain);
-    const art = graphicsProfile().paintedGround ? this.siegeGround(view) ?? battlefieldArt(view.archetype, view.climate) : null;
+    const siegeArt = graphicsProfile().paintedGround ? this.siegeGround(view) : null;
+    const art = siegeArt ?? (graphicsProfile().paintedGround ? battlefieldArt(view.archetype, view.climate) : null);
     if (!art) return;
+    const [shiftX, shiftY] = (siegeArt && SIEGE_GROUND_SHIFT[view.siege?.pantheonId ?? '']) || [0, 0];
     const first = this.cellXY({ col: 0, row: 0 });
     const last = this.cellXY({ col: view.cols - 1, row: view.rows - 1 });
     const minX = first.x - RB;
@@ -365,7 +375,7 @@ export class BattleSceneController implements SceneController {
         const s = new Sprite(tex);
         s.width = w;
         s.height = h;
-        s.position.set(cx - w / 2, cy - h / 2);
+        s.position.set(cx - w / 2 + shiftX * w, cy - h / 2 + shiftY * h);
         this.backdrop.addChild(s);
       },
       () => undefined,
@@ -453,8 +463,11 @@ export class BattleSceneController implements SceneController {
     this.objects.addChild(root);
     const def = spriteManifest().siege['catapult.intact'];
     if (def) {
-      const still = stillSprite(def, HEX_W, 1.2);
+      const still = stillSprite(def, HEX_W, CATAPULT_SPRITE_SCALE);
       root.addChild(still);
+      // Load the throw strip now, so the first shot does not wait for it.
+      const throwFx = spriteManifest().effects['fx.siege.catapult.throw'];
+      if (throwFx && graphicsProfile().effects !== 'simple') void loadStrip(throwFx).catch(() => null);
       return { root, arm: null, stone: null, still };
     }
     const u = RB;
@@ -496,13 +509,24 @@ export class BattleSceneController implements SceneController {
     const top = this.catapultPos();
     if (!c) return { x: top.x, y: top.y - RB * 1.6 };
     if (c.still) {
+      // The painted catapult: the still hides while the throw strip plays once in its place
+      // (same frame, anchor and scale); the stone leaves the cup at the strip's release frame
+      // and flies on as the game's projectile while the arm settles; then the still returns.
       const fx = spriteManifest().effects['fx.siege.catapult.throw'];
-      if (fx) {
-        c.still.alpha = 0;
-        await this.effect('fx.siege.catapult.throw', { x: top.x, y: top.y }, { scale: 1.2 });
-        c.still.alpha = 1;
+      const still = c.still;
+      const frameW = fx?.frameWidth ?? still.texture.width;
+      const frameH = fx?.frameHeight ?? still.texture.height;
+      const k = (HEX_W / (fx?.pixelsPerHex ?? 120)) * CATAPULT_SPRITE_SCALE;
+      const [ax, ay] = fx?.anchor ?? [0.5, 0.95];
+      const release = { x: top.x + (CATAPULT_RELEASE.x - ax) * frameW * k, y: top.y + (CATAPULT_RELEASE.y - ay) * frameH * k };
+      if (fx && graphicsProfile().effects !== 'simple' && (await loadStrip(fx).catch(() => null))) {
+        still.alpha = 0;
+        void this.effect('fx.siege.catapult.throw', { x: top.x, y: top.y }, { scale: CATAPULT_SPRITE_SCALE }).then(() => {
+          if (!still.destroyed) still.alpha = 1;
+        });
+        await this.tweens.wait((CATAPULT_RELEASE.frame / Math.max(1, fx.fps)) * 1000);
       }
-      return { x: top.x + HEX_W * 0.3, y: top.y - RB * 1.6 };
+      return release;
     }
     const arm = c.arm!;
     const u = RB;
@@ -815,7 +839,9 @@ export class BattleSceneController implements SceneController {
         const piece = new Container();
         piece.position.set(p.x, p.y + RB * S * 0.3);
         piece.zIndex = piece.y;
-        piece.addChild(stillSprite(def, HEX_W, st.kind === 'keep' ? 1.6 : 1));
+        // The shared keep was cut small; a pantheon's own keep (Brief 15) is painted at the board's scale.
+        const own = !!def && Object.entries(spriteManifest().siege).some(([k, v]) => v === def && k.split('.').length === 3);
+        piece.addChild(stillSprite(def, HEX_W, st.kind === 'keep' && !own ? 1.6 : 1));
         this.objects.addChild(piece);
         this.structurePieces.push(piece);
       }

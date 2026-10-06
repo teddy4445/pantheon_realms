@@ -752,6 +752,54 @@
    "average": "#9498A3",
    "edge": "#868C96"
   },
+  "battlefield.siege.ground.celtic": {
+   "file": "art/battle/battlefield.siege.ground.celtic.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1109,
+   "average": "#84763A",
+   "edge": "#766C30"
+  },
+  "battlefield.siege.ground.egyptian": {
+   "file": "art/battle/battlefield.siege.ground.egyptian.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#CE9A52",
+   "edge": "#C4954F"
+  },
+  "battlefield.siege.ground.greek": {
+   "file": "art/battle/battlefield.siege.ground.greek.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A99158",
+   "edge": "#A28B4F"
+  },
+  "battlefield.siege.ground.japanese": {
+   "file": "art/battle/battlefield.siege.ground.japanese.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#948153",
+   "edge": "#89764D"
+  },
+  "battlefield.siege.ground.mesoamerican": {
+   "file": "art/battle/battlefield.siege.ground.mesoamerican.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#A4864A",
+   "edge": "#987F3F"
+  },
+  "battlefield.siege.ground.norse": {
+   "file": "art/battle/battlefield.siege.ground.norse.webp",
+   "kind": "battlefield",
+   "width": 1419,
+   "height": 1108,
+   "average": "#7A6C5C",
+   "edge": "#6D655C"
+  },
   "campaign.lantern_road.cover": {
    "file": "art/covers/campaign.lantern_road.cover.webp",
    "kind": "cover",
@@ -1646,6 +1694,66 @@
    "width": 640,
    "height": 360
   },
+  "mission.skirmish.barrows.briefing": {
+   "file": "art/missions/mission.skirmish.barrows.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.skirmish.barrows.thumbnail": {
+   "file": "art/cards/mission.skirmish.barrows.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.skirmish.burning_oasis.briefing": {
+   "file": "art/missions/mission.skirmish.burning_oasis.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.skirmish.burning_oasis.thumbnail": {
+   "file": "art/cards/mission.skirmish.burning_oasis.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.skirmish.circle_of_gates.briefing": {
+   "file": "art/missions/mission.skirmish.circle_of_gates.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.skirmish.circle_of_gates.thumbnail": {
+   "file": "art/cards/mission.skirmish.circle_of_gates.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.skirmish.frostgate.briefing": {
+   "file": "art/missions/mission.skirmish.frostgate.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.skirmish.frostgate.thumbnail": {
+   "file": "art/cards/mission.skirmish.frostgate.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.skirmish.golden_fords.briefing": {
+   "file": "art/missions/mission.skirmish.golden_fords.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.skirmish.golden_fords.thumbnail": {
+   "file": "art/cards/mission.skirmish.golden_fords.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
   "mission.skirmish.random.briefing": {
    "file": "art/missions/mission.skirmish.random.briefing.webp",
    "kind": "briefing",
@@ -1654,6 +1762,18 @@
   },
   "mission.skirmish.random.thumbnail": {
    "file": "art/cards/mission.skirmish.random.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.skirmish.six_thrones.briefing": {
+   "file": "art/missions/mission.skirmish.six_thrones.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 940
+  },
+  "mission.skirmish.six_thrones.thumbnail": {
+   "file": "art/cards/mission.skirmish.six_thrones.thumbnail.webp",
    "kind": "card",
    "width": 640,
    "height": 360

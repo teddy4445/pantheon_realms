@@ -63,3 +63,21 @@ export const TERRAIN_TEXTURE_WORLD = 2 * Math.sqrt(3);
  * image centre. The board (15 × 11 hexes) is fitted inside it.
  */
 export const BATTLEFIELD_LAYOUT = { width: 4096, height: 3200, centreWidth: 1500, centreHeight: 1000 } as const;
+
+/**
+ * Siege battlefields (Brief 15, delivered 2026-10-05): where each painting's
+ * ditch and its crossing were painted, against the brief's design positions
+ * (ditch centre at 54.7 % of the width, the gate row at 50 % of the height).
+ * The painting is shifted on screen by this much (fractions of its width and
+ * height) so the painted ditch lies under the moat cells and the crossing at
+ * the gate row; the board itself never moves. Measured on the delivered files
+ * (DEVELOPMENT_STATUS.md, Brief 15 integration).
+ */
+export const SIEGE_GROUND_SHIFT: Readonly<Record<string, readonly [number, number]>> = {
+  greek: [-0.016, 0.0375],
+  norse: [-0.0445, 0.044],
+  egyptian: [0, 0.032],
+  japanese: [-0.0245, 0.03],
+  celtic: [-0.0174, 0.0325],
+  mesoamerican: [-0.03, 0.039],
+};

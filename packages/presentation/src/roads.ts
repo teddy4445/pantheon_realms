@@ -134,3 +134,106 @@ export function roadStyleFor(biome: string): RoadStyle {
 /** Boardwalk planks over marsh. */
 export const PLANK_COLOR = 0x6b4a2b;
 export const PLANK_EDGE = 0x3a2817;
+
+// ---------------------------------------------------------------------------
+// Painted road tiles (GPT-6 Brief 16)
+// ---------------------------------------------------------------------------
+
+/**
+ * The six edges of a pointy-top map hex, in the order of `hexPolygon`'s edges
+ * (edge k joins corners k and k+1): east, south-east, south-west, west,
+ * north-west, north-east. A road tile's connection mask has bit k set when the
+ * road leaves the hex across edge k.
+ */
+export const ROAD_DIRS = ['e', 'se', 'sw', 'w', 'nw', 'ne'] as const;
+export type RoadDir = (typeof ROAD_DIRS)[number];
+
+/** The axial step to the neighbour across each edge (same order as ROAD_DIRS). */
+export const ROAD_STEP: readonly (readonly [number, number])[] = [
+  [1, 0],
+  [0, 1],
+  [-1, 1],
+  [-1, 0],
+  [0, -1],
+  [1, -1],
+];
+
+/** The painted road types (one set of three sheets each), and the land each is used on. */
+export const ROAD_TYPES = ['dirt', 'cobble', 'sand', 'snow', 'boardwalk'] as const;
+export type RoadType = (typeof ROAD_TYPES)[number];
+
+/** The sheets of a road type: a = ends, straights and bends; b = three-way crossings and the six-way; c = four- and five-way. */
+export const ROAD_PARTS = ['a', 'b', 'c'] as const;
+export type RoadPart = (typeof ROAD_PARTS)[number];
+
+const bits = (...dirs: number[]) => dirs.reduce((m, d) => m | (1 << (d % 6)), 0);
+const ALL = 0b111111;
+
+/**
+ * The 63 connection masks in sheet order (7 columns × 3 rows per sheet, row by
+ * row). The guide generator (`tools/assets/briefs/road_guides.py`) writes the
+ * same order into `assets-source/sprites/road-tiles.json`; a unit test keeps
+ * the two equal.
+ */
+export function roadTileOrder(): Record<RoadPart, number[]> {
+  const k6 = [0, 1, 2, 3, 4, 5];
+  const a = [
+    ...k6.map((k) => bits(k)), // dead ends
+    bits(0, 3), bits(1, 4), bits(2, 5), // straights
+    ...k6.map((k) => bits(k, k + 2)), // wide bends (120°)
+    ...k6.map((k) => bits(k, k + 1)), // sharp bends (60°)
+  ];
+  const b = [
+    bits(0, 2, 4), bits(1, 3, 5), // Y crossings
+    ...k6.map((k) => bits(k, k + 1, k + 3)), // forks
+    ...k6.map((k) => bits(k, k + 1, k + 4)), // forks, mirrored
+    ...k6.map((k) => bits(k, k + 1, k + 2)), // fans
+    ALL, // six-way
+  ];
+  const c = [
+    ...[0, 1, 2].map((k) => ALL & ~bits(k, k + 3)), // X crossings
+    ...k6.map((k) => ALL & ~bits(k, k + 2)),
+    ...k6.map((k) => ALL & ~bits(k, k + 1)),
+    ...k6.map((k) => ALL & ~bits(k)), // five-way
+  ];
+  return { a, b, c };
+}
+
+/** Where a mask sits: its sheet and its cell index there. */
+export function roadTileSlot(mask: number): { part: RoadPart; index: number } | null {
+  const order = roadTileOrder();
+  for (const part of ROAD_PARTS) {
+    const index = order[part].indexOf(mask);
+    if (index >= 0) return { part, index };
+  }
+  return null;
+}
+
+/** The connection directions of a mask, e.g. `e-sw-nw` (the tile names in the brief). */
+export function roadMaskName(mask: number): string {
+  return ROAD_DIRS.filter((_, k) => mask & (1 << k)).join('-');
+}
+
+/**
+ * The road type painted on a tile: boardwalks over marsh (and water) in every
+ * climate; otherwise the climate's road — sandstone flags in the desert, packed
+ * snow in the north, cobbles in the mountain climates and on rough ground —
+ * and a dirt track everywhere else.
+ */
+export function roadTypeFor(biome: string, terrain: string): RoadType {
+  if (terrain === 'marsh' || terrain === 'water') return 'boardwalk';
+  if (biome === 'desert') return 'sand';
+  if (biome === 'tundra' || biome === 'fjord') return 'snow';
+  if (biome === 'high_pass' || biome === 'storm_plateau' || terrain === 'rough') return 'cobble';
+  return 'dirt';
+}
+
+/** Road sheet geometry (shared with the guides and the importer). */
+export const ROAD_SHEET = {
+  /** Cell size in sheet pixels. */
+  cell: 256,
+  cols: 7,
+  rows: 3,
+  /** Width of the (pointy-top) hex inside a cell, between its vertical sides, in sheet pixels. */
+  hexWidth: 224,
+} as const;

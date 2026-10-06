@@ -1,12 +1,132 @@
 # Development Status
 
-_Last updated: 2026-10-05 · **app 0.13.1** (Windows installer for play-testing): **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.6`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
+_Last updated: 2026-10-06 · **app 0.13.2** (Windows installer for play-testing): **the ground crisp again** (only the edges between grounds slightly softened), **GPT-6 Brief 16** (painted road tiles: five road types × every way a road crosses a hex; the game reads them already) and **Briefs 14 and 15 in the game** (six skirmish-map paintings, each pantheon's walls, gate, towers, keep and siege battlefield, the catapult's throw; below the asked resolutions, accepted) (below) · before it, **app 0.13.1**: **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.6`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## Ground edges, the road brief (16), Briefs 14 and 15 in the game; app 0.13.2 (owner requests, 2026-10-05)
+
+Owner requests: "reverse the map's land smoothing back, it looks really bad.
+Just smooth a bit the edges, not so much it looks like a blur"; "we want roads
+as with real design. So give GPT 6 a guide to generate the sheets with the
+styles. For each one, have a line, an angle, all possible crossing … and repeat
+for each road type"; then the owner's combined delivery of Briefs 14 and 15.
+
+### The ground: crisp again, edges only slightly softened
+
+The soft-ground blend of 0.13.0 painted the whole map into one picture at
+reduced resolution with a blur a third of a hex wide; it is gone. Each ground
+type's painting is drawn per hex at full resolution again, and only where two
+different grounds meet does each reach a sixth of a hex into the other in
+three fading steps (`featherGroundEdges` in `presentation/src/adventure.ts`;
+the map's outer edge and same-ground neighbours are untouched). Setting
+`softGround` now means this edge softening. The fog's soft edges are
+unchanged. Checked on screenshots of temperate, desert and tundra random maps
+at two zoom levels.
+
+### GPT-6 Brief 16: painted road tiles
+
+`assets-source/art/briefs/GPT6_BRIEF_16_ROADS.md`. Five road types — dirt
+track, cobbled road, desert flagstones, snow road, plank boardwalk — each in
+three sheets: **a** dead ends (6), straights (3), wide bends (6), sharp bends
+(6); **b** three-way crossings (20: two Y crossings, twelve straights with a
+branch, six fans) and the six-way; **c** four-way (15, incl. the three X
+crossings) and five-way (6). That is every one of the 63 ways a road can
+leave a hex, 15 sheets of 7 × 3 cells (256 × 256 px; the hex 224 px wide and
+foreshortened to 84 % like the map). The guides are drawn from the game's own
+hex geometry (`npm run art:road-guides`): each cell shows the hex, the road's
+footprint and a red bar where it must cross each connected edge (the middle
+36 % of the edge for the surface, 50 % with its verge), so any two tiles join;
+a join example shows tiles meeting on the map. Which road a hex gets follows
+its land (`roadTypeFor`): boardwalks over marsh (and water), desert flagstones
+in the desert, snow roads in tundra and fjord, cobbles in the mountain
+climates and on rough ground, dirt tracks elsewhere.
+
+The game reads the sheets already: `npm run roads:import` checks every cell
+against the guide (the road must reach each connected edge at its middle and
+no other edge), clips each tile to its hex and writes one WebP atlas per sheet
+(`assets-runtime/sprites/final/roads/`, manifest `roads`). The adventure map
+draws one tile per road hex by its connections and land once all three sheets
+of every road type the map needs are imported; until then it keeps the
+code-drawn roads, so a map never mixes the two. Checked with synthetic sheets
+made from the guides (imported, rendered on a random map: the tiles join
+across hexes through bends and crossings, type changes on rough ground), then
+removed again; `import_roads.py --self-test` passed; unit tests keep the cell
+order equal in the guides and the game.
+
+### Briefs 14 and 15 in the game (owner delivery)
+
+**Copied and imported.** From the owner's delivery folder (read only) into the
+game, in the owner's folder and the cloud copy: 12 paintings into
+`assets-source/art/final/` and 74 sprites plus the throw strip's JSON sidecar
+into `assets-source/sprites/final/` — 87 files, none existing before, all 86
+PNG SHA-256 values equal to the delivery's `asset-manifest.json` on both sides.
+`npm run sprites:import -- --only siege.` imported 74 files with 0 problems;
+`npm run art:import` (no `--prune`) made 526 runtime files and kept the 180
+whose masters are not in the cloud copy. Result: **73 new siege stills, 1 new
+effect strip, 18 new art entries** (six cards, six full pictures, six siege
+battlefields); every other runtime file and manifest entry unchanged (hash
+comparison before and after). The importer's provenance now names Brief 15 for
+the throw strip.
+
+**Accepted resolution exception** (the owner's choice: "deliver native paintings
+and clearly document resolution shortfalls"). The six map paintings are native
+1672 × 941 (Six Thrones 1672 × 940), below the brief's 1920 × 1080; the six
+siege battlefields are native 1419 × 1108 (Celtic 1419 × 1109), below
+4096 × 3200, and look softer stretched over the field. None was enlarged; the
+cards (640 × 360) and full pictures are the importer's usual derivatives.
+Sprites meet their sizes.
+
+**Integration.**
+* *Skirmish pictures:* the list cards, the selected map's picture (now capped at
+  38 % of the screen height so the facts and the layout stay in view) and the
+  seat setup show the paintings; the backdrop uses the full picture.
+* *Sieges:* the defending town's pantheon chooses the wall, gate, tower and keep
+  pieces and the battlefield (the shared set stays the fallback). A pantheon's
+  own keep is drawn at the board's scale (the old shared keep was enlarged
+  1.6×), and a siege board keeps two hex widths east of the field so the keep
+  is whole on screen.
+* *Siege battlefields:* each painting's ditch and crossing were painted off the
+  brief's design positions (ditch up to 1.8 hexes east, crossing about a row and
+  a half above the gate). Measured per file and corrected by shifting the
+  painting on screen (`SIEGE_GROUND_SHIFT`): Greek −1.6 %/+3.75 %, Norse
+  −4.45 %/+4.4 %, Egyptian 0/+3.2 %, Japanese −2.45 %/+3.0 %, Celtic
+  −1.74 %/+3.25 %, Mesoamerican −3.0 %/+3.9 % of the painting's width/height.
+  The board never moves; the moat cells now lie on the painted ditch and the
+  gate row on its crossing. The painted town streets start farther east than
+  the brief asked (open ground just inside the wall).
+* *Catapult:* the still stands west of the field; at each shot it hides and the
+  throw strip plays once in its place (same frame, anchor and scale), the
+  game's stone leaves the cup at the strip's release frame (frame 5, 1/3 s at
+  12 fps) and flies on while the arm settles, then the still returns. On Low
+  graphics (simple effects) the still stays and only the stone flies.
+
+### Verification (commands actually run)
+
+| Command | Result |
+|---|---|
+| `npm run check` | boundaries OK, type-check clean, **401/401** unit tests in 44 files (new: road tile order and land, 3; siege battlefields per pantheon, 1; the art-count tests now include the six map pictures and six siege battlefields, and the effect-strip test the catapult's throw) |
+| `python3 tools/assets/roads/import_roads.py --self-test`, `python3 tools/assets/sprites/import_sprites.py --self-test` | both passed |
+| `npx playwright test` (whole suite, the final build, one worker) | **121/121 passed** in 1.1 h, among them the new `brief15.spec.ts` (5: every pantheon's level-3 and level-2 siege draws its own pieces and battlefield, the damage states, the catapult's throw filmed at a round start, the skirmish pictures in the list, detail and setup) |
+| `npm run build` + `npm run desktop:build` + (in `apps/desktop`) `npx electron-builder --config electron-builder.json --win nsis --x64 --linux dir --x64` | **built** `Pantheon-Realms-Setup-0.13.2-x64.exe`, 525,320,292 bytes, SHA-256 `9046057514a03d6b3e157f31c025e881719c2deefeb5f2f68b4b07b64e98efbd`; `app.asar` 419.6 MB, 3,047 entries (0.13.1 plus the 92 new runtime files; `dist/`, `package.json`, `renderer/` only) |
+| `7z x` of the installer's `app-64.7z` | its `app.asar` is byte-identical to `win-unpacked` |
+| `unshare -n` (no network) + packaged smoke (`tools/desktop-smoke.mjs`) | **DESKTOP SMOKE OK**: 1,293 sprites (1,219 before), 526 paintings (508), 643 interface images, 91 sounds, the map drawn with WebGL |
+
+App version **0.13.2**; content `content-0.8.0` (saves of 0.12.0–0.13.1 load).
+Unsigned; **not run on Windows** here. Not checked: a human play-test of a
+siege of every pantheon, the road brief's art (not painted yet), and the
+skirmish pictures on large displays.
+
+**Delivery.** The 87 delivered files were copied into the owner's folder from
+the delivery folder (hashes checked there); bundle 23 (`apply_sync.py`, not
+committed) then wrote 123 files (102 new) with 0 problems, the old versions of
+the 21 changed files measured there first. The 0.13.2 installer was copied to
+the owner's `installer\` folder in 26 parts and joined there (SHA-256 checked:
+`9046057…efbd`).
 
 ## Brief 13 icons in the game; app 0.13.1 (owner delivery, 2026-10-05)
 

@@ -2,6 +2,9 @@
 
 _Written 2026-10-05 for the six authored skirmish maps added that day (`packages/content/src/skirmish/maps/`). Until these pictures arrive, the skirmish screens show a drawn top-down overview of each map in their place. Nothing in the game code changes when they arrive: each file is found by its name._
 
+
+**Status (2026-10-05): delivered and in the game** — all six paintings, imported with `npm run art:import`. Accepted resolution exception: native 1672 × 941 (Six Thrones 1672 × 940), below the 1920 × 1080 asked; not enlarged (ASSET_PIPELINE.md §14).
+
 ## At a glance
 
 | # | Map | Empires | File to deliver | Layout guide (attach) |

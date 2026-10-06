@@ -51,7 +51,8 @@ const allLines = (): DialogueLine[] => {
 describe('story art runtime files', () => {
   it('every registered file exists with its registered size; paths stay inside assets-runtime', () => {
     const entries = Object.entries(manifest.assets).filter(([, a]) => STORY_KINDS.includes(a.kind));
-    expect(entries.length).toBe(36 + 6 + 6 + 11 + 40 + 40);
+    // Busts, covers, campaign cards, endings, mission pictures and their cards (incl. the six skirmish maps of Brief 14).
+    expect(entries.length).toBe(36 + 6 + 6 + 11 + 46 + 46);
     for (const [id, a] of entries) {
       expect(a.file.startsWith('art/'), `${id}: ${a.file}`).toBe(true);
       expect(a.file).not.toMatch(/\.\.|assets-source|\.codex|blannder|:\\|^\//i);

@@ -14,7 +14,7 @@
  * the pointer is found by inverting the board transform, so sprite sizes never
  * change what a click selects.
  */
-import { Container, FillPattern, Graphics, Matrix, Sprite, Texture } from 'pixi.js';
+import { Container, FillPattern, Graphics, Matrix, Rectangle, Sprite, Texture, type FillStyle } from 'pixi.js';
 import { TERRAIN_BY_CODE, TERRAIN_CODES, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
 import type { EngineHost, SceneController } from './engineHost';
@@ -28,7 +28,7 @@ import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, ty
 import { loadStrip, loadTexture, stripFrames } from './textures';
 import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
 import { FxPainter, type FxTarget } from './fx';
-import { PLANK_COLOR, marksAlong, offsetRun, roadRuns, roadStyleFor, smoothRun, type RoadPoint } from './roads';
+import { PLANK_COLOR, ROAD_PARTS, ROAD_STEP, marksAlong, offsetRun, roadRuns, roadStyleFor, roadTileSlot, roadTypeFor, smoothRun, type RoadPoint, type RoadType } from './roads';
 import type { FxLook } from './fxLooks';
 
 /**
@@ -171,6 +171,9 @@ interface SiteEntry {
 
 /** Ground types in a fixed order. */
 const GROUND_TYPES: readonly Terrain[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
+type GroundFill = FillStyle;
+/** The axial step to the neighbour across edge k of a pointy-top hex (corners k and k+1 of `hexPolygon`). */
+const NEIGHBOUR_STEP = ROAD_STEP;
 
 export class AdventureSceneController implements SceneController {
   readonly root = new Container();
@@ -181,8 +184,13 @@ export class AdventureSceneController implements SceneController {
   private readonly backdrop = new Container();
   private readonly terrain = new Graphics();
   /** The blended ground (one picture with soft transitions between ground types) once its textures are in. */
-  private readonly terrainBlend = new Container();
+  private readonly terrainBlend = new Graphics();
   private readonly roads = new Graphics();
+  /** Painted road tiles (GPT-6 Brief 16), when every road type the map needs is delivered. */
+  private readonly roadTiles = new Container();
+  private readonly roadSheets = new Map<string, Texture>();
+  private readonly roadFrames = new Map<string, Texture>();
+  private roadSheetsLoading = false;
   private readonly grid = new Graphics();
   private readonly reach = new Graphics();
   private readonly ground = new Container();
@@ -241,7 +249,7 @@ export class AdventureSceneController implements SceneController {
     this.painter = new FxPainter(this.effects, this.tweens, R, S, { layer: this.screenLayer, size: () => this.view });
     this.ground.addChild(this.selectRing, this.pathLayer, this.trailLayer, this.hover);
     this.objects.sortableChildren = true;
-    this.world.addChild(this.backdrop, this.terrain, this.terrainBlend, this.roads, this.grid, this.reach, this.ground, this.objects, this.fog, this.fogSoft, this.effects);
+    this.world.addChild(this.backdrop, this.terrain, this.terrainBlend, this.roads, this.roadTiles, this.grid, this.reach, this.ground, this.objects, this.fog, this.fogSoft, this.effects);
     this.hover.visible = false;
     this.selectRing.visible = false;
     this.view = { width: engine.width, height: engine.height };
@@ -341,14 +349,7 @@ export class AdventureSceneController implements SceneController {
     this.drawTerrain();
     this.buildBackdrop(map);
     this.buildDecor(map);
-    // Painted ground replaces the flat colours as each texture arrives; once all have
-    // arrived (or failed) the ground is blended into one picture with soft transitions.
-    let pending = this.terrainArts.size;
-    const settled = () => {
-      pending -= 1;
-      if (pending === 0 && !this.disposed && this.map === map) this.blendTerrain();
-    };
-    if (pending === 0) this.blendTerrain();
+    // Painted ground replaces the flat colours as each texture arrives.
     for (const [t, art] of this.terrainArts) {
       void loadTexture(art.url).then(
         (tex) => {
@@ -358,9 +359,8 @@ export class AdventureSceneController implements SceneController {
           tex.source.style.update();
           this.terrainTextures.set(t, tex);
           this.drawTerrain();
-          settled();
         },
-        () => settled(),
+        () => undefined,
       );
     }
     // Centre the camera on the map initially.
@@ -382,137 +382,82 @@ export class AdventureSceneController implements SceneController {
     return p;
   }
 
-  /**
-   * Soft ground (owner request 2026-10-05: a map that looks less like tiles). Each
-   * ground type is painted where it lies with a blurred edge, over the plains, into
-   * one picture at reduced resolution: colours and textures fade into each other
-   * across a third of a hex instead of meeting at hex edges. Only the map's outer
-   * edge stays a hex outline. Without a 2D canvas (tests) the tile drawing stays.
-   */
-  private blendTerrain(): void {
-    const map = this.map;
-    for (const c of this.terrainBlend.removeChildren()) c.destroy({ children: true, texture: true, textureSource: true });
-    this.terrain.visible = true;
-    if (!map || typeof document === 'undefined' || !graphicsProfile().softGround) return;
-    const b = this.mapBounds(map);
-    const k = Math.min(0.55, 4096 / Math.max(1, b.maxX - b.minX), 4096 / Math.max(1, b.maxY - b.minY));
-    const W = Math.max(1, Math.ceil((b.maxX - b.minX) * k));
-    const H = Math.max(1, Math.ceil((b.maxY - b.minY) * k));
-    const canvas = (w: number, h: number) => {
-      const c = document.createElement('canvas');
-      c.width = w;
-      c.height = h;
-      return c;
-    };
-    const out = canvas(W, H);
-    const ctx = out.getContext('2d');
-    if (!ctx) return;
-    const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
-    const cells = (want: (t: Terrain) => boolean, grow: number, c2: CanvasRenderingContext2D) => {
-      c2.beginPath();
-      for (let r = 0; r < map.height; r++)
-        for (let q = 0; q < map.width; q++) {
-          const t = this.terrainOf(map, r * map.width + q);
-          if (t === 'void' || !want(t)) continue;
-          const { x, y } = this.hexCenter({ q, r });
-          const poly = hexPolygon((x - b.minX) * k, (y - b.minY) * k, R * k * grow, S);
-          c2.moveTo(poly[0]!, poly[1]!);
-          for (let i = 2; i < poly.length; i += 2) c2.lineTo(poly[i]!, poly[i + 1]!);
-          c2.closePath();
-        }
-      c2.fill();
-    };
-    /** The fill of a ground type: its painting (mirrored tiles where it is not seamless) or its flat colour. */
-    const fillOf = (t: Terrain): string | CanvasPattern => {
-      const tex = this.terrainTextures.get(t);
-      const img = tex?.source.resource as CanvasImageSource | undefined;
-      if (tex && img) {
-        let tile: CanvasImageSource = img;
-        const mirror = this.terrainArts.get(t)?.wrap !== 'repeat';
-        if (mirror) {
-          const m = canvas(tex.width * 2, tex.height * 2);
-          const mc = m.getContext('2d')!;
-          for (const [sx, sy] of [[1, 1], [-1, 1], [1, -1], [-1, -1]] as const) {
-            mc.setTransform(sx, 0, 0, sy, sx < 0 ? tex.width * 2 : 0, sy < 0 ? tex.height * 2 : 0);
-            mc.drawImage(img, 0, 0, tex.width, tex.height);
-          }
-          tile = m;
-        }
-        const pat = ctx.createPattern(tile, 'repeat');
-        if (pat) {
-          const span = TERRAIN_TEXTURE_WORLD * R;
-          pat.setTransform(new DOMMatrix([(span / tex.width) * k, 0, 0, ((span * S) / tex.height) * k, -b.minX * k, -b.minY * k]));
-          return pat;
-        }
-      }
-      const base = biomeTerrainRgb(t, map.biome);
-      const c = (v: number) => Math.round(Math.max(0, Math.min(1, v)) * 255);
-      return `rgb(${c(base[0] * tint[0])}, ${c(base[1] * tint[1])}, ${c(base[2] * tint[2])})`;
-    };
-    // Plains under everything, then each ground type with a soft edge.
-    ctx.fillStyle = fillOf('plains');
-    cells(() => true, 1.02, ctx);
-    const blur = Math.max(2, HEX_W * k * 0.3);
-    for (const t of ['marsh', 'rough', 'forest', 'water', 'mountain'] as const) {
-      if (![...map.terrain].includes(TERRAIN_CODES[t])) continue;
-      const mask = canvas(W, H);
-      const mc = mask.getContext('2d')!;
-      mc.fillStyle = '#fff';
-      cells((x) => x === t, 1.08, mc);
-      const soft = canvas(W, H);
-      const sc = soft.getContext('2d')!;
-      sc.filter = `blur(${blur.toFixed(1)}px)`;
-      sc.drawImage(mask, 0, 0);
-      sc.filter = 'none';
-      // Twice over: a lone tile stays solid in its middle; only its rim fades.
-      sc.globalCompositeOperation = 'lighter';
-      sc.drawImage(soft, 0, 0);
-      const layer = canvas(W, H);
-      const lc = layer.getContext('2d')!;
-      lc.fillStyle = fillOf(t);
-      lc.fillRect(0, 0, W, H);
-      lc.globalCompositeOperation = 'destination-in';
-      lc.drawImage(soft, 0, 0);
-      ctx.drawImage(layer, 0, 0);
-    }
-    // The map's outer edge stays crisp (the black around the map shows no smear).
-    const edge = canvas(W, H);
-    const ec = edge.getContext('2d')!;
-    ec.fillStyle = '#fff';
-    cells(() => true, 1.0, ec);
-    ctx.globalCompositeOperation = 'destination-in';
-    ctx.drawImage(edge, 0, 0);
-    ctx.globalCompositeOperation = 'source-over';
-    const sprite = new Sprite(Texture.from(out));
-    sprite.position.set(b.minX, b.minY);
-    sprite.scale.set(1 / k);
-    this.terrainBlend.addChild(sprite);
-    this.terrain.visible = false;
-  }
-
   private drawTerrain(): void {
     const map = this.map;
     const g = this.terrain;
     g.clear();
+    this.terrainBlend.clear();
     if (!map) return;
     const tint = BIOME_TINT[map.biome] ?? [1, 1, 1];
     const patterns = new Map<Terrain, FillPattern | null>();
     for (const t of GROUND_TYPES) patterns.set(t, this.pattern(t));
+    const fillOf = (t: Terrain, alpha: number): GroundFill => {
+      const pat = patterns.get(t);
+      if (pat) return { fill: pat, color: rgbOf(0.97, 0.97, 0.97), alpha };
+      const base = biomeTerrainRgb(t, map.biome);
+      return { color: rgbOf(base[0] * tint[0], base[1] * tint[1], base[2] * tint[2]), alpha };
+    };
     for (let r = 0; r < map.height; r++) {
       for (let q = 0; q < map.width; q++) {
-        const i = r * map.width + q;
-        const t = this.terrainOf(map, i);
+        const t = this.terrainOf(map, r * map.width + q);
         if (t === 'void') continue;
         const { x, y } = this.hexCenter({ q, r });
-        const poly = hexPolygon(x, y, R * 1.012, S);
-        const pat = patterns.get(t);
         // One even tone per ground type: no per-tile shading, so no hex outlines show (owner request 2026-10-04).
-        if (pat) {
-          g.poly(poly).fill({ fill: pat, color: rgbOf(0.97, 0.97, 0.97) });
-        } else {
-          const base = biomeTerrainRgb(t, map.biome);
-          g.poly(poly).fill({ color: rgbOf(base[0] * tint[0], base[1] * tint[1], base[2] * tint[2]) });
+        g.poly(hexPolygon(x, y, R * 1.012, S)).fill(fillOf(t, 1));
+      }
+    }
+    if (graphicsProfile().softGround) this.featherGroundEdges(map, fillOf);
+  }
+
+  /**
+   * Slightly softened borders between grounds (owner request 2026-10-05: smooth
+   * the edges a little, not a blur). Where two different grounds meet, each
+   * reaches a sixth of a hex into its neighbour in three fading steps, so the
+   * hard hex edge becomes a short transition; textures stay sharp, and the
+   * map's outer edge and same-ground neighbours are untouched.
+   */
+  private featherGroundEdges(map: WorldMapDefinition, fillOf: (t: Terrain, alpha: number) => GroundFill): void {
+    const g = this.terrainBlend;
+    const corners = hexPolygon(0, 0, R * 1.012, S);
+    const STEPS: readonly [number, number, number][] = [
+      [0, 0.06, 0.5],
+      [0.06, 0.12, 0.3],
+      [0.12, 0.18, 0.13],
+    ];
+    // Edge k (corners k, k+1) faces the neighbour at NEIGHBOUR_STEP[k].
+    const byGround = new Map<Terrain, number[][]>();
+    for (let r = 0; r < map.height; r++) {
+      for (let q = 0; q < map.width; q++) {
+        const t = this.terrainOf(map, r * map.width + q);
+        if (t === 'void') continue;
+        const c = this.hexCenter({ q, r });
+        for (let k = 0; k < 6; k++) {
+          const [dq, dr] = NEIGHBOUR_STEP[k]!;
+          const nq = q + dq;
+          const nr = r + dr;
+          if (nq < 0 || nr < 0 || nq >= map.width || nr >= map.height) continue;
+          const nt = this.terrainOf(map, nr * map.width + nq);
+          if (nt === 'void' || nt === t) continue;
+          const n = this.hexCenter({ q: nq, r: nr });
+          const a = { x: c.x + corners[k * 2]!, y: c.y + corners[k * 2 + 1]! };
+          const b = { x: c.x + corners[((k + 1) % 6) * 2]!, y: c.y + corners[((k + 1) % 6) * 2 + 1]! };
+          // A band inside the neighbour: between the shared edge pulled towards the neighbour's centre by f0 and by f1.
+          const at = (p: { x: number; y: number }, f: number) => [p.x + (n.x - p.x) * f, p.y + (n.y - p.y) * f];
+          const list = byGround.get(t) ?? [];
+          for (const [f0, f1, alpha] of STEPS) list.push([...at(a, f0), ...at(b, f0), ...at(b, f1), ...at(a, f1), alpha]);
+          byGround.set(t, list);
         }
+      }
+    }
+    for (const [t, bands] of byGround) {
+      for (const [, , alpha] of STEPS) {
+        let any = false;
+        for (const band of bands) {
+          if (band[8] !== alpha) continue;
+          g.poly(band.slice(0, 8));
+          any = true;
+        }
+        if (any) g.fill(fillOf(t, alpha));
       }
     }
   }
@@ -662,9 +607,76 @@ export class AdventureSceneController implements SceneController {
    * (`roads.ts`): a dark verge, the road, its worn middle and ruts, flagstones or
    * cobbles — and planks where the road crosses a marsh.
    */
+  /**
+   * Painted roads (GPT-6 Brief 16): one tile per road hex, chosen by the hex's
+   * connections (63 patterns in three sheets per road type) and by its land
+   * (`roadTypeFor`). Used only when all three sheets of every road type the map
+   * needs are registered and loaded, so a map never mixes painted and drawn
+   * roads; until then (or without them) the roads are drawn by code. Returns
+   * whether the tiles were drawn.
+   */
+  private drawRoadTiles(map: WorldMapDefinition, explored: readonly number[]): boolean {
+    const sheets = spriteManifest().roads;
+    if (!sheets || map.roads.length === 0) return false;
+    const masks = new Map<number, number>();
+    for (const k of map.roads) {
+      const [a, b] = k.split('|');
+      const [aq, ar] = a!.split(',').map(Number);
+      const [bq, br] = b!.split(',').map(Number);
+      const ia = ar! * map.width + aq!;
+      const ib = br! * map.width + bq!;
+      if (explored[ia] !== 1 || explored[ib] !== 1) continue;
+      const da = NEIGHBOUR_STEP.findIndex(([dq, dr]) => dq === bq! - aq! && dr === br! - ar!);
+      const db = NEIGHBOUR_STEP.findIndex(([dq, dr]) => dq === aq! - bq! && dr === ar! - br!);
+      if (da < 0 || db < 0) continue;
+      masks.set(ia, (masks.get(ia) ?? 0) | (1 << da));
+      masks.set(ib, (masks.get(ib) ?? 0) | (1 << db));
+    }
+    const typeOf = (i: number): RoadType => roadTypeFor(map.biome, this.terrainOf(map, i));
+    const types = new Set<RoadType>();
+    for (const i of masks.keys()) types.add(typeOf(i));
+    const keys = [...types].flatMap((t) => ROAD_PARTS.map((p) => `${t}.${p}`));
+    if (keys.some((k) => !sheets[k])) return false;
+    const missing = keys.filter((k) => !this.roadSheets.has(k));
+    if (missing.length > 0) {
+      if (!this.roadSheetsLoading) {
+        this.roadSheetsLoading = true;
+        void Promise.allSettled(missing.map((k) => loadTexture(spriteUrl(sheets[k]!.file)).then((tex) => this.roadSheets.set(k, tex)))).then(() => {
+          this.roadSheetsLoading = false;
+          if (!this.disposed && this.map === map && this.explored && keys.every((k) => this.roadSheets.has(k))) this.drawRoads(map, this.explored);
+        });
+      }
+      return false;
+    }
+    for (const [i, mask] of masks) {
+      const slot = roadTileSlot(mask);
+      if (!slot) continue;
+      const key = `${typeOf(i)}.${slot.part}`;
+      const def = sheets[key]!;
+      const fk = `${key}#${slot.index}`;
+      let frame = this.roadFrames.get(fk);
+      if (!frame) {
+        const tex = this.roadSheets.get(key)!;
+        const x = (slot.index % def.cols) * def.cell;
+        const y = Math.floor(slot.index / def.cols) * def.cell;
+        frame = new Texture({ source: tex.source, frame: new Rectangle(x, y, def.cell, def.cell) });
+        this.roadFrames.set(fk, frame);
+      }
+      const sp = new Sprite(frame);
+      sp.anchor.set(0.5);
+      const { x, y } = this.hexCenter({ q: i % map.width, r: Math.floor(i / map.width) });
+      sp.position.set(x, y);
+      sp.scale.set(HEX_W / def.hexWidth);
+      this.roadTiles.addChild(sp);
+    }
+    return true;
+  }
+
   private drawRoads(map: WorldMapDefinition, explored: readonly number[]): void {
     const g = this.roads;
     g.clear();
+    for (const c of this.roadTiles.removeChildren()) c.destroy();
+    if (this.drawRoadTiles(map, explored)) return;
     const edges: [string, string][] = [];
     for (const k of map.roads) {
       const [a, b] = k.split('|');
