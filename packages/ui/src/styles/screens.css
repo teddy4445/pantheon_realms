@@ -48,7 +48,6 @@ code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.78rem
 .screen-header__titles { min-width: 0; }
 .screen-header__title { font-size: 1.35rem; font-weight: 700; line-height: 1.1; color: var(--gold-200); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .screen-header__subtitle { font-size: 0.82rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.screen-header__code { font-family: var(--font-ui); font-size: 0.6rem; color: var(--text-faint); border: 1px solid rgba(194, 154, 82, 0.25); border-radius: 3px; padding: 0 0.3rem; }
 .screen-header__right { margin-left: auto; display: flex; align-items: center; gap: 0.8rem; }
 .screen-header .resbar { padding: 0; }
 /* The wallet always sits in the middle of the screen (as on the adventure map). */
@@ -230,7 +229,8 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .adv-top .resbar { margin: 0 auto; }
 .adv-left, .adv-right { position: absolute; top: calc(var(--topbar-h) + 0.9rem); bottom: calc(var(--bottombar-h) + 0.8rem); display: flex; flex-direction: column; gap: 0.6rem; z-index: 3; pointer-events: none; }
 .adv-left > *, .adv-right > * { pointer-events: auto; }
-.adv-left { left: 0.8rem; width: 12.5rem; bottom: calc(min(24rem, 23vw) + 2.2rem); overflow-y: auto; }
+/* The hero panel and End Day sit 24 px lower than the other map panels (owner request 2026-10-07). */
+.adv-left { left: 0.8rem; width: 12.5rem; top: calc(var(--topbar-h) + 0.9rem + 24px); bottom: calc(min(24rem, 23vw) + 2.2rem); overflow-y: auto; }
 .adv-right { right: 0.8rem; width: 21rem; }
 .adv-list .panel__body { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.5rem; }
 .hero-tab { display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem; background: var(--plate-raised); border: 1px solid rgba(194, 154, 82, 0.4); border-radius: var(--radius-s); box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.7); cursor: var(--cur-pointer, pointer); }
@@ -273,11 +273,11 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .adv-bottom__status { position: absolute; left: 50%; bottom: calc(100% + 0.35rem); transform: translateX(-50%); white-space: nowrap; text-align: center; text-shadow: 0 1px 3px #000, 0 0 8px rgba(0, 0, 0, 0.9); }
 .adv-bottom__status:empty { display: none; }
 /* End Day sits at the top centre, just under the resources (owner request 2026-10-04). */
-.adv-endday { position: absolute; top: calc(var(--topbar-h) + 0.9rem); left: 50%; transform: translateX(-50%); z-index: 4; }
+.adv-endday { position: absolute; top: calc(var(--topbar-h) + 0.9rem + 24px); left: 50%; transform: translateX(-50%); z-index: 4; }
 .adv-endday .btn { min-width: 11rem; }
 .adv-tile { position: relative; }
 .adv-tile__unpin { position: absolute; top: 0.3rem; right: 0.3rem; z-index: 1; }
-.turn-banner { position: absolute; top: calc(var(--topbar-h) + 4.4rem); left: 50%; transform: translateX(-50%); padding: 0.5rem 1.3rem; z-index: 5; font-family: var(--font-display); font-weight: 600; color: var(--gold-200); display: flex; align-items: center; gap: 0.6rem; }
+.turn-banner { position: absolute; top: calc(var(--topbar-h) + 4.4rem + 24px); left: 50%; transform: translateX(-50%); padding: 0.5rem 1.3rem; z-index: 5; font-family: var(--font-display); font-weight: 600; color: var(--gold-200); display: flex; align-items: center; gap: 0.6rem; }
 .day-banner { position: absolute; top: 34%; left: 50%; transform: translate(-50%, -50%); z-index: 6; pointer-events: none; font-family: var(--font-display); font-weight: 700; font-size: 2.2rem; letter-spacing: 0.08em; color: var(--gold-200); text-shadow: 0 3px 12px #000, 0 0 30px rgba(234, 208, 143, 0.35); animation: day-banner 2.2s ease-out forwards; white-space: nowrap; }
 @keyframes day-banner { 0% { opacity: 0; transform: translate(-50%, -40%); } 15% { opacity: 1; transform: translate(-50%, -50%); } 80% { opacity: 1; } 100% { opacity: 0; } }
 
@@ -397,6 +397,10 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 .modal__actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 0.8rem; }
 .hire-list { display: flex; flex-direction: column; gap: 0.6rem; }
 .hire-card { display: flex; gap: 0.8rem; padding: 0.7rem; }
+.hire-card > div:nth-child(2) { flex: 1; min-width: 0; }
+/* Price and Hire on the right of the row (owner request 2026-10-07). */
+.hire-card__buy { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.45rem; padding-left: 0.8rem; border-left: 1px solid rgba(194, 154, 82, 0.25); }
+.hire-card__buy .btn { min-width: 5.5rem; }
 .hire-card__name { font-family: var(--font-display); color: var(--gold-200); font-size: 1.05rem; }
 /* Hero specialty line (Tavern, hero screen, Encyclopedia; proposed 2026-10-02). */
 .specialty { display: flex; align-items: center; gap: 0.55rem; margin: 0.35rem 0; padding: 0.3rem 0.45rem; border: 1px solid rgba(194, 154, 82, 0.35); border-radius: var(--radius-s); background: rgba(13, 26, 44, 0.65); }
@@ -737,15 +741,10 @@ button.god-card { cursor: var(--cur-pointer, pointer); }
 
 /* Authored skirmish maps (2026-10-05): list cards, the detail panel and S23 seat setup. */
 .map-preview { display: block; border-radius: var(--radius-s); box-shadow: inset 0 0 0 1px rgba(194, 154, 82, 0.35); image-rendering: auto; }
-.map-detail__art.is-empty { display: none; }
-.map-detail__art { max-width: min(46rem, calc(38vh * 16 / 9)); margin: 0 auto 0.7rem; border-radius: var(--radius-s); overflow: hidden; box-shadow: 0 0 0 1px rgba(194, 154, 82, 0.45), 0 6px 18px rgba(0, 0, 0, 0.45); }
-.map-detail__split { display: grid; grid-template-columns: minmax(16rem, 2fr) minmax(16rem, 3fr); gap: 1rem 1.4rem; align-items: start; margin: 0.6rem 0; }
 .map-detail__facts { display: grid; gap: 0.35rem; margin: 0.4rem 0; }
 .map-detail__fact { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.6rem; align-items: baseline; }
 .map-detail__fact dt { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-200); }
 .map-detail__fact dd { margin: 0; font-size: 0.92rem; color: var(--text-strong); }
-.map-detail__layout { margin: 0; display: flex; flex-direction: column; gap: 0.3rem; }
-@media (max-width: 1300px) { .map-detail__split { grid-template-columns: 1fr; } }
 .map-setup { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(20rem, 30rem) 1fr; gap: 1rem; padding: 0 1.6rem 1.2rem; }
 .map-setup__map, .map-setup__seats { min-height: 0; display: flex; flex-direction: column; }
 .map-setup__map .panel__body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 0.6rem; }
@@ -1072,6 +1071,9 @@ button.tome-spell:disabled { cursor: var(--cur-default, default); }
 .god-ico--glyph { color: var(--gold-300); }
 .god-row--price .god-tok { border-color: rgba(143, 179, 214, 0.35); }
 .god-row--price.is-unmet .god-tok:not(:first-child), .god-tok.is-unmet { border-color: var(--danger); box-shadow: inset 0 0 0 1px rgba(192, 86, 75, 0.35); }
+/* The Favor price is just its symbol and number, without the tag (owner request 2026-10-07); short of Favor → the number turns red. */
+.god-row .god-tok.god-tok--favor { border: none; background: none; box-shadow: none; padding: 0.12rem 0.15rem; }
+.god-tok--favor.is-unmet .num { color: var(--danger); }
 .god-chip { display: inline-flex; align-items: center; gap: 0.25rem; }
 .god-chip .god-ico { width: 1.1rem; height: 1.1rem; }
 .god-sentences { text-align: left; align-self: stretch; }
@@ -1161,3 +1163,43 @@ button.tome-spell:disabled { cursor: var(--cur-default, default); }
 .editor-library__row { display: flex; align-items: center; gap: 0.5rem; }
 .editor-library__name { flex: 1; font-family: var(--font-display); color: var(--gold-200); }
 @media (max-width: 1300px) { .map-editor__body { grid-template-columns: 13rem minmax(0, 1fr) 18rem; } }
+
+/* The gods' gifts at levels 10 and 15 (existing god portraits and stat icons only). */
+.levelup-gift-hint { margin: -0.2rem 0 0.5rem; }
+.gift-grid { margin-bottom: 0.6rem; }
+.gift-card.is-selected { border-color: var(--gold-300); box-shadow: var(--shadow-panel), var(--glow-gold-strong); }
+.gift-card.is-selected .offer-card__kind::after { content: ' ✓'; color: var(--gold-300); }
+.offer-card:disabled { cursor: default; opacity: 0.55; transform: none; box-shadow: none; }
+.gift-badge { position: relative; display: inline-block; flex: none; }
+.gift-badge__icon { position: absolute; right: -0.15em; bottom: -0.15em; width: 42%; height: 42%; border-radius: 50%; display: grid; place-items: center; background: var(--panel-deep, #1d1810); border: 1px solid var(--gold-400); color: var(--gold-200); padding: 6%; box-sizing: border-box; }
+.gift-badge__icon svg { width: 100%; height: 100%; }
+.hero-gifts { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.35rem; }
+
+/* Quick battle in the encounter panel (2026-10-07). */
+.quick-battle { display: flex; gap: 0.7rem; align-items: flex-start; margin: 0.7rem 0 0.2rem; padding: 0.55rem 0.8rem; border: 1px solid var(--line, rgba(234, 208, 143, 0.25)); border-radius: 0.5rem; background: rgba(0, 0, 0, 0.18); }
+.quick-battle.is-win { border-color: rgba(120, 200, 140, 0.45); }
+.quick-battle.is-loss { border-color: rgba(220, 110, 90, 0.55); }
+.quick-battle__icon { width: 1.7rem; height: 1.7rem; flex: none; color: var(--gold-300); margin-top: 0.1rem; }
+.quick-battle__body { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.quick-battle__head { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+.quick-battle__label { font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); }
+.quick-battle__losses { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.quick-battle__loss { display: inline-flex; align-items: center; gap: 0.3rem; }
+
+/* Siege: aiming the Catapult and combining defenders (2026-10-07). */
+button.siege-status__item { border: 1px dashed rgba(234, 208, 143, 0.5); cursor: var(--cur-pointer, pointer); font: inherit; font-family: var(--font-ui); font-size: 0.62rem; }
+button.siege-status__item:hover, button.siege-status__item:focus-visible { background: rgba(234, 208, 143, 0.28); }
+.siege-status__item.is-aim { outline: 1px solid var(--gold-300); background: rgba(234, 208, 143, 0.3); display: inline-flex; align-items: center; gap: 0.15rem; }
+.siege-status__aim { width: 0.8rem; height: 0.8rem; }
+.defender-merge { align-items: center; margin-top: 0.5rem; }
+
+/* The rivals' turns in a few lines (2026-10-07). */
+.adv-rivals .panel__title { font-size: 1rem; }
+.adv-rivals__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.86rem; line-height: 1.35; max-height: 11rem; overflow: auto; }
+.adv-rivals__list li { display: flex; gap: 0.45rem; align-items: baseline; }
+.adv-rivals__list li.is-mine strong { color: var(--gold-200); }
+.adv-rivals__list .dot { flex: none; width: 0.6rem; height: 0.6rem; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.5); transform: translateY(0.05rem); }
+
+/* Map editor: symmetry brush and the generate dialog (2026-10-07). */
+.map-editor__symmetry { display: flex; flex-direction: column; gap: 0.3rem; margin: 0.5rem 0 0.2rem; }
+.map-editor__form { display: grid; grid-template-columns: 8rem 1fr; gap: 0.5rem 0.8rem; align-items: center; margin: 0.6rem 0; }

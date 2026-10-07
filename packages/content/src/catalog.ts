@@ -2,6 +2,7 @@
  * ContentLoader + ContentRegistry: assembles all definitions into one indexed,
  * frozen ContentCatalog and validates it.
  */
+import { buildGodPerks } from './common/godPerks';
 import { PR_02_CANDIDATE, deepFreeze, type ContentCatalog, type VersionBundle } from '@pr/rules';
 import { ABILITIES } from './common/abilities';
 import { ARTIFACTS, HERO_CLASSES, SKILLS, SPELLS } from './common/heroesMagic';
@@ -68,6 +69,7 @@ export function buildCatalog(): ContentCatalog {
   const arc = buildArcCampaigns((id) => creatureIndex[id], (id) => creatureIndex[id]?.familyId ?? id);
   const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families], 'family');
   const spellIndex = index(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS]), 'spell');
+  const godList = [...GREEK_GODS, ...NORSE_GODS, ...kits.flatMap((k) => k.gods)];
   const heroList = withSpecialties([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes), ...ARC_CAMPAIGN_HEROES], { families: familyIndex, creatures: creatureIndex, spells: spellIndex });
   const catalog: ContentCatalog = {
     versions: VERSIONS,
@@ -79,7 +81,8 @@ export function buildCatalog(): ContentCatalog {
     lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE], 'lore'),
     buildings: index([...GREEK_BUILDINGS, ...NORSE_BUILDINGS, ...kits.flatMap((k) => k.buildings)], 'building'),
     townArchetypes: index([GREEK_TOWN, NORSE_TOWN, ...kits.map((k) => k.town)], 'town archetype'),
-    gods: index([...GREEK_GODS, ...NORSE_GODS, ...kits.flatMap((k) => k.gods)], 'god'),
+    gods: index(godList, 'god'),
+    godPerks: index(buildGodPerks(godList), 'god perk'),
     heroes: index(heroList, 'hero'),
     heroClasses: index([...HERO_CLASSES, ...NORSE_HERO_CLASSES, ...kits.flatMap((k) => k.classes)], 'hero class'),
     skills: index([...SKILLS, ...EXPANDED_SKILLS], 'skill'),

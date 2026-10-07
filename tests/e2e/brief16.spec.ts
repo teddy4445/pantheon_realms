@@ -20,6 +20,7 @@ const STEP: [number, number][] = [[1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1], [1,
 interface GroundDebug {
   edges: string;
   roadTiles: number;
+  roadTileTypes?: Record<string, string>;
 }
 const ground = (page: Page) => page.evaluate(() => (globalThis as unknown as { __prGround: () => GroundDebug | null }).__prGround());
 const project = (page: Page, q: number, r: number) => page.evaluate(([a, b]) => (globalThis as unknown as { __prProject: (k: string, a: number, b: number) => { x: number; y: number } | null }).__prProject('adventure', a!, b!), [q, r]);
@@ -146,28 +147,70 @@ for (const [missionId, type] of [
   });
 }
 
-test('mixed: a road crossing marsh and rough ground in a green climate turns into boardwalk and cobbles between dirt', async ({ page }) => {
+/** Road stretches between junctions and dead ends (each a list of `q,r` keys, ends included). */
+function stretches(roads: readonly string[]): string[][] {
+  const adj = new Map<string, string[]>();
+  for (const e of roads) {
+    const [a, b] = e.split('|') as [string, string];
+    (adj.get(a) ?? adj.set(a, []).get(a)!).push(b);
+    (adj.get(b) ?? adj.set(b, []).get(b)!).push(a);
+  }
+  const seen = new Set<string>();
+  const out: string[][] = [];
+  for (const [start, ns] of [...adj.entries()].sort()) {
+    if (ns.length === 2) continue;
+    for (const n of ns) {
+      if (seen.has(`${start}|${n}`)) continue;
+      const run = [start, n];
+      seen.add(`${start}|${n}`).add(`${n}|${start}`);
+      let prev = start;
+      let cur = n;
+      while (adj.get(cur)!.length === 2) {
+        const nxt = adj.get(cur)!.find((x) => x !== prev)!;
+        seen.add(`${cur}|${nxt}`).add(`${nxt}|${cur}`);
+        run.push(nxt);
+        prev = cur;
+        cur = nxt;
+      }
+      out.push(run);
+    }
+  }
+  return out;
+}
+
+test('mixed: one material per stretch — a mostly rough stretch is cobbled, a lone rough hex stays dirt, marsh is boardwalk (2026-10-07)', async ({ page }) => {
   test.setTimeout(300_000);
   const fetched: string[] = [];
   page.on('response', (r) => r.url().includes('/sprites/final/roads/') && r.status() < 400 && fetched.push(r.url().split('/').pop()!));
   const d = GameDriver.mission('skirmish_twin_harbors', { matchId: 'e2e-b16-mixed' });
   const map = d.state.world.map;
   const mask = roadMasks(d);
-  // Six straight road hexes (not necessarily one stretch): three become marsh, three rough ground.
-  const straight = [...mask.entries()].filter(([, m]) => STRAIGHT.includes(m)).map(([k]) => k);
-  const run = straight.slice(4, 10);
-  expect(run.length).toBe(6);
+  const long = stretches(map.roads)
+    .filter((r) => r.length >= 6)
+    .sort((a, b) => b.length - a.length || (a[0]! < b[0]! ? -1 : 1));
+  expect(long.length).toBeGreaterThanOrEqual(3);
+  const [rocky, wet, lone] = long as [string[], string[], string[]];
+  const interior = (r: string[]) => r.slice(1, -1);
   const terrain = [...map.terrain];
-  run.forEach((k, i) => {
+  const set = (k: string, code: string) => {
     const [q, r] = k.split(',').map(Number) as [number, number];
-    terrain[r * map.width + q] = i < 3 ? 's' : 'r';
-  });
+    terrain[r * map.width + q] = code;
+  };
+  interior(rocky).forEach((k) => set(k, 'r')); // a whole stretch over rough ground
+  interior(wet).slice(1, 3).forEach((k) => set(k, 's')); // two marsh hexes on another
+  const loneRough = interior(lone)[1]!;
+  set(loneRough, 'r'); // one rough hex on a third
   (map as { terrain: string }).terrain = terrain.join('');
   await load(page, d, 'mixed');
   expect(await tilesDrawn(page, mask.size)).toBe(mask.size);
   const kinds = new Set(fetched.map((f) => f.split('.')[1]));
   expect(['boardwalk', 'cobble', 'dirt'].every((k) => kinds.has(k))).toBe(true);
+  const types = (await ground(page))!.roadTileTypes!;
+  for (const k of interior(rocky)) expect(types[k], `rough stretch ${k}`).toBe('cobble');
+  for (const k of interior(wet).slice(1, 3)) expect(types[k], `marsh ${k}`).toBe('boardwalk');
+  for (const k of [interior(wet)[0]!, interior(wet)[3] ?? interior(wet)[0]!]) expect(types[k], `beside the marsh ${k}`).toBe('dirt');
+  expect(types[loneRough], 'a lone rough hex keeps the stretch’s dirt').toBe('dirt');
   await page.screenshot({ path: 'test-results/b16-mixed-play-zoom.png' });
-  const [q, r] = run[2]!.split(',').map(Number) as [number, number];
+  const [q, r] = interior(rocky)[1]!.split(',').map(Number) as [number, number];
   await closeUp(page, q, r, 'test-results/b16-mixed-close.png');
 });

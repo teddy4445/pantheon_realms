@@ -23,12 +23,25 @@ export function interventionsEnabled(state: MatchState): boolean {
   return state.scenario.features?.interventions === true;
 }
 
-/** Interventions this player's pantheon offers (both contexts), in stable order. */
+/** A miracle as a pantheon knows it: its own god's name for a shared miracle (same effect, cost and art). */
+export function interventionForPantheon(def: InterventionDefinition, pantheonId: string | null | undefined): InterventionDefinition {
+  const name = pantheonId ? def.names?.[pantheonId] : undefined;
+  return name && name !== def.name ? { ...def, name } : def;
+}
+
+/** One intervention by ID, named as the player's pantheon names it (null when unknown). */
+export function interventionOf(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, interventionId: string): InterventionDefinition | null {
+  const def = catalog.interventions?.[interventionId];
+  return def ? interventionForPantheon(def, state.players[playerId]?.pantheonId) : null;
+}
+
+/** Interventions this player's pantheon offers (both contexts), in stable order, under the pantheon's own names. */
 export function interventionsFor(catalog: ContentCatalog, state: MatchState, playerId: PlayerId): InterventionDefinition[] {
   const player = state.players[playerId];
   if (!player || !interventionsEnabled(state)) return [];
   return Object.values(catalog.interventions ?? {})
     .filter((d) => !d.pantheonIds || d.pantheonIds.includes(player.pantheonId))
+    .map((d) => interventionForPantheon(d, player.pantheonId))
     .sort((a, b) => (a.context === b.context ? (a.favorCost - b.favorCost || (a.id < b.id ? -1 : 1)) : a.context === 'adventure' ? -1 : 1));
 }
 
@@ -52,13 +65,13 @@ export function quoteIntervention(
   interventionId: string,
   target: { townId?: TownId | null; stackId?: BattleStackId | null } = {},
 ): InterventionQuote {
-  const def = catalog.interventions?.[interventionId] ?? null;
+  const def = interventionOf(catalog, state, playerId, interventionId);
   const fail = (code: RejectionCode, reason: string): InterventionQuote => ({ legal: false, code, reason, def });
   const player = state.players[playerId];
   if (!def || !player) return fail('not_found', 'Unknown intervention');
   if (!interventionsEnabled(state)) return fail('not_in_scope', 'Divine interventions are not part of this scenario');
   if (!interventionsFor(catalog, state, playerId).some((d) => d.id === def.id)) return fail('not_in_scope', `${def.name} is not offered to your pantheon`);
-  if (interventionUsedThisWeek(catalog, state, playerId)) return fail('already_done', 'The gods answer once per week — wait for the next week');
+  if (interventionUsedThisWeek(catalog, state, playerId)) return fail('already_done', 'The gods answer once per week');
   if (player.wallet.favor < def.favorCost) return fail('insufficient_resources', `Requires ${def.favorCost} Favor`);
   const battle = state.battle;
   if (def.context === 'battle') {

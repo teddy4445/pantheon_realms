@@ -98,9 +98,14 @@ export function specialtyEffects(catalog: ContentCatalog, state: Pick<MatchState
   return out;
 }
 
-/** Everything the hero itself carries: artifacts, set bonuses, skill effects and (with `state`) its specialty. */
+/** The effects of the gods' gifts a hero took at levels 10 and 15 (owner request 2026-10-07). */
+export function perkEffects(catalog: ContentCatalog, hero: Pick<HeroState, 'perks'>): EffectDefinition[] {
+  return (hero.perks ?? []).flatMap((id) => catalog.godPerks?.[id]?.effects ?? []);
+}
+
+/** Everything the hero itself carries: artifacts, set bonuses, skill effects, the gods' gifts and (with `state`) its specialty. */
 export function heroEffects(catalog: ContentCatalog, hero: HeroState, state?: Pick<MatchState, 'scenario'>): EffectDefinition[] {
-  return [...artifactEffects(catalog, hero), ...skillEffects(catalog, hero), ...(state ? specialtyEffects(catalog, state, hero) : [])];
+  return [...artifactEffects(catalog, hero), ...skillEffects(catalog, hero), ...perkEffects(catalog, hero), ...(state ? specialtyEffects(catalog, state, hero) : [])];
 }
 
 /** Player-wide effects reaching this hero: committed gods and the pantheon signature. */
@@ -110,7 +115,8 @@ export function divineEffects(catalog: ContentCatalog, state: MatchState, hero: 
 
 export function effectiveAttributes(catalog: ContentCatalog, state: MatchState, hero: HeroState): EffectiveAttributes {
   const art = artifactEffects(catalog, hero);
-  const div = divineEffects(catalog, state, hero);
+  // The gods' gifts count with the divine part.
+  const div = [...divineEffects(catalog, state, hero), ...perkEffects(catalog, hero)];
   const sk = skillEffects(catalog, hero);
   const sum = (effects: EffectDefinition[], attr: HeroAttribute) =>
     effects.reduce((n, e) => (e.type === 'commander_attribute' && e.attribute === attr ? n + e.amount : n), 0);
@@ -157,6 +163,22 @@ export function skillValue(catalog: ContentCatalog, hero: { skills: readonly { s
 
 export function maxMana(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {
   return catalog.rulesProfile.manaPerKnowledge * effectiveAttributes(catalog, state, hero).knowledge.total;
+}
+
+/**
+ * Morale from an army's make-up: +1 when every creature is of one pantheon (no
+ * neutrals), −1 for each pantheon beyond the first (at most −2; neutral creatures
+ * never count; owner request 2026-10-07), else 0.
+ */
+export function armyCompositionMorale(catalog: ContentCatalog, creatureIds: readonly string[]): { value: number; pantheons: string[]; neutral: boolean } {
+  const ids = creatureIds.filter((id) => !!catalog.creatures[id]);
+  const pantheons = [...new Set(ids.map((id) => catalog.creatures[id]!.pantheonId).filter((p): p is string => !!p))].sort();
+  const neutral = ids.some((id) => !catalog.creatures[id]!.pantheonId);
+  const c = catalog.rulesProfile.combat;
+  if (ids.length === 0) return { value: 0, pantheons, neutral };
+  if (pantheons.length === 1 && !neutral) return { value: c.sameFactionMorale, pantheons, neutral };
+  if (pantheons.length >= 2) return { value: -Math.min(c.mixedPantheonMoraleCap, (pantheons.length - 1) * c.mixedPantheonMorale), pantheons, neutral };
+  return { value: 0, pantheons, neutral };
 }
 
 export function heroMoraleBonus(catalog: ContentCatalog, state: MatchState, hero: HeroState): number {

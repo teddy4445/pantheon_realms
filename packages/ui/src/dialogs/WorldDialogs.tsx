@@ -22,6 +22,7 @@ import {
   resources,
   type InterventionDefinition,
   type RewardDefinition,
+  interventionOf,
 } from '@pr/rules';
 import { useStore } from '../app/context';
 import { MiracleBook, type MiracleOption } from '../components/miraclebook';
@@ -342,12 +343,11 @@ function InterventionCard({ def, onInvoke, quote }: { def: InterventionDefinitio
       <div className="row gap">
         <strong>{def.name}</strong>
         <span className="grow" />
-        <Chip tone="info">
-          <span className="favor-cost" title={`${def.favorCost} Favor`} aria-label={`${def.favorCost} Favor`}>
-            {def.favorCost}
-            <Icon name="favor" className="inline-icon" />
-          </span>
-        </Chip>
+        {/* Just the Favor symbol and the number, no tag (owner request 2026-10-07). */}
+        <span className="favor-cost favor-cost--plain" title={`${def.favorCost} Favor`} aria-label={`${def.favorCost} Favor`}>
+          <Icon name="favor" className="inline-icon" />
+          {def.favorCost}
+        </span>
         <Chip>{def.context === 'battle' ? 'In battle' : 'On the map'}</Chip>
       </div>
       <div className="small">{def.summary}</div>
@@ -437,7 +437,7 @@ export function InterventionsDialog() {
       idPrefix="invoke-"
       onClose={() => store.closeOverlay()}
       onInvoke={(id) => {
-        const d = catalog.interventions?.[id];
+        const d = interventionOf(catalog, state, playerId, id);
         if (!d) return;
         if (!store.dispatch({ kind: 'InvokeIntervention', interventionId: id, ...(d.target === 'own_town' ? { townId } : {}) })) {
           store.toast(`${d.name}: the gods answer.`, 'success');

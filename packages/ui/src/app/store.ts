@@ -6,7 +6,8 @@
  * presentation queue. Does NOT own game truth: all game data is read from
  * session.state, and all changes go through session.dispatch (commands).
  */
-import { KEY_COLOR_LABEL, campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type Rejection } from '@pr/rules';
+import { KEY_COLOR_LABEL, campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type MatchState, type Rejection } from '@pr/rules';
+import { approachNotes, heroesInView, rivalNotes, summarizeRivalNotes, type RivalNote, type RivalSummaryLine } from './rivalSummary';
 import { clearBattleLogs, recordBattleEvents } from './battleLog';
 import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
 import type { PlatformServices } from '@pr/platform';
@@ -225,6 +226,11 @@ export class AppStore {
   private hintsShown = new Set<string>();
   /** Hot-seat: the human seat whose view was last handed over. */
   private shownViewer: string | null = null;
+  /** The rivals' turns in a few lines for a human seat, shown when its turn begins (2026-10-07). */
+  rivalSummary: { viewerId: string; day: number; lines: RivalSummaryLine[] } | null = null;
+  /** Per human seat: notes gathered since that seat ended its turn, and the enemy heroes it saw then. */
+  private rivalLog = new Map<string, { notes: RivalNote[]; seen: string[] }>();
+  private prevState: MatchState | null = null;
   /** Result of the last high-score recording (summary screen). */
   lastRecord: { table: 'campaign' | 'skirmish'; rank: number | null; score: number } | null = null;
   private presenters = new Set<Presenter>();
@@ -353,8 +359,16 @@ export class AppStore {
     this.lastRecord = null;
     this.shownViewer = session.state.players[session.state.activePlayerId]?.controller === 'human' ? session.state.activePlayerId : null;
     clearBattleLogs();
+    this.rivalSummary = null;
+    this.rivalLog.clear();
+    this.prevState = session.state;
     this.unsubSession = session.subscribe((u) => {
       if (u.events.length > 0) recordBattleEvents(this.catalog, u.state, u.events, this.prefs.combatLogDetail);
+      if (u.source === 'start' || u.source === 'load') {
+        this.rivalSummary = null;
+        this.rivalLog.clear();
+      } else if (u.events.length > 0) this.noteRivalTurns(session, this.prevState ?? u.state, u.state, u.events);
+      this.prevState = u.state;
       if (u.events.length > 0) this.prepare(u.events);
       this.notify();
       if (u.events.length > 0) this.present(u.events, u.source);
@@ -684,6 +698,54 @@ export class AppStore {
     return null;
   }
 
+  /**
+   * Gather the rivals' turns for each human seat between its End Day and its
+   * next turn; at that turn's start the summary lines replace the last ones.
+   */
+  private noteRivalTurns(session: GameSession, before: MatchState, after: MatchState, events: readonly GameEvent[]): void {
+    try {
+      for (const viewer of session.humanSeats) {
+        const ended = events.findIndex((e) => e.kind === 'TurnEnded' && e.playerId === viewer);
+        const started = events.findIndex((e) => e.kind === 'TurnStarted' && e.playerId === viewer);
+        if (ended >= 0) {
+          if (this.rivalSummary?.viewerId === viewer) this.rivalSummary = null;
+          this.rivalLog.set(viewer, { notes: [], seen: heroesInView(this.catalog, before, viewer) });
+        }
+        const log = this.rivalLog.get(viewer);
+        if (!log) continue;
+        const from = ended >= 0 ? ended + 1 : 0;
+        const to = started > from ? started : events.length;
+        const slice = events.slice(from, to);
+        if (slice.length > 0) log.notes.push(...rivalNotes(this.catalog, before, after, slice, viewer));
+        if (started >= 0 && started >= from) {
+          const lines = summarizeRivalNotes(after, [...approachNotes(this.catalog, after, viewer, log.seen), ...log.notes]);
+          this.rivalLog.delete(viewer);
+          this.rivalSummary = lines.length > 0 ? { viewerId: viewer, day: after.day, lines } : null;
+        }
+      }
+    } catch {
+      // A summary is a convenience: never let it break the game loop.
+      this.rivalLog.clear();
+    }
+  }
+
+  dismissRivalSummary(): void {
+    this.rivalSummary = null;
+    this.notify();
+  }
+
+  /** Quick battle from the encounter panel: the battle is fought without the battlefield, then the result screen opens. */
+  quickBattle(payload: CommandPayload): Rejection | null {
+    const session = this.session;
+    if (!session) return { code: 'invalid_command', message: 'No game in progress' };
+    const res = session.quickBattle(payload);
+    if (!res.ok) {
+      this.toast(res.rejection.message, 'error');
+      return res.rejection;
+    }
+    return null;
+  }
+
   // ------------------------------------------------------------ routing after events
 
   private routeAfterUpdate(events: readonly GameEvent[]): void {
@@ -691,7 +753,8 @@ export class AppStore {
     if (!s) return;
     const session = this.session;
     this.announceSiteEvents(events);
-    if (events.some((e) => e.kind === 'BattleStarted')) {
+    // A quick battle starts and ends in one batch: straight to the result.
+    if (events.some((e) => e.kind === 'BattleStarted') && !events.some((e) => e.kind === 'BattleEnded')) {
       const humanInvolved = !!s.battle && Object.values(s.battle.sides).some((side) => side.controller === 'human');
       if (humanInvolved) {
         // Let the approach movement finish playing, then open the battlefield.

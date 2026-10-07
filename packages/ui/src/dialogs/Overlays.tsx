@@ -40,6 +40,7 @@ import { relativeTime } from '../app/view';
 import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog } from './WorldDialogs';
 import { SpellBook } from '../components/spellbook';
 import { AbilityBadge } from '../components/badges';
+import { QuickBattlePanel, useQuickBattlePreview } from './QuickBattle';
 
 // ---------------------------------------------------------------------------
 
@@ -711,6 +712,13 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
     store.closeOverlay();
     store.dispatch({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true });
   };
+  // Quick battle: the expected result is the actual one (same function, same state).
+  const preview = useQuickBattlePreview(heroId, dest);
+  const quick = () => {
+    store.closeOverlay();
+    store.quickBattle({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true });
+  };
+  const quickReason = !preview ? 'Working out the quick battle…' : preview.run.ok ? null : preview.run.reason;
   const react = (choice: 'join' | 'release') => {
     store.closeOverlay();
     const names = (reaction?.stacks ?? []).map((s) => `${s.count} ${s.count === 1 ? catalog.creatures[s.creatureId]?.name : catalog.creatures[s.creatureId]?.pluralName}`).join(', ');
@@ -740,6 +748,9 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
               Let them go
             </Button>
           ) : null}
+          <Button size="large" icon="auto" onClick={quick} disabled={!!quickReason} disabledReason={quickReason} data-testid="encounter-quick">
+            Quick battle
+          </Button>
           <Button variant="danger" size="large" icon="attack" onClick={attack} autoFocus={!reaction?.kind} data-testid="encounter-attack">
             {reaction?.kind ? 'Fight anyway' : 'Attack'}
           </Button>
@@ -813,11 +824,12 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
       {town ? (
         <div className="encounter-note siege-brief" data-testid="siege-brief">
           <p>
-            <strong>Siege.</strong> {FORT_TEXT[level] ?? FORT_TEXT[0]} Your Catapult removes one structure point at the start of every round; Cyclopes can batter the walls instead of shooting. Shots into the town across an intact wall deal half damage.
+            <strong>Siege.</strong> {FORT_TEXT[level] ?? FORT_TEXT[0]} Your Catapult removes one structure point at the start of every round — the gate first, or the section you aim it at on your turn (click it in the fortification list); Cyclopes can batter the walls instead of shooting. Shots into the town across an intact wall deal half damage.{level >= 2 ? ' The keep and towers fire at the stack their shot hurts most, shooters first.' : ''}
           </p>
-          <p className="faint">The defender fights with at most seven stacks and cannot retreat or surrender. Winning captures {town.name}. Temporary siege model; values are proposed.</p>
+          <p className="faint">The defender fights with at most seven stacks (identical stacks may be combined first) and cannot retreat or surrender. Winning captures {town.name}. Values are proposed.</p>
         </div>
       ) : null}
+      <QuickBattlePanel preview={preview} />
       {reward?.resources || reward?.artifactIds?.length ? (
         <div className="encounter-reward">
           <span className="encounter-reward__label">Reward on victory</span>

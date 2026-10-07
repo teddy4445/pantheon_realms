@@ -71,6 +71,12 @@ export interface InterventionDefinition {
   readonly effect: InterventionEffectDefinition;
   /** Offered only to these pantheons (omitted: every pantheon). */
   readonly pantheonIds?: readonly PantheonId[];
+  /**
+   * A shared miracle's name in each pantheon's own faith — the god who answers
+   * (owner request 2026-10-07: miracles belong to the pantheon). Same effect, cost
+   * and art; `name` remains the fallback.
+   */
+  readonly names?: Readonly<Partial<Record<PantheonId, string>>>;
   readonly iconAssetId: AssetId;
 }
 

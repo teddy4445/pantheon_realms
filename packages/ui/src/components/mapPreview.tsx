@@ -2,8 +2,9 @@
  * A drawn overview of a custom map document (authored skirmish maps,
  * 2026-10-05): ground in the biome's colours, roads, each empire's town in its
  * seat colour and the landmarks that shape play (the shrine, portals, key gates
- * and tents, guarded passes). It is the honest stand-in until a map's painted
- * card (GPT-6 Brief 14) is delivered, and the layout view next to it after.
+ * and tents, guarded passes). It is the honest stand-in when a map's painted
+ * card (GPT-6 Brief 14) is missing; the skirmish chooser no longer shows it
+ * beside the painting (owner request 2026-10-07).
  */
 import { useEffect, useMemo, useRef, type CSSProperties } from 'react';
 import { KEY_COLOR_HEX, TERRAIN_BY_CODE, type CustomMapDocument } from '@pr/rules';

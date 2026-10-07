@@ -36,7 +36,7 @@ import {
   type GeneratedScenario,
   type MissionStartOptions,
 } from '@pr/campaign';
-import { battleActor, chooseBattleAction, isAiControlledBattleTurn, stepBattleAI, stepStrategicAI } from '@pr/ai';
+import { battleActor, chooseBattleAction, isAiControlledBattleTurn, runQuickBattle, stepBattleAI, stepStrategicAI } from '@pr/ai';
 import type { SaveSnapshot } from './save';
 
 export type CheckpointKind = 'pre_encounter' | 'dawn' | 'mission_start';
@@ -236,6 +236,27 @@ export class GameSession {
     const actor = battleActor(s) ?? this.humanPlayerId;
     if (!payload) return { ok: false, rejection: { code: 'illegal_action', message: 'No action' } };
     return this.dispatch(payload, actor === NEUTRAL_PLAYER_ID ? this.humanPlayerId : actor);
+  }
+
+  /**
+   * Quick battle (2026-10-07): submit the encounter move and fight the battle it
+   * starts to the end with the tactical AI on both sides, without the
+   * battlefield. The same function on the same state gives the encounter panel's
+   * preview, so the result matches what the panel showed. One checkpoint before,
+   * one published batch after (the movement, the battle and its result).
+   */
+  quickBattle(payload: CommandPayload): DispatchResult {
+    const before = this._state;
+    const actor = this.humanPlayerId;
+    if (before.players[actor]?.controller !== 'human' || before.activePlayerId !== actor) return { ok: false, rejection: { code: 'not_your_turn', message: 'It is not your turn' } };
+    const run = runQuickBattle(this.catalog, before, actor, payload);
+    if (!run.ok) return { ok: false, rejection: { code: 'invalid_command', message: run.reason } };
+    this.checkpoint('pre_encounter', { match: before, campaign: this._campaign });
+    this._state = run.state;
+    this.lastHumanId = actor;
+    this.afterCommit(run.events);
+    this.publish(run.events, 'human');
+    return { ok: true, events: run.events };
   }
 
   // ------------------------------------------------------------------ campaign transitions

@@ -1,7 +1,8 @@
 /**
  * One empire's seat in a skirmish setup (random maps S19, authored skirmish
  * maps S23): its colour, pantheon, who plays it (a person on this computer or
- * the AI), the person's name and patron god — or the AI's temperament.
+ * the AI), the person's name and patron god (shown, not picked: one per
+ * pantheon) — or the AI's temperament.
  */
 import type { ContentCatalog } from '@pr/rules';
 import { Segmented, TextInput } from './kit';
@@ -74,13 +75,20 @@ export function SeatRow({
         {s.controller === 'human' ? (
           <div className="row gap wrap">
             <TextInput label={`Seat ${i + 1} name`} value={s.name} onChange={(v) => onChange({ name: v })} testId={`seat-${i}-name`} />
-            <select className="select" value={s.godId ?? ''} aria-label={`Seat ${i + 1} patron god`} onChange={(e) => onChange({ godId: e.target.value || null })} data-testid={`seat-${i}-patron`}>
-              {patrons.map((g) => (
-                <option key={g} value={g}>
-                  Patron: {catalog.gods[g]?.name}
-                </option>
-              ))}
-            </select>
+            {/* Every pantheon has one patron, so there is nothing to pick (owner request 2026-10-07); a picker returns only if a pantheon gains a second. */}
+            {patrons.length > 1 ? (
+              <select className="select" value={s.godId ?? ''} aria-label={`Seat ${i + 1} patron god`} onChange={(e) => onChange({ godId: e.target.value || null })} data-testid={`seat-${i}-patron`}>
+                {patrons.map((g) => (
+                  <option key={g} value={g}>
+                    Patron: {catalog.gods[g]?.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span className="small dim seat-row__patron" data-testid={`seat-${i}-patron-name`}>
+                Patron: {catalog.gods[s.godId ?? patrons[0] ?? '']?.name ?? '—'}
+              </span>
+            )}
           </div>
         ) : (
           <div className="small dim">

@@ -38,6 +38,23 @@ describe('AI level-up choices', () => {
   });
 });
 
+describe('AI gifts of the gods', () => {
+  it('a fighter takes a fighting gift, a spellcaster a spell gift', () => {
+    const d = GameDriver.mission(SKIRMISH);
+    const s: MatchState = clone(d.state);
+    const hero = s.heroes['alexios']!;
+    hero.army.slots = army([['hoplite', 40]]);
+    const byTheme = (t: string) => Object.values(d.catalog.godPerks!).find((p) => p.theme === t)!.id;
+    const offers = [byTheme('storm'), byTheme('might')];
+    s.pendingDecisions = [{ decisionId: 'lv10', kind: 'level_up', heroId: hero.id, newLevel: 10, primaryGain: 'attack', offers: [], perkOffers: offers }];
+    hero.spellbook = false;
+    expect(levelUpCandidates(d.catalog, s, 'player')).toEqual([{ kind: 'ChooseLevelUp', decisionId: 'lv10', offerIndex: null, perkIndex: 1 }]);
+    hero.spellbook = true;
+    s.pendingDecisions[0] = { ...s.pendingDecisions[0]!, perkOffers: [byTheme('sorcery'), byTheme('watch')] };
+    expect(levelUpCandidates(d.catalog, s, 'player')[0]).toMatchObject({ perkIndex: 0 });
+  });
+});
+
 describe('AI artifacts and sets', () => {
   it('a second set piece is worth more than a slightly stronger loose item', () => {
     const d = GameDriver.mission(SKIRMISH);

@@ -119,7 +119,7 @@ describe('moments from committed events', () => {
     const gold = d.player.wallet.gold;
     const events = d.do({ kind: 'InvokeIntervention', interventionId: 'tithe_of_the_faithful' });
     const moments = momentsFromEvents(d.catalog, d.state, 'player', events);
-    expect(moments).toEqual([{ kind: 'miracle', interventionId: 'tithe_of_the_faithful', context: 'adventure', name: 'Tithe of the Faithful', summary: d.catalog.interventions['tithe_of_the_faithful']!.summary, invokedBy: null }]);
+    expect(moments).toEqual([{ kind: 'miracle', interventionId: 'tithe_of_the_faithful', context: 'adventure', name: 'Tribute of Hera', summary: d.catalog.interventions['tithe_of_the_faithful']!.summary, invokedBy: null }]);
     // Building the moment again (a re-render, a replayed animation) changes nothing.
     const after = JSON.stringify(d.state);
     momentsFromEvents(d.catalog, d.state, 'player', events);

@@ -30,6 +30,7 @@ export {
   type SkirmishVictory,
   type StartWealth,
   type TreasureLevel,
+  type UnownedTowns,
 } from '@pr/mapgen';
 
 export interface RandomSkirmish extends GeneratedScenario {
@@ -38,6 +39,7 @@ export interface RandomSkirmish extends GeneratedScenario {
 }
 
 // Custom maps made in the map editor (2026-10-05): the document format, validation and compiler.
+export { CUSTOM_SYMMETRIES, customMapFromGenerated, symmetricCells, symmetricEdges, type CustomSymmetry, type EditorDocumentFromGenerated } from '@pr/mapgen';
 export {
   CUSTOM_KEY_COLORS,
   CUSTOM_MAP_FORMAT,
@@ -83,7 +85,7 @@ export interface SkirmishMapSeat {
  * seats: each seat's pantheon replaces the document's default. Throws for an
  * unknown map or a seat count other than the map's.
  */
-export function compileSkirmishMap(catalog: ContentCatalog, mapId: string, seats: readonly SkirmishMapSeat[]): CompiledCustomMap {
+export function compileSkirmishMap(catalog: ContentCatalog, mapId: string, seats: readonly SkirmishMapSeat[], extra: { readonly unownedTowns?: 'own' | 'other' | 'none' } = {}): CompiledCustomMap {
   const def = catalog.skirmishMaps?.[mapId];
   if (!def) throw new Error(`Unknown skirmish map ${mapId}`);
   const n = def.map.players.length;
@@ -93,7 +95,8 @@ export function compileSkirmishMap(catalog: ContentCatalog, mapId: string, seats
     catalog,
     doc,
     seats.map((s) => ({ controller: s.controller, ...(s.name ? { name: s.name } : {}) })),
-    { skirmishMapId: def.id, subtitle: `Skirmish map · ${n} empires`, thumbnailAssetId: def.thumbnailAssetId },
+    // Unowned towns: an authored map's are left out unless the setup asks for them (2026-10-07).
+    { skirmishMapId: def.id, subtitle: `Skirmish map · ${n} empires`, thumbnailAssetId: def.thumbnailAssetId, unownedTowns: extra.unownedTowns ?? 'none' },
   );
 }
 

@@ -422,7 +422,7 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
     if (sk.type === 'key_gate' && !m.sites.some((x) => x.kind.type === 'key_tent' && x.kind.color === sk.color)) push(`${where}/${s.id}: no key tent of colour ${sk.color}`);
   }
   const objById = new Map(m.objectives.map((o) => [o.id, o] as const));
-  const townIds = new Set([m.player.town.townId, ...(m.rivals ?? []).map((r) => r.town.townId)]);
+  const townIds = new Set([m.player.town.townId, ...(m.rivals ?? []).map((r) => r.town.townId), ...(m.neutralTowns ?? []).map((t) => t.townId)]);
   const foeIds = new Set([...m.hostileHeroes.map((h) => h.commander.heroDefinitionId), ...(m.rivals ?? []).map((r) => r.hero.definitionId)]);
   for (const o of m.objectives) {
     for (const u of o.unlocks ?? []) if (!objIds.has(u)) push(`${where}/${o.id}: unlocks unknown objective ${u}`);
@@ -460,6 +460,17 @@ function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, ch
     for (const b of r.town.buildings) if (!c.buildings[b]) push(`${where}: unknown starting building ${b}`);
     r.town.garrison?.forEach((g) => creatureOk(g.creatureId));
     if (!siteIds.has(r.town.siteId)) push(`${where}: rival town site ${r.town.siteId} is missing`);
+  }
+  // Unowned towns (2026-10-07): a known archetype and buildings, a town site of their own, no clash with an empire's town.
+  const empireTowns = new Set([m.player.town.townId, ...(m.rivals ?? []).map((r) => r.town.townId)]);
+  for (const t of m.neutralTowns ?? []) {
+    if (!c.townArchetypes[t.archetypeId]) push(`${where}: unowned town ${t.townId} has an unknown archetype ${t.archetypeId}`);
+    for (const b of t.buildings) if (!c.buildings[b]) push(`${where}: unknown building ${b} in unowned town ${t.townId}`);
+    t.garrison?.forEach((g) => creatureOk(g.creatureId));
+    if (empireTowns.has(t.townId)) push(`${where}: unowned town ${t.townId} shares an empire town's ID`);
+    const site = m.sites.find((x) => x.id === t.siteId);
+    if (!site) push(`${where}: unowned town site ${t.siteId} is missing`);
+    else if (site.kind.type !== 'town' || site.kind.townId !== t.townId) push(`${where}: site ${t.siteId} is not the town ${t.townId}`);
   }
   const cond = m.victoryCondition;
   if (cond?.type === 'hold_site') {

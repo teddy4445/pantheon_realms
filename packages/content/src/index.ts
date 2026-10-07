@@ -6,3 +6,4 @@ export { buildCatalog, loadCatalog, VERSIONS } from './catalog';
 export { validateCatalog, validateGeneratedMission, VALIDATORS, type ValidationIssue, type ValidationReport } from './validation/validators';
 export { THREE_BEACONS } from './campaign/threeBeacons';
 export { WINTER_OATH } from './campaign/winterOath';
+export { buildGodPerks, godPerksOf, PERK_THEMES, DOMAIN_THEME } from './common/godPerks';

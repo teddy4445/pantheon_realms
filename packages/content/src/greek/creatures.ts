@@ -224,7 +224,8 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       id: 'minotaur',
       name: 'Minotaur',
       plural: 'Minotaurs',
-      stats: s(15, 14, 95, [16, 24], 6, 0, 2),
+      // 2026-10-07 balance: damage 16–22 like the other tier-6 creatures (was 16–24).
+      stats: s(15, 14, 95, [16, 22], 6, 0, 2),
       cost: { gold: 1000 },
       abilities: ['unyielding'],
       summary: 'Bull-headed axe fighters with reliable morale.',
@@ -235,7 +236,8 @@ export const GREEK_FAMILY_SPECS: readonly FamilySpec[] = [
       name: 'Labyrinth Warden',
       plural: 'Labyrinth Wardens',
       stats: s(17, 16, 110, [20, 25], 7, 0, 2),
-      cost: { gold: 1200 },
+      // 2026-10-07 balance: the tier-6 upgraded price of the other pantheons (was 1,200).
+      cost: { gold: 1250 },
       abilities: ['unyielding'],
       summary: 'Wardens entrusted with the passages others must not lose.',
       portraitAlt: 'A minotaur in patterned chest armor with horn fittings and a heavier axe.',

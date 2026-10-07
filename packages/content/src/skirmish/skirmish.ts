@@ -318,7 +318,7 @@ function twinHarbors(id: string, playerPantheon: string, rivalPantheon: string):
       { id: 'sk_victory', title: 'Defeat Eastharbor', description: 'Defeat every rival hero and take every rival town.', category: 'primary', initialStatus: 'active', condition: { type: 'flag', flag: 'rivals_eliminated' } },
     ],
     hostileHeroes: [],
-    helpTopics: [{ id: 'sieges', title: 'Sieges', text: 'Entering an enemy town that has a garrison or a visiting hero starts a siege. The Fort gives walls and a gate, the Citadel adds a keep and a moat, the Castle stronger walls and two towers. Your Catapult removes one structure point at the start of every round; Cyclopes can batter the walls instead of shooting. The defender chooses at most seven stacks; the rest wait in reserve and are lost if the town falls. A town defender cannot retreat or surrender. Temporary siege model; values are proposed.' }],
+    helpTopics: [{ id: 'sieges', title: 'Sieges', text: 'Entering an enemy town that has a garrison or a visiting hero starts a siege. The Fort gives walls and a gate, the Citadel adds a keep and a moat, the Castle stronger walls and two towers. Your Catapult removes one structure point at the start of every round: the gate first, or the section you aim it at on your turn. Cyclopes can batter the walls instead of shooting. The keep and towers fire at the stack their shot hurts most, shooters first. The defender may combine identical stacks, then chooses at most seven; the rest wait in reserve and are lost if the town falls. A town defender cannot retreat or surrender. Values are proposed.' }],
     protectedHeroFailure: false,
     thumbnailAssetId: 'mission.skirmish.twin_harbors.thumbnail',
   };
@@ -340,7 +340,9 @@ export const SKIRMISH_SCENARIOS: readonly SkirmishScenarioDefinition[] = [
   {
     id: 'skirmish_twin_harbors',
     name: 'Twin Harbors',
-    summary: 'Two harbor towns on a small coastal map. Choose your pantheon and the rival’s; local AI opponent. Values outside the Greek roster are proposed and unplaytested.',
+    tagline: 'Two harbors, one gold mine between them.',
+    summary: 'Two harbor towns face each other along a small stretch of coast. Between them lies a guarded gold mine — whoever holds it pulls ahead. Choose your pantheon and the rival’s; the rival is played by the AI or by a second player on this computer.',
+    highlights: ['A short game for two empires on a small map.', 'The guarded gold mine lies halfway between the towns.', 'Any pantheon against any pantheon.'],
     missionId: 'skirmish_twin_harbors',
     status: 'playable',
     variants: PAIRS.map(([p, r]) => ({ playerPantheonId: p, rivalPantheonId: r, missionId: skirmishMissionId(p, r) })),

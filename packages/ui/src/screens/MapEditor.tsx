@@ -24,14 +24,25 @@ import {
   CUSTOM_MAP_SIZES,
   CUSTOM_MAX_EMPIRES,
   CUSTOM_SITE_KINDS,
+  CUSTOM_SYMMETRIES,
+  SKIRMISH_MAP_TYPES,
   SKIRMISH_PLAYER_COLORS,
+  createRandomSkirmish,
+  customMapFromGenerated,
+  skirmishSizeAllows,
+  skirmishTypeAllows,
+  symmetricCells,
+  symmetricEdges,
+  type CustomSymmetry,
+  type SkirmishMapSize,
+  type SkirmishMapType,
   type CustomMapDocument,
   type CustomReward,
   type CustomMapSize,
   type CustomSite,
   type CustomSiteKind,
 } from '@pr/session';
-import { KEY_COLOR_LABEL, TERRAIN_CODES, axialNeighbors, edgeKey, hexKey, type ContentCatalog, type HexCoord, type KeyColor, type Terrain } from '@pr/rules';
+import { KEY_COLOR_LABEL, TERRAIN_CODES, axialNeighbors, hexKey, type ContentCatalog, type HexCoord, type KeyColor, type Terrain } from '@pr/rules';
 import { axialPoint, hexCorners, pointAxial, siteSprite, spriteUrl, terrainArt } from '@pr/presentation/core';
 import { useStore } from '../app/context';
 import { Button, Modal, Panel, SectionTitle, Segmented, Tabs, TextInput, Toggle } from '../components/kit';
@@ -147,11 +158,13 @@ export function MapEditorScreen() {
   const [dirty, setDirty] = useState(false);
   const [tool, setTool] = useState<Tool>({ kind: 'terrain', terrain: 'forest' });
   const [brush, setBrush] = useState(1);
+  // Symmetry brush (2026-10-07): ground and roads are painted in mirrored or turned copies too.
+  const [symmetry, setSymmetry] = useState<CustomSymmetry>('none');
   const [townOwner, setTownOwner] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [pendingPortal, setPendingPortal] = useState<string | null>(null);
   const [tab, setTab] = useState<'map' | 'empires' | 'site' | 'check'>('map');
-  const [dialog, setDialog] = useState<null | 'new' | 'open' | 'play' | 'leave'>(null);
+  const [dialog, setDialog] = useState<null | 'new' | 'generate' | 'open' | 'play' | 'leave'>(null);
   const [hover, setHover] = useState<HexCoord | null>(null);
   const undo = useRef<CustomMapDocument[]>([]);
   const redo = useRef<CustomMapDocument[]>([]);
@@ -213,8 +226,9 @@ export function MapEditorScreen() {
         return;
       }
       let s: CustomSite = { id, kind, q: c.q, r: c.r };
-      const owner = Math.min(townOwner, doc.players.length - 1);
-      if (kind === 'town') s = { ...s, owner };
+      // -1: an unowned town (2026-10-07), its pantheon the nearest empire's unless set in the site panel.
+      const owner = townOwner < 0 ? -1 : Math.min(townOwner, doc.players.length - 1);
+      if (kind === 'town' && owner >= 0) s = { ...s, owner };
       if (kind === 'monster') s = { ...s, guard: { creatureId: defaultCreature(catalog, 3), count: 12 } };
       if (kind === 'creature_camp') s = { ...s, creatureId: defaultCreature(catalog, 2) };
       if (kind === 'gold_mine' || kind === 'relic') s = { ...s, guard: { creatureId: defaultCreature(catalog, kind === 'relic' ? 5 : 3), count: kind === 'relic' ? 10 : 8 } };
@@ -226,7 +240,7 @@ export function MapEditorScreen() {
       if (kind === 'watchtower') s = { ...s, radius: 9 };
       setDoc((d) => {
         let sites = d.sites;
-        if (kind === 'town') sites = sites.filter((x) => !(x.kind === 'town' && x.owner === owner)); // one town per empire: moving it
+        if (kind === 'town' && owner >= 0) sites = sites.filter((x) => !(x.kind === 'town' && x.owner === owner)); // one town per empire: moving it
         if (kind === 'portal' && pendingPortal) sites = sites.map((x) => (x.id === pendingPortal ? { ...x, twinId: id } : x));
         return { ...d, sites: [...sites, s] };
       });
@@ -331,6 +345,9 @@ export function MapEditorScreen() {
         <Button size="small" icon="map" onClick={() => setDialog('new')} data-testid="editor-new">
           New
         </Button>
+        <Button size="small" icon="auto" onClick={() => setDialog('generate')} data-testid="editor-generate" title="Generate a random map, then edit it">
+          Generate
+        </Button>
         <Button size="small" icon="load" onClick={() => setDialog('open')} data-testid="editor-open">
           Open
         </Button>
@@ -356,29 +373,33 @@ export function MapEditorScreen() {
         </Button>
       </div>
       <div className="map-editor__body">
-        <ToolPalette catalog={catalog} doc={doc} tool={tool} setTool={(t) => { setTool(t); if (t.kind !== 'place' || t.site !== 'portal') setPendingPortal(null); }} brush={brush} setBrush={setBrush} townOwner={townOwner} setTownOwner={setTownOwner} pendingPortal={pendingPortal} />
+        <ToolPalette catalog={catalog} doc={doc} tool={tool} setTool={(t) => { setTool(t); if (t.kind !== 'place' || t.site !== 'portal') setPendingPortal(null); }} brush={brush} setBrush={setBrush} symmetry={symmetry} setSymmetry={setSymmetry} townOwner={townOwner} setTownOwner={setTownOwner} pendingPortal={pendingPortal} />
         <EditorCanvas
           catalog={catalog}
           doc={doc}
           tool={tool}
           brush={brush}
+          symmetry={symmetry}
           selected={selected}
           hover={hover}
           setHover={setHover}
-          onPaint={(cells, first) => {
+          onPaint={(painted, first) => {
             if (tool.kind !== 'terrain') return;
             const blocked = new Set(doc.sites.map((s) => hexKey({ q: s.q, r: s.r })));
             const t = tool.terrain;
+            const seen = new Set<string>();
+            const cells = painted.flatMap((c) => symmetricCells(doc, c, symmetry)).filter((c) => !seen.has(hexKey(c)) && !!seen.add(hexKey(c)));
             const ok = t === 'water' || t === 'mountain' ? cells.filter((c) => !blocked.has(hexKey(c))) : cells;
             setDoc((d) => paintCells(d, ok, t), first);
           }}
           onRoad={(a, b, first) => {
             if (tool.kind !== 'road') return;
-            const k = edgeKey(a, b);
+            const keys = symmetricEdges(doc, a, b, symmetry);
             setDoc((d) => {
-              const has = d.roads.includes(k);
-              if (tool.erase ? !has : has) return d;
-              return { ...d, roads: tool.erase ? d.roads.filter((x) => x !== k) : [...d.roads, k] };
+              const has = new Set(d.roads);
+              const change = keys.filter((k) => (tool.erase ? has.has(k) : !has.has(k)));
+              if (change.length === 0) return d;
+              return { ...d, roads: tool.erase ? d.roads.filter((x) => !change.includes(x)) : [...d.roads, ...change] };
             }, first);
           }}
           onClickCell={(c) => {
@@ -445,6 +466,25 @@ export function MapEditorScreen() {
           }}
         />
       ) : null}
+      {dialog === 'generate' ? (
+        <GenerateMapDialog
+          catalog={catalog}
+          players={doc.players.map((p) => p.pantheonId)}
+          onClose={() => setDialog(null)}
+          onGenerate={(next, leftOut) => {
+            undo.current = [];
+            redo.current = [];
+            setDocState(next);
+            setLibraryId(null);
+            setDirty(true);
+            setSelected(null);
+            setPendingPortal(null);
+            setTownOwner(0);
+            setDialog(null);
+            store.toast(leftOut.length ? `Generated. Left out (the editor has no such site): ${leftOut.join(', ')}` : 'Generated — edit it as you like', 'success');
+          }}
+        />
+      ) : null}
       {dialog === 'open' ? <OpenMapDialog onClose={() => setDialog(null)} onLoad={load} /> : null}
       {dialog === 'play' ? <PlayDialog catalog={catalog} doc={doc} onClose={() => setDialog(null)} /> : null}
       {dialog === 'leave' ? (
@@ -487,6 +527,8 @@ function ToolPalette({
   setTool,
   brush,
   setBrush,
+  symmetry,
+  setSymmetry,
   townOwner,
   setTownOwner,
   pendingPortal,
@@ -497,6 +539,8 @@ function ToolPalette({
   setTool: (t: Tool) => void;
   brush: number;
   setBrush: (n: number) => void;
+  symmetry: CustomSymmetry;
+  setSymmetry: (s: CustomSymmetry) => void;
   townOwner: number;
   setTownOwner: (n: number) => void;
   pendingPortal: string | null;
@@ -532,6 +576,11 @@ function ToolPalette({
         <span className="dim">Brush</span>
         <Segmented label="Brush size" value={String(brush) as '1' | '2' | '3'} options={(['1', '2', '3'] as const).map((id) => ({ id, label: id }))} onChange={(v) => setBrush(Number(v))} testId="brush" />
       </div>
+      <div className="map-editor__symmetry small">
+        <span className="dim">Symmetry</span>
+        <Segmented label="Symmetry brush" value={symmetry} options={CUSTOM_SYMMETRIES.map((x) => ({ id: x.id, label: x.label }))} onChange={(v) => setSymmetry(v)} testId="symmetry" />
+        <span className="faint">{CUSTOM_SYMMETRIES.find((x) => x.id === symmetry)?.summary} Ground and roads.</span>
+      </div>
       <SectionTitle>Roads</SectionTitle>
       <div className="map-editor__grid">
         <button type="button" className={`editor-tool ${is({ kind: 'road', erase: false }) ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'road', erase: false })} data-testid="tool-road" title="Drag across tiles to lay a road">
@@ -548,7 +597,7 @@ function ToolPalette({
           <Segmented
             label="Town for empire"
             value={String(townOwner)}
-            options={doc.players.map((p, i) => ({ id: String(i), label: `${i + 1} · ${catalog.pantheons[p.pantheonId]?.name ?? p.pantheonId}` }))}
+            options={[...doc.players.map((p, i) => ({ id: String(i), label: `${i + 1} · ${catalog.pantheons[p.pantheonId]?.name ?? p.pantheonId}` })), { id: '-1', label: 'Unowned' }]}
             onChange={(v) => setTownOwner(Number(v))}
             testId="town-owner"
           />
@@ -575,6 +624,7 @@ function EditorCanvas({
   doc,
   tool,
   brush,
+  symmetry,
   selected,
   hover,
   setHover,
@@ -588,6 +638,7 @@ function EditorCanvas({
   doc: CustomMapDocument;
   tool: Tool;
   brush: number;
+  symmetry: CustomSymmetry;
   selected: string | null;
   hover: HexCoord | null;
   setHover: (c: HexCoord | null) => void;
@@ -727,7 +778,7 @@ function EditorCanvas({
     const sorted = [...doc.sites].sort((a, b) => a.r - b.r);
     for (const s of sorted) {
       const p = axialPoint(s, R);
-      const owner = s.kind === 'town' ? s.owner ?? 0 : null;
+      const owner = s.kind === 'town' ? (s.owner ?? null) : null;
       if (owner !== null) {
         ctx.fillStyle = SKIRMISH_PLAYER_COLORS[owner % SKIRMISH_PLAYER_COLORS.length]!;
         ctx.globalAlpha = 0.55;
@@ -754,7 +805,8 @@ function EditorCanvas({
         }
         drew = true;
       } else {
-        const def = siteSprite(s.kind === 'town' ? 'town' : SPRITE_KIND[s.kind] ?? 'pickup', s.kind === 'town' ? doc.players[s.owner ?? 0]?.pantheonId : s.kind === 'resource_cache' ? 'gold' : null);
+        const townPantheon = s.kind !== 'town' ? null : s.owner !== undefined ? doc.players[s.owner]?.pantheonId : s.pantheon && s.pantheon !== 'nearest' && s.pantheon !== 'other' ? s.pantheon : doc.players[0]?.pantheonId;
+        const def = siteSprite(s.kind === 'town' ? 'town' : SPRITE_KIND[s.kind] ?? 'pickup', s.kind === 'town' ? townPantheon : s.kind === 'resource_cache' ? 'gold' : null);
         const img = image(def ? spriteUrl(def.file) : null, redraw);
         if (def && img) {
           const scale = (Math.sqrt(3) * R) / def.pixelsPerHex;
@@ -796,9 +848,19 @@ function EditorCanvas({
         path(p.x, p.y);
         ctx.stroke();
       }
+      // The symmetric copies the brush paints too (fainter).
+      if (symmetry !== 'none' && (tool.kind === 'terrain' || tool.kind === 'road')) {
+        ctx.strokeStyle = 'rgba(160, 220, 255, 0.6)';
+        for (const c of footprint)
+          for (const m of symmetricCells(doc, c, symmetry).slice(1)) {
+            const p = axialPoint(m, R);
+            path(p.x, p.y);
+            ctx.stroke();
+          }
+      }
     }
     ctx.restore();
-  }, [brush, catalog, cells, doc, hover, redraw, selected, tick, tool, view]);
+  }, [brush, catalog, cells, doc, hover, redraw, selected, symmetry, tick, tool, view]);
 
   // Resize: redraw.
   useEffect(() => {
@@ -978,7 +1040,7 @@ function EmpiresPanel({ catalog, doc, setDoc }: { catalog: ContentCatalog; doc: 
                   ...d,
                   players: d.players.filter((_, k) => k !== i),
                   // Its town goes; later empires' towns move up one slot.
-                  sites: d.sites.filter((s) => !(s.kind === 'town' && s.owner === i)).map((s) => (s.kind === 'town' && (s.owner ?? 0) > i ? { ...s, owner: (s.owner ?? 0) - 1 } : s)),
+                  sites: d.sites.filter((s) => !(s.kind === 'town' && s.owner === i)).map((s) => (s.kind === 'town' && s.owner !== undefined && s.owner > i ? { ...s, owner: s.owner - 1 } : s)),
                 }))
               }
             />
@@ -1061,7 +1123,30 @@ function SitePanel({ catalog, doc, site, update, remove }: { catalog: ContentCat
       {site.kind === 'town' ? (
         <>
           <label className="setting-block__label">Empire</label>
-          <Segmented label="Town's empire" value={String(site.owner ?? 0)} options={doc.players.map((p, i) => ({ id: String(i), label: `${i + 1} · ${catalog.pantheons[p.pantheonId]?.name ?? p.pantheonId}` }))} onChange={(v) => update(site.id, { owner: Number(v) })} />
+          <Segmented
+            label="Town's empire"
+            value={String(site.owner ?? -1)}
+            options={[...doc.players.map((p, i) => ({ id: String(i), label: `${i + 1} · ${catalog.pantheons[p.pantheonId]?.name ?? p.pantheonId}` })), { id: '-1', label: 'Unowned' }]}
+            onChange={(v) => update(site.id, Number(v) < 0 ? { owner: undefined } : { owner: Number(v), pantheon: undefined })}
+            testId="site-town-owner"
+          />
+          {site.owner === undefined ? (
+            <>
+              <label className="setting-block__label">Pantheon of the unowned town</label>
+              <select className="text-input" value={site.pantheon ?? 'nearest'} aria-label="Unowned town pantheon" onChange={(e) => update(site.id, { pantheon: e.target.value === 'nearest' ? undefined : e.target.value })} data-testid="site-town-pantheon">
+                <option value="nearest">The nearest empire’s</option>
+                <option value="other">Another pantheon (one no empire plays)</option>
+                {Object.keys(catalog.skirmishKits)
+                  .sort()
+                  .map((p) => (
+                    <option key={p} value={p}>
+                      {catalog.pantheons[p]?.name ?? p}
+                    </option>
+                  ))}
+              </select>
+              <p className="small dim">No owner and no hero at the start; its own militia holds it until an empire takes it.</p>
+            </>
+          ) : null}
         </>
       ) : null}
       {site.kind === 'creature_camp' ? (
@@ -1261,6 +1346,76 @@ function NewMapDialog({ onClose, onCreate }: { onClose: () => void; onCreate: (s
     >
       <p className="small dim">An empty map of plains with two empires. Unsaved changes to the current map are lost.</p>
       <Segmented label="Map size" value={size} options={(Object.keys(CUSTOM_MAP_SIZES) as CustomMapSize[]).map((id) => ({ id, label: `${CUSTOM_MAP_SIZES[id].label} (${CUSTOM_MAP_SIZES[id].cols}×${CUSTOM_MAP_SIZES[id].rows})` }))} onChange={setSize} testId="editor-new-size" />
+    </Modal>
+  );
+}
+
+/** Generate a random map with the random-map generator, then open it in the editor (2026-10-07). */
+function GenerateMapDialog({ catalog, players, onClose, onGenerate }: { catalog: ContentCatalog; players: readonly string[]; onClose: () => void; onGenerate: (doc: CustomMapDocument, leftOut: readonly string[]) => void }) {
+  const store = useStore();
+  const [size, setSize] = useState<SkirmishMapSize>('small');
+  const [mapType, setMapType] = useState<SkirmishMapType>('continental');
+  const [empires, setEmpires] = useState(2);
+  const [unowned, setUnowned] = useState<'none' | 'own'>('none');
+  const pantheons = Object.keys(catalog.skirmishKits);
+  const seatPantheon = (i: number) => players[i] ?? pantheons[i % pantheons.length]!;
+  const sizeOk = skirmishSizeAllows(size, empires);
+  const typeOk = skirmishTypeAllows(mapType, empires);
+  const reason = !sizeOk ? 'Four or more empires need a large or huge map' : !typeOk ? 'This map type is for fewer empires' : null;
+  const generate = () => {
+    try {
+      const seed = Math.floor(Math.random() * 2 ** 31);
+      const g = createRandomSkirmish(catalog, {
+        seed,
+        size,
+        mapType,
+        seats: Array.from({ length: empires }, (_, i) => ({ pantheonId: seatPantheon(i), controller: i === 0 ? ('human' as const) : ('ai' as const) })),
+        victory: { type: 'elimination' },
+        monsters: 'few',
+        unownedTowns: unowned,
+      });
+      const label = SKIRMISH_MAP_TYPES.find((t) => t.id === mapType)?.label ?? mapType;
+      const { doc, leftOut } = customMapFromGenerated(catalog, g, `${label} ${seed % 10000}`);
+      onGenerate(doc, leftOut);
+    } catch (e) {
+      store.toast(`Could not generate a map: ${e instanceof Error ? e.message : String(e)}`, 'error');
+    }
+  };
+  return (
+    <Modal
+      title="Generate a map to edit"
+      onClose={onClose}
+      width="38rem"
+      testId="editor-generate-dialog"
+      footer={
+        <>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button variant="primary" icon="auto" disabled={!!reason} disabledReason={reason} onClick={generate} data-testid="editor-generate-confirm">
+            Generate and edit
+          </Button>
+        </>
+      }
+    >
+      <p className="small">The random-map generator lays out ground, roads, towns, mines, guards and treasures; the map then opens here to change anything. It replaces the map you are editing.</p>
+      <div className="map-editor__form">
+        <label className="small dim">Size</label>
+        <Segmented label="Map size" value={size} options={(['small', 'medium', 'large', 'huge'] as const).map((id) => ({ id, label: id[0]!.toUpperCase() + id.slice(1) }))} onChange={setSize} testId="generate-size" />
+        <label className="small dim">Empires</label>
+        <Segmented label="Empires" value={String(empires) as '2' | '3' | '4'} options={(['2', '3', '4'] as const).map((id) => ({ id, label: id }))} onChange={(v) => setEmpires(Number(v))} testId="generate-empires" />
+        <label className="small dim" htmlFor="generate-type">
+          Map type
+        </label>
+        <select id="generate-type" value={mapType} onChange={(e) => setMapType(e.target.value as SkirmishMapType)} data-testid="generate-type">
+          {SKIRMISH_MAP_TYPES.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.label}
+            </option>
+          ))}
+        </select>
+        <label className="small dim">Unowned towns</label>
+        <Segmented label="Unowned towns" value={unowned} options={[{ id: 'none', label: 'None' }, { id: 'own', label: 'One each' }]} onChange={setUnowned} testId="generate-unowned" />
+      </div>
+      <p className="faint small">Empires: {Array.from({ length: empires }, (_, i) => catalog.pantheons[seatPantheon(i)]?.name ?? seatPantheon(i)).join(', ')} (change them on the Empires tab).</p>
     </Modal>
   );
 }

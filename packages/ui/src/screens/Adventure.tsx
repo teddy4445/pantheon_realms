@@ -1085,6 +1085,25 @@ export function AdventureScreen() {
       ) : null}
 
       <aside className="adv-right">
+        {store.rivalSummary && store.rivalSummary.viewerId === playerId ? (
+          <Panel
+            className="adv-rivals"
+            title="While you waited"
+            headerIcon="hourglass"
+            actions={<Button size="small" variant="ghost" icon="close" onClick={() => store.dismissRivalSummary()} aria-label="Close the rivals’ summary" data-testid="rival-summary-close" />}
+          >
+            <ul className="adv-rivals__list" data-testid="rival-summary">
+              {store.rivalSummary.lines.map((l) => (
+                <li key={l.playerId} className={l.mine ? 'is-mine' : ''} data-testid={`rival-line-${l.playerId}`}>
+                  <span className="dot" style={{ background: state.players[l.playerId]?.color }} aria-hidden="true" />
+                  <span>
+                    <strong>{l.who}</strong> {l.text}.
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        ) : null}
         {info ? (
           <Panel className="adv-tile" label={pinned ? 'Tile (pinned)' : 'Tile'}>
             {pinned ? <Button size="small" variant="ghost" icon="close" onClick={() => setPinned(null)} aria-label="Unpin" className="adv-tile__unpin" /> : null}

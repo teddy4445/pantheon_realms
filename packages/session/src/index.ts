@@ -29,6 +29,12 @@ export {
   terrainAt,
   toggleRoad,
   validateCustomMap,
+  CUSTOM_SYMMETRIES,
+  customMapFromGenerated,
+  symmetricCells,
+  symmetricEdges,
+  type CustomSymmetry,
+  type EditorDocumentFromGenerated,
   type CompiledCustomMap,
   type CustomGuard,
   type CustomQuest,
@@ -52,4 +58,5 @@ export {
   type SkirmishVictory,
   type StartWealth,
   type TreasureLevel,
+  type UnownedTowns,
 } from '@pr/campaign';

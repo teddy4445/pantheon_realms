@@ -228,6 +228,60 @@ export function roadTypeFor(biome: string, terrain: string): RoadType {
   return 'dirt';
 }
 
+/**
+ * One road material per stretch of road (owner request 2026-10-07: roads better
+ * aligned). The painted dirt and cobble tiles differ in width, so switching per
+ * tile (cobbles on every rough hex) made a straight road a patchwork with
+ * visible seams. Now each run between junctions takes the material most of its
+ * hexes ask for (ties: the first in ROAD_TYPES order); a junction takes the most
+ * common material of the runs that meet there. Boardwalks stay hex by hex over
+ * marsh and water (a bridge is a bridge). Computed over every road of the map,
+ * so revealing the fog never changes a tile. Pure: keys are `q,r` strings.
+ */
+export function smoothRoadTypes(edges: readonly (readonly [string, string])[], rawType: (key: string) => RoadType): Map<string, RoadType> {
+  const out = new Map<string, RoadType>();
+  const degree = new Map<string, number>();
+  for (const [a, b] of edges) {
+    if (a === b) continue;
+    degree.set(a, (degree.get(a) ?? 0) + 1);
+    degree.set(b, (degree.get(b) ?? 0) + 1);
+  }
+  const majority = (types: readonly RoadType[], fallback: RoadType): RoadType => {
+    const count = new Map<RoadType, number>();
+    for (const t of types) count.set(t, (count.get(t) ?? 0) + 1);
+    let best: RoadType = fallback;
+    let n = 0;
+    for (const t of ROAD_TYPES) {
+      const c = count.get(t) ?? 0;
+      if (c > n) {
+        best = t;
+        n = c;
+      }
+    }
+    return best;
+  };
+  const runOf = new Map<string, RoadType[]>();
+  for (const run of roadRuns(edges)) {
+    const land = run.map(rawType).filter((t) => t !== 'boardwalk');
+    const material = majority(land, land[0] ?? 'dirt');
+    run.forEach((k, i) => {
+      const end = i === 0 || i === run.length - 1;
+      if (end && (degree.get(k) ?? 0) >= 3) {
+        (runOf.get(k) ?? runOf.set(k, []).get(k)!).push(material);
+        return;
+      }
+      out.set(k, rawType(k) === 'boardwalk' ? 'boardwalk' : material);
+    });
+  }
+  // Junctions: the material most of the meeting runs use.
+  for (const [k, materials] of runOf) {
+    if (out.has(k)) continue;
+    const raw = rawType(k);
+    out.set(k, raw === 'boardwalk' ? 'boardwalk' : majority(materials, raw));
+  }
+  return out;
+}
+
 /** Road sheet geometry (shared with the guides and the importer). */
 export const ROAD_SHEET = {
   /** Cell size in sheet pixels. */

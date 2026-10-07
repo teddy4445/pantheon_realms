@@ -9,6 +9,7 @@
  "terrain": "vvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvmmmppppppffpppwwppppppppffwwppfppppfpmvvvvvvvvvvvvvvmmppppppffpppwwpppppppppfwwppffprppfrmvvvvvvvvvvvvvmmmppppppfppppwwppppppppffwwppfprrpppmvvvvvvvvvvvvvvmmprrrrppppppwwppppppppppwwppppprppppmvvvvvvvvvvvvvmmmrrrpppppppwwfpppppppppwwppppprrpppmvvvvvvvvvvvvvvmmprrppppppppppppppppppppppppppprpppfmvvvvvvvvvvvvvmmmppppppfpppwwppppppppppwwffpppppppfmvvvvvvvvvvvvvvmmpffpppffppwwpppppfppppwwffppppppfffmvvvvvvvvvvvvvmmmpfpppppppwwppppppppppwwfffppppppffmvvvvvvvvvvvvvvmmppppppppppwwfpppppppppwwfffpppppfffmvvvvvvvvvvvvvmmmprrrrrrppwwffppppppppwwpffprrpffppmvvvvvvvvvvvvvvmmpprrprrpppwwppppppppppwwfffrrfpfffpmvvvvvvvvvvvvvmmmpfppppffffwwppppppppppwwffffppppffmvvvvvvvvvvvvvvmmpffpppffffpppppppppppppppffffpppffpmvvvvvvvvvvvvvmmmffppppffffwwppppppppppwwffffppppfpmvvvvvvvvvvvvvvmmpfffpfrrfffwwppppppppppwwppprrprrppmvvvvvvvvvvvvvmmmppffprrpffpwwppppppppffwwpprrrrrrpmvvvvvvvvvvvvvvmmfffpppppfffwwpppppppppfwwppppppppppmvvvvvvvvvvvvvmmmffppppppfffwwppppppppppwwpppppppfpmvvvvvvvvvvvvvvmmfffppppppffwwppppfpppppwwppffpppffpmvvvvvvvvvvvvvmmmfpppppppffwwppppppppppwwpppfppppppmvvvvvvvvvvvvvvmmfppprppppppppppppppppppppppppppprrpmvvvvvvvvvvvvvmmmppprrpppppwwpppppppppfwwppppppprrrmvvvvvvvvvvvvvvmmpppprpppppwwppppppppppwwpppppprrrrpmvvvvvvvvvvvvvmmmppprrpfppwwffppppppppwwppppfppppppmvvvvvvvvvvvvvvmmrfpprpffppwwfpppppppppwwpppffppppppmvvvvvvvvvvvvvmmmpfppppfppwwffppppppppwwpppffppppppmvvvvvvvvvvvvvvmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmvvvvvvvvvvvvvv",
  "roads": [
   "10,19|11,18",
+  "10,23|11,22",
   "11,18|11,19",
   "11,18|12,17",
   "11,19|11,20",
@@ -137,6 +138,7 @@
   "41,6|41,7",
   "41,7|41,8",
   "41,8|41,9",
+  "41,8|42,7",
   "41,9|41,10",
   "42,11|43,10",
   "43,10|44,9",
@@ -276,6 +278,18 @@
     "count": 22,
     "label": "River boars"
    }
+  },
+  {
+   "id": "free_town_1",
+   "kind": "town",
+   "q": 10,
+   "r": 23
+  },
+  {
+   "id": "free_town_2",
+   "kind": "town",
+   "q": 42,
+   "r": 7
   },
   {
    "id": "gold_1",

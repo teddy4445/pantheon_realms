@@ -4,6 +4,7 @@
  * casualties, XP, scenario rewards, site clearing, hero outcomes, level-ups.
  * Reopening the result screen is read-only; rewards apply exactly once.
  */
+import { changeTownOwner } from '../ownership';
 import type { HeroId } from '../../ids';
 import { addResources, resources } from '../../core/resources';
 import { grant } from '../economy';
@@ -178,10 +179,7 @@ export function resolveBattle(tx: Tx, battle: BattleState, winner: BattleSideId,
     if (winner === 'attacker' && attackerHero && attackerHero.status === 'active') {
       siegeTown.garrison.slots = siegeTown.garrison.slots.map(() => null);
       if (defenderHero) defenderHero.army.slots = defenderHero.army.slots.map(() => null);
-      siegeTown.ownerId = attackerHero.ownerId;
-      const site = state.world.sites[siegeTown.siteId];
-      if (site) site.owner = attackerHero.ownerId;
-      tx.emit({ kind: 'TownCaptured', townId: siegeTown.id, playerId: attackerHero.ownerId });
+      changeTownOwner(tx, siegeTown, attackerHero.ownerId);
       bumpTotal(state, attackerHero.ownerId, 'townsCaptured');
       tx.emit({ kind: 'SiteCaptured', siteId: siegeTown.siteId, playerId: attackerHero.ownerId });
       heroOutcome = `${siegeTown.name} was captured. ${heroOutcome}`.trim();

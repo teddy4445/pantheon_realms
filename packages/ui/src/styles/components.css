@@ -1400,3 +1400,4 @@ input[type='radio']:disabled {
 .icon-link:focus-visible { outline: 2px solid var(--gold-300); outline-offset: 2px; }
 .favor-cost { display: inline-flex; align-items: center; gap: 0.25em; }
 .favor-cost .inline-icon { width: 1.05em; height: 1.05em; }
+.favor-cost--plain { font-weight: 700; color: var(--gold-100); font-size: 0.85rem; }

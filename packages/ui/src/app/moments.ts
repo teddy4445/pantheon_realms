@@ -6,7 +6,7 @@
  * load, restart or a later re-render (loads and match starts publish no
  * moments; each committed update is presented once).
  */
-import type { ContentCatalog, GameEvent, MatchState } from '@pr/rules';
+import { interventionOf, type ContentCatalog, type GameEvent, type MatchState } from '@pr/rules';
 import { miracleCardArt, newWeekBannerArt } from '../assets/momentArt';
 import type { Preferences } from './preferences';
 
@@ -63,7 +63,8 @@ export function momentsFromEvents(catalog: ContentCatalog, state: MatchState, vi
   const out: MomentDraft[] = [];
   for (const e of events) {
     if (e.kind === 'InterventionInvoked') {
-      const def = catalog.interventions?.[e.interventionId];
+      // Named as the invoking empire's pantheon calls it (owner request 2026-10-07).
+      const def = interventionOf(catalog, state, e.playerId, e.interventionId);
       if (!def || !miracleCardArt(def.id)) continue;
       const own = e.playerId === viewerId;
       if (!own && !(def.context === 'battle' && inBattle(state, viewerId))) continue;

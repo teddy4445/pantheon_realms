@@ -74,8 +74,17 @@ export interface CustomSite {
   readonly kind: CustomSiteKind;
   readonly q: number;
   readonly r: number;
-  /** Towns: the empire (player slot) that starts with it. Prisons: the empire whose pantheon the captive comes from (default: the nearest town's). */
+  /**
+   * Towns: the empire (player slot) that starts with it; absent = an unowned town
+   * (2026-10-07: no owner, no hero, held by its own militia). Prisons: the empire
+   * whose pantheon the captive comes from (default: the nearest town's).
+   */
   readonly owner?: number;
+  /**
+   * Unowned towns: their pantheon — 'nearest' (the nearest empire's, the default),
+   * 'other' (one no empire plays, else not the nearest empire's) or a pantheon ID.
+   */
+  readonly pantheon?: string;
   readonly name?: string;
   readonly guard?: CustomGuard | null;
   /** Portals: the twin portal's site ID. */

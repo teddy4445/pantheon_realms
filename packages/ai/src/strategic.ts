@@ -52,6 +52,7 @@ import { campCandidates, godCandidates, interventionCandidates,
   giftCandidates, mapEventCandidates, offeringCandidates, siteCandidates, trainingCandidates } from './services';
 import { equipCandidates, levelUpCandidates, merchantCandidates, movementSpellCandidate, recallSpellCandidate, scoutingSpellCandidate, specialtyHireValue } from './growth';
 import { aiPersonalityFor, aiTemperamentFor, temperBuildScore } from './temperament';
+import { courierMove, handOffTransfer, handOffsActive, isCourier, mainHero } from './handoff';
 import type { AITemperamentDefinition } from '@pr/rules';
 
 /**
@@ -278,10 +279,23 @@ interface Target {
   readonly town?: boolean;
 }
 
+/** Days after losing a town during which the empire counterattacks it (2026-10-07). */
+const RETAKE_DAYS = 21;
+/** A lost town is worth this much more to retake… */
+const RETAKE_VALUE = 1.6;
+/** …and is besieged at closer odds (never below even). */
+const RETAKE_MARGIN = 0.85;
+
+/** Towns this empire lost recently and has not retaken (public: ownership changes are seen by all). */
+export function recentlyLostTowns(belief: MatchState, playerId: PlayerId): Set<string> {
+  return new Set((belief.players[playerId]?.lostTowns ?? []).filter((x) => belief.day - x.day <= RETAKE_DAYS && belief.towns[x.townId]?.ownerId !== playerId).map((x) => x.townId));
+}
+
 function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): Target[] {
   const out: Target[] = [];
   const mission = requireScenarioMission(catalog, belief);
   const persona = aiPersonalityFor(catalog, belief, playerId);
+  const lostTowns = recentlyLostTowns(belief, playerId);
   // Temperament: rival heroes, towns and mines are worth more (or less) to raiders.
   const raid = aiTemperamentFor(catalog, belief, playerId).aggression;
   const holdRelic = mission.victoryCondition?.type === 'hold_site' ? mission.victoryCondition.siteId : null;
@@ -310,14 +324,17 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
         const town = belief.towns[def.kind.townId];
         if (!town || town.ownerId === playerId) break;
         // An empire's last town ends it: worth half again as much (ownership is public).
-        const last = (!!town.ownerId && Object.values(belief.towns).filter((x) => x.ownerId === town.ownerId).length <= 1 ? 1.5 : 1) * (town.ownerId ? raid : 1);
+        // A town this empire just lost is worth more again, and taken back at closer odds.
+        const retake = lostTowns.has(town.id);
+        const siegeMargin = retake ? Math.max(1, persona.siegeMargin * RETAKE_MARGIN) : persona.siegeMargin;
+        const last = (!!town.ownerId && Object.values(belief.towns).filter((x) => x.ownerId === town.ownerId).length <= 1 ? 1.5 : 1) * (town.ownerId ? raid : 1) * (retake ? RETAKE_VALUE : 1);
         if (!visible.has(cellIndex(belief.world.map, town.coord))) {
           // Garrison unknown: approach (the real move is refused if it would start an unplanned
           // siege) only when strong enough for a typical garrison — half a week of the town's
           // tier 1–5 growth per week played, up to eight weeks. Weak heroes used to walk up,
           // see the walls, walk home and come back the next day for weeks on end.
           const prior = unseenGarrisonPrior(catalog, belief, town.pantheonId);
-          if (myStrength >= prior * persona.siegeMargin) out.push({ coord: def.coord, value: (myStrength >= 2 * prior * persona.siegeMargin ? 4000 : 2500) * last, encounter: false, label: town.name });
+          if (myStrength >= prior * siegeMargin) out.push({ coord: def.coord, value: (myStrength >= 2 * prior * siegeMargin ? 4000 : 2500) * last, encounter: false, label: town.name });
           break;
         }
         const garrison: StackSpec[] = town.garrison.slots.filter((x): x is NonNullable<typeof x> => !!x && x.count > 0).map((x) => ({ creatureId: x.creatureId, count: x.count }));
@@ -329,7 +346,7 @@ function heroTargets(catalog: ContentCatalog, belief: MatchState, playerId: Play
         // Siege: walls, keep and towers favour the defender; demand a clear margin.
         const defense = fightingStrength(catalog, garrison) + (visitor ? heroStrength(catalog, belief, visitor) : 0);
         const walls = 1 + 0.25 * townFortificationLevel(catalog, town);
-        if (myStrength >= defense * walls * persona.siegeMargin) {
+        if (myStrength >= defense * walls * siegeMargin) {
           out.push({ coord: def.coord, value: (8000 + defense * 0.3) * last, encounter: true, label: `Siege of ${town.name}`, town: true });
         }
         break;
@@ -764,6 +781,8 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
     out.push(...interventionCandidates(catalog, belief, playerId, strategic));
     out.push(...giftCandidates(catalog, belief, playerId, threatened));
     const plan = weekPlan(catalog, belief, playerId);
+    // One hero hire a week for every empire (owner request 2026-10-07): propose it at one town only.
+    let hireProposed = false;
     for (const town of playerTowns(belief, playerId)) {
       const underThreat = threatened.has(town.id);
       // Build: best-scoring legal next level of any location, keeping a Gold reserve.
@@ -782,7 +801,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         }
       }
       // Hire: returning heroes first, then new candidates, while keeping a reserve.
-      if (myHeroes.length < aiPersonalityFor(catalog, belief, playerId).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : hireReserve(plan, HIRE_RESERVE_GOLD))) {
+      if (!hireProposed && myHeroes.length < aiPersonalityFor(catalog, belief, playerId).targetHeroes && player.wallet.gold >= hireCost + (strategic.length === 0 ? 0 : hireReserve(plan, HIRE_RESERVE_GOLD))) {
         // Returning heroes first (they keep their levels), then new recruits by specialty value.
         const roster = [...(obs.hireRoster[town.id] ?? [])].sort(
           (a, b) =>
@@ -793,6 +812,7 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
         for (const option of roster) {
           if (quoteHireHero(catalog, belief, playerId, town.id, option.definitionId).legal) {
             out.push({ kind: 'HireHero', townId: town.id, heroDefinitionId: option.definitionId });
+            hireProposed = true;
             break;
           }
         }
@@ -822,11 +842,31 @@ export function strategicCandidates(catalog: ContentCatalog, obs: AIObservation)
     }
   }
 
+  // Late game (2026-10-07): secondary heroes carry their armies to the main hero.
+  const couriers = new Map<string, HeroState>();
+  if (player.role !== 'scripted_hostile' && handOffsActive(catalog, belief, strategic)) {
+    const main = mainHero(catalog, belief, strategic);
+    if (main) {
+      for (const h of strategic) {
+        if (holding.has(h.id) || !isCourier(catalog, belief, h, main)) continue;
+        const give = handOffTransfer(catalog, belief, playerId, h, main.hero);
+        if (give) out.push(give);
+        else couriers.set(h.id, main.hero);
+      }
+    }
+  }
+
   for (const hero of myHeroes) {
     if (holding.has(hero.id)) continue;
     if (hero.ai?.profile === 'patrol') {
       out.push(...patrolCandidates(catalog, belief, playerId, hero));
       continue;
+    }
+    const main = couriers.get(hero.id);
+    if (main) {
+      const mine = heroStrength(catalog, belief, hero);
+      const walk = courierMove(catalog, belief, hero, main, (stop) => !endangered(catalog, belief, playerId, stop, mine));
+      if (walk) out.push(walk);
     }
     const moves = movementCandidates(catalog, belief, playerId, hero);
     if (player.role !== 'scripted_hostile') out.push(...adventureSpellCandidates(catalog, belief, playerId, hero, moves[0], threatened));

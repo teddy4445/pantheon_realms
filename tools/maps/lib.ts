@@ -330,6 +330,44 @@ export class MapBuilder {
     });
   }
 
+  /**
+   * An unowned town for every empire (2026-10-07): on open ground already there
+   * (no terrain changes, so a map compiled without unowned towns stays exactly as
+   * before), `range` steps from empire 1's town and nearer to it than to any other,
+   * as far from every site as the map allows; one road from its gate to `homeGate`.
+   * The town has no owner; its pantheon is chosen when the map is set up.
+   */
+  unownedTown(homeGate: HexCoord, range: readonly [number, number], minGap = 3): this {
+    const home = this.siteCell(this.id('town', 0));
+    const towns = this.syms.map((_, k) => this.siteCell(this.id('town', k)));
+    const sites = this.sites.map((x) => ({ q: x.q, r: x.r }));
+    const d = (a: HexCoord, b: HexCoord) => Math.max(Math.abs(a.q - b.q), Math.abs(a.r - b.r), Math.abs(a.q + a.r - b.q - b.r));
+    const target = (range[0] + range[1]) / 2;
+    let best: { c: HexCoord; gap: number; off: number; key: string } | null = null;
+    for (let r = 0; r < this.rows; r++)
+      for (let q = 0; q < this.width; q++) {
+        const c = { q, r };
+        if (!this.inRect(c) || this.terrain(c) !== 'p') continue;
+        const dh = d(c, home);
+        if (dh < range[0] || dh > range[1]) continue;
+        if (towns.some((t, k) => k > 0 && d(c, t) < dh + 2)) continue;
+        if (!axialNeighbors(c).every((n) => this.passable(n))) continue;
+        const copies = this.copies(c);
+        if (copies.some((o) => !this.inRect(o) || this.terrain(o) !== 'p')) continue;
+        // Not on a road already laid (a town takes exactly one road, at its gate).
+        if (copies.some((o) => axialNeighbors(o).some((n) => this.roads.has(edgeKey(o, n))))) continue;
+        if (copies.some((o, i) => copies.some((p, j) => j > i && d(o, p) < 2 * minGap))) continue;
+        const gap = Math.min(...copies.flatMap((o) => sites.map((x) => d(o, x))));
+        if (gap < minGap) continue;
+        const cand = { c, gap: Math.min(gap, 6), off: Math.abs(dh - target), key: hexKey(c) };
+        if (!best || cand.gap > best.gap || (cand.gap === best.gap && (cand.off < best.off || (cand.off === best.off && cand.key < best.key)))) best = cand;
+      }
+    if (!best) throw new Error('No room for an unowned town');
+    this.site({ id: 'free_town', kind: 'town', at: this.pt(best.c) });
+    const gate = this.townGate('free_town', this.pt(homeGate));
+    return this.road(homeGate, gate);
+  }
+
   passable(c: HexCoord): boolean {
     const t = this.terrain(c);
     return t === 'p' || t === 'f' || t === 'r' || t === 's';

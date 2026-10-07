@@ -6,3 +6,6 @@ export * from './strategic';
 export * from './temperament';
 export * from './growth';
 export * from './controller';
+export * from './quickBattle';
+export * from './handoff';
+export * from './assessment';

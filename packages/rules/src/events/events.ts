@@ -65,7 +65,7 @@ export type GameEventPayload =
   | { kind: 'ArtifactUnequipped'; heroId: HeroId; artifactId: ArtifactId }
   | { kind: 'ExperienceGranted'; heroId: HeroId; amount: number; capped: boolean; total: number }
   | { kind: 'LevelUpPending'; heroId: HeroId; newLevel: number }
-  | { kind: 'HeroLeveled'; heroId: HeroId; level: number; primaryGain: HeroAttribute; skillId: SkillId | null; rank: number | null }
+  | { kind: 'HeroLeveled'; heroId: HeroId; level: number; primaryGain: HeroAttribute; skillId: SkillId | null; rank: number | null; /** A god's gift taken at this level (levels 10 and 15). */ perkId?: string | null }
   | { kind: 'HeroDefeated'; heroId: HeroId }
   | { kind: 'HeroRetreated'; heroId: HeroId }
   // Town services (proposed this build)
@@ -106,14 +106,18 @@ export type GameEventPayload =
   | { kind: 'BattleStackDestroyed'; stackId: BattleStackId }
   | { kind: 'BattleEnded'; battleId: BattleId; winner: BattleSideId; outcome: string }
   | { kind: 'BattleDefendersSelected'; count: number; reserves: number }
+  /** Identical defender stacks combined before a siege (2026-10-07); `stacks` is how many became one. */
+  | { kind: 'BattleDefendersMerged'; creatureId: CreatureId; count: number; stacks: number }
   | { kind: 'BattleDeploymentStarted'; sides: BattleSideId[] }
   | { kind: 'BattleStackDeployed'; stackId: BattleStackId; to: BattleCell }
   | { kind: 'BattleDeploymentConfirmed'; side: BattleSideId }
   | { kind: 'SiegeStructureDamaged'; structureId: string; source: 'catapult' | 'creature'; hp: number; attackerId: BattleStackId | null }
   | { kind: 'SiegeStructureDestroyed'; structureId: string }
   | { kind: 'SiegeTurretShot'; structureId: string; targetId: BattleStackId; damage: number; killed: number; targetRemaining: number }
+  /** The attacker chose the Catapult's target (2026-10-07). */
+  | { kind: 'SiegeCatapultAimed'; structureId: string }
   | { kind: 'SiegeMoatDamage'; stackId: BattleStackId; damage: number; killed: number; targetRemaining: number }
-  | { kind: 'TownCaptured'; townId: TownId; playerId: PlayerId }
+  | { kind: 'TownCaptured'; townId: TownId; playerId: PlayerId; /** The previous owner (null: unowned). */ fromPlayerId?: PlayerId | null }
   // World map, interventions, story, outcome (proposed this build)
   | { kind: 'CampRecruited'; siteId: SiteId; heroId: HeroId; creatureId: CreatureId; quantity: number }
   | { kind: 'CampRestocked'; siteId: SiteId; stock: number }

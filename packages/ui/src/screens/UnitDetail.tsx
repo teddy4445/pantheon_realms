@@ -165,15 +165,14 @@ export function UnitDetailScreen() {
         </Panel>
         <div className="unit-viewer panel">
           <SceneViewport factory={factory} onController={onController} className="unit-viewer__scene" label={`${def.name} animated preview`} />
-          <span className="placeholder-tag unit-viewer__tag" data-testid="viewer-sprite-status" data-status={status.kind === 'ready' ? status.status : status.kind}>
-            {status.kind === 'ready'
-              ? status.status === 'final'
-                ? 'Final sprites'
-                : 'Placeholder sprites'
-              : status.kind === 'loading'
-                ? 'Loading sprites…'
-                : 'No sprites yet — portrait only'}
-          </span>
+          {/* Finished sprites carry no label (owner request 2026-10-07); stand-ins stay labelled. */}
+          {status.kind === 'ready' && status.status === 'final' ? (
+            <span hidden data-testid="viewer-sprite-status" data-status="final" />
+          ) : (
+            <span className="placeholder-tag unit-viewer__tag" data-testid="viewer-sprite-status" data-status={status.kind === 'ready' ? status.status : status.kind}>
+              {status.kind === 'ready' ? 'Placeholder sprites' : status.kind === 'loading' ? 'Loading sprites…' : 'No sprites yet — portrait only'}
+            </span>
+          )}
           <div className="unit-viewer__controls">
             <div className="anim-buttons" role="radiogroup" aria-label="Animation">
               {states.map((st) => {

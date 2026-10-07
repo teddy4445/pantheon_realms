@@ -180,8 +180,10 @@ export function levelUpCandidates(catalog: ContentCatalog, belief: MatchState, p
   for (const d of belief.pendingDecisions) {
     const hero = belief.heroes[d.heroId];
     if (!hero || hero.ownerId !== playerId) continue;
+    const perkIndex = d.perkOffers?.length ? bestPerk(catalog, hero, d.perkOffers, magic) : null;
+    const perk = perkIndex !== null ? { perkIndex } : {};
     if (d.offers.length === 0) {
-      out.push({ kind: 'ChooseLevelUp', decisionId: d.decisionId, offerIndex: null });
+      out.push({ kind: 'ChooseLevelUp', decisionId: d.decisionId, offerIndex: null, ...perk });
       continue;
     }
     let best = 0;
@@ -193,9 +195,32 @@ export function levelUpCandidates(catalog: ContentCatalog, belief: MatchState, p
         best = i;
       }
     });
-    out.push({ kind: 'ChooseLevelUp', decisionId: d.decisionId, offerIndex: best });
+    out.push({ kind: 'ChooseLevelUp', decisionId: d.decisionId, offerIndex: best, ...perk });
   }
   return out;
+}
+
+/** How much a god's gift is worth to this hero (fighting gifts for fighters, spell gifts for spellcasters; 2026-10-07). */
+const PERK_VALUE: Readonly<Record<string, number>> = {
+  might: 10, guard: 9, strategy: 9.5, swift: 8, majesty: 7, plenty: 7, healing: 7, glory: 6, fortune: 6, travel: 6, horizon: 6, hunt: 5, afterlife: 5, sorcery: 5, lore: 5, renewal: 4, storm: 4, watch: 3,
+};
+
+function bestPerk(catalog: ContentCatalog, hero: HeroState, offers: readonly string[], magic: number): number {
+  const shooters = hero.army.slots.filter((s) => s && catalog.creatures[s.creatureId]?.abilityIds.some((a) => catalog.abilities[a]?.rule.type === 'shooter')).length;
+  const caster = hero.spellbook ? 1 + Math.max(0, magic) : 0;
+  let best = 0;
+  let bestV = -Infinity;
+  offers.forEach((id, i) => {
+    const theme = catalog.godPerks?.[id]?.theme ?? '';
+    let v = PERK_VALUE[theme] ?? 0;
+    if (theme === 'sorcery' || theme === 'storm' || theme === 'lore' || theme === 'renewal') v += 4 * caster;
+    if (theme === 'hunt') v += 2 * shooters;
+    if (v > bestV || (v === bestV && id < (offers[best] ?? ''))) {
+      bestV = v;
+      best = i;
+    }
+  });
+  return best;
 }
 
 // ---------------------------------------------------------------------------

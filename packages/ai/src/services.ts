@@ -23,6 +23,7 @@ import {
   hexEquals,
   offeringRule,
   playerTowns,
+  axialDistance,
   quoteGodSelection,
   quoteOffering,
   quoteTraining,
@@ -35,6 +36,7 @@ import {
   type PlayerId, heroInTown,
 } from '@pr/rules';
 import { aiTemperamentFor, faithFavorGoal } from './temperament';
+import { lateInWeek } from './handoff';
 
 /** Rough value of a blessing for an AI empire (higher is better). */
 export function effectScore(e: EffectDefinition): number {
@@ -249,9 +251,35 @@ function favorSpare(catalog: ContentCatalog, belief: MatchState, playerId: Playe
   return player.wallet.favor - (committedAll ? 0 : FAVOR_RESERVE_FOR_GODS);
 }
 
-/** Adventure interventions (at most one a week): extra recruits, then resources, then movement. */
+/** How near (hexes, about two days' march) an enemy army or town must be for the week's miracle to be kept for battle. */
+const DECISIVE_RADIUS = 16;
+
+/**
+ * A battle that matters may come this week (2026-10-07): an enemy empire's hero
+ * or town within about two days of one of our heroes, or an enemy hero that
+ * near one of our towns. Uses the belief only (visible heroes, known towns).
+ */
+export function decisiveBattleNear(belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): boolean {
+  const enemyHeroes = Object.values(belief.heroes).filter((h) => h.status === 'active' && !h.monster && h.ownerId !== playerId && belief.players[h.ownerId]?.role !== 'scripted_hostile');
+  const enemyTowns = Object.values(belief.towns).filter((t) => t.ownerId && t.ownerId !== playerId);
+  const ours = playerTowns(belief, playerId);
+  for (const h of heroes) {
+    if (enemyHeroes.some((e) => axialDistance(e.position, h.position) <= DECISIVE_RADIUS)) return true;
+    if (enemyTowns.some((t) => axialDistance(t.coord, h.position) <= DECISIVE_RADIUS)) return true;
+  }
+  return ours.some((t) => enemyHeroes.some((e) => axialDistance(e.position, t.coord) <= DECISIVE_RADIUS));
+}
+
+/**
+ * Adventure interventions (at most one a week): extra recruits, then resources,
+ * then movement. The gods answer once a week, battle or map alike, so while a
+ * battle that matters may come the miracle is kept for it (2026-10-07) — until
+ * the last two days of the week, when an unused miracle is spent here.
+ */
 export function interventionCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, heroes: readonly HeroState[]): CommandPayload[] {
   if (interventionUsedThisWeek(catalog, belief, playerId)) return [];
+  const hasBattleMiracle = interventionsFor(catalog, belief, playerId).some((d) => d.context === 'battle');
+  if (hasBattleMiracle && !lateInWeek(catalog, belief) && decisiveBattleNear(belief, playerId, heroes)) return [];
   const spare = favorSpare(catalog, belief, playerId);
   const options = interventionsFor(catalog, belief, playerId).filter((d) => d.context === 'adventure' && d.favorCost <= spare);
   const scored: { score: number; payload: CommandPayload }[] = [];

@@ -15,7 +15,7 @@ import { cellEquals, cellKey, footprintCells, type BattleCell } from '../../core
 import type { ContentCatalog } from '../../definitions/catalog';
 import type { StackSpec } from '../../definitions/world';
 import type { BattleSideId, BattleStackState, BattleState, DefenderSelectionState } from '../../state/match';
-import { skillValue } from '../../resolvers/heroes';
+import { armyCompositionMorale, skillValue } from '../../resolvers/heroes';
 import { reject, type Tx } from '../../engine/tx';
 import { footprintFree, isAlive, occupancy, requireBattle, sideStacks, stackCells, statsOf } from './common';
 import { beginRounds } from './flow';
@@ -232,10 +232,61 @@ export function applyDefenderSelection(tx: Tx, battle: BattleState, sel: Defende
   placeStacks(tx, battle, 'defender', entries);
   if (battle.siege) battle.siege.reserves = reserves;
   battle.selection = null;
-  const pantheons = new Set(entries.map((e) => tx.catalog.creatures[e.spec.creatureId]?.pantheonId ?? null));
-  const only = pantheons.size === 1 ? [...pantheons][0] : null;
-  battle.sides.defender.factionMorale = only ? tx.profile.combat.sameFactionMorale : 0;
+  battle.sides.defender.factionMorale = armyCompositionMorale(tx.catalog, entries.map((e) => e.spec.creatureId)).value;
   tx.emit({ kind: 'BattleDefendersSelected', count: entries.length, reserves: reserves.length });
+}
+
+/**
+ * Combine identical defender stacks (same creature and form) of the garrison and
+ * the visiting hero before a siege (2026-10-07). Each group becomes one stack in
+ * the visiting hero's army when the hero has that creature (the hero keeps an
+ * army), otherwise in the first garrison slot. The move is persistent, like an
+ * exchange of troops: if the town holds, the merged creatures stay where they
+ * were combined. Returns the number of stacks removed.
+ */
+export function mergeDefenderCandidates(tx: Tx, battle: BattleState, sel: DefenderSelectionState): number {
+  const town = battle.siege ? tx.state.towns[battle.siege.townId] : undefined;
+  const hero = battle.encounter.defenderHeroId ? tx.state.heroes[battle.encounter.defenderHeroId] : undefined;
+  const armyOf = (source: 'hero' | 'garrison') => (source === 'garrison' ? town?.garrison : hero?.army);
+  const groups = new Map<string, number[]>();
+  sel.candidates.forEach((c, i) => groups.set(c.creatureId, [...(groups.get(c.creatureId) ?? []), i]));
+  const drop = new Set<number>();
+  for (const [creatureId, idx] of groups) {
+    if (idx.length < 2) continue;
+    const into = idx.find((i) => sel.candidates[i]!.source === 'hero') ?? idx[0]!;
+    const target = sel.candidates[into]!;
+    const targetSlot = armyOf(target.source)?.slots[target.slot];
+    if (!targetSlot) continue;
+    let moved = 0;
+    for (const i of idx) {
+      if (i === into) continue;
+      const c = sel.candidates[i]!;
+      const army = armyOf(c.source);
+      const slot = army?.slots[c.slot];
+      if (!army || !slot || slot.creatureId !== creatureId) continue;
+      targetSlot.count += slot.count;
+      target.count += slot.count;
+      army.slots[c.slot] = null;
+      drop.add(i);
+      moved += 1;
+    }
+    if (moved > 0) tx.emit({ kind: 'BattleDefendersMerged', creatureId: creatureId as never, count: target.count, stacks: moved + 1 });
+  }
+  if (drop.size > 0) sel.candidates = sel.candidates.filter((_, i) => !drop.has(i));
+  return drop.size;
+}
+
+export function commitBattleMergeDefenders(tx: Tx): void {
+  const battle = requireBattle(tx.state);
+  const sel = battle.selection;
+  if (battle.phase !== 'selection' || !sel) reject('illegal_action', 'No defender selection is pending');
+  requireControl(tx, battle, 'defender');
+  if (mergeDefenderCandidates(tx, battle, sel) === 0) reject('illegal_action', 'No identical stacks to combine');
+  // Seven or fewer stacks left: all of them defend, as when no choice was needed.
+  if (sel.candidates.length <= sel.max) {
+    applyDefenderSelection(tx, battle, sel, sel.candidates.map((_, i) => i));
+    finishSetup(tx, battle);
+  }
 }
 
 export function commitBattleSelectDefenders(tx: Tx, picks: readonly number[]): void {

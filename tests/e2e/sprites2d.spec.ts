@@ -28,7 +28,7 @@ const MANIFEST = JSON.parse(readFileSync('assets-runtime/sprites/manifest.json',
 /** A creature form still drawn as a procedural silhouette (none since the owner's delivery of 2026-10-04; kept for re-checks). */
 const SILHOUETTE = Object.entries(MANIFEST.creatures).find(([, c]) => c.status === 'placeholder' && c.provenance.startsWith('Procedural silhouette'))?.[0] ?? null;
 /** The viewer's sprite tag for a creature, from the game's own manifest. */
-const statusText = (id: string): string => (MANIFEST.creatures[id]?.status === 'final' ? 'Final sprites' : 'Placeholder sprites');
+const statusOf = (id: string): string => (MANIFEST.creatures[id]?.status === 'final' ? 'final' : 'placeholder');
 const ownsStrip = (id: string, anim: string): 'yes' | 'no' => (MANIFEST.creatures[id]?.animations[anim] ? 'yes' : 'no');
 
 const stacks = (page: Page): Promise<Record<string, StackDebug> | null> => page.evaluate(() => (globalThis as unknown as { __prBattle: () => Record<string, StackDebug> | null }).__prBattle());
@@ -44,7 +44,9 @@ test('bestiary: the animated 2D viewer plays the states this creature has, switc
   await page.getByTestId('menu-encyclopedia').click();
   // A shooter: one button per state it has (shoot, no flight), each marked by whether it has its own strip.
   await page.getByTestId('codex-peltast').click();
-  await expect(page.getByTestId('viewer-sprite-status')).toHaveText(statusText('peltast'), { timeout: 20_000 });
+  await expect(page.getByTestId('viewer-sprite-status')).toHaveAttribute('data-status', statusOf('peltast'), { timeout: 20_000 });
+  // Finished sprites carry no label (owner request 2026-10-07).
+  await expect(page.getByText('Final sprites')).toHaveCount(0);
   for (const s of ['idle', 'move', 'attack', 'shoot', 'defend', 'hit', 'death', 'victory']) await expect(page.getByTestId(`anim-${s}`)).toBeVisible();
   await expect(page.getByTestId('anim-takeoff')).toHaveCount(0);
   await expect(page.getByTestId('anim-idle')).toHaveAttribute('data-own', ownsStrip('peltast', 'idle'));
@@ -60,7 +62,7 @@ test('bestiary: the animated 2D viewer plays the states this creature has, switc
   await page.getByTestId('codex-veteran_peltast').click();
   expect((await inspect(page)).screen).toBe('unit-detail');
   await expect(page.locator('.screen-header__title')).toHaveText('Veteran Peltast');
-  await expect(page.getByTestId('viewer-sprite-status')).toHaveText(statusText('veteran_peltast'));
+  await expect(page.getByTestId('viewer-sprite-status')).toHaveAttribute('data-status', statusOf('veteran_peltast'));
   // A form still drawn as an animated silhouette, when one is left (none since the 2026-10-04 delivery).
   if (!SILHOUETTE) {
     expect(failed).toEqual([]);
@@ -82,7 +84,7 @@ test('bestiary under reduced motion shows a still and plays only on demand', asy
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-encyclopedia').click();
   await page.getByTestId('codex-hoplite').click();
-  await expect(page.getByTestId('viewer-sprite-status')).toHaveText(statusText('hoplite'), { timeout: 20_000 });
+  await expect(page.getByTestId('viewer-sprite-status')).toHaveAttribute('data-status', statusOf('hoplite'), { timeout: 20_000 });
   await expect(page.getByText(/Reduced motion: a still picture/)).toBeVisible();
   await expect(page.getByRole('switch', { name: 'Autoplay' })).toBeDisabled();
   await page.getByTestId('anim-attack').click();

@@ -17,7 +17,7 @@
 import { Container, FillPattern, Graphics, Matrix, Rectangle, Sprite, Texture, type FillStyle } from 'pixi.js';
 import { TERRAIN_BY_CODE, TERRAIN_CODES, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
-import { planNatureSceneryCached, type NatureItem, type NaturePlan } from './nature';
+import { facesLeft, planNatureSceneryCached, type NatureItem, type NaturePlan } from './nature';
 import type { EngineHost, SceneController } from './engineHost';
 import { MAP_SQUASH, SQRT3, axialPoint, directionOf, hexPolygon, pointAxial, pointAxialFraction, type MapDirection } from './hexmath';
 import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
@@ -29,9 +29,9 @@ import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, ty
 import { loadStrip, loadTexture, stripFrames } from './textures';
 import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
 import { FxPainter, type FxTarget } from './fx';
-import { PLANK_COLOR, ROAD_PARTS, ROAD_STEP, marksAlong, offsetRun, roadRuns, roadStyleFor, roadTileSlot, roadTypeFor, smoothRun, type RoadPoint, type RoadType } from './roads';
+import { PLANK_COLOR, ROAD_PARTS, ROAD_STEP, marksAlong, offsetRun, roadRuns, roadStyleFor, roadTileSlot, roadTypeFor, smoothRoadTypes, smoothRun, type RoadPoint, type RoadType } from './roads';
 import type { FxLook } from './fxLooks';
-import { groundEdgesComplete, groundEdgesUsable, groundPieceOutlines, planGroundEdges, type GroundEdgePiece } from './groundEdges';
+import { groundCornerOutlines, groundEdgesComplete, groundEdgesUsable, groundPieceOutlines, planGroundCorners, planGroundEdges, type GroundEdgePiece } from './groundEdges';
 
 /**
  * Nominal map time per hex step (ms, before the Adventure animation speed
@@ -520,17 +520,24 @@ export class AdventureSceneController implements SceneController {
       return false;
     }
     const rows = data.characters['shore']?.[0]?.length ?? 3;
-    const pieces = planGroundEdges(map.width, map.height, (q, r) => this.terrainOf(map, r * map.width + q), NEIGHBOUR_STEP, rows);
+    // Varied borders (owner request 2026-10-07): reach, mirroring and the lower ground reaching back differ along a border and by map.
+    const pieces = planGroundEdges(map.width, map.height, (q, r) => this.terrainOf(map, r * map.width + q), NEIGHBOUR_STEP, rows, { salt: map.seed | 0 });
     // One fill per reaching ground and outline level, outer (faint) levels first.
     const batches = new Map<string, { from: Terrain; level: number; polys: number[][] }>();
+    const add = (from: Terrain, level: number, points: number[]) => {
+      const key = `${level}|${from}`;
+      let b = batches.get(key);
+      if (!b) batches.set(key, (b = { from, level, polys: [] }));
+      b.polys.push(points);
+    };
+    // Rounded corners first (a border bends instead of stepping hex by hex), then the painted edge shapes over them.
+    for (const p of planGroundCorners(map.width, map.height, (q, r) => this.terrainOf(map, r * map.width + q), NEIGHBOUR_STEP, map.seed | 0)) {
+      const c = this.hexCenter({ q: p.q, r: p.r });
+      for (const o of groundCornerOutlines(p, c.x, c.y, HEX_W, data.levels.length)) add(p.from, o.level, o.points);
+    }
     for (const p of pieces) {
       const c = this.hexCenter({ q: p.q, r: p.r });
-      for (const o of groundPieceOutlines(data, p, c.x, c.y, HEX_W)) {
-        const key = `${o.level}|${p.from}`;
-        let b = batches.get(key);
-        if (!b) batches.set(key, (b = { from: p.from, level: o.level, polys: [] }));
-        b.polys.push(o.points);
-      }
+      for (const o of groundPieceOutlines(data, p, c.x, c.y, HEX_W)) add(p.from, o.level, o.points);
     }
     const g = this.terrainBlend;
     for (const b of [...batches.values()].sort((x, y) => x.level - y.level)) {
@@ -586,9 +593,14 @@ export class AdventureSceneController implements SceneController {
   }
 
   /** How the ground borders and roads are drawn right now (read-only diagnostics for tests): painted road tiles drawn, if any. */
-  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number } {
-    return { ...this.groundMode, roadTiles: this.roadTiles.children.length };
+  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number; roadTypes: Record<string, number>; roadTileTypes: Record<string, string> } {
+    const roadTypes: Record<string, number> = {};
+    for (const t of Object.values(this.roadTileTypes)) roadTypes[t] = (roadTypes[t] ?? 0) + 1;
+    return { ...this.groundMode, roadTiles: this.roadTiles.children.length, roadTypes, roadTileTypes: { ...this.roadTileTypes } };
   }
+
+  /** The material of every painted road tile now drawn, by `q,r` (read-only diagnostics). */
+  private roadTileTypes: Record<string, string> = {};
 
   /**
    * Slightly softened borders between grounds (owner request 2026-10-05: smooth
@@ -752,6 +764,8 @@ export class AdventureSceneController implements SceneController {
     ids: string[];
     water: { kind: string | null; area: number; boundary: boolean; maxClearance: number }[];
     waterItems: { id: string; tile: number; body: string | null; area: number }[];
+    /** Location guards drawn beside their sites and whether each faces left (mirrored). */
+    guards: { id: string; mirrored: boolean }[];
   } {
     const plan = this.naturePlan;
     const byRole: Record<string, number> = {};
@@ -788,6 +802,7 @@ export class AdventureSceneController implements SceneController {
           const c = plan!.water.components[plan!.water.componentOf[it.tile]!]!;
           return { id: it.id, tile: it.tile, body: c.kind, area: c.area };
         }),
+      guards: [...this.sites.entries()].filter(([, e]) => !!e.guard).map(([id, e]) => ({ id, mirrored: e.guard!.mirror })),
     };
   }
 
@@ -889,6 +904,20 @@ export class AdventureSceneController implements SceneController {
    * roads; until then (or without them) the roads are drawn by code. Returns
    * whether the tiles were drawn.
    */
+  private roadMaterialCache: { map: WorldMapDefinition; types: Map<string, RoadType> } | null = null;
+
+  private roadMaterials(map: WorldMapDefinition): Map<string, RoadType> {
+    if (this.roadMaterialCache?.map === map) return this.roadMaterialCache.types;
+    const edges = map.roads.map((k) => k.split('|') as [string, string]);
+    const raw = (key: string): RoadType => {
+      const [q, r] = key.split(',').map(Number);
+      return roadTypeFor(map.biome, this.terrainOf(map, r! * map.width + q!));
+    };
+    const types = smoothRoadTypes(edges, raw);
+    this.roadMaterialCache = { map, types };
+    return types;
+  }
+
   private drawRoadTiles(map: WorldMapDefinition, explored: readonly number[]): boolean {
     const sheets = spriteManifest().roads;
     if (!sheets || map.roads.length === 0) return false;
@@ -906,7 +935,9 @@ export class AdventureSceneController implements SceneController {
       masks.set(ia, (masks.get(ia) ?? 0) | (1 << da));
       masks.set(ib, (masks.get(ib) ?? 0) | (1 << db));
     }
-    const typeOf = (i: number): RoadType => roadTypeFor(map.biome, this.terrainOf(map, i));
+    // One material per stretch of road (smoothRoadTypes), over every road of the map so the fog never changes a tile.
+    const smooth = this.roadMaterials(map);
+    const typeOf = (i: number): RoadType => smooth.get(`${i % map.width},${Math.floor(i / map.width)}`) ?? roadTypeFor(map.biome, this.terrainOf(map, i));
     const types = new Set<RoadType>();
     for (const i of masks.keys()) types.add(typeOf(i));
     const keys = [...types].flatMap((t) => ROAD_PARTS.map((p) => `${t}.${p}`));
@@ -942,6 +973,7 @@ export class AdventureSceneController implements SceneController {
       sp.position.set(x, y);
       sp.scale.set(HEX_W / def.hexWidth);
       this.roadTiles.addChild(sp);
+      this.roadTileTypes[`${i % map.width},${Math.floor(i / map.width)}`] = typeOf(i);
     }
     return true;
   }
@@ -950,6 +982,7 @@ export class AdventureSceneController implements SceneController {
     const g = this.roads;
     g.clear();
     for (const c of this.roadTiles.removeChildren()) c.destroy();
+    this.roadTileTypes = {};
     if (this.drawRoadTiles(map, explored)) return;
     const edges: [string, string][] = [];
     for (const k of map.roads) {
@@ -1153,7 +1186,8 @@ export class AdventureSceneController implements SceneController {
         }
         e.bannerKey = bk;
       }
-      // The strongest guard stands beside the location, facing the visitor.
+      // The strongest guard stands beside the location, facing left or right by a
+      // stable hash of the location (owner request 2026-10-07: not all one way).
       const gk = v.guard ?? '';
       if (gk !== e.guardKey) {
         e.guard?.destroy();
@@ -1161,7 +1195,7 @@ export class AdventureSceneController implements SceneController {
         if (v.guard) {
           const f = new SpriteFigure({ set: creatureSprites(v.guard), hexWidth: HEX_W, size: 0.62, accent: 0x7a2f2a });
           f.view.position.set(HEX_W * 0.34, R * S * 0.1);
-          f.mirror = true;
+          f.mirror = facesLeft('guard', v.id);
           e.root.addChild(f.view);
           e.guard = f;
         }
@@ -1243,6 +1277,9 @@ export class AdventureSceneController implements SceneController {
           root.position.copyFrom(old.root.position);
           figure.mirror = old.figure.mirror;
           this.disposeHero(old);
+        } else if (monster) {
+          // A wandering band at rest faces either way (stable per band); walking turns it as before.
+          figure.mirror = facesLeft('monster', v.id);
         }
         this.objects.addChild(root);
         this.heroes.set(v.id, e);

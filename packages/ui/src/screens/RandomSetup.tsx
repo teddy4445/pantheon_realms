@@ -31,6 +31,7 @@ import {
   type SkirmishVictory,
   type StartWealth,
   type TreasureLevel,
+  type UnownedTowns,
 } from '@pr/session';
 import { RESOURCE_KEYS, RESOURCE_LABELS } from '@pr/rules';
 import { useStore } from '../app/context';
@@ -71,6 +72,7 @@ export function RandomSetupScreen() {
   const [revealMap, setRevealMap] = useState(false);
   const [portals, setPortals] = useState(true);
   const [climateRules, setClimateRules] = useState(true);
+  const [unownedTowns, setUnownedTowns] = useState<UnownedTowns>('none');
   const [aiTemperaments, setAiTemperaments] = useState(true);
   const [rotating, setRotating] = useState(true);
   const [difficulty, setDifficulty] = useState('normal');
@@ -102,6 +104,7 @@ export function RandomSetupScreen() {
     climateRules,
     aiTemperaments,
     ...(turnOrder ? { turnOrder } : {}),
+    ...(unownedTowns !== 'none' ? { unownedTowns } : {}),
   };
   const optionsKey = JSON.stringify(options);
   // A generator error is shown until a setting changes.
@@ -262,6 +265,26 @@ export function RandomSetupScreen() {
                   <Toggle checked={climateRules} onChange={setClimateRules} label="Climate rules" />
                   <span className="small">Climate rules — the map’s weather changes every battle a little, for both sides alike: fog shortens shots, sand slows the ground troops, storms keep flyers low.</span>
                 </div>
+              </div>
+              <div className="setting-block">
+                <div className="setting-block__label">Unowned towns</div>
+                <Segmented
+                  label="Unowned towns"
+                  value={unownedTowns}
+                  options={[
+                    { id: 'none', label: 'None' },
+                    { id: 'own', label: 'Same pantheon' },
+                    { id: 'other', label: 'Other pantheon' },
+                    { id: 'both', label: 'Both' },
+                  ]}
+                  onChange={setUnownedTowns}
+                  testId="random-unowned"
+                />
+                <p className="small faint setting-block__details" data-testid="random-unowned-text">
+                  {unownedTowns === 'none'
+                    ? 'Every town on the map starts with an empire.'
+                    : `${unownedTowns === 'both' ? 'Two towns' : 'A town'} in each empire’s outer lands start${unownedTowns === 'both' ? '' : 's'} without a lord or a hero, held by ${unownedTowns === 'both' ? 'their' : 'its'} own militia — ${unownedTowns === 'own' ? 'of the empire’s own pantheon' : unownedTowns === 'other' ? 'of another pantheon' : 'one of the empire’s own pantheon, one of another'}. Take ${unownedTowns === 'both' ? 'them' : 'it'} to build and recruit there.`}
+                </p>
               </div>
             </div>
 

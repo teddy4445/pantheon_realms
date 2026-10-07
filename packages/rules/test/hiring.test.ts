@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
-import { HIRE_STARTING_TROOPS, hireCandidates, hireOptions, quoteHireHero, townGate, type MatchState } from '../src';
+import { HIRE_STARTING_TROOPS, heroHiredThisWeek, hireCandidates, hireOptions, quoteHireHero, townGate, weekOf, type MatchState } from '../src';
 
 const aiTurn = (s: MatchState) => !!s.battle?.activeStackId && s.battle.sides[s.battle.stacks[s.battle.activeStackId]!.side].controller === 'ai';
 
@@ -61,5 +61,29 @@ describe('hero hiring (Tavern)', () => {
     expect(back.movementPoints).toBe(0);
     expect(back.army.slots[0]).toMatchObject({ creatureId: 'hoplite', count: 1 });
     expect(d.player.wallet.gold).toBe(gold - d.catalog.rulesProfile.heroHireCost);
+  });
+
+  it('allows one hire per player per week (owner request 2026-10-07)', () => {
+    const d = GameDriver.mission(SKIRMISH);
+    const playerId = d.state.playerOrder[0]!;
+    const town = Object.values(d.state.towns).find((t) => t.ownerId === playerId)!;
+    const hero = Object.values(d.state.heroes).find((h) => h.ownerId === playerId)!;
+    d.marchTo({ q: town.coord.q + 2, r: town.coord.r }, hero.id);
+    d.player.wallet.gold = 50_000;
+    const [first, second] = hireCandidates(d.catalog, d.state, town.id);
+    expect(second).toBeTruthy();
+    d.do({ kind: 'HireHero', townId: town.id, heroDefinitionId: first! });
+    expect(heroHiredThisWeek(d.catalog, d.state, playerId)).toBe(true);
+    // Move the new hero off the town tile so only the weekly limit refuses the second hire.
+    const hired = Object.values(d.state.heroes).find((h) => h.definitionId === first)!;
+    d.marchTo({ q: town.coord.q + 1, r: town.coord.r + 1 }, hired.id);
+    const q = quoteHireHero(d.catalog, d.state, playerId, town.id, second!);
+    expect(q).toMatchObject({ legal: false, code: 'already_done', reason: 'One hero per week' });
+    expect(d.reject({ kind: 'HireHero', townId: town.id, heroDefinitionId: second! }).code).toBe('already_done');
+    // The next week the Tavern hires again.
+    const week = weekOf(d.state.day, d.catalog.rulesProfile.daysPerWeek);
+    while (weekOf(d.state.day, d.catalog.rulesProfile.daysPerWeek) === week) d.endDay();
+    expect(heroHiredThisWeek(d.catalog, d.state, playerId)).toBe(false);
+    expect(quoteHireHero(d.catalog, d.state, playerId, town.id, second!).code).not.toBe('already_done');
   });
 });

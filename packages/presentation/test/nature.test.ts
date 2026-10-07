@@ -333,3 +333,16 @@ describe('the remembered plan', () => {
     expect(JSON.stringify(planNatureSceneryCached(map, { decor: 'all', artKey: '318' }).items)).toBe(JSON.stringify(planNatureScenery(map, { decor: 'all' }).items));
   });
 });
+
+describe('map creature facing (owner request 2026-10-07)', () => {
+  it('faces both ways, about half each, stably per ID', async () => {
+    const { facesLeft } = await import('../src/nature');
+    const ids = Array.from({ length: 400 }, (_, i) => `site_${i}`);
+    const left = ids.filter((id) => facesLeft('guard', id)).length;
+    expect(left).toBeGreaterThan(400 * 0.4);
+    expect(left).toBeLessThan(400 * 0.6);
+    for (const id of ids.slice(0, 20)) expect(facesLeft('guard', id)).toBe(facesLeft('guard', id));
+    // Neighbouring IDs are not all one way.
+    expect(new Set(['sk_mine_w', 'sk_mine_e', 'sk_gold', 'sk_crystal_w', 'sk_crystal_e', 'sk_sawmill_w', 'sk_sawmill_e'].map((id) => facesLeft('guard', id))).size).toBe(2);
+  });
+});

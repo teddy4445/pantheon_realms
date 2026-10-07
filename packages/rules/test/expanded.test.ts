@@ -72,6 +72,32 @@ describe('divine interventions', () => {
     expect(interventionsFor(norse.catalog, norse.state, 'player').map((x) => x.id)).toContain('ride_of_the_valkyries');
   });
 
+  it('every miracle a pantheon is offered is its own: its signature, or a shared one under its own god’s name (2026-10-07)', () => {
+    const pantheons = ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'];
+    const seen = new Map<string, string>();
+    for (const p of pantheons) {
+      const d = GameDriver.mission(p === 'greek' ? 'skirmish_twin_harbors' : `skirmish_twin_harbors_${p}_vs_greek`);
+      const list = interventionsFor(d.catalog, d.state, 'player');
+      expect(list.length).toBe(9);
+      for (const m of list) {
+        const base = d.catalog.interventions[m.id]!;
+        if (base.pantheonIds) expect(base.pantheonIds).toEqual([p]);
+        else {
+          expect(base.names?.[p], `${p} ${m.id}`).toBeTruthy();
+          expect(m.name).toBe(base.names![p]);
+          // Same effect, cost and target as the shared definition.
+          expect({ ...m, name: base.name }).toEqual(base);
+        }
+        // No two pantheons share a name for a miracle.
+        expect(seen.get(m.name), m.name).toBeUndefined();
+        seen.set(m.name, p);
+      }
+      expect(new Set(list.map((m) => m.name)).size).toBe(list.length);
+      // The quote names it the same way.
+      expect(quoteIntervention(d.catalog, d.state, 'player', 'tithe_of_the_faithful').def?.name).toBe(d.catalog.interventions['tithe_of_the_faithful']!.names![p]);
+    }
+  });
+
   it('town growth adds recruits to tier 1–3 families of the chosen town', () => {
     const d = twin();
     d.player.wallet.favor = 20;

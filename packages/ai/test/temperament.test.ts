@@ -22,6 +22,16 @@ function withTemperaments(s: MatchState, on: boolean): MatchState {
   return c;
 }
 
+/**
+ * The same match with Raiders that attack at smaller margins (boldness 0.95): the
+ * mechanism. The shipped Raiders keep the even margins since the 2026-10-07
+ * balance pass (they still value raids more and keep an extra hero).
+ */
+function boldRaiders(d: GameDriver): GameDriver {
+  const t = d.catalog.aiTemperaments!;
+  return new GameDriver(d.state, { ...d.catalog, aiTemperaments: { ...t, norse: { ...t['norse']!, boldness: 0.95 } } });
+}
+
 function rivalCandidates(d: GameDriver, s: MatchState): CommandPayload[] {
   return strategicCandidates(d.catalog, buildObservation(d.catalog, s, 'rival'));
 }
@@ -64,7 +74,9 @@ describe('AI temperaments (content data)', () => {
   });
 
   it('scales the difficulty margins by boldness, never below 1, and adds the extra hero', () => {
-    const d = GameDriver.mission(mission('greek', 'norse'));
+    const shipped = GameDriver.mission(mission('greek', 'norse'));
+    expect(aiPersonalityFor(shipped.catalog, shipped.state, 'rival').heroAttackMargin).toBe(aiPersonality(shipped.catalog, shipped.state).heroAttackMargin);
+    const d = boldRaiders(shipped);
     const base = aiPersonality(d.catalog, d.state);
     const norse = aiPersonalityFor(d.catalog, d.state, 'rival');
     expect(norse.heroAttackMargin).toBeLessThan(base.heroAttackMargin);
@@ -107,8 +119,8 @@ describe('AI temperaments (choices)', () => {
     }
   });
 
-  it('Raiders attack a hero they beat by a small margin that an even rival leaves alone', () => {
-    const d = GameDriver.mission(mission('greek', 'norse'));
+  it('bold Raiders attack a hero they beat by a small margin that an even rival leaves alone', () => {
+    const d = boldRaiders(GameDriver.mission(mission('greek', 'norse')));
     const s = deepClone(d.state);
     for (const fog of Object.values(s.fog)) fog.explored = fog.explored.map(() => 1);
     const rivalHero = Object.values(s.heroes).find((h) => h.ownerId === 'rival')!;

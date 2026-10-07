@@ -10,10 +10,10 @@ import { cellKey, cellNeighbors, footprintCells, type BattleCell, type HexCoord 
 import type { BattlefieldArchetype, CommanderSpec, StackSpec } from '../../definitions/world';
 import type { TownState } from '../../state/match';
 import type { BattleCommanderSnapshot, BattleSideId, BattleSideState, BattleState, DefenderSelectionState, HeroState } from '../../state/match';
-import { effectiveAttributes, heroEffects, heroLuckBonus, heroMoraleBonus } from '../../resolvers/heroes';
+import { armyCompositionMorale, effectiveAttributes, heroEffects, heroLuckBonus, heroMoraleBonus } from '../../resolvers/heroes';
 import { missionSite } from '../../resolvers/world';
 import { reject, type Tx } from '../../engine/tx';
-import { applyDefenderSelection, autoDefenderPicks, deploymentZone, finishSetup, placeStacks, type DeployEntry } from './deployment';
+import { applyDefenderSelection, autoDefenderPicks, deploymentZone, finishSetup, mergeDefenderCandidates, placeStacks, type DeployEntry } from './deployment';
 import { buildSiege, townFortificationLevel } from './siege';
 import { battleSideEffects } from '../../resolvers/effects';
 import { battleClimate } from './climate';
@@ -77,10 +77,7 @@ function scriptedCommander(tx: Tx, spec: CommanderSpec): BattleCommanderSnapshot
 }
 
 function factionMorale(tx: Tx, specs: readonly StackSpec[]): number {
-  const pantheons = new Set(specs.map((s) => tx.catalog.creatures[s.creatureId]?.pantheonId ?? null));
-  if (pantheons.size !== 1) return 0;
-  const [only] = [...pantheons];
-  return only ? tx.profile.combat.sameFactionMorale : 0;
+  return armyCompositionMorale(tx.catalog, specs.map((s) => s.creatureId)).value;
 }
 
 function makeSide(
@@ -292,7 +289,9 @@ export function startBattle(tx: Tx, req: EncounterRequest): BattleState {
       battle.selection = selection;
       return battle;
     }
-    const picks = defenderEntries.length > max ? autoDefenderPicks(tx.catalog, selection) : defenderEntries.map((_, i) => i);
+    // The game's own defenders combine identical stacks first (2026-10-07), then keep the most valuable.
+    if (defenderEntries.length > max) mergeDefenderCandidates(tx, battle, selection);
+    const picks = selection.candidates.length > max ? autoDefenderPicks(tx.catalog, selection) : selection.candidates.map((_, i) => i);
     applyDefenderSelection(tx, battle, selection, picks);
   } else {
     placeStacks(tx, battle, 'defender', defenderEntries);

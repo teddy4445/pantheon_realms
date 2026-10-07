@@ -280,7 +280,7 @@ function buildMissionMatch(
   }
 
   const towns: Record<string, TownState> = {};
-  const addTown = (setup: MissionDefinition['player']['town'], ownerId: string) => {
+  const addTown = (setup: MissionDefinition['player']['town'], ownerId: string | null) => {
     towns[setup.townId] = createTownState(catalog, {
       id: setup.townId,
       name: setup.name,
@@ -296,6 +296,8 @@ function buildMissionMatch(
   };
   addTown(p.town, p.playerId);
   for (const rival of mission.rivals ?? []) addTown(rival.town, rival.playerId);
+  // Unowned towns: no owner and no hero; a neutral garrison may hold them (2026-10-07).
+  for (const t of mission.neutralTowns ?? []) addTown(t, null);
 
   const heroes: Record<string, HeroState> = {};
   const playerHero = heroFromSetup(catalog, p.hero, p.playerId, towns[p.hero.startTownId]!.coord, carry);

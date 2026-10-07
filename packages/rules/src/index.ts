@@ -65,3 +65,4 @@ export * from './systems/battle/deployment';
 export * from './systems/battle/climate';
 
 export * from './factories/entities';
+export * from './systems/ownership';

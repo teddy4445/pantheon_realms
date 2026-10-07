@@ -32,6 +32,7 @@ import type {
   ArtifactDefinition,
   ArtifactSetDefinition,
   GodDefinition,
+  GodPerkDefinition,
   HeroClassDefinition,
   HeroDefinition,
   PantheonDefinition,
@@ -61,6 +62,8 @@ export interface ContentCatalog {
   readonly buildings: Readonly<Record<BuildingId, BuildingDefinition>>;
   readonly townArchetypes: Readonly<Record<TownArchetypeId, TownArchetypeDefinition>>;
   readonly gods: Readonly<Record<GodId, GodDefinition>>;
+  /** Gods' gifts to heroes at levels 10 and 15 (two per god; absent in older catalogs). */
+  readonly godPerks?: Readonly<Record<string, GodPerkDefinition>>;
   readonly heroes: Readonly<Record<HeroDefinitionId, HeroDefinition>>;
   readonly heroClasses: Readonly<Record<HeroClassId, HeroClassDefinition>>;
   readonly skills: Readonly<Record<SkillId, SkillDefinition>>;

@@ -65,6 +65,10 @@ export interface RulesProfile {
     readonly wallFactor: Rational;
     readonly meleePenaltyFactor: Rational;
     readonly sameFactionMorale: number;
+    /** Morale lost for each pantheon beyond the first in one army (neutral creatures do not count; proposed 2026-10-07). */
+    readonly mixedPantheonMorale: number;
+    /** At most this much morale lost to a mixed army. */
+    readonly mixedPantheonMoraleCap: number;
     readonly negativeMoraleDenominator: number;
     readonly positiveMoraleDenominator: number;
     readonly luckDenominator: number;
@@ -149,6 +153,8 @@ export const PR_02_CANDIDATE: RulesProfile = {
     wallFactor: { numerator: 1, denominator: 2 },
     meleePenaltyFactor: { numerator: 1, denominator: 2 },
     sameFactionMorale: 1,
+    mixedPantheonMorale: 1,
+    mixedPantheonMoraleCap: 2,
     negativeMoraleDenominator: 12,
     positiveMoraleDenominator: 24,
     luckDenominator: 24,

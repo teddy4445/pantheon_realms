@@ -18,7 +18,6 @@ import { Icon, RESOURCE_ICON } from '../assets/icons';
 import { Button, Chip } from './kit';
 import { CreaturePortrait } from './art';
 import { useStore } from '../app/context';
-import { SCREEN_CODES, type ScreenId } from '../app/store';
 import { dayLabel, formatNumber } from '../app/view';
 
 export function ResourceBar({ wallet, income, compact }: { wallet: Readonly<Record<ResourceKey, number>>; income?: Readonly<Record<ResourceKey, number>>; compact?: boolean }) {
@@ -186,7 +185,6 @@ export function ScreenHeader({ title, subtitle, back = true, right, onBack }: { 
   const store = useStore();
   const state = store.session?.state;
   const player = state ? state.players[store.session!.humanPlayerId] : undefined;
-  const code = SCREEN_CODES[store.screen.id as ScreenId];
   return (
     <header className="screen-header">
       {back ? <Button icon="back" onClick={onBack ?? (() => store.back())} aria-label="Back" title="Back (Esc)" className="screen-header__back" /> : null}
@@ -194,9 +192,6 @@ export function ScreenHeader({ title, subtitle, back = true, right, onBack }: { 
         <h1 className="screen-header__title">{title}</h1>
         {subtitle ? <div className="screen-header__subtitle">{subtitle}</div> : null}
       </div>
-      <span className="screen-header__code" aria-hidden="true">
-        {code}
-      </span>
       {/* Resources always sit in the middle of the screen (owner request 2026-10-03), as on the map. */}
       {player && state ? (
         <div className="screen-header__resources">

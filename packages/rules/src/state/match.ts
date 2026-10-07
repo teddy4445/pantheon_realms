@@ -98,8 +98,12 @@ export interface PlayerState {
   incomePercent?: number;
   /** World week of the player's last divine intervention (0 or absent = never). */
   interventionWeek?: number;
+  /** World week of the player's last hero hire at a Tavern (one a week; owner request 2026-10-07). Absent = never. */
+  heroHireWeek?: number;
   /** Key colours this player holds from key tents (random maps; absent = none). */
   keys?: string[];
+  /** Towns this player lost and has not retaken, with the day of the loss (public; 2026-10-07). */
+  lostTowns?: { townId: TownId; day: number }[];
 }
 
 // ---------------------------------------------------------------------------
@@ -151,6 +155,8 @@ export interface HeroState {
   status: 'active' | 'defeated' | 'retreated';
   /** Levels earned but not yet resolved through a level-up decision. */
   pendingLevels: number;
+  /** Gods' gifts this hero took at levels 10 and 15 (`catalog.godPerks` IDs; absent = none). */
+  perks?: string[];
   /** World week of the last Training Academy session (0 = never). */
   lastTrainedWeek: number;
   ai?: HeroAiState;
@@ -325,6 +331,8 @@ export interface LevelUpDecision {
   newLevel: number;
   primaryGain: HeroAttribute;
   offers: SkillOffer[];
+  /** At levels 10 and 15: two gods' gifts to choose between (`catalog.godPerks` IDs; absent otherwise). */
+  perkOffers?: string[];
 }
 
 export type PendingDecision = LevelUpDecision;
@@ -456,6 +464,8 @@ export interface SiegeState {
   moat: BattleCell[];
   /** Defender stacks left out of the battle (garrison/visitor reserves). */
   reserves: { source: 'hero' | 'garrison'; slot: number }[];
+  /** The structure the attacker aimed the Catapult at (absent: the default target). */
+  catapultTargetId?: string | null;
 }
 
 /** Defender stack choice when a visitor plus garrison exceed seven stacks (BAT-14). */

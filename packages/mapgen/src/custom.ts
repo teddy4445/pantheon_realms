@@ -37,6 +37,7 @@ import {
   type HexCoord,
   type MissionDefinition,
   type MissionRivalSetup,
+  type MissionTownSetup,
   type ResourceCost,
   type SiteDefinition,
   type Terrain,
@@ -44,6 +45,7 @@ import {
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
 import { RANDOM_TEMPLATE_ID, SKIRMISH_PLAYER_COLORS, SKIRMISH_START_WALLET, WEALTH_PERCENT, randomMapTavernPool, travelCosts } from './skirmish';
+import { UNOWNED_GARRISON_VALUE, unownedTownGarrison, unownedTownSetup } from './unownedTowns';
 
 export { CUSTOM_MAP_FORMAT, CUSTOM_MAP_VERSION } from '@pr/rules';
 export type { CustomGuard, CustomMapDocument, CustomPlayer, CustomQuest, CustomReward, CustomSite, CustomSiteKind, CustomVictory } from '@pr/rules';
@@ -68,7 +70,7 @@ export interface CustomSiteKindInfo {
 }
 
 export const CUSTOM_SITE_KINDS: readonly CustomSiteKindInfo[] = [
-  { id: 'town', label: 'Town', summary: 'An empire’s home town (one per empire).', guardable: false },
+  { id: 'town', label: 'Town', summary: 'An empire’s home town (one per empire), or an unowned town any empire may take.', guardable: false },
   { id: 'sawmill', label: 'Sawmill', summary: '+2 Wood per day to its owner.', guardable: true },
   { id: 'quarry', label: 'Quarry', summary: '+2 Stone per day to its owner.', guardable: true },
   { id: 'gold_mine', label: 'Gold Mine', summary: '+500 Gold per day to its owner.', guardable: true },
@@ -232,7 +234,8 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
     const k = hexKey(c);
     if (seen.has(k)) err(`${label} shares its tile with another site.`, s.id);
     seen.set(k, s.id);
-    if (s.kind === 'town' && (s.owner === undefined || s.owner < 0 || s.owner >= doc.players.length)) err(`${label} belongs to no empire.`, s.id);
+    if (s.kind === 'town' && s.owner !== undefined && (s.owner < 0 || s.owner >= doc.players.length)) err(`${label} belongs to no empire ${s.owner + 1}.`, s.id);
+    if (s.kind === 'town' && s.owner === undefined && s.pantheon && s.pantheon !== 'nearest' && s.pantheon !== 'other' && !catalog.skirmishKits[s.pantheon]) err(`${label}: ${s.pantheon} towns cannot be played in a skirmish.`, s.id);
     if (s.guard && !catalog.creatures[s.guard.creatureId]) err(`${label}: unknown guard creature ${s.guard.creatureId}.`, s.id);
     if (s.kind === 'monster' && !s.guard) err(`${label} has no army.`, s.id);
     if (s.kind === 'creature_camp' && (!s.creatureId || !catalog.creatures[s.creatureId])) err(`${label} sells no creature.`, s.id);
@@ -331,12 +334,20 @@ export interface CustomCompileOptions {
   readonly skirmishMapId?: string;
   readonly subtitle?: string;
   readonly thumbnailAssetId?: string;
+  /**
+   * The map's unowned towns (2026-10-07): 'map' as authored (each town's own
+   * pantheon setting; the default), 'own' every one of its nearest empire's
+   * pantheon, 'other' of a pantheon no empire plays, 'none' left out (with the
+   * road that only led to it).
+   */
+  readonly unownedTowns?: 'map' | 'own' | 'other' | 'none';
 }
 
 /** The mission + logical map of a playable document (throws when `validateCustomMap` reports an error). */
-export function compileCustomMap(catalog: ContentCatalog, doc: CustomMapDocument, seats: readonly CustomSeat[], opts: CustomCompileOptions = {}): CompiledCustomMap {
-  const errors = validateCustomMap(catalog, doc).filter((i) => i.severity === 'error');
+export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDocument, seats: readonly CustomSeat[], opts: CustomCompileOptions = {}): CompiledCustomMap {
+  const errors = validateCustomMap(catalog, authored).filter((i) => i.severity === 'error');
   if (errors.length > 0) throw new Error(`The map cannot be played: ${errors.map((e) => e.text).join(' ')}`);
+  const doc = opts.unownedTowns === 'none' ? withoutUnownedTowns(authored) : authored;
   const n = doc.players.length;
   const map = toWorldMap(doc);
   const features = { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true };
@@ -416,8 +427,37 @@ export function compileCustomMap(catalog: ContentCatalog, doc: CustomMapDocument
     const reward = s.reward && s.kind !== 'quest_hut' && s.kind !== 'artifact' ? rewardOf(s.reward, `${s.id}:guard`) : { resources: { gold: Math.max(100, Math.round((value * 0.25) / 50) * 50) } };
     return { label: s.guard.label ?? (s.kind === 'monster' ? c.pluralName : `${c.pluralName} on guard`), army: stacks, reward, battlefield };
   };
+  // Unowned towns (2026-10-07): their pantheon by the option or the site's own setting.
+  const unownedMode = opts.unownedTowns ?? 'map';
+  const freeSites = unownedMode === 'none' ? [] : doc.sites.filter((s) => s.kind === 'town' && s.owner === undefined);
+  const freeIds = new Map(freeSites.map((s, k) => [s.id, `free_${k + 1}`] as const));
+  const nearestSeat = (s: CustomSite): number => {
+    let seat = 0;
+    let best = Infinity;
+    doc.players.forEach((_, i) => {
+      const t = townSite(i);
+      const d = axialDistance({ q: s.q, r: s.r }, { q: t.q, r: t.r });
+      if (d < best) {
+        best = d;
+        seat = i;
+      }
+    });
+    return seat;
+  };
+  const freePantheon = (s: CustomSite): string => {
+    const want = unownedMode === 'own' ? 'nearest' : unownedMode === 'other' ? 'other' : (s.pantheon ?? 'nearest');
+    const nearest = doc.players[nearestSeat(s)]!.pantheonId;
+    if (want === 'nearest') return nearest;
+    if (want !== 'other') return want;
+    const played = new Set(doc.players.map((p) => p.pantheonId));
+    const all = Object.keys(catalog.skirmishKits).sort();
+    const pool = all.filter((p) => !played.has(p));
+    const from = pool.length > 0 ? pool : all.filter((p) => p !== nearest);
+    return from.length > 0 ? from[hashSeed(`${doc.name}|${s.id}|other`) % from.length]! : nearest;
+  };
   /** The compiled site ID of a document site (towns and the relic are renamed). */
-  const compiledId = (x: CustomSite): string => (x.kind === 'town' ? `site_${townIds[x.owner!]}` : x.kind === 'relic' ? 'relic' : x.id);
+  const compiledId = (x: CustomSite): string => (x.kind === 'town' ? `site_${x.owner === undefined ? (freeIds.get(x.id) ?? x.id) : townIds[x.owner]}` : x.kind === 'relic' ? 'relic' : x.id);
+  const neutralTowns: MissionTownSetup[] = [];
   // Prisoners: the named hero, else a hireable hero of the owning (or nearest) empire's pantheon.
   const prisoners = new Map<string, string | null>();
   {
@@ -458,7 +498,20 @@ export function compileCustomMap(catalog: ContentCatalog, doc: CustomMapDocument
     const named = (name: string) => s.name || name;
     switch (s.kind) {
       case 'town': {
-        const i = s.owner!;
+        if (s.owner === undefined) {
+          const townId = freeIds.get(s.id);
+          if (!townId) break; // left out ('none')
+          const pantheonId = freePantheon(s);
+          const kit = catalog.skirmishKits[pantheonId]!;
+          const used = usedNames.get(pantheonId) ?? 0;
+          usedNames.set(pantheonId, used + 1);
+          const name = s.name || (kit.townNames[used % kit.townNames.length] ?? `Free Town ${townId}`);
+          const garrison = s.guard ? [{ creatureId: s.guard.creatureId, count: s.guard.count }, ...(s.guard.more ?? [])] : unownedTownGarrison(catalog, pantheonId, UNOWNED_GARRISON_VALUE);
+          sites.push({ ...base, id: `site_${townId}`, anchorId: `site_${townId}`, name, description: `A ${kit.adjective} town without a lord, held by its own militia. Take it to build and recruit there.`, kind: { type: 'town', townId } });
+          neutralTowns.push(unownedTownSetup(catalog, pantheonId, townId, `site_${townId}`, name, garrison));
+          break;
+        }
+        const i = s.owner;
         sites.push({ ...base, id: `site_${townIds[i]}`, anchorId: `site_${townIds[i]}`, name: townNames[i]!, description: `${doc.players[i]!.name ?? townNames[i]}’s home town.`, kind: { type: 'town', townId: townIds[i]! } });
         break;
       }
@@ -595,7 +648,7 @@ export function compileCustomMap(catalog: ContentCatalog, doc: CustomMapDocument
   const hold = doc.victory.type === 'hold_relic' && relic ? doc.victory : null;
   const slug = doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 32) || 'map';
   const mission: MissionDefinition = {
-    id: opts.skirmishMapId ? `skirmish_map_${opts.skirmishMapId}_${map.logicalHash.slice(0, 8)}` : `custom_${slug}_${map.logicalHash.slice(0, 8)}`,
+    id: `${opts.skirmishMapId ? `skirmish_map_${opts.skirmishMapId}_${map.logicalHash.slice(0, 8)}` : `custom_${slug}_${map.logicalHash.slice(0, 8)}`}${unownedMode === 'own' || unownedMode === 'other' ? `_free${unownedMode}` : ''}`,
     scenarioId: opts.skirmishMapId ? `skirmish_map_${opts.skirmishMapId}` : `custom_${slug}`,
     campaignId: null,
     order: 1,
@@ -613,6 +666,7 @@ export function compileCustomMap(catalog: ContentCatalog, doc: CustomMapDocument
     debriefPolicy: [],
     player: { playerId: 'player', name: seats[0]?.name ?? doc.players[0]!.name ?? townNames[0]!, controller: seats[0]?.controller ?? 'human', pantheonId: doc.players[0]!.pantheonId, wallet, town: seat0.town, hero: seat0.hero },
     rivals,
+    ...(neutralTowns.length > 0 ? { neutralTowns } : {}),
     initialFlags: ['skirmish'],
     features,
     ...(doc.revealMap ? { startExplored: true } : {}),
@@ -628,15 +682,46 @@ export function compileCustomMap(catalog: ContentCatalog, doc: CustomMapDocument
         : { id: 'victory', title: 'Conquer the realm', description: 'Defeat every rival hero and take every rival town.', category: 'primary', initialStatus: 'active', condition: { type: 'flag', flag: 'rivals_eliminated' } },
     ],
     hostileHeroes: [],
-    helpTopics: opts.skirmishMapId
-      ? [{ id: 'skirmish_maps', title: 'Skirmish maps', text: 'An authored skirmish map: every empire’s home lands are laid out alike (mirrored or turned), so no seat starts with better ground. Its values are proposed and measured only in AI-against-AI games.' }]
-      : [{ id: 'custom_maps', title: 'Custom maps', text: 'This map was made in the map editor. Its towns, sites and goal are the author’s; nothing about it is generated or checked for fairness.' }],
+    helpTopics: [
+      opts.skirmishMapId
+        ? { id: 'skirmish_maps', title: 'Skirmish maps', text: 'An authored skirmish map: every empire’s home lands are laid out alike (mirrored or turned), so no seat starts with better ground. Its values are proposed and measured only in AI-against-AI games.' }
+        : { id: 'custom_maps', title: 'Custom maps', text: 'This map was made in the map editor. Its towns, sites and goal are the author’s; nothing about it is generated or checked for fairness.' },
+      ...(neutralTowns.length > 0
+        ? [{ id: 'unowned_towns', title: 'Unowned towns', text: 'Unowned towns start without a lord or a hero; their own militia holds them. Defeat it (a siege) and the town is yours: build, recruit and hire there like in your home town — whatever its pantheon. An army of several pantheons fights with lower morale (−1 for each pantheon beyond the first, at most −2; neutral creatures never count). Proposed; values unplaytested.' }]
+        : []),
+    ],
     protectedHeroFailure: false,
     thumbnailAssetId: opts.thumbnailAssetId ?? 'mission.skirmish.random.thumbnail',
   };
   const checks: MapCheck[] = [{ id: 'CUS-1', pass: true, detail: 'validated by validateCustomMap' }];
   const decor = buildDecor(map, deriveStreams(hashSeed(map.logicalHash), RANDOM_TEMPLATE_ID, 0));
   return { mission, map, decor, checks };
+}
+
+/**
+ * The document without its unowned towns, and without the roads that only led to
+ * them: from each such town, a road is followed back while it is a dead end that
+ * reaches no other site.
+ */
+function withoutUnownedTowns(doc: CustomMapDocument): CustomMapDocument {
+  const free = doc.sites.filter((s) => s.kind === 'town' && s.owner === undefined);
+  if (free.length === 0) return doc;
+  const roads = new Set(doc.roads);
+  const keyOf = (c: HexCoord) => `${c.q},${c.r}`;
+  const siteTiles = new Set(doc.sites.filter((s) => !free.includes(s)).map((s) => keyOf(s)));
+  const links = (k: string) => [...roads].filter((e) => e.split('|').includes(k));
+  for (const t of free) {
+    let cur = keyOf(t);
+    for (let guard = 0; guard < 200; guard++) {
+      const here = links(cur);
+      if (here.length !== 1 || (siteTiles.has(cur) && cur !== keyOf(t))) break;
+      const e = here[0]!;
+      roads.delete(e);
+      cur = e.split('|').find((x) => x !== cur) ?? cur;
+      if (siteTiles.has(cur)) break;
+    }
+  }
+  return { ...doc, roads: doc.roads.filter((e) => roads.has(e)), sites: doc.sites.filter((s) => !free.includes(s)) };
 }
 
 function scale(c: ResourceCost, percent: number): ResourceCost {

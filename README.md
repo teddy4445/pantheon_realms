@@ -39,7 +39,13 @@ through validated commands; presentation never defines gameplay outcomes.
 * **End of game**: a summary with day-by-day charts and a score, and high
   scores for campaign and skirmish. Tips the first time you meet a mechanic,
   F1 for the keyboard shortcuts, and every shortcut can be rebound.
-* **Town sieges**, Tactics deployment and Divine Sight on the adventure map.
+* **Town sieges** (aim the Catapult, towers that pick their targets, combine
+  identical defenders), Tactics deployment and Divine Sight on the adventure map.
+* **Quick battles** from the encounter panel: the expected result and every
+  loss shown first, then resolved without the battlefield (exactly as shown).
+* **The gods' gifts** at hero levels 10 and 15 (expanded rules), a smarter
+  late-game computer player and a "While you waited" summary of the rivals'
+  turns (proposed values).
 * **Pantheon signatures** (proposed, skirmish only): Greek Glory, Norse
   Berserk Fury, Egyptian Afterlife, Japanese Harmony, Celtic Shapeshifting,
   Mesoamerican Offering — all built from shared rules

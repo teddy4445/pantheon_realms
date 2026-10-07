@@ -1,14 +1,15 @@
 /**
  * S23 Skirmish map setup (2026-10-05): the empires of an authored skirmish map
  * (catalog `skirmishMaps`) — each seat's pantheon, who plays it (a person on
- * this computer or the AI), the person's name and patron — and the difficulty.
+ * this computer or the AI), the person's name and patron — the difficulty, and
+ * whether the map's unowned towns are used (2026-10-07).
  * The seat count is the map's. Start compiles the map for these seats and opens
  * the adventure map, like a random map (no briefing).
  */
 import { useState } from 'react';
 import { SKIRMISH_PLAYER_COLORS, compileSkirmishMap } from '@pr/session';
 import { useStore } from '../app/context';
-import { Button, Panel, SectionTitle } from '../components/kit';
+import { Button, Panel, SectionTitle, Segmented } from '../components/kit';
 import { ScreenHeader } from '../components/game';
 import { SkirmishMapThumb } from '../components/mapPreview';
 import { SeatRow, patchSeat, patronsOf, type SeatDraft } from '../components/seats';
@@ -26,6 +27,7 @@ export function MapSetupScreen() {
     }),
   );
   const [difficulty, setDifficulty] = useState('normal');
+  const [unowned, setUnowned] = useState<'none' | 'own' | 'other'>('none');
   if (!def) {
     return (
       <div className="setup-screen">
@@ -39,6 +41,7 @@ export function MapSetupScreen() {
       </div>
     );
   }
+  const freeSpots = def.map.sites.filter((x) => x.kind === 'town' && x.owner === undefined).length;
   const humans = seats.filter((s) => s.controller === 'human').length;
   const anyAi = seats.some((s) => s.controller === 'ai');
   const reason = humans === 0 ? 'At least one seat must be played by a person' : seats.some((s) => s.controller === 'human' && !s.godId) ? 'Every human seat needs a patron god' : '';
@@ -51,6 +54,7 @@ export function MapSetupScreen() {
         catalog,
         def.id,
         seats.map((s, i) => ({ pantheonId: s.pantheonId, controller: s.controller, ...(s.controller === 'human' ? { name: s.name.trim() || `Player ${i + 1}` } : {}) })),
+        { unownedTowns: unowned },
       );
     } catch (e) {
       store.toast(e instanceof Error ? e.message : String(e), 'error');
@@ -93,6 +97,29 @@ export function MapSetupScreen() {
               ))}
             </div>
             {humans > 1 ? <p className="note small">Hot-seat: {humans} players share this computer and take turns. The map is hidden at every hand-over.</p> : null}
+            {freeSpots > 0 ? (
+              <>
+                <SectionTitle>Unowned towns</SectionTitle>
+                <div className="setting-block">
+                  <Segmented
+                    label="Unowned towns"
+                    value={unowned}
+                    options={[
+                      { id: 'none', label: 'None' },
+                      { id: 'own', label: 'Same pantheon' },
+                      { id: 'other', label: 'Other pantheon' },
+                    ]}
+                    onChange={setUnowned}
+                    testId="map-setup-unowned"
+                  />
+                  <p className="small faint setting-block__details">
+                    {unowned === 'none'
+                      ? 'Every town on the map starts with an empire.'
+                      : `One town near each empire starts without a lord or a hero, held by its own militia — ${unowned === 'own' ? 'of that empire’s pantheon' : 'of another pantheon (one no empire plays, when there is one)'}. Take it to build and recruit there.`}
+                  </p>
+                </div>
+              </>
+            ) : null}
             {anyAi ? (
               <>
                 <SectionTitle>AI rivals</SectionTitle>

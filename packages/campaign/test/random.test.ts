@@ -5,7 +5,8 @@
 import { describe, expect, it } from 'vitest';
 import { buildCatalog, validateGeneratedMission } from '@pr/content';
 import { runAITurn } from '@pr/ai';
-import { axialDistance, contenderIds, ensureStats, matchScore, processCommand, type GameCommand, type HexCoord, type MatchState } from '@pr/rules';
+import { axialDistance, axialNeighbors, contenderIds, ensureStats, matchScore, processCommand, type GameCommand, type HexCoord, type MatchState } from '@pr/rules';
+import { GameDriver } from '@pr/testing';
 import { createGeneratedMatch, createRandomSkirmish, SKIRMISH_MAP_TYPES, type SkirmishGenOptions, type SkirmishMapSize } from '../src';
 
 const catalog = buildCatalog();
@@ -411,4 +412,74 @@ describe('random skirmish matches', () => {
     expect(match.players.p3!.controller).toBe('ai');
     expect(match.players.p3!.pantheon.patronGodId).toBeNull();
   });
+});
+
+describe('generator 0.7: unowned towns (owner request 2026-10-07)', () => {
+  it('places one or two unowned towns per empire, fair, valid, owned by nobody and held by a neutral garrison', () => {
+    for (const [n, size] of [[2, 'medium'], [3, 'large'], [4, 'large'], [5, 'huge'], [6, 'huge']] as const) {
+      for (const unownedTowns of ['own', 'other', 'both'] as const) {
+        const g = createRandomSkirmish(catalog, opts(n, size, 7, { unownedTowns }));
+        for (const c of g.checks) expect(c.pass, `${n} ${unownedTowns} ${c.id}: ${c.detail}`).toBe(true);
+        expect(g.checks.some((c) => c.id === 'SKM-8')).toBe(true);
+        expect(validateGeneratedMission(catalog, g.mission).issues).toEqual([]);
+        const per = unownedTowns === 'both' ? 2 : 1;
+        expect(g.mission.neutralTowns?.length).toBe(n * per);
+        const { match } = createGeneratedMatch(catalog, g, { matchId: `free-${n}-${unownedTowns}` });
+        const seatPantheons = [g.mission.player.pantheonId, ...(g.mission.rivals ?? []).map((r) => r.pantheonId)];
+        for (const t of g.mission.neutralTowns ?? []) {
+          const town = match.towns[t.townId]!;
+          expect(town.ownerId).toBeNull();
+          expect(town.garrison.slots.some((x) => x && x.count > 0)).toBe(true);
+          expect(Object.values(match.heroes).some((h) => h.status === 'active' && axialDistance(h.position, town.coord) <= 1 && !h.monster)).toBe(false);
+          // Own: the pantheon of the empire it was laid out for; other: never that one.
+          const seat = Number(t.townId.split('_')[2]) - 1;
+          const kind = t.townId.split('_')[1];
+          const own = seatPantheons[seat]!;
+          if (unownedTowns === 'own' || (unownedTowns === 'both' && kind === '1')) expect(town.pantheonId).toBe(own);
+          else expect(town.pantheonId).not.toBe(own);
+          // No Tavern and no walls; a civic hall and the first dwelling.
+          expect(t.buildings.length).toBe(2);
+        }
+      }
+    }
+  });
+
+  it('is off by default: no unowned towns, and the map id says when they are on', () => {
+    const off = createRandomSkirmish(catalog, opts(2, 'medium', 61));
+    expect(off.mission.neutralTowns).toBeUndefined();
+    const on = createRandomSkirmish(catalog, opts(2, 'medium', 61, { unownedTowns: 'other' }));
+    expect(on.mission.id).not.toBe(off.mission.id);
+    expect(on.mission.helpTopics.some((h) => h.id === 'unowned_towns')).toBe(true);
+  });
+
+  it('a hero takes an unowned town by siege, then builds and recruits there', () => {
+    const g = createRandomSkirmish(catalog, { ...opts(2, 'medium', 11, { unownedTowns: 'own' }), seats: [{ pantheonId: 'greek', controller: 'human' }, { pantheonId: 'norse', controller: 'ai' }] });
+    const { match } = createGeneratedMatch(catalog, g, { matchId: 'free-siege' });
+    const d = new GameDriver(match, catalog);
+    const free = g.mission.neutralTowns!.find((t) => t.townId.endsWith('_1'))!;
+    const site = g.mission.sites.find((s) => s.id === free.siteId)!;
+    const hero = Object.values(d.state.heroes).find((h) => h.ownerId === 'player')!;
+    // A test shortcut: the leader stands beside the town with a strong army; the rules decide the rest.
+    const occupied = new Set(g.mission.sites.map((x) => `${x.coord.q},${x.coord.r}`));
+    const beside = axialNeighbors(site.coord).find((c) => d.state.world.map.terrain[c.r * d.state.world.map.width + c.q] === 'p' && !occupied.has(`${c.q},${c.r}`))!;
+    hero.position = beside;
+    hero.army.slots = hero.army.slots.map((x, i) => (i === 0 ? { stackId: 'test_stack', creatureId: 'cyclops', count: 60 } : null));
+    hero.movementPoints = 5000;
+    for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
+    d.do({ kind: 'MoveHero', heroId: hero.id, destination: site.coord, confirmEncounter: true });
+    expect(d.state.battle?.encounter.kind).toBe('town_siege');
+    expect(d.state.battle?.sides.defender.playerId).toBeNull();
+    d.autoBattle();
+    expect(d.state.battle).toBeNull();
+    const town = d.state.towns[free.townId]!;
+    expect(town.ownerId).toBe('player');
+    expect(town.garrison.slots.every((x) => !x)).toBe(true);
+    // Now the player's own: a building and recruits there (pantheon-matched here).
+    d.player.wallet.gold = 50_000;
+    d.player.wallet.wood = 50;
+    d.player.wallet.stone = 50;
+    const tavern = catalog.townArchetypes[town.archetypeId]!.slots.find((x) => x.role === 'tavern')!.chain[0]!;
+    d.do({ kind: 'BuildStructure', townId: town.id, buildingId: tavern });
+    expect(d.state.towns[town.id]!.buildings[catalog.buildings[tavern]!.slotId]).toBe(1);
+});
 });

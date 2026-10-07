@@ -11,17 +11,24 @@
  *   keep    Citadel+, stands behind the east board edge (no board cells)
  *
  * Creature damage never reduces structure HP. The attacker's Catapult removes
- * 1 HP from the intact structure with the lowest stable ID at each round
- * start; then the keep and each tower shoot the closest attacker. A wall
+ * 1 HP from a structure at each round start: the one the attacker aimed it at
+ * (BattleAimCatapult, 2026-10-07) while it stands, otherwise the intact
+ * structure with the lowest stable ID (the gate first). Then the keep and each
+ * tower shoot: each picks the attacker stack it hurts most — the Gold worth of
+ * the creatures its shot removes, shooters counted half again (they hit the
+ * town over the walls); ties go to the closest, then the lowest ID. A wall
  * breaker (Cyclops) may spend its activation and one shot for 1 structure HP.
+ * Before a siege a defender with more than seven stacks may combine identical
+ * stacks of the garrison and the visiting hero (BattleMergeDefenders).
  */
 import type { BattleStackId, TownId } from '../../ids';
 import { cellKey, footprintDistance, type BattleCell } from '../../core/hex';
 import type { ContentCatalog } from '../../definitions/catalog';
 import type { BattleStackState, BattleState, SiegeState, SiegeStructureState, TownState } from '../../state/match';
-import type { Tx } from '../../engine/tx';
+import { reject, type Tx } from '../../engine/tx';
 import { townEffects } from '../../resolvers/town';
-import { aliveCount, applyDamage, sideStacks, stackCells } from './common';
+import { aliveCount, applyDamage, isShooter, requireBattle, sideStacks, stackCells, statsOf } from './common';
+import { requireControl } from './actions';
 
 export type FortificationLevel = 0 | 1 | 2 | 3;
 
@@ -119,33 +126,60 @@ export function keepReferenceCell(battle: BattleState): BattleCell {
   return { col: battle.cols - 1, row: SIEGE_GATE_ROW };
 }
 
+/** The structure the Catapult hits next: the aimed one while it stands, else the intact one with the lowest ID. */
+export function catapultTarget(battle: BattleState): SiegeStructureState | null {
+  const intact = intactStructures(battle).sort(byId);
+  const aimed = battle.siege?.catapultTargetId;
+  return (aimed ? intact.find((s) => s.id === aimed) : undefined) ?? intact[0] ?? null;
+}
+
+/**
+ * How much a turret's shot of `damage` hurts `stack`: the Gold worth of the
+ * creature HP it removes (a stack at full health loses only what the shot
+ * reaches), shooters × 1.5 while they have shots.
+ */
+export function turretTargetValue(catalog: ContentCatalog, stack: BattleStackState, damage: number): number {
+  const hp = Math.max(1, statsOf(catalog, stack.creatureId).hp);
+  const unit = catalog.creatures[stack.creatureId]?.cost?.gold ?? hp * 10;
+  const removed = Math.min(damage, stack.totalHp);
+  const shooter = isShooter(catalog, stack.creatureId) && stack.shotsRemaining > 0 ? 1.5 : 1;
+  return (removed / hp) * unit * shooter;
+}
+
+/** The attacker stack a turret shoots: most hurt by the shot, then closest, then lowest ID. */
+export function turretTarget(catalog: ContentCatalog, battle: BattleState, turret: SiegeStructureState, damage: number): BattleStackState | null {
+  const ref = turret.kind === 'keep' ? [keepReferenceCell(battle)] : turret.cells;
+  let best: BattleStackState | null = null;
+  let bestV = -1;
+  let bestDist = Number.POSITIVE_INFINITY;
+  for (const a of sideStacks(battle, 'attacker').sort(byId)) {
+    const v = Math.round(turretTargetValue(catalog, a, damage) * 1000);
+    const d = footprintDistance(ref, stackCells(catalog, a));
+    if (v > bestV || (v === bestV && d < bestDist)) {
+      best = a;
+      bestV = v;
+      bestDist = d;
+    }
+  }
+  return best;
+}
+
 /** Round-start siege effects: Catapult shot, then keep and towers (stable ID order). */
 export function siegeRoundStart(tx: Tx, battle: BattleState): void {
   const siege = battle.siege;
   if (!siege || siege.level === 0) return;
   const cfg = tx.profile.combat.siege;
   if (sideStacks(battle, 'attacker').length > 0) {
-    const target = intactStructures(battle).sort(byId)[0];
+    const target = catapultTarget(battle);
     if (target) damageStructure(tx, target, cfg.catapultDamage, 'catapult', null);
   }
   const turrets = intactStructures(battle)
     .filter((s) => s.kind === 'keep' || s.kind === 'tower')
     .sort(byId);
   for (const turret of turrets) {
-    const attackers = sideStacks(battle, 'attacker');
-    if (attackers.length === 0) return;
-    const ref = turret.kind === 'keep' ? [keepReferenceCell(battle)] : turret.cells;
-    let best: BattleStackState | null = null;
-    let bestDist = Number.POSITIVE_INFINITY;
-    for (const a of attackers) {
-      const d = footprintDistance(ref, stackCells(tx.catalog, a));
-      if (d < bestDist || (d === bestDist && best && a.id < best.id)) {
-        best = a;
-        bestDist = d;
-      }
-    }
-    if (!best) return;
     const damage = turret.kind === 'keep' ? cfg.keepDamage : cfg.towerDamage;
+    const best = turretTarget(tx.catalog, battle, turret, damage);
+    if (!best) return;
     const killed = applyDamage(tx, battle, best, damage);
     tx.emit({ kind: 'SiegeTurretShot', structureId: turret.id, targetId: best.id, damage, killed, targetRemaining: aliveCount(tx.catalog, best) });
   }
@@ -174,4 +208,19 @@ export function structureLabel(id: string): string {
     default:
       return id.startsWith('wall_') ? `Wall section ${id.slice(5)}` : id;
   }
+}
+
+/** The siege attacker aims the Catapult (on one of its own activations; free, no action spent). */
+export function commitBattleAimCatapult(tx: Tx, structureId: string): void {
+  const battle = requireBattle(tx.state);
+  const siege = battle.siege;
+  if (!siege || siege.level === 0) reject('illegal_action', 'There are no walls to aim at');
+  const active = battle.activeStackId ? battle.stacks[battle.activeStackId] : undefined;
+  if (!active || active.side !== 'attacker') reject('illegal_action', 'Aim the Catapult on one of your own turns');
+  requireControl(tx, battle, 'attacker');
+  const target = siege.structures.find((s) => s.id === structureId);
+  if (!target) reject('illegal_target', 'Unknown structure');
+  if (target.hp <= 0) reject('illegal_target', `${structureLabel(structureId)} is already destroyed`);
+  siege.catapultTargetId = structureId;
+  tx.emit({ kind: 'SiegeCatapultAimed', structureId });
 }

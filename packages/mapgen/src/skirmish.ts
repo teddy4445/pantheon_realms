@@ -76,6 +76,7 @@ import {
   type HostileHeroDefinition,
   type MissionDefinition,
   type MissionRivalSetup,
+  type MissionTownSetup,
   type ResourceCost,
   type RewardDefinition,
   type ScenarioFeatures,
@@ -85,8 +86,9 @@ import {
   type WorldMapDefinition,
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
+import { UNOWNED_GARRISON_VALUE, otherPantheons, unownedTownGarrison, unownedTownSetup } from './unownedTowns';
 
-export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.6';
+export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.7';
 /** Seeds the terrain noise and site choices (unchanged since 0.5, so a seed keeps its map). */
 const SKIRMISH_NOISE_LABEL = 'pr-skirmishgen-0.5';
 export const RANDOM_TEMPLATE_ID = 'random_skirmish';
@@ -132,6 +134,12 @@ export type GuardStrength = 'weak' | 'normal' | 'strong';
 export type TreasureLevel = 'scarce' | 'normal' | 'rich';
 export type StartWealth = 'low' | 'normal' | 'high';
 export type RoadDensity = 'full' | 'sparse';
+/**
+ * Towns that start without an owner or a hero (owner request 2026-10-07): none;
+ * one per empire of the empire's own pantheon; one of another pantheon; or both.
+ * Each stands in the empire's outer lands, held by a neutral garrison.
+ */
+export type UnownedTowns = 'none' | 'own' | 'other' | 'both';
 
 /** Multipliers (percent) for guard armies, rewards and the starting wallet. */
 export const GUARD_PERCENT: Readonly<Record<GuardStrength, number>> = { weak: 60, normal: 100, strong: 160 };
@@ -175,6 +183,8 @@ export interface SkirmishGenOptions {
   readonly climateRules?: boolean;
   /** AI rivals play by their pantheon's temperament (default on; ignored when `features` is given). */
   readonly aiTemperaments?: boolean;
+  /** Unowned towns per empire (default none). */
+  readonly unownedTowns?: UnownedTowns;
 }
 
 export interface GeneratedSkirmish {
@@ -253,6 +263,47 @@ function symmetryLayout(n: number): { seats: Transform[]; geom: Transform[] } {
 }
 
 const relDist = (c: HexCoord) => axialDistance(c, { q: 0, r: 0 });
+
+/** A small binary min-heap (the road router's open list; stable through the comparator's tie-break). */
+class MinHeap<T> {
+  private readonly items: T[] = [];
+  constructor(private readonly less: (a: T, b: T) => number) {}
+  get size(): number {
+    return this.items.length;
+  }
+  push(x: T): void {
+    const a = this.items;
+    a.push(x);
+    let i = a.length - 1;
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (this.less(a[i]!, a[p]!) >= 0) break;
+      [a[i], a[p]] = [a[p]!, a[i]!];
+      i = p;
+    }
+  }
+  pop(): T | undefined {
+    const a = this.items;
+    if (a.length === 0) return undefined;
+    const top = a[0]!;
+    const last = a.pop()!;
+    if (a.length > 0) {
+      a[0] = last;
+      let i = 0;
+      for (;;) {
+        const l = i * 2 + 1;
+        const r = l + 1;
+        let m = i;
+        if (l < a.length && this.less(a[l]!, a[m]!) < 0) m = l;
+        if (r < a.length && this.less(a[r]!, a[m]!) < 0) m = r;
+        if (m === i) break;
+        [a[i], a[m]] = [a[m]!, a[i]!];
+        i = m;
+      }
+    }
+    return top;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Content helpers
@@ -643,6 +694,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   const treasure: TreasureLevel = opts.treasure ?? 'normal';
   const wealth: StartWealth = opts.startWealth ?? 'normal';
   const roadsSetting: RoadDensity = opts.roads ?? 'full';
+  const unownedSetting: UnownedTowns = opts.unownedTowns ?? 'none';
   const features = opts.features ?? { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: opts.climateRules ?? true, aiTemperaments: opts.aiTemperaments ?? true };
   const seed = opts.seed >>> 0;
   const Rh = SKIRMISH_SIZE_RADIUS[opts.size];
@@ -968,7 +1020,32 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     }
   }
 
+  // Unowned towns (generator 0.7): in the empire's outer lands, well clear of every other
+  // site, copied by symmetry like the rest (so every empire's is the same distance away).
+  const freeKinds: ('own' | 'other')[] = unownedSetting === 'both' ? ['own', 'other'] : unownedSetting === 'own' ? ['own'] : unownedSetting === 'other' ? ['other'] : [];
+  const freeTowns: { pos: HexCoord; kind: 'own' | 'other' }[] = [];
+  for (const kind of freeKinds) {
+    const busy = [...chosen.map((x) => x.pos), ...monsterHomes, ...portalBase, ...inner, ...valley, ...gates.map((g) => g.pos), ...(pocket ? [pocket.treasury, pocket.gate] : []), ...freeTowns.map((f) => f.pos)];
+    const pick = (gap: number) =>
+      regionA.filter((c) => {
+        const d = axialDistance(c, A);
+        if (d < Math.max(5, homeR + 1) || d > R + 3) return false;
+        if (relDist(c) < centerR + 3 || relDist(c) > Rh - 3) return false;
+        if (zoneOf(c) === 'center' || (mapType === 'highlands' && zoneOf(c) !== 'outer')) return false;
+        if (busy.some((b) => axialDistance(b, c) < gap) || nearHard(c)) return false;
+        // Never next to another empire's region copy of itself or of a town.
+        return group.every((g, i) => i === 0 || axialDistance(g(c), c) >= 8);
+      });
+    let cands = pick(4);
+    if (cands.length === 0) cands = pick(3);
+    if (cands.length > 0) freeTowns.push({ pos: cands[rng.nextInt(cands.length)]!, kind });
+  }
+
   // Clearings: every site stands on open ground with an open ring around it (the wild forest's glades).
+  for (const f of freeTowns) {
+    clearOrbit(f.pos);
+    for (const nb of axialNeighbors(f.pos)) if (tAt(nb) === 'mountain' || tAt(nb) === 'water') clearOrbit(nb, 'rough');
+  }
   for (const c of portalBase) {
     clearOrbit(c);
     for (const nb of axialNeighbors(c)) if (tAt(nb) === 'mountain' || tAt(nb) === 'water') clearOrbit(nb, 'rough');
@@ -1030,7 +1107,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       k = c ? hexKey(c) : '';
     }
   };
-  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...valley, ...monsterHomes, ...gates.map((g) => g.pos), ...portalBase, ...(pocket ? [pocket.gate, pocket.treasury] : [])];
+  const targets: HexCoord[] = [{ q: 0, r: 0 }, ...chosen.map((x) => x.pos), ...inner, ...valley, ...monsterHomes, ...gates.map((g) => g.pos), ...portalBase, ...(pocket ? [pocket.gate, pocket.treasury] : []), ...freeTowns.map((f) => f.pos)];
   for (let pass = 0; pass < 3; pass++) {
     const reach = reachFrom(A);
     const missing = targets.filter((t) => !reach.has(hexKey(t)));
@@ -1040,40 +1117,66 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
 
   // --- Roads: the first empire's town to its sites, then copied ----
   const roadEdges = new Set<string>();
+  /*
+   * Road routing (generator 0.7, owner request 2026-10-07: better aligned roads).
+   * A Dijkstra over (hex, heading) with a binary heap:
+   * - trunk sharing: a step along a road already laid (this empire's or an image
+   *   of another's) costs 40 %, so later roads join the trunk instead of running
+   *   beside it one hex away;
+   * - turn penalties: a 60° change of heading costs 2, a 120° change 6 (a U-turn
+   *   is never taken), so among equally long ways the road takes long straight
+   *   runs with few bends instead of zig-zagging.
+   * Everything still happens in the first empire's frame and is copied by the
+   * symmetry, so every empire keeps the same roads.
+   */
   const route = (from: HexCoord, to: HexCoord): HexCoord[] | null => {
-    // Dijkstra over relative coords; soft mountains cost a lot (opened later), walls and water are closed.
+    // Soft mountains cost a lot (opened later); walls, water and key gates are closed.
     const keyGates = new Set(pocket ? geom.map((g) => hexKey(g(pocket!.gate))) : []);
-    const cost = (c: HexCoord) => {
+    const cellCost = (c: HexCoord) => {
       const t = tAt(c);
       if (!t || t === 'water' || !inside(c) || hard.has(hexKey(c)) || keyGates.has(hexKey(c))) return null;
       if (t === 'mountain') return 40;
       return t === 'plains' ? 4 : t === 'marsh' ? 7 : 5 + (noise(c, 'road') > 0.5 ? 1 : 0);
     };
-    const dist = new Map<string, number>([[hexKey(from), 0]]);
+    const TURN = [0, 2, 6, Infinity, 6, 2];
+    const onRoad = (a: HexCoord, b: HexCoord) => roadEdges.has(edgeKey(abs(a), abs(b)));
+    // State key: hex key + heading (6 = the start, no heading yet).
+    const sk = (k: string, h: number) => `${k}#${h}`;
+    const dist = new Map<string, number>([[sk(hexKey(from), 6), 0]]);
     const prev = new Map<string, string>();
-    const open: { k: string; c: HexCoord; d: number }[] = [{ k: hexKey(from), c: from, d: 0 }];
-    while (open.length) {
-      open.sort((a, b) => a.d - b.d || (a.k < b.k ? -1 : 1));
-      const cur = open.shift()!;
-      if (cur.d > (dist.get(cur.k) ?? Infinity)) continue;
-      if (cur.k === hexKey(to)) break;
-      for (const nb of axialNeighbors(cur.c)) {
-        const step = cost(nb);
-        if (step === null) continue;
-        const nd = cur.d + step;
+    const heap = new MinHeap<{ k: string; c: HexCoord; h: number; d: number; s: string }>((a, b) => a.d - b.d || (a.s < b.s ? -1 : a.s > b.s ? 1 : 0));
+    heap.push({ k: hexKey(from), c: from, h: 6, d: 0, s: sk(hexKey(from), 6) });
+    const goal = hexKey(to);
+    let end: string | null = null;
+    while (heap.size > 0) {
+      const cur = heap.pop()!;
+      if (cur.d > (dist.get(cur.s) ?? Infinity)) continue;
+      if (cur.k === goal) {
+        end = cur.s;
+        break;
+      }
+      const nbs = axialNeighbors(cur.c);
+      for (let dir = 0; dir < nbs.length; dir++) {
+        const nb = nbs[dir]!;
+        const base = cellCost(nb);
+        if (base === null) continue;
+        const turn = cur.h === 6 ? 0 : TURN[(dir - cur.h + 6) % 6]!;
+        if (turn === Infinity) continue;
+        const nd = cur.d + (onRoad(cur.c, nb) ? base * 0.4 : base) + turn;
         const nk = hexKey(nb);
-        if (nd < (dist.get(nk) ?? Infinity)) {
-          dist.set(nk, nd);
-          prev.set(nk, cur.k);
-          open.push({ k: nk, c: nb, d: nd });
+        const ns = sk(nk, dir);
+        if (nd < (dist.get(ns) ?? Infinity)) {
+          dist.set(ns, nd);
+          prev.set(ns, cur.s);
+          heap.push({ k: nk, c: nb, h: dir, d: nd, s: ns });
         }
       }
     }
-    if (!dist.has(hexKey(to))) return null;
+    if (!end) return null;
     const path: HexCoord[] = [];
-    let k: string | undefined = hexKey(to);
+    let k: string | undefined = end;
     while (k) {
-      const [q, r] = k.split(',').map(Number);
+      const [q, r] = k.split('#')[0]!.split(',').map(Number);
       path.unshift({ q: q!, r: r! });
       k = prev.get(k);
     }
@@ -1098,6 +1201,11 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   }
   // Roads through the passes of the highlands (a road should lead out of every valley).
   if (mapType === 'highlands' && roadsSetting === 'full') for (const gt of gates) { const p = route(A, gt.pos); if (p) addRoad(p); }
+  // A road to every unowned town (with full or sparse roads: a town is worth a road).
+  for (const f of freeTowns) {
+    const p = route(A, f.pos);
+    if (p) addRoad(p);
+  }
 
   // --- Mission content ---------------------------------------------------------
   const sites: SiteDefinition[] = [];
@@ -1293,6 +1401,24 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     });
   });
 
+  // Unowned towns: one per empire and kind, with a neutral garrison of the town's own pantheon.
+  const neutralTowns: MissionTownSetup[] = [];
+  freeTowns.forEach((f, fi) => {
+    group.forEach((g, i) => {
+      const own = kits[i]!.pantheonId;
+      const others = otherPantheons(catalog, own);
+      const pantheonId = f.kind === 'own' || others.length === 0 ? own : others[rng.nextInt(others.length)]!;
+      const kit = catalog.skirmishKits[pantheonId]!;
+      const used = usedNames.get(pantheonId) ?? 0;
+      usedNames.set(pantheonId, used + 1);
+      const name = kit.townNames[used % kit.townNames.length] ?? `Free Town ${fi + 1}`;
+      const townId = `free_${fi + 1}_${i + 1}`;
+      const siteId = `site_${townId}`;
+      sites.push({ id: siteId, anchorId: siteId, coord: abs(g(f.pos)), name, description: `A ${kit.adjective} town without a lord, held by its own militia. Take it to build and recruit there.`, kind: { type: 'town', townId } });
+      neutralTowns.push(unownedTownSetup(catalog, pantheonId, townId, siteId, name, unownedTownGarrison(catalog, pantheonId, (UNOWNED_GARRISON_VALUE * ctx.guardPct) / 100)));
+    });
+  });
+
   // Players: seat 0 is the scenario's player seat; the others are rival seats (human or AI).
   const wallet = scaleCost(START_WALLET, WEALTH_PERCENT[wealth]);
   const setupFor = (i: number) => {
@@ -1332,7 +1458,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   });
   const sizeLabel = SKIRMISH_SIZE_LABEL[opts.size];
   const typeInfo = SKIRMISH_MAP_TYPES.find((t) => t.id === mapType)!;
-  const settingsKey = [mapType, guards, treasure, wealth, roadsSetting, opts.revealMap ? 'revealed' : 'fog', ...(opts.portals === false ? ['noportals'] : []), ...(opts.turnOrder && opts.turnOrder !== (n >= 3 ? 'rotating' : 'fixed') ? [opts.turnOrder] : [])].join('-');
+  const settingsKey = [mapType, guards, treasure, wealth, roadsSetting, opts.revealMap ? 'revealed' : 'fog', ...(opts.portals === false ? ['noportals'] : []), ...(opts.turnOrder && opts.turnOrder !== (n >= 3 ? 'rotating' : 'fixed') ? [opts.turnOrder] : []), ...(unownedSetting !== 'none' ? [`free${unownedSetting}`] : [])].join('-');
   const id = `random_${opts.size}_${n}p_${seed}${settingsKey === 'continental-normal-normal-normal-full-fog' ? '' : `_${settingsKey}`}`;
   const relicSite = sites.find((s) => s.id === 'relic');
   const mission: MissionDefinition = {
@@ -1342,7 +1468,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     order: 1,
     name: `Random Map — ${typeInfo.label}`,
     subtitle: `${sizeLabel} · ${n} empires · seed ${seed}`,
-    summary: `A generated ${sizeLabel.toLowerCase()} ${typeInfo.label.toLowerCase()} map for ${n} empires. ${typeInfo.summary} ${victory.type === 'hold_relic' ? `Win by holding the central shrine for ${victory.days} days, or by defeating every rival.` : 'Win by defeating every rival empire.'} Every empire gets the same terrain, roads and treasures around its town (symmetric map${n === 5 ? '; a sixth region is wild land, so two empires have one rival neighbour fewer' : ''}). Guards ${guards}, treasure ${treasure}, starting wealth ${wealth}. Proposed feature; values unplaytested.`,
+    summary: `A generated ${sizeLabel.toLowerCase()} ${typeInfo.label.toLowerCase()} map for ${n} empires. ${typeInfo.summary} ${victory.type === 'hold_relic' ? `Win by holding the central shrine for ${victory.days} days, or by defeating every rival.` : 'Win by defeating every rival empire.'} Every empire gets the same terrain, roads and treasures around its town (symmetric map${n === 5 ? '; a sixth region is wild land, so two empires have one rival neighbour fewer' : ''}). Guards ${guards}, treasure ${treasure}, starting wealth ${wealth}.${neutralTowns.length ? ` ${neutralTowns.length / n === 1 ? 'One unowned town' : 'Two unowned towns'} per empire wait to be taken.` : ''} Proposed feature; values unplaytested.`,
     mapTemplateId: RANDOM_TEMPLATE_ID,
     soundscape: mapType === 'highlands' || mapType === 'crossroads' ? 'high_pass' : 'coast',
     targetPlaytime: n === 2 ? '30–60 minutes (unmeasured)' : '45–90 minutes (unmeasured)',
@@ -1362,6 +1488,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       hero: seat0.hero,
     },
     rivals,
+    ...(neutralTowns.length > 0 ? { neutralTowns } : {}),
     ...(monsterCount > 0 ? { hostilePlayer: { playerId: 'monsters', name: 'Wild creatures' } } : {}),
     initialFlags: ['skirmish'],
     features,
@@ -1384,7 +1511,10 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     helpTopics: [
       { id: 'random_maps', title: 'Random maps', text: `Random maps are symmetric: every empire has the same terrain, roads, mines, camps and treasures around its town, so no starting position is favored. ${typeInfo.label}: ${typeInfo.summary} Creature camps sell creatures to a visiting hero; map events happen once, to the first hero who arrives. Wandering monsters roam near their lair and attack heroes they can beat; much weaker neutrals join you or flee instead of fighting.` },
       { id: 'map_sites', title: 'Map sites', text: 'Learning stones give every hero 1,000 experience once. Spell shrines teach their spell to heroes with a spellbook; skill trainers teach a skill to heroes with a free slot. Quest huts reward a delivery or a defeated guard. Windmills pay the first hero each week. Treasure chests hold Gold or experience — you choose. Prisons free a captive hero who joins you. A key tent gives your empire the key that opens the key gate of the same colour.' },
-      { id: 'sieges', title: 'Sieges', text: 'Entering an enemy town that has a garrison or a visiting hero starts a siege. The Fort gives walls and a gate, the Citadel adds a keep and a moat, the Castle stronger walls and two towers. Temporary siege model; values are proposed.' },
+      { id: 'sieges', title: 'Sieges', text: 'Entering an enemy town that has a garrison or a visiting hero starts a siege. The Fort gives walls and a gate, the Citadel adds a keep and a moat, the Castle stronger walls and two towers. Aim your Catapult on your turn; the keep and towers fire at the stack they hurt most. Values are proposed.' },
+      ...(neutralTowns.length
+        ? [{ id: 'unowned_towns', title: 'Unowned towns', text: 'Unowned towns start without a lord or a hero; their own militia holds them. Defeat it (a siege) and the town is yours: build, recruit and hire there like in your home town — whatever its pantheon. An army of several pantheons fights with lower morale (−1 for each pantheon beyond the first, at most −2; neutral creatures never count). Proposed; values unplaytested.' }]
+        : []),
     ],
     protectedHeroFailure: false,
     thumbnailAssetId: 'mission.skirmish.random.thumbnail',
@@ -1456,7 +1586,8 @@ export function travelCosts(map: WorldMapDefinition, from: HexCoord, blocked: Re
 
 export function validateSkirmishMap(map: WorldMapDefinition, mission: MissionDefinition, mapType: SkirmishMapType = 'continental'): MapCheck[] {
   const checks: MapCheck[] = [];
-  const towns = mission.sites.filter((s) => s.kind.type === 'town');
+  // The empires' own towns (unowned towns are checked below).
+  const towns = mission.sites.filter((s) => s.kind.type === 'town' && s.id.startsWith('site_town_'));
   const fromFirst = travelCosts(map, towns[0]!.coord);
   const unreachable = mission.sites.filter((s) => !fromFirst.has(hexKey(s.coord)));
   checks.push({ id: 'SKM-1', pass: unreachable.length === 0, detail: unreachable.length ? `unreachable: ${unreachable.map((s) => s.id).join(', ')}` : 'every site is reachable' });
@@ -1505,6 +1636,14 @@ export function validateSkirmishMap(map: WorldMapDefinition, mission: MissionDef
     const cutOff = others.filter((s) => !fromTowns.some((d) => d.has(hexKey(s.coord))));
     if (cutOff.length > 0) problems.push(`closed key gates cut off ${cutOff.map((s) => s.id).join(', ')}`);
     checks.push({ id: 'SKM-7', pass: problems.length === 0, detail: problems.length ? problems.join('; ') : `${keyGates.length} key gates seal their treasuries; every other site is reachable without keys` });
+  }
+  // Unowned towns (generator 0.7): every empire's is as far from its town as every other empire's.
+  const free = mission.sites.filter((s) => s.kind.type === 'town' && s.id.startsWith('site_free_'));
+  if (free.length > 0) {
+    const kinds = [...new Set(free.map((s) => s.id.split('_')[2]!))].sort();
+    const costs = kinds.map((k) => towns.map((t, i) => travelCosts(map, t.coord).get(hexKey(free.find((s) => s.id === `site_free_${k}_${i + 1}`)?.coord ?? t.coord)) ?? -1));
+    const fair = costs.every((row) => row.every((c) => c === row[0] && c > 0)) && free.length === kinds.length * towns.length;
+    checks.push({ id: 'SKM-8', pass: fair, detail: `unowned towns: ${costs.map((row) => row.join(' / ')).join('; ')}` });
   }
   return checks;
 }

@@ -19,6 +19,11 @@ import {
   type CreatureStackState,
   type HexCoord,
   townGate,
+  catapultTarget,
+  siegeRoundStart,
+  turretTarget,
+  turretTargetValue,
+  Tx,
 } from '../src';
 
 const SKIRMISH = 'skirmish_twin_harbors';
@@ -338,5 +343,78 @@ describe('Divine Sight (adventure spell)', () => {
     d.endDay();
     expect(visibleCells(d.catalog, d.state, 'player').has(cellIndex(map, far))).toBe(false);
     expect(d.state.fog['player']!.explored[cellIndex(map, { q: 16, r: 6 })]).toBe(1);
+  });
+});
+
+describe('finished siege rules (2026-10-07)', () => {
+  it('the attacker aims the Catapult on its own turn; the next round start hits that structure', () => {
+    const d = besiegeEast({ level: 3 });
+    const cfg = d.catalog.rulesProfile.combat.siege;
+    // Round 1 (before anyone could aim): the default target, the gate.
+    expect(d.state.battle!.siege!.structures.find((s) => s.id === 'gate')!.hp).toBe(cfg.gateHp - cfg.catapultDamage);
+    const attacker = Object.values(d.state.battle!.stacks).find((s) => s.side === 'attacker')!;
+    const defender = Object.values(d.state.battle!.stacks).find((s) => s.side === 'defender')!;
+    setActive(d, defender.id);
+    expect(d.reject({ kind: 'BattleAimCatapult', structureId: 'tower_n' }, 'player').message).toMatch(/own turns/);
+    setActive(d, attacker.id);
+    expect(d.reject({ kind: 'BattleAimCatapult', structureId: 'tower_x' }, 'player').code).toBe('illegal_target');
+    expect(d.reject({ kind: 'BattleAimCatapult', structureId: 'tower_n' }, 'rival').code).toBe('not_owner');
+    const events = d.do({ kind: 'BattleAimCatapult', structureId: 'tower_n' }, 'player');
+    expect(events.find((e) => e.kind === 'SiegeCatapultAimed')).toMatchObject({ structureId: 'tower_n' });
+    // Free: the same stack still acts.
+    expect(d.state.battle!.activeStackId).toBe(attacker.id);
+    const b = d.state.battle!;
+    expect(catapultTarget(b)!.id).toBe('tower_n');
+    const tx = new Tx({ catalog: d.catalog }, d.state, 'player');
+    siegeRoundStart(tx, b);
+    expect(b.siege!.structures.find((s) => s.id === 'tower_n')!.hp).toBe(cfg.towerHp - cfg.catapultDamage);
+    // A destroyed aim falls back to the default target.
+    b.siege!.structures.find((s) => s.id === 'tower_n')!.hp = 0;
+    expect(catapultTarget(b)!.id).toBe('gate');
+    expect(d.reject({ kind: 'BattleAimCatapult', structureId: 'tower_n' }, 'player').message).toMatch(/destroyed/);
+  });
+
+  it('turrets fire at the attacker stack their shot hurts most — a shooter over a closer melee stack', () => {
+    const d = besiegeEast({ level: 2, attacker: [['hoplite', 20], ['peltast', 10]] });
+    const b = d.state.battle!;
+    const shot = d.events.find((e) => e.kind === 'SiegeTurretShot');
+    const keep = b.siege!.structures.find((s) => s.id === 'keep')!;
+    const hop = b.stacks['a0' as BattleStackId]!;
+    const pel = b.stacks['a1' as BattleStackId]!;
+    const dmg = d.catalog.rulesProfile.combat.siege.keepDamage;
+    const want = turretTargetValue(d.catalog, pel, dmg) > turretTargetValue(d.catalog, hop, dmg) ? 'a1' : 'a0';
+    expect(shot).toMatchObject({ structureId: 'keep', targetId: want });
+    // The peltasts (shooters with shots) count half again.
+    const noShots = { ...pel, shotsRemaining: 0 };
+    expect(turretTargetValue(d.catalog, pel, dmg)).toBeCloseTo(turretTargetValue(d.catalog, noShots, dmg) * 1.5);
+    expect(turretTarget(d.catalog, b, keep, dmg)!.id).toBe(want);
+  });
+
+  it('the human defender combines identical stacks; with seven or fewer left all defend', () => {
+    const garrison: Army = [['hoplite', 5], ['hoplite', 5], ['peltast', 4], ['peltast', 4]];
+    const visitor: Army = [['hoplite', 6], ['peltast', 3], ['hoplite', 2], ['peltast', 2]];
+    const d = rivalBesiegesWest(garrison, visitor, [['hoplite', 1]]);
+    expect(d.state.battle!.phase).toBe('selection');
+    expect(d.reject({ kind: 'BattleMergeDefenders' }, 'rival').code).toBe('not_owner');
+    const events = d.do({ kind: 'BattleMergeDefenders' }, 'player');
+    expect(events.filter((e) => e.kind === 'BattleDefendersMerged').map((e) => (e.kind === 'BattleDefendersMerged' ? [e.creatureId, e.count, e.stacks] : []))).toEqual([
+      ['hoplite', 18, 4],
+      ['peltast', 13, 4],
+    ]);
+    // Into the visiting hero's own stacks; the garrison's identical stacks are emptied.
+    const alexios = d.state.heroes['alexios']!;
+    expect(alexios.army.slots.slice(0, 4)).toEqual([{ creatureId: 'hoplite', count: 18 }, { creatureId: 'peltast', count: 13 }, null, null]);
+    expect(d.state.towns['westharbor']!.garrison.slots.every((s) => !s)).toBe(true);
+    const b = d.state.battle!;
+    expect(b.phase).not.toBe('selection');
+    expect(Object.values(b.stacks).filter((s) => s.side === 'defender').map((s) => s.startingCount).sort((x, y) => x - y)).toEqual([13, 18]);
+    expect(d.reject({ kind: 'BattleMergeDefenders' }, 'player').code).toBe('illegal_action');
+  });
+
+  it('the game’s own defenders combine identical stacks before choosing', () => {
+    const d = besiegeEast({ level: 1, garrison: [['hoplite', 5], ['hoplite', 5], ['peltast', 4], ['peltast', 4]], visitor: [['hoplite', 6], ['peltast', 3], ['hoplite', 2], ['peltast', 2]] });
+    const defenders = Object.values(d.state.battle!.stacks).filter((s) => s.side === 'defender');
+    expect(defenders).toHaveLength(2);
+    expect(d.events.filter((e) => e.kind === 'BattleDefendersMerged')).toHaveLength(2);
   });
 });

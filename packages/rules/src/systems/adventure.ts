@@ -5,6 +5,7 @@
  * A guarded destination requires explicit encounter confirmation; the hero pays
  * the final edge as the battle begins (heroes/05 "Adventure movement").
  */
+import { changeTownOwner } from './ownership';
 import type { HeroId, PlayerId, SiteId } from '../ids';
 import { hexEquals, type HexCoord } from '../core/hex';
 import { canAfford, resources, type ResourceBundle } from '../core/resources';
@@ -169,7 +170,7 @@ export function arriveAt(tx: Tx, hero: HeroState, coord: HexCoord): void {
       } else {
         const garrisoned = town.garrison.slots.some((s) => s && s.count > 0);
         if (garrisoned) reject('illegal_action', 'Town sieges are not available in this build');
-        town.ownerId = playerId;
+        changeTownOwner(tx, town, playerId);
         st.owner = playerId;
         tx.emit({ kind: 'SiteCaptured', siteId: def.id, playerId });
         bumpTotal(tx.state, playerId, 'townsCaptured');

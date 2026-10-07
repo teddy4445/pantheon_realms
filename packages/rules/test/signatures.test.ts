@@ -220,12 +220,12 @@ describe('Offering (Temple rite)', () => {
     return { d, town };
   };
 
-  it('turns creatures into Favor at 1 per 150 Gold, capped at 10, once per town per week', () => {
+  it('turns creatures into Favor at 1 per 125 Gold, capped at 10, once per town per week', () => {
     const { d } = setup();
     const favor = d.player.wallet.favor;
-    // 12 serpents x 60 = 720 Gold -> 4 Favor.
+    // 12 serpents x 60 = 720 Gold -> 5 Favor.
     d.do({ kind: 'MakeOffering', townId: 'westharbor', offerings: [{ army: { kind: 'garrison', townId: 'westharbor' }, slot: 0, quantity: 12 }] });
-    expect(d.player.wallet.favor).toBe(favor + 4);
+    expect(d.player.wallet.favor).toBe(favor + 5);
     expect(d.town('westharbor').garrison.slots[0]?.count).toBe(28);
     expect(d.reject({ kind: 'MakeOffering', townId: 'westharbor', offerings: [{ army: { kind: 'garrison', townId: 'westharbor' }, slot: 0, quantity: 1 }] }).code).toBe('already_done');
     // Next week the rite is available again; the cap limits a large offering to 10.

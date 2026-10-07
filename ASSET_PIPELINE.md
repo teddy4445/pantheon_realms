@@ -1135,6 +1135,19 @@ does so only when all six mask sheets are imported (and `softGround` is on);
 until then it keeps the softened hex edges. Read-only check: `__prGround()`
 under `?e2e` reports `painted`, `softened` or `crisp`.
 
+Since 2026-10-07 (owner: borders between lands looked too alike) the same
+masks are varied when they are drawn, with no new art: a piece's reach is
+scaled 0.7–1.9 × along its edge's normal (the edge and its corners stay;
+`GROUND_VARIETY`, smooth noise of the map seed), half are mirrored along the
+edge, on about 30 % of land borders the lower ground reaches back into the
+higher one, and rounded corner patches (`planGroundCorners`) bend a border at
+most hex corners where one ground pokes between two of another. Shores and
+their foam are drawn as painted.
+
+Road tiles (§15) are chosen per stretch of road since 2026-10-07: one material
+for a stretch between junctions (`smoothRoadTypes`), boardwalks still hex by
+hex over marsh.
+
 ## 17. Nature scenery and the hero equipment figure (2026-10-06)
 
 **Nature scenery** (owner delivery `nature-expansion-2026-10-06`): 106

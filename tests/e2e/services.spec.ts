@@ -34,12 +34,13 @@ test('Mesoamerican offering at the Temple turns creatures into Favor', async ({ 
   await page.getByTestId('offering-open').click();
   const modal = page.getByTestId('offering');
   await modal.getByRole('slider').first().fill('20');
-  await expect(modal.getByTestId('offering-favor')).toHaveText('8');
+  // 20 Feathered Serpents (60 Gold each) at 1 Favor per 125 Gold (2026-10-07; was 150).
+  await expect(modal.getByTestId('offering-favor')).toHaveText('9');
   await page.waitForTimeout(800); // let the dialog's fade-in finish before the screenshot
   await page.screenshot({ path: 'test-results/offering.png' });
   await modal.getByTestId('offering-confirm').click();
   await page.getByTestId('confirm-ok').click();
-  const s = await waitFor(page, (x) => x.state.players.player.wallet.favor === favor + 8, 'Favor from the offering');
+  const s = await waitFor(page, (x) => x.state.players.player.wallet.favor === favor + 9, 'Favor from the offering');
   expect(s.state.towns.westharbor.garrison.slots[0].count).toBe(10);
 });
 

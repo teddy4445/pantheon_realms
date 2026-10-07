@@ -164,7 +164,7 @@ test('map: Far Sight spreads its ring over the chosen tile; Fleet Foot winds rou
   expect(drawn[drawn.length - 1]).toBe('idle');
 });
 
-test('map miracle: Tithe of the Faithful showers coins over the Gold counter after its card', async ({ page }) => {
+test('map miracle: the Tithe (Greek: Tribute of Hera) showers coins over the Gold counter after its card', async ({ page }) => {
   test.setTimeout(240_000);
   await usePrefs(page, PREFS);
   const d = GameDriver.mission('skirmish_twin_harbors', { matchId: 'e2e-r12-tithe' });

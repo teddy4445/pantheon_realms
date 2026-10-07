@@ -1221,3 +1221,119 @@ cobbles, marsh planks) and turn in curves; ground types fade into each other
 and the fog's edges fade. Owner decision 2026-10-05 for the dwelling order:
 a dwelling never needs a dwelling of a higher tier (tier 3 now needs tier 2 and
 the first temple in every pantheon, including The Three Beacons).
+
+## Group 1.2 — owner requests of 2026-10-07 (second list; proposed values)
+
+The owner asked for quick battles, a smarter late-game computer player with a
+summary of the rivals' turns, a check of the campaigns by simulation, the end
+of the pantheon balance work, a morale penalty for mixed armies, finished
+siege rules, late hero choices tied to the gods (with no new art) and two map
+editor tools. Values are proposed and unplaytested; the measurements are in
+DEVELOPMENT_STATUS.md.
+
+### 48. Quick battles from the encounter panel
+
+The encounter panel fights the battle on a copy of the current state with the
+battle AI on both sides — the same thing as Auto in battle — and shows the
+outcome, the rounds, the experience and each of the player's losses. **Quick
+battle** then resolves it without the battlefield, through the same function
+on the same state, so the result is the one shown (the rules are deterministic:
+the dice travel in the state). Not offered when another human seat commands
+the other army (hot-seat): that player fights their own battle. Decision taken:
+no "estimate" wording — the panel says "This is the result you get".
+
+### 49. Mixed-pantheon armies
+
+An army of one pantheon fights with +1 morale (as before); each further
+pantheon in it gives −1, at most −2 (`combat.mixedPantheonMorale`,
+`mixedPantheonMoraleCap`); neutral creatures never count either way. Town
+defenders count their chosen stacks. The hero screen's morale shows the army
+part in its tooltip.
+
+### 50. The gods' gifts (hero levels 10 and 15)
+
+At level 10 and level 15 (expanded rules: skirmishes, random maps, The Winter
+Oath and the arc campaigns) the level-up first offers **two gifts from the gods
+the empire committed to** — from two different gods when it has two or more —
+and one must be taken; the other is gone for that hero. Every god has two
+gifts, one per word of its domain (Athena: "Knowledge & Strategy" → Athena's
+Knowledge +2 Knowledge, Athena's Strategy +1 Attack and +1 Defense); a domain
+word maps to one of 18 small themes (might, guard, sorcery, lore, strategy,
+glory, fortune, majesty, watch, plenty, healing, renewal, travel, horizon,
+hunt, swiftness, storm, afterlife; `packages/content/src/common/godPerks.ts`).
+Each gift is drawn with its god's portrait and the theme's existing stat icon
+— no new art. The AI takes fighting gifts for fighters and spell gifts for
+spellcasters. Values (e.g. +2 Attack, +350 Gold a day, +20% spell damage) are
+proposals.
+
+### 51. Finished sieges
+
+* **Combining defenders:** a defender with more than seven stacks may combine
+  identical stacks (same creature and form) of the garrison and the visiting
+  hero first; each group becomes one stack in the visiting hero's army when the
+  hero has that creature, otherwise in the garrison. It is a real exchange of
+  troops: if the town holds, the creatures stay where they were combined. With
+  seven or fewer left, all of them defend. The game's own defenders always
+  combine first.
+* **Aiming the Catapult:** on one of its own turns the attacker clicks a
+  standing structure in the fortification list; from the next round start the
+  Catapult hits it while it stands, then falls back to the default (the gate
+  first). Round 1 always hits the default target (nobody has acted yet). The
+  AI aims at the gate while it has ground troops, else at the weakest keep or
+  tower.
+* **Towers pick their targets:** the keep and each tower shoot the attacker
+  stack their shot hurts most — the Gold worth of the creature Health it
+  removes, shooters with shots counted half again; ties go to the closest,
+  then the lowest ID (before: always the closest).
+
+### 52. The late-game computer player
+
+* **Hand-offs:** from day 15 a secondary hero carrying between 15% and 80% of
+  the main army's strength walks to the main hero (at most two days away,
+  never ending where a stronger visible enemy reaches) and hands over its
+  stacks — the most valuable first, into a matching stack or an empty slot, or
+  swapped for the main army's weakest stack when worth 20% more — keeping one
+  creature; it then goes back for the next recruits.
+* **Miracles at the decisive moment:** the weekly miracle is kept for a battle
+  while an enemy empire's hero or town is within about two days (16 hexes) of
+  its heroes or towns, until the last two days of the week; in battle it is
+  called in rounds 1–4 of a siege, a fight against another empire's hero, or a
+  close fight (not a walkover above 3 : 1, not an easy fight against neutrals
+  above 1.6 : 1, not a lost cause below 0.3 : 1 unless the town itself is
+  defended).
+* **Counterattacks:** a town lost in the last 21 days is worth 1.6 × as much to
+  take back and is besieged at closer odds (the AI's siege margin × 0.85, never
+  below even). Every ownership change records the loss (`PlayerState.lostTowns`,
+  public information) and now emits `TownCaptured` with the previous owner.
+
+### 53. The rivals' turns in a few lines
+
+When a human seat's turn begins, a small "While you waited" panel on the map
+lists, one line per empire, what that seat could know: captures of towns
+(public) and of its own sites (wherever they were), sites taken, recruits,
+hires and buildings in towns it could see when they happened, its own battles,
+eliminations, and enemy heroes that came into view near its towns ("Norse took
+the Sawmill and recruited at Hvitstrand"). Nothing out of sight is reported.
+Hot-seat: each human seat gets its own summary.
+
+### 54. Map editor tools
+
+* **Symmetry brush** (Off, Left–right, Top–bottom, Four ways, Turned) for
+  ground and roads. Turned (half around the centre) is exact on every editor
+  map size; a mirror shifts alternate rows by half a hex, so the mirrored cell
+  is the nearest one.
+* **Generate, then edit:** the editor's Generate button runs the random-map
+  generator (size, 2–4 empires, map type, unowned towns) and opens the result
+  as an ordinary editor map: the same ground and roads, its towns, mines,
+  guards and rewards. One-off map events have no editor site and are left out
+  (named in a message); wandering monsters become standing armies.
+
+### 55. Campaign simulation
+
+`npm run campaign-sim` plays every mission of The Winter Oath and the four
+arc campaigns many times with an objective-driven autopilot for the player and
+the shipped AI for everyone else, and reports per mission: wins, days, the
+costliest battle, and a verdict — nearly unwinnable (< 25% wins), blocked by a
+fight or a gate (most lost runs stuck at the same objective), hard (25–60%),
+too easy (≥ 95% won and the costliest battle cost under 10% of the army) or
+ok. These thresholds are proposals; only clear blockers are fixed.

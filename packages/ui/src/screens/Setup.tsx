@@ -9,8 +9,8 @@
  * one patron god, so it is taken from the content (`defaultPatron`).
  * Content not yet playable is shown honestly as unavailable.
  */
-import { useState, type CSSProperties } from 'react';
-import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, PantheonDefinition, SkirmishMapDefinition } from '@pr/rules';
+import { useState, type CSSProperties, type ReactNode } from 'react';
+import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, PantheonDefinition, SkirmishMapDefinition, SkirmishScenarioDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented, TextInput } from '../components/kit';
 import { CampaignThumb, Emblem, GodPortrait, HeroPortrait, MissionThumb, CreaturePortrait, SpeakerPortrait } from '../components/art';
@@ -18,7 +18,7 @@ import { resolveArt, resolveAsset } from '../assets/manifest';
 import { ScreenHeader } from '../components/game';
 import { Icon } from '../assets/icons';
 import { TemperamentNote } from '../components/temperament';
-import { MapPreview, SkirmishMapThumb } from '../components/mapPreview';
+import { SkirmishMapThumb } from '../components/mapPreview';
 
 /**
  * A chosen campaign's painted cover behind the setup screens (campaign
@@ -142,56 +142,96 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
 
 const BIOME_LABEL: Readonly<Record<string, string>> = { temperate: 'Temperate', autumn: 'Autumn', coast: 'Coast', desert: 'Desert', fjord: 'Fjord', high_pass: 'High pass', jungle: 'Jungle', moor: 'Moor', storm_plateau: 'Storm plateau', tundra: 'Tundra' };
 
+type Fact = { label: string; value: string };
+
+function sizeFact(cells: number): string {
+  const size = cells < 700 ? 'Small' : cells < 900 ? 'Medium' : cells < 1800 ? 'Large' : 'Huge';
+  return `${size} (${cells.toLocaleString('en-US')} hexes)`;
+}
+
+function climateFact(catalog: ContentCatalog, biome: string | undefined): string {
+  const climate = catalog.climates?.[biome ?? ''];
+  if (!climate) return BIOME_LABEL[biome ?? 'temperate'] ?? 'Temperate';
+  // Some summaries already open with the climate's name ("Icy spray: …").
+  return climate.summary.startsWith(climate.name) ? climate.summary : `${climate.name} — ${climate.summary}`;
+}
+
 /** The facts of an authored skirmish map, from its document. */
-export function skirmishMapFacts(catalog: ContentCatalog, def: SkirmishMapDefinition): { label: string; value: string }[] {
+export function skirmishMapFacts(catalog: ContentCatalog, def: SkirmishMapDefinition): Fact[] {
   const d = def.map;
   const cells = [...d.terrain].filter((c) => c !== 'v').length;
-  const size = cells < 900 ? 'Medium' : cells < 1800 ? 'Large' : 'Huge';
-  const climate = catalog.climates?.[d.biome ?? ''];
   return [
     { label: 'Empires', value: String(d.players.length) },
-    { label: 'Size', value: `${size} (${cells.toLocaleString('en-US')} hexes)` },
+    { label: 'Size', value: sizeFact(cells) },
     { label: 'Victory', value: d.victory.type === 'hold_relic' ? `Hold the shrine ${d.victory.days} days, or conquer` : 'Last empire standing' },
-    { label: 'Climate', value: climate ? `${climate.name} — ${climate.summary}` : (BIOME_LABEL[d.biome ?? 'temperate'] ?? 'Temperate') },
+    { label: 'Climate', value: climateFact(catalog, d.biome) },
     { label: 'Treasury', value: d.startWealth === 'high' ? 'Twice the usual' : d.startWealth === 'low' ? 'Half the usual' : 'The usual' },
     { label: 'Map', value: d.revealMap ? 'Revealed from the start' : 'Hidden until explored' },
   ];
 }
 
-function SkirmishMapDetail({ def }: { def: SkirmishMapDefinition }) {
-  const store = useStore();
-  const catalog = store.catalog;
-  const hasArt = !!resolveAsset(def.thumbnailAssetId).url;
+/** The same facts for an authored scenario (Twin Harbors), from its mission and map template. */
+export function scenarioFacts(catalog: ContentCatalog, sk: SkirmishScenarioDefinition): Fact[] {
+  const m = catalog.missions[sk.missionId];
+  const t = m ? catalog.mapTemplates[m.mapTemplateId] : undefined;
+  if (!m) return [];
+  const others = m.rivals?.length ?? 0;
+  const gold = m.player.wallet.gold ?? 0;
+  return [
+    { label: 'Empires', value: String(1 + others) },
+    ...(t ? [{ label: 'Size', value: sizeFact(t.width * t.height) }] : []),
+    { label: 'Victory', value: 'Last empire standing' },
+    { label: 'Climate', value: climateFact(catalog, t?.biome) },
+    { label: 'Treasury', value: gold === 10000 ? 'The usual' : `${gold.toLocaleString('en-US')} Gold` },
+    { label: 'Map', value: 'Hidden until explored' },
+  ];
+}
+
+/**
+ * One detail panel for every skirmish choice (owner request 2026-10-07): a small
+ * picture beside the tagline and summary, then the highlights and the facts as
+ * sub-sections — the authored maps and Twin Harbors alike, no drawn layout.
+ */
+function ScenarioDetail({ title, picture, tagline, summary, highlights, facts, testId }: { title: string; picture: ReactNode; tagline?: string; summary: string; highlights: readonly string[]; facts: readonly Fact[]; testId: string }) {
   return (
-    <Panel title={def.name} className="setup-detail" headerIcon="map" bodyClassName="scroll">
-      {/* The painting once delivered (Brief 14); until then the drawn layout below is the picture. */}
-      <div className={`map-detail__art ${hasArt ? '' : 'is-empty'}`} data-testid="skirmish-map-detail">
-        {hasArt ? <SkirmishMapThumb doc={def.map} assetId={def.thumbnailAssetId} large style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} /> : null}
+    <Panel title={title} className="setup-detail" headerIcon="map" bodyClassName="scroll">
+      <div className="setup-detail__lead" data-testid={testId}>
+        {picture}
+        <div>
+          {tagline ? <div className="tagline">{tagline}</div> : null}
+          <p>{summary}</p>
+        </div>
       </div>
-      <div className="tagline">{def.tagline}</div>
-      <p>{def.summary}</p>
-      <ul className="bullets">
-        {def.highlights.map((h) => (
-          <li key={h}>{h}</li>
+      {highlights.length ? (
+        <>
+          <SectionTitle>Highlights</SectionTitle>
+          <ul className="bullets">
+            {highlights.map((h) => (
+              <li key={h}>{h}</li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      <SectionTitle>The map</SectionTitle>
+      <dl className="map-detail__facts">
+        {facts.map((f) => (
+          <div key={f.label} className="map-detail__fact">
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
         ))}
-      </ul>
-      <div className="map-detail__split">
-        <dl className="map-detail__facts">
-          {skirmishMapFacts(catalog, def).map((f) => (
-            <div key={f.label} className="map-detail__fact">
-              <dt>{f.label}</dt>
-              <dd>{f.value}</dd>
-            </div>
-          ))}
-        </dl>
-        <figure className="map-detail__layout">
-          <MapPreview doc={def.map} style={{ width: '100%', height: 'auto' }} label={`${def.name} — layout`} />
-          <figcaption className="small faint">Layout: towns in their seat colours, the shrine, portals, key gates and guarded passes.</figcaption>
-        </figure>
-      </div>
-      <p className="small dim">Every empire’s lands are laid out alike — mirrored or turned — so no seat starts with better ground. Values are proposed and measured only in AI-against-AI games.</p>
+      </dl>
     </Panel>
   );
+}
+
+const DETAIL_PICTURE: CSSProperties = { width: '12.8rem', height: '7.2rem', flex: 'none' };
+
+/** A scenario's list picture drawn like the skirmish maps' (plain painting, no frame); the procedural stand-in otherwise. */
+function ScenarioCardPicture({ catalog, missionId }: { catalog: ContentCatalog; missionId: string }) {
+  const url = resolveAsset(catalog.missions[missionId]?.thumbnailAssetId ?? '').url;
+  const style: CSSProperties = { width: '100%', aspectRatio: '16 / 9', height: 'auto' };
+  return url ? <img src={url} alt={`${catalog.missions[missionId]?.name ?? ''}`} style={{ objectFit: 'cover', display: 'block', ...style }} draggable={false} data-testid="map-art" /> : <MissionThumb catalog={catalog} missionId={missionId} style={style} />;
 }
 
 export function ScenarioSelectScreen() {
@@ -237,8 +277,9 @@ export function ScenarioSelectScreen() {
     store.goto('pantheon-select');
   };
   const skMission = skirmish ? catalog.missions[skirmish.missionId] : undefined;
-  // A selected skirmish map's painting (Brief 14) behind the list, like a campaign's cover.
-  const mapArt = map ? resolveArt(map.thumbnailAssetId.replace(/\.thumbnail$/, '.briefing')) : null;
+  // A selected skirmish map's painting (Brief 14) behind the list, like a campaign's cover — Twin Harbors' too.
+  const paintingOf = (thumb: string | undefined) => (thumb ? resolveArt(thumb.replace(/\.thumbnail$/, '.briefing')) : null);
+  const mapArt = map ? paintingOf(map.thumbnailAssetId) : skMission ? paintingOf(skMission.thumbnailAssetId) : null;
   const backdrop = mapArt ? { className: 'setup-screen setup-screen--cover', style: { ['--app-art' as string]: `url("${mapArt.url}")` } } : campaignBackdrop(mode === 'campaign' ? selected : null);
   return (
     <div {...backdrop}>
@@ -250,16 +291,16 @@ export function ScenarioSelectScreen() {
               {mode === 'campaign' ? (
                 <CampaignThumb catalog={catalog} campaignId={c.id} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
               ) : 'missionId' in c ? (
-                <MissionThumb catalog={catalog} missionId={c.missionId} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
+                <ScenarioCardPicture catalog={catalog} missionId={c.missionId} />
               ) : null}
               <div className="list-card__title">{c.name}</div>
-              <div className="list-card__meta">{'tagline' in c ? c.tagline : c.summary}</div>
+              <div className="list-card__meta">{mode === 'skirmish' && 'missionId' in c ? `${scenarioFacts(catalog, c)[0]?.value ?? 2} empires · ${c.tagline ?? c.summary}` : 'tagline' in c ? c.tagline : c.summary}</div>
               {c.status !== 'playable' ? <div className="list-card__meta dim">Not available yet</div> : null}
             </button>
           ))}
+          {/* The authored maps follow Twin Harbors in the same list, same cards (owner request 2026-10-07). */}
           {mode === 'skirmish' && maps.length ? (
             <>
-              <SectionTitle>Skirmish maps</SectionTitle>
               {maps.map((m) => (
                 <button key={m.id} type="button" className={`list-card ${selected === `map:${m.id}` ? 'is-selected' : ''}`} onClick={() => setSelected(`map:${m.id}`)} data-testid={`skirmish-map-${m.id}`}>
                   <SkirmishMapThumb doc={m.map} assetId={m.thumbnailAssetId} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
@@ -273,30 +314,31 @@ export function ScenarioSelectScreen() {
           ) : null}
         </Panel>
         {campaign ? <CampaignDetail c={campaign} /> : null}
-        {map ? <SkirmishMapDetail def={map} /> : null}
+        {map ? (
+          <ScenarioDetail
+            title={map.name}
+            picture={
+              <span className="portrait" style={{ display: 'block', ...DETAIL_PICTURE }}>
+                <SkirmishMapThumb doc={map.map} assetId={map.thumbnailAssetId} style={{ width: '100%', height: '100%' }} />
+              </span>
+            }
+            tagline={map.tagline}
+            summary={map.summary}
+            highlights={map.highlights}
+            facts={skirmishMapFacts(catalog, map)}
+            testId="skirmish-map-detail"
+          />
+        ) : null}
         {skirmish && skMission ? (
-          <Panel title={skirmish.name} className="setup-detail" headerIcon="skirmish" bodyClassName="scroll">
-            <div className="setup-detail__lead">
-              <MissionThumb catalog={catalog} missionId={skMission.id} style={{ width: '12.8rem', height: '7.2rem' }} />
-              <div>
-                <p>{skirmish.summary}</p>
-                <p className="dim">{skMission.summary}</p>
-              </div>
-            </div>
-            <SectionTitle>Objectives</SectionTitle>
-            <ul className="bullets">
-              {skMission.objectives.map((o) => (
-                <li key={o.id}>
-                  <strong>{o.title}</strong> <span className="dim">— {o.description}</span>
-                </li>
-              ))}
-            </ul>
-            <SectionTitle>Known limits</SectionTitle>
-            <p className="dim">
-              Sieges use a temporary deterministic model (walls, gate, keep, moat, towers; proposed values). Town-defender stack merging is not available yet. Skirmish grants the covenants for the tier-3, -6 and -7 dwellings so every
-              pantheon’s full roster can be built. Norse, Egyptian, Japanese, Celtic and Mesoamerican values are proposed and unplaytested.
-            </p>
-          </Panel>
+          <ScenarioDetail
+            title={skirmish.name}
+            picture={<MissionThumb catalog={catalog} missionId={skMission.id} style={DETAIL_PICTURE} />}
+            tagline={skirmish.tagline}
+            summary={skirmish.summary}
+            highlights={skirmish.highlights ?? []}
+            facts={scenarioFacts(catalog, skirmish)}
+            testId={`scenario-detail-${skirmish.id}`}
+          />
         ) : null}
       </div>
       <footer className="setup-footer">

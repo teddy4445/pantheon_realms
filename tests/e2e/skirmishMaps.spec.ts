@@ -32,11 +32,20 @@ async function openSkirmishList(page: Page) {
   await waitFor(page, (s) => s.screen === 'scenario-select', 'scenario list');
 }
 
-test('skirmish list: six maps after Twin Harbors, each with its picture, facts and layout', async ({ page }) => {
+test('skirmish list: six maps after Twin Harbors, one card and detail style for all (picture, highlights, facts; no layout)', async ({ page }) => {
   test.setTimeout(120_000);
   const errors = errorsOf(page);
   await openSkirmishList(page);
   await expect(page.locator('[data-testid^="skirmish-map-"]:not([data-testid="skirmish-map-detail"])')).toHaveCount(6);
+  // Twin Harbors is a card like the maps (owner request 2026-10-07): empires and tagline, no separate section.
+  await expect(page.getByTestId('scenario-skirmish_twin_harbors')).toContainText('2 empires');
+  await expect(page.locator('.setup-list .section-title')).toHaveCount(0);
+  const twin = page.locator('.setup-detail');
+  await expect(twin.getByTestId('scenario-detail-skirmish_twin_harbors')).toBeVisible();
+  await expect(twin).toContainText('Highlights');
+  await expect(twin.locator('.map-detail__fact').first()).toContainText('2');
+  await expect(twin).not.toContainText('Known limits');
+  await page.screenshot({ path: 'test-results/maps-detail-twin_harbors.png' });
   await page.screenshot({ path: 'test-results/maps-list.png' });
   for (const [id, empires] of MAPS) {
     const card = page.getByTestId(`skirmish-map-${id}`);
@@ -46,10 +55,13 @@ test('skirmish list: six maps after Twin Harbors, each with its picture, facts a
     await expect(card).toContainText(`${empires} empires`);
     const detail = page.locator('.setup-detail');
     await expect(detail.locator('.map-detail__fact').first()).toContainText(String(empires));
-    // A picture: the painted art when delivered, else the drawn overview (both canvases drawn).
-    await expect(detail.locator('[data-testid="map-preview"], [data-testid="map-art"]').first()).toBeVisible();
-    const drawn = await detail.locator('canvas[data-testid="map-preview"]').evaluateAll((els) => els.every((c) => (c as HTMLCanvasElement).width > 100 && (c as HTMLCanvasElement).height > 60));
-    expect(drawn, id).toBe(true);
+    // One small picture beside the text (the painting), sub-sections, and no drawn layout or closing sentence.
+    await expect(detail.getByTestId('skirmish-map-detail').locator('[data-testid="map-preview"], [data-testid="map-art"]').first()).toBeVisible();
+    await expect(detail.locator('.map-detail__layout')).toHaveCount(0);
+    await expect(detail).toContainText('Highlights');
+    await expect(detail).not.toContainText('lands are laid out alike');
+    const pic = await detail.getByTestId('skirmish-map-detail').locator('.portrait').boundingBox();
+    expect(pic && pic.width < 260, id).toBe(true);
     await expect(page.getByTestId('setup-next')).toHaveText(/Set Up Empires/);
     await page.waitForTimeout(200);
     await page.screenshot({ path: `test-results/maps-detail-${id}.png` });

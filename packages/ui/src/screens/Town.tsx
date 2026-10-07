@@ -21,6 +21,7 @@ import {
   townTierOneBase,
   quoteConstruction,
   quoteHireHero,
+  heroHiredThisWeek,
   quoteSpellbook,
   quoteTrade,
   marketRates,
@@ -135,10 +136,16 @@ function TavernModal({ town, onClose }: { town: TownState; onClose: () => void }
   const candidates = hireOptions(catalog, state, playerId, town.id);
   const escort = townTierOneBase(catalog, town);
   const escortName = escort ? catalog.creatures[escort]?.pluralName : 'troops';
+  const hiredThisWeek = heroHiredThisWeek(catalog, state, playerId);
   return (
     <Modal title={`Heroes' Lodge — ${town.name}`} onClose={onClose} width="44rem" testId="tavern">
       {!state.scenario.heroHiringEnabled ? <p className="note">{state.scenario.heroHiringDisabledReason ?? 'Hero hiring is not available in this scenario.'}</p> : null}
       {candidates.length === 0 ? <p className="dim">No heroes are available for hire.</p> : null}
+      {state.scenario.heroHiringEnabled ? (
+        <p className={`small ${hiredThisWeek ? 'warn' : 'dim'}`} data-testid="tavern-weekly">
+          {hiredThisWeek ? 'A hero was hired this week — one hero per week.' : 'One hero per week, at any of your Lodges.'}
+        </p>
+      ) : null}
       <div className="hire-list">
         {candidates.map(({ definitionId: id, returningHeroId }) => {
           const def = catalog.heroes[id]!;
@@ -155,32 +162,34 @@ function TavernModal({ town, onClose }: { town: TownState; onClose: () => void }
                 <div className="small">{cls?.name} — {cls?.summary}</div>
                 <SpecialtyLine catalog={catalog} definitionId={id} active={specialtiesEnabled(state)} />
                 <p className="faint small">{heroStory(def.biography)}</p>
-                <div className="row gap">
-                  <CostList cost={q.cost} wallet={state.players[playerId]!.wallet} />
-                  <Button
-                    variant="primary"
-                    size="small"
-                    disabled={!q.legal}
-                    disabledReason={q.reason}
-                    onClick={() =>
-                      store.confirm(
-                        `Hire ${def.name}?`,
-                        returning
-                          ? `${def.name} returns with ${returning.army.slots.some((x) => x && x.count > 0) ? 'the troops that survived the surrender' : `one of the ${escortName}`} and no movement left today.`
-                          : `${def.name} joins with ${HIRE_STARTING_TROOPS} ${escortName} and full movement.`,
-                        'Hire',
-                        () => {
-                        if (!store.dispatch({ kind: 'HireHero', townId: town.id, heroDefinitionId: id })) {
-                          store.toast(`${def.name} has joined you`, 'success');
-                          onClose();
-                        }
-                      },
-                      )
-                    }
-                  >
-                    Hire
-                  </Button>
-                </div>
+              </div>
+              {/* Price and Hire on the right of the row (owner request 2026-10-07). */}
+              <div className="hire-card__buy">
+                <CostList cost={q.cost} wallet={state.players[playerId]!.wallet} />
+                <Button
+                  variant="primary"
+                  size="small"
+                  disabled={!q.legal}
+                  disabledReason={q.reason}
+                  onClick={() =>
+                    store.confirm(
+                      `Hire ${def.name}?`,
+                      returning
+                        ? `${def.name} returns with ${returning.army.slots.some((x) => x && x.count > 0) ? 'the troops that survived the surrender' : `one of the ${escortName}`} and no movement left today.`
+                        : `${def.name} joins with ${HIRE_STARTING_TROOPS} ${escortName} and full movement.`,
+                      'Hire',
+                      () => {
+                      if (!store.dispatch({ kind: 'HireHero', townId: town.id, heroDefinitionId: id })) {
+                        store.toast(`${def.name} has joined you`, 'success');
+                        onClose();
+                      }
+                    },
+                    )
+                  }
+                  data-testid={`hire-button-${id}`}
+                >
+                  Hire
+                </Button>
               </div>
             </div>
           );

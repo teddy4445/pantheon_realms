@@ -101,6 +101,7 @@ npm run art:briefs       # (delivered; writes the documents again only when need
 npm run art:brief12      # GPT-6 Brief 12: every visual still missing, from the game (dwellings, services, climate icons, site markers, town backgrounds, fx.god.commit) + sheet-layouts.brief12.json + town layout guides
 npm run balance -- skirmish --no-temperaments   # the same matches with every AI empire playing the neutral way (compare with the default)
 npm run balance -- maps --matches 2   # the six authored skirmish maps, each pantheon line-up from every seat (--maps a,b)
+npm run campaign-sim -- --runs 20   # the computer plays The Winter Oath and the arc campaigns (objective autopilot); per-mission wins, days, costliest battle, verdicts (tools/campaign-sim)
 npm run maps:build       # writes the authored skirmish maps (packages/content/src/skirmish/maps/*.prmap.json) from tools/maps/maps.ts, checked, + layout guides for Brief 14
 npm run art:siege-guide  # the siege layout guide for GPT-6 Brief 15 (assets-source/art/briefs/guides/siege.layout.png)
 npm run art:road-guides  # GPT-6 Brief 16 road guides (guides/road.<a|b|c>.layout.png, road.join-example.png) + assets-source/sprites/road-tiles.json, from the game's hex geometry
@@ -158,6 +159,18 @@ Never pick scenery from a pantheon or a ground colour; unknown water kinds get
 nothing. Read-only check: `__prScenery()` under `?e2e`. The hero screen's
 equipment figure is the delivered `assets-runtime/ui/hero-equipment-schematic-v2.png`
 (`HERO_EQUIPMENT_SCHEMATIC`), a decorative `<img>` behind the slot buttons.
+
+**Owner round 2026-10-07 (app 0.13.6):** one hero hire per empire per week
+(`heroHiredThisWeek`); unowned towns (`MissionDefinition.neutralTowns`; random
+maps `unownedTowns`, authored maps' town sites without `owner`, compiled by
+`packages/mapgen/src/unownedTowns.ts`); shared miracles named by each pantheon
+(`InterventionDefinition.names` — show names through `interventionsFor` /
+`interventionOf`, never `catalog.interventions[id].name` in front of a
+player); random-map roads routed with trunk sharing and turn penalties
+(`pr-skirmishgen-0.7`) and drawn one material per stretch
+(`smoothRoadTypes`); varied ground borders and rounded corners
+(`GROUND_VARIETY`, `planGroundCorners`); map guards face either way
+(`facesLeft`, a stable hash). Headers carry no screen codes.
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and
 provenance in `assets-runtime/ui/` (ASSET_PIPELINE.md §11). The visual

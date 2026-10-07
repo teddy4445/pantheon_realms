@@ -61,7 +61,7 @@ export type CommandPayload =
   | { kind: 'ActivateSite'; heroId: HeroId; siteId: SiteId }
   | { kind: 'EquipArtifact'; heroId: HeroId; instanceId: ArtifactInstanceId; slot?: EquipSlot }
   | { kind: 'UnequipArtifact'; heroId: HeroId; slot: EquipSlot }
-  | { kind: 'ChooseLevelUp'; decisionId: DecisionId; offerIndex: number | null }
+  | { kind: 'ChooseLevelUp'; decisionId: DecisionId; offerIndex: number | null; /** Which god's gift, when the level offers them. */ perkIndex?: number | null }
   | { kind: 'CastAdventureSpell'; heroId: HeroId; spellId: SpellId; target: HexCoord }
   // --- Town services (proposed this build) ---
   | { kind: 'MakeOffering'; townId: TownId; offerings: { army: ArmyRef; slot: number; quantity: number }[] }
@@ -86,6 +86,10 @@ export type CommandPayload =
   | { kind: 'BattleUseAbility'; stackId: BattleStackId; abilityId: string; targetId: BattleStackId }
   | { kind: 'BattleAttackStructure'; stackId: BattleStackId; structureId: string }
   | { kind: 'BattleSelectDefenders'; picks: number[] }
+  /** Before a siege: combine identical defender stacks (garrison and visitor) into one (2026-10-07). */
+  | { kind: 'BattleMergeDefenders' }
+  /** The siege attacker aims the Catapult at an intact structure for the next round starts (2026-10-07). */
+  | { kind: 'BattleAimCatapult'; structureId: string }
   | { kind: 'BattleDeploy'; stackId: BattleStackId; to: BattleCell }
   | { kind: 'BattleConfirmDeployment' }
   | { kind: 'BattleRetreat' }
@@ -110,6 +114,8 @@ export const BATTLE_COMMAND_KINDS: ReadonlySet<CommandKind> = new Set<CommandKin
   'BattleUseAbility',
   'BattleAttackStructure',
   'BattleSelectDefenders',
+  'BattleMergeDefenders',
+  'BattleAimCatapult',
   'BattleDeploy',
   'BattleConfirmDeployment',
   'BattleRetreat',

@@ -35,7 +35,7 @@ AI never mutates state directly — each of those paths goes through
 |---|---|---|
 | `@pr/rules` | IDs, resources, deterministic RNG, hex math, content *types*, `MatchState`, commands, events, `processCommand`, every quote/commit (economy, movement, sites, heroes, gods, quests, turn/dawn, adventure spells, tactical battle, sieges, deployment, damage) | import anything outside the TS standard library (no DOM, React, PixiJS, Electron, Node) |
 | `@pr/content` | The authored, validated `ContentCatalog`: six playable pantheons (Greek design values; Norse, Egyptian, Japanese, Celtic and Mesoamerican values proposed) with rosters/towns/gods/heroes/classes/lore, spells, skills, artifacts (incl. the `arcana` spells, artifacts and sets with lore), *The Three Beacons*, *The Winter Oath* (seven Norse missions), the four arc campaigns (`campaign/arc.ts` builds seven-mission campaigns from writing + layout; *The Twelfth Hour*, *The Lantern Road*, *The Silver Branch*, *The New Fire*), the neutral creature roster (`common/neutrals.ts`), the *Twin Harbors* skirmish in 36 pantheon pairings, validators | contain logic beyond building and validating data |
-| `@pr/mapgen` | Template-driven logical map generation (`pr-mapgen-0.3`), validation, logical hash, cosmetic decor stream; the symmetric random skirmish generator (`pr-skirmishgen-0.5`, `skirmish.ts`: square maps with `void` cells outside the square, two to six empires (`symmetryLayout`), six map types, zones, guarded passes and gates, two-way portals paired by the map's symmetry, roads to the centre, neutral + pantheon creatures half and half, size/guard/treasure/wealth/road/reveal/portal settings) that outputs a full `MissionDefinition` | affect rules through cosmetic data |
+| `@pr/mapgen` | Template-driven logical map generation (`pr-mapgen-0.3`), validation, logical hash, cosmetic decor stream; the symmetric random skirmish generator (`pr-skirmishgen-0.7`, `skirmish.ts`: square maps with `void` cells outside the square, two to six empires (`symmetryLayout`), nine map types, zones, guarded passes and gates, two-way portals paired by the map's symmetry, roads to the centre (routed over hex and heading with trunk sharing and turn penalties, 0.7), optional unowned towns, neutral + pantheon creatures half and half, size/guard/treasure/wealth/road/reveal/portal settings) that outputs a full `MissionDefinition` | affect rules through cosmetic data |
 | `@pr/campaign` | Mission factory (scenario manifest or generated scenario → `MatchState`; difficulty, seat controllers, names and patrons), hero carryover, campaign state machine, completion records with mission scores; `createRandomSkirmish` (re-exports the generator for the session and UI) | render or persist |
 | `@pr/ai` | Observation (belief-state redaction), strategic and tactical planners, controller that submits commands | read hidden state or write state |
 | `@pr/session` | `GameSession` (single authoritative state host), checkpoints, campaign transitions, versioned save envelope + validation | contain rules or storage I/O |
@@ -142,8 +142,11 @@ reason.
 A battle can open in a pre-round phase before round 1:
 
 * `selection` — a human town defender whose garrison plus visiting hero
-  exceed seven stacks chooses at most seven (`BattleSelectDefenders`, BAT-14);
-  AI defenders pick automatically by value. The rest become `siege.reserves`.
+  exceed seven stacks chooses at most seven (`BattleSelectDefenders`, BAT-14),
+  optionally after combining identical stacks (`BattleMergeDefenders`,
+  2026-10-07: a persistent exchange into the visiting hero's matching stack,
+  else the garrison's; seven or fewer left defend at once). AI defenders
+  combine, then pick by value. The rest become `siege.reserves`.
 * `deployment` — only for a human side whose commander has Tactics
   (owner decision): `BattleDeploy` inside the zone (2 + Tactics columns, inside
   or outside the walls in a siege; swaps allowed), then
@@ -153,7 +156,11 @@ A battle can open in a pre-round phase before round 1:
 `town_siege` encounters start when a hero enters an enemy-held town that has a
 garrison or a visiting hero. `systems/battle/siege.ts` builds the fixed wall
 layout from the town's `siege_fortification` level (Fort/Citadel/Castle), and
-the round start runs the Catapult shot then keep/tower shots. Structures block
+the round start runs the Catapult shot (at `siege.catapultTargetId`, set by
+the attacker's free `BattleAimCatapult` on its own turn, while that structure
+stands; else the lowest-ID intact structure) then keep/tower shots (each at the
+attacker stack its shot hurts most — `turretTarget`: Gold worth of Health
+removed, shooters × 1.5; ties closest, then ID). Structures block
 occupancy (the intact gate opens only for the defender), moat cells are
 terminal for ground movement and forbid an attack after entering, and shots
 into the town across an intact section take the wall factor. Resolution writes
@@ -225,7 +232,12 @@ scenario IDs (`DESIGN_PROPOSALS.md` §4–12):
   spells carry `pantheonId` (offered only to that pantheon's heroes / taught
   only in that pantheon's towns).
 * **Hero effects**: `heroEffects` = artifact pieces + active set bonuses
-  (`artifactSetStatus`) + skill effects (`SkillRule` `effects` by rank). New
+  (`artifactSetStatus`) + skill effects (`SkillRule` `effects` by rank) + the
+  gods' gifts (`HeroState.perks`, `catalog.godPerks`; 2026-10-07: offered at
+  levels 10 and 15 with `expandedContent` as `LevelUpDecision.perkOffers`, from
+  the empire's committed gods, chosen with `ChooseLevelUp.perkIndex`; built from
+  each god's domain words in `content/src/common/godPerks.ts`; attributes count
+  as divine in `effectiveAttributes`). New
   effect types: `mana_regen`, `spell_damage_percent`, `movement_percent`
   (also used by weekly events) — read by dawn mana, spell damage and the
   movement budget.
@@ -233,7 +245,18 @@ scenario IDs (`DESIGN_PROPOSALS.md` §4–12):
   (adventure) and `BattleInvokeIntervention` (at the start of one's own
   activation); one per world week (`PlayerState.interventionWeek`), paid in
   Favor; effect types `restore_movement`, `restore_mana`, `grant_resources`,
-  `town_growth`, `battle_status`, `battle_heal`, `battle_smite`.
+  `town_growth`, `battle_status`, `battle_heal`, `battle_smite`. Shared
+  miracles carry each pantheon's own name (`names`); `interventionsFor`,
+  `interventionOf` and the quote return them under the player's pantheon's
+  name (2026-10-07).
+* **Hero hiring**: at most one hire per empire per world week
+  (`PlayerState.heroHireWeek`, `heroHiredThisWeek`; 2026-10-07).
+* **Unowned towns** (`MissionDefinition.neutralTowns`, 2026-10-07): towns with
+  `ownerId: null` and no hero; walking into an unguarded one takes it, a
+  garrisoned one is a `town_siege` against a neutral side. Random maps place
+  them with `unownedTowns`; authored and editor maps mark a town site without
+  `owner` (`packages/mapgen/src/unownedTowns.ts` builds the setup and
+  garrison).
 * **World features** (`systems/world.ts`): weekly events drawn at each new
   week from the `progression` stream (`world.weeklyEventId`, reaching every
   empire through `playerEffects`); creature camps (`RecruitFromCamp`,
@@ -299,6 +322,20 @@ approaches an unseen town with a hero strong enough for a public-information
 estimate of its garrison. The tactical AI takes a free Shapeshift when the other
 aspect gives a clearly better best action (e.g. Hare Speed lets a Pooka reach
 an enemy); it does not use a Shapeshift that costs the activation.
+
+Late game (2026-10-07, `packages/ai/src/handoff.ts`): from day 15 secondary
+heroes carrying 15–80% of the main army's strength walk to it (≤ 2 days, safe
+stops only) and hand their stacks over (`TransferStack`, one creature kept);
+the weekly miracle is held for a battle while an enemy army or town is within
+16 hexes, until the week's last two days, and called in battle only when it
+decides something (siege, rival hero, close odds); a town lost in the last 21
+days (`PlayerState.lostTowns`, written by `systems/ownership.ts` on every
+ownership change) is worth 1.6 × and besieged at 0.85 × the usual margin.
+Quick battles (`packages/ai/src/quickBattle.ts`): `runQuickBattle` submits the
+encounter move and fights the battle with the tactical AI on both sides through
+the processor; the encounter panel runs it on the current state for the
+preview and `GameSession.quickBattle` runs it again on the same state, so both
+agree exactly (deterministic RNG in the state, command IDs from the state).
 
 Turn-order fairness (measured with `npm run balance`): whoever moves first
 advances into the unseen middle first and is caught by armies it never saw.
@@ -510,6 +547,16 @@ camp, map event, interventions, keyboard shortcuts. The town's building
 pop-up and economy panel sit on the painting (`TownArchetypeDefinition.hudAnchor`
 names the stretch of sky each painting keeps free).
 
+2026-10-07: the encounter dialog carries the quick-battle preview
+(`dialogs/QuickBattle.tsx`; `store.quickBattle` goes straight to the result
+screen because the battle starts and ends in one published batch); the map
+shows "While you waited" (`app/rivalSummary.ts`: per human seat, notes from
+the batches between its TurnEnded and TurnStarted, kept only for what that
+seat saw or what touched it; `store.rivalSummary`); the level-up screen takes
+a god's gift first when offered (`components/godGifts.tsx`: the god's portrait
+and an existing stat icon per gift theme); the map editor has the symmetry
+brush and Generate (`mapgen/src/editorTools.ts`).
+
 Visual language (0.4.1): the shared kit (`components/kit.tsx`,
 `components/game.tsx`, `components/art.tsx`) and `styles/components.css`
 carry the owner's GUI style once — navy and slate plates, double gold rims
@@ -560,3 +607,10 @@ rebinding in `Preferences.keyBindings`); Esc, F1 and the arrows are fixed.
   files served and decoded (no `.glb`/`.gltf`/`.blend` in the renderer), the
   adventure map drawn without a view error, navigation blocked.
 * `tools/check-boundaries.mjs` — package import rules.
+* `npm run campaign-sim` (`tools/campaign-sim`, never packaged; 2026-10-07) —
+  plays The Winter Oath and the arc campaigns many times: an objective-driven
+  autopilot for the player (`pilot.ts`: recruit/train/build for counters,
+  gods, claims, activations, map events that set a needed flag, sites, heroes
+  and towns; a guarded objective only when `runQuickBattle` wins; otherwise
+  the shipped strategic AI), the shipped AI for every other side; reports wins,
+  days, the costliest battle and a verdict per mission.

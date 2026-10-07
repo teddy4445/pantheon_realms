@@ -246,7 +246,23 @@ export const ARTIFACT_SETS: readonly ArtifactSetDefinition[] = [
 // Divine interventions (Favor; once per world week)
 // ---------------------------------------------------------------------------
 
-const intervention = (d: Omit<InterventionDefinition, 'iconAssetId'>): InterventionDefinition => ({ ...d, iconAssetId: `icon.intervention.${d.id}` });
+/**
+ * Each pantheon calls the shared miracles by its own gods (owner request
+ * 2026-10-07: the miracles belong to the pantheon). Same effect, cost and art;
+ * every pantheon also has one miracle of its own (below).
+ */
+const PANTHEON_NAMES: Readonly<Record<string, Readonly<Record<string, string>>>> = {
+  favorable_winds: { greek: 'Sandals of Hermes', norse: 'Bifröst Crossing', egyptian: 'Wings of Horus', japanese: 'Fujin’s Wind', celtic: 'Epona’s Ride', mesoamerican: 'Xolotl’s Guidance' },
+  bountiful_harvest: { greek: 'Demeter’s Bounty', norse: 'Freyja’s Abundance', egyptian: 'Harvest of Osiris', japanese: 'Inari’s Harvest', celtic: 'Cauldron of the Dagda', mesoamerican: 'Tlaloc’s Rains' },
+  tithe_of_the_faithful: { greek: 'Tribute of Hera', norse: 'Riches of Njord', egyptian: 'Hathor’s Prosperity', japanese: 'Gift of Amaterasu', celtic: 'Arawn’s Hoard', mesoamerican: 'Treasure of Coatlicue' },
+  inspiration: { greek: 'Wisdom of Athena', norse: 'Mead of Odin', egyptian: 'Words of Thoth', japanese: 'Benzaiten’s Muse', celtic: 'Wisdom of Danu', mesoamerican: 'Mirror of Tezcatlipoca' },
+  rally_the_faithful: { greek: 'Fury of Ares', norse: 'Thor’s Battle-Fury', egyptian: 'Strength of Set', japanese: 'Hachiman’s War Cry', celtic: 'Morrígan’s Battle Cry', mesoamerican: 'Huitzilopochtli’s Fury' },
+  shield_of_the_gods: { greek: 'Aegis of Olympus', norse: 'Frigg’s Protection', egyptian: 'Bastet’s Ward', japanese: 'Shield of Susanoo', celtic: 'Shield of Nuada', mesoamerican: 'Mixcoatl’s Cloud Shield' },
+  mending_light: { greek: 'Light of Apollo', norse: 'Baldr’s Light', egyptian: 'Healing of Isis', japanese: 'Izanagi’s Renewal', celtic: 'Brigid’s Healing Well', mesoamerican: 'Waters of Chalchiuhtlicue' },
+  wrath_from_above: { greek: 'Arrows of Artemis', norse: 'Hel’s Grasp', egyptian: 'Eye of Ra', japanese: 'Raijin’s Thunder', celtic: 'Spear of Lugh', mesoamerican: 'Fire of Xiuhtecuhtli' },
+};
+
+const intervention = (d: Omit<InterventionDefinition, 'iconAssetId'>): InterventionDefinition => ({ ...d, ...(PANTHEON_NAMES[d.id] ? { names: PANTHEON_NAMES[d.id] } : {}), iconAssetId: `icon.intervention.${d.id}` });
 
 export const INTERVENTIONS: readonly InterventionDefinition[] = [
   intervention({ id: 'favorable_winds', name: 'Favorable Winds', summary: 'Every hero of yours regains half a day’s movement.', favorCost: 8, context: 'adventure', target: 'none', effect: { type: 'restore_movement', percent: 50 } }),

@@ -102,6 +102,8 @@ export function frostgate(): AuthoredMap {
   b.roadCells(pass);
   b.road(gate, 'camp_1');
 
+  // An unowned town per empire (2026-10-07; used only when the setup asks for them).
+  b.unownedTown(gate, [6, 10]);
   return {
     id: 'frostgate',
     builder: b,
@@ -179,6 +181,8 @@ export function burningOasis(): AuthoredMap {
   const gate = b.townGate('town', at(0, 0));
   b.road(gate, 'sawmill_1').road(gate, 'quarry_1').road(gate, 'windmill_1').road(gate, 'oasis_gold_1').road(gate, 'oasis_crystal_1').road(gate, 'relic');
   b.road(gate, 'oasis_camp_n_1').road(gate, 'oasis_camp_w_1');
+  // An unowned town per empire (2026-10-07; used only when the setup asks for them).
+  b.unownedTown(gate, [6, 10]);
   return {
     id: 'burning_oasis',
     builder: b,
@@ -267,6 +271,8 @@ export function circleOfGates(): AuthoredMap {
   b.roadCells([b.step(terraceExit, 2), terraceExit, b.step(backCell, 2), backCell]);
   b.road(gate, b.step(passCell, 1, -3));
   b.roadCells([b.step(passCell, 1, -3), ...crossing, b.step(passCell, 1, 3)]);
+  // An unowned town per empire (2026-10-07; used only when the setup asks for them).
+  b.unownedTown(gate, [6, 10]);
   return {
     id: 'circle_of_gates',
     builder: b,
@@ -362,6 +368,8 @@ export function barrows(): AuthoredMap {
 
   const gate = b.townGate('town', at(0, 0));
   b.road(gate, 'sawmill_1').road(gate, 'quarry_1').road(gate, 'windmill_1').road(gate, 'camp_1').road(gate, 'gold_1').road(gate, 'crystal_1').road(gate, 'barrow_1').road(gate, 'crown');
+  // An unowned town per empire (2026-10-07; used only when the setup asks for them).
+  b.unownedTown(gate, [6, 10]);
   return {
     id: 'barrows',
     builder: b,
@@ -458,6 +466,8 @@ export function goldenFords(): AuthoredMap {
   b.road(b.step(fords[1]![fords[1]!.length - 1]!, 0), 'mid_camp_1');
   b.road(b.step(fords[0]![fords[0]!.length - 1]!, 0), 'mid_gold_1');
   b.road(b.step(fords[1]![fords[1]!.length - 1]!, 0), 'horn');
+  // An unowned town per empire (2026-10-07; used only when the setup asks for them).
+  b.unownedTown(gate, [6, 10]);
   return {
     id: 'golden_fords',
     builder: b,
@@ -530,6 +540,8 @@ export function sixThrones(): AuthoredMap {
   b.road(gate, 'sawmill_1').road(gate, 'quarry_1').road(gate, 'gold_1').road(gate, 'crystal_1').road(gate, 'path_guard_1').road(gate, 'windmill_1').road(gate, 'stone_1');
   b.road(gate, b.step(passCell, 0, -3));
   b.roadCells([b.step(passCell, 0, -3), ...crossing, b.step(passCell, 0, 3)]);
+  // An unowned town per empire (2026-10-07; used only when the setup asks for them).
+  b.unownedTown(gate, [6, 10]);
   return {
     id: 'six_thrones',
     builder: b,

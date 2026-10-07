@@ -30,6 +30,7 @@ import {
   effectiveAttributes,
   heroLuckBonus,
   heroMoraleBonus,
+  armyCompositionMorale,
   heroVisionRadius,
   maxMana,
   movementBudget,
@@ -47,6 +48,7 @@ import { useStore } from '../app/context';
 import { Bar, Button, Chip, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
 import { ArmyStrip, ScreenHeader } from '../components/game';
+import { HeroGifts } from '../components/godGifts';
 import { Icon, type IconName } from '../assets/icons';
 import { HERO_EQUIPMENT_SCHEMATIC, resolveAsset } from '../assets/manifest';
 import { humanPlayer, playerHeroes, townAtHero } from '../app/view';
@@ -215,6 +217,8 @@ function ArtifactCompare({ hero, inst }: { hero: HeroState; inst: ArtifactInstan
   );
 }
 
+const signedNum = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n)}`;
+
 export function ArmyEditor({ hero }: { hero: HeroState }) {
   const store = useStore();
   const catalog = store.catalog;
@@ -344,6 +348,14 @@ export function HeroScreen() {
   const neighbors = heroes.filter((h) => h.id !== hero.id && Math.max(Math.abs(h.position.q - hero.position.q), Math.abs(h.position.r - hero.position.r), Math.abs(h.position.q + h.position.r - hero.position.q - hero.position.r)) <= 1);
   const totalCreatures = armyStacks(hero.army).reduce((n, s) => n + s.count, 0);
   const morale = heroMoraleBonus(catalog, state, hero);
+  // The army's make-up counts too (one pantheon +1; each further pantheon −1, at most −2; neutrals never count).
+  const armyMorale = armyCompositionMorale(catalog, armyStacks(hero.army).map((s) => s.creatureId));
+  const armyMoraleText =
+    armyMorale.value > 0
+      ? `one pantheon ${signedNum(armyMorale.value)}`
+      : armyMorale.pantheons.length >= 2
+        ? `${armyMorale.pantheons.length} pantheons ${signedNum(armyMorale.value)}`
+        : 'no bonus';
   const luck = heroLuckBonus(catalog, state, hero);
   const mana = maxMana(catalog, state, hero);
   const signed = (n: number) => `${n >= 0 ? '+' : ''}${n}`;
@@ -429,6 +441,7 @@ export function HeroScreen() {
             </div>
           </div>
           {specialtiesEnabled(state) ? <SpecialtyLine catalog={catalog} definitionId={hero.definitionId} size="1.9rem" /> : null}
+          <HeroGifts catalog={catalog} hero={hero} size="1.9rem" />
           <div className="h3-primary" data-testid="hero-primary">
             {HERO_ATTRIBUTES.map((a) => {
               const b = attrs[a];
@@ -464,11 +477,11 @@ export function HeroScreen() {
                 <Bar value={hero.mana} max={Math.max(1, mana)} kind="mana" label="Mana" />
               </div>
             </div>
-            <div className="h3-stat" title="Morale bonus from skills, artifacts and gods">
+            <div className="h3-stat" title={`Skills, artifacts and gods ${signed(morale)}; army: ${armyMoraleText}`} data-testid="hero-morale">
               <Icon name="morale" className="h3-stat__icon" />
               <div>
                 <div className="h3-stat__label">Morale</div>
-                <div className="num">{signed(morale)}</div>
+                <div className="num">{signed(morale + armyMorale.value)}</div>
               </div>
             </div>
             <div className="h3-stat" title="Luck bonus from skills, artifacts and gods">

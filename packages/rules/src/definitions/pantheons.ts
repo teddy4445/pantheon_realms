@@ -80,6 +80,22 @@ export interface GodDefinition {
   readonly provenance: ProvenanceInfo;
 }
 
+/**
+ * A god's gift to one hero (owner request 2026-10-07): at hero levels 10 and 15
+ * the level-up offers two of these, from the gods its empire committed to; the
+ * hero keeps the one taken. Plain effects from the shared vocabulary, applied as
+ * the hero's own (`heroEffects`). Proposed values, unplaytested.
+ */
+export interface GodPerkDefinition {
+  readonly id: string;
+  readonly godId: GodId;
+  /** The family of effect (might, guard, lore, …): the interface's existing icon for it. */
+  readonly theme: string;
+  readonly name: string;
+  readonly summary: string;
+  readonly effects: readonly EffectDefinition[];
+}
+
 export interface HeroClassDefinition {
   readonly id: HeroClassId;
   readonly name: string;

@@ -18,6 +18,7 @@ import { reject, type RejectionCode, type Tx } from '../engine/tx';
 import { spend } from './economy';
 import { scenarioMission, scopeAllowed } from '../resolvers/scenario';
 import { imprisonedHeroIds, heroInTown, townVisitor, townGate } from '../resolvers/world';
+import { weekOf } from './turn';
 
 // ---------------------------------------------------------------------------
 // Experience
@@ -56,6 +57,7 @@ export function ensureLevelUpDecision(tx: Tx, hero: HeroState): void {
   const cycle = cls.primaryGainCycle;
   const primaryGain = cycle[(newLevel - 2) % cycle.length] ?? 'attack';
   const offers = rollSkillOffers(tx, hero);
+  const perkOffers = GOD_PERK_LEVELS.includes(newLevel) ? rollPerkOffers(tx, hero) : [];
   const decision: LevelUpDecision = {
     decisionId: tx.nextId('decision') as DecisionId,
     kind: 'level_up',
@@ -63,8 +65,48 @@ export function ensureLevelUpDecision(tx: Tx, hero: HeroState): void {
     newLevel,
     primaryGain,
     offers,
+    ...(perkOffers.length > 0 ? { perkOffers } : {}),
   };
   tx.state.pendingDecisions.push(decision);
+}
+
+/** Hero levels at which the gods offer a gift (owner request 2026-10-07). */
+export const GOD_PERK_LEVELS: readonly number[] = [10, 15];
+
+/** Gods' gifts are part of the expanded rules (skirmishes, random maps, The Winter Oath and the arc campaigns). */
+export function godPerksEnabled(state: Pick<MatchState, 'scenario'>): boolean {
+  return state.scenario.features?.expandedContent === true;
+}
+
+/**
+ * The gifts a hero may be offered: those of every god its empire committed to
+ * (patron first, then the minor gods in order of commitment), less the ones the
+ * hero already has.
+ */
+export function perkCandidates(catalog: ContentCatalog, state: MatchState, hero: HeroState): string[] {
+  const player = state.players[hero.ownerId];
+  if (!player || !catalog.godPerks || !godPerksEnabled(state)) return [];
+  const gods = [player.pantheon.patronGodId, ...player.pantheon.minorGodIds].filter((g): g is string => !!g);
+  const owned = new Set(hero.perks ?? []);
+  return gods.flatMap((g) =>
+    Object.values(catalog.godPerks!)
+      .filter((p) => p.godId === g && !owned.has(p.id))
+      .map((p) => p.id)
+      .sort(),
+  );
+}
+
+/** Two gifts, from two different gods when the empire has two or more, else both of the one god's. */
+function rollPerkOffers(tx: Tx, hero: HeroState): string[] {
+  const pool = perkCandidates(tx.catalog, tx.state, hero);
+  if (pool.length === 0) return [];
+  const rng = tx.rng('progression');
+  const godOf = (id: string) => tx.catalog.godPerks![id]!.godId;
+  const first = pool[rng.nextInt(pool.length)]!;
+  const others = pool.filter((p) => p !== first && godOf(p) !== godOf(first));
+  const rest = others.length > 0 ? others : pool.filter((p) => p !== first);
+  const second = rest.length > 0 ? rest[rng.nextInt(rest.length)]! : null;
+  return second ? [first, second] : [first];
 }
 
 /** Skills a hero may be offered: core skills, plus expanded ones of its own pantheon where the scenario allows. */
@@ -109,7 +151,7 @@ function rollSkillOffers(tx: Tx, hero: HeroState): SkillOffer[] {
   return out;
 }
 
-export function commitLevelUpChoice(tx: Tx, decisionId: DecisionId, offerIndex: number | null): void {
+export function commitLevelUpChoice(tx: Tx, decisionId: DecisionId, offerIndex: number | null, perkIndex: number | null = null): void {
   const idx = tx.state.pendingDecisions.findIndex((d) => d.decisionId === decisionId);
   const decision = tx.state.pendingDecisions[idx];
   if (!decision) reject('not_found', 'That decision is no longer pending');
@@ -122,6 +164,14 @@ export function commitLevelUpChoice(tx: Tx, decisionId: DecisionId, offerIndex: 
   } else if (offerIndex !== null) {
     reject('invalid_command', 'There is no skill choice for this level');
   }
+  const perkOffers = decision.perkOffers ?? [];
+  let perkId: string | null = null;
+  if (perkOffers.length > 0) {
+    if (perkIndex === null || !perkOffers[perkIndex]) reject('invalid_command', 'Choose one of the gods’ gifts');
+    perkId = perkOffers[perkIndex]!;
+  } else if (perkIndex !== null) {
+    reject('invalid_command', 'There is no gift of the gods at this level');
+  }
   hero.level = decision.newLevel;
   hero.pendingLevels = Math.max(0, hero.pendingLevels - 1);
   hero.attributes[decision.primaryGain] += 1;
@@ -130,6 +180,7 @@ export function commitLevelUpChoice(tx: Tx, decisionId: DecisionId, offerIndex: 
     if (existing) existing.rank = offer.toRank;
     else hero.skills.push({ skillId: offer.skillId, rank: offer.toRank });
   }
+  if (perkId) hero.perks = [...(hero.perks ?? []), perkId];
   tx.state.pendingDecisions.splice(idx, 1);
   tx.emit({
     kind: 'HeroLeveled',
@@ -138,6 +189,7 @@ export function commitLevelUpChoice(tx: Tx, decisionId: DecisionId, offerIndex: 
     primaryGain: decision.primaryGain,
     skillId: offer?.skillId ?? null,
     rank: offer?.toRank ?? null,
+    ...(perkId ? { perkId } : {}),
   });
   ensureLevelUpDecision(tx, hero);
 }
@@ -312,6 +364,11 @@ export function hireCandidates(catalog: ContentCatalog, state: MatchState, townI
   return hireOptions(catalog, state, town.ownerId, townId).filter((c) => !c.returningHeroId).map((c) => c.definitionId);
 }
 
+/** A player hires at most one hero a week, at any of their Taverns (owner request 2026-10-07). */
+export function heroHiredThisWeek(catalog: ContentCatalog, state: MatchState, playerId: string): boolean {
+  return (state.players[playerId]?.heroHireWeek ?? 0) === weekOf(state.day, catalog.rulesProfile.daysPerWeek);
+}
+
 export function quoteHireHero(catalog: ContentCatalog, state: MatchState, playerId: string, townId: TownId, definitionId: string): HireQuote {
   const cost = resources({ gold: catalog.rulesProfile.heroHireCost });
   const fail = (code: RejectionCode, reason: string): HireQuote => ({ legal: false, reason, code, cost });
@@ -325,6 +382,7 @@ export function quoteHireHero(catalog: ContentCatalog, state: MatchState, player
   if (!hireOptions(catalog, state, playerId, townId).some((c) => c.definitionId === definitionId)) return fail('illegal_action', `${def.name} is not available for hire`);
   const owned = Object.values(state.heroes).filter((h) => h.ownerId === playerId && h.status === 'active').length;
   if (owned >= catalog.rulesProfile.maxHeroesPerPlayer) return fail('no_capacity', `At most ${catalog.rulesProfile.maxHeroesPerPlayer} heroes`);
+  if (heroHiredThisWeek(catalog, state, playerId)) return fail('already_done', 'One hero per week');
   if (townVisitor(catalog, state, town.id)) {
     return fail('not_present', 'The visitor position is occupied — move that hero out first');
   }
@@ -340,6 +398,7 @@ export function commitHireHero(tx: Tx, townId: TownId, definitionId: string): vo
   const option = hireOptions(tx.catalog, tx.state, tx.actorId, townId).find((c) => c.definitionId === definitionId)!;
   const escortId = townTierOneBase(tx.catalog, town);
   spend(tx, tx.actorId, q.cost, `Hire ${def.name}`);
+  tx.state.players[tx.actorId]!.heroHireWeek = weekOf(tx.state.day, tx.profile.daysPerWeek);
   const slots = (count: number) =>
     Array.from({ length: tx.profile.armySlots }, (_, i) => (i === 0 && escortId && count > 0 ? { stackId: tx.nextId('stack'), creatureId: escortId, count } : null));
 

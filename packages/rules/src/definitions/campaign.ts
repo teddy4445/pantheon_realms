@@ -231,6 +231,13 @@ export interface MissionDefinition {
   readonly hostilePlayer?: { readonly playerId: PlayerId; readonly name: string };
   /** Skirmish rivals: full AI empires using the same rules (proposed-this-build). */
   readonly rivals?: readonly MissionRivalSetup[];
+  /**
+   * Towns that start without an owner or a hero (owner request 2026-10-07): any
+   * empire may take one — by walking in, or by siege when a neutral garrison
+   * holds it — and then builds and recruits there like in its own town. The
+   * archetype decides the town's pantheon, so it may match its taker's or not.
+   */
+  readonly neutralTowns?: readonly MissionTownSetup[];
   /** Mission flags set at initialization (e.g. "skirmish"). */
   readonly initialFlags?: readonly string[];
   readonly purchasableBuildingIds: readonly BuildingId[] | null;
@@ -286,6 +293,10 @@ export interface SkirmishScenarioDefinition {
   readonly id: ScenarioId;
   readonly name: string;
   readonly summary: string;
+  /** One line under the name, as the authored skirmish maps have (owner request 2026-10-07: one style for the whole list). */
+  readonly tagline?: string;
+  /** What makes the scenario different, one short sentence each. */
+  readonly highlights?: readonly string[];
   /** Default mission (used when no variant is chosen). */
   readonly missionId: MissionId;
   readonly status: 'playable' | 'coming_soon';

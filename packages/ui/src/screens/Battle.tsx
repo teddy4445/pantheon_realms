@@ -25,6 +25,7 @@ import {
   deploymentAnchors,
   deploymentZone,
   structureLabel,
+  catapultTarget,
   attackBreakdown,
   defenseBreakdown,
   effectiveSpeed,
@@ -41,6 +42,7 @@ import {
   interventionsFor,
   interventionUsedThisWeek,
   quoteIntervention,
+  interventionOf,
 } from '@pr/rules';
 import type { BattleMiracleFx, BattleSceneController, BattleSpellFx, BattleStackMark, BattleView } from '@pr/presentation';
 import { useStore } from '../app/context';
@@ -136,7 +138,7 @@ function spellFxOf(catalog: ContentCatalog, spellId: string): BattleSpellFx | nu
 
 /** How a divine intervention looks in this battle, and whose side called it (null: a map miracle). */
 function miracleFxOf(catalog: ContentCatalog, state: MatchState | undefined, interventionId: string, playerId: string): BattleMiracleFx | null {
-  const def = catalog.interventions?.[interventionId];
+  const def = state ? interventionOf(catalog, state, playerId, interventionId) : null;
   const battle = state?.battle;
   if (!def || def.context !== 'battle' || !battle) return null;
   const side = battle.sides.attacker.playerId === playerId ? 'attacker' : battle.sides.defender.playerId === playerId ? 'defender' : null;
@@ -304,6 +306,8 @@ export function BattleScreen() {
   const humanTurn = !ended && !!battle && battle.status === 'active' && session.isHumanTurn();
   const humanSide = battle ? Object.values(battle.sides).find((s) => s.controller === 'human') : undefined;
   const la = humanTurn && !store.presentationBusy ? legalActions(catalog, state) : null;
+  // The Catapult is aimed by the siege attacker on one of its own stacks' turns (2026-10-07).
+  const canAimCatapult = !!la && la.side === 'attacker' && !!battle?.siege && battle.siege.level > 0;
   /** The human side still arranging its deployment zone (Tactics), if any. */
   const deploySide = battle?.phase === 'deployment' && humanTurn ? (battle.deployment?.pending.find((x) => battle.sides[x].controller === 'human') ?? null) : null;
   const selecting = battle?.phase === 'selection' && humanTurn && !!battle.selection;
@@ -657,11 +661,24 @@ export function BattleScreen() {
           </div>
           {battle.siege && battle.siege.level > 0 ? (
             <div className="siege-status small" data-testid="siege-status" aria-label="Fortifications">
-              {battle.siege.structures.map((x) => (
-                <span key={x.id} className={x.hp <= 0 ? 'siege-status__item is-down' : 'siege-status__item'} title={`${structureLabel(x.id)}: ${x.hp}/${x.maxHp} structure points`}>
-                  {structureLabel(x.id).replace('Wall section ', 'W')} {x.hp}/{x.maxHp}
-                </span>
-              ))}
+              {battle.siege.structures.map((x) => {
+                const aimed = catapultTarget(battle)?.id === x.id;
+                // The human attacker aims the Catapult by clicking a standing structure (on its own turn).
+                const canAim = canAimCatapult && x.hp > 0 && !aimed;
+                const label = `${structureLabel(x.id).replace('Wall section ', 'W')} ${x.hp}/${x.maxHp}`;
+                const title = `${structureLabel(x.id)}: ${x.hp}/${x.maxHp} structure points${aimed ? ' — the Catapult’s next target' : canAim ? ' — click to aim the Catapult here' : ''}`;
+                const cls = `siege-status__item${x.hp <= 0 ? ' is-down' : ''}${aimed ? ' is-aim' : ''}${canAim ? ' is-aimable' : ''}`;
+                return canAim ? (
+                  <button key={x.id} type="button" className={cls} title={title} onClick={() => act({ kind: 'BattleAimCatapult', structureId: x.id })} data-testid={`catapult-aim-${x.id}`}>
+                    {label}
+                  </button>
+                ) : (
+                  <span key={x.id} className={cls} title={title} data-testid={aimed ? 'catapult-target' : undefined} data-structure={x.id}>
+                    {aimed ? <Icon name="spell" className="siege-status__aim" aria-hidden="true" /> : null}
+                    {label}
+                  </span>
+                );
+              })}
             </div>
           ) : null}
           </div>
@@ -782,7 +799,7 @@ export function BattleScreen() {
             </>
           ) : mode.kind === 'intervention' ? (
             <>
-              <span className="small">{catalog.interventions?.[mode.interventionId]?.name}: choose an enemy stack.</span>
+              <span className="small">{(actingPlayer ? interventionOf(catalog, state, actingPlayer, mode.interventionId) : catalog.interventions?.[mode.interventionId])?.name}: choose an enemy stack.</span>
               <Button size="small" onClick={() => setMode({ kind: 'normal' })}>
                 Cancel
               </Button>
@@ -895,6 +912,11 @@ function DefenderSelection() {
   const sel = battle.selection!;
   const visitorName = battle.sides.defender.commander?.name ?? 'Visiting hero';
   const [picked, setPicked] = useState<number[]>(() => sel.candidates.map((_, i) => i).slice(0, sel.max));
+  // Combining identical stacks changes the list: start the choice again.
+  const listKey = sel.candidates.map((c) => `${c.source}${c.slot}:${c.count}`).join(',');
+  useEffect(() => setPicked(sel.candidates.map((_, i) => i).slice(0, sel.max)), [listKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const ids = sel.candidates.map((c) => c.creatureId);
+  const canMerge = new Set(ids).size < ids.length;
   const toggle = (i: number) => setPicked((p) => (p.includes(i) ? p.filter((x) => x !== i) : p.length >= sel.max ? p : [...p, i].sort((a, b) => a - b)));
   const reserves = sel.candidates.length - picked.length;
   return (
@@ -936,7 +958,16 @@ function DefenderSelection() {
           );
         })}
       </ul>
-      <p className="faint small">Merging identical stacks before a siege is not available in this build.</p>
+      {canMerge ? (
+        <div className="row gap defender-merge">
+          <Button icon="swap" onClick={() => store.dispatch({ kind: 'BattleMergeDefenders' })} data-testid="defenders-merge">
+            Combine identical stacks
+          </Button>
+          <span className="faint small">Stacks of the same creature become one (in {visitorName}’s army when it has them). If seven or fewer remain, all of them defend.</span>
+        </div>
+      ) : (
+        <p className="faint small">No identical stacks to combine.</p>
+      )}
     </Modal>
   );
 }

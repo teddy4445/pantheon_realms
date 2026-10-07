@@ -55,9 +55,10 @@ export const SIGNATURES: Readonly<Record<string, PantheonSignatureDefinition>> =
     summary: 'The sun is fed so that it rises.',
     rules: [
       'Once per week in each town with a Temple, offer creatures from the garrison or the visiting hero.',
-      'Gain 1 Favor per 150 Gold of their recruitment price (rounded down), at most 10 Favor per offering.',
+      'Gain 1 Favor per 125 Gold of their recruitment price (rounded down), at most 10 Favor per offering.',
       'A hero cannot offer its last creature.',
     ],
-    effects: [{ type: 'offering', goldPerFavor: 150, maxFavorPerWeek: 10 }],
+    // 2026-10-07 balance: 125 Gold per Favor (was 150; Mesoamerican 0.42 on random maps).
+    effects: [{ type: 'offering', goldPerFavor: 125, maxFavorPerWeek: 10 }],
   },
 };

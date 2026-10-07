@@ -74,7 +74,7 @@ test('a map miracle shows its painted card once, in the gold frame with a live n
   await page.getByTestId('invoke-tithe_of_the_faithful').click();
   const seen = await waitForSighting(page, 'miracle-card');
   expect(seen.asset).toBe('intervention.tithe_of_the_faithful.card');
-  expect(seen.text).toContain('Tithe of the Faithful');
+  expect(seen.text).toContain('Tribute of Hera'); // the Greek name of the shared Tithe miracle (2026-10-07)
   expect(seen.corners).toBe(4);
   // The 2:3 painting (not the 96 px icon), its nameplate over the bottom 18 %.
   expect(Math.abs(seen.artRatio! - 2 / 3)).toBeLessThan(0.02);

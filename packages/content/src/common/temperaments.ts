@@ -33,8 +33,9 @@ export const AI_TEMPERAMENTS: readonly AITemperamentDefinition[] = [
   {
     id: 'norse',
     name: 'Raiders',
-    summary: 'Attacks at smaller advantages, keeps an extra hero on the road and raises troops before comforts.',
-    boldness: 0.95,
+    summary: 'Values raids more, keeps an extra hero on the road and raises troops before comforts.',
+    // 2026-10-07 balance: attacks at the same margins as everyone (was 0.95: Norse 0.44 on random maps).
+    boldness: 1,
     aggression: 1.15,
     extraHeroes: 1,
     build: { military: 1.15, economy: 0.95 },

@@ -76,8 +76,37 @@ test('the tavern lists every candidate’s specialty before hiring', async ({ pa
   const n = await cards.count();
   expect(n).toBeGreaterThan(0);
   for (let i = 0; i < n; i++) await expect(cards.nth(i).locator('[data-testid^="specialty-"]')).toBeVisible();
+  // The price and Hire sit on the right of each row (owner request 2026-10-07).
+  for (let i = 0; i < n; i++) {
+    const card = await cards.nth(i).boundingBox();
+    const hire = await cards.nth(i).getByRole('button', { name: 'Hire' }).boundingBox();
+    expect(card && hire && hire.x > card.x + card.width * 0.7 && hire.x + hire.width <= card.x + card.width).toBe(true);
+  }
+  await expect(modal.getByTestId('tavern-weekly')).toHaveText(/One hero per week/);
   await page.waitForTimeout(800); // let the dialog's fade-in finish before the screenshot
   await page.screenshot({ path: 'test-results/tavern-specialties.png' });
+});
+
+test('the tavern hires one hero per week: after a hire every Hire button is refused with the reason', async ({ page }) => {
+  const d = GameDriver.mission('skirmish_twin_harbors', { matchId: 'e2e-tavern-weekly' });
+  for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
+  d.state.towns['westharbor']!.buildings['tavern'] = 1;
+  // The week's hire already made (the save carries it like any other state).
+  d.player.heroHireWeek = 1;
+  const file = writeSave(d, 'tavern-weekly');
+  await page.goto('/?e2e', { waitUntil: 'networkidle' });
+  await importAndLoad(page, file);
+  await page.getByTestId('town-tab-westharbor').click();
+  await page.getByRole('button', { name: 'Tavern', exact: true }).click();
+  const modal = page.getByTestId('tavern');
+  await expect(modal.getByTestId('tavern-weekly')).toHaveText(/hired this week/);
+  const buttons = modal.getByRole('button', { name: 'Hire' });
+  const n = await buttons.count();
+  expect(n).toBeGreaterThan(0);
+  for (let i = 0; i < n; i++) {
+    await expect(buttons.nth(i)).toBeDisabled();
+    await expect(buttons.nth(i)).toHaveAttribute('title', 'One hero per week');
+  }
 });
 
 test('much weaker neutrals offer to join; accepting adds them without a battle', async ({ page }) => {

@@ -24,6 +24,7 @@ import {
   isShooter,
   shootingRange,
   SIEGE_GATE_ROW,
+  catapultTarget,
   adjacentEnemies,
   interventionsFor,
   interventionUsedThisWeek,
@@ -115,6 +116,25 @@ function mainOptions(catalog: ContentCatalog, battle: BattleState, stack: Battle
   return options;
 }
 
+/**
+ * Where a siege attacker wants the Catapult (2026-10-07): the gate while it has
+ * ground troops that must get in; an army that flies or shoots over the walls
+ * silences the turrets instead (the weakest keep or tower first).
+ */
+export function catapultAimFor(catalog: ContentCatalog, battle: BattleState): string | null {
+  const siege = battle.siege;
+  if (!siege || siege.level === 0) return null;
+  const intact = siege.structures.filter((s) => s.hp > 0);
+  if (intact.length === 0) return null;
+  const attackers = sideStacks(battle, 'attacker');
+  const groundMelee = attackers.some((a) => !hasFlight(catalog, a.creatureId) && !(isShooter(catalog, a.creatureId) && a.shotsRemaining > 0));
+  const gate = intact.find((s) => s.kind === 'gate');
+  if (groundMelee && gate) return gate.id;
+  const turrets = intact.filter((s) => s.kind === 'keep' || s.kind === 'tower').sort((a, b) => a.hp - b.hp || (a.id < b.id ? -1 : 1));
+  if (turrets[0]) return turrets[0].id;
+  return gate?.id ?? null;
+}
+
 const SHIFT_MARGIN = 5;
 /** Progress (in cells) a lone advance gives up per enemy melee stack that could strike it next. */
 /** Base score of a shooter's move that brings an enemy into range (see step 5). */
@@ -129,7 +149,12 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
   const battle = state.battle;
   if (!battle || battle.status !== 'active') return null;
   // Pre-battle phases: automatic choices keep the default formation.
-  if (battle.phase === 'selection' && battle.selection) return { kind: 'BattleSelectDefenders', picks: autoDefenderPicks(catalog, battle.selection) };
+  if (battle.phase === 'selection' && battle.selection) {
+    // Combine identical stacks first (2026-10-07), then keep the most valuable seven.
+    const ids = battle.selection.candidates.map((c) => c.creatureId);
+    if (new Set(ids).size < ids.length) return { kind: 'BattleMergeDefenders' };
+    return { kind: 'BattleSelectDefenders', picks: autoDefenderPicks(catalog, battle.selection) };
+  }
   if (battle.phase === 'deployment') return { kind: 'BattleConfirmDeployment' };
   if (!battle.activeStackId) return null;
   const actions = legalActions(catalog, state);
@@ -137,6 +162,11 @@ export function chooseBattleAction(catalog: ContentCatalog, state: MatchState): 
   const stack = battle.stacks[battle.activeStackId]!;
   const enemies = sideStacks(battle, opposing(stack.side));
   if (enemies.length === 0) return { kind: 'BattleDefend', stackId: stack.id };
+  // Siege attacker: aim the Catapult where it helps this army most (a free choice).
+  if (stack.side === 'attacker') {
+    const aim = catapultAimFor(catalog, battle);
+    if (aim && aim !== catapultTarget(battle)?.id) return { kind: 'BattleAimCatapult', structureId: aim };
+  }
 
   // 0. AI empires may call a battle intervention (Favor, once a week) in a fight that matters.
   const miracle = interventionChoice(catalog, state, battle, stack);
@@ -328,11 +358,17 @@ function groundDistanceField(catalog: ContentCatalog, battle: BattleState, stack
   return dist;
 }
 
-/** Battle interventions for AI-controlled empires (never for a human side on auto-combat). */
+/**
+ * Battle interventions for AI-controlled empires (never for a human side on
+ * auto-combat). The weekly miracle is kept for the battle that decides
+ * something (2026-10-07): a siege, a fight against another empire's hero, or a
+ * close fight — not a walkover, and not a lost cause unless the town itself is
+ * at stake. Early rounds only, while it still changes the outcome.
+ */
 function interventionChoice(catalog: ContentCatalog, state: MatchState, battle: BattleState, stack: BattleStackState): CommandPayload | null {
   const side = battle.sides[stack.side];
   const playerId = side.playerId;
-  if (!playerId || side.controller !== 'ai' || battle.round > 3) return null;
+  if (!playerId || side.controller !== 'ai' || battle.round > 4) return null;
   if (state.players[playerId]?.role === 'scripted_hostile') return null;
   if (interventionUsedThisWeek(catalog, state, playerId)) return null;
   const spare = favorSpare(catalog, state, playerId);
@@ -340,6 +376,13 @@ function interventionChoice(catalog: ContentCatalog, state: MatchState, battle: 
   const mine = armyValue(stack.side);
   const theirs = armyValue(opposing(stack.side));
   if (theirs < 3000) return null;
+  const foe = battle.sides[opposing(stack.side)];
+  const siege = battle.encounter.kind === 'town_siege';
+  const rivalHero = !!foe.playerId && !!foe.commander?.heroId;
+  const ratio = mine / Math.max(1, theirs);
+  if (ratio > 3) return null; // a walkover: keep the miracle
+  if (!siege && !rivalHero && ratio > 1.6) return null; // an easy fight against neutrals
+  if (ratio < 0.3 && !(siege && stack.side === 'defender')) return null; // beyond help
   const options: Scored[] = [];
   for (const d of interventionsFor(catalog, state, playerId)) {
     if (d.context !== 'battle' || d.favorCost > spare) continue;

@@ -226,7 +226,7 @@ export function GodPrice({ catalog, god, quote }: { catalog: ContentCatalog; god
   const short = quote?.state === 'unaffordable';
   return (
     <ul className={`god-row god-row--price ${missing.length ? 'is-unmet' : ''}`} aria-label="Price" data-testid={`god-price-${god.id}`}>
-      <Token text={`Costs ${god.favorCost} Favor${short && quote?.reason ? ` — ${quote.reason}` : ''}`} className={short ? 'is-unmet' : ''}>
+      <Token text={`Costs ${god.favorCost} Favor${short && quote?.reason ? ` — ${quote.reason}` : ''}`} className={`god-tok--favor ${short ? 'is-unmet' : ''}`}>
         <Icon name="favor" className="god-ico god-ico--attr" />
         <span className="num">{god.favorCost}</span>
       </Token>

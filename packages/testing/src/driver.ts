@@ -146,7 +146,7 @@ export class GameDriver {
   resolveLevelUps(): void {
     for (let i = 0; i < 20 && this.state.pendingDecisions.length > 0; i++) {
       const d = this.state.pendingDecisions[0]!;
-      this.do({ kind: 'ChooseLevelUp', decisionId: d.decisionId, offerIndex: d.offers.length > 0 ? 0 : null });
+      this.do({ kind: 'ChooseLevelUp', decisionId: d.decisionId, offerIndex: d.offers.length > 0 ? 0 : null, ...(d.perkOffers?.length ? { perkIndex: 0 } : {}) });
     }
   }
 

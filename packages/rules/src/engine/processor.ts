@@ -45,7 +45,8 @@ import {
   commitBattleSurrender,
   commitBattleWait,
 } from '../systems/battle/actions';
-import { commitBattleConfirmDeployment, commitBattleDeploy, commitBattleSelectDefenders } from '../systems/battle/deployment';
+import { commitBattleConfirmDeployment, commitBattleDeploy, commitBattleMergeDefenders, commitBattleSelectDefenders } from '../systems/battle/deployment';
+import { commitBattleAimCatapult } from '../systems/battle/siege';
 
 export type CommandResult =
   | { readonly ok: true; readonly state: MatchState; readonly events: readonly GameEvent[] }
@@ -162,7 +163,7 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'UnequipArtifact':
       return commitUnequip(tx, c.heroId, c.slot);
     case 'ChooseLevelUp':
-      return commitLevelUpChoice(tx, c.decisionId, c.offerIndex);
+      return commitLevelUpChoice(tx, c.decisionId, c.offerIndex, c.perkIndex ?? null);
     case 'BattleMove':
       return commitBattleMove(tx, c.stackId, c.to);
     case 'BattleMelee':
@@ -181,6 +182,10 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitBattleAttackStructure(tx, c.stackId, c.structureId);
     case 'BattleSelectDefenders':
       return commitBattleSelectDefenders(tx, c.picks);
+    case 'BattleMergeDefenders':
+      return commitBattleMergeDefenders(tx);
+    case 'BattleAimCatapult':
+      return commitBattleAimCatapult(tx, c.structureId);
     case 'BattleDeploy':
       return commitBattleDeploy(tx, c.stackId, c.to);
     case 'BattleConfirmDeployment':

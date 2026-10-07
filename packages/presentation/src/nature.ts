@@ -74,6 +74,20 @@ export function natureHash(...parts: readonly (string | number | undefined | nul
   return h >>> 0;
 }
 
+/**
+ * Map creatures (location guards, wandering bands at rest) face left or right by
+ * a stable hash of their ID — about half each way, the same every time, no game
+ * RNG (owner request 2026-10-07). Kept here beside the scenery's hash.
+ */
+export function facesLeft(kind: 'guard' | 'monster', id: string): boolean {
+  // FNV-1a mixes its last characters poorly; a final avalanche (murmur3's fmix32) spreads them.
+  let h = natureHash('facing', kind, id);
+  h = Math.imul(h ^ (h >>> 16), 0x85ebca6b);
+  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
+  h ^= h >>> 16;
+  return (h & 1) === 1;
+}
+
 function weighted(table: Readonly<Record<string, number>> | undefined, hash: number): string | null {
   const entries = Object.entries(table ?? {});
   const total = entries.reduce((n, [, w]) => n + w, 0);

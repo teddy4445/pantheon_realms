@@ -62,6 +62,10 @@ function describe(catalog: ContentCatalog, battle: BattleState, e: GameEvent, de
       return `${structureLabel(e.structureId)} fires on ${stackName(catalog, battle, e.targetId)}: ${e.damage} damage, ${e.killed} slain.`;
     case 'SiegeMoatDamage':
       return `${stackName(catalog, battle, e.stackId)} wade into the moat: ${e.damage} damage, ${e.killed} slain.`;
+    case 'SiegeCatapultAimed':
+      return `The Catapult takes aim at the ${structureLabel(e.structureId).toLowerCase()}.`;
+    case 'BattleDefendersMerged':
+      return `${e.stacks} stacks of ${catalog.creatures[e.creatureId]?.pluralName ?? e.creatureId} combine into one of ${e.count}.`;
     default:
       return null;
   }
