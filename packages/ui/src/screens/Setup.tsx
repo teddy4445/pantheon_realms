@@ -10,7 +10,7 @@
  * Content not yet playable is shown honestly as unavailable.
  */
 import { useState, type CSSProperties, type ReactNode } from 'react';
-import type { CampaignDefinition, ContentCatalog, DifficultyDefinition, PantheonDefinition, SkirmishMapDefinition, SkirmishScenarioDefinition } from '@pr/rules';
+import { DEFAULT_CAMPAIGN_DIFFICULTY, difficultyLevels, type CampaignDefinition, type ContentCatalog, type DifficultyDefinition, type PantheonDefinition, type SkirmishMapDefinition, type SkirmishScenarioDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented, TextInput } from '../components/kit';
 import { CampaignThumb, Emblem, GodPortrait, HeroPortrait, MissionThumb, CreaturePortrait, SpeakerPortrait } from '../components/art';
@@ -77,15 +77,15 @@ export function GameModeScreen() {
   );
 }
 
-/** Difficulty choice with its exact effects (skirmish only; the campaign keeps its authored balance). */
-export function DifficultyPicker({ catalog, value, onChange }: { catalog: ContentCatalog; value: string; onChange: (id: string) => void }) {
-  const list: DifficultyDefinition[] = Object.values(catalog.difficulties ?? {}).sort((a, b) => a.order - b.order);
+/** Difficulty choice with its exact effects: the skirmish levels, or a campaign's (Story / Normal / Hard). */
+export function DifficultyPicker({ catalog, value, onChange, scope = 'skirmish' }: { catalog: ContentCatalog; value: string; onChange: (id: string) => void; scope?: 'skirmish' | 'campaign' }) {
+  const list: DifficultyDefinition[] = difficultyLevels(catalog, scope);
   const cur = list.find((d) => d.id === value);
   if (list.length === 0) return null;
   return (
     <div className="setting-block">
       <div className="setting-block__label">Difficulty</div>
-      <Segmented label="Difficulty" value={value} options={list.map((d) => ({ id: d.id, label: d.name, title: d.summary }))} onChange={onChange} testId="difficulty" />
+      <Segmented label="Difficulty" value={value} options={list.map((d) => ({ id: d.id, label: d.name, title: d.summary }))} onChange={onChange} testId={scope === 'campaign' ? 'campaign-difficulty' : 'difficulty'} />
       {cur ? (
         <ul className="bullets small dim setting-block__details">
           {cur.details.map((d) => (
@@ -101,7 +101,7 @@ export function DifficultyPicker({ catalog, value, onChange }: { catalog: Conten
 // S03 Scenario / Campaign selection
 // ---------------------------------------------------------------------------
 
-function CampaignDetail({ c }: { c: CampaignDefinition }) {
+function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefinition; difficultyId: string; onDifficulty: (id: string) => void }) {
   const store = useStore();
   const catalog = store.catalog;
   const missions = c.missionIds.map((id) => catalog.missions[id]!).filter(Boolean);
@@ -118,6 +118,7 @@ function CampaignDetail({ c }: { c: CampaignDefinition }) {
           <p>{c.summary}</p>
         </div>
       </div>
+      {c.status === 'playable' ? <DifficultyPicker catalog={catalog} value={difficultyId} onChange={onDifficulty} scope="campaign" /> : null}
       {missions.length ? (
         <>
           <SectionTitle>Missions</SectionTitle>
@@ -244,6 +245,7 @@ export function ScenarioSelectScreen() {
   const [selected, setSelected] = useState<string>(mode === 'campaign' ? (campaigns.find((c) => c.status === 'playable')?.id ?? '') : (skirmishes[0]?.id ?? ''));
   const campaign = mode === 'campaign' ? catalog.campaigns[selected] : undefined;
   const skirmish = mode === 'skirmish' ? catalog.skirmishes[selected] : undefined;
+  const [campaignDifficulty, setCampaignDifficulty] = useState<string>(store.setup.campaignDifficultyId ?? DEFAULT_CAMPAIGN_DIFFICULTY);
   // Authored skirmish maps are listed after the scenarios (selection key `map:<id>`).
   const map = mode === 'skirmish' && selected.startsWith('map:') ? catalog.skirmishMaps?.[selected.slice(4)] : undefined;
   const playable = campaign ? campaign.status === 'playable' : skirmish ? skirmish.status === 'playable' : !!map;
@@ -256,8 +258,8 @@ export function ScenarioSelectScreen() {
     if (campaign) {
       // A campaign is played with its own pantheon and patron: straight to the briefing.
       const godId = defaultPatron(catalog, campaign.pantheonId, campaign);
-      store.setup = { ...store.setup, mode: 'campaign', campaignId: campaign.id, missionId: campaign.missionIds[0] ?? null, pantheonId: campaign.pantheonId, godId };
-      store.startCampaign(campaign.id, godId);
+      store.setup = { ...store.setup, mode: 'campaign', campaignId: campaign.id, missionId: campaign.missionIds[0] ?? null, pantheonId: campaign.pantheonId, godId, campaignDifficultyId: campaignDifficulty };
+      store.startCampaign(campaign.id, godId, campaignDifficulty);
       return;
     } else if (skirmish) {
       const m = catalog.missions[skirmish.missionId];
@@ -313,7 +315,7 @@ export function ScenarioSelectScreen() {
             </>
           ) : null}
         </Panel>
-        {campaign ? <CampaignDetail c={campaign} /> : null}
+        {campaign ? <CampaignDetail c={campaign} difficultyId={campaignDifficulty} onDifficulty={setCampaignDifficulty} /> : null}
         {map ? (
           <ScenarioDetail
             title={map.name}
@@ -579,7 +581,7 @@ function begin(store: ReturnType<typeof useStore>): void {
   const campaign = setup.campaignId ? catalog.campaigns[setup.campaignId] : undefined;
   const godId = setup.godId ?? defaultPatron(catalog, setup.pantheonId, campaign);
   if (campaign) {
-    store.startCampaign(campaign.id, godId);
+    store.startCampaign(campaign.id, godId, setup.campaignDifficultyId ?? DEFAULT_CAMPAIGN_DIFFICULTY);
     return;
   }
   if (!setup.missionId) return;

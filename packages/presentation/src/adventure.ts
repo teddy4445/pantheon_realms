@@ -18,7 +18,7 @@ import { Container, FillPattern, Graphics, Matrix, Rectangle, Sprite, Texture, t
 import { TERRAIN_BY_CODE, TERRAIN_CODES, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
 import { facesLeft, planNatureSceneryCached, type NatureItem, type NaturePlan } from './nature';
-import type { EngineHost, SceneController } from './engineHost';
+import type { EngineHost, FramePace, SceneController } from './engineHost';
 import { MAP_SQUASH, SQRT3, axialPoint, directionOf, hexPolygon, pointAxial, pointAxialFraction, type MapDirection } from './hexmath';
 import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
 import { TweenPlayer, linear } from './tween';
@@ -31,6 +31,7 @@ import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './static
 import { FxPainter, type FxTarget } from './fx';
 import { PLANK_COLOR, ROAD_PARTS, ROAD_STEP, marksAlong, offsetRun, roadRuns, roadStyleFor, roadTileSlot, roadTypeFor, smoothRoadTypes, smoothRun, type RoadPoint, type RoadType } from './roads';
 import type { FxLook } from './fxLooks';
+import { GroundCache, type GroundCacheStats } from './groundCache';
 import { groundCornerOutlines, groundEdgesComplete, groundEdgesUsable, groundPieceOutlines, planGroundCorners, planGroundEdges, type GroundEdgePiece } from './groundEdges';
 
 /**
@@ -276,9 +277,16 @@ export class AdventureSceneController implements SceneController {
   private disposed = false;
   private readonly listeners: [string, EventListener][] = [];
 
+  /** Wakes the renderer to the full frame rate (frame pacing) after a change it cannot see coming. */
+  private readonly wake: () => void;
+  /** The ground drawn into textures (frame-rate work 2026-10-07; `groundCache.ts`): the map shows these instead of the ground layer. */
+  private readonly groundCache: GroundCache;
+
   constructor(engine: EngineHost, canvas: HTMLCanvasElement, cb: AdventureCallbacks) {
     this.canvas = canvas;
     this.cb = cb;
+    this.wake = () => engine.wake?.();
+    this.groundCache = new GroundCache(engine.renderer, this.groundLayer, engine.antialias);
     this.root.addChild(this.world, this.screenLayer);
     this.painter = new FxPainter(this.effects, this.tweens, R, S, { layer: this.screenLayer, size: () => this.view });
     this.ground.addChild(this.selectRing, this.pathLayer, this.trailLayer, this.hover);
@@ -288,7 +296,8 @@ export class AdventureSceneController implements SceneController {
     this.groundLayer.addChild(this.terrain, this.terrainBlend, this.groundFoam, this.roads, this.roadTiles, this.grid);
     this.marks.addChild(this.reach, this.ground);
     this.fogLayer.addChild(this.fog, this.fogSoft);
-    this.world.addChild(this.groundLayer, this.marks, this.objects, this.fogLayer, this.effects);
+    // The ground cache's chunks lie over the live ground; while they cover the view the live ground is not drawn.
+    this.world.addChild(this.groundLayer, this.groundCache.view, this.marks, this.objects, this.fogLayer, this.effects);
     // Render groups (2026-10-06 frame-rate work): moving the camera changes one
     // transform on the GPU instead of every vertex, and the animated heroes and
     // guards re-send only the objects layer each frame, never the ground or fog.
@@ -321,6 +330,7 @@ export class AdventureSceneController implements SceneController {
   // ------------------------------------------------------------------ view updates
 
   update(view: AdventureView): void {
+    this.wake();
     this.calm = !!view.calm;
     const key = `${view.map.templateId}|${view.map.logicalHash}`;
     if (key !== this.mapKey) {
@@ -442,6 +452,7 @@ export class AdventureSceneController implements SceneController {
   }
 
   private drawTerrain(): void {
+    this.groundCache.invalidate();
     const map = this.map;
     const g = this.terrain;
     g.clear();
@@ -593,10 +604,10 @@ export class AdventureSceneController implements SceneController {
   }
 
   /** How the ground borders and roads are drawn right now (read-only diagnostics for tests): painted road tiles drawn, if any. */
-  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number; roadTypes: Record<string, number>; roadTileTypes: Record<string, string> } {
+  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number; roadTypes: Record<string, number>; roadTileTypes: Record<string, string>; cache: GroundCacheStats } {
     const roadTypes: Record<string, number> = {};
     for (const t of Object.values(this.roadTileTypes)) roadTypes[t] = (roadTypes[t] ?? 0) + 1;
-    return { ...this.groundMode, roadTiles: this.roadTiles.children.length, roadTypes, roadTileTypes: { ...this.roadTileTypes } };
+    return { ...this.groundMode, roadTiles: this.roadTiles.children.length, roadTypes, roadTileTypes: { ...this.roadTileTypes }, cache: this.groundCache.stats() };
   }
 
   /** The material of every painted road tile now drawn, by `q,r` (read-only diagnostics). */
@@ -814,7 +825,10 @@ export class AdventureSceneController implements SceneController {
     const fog = this.fog;
     const grid = this.grid;
     fog.clear();
-    if (full) grid.clear();
+    if (full) {
+      grid.clear();
+      this.groundCache.invalidate();
+    }
     const unknown = hexToRgb(UNKNOWN_COLOR);
     // Soft fog (2026-10-05): the edges of the unknown and of what is out of sight fade over a
     // fraction of a hex instead of following hex outlines; tile drawing stays without a canvas.
@@ -979,6 +993,7 @@ export class AdventureSceneController implements SceneController {
   }
 
   private drawRoads(map: WorldMapDefinition, explored: readonly number[]): void {
+    this.groundCache.invalidate();
     const g = this.roads;
     g.clear();
     for (const c of this.roadTiles.removeChildren()) c.destroy();
@@ -1883,10 +1898,37 @@ export class AdventureSceneController implements SceneController {
         }
       }
     }
+    this.syncGroundCache();
+  }
+
+  /** Bring the ground chunks up to date for this frame's camera: the chunks when they cover the view, else the live ground. */
+  private syncGroundCache(): void {
+    const z = this.cam.zoom;
+    const x0 = -this.world.x / z;
+    const y0 = -this.world.y / z;
+    const covering = this.groundCache.update(x0, y0, x0 + this.view.width / z, y0 + this.view.height / z, z);
+    if (this.groundLayer.renderable === covering) this.groundLayer.renderable = !covering;
+  }
+
+  /** The GPU lost and restored its context: the chunk textures are empty, draw them again. */
+  contextRestored(): void {
+    this.groundCache.invalidate();
   }
 
   get busy(): boolean {
     return this.tweens.busy;
+  }
+
+  /**
+   * Frame pacing (engineHost `FramePace`): full while anything moves — a
+   * playback, an effect, the camera easing, a drag, a walk or a hero snapping
+   * in — ambient while only the idle loops and pulses play, still without
+   * ambient motion (Low graphics, reduced motion).
+   */
+  pace(): FramePace {
+    if (this.tweens.busy || this.camGoal || this.down || this.terrainQueued || this.groundCache.pending || this.extraTweens.some((t) => t.busy)) return 'full';
+    for (const e of this.heroes.values()) if (e.clip !== 'idle' || e.locked > 0 || e.snapIn > 0) return 'full';
+    return graphicsProfile().ambientMotion && !this.calm ? 'ambient' : 'still';
   }
 
   dispose(): void {
@@ -1898,6 +1940,7 @@ export class AdventureSceneController implements SceneController {
     for (const [type, fn] of this.listeners) this.canvas.removeEventListener(type, fn);
     for (const e of this.heroes.values()) e.figure.destroy();
     for (const s of this.sites.values()) s.guard?.destroy();
+    this.groundCache.destroy();
     this.heroes.clear();
     this.sites.clear();
     this.root.destroy({ children: true });

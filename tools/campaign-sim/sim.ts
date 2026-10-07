@@ -14,6 +14,8 @@ import { fightOut, mainHeroOf, newPilotMemory, pilotTurn, type PilotBlock } from
 
 export interface MissionRun {
   readonly campaignId: string;
+  /** Campaign difficulty level (null: the missions as written). */
+  readonly difficultyId: string | null;
   readonly missionId: string;
   readonly order: number;
   readonly run: number;
@@ -82,7 +84,7 @@ export function playMission(catalog: ContentCatalog, initial: MatchState, maxDay
   return { state: outcome === 'victory' ? settleLevelUps(catalog, state) : state, outcome, reason, mem };
 }
 
-function summarize(catalog: ContentCatalog, campaignId: string, order: number, run: number, start: MissionRun['start'], res: ReturnType<typeof playMission>, seconds: number): MissionRun {
+function summarize(catalog: ContentCatalog, campaignId: string, difficultyId: string | null, order: number, run: number, start: MissionRun['start'], res: ReturnType<typeof playMission>, seconds: number): MissionRun {
   const s = res.state;
   const mission = requireScenarioMission(catalog, s);
   const open = mission.objectives.filter((o) => o.category === 'primary' && s.mission.objectives[o.id]?.status !== 'completed').map((o) => o.id);
@@ -90,6 +92,7 @@ function summarize(catalog: ContentCatalog, campaignId: string, order: number, r
   const hero = heroId ? s.heroes[heroId] : undefined;
   return {
     campaignId,
+    difficultyId,
     missionId: mission.id,
     order,
     run,
@@ -110,14 +113,14 @@ function summarize(catalog: ContentCatalog, campaignId: string, order: number, r
 }
 
 /** One journey through a campaign: every mission once, with carry-over while the missions are won. */
-export function playJourney(catalog: ContentCatalog, campaignId: string, run: number, maxDay: number, onMission?: (r: MissionRun) => void): MissionRun[] {
+export function playJourney(catalog: ContentCatalog, campaignId: string, run: number, maxDay: number, difficultyId: string | null = null, onMission?: (r: MissionRun) => void): MissionRun[] {
   const camp = catalog.campaigns[campaignId]!;
   const out: MissionRun[] = [];
   const godId = patronOf(catalog, campaignId);
   let campaign: CampaignState | null = null;
   let state: MatchState;
   {
-    const s = startCampaign(catalog, campaignId, { runId: `sim-${campaignId}-${run}`, startingGodId: godId });
+    const s = startCampaign(catalog, campaignId, { runId: `sim-${campaignId}-${run}`, startingGodId: godId, difficultyId });
     campaign = s.campaign;
     state = s.start.match;
   }
@@ -125,7 +128,7 @@ export function playJourney(catalog: ContentCatalog, campaignId: string, run: nu
     const t0 = Date.now();
     const start: MissionRun['start'] = campaign ? 'carried' : 'direct';
     const res = playMission(catalog, state, maxDay);
-    const r = summarize(catalog, campaignId, i + 1, run, i === 0 ? 'carried' : start, res, (Date.now() - t0) / 1000);
+    const r = summarize(catalog, campaignId, difficultyId, i + 1, run, i === 0 ? 'carried' : start, res, (Date.now() - t0) / 1000);
     out.push(r);
     onMission?.(r);
     const next = camp.missionIds[i + 1];
@@ -142,7 +145,7 @@ export function playJourney(catalog: ContentCatalog, campaignId: string, run: nu
       }
     }
     campaign = null;
-    state = createMissionMatch(catalog, next, { matchId: `sim-${campaignId}-${run}:${next}:direct`, startingGodId: godId, carryover: null }).match;
+    state = createMissionMatch(catalog, next, { matchId: `sim-${campaignId}-${run}:${next}:direct`, startingGodId: godId, carryover: null, difficultyId }).match;
   }
   return out;
 }

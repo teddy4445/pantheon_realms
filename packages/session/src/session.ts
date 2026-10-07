@@ -75,8 +75,8 @@ export class GameSession {
 
   // ------------------------------------------------------------------ factories
 
-  static newCampaign(catalog: ContentCatalog, campaignId: string, startingGodId: string | null, runId: string): GameSession {
-    const { campaign, start } = startCampaign(catalog, campaignId, { runId, startingGodId });
+  static newCampaign(catalog: ContentCatalog, campaignId: string, startingGodId: string | null, runId: string, difficultyId: string | null = null): GameSession {
+    const { campaign, start } = startCampaign(catalog, campaignId, { runId, startingGodId, difficultyId });
     return new GameSession(catalog, start.match, campaign);
   }
 

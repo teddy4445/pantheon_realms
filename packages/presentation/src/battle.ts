@@ -15,7 +15,7 @@
  */
 import { Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
 import type { BattleCell, GameEvent } from '@pr/rules';
-import type { EngineHost, SceneController } from './engineHost';
+import type { EngineHost, FramePace, SceneController } from './engineHost';
 import { BATTLE_SQUASH, SQRT3, cellPoint, hexPolygon, pointCell } from './hexmath';
 import { tileNoise } from './palette';
 import { TweenPlayer, easeInOut, easeOut, linear } from './tween';
@@ -337,9 +337,13 @@ export class BattleSceneController implements SceneController {
   private readonly iconLoading = new Set<string>();
   private marksDirty = false;
 
+  /** Wakes the renderer to the full frame rate (frame pacing) after a change it cannot see coming. */
+  private readonly wake: () => void;
+
   constructor(engine: EngineHost, canvas: HTMLCanvasElement, cb: BattleCallbacks) {
     this.canvas = canvas;
     this.cb = cb;
+    this.wake = () => engine.wake?.();
     this.objects.sortableChildren = true;
     this.badges.sortableChildren = true;
     this.field.addChild(this.backdrop, this.cells, this.grid);
@@ -903,6 +907,7 @@ export class BattleSceneController implements SceneController {
   }
 
   update(view: BattleView): void {
+    this.wake();
     const bk = `${view.battleId}|${view.climate ?? ''}|${view.obstacles.length}|${view.siege?.moat.length ?? -1}|${view.siege?.structures.length ?? -1}`;
     if (bk !== this.boardKey) {
       for (const e of this.stacks.values()) this.disposeStack(e);
@@ -1848,6 +1853,17 @@ export class BattleSceneController implements SceneController {
 
   get busy(): boolean {
     return this.tweens.busy;
+  }
+
+  /**
+   * Frame pacing (engineHost `FramePace`): full while a playback, an effect, a
+   * snap or the victory cheer runs, ambient while only idle loops, status auras
+   * and the active ring's pulse play, still without ambient motion.
+   */
+  pace(): FramePace {
+    if (this.tweens.busy || this.structureSnapIn > 0 || this.marksDirty || this.celebrating.size > 0 || this.extraTweens.some((t) => t.busy)) return 'full';
+    for (const e of this.stacks.values()) if (e.locked > 0 || e.snapIn > 0) return 'full';
+    return graphicsProfile().ambientMotion && !this.calm ? 'ambient' : 'still';
   }
 
   /** Finish any running playback immediately (skip). */

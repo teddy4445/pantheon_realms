@@ -318,7 +318,7 @@ export function playMap(catalog: ContentCatalog, o: { readonly mapId: string; re
   return { ...r, holdWin: r.holdWin ?? false };
 }
 
-function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, matchId: string, o: { pantheon: string; empires: number; seed: number; maxDay?: number }): RandomResult & { holdWin?: boolean } {
+export function playGenerated(catalog: ContentCatalog, g: GeneratedScenario, matchId: string, o: { pantheon: string; empires: number; seed: number; maxDay?: number }): RandomResult & { holdWin?: boolean } {
   const { match } = createGeneratedMatch(catalog, g, { matchId });
   const d = new GameDriver(match, catalog);
   const maxDay = o.maxDay ?? 40;

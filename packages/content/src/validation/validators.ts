@@ -565,7 +565,11 @@ function expandedContentValidator(c: ContentCatalog, push: Push): void {
   for (const d of Object.values(c.difficulties)) {
     if (d.humanStartPercent <= 0 || d.aiStartPercent <= 0 || d.aiIncomePercent <= 0) push(`${d.id}: percentages must be positive`);
     if (d.ai.heroAttackMargin < 1 || d.ai.guardMargin < 1 || d.ai.siegeMargin < 1) push(`${d.id}: AI margins below 1 would attack stronger armies`);
+    if ((d.guardPercent ?? 100) <= 0 || (d.rivalArmyPercent ?? 100) <= 0 || (d.hostileThresholdPercent ?? 100) <= 0) push(`${d.id}: guard, rival-army and threshold percentages must be positive`);
+    if ((d.scope ?? 'skirmish') === 'skirmish' && (d.guardPercent !== undefined || d.rivalArmyPercent !== undefined || d.hostileThresholdPercent !== undefined)) push(`${d.id}: army scaling is for campaign levels only`);
   }
+  const campaignLevels = Object.values(c.difficulties).filter((d) => d.scope === 'campaign');
+  if (campaignLevels.length > 0 && !c.difficulties['campaign_normal']) push('difficulties: campaign levels need campaign_normal (the default)');
   for (const [pid, kit] of Object.entries(c.skirmishKits)) {
     if (!pantheons.has(pid) || kit.pantheonId !== pid) push(`skirmish kit ${pid}: pantheon mismatch`);
     if (!c.townArchetypes[kit.archetypeId]) push(`skirmish kit ${pid}: unknown town ${kit.archetypeId}`);

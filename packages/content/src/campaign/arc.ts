@@ -14,6 +14,7 @@
  * Winter Oath, which passed its headless journey; the new campaigns' own
  * journeys are in packages/campaign/test/arcCampaigns.test.ts).
  */
+import { armyToken } from '@pr/rules';
 import type {
   BattlefieldArchetype,
   CampaignDefinition,
@@ -1208,10 +1209,12 @@ function nameOf(ctx: ArcCampaignContext, id: string, count = 2): string {
   return count === 1 ? n.name : n.pluralName;
 }
 
-export function armyText(ctx: ArcCampaignContext, a: Army): string {
-  const merged = new Map<string, number>();
-  for (const [id, n] of a) merged.set(id, (merged.get(id) ?? 0) + n);
-  return [...merged].map(([id, n]) => `${n} ${nameOf(ctx, id, n)}`).join(', ');
+/**
+ * An army in an objective text, as a token the game writes out with the counts
+ * the match started with (`missionText`: the campaign level scales guards).
+ */
+export function armyText(_ctx: ArcCampaignContext, a: Army): string {
+  return armyToken(a.map(([creatureId, count]) => ({ creatureId, count })));
 }
 
 function costText(c: ResourceCost): string {

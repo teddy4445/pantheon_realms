@@ -11,6 +11,8 @@ import { playJourney, type MissionRun } from './sim';
 
 interface Opts {
   readonly campaigns: readonly string[];
+  /** Campaign difficulty IDs to play (null: the missions as written). */
+  readonly difficulties: readonly (string | null)[];
   readonly runs: number;
   readonly maxDay: number;
   readonly shard: number;
@@ -21,12 +23,15 @@ interface Opts {
 it('campaign simulation shard', () => {
   const o = JSON.parse(process.env.CAMPAIGN_SIM_OPTS ?? '{}') as Opts;
   const catalog = loadCatalog();
-  const jobs = o.campaigns.flatMap((campaignId) => Array.from({ length: o.runs }, (_, run) => ({ campaignId, run }))).filter((_, i) => i % o.shards === o.shard);
+  const levels = o.difficulties?.length ? o.difficulties : [null];
+  const jobs = levels
+    .flatMap((difficultyId) => o.campaigns.flatMap((campaignId) => Array.from({ length: o.runs }, (_, run) => ({ campaignId, run, difficultyId }))))
+    .filter((_, i) => i % o.shards === o.shard);
   const results: MissionRun[] = [];
   const t0 = Date.now();
   let last = t0;
   jobs.forEach((j, i) => {
-    results.push(...playJourney(catalog, j.campaignId, j.run, o.maxDay));
+    results.push(...playJourney(catalog, j.campaignId, j.run, o.maxDay, j.difficultyId));
     if (Date.now() - last > 15000) {
       last = Date.now();
       process.stdout.write(`[campaign-sim] shard ${o.shard + 1}/${o.shards}: ${i + 1}/${jobs.length} journeys\n`);

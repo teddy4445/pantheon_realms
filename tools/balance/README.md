@@ -44,3 +44,12 @@ W=greek E=norse FIRST=east SEED=3 MAPSEED=5003 DAYS=20 \
 ```
 
 prints each day's heroes, armies and towns plus battles, hires and captures.
+
+```
+MAP=circle_of_gates SEATS=greek SEED=3 DAYS=30 EVERY=3 \
+  npx vitest run --config tools/balance/vitest.config.ts tools/balance/mapTrace.measure.ts
+```
+
+traces one all-AI match on an authored skirmish map (every seat's heroes, towns,
+battles, captures and knock-outs). The seat-fairness test of the authored maps
+lives in `tools/maps` (`npm run maps:fairness`).

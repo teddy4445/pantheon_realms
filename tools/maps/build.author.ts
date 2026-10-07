@@ -1,9 +1,11 @@
 /**
- * `npm run maps:build` — writes the authored skirmish maps
- * (packages/content/src/skirmish/maps/<id>.prmap.json) from tools/maps/maps.ts
- * after checking each one: the editor's validation, exact symmetry, one road
- * into every town, and each map's own promises (e.g. Frostgate's pass is shut
- * without the crimson key). Development tool; never packaged in the game.
+ * `npm run maps:build` (tools/maps/build.mjs) — builds the authored skirmish
+ * maps from tools/maps/maps.ts after checking each one: the editor's
+ * validation, exact symmetry, one road into every town, and each map's own
+ * promises (e.g. Frostgate's pass is shut without the crimson key). The
+ * runner then plays the seat-fairness test on the maps that changed and writes
+ * packages/content/src/skirmish/maps/<id>.prmap.json only for the ones that pass.
+ * Development tool; never packaged in the game.
  */
 import { expect, it } from 'vitest';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -14,7 +16,8 @@ import { serializeCustomMap, validateCustomMap } from '@pr/mapgen';
 import { AUTHORED_MAPS } from './maps';
 import { reachable, type MapBuilder } from './lib';
 
-const OUT = join(process.cwd(), 'packages/content/src/skirmish/maps');
+// tools/maps/build.mjs stages the documents first (MAPS_OUT) and ships only the ones that pass the fairness test.
+const OUT = process.env.MAPS_OUT ?? join(process.cwd(), 'packages/content/src/skirmish/maps');
 const catalog = buildCatalog();
 
 function townCell(doc: CustomMapDocument, owner: number): HexCoord {

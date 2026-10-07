@@ -117,8 +117,8 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
       guard: {
         label: 'Masked hirelings',
         army: [
-          ['brigand', 14],
-          ['brigand_cutthroat', 4],
+          ['brigand', 20],
+          ['brigand_cutthroat', 6],
         ],
         reward: { resources: { gold: 500 }, artifactIds: ['khopesh_of_set'] },
         battlefield: 'beacon_clearing',
@@ -235,8 +235,8 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
       guard: {
         label: 'Cliff-road hirelings',
         army: [
-          ['brigand', 16],
-          ['brigand_cutthroat', 6],
+          ['brigand', 24],
+          ['brigand_cutthroat', 10],
         ],
         reward: { resources: { gold: 750, favor: 5 } },
         battlefield: 'ridge_pass',
@@ -331,8 +331,8 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
       guard: {
         label: 'Drowned crew',
         army: [
-          ['brigand', 20],
-          ['brigand_cutthroat', 8],
+          ['brigand', 36],
+          ['brigand_cutthroat', 14],
         ],
         reward: { resources: { gold: 800, favor: 3 } },
         battlefield: 'coast_road',
@@ -357,8 +357,8 @@ export function buildTwelfthHour(names: ArcCampaignContext['names'], familyOf: A
       guard: {
         label: 'Turned river beasts',
         army: [
-          ['egyptian_crocodile_beast', 3],
-          ['egyptian_sobek_warbeast', 1],
+          ['egyptian_crocodile_beast', 4],
+          ['egyptian_sobek_warbeast', 2],
         ],
         reward: { resources: { gold: 1000 } },
         battlefield: 'coast_road',

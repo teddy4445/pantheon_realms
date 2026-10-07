@@ -196,8 +196,11 @@ export function SceneHostLayer({ showFrameRate = false }: { showFrameRate?: bool
 }
 
 /**
- * Frames per second over the last four seconds, the slowest frame among them,
- * and how many frames since the view opened took longer than 1/30 s.
+ * Frames per second over the last four seconds while something moves, the
+ * slowest frame among them, and how many such frames since the view opened
+ * took longer than 1/30 s. While nothing moves the view is drawn calm (frame
+ * pacing: 30 frames a second for idle loops, 8 when nothing changes), which
+ * says nothing about speed, so the readout says so instead.
  */
 function FrameRateReadout() {
   const [s, setS] = useState<FrameStats | null>(null);
@@ -205,12 +208,13 @@ function FrameRateReadout() {
     const t = setInterval(() => setS(host?.current ? host.frameStats() : null), 500);
     return () => clearInterval(t);
   }, []);
-  if (!s || s.total === 0) return null;
-  const low = s.fps > 0 && s.fps < 30;
+  if (!s || (s.total === 0 && s.calmFrames === 0)) return null;
+  const moving = s.frames >= 10;
+  const low = moving && s.fps > 0 && s.fps < 30;
   return (
-    <div className={`frame-rate${low ? ' frame-rate--low' : ''}`} data-testid="frame-rate" aria-hidden="true">
-      <strong>{Math.round(s.fps)} fps</strong>
-      <span>slowest {Math.round(s.worstMs)} ms</span>
+    <div className={`frame-rate${low ? ' frame-rate--low' : ''}`} data-testid="frame-rate" data-calm={moving ? undefined : 'true'} aria-hidden="true">
+      {moving ? <strong>{Math.round(s.fps)} fps</strong> : <strong>calm · {Math.round(s.drawnFps)} drawn</strong>}
+      {moving ? <span>slowest {Math.round(s.worstMs)} ms</span> : <span>move the view to measure</span>}
       <span>
         below 30 fps: {s.slow} of {s.total.toLocaleString('en-GB')}
       </span>

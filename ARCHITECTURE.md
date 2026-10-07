@@ -280,7 +280,20 @@ scenario IDs (`DESIGN_PROPOSALS.md` §4–12):
   `compileCustomMap`; `campaign`'s `compileSkirmishMap` picks a map's seats).
 * **Difficulty** (`DifficultyDefinition`): wallet and income percentages
   (`PlayerState.incomePercent`) applied by the mission factory, plus the AI
-  personality margins (`aiPersonality`). Skirmish only.
+  personality margins (`aiPersonality`). Skirmish levels (Easy/Normal/Hard)
+  and, since 2026-10-07, campaign levels (`scope: 'campaign'`: Story, Normal,
+  Hard) which also scale the creatures in guards, wandering monsters, scripted
+  hostile armies and unowned garrisons (`guardPercent`), the computer rivals'
+  starting armies (`rivalArmyPercent`) and the scripted hostile heroes' attack
+  threshold (`hostileThresholdPercent`, never below even). `missionDifficulty`
+  picks the level a start may use (never one of the other scope); the run keeps
+  it (`CampaignState.difficultyId`; absent in older runs = the missions as
+  written, so their recorded entry hashes still match) and the match records it
+  in `scenario.difficultyId` (score multiplier, AI margins). Creature numbers in
+  mission texts are written as tokens (`{army:id=count,…}`) and shown through
+  `missionText`, which scales them exactly as the factory scales the armies
+  (`scaleStackCount`; a test checks that every token is one of its mission's
+  armies).
 * **Statistics** (`systems/stats.ts`): `MatchState.stats` records each
   empire's day line at the start and at every dawn plus running totals;
   `matchScore` turns them into the score. Never read by play.
@@ -418,6 +431,28 @@ their viewport and ask for a scene controller. Both controllers keep their
 layers in Pixi render groups (2026-10-06): the camera is one group transform,
 and a layer that changes (animated figures, the reach after a command, a
 walk's trail) re-sends only its own group.
+
+**Frame pacing** (2026-10-07): a controller reports its `pace()` — `full`
+while anything moves (a playback, an effect, the camera easing, a drag, a walk,
+the ground cache catching up), `ambient` while only idle loops and pulses play,
+`still` without ambient motion (Low, reduced motion) — and the engine draws at
+the preset's cap, at 30 frames a second (`AMBIENT_FPS`) or at 8 (`STILL_FPS`).
+Pointer, wheel and key input, pictures still arriving and a controller's
+`wake()` (every view update) bring the full rate back at once. Calm frames are
+left out of the frame-rate readout's timing, the slow-frame count and adaptive
+resolution; the readout says "calm" while nothing moves.
+
+**Ground cache** (`groundCache.ts`, 2026-10-07): the map's ground layer
+(painted terrain, painted transitions, shore foam, roads, grid) is also drawn
+into 512-pixel square render textures on the screen's pixel grid at the current
+zoom and resolution (multisampled like the screen); while those chunks cover
+the view the live ground is not drawn (`renderable = false`). At most four
+chunks (and about 6 ms) are drawn per frame — the view's first, then a
+half-chunk ring around it — and whenever they do not cover the view (just
+opened, the ground changed: `invalidate` from `drawTerrain`, `drawRoads`, a new
+grid; a zoom, settled for 200 ms before chunks are drawn; a resolution change;
+a pan faster than the ring) the live ground is drawn as before. Context loss
+redraws the chunks (`SceneController.contextRestored`).
 
 * `AdventureSceneController` — 2D layers, back to front (black behind the
   map is the renderer's background colour): painted terrain (the delivered ground paintings as

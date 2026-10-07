@@ -330,8 +330,8 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
       guard: {
         label: 'Fog-fleet raiders',
         army: [
-          ['brigand', 20],
-          ['brigand_cutthroat', 8],
+          ['brigand', 36],
+          ['brigand_cutthroat', 14],
         ],
         reward: { resources: { gold: 800, favor: 3 } },
         battlefield: 'coast_road',
@@ -356,8 +356,8 @@ export function buildLanternRoad(names: ArcCampaignContext['names'], familyOf: A
       guard: {
         label: 'Mirror-weavers',
         army: [
-          ['japanese_jorogumo', 3],
-          ['japanese_queen_jorogumo', 1],
+          ['japanese_jorogumo', 4],
+          ['japanese_queen_jorogumo', 2],
         ],
         reward: { resources: { gold: 1000 } },
         battlefield: 'coast_road',

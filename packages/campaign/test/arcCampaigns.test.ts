@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '@pr/content';
 import { generateMap } from '@pr/mapgen';
 import { GameDriver } from '@pr/testing';
-import { campaignEpilogueLines, hexEquals, quoteMovement, quoteRecruitment, recruitableCreatureIds, type HexCoord } from '@pr/rules';
+import { campaignEpilogueLines, hexEquals, missionText, quoteMovement, quoteRecruitment, recruitableCreatureIds, type HexCoord } from '@pr/rules';
 import { recordCompletion, startCampaign, startNextMission, type CampaignState } from '../src';
 
 const catalog = loadCatalog();
@@ -119,8 +119,8 @@ for (const c of CASES) {
         const primaries = m.objectives.filter((o) => o.category === 'primary');
         expect(primaries[0]!.initialStatus).toBe('active');
         for (const o of primaries.slice(1)) expect(o.requires?.length || (o.condition.type === 'claim' ? 1 : 0)).toBeGreaterThan(0);
-        // Every objective names its troops (no raw IDs left in the text).
-        for (const o of m.objectives) expect(o.description, `${id}/${o.id}`).not.toMatch(/[a-z]+_[a-z_]+/);
+        // Every objective names its troops once written out (no raw IDs or tokens left in the text).
+        for (const o of m.objectives) expect(missionText(catalog, null, o.description), `${id}/${o.id}`).not.toMatch(/[a-z]+_[a-z_]+|[{}]/);
       });
     });
 

@@ -308,7 +308,7 @@ export function HighScoresScreen() {
                 <th>{table === 'campaign' ? 'Campaign' : 'Map'}</th>
                 <th>Result</th>
                 <th className="num">Days</th>
-                {table === 'skirmish' ? <th>Difficulty</th> : null}
+                <th>Difficulty</th>
                 <th className="num">Score</th>
                 <th>Date</th>
               </tr>
@@ -326,7 +326,7 @@ export function HighScoresScreen() {
                   <td>{e.title}</td>
                   <td>{e.outcome === 'victory' ? <Chip tone="ok">Victory</Chip> : <Chip tone="muted">Defeat</Chip>}</td>
                   <td className="num">{e.days}</td>
-                  {table === 'skirmish' ? <td>{e.difficultyId ? (catalog.difficulties?.[e.difficultyId]?.name ?? e.difficultyId) : '—'}</td> : null}
+                  <td>{e.difficultyId ? (catalog.difficulties?.[e.difficultyId]?.name ?? e.difficultyId) : '—'}</td>
                   <td className="num">{formatNumber(e.score)}</td>
                   <td className="small dim">{relativeTime(e.recordedAt)}</td>
                 </tr>

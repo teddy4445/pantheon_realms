@@ -338,7 +338,34 @@ export const DIFFICULTIES: readonly DifficultyDefinition[] = [
     ai: { heroAttackMargin: 1.05, guardMargin: 1.15, siegeMargin: 1.1, targetHeroes: 4 },
     scorePercent: 140,
   },
+  // Campaign levels (proposed 2026-10-07; values calibrated with `npm run campaign-sim`, unplaytested).
+  // Same creatures and rules as authored; only how many stand in the way, the rivals' purse and the computer's nerve change.
+  ...CAMPAIGN_DIFFICULTIES(),
 ];
+
+/** Campaign difficulty: one table of values, its setup lines written from the same numbers. */
+function CAMPAIGN_DIFFICULTIES(): DifficultyDefinition[] {
+  type Level = Pick<DifficultyDefinition, 'id' | 'name' | 'order' | 'summary' | 'aiStartPercent' | 'aiIncomePercent' | 'ai' | 'scorePercent'> & { guardPercent: number; rivalArmyPercent: number; hostileThresholdPercent: number };
+  const levels: Level[] = [
+    { id: 'campaign_story', name: 'Story', order: 11, summary: 'For the tale: thinner guards and a cautious enemy.', guardPercent: 75, rivalArmyPercent: 85, hostileThresholdPercent: 130, aiStartPercent: 75, aiIncomePercent: 90, ai: { heroAttackMargin: 1.5, guardMargin: 1.6, siegeMargin: 1.6, targetHeroes: 2 }, scorePercent: 70 },
+    { id: 'campaign_normal', name: 'Normal', order: 12, summary: 'The intended challenge: every fight costs something.', guardPercent: 130, rivalArmyPercent: 115, hostileThresholdPercent: 100, aiStartPercent: 100, aiIncomePercent: 100, ai: { heroAttackMargin: 1.2, guardMargin: 1.3, siegeMargin: 1.25, targetHeroes: 3 }, scorePercent: 100 },
+    { id: 'campaign_hard', name: 'Hard', order: 13, summary: 'Larger guards, a richer rival and a bold enemy.', guardPercent: 170, rivalArmyPercent: 110, hostileThresholdPercent: 90, aiStartPercent: 130, aiIncomePercent: 120, ai: { heroAttackMargin: 1.05, guardMargin: 1.15, siegeMargin: 1.1, targetHeroes: 4 }, scorePercent: 140 },
+  ];
+  return levels.map((l) => ({
+    ...l,
+    scope: 'campaign' as const,
+    ai: { ...l.ai },
+    humanStartPercent: 100,
+    details: [
+      l.guardPercent === 100 ? 'Guards and enemy armies as written' : `Guards and enemy armies: ${l.guardPercent}% of the written numbers`,
+      l.hostileThresholdPercent === 100 ? 'Enemy heroes attack as written' : l.hostileThresholdPercent > 100 ? 'Enemy heroes attack only with a clear advantage' : 'Enemy heroes attack at smaller advantages',
+      l.aiStartPercent === 100 && l.aiIncomePercent === 100 && l.rivalArmyPercent === 100
+        ? 'Rival empires start and earn as written'
+        : `Rival empires: armies ${l.rivalArmyPercent}%, starting resources ${l.aiStartPercent}%, income ${l.aiIncomePercent}%`,
+      `Score ×${(l.scorePercent / 100).toFixed(1)}`,
+    ],
+  }));
+}
 
 // ---------------------------------------------------------------------------
 // Map events for random skirmish maps (each happens once, to the first hero to arrive)

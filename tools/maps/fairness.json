@@ -1,0 +1,82 @@
+{
+ "barrows": {
+  "hash": "f7a2148538c44fb0",
+  "verdict": "fair",
+  "matches": 36,
+  "seatShares": [
+   0.375,
+   0.625
+  ],
+  "weakestSeat": 1,
+  "weakestOfFair": 0.75,
+  "date": "2026-10-07"
+ },
+ "burning_oasis": {
+  "hash": "7aca9b8fb24179a5",
+  "verdict": "suspect",
+  "matches": 36,
+  "seatShares": [
+   0.25,
+   0.18,
+   0.19,
+   0.39
+  ],
+  "weakestSeat": 2,
+  "weakestOfFair": 0.7,
+  "date": "2026-10-07"
+ },
+ "circle_of_gates": {
+  "hash": "a16000072bee173d",
+  "verdict": "unfair",
+  "matches": 96,
+  "seatShares": [
+   0.51,
+   0.16,
+   0.33
+  ],
+  "weakestSeat": 2,
+  "weakestOfFair": 0.48,
+  "note": "Shipped before the gate existed; measured 2026-10-07 (36 mirror matches 37/25/38%, 60 more 59/11/30%): unfair, the second seat weakest. Design changes tried (portal ring reversed, stronger gate-terrace wardens, 10 or 16 ridge ogres) did not even the seats; the owner stopped the balancing for 1.0.0, so the map ships unchanged. A changed design is tested again before it ships.",
+  "date": "2026-10-07"
+ },
+ "frostgate": {
+  "hash": "93d9a1e2f074ae0d",
+  "verdict": "fair",
+  "matches": 12,
+  "seatShares": [
+   0.625,
+   0.375
+  ],
+  "weakestSeat": 2,
+  "weakestOfFair": 0.75,
+  "date": "2026-10-07"
+ },
+ "golden_fords": {
+  "hash": "1016843b9a590f9e",
+  "verdict": "fair",
+  "matches": 12,
+  "seatShares": [
+   0.54,
+   0.46
+  ],
+  "weakestSeat": 2,
+  "weakestOfFair": 0.92,
+  "date": "2026-10-07"
+ },
+ "six_thrones": {
+  "hash": "68dd5d739871aef7",
+  "verdict": "suspect",
+  "matches": 36,
+  "seatShares": [
+   0.17,
+   0.1,
+   0.17,
+   0.12,
+   0.12,
+   0.31
+  ],
+  "weakestSeat": 2,
+  "weakestOfFair": 0.59,
+  "date": "2026-10-07"
+ }
+}

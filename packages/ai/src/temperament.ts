@@ -13,7 +13,8 @@ import type { AIBuildFocus, AITemperamentDefinition, BuildingId, ContentCatalog,
 
 /**
  * Strength margins and hero target by skirmish difficulty (catalog data). The
- * defaults are the Normal values, used whenever no difficulty applies (campaign).
+ * defaults are the Normal values, used whenever no difficulty applies (a campaign
+ * run started before campaign levels existed).
  */
 export interface AIPersonality {
   readonly heroAttackMargin: number;

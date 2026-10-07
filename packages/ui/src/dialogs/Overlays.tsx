@@ -15,6 +15,7 @@ import {
   hexEquals,
   missionObjectiveDefs,
   missionSite,
+  missionText,
   quoteActivation,
   quoteMovement,
   quoteTransfer,
@@ -363,7 +364,7 @@ function BriefingDialog() {
           <ul className="bullets">
             {objectives.map((o) => (
               <li key={o.id}>
-                <strong>{o.title}</strong> {o.category === 'optional' ? <Chip>optional</Chip> : null} <span className="dim small">— {o.description}</span>
+                <strong>{o.title}</strong> {o.category === 'optional' ? <Chip>optional</Chip> : null} <span className="dim small">— {missionText(catalog, state, o.description)}</span>
               </li>
             ))}
           </ul>
@@ -379,9 +380,10 @@ function BriefingDialog() {
               </div>
             </>
           ) : null}
-          <p className="faint small">
+          <p className="faint small" data-testid="briefing-facts">
             {mission.targetPlaytime}
             {template ? ` · ${template.width}×${template.height} map` : ''}
+            {state.scenario.difficultyId && catalog.difficulties?.[state.scenario.difficultyId] ? ` · ${catalog.difficulties[state.scenario.difficultyId]!.name} difficulty` : ''}
           </p>
         </div>
       </aside>
@@ -530,7 +532,7 @@ function DebriefDialog({ final }: { final: boolean }) {
       ) : null}
       {final ? (
         <p className="note">
-          You have completed {catalog.campaigns[campaign?.campaignId ?? '']?.name ?? 'the campaign'}. Thank you for playing this development build — much of the art and animation is still a temporary placeholder.
+          You have completed {catalog.campaigns[campaign?.campaignId ?? '']?.name ?? 'the campaign'}. Thank you for playing.
         </p>
       ) : null}
     </Modal>

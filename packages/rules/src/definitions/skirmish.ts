@@ -9,22 +9,44 @@ import type { EffectDefinition, HeroAttribute } from './logic';
 import type { MapEventOptionDefinition, StackSpec } from './world';
 
 /**
- * Skirmish difficulty. Changes only starting resources, AI income and how
- * boldly the AI attacks; it never changes creature statistics (campaign/01 §3)
- * and is never stored in preferences (data contracts: it is match state).
+ * Difficulty. Skirmish difficulties change only starting resources, AI income
+ * and how boldly the AI attacks; campaign difficulties (proposed 2026-10-07,
+ * `scope: 'campaign'`) also scale how many creatures stand in the mission's
+ * guards and hostile armies, and how readily its scripted hostile heroes attack.
+ * Neither changes creature statistics (campaign/01 §3), and neither is stored in
+ * preferences (data contracts: it is match state).
  */
 export interface DifficultyDefinition {
   readonly id: string;
   readonly name: string;
   readonly order: number;
+  /** Where the level is offered: skirmishes and random maps (default) or campaigns. */
+  readonly scope?: 'skirmish' | 'campaign';
+  /**
+   * Campaign only: creatures in neutral guards, wandering monsters, scripted
+   * hostile armies and unowned towns' garrisons, percent of the authored count
+   * (each stack rounded, never below 1). Absent = 100.
+   */
+  readonly guardPercent?: number;
+  /**
+   * Campaign only: the computer rivals' starting armies (hero and town
+   * garrison), percent of the written counts, rounded as the guards. Absent = 100.
+   */
+  readonly rivalArmyPercent?: number;
+  /**
+   * Campaign only: the strength ratio a scripted hostile hero needs before it
+   * attacks, percent of the authored threshold (never below even strength).
+   * Absent = 100.
+   */
+  readonly hostileThresholdPercent?: number;
   readonly summary: string;
   /** Exact effects shown in setup; must match the numbers below. */
   readonly details: readonly string[];
   /** Starting resources of human players, percent of the scenario's wallet. */
   readonly humanStartPercent: number;
-  /** Starting resources of AI empires, percent of the scenario's wallet. */
+  /** Starting resources of AI empires (campaign: the computer rivals), percent of the scenario's wallet. */
   readonly aiStartPercent: number;
-  /** Dawn income of AI empires, percent (each resource rounded down). */
+  /** Dawn income of AI empires (campaign: the computer rivals), percent (each resource rounded down). */
   readonly aiIncomePercent: number;
   /** Strategic AI behaviour (strength ratios it demands before fighting). */
   readonly ai: {
@@ -212,3 +234,13 @@ export interface DivineGiftDefinition {
   readonly grant: DivineGiftGrant;
   readonly iconAssetId: AssetId;
 }
+
+/** The difficulty levels offered for a scope, in order (skirmish levels have no scope or `skirmish`). */
+export function difficultyLevels(catalog: { readonly difficulties?: Readonly<Record<string, DifficultyDefinition>> }, scope: 'skirmish' | 'campaign'): DifficultyDefinition[] {
+  return Object.values(catalog.difficulties ?? {})
+    .filter((d) => (d.scope ?? 'skirmish') === scope)
+    .sort((a, b) => a.order - b.order);
+}
+
+/** The level a campaign starts on when the player does not choose (the middle one). */
+export const DEFAULT_CAMPAIGN_DIFFICULTY = 'campaign_normal';

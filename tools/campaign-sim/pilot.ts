@@ -26,6 +26,7 @@ import {
   quoteMovement,
   quoteRecruitment,
   quoteTrade,
+  quoteTransfer,
   quoteUpgrade,
   reachableTiles,
   recruitableCreatureIds,
@@ -60,6 +61,8 @@ export interface PilotMemory {
   readonly days: { battlesWon: number; battlesLost: number };
   /** Every battle of the player's: its label, whether it was won, and the share of the army's Gold value lost. */
   readonly battles: { label: string; won: boolean; lossShare: number; day: number }[];
+  /** The town the main hero is walking back to for troops (after a fight it would lose), if any. */
+  fetchTown?: string;
 }
 
 export function newPilotMemory(): PilotMemory {
@@ -262,10 +265,59 @@ function goTo(c: Ctx, dest: HexCoord, fight: boolean): boolean {
     const mine = heroPower(c.catalog, c.state, hero);
     const enemy = run.ok ? run.result.defender.lines.reduce((n, l) => n + fightingStrength(c.catalog, [{ creatureId: l.creatureId, count: l.before }]), 0) : 0;
     block(c, 'fight', `${q.encounterLabel ?? 'a fight'} would be lost`, enemy > 0 ? mine / enemy : undefined);
-    return false;
+    // As a person would: fetch the garrison and buy what the towns offer before trying again.
+    return strengthen(c);
   }
   push(c, { kind: 'MoveHero', heroId: c.heroId, destination: target, confirmEncounter: q.endsInEncounter });
   return true;
+}
+
+/**
+ * A fight the main hero would lose: gather the empire's strength in it first —
+ * the town garrison (only when no rival empire could take the town) and every
+ * creature its towns sell, the best first; walk home for them when away.
+ */
+function strengthen(c: Ctx): boolean {
+  const hero = c.state.heroes[c.heroId];
+  if (!hero) return false;
+  const towns = myTowns(c.state, c.playerId);
+  const rivals = (requireScenarioMission(c.catalog, c.state).rivals ?? []).length > 0;
+  const toHero = { kind: 'hero' as const, heroId: c.heroId };
+  const best = (ids: string[]) => [...ids].sort((a, b) => (c.catalog.creatures[b]?.tier ?? 0) - (c.catalog.creatures[a]?.tier ?? 0) || Number(c.catalog.creatures[b]?.form === 'upgraded') - Number(c.catalog.creatures[a]?.form === 'upgraded'));
+  const buyable = (townId: string, dest: { kind: 'hero'; heroId: string } | { kind: 'garrison' }) =>
+    best(recruitableCreatureIds(c.catalog, c.state.towns[townId]!)).find((id) => quoteRecruitment(c.catalog, c.state, c.playerId, townId, id, 1, dest).maxQuantity > 0);
+  for (const town of towns) {
+    if (!heroInTown(c.catalog, c.state, hero, town.id)) continue;
+    if (!rivals) {
+      for (let i = 0; i < town.garrison.slots.length; i++) {
+        const st = town.garrison.slots[i];
+        if (!st || st.count <= 0) continue;
+        const same = hero.army.slots.findIndex((x) => x?.creatureId === st.creatureId);
+        const slot = same >= 0 ? same : hero.army.slots.findIndex((x) => !x);
+        if (slot < 0) break;
+        const from = { kind: 'garrison' as const, townId: town.id };
+        if (quoteTransfer(c.catalog, c.state, c.playerId, from, i, toHero, slot, st.count).legal) {
+          push(c, { kind: 'TransferStack', from, fromSlot: i, to: toHero, toSlot: slot, quantity: st.count });
+          return true;
+        }
+      }
+    }
+    const id = buyable(town.id, toHero);
+    if (id) {
+      push(c, { kind: 'RecruitUnits', townId: town.id, creatureId: id, quantity: quoteRecruitment(c.catalog, c.state, c.playerId, town.id, id, 1, toHero).maxQuantity, destination: toHero });
+      return true;
+    }
+    return false;
+  }
+  for (const town of towns) {
+    const garrison = !rivals && town.garrison.slots.some((x) => !!x && x.count > 0);
+    if (garrison || buyable(town.id, { kind: 'garrison' })) {
+      // Keep walking there until the troops are fetched (pilotCandidates), not back and forth.
+      c.mem.fetchTown = town.id;
+      return goTo(c, town.coord, false);
+    }
+  }
+  return false;
 }
 
 /** Wait for, or buy at a market, what an activation costs; nothing else may spend it meanwhile. */
@@ -434,6 +486,19 @@ export function pilotCandidates(catalog: ContentCatalog, state: MatchState, play
       }
   }
   if (!heroId) return { cands: out, reserve };
+  // Walking home for troops after a fight it would lose: finish that first.
+  if (mem.fetchTown) {
+    const town = state.towns[mem.fetchTown];
+    const hero = state.heroes[heroId]!;
+    const c: Ctx = { catalog, state, playerId, heroId, mem, out, objectiveId: 'fetch', reserve };
+    if (!town || town.ownerId !== playerId) mem.fetchTown = undefined;
+    else if (heroInTown(catalog, state, hero, town.id)) {
+      if (!strengthen(c)) mem.fetchTown = undefined;
+      else return { cands: out, reserve };
+    } else if (goTo(c, town.coord, false)) return { cands: out, reserve };
+    else if (!quoteMovement(catalog, state, heroId, movementTarget(catalog, state, town.coord)).reachable) mem.fetchTown = undefined;
+    // Otherwise it is out of movement for today: keep heading home tomorrow.
+  }
   for (const o of mission.objectives) {
     if (o.category !== 'primary' || state.mission.objectives[o.id]?.status !== 'active') continue;
     const c: Ctx = { catalog, state, playerId, heroId, mem, out, objectiveId: o.id, reserve };

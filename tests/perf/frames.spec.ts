@@ -14,6 +14,10 @@ import { leaderOf, toHumanBattleTurn, usePrefs } from '../e2e/momentFixtures';
 
 interface Frames {
   fps: number;
+  drawnFps: number;
+  calmShare: number;
+  calmFrames: number;
+  frames: number;
   avgMs: number;
   p95Ms: number;
   worstMs: number;
@@ -65,10 +69,15 @@ async function measure(page: Page, name: string, ms: number, act?: (until: numbe
   const f = (await frames(page, t0))!;
   const elapsed = (await now(page)) - t0;
   const cam = await page.evaluate(() => (globalThis as unknown as { __prCamera?: () => unknown }).__prCamera?.() ?? null);
+  // The ground cache's own work so far (chunks drawn, main-thread ms), on the map.
+  const cache = await page.evaluate(() => ((globalThis as unknown as { __prGround?: () => { cache?: unknown } | null }).__prGround?.() ?? null)?.cache ?? null);
   const row = {
     scenario: name,
     cam,
-    fps: Math.round(f.fps * 10) / 10,
+    // fps: frames at full pace (something moving); drawnFps: every frame drawn, calm ones included (frame pacing).
+    fps: f.frames ? Math.round(f.fps * 10) / 10 : null,
+    drawnFps: Math.round(f.drawnFps * 10) / 10,
+    calmShare: Math.round(f.calmShare * 100) / 100,
     avgMs: Math.round(f.avgMs * 10) / 10,
     p95Ms: Math.round(f.p95Ms * 10) / 10,
     worstMs: Math.round(f.worstMs * 10) / 10,
@@ -80,6 +89,7 @@ async function measure(page: Page, name: string, ms: number, act?: (until: numbe
     objects: f.objects,
     renderables: f.renderables,
     canvas: `${f.width}x${f.height}@${f.resolution}`,
+    groundCache: cache,
     seconds: Math.round(elapsed / 100) / 10,
   };
   results.push(row);

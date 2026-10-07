@@ -6,7 +6,7 @@
  * presentation queue. Does NOT own game truth: all game data is read from
  * session.state, and all changes go through session.dispatch (commands).
  */
-import { KEY_COLOR_LABEL, campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type MatchState, type Rejection } from '@pr/rules';
+import { DEFAULT_CAMPAIGN_DIFFICULTY, KEY_COLOR_LABEL, campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type MatchState, type Rejection } from '@pr/rules';
 import { approachNotes, heroesInView, rivalNotes, summarizeRivalNotes, type RivalNote, type RivalSummaryLine } from './rivalSummary';
 import { clearBattleLogs, recordBattleEvents } from './battleLog';
 import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
@@ -165,6 +165,8 @@ export interface SetupDraft {
   godId: string | null;
   /** Skirmish only: difficulty (AI resources and aggression). */
   difficultyId?: string | null;
+  /** Campaign only: the campaign difficulty level (guards, rivals, the computer's nerve). */
+  campaignDifficultyId?: string | null;
   /** Skirmish only: who plays the rival seat (human = hot-seat on this computer). */
   rivalController?: 'ai' | 'human';
   /** Hot-seat: the rival's patron god. */
@@ -417,9 +419,9 @@ export class AppStore {
     this.notify();
   }
 
-  startCampaign(campaignId: string, godId: string | null): void {
+  startCampaign(campaignId: string, godId: string | null, difficultyId: string | null = DEFAULT_CAMPAIGN_DIFFICULTY): void {
     const runId = `run-${Date.now().toString(36)}`;
-    const session = GameSession.newCampaign(this.catalog, campaignId, godId, runId);
+    const session = GameSession.newCampaign(this.catalog, campaignId, godId, runId, this.catalog.difficulties?.[difficultyId ?? '']?.scope === 'campaign' ? difficultyId : null);
     this.attach(session);
     void this.saves.autosave(session.snapshot(), 'Campaign start').catch(() => undefined);
     this.resetTo('adventure');
@@ -653,7 +655,7 @@ export class AppStore {
           title: this.catalog.campaigns[camp.campaignId]?.name ?? camp.campaignId,
           outcome: 'victory',
           days: camp.completions.reduce((n, c) => n + c.summary.days, 0),
-          difficultyId: null,
+          difficultyId: camp.difficultyId ?? null,
           recordedAt: at,
         });
         this.lastRecord = { table: 'campaign', rank: res.rank, score };

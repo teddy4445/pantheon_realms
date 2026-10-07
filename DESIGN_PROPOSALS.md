@@ -1337,3 +1337,84 @@ costliest battle, and a verdict — nearly unwinnable (< 25% wins), blocked by a
 fight or a gate (most lost runs stuck at the same objective), hard (25–60%),
 too easy (≥ 95% won and the costliest battle cost under 10% of the army) or
 ok. These thresholds are proposals; only clear blockers are fixed.
+
+## Group 1.3 — owner requests of 2026-10-07 (third list; proposed values)
+
+The owner asked for difficulty levels in the campaigns (the simulation had
+found 17 of 35 missions too easy), a seat-fairness check for the authored maps
+(The Circle of Gates' second seat had scored 0.06) and for the random-map
+layouts (no pantheon under 0.40 on any layout), and a better frame rate.
+Values are proposed and unplaytested; the measurements are in
+DEVELOPMENT_STATUS.md.
+
+### 56. Campaign difficulty: Story, Normal, Hard
+
+Chosen on the campaign page (default Normal) with its exact effects listed,
+kept for the whole run (next missions, restarts, practice replays) and shown
+in the briefing. Creature statistics never change; what changes:
+
+| | Story | Normal | Hard |
+|---|---|---|---|
+| Neutral guards, wandering monsters, scripted enemy armies, unowned garrisons | 75% | 130% | 170% |
+| Computer rivals' starting armies (hero and town) | 85% | 115% | 110% |
+| Rivals' starting resources / income | 75% / 90% | 100% / 100% | 130% / 120% |
+| Scripted enemy heroes attack at (× their written margin, never below even) | 130% | 100% | 90% |
+| Computer margins (hero, guard, siege), heroes kept | 1.5, 1.6, 1.6, 2 | 1.2, 1.3, 1.25, 3 | 1.05, 1.15, 1.1, 4 |
+| Score | ×0.7 | ×1.0 | ×1.4 |
+
+Each stack is scaled on its own and rounds half its way (down on Story, up on
+Hard), never below 1. "Normal" is above the written numbers because the
+simulation found the written guards too light once the steps before a fight
+had been done; Hard's rival armies are only a little larger than Normal's
+because the rival's hero, bolder and richer at Hard, otherwise ended mission 5
+in its first days. A run started by an older build has no level: its missions
+stay as written. Objective texts show the counts the match really has (army
+tokens in the mission data, written out with the level's share).
+
+Content changes made with the levels (the simulation's "too easy" missions):
+the arc campaigns' mission 4 landing guard 36 Brigands and 14 Cutthroats (was
+20 and 8) and its goal guard 4 + 2 (was 3 + 1); The Winter Oath's mission 4
+landing 30 Draugar and 12 Deathless Draugar (was 20 and 8) and wyrm brood
+4 + 2 (was 3 + 1); The Twelfth Hour's mission 1 monument 20 + 6 (was 14 + 4)
+and mission 3 pass 24 + 10 (was 16 + 6).
+
+**Target bands** (checked by `npm run campaign-sim -- --check`): Story — the
+autopilot wins at least 95% of the missions and the costliest battle takes a
+median of at most 15% of the army; Normal — wins at least 85%, costliest
+10–30%; Hard — wins 60–95%, costliest 20–45%. The autopilot never starts a
+fight the preview says it loses, so its win rate falls only to the enemy's own
+attacks and to time; the costliest-battle share is what separates the levels.
+
+### 57. Seat fairness of the authored maps
+
+`npm run maps:build` now plays a short seat-fairness test on every map whose
+document changed and ships only the fair ones (`npm run maps:fairness` tests the
+shipped maps). The test plays mirror matches — every seat the same pantheon,
+the pantheon changing per match, all AI — so only the map and the turn order
+differ; a seat scores a win (or a day-cap finish 25% ahead in armies), a draw is
+split between the empires still standing. A first batch of 12 matches; if a seat
+looks weak (under 75% of its fair share, or z ≤ −1.64), 24 more; the map is
+refused only when a seat is under 60% of its fair share and the shortfall is
+beyond chance (one-sided z ≤ −2.58, about 1 in 200 for a fair map). The record
+of accepted maps is `tools/maps/fairness.json`.
+
+Measured on the six shipped maps (2026-10-07): Frostgate, The Golden Fords and
+Barrows fair; The Burning Oasis and The Six Thrones uneven but within chance;
+**The Circle of Gates unfair** — over 96 mirror matches its second seat won
+about 16% (fair 33%) and was knocked out first more often than the others, by a neighbour's early
+raid. Four design changes were tried (the portal ring reversed, stronger
+gate-terrace wardens, 10 and 16 ridge ogres); none evened the seats, and the
+owner stopped the balancing for 1.0.0, so the map ships unchanged with the
+measurement in the record. The cause looks like timing — three empires racing
+to the first raid in a rotating turn order — rather than the ground.
+
+### 58. A floor for every pantheon on every random-map layout
+
+The one-against-one random-map report (`npm run balance -- random1v1`) marks each
+pantheon's score per map type against a floor of 0.40. A cell fails only when
+even the top of its one-sided 95% range (score + 1.645 × √(0.25 ÷ matches)) is
+under the floor; under the floor but within the noise it is "watched".
+`--check` exits with code 1 when a cell fails. The large run that would settle
+the cells was not played this round (the owner stopped the balancing for
+1.0.0); the earlier 720-match run had a few cells near 0.25 on about 27 matches
+each, which this rule would only watch.

@@ -330,8 +330,8 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
       guard: {
         label: 'Canoe raiders',
         army: [
-          ['brigand', 20],
-          ['brigand_cutthroat', 8],
+          ['brigand', 36],
+          ['brigand_cutthroat', 14],
         ],
         reward: { resources: { gold: 800, favor: 3 } },
         battlefield: 'coast_road',
@@ -356,8 +356,8 @@ export function buildNewFire(names: ArcCampaignContext['names'], familyOf: ArcCa
       guard: {
         label: 'House bats',
         army: [
-          ['mesoamerican_camazotz', 3],
-          ['mesoamerican_blood_moon_camazotz', 1],
+          ['mesoamerican_camazotz', 4],
+          ['mesoamerican_blood_moon_camazotz', 2],
         ],
         reward: { resources: { gold: 1000 } },
         battlefield: 'coast_road',

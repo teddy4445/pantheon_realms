@@ -34,8 +34,19 @@ test('Settings: the frame-rate readout and adaptive resolution; the readout over
   await waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0, 'map', 60_000);
   const box = page.getByTestId('frame-rate');
   await expect(box).toBeVisible({ timeout: 15_000 });
+  // Frame pacing (2026-10-07): with nothing moving the map is drawn calm, and the readout says so…
+  await expect(box).toHaveAttribute('data-calm', 'true', { timeout: 15_000 });
+  await expect(box).toContainText(/calm · \d+ drawn/);
+  await expect(box).toContainText(/move the view to measure/);
+  await page.screenshot({ path: 'test-results/framerate-calm.png' });
+  // …and while the view moves it measures the frame rate again.
+  const vp = page.viewportSize()!;
+  await page.mouse.move(vp.width / 2, vp.height / 2);
+  await page.mouse.down();
+  for (let i = 0; i < 40; i++) await page.mouse.move(vp.width / 2 + Math.cos(i / 4) * 160, vp.height / 2 + Math.sin(i / 4) * 90, { steps: 2 });
   await expect(box).toContainText(/\d+ fps/);
   await expect(box).toContainText(/slowest \d+ ms/);
+  await page.mouse.up();
   await expect(box).toContainText(/below 30 fps: \d+ of [\d,]+/);
   // The readout never takes clicks meant for the map.
   expect(await box.evaluate((el) => getComputedStyle(el).pointerEvents)).toBe('none');

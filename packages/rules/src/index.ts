@@ -66,3 +66,4 @@ export * from './systems/battle/climate';
 
 export * from './factories/entities';
 export * from './systems/ownership';
+export * from './systems/missionText';

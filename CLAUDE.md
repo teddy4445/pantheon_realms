@@ -101,8 +101,10 @@ npm run art:briefs       # (delivered; writes the documents again only when need
 npm run art:brief12      # GPT-6 Brief 12: every visual still missing, from the game (dwellings, services, climate icons, site markers, town backgrounds, fx.god.commit) + sheet-layouts.brief12.json + town layout guides
 npm run balance -- skirmish --no-temperaments   # the same matches with every AI empire playing the neutral way (compare with the default)
 npm run balance -- maps --matches 2   # the six authored skirmish maps, each pantheon line-up from every seat (--maps a,b)
-npm run campaign-sim -- --runs 20   # the computer plays The Winter Oath and the arc campaigns (objective autopilot); per-mission wins, days, costliest battle, verdicts (tools/campaign-sim)
-npm run maps:build       # writes the authored skirmish maps (packages/content/src/skirmish/maps/*.prmap.json) from tools/maps/maps.ts, checked, + layout guides for Brief 14
+npm run campaign-sim -- --runs 20   # the computer plays every campaign at Story, Normal and Hard (objective autopilot); per-level target bands, per-mission wins, days, costliest battle, verdicts (tools/campaign-sim; --difficulty story|normal|hard|written, --check)
+npm run maps:build       # builds the authored skirmish maps from tools/maps/maps.ts, checks them, plays the seat-fairness test on the ones that changed and ships only the fair ones (packages/content/src/skirmish/maps/*.prmap.json; record tools/maps/fairness.json; --all, --no-fairness) + layout guides for Brief 14
+npm run maps:fairness    # the seat-fairness test on the shipped authored maps only (report; -- --maps a,b)
+npm run balance -- random1v1 --matches 30 --check   # …and exit 1 when a pantheon is significantly under the layout floor (0.40 on a map type)
 npm run art:siege-guide  # the siege layout guide for GPT-6 Brief 15 (assets-source/art/briefs/guides/siege.layout.png)
 npm run art:road-guides  # GPT-6 Brief 16 road guides (guides/road.<a|b|c>.layout.png, road.join-example.png) + assets-source/sprites/road-tiles.json, from the game's hex geometry
 npm run roads:import     # painted road sheets (assets-source/sprites/final/sheet.road.<type>.<a|b|c>.png) → assets-runtime/sprites/final/roads/ + sprite manifest `roads`; `-- --dry-run`, `-- --only dirt`, `-- --note "<review status>"`, `-- --self-test`
@@ -171,6 +173,19 @@ player); random-map roads routed with trunk sharing and turn penalties
 (`smoothRoadTypes`); varied ground borders and rounded corners
 (`GROUND_VARIETY`, `planGroundCorners`); map guards face either way
 (`facesLeft`, a stable hash). Headers carry no screen codes.
+
+**App 1.0.0 (2026-10-07, owner Teddy Lazebnik):** campaign difficulty levels
+are `DifficultyDefinition`s with `scope: 'campaign'` (`campaign_story`,
+`campaign_normal`, `campaign_hard`); the mission factory scales guards, hostile
+armies and rival armies through `scaleStackCount`, and any creature count in a
+mission text is an army token (`{army:id=count,…}`, `armyToken`) shown through
+`missionText` — never type a guard's number into an objective. The map's ground
+is shown from `GroundCache` chunks: anything that changes the ground layer must
+call `groundCache.invalidate()` (as `drawTerrain`, `drawRoads` and a new grid
+do). Views report a frame pace (`pace()`: full / ambient / still) and call the
+engine's `wake()` when they change without input; the readout judges only
+moving frames. Authored maps ship only through `npm run maps:build` with the
+seat-fairness gate (`tools/maps/fairness.json` records each verdict).
 
 Interface art: sources in `assets-source/ui/`, generated runtime files and
 provenance in `assets-runtime/ui/` (ASSET_PIPELINE.md §11). The visual

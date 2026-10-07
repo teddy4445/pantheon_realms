@@ -376,8 +376,8 @@ const ALL_GODS = ['norse_thor', 'norse_tyr', 'norse_freyja', 'norse_heimdall', '
 const M01_OBJECTIVES: ObjectiveDefinition[] = [
   { id: 'm01_recruit', title: 'Raise the barrow-watch', description: 'Recruit at least 10 Draugar during this mission. Starting troops and creatures that join on the map do not count.', category: 'primary', initialStatus: 'active', condition: { type: 'counter_at_least', counter: 'recruited:norse_draugr', value: 10 }, hint: 'Visit Kaldvik and open Recruitment at the Draugr Barrow.' },
   { id: 'm01_train', title: 'Bind a deathless guard', description: 'Train at least 8 Draugar into Deathless Draugar.', category: 'primary', initialStatus: 'locked', requires: ['m01_recruit'], condition: { type: 'counter_at_least', counter: 'trained:norse_draugr', value: 8 }, hint: 'Build the Deathless Barrow, then train Draugar in Kaldvik. Training costs the price difference and uses no population.' },
-  { id: 'm01_ford', title: 'Clear the frozen ford', description: 'Drive off the 8 Frost Wolves that hold the only ford over the river.', category: 'primary', initialStatus: 'locked', requires: ['m01_train'], condition: { type: 'site_cleared', siteId: 'm01_ford' }, markerSiteId: 'm01_ford' },
-  { id: 'm01_barrow_guard', title: 'Break the barrow-guard', description: 'Defeat the 14 Draugar and 4 Deathless Draugar standing around the Rune Stone.', category: 'primary', initialStatus: 'locked', requires: ['m01_ford'], condition: { type: 'site_cleared', siteId: 'm01_rune_stone' }, markerSiteId: 'm01_rune_stone' },
+  { id: 'm01_ford', title: 'Clear the frozen ford', description: 'Drive off the {army:norse_frost_wolf=8} that hold the only ford over the river.', category: 'primary', initialStatus: 'locked', requires: ['m01_train'], condition: { type: 'site_cleared', siteId: 'm01_ford' }, markerSiteId: 'm01_ford' },
+  { id: 'm01_barrow_guard', title: 'Break the barrow-guard', description: 'Defeat the {army:norse_draugr=14,norse_deathless_draugr=4} standing around the Rune Stone.', category: 'primary', initialStatus: 'locked', requires: ['m01_ford'], condition: { type: 'site_cleared', siteId: 'm01_rune_stone' }, markerSiteId: 'm01_rune_stone' },
   { id: 'm01_recut', title: 'Re-cut the rune', description: 'At the Rune Stone, with its guard broken and both muster objectives met, pay 300 Gold, 3 Stone and 1 Crystal to cut the rune again.', category: 'primary', initialStatus: 'locked', requires: ['m01_barrow_guard'], condition: { type: 'site_activated', siteId: 'm01_rune_stone' }, markerSiteId: 'm01_rune_stone' },
   { id: 'm01_longship', title: 'The frozen longship (optional)', description: 'Visit the longship caught in the fjord ice.', category: 'optional', initialStatus: 'active', condition: { type: 'site_visited', siteId: 'm01_longship' }, markerSiteId: 'm01_longship' },
 ];
@@ -547,10 +547,10 @@ const M01: MissionDefinition = {
 const M02_OBJECTIVES: ObjectiveDefinition[] = [
   { id: 'm02_den', title: 'Wolves of our own', description: 'Recruit at least 8 Frost Wolves in Birkaby (build the Wolf Den first).', category: 'primary', initialStatus: 'active', condition: { type: 'counter_at_least', counter: 'recruited:norse_frost_wolf', value: 8 }, hint: 'Build the Wolf Den in Birkaby, then recruit. Wolves bought at the camp do not count.' },
   { id: 'm02_trail', title: 'Find the pack’s trail', description: 'Climb the Watch-hill to see where the White Pack dens.', category: 'primary', initialStatus: 'locked', requires: ['m02_den'], condition: { type: 'site_visited', siteId: 'm02_watch_hill' }, markerSiteId: 'm02_watch_hill' },
-  { id: 'm02_bridge', title: 'Take the ice bridge', description: 'Defeat the 16 Draugar and 6 Deathless Draugar holding the ice bridge over the Varg-river.', category: 'primary', initialStatus: 'locked', requires: ['m02_trail'], condition: { type: 'site_cleared', siteId: 'm02_bridge' }, markerSiteId: 'm02_bridge' },
-  { id: 'm02_pack', title: 'Hunt the White Pack', description: 'Catch and defeat the White Pack (6 Fenrir Wolves and 12 Frost Wolves) in the Varg-wood beyond the river.', category: 'primary', initialStatus: 'locked', requires: ['m02_bridge'], condition: { type: 'hero_defeated', heroDefinitionId: 'norse_white_pack' }, hint: 'The pack roams near the wood’s middle and only attacks a war-band it is sure it can beat. Corner it: move onto it to fight.' },
+  { id: 'm02_bridge', title: 'Take the ice bridge', description: 'Defeat the {army:norse_draugr=16,norse_deathless_draugr=6} holding the ice bridge over the Varg-river.', category: 'primary', initialStatus: 'locked', requires: ['m02_trail'], condition: { type: 'site_cleared', siteId: 'm02_bridge' }, markerSiteId: 'm02_bridge' },
+  { id: 'm02_pack', title: 'Hunt the White Pack', description: 'Catch and defeat the White Pack ({army:norse_fenrir_wolf=6,norse_frost_wolf=12}) in the Varg-wood beyond the river.', category: 'primary', initialStatus: 'locked', requires: ['m02_bridge'], condition: { type: 'hero_defeated', heroDefinitionId: 'norse_white_pack' }, hint: 'The pack roams near the wood’s middle and only attacks a war-band it is sure it can beat. Corner it: move onto it to fight.' },
   { id: 'm02_recut', title: 'Re-cut the Varg-wood rune', description: 'With the pack broken, pay 400 Gold, 4 Stone and 1 Crystal at the Varg-wood Rune Stone.', category: 'primary', initialStatus: 'locked', requires: ['m02_pack'], condition: { type: 'site_activated', siteId: 'm02_rune_stone' }, markerSiteId: 'm02_rune_stone' },
-  { id: 'm02_lair', title: 'The wolf-mother’s lair (optional)', description: 'Defeat the 4 Fenrir Wolves and 6 Frost Wolves at the lair for 500 Gold and a Boar-crested Helm.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm02_lair' }, markerSiteId: 'm02_lair' },
+  { id: 'm02_lair', title: 'The wolf-mother’s lair (optional)', description: 'Defeat the {army:norse_fenrir_wolf=4,norse_frost_wolf=6} at the lair for 500 Gold and a Boar-crested Helm.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm02_lair' }, markerSiteId: 'm02_lair' },
   { id: 'm02_lodge', title: 'The hunter’s lodge (optional)', description: 'Visit the old hunter in the north woods.', category: 'optional', initialStatus: 'active', condition: { type: 'site_visited', siteId: 'm02_lodge' }, markerSiteId: 'm02_lodge' },
 ];
 
@@ -762,8 +762,8 @@ const M02: MissionDefinition = {
 // ---------------------------------------------------------------------------
 
 const M03_OBJECTIVES: ObjectiveDefinition[] = [
-  { id: 'm03_pass', title: 'Break the ice-pass', description: 'Defeat the 16 Draugar and 6 Deathless Draugar holding the pass into the high fells.', category: 'primary', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm03_pass' }, markerSiteId: 'm03_pass' },
-  { id: 'm03_aerie', title: 'Free the Valkyrie aerie', description: 'Drive the 5 Frost Trolls out of the Valkyries’ cliff-hall.', category: 'primary', initialStatus: 'locked', requires: ['m03_pass'], condition: { type: 'site_cleared', siteId: 'm03_aerie' }, markerSiteId: 'm03_aerie' },
+  { id: 'm03_pass', title: 'Break the ice-pass', description: 'Defeat the {army:norse_draugr=16,norse_deathless_draugr=6} holding the pass into the high fells.', category: 'primary', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm03_pass' }, markerSiteId: 'm03_pass' },
+  { id: 'm03_aerie', title: 'Free the Valkyrie aerie', description: 'Drive the {army:norse_frost_troll=5} out of the Valkyries’ cliff-hall.', category: 'primary', initialStatus: 'locked', requires: ['m03_pass'], condition: { type: 'site_cleared', siteId: 'm03_aerie' }, markerSiteId: 'm03_aerie' },
   {
     id: 'm03_troll_oath',
     title: 'The troll-oath',
@@ -1037,12 +1037,12 @@ const cairn = (id: string, q: number, r: number, flag: string, name: string): Si
 
 const M04_OBJECTIVES: ObjectiveDefinition[] = [
   { id: 'm04_roost', title: 'Wings over the ice', description: 'Recruit at least 3 Lindworms in Skarvik (build the Lindworm Roost first).', category: 'primary', initialStatus: 'active', condition: { type: 'counter_at_least', counter: 'recruited:norse_lindworm', value: 3 }, hint: 'The Lindworm Roost needs the Valkyrie Aerie and Rune Circle I. Lindworms are the Norse shooters.' },
-  { id: 'm04_landing', title: 'Take the ice-landing', description: 'Defeat the 20 Draugar and 8 Deathless Draugar of the nail-ship’s crew at the landing.', category: 'primary', initialStatus: 'locked', requires: ['m04_roost'], condition: { type: 'site_cleared', siteId: 'm04_landing' }, markerSiteId: 'm04_landing' },
+  { id: 'm04_landing', title: 'Take the ice-landing', description: 'Defeat the {army:norse_draugr=30,norse_deathless_draugr=12} of the nail-ship’s crew at the landing.', category: 'primary', initialStatus: 'locked', requires: ['m04_roost'], condition: { type: 'site_cleared', siteId: 'm04_landing' }, markerSiteId: 'm04_landing' },
   { id: 'm04_cairn_north', title: 'Northern way-cairn', description: 'Light the northern way-cairn (250 Gold, 3 Stone).', category: 'primary', initialStatus: 'locked', requires: ['m04_landing'], condition: { type: 'site_activated', siteId: 'm04_cairn_north' }, markerSiteId: 'm04_cairn_north' },
   { id: 'm04_cairn_south', title: 'Southern way-cairn', description: 'Light the southern way-cairn (250 Gold, 3 Stone).', category: 'primary', initialStatus: 'locked', requires: ['m04_landing'], condition: { type: 'site_activated', siteId: 'm04_cairn_south' }, markerSiteId: 'm04_cairn_south' },
   { id: 'm04_fog', title: 'Burn through the fog-wall', description: 'With both cairns lit, the fog-wall parts.', category: 'primary', initialStatus: 'locked', requires: ['m04_cairn_north', 'm04_cairn_south'], condition: { type: 'all', conditions: [{ type: 'flag', flag: 'cairn_north' }, { type: 'flag', flag: 'cairn_south' }] }, markerSiteId: 'm04_fog_gate' },
-  { id: 'm04_well', title: 'The Norns’ Well', description: 'Defeat the wyrm brood at the Well (3 Lindworms, 1 Storm Lindworm) and pay 500 Gold and 3 Crystal to read the water.', category: 'primary', initialStatus: 'locked', requires: ['m04_fog'], condition: { type: 'site_activated', siteId: 'm04_well' }, markerSiteId: 'm04_well' },
-  { id: 'm04_nest', title: 'Lindworm crags (optional)', description: 'Defeat the 2 Lindworms on the crags for 5 Crystal.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm04_nest' }, markerSiteId: 'm04_nest' },
+  { id: 'm04_well', title: 'The Norns’ Well', description: 'Defeat the wyrm brood at the Well ({army:norse_lindworm=4,norse_storm_lindworm=2}) and pay 500 Gold and 3 Crystal to read the water.', category: 'primary', initialStatus: 'locked', requires: ['m04_fog'], condition: { type: 'site_activated', siteId: 'm04_well' }, markerSiteId: 'm04_well' },
+  { id: 'm04_nest', title: 'Lindworm crags (optional)', description: 'Defeat the {army:norse_lindworm=2} on the crags for 5 Crystal.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm04_nest' }, markerSiteId: 'm04_nest' },
   { id: 'm04_wanderer', title: 'A grey wanderer (optional)', description: 'Someone has made a fire on the north shore.', category: 'optional', initialStatus: 'active', condition: { type: 'site_visited', siteId: 'm04_wanderer' }, markerSiteId: 'm04_wanderer' },
 ];
 
@@ -1078,8 +1078,8 @@ const M04_SITES: SiteDefinition[] = [
     guard: {
       label: 'Nail-ship crew',
       army: [
-        { creatureId: 'norse_draugr', count: 20 },
-        { creatureId: 'norse_deathless_draugr', count: 8 },
+        { creatureId: 'norse_draugr', count: 30 },
+        { creatureId: 'norse_deathless_draugr', count: 12 },
       ],
       reward: { resources: { gold: 800, favor: 3 } },
       battlefield: 'coast_road',
@@ -1136,8 +1136,8 @@ const M04_SITES: SiteDefinition[] = [
     guard: {
       label: 'Wyrm brood',
       army: [
-        { creatureId: 'norse_lindworm', count: 3 },
-        { creatureId: 'norse_storm_lindworm', count: 1 },
+        { creatureId: 'norse_lindworm', count: 4 },
+        { creatureId: 'norse_storm_lindworm', count: 2 },
       ],
       reward: { resources: { gold: 1000 } },
       battlefield: 'beacon_clearing',
@@ -1281,7 +1281,7 @@ const M05_OBJECTIVES: ObjectiveDefinition[] = [
   {
     id: 'm05_crossing',
     title: 'Cross the Hvita',
-    description: 'Clear either ford over the frozen Hvita: the north ford (8 Frost Trolls) or the south ford (24 Draugar, 10 Deathless Draugar).',
+    description: 'Clear either ford over the frozen Hvita: the north ford ({army:norse_frost_troll=8}) or the south ford ({army:norse_draugr=24,norse_deathless_draugr=10}).',
     category: 'primary',
     initialStatus: 'active',
     condition: { type: 'any', conditions: [{ type: 'site_cleared', siteId: 'm05_north_ford' }, { type: 'site_cleared', siteId: 'm05_south_ford' }] },
@@ -1521,18 +1521,18 @@ const M06_OBJECTIVES: ObjectiveDefinition[] = [
   {
     id: 'm06_approach',
     title: 'Climb onto the glacier',
-    description: 'Clear either crossing of the glacier wall: north (8 Frost Trolls, 2 Ancient Frost Trolls) or south (24 Deathless Draugar, 6 Fenrir Wolves).',
+    description: 'Clear either crossing of the glacier wall: north ({army:norse_frost_troll=8,norse_ancient_frost_troll=2}) or south ({army:norse_deathless_draugr=24,norse_fenrir_wolf=6}).',
     category: 'primary',
     initialStatus: 'active',
     condition: { type: 'any', conditions: [{ type: 'site_cleared', siteId: 'm06_north_crossing' }, { type: 'site_cleared', siteId: 'm06_south_crossing' }] },
   },
-  { id: 'm06_refuge', title: 'Break the ice-wardens', description: 'Defeat the Jarl’s wardens at Hrimgard (30 Deathless Draugar, 3 Ancient Frost Trolls, 2 Storm Lindworms) and free the frozen giants.', category: 'primary', initialStatus: 'locked', requires: ['m06_approach'], condition: { type: 'site_cleared', siteId: 'm06_refuge' }, markerSiteId: 'm06_refuge' },
+  { id: 'm06_refuge', title: 'Break the ice-wardens', description: 'Defeat the Jarl’s wardens at Hrimgard ({army:norse_deathless_draugr=30,norse_ancient_frost_troll=3,norse_storm_lindworm=2}) and free the frozen giants.', category: 'primary', initialStatus: 'locked', requires: ['m06_approach'], condition: { type: 'site_cleared', siteId: 'm06_refuge' }, markerSiteId: 'm06_refuge' },
   { id: 'm06_claim', title: 'Claim the Jotunn covenant', description: 'Accept the giants’ oath in the journal. It can then be assigned to Jokulsby.', category: 'primary', initialStatus: 'locked', condition: { type: 'claim', after: ['m06_refuge'] }, reward: { entitlementIds: ['covenant.norse_jotunn.wo6'] } },
   { id: 'm06_giants', title: 'Giants in the war-band', description: 'Assign the covenant, build the Jotunn Camp and have at least 2 Jotnar in Hervor’s army.', category: 'primary', initialStatus: 'locked', requires: ['m06_claim'], condition: { type: 'hero_army_contains', heroId: 'hervor', creatureId: 'norse_jotunn', count: 2 }, live: true, hint: 'The Jotunn Camp needs Hof II, the Valkyrie Aerie and the assigned covenant. Recruit with Hervor in town.' },
-  { id: 'm06_hrafn', title: 'Hrafn the Hollow', description: 'Defeat Hrafn and the glacier-gate guard (30 Deathless Draugar, 10 Fenrir Wolves, 4 Ancient Frost Trolls, 3 Battle Valkyries).', category: 'primary', initialStatus: 'locked', requires: ['m06_giants'], condition: { type: 'site_cleared', siteId: 'm06_glacier_gate' }, markerSiteId: 'm06_glacier_gate' },
+  { id: 'm06_hrafn', title: 'Hrafn the Hollow', description: 'Defeat Hrafn and the glacier-gate guard ({army:norse_deathless_draugr=30,norse_fenrir_wolf=10,norse_ancient_frost_troll=4,norse_battle_valkyrie=3}).', category: 'primary', initialStatus: 'locked', requires: ['m06_giants'], condition: { type: 'site_cleared', siteId: 'm06_glacier_gate' }, markerSiteId: 'm06_glacier_gate' },
   { id: 'm06_horn', title: 'Sound the giants’ horn', description: 'With the gate open, pay 500 Gold and 10 Favor to sound the horn of Hrimgard and wake the road to the Jarl’s hall.', category: 'primary', initialStatus: 'locked', requires: ['m06_hrafn'], condition: { type: 'site_activated', siteId: 'm06_horn' }, markerSiteId: 'm06_horn' },
   { id: 'm06_child', title: 'The ice-bound child (optional)', description: 'A small shape in the ice near the north crossing.', category: 'optional', initialStatus: 'active', condition: { type: 'site_visited', siteId: 'm06_frozen_child' }, markerSiteId: 'm06_frozen_child' },
-  { id: 'm06_nest', title: 'Storm crags (optional)', description: 'Defeat the 2 Storm Lindworms on the crags for 6 Crystal.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm06_nest' }, markerSiteId: 'm06_nest' },
+  { id: 'm06_nest', title: 'Storm crags (optional)', description: 'Defeat the {army:norse_storm_lindworm=2} on the crags for 6 Crystal.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm06_nest' }, markerSiteId: 'm06_nest' },
 ];
 
 const M06_SITES: SiteDefinition[] = [
@@ -1843,10 +1843,10 @@ const M07_OBJECTIVES: ObjectiveDefinition[] = [
   { id: 'm07_stone_north', title: 'The north stone', description: 'Cut the counter-rune on the north stone (300 Gold, 3 Stone).', category: 'primary', initialStatus: 'locked', requires: ['m07_approach'], condition: { type: 'site_activated', siteId: 'm07_stone_north' }, markerSiteId: 'm07_stone_north' },
   { id: 'm07_stone_south', title: 'The south stone', description: 'Cut the counter-rune on the south stone (300 Gold, 3 Stone).', category: 'primary', initialStatus: 'locked', requires: ['m07_approach'], condition: { type: 'site_activated', siteId: 'm07_stone_south' }, markerSiteId: 'm07_stone_south' },
   { id: 'm07_gate', title: 'Open the barrow-gate', description: 'With both stones cut, the barrow-gate opens.', category: 'primary', initialStatus: 'locked', requires: ['m07_stone_north', 'm07_stone_south'], condition: { type: 'all', conditions: [{ type: 'flag', flag: 'stone_north' }, { type: 'flag', flag: 'stone_south' }] }, markerSiteId: 'm07_barrow_gate' },
-  { id: 'm07_jarl', title: 'The Grey Jarl', description: 'Defeat the Grey Jarl in his hall (2 Ancient Frost Trolls, 40 Deathless Draugar, 12 Fenrir Wolves, 2 Runic Jotnar, 2 Storm Lindworms).', category: 'primary', initialStatus: 'locked', requires: ['m07_gate'], condition: { type: 'site_cleared', siteId: 'm07_jarl_hall' }, markerSiteId: 'm07_jarl_hall' },
+  { id: 'm07_jarl', title: 'The Grey Jarl', description: 'Defeat the Grey Jarl in his hall ({army:norse_ancient_frost_troll=2,norse_deathless_draugr=20,norse_deathless_draugr=20,norse_fenrir_wolf=12,norse_runic_jotunn=2,norse_storm_lindworm=2}).', category: 'primary', initialStatus: 'locked', requires: ['m07_gate'], condition: { type: 'site_cleared', siteId: 'm07_jarl_hall' }, markerSiteId: 'm07_jarl_hall' },
   { id: 'm07_choice', title: 'The sword', description: 'At the barrow-door, decide what becomes of the sword.', category: 'primary', initialStatus: 'locked', requires: ['m07_jarl'], condition: { type: 'any', conditions: [{ type: 'flag', flag: 'sword_returned' }, { type: 'flag', flag: 'sword_broken' }] }, markerSiteId: 'm07_barrow_door' },
   { id: 'm07_seal', title: 'Seal the oath', description: 'At the oath-mound, pay 1,000 Gold, 3 Crystal and 10 Favor to seal the oath and end the long winter.', category: 'primary', initialStatus: 'locked', requires: ['m07_choice'], condition: { type: 'site_activated', siteId: 'm07_oath_mound' }, markerSiteId: 'm07_oath_mound' },
-  { id: 'm07_nest', title: 'Wyrm crags (optional)', description: 'Defeat the 3 Storm Lindworms on the crags for 6 Crystal.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm07_nest' }, markerSiteId: 'm07_nest' },
+  { id: 'm07_nest', title: 'Wyrm crags (optional)', description: 'Defeat the {army:norse_storm_lindworm=3} on the crags for 6 Crystal.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm07_nest' }, markerSiteId: 'm07_nest' },
 ];
 
 const M07_SITES: SiteDefinition[] = [

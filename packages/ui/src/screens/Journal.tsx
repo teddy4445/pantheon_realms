@@ -6,7 +6,7 @@
  * ("done early") reads as completed (owner request 2026-10-03).
  */
 import { useState } from 'react';
-import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, objectiveDoneEarly, objectivePrerequisites, type ObjectiveDefinition, requireScenarioMission } from '@pr/rules';
+import { cellIndex, conditionProgress, missionObjectiveDefs, missionSite, missionText, objectiveDoneEarly, objectivePrerequisites, type ObjectiveDefinition, requireScenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
 import { HINTS } from '../app/hints';
 import { Button, Chip, Panel, Tabs } from '../components/kit';
@@ -102,8 +102,8 @@ export function JournalScreen() {
             {o.title} <StatusIcon status={status} /> {prog ? <span className="objective__progress num">{prog}</span> : null}
             {st?.completedOnDay ? <span className="faint small"> · day {st.completedOnDay}</span> : null}
           </div>
-          <div className="small">{status === 'locked' ? lockedText(o) : o.description}</div>
-          {o.hint && status !== 'completed' && status !== 'locked' ? <div className="faint small">Hint: {o.hint}</div> : null}
+          <div className="small">{status === 'locked' ? lockedText(o) : missionText(catalog, state, o.description)}</div>
+          {o.hint && status !== 'completed' && status !== 'locked' ? <div className="faint small">Hint: {missionText(catalog, state, o.hint)}</div> : null}
           <div className="row gap">
             {site && status !== 'locked' ? (
               <Button

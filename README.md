@@ -9,13 +9,13 @@ core. Content presentation uses high-resolution 2D backgrounds, sprites,
 atlases, portraits, UI art and animation strips. Gameplay state changes only
 through validated commands; presentation never defines gameplay outcomes.
 
-> **Play-test build.** The architecture, screens and game logic are real.
-> The art is final (GPT-6 paintings, creature and hero animation strips, map
-> objects, effects, icons, cursors, town buildings), except the six town
-> backgrounds, which are still crops of the owner's concept boards and the
-> neutral map hero's silhouette. Music and sound effects are royalty-free
-> Pixabay recordings (`assets-source/audio/`). Balance values are proposed
-> and measured by AI-vs-AI runs, not yet play-tested. See
+> **Version 1.0.0** (Windows installer; owner: Teddy Lazebnik). The
+> architecture, screens and game logic are real, and the art is final
+> (GPT-6 paintings, creature and hero animation strips, map objects, effects,
+> icons, cursors, town buildings and town backgrounds). Music and sound
+> effects are royalty-free Pixabay recordings (`assets-source/audio/`).
+> Balance values are proposals measured by AI-vs-AI runs and the campaign
+> simulator, not yet play-tested by people. See
 > [`DEVELOPMENT_STATUS.md`](DEVELOPMENT_STATUS.md).
 
 ## Playable now
@@ -53,9 +53,13 @@ through validated commands; presentation never defines gameplay outcomes.
 * **A second god choice** (three gods per pantheon with real blessings) and
   the **Training Academy, Watchtower and Artifact Merchant** in every town
   (proposed values).
+* **Campaign difficulty**: Story, Normal or Hard for every campaign — the
+  size of the guards and enemy armies, the rivals' purse and the computer's
+  nerve; objective texts show the numbers the game really uses, and the
+  levels are checked by the campaign simulator (proposed values).
 * **Sound**: menu, map (per region) and battle music, the victory, defeat,
   level-up and beacon fanfares, sea/wind/storm ambience, interface and combat
-  sounds — all placeholders — with Master, Music, Ambience, Interface and
+  sounds (licensed recordings) — with Master, Music, Ambience, Interface and
   Combat volumes, Mute all, mute in the background and "Calmer sound".
 
 ## Installing on Windows

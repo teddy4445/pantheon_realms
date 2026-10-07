@@ -15,11 +15,23 @@ import { Container, autoDetectRenderer, type Renderer } from 'pixi.js';
 import { ADAPT_START, adaptResolutionStep, adaptiveResolution, frameDue, graphicsProfile, onGraphicsChange, renderResolution, type AdaptState, type GraphicsProfile } from './graphics';
 import { markUploaded, pendingUploads, takeUploads } from './textures';
 
+/**
+ * How often a view needs drawing (frame pacing, 2026-10-07): `full` while
+ * anything moves (the camera, a walk, an attack, an effect) or the player is
+ * pointing, `ambient` while only idle loops play (figures breathing, a pulse),
+ * `still` while nothing changes at all (Low graphics, reduced motion).
+ */
+export type FramePace = 'full' | 'ambient' | 'still';
+
 export interface SceneController {
   /** Everything this view draws (added to the stage while it is shown). */
   readonly root: Container;
   /** Called every frame before rendering (camera easing, animation). */
   tick?(dtMs: number): void;
+  /** How often the view needs drawing now (default `full`). */
+  pace?(): FramePace;
+  /** The GPU context was lost and restored: redraw whatever the view keeps in textures of its own. */
+  contextRestored?(): void;
   /** The viewport changed size (CSS pixels). */
   resize?(width: number, height: number): void;
   /** Colour behind everything the view draws (instead of a full-screen rectangle; read every frame). */
@@ -34,8 +46,13 @@ export type ControllerFactory<T extends SceneController> = (engine: EngineHost, 
  * in-game frame-rate readout and the benchmark). Presentation only.
  */
 export interface FrameStats {
-  /** Frames drawn per second over the recent window. */
+  /** Frames per second over the recent window, judged on the frames drawn at full pace (something moving). */
   readonly fps: number;
+  /** Frames drawn calm (paced: only idle loops, or nothing changing) in the window, and their share of all frames drawn. */
+  readonly calmFrames: number;
+  readonly calmShare: number;
+  /** Every frame drawn per second over the window, calm ones included (what the GPU actually did). */
+  readonly drawnFps: number;
   /** Frames drawn in the window, and those slower than 1/30 s (`SLOW_FRAME_MS`). */
   readonly frames: number;
   readonly slowFrames: number;
@@ -81,6 +98,15 @@ const ADAPT_WINDOW_MS = 2000;
 const ADAPT_PAUSE_MS = 250;
 /** A frame slower than 1/30 s (with 2 ms for timer jitter around a 30 fps frame cap) counts as slow. */
 const SLOW_FRAME_MS = 1000 / 30 + 2;
+/**
+ * Frame pacing: frames per second while only idle loops play (the sprite strips
+ * run at 3–14 frames per second; a pulse at 30 stays smooth), and while nothing
+ * changes at all (a safety net for late pictures; input wakes the view at once).
+ */
+export const AMBIENT_FPS = 30;
+export const STILL_FPS = 8;
+/** Full frame rate this long after the last pointer, wheel or key input, or a view's `wake()` (ms). */
+const INPUT_HOLD_MS = 600;
 const UPLOAD_BUDGET_MS = 4;
 
 export class EngineHost {
@@ -109,7 +135,7 @@ export class EngineHost {
   /** Wait for the GPU after each frame and time it (benchmark only: it costs frame rate). */
   measureGpu = false;
   private readonly pixel = new Uint8Array(4);
-  private readonly ring = { at: new Float64Array(WINDOW), interval: new Float32Array(WINDOW), tick: new Float32Array(WINDOW), render: new Float32Array(WINDOW), gpu: new Float32Array(WINDOW), draws: new Float32Array(WINDOW), upload: new Float32Array(WINDOW), n: 0, i: 0 };
+  private readonly ring = { at: new Float64Array(WINDOW), interval: new Float32Array(WINDOW), tick: new Float32Array(WINDOW), render: new Float32Array(WINDOW), gpu: new Float32Array(WINDOW), draws: new Float32Array(WINDOW), upload: new Float32Array(WINDOW), paced: new Uint8Array(WINDOW), n: 0, i: 0 };
   private draws = 0;
   private uploaded = 0;
   /** Benchmark: textures sent to the GPU since the view opened. */
@@ -120,6 +146,9 @@ export class EngineHost {
   private resumed = false;
   /** Times the drawing buffer was resized (diagnostics). */
   private resizes = 0;
+  /** Frame pacing: the last input (or `wake()`), and whether the last drawn frame was at full pace. */
+  private lastInput = -Infinity;
+  private paceFull = true;
 
   private constructor(renderer: Renderer, antialias: boolean) {
     this.renderer = renderer;
@@ -135,8 +164,13 @@ export class EngineHost {
     });
     this.canvas.addEventListener('webglcontextrestored', () => {
       this.contextLost = false;
+      this.active?.contextRestored?.();
     });
     if (typeof document !== 'undefined') document.addEventListener('visibilitychange', () => (this.resumed = true));
+    // Frame pacing: any pointing or key press draws at the full rate at once (hover marks, camera keys).
+    const woken = () => this.wake();
+    for (const type of ['pointerdown', 'pointermove', 'pointerup', 'wheel']) this.canvas.addEventListener(type, woken, { passive: true });
+    if (typeof window !== 'undefined') window.addEventListener('keydown', woken, { passive: true });
     // Long tasks (the computer players' turns, the interface) slow frames too, but a lower resolution would not help them.
     try {
       if (typeof PerformanceObserver !== 'undefined' && PerformanceObserver.supportedEntryTypes?.includes('longtask')) {
@@ -285,6 +319,17 @@ export class EngineHost {
     return this.active;
   }
 
+  /** Draw at the full frame rate for a moment (input, or a view that just changed something). */
+  wake(): void {
+    this.lastInput = performance.now();
+  }
+
+  /** The pace of the next frame: full while input is recent or pictures are still arriving, else the view's own. */
+  private paceOf(c: SceneController, now: number): FramePace {
+    if (now - this.lastInput < INPUT_HOLD_MS || pendingUploads() > 0) return 'full';
+    return c.pace?.() ?? 'full';
+  }
+
   private startLoop(): void {
     if (this.frame) return;
     this.lastFrame = performance.now();
@@ -293,18 +338,27 @@ export class EngineHost {
       const c = this.active;
       if (!c || this.contextLost) return;
       const now = performance.now();
+      // Frame pacing: the full cap while anything moves, fewer frames while only idle loops
+      // play or nothing changes; waking up draws the next display frame at once.
+      const pace = this.paceOf(c, now);
+      const capFull = graphicsProfile().frameCap;
+      const cap = pace === 'full' ? capFull : pace === 'ambient' ? (capFull > 0 ? Math.min(capFull, AMBIENT_FPS) : AMBIENT_FPS) : STILL_FPS;
+      if (pace === 'full' && !this.paceFull) this.nextDue = 0;
       // Frame-rate cap: skip this display frame until the next one is due (the canvas keeps
       // showing the last). Due times advance by the cap's period, so a display whose rate is
       // not a multiple of the cap (144 Hz, cap 60) still averages the cap; 1 ms of slack.
-      const due = frameDue(now, this.nextDue, graphicsProfile().frameCap);
+      const due = frameDue(now, this.nextDue, cap);
       if (due === null) return;
       this.nextDue = due;
       const interval = now - this.lastFrame;
       const dt = Math.min(100, interval);
       this.lastFrame = now;
-      // The window was hidden (no frames are drawn then): not a slow frame.
-      const resumed = this.resumed;
+      // The window was hidden (no frames are drawn then), or the view is calm (paced frames) or
+      // just woke from calm: not a slow frame, and not judged by adaptive resolution.
+      const paced = pace !== 'full';
+      const resumed = this.resumed || (!paced && !this.paceFull);
       this.resumed = false;
+      this.paceFull = !paced;
       c.tick?.(dt);
       const bg = c.background ?? BACKGROUND;
       if (bg !== this.background) this.renderer.background.color = this.background = bg;
@@ -320,7 +374,8 @@ export class EngineHost {
         (this.renderer as unknown as { gl?: WebGLRenderingContext }).gl?.readPixels(0, 0, 1, 1, 0x1908, 0x1401, this.pixel);
         gpu = performance.now() - t2;
       }
-      if (!resumed) {
+      if (paced) this.record(interval, t1 - now, t2 - t1, gpu, this.draws, this.uploaded, true);
+      else if (!resumed) {
         this.record(interval, t1 - now, t2 - t1, gpu, this.draws, this.uploaded);
         this.adaptResolution(now, interval);
       } else this.adapt.since = 0;
@@ -393,8 +448,9 @@ export class EngineHost {
     return { objects, renderables };
   }
 
-  private record(interval: number, tick: number, render: number, gpu: number, draws = 0, uploaded = 0): void {
+  private record(interval: number, tick: number, render: number, gpu: number, draws = 0, uploaded = 0, paced = false): void {
     const r = this.ring;
+    r.paced[r.i] = paced ? 1 : 0;
     r.upload[r.i] = uploaded / 1024;
     r.at[r.i] = performance.now();
     r.draws[r.i] = draws;
@@ -404,6 +460,7 @@ export class EngineHost {
     r.gpu[r.i] = gpu;
     r.i = (r.i + 1) % WINDOW;
     r.n = Math.min(WINDOW, r.n + 1);
+    if (paced) return;
     this.totals.frames += 1;
     if (interval > SLOW_FRAME_MS) this.totals.slow += 1;
     this.totals.worst = Math.max(this.totals.worst, interval);
@@ -416,8 +473,11 @@ export class EngineHost {
   frameStats(since?: number): FrameStats {
     const r = this.ring;
     const from = since ?? performance.now() - RECENT_MS;
-    const idx: number[] = [];
-    for (let k = 0; k < r.n; k++) if (r.at[k]! >= from) idx.push(k);
+    const all: number[] = [];
+    for (let k = 0; k < r.n; k++) if (r.at[k]! >= from) all.push(k);
+    // Timing is judged on the frames drawn at full pace (calm, paced frames are slow on purpose).
+    const idx = all.filter((k) => r.paced[k] === 0);
+    const calm = all.filter((k) => r.paced[k] === 1);
     const n = idx.length;
     const mean = (a: Float32Array) => {
       let t = 0;
@@ -426,8 +486,12 @@ export class EngineHost {
     };
     const iv = idx.map((k) => r.interval[k]!).sort((a, b) => a - b);
     const avg = mean(r.interval);
+    const span = all.length > 1 ? r.at[all[all.length - 1]!]! - r.at[all[0]!]! : 0;
     return {
       fps: avg > 0 ? 1000 / avg : 0,
+      calmFrames: calm.length,
+      calmShare: all.length ? calm.length / all.length : 0,
+      drawnFps: span > 0 ? ((all.length - 1) * 1000) / span : 0,
       frames: n,
       slowFrames: iv.filter((v) => v > SLOW_FRAME_MS).length,
       avgMs: avg,

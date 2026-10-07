@@ -330,8 +330,8 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
       guard: {
         label: 'Grey raiders',
         army: [
-          ['brigand', 20],
-          ['brigand_cutthroat', 8],
+          ['brigand', 36],
+          ['brigand_cutthroat', 14],
         ],
         reward: { resources: { gold: 800, favor: 3 } },
         battlefield: 'coast_road',
@@ -356,8 +356,8 @@ export function buildSilverBranch(names: ArcCampaignContext['names'], familyOf: 
       guard: {
         label: 'Hall selkies',
         army: [
-          ['celtic_selkie', 3],
-          ['celtic_storm_selkie', 1],
+          ['celtic_selkie', 4],
+          ['celtic_storm_selkie', 2],
         ],
         reward: { resources: { gold: 1000 } },
         battlefield: 'coast_road',

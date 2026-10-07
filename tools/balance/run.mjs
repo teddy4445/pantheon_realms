@@ -26,6 +26,7 @@
  *   --map-types a,b   map types for random1v1 (default: all six, in turn)
  *   --focus a,b       random1v1: only the pairings that include one of these pantheons
  *   --maps a,b        maps: only these skirmish maps (frostgate, burning_oasis, circle_of_gates, barrows, golden_fords, six_thrones)
+ *   --check           exit with code 1 when random1v1 finds a pantheon significantly under the layout floor (0.40 on a map type)
  *
  * Writes <out>/balance-<timestamp>.md (readable report) and .json (raw results).
  * Every number is an AI-vs-AI measurement with the shipped AI, not a playtest.
@@ -41,6 +42,11 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SUITES = ['skirmish', 'armies', 'starts', 'tiers', 'random', 'random1v1', 'maps'];
 const PANTHEONS = ['greek', 'norse', 'egyptian', 'japanese', 'celtic', 'mesoamerican'];
 const NAMES = { greek: 'Greek', norse: 'Norse', egyptian: 'Egyptian', japanese: 'Japanese', celtic: 'Celtic', mesoamerican: 'Mesoamerican' };
+
+/** Layout floor (proposed 2026-10-07): every pantheon at least this score on every random-map type. */
+const LAYOUT_FLOOR = 0.4;
+/** Cells found significantly under the floor in this run (random1v1); `--check` exits 1 when there are any. */
+const layoutFailures = [];
 
 function parseArgs(argv) {
   const o = { suites: [], seeds: 12, matches: 3, pantheons: PANTHEONS, maxDay: 40, jobs: Math.min(8, Math.max(1, cpus().length)), out: join(ROOT, 'balance-reports'), signatures: true, temperaments: true };
@@ -61,6 +67,7 @@ function parseArgs(argv) {
     else if (a === '--map-types') o.mapTypes = next().split(',');
     else if (a === '--focus') o.focus = next().split(',');
     else if (a === '--maps') o.maps = next().split(',');
+    else if (a === '--check') o.check = true;
     else if (a === '--quick') {
       o.seeds = 4;
       o.matches = 1;
@@ -288,9 +295,30 @@ function render(opts, results, seconds, contentVersion) {
       out.push(`|---|${P.map(() => '---').join('|')}|`);
       for (const t of types) out.push(`| ${t} | ${P.map((p) => {
         const c = cell.get(`${p}|@${t}`);
-        return c ? pct(c.s / c.n) : '—';
+        return c ? `${pct(c.s / c.n)}${c.s / c.n < LAYOUT_FLOOR ? ' ⚠' : ''} (${c.n})` : '—';
       }).join(' | ')} |`);
       out.push('');
+      // Layout floor (proposed 2026-10-07): no pantheon under 0.40 on any map type. A cell fails only when even
+      // the top of its one-sided 95% range is under the floor (a few dozen matches per cell are noisy).
+      const below = [];
+      const watch = [];
+      for (const t of types)
+        for (const p of P) {
+          const c = cell.get(`${p}|@${t}`);
+          if (!c || c.s / c.n >= LAYOUT_FLOOR) continue;
+          const v = c.s / c.n;
+          const top = v + 1.645 * Math.sqrt(0.25 / c.n);
+          (top < LAYOUT_FLOOR ? below : watch).push({ t, p, v, n: c.n, top });
+        }
+      out.push(`Layout floor (proposed): every pantheon at least ${pct(LAYOUT_FLOOR)} on every map type. ⚠ marks a cell under it; a cell **fails** when the top of its one-sided 95% range (score + 1.645 × √(0.25 ÷ matches)) is still under the floor, otherwise it is only watched (not enough matches to tell).`);
+      out.push('');
+      out.push(below.length ? `**Below the floor:** ${below.map((x) => `${NAMES[x.p]} on ${x.t} ${pct(x.v)} (${x.n} matches, at most ${pct(x.top)})`).join('; ')}.` : '**Below the floor:** none.');
+      out.push('');
+      if (watch.length) {
+        out.push(`Watched (under the floor, within the noise): ${watch.map((x) => `${NAMES[x.p]} on ${x.t} ${pct(x.v)} (${x.n} matches, up to ${pct(x.top)})`).join('; ')}.`);
+        out.push('');
+      }
+      layoutFailures.push(...below);
     }
   }
 
@@ -363,3 +391,5 @@ writeFileSync(`${base}.md`, `${md}\n`);
 writeFileSync(`${base}.json`, JSON.stringify({ options: opts, seconds, results }, null, 1));
 rmSync(tmp, { recursive: true, force: true });
 console.log(`[balance] ${results.length} jobs in ${(seconds / 60).toFixed(1)} min → ${base}.md`);
+if (layoutFailures.length) console.log(`[balance] below the layout floor: ${layoutFailures.map((x) => `${x.p} on ${x.t} ${x.v.toFixed(2)} (${x.n})`).join('; ')}`);
+if (opts.check && layoutFailures.length) process.exitCode = 1;

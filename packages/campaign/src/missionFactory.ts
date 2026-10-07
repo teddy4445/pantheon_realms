@@ -44,6 +44,7 @@ import {
   grantSpecialtySpell,
   settleHeroesAtTownGates,
   heroInTown,
+  scaleStackCount,
 } from '@pr/rules';
 import { generateMap, type DecorItem, type GenerationMode } from '@pr/mapgen';
 
@@ -71,7 +72,11 @@ export interface MissionStartOptions {
   readonly carryover?: HeroCarryover | null;
   readonly startingGodId?: GodId | null;
   readonly playerName?: string;
-  /** Skirmish difficulty (ignored outside skirmish scenarios). Default: 'normal' when the catalog defines it. */
+  /**
+   * Difficulty. Skirmishes take a skirmish level (default: 'normal' when the
+   * catalog defines it); campaign missions take a campaign level (absent or
+   * another scope: the mission as written). Ignored elsewhere.
+   */
   readonly difficultyId?: string | null;
   /** Override who controls each seat (hot-seat: several 'human' seats). */
   readonly controllers?: Readonly<Record<string, 'human' | 'ai'>>;
@@ -199,6 +204,37 @@ function scaleWallet(wallet: MissionDefinition['player']['wallet'], percent: num
   });
 }
 
+/**
+ * The difficulty that applies to a mission start: a skirmish level in a
+ * skirmish (Normal unless asked otherwise), a campaign level in a campaign
+ * mission (none = the mission as written), never a level of the other scope.
+ */
+export function missionDifficulty(catalog: ContentCatalog, mission: MissionDefinition, requested: string | null | undefined): DifficultyDefinition | undefined {
+  const skirmish = (mission.initialFlags ?? []).includes('skirmish');
+  const scope = skirmish ? 'skirmish' : mission.campaignId ? 'campaign' : null;
+  if (!scope) return undefined;
+  const id = requested === undefined && scope === 'skirmish' ? 'normal' : requested;
+  const def = id ? catalog.difficulties?.[id] : undefined;
+  return def && (def.scope ?? 'skirmish') === scope ? def : undefined;
+}
+
+/** Creature counts at `percent` of the written numbers (each stack rounded, never below 1). */
+export function scaleArmy<T extends { readonly count: number }>(army: readonly T[], percent: number): T[] {
+  return army.map((a) => ({ ...a, count: scaleStackCount(a.count, percent) }));
+}
+
+const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+
+/** An attack threshold at `percent` of the written ratio, never below even strength. */
+function scaleThreshold(t: { readonly numerator: number; readonly denominator: number }, percent: number): { numerator: number; denominator: number } {
+  if (percent === 100) return { ...t };
+  let numerator = t.numerator * percent;
+  let denominator = t.denominator * 100;
+  if (numerator < denominator) numerator = denominator;
+  const g = gcd(numerator, denominator);
+  return { numerator: numerator / g, denominator: denominator / g };
+}
+
 function buildMissionMatch(
   catalog: ContentCatalog,
   mission: MissionDefinition,
@@ -210,9 +246,11 @@ function buildMissionMatch(
 ): MissionStart {
   const gen = { map, decor };
   const carry = opts.carryover ?? null;
-  const skirmish = (mission.initialFlags ?? []).includes('skirmish');
-  const difficultyId = skirmish ? (opts.difficultyId === undefined ? (catalog.difficulties?.['normal'] ? 'normal' : null) : opts.difficultyId) : null;
-  const difficulty: DifficultyDefinition | undefined = difficultyId ? catalog.difficulties?.[difficultyId] : undefined;
+  const difficulty: DifficultyDefinition | undefined = missionDifficulty(catalog, mission, opts.difficultyId);
+  const difficultyId = difficulty?.id ?? null;
+  // Campaign levels scale the creatures in the way (guards, hostile armies, unowned garrisons).
+  const guardPercent = difficulty?.guardPercent ?? 100;
+  const rivalArmyPercent = difficulty?.rivalArmyPercent ?? 100;
   const controllerOf = (id: string, fallback: 'human' | 'ai') => opts.controllers?.[id] ?? fallback;
   const startPercent = (controller: 'human' | 'ai') => (difficulty ? (controller === 'human' ? difficulty.humanStartPercent : difficulty.aiStartPercent) : 100);
   const incomePercent = (controller: 'human' | 'ai') => (difficulty && controller === 'ai' ? difficulty.aiIncomePercent : 100);
@@ -291,7 +329,8 @@ function buildMissionMatch(
       buildings: setup.buildings,
       population: setup.population,
       covenants: setup.covenants,
-      ...(setup.garrison ? { garrison: setup.garrison } : {}),
+      // Unowned towns' garrisons scale like the guards, the computer rivals' by their own share; a human seat's never.
+      ...(setup.garrison ? { garrison: ownerId === null ? scaleArmy(setup.garrison, guardPercent) : players[ownerId]?.controller === 'ai' ? scaleArmy(setup.garrison, rivalArmyPercent) : setup.garrison } : {}),
     });
   };
   addTown(p.town, p.playerId);
@@ -306,6 +345,8 @@ function buildMissionMatch(
     const h = heroFromSetup(catalog, rival.hero, rival.playerId, towns[rival.hero.startTownId]!.coord, null);
     if (players[rival.playerId]?.controller === 'ai') {
       h.ai = { profile: 'strategic', waypoints: [], waypointIndex: 0, regionMinQ: 0, regionMaxQ: 999, attackThreshold: { numerator: 11, denominator: 10 } };
+      // A computer rival's starting army is an enemy army too (campaign levels).
+      for (const slot of h.army.slots) if (slot) slot.count = scaleStackCount(slot.count, rivalArmyPercent);
     }
     heroes[h.id] = h;
   }
@@ -328,7 +369,7 @@ function buildMissionMatch(
       spellbook: hh.commander.spellbook,
       knownSpellIds: hh.commander.spellIds,
       position: hh.startCoord,
-      army: hh.army,
+      army: scaleArmy(hh.army, guardPercent),
     });
     h.ai = {
       profile: hh.ai.profile,
@@ -336,7 +377,7 @@ function buildMissionMatch(
       waypointIndex: 0,
       regionMinQ: hh.ai.regionMinQ,
       regionMaxQ: hh.ai.regionMaxQ,
-      attackThreshold: { ...hh.ai.attackThreshold },
+      attackThreshold: scaleThreshold(hh.ai.attackThreshold, difficulty?.hostileThresholdPercent ?? 100),
       ...(hh.ai.regionCenter ? { regionCenter: { ...hh.ai.regionCenter } } : {}),
       ...(hh.ai.regionRadius !== undefined ? { regionRadius: hh.ai.regionRadius } : {}),
     };
@@ -355,7 +396,7 @@ function buildMissionMatch(
       activated: false,
       visitedBy: [],
       open: false,
-      guard: s.guard ? s.guard.army.map((a) => ({ ...a })) : null,
+      guard: s.guard ? scaleArmy(s.guard.army, guardPercent) : null,
       ...(s.kind.type === 'creature_camp' ? { stock: s.kind.initialStock } : {}),
       ...(s.kind.type === 'relic' ? { heldDays: 0 } : {}),
     };

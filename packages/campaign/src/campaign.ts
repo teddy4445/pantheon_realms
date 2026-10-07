@@ -41,6 +41,12 @@ export interface CampaignState {
   readonly campaignRunId: string;
   readonly branch: 'primary' | 'practice';
   readonly startingGodId: GodId | null;
+  /**
+   * Campaign difficulty level, kept for every mission of the run (proposed
+   * 2026-10-07). Absent in runs started by older builds: their missions keep
+   * the values as written, so their recorded entry hashes still match.
+   */
+  readonly difficultyId?: string | null;
   readonly currentMissionId: string;
   readonly currentEntryHash: string;
   /** Carryover used to create the current mission (null for mission 1). */
@@ -58,7 +64,7 @@ export interface CampaignStart {
 export function startCampaign(
   catalog: ContentCatalog,
   campaignId: string,
-  opts: { runId: string; startingGodId: GodId | null },
+  opts: { runId: string; startingGodId: GodId | null; difficultyId?: string | null },
 ): CampaignStart {
   const camp = getCampaign(catalog, campaignId);
   if (camp.status !== 'playable') throw new Error(`${camp.name} is not available in this build`);
@@ -66,8 +72,10 @@ export function startCampaign(
     throw new Error(`${opts.startingGodId} is not a starting option for ${camp.name}`);
   }
   const godId = opts.startingGodId ?? camp.startingGodOptions[0] ?? null;
+  const difficultyId = opts.difficultyId ?? null;
+  if (difficultyId && catalog.difficulties?.[difficultyId]?.scope !== 'campaign') throw new Error(`${difficultyId} is not a campaign difficulty`);
   const firstMission = camp.missionIds[0]!;
-  const start = createMissionMatch(catalog, firstMission, { matchId: `${opts.runId}:${firstMission}`, startingGodId: godId });
+  const start = createMissionMatch(catalog, firstMission, { matchId: `${opts.runId}:${firstMission}`, startingGodId: godId, difficultyId });
   return {
     campaign: {
       kind: 'campaign',
@@ -75,6 +83,7 @@ export function startCampaign(
       campaignRunId: opts.runId,
       branch: 'primary',
       startingGodId: godId,
+      difficultyId,
       currentMissionId: firstMission,
       currentEntryHash: start.entryHash,
       currentEntryCarryover: null,
@@ -92,6 +101,7 @@ export function restartCurrentMission(catalog: ContentCatalog, campaign: Campaig
     matchId: `${campaign.campaignRunId}:${campaign.currentMissionId}`,
     carryover: campaign.currentEntryCarryover,
     startingGodId: campaign.startingGodId,
+    difficultyId: campaign.difficultyId ?? null,
   });
   if (start.entryHash !== campaign.currentEntryHash) {
     throw new Error('Mission entry state no longer matches its recorded hash (content or rules version changed)');
@@ -174,6 +184,7 @@ export function startNextMission(catalog: ContentCatalog, campaign: CampaignStat
     matchId: `${campaign.campaignRunId}:${next}`,
     carryover: record.carryover,
     startingGodId: campaign.startingGodId,
+    difficultyId: campaign.difficultyId ?? null,
   });
   return {
     campaign: { ...campaign, currentMissionId: next, currentEntryHash: start.entryHash, currentEntryCarryover: record.carryover },
@@ -190,7 +201,7 @@ export function startPracticeReplay(catalog: ContentCatalog, campaign: CampaignS
   if (!unlocked) throw new Error('Mission not yet unlocked');
   const entryCarry = idx === 0 ? null : (campaign.completions.find((c) => c.missionId === camp.missionIds[idx - 1])?.carryover ?? null);
   const runId = `${campaign.campaignRunId}:practice:${missionId}`;
-  const start = createMissionMatch(catalog, missionId, { matchId: `${runId}:${missionId}`, carryover: entryCarry, startingGodId: campaign.startingGodId });
+  const start = createMissionMatch(catalog, missionId, { matchId: `${runId}:${missionId}`, carryover: entryCarry, startingGodId: campaign.startingGodId, difficultyId: campaign.difficultyId ?? null });
   return {
     campaign: {
       kind: 'campaign',
@@ -198,6 +209,7 @@ export function startPracticeReplay(catalog: ContentCatalog, campaign: CampaignS
       campaignRunId: runId,
       branch: 'practice',
       startingGodId: campaign.startingGodId,
+      difficultyId: campaign.difficultyId ?? null,
       currentMissionId: missionId,
       currentEntryHash: start.entryHash,
       currentEntryCarryover: entryCarry,

@@ -1,7 +1,7 @@
 {
-  "appId": "com.skanarobotics.pantheonrealms",
+  "appId": "com.teddylazebnik.pantheonrealms",
   "productName": "Pantheon Realms",
-  "copyright": "Development build — placeholder art",
+  "copyright": "Copyright © 2026 Teddy Lazebnik",
   "directories": { "output": "release", "buildResources": "build-resources" },
   "files": ["dist/**", "renderer/**", "package.json", "!**/*.map"],
   "asar": true,
