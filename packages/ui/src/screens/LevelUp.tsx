@@ -7,16 +7,18 @@
  * rules) the gods first offer two gifts: one is picked (it stays selected),
  * then the skill pick submits both.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useStore } from '../app/context';
 import { Button, Chip, Panel } from '../components/kit';
-import { HeroPortrait, SkillIcon } from '../components/art';
+import { AdventureStage, HeroFigure, HeroMedallion, SkillPlaque, campScene } from '../components/adventure';
+import { guiThemeFor } from '../assets/guiArt';
 import { Icon, type IconName } from '../assets/icons';
 import { levelUpBannerArt } from '../assets/momentArt';
 import { BannerPlaque } from '../components/moments';
 import { GiftBadge } from '../components/godGifts';
 
 const ATTR_ICON: Record<string, IconName> = { attack: 'attack', defense: 'defense', power: 'power', knowledge: 'knowledge' };
+const RANK_NAME: Record<number, string> = { 1: 'Basic', 2: 'Advanced', 3: 'Expert' };
 
 export function LevelUpScreen() {
   const store = useStore();
@@ -60,103 +62,116 @@ export function LevelUpScreen() {
     if (store.stack.length > 1) store.back();
     else store.toAdventure();
   };
+  const pantheonId = catalog.heroes[hero.definitionId]?.pantheonId ?? state.players[hero.ownerId]?.pantheonId;
+  const gainName = decision.primaryGain[0]!.toUpperCase() + decision.primaryGain.slice(1);
   return (
-    <div className={`screen levelup-screen ${banner ? 'has-banner' : ''}`} data-testid="level-up">
-      {banner ? (
-        <div className="levelup-banner" data-testid="levelup-banner">
-          <BannerPlaque art={banner}>
-            <span className={`plaque-text__title ${hero.name.length > 16 ? 'is-long' : ''}`}>{hero.name}</span>
-            <span className="plaque-text__level">
-              Level up<span className="plaque-text__sep"> · </span>Level {decision.newLevel}
-            </span>
-          </BannerPlaque>
-        </div>
-      ) : null}
-      <Panel title={banner ? undefined : `${hero.name} reaches level ${decision.newLevel}`} className="levelup-card">
-        <div className="levelup-hero">
-          <HeroPortrait catalog={catalog} definitionId={hero.definitionId} name={hero.name} size="8rem" />
-          <div>
-            <div className="levelup-gain">
+    <AdventureStage
+      mode="screen"
+      theme={guiThemeFor(pantheonId)}
+      scene={campScene(pantheonId)}
+      shade="dim"
+      title="A legend grows"
+      subtitle={`${hero.name} reaches level ${decision.newLevel}`}
+      pantheonId={pantheonId}
+      catalog={catalog}
+      testId="level-up"
+      className="ak-level-stage"
+    >
+      <div className="ak-level">
+        {/* The hero's character portrait beside the choice on wide windows (decorative; the medallion names the hero). */}
+        <span className="ak-level__figure" aria-hidden="true">
+          <HeroFigure catalog={catalog} definitionId={hero.definitionId} portraitAssetId={hero.portraitAssetId} name={hero.name} />
+        </span>
+        <div className="ak-level__top">
+          <HeroMedallion catalog={catalog} definitionId={hero.definitionId} portraitAssetId={hero.portraitAssetId} name={hero.name} size="clamp(9rem, 24vh, 15rem)" />
+          <div className="ak-level__facts">
+            {banner ? (
+              <div className="levelup-banner" data-testid="levelup-banner">
+                <BannerPlaque art={banner}>
+                  <span className={`plaque-text__title ${hero.name.length > 16 ? 'is-long' : ''}`}>{hero.name}</span>
+                  <span className="plaque-text__level">
+                    Level up<span className="plaque-text__sep"> · </span>Level {decision.newLevel}
+                  </span>
+                </BannerPlaque>
+              </div>
+            ) : (
+              <div className="ak-level__level">Level {decision.newLevel}</div>
+            )}
+            <div className="levelup-gain ak-level__gain">
               <Icon name={ATTR_ICON[decision.primaryGain]!} className="levelup-gain__icon" />
-              <span>+1 {decision.primaryGain[0]!.toUpperCase() + decision.primaryGain.slice(1)}</span>
+              <span>+1 {gainName}</span>
             </div>
-            <div className="faint small">Primary gain from the {catalog.heroClasses[hero.classId]?.name} progression.</div>
-            {remaining > 1 ? <Chip tone="info">{remaining - 1} more level-up{remaining > 2 ? 's' : ''} after this</Chip> : null}
+            <div className="ak-muted small">Primary gain from the {catalog.heroClasses[hero.classId]?.name} progression.</div>
+            {remaining > 1 ? (
+              <Chip tone="info">
+                {remaining - 1} more level-up{remaining > 2 ? 's' : ''} after this
+              </Chip>
+            ) : null}
           </div>
         </div>
         {perkOffers.length > 0 ? (
-          <>
-            <div className="section-title">A gift of the gods</div>
-            <p className="faint small levelup-gift-hint">The gods your empire serves each offer a gift. Take one; the other is gone for this hero.</p>
-            <div className="offer-grid gift-grid" role="radiogroup" aria-label="A gift of the gods">
+          <section className="ak-level__section" aria-label="A gift of the gods">
+            <h3 className="ak-level__title">A gift of the gods</h3>
+            <p className="ak-muted small levelup-gift-hint">The gods your empire serves each offer a gift. Take one; the other is gone for this hero.</p>
+            <div className="ak-level__grid gift-grid" role="radiogroup" aria-label="A gift of the gods">
               {perkOffers.map((id, i) => {
                 const perk = catalog.godPerks?.[id];
                 const god = perk ? catalog.gods[perk.godId] : undefined;
-                const on = giftIndex === i;
                 return (
-                  <button
+                  <SkillPlaque
                     key={`${decision.decisionId}-gift-${i}`}
-                    type="button"
                     role="radio"
-                    aria-checked={on}
-                    className={`offer-card gift-card panel ${on ? 'is-selected' : ''}`}
+                    selected={giftIndex === i}
+                    icon={perk ? <GiftBadge catalog={catalog} perk={perk} size="100%" /> : null}
+                    kicker={`Gift of ${god?.name ?? 'the gods'}`}
+                    name={perk?.name ?? id}
+                    text={perk?.summary}
                     onClick={() => setGift({ decisionId: decision.decisionId, index: i })}
-                    data-testid={`gift-${i}`}
-                    aria-label={`Gift of ${god?.name ?? 'the gods'}: ${perk?.name ?? id}, ${perk?.summary ?? ''}`}
-                  >
-                    <span className="offer-card__icon">{perk ? <GiftBadge catalog={catalog} perk={perk} size="4.8rem" /> : null}</span>
-                    <span className="offer-card__body">
-                      <span className="offer-card__kind">Gift of {god?.name ?? 'the gods'}</span>
-                      <span className="offer-card__name">{perk?.name ?? id}</span>
-                      <span className="offer-card__text">{perk?.summary}</span>
-                    </span>
-                  </button>
+                    testId={`gift-${i}`}
+                    ariaLabel={`Gift of ${god?.name ?? 'the gods'}: ${perk?.name ?? id}, ${perk?.summary ?? ''}`}
+                  />
                 );
               })}
             </div>
-          </>
+          </section>
         ) : null}
-        <div className="section-title">Choose a skill</div>
-        {needGift && decision.offers.length > 0 ? <p className="faint small" data-testid="levelup-gift-first">Take a gift of the gods first.</p> : null}
-        {decision.offers.length === 0 ? <p className="dim">No skill offers are available (all skills are at maximum or slots are full).</p> : null}
-        <div className="offer-grid">
-          {decision.offers.map((o, i) => {
-            const sd = catalog.skills[o.skillId];
-            return (
-              <button
-                key={`${decision.decisionId}-${i}`}
-                type="button"
-                className="offer-card panel"
-                onClick={() => choose(i)}
-                disabled={needGift}
-                data-testid={`offer-${i}`}
-                aria-label={`Take ${sd?.name ?? o.skillId}${o.kind === 'new' ? ' (new skill)' : `, rank ${o.fromRank} to ${o.toRank}`}`}
-              >
-                <span className="offer-card__icon">{sd ? <SkillIcon iconAssetId={sd.iconAssetId} size="5.4rem" /> : null}</span>
-                <span className="offer-card__body">
-                  <span className="offer-card__kind">{o.kind === 'new' ? 'New skill' : `Rank ${o.fromRank} → ${o.toRank}`}</span>
-                  <span className="offer-card__name">{sd?.name}</span>
-                  <span className="rank">
-                    {[1, 2, 3].map((r) => (
-                      <span key={r} className={r <= o.toRank ? 'on' : ''}>
-                        ◆
-                      </span>
-                    ))}
-                  </span>
-                  <span className="offer-card__text">{sd?.rankSummaries[o.toRank - 1]}</span>
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        {decision.offers.length === 0 ? (
-          <div className="modal__actions">
-            <Button variant="primary" size="large" onClick={() => choose(null)} disabled={needGift} disabledReason="Take a gift of the gods first" data-testid="levelup-confirm">
-              Continue
-            </Button>
+        <section className="ak-level__section" aria-label="Choose a skill">
+          <h3 className="ak-level__title">Choose a skill</h3>
+          {needGift && decision.offers.length > 0 ? (
+            <p className="ak-muted small" data-testid="levelup-gift-first">
+              Take a gift of the gods first.
+            </p>
+          ) : null}
+          {decision.offers.length === 0 ? <p className="ak-muted">No skill offers are available (all skills are at maximum or slots are full).</p> : null}
+          <div className="ak-level__grid" style={{ ['--n' as string]: Math.max(1, Math.min(decision.offers.length, 3)) } as CSSProperties}>
+            {decision.offers.map((o, i) => {
+              const sd = catalog.skills[o.skillId];
+              return (
+                <SkillPlaque
+                  key={`${decision.decisionId}-${i}`}
+                  iconAssetId={sd?.iconAssetId}
+                  kicker={o.kind === 'new' ? 'Learn Basic' : `${RANK_NAME[o.fromRank] ?? `Rank ${o.fromRank}`} → ${RANK_NAME[o.toRank] ?? `Rank ${o.toRank}`}`}
+                  name={sd?.name ?? o.skillId}
+                  text={sd?.rankSummaries[o.toRank - 1]}
+                  onClick={() => choose(i)}
+                  disabled={needGift}
+                  testId={`offer-${i}`}
+                  ariaLabel={`Take ${sd?.name ?? o.skillId}${o.kind === 'new' ? ' (new skill)' : `, rank ${o.fromRank} to ${o.toRank}`}`}
+                />
+              );
+            })}
           </div>
-        ) : null}
-      </Panel>
-    </div>
+          {decision.offers.length === 0 ? (
+            <div className="ak-level__continue">
+              <Button variant="primary" size="large" onClick={() => choose(null)} disabled={needGift} disabledReason="Take a gift of the gods first" data-testid="levelup-confirm">
+                Continue
+              </Button>
+            </div>
+          ) : (
+            <p className="ak-muted small ak-level__note">Select a skill to take it and continue your journey.</p>
+          )}
+        </section>
+      </div>
+    </AdventureStage>
   );
 }

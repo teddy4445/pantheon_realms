@@ -1,0 +1,8 @@
+{
+  "hero.japanese.abe_no_seimei.bust": {
+    "id": "hero.japanese.abe_no_seimei.bust",
+    "file": "hero.japanese.abe_no_seimei.bust-v2.png",
+    "prompt": "Edit this character portrait. Preserve exactly the same face, identity, expression, costume, hands, fox spirit and painterly rendering. Reframe with the character about 15% smaller so the COMPLETE tall black ceremonial hat has generous transparent clearance above it (at least 70 pixels), and both hands and sleeves have clearance at left/right. Keep a head-to-mid-thigh character composition. No opaque backdrop, no colored gradient background: true transparent alpha outside character and magical wisps. Native portrait 1024 x 1536. Do not add text or a frame. Only improve framing and transparent margins.",
+    "generatedSource": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-8bbe3785-5051-48e8-96e0-c37d983c1544.png"
+  }
+}

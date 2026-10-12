@@ -1,0 +1,372 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Frontend construction kit</title><link rel="stylesheet" href="gallery.css"><style>.tiny img{height:110px;object-fit:contain;background:repeating-conic-gradient(#1e303e 0% 25%,#142532 0% 50%) 0/20px 20px}.banners img{height:230px}.portraits{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}.pair{display:flex;gap:8px}.pair figure{width:50%;padding:4px}.pair img{width:100%;height:auto;aspect-ratio:1;object-fit:contain}h3{font-size:20px}.title-proof{position:relative;aspect-ratio:1.6;background:url(../../assets-runtime/frontend-kit-v1.1.0/backdrop-title.png) center/cover;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:10px;padding:4%}.title-proof>.logo{width:46%;height:auto;max-height:35%;object-fit:contain}.title-proof .menu{display:grid;gap:4px;width:26%;background:#091729cc;padding:8px}.title-proof button{display:flex;align-items:center;gap:10px;color:#f7dfac;background:linear-gradient(#143650,#091e35);border:1px solid #b08d46;padding:8px;text-align:left;font:clamp(10px,1.2vw,18px) Georgia;min-width:0}.title-proof button img{width:24px;height:24px;object-fit:contain}.title-proof button:hover{outline:2px solid #e6b658}.title-proof button:focus-visible{outline:3px solid white}.tall img{aspect-ratio:auto;max-height:200px;object-fit:contain}@media(max-width:600px){.title-proof{aspect-ratio:1;gap:3px}.title-proof>.logo{width:70%}.title-proof .menu{width:48%;padding:3px}.title-proof button{padding:4px;font-size:12px}.title-proof button img{width:18px;height:18px}}</style><header><p class="eyebrow">PANTHEON REALMS · INDEPENDENT ASSETS</p><h1>The screen construction kit</h1><p>Separate background, logo, banners, icons, surfaces and verified original creatures. No screenshot extraction required.</p><nav><a href="UI-ART-COMPLETENESS.txt">Start here: Claude handoff</a><a href="index.html">Concept gallery</a><a href="#icons">Icon bindings</a><a href="#creatures">All creature artwork</a><a href="complete-copy-inventory.json">Complete copy list</a></nav></header><main>
+<section><h2>Main-menu assembly proof</h2><p>This is assembled in HTML from the independent PNG background, transparent logo and existing menu icons. Buttons are demonstration controls only.</p><div class="title-proof"><img class="logo" src="../../assets-runtime/frontend-kit-v1.1.0/brand-logo-v2.png" alt="Pantheon Realms"><div class="menu">
+<button type="button" onclick="document.getElementById('demo-feedback').textContent='Reference only: no game action runs.'"><img src="../../assets-runtime/ui/icons/final/icon.menu.continue.png" alt="">Continue</button>
+<button type="button" onclick="document.getElementById('demo-feedback').textContent='Reference only: no game action runs.'"><img src="../../assets-runtime/ui/icons/final/icon.menu.new-game.png" alt="">New Game</button>
+<button type="button" onclick="document.getElementById('demo-feedback').textContent='Reference only: no game action runs.'"><img src="../../assets-runtime/ui/icons/final/icon.menu.load-game.png" alt="">Load Game</button>
+<button type="button" onclick="document.getElementById('demo-feedback').textContent='Reference only: no game action runs.'"><img src="../../assets-runtime/ui/icons/final/icon.menu.encyclopedia.png" alt="">Encyclopedia</button>
+<button type="button" onclick="document.getElementById('demo-feedback').textContent='Reference only: no game action runs.'"><img src="../../assets-runtime/ui/icons/final/icon.menu.settings.png" alt="">Settings</button>
+<button type="button" onclick="document.getElementById('demo-feedback').textContent='Reference only: no game action runs.'"><img src="../../assets-runtime/ui/icons/final/icon.menu.quit.png" alt="">Quit</button>
+</div></div><p id="demo-feedback" role="status">Independent layers; actual game behavior stays in the existing components.</p></section><section><h2>New independent artwork</h2><div class="asset-grid tall">
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/brand-logo-v2.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/brand-logo-v2.png" alt="frontendkit.brand.logo"></a><figcaption><code>frontendkit.brand.logo</code><br>2172 × 724</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/backdrop-title.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/backdrop-title.png" alt="frontendkit.backdrop.title"></a><figcaption><code>frontendkit.backdrop.title</code><br>1586 × 992</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/banner-greek.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-greek.png" alt="frontendkit.banner.greek"></a><figcaption><code>frontendkit.banner.greek</code><br>1024 × 1536</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/banner-norse.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-norse.png" alt="frontendkit.banner.norse"></a><figcaption><code>frontendkit.banner.norse</code><br>1024 × 1536</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/banner-egyptian.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-egyptian.png" alt="frontendkit.banner.egyptian"></a><figcaption><code>frontendkit.banner.egyptian</code><br>1024 × 1536</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/banner-japanese.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-japanese.png" alt="frontendkit.banner.japanese"></a><figcaption><code>frontendkit.banner.japanese</code><br>1024 × 1536</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/banner-celtic.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-celtic.png" alt="frontendkit.banner.celtic"></a><figcaption><code>frontendkit.banner.celtic</code><br>1024 × 1536</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/banner-mesoamerican.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-mesoamerican.png" alt="frontendkit.banner.mesoamerican"></a><figcaption><code>frontendkit.banner.mesoamerican</code><br>1024 × 1536</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-interface.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-interface.png" alt="frontendkit.icon.interface"></a><figcaption><code>frontendkit.icon.interface</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-display.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-display.png" alt="frontendkit.icon.display"></a><figcaption><code>frontendkit.icon.display</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-audio.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-audio.png" alt="frontendkit.icon.audio"></a><figcaption><code>frontendkit.icon.audio</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-accessibility.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-accessibility.png" alt="frontendkit.icon.accessibility"></a><figcaption><code>frontendkit.icon.accessibility</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-controls.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-controls.png" alt="frontendkit.icon.controls"></a><figcaption><code>frontendkit.icon.controls</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-bestiary.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-bestiary.png" alt="frontendkit.icon.bestiary"></a><figcaption><code>frontendkit.icon.bestiary</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-select.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-select.png" alt="frontendkit.icon.select"></a><figcaption><code>frontendkit.icon.select</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-erase.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-erase.png" alt="frontendkit.icon.erase"></a><figcaption><code>frontendkit.icon.erase</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-terrain.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-terrain.png" alt="frontendkit.icon.terrain"></a><figcaption><code>frontendkit.icon.terrain</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-forest.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-forest.png" alt="frontendkit.icon.forest"></a><figcaption><code>frontendkit.icon.forest</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-water.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-water.png" alt="frontendkit.icon.water"></a><figcaption><code>frontendkit.icon.water</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-road.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-road.png" alt="frontendkit.icon.road"></a><figcaption><code>frontendkit.icon.road</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-hex.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-hex.png" alt="frontendkit.icon.hex"></a><figcaption><code>frontendkit.icon.hex</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-generate.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-generate.png" alt="frontendkit.icon.generate"></a><figcaption><code>frontendkit.icon.generate</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-new-map.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-new-map.png" alt="frontendkit.icon.new-map"></a><figcaption><code>frontendkit.icon.new-map</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-import.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-import.png" alt="frontendkit.icon.import"></a><figcaption><code>frontendkit.icon.import</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-export.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-export.png" alt="frontendkit.icon.export"></a><figcaption><code>frontendkit.icon.export</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-delete.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-delete.png" alt="frontendkit.icon.delete"></a><figcaption><code>frontendkit.icon.delete</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-undo.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-undo.png" alt="frontendkit.icon.undo"></a><figcaption><code>frontendkit.icon.undo</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-redo.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-redo.png" alt="frontendkit.icon.redo"></a><figcaption><code>frontendkit.icon.redo</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-artifacts.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-artifacts.png" alt="frontendkit.icon.artifacts"></a><figcaption><code>frontendkit.icon.artifacts</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-warning.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-warning.png" alt="frontendkit.icon.warning"></a><figcaption><code>frontendkit.icon.warning</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/icon-records.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-records.png" alt="frontendkit.icon.records"></a><figcaption><code>frontendkit.icon.records</code><br>1254 × 1254</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/chrome-header.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/chrome-header.png" alt="frontendkit.chrome.header"></a><figcaption><code>frontendkit.chrome.header</code><br>2172 × 724</figcaption></figure>
+<figure><a href="../../assets-runtime/frontend-kit-v1.1.0/chrome-round-socket.png"><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/chrome-round-socket.png" alt="frontendkit.chrome.round-socket"></a><figcaption><code>frontendkit.chrome.round-socket</code><br>1254 × 1254</figcaption></figure>
+</div></section><section id="icons"><h2>Every role has an asset</h2>
+<h3>main-menu</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/backdrop-title.png" alt=""><figcaption>background<br><code>frontendkit.backdrop.title</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/brand-logo-v2.png" alt=""><figcaption>logo<br><code>frontendkit.brand.logo</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.continue.png" alt=""><figcaption>Continue<br><code>icon.menu.continue</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.new-game.png" alt=""><figcaption>New Game<br><code>icon.menu.new-game</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.load-game.png" alt=""><figcaption>Load Game<br><code>icon.menu.load-game</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.encyclopedia.png" alt=""><figcaption>Encyclopedia<br><code>icon.menu.encyclopedia</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.settings.png" alt=""><figcaption>Settings<br><code>icon.menu.settings</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.quit.png" alt=""><figcaption>Quit<br><code>icon.menu.quit</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-records.png" alt=""><figcaption>Records<br><code>frontendkit.icon.records</code></figcaption></figure>
+</div>
+<h3>settings</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.settings.png" alt=""><figcaption>Gameplay<br><code>icon.menu.settings</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-interface.png" alt=""><figcaption>Interface<br><code>frontendkit.icon.interface</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-display.png" alt=""><figcaption>Display<br><code>frontendkit.icon.display</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-audio.png" alt=""><figcaption>Audio<br><code>frontendkit.icon.audio</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-accessibility.png" alt=""><figcaption>Accessibility<br><code>frontendkit.icon.accessibility</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-controls.png" alt=""><figcaption>Controls<br><code>frontendkit.icon.controls</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.save.png" alt=""><figcaption>Saves<br><code>icon.ui.save</code></figcaption></figure>
+</div>
+<h3>encyclopedia</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-bestiary.png" alt=""><figcaption>Bestiary<br><code>frontendkit.icon.bestiary</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.pantheon.png" alt=""><figcaption>Gods<br><code>icon.ui.pantheon</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.recruit.png" alt=""><figcaption>Heroes<br><code>icon.ui.recruit</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.world.town.png" alt=""><figcaption>Towns<br><code>icon.world.town</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.encyclopedia.png" alt=""><figcaption>Spells<br><code>icon.menu.encyclopedia</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.sword2.png" alt=""><figcaption>Skills<br><code>icon.ui.sword2</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-artifacts.png" alt=""><figcaption>Artifacts<br><code>frontendkit.icon.artifacts</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.action.ability.png" alt=""><figcaption>Abilities<br><code>icon.action.ability</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.star.png" alt=""><figcaption>Neutral<br><code>icon.ui.star</code></figcaption></figure>
+</div>
+<h3>editor-toolbar</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-new-map.png" alt=""><figcaption>New<br><code>frontendkit.icon.new-map</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-generate.png" alt=""><figcaption>Generate<br><code>frontendkit.icon.generate</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.load-game.png" alt=""><figcaption>Open<br><code>icon.menu.load-game</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.save.png" alt=""><figcaption>Save<br><code>icon.ui.save</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-export.png" alt=""><figcaption>Export<br><code>frontendkit.icon.export</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-import.png" alt=""><figcaption>Import<br><code>frontendkit.icon.import</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-delete.png" alt=""><figcaption>Delete<br><code>frontendkit.icon.delete</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-undo.png" alt=""><figcaption>Undo<br><code>frontendkit.icon.undo</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-redo.png" alt=""><figcaption>Redo<br><code>frontendkit.icon.redo</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.play.png" alt=""><figcaption>Play<br><code>icon.ui.play</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.back.png" alt=""><figcaption>Back<br><code>icon.ui.back</code></figcaption></figure>
+</div>
+<h3>editor-tools</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-select.png" alt=""><figcaption>Select<br><code>frontendkit.icon.select</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-erase.png" alt=""><figcaption>Erase<br><code>frontendkit.icon.erase</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-terrain.png" alt=""><figcaption>Terrain<br><code>frontendkit.icon.terrain</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-forest.png" alt=""><figcaption>Forest<br><code>frontendkit.icon.forest</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-water.png" alt=""><figcaption>Water<br><code>frontendkit.icon.water</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-road.png" alt=""><figcaption>Roads<br><code>frontendkit.icon.road</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-hex.png" alt=""><figcaption>Hex grid<br><code>frontendkit.icon.hex</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.world.town.png" alt=""><figcaption>Sites<br><code>icon.world.town</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.flag.png" alt=""><figcaption>Empires<br><code>icon.ui.flag</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.check.png" alt=""><figcaption>Check<br><code>icon.ui.check</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.map.png" alt=""><figcaption>Map<br><code>icon.ui.map</code></figcaption></figure>
+</div>
+<h3>common</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-warning.png" alt=""><figcaption>warning<br><code>frontendkit.icon.warning</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-records.png" alt=""><figcaption>rank-medallion<br><code>frontendkit.icon.records</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/chrome-header.png" alt=""><figcaption>header<br><code>frontendkit.chrome.header</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/chrome-round-socket.png" alt=""><figcaption>round-socket<br><code>frontendkit.chrome.round-socket</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui-v1.1.0/control-button.png" alt=""><figcaption>button<br><code>gui.control.button</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui-v1.1.0/control-socket.png" alt=""><figcaption>portrait-socket<br><code>gui.control.socket</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui-v1.1.0/surface-parchment.png" alt=""><figcaption>parchment<br><code>gui.surface.parchment</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui-v1.1.0/surface-stone.png" alt=""><figcaption>stone<br><code>gui.surface.stone</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui-v1.1.0/book-open.png" alt=""><figcaption>book<br><code>gui.book.open</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.back.png" alt=""><figcaption>Back<br><code>icon.ui.back</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.close.png" alt=""><figcaption>Close<br><code>icon.ui.close</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.check.png" alt=""><figcaption>Confirm<br><code>icon.ui.check</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.lock.png" alt=""><figcaption>Locked<br><code>icon.ui.lock</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.info.png" alt=""><figcaption>Info<br><code>icon.ui.info</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.play.png" alt=""><figcaption>Play<br><code>icon.ui.play</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.pause.png" alt=""><figcaption>Pause<br><code>icon.ui.pause</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.stop.png" alt=""><figcaption>Stop<br><code>icon.ui.stop</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.swap.png" alt=""><figcaption>Swap<br><code>icon.ui.swap</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.upgrade.png" alt=""><figcaption>Upgrade<br><code>icon.ui.upgrade</code></figcaption></figure>
+<figure><figcaption>Search · native control / supplied CSS or SVG primitive<br><code>code.search-glyph</code></figcaption></figure>
+<figure><figcaption>Checkbox · native control / supplied CSS or SVG primitive<br><code>code.checkbox</code></figcaption></figure>
+<figure><figcaption>Slider · native control / supplied CSS or SVG primitive<br><code>code.range</code></figcaption></figure>
+<figure><figcaption>Scrollbar · native control / supplied CSS or SVG primitive<br><code>code.scrollbar</code></figcaption></figure>
+</div>
+<h3>creature-stats</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.stat.attack.png" alt=""><figcaption>Attack<br><code>icon.stat.attack</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.stat.defense.png" alt=""><figcaption>Defense<br><code>icon.stat.defense</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.stat.hp.png" alt=""><figcaption>Health<br><code>icon.stat.hp</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.stat.damage.png" alt=""><figcaption>Damage<br><code>icon.stat.damage</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.stat.speed.png" alt=""><figcaption>Speed<br><code>icon.stat.speed</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.growth.png" alt=""><figcaption>Growth<br><code>icon.ui.growth</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.stat.shots.png" alt=""><figcaption>Shots<br><code>icon.stat.shots</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.stat.range.png" alt=""><figcaption>Range<br><code>icon.stat.range</code></figcaption></figure>
+</div>
+<h3>pantheons</h3><div class="asset-grid tiny banners">
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-greek.png" alt=""><figcaption>greek<br><code>frontendkit.banner.greek</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-norse.png" alt=""><figcaption>norse<br><code>frontendkit.banner.norse</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-egyptian.png" alt=""><figcaption>egyptian<br><code>frontendkit.banner.egyptian</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-japanese.png" alt=""><figcaption>japanese<br><code>frontendkit.banner.japanese</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-celtic.png" alt=""><figcaption>celtic<br><code>frontendkit.banner.celtic</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/banner-mesoamerican.png" alt=""><figcaption>mesoamerican<br><code>frontendkit.banner.mesoamerican</code></figcaption></figure>
+</div>
+<h3>setup-facts</h3><div class="asset-grid tiny ">
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.flag.png" alt=""><figcaption>Empires<br><code>icon.ui.flag</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.map.png" alt=""><figcaption>Size<br><code>icon.ui.map</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.skirmish.png" alt=""><figcaption>Victory<br><code>icon.menu.skirmish</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/frontend-kit-v1.1.0/icon-display.png" alt=""><figcaption>Climate<br><code>frontendkit.icon.display</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.ui.sword2.png" alt=""><figcaption>Difficulty<br><code>icon.ui.sword2</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.menu.encyclopedia.png" alt=""><figcaption>Story<br><code>icon.menu.encyclopedia</code></figcaption></figure>
+<figure><img loading="lazy" src="../../assets-runtime/ui/icons/final/icon.res.gold.png" alt=""><figcaption>Wealth<br><code>icon.res.gold</code></figcaption></figure>
+</div>
+</section><section id="creatures"><h2>Every creature: base and upgraded</h2><p>These are the game’s existing character identities, supplied explicitly. The generic figures inside concept screenshots are not replacement game creatures.</p>
+<h3>Greek</h3><div class="portraits">
+<article><h3>Tier 1 · Hoplites</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier1.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier1.base.portrait.webp" alt="Hoplite"></a><figcaption>Hoplite<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp" alt="Veteran Hoplite"></a><figcaption>Veteran Hoplite<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Peltasts</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier2.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier2.base.portrait.webp" alt="Peltast"></a><figcaption>Peltast<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier2.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier2.upgraded.portrait.webp" alt="Veteran Peltast"></a><figcaption>Veteran Peltast<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Griffins</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier3.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier3.base.portrait.webp" alt="Griffin"></a><figcaption>Griffin<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp" alt="Windcrest Griffin"></a><figcaption>Windcrest Griffin<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 4 · Cavalry</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier4.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier4.base.portrait.webp" alt="Cavalry"></a><figcaption>Cavalry<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp" alt="Companion Cavalry"></a><figcaption>Companion Cavalry<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 5 · Temple Adepts</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier5.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier5.base.portrait.webp" alt="Temple Adept"></a><figcaption>Temple Adept<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier5.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier5.upgraded.portrait.webp" alt="Temple Seer"></a><figcaption>Temple Seer<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 6 · Minotaurs</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier6.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier6.base.portrait.webp" alt="Minotaur"></a><figcaption>Minotaur<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier6.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier6.upgraded.portrait.webp" alt="Labyrinth Warden"></a><figcaption>Labyrinth Warden<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 7 · Cyclopes</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier7.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier7.base.portrait.webp" alt="Cyclops"></a><figcaption>Cyclops<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.greek.tier7.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.greek.tier7.upgraded.portrait.webp" alt="Stormforged Cyclops"></a><figcaption>Stormforged Cyclops<br>upgraded</figcaption></figure>
+</div></article>
+</div>
+<h3>Norse</h3><div class="portraits">
+<article><h3>Tier 1 · Draugar</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier1.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier1.base.portrait.webp" alt="Draugr"></a><figcaption>Draugr<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp" alt="Deathless Draugr"></a><figcaption>Deathless Draugr<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Frost Wolves</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier2.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier2.base.portrait.webp" alt="Frost Wolf"></a><figcaption>Frost Wolf<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier2.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier2.upgraded.portrait.webp" alt="Fenrir Wolf"></a><figcaption>Fenrir Wolf<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Frost Trolls</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier3.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier3.base.portrait.webp" alt="Frost Troll"></a><figcaption>Frost Troll<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier3.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier3.upgraded.portrait.webp" alt="Ancient Frost Troll"></a><figcaption>Ancient Frost Troll<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 4 · Valkyries</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier4.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier4.base.portrait.webp" alt="Valkyrie"></a><figcaption>Valkyrie<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp" alt="Battle Valkyrie"></a><figcaption>Battle Valkyrie<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 5 · Lindworms</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier5.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier5.base.portrait.webp" alt="Lindworm"></a><figcaption>Lindworm<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp" alt="Storm Lindworm"></a><figcaption>Storm Lindworm<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 6 · Jotnar</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier6.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier6.base.portrait.webp" alt="Jotunn"></a><figcaption>Jotunn<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier6.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier6.upgraded.portrait.webp" alt="Runic Jotunn"></a><figcaption>Runic Jotunn<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 7 · Nidhogg Wyrms</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier7.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier7.base.portrait.webp" alt="Nidhogg Wyrm"></a><figcaption>Nidhogg Wyrm<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.norse.tier7.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.norse.tier7.upgraded.portrait.webp" alt="World-Serpent Wyrm"></a><figcaption>World-Serpent Wyrm<br>upgraded</figcaption></figure>
+</div></article>
+</div>
+<h3>Egyptian</h3><div class="portraits">
+<article><h3>Tier 1 · Sacred Scarabs</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier1.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier1.base.portrait.webp" alt="Sacred Scarab"></a><figcaption>Sacred Scarab<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp" alt="Solar Scarab"></a><figcaption>Solar Scarab<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Jackal Guardians</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier2.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier2.base.portrait.webp" alt="Jackal Guardian"></a><figcaption>Jackal Guardian<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp" alt="Anubian Warden"></a><figcaption>Anubian Warden<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Ushabti</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier3.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier3.base.portrait.webp" alt="Ushabti"></a><figcaption>Ushabti<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp" alt="Royal Ushabti"></a><figcaption>Royal Ushabti<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 4 · Sphinxes</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier4.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier4.base.portrait.webp" alt="Sphinx"></a><figcaption>Sphinx<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp" alt="Great Sphinx"></a><figcaption>Great Sphinx<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 5 · Crocodile Beasts</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier5.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier5.base.portrait.webp" alt="Crocodile Beast"></a><figcaption>Crocodile Beast<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp" alt="Sobek Warbeast"></a><figcaption>Sobek Warbeast<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 6 · Bennu</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier6.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier6.base.portrait.webp" alt="Bennu"></a><figcaption>Bennu<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp" alt="Radiant Bennu"></a><figcaption>Radiant Bennu<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 7 · Desert Colossi</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier7.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier7.base.portrait.webp" alt="Desert Colossus"></a><figcaption>Desert Colossus<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp" alt="Divine Colossus"></a><figcaption>Divine Colossus<br>upgraded</figcaption></figure>
+</div></article>
+</div>
+<h3>Japanese</h3><div class="portraits">
+<article><h3>Tier 1 · Kitsune</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier1.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier1.base.portrait.webp" alt="Kitsune"></a><figcaption>Kitsune<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp" alt="Nine-Tailed Kitsune"></a><figcaption>Nine-Tailed Kitsune<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Kappa</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier2.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier2.base.portrait.webp" alt="Kappa"></a><figcaption>Kappa<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp" alt="River Elder Kappa"></a><figcaption>River Elder Kappa<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Tengu</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier3.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier3.base.portrait.webp" alt="Tengu"></a><figcaption>Tengu<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp" alt="Great Tengu"></a><figcaption>Great Tengu<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 4 · Oni</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier4.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier4.base.portrait.webp" alt="Oni"></a><figcaption>Oni<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp" alt="Oni Warlord"></a><figcaption>Oni Warlord<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 5 · Jorogumo</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier5.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier5.base.portrait.webp" alt="Jorogumo"></a><figcaption>Jorogumo<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp" alt="Queen Jorogumo"></a><figcaption>Queen Jorogumo<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 6 · Kirin</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier6.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier6.base.portrait.webp" alt="Kirin"></a><figcaption>Kirin<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp" alt="Celestial Kirin"></a><figcaption>Celestial Kirin<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 7 · Orochi</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier7.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier7.base.portrait.webp" alt="Orochi"></a><figcaption>Orochi<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp" alt="Imperial Orochi"></a><figcaption>Imperial Orochi<br>upgraded</figcaption></figure>
+</div></article>
+</div>
+<h3>Celtic</h3><div class="portraits">
+<article><h3>Tier 1 · Pooka</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier1.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier1.base.portrait.webp" alt="Pooka"></a><figcaption>Pooka<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp" alt="Elder Pooka"></a><figcaption>Elder Pooka<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Cu Sith</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier2.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier2.base.portrait.webp" alt="Cu Sith"></a><figcaption>Cu Sith<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp" alt="Great Cu Sith"></a><figcaption>Great Cu Sith<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Kelpies</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier3.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier3.base.portrait.webp" alt="Kelpie"></a><figcaption>Kelpie<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp" alt="Dread Kelpie"></a><figcaption>Dread Kelpie<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 4 · Banshees</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier4.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier4.base.portrait.webp" alt="Banshee"></a><figcaption>Banshee<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp" alt="Battle Banshee"></a><figcaption>Battle Banshee<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 5 · Selkies</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier5.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier5.base.portrait.webp" alt="Selkie"></a><figcaption>Selkie<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp" alt="Storm Selkie"></a><figcaption>Storm Selkie<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 6 · Horned Stag Spirits</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier6.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier6.base.portrait.webp" alt="Horned Stag Spirit"></a><figcaption>Horned Stag Spirit<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp" alt="Great Stag Spirit"></a><figcaption>Great Stag Spirit<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 7 · Fomorian Giants</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier7.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier7.base.portrait.webp" alt="Fomorian Giant"></a><figcaption>Fomorian Giant<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp" alt="Ancient Fomorian"></a><figcaption>Ancient Fomorian<br>upgraded</figcaption></figure>
+</div></article>
+</div>
+<h3>Mesoamerican</h3><div class="portraits">
+<article><h3>Tier 1 · Feathered Serpents</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp" alt="Feathered Serpent"></a><figcaption>Feathered Serpent<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp" alt="Celestial Feathered Serpent"></a><figcaption>Celestial Feathered Serpent<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Jaguar Spirits</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp" alt="Jaguar Spirit"></a><figcaption>Jaguar Spirit<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp" alt="Sun Jaguar"></a><figcaption>Sun Jaguar<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Eagle Warrior Spirits</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp" alt="Eagle Warrior Spirit"></a><figcaption>Eagle Warrior Spirit<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp" alt="Solar Eagle Warrior"></a><figcaption>Solar Eagle Warrior<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 4 · Cenote Crocodiles</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp" alt="Cenote Crocodile"></a><figcaption>Cenote Crocodile<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp" alt="Temple Crocodile"></a><figcaption>Temple Crocodile<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 5 · Camazotz</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp" alt="Camazotz"></a><figcaption>Camazotz<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp" alt="Blood Moon Camazotz"></a><figcaption>Blood Moon Camazotz<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 6 · Xiuhcoatl</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp" alt="Xiuhcoatl"></a><figcaption>Xiuhcoatl<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp" alt="Divine Xiuhcoatl"></a><figcaption>Divine Xiuhcoatl<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 7 · Stone Colossi</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp" alt="Stone Colossus"></a><figcaption>Stone Colossus<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp" alt="Sun Colossus"></a><figcaption>Sun Colossus<br>upgraded</figcaption></figure>
+</div></article>
+</div>
+<h3>Neutral</h3><div class="portraits">
+<article><h3>Tier 1 · Brigands</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.brigand.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.brigand.base.portrait.webp" alt="Brigand"></a><figcaption>Brigand<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.brigand.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.brigand.upgraded.portrait.webp" alt="Brigand Cutthroat"></a><figcaption>Brigand Cutthroat<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Wild Boars</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.wild_boar.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.wild_boar.base.portrait.webp" alt="Wild Boar"></a><figcaption>Wild Boar<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.wild_boar.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.wild_boar.upgraded.portrait.webp" alt="Great Tusked Boar"></a><figcaption>Great Tusked Boar<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 2 · Hill Slingers</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.hill_slinger.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.hill_slinger.base.portrait.webp" alt="Hill Slinger"></a><figcaption>Hill Slinger<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.hill_slinger.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.hill_slinger.upgraded.portrait.webp" alt="Sling Master"></a><figcaption>Sling Master<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Clay Golems</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.clay_golem.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.clay_golem.base.portrait.webp" alt="Clay Golem"></a><figcaption>Clay Golem<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.clay_golem.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.clay_golem.upgraded.portrait.webp" alt="Bronze Golem"></a><figcaption>Bronze Golem<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 3 · Centaurs</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.centaur.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.centaur.base.portrait.webp" alt="Centaur"></a><figcaption>Centaur<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.centaur.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.centaur.upgraded.portrait.webp" alt="Centaur Sentinel"></a><figcaption>Centaur Sentinel<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 4 · Wyverns</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.wyvern.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.wyvern.base.portrait.webp" alt="Wyvern"></a><figcaption>Wyvern<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.wyvern.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.wyvern.upgraded.portrait.webp" alt="Wyvern Matriarch"></a><figcaption>Wyvern Matriarch<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 5 · Ogres</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.ogre.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.ogre.base.portrait.webp" alt="Ogre"></a><figcaption>Ogre<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.ogre.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.ogre.upgraded.portrait.webp" alt="Ogre Chieftain"></a><figcaption>Ogre Chieftain<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 6 · Basilisks</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.basilisk.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.basilisk.base.portrait.webp" alt="Basilisk"></a><figcaption>Basilisk<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.basilisk.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.basilisk.upgraded.portrait.webp" alt="Greater Basilisk"></a><figcaption>Greater Basilisk<br>upgraded</figcaption></figure>
+</div></article>
+<article><h3>Tier 7 · Elder Drakes</h3><div class="pair">
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.elder_drake.base.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.elder_drake.base.portrait.webp" alt="Elder Drake"></a><figcaption>Elder Drake<br>base</figcaption></figure>
+<figure><a href="../../assets-runtime/ui/icons/final/creature.neutral.elder_drake.upgraded.portrait.webp"><img loading="lazy" src="../../assets-runtime/ui/icons/final/creature.neutral.elder_drake.upgraded.portrait.webp" alt="Ancient Drake"></a><figcaption>Ancient Drake<br>upgraded</figcaption></figure>
+</div></article>
+</div>
+</section></main></html>

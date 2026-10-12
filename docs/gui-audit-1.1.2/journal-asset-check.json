@@ -1,0 +1,44 @@
+{
+  "assets": [
+    {
+      "url": "http://127.0.0.1:5196/ui-v1.1.0/book-open.png",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "url": "http://127.0.0.1:5196/art/missions/mission.three_beacons.m01.briefing.webp",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "url": "http://127.0.0.1:5196/ui/icons/final/icon.marker.quest.png",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "url": "http://127.0.0.1:5196/ui/icons/final/icon.marker.quest.png",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "url": "http://127.0.0.1:5196/ui/icons/final/icon.marker.quest.png",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "url": "http://127.0.0.1:5196/ui/icons/final/icon.marker.quest.png",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "url": "http://127.0.0.1:5196/ui/icons/final/icon.marker.quest.png",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "url": "http://127.0.0.1:5196/ui/icons/final/icon.marker.quest.png",
+      "width": 96,
+      "height": 96
+    }
+  ]
+}

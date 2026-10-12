@@ -86,7 +86,9 @@ test('map: no Overview or hero panel; guards shown as portraits without an estim
   await waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0 && x.humanTurn, 'map');
   await expect(page.getByRole('button', { name: 'Overview' })).toHaveCount(0);
   await expect(page.locator('.adv-hero')).toHaveCount(0);
-  await expect(page.locator('.adv-left .panel__header')).toHaveCount(0);
+  // 1.1.0: heroes and towns live in the command sidebar; the left column only informs (the objectives keep their title).
+  await expect(page.locator('.adv-left .adv-list')).toHaveCount(0);
+  await expect(page.locator('.adv-left .panel__header').filter({ hasNotText: /Objectives|While you waited/ })).toHaveCount(0);
 
   // The tile panel: the guards as portraits with counts, no "Estimate vs" heuristic.
   await clickHex(page, site.q, site.r, 'right');

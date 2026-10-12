@@ -49,6 +49,8 @@ import { Button, Modal, Panel, SectionTitle, Segmented, Tabs, TextInput, Toggle 
 import { ScreenHeader } from '../components/game';
 import { resolveAsset } from '../assets/manifest';
 import { DifficultyPicker } from './Setup';
+import { SkirmishMapThumb } from '../components/mapPreview';
+import { ArtIcon, EmptyArchive, artUrl, backdropStyle } from '../components/frontend';
 
 const R = 22; // hex radius in world pixels at zoom 1
 const GROUNDS: readonly Exclude<Terrain, 'void'>[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
@@ -339,33 +341,33 @@ export function MapEditorScreen() {
   leaveRef.current = leave;
 
   return (
-    <div className="screen map-editor" data-testid="map-editor">
+    <div className="screen map-editor fe-shell fe-shell--atlas fe-editor" style={backdropStyle('atlas')} data-testid="map-editor">
       <ScreenHeader title="Map Editor" subtitle={`${doc.name}${dirty ? ' · unsaved' : ''}`} onBack={leave} />
-      <div className="map-editor__bar">
-        <Button size="small" icon="map" onClick={() => setDialog('new')} data-testid="editor-new">
+      <div className="map-editor__bar" role="toolbar" aria-label="Map file and history">
+        <Button size="small" icon="map" artUrl={artUrl('frontendkit.icon.new-map')} onClick={() => setDialog('new')} data-testid="editor-new">
           New
         </Button>
-        <Button size="small" icon="auto" onClick={() => setDialog('generate')} data-testid="editor-generate" title="Generate a random map, then edit it">
+        <Button size="small" icon="auto" artUrl={artUrl('frontendkit.icon.generate')} onClick={() => setDialog('generate')} data-testid="editor-generate" title="Generate a random map, then edit it">
           Generate
         </Button>
-        <Button size="small" icon="load" onClick={() => setDialog('open')} data-testid="editor-open">
+        <Button size="small" icon="load" artUrl={artUrl('icon.menu.load-game')} onClick={() => setDialog('open')} data-testid="editor-open">
           Open
         </Button>
-        <Button size="small" icon="save" onClick={() => void saveToLibrary()} data-testid="editor-save">
+        <Button size="small" icon="save" artUrl={artUrl('icon.ui.save')} onClick={() => void saveToLibrary()} data-testid="editor-save">
           Save
         </Button>
-        <Button size="small" onClick={() => void exportFile()} data-testid="editor-export">
+        <Button size="small" artUrl={artUrl('frontendkit.icon.export')} onClick={() => void exportFile()} data-testid="editor-export">
           Export file
         </Button>
         <span className="map-editor__sep" />
-        <Button size="small" onClick={doUndo} disabled={undo.current.length === 0} title="Undo (Ctrl+Z)" data-testid="editor-undo">
+        <Button size="small" artUrl={artUrl('frontendkit.icon.undo')} onClick={doUndo} disabled={undo.current.length === 0} disabledReason="Nothing to undo" title="Undo (Ctrl+Z)" data-testid="editor-undo">
           Undo
         </Button>
-        <Button size="small" onClick={doRedo} disabled={redo.current.length === 0} title="Redo (Ctrl+Y)" data-testid="editor-redo">
+        <Button size="small" artUrl={artUrl('frontendkit.icon.redo')} onClick={doRedo} disabled={redo.current.length === 0} disabledReason="Nothing to redo" title="Redo (Ctrl+Y)" data-testid="editor-redo">
           Redo
         </Button>
         <span className="map-editor__spacer" />
-        <span className={`small ${errors.length ? 'map-editor__bad' : 'dim'}`} data-testid="editor-status">
+        <span className={`small ${errors.length ? 'map-editor__bad' : 'dim'}`} role="status" data-testid="editor-status">
           {errors.length ? `${errors.length} problem${errors.length > 1 ? 's' : ''} to fix before playing` : 'Ready to play'}
         </span>
         <Button variant="primary" size="small" icon="play" disabled={errors.length > 0} disabledReason={errors[0]?.text} onClick={() => setDialog('play')} data-testid="editor-play">
@@ -423,7 +425,7 @@ export function MapEditorScreen() {
             if (id) setTab('site');
           }}
         />
-        <Panel className="map-editor__side" bodyClassName="map-editor__side-body">
+        <Panel className="map-editor__side" bodyClassName="map-editor__side-body" framed="compact">
           <Tabs
             label="Editor panels"
             value={tab}
@@ -492,16 +494,25 @@ export function MapEditorScreen() {
           title="Leave the editor?"
           onClose={() => setDialog(null)}
           testId="editor-leave"
+          surface="parchment"
+          compact
+          width="30rem"
           footer={
             <>
-              <Button onClick={() => setDialog(null)}>Keep editing</Button>
+              <span className="grow" />
+              <Button onClick={() => setDialog(null)} data-autofocus="" data-testid="editor-leave-cancel">
+                Keep editing
+              </Button>
               <Button variant="danger" onClick={() => store.back()} data-testid="editor-leave-confirm">
                 Leave without saving
               </Button>
             </>
           }
         >
-          <p>This map has changes that are not saved to the map library.</p>
+          <div className="confirm__lead confirm__lead--danger">
+            <ArtIcon id="frontendkit.icon.warning" className="confirm__seal" />
+            <p className="confirm__body">This map has changes that are not saved to the map library.</p>
+          </div>
         </Modal>
       ) : null}
     </div>
@@ -547,17 +558,21 @@ function ToolPalette({
 }) {
   const is = (t: Tool) => JSON.stringify(t) === JSON.stringify(tool);
   return (
-    <Panel className="map-editor__tools" bodyClassName="map-editor__tools-body scroll">
+    <Panel className="map-editor__tools" bodyClassName="map-editor__tools-body scroll" framed="compact">
       <SectionTitle>Tools</SectionTitle>
       <div className="map-editor__grid">
         <button type="button" className={`editor-tool ${is({ kind: 'select' }) ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'select' })} data-testid="tool-select" title="Select and move sites">
+          <ArtIcon id="frontendkit.icon.select" className="editor-tool__icon" />
           Select
         </button>
         <button type="button" className={`editor-tool ${is({ kind: 'erase' }) ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'erase' })} data-testid="tool-erase" title="Remove a site">
+          <ArtIcon id="frontendkit.icon.erase" className="editor-tool__icon" />
           Erase site
         </button>
       </div>
-      <SectionTitle>Ground</SectionTitle>
+      <SectionTitle>
+        <ArtIcon id="frontendkit.icon.terrain" className="section-title__icon" /> Ground
+      </SectionTitle>
       <div className="map-editor__grid">
         {GROUNDS.map((g) => (
           <button
@@ -581,12 +596,16 @@ function ToolPalette({
         <Segmented label="Symmetry brush" value={symmetry} options={CUSTOM_SYMMETRIES.map((x) => ({ id: x.id, label: x.label }))} onChange={(v) => setSymmetry(v)} testId="symmetry" />
         <span className="faint">{CUSTOM_SYMMETRIES.find((x) => x.id === symmetry)?.summary} Ground and roads.</span>
       </div>
-      <SectionTitle>Roads</SectionTitle>
+      <SectionTitle>
+        <ArtIcon id="frontendkit.icon.road" className="section-title__icon" /> Roads
+      </SectionTitle>
       <div className="map-editor__grid">
         <button type="button" className={`editor-tool ${is({ kind: 'road', erase: false }) ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'road', erase: false })} data-testid="tool-road" title="Drag across tiles to lay a road">
+          <ArtIcon id="frontendkit.icon.road" className="editor-tool__icon" />
           Road
         </button>
         <button type="button" className={`editor-tool ${is({ kind: 'road', erase: true }) ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'road', erase: true })} data-testid="tool-road-erase" title="Drag across tiles to remove a road">
+          <ArtIcon id="frontendkit.icon.erase" className="editor-tool__icon" />
           Remove road
         </button>
       </div>
@@ -1436,60 +1455,94 @@ function OpenMapDialog({ onClose, onLoad }: { onClose: () => void; onLoad: (text
   useEffect(() => {
     void refresh();
   }, [refresh]);
+  const templates = Object.values(store.catalog.skirmishMaps ?? {}).sort((a, b) => a.order - b.order);
+  const where = store.platform.kind === 'desktop' ? 'on this computer' : 'in this browser';
+  const importFile = () => void store.platform.maps.importFile().then((t) => onLoad(t, null));
+  // Map Library (1.1.0 handoff screen 11): the maps kept locally and the built-in skirmish maps, apart; a
+  // template is only ever opened as a copy. No thumbnails are promised for local maps (a generic map sign).
   return (
     <Modal
-      title="Open a map"
+      title="Map Library"
       onClose={onClose}
+      width="56rem"
+      surface="parchment"
       testId="editor-open-dialog"
       footer={
         <>
-          <Button onClick={() => void store.platform.maps.importFile().then((t) => onLoad(t, null))} data-testid="editor-import">
+          <Button onClick={importFile} artUrl={artUrl('frontendkit.icon.import')} data-testid="editor-import">
             Import a map file…
           </Button>
+          <span className="grow" />
           <Button onClick={onClose}>Close</Button>
         </>
       }
     >
-      {list === null ? <p className="small dim">Reading the map library…</p> : null}
-      {list && list.length === 0 ? <p className="small dim">The map library is empty. Save a map with Save, or import a map file.</p> : null}
-      <ul className="editor-library">
-        {(list ?? []).map((m) => (
-          <li key={m.id} className="editor-library__row">
-            <span className="editor-library__name">{m.name}</span>
-            <span className="small dim">{(m.bytes / 1024).toFixed(1)} KB</span>
-            <Button size="small" variant="primary" onClick={() => void store.platform.maps.read(m.id).then((t) => onLoad(t, m.id))} data-testid={`library-open-${m.id}`}>
-              Open
-            </Button>
-            <Button
-              size="small"
-              variant="ghost"
-              onClick={() =>
-                store.confirm(`Delete “${m.name}”?`, 'The map leaves the library for good (exported map files stay where you saved them).', 'Delete', () => void store.platform.maps.remove(m.id).then(refresh), { danger: true })
-              }
-            >
-              Delete
-            </Button>
-          </li>
-        ))}
-      </ul>
-      {Object.keys(store.catalog.skirmishMaps ?? {}).length ? (
-        <>
-          <SectionTitle>Skirmish maps</SectionTitle>
+      <section className="fe-library__section" aria-labelledby="library-local">
+        <h3 className="fe-library__heading" id="library-local">
+          Your maps <span className="fe-library__where">kept {where}</span>
+        </h3>
+        {list === null ? (
+          <p className="small dim" role="status">
+            Reading the map library…
+          </p>
+        ) : null}
+        {list && list.length === 0 ? (
+          <EmptyArchive
+            title="Your map library is empty"
+            testId="library-empty"
+            action={
+              <Button onClick={importFile} artUrl={artUrl('frontendkit.icon.import')} data-testid="library-empty-import">
+                Import a map file (.prmap.json)…
+              </Button>
+            }
+          >
+            A map you keep with Save in the editor appears here. You can also import a map file, or open a copy of a skirmish map below.
+          </EmptyArchive>
+        ) : null}
+        <ul className="editor-library fe-library__list">
+          {(list ?? []).map((m) => (
+            <li key={m.id} className="editor-library__row fe-library__row">
+              <span className="fe-library__sign" aria-hidden="true" />
+              <span className="fe-library__text">
+                <span className="editor-library__name">{m.name}</span>
+                <span className="small dim">{(m.bytes / 1024).toFixed(1)} KB</span>
+              </span>
+              <Button size="small" variant="primary" onClick={() => void store.platform.maps.read(m.id).then((t) => onLoad(t, m.id))} data-testid={`library-open-${m.id}`}>
+                Open
+              </Button>
+              <Button
+                size="small"
+                variant="ghost"
+                artUrl={artUrl('frontendkit.icon.delete')}
+                onClick={() =>
+                  store.confirm(`Delete “${m.name}”?`, 'The map leaves the library for good (exported map files stay where you saved them).', 'Delete', () => void store.platform.maps.remove(m.id).then(refresh), { danger: true })
+                }
+              >
+                Delete
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </section>
+      {templates.length ? (
+        <section className="fe-library__section" aria-labelledby="library-templates">
+          <h3 className="fe-library__heading" id="library-templates">
+            Skirmish maps <span className="fe-library__where">built into the game</span>
+          </h3>
           <p className="small dim">Open a copy of a map from the Skirmish list to change it; the original stays as it is.</p>
-          <ul className="editor-library">
-            {Object.values(store.catalog.skirmishMaps ?? {})
-              .sort((a, b) => a.order - b.order)
-              .map((m) => (
-                <li key={m.id} className="editor-library__row">
-                  <span className="editor-library__name">{m.name}</span>
-                  <span className="small dim">{m.map.players.length} empires</span>
-                  <Button size="small" onClick={() => onLoad(serializeCustomMap({ ...m.map, name: `${m.name} (copy)` }), null)} data-testid={`library-copy-${m.id}`}>
-                    Open a copy
-                  </Button>
-                </li>
-              ))}
+          <ul className="editor-library fe-library__grid">
+            {templates.map((m) => (
+              <li key={m.id} className="editor-library__row fe-library__card">
+                <SkirmishMapThumb doc={m.map} assetId={m.thumbnailAssetId} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
+                <span className="editor-library__name">{m.name}</span>
+                <span className="small dim">{m.map.players.length} empires</span>
+                <Button size="small" onClick={() => onLoad(serializeCustomMap({ ...m.map, name: `${m.name} (copy)` }), null)} data-testid={`library-copy-${m.id}`}>
+                  Open a copy
+                </Button>
+              </li>
+            ))}
           </ul>
-        </>
+        </section>
       ) : null}
     </Modal>
   );

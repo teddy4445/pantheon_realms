@@ -1,0 +1,222 @@
+{
+  "scope": "Standalone component/art preview only; not an integrated game test",
+  "errors": [],
+  "viewports": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "scrollWidth": 1920,
+      "horizontalOverflow": false,
+      "brokenImages": []
+    },
+    {
+      "width": 1600,
+      "height": 1000,
+      "scrollWidth": 1600,
+      "horizontalOverflow": false,
+      "brokenImages": []
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1280,
+      "horizontalOverflow": false,
+      "brokenImages": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "horizontalOverflow": false,
+      "brokenImages": []
+    }
+  ],
+  "themes": [
+    {
+      "theme": "greek",
+      "stage": "url(\"file:///C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/recruit-greek.png\")",
+      "merchant": "../../assets-runtime/ui-v1.1.0/merchant-greek.png"
+    },
+    {
+      "theme": "norse",
+      "stage": "url(\"file:///C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/recruit-norse.png\")",
+      "merchant": "../../assets-runtime/ui-v1.1.0/merchant-norse.png"
+    },
+    {
+      "theme": "egyptian",
+      "stage": "url(\"file:///C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/recruit-egyptian-v2.png\")",
+      "merchant": "../../assets-runtime/ui-v1.1.0/merchant-egyptian.png"
+    },
+    {
+      "theme": "japanese",
+      "stage": "url(\"file:///C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/recruit-japanese-v2.png\")",
+      "merchant": "../../assets-runtime/ui-v1.1.0/merchant-japanese.png"
+    },
+    {
+      "theme": "celtic",
+      "stage": "url(\"file:///C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/recruit-celtic-v2.png\")",
+      "merchant": "../../assets-runtime/ui-v1.1.0/merchant-celtic.png"
+    },
+    {
+      "theme": "mesoamerican",
+      "stage": "url(\"file:///C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/recruit-mesoamerican-v2.png\")",
+      "merchant": "../../assets-runtime/ui-v1.1.0/merchant-mesoamerican.png"
+    }
+  ],
+  "newImageDecode": [
+    {
+      "src": "ui-v1.1.0/frame-greek.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/banner-greek.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/recruit-greek.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/merchant-greek.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/frame-norse.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/banner-norse.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/recruit-norse.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/merchant-norse.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/frame-egyptian.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/banner-egyptian.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/recruit-egyptian-v2.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/merchant-egyptian.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/frame-japanese.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/banner-japanese.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/recruit-japanese-v2.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/merchant-japanese.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/frame-celtic.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/banner-celtic.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/recruit-celtic-v2.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/merchant-celtic.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/frame-mesoamerican.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/banner-mesoamerican.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/recruit-mesoamerican-v2.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/merchant-mesoamerican.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/surface-stone.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/surface-parchment.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/surface-leather.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/book-open.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/equipment-figure.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/control-button.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/control-socket.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/encounter-treasure.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/encounter-treasure-empty.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/encounter-longship.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/encounter-hermit.png",
+      "ok": true
+    },
+    {
+      "src": "ui-v1.1.0/encounter-crossroads.png",
+      "ok": true
+    }
+  ],
+  "initialConfirmDisabled": true,
+  "selectDoesNotConfirm": true,
+  "singleConfirmation": true,
+  "resetNoSelection": true,
+  "reducedMotionTransitions": "0s",
+  "gallery": {
+    "cards": 36,
+    "brokenImages": []
+  },
+  "pass": true
+}

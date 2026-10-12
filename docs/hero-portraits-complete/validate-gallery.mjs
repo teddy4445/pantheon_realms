@@ -1,0 +1,24 @@
+import { chromium } from 'file:///C:/Users/lazeb/Desktop/blannder_models/landing/node_modules/playwright/index.mjs';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const root='C:/Users/lazeb/Desktop/pantheon_realms/docs/hero-portraits-complete';
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1366,height:1000}});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('file:///'+root+'/index.html');
+await page.evaluate(async()=>{for(const i of document.images)i.loading='eager';await Promise.all([...document.images].map(i=>i.decode()));});
+const imageCount=await page.locator('img').count();assert.equal(imageCount,178);
+assert.equal(await page.locator('article:visible').count(),89);
+await page.selectOption('#status','generated');assert.equal(await page.locator('article:visible').count(),54);
+const expected={celtic:11,egyptian:11,greek:6,japanese:11,mesoamerican:11,norse:4};
+for(const [f,n] of Object.entries(expected)){await page.selectOption('#faction',f);assert.equal(await page.locator('article:visible').count(),n);}
+await page.selectOption('#faction','');await page.fill('#search','amergin');assert.equal(await page.locator('article:visible').count(),1);
+await page.fill('#search','');await page.selectOption('#faction','norse');
+const desktopOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(desktopOverflow,false);
+await page.screenshot({path:root+'/gallery-desktop.png'});
+await page.setViewportSize({width:390,height:844});
+const mobileOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(mobileOverflow,false);
+await page.screenshot({path:root+'/gallery-mobile.png'});assert.deepEqual(errors,[]);
+await fs.writeFile(root+'/gallery-validation.json',JSON.stringify({status:'passed',imagesDecoded:imageCount,identities:89,newPortraits:54,factionCounts:expected,searchPassed:true,desktopOverflow,mobileOverflow,errors},null,2));
+console.log('PASS: 178 images decoded, 89 identities, 54 new portraits; faction/search filters and desktop/mobile layout.');
+await browser.close();

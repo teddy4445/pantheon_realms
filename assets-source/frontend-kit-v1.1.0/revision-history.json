@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "retouching": "Image generator only; native image bytes copied unchanged",
+  "revisions": [
+    {
+      "assetId": "frontendkit.brand.logo",
+      "original": "brand-logo.png",
+      "selected": "brand-logo-v2.png",
+      "reason": "Original tallest crest tip touched canvas boundary; selected revision includes the full tip.",
+      "prompt": "Edit target: attached Pantheon Realms transparent title logo. Preserve EXACT gold letters PANTHEON REALMS, blue enamel rectangular plaque, ornamental details, gold crest and all identity. Fix only composition and framing: entire upper pointed ray is currently clipped by canvas. Show complete uncut top crest and every ornament, all four sides fully within frame. Scale entire design uniformly down to allow generous transparent clearance 8 percent of canvas height above the tallest spike and below ornament, and safe margins at sides. Wide 3:1 canvas. Same gold and blue game artwork. True transparent background, no opaque rectangle, no shadow rectangle. Do not change text or design. This is isolated production UI artwork, not a screenshot."
+    }
+  ]
+}

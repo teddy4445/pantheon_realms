@@ -1,0 +1,1139 @@
+{
+  "provenance": "54 missing hero character portraits, matching existing square portraits. Additive production pack.",
+  "assets": {
+    "hero.celtic.amergin.bust": {
+      "file": "hero-portraits-complete/hero.celtic.amergin.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.231,
+      "sha256": "f1e748dc6cb763a0af43dc363a953ea5d6115d31329374a29751f1fa601f6752",
+      "bytes": 3308968,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.boudicca.bust": {
+      "file": "hero-portraits-complete/hero.celtic.boudicca.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01432,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2327,
+      "sha256": "dfb5c780ed94ccd4217b9372f005f6603bd271e9c97986fe42882971ded334cb",
+      "bytes": 3265578,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.ciar.bust": {
+      "file": "hero-portraits-complete/hero.celtic.ciar.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00977,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.233,
+      "sha256": "88cff91b73cc5dc3e727920a560c7f7d08e329f132e413c1c5cd8b56b9faeead",
+      "bytes": 3285217,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.corc.bust": {
+      "file": "hero-portraits-complete/hero.celtic.corc.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00716,
+        0.97266,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2579,
+      "sha256": "76a2151aa6095648ac2cd42abae1369f3fc08f63ca7a94ea5d70823bf96b9b9a",
+      "bytes": 3326805,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.cu_chulainn.bust": {
+      "file": "hero-portraits-complete/hero.celtic.cu_chulainn.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00586,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2749,
+      "sha256": "60b4c1409276bc094995f58bb4a056a501618cba51371efd2bf6473f9deb9849",
+      "bytes": 3057892,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.deirdre.bust": {
+      "file": "hero-portraits-complete/hero.celtic.deirdre.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01107,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.1975,
+      "sha256": "f3e32a335d024866366005a01738918d286dde32e050ff4114305540a5be9867",
+      "bytes": 3258521,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.fergus_mac_roich.bust": {
+      "file": "hero-portraits-complete/hero.celtic.fergus_mac_roich.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.02344,
+        0.00586,
+        0.98535,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2442,
+      "sha256": "1f6bf54ca14a81f1027c06b141f955d3ca3f3f18a4b00789a848832ebb249993",
+      "bytes": 3287060,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.fionn_mac_cumhaill.bust": {
+      "file": "hero-portraits-complete/hero.celtic.fionn_mac_cumhaill.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00716,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2217,
+      "sha256": "9de9d719ca660f002787501231c796864cff3258e21fcfa4ad7e43aa4496cd73",
+      "bytes": 3178863,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.medb.bust": {
+      "file": "hero-portraits-complete/hero.celtic.medb.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00846,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2174,
+      "sha256": "733db10e4a4bae54a9d11644a38c51ecf08f2841e098086ba9b29be2286be5a8",
+      "bytes": 3283657,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.scathach.bust": {
+      "file": "hero-portraits-complete/hero.celtic.scathach.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.99121,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2148,
+      "sha256": "5d6fbf276ed820262af8de3df58fb04d0255700f80c503c23a4fe059ac995966",
+      "bytes": 3246663,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.celtic.tadhg.bust": {
+      "file": "hero-portraits-complete/hero.celtic.tadhg.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01107,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2533,
+      "sha256": "12e5ff60f265ae707475ac8d12d0fe5db8e41282c44f59d7ddfadcfefeba26bc",
+      "bytes": 3328868,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.ahmose.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.ahmose.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0013,
+        0.98633,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3633,
+      "sha256": "1720c95784c9745036c4e97116686d9bd1978ecb2fb37f1e5dc185c24f0be787",
+      "bytes": 2840080,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.ankhwen.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.ankhwen.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.02018,
+        0.98926,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2998,
+      "sha256": "ddecbe1447799a1c1690b7a96b2e9d48ac1bf9c8f8e13612f9ea3b4f4a45e83d",
+      "bytes": 3079354,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.cleopatra.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.cleopatra.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01888,
+        0.99902,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3275,
+      "sha256": "75f477d01caedf6657d21e8c3eae9c9b4718b684a2789ad69ccc25f7a425df0b",
+      "bytes": 2667185,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.hatshepsut.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.hatshepsut.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98633,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.325,
+      "sha256": "3646c4dc1460f369f4808de0a1ffc54c948f46b8d81ae56ec35f842a2470a9ff",
+      "bytes": 2756563,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.hekaib.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.hekaib.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3148,
+      "sha256": "d3eed92e80ebda018327e0e275df0abea8ce2bdb863a14342aef07792605b290",
+      "bytes": 2964689,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.imhotep.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.imhotep.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.02148,
+        0.98633,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.4028,
+      "sha256": "47d7ddead5dd1fc22ab90ebf0710505a99e22c59f7327413292bcf54bd0b6565",
+      "bytes": 2609985,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.iti.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.iti.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2757,
+      "sha256": "954bc21d86485201e3dcf91b22a05b4dbe7adc9ea3ba8cea9c37e59b587a15ae",
+      "bytes": 2872889,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.nefertiti.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.nefertiti.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0293,
+        0.0,
+        0.96973,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3713,
+      "sha256": "8796bdcdaf7c8fc516eb348bb96f2c39c11ea4537ea2057a4bff91c832899e56",
+      "bytes": 2676729,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.peseshet.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.peseshet.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.01855,
+        0.01107,
+        0.98633,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3314,
+      "sha256": "4aa2ce9bde4c9f6f0db9f18f6bb6df0bae4e3af274a65870b0147087cbaea894",
+      "bytes": 2877550,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.ramses.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.ramses.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98633,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3035,
+      "sha256": "fe63ffc27856be865853b63bb7007b756f1e184521dfb91b03b3a7a6b369acaf",
+      "bytes": 2936287,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.egyptian.tiye.bust": {
+      "file": "hero-portraits-complete/hero.egyptian.tiye.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.9873,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.375,
+      "sha256": "140cd8dc18c6fd5c2a162d44c33fc4b0d5ffc116735ce92cb9cdc034b8f7069b",
+      "bytes": 2807759,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.greek.achilles.bust": {
+      "file": "hero-portraits-complete/hero.greek.achilles.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2713,
+      "sha256": "aba433eee1418313ca238acdc6803ca4e24466c8261da6fab739d6f91c8e12e8",
+      "bytes": 3145901,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.greek.atalanta.bust": {
+      "file": "hero-portraits-complete/hero.greek.atalanta.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2756,
+      "sha256": "14c8aa2f8458daf53e9d48747b17a1d0e7ea6cb9b5078387a90465fbe0cb7748",
+      "bytes": 2969107,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.greek.heracles.bust": {
+      "file": "hero-portraits-complete/hero.greek.heracles.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01497,
+        0.99609,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2665,
+      "sha256": "e9b55b506d516cc786953521a8e86222e3baadc7d06cbe340ed276820639d234",
+      "bytes": 3218221,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.greek.odysseus.bust": {
+      "file": "hero-portraits-complete/hero.greek.odysseus.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.02018,
+        0.99902,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3094,
+      "sha256": "7b8e69759acc7645a39f930513e27602c59eff89e577417a055e1254542e1e68",
+      "bytes": 2914084,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.greek.perseus.bust": {
+      "file": "hero-portraits-complete/hero.greek.perseus.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2774,
+      "sha256": "c341908dc3dab7d9e2b5b3c50639de261483b6fb25a6a88cf211a8933d426696",
+      "bytes": 3097481,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.greek.scout_captain.bust": {
+      "file": "hero-portraits-complete/hero.greek.scout_captain.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2871,
+      "sha256": "140debd0a0edca092c6d9b830edf1b4a32915628ced040d6b2a59c7c64ae9a95",
+      "bytes": 2985865,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.abe_no_seimei.bust": {
+      "file": "hero-portraits-complete/hero.japanese.abe_no_seimei.bust-v2.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01367,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2308,
+      "sha256": "2e84f396655aa79e372e21a2504feb663984569f8688dac96698d248734b2afd",
+      "bytes": 2996751,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.benkei.bust": {
+      "file": "hero-portraits-complete/hero.japanese.benkei.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.99023,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2656,
+      "sha256": "933a79f2a3488d64b5a03cf934f787fef7059b98cacb3a710dca172d381c4c5a",
+      "bytes": 3062755,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.gonryo.bust": {
+      "file": "hero-portraits-complete/hero.japanese.gonryo.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2339,
+      "sha256": "e613d7e0cb4931d99490e0932dfa0e5bc96298a753533db0e26285c5e99d00ab",
+      "bytes": 3245789,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.hangaku_gozen.bust": {
+      "file": "hero-portraits-complete/hero.japanese.hangaku_gozen.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.1666,
+      "sha256": "8c59e3ec010da074c4e6678eb178f80c9007961f0c0e8e0d437c1a491c978a37",
+      "bytes": 3160179,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.kagero.bust": {
+      "file": "hero-portraits-complete/hero.japanese.kagero.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.1976,
+      "sha256": "4931f6999578c2d29db6f368e1ad7a736b7abb22bbdd64a6bf229ebe871222cd",
+      "bytes": 3190553,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.kusunoki_masashige.bust": {
+      "file": "hero-portraits-complete/hero.japanese.kusunoki_masashige.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2776,
+      "sha256": "58ed1083316057538759bac81b4a6ec8e7c05cc737bcc6566f99d95a01c69ae9",
+      "bytes": 3077597,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.momotaro.bust": {
+      "file": "hero-portraits-complete/hero.japanese.momotaro.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00651,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2763,
+      "sha256": "f8492639f79b7eb92802a66337267ff57a27a3b3c738a6d4d573da29984a68c3",
+      "bytes": 3011270,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.oboro.bust": {
+      "file": "hero-portraits-complete/hero.japanese.oboro.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00521,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.1947,
+      "sha256": "9c65b3176856b656d190b79c6e0533ce5cbdc730941cc4e78efea9abd00f9504",
+      "bytes": 3217021,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.tomoe_gozen.bust": {
+      "file": "hero-portraits-complete/hero.japanese.tomoe_gozen.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.1729,
+      "sha256": "8befffbb2765abb831b4bc8767ee36b9bc7c9f57855d24276e46a61a9aca0db9",
+      "bytes": 3394974,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.yamato_takeru.bust": {
+      "file": "hero-portraits-complete/hero.japanese.yamato_takeru.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01237,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2181,
+      "sha256": "3cf6ad13ae2b59f3ba4398dc8f8bd99178af2181efc2bda6e9c2d89945368c7e",
+      "bytes": 3223063,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.japanese.yoshitsune.bust": {
+      "file": "hero-portraits-complete/hero.japanese.yoshitsune.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2085,
+      "sha256": "b3c5fcc142755637d71b2c90f20d589145e725c0afdc08e5e6630ea55821470b",
+      "bytes": 3176448,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.acatl.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.acatl.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98828,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3422,
+      "sha256": "8700d076dd71336d8e380c7ca1a2cb447f4d55b3e5d30acfc38033e08ba92ebf",
+      "bytes": 2987286,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.chilam_balam.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.chilam_balam.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.99023,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2877,
+      "sha256": "e1be6247ee28e0becaa6f1a5b5dc92800c15ddcff328535283acff96c691f5be",
+      "bytes": 3215323,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.eight_deer_jaguar_claw.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.eight_deer_jaguar_claw.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98828,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2535,
+      "sha256": "460fc84cb2166b7f50a216b128a03533657b68522e4b62a3f233dbf84dd2869d",
+      "bytes": 3243476,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.hunahpu.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.hunahpu.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98828,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3327,
+      "sha256": "53c022b3e104c0ceaba73ac0d91384a7595a19e47c1882df91fd7367d4be90ff",
+      "bytes": 2968694,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.lady_six_sky.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.lady_six_sky.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98828,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3611,
+      "sha256": "a28c5653d65a93e3f169a2029afa3e427eb05e2a69149953822a35c6c0aeb7dd",
+      "bytes": 2913559,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.mazatl.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.mazatl.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98828,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3245,
+      "sha256": "d47797064cc2fdcdb944ae4b2e944962fc4eb492ca2ebb33727d0294b94d6ede",
+      "bytes": 2979203,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.moctezuma_ilhuicamina.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.moctezuma_ilhuicamina.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.98242,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3073,
+      "sha256": "7cd8fe97d67a4e7351cdd4bdfb2ff624750be3b9bdc2bbf7216566ae2c6cac6d",
+      "bytes": 3138736,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.nezahualcoyotl.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.nezahualcoyotl.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.99902,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2669,
+      "sha256": "bb4f61262ed1d56983a1ed7f1766ff58430d0a7f55dc3bb720d508a32af59999",
+      "bytes": 3151382,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.tlacatl.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.tlacatl.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00065,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.272,
+      "sha256": "5ff702562f47dc76a4fd398f7328376f7da4c369b70a1cd49d7972b3d9c09251",
+      "bytes": 3241953,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.topiltzin_quetzalcoatl.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.topiltzin_quetzalcoatl.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00065,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.281,
+      "sha256": "27c532bb47983327964c70b7433d42a8200e2a217622d8ba5ccd336b065cf12e",
+      "bytes": 3087534,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.mesoamerican.xbalanque.bust": {
+      "file": "hero-portraits-complete/hero.mesoamerican.xbalanque.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        0.99023,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2917,
+      "sha256": "714f83338a683c4154ddc4a9c7c5e33facd3b5e2c7c29218a19d7b6a8ee64df6",
+      "bytes": 3144373,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.norse.brynhild.bust": {
+      "file": "hero-portraits-complete/hero.norse.brynhild.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.00977,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3087,
+      "sha256": "f4913369f48ae1963f0e33d8bca306bda8ebba4d3a9ec5704e6fa68d66678806",
+      "bytes": 3180128,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.norse.lagertha.bust": {
+      "file": "hero-portraits-complete/hero.norse.lagertha.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.01107,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2847,
+      "sha256": "3e6e2444d8cc690f338ad997394fd136db87757c2e80a5ab8e023600f210051f",
+      "bytes": 3273753,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.norse.ragnar.bust": {
+      "file": "hero-portraits-complete/hero.norse.ragnar.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.3132,
+      "sha256": "8a82b942b42abe9f0d8f2886be0023557a4a3b76d6362ff2c00c31f7f9d79191",
+      "bytes": 3240017,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    },
+    "hero.norse.sigurd.bust": {
+      "file": "hero-portraits-complete/hero.norse.sigurd.bust.png",
+      "kind": "bust",
+      "width": 1024,
+      "height": 1536,
+      "alphaBox": [
+        0.0,
+        0.0013,
+        1.0,
+        1.0
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.2831,
+      "sha256": "e4a16a578940045ae73f09fdc544f200be2c468cd6b975ccd991c040781b3c04",
+      "bytes": 3253714,
+      "status": "final",
+      "provenance": "Built-in image generator, identity reference in generation-queue.json. Native PNG, no code retouching or resizing."
+    }
+  }
+}

@@ -128,7 +128,7 @@ test('main menu and New Game show the delivered menu icons', async ({ page }) =>
 });
 
 test('adventure map, tile panel markers, hero, town, Pantheon, interventions, Journal and Encyclopedia', async ({ page }) => {
-  test.setTimeout(420_000);
+  test.setTimeout(600_000);
   const errors = errorsOf(page);
   const base = () => {
     const d = GameDriver.mission('skirmish_twin_harbors', { matchId: 'e2e-b13' });

@@ -24,6 +24,7 @@ import type { ReactNode } from 'react';
 import type { GameAudio } from '../audio/gameAudio';
 import { campaignEndingArtId } from '../assets/storyArt';
 import { momentsFromEvents, type Moment } from './moments';
+import { buildReceipt, type RewardReceipt } from './rewards';
 
 export type ScreenId =
   | 'main-menu'
@@ -97,7 +98,7 @@ export interface SpellCastRequest {
 export type Overlay =
   | { kind: 'pause' }
   | { kind: 'save-load'; mode: 'save' | 'load' }
-  | { kind: 'confirm'; title: string; body: string; confirmLabel: string; danger?: boolean; onConfirm: () => void; detail?: string[]; content?: ReactNode }
+  | { kind: 'confirm'; title: string; body: string; confirmLabel: string; danger?: boolean; onConfirm: () => void; detail?: string[]; content?: ReactNode; cancelLabel?: string }
   | { kind: 'briefing' }
   | { kind: 'debrief' }
   | { kind: 'mission-failed' }
@@ -130,7 +131,9 @@ export type Overlay =
   /** End of a skirmish (victory or defeat). */
   | { kind: 'game-over' }
   /** Keyboard shortcuts reference. */
-  | { kind: 'shortcuts' };
+  | { kind: 'shortcuts' }
+  /** The committed outcome of one completed reward action (a receipt; Continue only dismisses it). */
+  | { kind: 'reward'; receipt: RewardReceipt };
 
 /** One story scene (or the campaign epilogue) waiting in the dialogue window. */
 export interface StoryEntry {
@@ -149,6 +152,8 @@ export interface Toast {
   readonly tone: 'info' | 'error' | 'success';
   /** Seen by every player (e.g. an empire eliminated). Others are cleared at a hot-seat hand-over. */
   readonly public?: boolean;
+  /** A small reward shown as a passing tray (non-blocking) instead of a receipt dialog. */
+  readonly receipt?: RewardReceipt;
 }
 
 export interface SetupDraft {
@@ -202,6 +207,12 @@ export class AppStore {
   continueChecked = false;
   storageError: string | null = null;
   presentationBusy = false;
+  /**
+   * A battle board whose essential pictures (battlefield painting, every stack's standing frame)
+   * are still loading (1.1.4, GUI audit): battle commands and the computer's moves wait, so play
+   * never starts on an apparently empty field. Set by the battle screen; never part of the match.
+   */
+  boardLoading = false;
   /** Diagnostics: how many times a started battle opened the battlefield (read by UI tests). */
   battleScreenOpens = 0;
   /** Diagnostics: outcomes of the mounted heroes' readiness beats before battles (read by UI tests). */
@@ -294,6 +305,13 @@ export class AppStore {
     }
   }
 
+  /**
+   * A screen with unsaved edits (Settings) can intercept Escape: the guard
+   * returns true when it took over (e.g. asked to discard), false to let the
+   * screen close. Set by the screen while it is shown.
+   */
+  leaveGuard: (() => boolean) | null = null;
+
   /** Persist UI context on the current entry (used for return context). */
   setParams(patch: Record<string, unknown>): void {
     const top = this.screen;
@@ -324,12 +342,12 @@ export class AppStore {
     this.checkLevelUp();
   }
 
-  confirm(title: string, body: string, confirmLabel: string, onConfirm: () => void, opts: { danger?: boolean; detail?: string[]; content?: ReactNode } = {}): void {
+  confirm(title: string, body: string, confirmLabel: string, onConfirm: () => void, opts: { danger?: boolean; detail?: string[]; content?: ReactNode; cancelLabel?: string } = {}): void {
     this.openOverlay({ kind: 'confirm', title, body, confirmLabel, onConfirm, ...opts });
   }
 
-  toast(text: string, tone: Toast['tone'] = 'info', opts: { public?: boolean } = {}): void {
-    const t = { id: this.toastSeq++, text, tone, ...(opts.public ? { public: true } : {}) };
+  toast(text: string, tone: Toast['tone'] = 'info', opts: { public?: boolean; receipt?: RewardReceipt } = {}): void {
+    const t = { id: this.toastSeq++, text, tone, ...(opts.public ? { public: true } : {}), ...(opts.receipt ? { receipt: opts.receipt } : {}) };
     this.toasts = [...this.toasts.slice(-3), t];
     this.notify();
     setTimeout(() => {
@@ -692,6 +710,7 @@ export class AppStore {
     const session = this.session;
     if (!session) return { code: 'invalid_command', message: 'No game in progress' };
     if (this.presentationBusy && payload.kind.startsWith('Battle')) return { code: 'invalid_command', message: 'Wait for the current action to finish' };
+    if (this.boardLoading && payload.kind.startsWith('Battle')) return { code: 'invalid_command', message: 'The battlefield is still loading' };
     const res = session.dispatch(payload);
     if (!res.ok) {
       this.toast(res.rejection.message, 'error');
@@ -699,6 +718,44 @@ export class AppStore {
     }
     return null;
   }
+  /**
+   * Run a command that grants a reward (a chest, a quest hut, a map event) and
+   * present what the rules committed for it, once: the receipt is read from this
+   * command's own event batch and the state before and after it (never from the
+   * saved history, so a reload reopens nothing). The choice dialog (`closeKind`)
+   * is closed by kind, never by position, so a dialog the command opened (a
+   * mission result) is kept. Small rewards pass as a tray notice; artifacts,
+   * creatures, quests and mixed rewards get a receipt dialog whose Continue only
+   * dismisses it. A pending level-up waits until the receipt is closed (it waits
+   * for every dialog).
+   */
+  claimReward(payload: CommandPayload, meta: { title: string; source: string; heroId: string | null; closeKind?: Overlay['kind']; major?: boolean; nothing?: string }): Rejection | null {
+    const session = this.session;
+    if (!session) return { code: 'invalid_command', message: 'No game in progress' };
+    const before = session.state;
+    const res = session.dispatch(payload);
+    if (!res.ok) {
+      this.toast(res.rejection.message, 'error');
+      return res.rejection;
+    }
+    if (meta.closeKind) {
+      const i = this.overlays.map((o) => o.kind).lastIndexOf(meta.closeKind);
+      if (i >= 0) this.overlays = [...this.overlays.slice(0, i), ...this.overlays.slice(i + 1)];
+    }
+    const receipt = buildReceipt(this.catalog, before, session.state, res.events, session.humanPlayerId, meta.heroId, meta);
+    if (receipt.items.length === 0) {
+      // Nothing gained (e.g. at the experience cap): say so plainly, no celebratory tray.
+      this.toast(receipt.notes[0] ?? meta.nothing ?? `${meta.title}: nothing gained`, 'info');
+    } else if (receipt.major) {
+      this.openOverlay({ kind: 'reward', receipt });
+    } else {
+      this.toast(receipt.title, 'success', { receipt });
+    }
+    this.notify();
+    this.checkLevelUp();
+    return null;
+  }
+
 
   /**
    * Gather the rivals' turns for each human seat between its End Day and its
@@ -917,6 +974,14 @@ export class AppStore {
       });
   }
 
+  /** The battle screen reports whether its board is still loading (see `boardLoading`). */
+  setBoardLoading(loading: boolean): void {
+    if (this.boardLoading === loading) return;
+    this.boardLoading = loading;
+    this.notify();
+    if (!loading) this.scheduleAI();
+  }
+
   /** Resolves once queued presentation has finished (used by the AI pacing loop). */
   whenIdle(): Promise<void> {
     return this.presentQueue;
@@ -934,7 +999,7 @@ export class AppStore {
       this.aiTimer = null;
       void this.whenIdle().then(() => {
         if (this.session !== session || !session.needsAI()) return;
-        if (this.presentationBusy) return this.scheduleAI();
+        if (this.presentationBusy || this.boardLoading) return this.scheduleAI();
         try {
           session.stepAI();
         } catch (e) {

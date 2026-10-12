@@ -1,0 +1,21 @@
+{
+  "note": "These are visual biome IDs, not new engine Terrain enum values. Resolve current map biome/climate metadata via existing environment-art logic first. The UI must never infer biome from hero or enemy pantheon. No new movement rule.",
+  "scenes": {
+    "temperate": "adventurekit.encounter.temperate",
+    "alpine": "adventurekit.encounter.alpine",
+    "desert": "adventurekit.encounter.desert",
+    "woodland": "adventurekit.encounter.woodland",
+    "jungle": "adventurekit.encounter.jungle",
+    "volcanic": "adventurekit.encounter.volcanic"
+  },
+  "fallback": "adventurekit.encounter.temperate",
+  "selectionHints": {
+    "snow/frozen": "alpine",
+    "sand/arid/desert": "desert",
+    "tropical/jungle": "jungle",
+    "ash/lava/volcanic": "volcanic",
+    "temperate forest": "woodland",
+    "temperate plains/rough": "temperate"
+  },
+  "specialCases": "For marsh, water, siege or an authored environment outside these visual families, retain the appropriate existing battle/site/town artwork or neutral fallback. Do not change terrain rules or manufacture naval encounters."
+}

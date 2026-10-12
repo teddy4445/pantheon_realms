@@ -47,10 +47,15 @@ import { SetBadge } from '../components/badges';
 import { useStore } from '../app/context';
 import { Bar, Button, Chip, QuantitySelector } from '../components/kit';
 import { ArtifactIcon, Emblem, HeroPortrait, SpecialtyLine } from '../components/art';
+import { HeroFigure } from '../components/adventure';
 import { ArmyStrip, ScreenHeader } from '../components/game';
 import { HeroGifts } from '../components/godGifts';
 import { Icon, type IconName } from '../assets/icons';
 import { HERO_EQUIPMENT_SCHEMATIC, resolveAsset } from '../assets/manifest';
+import { guiArt } from '../assets/guiArt';
+
+/** 1.1.0: the quiet equipment silhouette under the real sockets (gui.equipment.figure), else the earlier schematic. */
+const EQUIPMENT_FIGURE = guiArt('gui.equipment.figure')?.url ?? HERO_EQUIPMENT_SCHEMATIC;
 import { humanPlayer, playerHeroes, townAtHero } from '../app/view';
 
 const ATTR: Record<string, { label: string; icon: IconName; hint: string }> = {
@@ -63,8 +68,9 @@ const ATTR: Record<string, { label: string; icon: IconName; hint: string }> = {
 const RANK = ['', 'Basic', 'Advanced', 'Expert'];
 
 /**
- * Slot boxes on the schematic figure (percent of the 4:5 stage, which matches
- * the delivered picture, 1122 × 1402): each worn slot sits on its body part —
+ * Slot boxes on the schematic figure (percent of the 4:5 stage; the 1.1.0
+ * figure, 1024 × 1536, is contained in it and its body parts fall on the same
+ * centres as the earlier 1122 × 1402 schematic): each worn slot sits on its body part —
  * the weapon and shield at the forearms, the rings at the hands — the five
  * accessories stand in the two side columns; the mount bottom left, the
  * spellbook bottom right (owner delivery 2026-10-06, its suggested centres).
@@ -427,7 +433,10 @@ export function HeroScreen() {
         {/* ---------------- left: identity, primary skills, statistics, secondary skills ---------------- */}
         <section className="h3-left plate" aria-label="Hero statistics">
           <div className="h3-ident">
-            <HeroPortrait catalog={catalog} definitionId={hero.definitionId} name={hero.name} size="6.4rem" />
+            {/* The hero's own character portrait (hero-portraits-complete), the square portrait when none resolves. */}
+            <span className="hero-bust-box" data-testid="hero-bust">
+              <HeroFigure catalog={catalog} definitionId={hero.definitionId} portraitAssetId={hero.portraitAssetId} name={hero.name} />
+            </span>
             <div className="h3-ident__text">
               <div className="h3-ident__name">{hero.name}</div>
               <div className="h3-ident__class">
@@ -532,10 +541,10 @@ export function HeroScreen() {
         </section>
 
         {/* ---------------- centre: the schematic body with its slot boxes ---------------- */}
-        <section className="h3-doll plate" aria-label="Equipment">
+        <section className="h3-doll plate gui-leather" aria-label="Equipment">
           <div className="h3-doll__stage">
             {/* The schematic figure (a neutral drawing, not the hero's look): decorative, never in the way of a click or a drag. */}
-            <img className="h3-body" src={HERO_EQUIPMENT_SCHEMATIC} alt="" aria-hidden="true" draggable={false} data-testid="hero-body" />
+            <img className="h3-body" src={EQUIPMENT_FIGURE} alt="" aria-hidden="true" draggable={false} data-testid="hero-body" />
             {EQUIP_SLOTS.map((slot) => {
               const inst = hero.equipment[slot];
               const art = inst ? catalog.artifacts[inst.artifactId] : undefined;

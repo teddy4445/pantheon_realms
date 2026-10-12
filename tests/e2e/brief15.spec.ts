@@ -81,9 +81,10 @@ for (const level of [3, 2] as const) {
       await page.waitForTimeout(1500);
       await page.screenshot({ path: `test-results/b15-siege-${p}-l${level}.png` });
       const seen = urls.slice(from).join('\n');
-      // The catapult's first shot (round start) may already have struck the gate.
-      for (const piece of ['wall', 'gate', 'keep', ...(level === 3 ? ['tower'] : [])]) expect(seen, `${p} ${piece}`).toMatch(new RegExp(`/siege/${piece}\\.(intact|damaged|rubble)\\.${p}\\.webp`));
-      expect(seen, `${p} battlefield`).toContain(`battlefield.siege.ground.${p}.webp`);
+      // Siege revision 2 (2026-10-10): the pantheon's gate/tower/keep atlas, its wall strip, its
+      // whole-view siege ground and the shared moat/bridge atlas (assets-runtime/siege-v2) replace
+      // the Brief 15 stills and battlefield; every state is a frame of the same atlas.
+      for (const file of [`kit.${p}`, `wall.${p}`, `ground.${p}`, 'groundworks-capped']) expect(seen, `${p} ${file}`).toContain(`/siege-v2/${file}.png`);
       expect(seen, 'catapult still').toContain('/siege/catapult.intact.webp');
     }
     expect(errors).toEqual([]);
@@ -100,13 +101,15 @@ test('damage states: a fallen and a damaged wall section, a damaged tower and ke
     await page.waitForTimeout(1500);
     await page.screenshot({ path: `test-results/b15-damage-${p}.png` });
     const seen = urls.slice(from).join('\n');
-    for (const f of [`wall.rubble.${p}`, `wall.damaged.${p}`, `tower.damaged.${p}`, `keep.damaged.${p}`]) expect(seen, f).toContain(`/siege/${f}.webp`);
+    // Siege revision 2: the damaged and fallen pieces are frames of the pantheon's wall strip and kit atlases.
+    for (const f of [`wall.${p}`, `kit.${p}`]) expect(seen, f).toContain(`/siege-v2/${f}.png`);
   }
   expect(errors).toEqual([]);
 });
 
 test('the catapult: the throw strip plays in place of the still, and the stone flies on', async ({ page }) => {
-  test.setTimeout(240_000);
+  // 30 screenshots while the battle animates: about 7 s each on SwiftShader in the cloud container (2026-10-11).
+  test.setTimeout(480_000);
   const { urls, errors } = watch(page);
   // The catapult shoots at the start of every round (round 1's shot was fired when the save was made):
   // play on automatically and film the start of round 2.

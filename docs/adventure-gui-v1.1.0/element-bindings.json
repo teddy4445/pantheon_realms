@@ -1,0 +1,389 @@
+{
+  "status": "ready",
+  "scope": "Production layers for six adventure screens across six pantheons",
+  "runtimeRoot": "assets-runtime/",
+  "elements": [
+    {
+      "element": "Decorative screen border",
+      "assetIds": [
+        "gui.frame.greek",
+        "gui.frame.norse",
+        "gui.frame.egyptian",
+        "gui.frame.japanese",
+        "gui.frame.celtic",
+        "gui.frame.mesoamerican"
+      ],
+      "runtimeFiles": [
+        "ui-v1.1.0/frame-greek.png",
+        "ui-v1.1.0/frame-norse.png",
+        "ui-v1.1.0/frame-egyptian.png",
+        "ui-v1.1.0/frame-japanese.png",
+        "ui-v1.1.0/frame-celtic.png",
+        "ui-v1.1.0/frame-mesoamerican.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Pantheon crest",
+      "assetIds": [
+        "emblem.greek",
+        "emblem.norse",
+        "emblem.egyptian",
+        "emblem.japanese",
+        "emblem.celtic",
+        "emblem.mesoamerican"
+      ],
+      "runtimeFiles": [
+        "ui/icons/final/emblem.greek.png",
+        "ui/icons/final/emblem.norse.png",
+        "ui/icons/final/emblem.egyptian.png",
+        "ui/icons/final/emblem.japanese.png",
+        "ui/icons/final/emblem.celtic.png",
+        "ui/icons/final/emblem.mesoamerican.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Pantheon banner",
+      "assetIds": [
+        "frontendkit.banner.greek",
+        "frontendkit.banner.norse",
+        "frontendkit.banner.egyptian",
+        "frontendkit.banner.japanese",
+        "frontendkit.banner.celtic",
+        "frontendkit.banner.mesoamerican"
+      ],
+      "runtimeFiles": [
+        "frontend-kit-v1.1.0/banner-greek.png",
+        "frontend-kit-v1.1.0/banner-norse.png",
+        "frontend-kit-v1.1.0/banner-egyptian.png",
+        "frontend-kit-v1.1.0/banner-japanese.png",
+        "frontend-kit-v1.1.0/banner-celtic.png",
+        "frontend-kit-v1.1.0/banner-mesoamerican.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Empty tavern interior",
+      "assetIds": [
+        "adventurekit.tavern.greek",
+        "adventurekit.tavern.norse",
+        "adventurekit.tavern.egyptian",
+        "adventurekit.tavern.japanese",
+        "adventurekit.tavern.celtic",
+        "adventurekit.tavern.mesoamerican"
+      ],
+      "runtimeFiles": [
+        "adventure-gui-v1.1.0/tavern-greek.png",
+        "adventure-gui-v1.1.0/tavern-norse.png",
+        "adventure-gui-v1.1.0/tavern-egyptian.png",
+        "adventure-gui-v1.1.0/tavern-japanese.png",
+        "adventure-gui-v1.1.0/tavern-celtic.png",
+        "adventure-gui-v1.1.0/tavern-mesoamerican.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Empty recruitment courtyard",
+      "assetIds": [
+        "adventurekit.recruit.greek",
+        "adventurekit.recruit.norse",
+        "adventurekit.recruit.egyptian",
+        "adventurekit.recruit.japanese",
+        "adventurekit.recruit.celtic",
+        "adventurekit.recruit.mesoamerican"
+      ],
+      "runtimeFiles": [
+        "adventure-gui-v1.1.0/recruit-greek.png",
+        "adventure-gui-v1.1.0/recruit-norse.png",
+        "adventure-gui-v1.1.0/recruit-egyptian.png",
+        "adventure-gui-v1.1.0/recruit-japanese.png",
+        "adventure-gui-v1.1.0/recruit-celtic.png",
+        "adventure-gui-v1.1.0/recruit-mesoamerican.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Merchant backdrop",
+      "assetIds": [
+        "gui.merchant.greek",
+        "gui.merchant.norse",
+        "gui.merchant.egyptian",
+        "gui.merchant.japanese",
+        "gui.merchant.celtic",
+        "gui.merchant.mesoamerican"
+      ],
+      "runtimeFiles": [
+        "ui-v1.1.0/merchant-greek.png",
+        "ui-v1.1.0/merchant-norse.png",
+        "ui-v1.1.0/merchant-egyptian.png",
+        "ui-v1.1.0/merchant-japanese.png",
+        "ui-v1.1.0/merchant-celtic.png",
+        "ui-v1.1.0/merchant-mesoamerican.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Level-up camp backdrop",
+      "assetIds": [
+        "encounterkit.meeting.greek",
+        "encounterkit.meeting.norse",
+        "encounterkit.meeting.egyptian",
+        "encounterkit.meeting.japanese",
+        "encounterkit.meeting.celtic",
+        "encounterkit.meeting.mesoamerican"
+      ],
+      "runtimeFiles": [
+        "encounters-v1.1.0/meeting-greek.png",
+        "encounters-v1.1.0/meeting-norse.png",
+        "encounters-v1.1.0/meeting-egyptian.png",
+        "encounters-v1.1.0/meeting-japanese.png",
+        "encounters-v1.1.0/meeting-celtic.png",
+        "encounters-v1.1.0/meeting-mesoamerican.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Blank spellbook",
+      "assetIds": [
+        "gui.book.open"
+      ],
+      "runtimeFiles": [
+        "ui-v1.1.0/book-open.png"
+      ],
+      "layout": "Independent decorative image. Resolve faction using theme-map.json; keep live content above the frame.",
+      "dataSource": "Town archetype for town screens; actual hero pantheon for hero screens."
+    },
+    {
+      "element": "Skill offer card",
+      "assetIds": [
+        "adventurekit.chrome.skill-card"
+      ],
+      "runtimeFiles": [
+        "adventure-gui-v1.1.0/skill-card.png"
+      ],
+      "layout": "Alpha image below a live button. Icon in the upper medallion; live offer text in normalized safe rectangle [0.12,0.54,0.88,0.86]. Reflow long localized descriptions rather than clip.",
+      "dataSource": "Actual pending decision offers; catalog.skills iconAssetId and descriptions."
+    },
+    {
+      "element": "Hero portrait medallion",
+      "assetIds": [
+        "adventurekit.chrome.hero-medallion"
+      ],
+      "runtimeFiles": [
+        "adventure-gui-v1.1.0/hero-medallion.png"
+      ],
+      "layout": "Circular cropped same-hero portrait under the alpha opening; live hero name on lower plate.",
+      "dataSource": "hero-art-map.json, then current hero definition."
+    },
+    {
+      "element": "Marketplace balance ornament",
+      "assetIds": [
+        "adventurekit.chrome.balance"
+      ],
+      "runtimeFiles": [
+        "adventure-gui-v1.1.0/balance.png"
+      ],
+      "layout": "Transparent decorative image between live give/receive panels. Hide from screen readers.",
+      "dataSource": null
+    },
+    {
+      "element": "Panel surfaces",
+      "assetIds": [
+        "gui.surface.parchment",
+        "gui.surface.leather",
+        "gui.surface.stone"
+      ],
+      "runtimeFiles": [
+        "ui-v1.1.0/surface-parchment.png",
+        "ui-v1.1.0/surface-leather.png",
+        "ui-v1.1.0/surface-stone.png"
+      ],
+      "layout": "Independent texture under native layout. Do not stretch text or crop texture from concepts.",
+      "dataSource": null
+    },
+    {
+      "element": "Painted button and army socket",
+      "assetIds": [
+        "gui.control.button",
+        "gui.control.socket"
+      ],
+      "runtimeFiles": [
+        "ui-v1.1.0/control-button.png",
+        "ui-v1.1.0/control-socket.png"
+      ],
+      "layout": "Optional independent art under semantic buttons/slots; CSS borders in preview are also supplied. Keep at least 44px target.",
+      "dataSource": null
+    },
+    {
+      "element": "Encounter scenery",
+      "assetIds": [
+        "adventurekit.encounter.temperate",
+        "adventurekit.encounter.alpine",
+        "adventurekit.encounter.desert",
+        "adventurekit.encounter.woodland",
+        "adventurekit.encounter.jungle",
+        "adventurekit.encounter.volcanic"
+      ],
+      "runtimeFiles": [
+        "adventure-gui-v1.1.0/encounter-temperate.png",
+        "adventure-gui-v1.1.0/encounter-alpine.png",
+        "adventure-gui-v1.1.0/encounter-desert.png",
+        "adventure-gui-v1.1.0/encounter-woodland.png",
+        "adventure-gui-v1.1.0/encounter-jungle.png",
+        "adventure-gui-v1.1.0/encounter-volcanic.png"
+      ],
+      "layout": "Cover stage with biome selected from destination terrain/climate. Preserve special water/siege fallbacks.",
+      "dataSource": "terrain-map.json"
+    },
+    {
+      "element": "Common stat and resource icons",
+      "assetIds": [
+        "icon.res.crystal",
+        "icon.res.favor",
+        "icon.res.gold",
+        "icon.res.stone",
+        "icon.res.wood",
+        "icon.stat.accuracy",
+        "icon.stat.attack",
+        "icon.stat.crit",
+        "icon.stat.damage",
+        "icon.stat.defense",
+        "icon.stat.evasion",
+        "icon.stat.flying",
+        "icon.stat.hp",
+        "icon.stat.initiative",
+        "icon.stat.knowledge",
+        "icon.stat.level",
+        "icon.stat.luck",
+        "icon.stat.magic-resist",
+        "icon.stat.mana",
+        "icon.stat.morale",
+        "icon.stat.movement",
+        "icon.stat.physical-resist",
+        "icon.stat.power",
+        "icon.stat.range",
+        "icon.stat.retaliation",
+        "icon.stat.shots",
+        "icon.stat.speed",
+        "icon.stat.stealth",
+        "icon.stat.vision",
+        "icon.stat.xp"
+      ],
+      "runtimeFiles": [
+        "ui/icons/final/icon.res.crystal.png",
+        "ui/icons/final/icon.res.favor.png",
+        "ui/icons/final/icon.res.gold.png",
+        "ui/icons/final/icon.res.stone.png",
+        "ui/icons/final/icon.res.wood.png",
+        "ui/icons/stat.accuracy.png",
+        "ui/icons/final/icon.stat.attack.png",
+        "ui/icons/stat.crit.png",
+        "ui/icons/final/icon.stat.damage.png",
+        "ui/icons/final/icon.stat.defense.png",
+        "ui/icons/stat.evasion.png",
+        "ui/icons/stat.flying.png",
+        "ui/icons/final/icon.stat.hp.png",
+        "ui/icons/stat.initiative.png",
+        "ui/icons/final/icon.stat.knowledge.png",
+        "ui/icons/stat.level.png",
+        "ui/icons/final/icon.stat.luck.png",
+        "ui/icons/stat.magic-resist.png",
+        "ui/icons/final/icon.stat.mana.png",
+        "ui/icons/final/icon.stat.morale.png",
+        "ui/icons/final/icon.stat.movement.png",
+        "ui/icons/stat.physical-resist.png",
+        "ui/icons/final/icon.stat.power.png",
+        "ui/icons/final/icon.stat.range.png",
+        "ui/icons/stat.retaliation.png",
+        "ui/icons/final/icon.stat.shots.png",
+        "ui/icons/final/icon.stat.speed.png",
+        "ui/icons/stat.stealth.png",
+        "ui/icons/final/icon.stat.vision.png",
+        "ui/icons/final/icon.stat.xp.png"
+      ],
+      "layout": "Contain icon at readable size with live number and accessible label. No baked values.",
+      "dataSource": "Current hero stats, wallet, quote objects."
+    },
+    {
+      "element": "Screen action icons",
+      "assetIds": [
+        "icon.ui.tavern",
+        "icon.ui.recruit",
+        "icon.ui.upgrade",
+        "icon.ui.swap",
+        "icon.ui.sword2",
+        "icon.action.retreat",
+        "icon.ui.check",
+        "icon.ui.auto"
+      ],
+      "runtimeFiles": [
+        "ui/icons/final/icon.ui.tavern.png",
+        "ui/icons/final/icon.ui.recruit.png",
+        "ui/icons/final/icon.ui.upgrade.png",
+        "ui/icons/final/icon.ui.swap.png",
+        "ui/icons/final/icon.ui.sword2.png",
+        "ui/icons/final/icon.action.retreat.png",
+        "ui/icons/final/icon.ui.check.png",
+        "ui/icons/final/icon.ui.auto.png"
+      ],
+      "layout": "Independent icon beside live label. Preserve actual command disabled reason.",
+      "dataSource": "screen-bindings.json"
+    },
+    {
+      "element": "Hero foreground and portrait",
+      "mapping": "hero-art-map.json",
+      "layout": "Use exact candidate/hero ID; prefer supplied same-hero bust, otherwise same-hero portrait panel. Never use another hero as a substitute."
+    },
+    {
+      "element": "Creature portrait and animated detail",
+      "mapping": "creature-art-map.json",
+      "layout": "Choose exact creatureId and base/upgraded form. Portrait is immediately usable; optional animation uses provided frame count, dimensions, fps, anchor and loop metadata."
+    },
+    {
+      "element": "Ability, spell, skill and gift icons",
+      "mapping": "icon-map.json and complete-assets.json",
+      "layout": "Resolve catalog iconAssetId. Use actual known spells/offered skills/abilities; no screenshot extraction. Existing god art can illustrate a gift."
+    },
+    {
+      "element": "Dynamic controls and text",
+      "implementation": "components.css and preview.js",
+      "controls": [
+        "tabs",
+        "resource mode selector",
+        "destination selector",
+        "tier selector",
+        "quantity slider and number input",
+        "army count labels",
+        "tooltips",
+        "close/back buttons",
+        "confirmation actions",
+        "scrollable spell list"
+      ],
+      "states": [
+        "normal",
+        "hover",
+        "focus-visible",
+        "selected",
+        "disabled",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "layout": "Use semantic native controls with live localized labels. Extend the existing game controls, not the preview fixture state. No generated bitmap required for these elements."
+    }
+  ],
+  "implementationNotes": [
+    "No text, prices, commands or tooltips baked into new images.",
+    "Keep border below content and pointer-events:none.",
+    "On narrow layouts stack panels, allow scroll, and replace two-page book with parchment panels.",
+    "Read CLAUDE_HANDOFF.txt before integrating; it preserves current command semantics."
+  ]
+}

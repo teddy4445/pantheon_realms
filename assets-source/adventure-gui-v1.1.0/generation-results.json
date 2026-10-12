@@ -1,0 +1,128 @@
+[
+  {
+    "id": "adventurekit.tavern.greek",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-57f9afb0-6faf-4d83-a118-126d577fb39f.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/tavern-greek.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.tavern.norse",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ae7211a3-f80e-4e97-ad74-0ef13e87f45b.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/tavern-norse.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.recruit.greek",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-bcee7db8-80ab-42c0-ace9-8029121b6f0e.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/recruit-greek.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.recruit.norse",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-d6eace60-5de2-4721-b022-2b631f87ee87.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/recruit-norse.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.tavern.japanese",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-6a3ffcdb-4569-4f37-8139-bf5d1c31910c.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/tavern-japanese.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.tavern.egyptian",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-358e0705-5993-4014-a3a3-d5fb4a0c06a8.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/tavern-egyptian.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.tavern.celtic",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-06eb6695-b428-4b80-9654-9c62b535769b.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/tavern-celtic.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.recruit.japanese",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-a575e7e0-032c-4b43-9468-5ff70c49c2b5.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/recruit-japanese.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.recruit.egyptian",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-9f94d206-0375-47fd-8a9e-6df339132f1f.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/recruit-egyptian.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.recruit.celtic",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-a5828e71-7aa4-46ed-a13f-814ad612014f.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/recruit-celtic.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.encounter.temperate",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-1fb588a8-40fc-45f1-979a-f430f56acde4.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/encounter-temperate.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.tavern.mesoamerican",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-5a597828-2bef-4815-b704-b2fc94705309.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/tavern-mesoamerican.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.recruit.mesoamerican",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-a254f2f6-1233-4dc4-ae8d-3df0764785cd.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/recruit-mesoamerican.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.encounter.alpine",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-84f5358e-9f74-4d76-bb0e-1a1fef71001d.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/encounter-alpine.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.encounter.desert",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-2a0f5781-336d-45cd-ad18-5262228e73a6.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/encounter-desert.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.encounter.woodland",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-c0fee5a3-cc89-4205-bd6c-926cf80cec49.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/encounter-woodland.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.encounter.jungle",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-51bdeb52-d3d3-4bb5-ab08-998a32180722.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/encounter-jungle.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.encounter.volcanic",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-351ac9d3-a12d-41bd-91e5-09a392cc6c66.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/encounter-volcanic.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.chrome.skill-card",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-4ce716bd-b609-44eb-abda-e6bd7e0ae2fd.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/skill-card.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.chrome.hero-medallion",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-d0d234b5-b579-4511-a483-ba9745eb0e65.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/hero-medallion.png",
+    "copy": 0
+  },
+  {
+    "id": "adventurekit.chrome.balance",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-82532726-0476-46f5-8bc0-e81afc6e9280.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/adventure-gui-v1.1.0/balance.png",
+    "copy": 0
+  }
+]

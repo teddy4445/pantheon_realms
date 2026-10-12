@@ -12,7 +12,7 @@
  * a skip or instant playback finishes them at once. Nothing here reads or
  * changes game state.
  */
-import { Container, Sprite, type Texture } from 'pixi.js';
+import { Container, Sprite, Texture } from 'pixi.js';
 import { directionalStrip, resolveAnimation, type ResolvedAnimation, type SpriteSetDefinition, type SpriteStrip } from './sprites';
 import { loadStrip, stripFrames } from './textures';
 import { linear, type TweenPlayer } from './tween';
@@ -53,7 +53,13 @@ export class SpriteFigure {
   private destroyed = false;
   /** Resolves once the set's strips are loaded (or failed). */
   readonly loaded: Promise<void>;
+  /**
+   * Resolves once the idle strip is loaded (or failed): the figure can be drawn standing. It is
+   * shown at once, before the other strips arrive (1.1.4: a battle is readable sooner).
+   */
+  readonly firstFrame: Promise<void>;
   status: 'loading' | 'ready' | 'missing' = 'loading';
+  private holding = false;
 
   constructor(opts: FigureOptions) {
     this.set = opts.set;
@@ -64,7 +70,20 @@ export class SpriteFigure {
     this.accent = opts.accent ?? null;
     this.baseScale = opts.set ? (opts.hexWidth / opts.set.pixelsPerHex) * this.size : 1;
     this.sprite.scale.set(this.baseScale);
+    const idle = opts.set?.animations['idle'];
+    this.firstFrame = idle
+      ? loadStrip(idle).then(
+          () => this.showFirstFrame(),
+          () => undefined,
+        )
+      : Promise.resolve();
     this.loaded = this.preload();
+  }
+
+  /** Stand in the idle loop as soon as its strip is in (the status stays 'loading' until every strip is). */
+  private showFirstFrame(): void {
+    if (this.destroyed || this.playing || this.holding || this.loopName !== 'idle') return;
+    this.start('idle', true);
   }
 
   private async preload(): Promise<void> {
@@ -82,7 +101,8 @@ export class SpriteFigure {
     await Promise.all(strips.map((s) => loadStrip(s).catch(() => null)));
     if (this.destroyed) return;
     this.status = set.animations['idle'] && stripFrames(set.animations['idle']) ? 'ready' : 'missing';
-    if (!this.playing) this.setLoop(this.loopName);
+    // Start the requested loop (the early idle frame may already be playing; a one-shot never is yet).
+    if (!this.playing || this.playing.loop) this.setLoop(this.loopName);
   }
 
   /** The figure's own strip exists for this animation (not a stand-in). */
@@ -197,6 +217,12 @@ export class SpriteFigure {
   /** Show the last frame of an animation at once (a stack that fell earlier). */
   holdLast(name: string): ResolvedAnimation | null {
     if (this.status !== 'ready') {
+      // A fallen stack never stands up in the early idle frame while its death strip loads.
+      this.holding = true;
+      if (this.playing?.loop) {
+        this.playing = null;
+        this.sprite.texture = Texture.EMPTY;
+      }
       void this.loaded.then(() => this.holdLast(name));
       return this.resolve(name);
     }

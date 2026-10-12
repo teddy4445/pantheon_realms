@@ -11,6 +11,8 @@
 import type { Terrain } from '@pr/rules';
 
 export interface EnvironmentArt {
+  /** Whole-view composition already painted in the battle camera (siege revision 2). */
+  readonly layout?: 'siege-v2';
   readonly url: string;
   readonly width: number;
   readonly height: number;

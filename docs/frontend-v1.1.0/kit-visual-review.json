@@ -1,0 +1,21 @@
+{
+  "status": "reviewed",
+  "scope": "Production art and delivery reference only; game integration remains for Claude",
+  "newNativeAssets": 33,
+  "selectedLogo": "brand-logo-v2.png",
+  "findings": [
+    "Main-menu proof successfully composes independent scenery, transparent logo and existing menu icons.",
+    "All six decorated banners retain their faction identity and have clean alpha against a light browser surface.",
+    "23 gold icons inspected at 32, 48 and 96 CSS pixels; labels should remain visible alongside category symbols.",
+    "Warning seal is an isolated exclamation icon and contains no dialog copy.",
+    "All 102 portraits load and all 800 animation-strip dependencies exist.",
+    "Town artwork uses the actual town.* ID prefix and is included in the final dependency inventory.",
+    "CSS controls and catalog-driven canvas content are intentionally implemented by code, not screenshot extraction."
+  ],
+  "copyHelper": "Dry-run source-hash validation passed; no destination project was modified.",
+  "limitations": [
+    "Native raster sizes are recorded per file. No upscaling or vector version supplied.",
+    "Existing creature portraits retain their original 256px size; use actual sprites for large animated details.",
+    "Concept artwork is a composition reference. Real game identities and behavior take precedence over illustrative mockup content."
+  ]
+}

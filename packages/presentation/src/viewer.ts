@@ -8,13 +8,23 @@
  *
  * The viewer reports the sprite set's status (placeholder or final) and which
  * animations are its own, so the screen never presents a stand-in as final art.
+ *
+ * 1.1.3: an optional painted backdrop (`setBackdrop`, e.g. the creature's
+ * pantheon's recruitment court) drawn behind the figure, cover-fitted and
+ * lightly shaded, with a soft ground shadow in place of the stone plinth.
+ * Decoration only: it never changes what plays.
  */
-import { Container, Graphics } from 'pixi.js';
+import { Container, Graphics, Sprite } from 'pixi.js';
 import type { EngineHost, SceneController } from './engineHost';
 import { SpriteFigure } from './figure';
 import { creatureSprites, type SpriteStatus } from './sprites';
 import { TweenPlayer } from './tween';
 import { colorOf, groundShadow } from './staticSprites';
+import { loadTexture } from './textures';
+
+
+/** The most the viewer enlarges a painted strip: screen pixels per painted pixel. */
+const MAX_MAGNIFY = 2.25;
 
 export interface ViewerSubject {
   readonly key: string;
@@ -37,6 +47,10 @@ export class UnitViewerController implements SceneController {
   private readonly tweens = new TweenPlayer();
   private readonly stage = new Container();
   private readonly backdrop = new Graphics();
+  private readonly painting = new Container();
+  private readonly shade = new Graphics();
+  private paintingSprite: Sprite | null = null;
+  private backdropUrl: string | null = null;
   private readonly holder = new Container();
   private figure: SpriteFigure | null = null;
   private subjectKey = '';
@@ -55,7 +69,7 @@ export class UnitViewerController implements SceneController {
   onStatus: ((s: ViewerSpriteStatus) => void) | null = null;
 
   constructor(engine: EngineHost, _canvas: HTMLCanvasElement) {
-    this.root.addChild(this.backdrop, this.stage);
+    this.root.addChild(this.backdrop, this.painting, this.shade, this.stage);
     this.stage.addChild(this.holder);
     this.view = { width: engine.width, height: engine.height };
     this.layout();
@@ -75,20 +89,62 @@ export class UnitViewerController implements SceneController {
     const px = width / 2;
     const py = height * 0.8;
     const rx = Math.min(width * 0.32, height * 0.42);
-    g.ellipse(px, py + 6, rx * 1.04, rx * 0.2).fill({ color: 0x2e2c29 });
-    g.ellipse(px, py, rx, rx * 0.19).fill({ color: 0x5b5a58 }).stroke({ width: 2, color: 0xc29a52, alpha: 0.85 });
+    const sh = this.shade;
+    sh.clear();
+    const art = this.paintingSprite;
+    if (art) {
+      // The painting covers the view (centred, a little below the middle so the floor shows under the figure).
+      const k = Math.max(width / Math.max(1, art.texture.width), height / Math.max(1, art.texture.height));
+      art.scale.set(k);
+      art.position.set(width / 2, height * 0.5);
+      // A light shade keeps the figure the brightest thing in view (the page frames the edges).
+      sh.rect(0, 0, width, height).fill({ color: 0x050a12, alpha: 0.2 });
+      for (let i = 5; i > 0; i--) sh.ellipse(px, py, rx * (0.55 + i * 0.12), rx * (0.1 + i * 0.022)).fill({ color: 0x000000, alpha: 0.07 });
+    } else {
+      g.ellipse(px, py + 6, rx * 1.04, rx * 0.2).fill({ color: 0x2e2c29 });
+      g.ellipse(px, py, rx, rx * 0.19).fill({ color: 0x5b5a58 }).stroke({ width: 2, color: 0xc29a52, alpha: 0.85 });
+    }
     this.stage.position.set(px, py);
     this.fit();
   }
 
-  /** Scale the subject so its idle frame fills about two thirds of the view height. */
+  /**
+   * A painted scene behind the figure (null: the plain dark stage with its plinth). Loaded through the
+   * shared texture loader (decoded off the main thread, shown once sent to the GPU); a newer request wins.
+   */
+  setBackdrop(url: string | null): void {
+    if (url === this.backdropUrl) return;
+    this.backdropUrl = url;
+    this.painting.removeChildren();
+    this.paintingSprite?.destroy();
+    this.paintingSprite = null;
+    this.layout();
+    if (!url) return;
+    void loadTexture(url)
+      .then((tex) => {
+        if (this.backdropUrl !== url || this.root.destroyed) return;
+        const art = new Sprite(tex);
+        art.anchor.set(0.5);
+        this.paintingSprite = art;
+        this.painting.addChild(art);
+        this.layout();
+      })
+      .catch(() => undefined);
+  }
+
+  /**
+   * Scale the subject so its idle frame fills about two thirds of the view height — but never more
+   * than `MAX_MAGNIFY` screen pixels per painted pixel (1.1.4, GUI audit: a strip blown up far past
+   * its native size turns soft; a large stage now leaves the figure crisp and a little smaller).
+   */
   private fit(): void {
     const f = this.figure;
     const idle = f?.set?.animations['idle'];
     if (!f || !idle) return;
-    const unscaled = idle.frameHeight * idle.anchor[1] * (100 / (idle.pixelsPerHex ?? f.set!.pixelsPerHex));
+    const ppx = idle.pixelsPerHex ?? f.set!.pixelsPerHex;
+    const unscaled = idle.frameHeight * idle.anchor[1] * (100 / ppx);
     const target = Math.min(this.view.height * 0.66, this.view.width * 0.7);
-    this.holder.scale.set(target / Math.max(1, unscaled));
+    this.holder.scale.set(Math.min(target / Math.max(1, unscaled), (MAX_MAGNIFY * ppx) / 100));
   }
 
   get spriteStatus(): ViewerSpriteStatus {

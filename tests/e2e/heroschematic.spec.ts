@@ -1,6 +1,6 @@
 /**
  * The hero screen's equipment figure (owner delivery 2026-10-06: the simpler
- * schematic, `ui/hero-equipment-schematic-v2.png`) at the supported window
+ * schematic; 1.1.0: `ui-v1.1.0/equipment-figure.png`) at the supported window
  * sizes, with an empty and a fully equipped hero: the picture sits behind the
  * slots at 4:5, decorative and click-through; every one of the fifteen slots
  * and the spellbook stays whole inside the stage without touching another;
@@ -107,13 +107,13 @@ for (const full of [false, true]) {
       await page.locator('.h3-doll__stage').scrollIntoViewIfNeeded();
       await expect.poll(() => page.locator('img.h3-body').evaluate((i) => (i as HTMLImageElement).complete && (i as HTMLImageElement).naturalWidth > 0)).toBe(true);
       const l = await layout(page);
-      // The picture: the delivered file, decorative, never catching the pointer, filling the 4:5 stage.
-      expect(l.img.src).toBe('./ui/hero-equipment-schematic-v2.png');
+      // The picture (1.1.0: gui.equipment.figure, contained in the 4:5 stage): decorative, never catching the pointer.
+      expect(l.img.src).toBe('./ui-v1.1.0/equipment-figure.png');
       expect(l.img.alt).toBe('');
       expect(l.img.hidden).toBe('true');
       expect(l.img.pointer).toBe('none');
       expect(l.img.draggable).toBe(false);
-      expect(l.img.natural).toEqual([1122, 1402]);
+      expect(l.img.natural).toEqual([1024, 1536]);
       expect(Math.abs(l.stage.w / l.stage.h - 0.8), `${w}×${h} stage ${l.stage.w}×${l.stage.h}`).toBeLessThan(0.01);
       expect(Math.abs(l.img.w - l.stage.w)).toBeLessThan(3);
       expect(Math.abs(l.img.h - l.stage.h)).toBeLessThan(3);

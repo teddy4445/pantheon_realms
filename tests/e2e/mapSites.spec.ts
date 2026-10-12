@@ -72,16 +72,21 @@ test('the tavern lists every candidate’s specialty before hiring', async ({ pa
   await page.getByRole('button', { name: 'Tavern', exact: true }).click();
   const modal = page.getByTestId('tavern');
   await expect(modal).toBeVisible();
-  const cards = modal.locator('.hire-card');
-  const n = await cards.count();
+  // 1.1.0 Heroes' Lodge: each candidate stands in the room; picking one shows that hero's details (specialty
+  // included) with the price and Hire beside them. Picking only inspects: nothing is hired.
+  const candidates = modal.locator('[data-testid^="hire-candidate-"]');
+  const n = await candidates.count();
   expect(n).toBeGreaterThan(0);
-  for (let i = 0; i < n; i++) await expect(cards.nth(i).locator('[data-testid^="specialty-"]')).toBeVisible();
-  // The price and Hire sit on the right of each row (owner request 2026-10-07).
+  const heroes = Object.keys((await inspect(page)).state.heroes).length;
   for (let i = 0; i < n; i++) {
-    const card = await cards.nth(i).boundingBox();
-    const hire = await cards.nth(i).getByRole('button', { name: 'Hire' }).boundingBox();
-    expect(card && hire && hire.x > card.x + card.width * 0.7 && hire.x + hire.width <= card.x + card.width).toBe(true);
+    await candidates.nth(i).click();
+    await expect(candidates.nth(i)).toHaveAttribute('aria-checked', 'true');
+    const id = ((await candidates.nth(i).getAttribute('data-testid')) ?? '').replace('hire-candidate-', '');
+    const card = modal.getByTestId(`hire-${id}`);
+    await expect(card.locator('[data-testid^="specialty-"]')).toBeVisible();
+    await expect(card.getByRole('button', { name: /^Hire / })).toBeVisible();
   }
+  expect(Object.keys((await inspect(page)).state.heroes).length).toBe(heroes);
   await expect(modal.getByTestId('tavern-weekly')).toHaveText(/One hero per week/);
   await page.waitForTimeout(800); // let the dialog's fade-in finish before the screenshot
   await page.screenshot({ path: 'test-results/tavern-specialties.png' });
@@ -100,12 +105,15 @@ test('the tavern hires one hero per week: after a hire every Hire button is refu
   await page.getByRole('button', { name: 'Tavern', exact: true }).click();
   const modal = page.getByTestId('tavern');
   await expect(modal.getByTestId('tavern-weekly')).toHaveText(/hired this week/);
-  const buttons = modal.getByRole('button', { name: 'Hire' });
-  const n = await buttons.count();
+  // Every candidate's Hire is refused with the reason (the Lodge shows the inspected candidate's Hire).
+  const candidates = modal.locator('[data-testid^="hire-candidate-"]');
+  const n = await candidates.count();
   expect(n).toBeGreaterThan(0);
   for (let i = 0; i < n; i++) {
-    await expect(buttons.nth(i)).toBeDisabled();
-    await expect(buttons.nth(i)).toHaveAttribute('title', 'One hero per week');
+    await candidates.nth(i).click();
+    const hire = modal.getByRole('button', { name: /^Hire / });
+    await expect(hire).toBeDisabled();
+    await expect(hire).toHaveAttribute('title', 'One hero per week');
   }
 });
 
@@ -145,7 +153,11 @@ test('a treasure chest asks for gold or experience', async ({ page }) => {
   await expect(page.getByTestId('chest-xp')).toBeVisible();
   await page.waitForTimeout(600);
   await page.screenshot({ path: 'test-results/treasure-chest.png' });
+  // 1.1.0: a reward tile only selects; Confirm opens the chest, once.
   await page.getByTestId('chest-gold').click();
+  await expect(page.getByTestId('chest-gold')).toHaveAttribute('aria-checked', 'true');
+  expect((await inspect(page)).state.players.player.wallet.gold).toBe(gold);
+  await page.getByTestId('chest-confirm').click();
   const k = chest.kind as { gold: number };
   await waitFor(page, (x) => x.state.players.player.wallet.gold === gold + k.gold, 'chest gold');
 });

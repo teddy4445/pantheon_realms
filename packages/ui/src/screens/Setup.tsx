@@ -9,26 +9,19 @@
  * one patron god, so it is taken from the content (`defaultPatron`).
  * Content not yet playable is shown honestly as unavailable.
  */
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import { DEFAULT_CAMPAIGN_DIFFICULTY, difficultyLevels, type CampaignDefinition, type ContentCatalog, type DifficultyDefinition, type PantheonDefinition, type SkirmishMapDefinition, type SkirmishScenarioDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented, TextInput } from '../components/kit';
-import { CampaignThumb, Emblem, GodPortrait, HeroPortrait, MissionThumb, CreaturePortrait, SpeakerPortrait } from '../components/art';
+import { CampaignThumb, Emblem, GodPortrait, MissionThumb, CreaturePortrait, SpeakerPortrait } from '../components/art';
 import { resolveArt, resolveAsset } from '../assets/manifest';
 import { ScreenHeader } from '../components/game';
-import { Icon } from '../assets/icons';
 import { TemperamentNote } from '../components/temperament';
 import { SkirmishMapThumb } from '../components/mapPreview';
-
-/**
- * A chosen campaign's painted cover behind the setup screens (campaign
- * selection and its intro steps), under a scrim; the game UI draws every title,
- * badge and button on top.
- */
-function campaignBackdrop(campaignId: string | null | undefined): { className: string; style?: CSSProperties } {
-  const art = campaignId ? resolveArt(`campaign.${campaignId}.cover`) : null;
-  return art ? { className: 'setup-screen setup-screen--cover', style: { ['--app-art' as string]: `url("${art.url}")` } } : { className: 'setup-screen' };
-}
+import { FactionBanner } from '../components/gui';
+import { guiThemeFor } from '../assets/guiArt';
+import { FrontendShell, IllustratedChoice, backdropStyle, radioKeys } from '../components/frontend';
+import { SKIRMISH_MAP_TYPES, SKIRMISH_MAX_EMPIRES } from '@pr/session';
 
 /** The patron god a game starts with: the campaign's starting option, else the pantheon's implemented patron. */
 export function defaultPatron(catalog: ContentCatalog, pantheonId: string | null | undefined, campaign?: CampaignDefinition): string | null {
@@ -42,6 +35,7 @@ export function defaultPatron(catalog: ContentCatalog, pantheonId: string | null
 
 export function GameModeScreen() {
   const store = useStore();
+  const catalog = store.catalog;
   const pick = (mode: 'campaign' | 'skirmish' | 'random' | 'editor') => {
     if (mode === 'editor') {
       store.goto('map-editor');
@@ -55,25 +49,35 @@ export function GameModeScreen() {
     store.resetSetup(mode);
     store.goto('scenario-select');
   };
+  // Every count comes from the content (1.1.0: no campaign or map names typed into the copy).
+  const campaigns = Object.values(catalog.campaigns).filter((c) => c.status === 'playable');
+  const campaignPantheons = new Set(campaigns.map((c) => c.pantheonId)).size;
+  const skirmishChoices = Object.values(catalog.skirmishes).filter((x) => x.status === 'playable').length + Object.keys(catalog.skirmishMaps ?? {}).length;
+  const pantheons = catalog.pantheonOrder.filter((id) => catalog.pantheons[id]?.playability === 'playable').length;
   const modes = [
-    { id: 'campaign' as const, icon: 'campaign' as const, title: 'Campaign', text: 'Story missions with a persistent hero: The Three Beacons (three Greek missions) and The Winter Oath (seven Norse missions).' },
-    { id: 'skirmish' as const, icon: 'skirmish' as const, title: 'Skirmish', text: 'An authored map against the AI or a second player on this computer (hot-seat). All six pantheons, three difficulties.' },
-    { id: 'random' as const, icon: 'map' as const, title: 'Random Map', text: 'A new fair map every time: nine layouts, two to six empires, AI or hot-seat seats, and a choice of victory condition.' },
-    { id: 'editor' as const, icon: 'build' as const, title: 'Map Editor', text: 'Make your own map — ground, roads, towns, mines, treasures and the goal — save it as a map file, and play it.' },
+    {
+      id: 'campaign' as const,
+      art: 'frontend.mode.campaign',
+      title: 'Campaign',
+      text: `${campaigns.length} story ${campaigns.length === 1 ? 'campaign' : 'campaigns'}${campaignPantheons > 1 ? `, one for each of ${campaignPantheons} pantheons` : ''}, with a hero who carries on from mission to mission.`,
+    },
+    { id: 'skirmish' as const, art: 'frontend.mode.skirmish', title: 'Skirmish', text: `${skirmishChoices} authored maps against the AI or other players on this computer (hot-seat). All ${pantheons} pantheons.` },
+    { id: 'random' as const, art: 'frontend.mode.random-map', title: 'Random Map', text: `A new map every time: ${SKIRMISH_MAP_TYPES.length} layouts, 2 to ${SKIRMISH_MAX_EMPIRES} empires, AI or hot-seat seats and a choice of victory.` },
+    { id: 'editor' as const, art: 'frontend.mode.map-editor', title: 'Map Editor', text: 'Draw your own map — ground, roads, towns, mines, treasures and the goal — keep it in the map library and play it.' },
   ];
   return (
-    <div className="setup-screen">
-      <ScreenHeader title="New Game" />
-      <div className="mode-grid mode-grid--4 mode-grid--large">
+    <FrontendShell
+      backdrop="title-hall"
+      title="New Game"
+      className="setup-screen fe-modes-screen"
+      onBack={() => store.back()}
+    >
+      <div className="fe-modes" role="group" aria-label="Game modes">
         {modes.map((m) => (
-          <button key={m.id} type="button" className="mode-card panel" onClick={() => pick(m.id)} data-testid={`mode-${m.id}`}>
-            <Icon name={m.icon} className="mode-card__icon" />
-            <h2>{m.title}</h2>
-            <p>{m.text}</p>
-          </button>
+          <IllustratedChoice key={m.id} artId={m.art} name={m.title} description={m.text} onSelect={() => pick(m.id)} testId={`mode-${m.id}`} className="fe-choice--mode" />
         ))}
       </div>
-    </div>
+    </FrontendShell>
   );
 }
 
@@ -101,42 +105,66 @@ export function DifficultyPicker({ catalog, value, onChange, scope = 'skirmish' 
 // S03 Scenario / Campaign selection
 // ---------------------------------------------------------------------------
 
+/**
+ * The chosen campaign (concept 03, "Campaign Chronicles"): its cover, story and
+ * hero, a read-only outline of its missions in order (from `missionIds`; never
+ * a mission picker) and the campaign difficulty with its exact effects. The
+ * panel wears the campaign's pantheon frame.
+ */
 function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefinition; difficultyId: string; onDifficulty: (id: string) => void }) {
   const store = useStore();
   const catalog = store.catalog;
   const missions = c.missionIds.map((id) => catalog.missions[id]!).filter(Boolean);
+  const cover = resolveArt(`campaign.${c.id}.cover`);
+  const hero = catalog.heroes[c.heroDefinitionId];
   return (
-    <Panel title={c.name} className="setup-detail" bodyClassName="scroll" headerIcon="campaign">
-      <div className="setup-detail__lead">
-        {catalog.heroes[c.heroDefinitionId] ? (
-          <SpeakerPortrait catalog={catalog} line={{ speaker: catalog.heroes[c.heroDefinitionId]!.name, portraitAssetId: catalog.heroes[c.heroDefinitionId]!.portraitAssetId }} size="6rem" bustFirst />
-        ) : (
-          <HeroPortrait catalog={catalog} definitionId={c.heroDefinitionId} size="6rem" />
-        )}
-        <div>
+    <Panel title={c.name} className="setup-detail fe-chronicle" bodyClassName="scroll fe-chronicle__body" framed surface="parchment" theme={guiThemeFor(c.pantheonId)} label={c.name}>
+      <div className="fe-chronicle__lead">
+        <figure className="fe-chronicle__cover">
+          {cover ? <img src={cover.url} alt={`${c.name} cover painting`} draggable={false} data-testid="campaign-cover" /> : <CampaignThumb catalog={catalog} campaignId={c.id} style={{ width: '100%', height: '100%' }} />}
+        </figure>
+        <div className="fe-chronicle__story">
+          <div className="fe-chronicle__kicker">
+            <Emblem catalog={catalog} pantheonId={c.pantheonId} size="1.6rem" /> {catalog.pantheons[c.pantheonId]?.name} campaign
+          </div>
           <div className="tagline">{c.tagline}</div>
           <p>{c.summary}</p>
+          {hero ? (
+            <div className="fe-chronicle__hero">
+              <SpeakerPortrait catalog={catalog} line={{ speaker: hero.name, portraitAssetId: hero.portraitAssetId }} size="3.2rem" bustFirst />
+              <span>
+                <span className="fe-chronicle__hero-name">{hero.name}</span>
+                <span className="fe-chronicle__hero-title"> · {hero.title}</span>
+              </span>
+            </div>
+          ) : null}
         </div>
       </div>
-      {c.status === 'playable' ? <DifficultyPicker catalog={catalog} value={difficultyId} onChange={onDifficulty} scope="campaign" /> : null}
       {missions.length ? (
         <>
-          <SectionTitle>Missions</SectionTitle>
-          <div className="mission-list">
+          <SectionTitle>
+            {missions.length} {missions.length === 1 ? 'mission' : 'missions'}
+          </SectionTitle>
+          {/* Read-only: the campaign always begins with its first mission. */}
+          <ol className="mission-list fe-outline" aria-label="Missions in order">
             {missions.map((m) => (
-              <div key={m.id} className="mission-row">
-                <MissionThumb catalog={catalog} missionId={m.id} style={{ width: '8.4rem', height: '4.725rem' }} />
+              <li key={m.id} className="mission-row fe-outline__row">
+                <span className="fe-outline__n" aria-hidden="true">
+                  {m.order}
+                </span>
+                <MissionThumb catalog={catalog} missionId={m.id} style={{ width: '7.2rem', height: '4.05rem' }} />
                 <div>
                   <div className="mission-row__title">
-                    {m.order}. {m.name} <span className="dim">— {m.subtitle}</span>
+                    {m.name} <span className="dim">— {m.subtitle}</span>
                   </div>
                   <p className="dim">{m.summary}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </>
       ) : null}
+      {c.status === 'playable' ? <DifficultyPicker catalog={catalog} value={difficultyId} onChange={onDifficulty} scope="campaign" /> : <p className="note">This campaign is not available in this build.</p>}
     </Panel>
   );
 }
@@ -195,9 +223,9 @@ export function scenarioFacts(catalog: ContentCatalog, sk: SkirmishScenarioDefin
  */
 function ScenarioDetail({ title, picture, tagline, summary, highlights, facts, testId }: { title: string; picture: ReactNode; tagline?: string; summary: string; highlights: readonly string[]; facts: readonly Fact[]; testId: string }) {
   return (
-    <Panel title={title} className="setup-detail" headerIcon="map" bodyClassName="scroll">
-      <div className="setup-detail__lead" data-testid={testId}>
-        {picture}
+    <Panel title={title} className="setup-detail fe-atlas__detail" bodyClassName="scroll" framed surface="parchment" label={title}>
+      <div className="setup-detail__lead fe-atlas__lead" data-testid={testId}>
+        <figure className="fe-atlas__painting">{picture}</figure>
         <div>
           {tagline ? <div className="tagline">{tagline}</div> : null}
           <p>{summary}</p>
@@ -226,7 +254,8 @@ function ScenarioDetail({ title, picture, tagline, summary, highlights, facts, t
   );
 }
 
-const DETAIL_PICTURE: CSSProperties = { width: '12.8rem', height: '7.2rem', flex: 'none' };
+/** The selected map's painting fills the detail page's width (1.1.0 atlas; it is atmosphere, not a tactical plan). */
+const DETAIL_PICTURE: CSSProperties = { width: '100%', height: '100%', flex: 'none' };
 
 /** A scenario's list picture drawn like the skirmish maps' (plain painting, no frame); the procedural stand-in otherwise. */
 function ScenarioCardPicture({ catalog, missionId }: { catalog: ContentCatalog; missionId: string }) {
@@ -279,49 +308,128 @@ export function ScenarioSelectScreen() {
     store.goto('pantheon-select');
   };
   const skMission = skirmish ? catalog.missions[skirmish.missionId] : undefined;
-  // A selected skirmish map's painting (Brief 14) behind the list, like a campaign's cover — Twin Harbors' too.
-  const paintingOf = (thumb: string | undefined) => (thumb ? resolveArt(thumb.replace(/\.thumbnail$/, '.briefing')) : null);
-  const mapArt = map ? paintingOf(map.thumbnailAssetId) : skMission ? paintingOf(skMission.thumbnailAssetId) : null;
-  const backdrop = mapArt ? { className: 'setup-screen setup-screen--cover', style: { ['--app-art' as string]: `url("${mapArt.url}")` } } : campaignBackdrop(mode === 'campaign' ? selected : null);
-  return (
-    <div {...backdrop}>
-      <ScreenHeader title={mode === 'campaign' ? 'Choose a Campaign' : 'Choose a Scenario'} />
-      <div className="setup-split">
-        <Panel title={mode === 'campaign' ? 'Campaigns' : 'Scenarios'} className="setup-list" bodyClassName="scroll">
-          {(mode === 'campaign' ? campaigns : skirmishes).map((c) => (
-            <button key={c.id} type="button" className={`list-card ${selected === c.id ? 'is-selected' : ''}`} onClick={() => setSelected(c.id)} data-testid={`scenario-${c.id}`}>
-              {mode === 'campaign' ? (
-                <CampaignThumb catalog={catalog} campaignId={c.id} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
-              ) : 'missionId' in c ? (
-                <ScenarioCardPicture catalog={catalog} missionId={c.missionId} />
-              ) : null}
-              <div className="list-card__title">{c.name}</div>
-              <div className="list-card__meta">{mode === 'skirmish' && 'missionId' in c ? `${scenarioFacts(catalog, c)[0]?.value ?? 2} empires · ${c.tagline ?? c.summary}` : 'tagline' in c ? c.tagline : c.summary}</div>
-              {c.status !== 'playable' ? <div className="list-card__meta dim">Not available yet</div> : null}
-            </button>
-          ))}
-          {/* The authored maps follow Twin Harbors in the same list, same cards (owner request 2026-10-07). */}
-          {mode === 'skirmish' && maps.length ? (
-            <>
-              {maps.map((m) => (
-                <button key={m.id} type="button" className={`list-card ${selected === `map:${m.id}` ? 'is-selected' : ''}`} onClick={() => setSelected(`map:${m.id}`)} data-testid={`skirmish-map-${m.id}`}>
-                  <SkirmishMapThumb doc={m.map} assetId={m.thumbnailAssetId} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
-                  <div className="list-card__title">{m.name}</div>
-                  <div className="list-card__meta">
-                    {m.map.players.length} empires · {m.tagline}
-                  </div>
+  const items = mode === 'campaign' ? campaigns.map((c) => c.id) : [...skirmishes.map((c) => c.id), ...maps.map((m) => `map:${m.id}`)];
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const keysFor = (i: number) => radioKeys(items, i, (id) => setSelected(id), itemRefs, mode === 'campaign' ? 1 : 2);
+  const footerActions = (
+    <>
+          <Button onClick={() => store.back()} icon="back">
+            Back
+          </Button>
+          {campaign ? (
+            <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-begin">
+              Begin — Mission Briefing
+            </Button>
+          ) : map ? (
+            <Button variant="primary" size="large" onClick={next} data-testid="setup-next">
+              Set Up Empires
+            </Button>
+          ) : (
+            <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-next">
+              Choose Pantheon
+            </Button>
+          )}
+    </>
+  );
+  if (mode === 'campaign') {
+    return (
+      <FrontendShell backdrop="atlas" title="Campaign Chronicles" className="setup-screen" footer={footerActions}>
+        <div className="setup-split fe-chronicles">
+          <Panel title="Campaigns" className="setup-list fe-chronicles__list" bodyClassName="scroll" framed="compact">
+            <div role="radiogroup" aria-label="Campaigns" className="fe-chronicles__items">
+              {campaigns.map((c, i) => (
+                <button
+                  key={c.id}
+                  ref={(el) => {
+                    itemRefs.current[i] = el;
+                  }}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected === c.id}
+                  tabIndex={selected === c.id ? 0 : -1}
+                  onKeyDown={keysFor(i)}
+                  className={`list-card fe-campaign-row ${selected === c.id ? 'is-selected' : ''}`}
+                  onClick={() => setSelected(c.id)}
+                  data-gui-theme={guiThemeFor(c.pantheonId)}
+                  data-testid={`scenario-${c.id}`}
+                >
+                  <CampaignThumb catalog={catalog} campaignId={c.id} style={{ width: '5.6rem', aspectRatio: '16 / 9', height: 'auto' }} />
+                  <span className="fe-campaign-row__text">
+                    <span className="list-card__title">{c.name}</span>
+                    <span className="list-card__meta">
+                      {catalog.pantheons[c.pantheonId]?.name} · {c.missionIds.length} {c.missionIds.length === 1 ? 'mission' : 'missions'}
+                    </span>
+                    {c.status !== 'playable' ? <span className="list-card__meta dim">Not available yet</span> : null}
+                  </span>
                 </button>
               ))}
-            </>
-          ) : null}
+            </div>
+          </Panel>
+          {campaign ? <CampaignDetail c={campaign} difficultyId={campaignDifficulty} onDifficulty={setCampaignDifficulty} /> : null}
+        </div>
+      </FrontendShell>
+    );
+  }
+  return (
+    <FrontendShell backdrop="atlas" title="Skirmish Atlas" className="setup-screen" footer={footerActions}>
+      <div className="setup-split fe-atlas">
+        <Panel title="Maps" className="setup-list fe-atlas__list" bodyClassName="scroll" framed="compact">
+          <div role="radiogroup" aria-label="Skirmish maps" className="fe-atlas__grid">
+            {skirmishes.map((c, i) => (
+              <button
+                key={c.id}
+                ref={(el) => {
+                  itemRefs.current[i] = el;
+                }}
+                type="button"
+                role="radio"
+                aria-checked={selected === c.id}
+                tabIndex={selected === c.id ? 0 : -1}
+                onKeyDown={keysFor(i)}
+                className={`list-card fe-map-card ${selected === c.id ? 'is-selected' : ''}`}
+                onClick={() => setSelected(c.id)}
+                data-testid={`scenario-${c.id}`}
+              >
+                <ScenarioCardPicture catalog={catalog} missionId={c.missionId} />
+                <span className="list-card__title">{c.name}</span>
+                <span className="list-card__meta">{`${scenarioFacts(catalog, c)[0]?.value ?? 2} empires · ${c.tagline ?? c.summary}`}</span>
+                {c.status !== 'playable' ? <span className="list-card__meta dim">Not available yet</span> : null}
+              </button>
+            ))}
+            {/* The authored maps follow the scenario in the same gallery, same cards (owner request 2026-10-07). */}
+            {maps.map((m, k) => {
+              const i = skirmishes.length + k;
+              return (
+                <button
+                  key={m.id}
+                  ref={(el) => {
+                    itemRefs.current[i] = el;
+                  }}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected === `map:${m.id}`}
+                  tabIndex={selected === `map:${m.id}` ? 0 : -1}
+                  onKeyDown={keysFor(i)}
+                  className={`list-card fe-map-card ${selected === `map:${m.id}` ? 'is-selected' : ''}`}
+                  onClick={() => setSelected(`map:${m.id}`)}
+                  data-testid={`skirmish-map-${m.id}`}
+                >
+                  <SkirmishMapThumb doc={m.map} assetId={m.thumbnailAssetId} style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
+                  <span className="list-card__title">{m.name}</span>
+                  <span className="list-card__meta">
+                    {m.map.players.length} empires · {m.tagline}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </Panel>
-        {campaign ? <CampaignDetail c={campaign} difficultyId={campaignDifficulty} onDifficulty={setCampaignDifficulty} /> : null}
         {map ? (
           <ScenarioDetail
             title={map.name}
             picture={
-              <span className="portrait" style={{ display: 'block', ...DETAIL_PICTURE }}>
-                <SkirmishMapThumb doc={map.map} assetId={map.thumbnailAssetId} style={{ width: '100%', height: '100%' }} />
+              <span className="portrait fe-atlas__frame" style={{ display: 'block', ...DETAIL_PICTURE }}>
+                <SkirmishMapThumb doc={map.map} assetId={map.thumbnailAssetId} large style={{ width: '100%', height: '100%' }} />
               </span>
             }
             tagline={map.tagline}
@@ -334,7 +442,7 @@ export function ScenarioSelectScreen() {
         {skirmish && skMission ? (
           <ScenarioDetail
             title={skirmish.name}
-            picture={<MissionThumb catalog={catalog} missionId={skMission.id} style={DETAIL_PICTURE} />}
+            picture={<ScenarioCardPicture catalog={catalog} missionId={skMission.id} />}
             tagline={skirmish.tagline}
             summary={skirmish.summary}
             highlights={skirmish.highlights ?? []}
@@ -343,25 +451,7 @@ export function ScenarioSelectScreen() {
           />
         ) : null}
       </div>
-      <footer className="setup-footer">
-        <Button onClick={() => store.back()} icon="back">
-          Back
-        </Button>
-        {campaign ? (
-          <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-begin">
-            Begin — Mission Briefing
-          </Button>
-        ) : map ? (
-          <Button variant="primary" size="large" onClick={next} data-testid="setup-next">
-            Set Up Empires
-          </Button>
-        ) : (
-          <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-next">
-            Choose Pantheon
-          </Button>
-        )}
-      </footer>
-    </div>
+    </FrontendShell>
   );
 }
 
@@ -369,64 +459,89 @@ export function ScenarioSelectScreen() {
 // S04 Pantheon selection
 // ---------------------------------------------------------------------------
 
-function PantheonDetail({ p }: { p: PantheonDefinition }) {
+/**
+ * The chosen pantheon (concept 09): its patron god, its parchment summary and
+ * signature, and the seven creature families of its roster — all from the
+ * content (the patron is the one the game would start with, never a fixed one).
+ */
+function PantheonStage({ p, patronId }: { p: PantheonDefinition; patronId: string | null }) {
   const store = useStore();
   const catalog = store.catalog;
+  const patron = patronId ? catalog.gods[patronId] : undefined;
   return (
-    <Panel title={`${p.name} Pantheon`} className="setup-detail" bodyClassName="scroll" style={{ ['--faction' as string]: p.theme.accent }}>
-      <div className="setup-detail__lead">
-        <Emblem catalog={catalog} pantheonId={p.id} size="5rem" />
-        <div>
-          <div className="tagline">{p.epithet}</div>
-          <p>{p.summary}</p>
+    <section className="pantheon-stage" aria-label={`${p.name} pantheon`} style={{ ['--faction' as string]: p.theme.accent }} data-gui-theme={guiThemeFor(p.id)} data-testid="pantheon-stage">
+      <figure className="pantheon-stage__patron gui-plate" data-testid="pantheon-patron">
+        {patron ? (
+          <>
+            <GodPortrait catalog={catalog} godId={patron.id} size="100%" locked={patron.implementationStatus !== 'implemented'} />
+            <figcaption>
+              <span className="pantheon-stage__patron-label">Patron</span>
+              <span className="pantheon-stage__patron-name">{patron.name}</span>
+              <span className="pantheon-stage__patron-domain">{patron.domain}</span>
+            </figcaption>
+          </>
+        ) : (
+          <figcaption className="dim small">No patron god is available.</figcaption>
+        )}
+      </figure>
+      <div className="pantheon-stage__info panel--parchment gui-surface--parchment">
+        <div className="pantheon-stage__lead">
+          <Emblem catalog={catalog} pantheonId={p.id} size="4rem" />
+          <div>
+            <h2 className="pantheon-stage__name">{p.name}</h2>
+            <div className="pantheon-stage__epithet">{p.epithet}</div>
+          </div>
         </div>
+        <p className="pantheon-stage__summary">{p.summary}</p>
+        {p.signature ? (
+          <>
+            <SectionTitle>Signature: {p.signature.name} (proposed)</SectionTitle>
+            <ul className="bullets small" data-testid="setup-signature">
+              {p.signature.rules.map((r) => (
+                <li key={r}>{r}</li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+        <SectionTitle>Gods</SectionTitle>
+        <div className="row gap wrap">
+          {p.godIds.map((g) => {
+            const god = catalog.gods[g];
+            return (
+              <span key={g} className="god-pill" title={god?.domain}>
+                <GodPortrait catalog={catalog} godId={g} size="1.8rem" locked={god?.implementationStatus !== 'implemented'} /> {god?.name}
+              </span>
+            );
+          })}
+        </div>
+        {p.playability !== 'playable' ? (
+          <p className="note">
+            Preparation pantheon: names, tiers and god list are present for architecture and the encyclopedia. Stats, towns and abilities are not designed yet, so it cannot be played.
+          </p>
+        ) : null}
       </div>
-      {p.signature ? (
-        <>
-          <SectionTitle>Signature: {p.signature.name} (proposed)</SectionTitle>
-          <ul className="bullets small" data-testid="setup-signature">
-            {p.signature.rules.map((r) => (
-              <li key={r}>{r}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
-      <SectionTitle>Seven creature tiers</SectionTitle>
-      <div className="roster-grid">
-        {p.roster.map((r) => {
-          const fam = catalog.families[r.familyId];
-          if (!fam) return null;
-          const base = catalog.creatures[fam.baseCreatureId];
-          const up = catalog.creatures[fam.upgradedCreatureId];
-          return (
-            <div key={r.tier} className="roster-cell">
-              <span className="roster-cell__tier">T{r.tier}</span>
-              <CreaturePortrait catalog={catalog} creatureId={fam.baseCreatureId} size="3rem" />
-              <div className="roster-cell__names">
-                <div>{base?.name}</div>
-                <div className="dim">↑ {up?.name}</div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="pantheon-roster" aria-label="Seven creature families">
+        <div className="pantheon-roster__title">Creatures</div>
+        <ol className="pantheon-roster__list">
+          {p.roster.map((r) => {
+            const fam = catalog.families[r.familyId];
+            if (!fam) return null;
+            const base = catalog.creatures[fam.baseCreatureId];
+            const up = catalog.creatures[fam.upgradedCreatureId];
+            return (
+              <li key={r.tier} className="pantheon-roster__tile roster-cell" data-testid={`roster-${r.tier}`}>
+                <span className="roster-cell__tier">T{r.tier}</span>
+                <CreaturePortrait catalog={catalog} creatureId={fam.baseCreatureId} size="5.2rem" />
+                <span className="pantheon-roster__names roster-cell__names">
+                  <span className="pantheon-roster__base">{base?.name}</span>
+                  <span className="pantheon-roster__up">↑ {up?.name}</span>
+                </span>
+              </li>
+            );
+          })}
+        </ol>
       </div>
-      <SectionTitle>Gods</SectionTitle>
-      <div className="row gap wrap">
-        {p.godIds.map((g) => {
-          const god = catalog.gods[g];
-          return (
-            <span key={g} className="god-pill" title={god?.domain}>
-              <GodPortrait catalog={catalog} godId={g} size="2rem" locked={god?.implementationStatus !== 'implemented'} /> {god?.name}
-            </span>
-          );
-        })}
-      </div>
-      {p.playability !== 'playable' ? (
-        <p className="note">
-          Preparation pantheon: names, tiers and god list are present for architecture and the encyclopedia. Stats, towns and abilities are not designed yet, so it cannot be played.
-        </p>
-      ) : null}
-    </Panel>
+    </section>
   );
 }
 
@@ -476,6 +591,18 @@ export function PantheonSelectScreen() {
   const campaign = store.setup.campaignId ? catalog.campaigns[store.setup.campaignId] : undefined;
   const needsVariant = variants.length > 0;
   const canPick = !!p && p.playability === 'playable' && (!locked || locked === p.id) && (!needsVariant || !!variant);
+  // Arrow keys move between the six banners (one radio group, one tab stop).
+  const bannerRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const onBannerKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
+    const step = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const order = catalog.pantheonOrder;
+    const j = (i + step + order.length) % order.length;
+    setSelected(order[j]!);
+    bannerRefs.current[j]?.focus();
+  };
+  const patronId = p ? defaultPatron(catalog, p.id, campaign) : null;
   const reason = !p
     ? ''
     : p.playability !== 'playable'
@@ -486,65 +613,69 @@ export function PantheonSelectScreen() {
           ? `${scenario?.name ?? 'This scenario'} has no ${p.name} vs. ${catalog.pantheons[rival]?.name} version`
           : '';
   return (
-    <div {...campaignBackdrop(store.setup.mode === 'campaign' ? store.setup.campaignId : null)}>
+    <div className="setup-screen fe-shell fe-shell--atlas fe-pantheon-screen" style={backdropStyle('atlas')}>
       <ScreenHeader title="Choose a Pantheon" />
-      <div className="pantheon-row" role="listbox" aria-label="Pantheons">
-        {catalog.pantheonOrder.map((id) => {
+      <div className="pantheon-banners" role="radiogroup" aria-label="Pantheons">
+        {catalog.pantheonOrder.map((id, i) => {
           const pp = catalog.pantheons[id];
           if (!pp) return null;
           return (
-            <button
+            <FactionBanner
               key={id}
-              type="button"
-              role="option"
-              aria-selected={selected === id}
-              className={`pantheon-card ${selected === id ? 'is-selected' : ''} ${pp.playability !== 'playable' ? 'is-prep' : ''}`}
-              style={{ ['--faction' as string]: pp.theme.accent }}
-              onClick={() => setSelected(id)}
-              data-testid={`pantheon-${id}`}
-            >
-              <span className="pantheon-card__emblem">
-                <Emblem catalog={catalog} pantheonId={id} size="5.2rem" />
-              </span>
-              <span className="pantheon-card__name">{pp.name}</span>
-              <span className="pantheon-card__epithet">{pp.epithet}</span>
-              {pp.playability !== 'playable' ? <span className="pantheon-card__note">Not playable yet</span> : null}
-            </button>
+              theme={guiThemeFor(id)}
+              name={pp.name}
+              caption={pp.epithet}
+              note={pp.playability !== 'playable' ? 'Not playable yet' : undefined}
+              selected={selected === id}
+              onSelect={() => setSelected(id)}
+              tabIndex={selected === id ? 0 : -1}
+              onKeyDown={(e) => onBannerKey(e, i)}
+              buttonRef={(el) => {
+                bannerRefs.current[i] = el;
+              }}
+              nameClassName="pantheon-card__name"
+              captionClassName="pantheon-card__epithet"
+              testId={`pantheon-${id}`}
+            />
           );
         })}
       </div>
-      {rivalOptions.length ? <RivalPicker options={rivalOptions} rival={rival} onPick={setRival} human={rivalCtl === 'human'} /> : null}
-      {rivalOptions.length && isSkirmish && rivalCtl === 'ai' && variant && catalog.missions[variant.missionId]?.features?.aiTemperaments === true ? (
-        <p className="rival-temperament">
-          <span className="dim small">As an AI rival, {catalog.pantheons[rival]?.name ?? rival} plays as </span>
-          <TemperamentNote catalog={catalog} pantheonId={rival} />
-        </p>
-      ) : null}
-      {isSkirmish ? (
-        <div className="match-settings" data-testid="match-settings">
-          <div className="setting-block">
-            <div className="setting-block__label">Rival seat</div>
-            <Segmented
-              label="Rival seat"
-              value={rivalCtl}
-              options={[
-                { id: 'ai', label: 'AI' },
-                { id: 'human', label: 'Second player (hot-seat)' },
-              ]}
-              onChange={setRivalCtl}
-              testId="rival-controller"
-            />
-            {rivalCtl === 'human' ? (
-              <div className="row gap wrap setting-block__details">
-                <TextInput label="First player's name" value={p1Name} onChange={setP1Name} testId="name-p1" />
-                <TextInput label="Second player's name" value={p2Name} onChange={setP2Name} testId="name-p2" />
-              </div>
-            ) : null}
+      {p ? <PantheonStage p={p} patronId={patronId} /> : null}
+      {rivalOptions.length || isSkirmish ? (
+        <div className="setup-drawer gui-plate" data-testid="setup-drawer">
+        {rivalOptions.length ? <RivalPicker options={rivalOptions} rival={rival} onPick={setRival} human={rivalCtl === 'human'} /> : null}
+        {rivalOptions.length && isSkirmish && rivalCtl === 'ai' && variant && catalog.missions[variant.missionId]?.features?.aiTemperaments === true ? (
+          <p className="rival-temperament">
+            <span className="dim small">As an AI rival, {catalog.pantheons[rival]?.name ?? rival} plays as </span>
+            <TemperamentNote catalog={catalog} pantheonId={rival} />
+          </p>
+        ) : null}
+        {isSkirmish ? (
+          <div className="match-settings" data-testid="match-settings">
+            <div className="setting-block">
+              <div className="setting-block__label">Rival seat</div>
+              <Segmented
+                label="Rival seat"
+                value={rivalCtl}
+                options={[
+                  { id: 'ai', label: 'AI' },
+                  { id: 'human', label: 'Second player (hot-seat)' },
+                ]}
+                onChange={setRivalCtl}
+                testId="rival-controller"
+              />
+              {rivalCtl === 'human' ? (
+                <div className="row gap wrap setting-block__details">
+                  <TextInput label="First player's name" value={p1Name} onChange={setP1Name} testId="name-p1" />
+                  <TextInput label="Second player's name" value={p2Name} onChange={setP2Name} testId="name-p2" />
+                </div>
+              ) : null}
+            </div>
+            {rivalCtl === 'ai' ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : <p className="dim small">Two players share this computer and take turns; the map is hidden at each hand-over. Difficulty does not apply.</p>}
           </div>
-          {rivalCtl === 'ai' ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : <p className="dim small">Two players share this computer and take turns; the map is hidden at each hand-over. Difficulty does not apply.</p>}
+        ) : null}
         </div>
       ) : null}
-      {p ? <PantheonDetail p={p} /> : null}
       <footer className="setup-footer">
         <Button onClick={() => store.back()} icon="back">
           Back

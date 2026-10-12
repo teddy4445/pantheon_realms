@@ -1,0 +1,24 @@
+{
+  "specific": [
+    {
+      "campaignId": "winter_oath",
+      "mapId": "winter_oath_m01_v1",
+      "siteId": "m01_longship",
+      "assetId": "gui.encounter.longship"
+    }
+  ],
+  "byKind": {
+    "treasure_chest": {
+      "unclaimed": "gui.encounter.treasure",
+      "claimed": "gui.encounter.treasure-empty"
+    }
+  },
+  "conditional": [
+    {
+      "assetId": "gui.encounter.hermit",
+      "useOnlyWhen": "Quest site narrative really describes a hermit/hut. A defeat-target quest must still show its actual target and state."
+    }
+  ],
+  "fallback": "gui.encounter.crossroads",
+  "note": "Use current typed site discriminants in implementation; byKind is a semantic mapping, not a new simulation schema. Never choose art by localized title. For encounters where crossroads misrepresents the place, omit the illustration or use the existing current mission art."
+}

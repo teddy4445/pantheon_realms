@@ -1,0 +1,16 @@
+import {chromium} from 'file:///C:/Users/lazeb/Desktop/blannder_models/landing/node_modules/playwright/index.mjs';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+const dir=path.dirname(fileURLToPath(import.meta.url));
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:390,height:1100}});
+await page.goto(pathToFileURL(path.join(dir,'index.html')).href);
+await page.locator('[data-screen="levelup"]').click();
+await page.evaluate(async()=>Promise.all([...document.images].map(i=>{i.loading='eager';return i.decode().catch(()=>{});})));
+const cards=await page.locator('.skill-copy').evaluateAll(els=>els.map(el=>({height:el.clientHeight,contentHeight:el.scrollHeight})));
+if(cards.some(x=>x.contentHeight>x.height))throw Error('Skill copy overflow');
+await page.locator('#stage').screenshot({path:path.join(dir,'previews/mobile-levelup.png')});
+await fs.writeFile(path.join(dir,'mobile-card-validation.json'),JSON.stringify({status:'passed',width:390,cards},null,2));
+console.log(JSON.stringify({status:'passed',cards}));
+await browser.close();

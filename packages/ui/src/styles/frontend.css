@@ -1,0 +1,2324 @@
+/*
+ * Release 1.1.0 pre-game screens (handoff docs/frontend-v1.1.0): the neutral
+ * dark blue and bronze shell over a quiet painted backdrop, illustrated choice
+ * tiles, Campaign Chronicles, the Skirmish Atlas, the Random Map chapters, seat
+ * banners, the library screens (encyclopedia, settings, saved journeys, map
+ * library, records) and the empty-archive state. Faction frames appear only on
+ * faction panels (`data-gui-theme`); everything else wears the neutral frame.
+ * Loaded after gui.css.
+ */
+
+/* ============================================================
+   Shell: backdrop, title plaque, one main region, sticky footer
+   ============================================================ */
+.fe-shell {
+  /* The painting shows through a lighter shade than other screens; text never sits on it directly. */
+  background:
+    linear-gradient(180deg, rgba(5, 9, 15, 0.78) 0%, rgba(5, 9, 15, 0.42) 22%, rgba(5, 9, 15, 0.46) 70%, rgba(5, 9, 15, 0.9) 100%),
+    radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(5, 9, 15, 0.55) 100%),
+    var(--app-art) center / cover no-repeat,
+    var(--navy-950);
+}
+.fe-shell::before {
+  display: none;
+}
+.fe-shell > .screen-header {
+  min-height: 3.6rem;
+}
+/* The title as a plaque in the middle of the bar (the back control, when a screen keeps one, stays at the left). */
+.fe-shell > .screen-header .screen-header__titles {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: min(46rem, 60vw);
+  padding: 0.3rem 2.6rem 0.35rem;
+  text-align: center;
+  background:
+    var(--orn-diamond) left 0.9rem center / 0.62rem no-repeat,
+    var(--orn-diamond) right 0.9rem center / 0.62rem no-repeat,
+    linear-gradient(180deg, rgba(23, 45, 75, 0.95), rgba(9, 18, 32, 0.95));
+  border: 1px solid var(--gold-600);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8), inset 0 0 0 2px rgba(216, 181, 108, 0.28), 0 4px 14px rgba(0, 0, 0, 0.55);
+}
+.fe-shell > .screen-header .screen-header__title {
+  font-size: 1.45rem;
+  letter-spacing: 0.08em;
+}
+.fe-shell > .screen-header .screen-header__right {
+  margin-left: auto;
+}
+.fe-shell__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fe-shell__footer {
+  position: relative;
+  z-index: 4;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  padding: 0.75rem 1.6rem 0.9rem;
+  background:
+    linear-gradient(180deg, rgba(14, 27, 45, 0.88), rgba(6, 12, 22, 0.94)),
+    var(--gui-surface-stone) center / cover;
+  border-top: 1px solid var(--gold-600);
+  box-shadow: 0 -1px 0 rgba(5, 9, 15, 0.9), 0 -3px 0 -1px rgba(194, 154, 82, 0.25), 0 -8px 20px rgba(0, 0, 0, 0.45);
+}
+.fe-shell__footer > .random-setup__reason {
+  flex: 1 1 14rem;
+  text-align: center;
+}
+.fe-shell__footer > :last-child:not(:first-child) {
+  margin-left: auto;
+}
+.fe-shell .setup-split,
+.fe-shell .map-setup {
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+/* Reading sizes on the pre-game screens: body copy 16–18 px at the reference sizes, notes at least 14 px;
+   both follow Settings → Interface → Text size. */
+.fe-shell {
+  --fe-body: calc(clamp(16px, 1.15rem, 18px) * var(--text-scale, 1));
+  --fe-note: calc(clamp(14px, 1rem, 16px) * var(--text-scale, 1));
+}
+.fe-shell:not(.fe-editor) :is(.small, .setting-block__details, .list-card__meta, .note) {
+  font-size: var(--fe-note);
+}
+.fe-shell:not(.fe-editor) :is(.fe-chronicle__story p, .fe-atlas__lead p, .fe-random__type-text, .map-setup__map p, .map-detail__fact dd, .bullets:not(.small)) {
+  font-size: var(--fe-body);
+  line-height: 1.42;
+}
+/* Controls on the pre-game screens: at least 40 px high (the map editor keeps its dense tool panels). */
+.fe-shell:not(.fe-editor) :is(.select, select, .input, .text-input) {
+  min-height: max(2.5rem, 40px);
+  font-size: max(0.92rem, 14px);
+}
+.fe-shell:not(.fe-editor) button.kbd {
+  min-width: 2.6rem;
+  min-height: max(2.5rem, 40px);
+  font-size: max(0.85rem, 13px);
+}
+.fe-shell:not(.fe-editor) .field .btn--small {
+  min-height: max(2.5rem, 40px);
+}
+/* Segmented choices: at least 40 px high; on parchment they read in ink. */
+.fe-shell:not(.fe-editor) .segmented__opt {
+  min-height: max(2.5rem, 40px);
+  font-size: max(0.92rem, 14px);
+  padding-inline: 0.95rem;
+}
+.gui-surface--parchment .segmented {
+  background: rgba(255, 248, 228, 0.55);
+  border-color: rgba(110, 78, 30, 0.7);
+  box-shadow: inset 0 1px 3px rgba(60, 40, 12, 0.25);
+}
+.gui-surface--parchment .segmented__opt {
+  color: var(--gui-ink);
+  border-right-color: rgba(110, 78, 30, 0.4);
+}
+.gui-surface--parchment .segmented__opt:hover:not(:disabled):not(.is-selected) {
+  color: var(--gui-ink-head);
+  background: rgba(214, 170, 69, 0.22);
+}
+.gui-surface--parchment .segmented__opt.is-selected {
+  color: #241806;
+}
+.gui-surface--parchment .segmented__opt:disabled {
+  opacity: 1;
+  color: var(--gui-ink-faint);
+  text-decoration: line-through;
+  text-decoration-color: rgba(110, 78, 30, 0.55);
+}
+
+/* ============================================================
+   Illustrated choice tile (New Game modes, random map types)
+   ============================================================ */
+.fe-choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: var(--plate-raised);
+  border: 1px solid var(--gold-600);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), 0 6px 18px rgba(0, 0, 0, 0.45);
+  cursor: var(--cur-pointer, pointer);
+  overflow: hidden;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out, transform 150ms ease-out;
+}
+.fe-choice__art {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #0b1626;
+  border-bottom: 1px solid rgba(194, 154, 82, 0.45);
+}
+.fe-choice__art > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 180ms ease-out;
+}
+.fe-choice__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.75rem 0.95rem 0.9rem;
+  min-width: 0;
+}
+.fe-choice__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  color: var(--gold-200);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+.fe-choice__desc {
+  font-family: var(--font-body);
+  font-size: var(--fe-body, 1.02rem);
+  line-height: 1.35;
+  color: var(--text);
+}
+.fe-choice__reason {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #f2cf86;
+}
+.fe-choice__reason::before {
+  content: '';
+  width: 0.8rem;
+  height: 0.8rem;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 7V5a4 4 0 0 1 8 0v2h1v8H3V7zm2 0h4V5a2 2 0 0 0-4 0z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 7V5a4 4 0 0 1 8 0v2h1v8H3V7zm2 0h4V5a2 2 0 0 0-4 0z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.fe-choice__check {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 2;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--orn-check) center / 62% no-repeat, radial-gradient(circle at 50% 35%, #e8c87c, #7a5a26);
+  border: 1px solid #3d2a0c;
+  box-shadow: 0 0 0 2px rgba(5, 9, 15, 0.75), 0 2px 6px rgba(0, 0, 0, 0.6);
+  visibility: hidden;
+}
+.fe-choice:hover:not(.is-unavailable) {
+  border-color: var(--gold-400);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), 0 8px 22px rgba(0, 0, 0, 0.55), 0 0 0.8rem rgba(234, 208, 143, 0.25);
+}
+.fe-choice:hover:not(.is-unavailable) .fe-choice__art > img {
+  transform: scale(1.03);
+}
+/* Selection: gold outline and the check. Keyboard focus: a separate pale ring outside it. */
+.fe-choice.is-selected {
+  border-color: var(--gold-200);
+  box-shadow: inset 0 0 0 2px var(--gui-select), 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0 1rem rgba(242, 207, 110, 0.45);
+}
+.fe-choice.is-selected .fe-choice__check {
+  visibility: visible;
+}
+.fe-choice:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 3px;
+}
+.fe-choice.is-unavailable {
+  cursor: var(--cur-blocked, not-allowed);
+  border-style: dashed;
+  border-color: rgba(194, 154, 82, 0.45);
+}
+.fe-choice.is-unavailable .fe-choice__art > img {
+  opacity: 0.45;
+}
+.fe-choice.is-unavailable .fe-choice__name {
+  color: var(--text-dim);
+}
+
+/* New Game: four modes in one row, two when narrow, one on a phone-width window. */
+.fe-modes {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-content: center;
+  gap: 1.4rem;
+  width: 100%;
+  max-width: 118rem;
+  margin: 0 auto;
+  padding: 1.4rem 2rem;
+}
+.fe-choice--mode .fe-choice__name {
+  font-size: 1.45rem;
+}
+.fe-choice--mode .fe-choice__text {
+  flex: 1;
+  padding: 0.9rem 1.1rem 1.1rem;
+}
+@media (max-width: 1100px) {
+  .fe-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+  }
+  .fe-choice--mode .fe-choice__art {
+    aspect-ratio: 16 / 9;
+  }
+}
+@media (max-width: 620px) {
+  .fe-modes {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}
+@media (max-height: 760px) and (min-width: 1101px) {
+  .fe-choice--mode .fe-choice__art {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+/* ============================================================
+   Campaign Chronicles
+   ============================================================ */
+.fe-chronicles {
+  grid-template-columns: minmax(19rem, 25rem) 1fr;
+}
+.fe-chronicles__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.list-card.fe-campaign-row {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.5rem 0.6rem;
+  min-height: 3.6rem;
+  border-left: 3px solid var(--gold-600);
+}
+.fe-campaign-row > :first-child {
+  flex: none;
+  border: 1px solid rgba(194, 154, 82, 0.5);
+  border-radius: 2px;
+}
+.fe-campaign-row__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.fe-campaign-row.is-selected {
+  border-left-color: var(--gold-200);
+}
+.fe-campaign-row:focus-visible,
+.fe-map-card:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 2px;
+}
+.fe-chronicle .panel__body {
+  padding: 0.6rem 1rem 1rem;
+}
+.fe-chronicle__lead {
+  display: grid;
+  grid-template-columns: minmax(16rem, 46%) 1fr;
+  gap: 1.1rem;
+  align-items: start;
+  margin-bottom: 0.6rem;
+}
+.fe-chronicle__cover {
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.4), 0 4px 12px rgba(60, 40, 12, 0.35);
+  background: #2b2014;
+}
+.fe-chronicle__cover > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fe-chronicle__story {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.fe-chronicle__story p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.45;
+}
+.fe-chronicle__kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+.fe-chronicle__hero {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.2rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--gui-paper-rule);
+}
+.fe-chronicle__hero-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gui-ink-head);
+}
+.fe-chronicle__hero-title {
+  color: var(--gui-ink-soft);
+}
+.fe-outline {
+  margin: 0.3rem 0 0.8rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.fe-outline .fe-outline__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem auto 1fr;
+  align-items: start;
+  gap: 0.7rem;
+  padding: 0.45rem 0.55rem;
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 2px;
+}
+.fe-outline__row p {
+  margin: 0.15rem 0 0;
+  font-size: var(--fe-note, 0.95rem);
+}
+/* The chronology: numbered seals on one thread (decorative; the missions are not choices). */
+.fe-outline__row:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: calc(0.55rem + 1rem - 1px);
+  top: 2.4rem;
+  bottom: -0.65rem;
+  width: 2px;
+  background: rgba(110, 78, 30, 0.45);
+}
+.fe-outline__n {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff3d6;
+  background: radial-gradient(circle at 50% 35%, #a5763a, #5c3f12);
+  border: 1px solid #3d2a0c;
+  box-shadow: 0 1px 3px rgba(60, 40, 12, 0.5);
+}
+.fe-outline__row .mission-thumb,
+.fe-outline__row > :nth-child(2) {
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(90, 62, 22, 0.6);
+}
+
+/* ============================================================
+   Skirmish Atlas
+   ============================================================ */
+.fe-atlas {
+  grid-template-columns: minmax(22rem, 42%) 1fr;
+}
+.fe-atlas__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  gap: 0.7rem;
+}
+.list-card.fe-map-card {
+  margin: 0;
+  padding: 0.4rem 0.4rem 0.6rem;
+  gap: 0.3rem;
+}
+.fe-map-card > :first-child {
+  width: 100%;
+  border: 1px solid rgba(194, 154, 82, 0.45);
+  border-radius: 2px;
+}
+.fe-map-card .list-card__title,
+.fe-map-card .list-card__meta {
+  padding: 0 0.3rem;
+}
+.fe-map-card .list-card__meta {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.fe-atlas__detail .panel__body {
+  padding: 0.6rem 1rem 1rem;
+}
+.fe-atlas__lead.setup-detail__lead {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+.fe-atlas__painting {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 46vh;
+  overflow: hidden;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.4), 0 4px 12px rgba(60, 40, 12, 0.35);
+  background: #2b2014;
+}
+.fe-atlas__painting > img,
+.fe-atlas__painting > .portrait,
+.fe-atlas__painting > * {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  object-fit: cover;
+}
+.fe-atlas__frame.portrait::after {
+  display: none;
+}
+.fe-atlas__detail .map-detail__fact dt {
+  color: var(--gui-ink-head);
+}
+.fe-atlas__detail .map-detail__fact dd {
+  color: var(--gui-ink);
+}
+
+/* ============================================================
+   Random Map: three chapters over one draft
+   ============================================================ */
+.fe-random {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 0.7rem;
+}
+.fe-random__chapters {
+  flex: none;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 auto 0.6rem;
+  border-bottom: none;
+}
+.fe-random__chapters .tab {
+  min-width: 9rem;
+  min-height: 2.75rem;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+}
+.fe-random__panel {
+  flex: 0 1 auto;
+  max-width: 112rem;
+}
+.fe-random__land {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(19rem, 27rem);
+  gap: 1.2rem;
+  align-items: start;
+}
+.map-type-grid.fe-random__types {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+/* Type tiles: the painting with the name on a dark band (readable over any landscape). */
+.fe-choice--type.map-type {
+  padding: 0;
+  gap: 0;
+  border-radius: 3px;
+  border: 1px solid var(--gold-600);
+  background: #0b1626;
+}
+.fe-choice--type.map-type.is-selected {
+  border-color: var(--gold-200);
+  box-shadow: inset 0 0 0 2px var(--gui-select), 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0 1rem rgba(242, 207, 110, 0.45);
+}
+.fe-choice--type.is-unavailable {
+  border-style: dashed;
+}
+.fe-choice--type .fe-choice__art {
+  aspect-ratio: 16 / 9;
+  border-bottom: none;
+}
+.fe-choice--type .fe-choice__text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  gap: 0.1rem;
+  padding: 1.1rem 0.65rem 0.45rem;
+  background: linear-gradient(180deg, rgba(5, 9, 15, 0) 0%, rgba(5, 9, 15, 0.82) 42%, rgba(5, 9, 15, 0.94) 100%);
+}
+.fe-choice--type .fe-choice__name {
+  font-size: 0.98rem;
+}
+.fe-choice--type .fe-choice__reason {
+  font-size: 0.78rem;
+}
+.fe-choice--type .fe-choice__check {
+  width: 1.55rem;
+  height: 1.55rem;
+  top: 0.4rem;
+  right: 0.4rem;
+}
+.fe-random__type {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem 0.9rem;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 3px;
+  background: var(--gui-surface-parchment) center / cover, #ead6a6;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.5), inset 0 0 2.2rem rgba(110, 78, 30, 0.22), 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+.fe-random__type-art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 34vh;
+  object-fit: cover;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 2px;
+}
+.fe-random__type-caption {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--gui-ink-faint);
+}
+.fe-random__type-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  color: var(--gui-ink-head);
+}
+.fe-random__type-text {
+  margin: 0 0 0.2rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--gui-ink);
+}
+.fe-random__type .setting-block__label {
+  color: var(--gui-ink-head);
+}
+.fe-random__summary {
+  flex: 1 1 18rem;
+  text-align: center;
+  color: var(--text-dim);
+}
+.fe-random-screen .fe-shell__footer {
+  justify-content: space-between;
+}
+@media (max-width: 1100px) {
+  .fe-random__land {
+    grid-template-columns: 1fr;
+  }
+  .fe-random__type {
+    position: static;
+    display: grid;
+    grid-template-columns: minmax(10rem, 40%) 1fr;
+    column-gap: 0.9rem;
+  }
+  .fe-random__type > :not(.fe-random__type-art) {
+    grid-column: 2;
+  }
+  .fe-random__type-art {
+    grid-row: 1 / span 6;
+  }
+}
+@media (max-width: 700px) {
+  .map-type-grid.fe-random__types {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fe-random__type {
+    display: flex;
+  }
+}
+
+/* ============================================================
+   Seats (random and authored maps): each seat flies its banner
+   ============================================================ */
+.seat-row {
+  align-items: center;
+  border-left-width: 5px;
+}
+.seat-row__banner.gui-banner--mini {
+  margin: -0.2rem 0;
+}
+.seat-row__patron {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.fe-shell .map-setup {
+  grid-template-columns: minmax(20rem, 30rem) 1fr;
+  align-items: start;
+}
+.fe-shell .map-setup > .panel {
+  max-height: 100%;
+}
+.fe-shell .map-setup__map .map-detail__fact dt {
+  color: var(--gui-ink-head);
+}
+.fe-shell .map-setup__map .map-detail__fact dd {
+  color: var(--gui-ink);
+}
+
+/* ============================================================
+   Encyclopedia: sections, search, pantheon filter, no results
+   ============================================================ */
+.fe-shell.codex-screen .codex-bar {
+  padding: 0.7rem 1.2rem 0;
+  gap: 0.6rem 1.2rem;
+}
+.fe-shell.codex-screen .codex-bar .tabs {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.fe-shell.codex-screen .codex-bar .tab {
+  min-height: max(2.6rem, 40px);
+}
+.tab__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.4rem;
+  height: 1.3rem;
+  margin-left: 0.15rem;
+  padding: 0 0.3rem;
+  border-radius: 0.65rem;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  color: #241806;
+  background: var(--gold-300);
+}
+.fe-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 1 20rem;
+  min-width: 13rem;
+}
+.fe-search::before {
+  content: '';
+  position: absolute;
+  left: 0.7rem;
+  width: 1rem;
+  height: 1rem;
+  background: var(--gold-300);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='6.6' cy='6.6' r='4.6' fill='none' stroke='%23000' stroke-width='1.8'/%3E%3Cpath d='M10 10l4.4 4.4' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='6.6' cy='6.6' r='4.6' fill='none' stroke='%23000' stroke-width='1.8'/%3E%3Cpath d='M10 10l4.4 4.4' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events: none;
+}
+.fe-search__input.text-input {
+  width: 100%;
+  min-height: max(2.6rem, 40px);
+  padding: 0 2.6rem 0 2.2rem;
+  font-size: max(0.95rem, 14px);
+}
+.fe-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+.fe-search__clear {
+  position: absolute;
+  right: 0.25rem;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  color: var(--gold-200);
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: var(--cur-pointer, pointer);
+}
+.fe-search__clear:hover {
+  background: rgba(194, 154, 82, 0.2);
+}
+.fe-search__clear:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 0;
+}
+.codex-faction.is-selected {
+  border-color: var(--gold-200);
+  box-shadow: inset 0 0 0 2px var(--gui-select), 0 0 0.7rem rgba(242, 207, 110, 0.4);
+  color: #fff6dc;
+}
+.codex-faction.is-selected::after {
+  content: '';
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-left: 0.1rem;
+  border-radius: 50%;
+  background: var(--orn-check) center / 70% no-repeat, radial-gradient(circle at 50% 35%, #e8c87c, #7a5a26);
+  border: 1px solid #3d2a0c;
+}
+.fe-shell.codex-screen .codex-faction {
+  min-height: max(2.6rem, 40px);
+}
+.fe-noresults {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2.4rem auto;
+  max-width: 40rem;
+  text-align: center;
+}
+.fe-noresults__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--gui-ink-head);
+}
+.fe-noresults__body {
+  font-size: var(--fe-body, 1rem);
+  color: var(--gui-ink);
+}
+.fe-noresults__links,
+.fe-noresults__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+.fe-shell .codex-body.codex-page {
+  margin: 0.7rem 1.4rem 1.1rem;
+}
+
+/* ============================================================
+   Settings: the section rail, the parchment page, the footer
+   ============================================================ */
+.settings-layout.fe-settings {
+  display: grid;
+  grid-template-columns: minmax(12.5rem, 16rem) minmax(0, 1fr);
+  gap: 1rem;
+  max-width: 88rem;
+  padding: 0.9rem 1.6rem;
+}
+.fe-settings__rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  align-self: start;
+  background:
+    linear-gradient(180deg, rgba(14, 27, 45, 0.88), rgba(6, 12, 22, 0.92)),
+    var(--gui-surface-stone) center / cover;
+  border: 1px solid var(--gold-600);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 2px rgba(216, 181, 108, 0.2), 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+.fe-settings__tab {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: max(3.2rem, 44px);
+  padding: 0.35rem 0.8rem 0.35rem 0.45rem;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: max(1.02rem, 15px);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  background: linear-gradient(90deg, rgba(25, 46, 76, 0.75), rgba(10, 20, 36, 0.55));
+  border: 1px solid rgba(194, 154, 82, 0.35);
+  border-radius: 3px;
+  cursor: var(--cur-pointer, pointer);
+  transition: border-color 150ms ease-out, background 150ms ease-out, color 150ms ease-out;
+}
+.fe-settings__icon {
+  flex: none;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0.42rem;
+  fill: none;
+  stroke: var(--gold-300);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  border-radius: 50%;
+  border: 1px solid var(--gold-600);
+  background: radial-gradient(circle at 50% 35%, #1d3557, #0a1424);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8);
+}
+.fe-settings__tab:hover {
+  border-color: var(--gold-400);
+  color: var(--gold-100);
+}
+.fe-settings__tab.is-selected {
+  color: var(--gold-100);
+  background: linear-gradient(90deg, rgba(52, 88, 132, 0.85), rgba(19, 37, 63, 0.75));
+  border-color: var(--gold-200);
+  box-shadow: inset 0 0 0 2px var(--gui-select), 0 0 0.7rem rgba(242, 207, 110, 0.3);
+}
+.fe-settings__tab.is-selected .fe-settings__icon {
+  stroke: #241806;
+  background: radial-gradient(circle at 50% 35%, #f1d99a, #b08646);
+  border-color: #3d2a0c;
+}
+.fe-settings__tab:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 2px;
+}
+.fe-settings__page {
+  min-height: 0;
+}
+.fe-settings__page .panel__body {
+  padding: 0.4rem 1.2rem 1rem;
+}
+.fe-settings__fields .field {
+  padding: 0.6rem 0.2rem;
+  gap: 0.8rem 1.2rem;
+}
+.fe-shell:not(.fe-editor) .field__label {
+  font-size: var(--fe-body, 1rem);
+}
+.fe-shell:not(.fe-editor) .field__hint {
+  font-size: var(--fe-note, 0.8rem);
+  line-height: 1.35;
+}
+.fe-settings__status {
+  flex: 1 1 14rem;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: var(--fe-note, 0.85rem);
+  color: var(--text-dim);
+}
+.fe-settings__status.is-dirty {
+  color: #f2cf86;
+  font-weight: 600;
+}
+.fe-settings__status.is-dirty::before {
+  content: '!';
+  display: inline-grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  color: #241806;
+  background: #e0b050;
+}
+.settings-screen .fe-shell__footer > :last-child:not(:first-child) {
+  margin-left: 0;
+}
+@media (max-width: 900px) {
+  .settings-layout.fe-settings {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    padding-inline: 0.9rem;
+  }
+  .fe-settings__rail {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: stretch;
+  }
+  .fe-settings__tab {
+    flex: 1 1 9rem;
+  }
+}
+
+/* Form controls on parchment pages read in ink on light paper (stone controls keep their own colours). */
+.gui-surface--parchment :is(.select, select, .input) {
+  color: var(--gui-ink);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.2l5 5 5-5' fill='none' stroke='%234f3510' stroke-width='1.8'/%3E%3C/svg%3E") right 0.55rem center / 0.65rem no-repeat,
+    rgba(255, 250, 236, 0.82);
+  border-color: rgba(110, 78, 30, 0.8);
+  box-shadow: inset 0 1px 3px rgba(60, 40, 12, 0.22);
+}
+.gui-surface--parchment .input,
+.gui-surface--parchment .text-input {
+  color: var(--gui-ink);
+  background: rgba(255, 250, 236, 0.82);
+  border-color: rgba(110, 78, 30, 0.8);
+  box-shadow: inset 0 1px 3px rgba(60, 40, 12, 0.22);
+}
+.gui-surface--parchment select option {
+  color: #2b2014;
+  background: #fbf3df;
+}
+.gui-surface--parchment :is(.select, select, .input, .text-input):focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.gui-surface--parchment .kbd {
+  color: var(--gui-ink);
+  background: rgba(255, 250, 236, 0.85);
+  border-color: rgba(110, 78, 30, 0.8);
+}
+.gui-surface--parchment button.kbd:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.gui-surface--parchment .kbd.is-capturing {
+  color: #1c4d8a;
+  border-color: #1c4d8a;
+}
+.gui-surface--parchment .field {
+  border-bottom-color: var(--gui-paper-rule);
+}
+.gui-surface--parchment .toggle:focus-visible,
+.gui-surface--parchment input[type='range']:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.gui-surface--parchment .num {
+  color: var(--gui-ink);
+}
+
+/* ============================================================
+   Saved Journeys (save and load)
+   ============================================================ */
+.save-layout.fe-saves {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 1.1rem;
+  min-height: min(30rem, 60vh);
+}
+.fe-saves__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-right: 0.9rem;
+  border-right: 1px solid var(--gui-paper-rule);
+}
+.fe-saves__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.fe-saves__group + .fe-saves__group {
+  margin-top: 0.5rem;
+}
+.fe-saves__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gui-ink-head);
+}
+.fe-saves__heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gui-paper-rule);
+}
+.save-row.fe-save-row {
+  display: grid;
+  grid-template-columns: 6.4rem minmax(0, 1fr) auto;
+  grid-template-rows: none;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 4.2rem;
+  padding: 0.35rem 0.6rem 0.35rem 0.35rem;
+  color: var(--gui-ink);
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 240, 0.4);
+  transition: border-color 150ms ease-out, background 150ms ease-out;
+}
+.fe-save-row:hover {
+  border-color: #8f6a2f;
+  background: rgba(255, 250, 235, 0.75);
+}
+/* The chosen slot: the dark plate with a gold outline (and the name in gold), as in the concept. */
+.save-row.fe-save-row.is-selected {
+  color: #f4e8c9;
+  background: linear-gradient(180deg, #1d3557, #0d1a2e);
+  border-color: var(--gold-200);
+  box-shadow: inset 0 0 0 2px var(--gui-select), 0 0 0.6rem rgba(214, 170, 69, 0.45);
+}
+.fe-save-row:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.fe-save-row__thumb {
+  display: block;
+  width: 6.4rem;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(90, 62, 22, 0.6);
+  background: rgba(110, 78, 30, 0.12);
+}
+.fe-save-row__laurel {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%238a6a3a' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M14 31c-5-3-8-8-7-15M26 31c5-3 8-8 7-15'/%3E%3Cpath d='M8.5 22l-3-1.5M8 18l-3 0M9.5 26l-2.5 1M31.5 22l3-1.5M32 18l3 0M30.5 26l2.5 1'/%3E%3C/g%3E%3C/svg%3E") center / 60% no-repeat;
+  opacity: 0.8;
+}
+.fe-save-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+.fe-save-row .save-row__kind {
+  grid-row: auto;
+  font-size: 0.72rem;
+  color: #6a4510;
+}
+.fe-save-row .save-row__name {
+  font-size: max(1rem, 15px);
+  color: var(--gui-ink-head);
+}
+.fe-save-row .save-row__meta {
+  grid-column: auto;
+  color: var(--gui-ink-soft);
+}
+.fe-save-row.is-empty .save-row__name {
+  font-style: italic;
+  color: var(--gui-ink-faint);
+}
+.fe-save-row.is-selected .save-row__kind {
+  color: var(--gold-300);
+}
+.fe-save-row.is-selected .save-row__name {
+  color: var(--gold-100);
+}
+.fe-save-row.is-selected .save-row__meta,
+.fe-save-row.is-selected .fe-save-row__when {
+  color: #e3d6b3;
+}
+.fe-save-row__when {
+  align-self: start;
+  padding-top: 0.25rem;
+  white-space: nowrap;
+  color: var(--gui-ink-soft);
+}
+.fe-saves__detail {
+  gap: 0.6rem;
+}
+.fe-saves__art {
+  margin: 0;
+}
+.fe-saves__art > :first-child {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto !important;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(60, 40, 12, 0.3);
+}
+.fe-saves__art figcaption {
+  margin-top: 0.3rem;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: max(0.85rem, 13px);
+  color: var(--gui-ink-faint);
+}
+.fe-saves__detail .save-detail__name {
+  font-size: 1.35rem;
+  color: var(--gui-ink-head);
+}
+.fe-saves__facts {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--gui-paper-rule);
+}
+.fe-saves__facts > div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: baseline;
+}
+.fe-saves__facts dt {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+.fe-saves__facts dd {
+  margin: 0;
+  font-size: max(0.98rem, 14px);
+  color: var(--gui-ink);
+}
+.fe-saves__save {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.fe-saves__hint {
+  margin: auto 0;
+  text-align: center;
+}
+@media (max-width: 820px) {
+  .save-layout.fe-saves {
+    grid-template-columns: 1fr;
+  }
+  .fe-saves__list {
+    padding-right: 0;
+    border-right: 0;
+  }
+}
+
+/* ============================================================
+   Map Library (editor overlay) and the Cartographer shell
+   ============================================================ */
+.fe-library__section + .fe-library__section {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--gui-paper-rule);
+}
+.fe-library__heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gui-ink-head);
+}
+.fe-library__where {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--gui-ink-soft);
+}
+.fe-library__row.editor-library__row {
+  min-height: 3.2rem;
+  padding: 0.35rem 0.6rem 0.35rem 0.4rem;
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 3px;
+}
+.fe-library__sign {
+  flex: none;
+  width: 2.6rem;
+  height: 2.6rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%236a4510' stroke-width='1.5' stroke-linejoin='round'%3E%3Cpath d='M4 7l7-3 10 3 7-3v21l-7 3-10-3-7 3z'/%3E%3Cpath d='M11 4v21M21 7v21'/%3E%3C/g%3E%3Cpath d='M14 13l3 3m0-3l-3 3' stroke='%239c2a17' stroke-width='1.6'/%3E%3C/svg%3E") center / 80% no-repeat;
+}
+.fe-library__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.gui-surface--parchment .editor-library__name {
+  color: var(--gui-ink-head);
+}
+.fe-library__grid.editor-library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.6rem;
+}
+.fe-library__card.editor-library__row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+  padding: 0.4rem;
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 3px;
+}
+.fe-library__card > :first-child {
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(90, 62, 22, 0.6);
+}
+.fe-library__card .editor-library__name {
+  flex: none;
+}
+.fe-editor .map-editor__bar {
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  background:
+    linear-gradient(180deg, rgba(14, 27, 45, 0.9), rgba(6, 12, 22, 0.94)),
+    var(--gui-surface-stone) center / cover;
+  border-bottom: 1px solid var(--gold-600);
+}
+.fe-editor .map-editor__body {
+  grid-template-columns: 16rem minmax(0, 1fr) 23.5rem;
+  gap: 0.6rem;
+  padding: 0.6rem;
+}
+.fe-editor .map-editor__side .tabs {
+  flex-wrap: wrap;
+}
+.fe-editor .map-editor__canvas {
+  border-color: var(--gold-600);
+  box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+.fe-editor .editor-tool:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 1px;
+}
+
+/* ============================================================
+   Hall of Records
+   ============================================================ */
+.fe-records__tabs {
+  display: flex;
+  justify-content: center;
+  padding: 0.8rem 1.6rem 0.4rem;
+}
+.fe-records__tabs .tab {
+  min-width: 9rem;
+  min-height: max(2.6rem, 40px);
+}
+.fe-records__panel.highscores-panel {
+  flex: 0 1 auto;
+  min-height: 0;
+  width: min(100% - 3.2rem, 96rem);
+  margin: 0.4rem auto 0.9rem;
+  display: flex;
+  flex-direction: column;
+}
+.fe-records__panel .panel__body {
+  flex: 1;
+  min-height: 0;
+}
+.fe-records__table {
+  font-size: max(0.9rem, 14px);
+}
+.fe-records__table td {
+  padding-block: 0.45rem;
+}
+.fe-records__note {
+  flex: 1 1 16rem;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   Title hall: the compact Hall of Records link under the menu
+   ============================================================ */
+.menu-frame__records {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  margin: 0.55em 12% 0;
+  padding-top: 0.7em;
+  background: var(--orn-divider) center top / 4.2em 0.75em no-repeat;
+}
+.menu-frame__records .menu-btn--compact {
+  min-width: 62%;
+  min-height: max(2.6em, 40px);
+  font-size: max(0.7em, 12px);
+}
+
+/* ============================================================
+   Empty archive (saves, map library, records)
+   ============================================================ */
+.fe-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.2rem 1rem 1.4rem;
+  text-align: center;
+}
+.fe-empty__art {
+  display: block;
+  width: min(22rem, 70%);
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  opacity: 0.92;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+.fe-empty__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 34rem;
+}
+.fe-empty__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+  color: var(--gold-200);
+}
+.gui-surface--parchment .fe-empty__title {
+  color: var(--gui-ink-head);
+}
+.fe-empty__body {
+  font-size: 0.98rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+.fe-empty__action {
+  margin-top: 0.4rem;
+}
+
+/* ============================================================
+   Shared: reduced motion, high contrast, narrow windows
+   ============================================================ */
+:root[data-motion='reduced'] .fe-choice,
+:root[data-motion='reduced'] .fe-choice__art > img {
+  transition: none;
+}
+:root[data-motion='reduced'] .fe-choice:hover .fe-choice__art > img {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-motion='system'] .fe-choice,
+  :root[data-motion='system'] .fe-choice__art > img {
+    transition: none;
+  }
+  :root[data-motion='system'] .fe-choice:hover .fe-choice__art > img {
+    transform: none;
+  }
+}
+:root[data-contrast='high'] .fe-shell {
+  background: linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.86)), var(--app-art) center / cover no-repeat, #000;
+}
+:root[data-contrast='high'] .fe-choice--type .fe-choice__text {
+  background: rgba(0, 0, 0, 0.92);
+}
+@media (max-width: 900px) {
+  .fe-chronicles,
+  .fe-atlas,
+  .fe-shell .map-setup {
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
+    overflow-y: auto;
+  }
+  /* One page that scrolls as a whole (the list and the detail keep their full height). */
+  .fe-chronicles > .panel .panel__body,
+  .fe-atlas > .panel .panel__body,
+  .fe-shell .map-setup > .panel .panel__body {
+    overflow: visible;
+  }
+  .fe-shell .map-setup > .panel {
+    max-height: none;
+  }
+  .fe-chronicle__lead {
+    grid-template-columns: 1fr;
+  }
+  .fe-shell > .screen-header .screen-header__titles {
+    max-width: calc(100vw - 9rem);
+    padding-inline: 1.6rem;
+  }
+  .fe-shell__footer {
+    padding-inline: 0.9rem;
+  }
+}
+
+/* ============================================================
+   The complete frontend kit (frontend-kit-v1.1.0)
+   ============================================================ */
+/* The blank navy-and-gold plate behind a screen's title, as a nine-slice (its end caps never stretch). */
+.fe-shell[data-plate] > .screen-header .screen-header__titles {
+  --plate-h: 2.95rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--plate-h);
+  padding: 0.25rem calc(var(--plate-h) * 0.85);
+  background: none;
+  box-shadow: none;
+  border: 0 solid transparent;
+  border-image-source: var(--fe-plate);
+  border-image-slice: 205 215 244 215 fill;
+  border-image-width: calc(var(--plate-h) * 0.589) calc(var(--plate-h) * 0.618) calc(var(--plate-h) * 0.701) calc(var(--plate-h) * 0.618);
+  border-image-outset: calc(var(--plate-h) * 0.486) 0 calc(var(--plate-h) * 0.595) 0;
+  border-image-repeat: stretch;
+}
+/* Finished pantheon pennants: whole (contained, never cropped), the name below in live text. */
+.gui-banner.gui-banner--kit {
+  background: none;
+}
+.gui-banner__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+  pointer-events: none;
+}
+.gui-banner__label {
+  max-width: 100%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: max(1rem, 14px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff1c8;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  overflow-wrap: anywhere;
+}
+.gui-banner-choice[aria-checked='true'] .gui-banner__label {
+  color: var(--gold-200);
+}
+/* The pantheon choice keeps its larger names (owner request 2026-10-07: 1.3rem names, 1.03rem epithets). */
+.gui-banner__label.pantheon-card__name {
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  overflow-wrap: normal;
+}
+.gui-banner--mini.gui-banner--kit .gui-banner__art {
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+}
+/* The title logo: its own layer (plaque, lettering, crest), contained. */
+.main-menu__logo.main-menu__logo--kit {
+  height: clamp(6rem, 21vh, 13.5rem);
+  max-width: 82vw;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+}
+/* Painted icons. */
+.art-icon {
+  display: inline-block;
+  flex: none;
+  object-fit: contain;
+  vertical-align: middle;
+}
+.btn__art {
+  flex: none;
+  width: 1.3em;
+  height: 1.3em;
+  object-fit: contain;
+}
+.menu-btn__art {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+}
+.tab__icon {
+  width: 1.4em;
+  height: 1.4em;
+  margin: -0.2em 0.4em -0.2em -0.1em;
+}
+.editor-tool__icon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+.section-title__icon {
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: -0.3em;
+}
+.fe-settings__icon {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--fe-socket, radial-gradient(circle at 50% 35%, #1d3557, #0a1424)) center / contain no-repeat;
+  border: 0;
+  box-shadow: none;
+}
+.fe-settings__icon .art-icon {
+  width: 66%;
+  height: 66%;
+}
+.fe-settings__tab.is-selected .fe-settings__icon {
+  background: var(--fe-socket, radial-gradient(circle at 50% 35%, #f1d99a, #b08646)) center / contain no-repeat;
+  box-shadow: 0 0 0 2px var(--gui-select);
+  border-radius: 50%;
+}
+/* The warning seal of destructive confirmations (48–72 px), beside the live explanation. */
+.confirm__lead {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.confirm__seal {
+  width: clamp(48px, 3.8rem, 72px);
+  height: clamp(48px, 3.8rem, 72px);
+  filter: drop-shadow(0 3px 5px rgba(60, 20, 10, 0.4));
+}
+.confirm__body {
+  margin: 0;
+  font-size: max(1rem, 15px);
+  line-height: 1.4;
+}
+/* Ranks in the laurel medallion (the number is live text). */
+.fe-records__rank {
+  width: 3.2rem;
+}
+.fe-rank {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: center / contain no-repeat;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #3a2608;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.6);
+}
+
+/* ============================================================
+   1.1.3 (owner): the encyclopedia's section rail, framed cards
+   ============================================================ */
+.codex-layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(13.5rem, 16.5rem) minmax(0, 1fr);
+  /* One row exactly as tall as the screen: the rail scrolls inside it, the page keeps a stable height. */
+  grid-template-rows: minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.8rem 1.4rem 1rem;
+}
+/* The rail: the search, then the eight sections one below the other (the settings rail's look). */
+.codex-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-self: start;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 0.65rem;
+  background:
+    linear-gradient(180deg, rgba(16, 30, 50, 0.55), rgba(6, 12, 22, 0.72)),
+    var(--gui-surface-leather) center / 40rem repeat,
+    #0c1622;
+  border: 1px solid var(--gold-600);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 2px rgba(216, 181, 108, 0.2), 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+.codex-rail .fe-search {
+  flex: none;
+  min-width: 0;
+}
+.codex-rail__tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.codex-rail__tab.fe-settings__tab {
+  width: 100%;
+  min-height: max(3.1rem, 44px);
+}
+.codex-rail__icon.tab__icon {
+  flex: none;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0.28rem;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 1px solid var(--gold-600);
+  background: radial-gradient(circle at 50% 35%, #1d3557, #0a1424);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8);
+}
+.codex-rail__tab.is-selected .codex-rail__icon {
+  border-color: var(--gold-200);
+  background: radial-gradient(circle at 50% 35%, #34598c, #11233d);
+}
+.codex-rail__label {
+  flex: 1;
+  min-width: 0;
+}
+.codex-rail__tab .tab__count {
+  margin-left: auto;
+}
+.codex-main {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fe-shell.codex-screen .codex-main .codex-factions {
+  justify-content: flex-start;
+  padding: 0 0 0.6rem;
+}
+/* The page: the parchment painting at its own grain (tiled, not stretched), a little deeper at the edges. */
+.fe-shell .codex-main .codex-body.codex-page {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  background:
+    radial-gradient(140% 110% at 50% 0%, rgba(255, 249, 230, 0.16), rgba(122, 82, 30, 0.14) 100%),
+    var(--gui-surface-parchment) center top / 52rem repeat,
+    #e6cf9c;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.45), inset 0 0 4rem rgba(110, 72, 24, 0.32), 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+/*
+ * Cards: a painted frame instead of a pale paper box. In a pantheon's section the
+ * frame is that pantheon's own (data-gui-theme on the section); elsewhere the
+ * painted socket rim. The fill is only a faint warm tint inside the frame line.
+ */
+.codex-page .codex-frame {
+  --codex-src: var(--gui-socket);
+  --codex-slice: 240;
+  --codex-fw: 1.3rem;
+  --codex-fill: 0.42rem;
+  position: relative;
+  isolation: isolate;
+  padding: 1.1rem 1.45rem 1.05rem 1.4rem;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.codex-pantheon[data-gui-theme] .codex-frame {
+  --codex-src: var(--gui-frame);
+  --codex-slice: var(--gui-frame-slice, 256 320 256 320);
+  /* The frame art's corners are 320 × 256: keep them in proportion. */
+  --codex-fw: 2.1rem;
+  --codex-fwx: 2.625rem;
+  --codex-fill: 0.5rem;
+  padding: 1.3rem 1.8rem 1.2rem 1.7rem;
+}
+.codex-page .codex-frame::before {
+  content: '';
+  position: absolute;
+  inset: var(--codex-fill);
+  z-index: -1;
+  border-radius: 2px;
+  background:
+    radial-gradient(120% 140% at 50% 0%, rgba(255, 246, 222, 0.34), rgba(255, 246, 222, 0) 70%),
+    linear-gradient(180deg, rgba(118, 80, 30, 0.05), rgba(92, 60, 20, 0.15));
+  box-shadow: inset 0 0 1.3rem rgba(96, 62, 20, 0.22), 0 2px 7px rgba(70, 44, 12, 0.22);
+  pointer-events: none;
+}
+.codex-page .codex-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-style: solid;
+  border-color: transparent;
+  border-width: var(--codex-fw) var(--codex-fwx, var(--codex-fw));
+  border-image-source: var(--codex-src);
+  border-image-slice: var(--codex-slice);
+  border-image-width: var(--codex-fw) var(--codex-fwx, var(--codex-fw));
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+.codex-page .codex-frame > .panel__corner {
+  display: none;
+}
+/* Town slots are panels with a title bar: the bar becomes a quiet heading inside the frame. */
+.codex-page .panel.codex-frame > .panel__header {
+  padding: 0 0 0.35rem;
+  background: none;
+  border-bottom: 1px solid rgba(122, 84, 30, 0.35);
+}
+.codex-page .panel.codex-frame > .panel__body {
+  padding: 0.3rem 0 0;
+}
+.codex-page .codex-building {
+  border-bottom-color: rgba(122, 84, 30, 0.22);
+}
+/* Portraits in the painted socket rim (square) or the round medallion (gods). */
+.codex-socket {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  line-height: 0;
+}
+.codex-socket::after {
+  content: '';
+  position: absolute;
+  inset: -0.34rem;
+  z-index: 2;
+  border: 0 solid transparent;
+  border-image-source: var(--gui-socket);
+  border-image-slice: 240;
+  border-image-width: 1.1rem;
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+.codex-socket > .portrait {
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 3px 9px rgba(40, 24, 6, 0.5);
+}
+.codex-socket > .portrait::after {
+  display: none;
+}
+.codex-socket--round::after {
+  inset: -14%;
+  z-index: 0;
+  border-image-source: none;
+  background: var(--fe-socket, radial-gradient(circle, #13294a 60%, #b08646 62%, #f1d99a 66%, #6c4b13 70%, transparent 71%)) center / contain no-repeat;
+}
+.codex-socket--round > .portrait {
+  z-index: 1;
+  border-radius: 50%;
+  box-shadow: none;
+}
+.codex-card--portrait > .codex-socket--round {
+  margin: 0.55rem 0.4rem 0.4rem 0.45rem;
+}
+/* The bestiary: each family framed, its two forms side by side with an arrow between (no box around each). */
+.codex-page .bestiary-tier.codex-frame {
+  padding-bottom: 1.1rem;
+}
+.codex-page .bestiary-tier__pair {
+  gap: 1.7rem;
+}
+.codex-page .bestiary-card {
+  position: relative;
+  gap: 0.95rem;
+  padding: 0.45rem 0.5rem 0.45rem 0.55rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  box-shadow: none;
+}
+.codex-page .bestiary-card:hover {
+  background: rgba(255, 244, 214, 0.42);
+  border-color: rgba(122, 84, 20, 0.5);
+  box-shadow: 0 0 0.8rem rgba(214, 170, 69, 0.35);
+}
+.codex-page .bestiary-card--up::before {
+  content: '';
+  position: absolute;
+  left: -1.35rem;
+  top: 50%;
+  width: 0.95rem;
+  height: 0.95rem;
+  transform: translateY(-50%);
+  background: #8a6220;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 2l7 6-7 6' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 2l7 6-7 6' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events: none;
+}
+.bestiary-card__text {
+  min-width: 0;
+}
+.bestiary-card__kind {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+@media (max-width: 900px) {
+  .codex-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 0.6rem 0.8rem 0.8rem;
+  }
+  .codex-rail {
+    max-height: none;
+  }
+  .codex-rail__tabs {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .codex-rail__tab.fe-settings__tab {
+    width: auto;
+    flex: none;
+  }
+}
+
+/* ============================================================
+   1.1.3 (owner): the title over the kit's hall painting — the
+   menu as one slim panel between the pillars, under the logo
+   ============================================================ */
+.main-menu--kit .main-menu__brand::before {
+  background: radial-gradient(closest-side, rgba(5, 9, 15, 0.42), rgba(5, 9, 15, 0.16) 55%, transparent);
+}
+.main-menu--kit .main-menu__stage {
+  padding-top: 1.2vh;
+}
+.main-menu--kit .menu-frame {
+  flex: none;
+  aspect-ratio: auto;
+  width: clamp(19rem, 24vw, 25.5rem);
+  max-width: 92vw;
+  container-type: normal;
+}
+.main-menu--kit .menu-frame::before {
+  left: -12%;
+  right: -12%;
+  top: -6%;
+  bottom: -8%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.22) 70%, transparent);
+}
+.main-menu.main-menu--kit .menu-frame__window {
+  position: relative;
+  inset: auto;
+  padding: 0.85rem 0.9rem 0.8rem;
+  font-size: clamp(13px, 1.95vh, 19px);
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(52, 88, 132, 0.3), transparent 70%),
+    linear-gradient(180deg, rgba(12, 24, 42, 0.86), rgba(5, 10, 19, 0.92)),
+    var(--gui-surface-leather) center / 30rem repeat,
+    #0c1622;
+  border: 1px solid var(--gold-500);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 2px rgba(216, 181, 108, 0.24), inset 0 0 1.8rem rgba(0, 0, 0, 0.55), 0 10px 28px rgba(0, 0, 0, 0.6);
+}
+/* Corner diamonds on the panel, as on the kit's plates. */
+.main-menu--kit .menu-frame__window::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background:
+    var(--orn-diamond) left top / 10px 10px no-repeat,
+    var(--orn-diamond) right top / 10px 10px no-repeat,
+    var(--orn-diamond) left bottom / 10px 10px no-repeat,
+    var(--orn-diamond) right bottom / 10px 10px no-repeat;
+}
+.main-menu--kit .menu-frame__list {
+  flex: none;
+  justify-content: flex-start;
+  gap: 0.42em;
+}
+.main-menu--kit .menu-btn--framed {
+  flex: none;
+  min-height: 2.85em;
+  max-height: none;
+}
+@media (max-height: 640px) {
+  .main-menu--kit .menu-btn--framed {
+    min-height: 2.45em;
+  }
+}
+/* (1.1.3) Panels in the parchment page normally get a paper fill; framed ones keep only the faint tint. */
+.codex-page .panel.codex-frame:not(.gui-window) {
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+.codex-page .codex-frame .specialty {
+  background: rgba(255, 248, 228, 0.22);
+  border-color: rgba(122, 84, 30, 0.32);
+}
+
+/* ============================================================
+   1.1.3 (owner): more texture on the pantheon screens — the
+   painted materials at their own grain instead of flat navy
+   ============================================================ */
+/* Choose a Pantheon: more of the atlas painting, a vignette, and the leather and parchment grain on the panels. */
+.setup-screen.fe-pantheon-screen {
+  background:
+    linear-gradient(180deg, rgba(5, 9, 15, 0.66) 0%, rgba(5, 9, 15, 0.28) 22%, rgba(5, 9, 15, 0.4) 60%, rgba(5, 9, 15, 0.8) 100%),
+    radial-gradient(130% 95% at 50% 30%, transparent 42%, rgba(5, 9, 15, 0.62) 100%),
+    var(--app-art) center / cover no-repeat,
+    var(--gui-surface-leather) center / 40rem repeat,
+    var(--navy-950);
+}
+.fe-pantheon-screen .pantheon-stage__info {
+  background:
+    radial-gradient(130% 120% at 50% 20%, rgba(255, 250, 232, 0.22), transparent 60%),
+    var(--gui-surface-parchment) center / 46rem repeat,
+    #e9d3a1;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.45), inset 0 0 3.4rem rgba(120, 78, 22, 0.38), 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+.fe-pantheon-screen .pantheon-roster,
+.fe-pantheon-screen .setup-drawer.gui-plate,
+.fe-pantheon-screen .pantheon-stage__patron.gui-plate {
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(70, 108, 156, 0.3), transparent 65%),
+    radial-gradient(150% 130% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.35)),
+    linear-gradient(180deg, rgba(14, 26, 43, 0.12), rgba(6, 12, 22, 0.38)),
+    var(--gui-surface-leather) center / 60rem repeat,
+    #0c1622;
+}
+.fe-pantheon-screen .pantheon-roster__tile.roster-cell {
+  background:
+    radial-gradient(110% 80% at 50% 0%, rgba(80, 118, 166, 0.32), transparent 70%),
+    linear-gradient(180deg, rgba(20, 36, 60, 0.15), rgba(6, 12, 22, 0.42)),
+    var(--gui-surface-leather) center / 48rem repeat,
+    #0d1826;
+  border-color: rgba(194, 154, 82, 0.55);
+}
+
+/* The pantheon's gods (in a match): the same leather grain under every panel, and the stone under the god cards. */
+.pantheon-screen .panel:not(.gui-window):not(.panel--parchment):not(.panel--glass) {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(70, 108, 156, 0.28), transparent 62%),
+    radial-gradient(150% 130% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.38)),
+    linear-gradient(180deg, rgba(12, 24, 42, 0.14), rgba(5, 10, 19, 0.4)),
+    var(--gui-surface-leather) center / 60rem repeat,
+    #0c1622;
+}
+.pantheon-screen .god-card.panel:not(.gui-window):not(.panel--parchment):not(.panel--glass),
+.pantheon-screen .signature.panel:not(.gui-window):not(.panel--parchment):not(.panel--glass) {
+  background:
+    radial-gradient(110% 70% at 50% 0%, rgba(90, 128, 176, 0.32), transparent 65%),
+    linear-gradient(180deg, rgba(20, 36, 60, 0.18), rgba(6, 12, 22, 0.46)),
+    var(--gui-surface-leather) center / 46rem repeat,
+    #0d1826;
+}
+
+/* ============================================================
+   1.1.3 (owner): the creature page — two framed pages, the
+   facts in a grid, the creature on its pantheon's ground
+   ============================================================ */
+.unit-layout.unit-layout--codex {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+  gap: 1rem;
+  padding: 0.7rem 1.3rem 1rem;
+}
+.unit-page.gui-window {
+  --gui-bw: 3rem;
+  --gui-pad: 1.85rem;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.unit-page.gui-window > .panel__body {
+  flex: 1;
+  min-height: 0;
+}
+.unit-info.unit-page .unit-info__body {
+  padding: 0.15rem 0.7rem 0.4rem 0.2rem;
+}
+/* The title block: name, then pantheon · tier · size, then the summary, centred like a codex heading. */
+.unit-title {
+  text-align: center;
+  padding: 0.1rem 0 0.55rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid var(--gui-paper-rule);
+}
+.unit-title__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  color: var(--gui-ink-head);
+}
+.unit-title__sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  letter-spacing: 0.08em;
+  color: var(--gui-ink-soft);
+}
+.unit-title__dot {
+  width: 0.36rem;
+  height: 0.36rem;
+  transform: rotate(45deg);
+  background: #8a6220;
+}
+.unit-title__summary {
+  margin: 0.45rem auto 0;
+  max-width: 34rem;
+  font-size: 1.12rem;
+  line-height: 1.42;
+  font-style: italic;
+  color: var(--gui-ink);
+}
+/* Both forms: socketed tiles, the current one checked. */
+.unit-page .unit-forms {
+  gap: 0.8rem;
+  margin: 0.2rem 0 0.4rem;
+}
+.unit-page .unit-form {
+  position: relative;
+  gap: 0.85rem;
+  padding: 0.6rem 0.75rem 0.6rem 0.7rem;
+  background: rgba(255, 248, 228, 0.24);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 3px;
+}
+.unit-page .unit-form:hover:not(.is-current) {
+  border-color: #6c4b13;
+  background: rgba(255, 248, 228, 0.45);
+}
+.unit-page .unit-form.is-current {
+  background: rgba(255, 244, 205, 0.6);
+}
+.unit-form__socket {
+  position: relative;
+  flex: none;
+  line-height: 0;
+}
+.unit-form__socket::after {
+  content: '';
+  position: absolute;
+  inset: -0.3rem;
+  z-index: 2;
+  border: 0 solid transparent;
+  border-image-source: var(--gui-socket);
+  border-image-slice: 240;
+  border-image-width: 1rem;
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+.unit-form__socket > .portrait {
+  border: 0;
+  border-radius: 2px;
+}
+.unit-form__socket > .portrait::after {
+  display: none;
+}
+.unit-page .unit-form__name {
+  font-size: 1.12rem;
+}
+.unit-form__check {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.45rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0.15rem;
+  color: #241806;
+  border-radius: 50%;
+  border: 1px solid #3d2a0c;
+  background: radial-gradient(circle at 50% 35%, #f1d99a, #b08646);
+}
+/* Statistics: a grid of tiles (icon, label, value). */
+.unit-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0.2rem 0 0;
+}
+.unit-stat {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 0.6rem;
+  align-items: center;
+  padding: 0.45rem 0.6rem;
+  background: rgba(255, 248, 228, 0.28);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 3px;
+}
+.unit-stat__icon {
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 3px;
+  border: 1px solid #6c4b13;
+  background: radial-gradient(circle at 50% 35%, #2a4a74, #0d1a2c);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8), inset 0 0 0 2px rgba(234, 208, 143, 0.25);
+  color: var(--gold-200);
+}
+.unit-stat__icon svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+.unit-stat__label {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+.unit-stat__value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--gui-ink-head);
+}
+.unit-page .unit-facts {
+  margin: 0.55rem 0 0.1rem;
+}
+.unit-facts__label {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+/* Abilities: one row each, the badge at the left. */
+.unit-abilities {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.unit-page .unit-ability {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.55rem 0.7rem;
+  background: rgba(255, 248, 228, 0.22);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 3px;
+}
+.unit-ability__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+.unit-page .ability__name {
+  font-size: 1.12rem;
+}
+.unit-ability__kind {
+  margin-left: 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+.unit-ability__summary {
+  font-size: 1.04rem;
+}
+.unit-lore {
+  padding: 0.1rem 0.2rem;
+}
+.unit-lore__source {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--gui-paper-rule);
+}
+/* The viewer page: the scene fills it; the controls sit in one labelled band under it. */
+.unit-viewer.unit-page {
+  overflow: visible;
+}
+.unit-viewer__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+}
+.unit-viewer__stage {
+  position: relative;
+  flex: 1;
+  min-height: 14rem;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid rgba(194, 154, 82, 0.55);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85);
+}
+.unit-viewer__stage .unit-viewer__scene {
+  flex: 1;
+  min-height: 0;
+}
+/* A soft vignette over the scene's edges (a shadow layer, not a filter; never under the pointer). */
+.unit-viewer__stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 3.2rem rgba(3, 7, 13, 0.55), inset 0 -4rem 3rem -2rem rgba(3, 7, 13, 0.35);
+}
+.unit-page .unit-viewer__controls {
+  gap: 0.55rem;
+  margin-top: 0.6rem;
+  padding: 0.6rem 0.75rem 0.65rem;
+  background:
+    linear-gradient(180deg, rgba(14, 26, 43, 0.5), rgba(6, 12, 22, 0.7)),
+    var(--gui-surface-leather) center / 30rem repeat,
+    #0c1622;
+  border: 1px solid rgba(194, 154, 82, 0.45);
+  border-radius: 3px;
+}
+.unit-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.unit-control__label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.unit-control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.6rem 1.6rem;
+}
+.unit-control__buttons,
+.unit-control__toggles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.8rem;
+}
+.unit-control__buttons {
+  gap: 0.35rem;
+}
+@media (max-width: 1000px) {
+  .unit-layout.unit-layout--codex {
+    grid-template-columns: minmax(0, 1fr);
+    overflow-y: auto;
+  }
+  .unit-viewer__stage {
+    min-height: 18rem;
+  }
+  .unit-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* (1.1.3) Narrow windows: the title panel and its labels shrink with the width; families stack their forms. */
+@media (max-width: 640px) {
+  .main-menu.main-menu--kit .menu-frame__window {
+    font-size: clamp(12px, min(1.95vh, 3.55vw), 19px);
+  }
+  .main-menu--kit .menu-frame {
+    width: min(92vw, 21rem);
+  }
+  .codex-page .bestiary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .codex-page .bestiary-tier__pair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .codex-page .bestiary-card--up::before {
+    display: none;
+  }
+  .codex-page .codex-cards,
+  .codex-page .codex-cards--wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* (1.1.3) The page restores its own scroll position: the browser's scroll anchoring must not move it. */
+.codex-body.codex-page {
+  overflow-anchor: none;
+}

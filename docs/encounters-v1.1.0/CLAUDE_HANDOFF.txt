@@ -1,0 +1,125 @@
+PANTHEON REALMS — HERO MEETING, SCENARIO INTRODUCTION & REWARD PRESENTATION
+Production artwork and implementation handoff, 2026-10-10. Supplements the 1.1.0 GUI redesign.
+
+REQUEST TO CLAUDE CODE
+Implement the three selected visual improvements using these independent assets and the reference screens. Preserve existing game rules, saved-game compatibility and handlers. This delivery contains artwork, a self-contained visual reference and implementation instructions. It does not implement the game screens or change the release version.
+
+SOURCE AND DESTINATION ARE DIFFERENT PROJECTS
+Source project: C:\Users\lazeb\Desktop\pantheon_realms
+Copy the files into YOUR local checkout before implementation. Do not reference desktop paths at runtime.
+
+Review these first:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\encounters-v1.1.0\index.html
+C:\Users\lazeb\Desktop\pantheon_realms\docs\encounters-v1.1.0\concept-hero-meeting.png
+C:\Users\lazeb\Desktop\pantheon_realms\docs\encounters-v1.1.0\concept-scenario-introduction.png
+C:\Users\lazeb\Desktop\pantheon_realms\docs\encounters-v1.1.0\concept-reward-presentation.png
+
+Eight new native production PNGs and generation prompts:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-source\encounters-v1.1.0
+Runtime copies and new-asset manifest:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\encounters-v1.1.0\manifest.json
+Additive dependency dictionary:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\encounters-v1.1.0\dependencies.json
+Exact screen mappings:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\encounters-v1.1.0\screen-bindings.json
+Existing hero portraits/busts and their fallback mapping:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\encounters-v1.1.0\hero-art-map.json
+
+The reference screens are HTML/CSS assemblies of supplied production images and live controls, captured as PNGs for review. Nothing visible needs to be extracted from a concept screenshot. The PNG screenshots are REFERENCE ONLY. The CSS/JS in this folder are a layout/interaction demonstration, not a replacement game implementation. Sample armies and reward quantities are illustrative, not authoritative game data; the reference does not simulate rules or change saved state.
+
+COPY TO YOUR CHECKOUT
+Dry run, replacing D:\your-project with your actual target:
+& 'C:\Users\lazeb\Desktop\pantheon_realms\docs\encounters-v1.1.0\Copy-To-Project.ps1' -DestinationRoot 'D:\your-project' -DryRun
+Repeat without -DryRun after reviewing the report. The script validates source hashes, includes existing required imagery by default, skips identical files and refuses differing destination files before copying. It does not overwrite game code or automatically merge master manifests. If existing target assets differ, reconcile deliberately; do not replace newer artwork silently.
+
+NEW ART REGISTER
+encounterkit.meeting.greek -> encounters-v1.1.0/meeting-greek.png
+encounterkit.meeting.norse -> encounters-v1.1.0/meeting-norse.png
+encounterkit.meeting.egyptian -> encounters-v1.1.0/meeting-egyptian.png
+encounterkit.meeting.japanese -> encounters-v1.1.0/meeting-japanese.png
+encounterkit.meeting.celtic -> encounters-v1.1.0/meeting-celtic.png
+encounterkit.meeting.mesoamerican -> encounters-v1.1.0/meeting-mesoamerican.png
+encounterkit.intro.scroll -> encounters-v1.1.0/intro-scroll.png
+encounterkit.reward.tray -> encounters-v1.1.0/reward-tray.png
+
+All six camps are independent opaque paintings with no figures or UI. The scroll is blank parchment, opaque inside and transparent outside. The tray is empty dark velvet with an opaque interior and transparent outside. Native output dimensions, hashes and alpha ranges are in manifest.json. No upscaling or code-based image editing was performed. Some image viewers display hidden brown RGB outside an alpha cutout; use normal alpha blending, never color-keying.
+
+1. HERO MEETING SCENE
+Current component: packages/ui/src/dialogs/Overlays.tsx, TransferDialog.
+Current state supports hero-to-hero and hero-to-town-garrison transfer. The scene is a visual upgrade of that component, not a new diplomacy, hiring or artifact-trading mechanic.
+
+COMPOSITION
+- Choose encounterkit.meeting.<initiating hero's pantheon>. This is decorative camp scenery, not an exact depiction of the current tile or a new world location. For mixed-pantheon meetings the initiating side chooses the camp; each hero keeps their actual identity and emblem.
+- Keep the existing heading and a short instruction above the scene. Put each real hero's bust above their corresponding troop strip. Keep names and counts in live HTML.
+- Resolve each hero's actual portraitAssetId from the catalog/state. Follow the existing storyArt.ts convention: replace the ending .portrait with .bust and resolveArt. hero-art-map.json enumerates available pairs. Use existing alphaBox/layout metadata where present. If no bust exists, use that SAME hero's portrait inside the supplied socket. Do not pick a random hero of the same faction.
+- Existing speakerSides documents busts facing right. Mirror the RIGHT display layer with CSS, as current dialogue scenes do, when appropriate to that bust. Do not reverse lettering or asymmetric identity-critical details if a future asset includes them. No raster edits required.
+- Use the current ArmyStrip and actual army.slots array. Preserve every slot even when empty. The demo shows seven positions; bind the game array rather than hardcoding a replacement inventory size.
+- On desktop, two troop strips side by side under their respective heroes. Keep the fire visible between them. On smaller screens wrap each strip and reduce portrait height; retain clear source/destination labels. At very narrow widths stack the two armies if necessary, preserving every slot and all controls. Portraits must never cover buttons.
+- Garrison mode: show the actual town name and appropriate existing town art in place of a second hero. Do not invent a castellan. Label it explicitly as a garrison. The target inventory remains town.garrison.
+
+BEHAVIOR TO PRESERVE
+TransferDialog currently selects a source slot, optionally chooses a quantity, calls quoteTransfer against the current state, and dispatches TransferStack on destination click. Same-slot click clears selection. Matching stacks merge and other legal operations follow quoteTransfer. A hero must retain at least one creature. Do not duplicate validation with guessed UI rules. Errors need readable feedback.
+Keep immediate destination-click commit. Done only closes the meeting; it is not an Apply button. Cancel clears the pending source/quantity only and must not pretend to undo a transfer already committed. Do not add a second command when a drop animation finishes. If drag/drop is added, preserve click and keyboard alternatives and route both through the same command path exactly once.
+The demo only shows selection/quantity/destination feedback; it is NOT a transfer-rules implementation. Retain real merge, swap, split, ownership, adjacency and garrison validation in the game.
+
+MOTION
+A subtle 150–220ms source/target highlight is sufficient. Avoid moving the portraits during normal selection. No looping zoom, camera rotation or large fire effects. Honor reduced motion with immediate state changes. Existing backgrounds contain static painted fire; an optional low-opacity CSS glow must not imply an animated video asset was delivered.
+
+2. SCENARIO INTRODUCTION SCROLL
+Current component: packages/ui/src/dialogs/Overlays.tsx, BriefingDialog.
+Related helpers: packages/ui/src/assets/storyArt.ts (briefingArt, speakerBust, speakerSides), missionObjectiveDefs and missionText.
+
+COMPOSITION
+- Dim the existing mission art behind an unrolled parchment scroll. Add the new scroll PNG as a separate noninteractive layer.
+- Safe writing rectangle on the native scroll: x12–88%, y17–83%. The reference uses a similar inset. Keep content between the rollers, not underneath them. Do not stretch the whole decorative image to arbitrary tall shapes.
+- Header: actual campaign name/mission order or existing Skirmish/Random map label, actual mission.name, subtitle, and the appropriate faction emblem.
+- Left column: actual mission illustration, obtained via briefingArt(mission.thumbnailAssetId), falling back to the existing MissionThumb. Put the real starting/current protagonist portrait and name beneath it when available.
+- Right column: real summary and all current visible objectives. Preserve optional labels, descriptions, status and missionText substitutions. Locked objectives stay hidden according to the existing filter. The objective list must scroll; do not discard objectives to match the reference screenshot.
+- Use current objective condition/category to choose a relevant existing icon: recruits, upgrade, swords, beacon, flag, gift. This is presentation only. Fall back to flag/info for unfamiliar objective kinds. Never infer rules by matching localized title text.
+- Bottom area: preserve all dialogue lines and actual speaker identity. Keep Back/Next navigation and Begin. The reference displays the existing two opening lines of The Silent Shore as an example, not a universal script.
+- Retain the existing mission facts, difficulty, map dimensions, target playtime and newDecisions somewhere readable, such as an expandable details area. Those fields are not all shown in the compact reference; they must not be lost in implementation.
+
+IMPORTANT SEMANTICS
+This briefing opens around an already created session. Begin currently calls closeOverlay; it must not initialize another scenario, reroll a random map or re-grant starting resources. Keep existing replay/open-briefing behavior. Do not gate Begin on reading every line if the current game permits starting immediately.
+Mission art is an illustration, not a tactical map. Do not paint fake starting-position pins on it. If you add an actual map inset, use only information the game permits the player to know and the actual renderer. Do not reveal unexplored areas, hidden objectives, camps or enemy armies.
+The Silent Shore demo is for visual review; keep scenario IDs and content data authoritative. Alexios/Ione in the meeting demo is unrelated sample content, not a new encounter in The Silent Shore (whose initial expedition disables hiring).
+
+RESPONSIVE AND ACCESSIBLE
+On narrow screens, use the existing parchment surface with a simple border and stack illustration, objectives and dialogue vertically. The reference switches to this composition instead of squeezing the scroll and making its text unreadable. Maintain at least the current game font scaling, focus trapping/restoration and scroll access. Generated labels must never replace live text. Keep the map's camera angle fixed.
+
+3. REWARD PRESENTATION
+Apply a shared visual component to post-action reward receipts in WorldDialogs.tsx and the reward section of BattleResult.tsx. Existing choice dialogs retain their decision step; this is the result of a completed choice, not a replacement for selecting gold versus experience.
+
+COMPOSITION AND ASSET BINDING
+- The blank encounterkit.reward.tray carries a row/grid of live item cells. Safe content rectangle x11–89%, y25–75%. Keep the 2:1 tray near its original proportion. Use a stacked dark panel on mobile or for unusually long lists, rather than stretching ornate corners.
+- Resources use icon.res.<key> and actual localized amounts. Existing keys are gold, wood, stone, crystal and favor; do not introduce Gems or Ore just because Heroes III uses them.
+- XP uses icon.stat.xp; mana and movement use icon.stat.mana and icon.stat.movement. Attributes use icon.stat.attack/defense/power/knowledge.
+- Artifacts use catalog.artifacts[id].iconAssetId, name and actual awarded location. If ArtifactGranted.location is cache, say where it went; never always label it 'In your backpack'. The example ring is only sample content.
+- Creatures use catalog.creatures[id].presentation.portraitAssetId and actual count. Entitlements use the existing gift icon and the real entitlement name/description. Special unlocks may use a matching existing icon if available; do not fabricate rewards.
+- Show positive outcomes in the tray, costs in a separate line, and partial/capped outcomes accurately. Zero-reward and already-claimed cases must not show celebratory fake items. XP should show the actual granted amount and cap message when applicable.
+
+COMMITTED DATA, EXACTLY ONCE
+Read actual committed outcomes. BattleResult.tsx already reads state.lastBattleResult; use its rewards and XP fields, and keep casualties, victory/defeat/retreat/surrender/stalemate distinctions. Do not collapse the entire results screen into a generic treasure popup. Preserve the existing Continue routing through pending level-up decisions.
+For world actions, capture the command's resulting event batch/committed state in the UI. Existing event types include ResourcesGranted, ArtifactGranted, ExperienceGranted, CreaturesJoined, AttributeGained, ChestOpened, WindmillCollected, DivineGiftReceived, QuestHutCompleted and EntitlementGranted. A MapEventResolved or QuestHutCompleted marker alone does not contain a complete reward bundle; use its associated authoritative events/state. Avoid counting both a summary event and its detailed grant events as separate gains. Never parse success-toast prose to reconstruct rewards.
+Group by the completed command/event batch, deduplicate with stable eventId/revision identifiers, scope to the current player/recipient, and prevent historical event replay from reopening receipts after reload. Reuse an existing event-consumption mechanism if available. Add UI state only where required; do not change rule outcomes to drive artwork.
+Continue dismisses the receipt. It NEVER dispatches the reward command again. Disable/reject duplicate confirmation while a choice command is pending. Closing or skipping visual motion cannot cancel a reward already granted. Preserve queued story scenes, level-ups and other mandatory dialogs in their existing order; do not overwrite them with a receipt. Avoid duplicate success toasts plus modal receipts for the same action unless there is a specific UX reason.
+For routine small resource pickups prefer a brief nonblocking compact tray/toast. For major artifacts, quest completion and meaningful mixed rewards allow a dismissible larger receipt. Do not require an extra click after every coin pickup. Do not close important item information on a timer while the player is inspecting it.
+
+MOTION
+Use a short 180–250ms reveal and optional item stagger capped at roughly 400ms total. All values should be available immediately to assistive technology. Do not make progress wait for a count-up effect. Reduced motion shows the final state instantly. Ambient glitter is optional CSS using existing star shapes, not a missing sprite-sheet dependency. No audio files are supplied; reuse suitable existing sounds only if available.
+
+TECHNICAL INTEGRATION
+Merge encounterkit.* records additively through packages/ui/src/assets/manifest.ts (or a typed namespace resolver), preserving existing registries and precedence. dependencies.json documents existing image dependencies, not a replacement authoritative manifest. The source game's Vite publicDir is assets-runtime and base is './'. Runtime URLs are ./encounters-v1.1.0/meeting-greek.png, NOT /assets-runtime/... and never C:\... . Use the current URL helper/base handling.
+No new raster icons are required beyond the eight new images: the pack explicitly includes the reused heroes, creature portraits, mission/campaign art, emblems, shared UI frames and required reward icon families in copy-inventory.json. CSS dividers, source/destination outlines, counters, sliders and focus are native controls. All six camp settings share the same composition and control geometry.
+Reuse existing kit.tsx, ArmyStrip, QuantitySelector, CreaturePortrait, ArtifactIcon, CostList, SceneArt and DialogueStage where suitable. Extract shared styling/presentational components without replacing rules with demo JavaScript. Use the existing shared 1.1.0 frames if desired; their safe insets are documented in docs/gui-v1.1.0/component-reference.css. The reference uses a lighter CSS rim to leave more space for art.
+
+ACCEPTANCE CHECKS
+1. Every referenced file resolves under a packaged relative-base build; alpha is preserved. No artwork extracted from concept screenshots.
+2. Hero-to-hero and hero-to-garrison work; same/mixed factions keep their own identity. Missing bust falls back to the correct portrait.
+3. Troop split/merge/swap legality, last-creature protection, stale state and cancel semantics remain correct; one gesture sends at most one TransferStack.
+4. Briefings handle short/long/no dialogue, all visible objectives, optional/locked conditions, random/authored/campaign missions and absent art. Begin closes without creating a new session.
+5. Rewards match committed outcomes for chests, quests, map events and battles. Test capped XP, full backpack/cache, creature joins, mixed rewards, no rewards, replay/reload and double-clicks. Continue never grants again.
+6. Test the integrated game at 1920x1080, 1366x768, 390px, increased text scale, keyboard-only and reduced motion. The supplied gallery checks do not prove integration.
+
+DELIVERY REVIEW
+asset-validation.json contains file/alpha/hash checks. preview-validation.json records the assembly checks. Concepts use real delivered images and live text; screenshot values are illustrative. The production game code and release version were left untouched by this delivery.

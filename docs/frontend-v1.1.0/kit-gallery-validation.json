@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "scope": "Asset gallery and independent HTML layering proof; not game integration",
+  "errors": [],
+  "viewports": [
+    {
+      "width": 1600,
+      "overflow": false
+    },
+    {
+      "width": 1366,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    }
+  ],
+  "loadedImages": 229
+}

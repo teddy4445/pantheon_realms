@@ -1,0 +1,326 @@
+[
+  {
+    "pantheon": "greek",
+    "file": "gate.greek-v5.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "alphaRange": [
+      0,
+      254
+    ],
+    "sha256": "322fd0fbe2a0dad0fd5b9f380dc1320626bb18b1244cb0d143bf4c4e5c431ccf",
+    "states": [
+      {
+        "state": "intact",
+        "alphaBounds": [
+          163,
+          33,
+          386,
+          986
+        ],
+        "anchor": [
+          0.577815,
+          0.5
+        ]
+      },
+      {
+        "state": "damaged",
+        "alphaBounds": [
+          139,
+          33,
+          361,
+          987
+        ],
+        "anchor": [
+          0.520817,
+          0.5
+        ]
+      },
+      {
+        "state": "rubble",
+        "alphaBounds": [
+          116,
+          33,
+          363,
+          988
+        ],
+        "anchor": [
+          0.532489,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "pantheon": "egyptian",
+    "file": "gate.egyptian-v5.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "alphaRange": [
+      0,
+      254
+    ],
+    "sha256": "dba1d0c732b10aef4f4380d1443b6bf8606ed55b66ee3ccc4aa96645b286ac0a",
+    "states": [
+      {
+        "state": "intact",
+        "alphaBounds": [
+          186,
+          28,
+          408,
+          996
+        ],
+        "anchor": [
+          0.627954,
+          0.5
+        ]
+      },
+      {
+        "state": "damaged",
+        "alphaBounds": [
+          149,
+          28,
+          370,
+          996
+        ],
+        "anchor": [
+          0.554354,
+          0.5
+        ]
+      },
+      {
+        "state": "rubble",
+        "alphaBounds": [
+          66,
+          28,
+          284,
+          998
+        ],
+        "anchor": [
+          0.380002,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "pantheon": "mesoamerican",
+    "file": "gate.mesoamerican-v5.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "alphaRange": [
+      0,
+      254
+    ],
+    "sha256": "387adf54e80b82a7f4ca0b704af6329447793fe60f761ee4a70b21b52061deb0",
+    "states": [
+      {
+        "state": "intact",
+        "alphaBounds": [
+          221,
+          13,
+          414,
+          1009
+        ],
+        "anchor": [
+          0.649414,
+          0.5
+        ]
+      },
+      {
+        "state": "damaged",
+        "alphaBounds": [
+          142,
+          13,
+          339,
+          1009
+        ],
+        "anchor": [
+          0.503335,
+          0.5
+        ]
+      },
+      {
+        "state": "rubble",
+        "alphaBounds": [
+          66,
+          13,
+          262,
+          1009
+        ],
+        "anchor": [
+          0.353635,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "pantheon": "norse",
+    "file": "gate.norse-v5.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "alphaRange": [
+      0,
+      254
+    ],
+    "sha256": "abbec526cb3628302c411a288e68680ba9fdde7f6500545dec794671c292c9aa",
+    "states": [
+      {
+        "state": "intact",
+        "alphaBounds": [
+          189,
+          58,
+          433,
+          971
+        ],
+        "anchor": [
+          0.64234,
+          0.5
+        ]
+      },
+      {
+        "state": "damaged",
+        "alphaBounds": [
+          153,
+          58,
+          399,
+          971
+        ],
+        "anchor": [
+          0.577768,
+          0.5
+        ]
+      },
+      {
+        "state": "rubble",
+        "alphaBounds": [
+          106,
+          59,
+          357,
+          971
+        ],
+        "anchor": [
+          0.494831,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "pantheon": "japanese",
+    "file": "gate.japanese-v5.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "alphaRange": [
+      0,
+      254
+    ],
+    "sha256": "bea045dee9ed8123a407e8c28ddd49157f4baf314c909effed7a985b8a24932c",
+    "states": [
+      {
+        "state": "intact",
+        "alphaBounds": [
+          247,
+          3,
+          450,
+          1013
+        ],
+        "anchor": [
+          0.698933,
+          0.5
+        ]
+      },
+      {
+        "state": "damaged",
+        "alphaBounds": [
+          175,
+          3,
+          380,
+          1013
+        ],
+        "anchor": [
+          0.55857,
+          0.5
+        ]
+      },
+      {
+        "state": "rubble",
+        "alphaBounds": [
+          92,
+          3,
+          294,
+          1013
+        ],
+        "anchor": [
+          0.397937,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "pantheon": "celtic",
+    "file": "gate.celtic-v5.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "alphaRange": [
+      0,
+      254
+    ],
+    "sha256": "6f64ea170f119afed8d6eab87b9bb9fcc828df2ce5142fde1ded6c53e6d25b59",
+    "states": [
+      {
+        "state": "intact",
+        "alphaBounds": [
+          272,
+          27,
+          456,
+          1002
+        ],
+        "anchor": [
+          0.753525,
+          0.5
+        ]
+      },
+      {
+        "state": "damaged",
+        "alphaBounds": [
+          154,
+          26,
+          356,
+          1001
+        ],
+        "anchor": [
+          0.537181,
+          0.5
+        ]
+      },
+      {
+        "state": "rubble",
+        "alphaBounds": [
+          56,
+          26,
+          256,
+          1002
+        ],
+        "anchor": [
+          0.336962,
+          0.5
+        ]
+      }
+    ]
+  }
+]

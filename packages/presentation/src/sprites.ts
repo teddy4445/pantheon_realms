@@ -80,6 +80,9 @@ export interface SpriteSetDefinition {
 /** A single still image (map sites, decoration, obstacles, siege pieces, projectiles). */
 export interface StaticSpriteDefinition {
   readonly file: string;
+  /** Optional atlas rectangle in native pixels. No resampling or destructive cutting of the source. */
+  readonly frame?: readonly [number, number, number, number];
+  readonly layout?: 'wall-strip';
   readonly width: number;
   readonly height: number;
   readonly anchor: readonly [number, number];
@@ -87,6 +90,21 @@ export interface StaticSpriteDefinition {
   readonly status: SpriteStatus;
   readonly provenance: string;
   readonly tint?: 'accent' | 'key';
+  /**
+   * Gate pieces painted as an opening in a north–south wall (siege-gates-v3, 2026-10-11): the
+   * frame point where the passage crosses the wall axis (the anchor points at it too) and the
+   * painted height of one board row. The renderer puts the passage centre on the gate cell's wall
+   * point and splits the picture around it for depth; see `siegeGate.ts`.
+   */
+  readonly registration?: SiegeGateRegistration;
+}
+
+export interface SiegeGateRegistration {
+  readonly passageCenter: readonly [number, number];
+  readonly passageDirection: 'screen-left-to-right';
+  readonly wallDirection: 'screen-top-to-bottom';
+  /** Painted pixels per board row along the wall (one gate cell). */
+  readonly startingPassagePitchPixels: number;
 }
 
 /** A one-shot effect strip (impacts, spell bursts). */

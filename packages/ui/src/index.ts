@@ -20,6 +20,11 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/components.css';
 import './styles/screens.css';
+import './styles/gui.css';
+import './styles/frontend.css';
+import './styles/encounters.css';
+import './styles/adventure.css';
+import { NEUTRAL_THEME, installGuiStyles } from './assets/guiArt';
 
 import { createElement } from 'react';
 import type { Root } from 'react-dom/client';
@@ -50,6 +55,9 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
   const art = menuBackground();
   // Absolute URL: a relative one would resolve against the stylesheet that uses the variable.
   if (art.url) document.documentElement.style.setProperty('--app-art', `url("${new URL(art.url, document.baseURI).href}")`);
+  // 1.1.0 interface materials: frames, surfaces, button, socket and book as CSS variables (absolute URLs).
+  installGuiStyles(document);
+  document.documentElement.dataset.guiTheme = NEUTRAL_THEME;
   if (error) store.toast(`Preferences could not be read: ${error}. Defaults are in use.`, 'error');
   // Sound: silent (never blocking) when the browser has no audio device.
   try {
@@ -89,7 +97,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
           story: store.story.map((x) => x.key),
           moments: store.moments.map((m) => ({ ...m })),
           hints: [...store.hints],
-          busy: store.presentationBusy,
+          busy: store.presentationBusy || store.boardLoading,
+          boardLoading: store.boardLoading,
           battleScreenOpens: store.battleScreenOpens,
           prepareWar: store.prepareWar,
           humanTurn: store.session?.isHumanTurn() ?? false,
@@ -104,6 +113,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
     (g as { __prCamera?: () => unknown }).__prCamera = () => inspectors.adventure?.camera() ?? null;
     // Read-only: where each battle stack's sprite is drawn, its facing and animation.
     (g as { __prBattle?: () => unknown }).__prBattle = () => inspectors.battle?.stacks() ?? null;
+    // Read-only: how the siege is drawn (gate picture and parts, wall rows) and whether the board's pictures are in.
+    (g as { __prSiege?: () => unknown }).__prSiege = () => inspectors.battle?.siege?.() ?? null;
     // Read-only: the magic effects the views played most recently (asset ID prefixes).
     (g as { __prFx?: () => unknown }).__prFx = () => ({ battle: inspectors.battle?.fx() ?? null, adventure: inspectors.adventure?.fx() ?? null });
     // Read-only: how the map draws the borders between grounds (painted, softened or crisp).
@@ -117,7 +128,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
       screen: store.screen.id,
       overlays: store.overlays.map((o) => o.kind),
       story: store.story.length,
-      busy: store.presentationBusy,
+      busy: store.presentationBusy || store.boardLoading,
+      boardLoading: store.boardLoading,
       humanTurn: store.session?.isHumanTurn() ?? false,
       day: store.session?.state.day ?? 0,
       revision: store.session?.state.revision ?? 0,

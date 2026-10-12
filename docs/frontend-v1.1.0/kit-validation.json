@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "newAssets": 33,
+  "expected": 33,
+  "missingBindings": [],
+  "creatureForms": 102,
+  "pantheonForms": 84,
+  "neutralForms": 18,
+  "verifiedFiles": 1891,
+  "runtimeMiB": 311.6
+}

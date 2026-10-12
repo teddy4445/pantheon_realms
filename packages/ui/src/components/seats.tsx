@@ -3,10 +3,16 @@
  * maps S23): its colour, pantheon, who plays it (a person on this computer or
  * the AI), the person's name and patron god (shown, not picked: one per
  * pantheon) — or the AI's temperament.
+ *
+ * 1.1.0: each seat flies its pantheon's banner with the live emblem; a human
+ * seat shows its patron's real portrait. The seat count always comes from the
+ * map (authored) or the empire count (random).
  */
 import type { ContentCatalog } from '@pr/rules';
 import { Segmented, TextInput } from './kit';
-import { Emblem } from './art';
+import { GodPortrait } from './art';
+import { MiniBanner } from './gui';
+import { guiThemeFor } from '../assets/guiArt';
 import { TemperamentNote } from './temperament';
 
 export interface SeatDraft {
@@ -49,9 +55,9 @@ export function SeatRow({
   const s = seat;
   const patrons = patronsOf(catalog, s.pantheonId);
   return (
-    <div className="seat-row" style={{ ['--seat' as string]: color }} data-testid={`seat-${i}`}>
-      <span className="seat-row__swatch" aria-hidden="true" />
-      <Emblem catalog={catalog} pantheonId={s.pantheonId} size="2.6rem" />
+    <div className="seat-row" style={{ ['--seat' as string]: color }} data-gui-theme={guiThemeFor(s.pantheonId)} data-testid={`seat-${i}`}>
+      <span className="seat-row__swatch" aria-hidden="true" title={`Seat ${i + 1} colour`} />
+      <MiniBanner pantheonId={s.pantheonId} className="seat-row__banner" />
       <div className="seat-row__fields">
         <div className="row gap wrap">
           <select className="select" value={s.pantheonId} aria-label={`Seat ${i + 1} pantheon`} onChange={(e) => onChange({ pantheonId: e.target.value })} data-testid={`seat-${i}-pantheon`}>
@@ -86,6 +92,7 @@ export function SeatRow({
               </select>
             ) : (
               <span className="small dim seat-row__patron" data-testid={`seat-${i}-patron-name`}>
+                {catalog.gods[s.godId ?? patrons[0] ?? ''] ? <GodPortrait catalog={catalog} godId={s.godId ?? patrons[0]!} size="2.2rem" /> : null}
                 Patron: {catalog.gods[s.godId ?? patrons[0] ?? '']?.name ?? '—'}
               </span>
             )}

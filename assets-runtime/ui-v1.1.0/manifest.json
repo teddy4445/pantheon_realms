@@ -1,0 +1,1017 @@
+{
+  "schema": "pantheon-realms-gui-art-v1",
+  "version": "1.1.0",
+  "status": "art handoff; not yet integrated into game",
+  "assets": {
+    "gui.frame.greek": {
+      "file": "ui-v1.1.0/frame-greek.png",
+      "kind": "frame",
+      "theme": "greek",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.02083,
+        0.05566,
+        0.97917,
+        0.91602
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "cbf49b3037fa045786ac1f26252f9b0b20cd833a77cbffb5966d829b35ae3828",
+      "bytes": 1242776,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "nineSlice": {
+        "top": 256,
+        "right": 320,
+        "bottom": 256,
+        "left": 320,
+        "fill": false,
+        "cssBorderWidth": 64,
+        "minimumWidth": 280,
+        "minimumHeight": 180
+      },
+      "contentPaddingCssPx": 40,
+      "surfaceInsetCssPx": [
+        20,
+        11,
+        28,
+        11
+      ]
+    },
+    "gui.banner.greek": {
+      "file": "ui-v1.1.0/banner-greek.png",
+      "kind": "banner",
+      "theme": "greek",
+      "width": 1024,
+      "height": 1536,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.02148,
+        0.02865,
+        0.97949,
+        0.9707
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "814b0116c008d7a5dcc941c06f79592fe37005e5f716012c59aa2356e4708fc8",
+      "bytes": 2475252,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "safeContentRect": [
+        0.27,
+        0.24,
+        0.73,
+        0.76
+      ]
+    },
+    "gui.recruit.greek": {
+      "file": "ui-v1.1.0/recruit-greek.png",
+      "kind": "recruitment-stage",
+      "theme": "greek",
+      "width": 1086,
+      "height": 1448,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "cbca1e3e99652a715a5678644f0416efd25739cdf8d215887e8bee3039f7a01e",
+      "bytes": 3018854,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "unitGroundAnchor": [
+        0.5,
+        0.86
+      ]
+    },
+    "gui.merchant.greek": {
+      "file": "ui-v1.1.0/merchant-greek.png",
+      "kind": "merchant-vignette",
+      "theme": "greek",
+      "width": 2172,
+      "height": 724,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "a682a9a4189df8b0819251148b6df5958c38e4395fb7bcd3207f4866a75e8a8c",
+      "bytes": 2585862,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "usage": "Illustration header only. Trade controls below; merchant is decorative, not a named gameplay NPC."
+    },
+    "gui.frame.norse": {
+      "file": "ui-v1.1.0/frame-norse.png",
+      "kind": "frame",
+      "theme": "norse",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.01432,
+        0.0332,
+        0.98568,
+        0.95605
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "6f404ad19971a4700ac25d8a61c665a2ec06b062861c54a2120d5387855535ac",
+      "bytes": 1462685,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "nineSlice": {
+        "top": 256,
+        "right": 320,
+        "bottom": 256,
+        "left": 320,
+        "fill": false,
+        "cssBorderWidth": 64,
+        "minimumWidth": 280,
+        "minimumHeight": 180
+      },
+      "contentPaddingCssPx": 40,
+      "surfaceInsetCssPx": [
+        26,
+        17,
+        28,
+        17
+      ]
+    },
+    "gui.banner.norse": {
+      "file": "ui-v1.1.0/banner-norse.png",
+      "kind": "banner",
+      "theme": "norse",
+      "width": 1024,
+      "height": 1536,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.01367,
+        0.02799,
+        0.98633,
+        0.97135
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "25ed78f5e47066eb80a33f65601adc8823d58d64c60dc0f0cb99b13e8300aaf7",
+      "bytes": 2745683,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "safeContentRect": [
+        0.27,
+        0.24,
+        0.73,
+        0.76
+      ]
+    },
+    "gui.recruit.norse": {
+      "file": "ui-v1.1.0/recruit-norse.png",
+      "kind": "recruitment-stage",
+      "theme": "norse",
+      "width": 1086,
+      "height": 1448,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "4aa384b9553cb08373f50cc646b572de0e889348438ef6cce5197c169874aef7",
+      "bytes": 3277957,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "unitGroundAnchor": [
+        0.5,
+        0.86
+      ]
+    },
+    "gui.merchant.norse": {
+      "file": "ui-v1.1.0/merchant-norse.png",
+      "kind": "merchant-vignette",
+      "theme": "norse",
+      "width": 2171,
+      "height": 724,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "f95f59ad5f63ab48b0f2c63a43e9e6a210649e0bd056646f89e6511f6be654c4",
+      "bytes": 2757088,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "usage": "Illustration header only. Trade controls below; merchant is decorative, not a named gameplay NPC."
+    },
+    "gui.frame.egyptian": {
+      "file": "ui-v1.1.0/frame-egyptian.png",
+      "kind": "frame",
+      "theme": "egyptian",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.01628,
+        0.05273,
+        0.98372,
+        0.9375
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "cede4a8d8e93cfefc90abff0dd70dcbb962f2d341a874a8a76e675246abe7961",
+      "bytes": 1539583,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "nineSlice": {
+        "top": 256,
+        "right": 320,
+        "bottom": 256,
+        "left": 320,
+        "fill": false,
+        "cssBorderWidth": 64,
+        "minimumWidth": 280,
+        "minimumHeight": 180
+      },
+      "contentPaddingCssPx": 40,
+      "surfaceInsetCssPx": [
+        23,
+        14,
+        26,
+        14
+      ]
+    },
+    "gui.banner.egyptian": {
+      "file": "ui-v1.1.0/banner-egyptian.png",
+      "kind": "banner",
+      "theme": "egyptian",
+      "width": 1024,
+      "height": 1536,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.00684,
+        0.02865,
+        0.99316,
+        0.96159
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "51f4f0f460823b2086b4343a6b21170fc5cab557c13ba36558d5a179d0b4aeaa",
+      "bytes": 2223983,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "safeContentRect": [
+        0.27,
+        0.24,
+        0.73,
+        0.76
+      ]
+    },
+    "gui.recruit.egyptian": {
+      "file": "ui-v1.1.0/recruit-egyptian-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "egyptian",
+      "width": 1086,
+      "height": 1448,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "2c7245917474a55ee313eda93481a165505374c6119bec239f2de5e0f9d57c40",
+      "bytes": 2448093,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "unitGroundAnchor": [
+        0.5,
+        0.86
+      ]
+    },
+    "gui.merchant.egyptian": {
+      "file": "ui-v1.1.0/merchant-egyptian.png",
+      "kind": "merchant-vignette",
+      "theme": "egyptian",
+      "width": 2172,
+      "height": 724,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "e6e0444867eec79c6e5b1e783686eef575e3bfed4fb11222e73de463121e1afa",
+      "bytes": 2650001,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "usage": "Illustration header only. Trade controls below; merchant is decorative, not a named gameplay NPC."
+    },
+    "gui.frame.japanese": {
+      "file": "ui-v1.1.0/frame-japanese.png",
+      "kind": "frame",
+      "theme": "japanese",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.02344,
+        0.03613,
+        0.97786,
+        0.93848
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "c1d88644a6b8040d1dfde35366e84a8b36e04163e519a9854bff8056fb9a9069",
+      "bytes": 1305181,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "nineSlice": {
+        "top": 256,
+        "right": 320,
+        "bottom": 256,
+        "left": 320,
+        "fill": false,
+        "cssBorderWidth": 64,
+        "minimumWidth": 280,
+        "minimumHeight": 180
+      },
+      "contentPaddingCssPx": 40,
+      "surfaceInsetCssPx": [
+        19,
+        14,
+        26,
+        14
+      ]
+    },
+    "gui.banner.japanese": {
+      "file": "ui-v1.1.0/banner-japanese.png",
+      "kind": "banner",
+      "theme": "japanese",
+      "width": 1024,
+      "height": 1536,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.01172,
+        0.04102,
+        0.98926,
+        0.96159
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "67703551fc6bce654da177a14bfa3cadf03c5d8c12794a2f719d08f29ae12a33",
+      "bytes": 2295053,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "safeContentRect": [
+        0.27,
+        0.24,
+        0.73,
+        0.76
+      ]
+    },
+    "gui.recruit.japanese": {
+      "file": "ui-v1.1.0/recruit-japanese-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "japanese",
+      "width": 1086,
+      "height": 1448,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "f192f20c02e543835f1a92074c027dfc748b9ed4766a33c14bfae66e3f314908",
+      "bytes": 2972495,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "unitGroundAnchor": [
+        0.5,
+        0.86
+      ]
+    },
+    "gui.merchant.japanese": {
+      "file": "ui-v1.1.0/merchant-japanese.png",
+      "kind": "merchant-vignette",
+      "theme": "japanese",
+      "width": 2164,
+      "height": 727,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "bacb2da70ab994349365f084f119858db479c3a8e334275913432c85652fa5df",
+      "bytes": 2822536,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "usage": "Illustration header only. Trade controls below; merchant is decorative, not a named gameplay NPC."
+    },
+    "gui.frame.celtic": {
+      "file": "ui-v1.1.0/frame-celtic.png",
+      "kind": "frame",
+      "theme": "celtic",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.02734,
+        0.03906,
+        0.97331,
+        0.93359
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "a9bebd3a6263c3fce2049a07aeb98bb80b6225a0f9fef515e9f216d91655d51b",
+      "bytes": 1472118,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "nineSlice": {
+        "top": 256,
+        "right": 320,
+        "bottom": 256,
+        "left": 320,
+        "fill": false,
+        "cssBorderWidth": 64,
+        "minimumWidth": 280,
+        "minimumHeight": 180
+      },
+      "contentPaddingCssPx": 40,
+      "surfaceInsetCssPx": [
+        19,
+        16,
+        27,
+        16
+      ]
+    },
+    "gui.banner.celtic": {
+      "file": "ui-v1.1.0/banner-celtic.png",
+      "kind": "banner",
+      "theme": "celtic",
+      "width": 1024,
+      "height": 1536,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.00879,
+        0.0293,
+        0.99219,
+        0.95768
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "f315d29b7886aa9f5281fbe853bc149524d1dd17815db2ecb87cf3263d16297b",
+      "bytes": 2781589,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "safeContentRect": [
+        0.27,
+        0.24,
+        0.73,
+        0.76
+      ]
+    },
+    "gui.recruit.celtic": {
+      "file": "ui-v1.1.0/recruit-celtic-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "celtic",
+      "width": 1086,
+      "height": 1448,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "25b5759192cea4c818bdd41a54778c22283df9120f1e8bb942d6a60d15de3316",
+      "bytes": 3416044,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "unitGroundAnchor": [
+        0.5,
+        0.86
+      ]
+    },
+    "gui.merchant.celtic": {
+      "file": "ui-v1.1.0/merchant-celtic.png",
+      "kind": "merchant-vignette",
+      "theme": "celtic",
+      "width": 2172,
+      "height": 724,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "3d6b3e6c5a26b2e82317fb5e302ce63efba27b57b5afd854b84f6b05bb99b9e2",
+      "bytes": 2871108,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "usage": "Illustration header only. Trade controls below; merchant is decorative, not a named gameplay NPC."
+    },
+    "gui.frame.mesoamerican": {
+      "file": "ui-v1.1.0/frame-mesoamerican.png",
+      "kind": "frame",
+      "theme": "mesoamerican",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.01237,
+        0.02539,
+        0.98763,
+        0.94434
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "61c3516444da80245cdd6a0e2db083e5f25e130c606807ccd5130a2afbdb6af1",
+      "bytes": 1393133,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "nineSlice": {
+        "top": 256,
+        "right": 320,
+        "bottom": 256,
+        "left": 320,
+        "fill": false,
+        "cssBorderWidth": 64,
+        "minimumWidth": 280,
+        "minimumHeight": 180
+      },
+      "contentPaddingCssPx": 40,
+      "surfaceInsetCssPx": [
+        15,
+        11,
+        23,
+        11
+      ]
+    },
+    "gui.banner.mesoamerican": {
+      "file": "ui-v1.1.0/banner-mesoamerican.png",
+      "kind": "banner",
+      "theme": "mesoamerican",
+      "width": 1024,
+      "height": 1536,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.01172,
+        0.02148,
+        0.98828,
+        0.95898
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "112b4f74b926afba05f764bab2120d94b894ee847930c7bd4accef59e4574454",
+      "bytes": 2753184,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "safeContentRect": [
+        0.27,
+        0.24,
+        0.73,
+        0.76
+      ]
+    },
+    "gui.recruit.mesoamerican": {
+      "file": "ui-v1.1.0/recruit-mesoamerican-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "mesoamerican",
+      "width": 1086,
+      "height": 1448,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "241b4926f7d3186f492328aabd9639fde43410b8c3e7f8209eea057ee16e135f",
+      "bytes": 2776721,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "unitGroundAnchor": [
+        0.5,
+        0.86
+      ]
+    },
+    "gui.merchant.mesoamerican": {
+      "file": "ui-v1.1.0/merchant-mesoamerican.png",
+      "kind": "merchant-vignette",
+      "theme": "mesoamerican",
+      "width": 2172,
+      "height": 724,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "c3e373aa6e7e422b779945c5c8d5184364c737d91ab79a719848077bc74af810",
+      "bytes": 2800858,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "usage": "Illustration header only. Trade controls below; merchant is decorative, not a named gameplay NPC."
+    },
+    "gui.surface.stone": {
+      "file": "ui-v1.1.0/surface-stone.png",
+      "kind": "surface",
+      "theme": "shared",
+      "width": 1254,
+      "height": 1254,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "9a638b7d96134e0216af7bb146d1eac4e082ae6220c51d4c6069cb53151e901c",
+      "bytes": 2537969,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.surface.parchment": {
+      "file": "ui-v1.1.0/surface-parchment.png",
+      "kind": "surface",
+      "theme": "shared",
+      "width": 1254,
+      "height": 1254,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "0504b2ee72797f5ad0b4bf1df6040fe52ce6194f25a9917a4e81dbe0879a9d55",
+      "bytes": 2818888,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.surface.leather": {
+      "file": "ui-v1.1.0/surface-leather.png",
+      "kind": "surface",
+      "theme": "shared",
+      "width": 1254,
+      "height": 1254,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "93f05bb5be973ac6aa6bdffe2e0a693334b641720fa407a4ed84f457cb182cf3",
+      "bytes": 3231789,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.book.open": {
+      "file": "ui-v1.1.0/book-open.png",
+      "kind": "book",
+      "theme": "shared",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.00195,
+        0.05664,
+        0.9987,
+        0.92676
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "b42a458a059ee868fb191c75e066db7b78d2f57e7a1b439fef7da1f6c4d663ff",
+      "bytes": 2587616,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching.",
+      "safePageRects": [
+        [
+          0.1,
+          0.15,
+          0.44,
+          0.84
+        ],
+        [
+          0.56,
+          0.15,
+          0.9,
+          0.84
+        ]
+      ]
+    },
+    "gui.equipment.figure": {
+      "file": "ui-v1.1.0/equipment-figure.png",
+      "kind": "figure",
+      "theme": "shared",
+      "width": 1024,
+      "height": 1536,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBounds": [
+        0.21777,
+        0.02865,
+        0.7832,
+        0.96094
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "2ec5c286b3d1d4cafab8ad0c8a0ac7af7ea5616e6fefaeca39917f5bfd45d557",
+      "bytes": 1398024,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.control.button": {
+      "file": "ui-v1.1.0/control-button.png",
+      "kind": "button",
+      "theme": "shared",
+      "width": 2172,
+      "height": 724,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBounds": [
+        0.03085,
+        0.23895,
+        0.96915,
+        0.76105
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "270e16a5cb1a02947bbf5af52698422d0962c1af4199788a121ae8f213f400c8",
+      "bytes": 1132046,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.control.socket": {
+      "file": "ui-v1.1.0/control-socket.png",
+      "kind": "socket",
+      "theme": "shared",
+      "width": 1254,
+      "height": 1254,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBounds": [
+        0.05104,
+        0.063,
+        0.94896,
+        0.92344
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "de6016d033ae58631e62484dcfa6d674302b914d891114e9d2b57c64d6affafc",
+      "bytes": 753538,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.encounter.treasure": {
+      "file": "ui-v1.1.0/encounter-treasure.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "width": 1774,
+      "height": 887,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "8c4549a5e479eb6b1371bcc423e30c03e44d677a589ffcd7484c4e9df447d38b",
+      "bytes": 3041793,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.encounter.treasure-empty": {
+      "file": "ui-v1.1.0/encounter-treasure-empty.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "width": 1774,
+      "height": 887,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "c484e6e8e0ed438d4e968203fed08a97818b350f9776d94310b23321d0247269",
+      "bytes": 3033264,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.encounter.longship": {
+      "file": "ui-v1.1.0/encounter-longship.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "width": 1774,
+      "height": 887,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "eb04fbb6720801f2b0adfa475cfc916b00d0fe146500d32ace23b7b81126cf5d",
+      "bytes": 3162105,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.encounter.hermit": {
+      "file": "ui-v1.1.0/encounter-hermit.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "width": 1774,
+      "height": 887,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "38437ff7d958ab7724bc27b312a7c215962a30c02c20a1d2c654ca1b8e9756fd",
+      "bytes": 2877707,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    },
+    "gui.encounter.crossroads": {
+      "file": "ui-v1.1.0/encounter-crossroads.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "width": 1774,
+      "height": 887,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBounds": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "boundsAlphaThreshold": 32,
+      "sha256": "216e397bd75c30e8007243dc755db364a9776e3bfa50c9f02af7e73a594adb72",
+      "bytes": 3087736,
+      "provenance": "Native built-in image generator output, 2026-10-10. No upscaling, cropping or code retouching."
+    }
+  }
+}

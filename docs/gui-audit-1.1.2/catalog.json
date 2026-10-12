@@ -1,0 +1,786 @@
+[
+  {
+    "id": "S01",
+    "name": "Main menu",
+    "when": "When the game opens or the player returns to the title screen.",
+    "includes": "Continue, New Game, Load Game, Encyclopedia, Settings, branding and version. Desktop also adds Quit.",
+    "source": "packages/ui/src/screens/MainMenu.tsx",
+    "screenshot": "screenshots/S01.png"
+  },
+  {
+    "id": "S02",
+    "name": "New game modes",
+    "when": "After selecting New Game.",
+    "includes": "Campaign, Skirmish, Random Map and access to the map editor.",
+    "source": "packages/ui/src/screens/Setup.tsx",
+    "screenshot": "screenshots/S02.png"
+  },
+  {
+    "id": "S03A",
+    "name": "Campaign selection",
+    "when": "When starting a campaign.",
+    "includes": "Six pantheon campaigns, story preview, mission list and difficulty.",
+    "source": "packages/ui/src/screens/Setup.tsx",
+    "screenshot": "screenshots/S03A.png"
+  },
+  {
+    "id": "S03B",
+    "name": "Skirmish map selection",
+    "when": "When starting a skirmish.",
+    "includes": "Authored map cards, map artwork, scenario details and selection controls.",
+    "source": "packages/ui/src/screens/Setup.tsx",
+    "screenshot": "screenshots/S03B.png"
+  },
+  {
+    "id": "S04",
+    "name": "Pantheon and match setup",
+    "when": "After choosing a legacy skirmish scenario.",
+    "includes": "Player and rival pantheons, seat names, controllers and difficulty.",
+    "source": "packages/ui/src/screens/Setup.tsx",
+    "screenshot": "screenshots/S04.png"
+  },
+  {
+    "id": "S19",
+    "name": "Random map setup",
+    "when": "When starting a generated map.",
+    "includes": "Map size, terrain and resource settings, victory rules, seats, pantheons and difficulty.",
+    "source": "packages/ui/src/screens/RandomSetup.tsx",
+    "screenshot": "screenshots/S19.png"
+  },
+  {
+    "id": "S23",
+    "name": "Authored map match setup",
+    "when": "After choosing an authored skirmish map.",
+    "includes": "Map preview, seat configuration, factions and match options.",
+    "source": "packages/ui/src/screens/MapSetup.tsx",
+    "screenshot": "screenshots/S23.png"
+  },
+  {
+    "id": "S17-gameplay",
+    "name": "Settings Gameplay",
+    "when": "From the main menu or pause menu.",
+    "includes": "Adventure and battle speed, enemy movement and gameplay preferences.",
+    "source": "packages/ui/src/screens/Settings.tsx",
+    "screenshot": "screenshots/S17-gameplay.png"
+  },
+  {
+    "id": "S17-interface",
+    "name": "Settings Interface",
+    "when": "From the main menu or pause menu.",
+    "includes": "UI display and interaction preferences.",
+    "source": "packages/ui/src/screens/Settings.tsx",
+    "screenshot": "screenshots/S17-interface.png"
+  },
+  {
+    "id": "S17-display",
+    "name": "Settings Display",
+    "when": "From the main menu or pause menu.",
+    "includes": "Rendering quality and display settings.",
+    "source": "packages/ui/src/screens/Settings.tsx",
+    "screenshot": "screenshots/S17-display.png"
+  },
+  {
+    "id": "S17-audio",
+    "name": "Settings Audio",
+    "when": "From the main menu or pause menu.",
+    "includes": "Music, sound and volume controls.",
+    "source": "packages/ui/src/screens/Settings.tsx",
+    "screenshot": "screenshots/S17-audio.png"
+  },
+  {
+    "id": "S17-accessibility",
+    "name": "Settings Accessibility",
+    "when": "From the main menu or pause menu.",
+    "includes": "Motion and accessibility preferences.",
+    "source": "packages/ui/src/screens/Settings.tsx",
+    "screenshot": "screenshots/S17-accessibility.png"
+  },
+  {
+    "id": "S17-controls",
+    "name": "Settings Controls",
+    "when": "From the main menu or pause menu.",
+    "includes": "Keyboard shortcuts and rebinding.",
+    "source": "packages/ui/src/screens/Settings.tsx",
+    "screenshot": "screenshots/S17-controls.png"
+  },
+  {
+    "id": "S17-storage",
+    "name": "Settings Saves",
+    "when": "From the main menu or pause menu.",
+    "includes": "Storage information and save management settings.",
+    "source": "packages/ui/src/screens/Settings.tsx",
+    "screenshot": "screenshots/S17-storage.png"
+  },
+  {
+    "id": "S16-creatures",
+    "name": "Encyclopedia Bestiary",
+    "when": "From Encyclopedia and its Bestiary tab.",
+    "includes": "Creature families and base and upgraded units grouped by pantheon.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-creatures.png"
+  },
+  {
+    "id": "S16-gods",
+    "name": "Encyclopedia Gods",
+    "when": "From Encyclopedia and its Gods tab.",
+    "includes": "Patron and minor gods with benefits and requirements.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-gods.png"
+  },
+  {
+    "id": "S16-heroes",
+    "name": "Encyclopedia Heroes",
+    "when": "From Encyclopedia and its Heroes tab.",
+    "includes": "Hero portraits, classes and specialties grouped by pantheon.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-heroes.png"
+  },
+  {
+    "id": "S16-town",
+    "name": "Encyclopedia Towns",
+    "when": "From Encyclopedia and its Towns tab.",
+    "includes": "Town buildings and progression grouped by pantheon.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-town.png"
+  },
+  {
+    "id": "S16-spells",
+    "name": "Encyclopedia Spells",
+    "when": "From Encyclopedia and its Spells tab.",
+    "includes": "Spell artwork, costs and effects.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-spells.png"
+  },
+  {
+    "id": "S16-skills",
+    "name": "Encyclopedia Skills",
+    "when": "From Encyclopedia and its Skills tab.",
+    "includes": "Hero skill ranks and bonuses.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-skills.png"
+  },
+  {
+    "id": "S16-artifacts",
+    "name": "Encyclopedia Artifacts",
+    "when": "From Encyclopedia and its Artifacts tab.",
+    "includes": "Equipment, artifact effects and set bonuses.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-artifacts.png"
+  },
+  {
+    "id": "S16-abilities",
+    "name": "Encyclopedia Abilities",
+    "when": "From Encyclopedia and its Abilities tab.",
+    "includes": "Creature ability badges and rule descriptions.",
+    "source": "packages/ui/src/screens/Encyclopedia.tsx",
+    "screenshot": "screenshots/S16-abilities.png"
+  },
+  {
+    "id": "S18",
+    "name": "Creature detail",
+    "when": "When opening a unit from the encyclopedia or a creature reference.",
+    "includes": "Creature artwork, combat attributes, abilities and upgrade information.",
+    "source": "packages/ui/src/screens/UnitDetail.tsx",
+    "screenshot": "screenshots/S18.png"
+  },
+  {
+    "id": "S21",
+    "name": "High scores",
+    "when": "From the end-of-game summary.",
+    "includes": "Skirmish and campaign record tabs, scores and recorded match details.",
+    "source": "packages/ui/src/screens/Summary.tsx",
+    "screenshot": "screenshots/S21.png"
+  },
+  {
+    "id": "D01",
+    "name": "Mission briefing",
+    "when": "At the start of a campaign mission or scenario.",
+    "includes": "Mission introduction, dialogue, objectives and Begin controls.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D01.png"
+  },
+  {
+    "id": "S06",
+    "name": "Adventure map",
+    "when": "During exploration between battles.",
+    "includes": "Map, resources, hero selection, minimap, movement, town and hero shortcuts and End Day.",
+    "source": "packages/ui/src/screens/Adventure.tsx",
+    "screenshot": "screenshots/S06.png"
+  },
+  {
+    "id": "S07",
+    "name": "Hero and equipment",
+    "when": "From the hero portrait or Hero command on the adventure map.",
+    "includes": "Hero attributes, equipment silhouette, inventory, skills and army.",
+    "source": "packages/ui/src/screens/Hero.tsx",
+    "screenshot": "screenshots/S07.png"
+  },
+  {
+    "id": "S08",
+    "name": "Town management",
+    "when": "When entering an owned town.",
+    "includes": "Town background, constructed buildings and sites, economy, garrison and visiting hero.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/S08.png"
+  },
+  {
+    "id": "S09",
+    "name": "Recruitment",
+    "when": "From an owned creature dwelling.",
+    "includes": "Creature selection, available population, quantity, cost and destination army.",
+    "source": "packages/ui/src/screens/Recruitment.tsx",
+    "screenshot": "screenshots/S09.png"
+  },
+  {
+    "id": "S10",
+    "name": "Pantheon and gods",
+    "when": "From the Pantheon command during a match.",
+    "includes": "Patron god, minor god choices, devotion and divine progression.",
+    "source": "packages/ui/src/screens/Pantheon.tsx",
+    "screenshot": "screenshots/S10.png"
+  },
+  {
+    "id": "S14-objectives",
+    "name": "Journal Objectives",
+    "when": "From Journal during a campaign.",
+    "includes": "Primary and optional objectives and progress.",
+    "source": "packages/ui/src/screens/Journal.tsx",
+    "screenshot": "screenshots/S14-objectives.png"
+  },
+  {
+    "id": "S14-story",
+    "name": "Journal Story",
+    "when": "From Journal during a campaign.",
+    "includes": "Mission story and dialogue history.",
+    "source": "packages/ui/src/screens/Journal.tsx",
+    "screenshot": "screenshots/S14-story.png"
+  },
+  {
+    "id": "S14-help",
+    "name": "Journal Mission help",
+    "when": "From Journal during a campaign.",
+    "includes": "Mission-specific hints and rules.",
+    "source": "packages/ui/src/screens/Journal.tsx",
+    "screenshot": "screenshots/S14-help.png"
+  },
+  {
+    "id": "S14-campaign",
+    "name": "Journal Campaign",
+    "when": "From Journal during a campaign.",
+    "includes": "Campaign route, progress and mission outcomes.",
+    "source": "packages/ui/src/screens/Journal.tsx",
+    "screenshot": "screenshots/S14-campaign.png"
+  },
+  {
+    "id": "D02",
+    "name": "Pause menu",
+    "when": "When pressing Escape during exploration or battle.",
+    "includes": "Resume, save, load, settings, journal, restart and return to main menu.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D02.png"
+  },
+  {
+    "id": "D03",
+    "name": "Save game",
+    "when": "From Pause then Save Game.",
+    "includes": "Manual slots, save naming, metadata and import controls.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D03.png"
+  },
+  {
+    "id": "D04",
+    "name": "Load game",
+    "when": "From the main menu or pause menu.",
+    "includes": "Manual saves, autosaves, checkpoint slots, metadata and import/load controls.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D04.png"
+  },
+  {
+    "id": "D05",
+    "name": "Keyboard shortcuts",
+    "when": "When pressing F1.",
+    "includes": "Current keyboard bindings and help for navigation and game actions.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/D05.png"
+  },
+  {
+    "id": "D06",
+    "name": "Creature stack inspection",
+    "when": "When inspecting a creature stack.",
+    "includes": "Creature portrait, stack size, combat statistics and abilities.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D06.png"
+  },
+  {
+    "id": "D10",
+    "name": "Hot seat handover",
+    "when": "At the next human player turn in a hot-seat match.",
+    "includes": "Player identity and a ready control while the map is hidden.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/D10.png"
+  },
+  {
+    "id": "D11",
+    "name": "Confirmation dialog",
+    "when": "Before a destructive or consequential action.",
+    "includes": "Action title, explanation, cancel and explicit confirmation.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D11.png"
+  },
+  {
+    "id": "D09",
+    "name": "Army exchange",
+    "when": "When exchanging troops with a town or another hero.",
+    "includes": "Both armies, stack selection and quantity controls.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D09.png"
+  },
+  {
+    "id": "D12",
+    "name": "Mission help dialog",
+    "when": "When opening a mission help topic.",
+    "includes": "A focused explanation of a mission mechanic.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D12.png"
+  },
+  {
+    "id": "D13",
+    "name": "Story dialogue",
+    "when": "When a campaign story trigger fires.",
+    "includes": "Speaker portrait, dialogue text, Continue and Skip.",
+    "source": "packages/ui/src/dialogs/Story.tsx",
+    "screenshot": "screenshots/D13.png"
+  },
+  {
+    "id": "D14",
+    "name": "Contextual tip",
+    "when": "When a new game mechanic is first encountered.",
+    "includes": "A short explanation, dismissal and disable-tips controls.",
+    "source": "packages/ui/src/dialogs/Story.tsx",
+    "screenshot": "screenshots/D14.png"
+  },
+  {
+    "id": "D15",
+    "name": "Mission debrief",
+    "when": "After completing a campaign mission.",
+    "includes": "Victory dialogue, mission results, summary and next-mission controls.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D15.png"
+  },
+  {
+    "id": "D16",
+    "name": "Campaign complete",
+    "when": "After the final campaign mission.",
+    "includes": "Campaign conclusion, epilogue, summary and main-menu controls.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D16.png"
+  },
+  {
+    "id": "D17",
+    "name": "Mission failed",
+    "when": "After a campaign defeat.",
+    "includes": "Defeat message, restart, checkpoint loading and main-menu controls.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/D17.png"
+  },
+  {
+    "id": "S20",
+    "name": "Match and campaign summary",
+    "when": "After a finished mission or match, via Summary.",
+    "includes": "Score, timeline charts, player statistics and high-score access.",
+    "source": "packages/ui/src/screens/Summary.tsx",
+    "screenshot": "screenshots/S20.png"
+  },
+  {
+    "id": "S08B",
+    "name": "Developed town",
+    "when": "When revisiting a town after constructing and upgrading buildings.",
+    "includes": "Advanced town art, built structures, services and armies.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/S08B.png"
+  },
+  {
+    "id": "T01",
+    "name": "Building action panel",
+    "when": "When clicking a town building or empty construction site.",
+    "includes": "Building information, upgrades, costs, prerequisites and service buttons.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T01.png"
+  },
+  {
+    "id": "T02",
+    "name": "Marketplace",
+    "when": "From the corresponding service in an owned developed town.",
+    "includes": "Resource selection, buy and sell tabs, rates, quantity and trade controls.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T02.png"
+  },
+  {
+    "id": "T03",
+    "name": "Heroes lodge",
+    "when": "From the corresponding service in an owned developed town.",
+    "includes": "Available hero portraits, classes, specialties, recruitment cost and Hire.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T03.png"
+  },
+  {
+    "id": "T04",
+    "name": "Artifact merchant",
+    "when": "From the corresponding service in an owned developed town.",
+    "includes": "Weekly artifact stock, effects, prices and purchase controls.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T04.png"
+  },
+  {
+    "id": "T05",
+    "name": "Workshop wares",
+    "when": "From the corresponding service in an owned developed town.",
+    "includes": "Workshop inventory, item details, pricing and purchase controls.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T05.png"
+  },
+  {
+    "id": "T07",
+    "name": "Divine gifts",
+    "when": "From the temple building action panel.",
+    "includes": "Available gifts, Favor cost, hero targeting and receive controls.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T07.png"
+  },
+  {
+    "id": "S13",
+    "name": "Hero level up",
+    "when": "When experience creates a pending level-up decision.",
+    "includes": "Hero portrait, primary attribute gain and skill choices.",
+    "source": "packages/ui/src/screens/LevelUp.tsx",
+    "screenshot": "screenshots/S13.png"
+  },
+  {
+    "id": "D18",
+    "name": "Skirmish victory",
+    "when": "When the player wins a skirmish.",
+    "includes": "Victory artwork, outcome message, summary and main-menu buttons.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/D18.png"
+  },
+  {
+    "id": "D19",
+    "name": "Skirmish defeat",
+    "when": "When the player loses a skirmish.",
+    "includes": "Defeat artwork, outcome message, summary and main-menu buttons.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/D19.png"
+  },
+  {
+    "id": "W01",
+    "name": "Neutral creature camp",
+    "when": "When visiting a recruitable neutral camp.",
+    "includes": "Available creatures, cost, quantity and recruitment.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/W01.png"
+  },
+  {
+    "id": "W02",
+    "name": "Map event choice",
+    "when": "When a hero visits a map event.",
+    "includes": "Event narrative, alternative choices, costs and rewards.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/W02.png"
+  },
+  {
+    "id": "W05",
+    "name": "Beacon activation",
+    "when": "When restoring or activating a mission beacon.",
+    "includes": "Activation requirement, cost and confirmation.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/W05.png"
+  },
+  {
+    "id": "S22-map",
+    "name": "Map editor Map",
+    "when": "From New Game then Map Editor.",
+    "includes": "Terrain canvas, tool palette, map name, size and map-wide configuration.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/S22-map.png"
+  },
+  {
+    "id": "S22-empires",
+    "name": "Map editor Empires",
+    "when": "From New Game then Map Editor.",
+    "includes": "Player seats, factions and starting empire properties.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/S22-empires.png"
+  },
+  {
+    "id": "E01",
+    "name": "New map",
+    "when": "From the corresponding map editor toolbar action.",
+    "includes": "Map size selection and create/cancel controls.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/E01.png"
+  },
+  {
+    "id": "E02",
+    "name": "Generate map",
+    "when": "From the corresponding map editor toolbar action.",
+    "includes": "Generation seed, map parameters and generation controls.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/E02.png"
+  },
+  {
+    "id": "E03",
+    "name": "Open map library",
+    "when": "From the corresponding map editor toolbar action.",
+    "includes": "Saved maps, import and load controls.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/E03.png"
+  },
+  {
+    "id": "S22-check",
+    "name": "Map editor validation",
+    "when": "While reviewing whether an edited map is playable.",
+    "includes": "Validation errors and links to affected sites.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/S22-check.png"
+  },
+  {
+    "id": "S22-site",
+    "name": "Map editor site properties",
+    "when": "When selecting or placing a map site.",
+    "includes": "Site identity, ownership, guards and object-specific settings.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/S22-site.png"
+  },
+  {
+    "id": "E04",
+    "name": "Play editor map",
+    "when": "When play-testing a valid edited map.",
+    "includes": "Player seats, pantheons, controllers and game-start controls.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/E04.png"
+  },
+  {
+    "id": "E05",
+    "name": "Leave unsaved map",
+    "when": "When leaving an editor map with unsaved changes.",
+    "includes": "Discard-changes confirmation and return to editing.",
+    "source": "packages/ui/src/screens/MapEditor.tsx",
+    "screenshot": "screenshots/E05.png"
+  },
+  {
+    "id": "W03",
+    "name": "Treasure chest",
+    "when": "When a hero visits this site on a generated or custom map.",
+    "includes": "Gold or experience choices and reward values.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/W03.png"
+  },
+  {
+    "id": "W04",
+    "name": "Quest hut",
+    "when": "When a hero visits this site on a generated or custom map.",
+    "includes": "Quest requirements, progress, reward and completion controls.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/W04.png"
+  },
+  {
+    "id": "T06",
+    "name": "Temple offering",
+    "when": "When a pantheon with an offering rite uses its temple.",
+    "includes": "Creature offerings, recruitment value, Favor gained and confirmation.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T06.png"
+  },
+  {
+    "id": "H01",
+    "name": "Artifact detail and comparison",
+    "when": "When selecting equipment or a backpack item on the hero screen.",
+    "includes": "Artifact name, effect, slot, set membership and equip comparison.",
+    "source": "packages/ui/src/screens/Hero.tsx",
+    "screenshot": "screenshots/H01.png"
+  },
+  {
+    "id": "H02",
+    "name": "Army splitting controls",
+    "when": "When splitting a hero army stack.",
+    "includes": "Selected stack, split quantity and destination-slot interaction.",
+    "source": "packages/ui/src/screens/Hero.tsx",
+    "screenshot": "screenshots/H02.png"
+  },
+  {
+    "id": "D07",
+    "name": "Hero spellbook",
+    "when": "When opening the hero spellbook.",
+    "includes": "Known spells, magic-school filters, mana and spell details.",
+    "source": "packages/ui/src/components/spellbook.tsx",
+    "screenshot": "screenshots/D07.png"
+  },
+  {
+    "id": "W06",
+    "name": "Adventure spell casting",
+    "when": "From the Spells action on the adventure map.",
+    "includes": "Castable adventure spells, mana costs and unavailable-spell explanations.",
+    "source": "packages/ui/src/components/spellbook.tsx",
+    "screenshot": "screenshots/W06.png"
+  },
+  {
+    "id": "M01",
+    "name": "New week announcement",
+    "when": "At the start of a new week.",
+    "includes": "Week number, event artwork and weekly growth or event effect.",
+    "source": "packages/ui/src/components/moments.tsx",
+    "screenshot": "screenshots/M01.png"
+  },
+  {
+    "id": "M02",
+    "name": "Divine miracle announcement",
+    "when": "When a divine intervention is invoked.",
+    "includes": "Miracle illustration, name, context and effect summary.",
+    "source": "packages/ui/src/components/moments.tsx",
+    "screenshot": "screenshots/M02.png"
+  },
+  {
+    "id": "S11A",
+    "name": "Battle deployment and siege",
+    "when": "At the start of a battle when Tactics allows deployment.",
+    "includes": "Battlefield, fortifications, initiative order, deployment zone and Start Battle.",
+    "source": "packages/ui/src/screens/Battle.tsx",
+    "screenshot": "screenshots/S11A.png"
+  },
+  {
+    "id": "B01",
+    "name": "Battle log",
+    "when": "When toggling the combat Log button.",
+    "includes": "Recent battle actions, damage and combat messages.",
+    "source": "packages/ui/src/screens/Battle.tsx",
+    "screenshot": "screenshots/B01.png"
+  },
+  {
+    "id": "S11B",
+    "name": "Tactical battle",
+    "when": "During a live combat turn.",
+    "includes": "Initiative order, active stack, grid, commands, spells, miracles and retreat options.",
+    "source": "packages/ui/src/screens/Battle.tsx",
+    "screenshot": "screenshots/S11B.png"
+  },
+  {
+    "id": "B03",
+    "name": "Battle spell casting",
+    "when": "From the Spells command during combat.",
+    "includes": "Known combat spells, mana costs and cast availability.",
+    "source": "packages/ui/src/components/spellbook.tsx",
+    "screenshot": "screenshots/B03.png"
+  },
+  {
+    "id": "B05",
+    "name": "Surrender confirmation",
+    "when": "When a battle permits a paid surrender.",
+    "includes": "Gold cost, preserved surviving army and surrender confirmation.",
+    "source": "packages/ui/src/screens/Battle.tsx",
+    "screenshot": "screenshots/B05.png"
+  },
+  {
+    "id": "B06",
+    "name": "Siege defender selection",
+    "when": "When the defending town and visiting hero have more than seven army stacks.",
+    "includes": "Defender choices, selection limit, reserves, merge and confirm controls.",
+    "source": "packages/ui/src/screens/Battle.tsx",
+    "screenshot": "screenshots/B06.png"
+  },
+  {
+    "id": "W07",
+    "name": "Pre-battle encounter",
+    "when": "Before committing to a guarded encounter or attacking an enemy.",
+    "includes": "Both armies, strength comparison, rewards, attack, quick battle and withdraw.",
+    "source": "packages/ui/src/dialogs/Overlays.tsx",
+    "screenshot": "screenshots/W07.png"
+  },
+  {
+    "id": "T08",
+    "name": "Construction and upgrade proposal",
+    "when": "When selecting an unbuilt town site or an available upgrade.",
+    "includes": "Next building, cost, missing prerequisites, effects and construction action.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T08.png"
+  },
+  {
+    "id": "S13B",
+    "name": "Level up with divine gifts",
+    "when": "At gift-granting hero levels such as level 10.",
+    "includes": "Two divine gift choices alongside the primary gain and skill offers.",
+    "source": "packages/ui/src/screens/LevelUp.tsx",
+    "screenshot": "screenshots/S13B.png"
+  },
+  {
+    "id": "N01",
+    "name": "Notification toast",
+    "when": "After an action succeeds, is rejected, or produces a short notice.",
+    "includes": "Brief status text above the current screen.",
+    "source": "packages/ui/src/app/App.tsx",
+    "screenshot": "screenshots/N01.png"
+  },
+  {
+    "id": "D08",
+    "name": "Divine interventions",
+    "when": "From the adventure map Favor command.",
+    "includes": "Divine interventions, Favor costs, context filters and targeting requirements.",
+    "source": "packages/ui/src/dialogs/WorldDialogs.tsx",
+    "screenshot": "screenshots/D08.png"
+  },
+  {
+    "id": "N02",
+    "name": "Rival turn summary",
+    "when": "At the start of the player turn after rival actions.",
+    "includes": "Brief visible enemy activity grouped by empire.",
+    "source": "packages/ui/src/screens/Adventure.tsx",
+    "screenshot": "screenshots/N02.png"
+  },
+  {
+    "id": "N03",
+    "name": "Map tile and site inspection",
+    "when": "When hovering or pinning a map tile.",
+    "includes": "Terrain, site information, owner, guards and interaction details.",
+    "source": "packages/ui/src/screens/Adventure.tsx",
+    "screenshot": "screenshots/N03.png"
+  },
+  {
+    "id": "T09",
+    "name": "Town army split dialog",
+    "when": "When Shift-dragging part of an army stack to another slot in town.",
+    "includes": "Source creature, quantity, cancel and split confirmation.",
+    "source": "packages/ui/src/screens/Town.tsx",
+    "screenshot": "screenshots/T09.png"
+  },
+  {
+    "id": "B02",
+    "name": "Battle miracles book",
+    "when": "From Favor during combat.",
+    "includes": "Available miracles, Favor costs and targeting requirements.",
+    "source": "packages/ui/src/screens/Battle.tsx",
+    "screenshot": "screenshots/B02.png"
+  },
+  {
+    "id": "B04",
+    "name": "Retreat confirmation",
+    "when": "When a hero retreats from battle.",
+    "includes": "Consequences and explicit confirmation.",
+    "source": "packages/ui/src/screens/Battle.tsx",
+    "screenshot": "screenshots/B04.png"
+  },
+  {
+    "id": "S12A",
+    "name": "Battle victory result",
+    "when": "After winning a battle.",
+    "includes": "Casualties for both armies, experience, rewards, hero outcome and Continue.",
+    "source": "packages/ui/src/screens/BattleResult.tsx",
+    "screenshot": "screenshots/S12A.png"
+  },
+  {
+    "id": "S12B",
+    "name": "Battle defeat result",
+    "when": "After losing a battle.",
+    "includes": "Defeat artwork, losses, hero outcome and Continue.",
+    "source": "packages/ui/src/screens/BattleResult.tsx",
+    "screenshot": "screenshots/S12B.png"
+  }
+]

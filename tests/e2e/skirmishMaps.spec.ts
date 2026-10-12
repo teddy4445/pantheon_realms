@@ -55,13 +55,14 @@ test('skirmish list: six maps after Twin Harbors, one card and detail style for 
     await expect(card).toContainText(`${empires} empires`);
     const detail = page.locator('.setup-detail');
     await expect(detail.locator('.map-detail__fact').first()).toContainText(String(empires));
-    // One small picture beside the text (the painting), sub-sections, and no drawn layout or closing sentence.
+    // The painting above the text (1.1.0 Skirmish Atlas: a large picture), sub-sections, and no drawn layout or closing sentence.
     await expect(detail.getByTestId('skirmish-map-detail').locator('[data-testid="map-preview"], [data-testid="map-art"]').first()).toBeVisible();
     await expect(detail.locator('.map-detail__layout')).toHaveCount(0);
     await expect(detail).toContainText('Highlights');
     await expect(detail).not.toContainText('lands are laid out alike');
     const pic = await detail.getByTestId('skirmish-map-detail').locator('.portrait').boundingBox();
-    expect(pic && pic.width < 260, id).toBe(true);
+    const text = await detail.getByTestId('skirmish-map-detail').boundingBox();
+    expect(pic && text && pic.width > text.width * 0.9, id).toBe(true);
     await expect(page.getByTestId('setup-next')).toHaveText(/Set Up Empires/);
     await page.waitForTimeout(200);
     await page.screenshot({ path: `test-results/maps-detail-${id}.png` });

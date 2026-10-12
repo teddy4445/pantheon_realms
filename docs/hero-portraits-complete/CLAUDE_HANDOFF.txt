@@ -1,0 +1,76 @@
+PANTHEON REALMS — COMPLETE HERO CHARACTER PORTRAITS
+Art delivery and implementation instructions · 2026-10-10
+
+REQUEST
+Add the supplied large transparent character portraits to the game wherever a hero needs full character artwork: Tavern/Lodge candidates, dialogue speakers, hero meeting, hero detail and encyclopedia panels, encounter presentation, and appropriate level-up presentation. Use the exact character, not a generic pantheon hero. Keep the existing square portrait icons for compact lists, army/map HUD, turn order and circular medallions where they work better.
+
+SOURCE PROJECT AND FULL PATHS
+Source project: C:\Users\lazeb\Desktop\pantheon_realms
+Delivery document: C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\CLAUDE_HANDOFF.txt
+Searchable before/after gallery: C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\index.html
+Hero-to-art JSON mapping: C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\hero-map.json
+Spreadsheet-friendly CSV: C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\hero-map.csv
+Audited current hero definitions: C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\catalog-heroes.json
+New original PNGs: C:\Users\lazeb\Desktop\pantheon_realms\assets-source\hero-portraits-complete
+New runtime PNGs: C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\hero-portraits-complete
+New-only additive manifest: C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\hero-portraits-complete\manifest.json
+All supplied new and existing bust records: C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\hero-portraits-complete\all-hero-busts.json
+Prompts and exact identity-reference paths: C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\generation-queue.json
+Validation report: C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\validation.json
+
+YOUR CHECKOUT IS A DIFFERENT PROJECT
+Copy the delivery into your own local project before implementing. Use Copy-To-Project.ps1 alongside this document, first with -DryRun, then without it:
+& 'C:\Users\lazeb\Desktop\pantheon_realms\docs\hero-portraits-complete\Copy-To-Project.ps1' -DestinationRoot 'D:\your-real-local-project' -DryRun
+Use the real destination path. The helper verifies source hashes, refuses conflicting destination files, preserves relative paths, and includes existing portraits/busts needed by the gallery. It does not merge application code or overwrite the destination game's master registry. Do not ship C:\Users\... paths or link the game to the source checkout.
+
+AUDIT AND SCOPE
+There are 74 heroes in the source game's actual content catalog. The art library contains 89 portrait identities, including 15 additional character portraits not currently registered as HeroDefinition entries. The initial library had 35 large busts and 54 missing busts. All 54 missing entries belong to current catalog heroes.
+New artwork by faction: Celtic 11, Egyptian 11, Greek 6, Japanese 11, Mesoamerican 11, Norse 4. Existing 35 busts are retained, for coverage of all 89 artwork identities after completion. The validation report is the authoritative delivery count.
+The selected Abe no Seimei file ends in .bust-v2.png; its logical asset ID still ends in .bust. Use the manifest file value, not a constructed filename. The initial draft is retained in the source folder for provenance and is not an additional hero. selected-variants.json records the reframing prompt.
+The 15 art-only characters have heroId:null and inCurrentCatalog:false in hero-map.json. Preserve their art for dialogue or later use; this delivery is not an instruction to add them to recruitment, campaign rosters or save data. Do not invent catalog IDs for them.
+
+WHAT “FULL PORTRAIT” MEANS HERE
+Large independent head-to-waist/thigh character illustration with transparent background, matching the existing game art. These are the .bust assets used by the game's dialogue system, not necessarily head-to-toe figures. They are not rigged models, map avatars, sprite strips or new animations. Preserve existing mounted map sprites and animation bindings.
+Each new cutout was generated from that hero's actual square portrait. Face, hairstyle, clothing colors and signature equipment provide continuity. The original portrait icons and all existing bust files remain unchanged. Use the game art reference rather than assumptions about a famous or mythological name.
+
+EXACT ID MAPPING — DO NOT GUESS FROM NAMES
+Use the hero's portraitAssetId from content definitions and replace the trailing '.portrait' with '.bust'. This is already how packages/ui/src/assets/storyArt.ts::speakerBust works. Examples:
+  hero.celtic.amergin.portrait -> hero.celtic.amergin.bust
+  hero.greek.achilles.portrait -> hero.greek.achilles.bust
+The hero definition ID may differ from the art ID slug. Many non-Greek heroes have a pantheon prefix in heroId; display names may contain accents. hero-map.json/CSV records the actual ID from buildCatalog(), not a guessed slug. Compare the current destination catalog against the delivery snapshot before merging if it has evolved.
+
+REGISTER THE PACK WITHOUT LOSING OTHER ART
+The source's packages/ui/src/assets/manifest.ts imports assets-runtime/art/manifest.json and resolveArt reads its STORY.assets. Merely copying PNGs or updating a documentation map will not make speakerBust find them.
+Preferred integration: import assets-runtime/hero-portraits-complete/manifest.json as an additive hero-art pack in the existing resolver. Merge its new .bust entries into the story-art lookup used by BOTH resolveArt and the general asset resolver. Preserve all existing story, UI, terrain, icon and animation registries and their precedence. Confirm the destination still has this structure; adapt to its current resolver rather than replacing the file wholesale.
+New records have file, kind:'bust', width, height and alphaBox compatible with StoryArtRecord, plus audit metadata. Example file value: 'hero-portraits-complete/hero.celtic.amergin.bust.png'. The shipped URL should go through the existing relative-base helper, e.g. './hero-portraits-complete/hero.celtic.amergin.bust.png'. Do not prepend '/assets-runtime/' in the runtime URL.
+The all-hero-busts.json file includes existing dependency records for inspection/copy; it is not permission to replace newer destination assets. Only the 54 missing keys need addition in the audited source version.
+The old art/manifest.json is generated by import_story_art.py; hand-editing it can be erased on regeneration. A separate additive import avoids that problem. Alternatively, deliberately extend the importer to accept this source folder and regenerate only through the destination's approved pipeline. PNGs are immediately usable; conversion is not required. Do not silently resize, remove alpha or replace originals.
+
+SCREEN BEHAVIOR
+1. Tavern/Lodge: resolve the exact offered candidate definition, including returning heroes. Use a large bust in the scene and its unchanged square portrait in compact details. Selection/highlight must refer to the actual candidate ID. Retain hireOptions/quoteHireHero, returning-hero behavior, weekly limits, scenario restrictions and existing HireHero confirmation.
+2. Dialogue: keep speakerBust and speakerSides conventions. Resolve art from each line's portraitAssetId. Existing side mirroring may be used for composition; never mirror text/UI. Do not assume all new poses look exactly rightward. Center/contain wide hats, wings, shields and hair; leave the dialogue box readable.
+3. Hero meeting: render the two actual meeting heroes independently; do not reuse the same pantheon generic portrait. Preserve army/artifact exchange, ownership and command semantics. Keep both faces readable at narrow widths.
+4. Hero details and encyclopedia: show the large artwork as the visual focal point beside live class, biography, specialty and stats. Keep the square icon in the hero list. Do not use the art-library list as the playable hero roster; derive entries from the current catalog.
+5. Encounter: use the actual attacking/defending hero definition. Neutral creature-only encounters stay creature-only. Preserve exact troop information currently shown, neutral join/flee branches, quick battle, siege and climate behavior.
+6. Level-up: a bust may illustrate the active hero, but do not crowd out actual offers or the required god-gift choice. Keep immediate skill selection, queued decisions, decisionId and double-click safeguards. No rule changes are implied by a new picture.
+
+COMPOSITION AND PERFORMANCE
+Keep real alpha. Some viewers display colored RGB beneath transparent pixels; that is not an instruction to color-key or flatten. Never paint a matching background into the PNG. Use object-fit:contain and object-position:center bottom by default; do not use cover to crop off crowns or faces. Place the lower portrait edge behind an appropriate bottom panel or within its viewport, so a waist/thigh crop reads naturally.
+The manifest supplies original dimensions and normalized visible alphaBox. Account for each silhouette; compare apparent face scale across heroes. Do not stretch everyone into a square. Responsive layouts can reduce or hide decorative busts only if the hero's identity remains visible in an accessible portrait/name treatment and gameplay controls remain available.
+Names, costs, stats, tooltips, selection frames and buttons remain live UI. Do not extract them from concept screenshots. Provide alt text with the actual hero name for informative artwork, or empty alt when the adjacent live text already conveys it.
+Lazy-load large portraits when the relevant panel/candidate becomes visible. Keep compact portrait icons for list rows. Avoid decoding all 89 full images on game startup. Cache the active pair and nearby candidates. These native PNGs are larger than the square icons; consult manifest bytes before choosing a preload strategy.
+
+RELATION TO THE PREVIOUS SIX-SCREEN GUI HANDOFF
+This pack supplements docs/adventure-gui-v1.1.0/CLAUDE_HANDOFF.txt. Its former same-hero square fallback is now a resilience fallback for unknown future heroes or failed loads, not the normal presentation of these mapped heroes. Use this newest hero-map.json instead of the older map that marks these 54 busts missing. Other GUI assets and behavior instructions remain applicable.
+
+ACCEPTANCE IN THE DESTINATION GAME
+- Every one of the 74 current catalog heroes resolves both its original portrait and its correct bust; no filename guessing from display names.
+- All 89 mapped artwork identities have independent files; the 15 art-only identities do not become hireable merely because artwork exists.
+- Every new PNG decodes with transparency; no opaque rectangular backgrounds, unintended halos or distorted aspect ratios. Test dark and light scenes.
+- Test at least one hero from each pantheon in Tavern, dialogue/detail, and a two-hero meeting. Check tall hats, winged helmets, broad shields and long hair at desktop and mobile widths.
+- Packaged Electron and browser/subdirectory builds resolve relative URLs. No source-checkout absolute paths remain in application code.
+- Keep hire, exchange, level-up, encounter and save semantics unchanged. Run the appropriate destination typecheck/build and focused tests for resolver changes.
+- Use gallery-validation.json and validation.json as delivery checks only; they do not prove destination game integration.
+
+DELIVERY BOUNDARY
+This is artwork, a complete identity map, searchable review gallery and copy/implementation guidance. The source game's implementation, catalog, balance, save schema and version were not changed. All new raster creation/editing used the built-in image generator; code was used for inventory, metadata, file copying and the HTML gallery only. Prompts are retained in generation-queue.json.

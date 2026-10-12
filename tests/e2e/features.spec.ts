@@ -44,6 +44,8 @@ test('random map, two people on one computer: the map is hidden at every hand-ov
   await page.getByTestId('menu-new').click();
   await page.getByTestId('mode-random').click();
   await page.getByTestId('random-size-small').click();
+  // 1.1.0: the seats are in the Empires chapter (same draft as the Land chapter).
+  await page.getByTestId('random-chapter-empires').click();
   await page.getByTestId('seat-1-controller-human').click();
   await page.getByTestId('seat-1-name').fill('Brynja');
   await page.getByTestId('seat-1-pantheon').selectOption('norse');

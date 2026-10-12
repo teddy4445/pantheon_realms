@@ -1059,6 +1059,34 @@ under the moat cells and the crossing on the gate row; the board never moves.
 The throw strip plays once per catapult shot in place of the still (same
 frame, anchor and scale); the stone leaves the cup at frame 5 (index 4).
 
+**Siege gates, six pantheons (2026-10-11, app 1.1.4).** The gates of the
+siege revision 2 pack (`assets-runtime/siege-v2`, gatehouse stills facing the
+camera) are replaced by a gate-only pack in `assets-runtime/siege-gates-v3/`:
+`manifest.json` and one native 1536 × 1024 RGBA atlas per pantheon,
+`gate.<pantheon>-v5.png` (the v5 is the artwork revision; earlier revisions
+are drafts kept only in `assets-source/siege-gates-v3/` and never
+registered). Each atlas holds three 512 × 1024 frames — intact, damaged,
+rubble — of an opening in the north–south wall facing the attackers, with
+plain wall connectors north and south, no ground and no bridge. The manifest
+has exactly the 18 keys `gate.<intact|damaged|rubble>.<pantheon>`; its anchor
+is the painted passage centre on the wall axis (`registration.passageCenter`,
+different in each frame — never re-centre or trim them) and
+`registration.startingPassagePitchPixels` painted pixels make one board row.
+`ui/src/assets/manifest.ts` spreads its `siege` last, over the siege-v2 gates;
+the v2 ground, walls, towers, keeps and moat stay. The battle view
+(`presentation/src/siegeGate.ts`) puts the passage centre on the gate cell's
+wall point (plus a 3 px presentation shift east–west), enlarges the picture
+1.33 × about it (`GATE_FIT`: the v2 strips have larger masonry and a taller
+west face; the doorway still centres on the gate cell) and draws it in two
+parts for depth (north part behind a creature in the gate cell, south part in
+front). While a neighbouring wall section stands, the gate's connector draws
+that section's cell next to the gate (rows 4 and 6; the painted strip is not
+drawn there); when it falls, the connector is cut back to the gate's own
+jamb (`JAMBS`, measured per pantheon) and the section's rubble shows. HP
+thresholds are the rules': full = intact, partial = damaged, 0 = rubble. The
+delivery's review (`docs/gui-audit-1.1.2/`) and its provenance are not game
+assets.
+
 **Ground edges (code only).** The adventure map draws each ground type's
 painting crisply per hex; where two grounds meet, each reaches a sixth of a
 hex into the other in three fading steps (`featherGroundEdges`, setting

@@ -58,7 +58,7 @@ test('quick battle: the panel shows the expected losses, and the battle resolves
   for (const l of sum.losses) await expect(page.getByTestId(`quick-loss-${l.creatureId}`)).toContainText(`−${l.lost}`);
   if (sum.losses.length === 0) await expect(page.getByTestId('quick-battle-losses')).toHaveText('No losses.');
   await page.waitForTimeout(900); // the dialog's fade-in
-  await page.getByTestId('encounter').locator('.modal').screenshot({ path: 'test-results/r0108-quick-panel.png' });
+  await page.getByTestId('encounter').locator('.ak-stage').screenshot({ path: 'test-results/r0108-quick-panel.png' });
   await page.getByTestId('encounter-quick').click();
   const s = await waitFor(page, (x) => x.screen === 'battle-result', 'battle result', 60_000);
   expect(s.state.battle).toBeNull();

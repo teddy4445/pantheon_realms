@@ -1,0 +1,128 @@
+{
+  "assets": {
+    "encounterkit.meeting.greek": {
+      "file": "encounters-v1.1.0/meeting-greek.png",
+      "width": 1672,
+      "height": 940,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bytes": 2122446,
+      "sha256": "3caf04b6ac2e4dc6175d8cad20c76f29a77e8617ecce8151d0ffd406d80cccfa",
+      "provenance": "Native built-in image generator output; no code retouching or resampling."
+    },
+    "encounterkit.meeting.norse": {
+      "file": "encounters-v1.1.0/meeting-norse.png",
+      "width": 1672,
+      "height": 941,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bytes": 2189278,
+      "sha256": "a2d8b1c3707210f43c0f39b65a1e689616faac282a17c1c26a99e40d7bd2357d",
+      "provenance": "Native built-in image generator output; no code retouching or resampling."
+    },
+    "encounterkit.meeting.egyptian": {
+      "file": "encounters-v1.1.0/meeting-egyptian.png",
+      "width": 1672,
+      "height": 941,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bytes": 2145916,
+      "sha256": "80bd30796e7091cabe5654bf3dd02200f961d52733a8b634e8f7deeca1d10441",
+      "provenance": "Native built-in image generator output; no code retouching or resampling."
+    },
+    "encounterkit.meeting.japanese": {
+      "file": "encounters-v1.1.0/meeting-japanese.png",
+      "width": 1672,
+      "height": 941,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bytes": 2074737,
+      "sha256": "6d130824d0b552186f06118000ef70cacb17e2ce1513c5ad3a44699b1accf543",
+      "provenance": "Native built-in image generator output; no code retouching or resampling."
+    },
+    "encounterkit.meeting.celtic": {
+      "file": "encounters-v1.1.0/meeting-celtic.png",
+      "width": 1672,
+      "height": 941,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bytes": 2313176,
+      "sha256": "b7269571461b403c69b500f2607694028d43d402a757f880d899e0a0e43ff0f0",
+      "provenance": "Native built-in image generator output; no code retouching or resampling."
+    },
+    "encounterkit.meeting.mesoamerican": {
+      "file": "encounters-v1.1.0/meeting-mesoamerican.png",
+      "width": 1672,
+      "height": 941,
+      "status": "final",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bytes": 2318143,
+      "sha256": "fec944a1ef6c789b8b1fd4dcd17118f7590b0e469828d83767a096b3fc2ac9cb",
+      "provenance": "Native built-in image generator output; no code retouching or resampling."
+    },
+    "encounterkit.intro.scroll": {
+      "file": "encounters-v1.1.0/intro-scroll.png",
+      "width": 1536,
+      "height": 1024,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "bytes": 2251099,
+      "sha256": "f73e39b98bfceb19cfa53b90e9d684f461c0d7fbaa5cc9d400bdb8a63a191d34",
+      "provenance": "Native built-in image generator output; no code retouching or resampling.",
+      "safeContentNormalized": [
+        0.12,
+        0.17,
+        0.88,
+        0.83
+      ]
+    },
+    "encounterkit.reward.tray": {
+      "file": "encounters-v1.1.0/reward-tray.png",
+      "width": 1774,
+      "height": 887,
+      "status": "final",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "bytes": 1918946,
+      "sha256": "4f76bcaec693c48b2255d7aab4f48e1de1a836f1f536d1b438adb8218ec7cbe3",
+      "provenance": "Native built-in image generator output; no code retouching or resampling.",
+      "safeContentNormalized": [
+        0.11,
+        0.25,
+        0.89,
+        0.75
+      ]
+    }
+  }
+}

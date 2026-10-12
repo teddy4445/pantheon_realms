@@ -1,0 +1,14 @@
+[
+  {
+    "id": "03",
+    "prompt": "Edit this GUI design concept precisely. Preserve composition, illustrations, typography, dialog, costs and rewards exactly. Correct ONLY the bottom resource strip crystal quantity from 10 to 3, so it agrees with the dialog's 'You have 3 of 5 crystals'. Change ONLY the upper right hero name above the portrait stats from MYRTOS to ODYSSEUS. Keep MYRTOS beneath the town illustration. Leave all other content identical. Output entire original landscape screen, no crop."
+  },
+  {
+    "id": "05",
+    "prompt": "Edit this hero GUI concept. Preserve portrait, typography, frame style, equipment figure, stats, army and buttons. Correct the RIGHT inventory pane so it contains ARTIFACTS, not shared treasury resources. Change capacity title 4 / 20 to 4 / 30, draw exactly THIRTY compact square backpack slots arranged SIX columns by FIVE rows within that pane. In the first four slots show original illustrated artifacts: small ornate dagger, rolled spell scroll, spare bronze helmet, jeweled chalice. Remaining26slots empty. Do not show piles of gold, timber, crystals or favor as inventory items, and no resource quantities. There is adequate width if slots are resized. Keep all other content unchanged, full landscape screen, no crop."
+  },
+  {
+    "id": "12",
+    "prompt": "Edit this bestiary screen precisely. Preserve all book content, Griffin illustration, stats, creature list, top navigation and bottom controls. Replace ONLY the far-left faction bookmark column. It must have EXACTLY SIX evenly spaced entries in this order from top to bottom: Greek (lightning emblem), Norse (hammer emblem), Egyptian (ankh emblem), Japanese (torii gate emblem), Celtic (triple spiral emblem), Mesoamerican (feathered serpent emblem). Greek remains selected. Remove Persian, Atlantean, Infernal completely, these are not factions in this game. Do not create any other factions. Keep exact readable names, same bronze/blue book style, entire landscape screen no crop."
+  }
+]

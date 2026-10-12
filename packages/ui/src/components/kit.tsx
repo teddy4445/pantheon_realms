@@ -2,8 +2,18 @@
  * Core UI kit: panels, buttons, tabs, chips, stats, quantity selector, toggles.
  * Presentational only — no game rules, no state mutation.
  */
-import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from 'react';
 import { Icon, type IconName } from '../assets/icons';
+import type { FrameTheme } from '../assets/guiArt';
+
+/** 1.1.0 surfaces: stone for command chrome, parchment for narrative, leather for equipment. */
+export type GuiSurface = 'stone' | 'parchment' | 'leather';
+
+/** Classes of a framed 1.1.0 window: the faction frame over an inset surface. */
+export function windowClasses(framed: boolean | 'compact' | undefined, surface: GuiSurface | undefined): string {
+  if (!framed) return surface === 'parchment' ? 'panel--parchment gui-surface--parchment' : surface === 'leather' ? 'gui-leather' : '';
+  return ['gui-window', framed === 'compact' ? 'gui-window--compact' : '', surface && surface !== 'stone' ? `gui-window--${surface}` : '', surface === 'parchment' ? 'gui-surface--parchment' : ''].join(' ');
+}
 
 export function Panel({
   title,
@@ -16,6 +26,9 @@ export function Panel({
   headerIcon,
   eq,
   label,
+  framed,
+  surface,
+  theme,
 }: {
   title?: ReactNode;
   actions?: ReactNode;
@@ -29,9 +42,15 @@ export function Panel({
   eq?: string;
   /** Accessible name for a panel shown without a title. */
   label?: string;
+  /** 1.1.0: draw the faction frame around this window (`compact` for smaller windows). */
+  framed?: boolean | 'compact';
+  /** 1.1.0: the window's surface (framed windows default to stone). */
+  surface?: GuiSurface;
+  /** 1.1.0: the frame's faction, when it differs from the screen's. */
+  theme?: FrameTheme;
 }) {
   return (
-    <section className={`panel ${variant ? `panel--${variant}` : ''} ${className}`} style={style} data-eq={eq} aria-label={label}>
+    <section className={`panel ${variant ? `panel--${variant}` : ''} ${windowClasses(framed, surface)} ${className}`} style={style} data-eq={eq} aria-label={label} data-gui-theme={theme}>
       <span className="panel__corner panel__corner--tl" />
       <span className="panel__corner panel__corner--tr" />
       <span className="panel__corner panel__corner--bl" />
@@ -52,19 +71,32 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   readonly variant?: 'primary' | 'danger' | 'ghost';
   readonly size?: 'small' | 'large';
   readonly icon?: IconName;
+  /** A painted icon (an asset URL) in place of `icon` (1.1.0 frontend kit); decorative. */
+  readonly artUrl?: string | null;
   readonly block?: boolean;
   /** Reason shown when disabled (tooltip + accessible description). */
   readonly disabledReason?: string | null;
 }
 
-export function Button({ variant, size, icon, block, disabledReason, children, className = '', disabled, title, ...rest }: ButtonProps) {
+export function Button({ variant, size, icon, artUrl, block, disabledReason, children, className = '', disabled, title, ...rest }: ButtonProps) {
   const cls = ['btn', variant ? `btn--${variant}` : '', size ? `btn--${size}` : '', block ? 'btn--block' : '', !children ? 'btn--icon' : '', className].join(' ');
   const reason = disabled && disabledReason ? disabledReason : undefined;
   return (
     <button type="button" className={cls} disabled={disabled} title={reason ?? title} aria-description={reason} {...rest}>
-      {icon ? <Icon name={icon} style={{ width: '1.15em', height: '1.15em' }} /> : null}
+      {/* Unavailable: a lock shape beside the label (not colour alone); the reason is the tooltip and description. */}
+      {disabled && children ? <LockIcon /> : null}
+      {artUrl ? <img className="btn__art" src={artUrl} alt="" aria-hidden="true" draggable={false} /> : icon ? <Icon name={icon} style={{ width: '1.15em', height: '1.15em' }} /> : null}
       {children}
     </button>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg className="btn__lock" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M4.5 7V5a3.5 3.5 0 0 1 7 0v2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="3" y="7" width="10" height="7.5" rx="1.2" fill="currentColor" />
+    </svg>
   );
 }
 
@@ -80,6 +112,7 @@ export function MenuButton({
   variant,
   onPreview,
   title,
+  artUrl,
 }: {
   icon: IconName;
   label: string;
@@ -94,6 +127,8 @@ export function MenuButton({
   /** Called on hover/focus so a screen can show a longer description elsewhere. */
   onPreview?: (on: boolean) => void;
   title?: string;
+  /** A painted icon (an asset URL) in place of `icon`; decorative. */
+  artUrl?: string | null;
 }) {
   return (
     <button
@@ -110,7 +145,7 @@ export function MenuButton({
       onBlur={onPreview ? () => onPreview(false) : undefined}
     >
       <span className="menu-btn__socket">
-        <Icon name={icon} className="menu-btn__icon" />
+        {artUrl ? <img className="menu-btn__icon menu-btn__art" src={artUrl} alt="" aria-hidden="true" draggable={false} /> : <Icon name={icon} className="menu-btn__icon" />}
       </span>
       <span className="menu-btn__text">
         <span className="menu-btn__label">{label}</span>
@@ -154,17 +189,18 @@ export function QuantitySelector({ value, max, onChange, min = 0, label }: { val
   const clamp = (n: number) => Math.max(min, Math.min(max, n));
   return (
     <div className="qty">
-      <Button size="small" onClick={() => onChange(clamp(value - 1))} disabled={value <= min} aria-label={`Decrease ${label}`}>
+      {/* Step controls at their limit are simply inactive: no lock (nothing is withheld). */}
+      <Button size="small" className="gui-no-lock" onClick={() => onChange(clamp(value - 1))} disabled={value <= min} aria-label={`Decrease ${label}`}>
         −
       </Button>
       <input type="range" min={min} max={Math.max(min, max)} value={value} onChange={(e) => onChange(clamp(Number(e.target.value)))} aria-label={label} disabled={max <= min} />
-      <Button size="small" onClick={() => onChange(clamp(value + 1))} disabled={value >= max} aria-label={`Increase ${label}`}>
+      <Button size="small" className="gui-no-lock" onClick={() => onChange(clamp(value + 1))} disabled={value >= max} aria-label={`Increase ${label}`}>
         +
       </Button>
       <span className="qty__value num" aria-live="polite">
         {value}
       </span>
-      <Button size="small" onClick={() => onChange(max)} disabled={max <= min || value === max}>
+      <Button size="small" className="gui-no-lock" onClick={() => onChange(max)} disabled={max <= min || value === max}>
         Max
       </Button>
     </div>
@@ -184,31 +220,119 @@ export function Bar({ value, max, kind, label }: { value: number; max: number; k
   );
 }
 
+// `a[href]`, not `[href]`: icon art is an SVG <image href>, which cannot take focus.
+const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])';
+
+function focusables(root: HTMLElement): HTMLElement[] {
+  return [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el instanceof HTMLElement && (el.offsetParent !== null || el === document.activeElement));
+}
+
 /**
- * A dialog. `splash` (a result painting with its live title) fills the window
- * behind it; the dialog then sits in the lower half, under the painting's title
- * area.
+ * Focus for a modal window: move focus inside on open (an autofocused control,
+ * else the first focusable one), keep Tab inside while open, and give focus
+ * back to the control that opened it when it closes.
  */
-export function Modal({ title, children, footer, onClose, width, testId, splash }: { title: ReactNode; children: ReactNode; footer?: ReactNode; onClose?: () => void; width?: string; testId?: string; splash?: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
+export function useModalFocus(ref: { current: HTMLElement | null }): (e: ReactKeyboardEvent) => void {
   useEffect(() => {
-    const el = ref.current?.querySelector<HTMLElement>('button, [href], input, select, [tabindex]:not([tabindex="-1"])');
-    el?.focus();
+    const opener = document.activeElement as HTMLElement | null;
+    const root = ref.current;
+    if (root && !root.contains(document.activeElement)) {
+      // An autofocused control, else the first control of the body, then of the footer, then Close.
+      const body = root.querySelector<HTMLElement>('.panel__body');
+      const foot = root.querySelector<HTMLElement>('.modal__footer');
+      const first = root.querySelector<HTMLElement>('[data-autofocus]') ?? (body && focusables(body)[0]) ?? (foot && focusables(foot)[0]) ?? focusables(root)[0];
+      first?.focus({ preventScroll: true });
+    }
+    return () => {
+      if (opener && opener !== document.body && opener.isConnected && typeof opener.focus === 'function') opener.focus({ preventScroll: true });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  return (e: ReactKeyboardEvent) => {
+    if (e.key !== 'Tab' || !ref.current) return;
+    const list = focusables(ref.current);
+    if (list.length === 0) return;
+    const first = list[0]!;
+    const last = list[list.length - 1]!;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+}
+
+/**
+ * A dialog (1.1.0): one faction frame around the title, the scrolling body and
+ * the footer, over a stone (commands) or parchment (narrative) surface; the map
+ * stays visible under a modest dimming and does not take clicks while it is
+ * open. `art` is an optional header illustration. `splash` (a result painting
+ * with its live title) fills the window behind it; the dialog then sits in the
+ * lower half, under the painting's title area.
+ */
+export function Modal({
+  title,
+  children,
+  footer,
+  onClose,
+  width,
+  testId,
+  splash,
+  surface = 'stone',
+  theme,
+  art,
+  compact,
+}: {
+  title: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  onClose?: () => void;
+  width?: string;
+  testId?: string;
+  splash?: ReactNode;
+  surface?: GuiSurface;
+  theme?: FrameTheme;
+  art?: ReactNode;
+  compact?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const trap = useModalFocus(ref);
+  // The frame and its padding come on top of the content width the dialog asked for.
+  const w = width ? `calc(${width} + ${compact ? '2.4rem' : '3.4rem'})` : undefined;
   return (
-    <div className={`modal-layer ${splash ? 'modal-layer--splash' : ''}`} role="dialog" aria-modal="true" aria-label={typeof title === 'string' ? title : undefined} data-testid={testId}>
+    <div
+      className={`modal-layer ${splash ? 'modal-layer--splash' : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={typeof title === 'string' ? title : undefined}
+      data-testid={testId}
+      data-gui-theme={theme}
+      onKeyDown={(e) => {
+        // Escape closes a closable dialog (and only the dialog: the screen behind stays where it is).
+        if (e.key === 'Escape' && onClose) {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+          return;
+        }
+        trap(e);
+      }}
+    >
       {splash}
-      <div ref={ref} className="modal" style={width ? { width, maxWidth: `min(${width}, 94vw)` } : undefined}>
-        <Panel
-          title={title}
-          actions={onClose ? <Button icon="close" variant="ghost" size="small" onClick={onClose} aria-label="Close" /> : undefined}
-          className="modal__panel"
-          style={{ display: 'flex', flexDirection: 'column', maxHeight: '88vh' }}
-          bodyClassName="scroll"
-        >
-          {children}
-        </Panel>
-        {footer ? <div className="panel modal__footer-wrap" style={{ marginTop: '-1px' }}><div className="modal__footer">{footer}</div></div> : null}
+      <div ref={ref} className="modal gui-modal" style={w ? { width: w, maxWidth: `min(${w}, 96vw)` } : undefined}>
+        <section className={`panel modal__panel ${windowClasses(compact ? 'compact' : true, surface)}`}>
+          <header className="panel__header">
+            <h2 className="panel__title">{title}</h2>
+          </header>
+          {onClose ? <Button icon="close" variant="ghost" size="small" onClick={onClose} aria-label="Close" className="gui-modal__close" /> : null}
+          <div className="panel__body scroll">
+            {art}
+            {children}
+          </div>
+          {footer ? <div className="modal__footer gui-modal__footer">{footer}</div> : null}
+        </section>
       </div>
     </div>
   );

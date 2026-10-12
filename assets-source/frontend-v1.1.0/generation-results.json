@@ -1,0 +1,212 @@
+[
+  {
+    "key": "concept-new-game",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ceee792b-db54-4ce7-866f-ab818606c345.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\02-new-game.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-campaign",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-30c49809-c0e9-4849-bed5-8329aa185319.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\03-campaign.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-skirmish",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-da764605-2c36-4d4c-82a5-19bae79d5919.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\04-skirmish.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-random-map",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-33815107-2995-4d14-9f96-e91acff49932.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\05-random-map.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-empire-setup",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-cabd43a6-cdf4-49b1-8b0e-2f9ad9317b03.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\06-empire-setup.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-title-hall",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-55ac83b7-0e9d-47f8-90c3-aaab739b4845.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\01-title-hall.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-settings",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-0af2c84f-d05a-455f-ae61-531c0db15dad.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\09-settings.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-save-archive",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-12ad4db0-e4d4-4366-ab54-66a40133e6a6.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\10-save-archive.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-map-library",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-05a2445e-15bc-42c0-a103-617ce57cf692.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\11-map-library.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-map-editor",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e09542e3-1e16-403a-86fb-a8201b6aeb4f.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\12-map-editor.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-hall-of-records",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-0610e4f1-26bc-4061-9756-9492c48a2cd9.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\13-hall-of-records.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-creature-detail",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-c02696c1-c094-4d99-9d27-0062f717d856.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\08-creature-detail.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-shared-dialog",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-7f7d4d0c-254b-4355-8bc4-f4c4698f0124.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\14-shared-dialog.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-encyclopedia",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ad0f6f62-05db-410c-a057-227f9a6e6bbe.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\07-encyclopedia.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.mode.campaign",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e002ae34-b386-4139-ae93-2998e6fcfd66.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-campaign.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.mode.skirmish",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-1d589b31-bc39-4b35-b5f1-bbb5b6caee85.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-skirmish.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.mode.random-map",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-370cb46d-28ca-4461-9dac-637c96c5f811.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-random-map.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.mode.map-editor",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-f1e68352-b510-4af3-bf6e-a5c51833d16c.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-map-editor.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.backdrop.atlas",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-fc9c1e57-fb1e-4834-90c5-f3739f3c2343.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-atlas.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.backdrop.title-hall",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-54ae678d-f579-4ca5-9f23-b15760d345d8.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-title-hall.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.empty.archive",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-7ba65b78-54ac-4f43-bff5-9413b046cc23.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\empty-archive.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.backdrop.library",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-fa8dad66-3d92-4eaa-9451-b6714cc1c5e2.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-library.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.marshlands",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-a4746fc1-d862-4923-b9b5-398291e229b6.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-marshlands.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.crossroads",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-706652d2-6a64-40c8-a4df-027b22ae3660.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-crossroads.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.archipelago",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-6a46efcc-c74a-4989-92be-7286524cd319.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-archipelago.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.twin_continents",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-31d85d71-480e-4db5-bd1b-2e9f30f2a408.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-twin_continents.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.continental",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-692de4e1-a62f-48d3-9716-e0f8e0f288df.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-continental.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.lake_isle",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-0b525e83-eaa9-4484-bf9d-6c14e54ed4dc.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-lake_isle.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.highlands",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-4b654f5f-5500-47bf-8708-7e392a31594e.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-highlands.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.central_valley",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-68713b51-efd4-441c-9e51-4027e0239be1.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-central_valley.png",
+    "copyExit": 0
+  },
+  {
+    "key": "frontend.random.wild_forest",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-98d5dff8-5b84-4a4a-bd6a-b664f21a88a2.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-wild_forest.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-map-editor-v2",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-9ae9f309-1dfa-4a50-ade6-08fafdfc1100.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/12-map-editor-v2.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-settings-v2",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-8a4e5794-3cf1-4d38-bb40-e829abf26d82.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/09-settings-v2.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-random-map-v2",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-1a11358a-08a5-4716-a29a-09b3723a79d8.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/05-random-map-v2.png",
+    "copyExit": 0
+  },
+  {
+    "key": "concept-shared-dialog-v2",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-a3d155c0-06d9-4001-8bef-74e8d60d7e48.png",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/14-shared-dialog-v2.png",
+    "copyExit": 0
+  }
+]

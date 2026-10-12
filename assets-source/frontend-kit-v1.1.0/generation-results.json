@@ -1,0 +1,200 @@
+[
+  {
+    "key": "frontendkit.banner.greek",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-b6fe3285-9735-499c-85a8-f2736d063b91.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-greek.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.banner.norse",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-1ac44364-19ab-40e9-be9a-a1d616e524bc.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-norse.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.banner.egyptian",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-4a055bc5-4a16-4784-a6f6-8fa4614932f6.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-egyptian.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.banner.japanese",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-178dbfff-4124-4b6e-a0c6-feba625a47cf.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-japanese.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.banner.celtic",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-142cb966-5c72-4a5e-af7f-ee2b44bf4dc7.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-celtic.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.backdrop.title",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-52d9829b-35bd-4358-b6cc-fb3f1b6f43bd.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\backdrop-title.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.brand.logo",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e6f2ed7f-739c-45dc-a006-c1daa53fa19f.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\brand-logo.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.banner.mesoamerican",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-8fa0d017-6944-44d4-bf06-b0c063340f5f.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-mesoamerican.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.audio",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e7f2c596-f4d3-43be-80a1-29d9b03cfe03.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-audio.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.accessibility",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-aa93e8a4-1bf7-4e21-96a4-6b9e77c859cd.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-accessibility.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.controls",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-3fc2d840-7fc1-48f8-8b49-fc9a7d59d8fc.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-controls.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.bestiary",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-101581ba-576c-430f-87c7-c64a06c01240.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-bestiary.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.select",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-9cae718f-3bf6-443d-b4ae-1df079349d3d.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-select.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.erase",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-662403df-08d1-4121-b890-cb900611e886.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-erase.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.display",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-8843f7cf-2306-476c-b979-788d33f23e48.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-display.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.interface",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-8f987f56-bc7e-4240-b25e-5b0a45c4974f.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-interface.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.terrain",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e7d021d2-2ba0-4039-8023-c675014bf229.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-terrain.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.road",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-fbeec70e-64d2-49de-a211-42fd18f37ded.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-road.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.hex",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-cc73e983-6442-407a-b5dd-6c9b161576bd.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-hex.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.generate",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-0750ccdb-43ff-4515-820f-8652dc26d421.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-generate.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.new-map",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-fa79f0d5-69b2-40e6-8242-cf1460358292.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-new-map.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.import",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-2ca8c400-6349-4ccf-aee4-f90330355bb2.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-import.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.water",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-bc82d134-e228-4f09-ad2b-f4f8701fb0c5.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-water.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.forest",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-568d62c5-8d0f-4792-ab93-bd79739c2620.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-forest.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.export",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-365a07f6-c978-4bdd-b3d4-8f2d652d7071.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-export.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.redo",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-da0ed626-105a-4cae-bc35-fa58f02a2e40.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-redo.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.artifacts",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-f660cc09-ba04-43e1-830d-1e35155d05ad.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-artifacts.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.warning",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-0c7eb066-ff50-4bdd-9472-aac38a44fb56.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-warning.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.records",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-3f49ef2c-3430-4e5e-9a56-b1c27db1d938.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-records.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.chrome.header",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-fb23b275-3afd-47d1-a2a0-e13ac2de7dc3.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\chrome-header.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.delete",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-9a38e831-8f75-4865-b9a1-71ac260b7d07.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-delete.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.chrome.round-socket",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ee5a3397-0008-46cd-ac2d-5ac3e20854f3.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\chrome-round-socket.png",
+    "exit": 0
+  },
+  {
+    "key": "frontendkit.icon.undo",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e063c4a5-0bc7-4918-87fe-1907463e88ce.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-undo.png",
+    "exit": 0
+  }
+]

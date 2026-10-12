@@ -14,11 +14,14 @@ import {
   type RecruitDestination,
 } from '@pr/rules';
 import { useStore } from '../app/context';
-import { Button, Chip, Panel, QuantitySelector, SectionTitle } from '../components/kit';
-import { CreaturePortrait } from '../components/art';
-import { CostList, CreatureStats, ScreenHeader } from '../components/game';
+import { Button, QuantitySelector } from '../components/kit';
+import { CreaturePortrait, HeroPortrait } from '../components/art';
+import { ArmyStrip, CostList, CreatureStats, ScreenHeader } from '../components/game';
 import { heroesInTown, humanPlayer } from '../app/view';
 import { Icon } from '../assets/icons';
+import { guiThemeFor } from '../assets/guiArt';
+import { LockGlyph } from '../components/gui';
+import { AdventureStage, CreatureStage, adventureScene } from '../components/adventure';
 
 function TrainingHint() {
   const store = useStore();
@@ -85,133 +88,201 @@ export function RecruitmentScreen() {
       .filter(({ s }) => s && catalog.creatures[s.creatureId]?.upgradeId)
       .map(({ s, i }) => ({ army: a, slot: i, stack: s! })),
   );
+  const destArmy = dest.kind === 'hero' ? state.heroes[dest.heroId]?.army : town.garrison;
+  const destLabel = dest.kind === 'hero' ? (state.heroes[dest.heroId]?.name ?? '') : `${town.name} garrison`;
+  // The seven dwellings in tier order, each with its family, built level and shared weekly pool.
+  const tiers = dwellings
+    .map((slot) => {
+      const famId = catalog.buildings[slot.chain[0] ?? '']?.dwelling?.familyId;
+      const fam = famId ? catalog.families[famId] : undefined;
+      return fam ? { slot, fam, level: town.buildings[slot.id] ?? 0, pool: town.population[fam.id] ?? 0 } : null;
+    })
+    .filter((t): t is NonNullable<typeof t> => !!t);
+  const current = def ? tiers.find((t) => t.fam.id === def.familyId) : undefined;
+  const pickTier = (t: (typeof tiers)[number]) => {
+    const up = t.fam.upgradedCreatureId;
+    pick(def && def.familyId === t.fam.id ? def.id : recruitable.includes(t.fam.baseCreatureId) || !recruitable.includes(up) ? t.fam.baseCreatureId : up);
+  };
+  const back = () => (store.stack.length > 1 ? store.back() : store.toAdventure());
   return (
-    <div className="screen recruit-screen">
-      <ScreenHeader title={`Recruit — ${town.name}`} />
-      <div className="recruit-layout">
-        <Panel title="Dwellings" className="recruit-tiers" bodyClassName="scroll">
-          {dwellings.map((slot) => {
-            const famId = catalog.buildings[slot.chain[0] ?? '']?.dwelling?.familyId;
-            const fam = famId ? catalog.families[famId] : undefined;
-            if (!fam) return null;
-            const level = town.buildings[slot.id] ?? 0;
-            const pool = town.population[fam.id] ?? 0;
+    <AdventureStage
+      mode="screen"
+      theme={guiThemeFor(town.pantheonId)}
+      scene={adventureScene('recruit', town.pantheonId)}
+      title="Gather your forces"
+      subtitle={`Recruit — ${town.name}`}
+      pantheonId={town.pantheonId}
+      catalog={catalog}
+      testId="recruit-screen"
+      className="ak-recruit-stage recruit-screen"
+      footer={
+        <Button onClick={back} data-testid="recruit-back">
+          Back
+        </Button>
+      }
+    >
+      <div className="ak-recruit">
+        <nav className="ak-recruit__tiers" aria-label="Dwellings">
+          {tiers.map((t) => {
+            const on = current?.fam.id === t.fam.id;
             return (
-              <div key={slot.id} className={`tier-row ${level === 0 ? 'is-locked' : ''}`}>
-                <div className="tier-row__head">
-                  <span className="tier-badge">T{slot.tier}</span>
-                  <span className="tier-row__name">{fam.name}</span>
-                  <span className="tier-row__pool" title="Shared population available this week">
-                    <strong className="num">{pool}</strong> available · +{weeklyGrowthFor(catalog, town, fam.id, state)}/week
-                  </span>
-                </div>
-                <div className="tier-row__forms">
-                  {[fam.baseCreatureId, fam.upgradedCreatureId].map((cid) => {
-                    const c = catalog.creatures[cid]!;
-                    const can = recruitable.includes(cid);
-                    const b = catalog.buildings[slot.chain[c.form === 'base' ? 0 : 1] ?? ''];
-                    return (
-                      <button key={cid} type="button" className={`form-card ${creatureId === cid ? 'is-selected' : ''} ${can ? '' : 'is-locked'}`} onClick={() => pick(cid)} data-testid={`recruit-${cid}`}>
-                        <CreaturePortrait catalog={catalog} creatureId={cid} size="3.6rem" />
-                        <span className="form-card__text">
-                          <span className="form-card__name">{c.name}</span>
-                          <span className="faint small">{c.form === 'upgraded' ? 'Upgraded' : 'Base'} · {c.roleLabel}</span>
-                          {can ? <CostList cost={c.cost ?? {}} wallet={player.wallet} /> : <span className="small warn">Requires {b?.name ?? 'its dwelling'}</span>}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+              <button
+                key={t.slot.id}
+                type="button"
+                className={`ak-tier ${on ? 'is-selected' : ''} ${t.level === 0 ? 'is-locked' : ''}`}
+                aria-pressed={on}
+                onClick={() => pickTier(t)}
+                title={t.level === 0 ? `${t.fam.name}: no dwelling` : `${t.fam.name}: ${t.pool} available, +${weeklyGrowthFor(catalog, town, t.fam.id, state)}/week`}
+                data-testid={`recruit-tier-${t.slot.tier}`}
+              >
+                <CreaturePortrait catalog={catalog} creatureId={t.fam.baseCreatureId} size="3rem" />
+                <span className="ak-tier__name">
+                  Tier {t.slot.tier}
+                  <span className="ak-tier__fam">{t.fam.name}</span>
+                </span>
+                <span className="ak-tier__pool">
+                  {t.level === 0 ? (
+                    <>
+                      <LockGlyph /> No dwelling
+                    </>
+                  ) : (
+                    <>
+                      <strong className="num">{t.pool}</strong> available
+                    </>
+                  )}
+                </span>
+              </button>
             );
           })}
-        </Panel>
+        </nav>
 
-        <Panel
-          title={
-            def ? (
-              <span className="title-with-icon">
-                <button type="button" className="icon-link" onClick={() => store.goto('unit-detail', { creatureId: def.id })} aria-label={`Bestiary entry: ${def.name}`} title="Bestiary entry" data-testid="recruit-bestiary">
-                  <Icon name="bestiary" />
-                </button>
-                {def.name}
-              </span>
+        <div className="ak-recruit__main">
+          <section className="ak-recruit__show" aria-label="Recruitment stage">
+            {current ? (
+              <div className="ak-seg ak-recruit__forms" role="group" aria-label={`${current.fam.name}: form`}>
+                {[current.fam.baseCreatureId, current.fam.upgradedCreatureId].map((cid) => {
+                  const c = catalog.creatures[cid]!;
+                  const can = recruitable.includes(cid);
+                  return (
+                    <button key={cid} type="button" className={`ak-seg__btn ${creatureId === cid ? 'is-selected' : ''} ${can ? '' : 'is-locked'}`} aria-pressed={creatureId === cid} onClick={() => pick(cid)} title={can ? c.name : `${c.name}: requires ${catalog.buildings[current.slot.chain[c.form === 'base' ? 0 : 1] ?? '']?.name ?? 'its dwelling'}`} data-testid={`recruit-${cid}`}>
+                      {can ? null : <LockGlyph />}
+                      {c.form === 'upgraded' ? 'Upgraded' : 'Base'}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+            {def ? <CreatureStage creatureId={def.id} name={def.name} /> : <div className="recruit-stage" />}
+            {def ? (
+              <div className="ak-recruit__plate">
+                <span className="ak-recruit__socket">
+                  <CreaturePortrait catalog={catalog} creatureId={def.id} size="3.4rem" showPlaceholderTag />
+                </span>
+                <span>
+                  <span className="ak-recruit__plate-name">{def.name}</span>
+                  <span className="ak-recruit__plate-role">
+                    {def.form === 'upgraded' ? 'Upgraded' : 'Base'} · {def.roleLabel}
+                  </span>
+                </span>
+              </div>
+            ) : null}
+          </section>
+
+          <section className="ak-pane ak-recruit__detail recruit-detail" aria-label={def ? `Recruit ${def.pluralName}` : 'Recruitment'}>
+            {def ? (
+              <>
+                <h3 className="ak-pane__title title-with-icon">
+                  <button type="button" className="icon-link" onClick={() => store.goto('unit-detail', { creatureId: def.id })} aria-label={`Bestiary entry: ${def.name}`} title="Bestiary entry" data-testid="recruit-bestiary">
+                    <Icon name="bestiary" />
+                  </button>
+                  {def.name}
+                </h3>
+                <p className="ak-recruit__summary small">{def.summary}</p>
+                <CreatureStats def={def} />
+                {def.abilityIds.length || abilityRules(catalog, def.id).length ? (
+                  <ul className="ak-recruit__abilities">
+                    {def.abilityIds.map((a) => (
+                      <li key={a}>
+                        <strong>{catalog.abilities[a]?.name}</strong> <span className="ak-muted">{catalog.abilities[a]?.exactRule}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                <div className="recruit-facts">
+                  <span>
+                    <Icon name="town" className="inline-icon" /> <strong className="num">{quote?.available ?? 0}</strong> available this week
+                    {current && current.level > 0 ? <span className="ak-muted"> · +{weeklyGrowthFor(catalog, town, current.fam.id, state)}/week</span> : null}
+                  </span>
+                  <span>
+                    <CostList cost={quote?.unitCost ?? {}} /> each
+                  </span>
+                </div>
+                <div className="field">
+                  <span className="field__label" id="recruit-dest-label">
+                    Recruit into
+                  </span>
+                  <div className="recruit-dest" role="radiogroup" aria-labelledby="recruit-dest-label">
+                    {visiting.map((h) => {
+                      const on = dest.kind === 'hero' && dest.heroId === h.id;
+                      return (
+                        <button key={h.id} type="button" role="radio" aria-checked={on} className={`recruit-dest__opt ${on ? 'is-selected' : ''}`} onClick={() => setDest({ kind: 'hero', heroId: h.id })} data-testid={`recruit-dest-${h.id}`}>
+                          <HeroPortrait catalog={catalog} definitionId={h.definitionId} name={h.name} size="2.4rem" />
+                          <span>{h.name}’s army</span>
+                        </button>
+                      );
+                    })}
+                    <button type="button" role="radio" aria-checked={dest.kind === 'garrison'} className={`recruit-dest__opt ${dest.kind === 'garrison' ? 'is-selected' : ''}`} onClick={() => setDest({ kind: 'garrison' })} data-testid="recruit-dest-garrison">
+                      <span className="recruit-dest__town">
+                        <Icon name="town" />
+                      </span>
+                      <span>Garrison</span>
+                    </button>
+                  </div>
+                </div>
+                <QuantitySelector label="Quantity" value={q} min={1} max={Math.max(1, max)} onChange={setQty} />
+                <div className="recruit-summary">
+                  <div className="row between">
+                    <span>Total</span> <span className="ak-big"><CostList cost={quote?.totalCost ?? {}} wallet={player.wallet} /></span>
+                  </div>
+                  <div className="row between ak-muted small">
+                    <span>Placement</span> <span>{quote?.destinationSlot !== null && quote?.destinationSlot !== undefined ? `${quote.destinationLabel}, slot ${quote.destinationSlot + 1}` : '—'}</span>
+                  </div>
+                </div>
+                {quote && !quote.legal ? (
+                  <p className="warn small row gap" data-testid="recruit-reason">
+                    <LockGlyph /> {quote.reason}
+                  </p>
+                ) : null}
+                <Button variant="primary" size="large" block disabled={!quote?.legal || max < 1} disabledReason={quote?.reason ?? (max < 1 ? 'None available or not affordable' : null)} onClick={recruit} data-testid="recruit-confirm">
+                  Recruit {q} {q === 1 ? def.name : def.pluralName}
+                </Button>
+              </>
             ) : (
-              'Choose a creature'
-            )
-          }
-          className="recruit-detail"
-          bodyClassName="scroll"
-        >
-          {def ? (
-            <>
-              <div className="recruit-detail__top">
-                <CreaturePortrait catalog={catalog} creatureId={def.id} size="8rem" showPlaceholderTag />
-                <div>
-                  <div className="dim">{def.roleLabel}</div>
-                  <CreatureStats def={def} />
-                </div>
-              </div>
-              {abilityRules(catalog, def.id).length || def.abilityIds.length ? (
-                <div className="row gap wrap">
-                  {def.abilityIds.map((a) => (
-                    <Chip key={a} tone="info" title={catalog.abilities[a]?.exactRule}>
-                      {catalog.abilities[a]?.name}
-                    </Chip>
-                  ))}
-                </div>
-              ) : null}
-              <SectionTitle>Recruit</SectionTitle>
-              <div className="field">
-                <span className="field__label">Destination</span>
-                <select
-                  className="select"
-                  value={dest.kind === 'hero' ? dest.heroId : 'garrison'}
-                  onChange={(e) => setDest(e.target.value === 'garrison' ? { kind: 'garrison' } : { kind: 'hero', heroId: e.target.value })}
-                  aria-label="Destination army"
-                >
-                  <option value="garrison">{town.name} garrison</option>
-                  {visiting.map((h) => (
-                    <option key={h.id} value={h.id}>
-                      {h.name} (visiting)
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <QuantitySelector label="Quantity" value={q} min={1} max={Math.max(1, max)} onChange={setQty} />
-              <div className="recruit-summary">
-                <div className="row between">
-                  <span>Unit cost</span> <CostList cost={quote?.unitCost ?? {}} />
-                </div>
-                <div className="row between">
-                  <span>Total</span> <CostList cost={quote?.totalCost ?? {}} wallet={player.wallet} />
-                </div>
-                <div className="row between faint small">
-                  <span>Available this week</span> <span className="num">{quote?.available ?? 0}</span>
-                </div>
-                <div className="row between faint small">
-                  <span>Placement</span> <span>{quote?.destinationSlot !== null && quote?.destinationSlot !== undefined ? `${quote.destinationLabel}, slot ${quote.destinationSlot + 1}` : '—'}</span>
-                </div>
-              </div>
-              {quote && !quote.legal ? <p className="warn small">{quote.reason}</p> : null}
-              <Button variant="primary" size="large" block disabled={!quote?.legal || max < 1} disabledReason={quote?.reason ?? (max < 1 ? 'None available or not affordable' : null)} onClick={recruit} data-testid="recruit-confirm">
-                Recruit {q} {q === 1 ? def.name : def.pluralName}
-              </Button>
-            </>
-          ) : (
-            <p className="dim">Build a dwelling to recruit creatures.</p>
-          )}
-        </Panel>
+              <p className="ak-muted">Build a dwelling to recruit creatures.</p>
+            )}
+          </section>
+        </div>
 
-        <Panel title="Upgrade troops" className="recruit-upgrades" bodyClassName="scroll">
-          <p className="dim small">Upgrading pays the price difference and uses no population. It requires the upgraded dwelling in this town.</p>
-          {upgradeRows.length === 0 ? <p className="dim small">No base-form stacks here to upgrade.</p> : <TrainingHint />}
-          {upgradeRows.map((row) => (
-            <UpgradeRow key={`${row.army.label}-${row.slot}`} townId={town.id} armyRef={row.army.ref} armyLabel={row.army.label} slot={row.slot} />
-          ))}
-        </Panel>
+        <div className="ak-recruit__bottom">
+          {destArmy ? (
+            <section className="ak-pane ak-recruit__army" aria-label={`${destLabel}: army after recruiting`}>
+              <h3 className="ak-pane__title">{dest.kind === 'hero' ? `${destLabel}’s army` : destLabel}</h3>
+              <ArmyStrip catalog={catalog} army={destArmy} label={`${destLabel} army`} selected={quote?.legal ? quote.destinationSlot : null} />
+            </section>
+          ) : null}
+          <section className="ak-pane ak-recruit__upgrades" aria-label="Upgrade troops">
+            <h3 className="ak-pane__title">Train existing troops</h3>
+            <p className="ak-muted small">Upgrading pays the price difference and uses no population. It requires the upgraded dwelling in this town.</p>
+            {upgradeRows.length === 0 ? <p className="ak-muted small">No base-form stacks here to upgrade.</p> : <TrainingHint />}
+            <div className="ak-recruit__upgrade-list">
+              {upgradeRows.map((row) => (
+                <UpgradeRow key={`${row.army.label}-${row.slot}`} townId={town.id} armyRef={row.army.ref} armyLabel={row.army.label} slot={row.slot} />
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </AdventureStage>
   );
 }
 

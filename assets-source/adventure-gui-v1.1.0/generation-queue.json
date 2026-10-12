@@ -1,0 +1,167 @@
+[
+  {
+    "id": "adventurekit.tavern.greek",
+    "file": "tavern-greek.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY HEROES' LODGE INTERIOR, Mediterranean Greek mythic architecture, ivory limestone columns, cobalt cloth, bronze and antique gold, olive wood, warm coastal light. A welcoming beautiful tavern interior at dusk. Camera across a spacious common room toward open window or arch, side benches, wooden beams, lamps, mugs only at extreme edges, subtle hearth to far left. Two quiet dark uncluttered foreground areas at x25% and x58% for later composited hero busts, NO seated characters or prominent chair backs obstructing them. Table edge low at bottom10%. Rightmost30% is low-detail dark wall under gentle shadow for a live information panel, no UI painted here. Upper15% quiet dark overhead timber for live heading. Avoid foreground clutter. Warm welcoming scene, clear faction identity.",
+    "kind": "tavern",
+    "pantheon": "greek"
+  },
+  {
+    "id": "adventurekit.recruit.greek",
+    "file": "recruit-greek.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY RECRUITMENT COURTYARD, Mediterranean Greek mythic architecture, ivory limestone columns, cobalt cloth, bronze and antique gold, olive wood, warm coastal light. Wide peaceful muster court outside a town's recruitment district, moderate eye-level perspective. Broad unoccupied clear ground on left60%, foreground landing area at x30% y75% for later displaying actual game creatures. Open arch or simple dwelling doorway on far left with a believable path to it, entrance behind the clear floor. Architecture and hanging unmarked cloth mostly at edges. Rightmost35% low-detail shadowed stone/timber wall for live stats panel, noUI. No humans or weapons standing like soldiers, no statues, no creature art, no invented landmark dominating background. This is a generic faction recruitment stage shared by all seven creature tiers, so no baked tier-specific mascot or figure. Quiet bottom15% for army row.",
+    "kind": "recruit",
+    "pantheon": "greek"
+  },
+  {
+    "id": "adventurekit.tavern.norse",
+    "file": "tavern-norse.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY HEROES' LODGE INTERIOR, Norse mythic timber construction, carved knotwork, burgundy and slate-blue cloth, iron and warm bronze, pine wood, cool fjord light and warm hearth. A welcoming beautiful tavern interior at dusk. Camera across a spacious common room toward open window or arch, side benches, wooden beams, lamps, mugs only at extreme edges, subtle hearth to far left. Two quiet dark uncluttered foreground areas at x25% and x58% for later composited hero busts, NO seated characters or prominent chair backs obstructing them. Table edge low at bottom10%. Rightmost30% is low-detail dark wall under gentle shadow for a live information panel, no UI painted here. Upper15% quiet dark overhead timber for live heading. Avoid foreground clutter. Warm welcoming scene, clear faction identity.",
+    "kind": "tavern",
+    "pantheon": "norse"
+  },
+  {
+    "id": "adventurekit.recruit.norse",
+    "file": "recruit-norse.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY RECRUITMENT COURTYARD, Norse mythic timber construction, carved knotwork, burgundy and slate-blue cloth, iron and warm bronze, pine wood, cool fjord light and warm hearth. Wide peaceful muster court outside a town's recruitment district, moderate eye-level perspective. Broad unoccupied clear ground on left60%, foreground landing area at x30% y75% for later displaying actual game creatures. Open arch or simple dwelling doorway on far left with a believable path to it, entrance behind the clear floor. Architecture and hanging unmarked cloth mostly at edges. Rightmost35% low-detail shadowed stone/timber wall for live stats panel, noUI. No humans or weapons standing like soldiers, no statues, no creature art, no invented landmark dominating background. This is a generic faction recruitment stage shared by all seven creature tiers, so no baked tier-specific mascot or figure. Quiet bottom15% for army row.",
+    "kind": "recruit",
+    "pantheon": "norse"
+  },
+  {
+    "id": "adventurekit.tavern.egyptian",
+    "file": "tavern-egyptian.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY HEROES' LODGE INTERIOR, ancient Egyptian mythic sandstone, lapis and ivory cloth, lotus-carved columns, turquoise and antique gold, Nile light, NO medieval Islamic domes. A welcoming beautiful tavern interior at dusk. Camera across a spacious common room toward open window or arch, side benches, wooden beams, lamps, mugs only at extreme edges, subtle hearth to far left. Two quiet dark uncluttered foreground areas at x25% and x58% for later composited hero busts, NO seated characters or prominent chair backs obstructing them. Table edge low at bottom10%. Rightmost30% is low-detail dark wall under gentle shadow for a live information panel, no UI painted here. Upper15% quiet dark overhead timber for live heading. Avoid foreground clutter. Warm welcoming scene, clear faction identity.",
+    "kind": "tavern",
+    "pantheon": "egyptian"
+  },
+  {
+    "id": "adventurekit.recruit.egyptian",
+    "file": "recruit-egyptian.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY RECRUITMENT COURTYARD, ancient Egyptian mythic sandstone, lapis and ivory cloth, lotus-carved columns, turquoise and antique gold, Nile light, NO medieval Islamic domes. Wide peaceful muster court outside a town's recruitment district, moderate eye-level perspective. Broad unoccupied clear ground on left60%, foreground landing area at x30% y75% for later displaying actual game creatures. Open arch or simple dwelling doorway on far left with a believable path to it, entrance behind the clear floor. Architecture and hanging unmarked cloth mostly at edges. Rightmost35% low-detail shadowed stone/timber wall for live stats panel, noUI. No humans or weapons standing like soldiers, no statues, no creature art, no invented landmark dominating background. This is a generic faction recruitment stage shared by all seven creature tiers, so no baked tier-specific mascot or figure. Quiet bottom15% for army row.",
+    "kind": "recruit",
+    "pantheon": "egyptian"
+  },
+  {
+    "id": "adventurekit.tavern.japanese",
+    "file": "tavern-japanese.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY HEROES' LODGE INTERIOR, Japanese mythic cedar and dark lacquer, vermilion and ivory cloth, restrained gold, lattice screens, mountain light, NO European armor. A welcoming beautiful tavern interior at dusk. Camera across a spacious common room toward open window or arch, side benches, wooden beams, lamps, mugs only at extreme edges, subtle hearth to far left. Two quiet dark uncluttered foreground areas at x25% and x58% for later composited hero busts, NO seated characters or prominent chair backs obstructing them. Table edge low at bottom10%. Rightmost30% is low-detail dark wall under gentle shadow for a live information panel, no UI painted here. Upper15% quiet dark overhead timber for live heading. Avoid foreground clutter. Warm welcoming scene, clear faction identity.",
+    "kind": "tavern",
+    "pantheon": "japanese"
+  },
+  {
+    "id": "adventurekit.recruit.japanese",
+    "file": "recruit-japanese.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY RECRUITMENT COURTYARD, Japanese mythic cedar and dark lacquer, vermilion and ivory cloth, restrained gold, lattice screens, mountain light, NO European armor. Wide peaceful muster court outside a town's recruitment district, moderate eye-level perspective. Broad unoccupied clear ground on left60%, foreground landing area at x30% y75% for later displaying actual game creatures. Open arch or simple dwelling doorway on far left with a believable path to it, entrance behind the clear floor. Architecture and hanging unmarked cloth mostly at edges. Rightmost35% low-detail shadowed stone/timber wall for live stats panel, noUI. No humans or weapons standing like soldiers, no statues, no creature art, no invented landmark dominating background. This is a generic faction recruitment stage shared by all seven creature tiers, so no baked tier-specific mascot or figure. Quiet bottom15% for army row.",
+    "kind": "recruit",
+    "pantheon": "japanese"
+  },
+  {
+    "id": "adventurekit.tavern.celtic",
+    "file": "tavern-celtic.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY HEROES' LODGE INTERIOR, Celtic mythic oak beams and pale fieldstone, forest-green cloth, bronze knotwork, oak leaves, misty green light, NO Greek columns. A welcoming beautiful tavern interior at dusk. Camera across a spacious common room toward open window or arch, side benches, wooden beams, lamps, mugs only at extreme edges, subtle hearth to far left. Two quiet dark uncluttered foreground areas at x25% and x58% for later composited hero busts, NO seated characters or prominent chair backs obstructing them. Table edge low at bottom10%. Rightmost30% is low-detail dark wall under gentle shadow for a live information panel, no UI painted here. Upper15% quiet dark overhead timber for live heading. Avoid foreground clutter. Warm welcoming scene, clear faction identity.",
+    "kind": "tavern",
+    "pantheon": "celtic"
+  },
+  {
+    "id": "adventurekit.recruit.celtic",
+    "file": "recruit-celtic.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY RECRUITMENT COURTYARD, Celtic mythic oak beams and pale fieldstone, forest-green cloth, bronze knotwork, oak leaves, misty green light, NO Greek columns. Wide peaceful muster court outside a town's recruitment district, moderate eye-level perspective. Broad unoccupied clear ground on left60%, foreground landing area at x30% y75% for later displaying actual game creatures. Open arch or simple dwelling doorway on far left with a believable path to it, entrance behind the clear floor. Architecture and hanging unmarked cloth mostly at edges. Rightmost35% low-detail shadowed stone/timber wall for live stats panel, noUI. No humans or weapons standing like soldiers, no statues, no creature art, no invented landmark dominating background. This is a generic faction recruitment stage shared by all seven creature tiers, so no baked tier-specific mascot or figure. Quiet bottom15% for army row.",
+    "kind": "recruit",
+    "pantheon": "celtic"
+  },
+  {
+    "id": "adventurekit.tavern.mesoamerican",
+    "file": "tavern-mesoamerican.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY HEROES' LODGE INTERIOR, Mesoamerican mythic cut-stone and cedar, turquoise and crimson woven cloth, geometric stepped borders, jade and warm gold, tropical forest light, NO European heraldry. A welcoming beautiful tavern interior at dusk. Camera across a spacious common room toward open window or arch, side benches, wooden beams, lamps, mugs only at extreme edges, subtle hearth to far left. Two quiet dark uncluttered foreground areas at x25% and x58% for later composited hero busts, NO seated characters or prominent chair backs obstructing them. Table edge low at bottom10%. Rightmost30% is low-detail dark wall under gentle shadow for a live information panel, no UI painted here. Upper15% quiet dark overhead timber for live heading. Avoid foreground clutter. Warm welcoming scene, clear faction identity.",
+    "kind": "tavern",
+    "pantheon": "mesoamerican"
+  },
+  {
+    "id": "adventurekit.recruit.mesoamerican",
+    "file": "recruit-mesoamerican.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY RECRUITMENT COURTYARD, Mesoamerican mythic cut-stone and cedar, turquoise and crimson woven cloth, geometric stepped borders, jade and warm gold, tropical forest light, NO European heraldry. Wide peaceful muster court outside a town's recruitment district, moderate eye-level perspective. Broad unoccupied clear ground on left60%, foreground landing area at x30% y75% for later displaying actual game creatures. Open arch or simple dwelling doorway on far left with a believable path to it, entrance behind the clear floor. Architecture and hanging unmarked cloth mostly at edges. Rightmost35% low-detail shadowed stone/timber wall for live stats panel, noUI. No humans or weapons standing like soldiers, no statues, no creature art, no invented landmark dominating background. This is a generic faction recruitment stage shared by all seven creature tiers, so no baked tier-specific mascot or figure. Quiet bottom15% for army row.",
+    "kind": "recruit",
+    "pantheon": "mesoamerican"
+  },
+  {
+    "id": "adventurekit.encounter.temperate",
+    "file": "encounter-temperate.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY ENCOUNTER STAGE: Mediterranean temperate mountain pass, ochre rock, sparse olive scrub, cypress only at edges, warm dusky horizon. A road runs from wide foreground into distant center. Calm composition with clear LEFT and RIGHT foreground standing areas for separately composited opposing heroes/creatures. No flags, camps, structures, combat, people, animals, monsters, footprints shaped like units, no decorative weapons. Horizon at45%. Quiet upper15% for live heading, quiet dark lower25% for live army slots. Terrain reads correctly across image. Cinematic but readable tactical adventure mood. Keepcenteropenandleft/rightbalanced.",
+    "kind": "encounter",
+    "biome": "temperate"
+  },
+  {
+    "id": "adventurekit.encounter.alpine",
+    "file": "encounter-alpine.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY ENCOUNTER STAGE: cold alpine pass, snow-tipped stone, sparse dark pine, frosty soil, blue twilight. A road runs from wide foreground into distant center. Calm composition with clear LEFT and RIGHT foreground standing areas for separately composited opposing heroes/creatures. No flags, camps, structures, combat, people, animals, monsters, footprints shaped like units, no decorative weapons. Horizon at45%. Quiet upper15% for live heading, quiet dark lower25% for live army slots. Terrain reads correctly across image. Cinematic but readable tactical adventure mood. Keepcenteropenandleft/rightbalanced.",
+    "kind": "encounter",
+    "biome": "alpine"
+  },
+  {
+    "id": "adventurekit.encounter.desert",
+    "file": "encounter-desert.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY ENCOUNTER STAGE: arid sandy canyon, ochre sandstone and wind-carved boulders, distant dune horizon, isolated dry scrub only, absolutely no green forest trees. A road runs from wide foreground into distant center. Calm composition with clear LEFT and RIGHT foreground standing areas for separately composited opposing heroes/creatures. No flags, camps, structures, combat, people, animals, monsters, footprints shaped like units, no decorative weapons. Horizon at45%. Quiet upper15% for live heading, quiet dark lower25% for live army slots. Terrain reads correctly across image. Cinematic but readable tactical adventure mood. Keepcenteropenandleft/rightbalanced.",
+    "kind": "encounter",
+    "biome": "desert"
+  },
+  {
+    "id": "adventurekit.encounter.woodland",
+    "file": "encounter-woodland.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY ENCOUNTER STAGE: temperate oak woodland road, soft moss at edges, distant hill under mist, grounded green-and-brown palette. A road runs from wide foreground into distant center. Calm composition with clear LEFT and RIGHT foreground standing areas for separately composited opposing heroes/creatures. No flags, camps, structures, combat, people, animals, monsters, footprints shaped like units, no decorative weapons. Horizon at45%. Quiet upper15% for live heading, quiet dark lower25% for live army slots. Terrain reads correctly across image. Cinematic but readable tactical adventure mood. Keepcenteropenandleft/rightbalanced.",
+    "kind": "encounter",
+    "biome": "woodland"
+  },
+  {
+    "id": "adventurekit.encounter.jungle",
+    "file": "encounter-jungle.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY ENCOUNTER STAGE: tropical jungle stone-and-earth track, broadleaf plants at edges, vines overhead edges, humid teal distance. A road runs from wide foreground into distant center. Calm composition with clear LEFT and RIGHT foreground standing areas for separately composited opposing heroes/creatures. No flags, camps, structures, combat, people, animals, monsters, footprints shaped like units, no decorative weapons. Horizon at45%. Quiet upper15% for live heading, quiet dark lower25% for live army slots. Terrain reads correctly across image. Cinematic but readable tactical adventure mood. Keepcenteropenandleft/rightbalanced.",
+    "kind": "encounter",
+    "biome": "jungle"
+  },
+  {
+    "id": "adventurekit.encounter.volcanic",
+    "file": "encounter-volcanic.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production background layer for Pantheon Realms, classic painted fantasy strategy-game GUI. Landscape 16:9. Beautiful stylized hand-painted art, broad readable forms, restrained fine detail, consistent with the supplied reference palette and finish. Completely separate usable artwork, NOT a concept screenshot. No text, letters, numbers, labels, interface, buttons, frames, icons, watermarks or logos. No people, humanoids, animals, monsters or statues shaped like people. Lighting and perspective consistent, crisp native output. EMPTY ENCOUNTER STAGE: dark volcanic basalt pass, ash soil, sparse rust-red scrub, dim warm horizon behind smoky mountains, no lava beneath where armies will stand. A road runs from wide foreground into distant center. Calm composition with clear LEFT and RIGHT foreground standing areas for separately composited opposing heroes/creatures. No flags, camps, structures, combat, people, animals, monsters, footprints shaped like units, no decorative weapons. Horizon at45%. Quiet upper15% for live heading, quiet dark lower25% for live army slots. Terrain reads correctly across image. Cinematic but readable tactical adventure mood. Keepcenteropenandleft/rightbalanced.",
+    "kind": "encounter",
+    "biome": "volcanic"
+  },
+  {
+    "id": "adventurekit.chrome.skill-card",
+    "file": "skill-card.png",
+    "transparent": true,
+    "kind": "chrome",
+    "prompt": "Use case: ui-mockup. ONE isolated blank wide parchment skill-choice plaque for a painted fantasy strategy game, ratio 2:1. Full object contained with 6% transparent margin. Ivory opaque parchment interior, restrained deep navy thin border and antique gold cornerwork. Upper center has an EMPTY round navy medallion backing for a separate skill icon, extending modestly above parchment. Central lower parchment writingarea wide and plain. No embedded icon, character, illustration, words, numbers, checkmark, text, logo, selectionglow. Straight-on symmetrical reusable control artwork, crisp painterly style matching classic Pantheon Realms GUI. GENUINE TRANSPARENT background outside plaque."
+  },
+  {
+    "id": "adventurekit.chrome.hero-medallion",
+    "file": "hero-medallion.png",
+    "transparent": true,
+    "kind": "chrome",
+    "prompt": "Use case: ui-mockup. ONE independent hero portrait frame ornament for a painted fantasy strategy-game GUI. Square canvas. Antique gold circular rim with symmetrical subtle laurel leaves around lower sides. Center circle is COMPLETELY TRANSPARENT to put actual hero portrait underneath. Empty modest navy plaque across very bottom for a live name, no words no numbers no portraits no silhouettes. Outside also genuine alpha transparent. Full object contained with generous6%margin. Gold and navy, clear shape, no excessive ornate filigree, no baked glow stretching canvas."
+  },
+  {
+    "id": "adventurekit.chrome.balance",
+    "file": "balance.png",
+    "transparent": true,
+    "kind": "chrome",
+    "prompt": "Use case: stylized-concept. ONE isolated brass merchant balance scale game GUI ornament, front-on orthographiclike view, wide3:2. Beautiful stylized gold/bronze antique scale, symmetrical horizontal beam, two chains and two EMPTY open pans, stable centered base. Pans at same height. No coins, logs, resource icons, merchant, surface, text, numbers, UI, painted backdrop. Genuine TRANSPARENT background including every gap between chains, entire object visiblewith8%margin. Clean silhouette readableat250pixels, broadformsnotphotorealistic. Assets will overlay live resource icons over the empty pans."
+  }
+]

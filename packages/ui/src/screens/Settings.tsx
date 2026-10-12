@@ -3,13 +3,20 @@
  * are heard live while editing; Cancel/leaving without applying restores them.
  * Only options that work are shown (2D migration directive §19); a few fixed
  * behaviours are stated as such (ownership is never colour alone).
+ *
+ * 1.1.0 pre-game (handoff frontend-v1.1.0, screen 09): the library backdrop, the
+ * seven sections as a rail of tabs, the page on parchment and one footer:
+ * Restore defaults (draft only), Revert (back to the applied settings), the
+ * unsaved-changes notice, Apply and Back. Leaving with unsaved changes — Back,
+ * the title bar's back or Escape — asks first; "Keep editing" is the safe
+ * choice and takes the focus.
  */
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from 'react';
 import { CONTEXT_LABEL, FIXED_KEYS, KEY_ACTIONS, bindingMap, isReservedKey, keyLabel, normalizeKey, rebind, type KeyContext } from '../app/keys';
 import { useStore } from '../app/context';
 import { DEFAULT_PREFERENCES, type Preferences } from '../app/preferences';
-import { Button, Chip, Panel, Tabs, Toggle } from '../components/kit';
-import { ScreenHeader } from '../components/game';
+import { Button, Chip, Panel, Toggle } from '../components/kit';
+import { ArtIcon, FrontendShell } from '../components/frontend';
 import { someSoundsArePlaceholders, soundsArePlaceholders } from '../audio/gameAudio';
 import { classifyGraphics } from '@pr/presentation/core';
 import { probeGraphics } from '../app/graphicsProbe';
@@ -22,6 +29,27 @@ const GRAPHICS_HINT: Record<Preferences['graphicsQuality'], string> = {
 };
 
 type Tab = 'gameplay' | 'interface' | 'display' | 'audio' | 'accessibility' | 'controls' | 'storage';
+
+/** The section rail's icons, as the frontend kit assigns them (element-bindings.json); every section is named in text. */
+const RAIL_ICON: Record<Tab, string> = {
+  gameplay: 'icon.menu.settings',
+  interface: 'frontendkit.icon.interface',
+  display: 'frontendkit.icon.display',
+  audio: 'frontendkit.icon.audio',
+  accessibility: 'frontendkit.icon.accessibility',
+  controls: 'frontendkit.icon.controls',
+  storage: 'icon.ui.save',
+};
+
+const SECTIONS: readonly { id: Tab; label: string }[] = [
+  { id: 'gameplay', label: 'Gameplay' },
+  { id: 'interface', label: 'Interface' },
+  { id: 'display', label: 'Display' },
+  { id: 'audio', label: 'Audio' },
+  { id: 'accessibility', label: 'Accessibility' },
+  { id: 'controls', label: 'Controls' },
+  { id: 'storage', label: 'Saves' },
+];
 
 function Field({ label, hint, children, disabledReason }: { label: string; hint?: string; children: ReactNode; disabledReason?: string }) {
   return (
@@ -110,30 +138,95 @@ export function SettingsScreen() {
     store.toast(err ? `Applied, but not saved: ${err}` : 'Settings saved', err ? 'error' : 'success');
   };
 
+  const ask = () => store.confirm('Discard your changes?', 'The settings you changed and did not apply will go back to how they were.', 'Discard changes', () => store.back(), { danger: true, cancelLabel: 'Keep editing' });
   const leave = () => {
-    if (dirty) store.confirm('Discard changes?', 'Your unsaved settings will be lost.', 'Discard', () => store.back());
+    if (dirty) ask();
     else store.back();
   };
+  // Escape on this screen asks too (the app's Escape goes through this guard).
+  const dirtyRef = useRef(dirty);
+  dirtyRef.current = dirty;
+  useEffect(() => {
+    store.leaveGuard = () => {
+      if (!dirtyRef.current) return false;
+      ask();
+      return true;
+    };
+    return () => {
+      store.leaveGuard = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store]);
+  const railRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const railKeys = (i: number) => (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+    const n = SECTIONS.length;
+    const j = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? (i + 1) % n : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? (i - 1 + n) % n : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : -1;
+    if (j < 0) return;
+    e.preventDefault();
+    setTab(SECTIONS[j]!.id);
+    store.setParams({ tab: SECTIONS[j]!.id });
+    railRefs.current[j]?.focus();
+  };
+  const section = SECTIONS.find((x) => x.id === tab) ?? SECTIONS[0]!;
 
   return (
-    <div className="screen settings-screen">
-      <ScreenHeader title="Settings" onBack={leave} />
-      <div className="settings-layout">
-        <Tabs<Tab>
-          label="Settings sections"
-          value={tab}
-          onChange={setTab}
-          tabs={[
-            { id: 'gameplay', label: 'Gameplay' },
-            { id: 'interface', label: 'Interface' },
-            { id: 'display', label: 'Display' },
-            { id: 'audio', label: 'Audio' },
-            { id: 'accessibility', label: 'Accessibility' },
-            { id: 'controls', label: 'Controls' },
-            { id: 'storage', label: 'Saves' },
-          ]}
-        />
-        <Panel className="settings-panel" bodyClassName="scroll">
+    <FrontendShell
+      backdrop="library"
+      title="Settings"
+      className="settings-screen"
+      label="Settings"
+      onBack={leave}
+      footer={
+        <>
+          <Button onClick={() => setDraft(DEFAULT_PREFERENCES)} data-testid="settings-defaults" title="Every setting back to its default (Apply to keep)">
+            Restore defaults
+          </Button>
+          <Button onClick={() => setDraft(store.prefs)} disabled={!dirty} disabledReason="Nothing to revert: no unapplied changes" data-testid="settings-revert">
+            Revert
+          </Button>
+          <div className={`fe-settings__status ${dirty ? 'is-dirty' : ''}`} role="status" aria-live="polite" data-testid="settings-status">
+            {dirty ? 'You have unsaved changes.' : 'No unsaved changes.'}
+          </div>
+          <Button variant="primary" onClick={() => void apply()} disabled={!dirty} disabledReason="Nothing to apply" data-testid="settings-apply">
+            Apply
+          </Button>
+          <Button icon="back" onClick={leave} data-testid="settings-back">
+            Back
+          </Button>
+        </>
+      }
+    >
+      <div className="settings-layout fe-settings">
+        <div className="fe-settings__rail" role="tablist" aria-label="Settings sections" aria-orientation="vertical">
+          {SECTIONS.map((x, i) => (
+            <button
+              key={x.id}
+              ref={(el) => {
+                railRefs.current[i] = el;
+              }}
+              type="button"
+              role="tab"
+              id={`settings-tab-${x.id}`}
+              aria-selected={tab === x.id}
+              aria-controls="settings-page"
+              tabIndex={tab === x.id ? 0 : -1}
+              className={`fe-settings__tab ${tab === x.id ? 'is-selected' : ''}`}
+              onClick={() => {
+                setTab(x.id);
+                store.setParams({ tab: x.id });
+              }}
+              onKeyDown={railKeys(i)}
+              data-testid={`settings-tab-${x.id}`}
+            >
+              <span className="fe-settings__icon" aria-hidden="true">
+                <ArtIcon id={RAIL_ICON[x.id]} />
+              </span>
+              <span>{x.label}</span>
+            </button>
+          ))}
+        </div>
+        <Panel className="settings-panel fe-settings__page" bodyClassName="scroll" framed surface="parchment" title={section.label}>
+          <div id="settings-page" role="tabpanel" aria-labelledby={`settings-tab-${tab}`} className="fe-settings__fields">
           {tab === 'gameplay' ? (
             <>
               <Field label="Adventure animation" hint="Hero movement playback on the map">
@@ -195,7 +288,7 @@ export function SettingsScreen() {
                 <Toggle label="Minimap" checked={draft.minimap} onChange={(v) => set('minimap', v)} />
               </Field>
               <Field label="Battle stack labels">
-                <Select label="Stack labels" value={draft.unitLabels} options={[{ id: 'count', label: 'Count' }, { id: 'health', label: 'Front health' }, { id: 'both', label: 'Count and health' }]} onChange={(v) => set('unitLabels', v)} />
+                <Select label="Stack labels" value={draft.unitLabels} options={[{ id: 'count', label: 'Count (health on hover)' }, { id: 'health', label: 'Front health' }, { id: 'both', label: 'Count and health, always' }]} onChange={(v) => set('unitLabels', v)} />
               </Field>
               <Field label="Bestiary animation" hint="Creatures in the bestiary play their idle animation by themselves">
                 <Toggle label="Bestiary animation" checked={draft.codexAutoplay} onChange={(v) => set('codexAutoplay', v)} />
@@ -306,18 +399,10 @@ export function SettingsScreen() {
               </Field>
             </>
           ) : null}
+          </div>
         </Panel>
-        <footer className="settings-footer">
-          <Button onClick={() => setDraft(DEFAULT_PREFERENCES)}>Restore defaults</Button>
-          <Button onClick={() => setDraft(store.prefs)} disabled={!dirty}>
-            Revert
-          </Button>
-          <Button variant="primary" onClick={() => void apply()} disabled={!dirty} data-testid="settings-apply">
-            Apply
-          </Button>
-        </footer>
       </div>
-    </div>
+    </FrontendShell>
   );
 }
 

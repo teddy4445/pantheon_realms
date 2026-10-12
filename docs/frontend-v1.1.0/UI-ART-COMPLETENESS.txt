@@ -1,0 +1,93 @@
+PANTHEON REALMS — COMPLETE FRONTEND ART CONSTRUCTION KIT
+For Claude Code, version 1.1.0 GUI work. Prepared 2026-10-10.
+
+READ THIS FIRST
+This supplement closes the asset gaps in the fourteen pre-game screen concepts. It supersedes the earlier handoff wherever that handoff says to use the old logo, blank faction banners, or an unspecified existing icon. The earlier handoff remains authoritative for navigation, behavior and game rules. The game UI has NOT been implemented by this delivery.
+
+SOURCE PROJECT AND DESTINATION PROJECT
+Source root: C:\Users\lazeb\Desktop\pantheon_realms
+Your Claude Code checkout can be a different project. Copy the assets into YOUR checkout first. Never embed source-machine paths in game code.
+
+Start with these files:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\asset-kit.html
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\concept-bom.json
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\element-bindings.json
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\creature-art-map.json
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\Copy-Complete-Frontend.ps1
+
+New native PNG masters and prompts:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-source\frontend-kit-v1.1.0
+New runtime PNGs and manifest:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\frontend-kit-v1.1.0
+Complete additive asset dictionary:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\frontend-kit-v1.1.0\complete-assets.json
+Exact file inventory, sizes and SHA-256 hashes:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\complete-copy-inventory.json
+
+COPY PROCEDURE
+Run this from PowerShell, replacing the example destination with your actual local project:
+& 'C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\Copy-Complete-Frontend.ps1' -DestinationRoot 'D:\your-local-project' -DryRun
+Then repeat without -DryRun. The helper copies ALL listed dependencies, including existing portraits, icons and creature animation strips, plus documentation and manifests. It skips identical files and refuses differing destination files before making any copies. Review conflicts instead of overwriting newer local artwork. It does not merge application code or authoritative target manifests.
+
+33 NEW, SEPARATE PRODUCTION ASSETS
+1 title-screen background; 1 transparent title logo; 6 finished faction banners; 23 standalone icons/seals; 2 blank reusable control ornaments. These supplement the previous 17 frontend paintings and 36 shared GUI assets. All generated with the built-in image generator at native dimensions, with no code-based retouching or upscaling. Inspect manifest dimensions rather than assuming 4K or vector format. Prompts are in generation-queue.json and revision-history.json.
+
+MAIN PAGE: TWO INDEPENDENT LAYERS
+Background: frontendkit.backdrop.title -> frontend-kit-v1.1.0/backdrop-title.png
+Logo: frontendkit.brand.logo -> frontend-kit-v1.1.0/brand-logo-v2.png
+The background contains only the hall and six-pantheon scenery. No logo, text, menu, button, or UI is painted into it. The logo is a genuine transparent PNG with its own blue plaque, gold lettering and crest. Do not use the earlier clipped logo master. Use object-fit: contain for the logo. Its plaque interior is intentionally opaque.
+Use the existing six menu icons mapped in element-bindings.json with live labels and live buttons. asset-kit.html includes a working HTML layering proof. Continue remains dependent on compatible saved data; Quit stays desktop-only. Records is an optional destination proposal, not new functionality.
+At wide screens use background cover with centered focal point, and place the live menu on its dark plate. At narrow screens preserve the logo and usable controls; crop scenery, not controls. Do not bake release numbers or UI copy into the image.
+
+GATHER THE EMPIRES / PANTHEON SELECTION
+frontendkit.banner.greek / norse / egyptian / japanese / celtic / mesoamerican are completed isolated pennants with each game's faction emblem already painted onto the cloth. Use these instead of gui.banner.* blank pennants. Do not place another emblem over them. Keep the whole pennant visible with object-fit: contain; do not stretch or crop its tip. Put the faction name in live text below the banner, with selection and focus on a real button surrounding it. Use existing catalog names and IDs, not the mockup's invented prose. Selection border, checked seal and glow are CSS state treatment. Banner colors never substitute for labels. No neutral faction banner is necessary: use the existing neutral star badge where neutral filtering exists.
+
+ENCYCLOPEDIA: REAL GAME CREATURES, ALL FORMS
+creature-art-map.json explicitly maps 102 creature forms: 84 forms across the six pantheons (7 base + 7 upgraded each), plus 18 neutral forms. Every row includes catalog creature ID, family, tier, form, pair ID, actual portrait asset ID, file path and animation metadata. The complete copy inventory includes all portrait files and all 800 referenced creature animation strips.
+Use these real game creatures instead of the generic illustrated creatures painted into the concept screenshots. The screenshots communicate layout, not replacement creature identities. Square portrait images are intentional: contain them in square slots and use the reusable portrait socket around them. Never stretch a 256px portrait into a large landscape illustration. In the large detail area, keep the existing AnimatedUnitDetail/sprite renderer and native animation controls. For a static large portrait, cap its size appropriately rather than inventing missing resolution.
+Resolve catalog.creatures[id].presentation.portraitAssetId; pair base/upgraded using actual IDs, not display-name matching. Do not rename creatures or derive numeric stats from concept text. Sprite metadata includes frame size, count, anchor, fps and looping: use the existing animation system and preserve this metadata.
+Other encyclopedia tabs reuse the existing god, hero, building, spell, skill, artifact and ability artwork. The complete additive dictionary and copy inventory include these image families. Category icons are explicitly assigned in element-bindings.json. Selected card borders, tier labels, costs and tooltips stay real HTML. Town thumbnails use actual buildable catalog entries, not a new invented building painting.
+
+SETTINGS LEFT NAVIGATION
+Gameplay = existing gear; Interface = new pane icon; Display = new sun; Audio = new horn; Accessibility = new human symbol; Controls = new controller; Saves = existing save icon. All seven assignments are in element-bindings.json.
+The controller is a category symbol, not a claim of newly supported gamepad input. Every item has a text label. Use gold active treatment, quiet inactive treatment and a visible keyboard focus ring. Keep all seven actual categories and transactional Apply/Revert/Defaults/discard behavior. Audio previews must still restore on cancel. Controls, slider thumbs, checkboxes, focus and disabled states are supplied as CSS primitives; they do not need painted screenshots.
+
+EDITOR AND MAP LIBRARY
+New icons: Select, Erase, Terrain, Forest, Water, Roads, Hex grid, Generate, New map, Import, Export, Delete, Undo, Redo. Existing icons cover Open, Save, Play, Back, Sites, Empires, Check and Map. element-bindings.json gives exact roles. These are image files, not newly declared members of the game's IconName union.
+Use the existing map renderer for live map previews and terrain thumbnails. The editor canvas in a concept is not a texture to implement. Existing terrain palette swatches, roads, site sprites, faction colors, selection outlines and hex grid are rendered from the real map and catalog. Do not create fictitious tools because a decorative mockup resembles one. Imports/exports keep existing validation. Preserve undo/redo, brush behavior, checks before Play, unsaved-change handling, fixed camera angle and existing pan/zoom behavior.
+The map library uses actual stored maps and computed previews. Use frontend.empty.archive for empty libraries, with live explanatory text. Do not label arbitrary illustrations as screenshots of a saved map.
+
+DISCARD CHANGES AND OTHER DIALOGS
+frontendkit.icon.warning is a separate transparent red wax seal with a gold exclamation mark. Use for discard, delete and overwrite confirmations at 48–72 CSS px. No words are painted into the seal. Keep the title, explanation and safe/destructive buttons live. Confirm intent through the existing handler; never delete or discard immediately just because the visual button changed.
+Use the supplied blank header plate and shared parchment surface for the dialog. For ordinary informational messages use the existing information icon, not the danger seal. Buttons reuse gui.control.button and real labels. The full dialog screenshot is only a reference.
+
+OTHER VISUAL PIECES ACCOUNTED FOR
+frontendkit.chrome.header is a blank navy-and-gold title plate; frontendkit.chrome.round-socket is a blank round backing for action icons, slot numbers or scores. gui.control.socket is the existing square portrait backing. Keep text and numbers live. Use the flat CSS panel treatment in frontend-primitives.css if a very wide header would distort the ornament. The standalone header artwork is best kept close to its native 3:1 aspect ratio, not stretched across an entire monitor.
+frontendkit.icon.records is a blank laurel medallion; render local rank as live text in the middle. Existing stat icons cover Attack, Defense, Health, Damage, Speed, Growth, Shots and Range. Existing resources, spells, skills, abilities and equipment icons are explicitly present in the copy inventory.
+Four mode illustrations, nine random-map paintings, atlas and library backdrops, and the archive empty state are in the prior frontend pack and included. Shared frames, book pages, stone, leather, parchment and buttons are in the prior GUI pack and included. Use the existing catalog campaign/mission pictures for campaign and skirmish cards.
+Search magnifier, chevrons, checkbox mark, divider lines, scrollbars, sliders, hover glow and selected outlines are simple code-native primitives provided alongside this document. They are not missing raster assets. Use real controls with accessible labels. Any credits/help text uses this same panel system and existing information/book icons rather than requiring its own painting.
+
+CONCEPT-TO-PRODUCTION BILL OF MATERIALS
+concept-bom.json assigns the fourteen concepts to their separate imagery, icon role groups and existing art dependencies. It also states how to replace illustrative content or decorative details that should not be copied literally. It has zero unspecified image placeholders when kit-validation.json passes. Read it together with screen-recipes.json and window-coverage.json for all screen/dialog variants.
+Do not extract, crop or screenshot artwork from the concept PNGs. Do not substitute browser emoji for the gold icons. Do not invent missing high-resolution images. The original game art is deliberately preferred over generic concept figures.
+
+IMPLEMENTATION NOTES
+1. Copy and verify files, then merge the new frontendkit.* records additively into the current asset loader. complete-assets.json is a dependency/reference dictionary, not a replacement for the game's current master manifest. Retain existing target metadata. Compare hashes on conflicts.
+2. The current Vite publicDir points to assets-runtime and the base is relative. A production URL is ./frontend-kit-v1.1.0/icon-audio.png, not /assets-runtime/... and never C:\... . Prefer the game's existing asset URL helper for base-path handling.
+3. packages/ui/src/assets/icons.tsx currently has an explicit IconName type and image mapping. Either render these new images using the manifest resolver or deliberately extend that registry and its type. Merely adding a PNG does not teach Icon arbitrary names. Keep fallback behavior intact.
+4. Use actual React controls and live data. Preserve responsive layouts, text scaling, keyboard navigation, dialog focus trapping/restoration and reduced motion. At 32–40px use the full icon contained; no excessive blur or hover-only essential labels.
+5. frontend-primitives.css is a scoped reference for control states, not a global stylesheet replacement. gui-v1.1.0/component-reference.css documents the already measured frame/book insets. Do not put text under ornamental borders. On smaller screens collapse the illustrated book into usable stacked panels.
+6. Do not replace or re-export unrelated gameplay art. Do not update the package version until the owner approves the integrated release. This task supplies artwork; Claude must still implement and verify the actual game.
+
+ACCEPTANCE CHECKS FOR CLAUDE
+- Main menu uses independent background and logo; buttons still work.
+- All six decorated banners display their correct identity and keyboard-select correctly.
+- All eight encyclopedia tabs have real images; all 102 creature forms resolve; base/upgraded pair and animation playback use catalog IDs.
+- Every settings/editor category and action resolves to its mapped asset or documented native primitive.
+- Discard/Delete/Overwrite use the independent seal and existing safe confirmation behavior.
+- Campaign, skirmish, random map, saves and editor preserve prior behavior, constraints and saved state.
+- No broken asset URLs in a production build with a relative base; no missing alpha; no screenshot-as-UI controls; no runtime desktop paths.
+- Check 1920x1080, 1366x768 and 390px layouts, text scaling, keyboard operation and reduced motion in the integrated game. Delivery-gallery QA is not a substitute for these game checks.
+
+VISUAL COMPLETENESS STATUS
+kit-validation.json records the delivered file/binding audit. kit-gallery-validation.json records independent HTML assembly/gallery checks. Both concern this art package; they do not claim that Claude's future integration has been completed or tested.

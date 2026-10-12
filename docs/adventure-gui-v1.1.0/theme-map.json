@@ -1,0 +1,134 @@
+{
+  "greek": {
+    "frame": "gui.frame.greek",
+    "emblem": "emblem.greek",
+    "banner": "frontendkit.banner.greek",
+    "tavern": "adventurekit.tavern.greek",
+    "recruitment": "adventurekit.recruit.greek",
+    "market": "gui.merchant.greek",
+    "levelup": "encounterkit.meeting.greek",
+    "spellbook": "gui.book.open",
+    "heroExamples": [
+      {
+        "name": "Alexios",
+        "portrait": "hero.greek.alexios.portrait",
+        "bust": "hero.greek.alexios.bust"
+      },
+      {
+        "name": "Ione",
+        "portrait": "hero.greek.ione.portrait",
+        "bust": "hero.greek.ione.bust"
+      }
+    ]
+  },
+  "norse": {
+    "frame": "gui.frame.norse",
+    "emblem": "emblem.norse",
+    "banner": "frontendkit.banner.norse",
+    "tavern": "adventurekit.tavern.norse",
+    "recruitment": "adventurekit.recruit.norse",
+    "market": "gui.merchant.norse",
+    "levelup": "encounterkit.meeting.norse",
+    "spellbook": "gui.book.open",
+    "heroExamples": [
+      {
+        "name": "Hervor",
+        "portrait": "hero.norse.hervor.portrait",
+        "bust": "hero.norse.hervor.bust"
+      },
+      {
+        "name": "Hrafn",
+        "portrait": "hero.norse.hrafn.portrait",
+        "bust": "hero.norse.hrafn.bust"
+      }
+    ]
+  },
+  "egyptian": {
+    "frame": "gui.frame.egyptian",
+    "emblem": "emblem.egyptian",
+    "banner": "frontendkit.banner.egyptian",
+    "tavern": "adventurekit.tavern.egyptian",
+    "recruitment": "adventurekit.recruit.egyptian",
+    "market": "gui.merchant.egyptian",
+    "levelup": "encounterkit.meeting.egyptian",
+    "spellbook": "gui.book.open",
+    "heroExamples": [
+      {
+        "name": "Djedkhonsu",
+        "portrait": "hero.egyptian.djedkhonsu.portrait",
+        "bust": "hero.egyptian.djedkhonsu.bust"
+      },
+      {
+        "name": "Nebet",
+        "portrait": "hero.egyptian.nebet.portrait",
+        "bust": "hero.egyptian.nebet.bust"
+      }
+    ]
+  },
+  "japanese": {
+    "frame": "gui.frame.japanese",
+    "emblem": "emblem.japanese",
+    "banner": "frontendkit.banner.japanese",
+    "tavern": "adventurekit.tavern.japanese",
+    "recruitment": "adventurekit.recruit.japanese",
+    "market": "gui.merchant.japanese",
+    "levelup": "encounterkit.meeting.japanese",
+    "spellbook": "gui.book.open",
+    "heroExamples": [
+      {
+        "name": "Akane",
+        "portrait": "hero.japanese.akane.portrait",
+        "bust": "hero.japanese.akane.bust"
+      },
+      {
+        "name": "Genzo",
+        "portrait": "hero.japanese.genzo.portrait",
+        "bust": "hero.japanese.genzo.bust"
+      }
+    ]
+  },
+  "celtic": {
+    "frame": "gui.frame.celtic",
+    "emblem": "emblem.celtic",
+    "banner": "frontendkit.banner.celtic",
+    "tavern": "adventurekit.tavern.celtic",
+    "recruitment": "adventurekit.recruit.celtic",
+    "market": "gui.merchant.celtic",
+    "levelup": "encounterkit.meeting.celtic",
+    "spellbook": "gui.book.open",
+    "heroExamples": [
+      {
+        "name": "Cathal",
+        "portrait": "hero.celtic.cathal.portrait",
+        "bust": "hero.celtic.cathal.bust"
+      },
+      {
+        "name": "Dubhghall",
+        "portrait": "hero.celtic.dubhghall.portrait",
+        "bust": "hero.celtic.dubhghall.bust"
+      }
+    ]
+  },
+  "mesoamerican": {
+    "frame": "gui.frame.mesoamerican",
+    "emblem": "emblem.mesoamerican",
+    "banner": "frontendkit.banner.mesoamerican",
+    "tavern": "adventurekit.tavern.mesoamerican",
+    "recruitment": "adventurekit.recruit.mesoamerican",
+    "market": "gui.merchant.mesoamerican",
+    "levelup": "encounterkit.meeting.mesoamerican",
+    "spellbook": "gui.book.open",
+    "heroExamples": [
+      {
+        "name": "Chimal",
+        "portrait": "hero.mesoamerican.chimal.portrait",
+        "bust": "hero.mesoamerican.chimal.bust"
+      },
+      {
+        "name": "Itzel",
+        "portrait": "hero.mesoamerican.itzel.portrait",
+        "bust": "hero.mesoamerican.itzel.bust"
+      }
+    ]
+  }
+}

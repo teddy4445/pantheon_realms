@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "catalogHeroes": 74,
+  "mappedIdentities": 89,
+  "existingBusts": 35,
+  "newBusts": 54,
+  "pending": [],
+  "problems": [],
+  "runtimeBytes": 177363910,
+  "scope": "Art and handoff only; application code and game catalog unchanged."
+}

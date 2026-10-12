@@ -1,0 +1,38 @@
+[
+  {
+    "key": "concept-random-map",
+    "file": "05-random-map.png",
+    "prompt": "Edit this same fantasy game UI screenshot, preserving composition and artwork. Correct ONLY the size controls: make Large the blue-and-gold selected size, and make Medium unselected parchment. Keep 4 selected under Empires. Add small readable text 'Illustrative landscape' under the Highlands painting. Keep all nine terrain tiles, their names, chapters, and buttons unchanged. Large plus four empires is the valid combination.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/05-random-map.png"
+    ],
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/05-random-map-v2.png"
+  },
+  {
+    "key": "concept-settings",
+    "file": "09-settings.png",
+    "prompt": "Edit this same fantasy Settings screenshot. Keep all seven category tabs, the five sliders, palette and layout unchanged. Correct the lower audio controls: 'Test Sound' must be a rectangular engraved clickable BUTTON, with NO checkbox. Keep Mute all, Mute in background, Calmer sound as checkboxes. Make the Revert button visibly enabled because unsaved changes exist. Preserve all other text and art.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/09-settings.png"
+    ],
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/09-settings-v2.png"
+  },
+  {
+    "key": "concept-map-editor",
+    "file": "12-map-editor.png",
+    "prompt": "Edit this same fantasy map editor UI screenshot preserving canvas landscape, left toolbox and overall style. Correct the top toolbar to exactly New, Generate, Open, Save, Export, Undo, Redo, Play, Back using compact buttons so all fit. Replace contents of RIGHT parchment inspector beneath the existing Map/Empires/Site/Check tabs with ONLY real fields: Name text field 'My realm'; Description multiline field; Land dropdown 'Temperate'; Victory two choices 'Last empire standing' and 'Hold the shrine'; Starting wealth 'Low Normal High'; checkbox 'Reveal map'; small read-only text 'Size: 60 x 40 tiles'. Remove the fake Hex Size, Water Level, Map Preview and all show/lock toggles. Keep existing tabs. Readable spaced form. No new controls.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/12-map-editor.png"
+    ],
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/12-map-editor-v2.png"
+  },
+  {
+    "key": "concept-shared-dialog",
+    "file": "14-shared-dialog.png",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/09-settings.png"
+    ],
+    "prompt": "Create a revised fantasy game confirmation concept based on the supplied SETTINGS reference. Use the supplied seven-tab Settings screen as the dimmed background, not a bestiary, no creatures or encyclopedia. Center a compact parchment modal in dark blue and gold frame. Exact text: 'Discard changes?' then 'Your changes have not been applied.' Two rectangular buttons 'Keep editing' and 'Discard'. Keep editing visibly focused with a thin bright outline. Small restrained warning seal. Everything behind modal dimmed. Landscape16:10.",
+    "destination": "C:/Users/lazeb/Desktop/pantheon_realms/docs/frontend-v1.1.0/concepts/14-shared-dialog-v2.png"
+  }
+]

@@ -471,14 +471,20 @@ redraws the chunks (`SceneController.contextRestored`).
 * `BattleSceneController` — the painted battlefield background fitted to the
   board, the logical 15×11 odd-r hex overlay (deployment zones, moat, paved
   town cells, optional grid), obstacles and siege pieces (wall, gate, towers,
-  keep in intact/damaged/rubble states with HP labels), creature stack
+  keep in intact/damaged/rubble states with HP labels; the six-pantheon gate
+  is an opening in the wall drawn in a north and a south part around the
+  gate cell, `siegeGate.ts`), creature stack
   sprites standing on their anchor cell (feet at the cell centre; defenders
   mirrored), count badges, highlights, projectiles and effects, and playback
   of committed battle events (move, melee, shot + projectile, retaliation,
   spell, ward, defend, wait, morale, catapult/turret/moat/structure damage,
   destruction — the fallen play `death` and stay lying on their cells — and
   victory). The React HUD sits on top; the board is laid out between its
-  insets.
+  insets. A new board reports when its essential pictures are drawn
+  (`onBoardReady`: the battlefield painting, the siege pieces and each stack's
+  idle frame, failures included — a stack without its picture stands as a
+  silhouette — capped at 15 s); until then the battle screen veils the field,
+  withholds commands and the AI waits (`AppStore.boardLoading`).
 * `UnitViewerController` — the animated Unit Detail viewer: the subject's
   strips by state (the buttons come from `requiredAnimations`: the base
   seven `idle, move, attack, defend, hit, death, victory`, plus `shoot`,

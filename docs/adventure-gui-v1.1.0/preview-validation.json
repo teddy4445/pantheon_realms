@@ -1,0 +1,282 @@
+{
+  "status": "passed",
+  "scope": "Standalone composition preview only, not integrated game",
+  "variants": [
+    {
+      "faction": "greek",
+      "screen": "tavern",
+      "loaded": true
+    },
+    {
+      "faction": "greek",
+      "screen": "recruitment",
+      "loaded": true
+    },
+    {
+      "faction": "greek",
+      "screen": "market",
+      "loaded": true
+    },
+    {
+      "faction": "greek",
+      "screen": "levelup",
+      "loaded": true
+    },
+    {
+      "faction": "greek",
+      "screen": "spellbook",
+      "loaded": true
+    },
+    {
+      "faction": "greek",
+      "screen": "encounter",
+      "loaded": true
+    },
+    {
+      "faction": "norse",
+      "screen": "tavern",
+      "loaded": true
+    },
+    {
+      "faction": "norse",
+      "screen": "recruitment",
+      "loaded": true
+    },
+    {
+      "faction": "norse",
+      "screen": "market",
+      "loaded": true
+    },
+    {
+      "faction": "norse",
+      "screen": "levelup",
+      "loaded": true
+    },
+    {
+      "faction": "norse",
+      "screen": "spellbook",
+      "loaded": true
+    },
+    {
+      "faction": "norse",
+      "screen": "encounter",
+      "loaded": true
+    },
+    {
+      "faction": "egyptian",
+      "screen": "tavern",
+      "loaded": true
+    },
+    {
+      "faction": "egyptian",
+      "screen": "recruitment",
+      "loaded": true
+    },
+    {
+      "faction": "egyptian",
+      "screen": "market",
+      "loaded": true
+    },
+    {
+      "faction": "egyptian",
+      "screen": "levelup",
+      "loaded": true
+    },
+    {
+      "faction": "egyptian",
+      "screen": "spellbook",
+      "loaded": true
+    },
+    {
+      "faction": "egyptian",
+      "screen": "encounter",
+      "loaded": true
+    },
+    {
+      "faction": "japanese",
+      "screen": "tavern",
+      "loaded": true
+    },
+    {
+      "faction": "japanese",
+      "screen": "recruitment",
+      "loaded": true
+    },
+    {
+      "faction": "japanese",
+      "screen": "market",
+      "loaded": true
+    },
+    {
+      "faction": "japanese",
+      "screen": "levelup",
+      "loaded": true
+    },
+    {
+      "faction": "japanese",
+      "screen": "spellbook",
+      "loaded": true
+    },
+    {
+      "faction": "japanese",
+      "screen": "encounter",
+      "loaded": true
+    },
+    {
+      "faction": "celtic",
+      "screen": "tavern",
+      "loaded": true
+    },
+    {
+      "faction": "celtic",
+      "screen": "recruitment",
+      "loaded": true
+    },
+    {
+      "faction": "celtic",
+      "screen": "market",
+      "loaded": true
+    },
+    {
+      "faction": "celtic",
+      "screen": "levelup",
+      "loaded": true
+    },
+    {
+      "faction": "celtic",
+      "screen": "spellbook",
+      "loaded": true
+    },
+    {
+      "faction": "celtic",
+      "screen": "encounter",
+      "loaded": true
+    },
+    {
+      "faction": "mesoamerican",
+      "screen": "tavern",
+      "loaded": true
+    },
+    {
+      "faction": "mesoamerican",
+      "screen": "recruitment",
+      "loaded": true
+    },
+    {
+      "faction": "mesoamerican",
+      "screen": "market",
+      "loaded": true
+    },
+    {
+      "faction": "mesoamerican",
+      "screen": "levelup",
+      "loaded": true
+    },
+    {
+      "faction": "mesoamerican",
+      "screen": "spellbook",
+      "loaded": true
+    },
+    {
+      "faction": "mesoamerican",
+      "screen": "encounter",
+      "loaded": true
+    }
+  ],
+  "creatureFormsChecked": 84,
+  "biomesChecked": 6,
+  "spellChoicesChecked": 6,
+  "responsive": [
+    {
+      "screen": "tavern",
+      "scroll": 1366,
+      "width": 1366
+    },
+    {
+      "screen": "recruitment",
+      "scroll": 1366,
+      "width": 1366
+    },
+    {
+      "screen": "market",
+      "scroll": 1366,
+      "width": 1366
+    },
+    {
+      "screen": "levelup",
+      "scroll": 1366,
+      "width": 1366
+    },
+    {
+      "screen": "spellbook",
+      "scroll": 1366,
+      "width": 1366
+    },
+    {
+      "screen": "encounter",
+      "scroll": 1366,
+      "width": 1366
+    },
+    {
+      "screen": "tavern",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "screen": "recruitment",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "screen": "market",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "screen": "levelup",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "screen": "spellbook",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "screen": "encounter",
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "screen": "tavern",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "screen": "recruitment",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "screen": "market",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "screen": "levelup",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "screen": "spellbook",
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "screen": "encounter",
+      "scroll": 390,
+      "width": 390
+    }
+  ],
+  "errors": []
+}

@@ -62,7 +62,7 @@ export const projectors: {
 /** Read-only view readouts for the ?e2e inspector (map avatar state, camera). Never mutate. */
 export const inspectors: {
   adventure?: { heroes: () => unknown; camera: () => unknown; fx: () => unknown; ground: () => unknown; scenery: () => unknown };
-  battle?: { stacks: () => unknown; fx: () => unknown; obstacles?: () => unknown };
+  battle?: { stacks: () => unknown; fx: () => unknown; obstacles?: () => unknown; siege?: () => unknown };
 } = {};
 
 /** Convert a canvas-local point to page coordinates. */
@@ -108,9 +108,12 @@ export function SceneViewport<T extends SceneController>({
   fallback,
   label,
   cursor,
+  onError,
 }: {
   factory: SceneFactory<T>;
   onController: (c: T | null) => void;
+  /** The view could not be shown (no WebGL, or the 2D layer failed to load). */
+  onError?: (message: string) => void;
   className?: string;
   fallback?: ReactNode;
   label: string;
@@ -134,6 +137,7 @@ export function SceneViewport<T extends SceneController>({
       h = made;
       if (!h) {
         setError(engineError() ?? 'WebGL is unavailable');
+        onError?.(engineError() ?? 'WebGL is unavailable');
         return;
       }
       h.mount(el);
@@ -141,6 +145,7 @@ export function SceneViewport<T extends SceneController>({
         ctrl = h.show((engine, canvas) => factory(p, engine, canvas));
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e));
+        onError?.(e instanceof Error ? e.message : String(e));
         return;
       }
       onController(ctrl);
@@ -151,6 +156,7 @@ export function SceneViewport<T extends SceneController>({
         if (disposed) return;
         setLoading(false);
         setError(`The view could not be loaded (${e instanceof Error ? e.message : String(e)}).`);
+        onError?.(String(e));
       });
     return () => {
       disposed = true;

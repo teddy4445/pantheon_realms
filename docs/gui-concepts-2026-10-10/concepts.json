@@ -1,0 +1,289 @@
+[
+  {
+    "id": "01",
+    "slug": "treasure-choice",
+    "title": "Treasure chest choice",
+    "catalog": [
+      "W03"
+    ],
+    "file": "01-treasure-choice.png",
+    "summary": "Replace stacked text rows with an illustrated reward choice.",
+    "behavior": "Select one reward tile, show a check and highlight, then confirm once. Decide later closes without claiming. Gold/experience amounts and the recipient come from current game state.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/W03.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/W03.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx"
+    ]
+  },
+  {
+    "id": "02",
+    "slug": "map-event-choice",
+    "title": "Map event: The Frozen Longship",
+    "catalog": [
+      "W02"
+    ],
+    "file": "02-map-event-choice.png",
+    "summary": "Use a distinct scene illustration to make the map encounter memorable.",
+    "behavior": "Keep choice consequences visible as icons plus text. Norse trim varies the material while retaining the same dialog anatomy. Unavailable choices must explain why.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/W02.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/W02.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx"
+    ]
+  },
+  {
+    "id": "03",
+    "slug": "quest-offer",
+    "title": "Map quest: The Hermit's Request",
+    "catalog": [
+      "W04"
+    ],
+    "file": "03-quest-offer-v2.png",
+    "summary": "Make quest requirements and rewards read as a visual exchange.",
+    "behavior": "Keep required, owned and missing quantities together. Disable submission with a textual reason. Rewards remain separate from the payment; do not imply both are choices.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/W04.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/W04.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx"
+    ]
+  },
+  {
+    "id": "04",
+    "slug": "adventure-command",
+    "title": "Adventure map and command sidebar",
+    "catalog": [
+      "S06",
+      "N03"
+    ],
+    "file": "04-adventure-command.png",
+    "summary": "Consolidate navigation into one command sidebar.",
+    "behavior": "Keep the fixed map angle and pan controls. Minimap, hero/town selection, army and End Day share one stable area. Hover and keyboard focus supply concise contextual help.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S06.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S06.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Adventure.tsx"
+    ]
+  },
+  {
+    "id": "05",
+    "slug": "hero-folio",
+    "title": "Hero equipment folio",
+    "catalog": [
+      "S07",
+      "H01",
+      "H02"
+    ],
+    "file": "05-hero-folio-v2.png",
+    "summary": "Use a compact equipment folio with larger artifact sockets.",
+    "behavior": "Preserve every real equipment slot, inventory capacity and army slot. The illustrative grid geometry and item modifiers in the image are not a data specification. Populate artifacts and stats from the existing catalog.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S07.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S07.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Hero.tsx"
+    ]
+  },
+  {
+    "id": "06",
+    "slug": "recruitment-chamber",
+    "title": "Recruitment chamber",
+    "catalog": [
+      "S09"
+    ],
+    "file": "06-recruitment-chamber.png",
+    "summary": "Focus recruitment on one creature and one clear purchase decision.",
+    "behavior": "Show all seven families, availability, quantity, cost, destination and current army. Distinguish no dwelling, no weekly population, no funds and no army space. Upgrades use the existing training rules.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S09.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S09.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Recruitment.tsx"
+    ]
+  },
+  {
+    "id": "07",
+    "slug": "town-buildings",
+    "title": "Town interaction and construction preview",
+    "catalog": [
+      "S08",
+      "T01",
+      "T08"
+    ],
+    "file": "07-town-buildings.png",
+    "summary": "Make the town buildings themselves the primary controls.",
+    "behavior": "Use hover/focus outlines and a short building tooltip; open the construction list from the town hall. Keep a visible discoverable construction control and optional build-site hints. Do not hide unbuilt buildings from the accessible construction list.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S08B.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S08B.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Town.tsx"
+    ]
+  },
+  {
+    "id": "08",
+    "slug": "battle-command",
+    "title": "Tactical battle interface",
+    "catalog": [
+      "S11B",
+      "B01"
+    ],
+    "file": "08-battle-command.png",
+    "summary": "Give battle commands a stable frame and reduce permanent labels.",
+    "behavior": "Show stack counts continuously; reveal HP, effects and wall durability through selection/inspection. Preserve turn order, movement/attack previews, shortcuts and an option for persistent tactical detail.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S11B.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S11B.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Battle.tsx"
+    ]
+  },
+  {
+    "id": "09",
+    "slug": "pantheon-banners",
+    "title": "Pantheon selection",
+    "catalog": [
+      "S04"
+    ],
+    "file": "09-pantheon-banners.png",
+    "summary": "Choose a faction through banners, its patron and creature roster.",
+    "behavior": "Exactly six existing pantheons and seven creatures per roster. Keep all current setup controls, including hot seat and difficulty; move secondary controls into a compact setup drawer when necessary.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S04.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S04.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Setup.tsx"
+    ]
+  },
+  {
+    "id": "10",
+    "slug": "merchant-counter",
+    "title": "Marketplace exchange",
+    "catalog": [
+      "T02"
+    ],
+    "file": "10-merchant-counter.png",
+    "summary": "Present trading as resources crossing a merchant's counter.",
+    "behavior": "Keep current resource-to-gold and gold-to-resource rules. Clearly show amount paid, amount received, exchange rate and resulting holdings. Do not invent direct resource barter.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/T02.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/T02.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Town.tsx"
+    ]
+  },
+  {
+    "id": "11",
+    "slug": "quest-journal",
+    "title": "Quest journal",
+    "catalog": [
+      "S14-objectives",
+      "S14-story"
+    ],
+    "file": "11-quest-journal.png",
+    "summary": "Turn objectives and story into an illustrated quest journal.",
+    "behavior": "Use a readable list of quest thumbnails and a selected detail page, with explicit status icons, progress and Show on map. All five mission objectives and optional quests remain available through the list.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S14-objectives.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S14-objectives.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Journal.tsx"
+    ]
+  },
+  {
+    "id": "12",
+    "slug": "bestiary-codex",
+    "title": "Bestiary and creature inspection",
+    "catalog": [
+      "S16-creatures",
+      "S18"
+    ],
+    "file": "12-bestiary-codex-v2.png",
+    "summary": "Make the encyclopedia feel like a bestiary with large creature illustrations.",
+    "behavior": "Preserve all encyclopedia sections and search/filter access. All six faction tabs and base/upgraded creatures remain explicit controls. Read every statistic and ability from current game data.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/S16-creatures.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/S16-creatures.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Encyclopedia.tsx",
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/UnitDetail.tsx"
+    ]
+  },
+  {
+    "id": "13",
+    "slug": "story-briefing",
+    "title": "Mission briefing and story dialogue",
+    "catalog": [
+      "D01",
+      "D13"
+    ],
+    "file": "13-story-briefing.png",
+    "summary": "Lead the briefing with the character and scene.",
+    "behavior": "Use three concise visual objective summaries while keeping the full objectives available. Preserve dialogue navigation, Begin behavior and exact quest requirements. Do not turn decorative summary copy into new mission rules.",
+    "reference": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/screenshots/D01.jpg",
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": "current/D01.jpg",
+    "codeFiles": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Overlays.tsx",
+      "C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Story.tsx"
+    ]
+  },
+  {
+    "id": "14",
+    "slug": "shared-materials-and-states",
+    "title": "Six pantheon themes and interaction states",
+    "catalog": [],
+    "file": "14-shared-materials-and-states.png",
+    "summary": "Use one control anatomy with six restrained material treatments.",
+    "behavior": "Create reusable frame, button, socket and tooltip assets. Normal, hover, focus, pressed, selected and unavailable states need clear distinction. The board illustrates five mouse/action states; add an equally clear keyboard focus state in implementation.",
+    "reference": null,
+    "dimensions": [
+      1586,
+      992
+    ],
+    "before": null,
+    "codeFiles": []
+  }
+]

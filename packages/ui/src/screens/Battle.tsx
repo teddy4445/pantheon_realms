@@ -60,6 +60,7 @@ import { Icon } from '../assets/icons';
 import { MiracleBook, type MiracleOption } from '../components/miraclebook';
 import { stackMarks } from '../app/stackMarks';
 import { resolveAsset } from '../assets/manifest';
+import { MiniBanner, contextTheme } from '../components/gui';
 
 type Mode =
   | { kind: 'normal' }
@@ -162,13 +163,16 @@ function buildView(
   const battle = state.battle!;
   const occ = new Map<string, string>();
   for (const s of Object.values(battle.stacks)) if (s.totalHp > 0) for (const c of stackCells(catalog, s)) occ.set(cellKey(c), s.id);
+  // "Count" labels (1.1.0 default): health is revealed on the stack under the pointer and on the acting stack.
+  const inspected = hover ? (occ.get(cellKey(hover.cell)) ?? null) : null;
   const stacks = Object.values(battle.stacks).map((s) => {
     const def = catalog.creatures[s.creatureId]!;
     const count = aliveCount(catalog, s);
     const side = battle.sides[s.side];
     const accent = side.playerId ? (state.players[side.playerId]?.color ?? NEUTRAL_ACCENT) : NEUTRAL_ACCENT;
     const hpTxt = `${frontHp(catalog, s)}hp`;
-    const label = unitLabels === 'count' ? String(count) : unitLabels === 'health' ? hpTxt : `${count} · ${hpTxt}`;
+    const shown = s.id === inspected || (!deploySide && battle.activeStackId === s.id);
+    const label = unitLabels === 'count' ? (shown && s.totalHp > 0 ? `${count} · ${hpTxt}` : String(count)) : unitLabels === 'health' ? hpTxt : `${count} · ${hpTxt}`;
     return {
       id: s.id,
       creatureId: s.creatureId,
@@ -303,13 +307,22 @@ export function BattleScreen() {
   const battleId = battle?.battleId ?? '';
   const log = battleLogLines(battleId);
 
+  // 1.1.4 (GUI audit): until the board's painting and every stack's standing frame are drawn (or the
+  // view cannot be shown at all), the field shows a loading notice and takes no orders; the menu stays.
+  const [boardReady, setBoardReady] = useState(false);
+  const [sceneFailed, setSceneFailed] = useState(false);
+  const boardLoading = !ended && !boardReady && !sceneFailed;
+  const boardLoadingRef = useRef(boardLoading);
+  boardLoadingRef.current = boardLoading;
+  useEffect(() => store.setBoardLoading(boardLoading), [boardLoading, store]);
+  useEffect(() => () => store.setBoardLoading(false), [store]);
   const humanTurn = !ended && !!battle && battle.status === 'active' && session.isHumanTurn();
   const humanSide = battle ? Object.values(battle.sides).find((s) => s.controller === 'human') : undefined;
-  const la = humanTurn && !store.presentationBusy ? legalActions(catalog, state) : null;
+  const la = humanTurn && !store.presentationBusy && !boardLoading ? legalActions(catalog, state) : null;
   // The Catapult is aimed by the siege attacker on one of its own stacks' turns (2026-10-07).
   const canAimCatapult = !!la && la.side === 'attacker' && !!battle?.siege && battle.siege.level > 0;
   /** The human side still arranging its deployment zone (Tactics), if any. */
-  const deploySide = battle?.phase === 'deployment' && humanTurn ? (battle.deployment?.pending.find((x) => battle.sides[x].controller === 'human') ?? null) : null;
+  const deploySide = battle?.phase === 'deployment' && humanTurn && !boardLoading ? (battle.deployment?.pending.find((x) => battle.sides[x].controller === 'human') ?? null) : null;
   const selecting = battle?.phase === 'selection' && humanTurn && !!battle.selection;
   const built = useMemo(
     () => (battle ? buildView(catalog, state, la, mode, hover, store.prefs.unitLabels, store.prefs.hexOverlay !== 'off', deploySel, deploySide) : null),
@@ -478,13 +491,14 @@ export function BattleScreen() {
         spellFx: (spellId) => spellFxOf(catalog, spellId),
         iconUrl: (assetId) => resolveAsset(assetId).url,
         miracleFx: (interventionId, playerId) => miracleFxOf(catalog, store.session?.state.battle ? store.session.state : (lastLive.current ?? undefined), interventionId, playerId),
+        onBoardReady: (ready) => setBoardReady(ready),
       }),
     [],
   );
   const onController = useCallback((c: BattleSceneController | null) => {
     ctrl.current = c;
     projectors.battle = c ? (col, row) => toPage(c.projectCell({ col, row })) : undefined;
-    inspectors.battle = c ? { stacks: () => c.stackDebug(), fx: () => c.fxDebug(), obstacles: () => c.obstacleDebug() } : undefined;
+    inspectors.battle = c ? { stacks: () => c.stackDebug(), fx: () => c.fxDebug(), obstacles: () => c.obstacleDebug(), siege: () => c.siegeDebug() } : undefined;
     if (c && builtRef.current) c.update({ ...builtRef.current.view, calm: reducedMotion(store.prefs) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -493,6 +507,7 @@ export function BattleScreen() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (store.overlays.length || store.story.length || e.ctrlKey || e.metaKey) return;
+      if (boardLoadingRef.current) return;
       const t = e.target as HTMLElement;
       if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') return;
       const k = e.key.toLowerCase();
@@ -538,7 +553,7 @@ export function BattleScreen() {
     const side = battle.sides[sideId];
     const pl = side.playerId ? state.players[side.playerId] : undefined;
     const stacks = Object.values(battle.stacks).filter((s) => s.side === sideId && s.totalHp > 0);
-    return { side, name: side.commander?.name ?? (sideId === 'defender' ? battle.encounter.label : 'Attacker'), owner: pl?.name ?? 'Neutral', total: stacks.reduce((n, s) => n + aliveCount(catalog, s), 0), color: pl?.color ?? NEUTRAL_ACCENT, mana: commanderMana(state, side) };
+    return { side, name: side.commander?.name ?? (sideId === 'defender' ? battle.encounter.label : 'Attacker'), owner: pl?.name ?? 'Neutral', total: stacks.reduce((n, s) => n + aliveCount(catalog, s), 0), color: pl?.color ?? NEUTRAL_ACCENT, mana: commanderMana(state, side), pantheonId: pl?.pantheonId ?? null };
   };
   // The commanding hero's portrait (Brief 9) beside the side's name; neutral guards have none.
   const commanderPortrait = (side: (typeof battle.sides)['attacker']) => {
@@ -619,11 +634,19 @@ export function BattleScreen() {
       : null;
 
   return (
-    <div className="battle">
-      <SceneViewport factory={factory} onController={onController} className="battle__scene" label="Tactical battlefield" cursor={sceneCursor} />
+    <div className="battle" data-gui-theme={contextTheme(store)}>
+      <SceneViewport factory={factory} onController={onController} onError={() => setSceneFailed(true)} className="battle__scene" label="Tactical battlefield" cursor={sceneCursor} />
+      {boardLoading ? (
+        <div className="battle-loading" role="status" aria-live="polite" data-testid="battle-loading">
+          <span className="battle-loading__note panel">
+            <span className="spinner" /> Preparing the battlefield…
+          </span>
+        </div>
+      ) : null}
       {miracleBook}
       <header className="battle-top">
         <div className="battle-side battle-side--att" style={{ ['--side' as string]: att.color }}>
+          <MiniBanner pantheonId={att.pantheonId} />
           {commanderPortrait(att.side)}
           <div className="battle-side__text">
           <div className="battle-side__name">{att.name}</div>
@@ -646,6 +669,7 @@ export function BattleScreen() {
           {battle.climate ? <ClimateChip climate={battle.climate} /> : null}
         </div>
         <div className="battle-side battle-side--def" style={{ ['--side' as string]: def.color }}>
+          <MiniBanner pantheonId={def.pantheonId} />
           {commanderPortrait(def.side)}
           <div className="battle-side__text">
           <div className="battle-side__name">{def.name}</div>
@@ -717,6 +741,45 @@ export function BattleScreen() {
         </div>
       ) : null}
 
+      {!preview && hoverStack && hoverStack.totalHp > 0 ? (
+        (() => {
+          const d = catalog.creatures[hoverStack.creatureId];
+          const n = aliveCount(catalog, hoverStack);
+          return (
+            <div className="battle-preview battle-inspect panel" role="status" data-testid="battle-inspect">
+              <div className="battle-preview__title">
+                {n} {n === 1 ? d?.name : d?.pluralName} <span className="faint small">({hoverStack.side})</span>
+                <MarkRow marks={stackMarks(catalog, hoverStack, battle.round)} testId="inspect-marks" />
+              </div>
+              <div className="battle-inspect__stats small">
+                <span title={breakdownTitle('Attack', attackBreakdown(catalog, battle, hoverStack))}>
+                  <Icon name="attack" className="inline-icon" /> {attackBreakdown(catalog, battle, hoverStack).total}
+                </span>
+                <span title={breakdownTitle('Defense', defenseBreakdown(catalog, battle, hoverStack))}>
+                  <Icon name="defense" className="inline-icon" /> {defenseBreakdown(catalog, battle, hoverStack).total}
+                </span>
+                <span title="Damage">
+                  <Icon name="damage" className="inline-icon" /> {d?.stats?.damageMin}–{d?.stats?.damageMax}
+                </span>
+                <span title="Speed">
+                  <Icon name="speed" className="inline-icon" /> {effectiveSpeed(catalog, hoverStack, battle)}
+                </span>
+                {d?.stats?.shots ? (
+                  <span title="Shots">
+                    <Icon name="shots" className="inline-icon" /> {hoverStack.shotsRemaining}
+                  </span>
+                ) : null}
+              </div>
+              <div className="battle-inspect__hp small" data-testid="inspect-hp">
+                <Icon name="hp" className="inline-icon" /> Front creature {frontHp(catalog, hoverStack)}/{d?.stats?.hp ?? '?'} hp · whole stack {hoverStack.totalHp} hp
+              </div>
+              <Bar value={frontHp(catalog, hoverStack)} max={d?.stats?.hp ?? 1} kind="hp" label="Front creature health" />
+              <div className="faint small">Right-click for the full creature card.</div>
+            </div>
+          );
+        })()
+      ) : null}
+
       {showLog ? (
         <Panel title="Combat log" className="battle-log" bodyClassName="scroll" actions={<Button size="small" variant="ghost" icon="close" onClick={() => setShowLog(false)} aria-label="Hide log" />}>
           <ol className="log-list">
@@ -733,7 +796,7 @@ export function BattleScreen() {
 
       {selecting && battle.selection ? <DefenderSelection key={battle.battleId} /> : null}
 
-      <footer className="battle-bottom panel">
+      <footer className="battle-bottom panel gui-command">
         {active && activeDef ? (
           <div className="active-card">
             <CreaturePortrait catalog={catalog} creatureId={active.creatureId} size="4rem" count={aliveCount(catalog, active)} />
@@ -763,7 +826,11 @@ export function BattleScreen() {
           <div className="active-card dim">No active stack</div>
         )}
         <div className="battle-actions">
-          {!humanTurn ? (
+          {boardLoading ? (
+            <span className="dim small">
+              <span className="spinner" /> Preparing the battlefield…
+            </span>
+          ) : !humanTurn ? (
             <span className="dim small">
               <span className="spinner" /> {store.presentationBusy ? 'Resolving…' : 'Enemy turn…'}
             </span>
@@ -887,7 +954,7 @@ export function BattleScreen() {
           ) : null}
         </div>
         <div className="battle-tools">
-          <Button icon="auto" variant={auto ? 'primary' : undefined} onClick={() => setAuto((a) => !a)} disabled={!humanSide} title="Auto-combat: the tactical AI plays your stacks (Q)" data-testid="battle-auto">
+          <Button icon="auto" variant={auto ? 'primary' : undefined} onClick={() => setAuto((a) => !a)} disabled={!humanSide || boardLoading} title="Auto-combat: the tactical AI plays your stacks (Q)" data-testid="battle-auto">
             {auto ? 'Auto: on' : 'Auto'}
           </Button>
           <Button icon="play" size="small" onClick={() => ctrl.current?.skip()} title="Skip animation (Space)">

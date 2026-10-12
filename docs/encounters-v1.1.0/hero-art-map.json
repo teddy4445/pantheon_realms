@@ -1,0 +1,627 @@
+{
+  "heroes": [
+    {
+      "portraitAssetId": "hero.celtic.amergin.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.amergin.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.boudicca.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.boudicca.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.cathal.portrait",
+      "bustAssetId": "hero.celtic.cathal.bust",
+      "portraitFile": "ui/icons/final/hero.celtic.cathal.portrait.webp",
+      "bustFile": "art/busts/hero.celtic.cathal.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.ciar.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.ciar.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.corc.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.corc.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.cu_chulainn.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.cu_chulainn.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.deirdre.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.deirdre.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.dubhghall.portrait",
+      "bustAssetId": "hero.celtic.dubhghall.bust",
+      "portraitFile": "ui/icons/final/hero.celtic.dubhghall.portrait.webp",
+      "bustFile": "art/busts/hero.celtic.dubhghall.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.fergus_mac_roich.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.fergus_mac_roich.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.fiachra.portrait",
+      "bustAssetId": "hero.celtic.fiachra.bust",
+      "portraitFile": "ui/icons/final/hero.celtic.fiachra.portrait.webp",
+      "bustFile": "art/busts/hero.celtic.fiachra.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.fionn_mac_cumhaill.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.medb.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.medb.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.orla.portrait",
+      "bustAssetId": "hero.celtic.orla.bust",
+      "portraitFile": "ui/icons/final/hero.celtic.orla.portrait.webp",
+      "bustFile": "art/busts/hero.celtic.orla.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.sadb.portrait",
+      "bustAssetId": "hero.celtic.sadb.bust",
+      "portraitFile": "ui/icons/final/hero.celtic.sadb.portrait.webp",
+      "bustFile": "art/busts/hero.celtic.sadb.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.scathach.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.scathach.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.celtic.tadhg.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.celtic.tadhg.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.ahmose.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.ahmose.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.ankhwen.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.ankhwen.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.cleopatra.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.cleopatra.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.djedkhonsu.portrait",
+      "bustAssetId": "hero.egyptian.djedkhonsu.bust",
+      "portraitFile": "ui/icons/final/hero.egyptian.djedkhonsu.portrait.webp",
+      "bustFile": "art/busts/hero.egyptian.djedkhonsu.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.hatshepsut.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.hatshepsut.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.hekaib.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.hekaib.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.imhotep.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.imhotep.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.iti.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.iti.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.nebet.portrait",
+      "bustAssetId": "hero.egyptian.nebet.bust",
+      "portraitFile": "ui/icons/final/hero.egyptian.nebet.portrait.webp",
+      "bustFile": "art/busts/hero.egyptian.nebet.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.nefertiti.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.nefertiti.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.paser.portrait",
+      "bustAssetId": "hero.egyptian.paser.bust",
+      "portraitFile": "ui/icons/final/hero.egyptian.paser.portrait.webp",
+      "bustFile": "art/busts/hero.egyptian.paser.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.pawah.portrait",
+      "bustAssetId": "hero.egyptian.pawah.bust",
+      "portraitFile": "ui/icons/final/hero.egyptian.pawah.portrait.webp",
+      "bustFile": "art/busts/hero.egyptian.pawah.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.peseshet.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.peseshet.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.ramses.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.ramses.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.seshet.portrait",
+      "bustAssetId": "hero.egyptian.seshet.bust",
+      "portraitFile": "ui/icons/final/hero.egyptian.seshet.portrait.webp",
+      "bustFile": "art/busts/hero.egyptian.seshet.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.egyptian.tiye.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.egyptian.tiye.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.achilles.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.greek.achilles.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.alexios.portrait",
+      "bustAssetId": "hero.greek.alexios.bust",
+      "portraitFile": "ui/icons/final/hero.greek.alexios.portrait.webp",
+      "bustFile": "art/busts/hero.greek.alexios.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.atalanta.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.greek.atalanta.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.heracles.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.greek.heracles.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.ione.portrait",
+      "bustAssetId": "hero.greek.ione.bust",
+      "portraitFile": "ui/icons/final/hero.greek.ione.portrait.webp",
+      "bustFile": "art/busts/hero.greek.ione.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.melas.portrait",
+      "bustAssetId": "hero.greek.melas.bust",
+      "portraitFile": "ui/icons/final/hero.greek.melas.portrait.webp",
+      "bustFile": "art/busts/hero.greek.melas.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.odysseus.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.greek.odysseus.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.perseus.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.greek.perseus.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.scout_captain.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.greek.scout_captain.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.greek.thaleia.portrait",
+      "bustAssetId": "hero.greek.thaleia.bust",
+      "portraitFile": "ui/icons/final/hero.greek.thaleia.portrait.webp",
+      "bustFile": "art/busts/hero.greek.thaleia.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.abe_no_seimei.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.abe_no_seimei.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.akane.portrait",
+      "bustAssetId": "hero.japanese.akane.bust",
+      "portraitFile": "ui/icons/final/hero.japanese.akane.portrait.webp",
+      "bustFile": "art/busts/hero.japanese.akane.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.benkei.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.benkei.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.genzo.portrait",
+      "bustAssetId": "hero.japanese.genzo.bust",
+      "portraitFile": "ui/icons/final/hero.japanese.genzo.portrait.webp",
+      "bustFile": "art/busts/hero.japanese.genzo.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.gonryo.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.gonryo.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.hangaku_gozen.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.hangaku_gozen.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.kagero.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.kagero.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.kurogane.portrait",
+      "bustAssetId": "hero.japanese.kurogane.bust",
+      "portraitFile": "ui/icons/final/hero.japanese.kurogane.portrait.webp",
+      "bustFile": "art/busts/hero.japanese.kurogane.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.kusunoki_masashige.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.kusunoki_masashige.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.momotaro.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.momotaro.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.oboro.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.oboro.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.shiro.portrait",
+      "bustAssetId": "hero.japanese.shiro.bust",
+      "portraitFile": "ui/icons/final/hero.japanese.shiro.portrait.webp",
+      "bustFile": "art/busts/hero.japanese.shiro.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.tomoe_gozen.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.tomoe_gozen.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.yamato_takeru.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.yamato_takeru.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.yamikage.portrait",
+      "bustAssetId": "hero.japanese.yamikage.bust",
+      "portraitFile": "ui/icons/final/hero.japanese.yamikage.portrait.webp",
+      "bustFile": "art/busts/hero.japanese.yamikage.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.japanese.yoshitsune.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.japanese.yoshitsune.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.acatl.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.acatl.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.chilam_balam.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.chilam_balam.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.chimal.portrait",
+      "bustAssetId": "hero.mesoamerican.chimal.bust",
+      "portraitFile": "ui/icons/final/hero.mesoamerican.chimal.portrait.webp",
+      "bustFile": "art/busts/hero.mesoamerican.chimal.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.eight_deer_jaguar_claw.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.hunahpu.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.hunahpu.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.itzel.portrait",
+      "bustAssetId": "hero.mesoamerican.itzel.bust",
+      "portraitFile": "ui/icons/final/hero.mesoamerican.itzel.portrait.webp",
+      "bustFile": "art/busts/hero.mesoamerican.itzel.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.itztli.portrait",
+      "bustAssetId": "hero.mesoamerican.itztli.bust",
+      "portraitFile": "ui/icons/final/hero.mesoamerican.itztli.portrait.webp",
+      "bustFile": "art/busts/hero.mesoamerican.itztli.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.lady_six_sky.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.lady_six_sky.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.mazatl.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.mazatl.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.moctezuma_ilhuicamina.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.nezahualcoyotl.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.tecuani.portrait",
+      "bustAssetId": "hero.mesoamerican.tecuani.bust",
+      "portraitFile": "ui/icons/final/hero.mesoamerican.tecuani.portrait.webp",
+      "bustFile": "art/busts/hero.mesoamerican.tecuani.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.tlacatl.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.tlacatl.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.topiltzin_quetzalcoatl.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.xbalanque.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.mesoamerican.xbalanque.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.mesoamerican.xoco.portrait",
+      "bustAssetId": "hero.mesoamerican.xoco.bust",
+      "portraitFile": "ui/icons/final/hero.mesoamerican.xoco.portrait.webp",
+      "bustFile": "art/busts/hero.mesoamerican.xoco.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.barrow_captain.portrait",
+      "bustAssetId": "hero.norse.barrow_captain.bust",
+      "portraitFile": "ui/icons/final/hero.norse.barrow_captain.portrait.webp",
+      "bustFile": "art/busts/hero.norse.barrow_captain.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.bone_helm.portrait",
+      "bustAssetId": "hero.norse.bone_helm.bust",
+      "portraitFile": "ui/icons/final/hero.norse.bone_helm.portrait.webp",
+      "bustFile": "art/busts/hero.norse.bone_helm.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.brynhild.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.norse.brynhild.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.eydis.portrait",
+      "bustAssetId": "hero.norse.eydis.bust",
+      "portraitFile": "ui/icons/final/hero.norse.eydis.portrait.webp",
+      "bustFile": "art/busts/hero.norse.eydis.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.grey_jarl.portrait",
+      "bustAssetId": "hero.norse.grey_jarl.bust",
+      "portraitFile": "ui/icons/final/hero.norse.grey_jarl.portrait.webp",
+      "bustFile": "art/busts/hero.norse.grey_jarl.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.hervor.portrait",
+      "bustAssetId": "hero.norse.hervor.bust",
+      "portraitFile": "ui/icons/final/hero.norse.hervor.portrait.webp",
+      "bustFile": "art/busts/hero.norse.hervor.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.hrafn.portrait",
+      "bustAssetId": "hero.norse.hrafn.bust",
+      "portraitFile": "ui/icons/final/hero.norse.hrafn.portrait.webp",
+      "bustFile": "art/busts/hero.norse.hrafn.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.jokul.portrait",
+      "bustAssetId": "hero.norse.jokul.bust",
+      "portraitFile": "ui/icons/final/hero.norse.jokul.portrait.webp",
+      "bustFile": "art/busts/hero.norse.jokul.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.lagertha.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.norse.lagertha.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.ragnar.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.norse.ragnar.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.sigurd.portrait",
+      "bustAssetId": null,
+      "portraitFile": "ui/icons/final/hero.norse.sigurd.portrait.webp",
+      "bustFile": null,
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.skeggi.portrait",
+      "bustAssetId": "hero.norse.skeggi.bust",
+      "portraitFile": "ui/icons/final/hero.norse.skeggi.portrait.webp",
+      "bustFile": "art/busts/hero.norse.skeggi.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.svanhild.portrait",
+      "bustAssetId": "hero.norse.svanhild.bust",
+      "portraitFile": "ui/icons/final/hero.norse.svanhild.portrait.webp",
+      "bustFile": "art/busts/hero.norse.svanhild.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.troll_wife.portrait",
+      "bustAssetId": "hero.norse.troll_wife.bust",
+      "portraitFile": "ui/icons/final/hero.norse.troll_wife.portrait.webp",
+      "bustFile": "art/busts/hero.norse.troll_wife.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    },
+    {
+      "portraitAssetId": "hero.norse.ulfhild.portrait",
+      "bustAssetId": "hero.norse.ulfhild.bust",
+      "portraitFile": "ui/icons/final/hero.norse.ulfhild.portrait.webp",
+      "bustFile": "art/busts/hero.norse.ulfhild.bust.webp",
+      "fallback": "Use square actual portrait in a medallion; do not invent or borrow another hero."
+    }
+  ]
+}

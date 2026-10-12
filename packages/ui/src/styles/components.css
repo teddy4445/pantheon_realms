@@ -1150,6 +1150,11 @@ input[type='radio']:disabled {
 /* Non-blocking: only its buttons take clicks, so the map underneath stays usable. */
 .hint-panel { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(var(--bottombar-h) + 0.8rem); width: min(30rem, 90vw); padding: 0.7rem 0.9rem; border-left: 3px solid var(--teal); animation: fade-in var(--motion-med) ease-out; pointer-events: none; opacity: 0.96; }
 .hint-panel button { pointer-events: auto; }
+/* 1.1.4 (GUI audit): a tip never sits on the control it explains. Recruitment keeps its quantity,
+   Recruit and Train controls at the bottom centre and right, so its tips dock at the bottom left;
+   on narrow windows every tip docks at the top, clear of the bottom action rows. */
+.hint-panel[data-screen='recruitment'] { left: 1rem; transform: none; bottom: 1rem; }
+@media (max-width: 720px) { .hint-panel, .hint-panel[data-screen='recruitment'] { top: 0.5rem; bottom: auto; left: 50%; transform: translateX(-50%); } }
 .hint-panel__title { font-family: var(--font-display); font-weight: 600; color: var(--teal); font-size: 0.9rem; margin-bottom: 0.3rem; }
 .hint-panel p { font-size: 0.92rem; margin: 0 0 0.5rem; }
 

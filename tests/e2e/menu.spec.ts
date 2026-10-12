@@ -11,12 +11,14 @@ test('main menu: honest Continue, no fake Quit, encyclopedia and bestiary viewer
   await expect(page.getByTestId('menu-quit')).toHaveCount(0);
   // Opening screen art: a background from the manifest list, the title logo, the frame and
   // the menu icons all load from bundled files (nothing broken, nothing remote).
-  await expect(page.locator('.main-menu__bg')).toHaveAttribute('data-background', /^menu\.background\./);
+  // 1.1.3: the title always shows the frontend kit's title painting (the older ones are only a fallback).
+  await expect(page.locator('.main-menu__bg')).toHaveAttribute('data-background', 'frontendkit.backdrop.title');
   const images = await page.locator('.main-menu img').evaluateAll((els) => els.map((e) => ({ src: (e as HTMLImageElement).src, ok: (e as HTMLImageElement).complete && (e as HTMLImageElement).naturalWidth > 0 })));
   expect(images.length).toBeGreaterThanOrEqual(2);
   for (const im of images) expect(im, im.src).toMatchObject({ ok: true });
-  // The title is the logo lettering alone; no tagline, footer emblem or "Temporary art" chip.
-  expect(images.some((im) => im.src.includes('logo-text'))).toBe(true);
+  // The title is the logo alone (1.1.0: the frontend kit's logo layer, else the older lettering); no
+  // tagline, footer emblem or "Temporary art" chip.
+  expect(images.some((im) => /frontend-kit-v1\.1\.0\/brand-logo[^/]*\.png$|logo-text/.test(im.src))).toBe(true);
   await expect(page.locator('.main-menu__tagline, .main-menu__emblem')).toHaveCount(0);
   await expect(page.getByText('Temporary art')).toHaveCount(0);
   await expect(page.locator('.main-menu__shade')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0.2)');

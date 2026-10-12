@@ -1,0 +1,86 @@
+# Page snapshot
+
+```yaml
+- main [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - button "Back" [ref=e6]:
+        - img [ref=e7]
+      - heading "Random Map" [level=1] [ref=e10]
+    - main [ref=e11]:
+      - generic [ref=e12]:
+        - tablist "Random map chapters" [ref=e13]:
+          - tab "Land" [ref=e14]
+          - tab "Empires" [active] [selected] [ref=e15]
+          - tab "Rules" [ref=e16]
+        - tabpanel "Empires" [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: Empires
+              - radiogroup "Number of empires" [ref=e23]:
+                - radio "2" [checked] [ref=e24]
+                - radio "3" [ref=e25]
+                - radio "4" [ref=e26]
+                - radio "5" [ref=e27]
+                - radio "6" [ref=e28]
+            - generic [ref=e29]:
+              - generic [ref=e30]: Difficulty
+              - radiogroup "Difficulty" [ref=e31]:
+                - radio "Easy" [ref=e32]
+                - radio "Normal" [checked] [ref=e33]
+                - radio "Hard" [ref=e34]
+              - list [ref=e35]:
+                - listitem [ref=e36]: Everyone starts with the scenario’s resources
+                - listitem [ref=e37]: Equal income
+                - listitem [ref=e38]: Score ×1.0
+            - generic [ref=e39]:
+              - generic [ref=e40]: AI rivals
+              - generic [ref=e41]:
+                - switch "Pantheon temperaments" [checked] [ref=e42]
+                - generic [ref=e43]: "Pantheon temperaments — each AI empire plays in its pantheon’s way: Norse raid, Egyptians build, Celts study magic. Only the AI’s choices change, never a rule."
+          - generic [ref=e44]: Seats
+          - generic [ref=e45]:
+            - generic [ref=e48]:
+              - generic [ref=e49]:
+                - combobox "Seat 1 pantheon" [ref=e50]:
+                  - option "Greek" [selected]
+                  - option "Norse"
+                  - option "Egyptian"
+                  - option "Japanese"
+                  - option "Celtic"
+                  - option "Mesoamerican"
+                - radiogroup "Seat 1 controller" [ref=e51]:
+                  - radio "Human" [checked] [ref=e52]
+                  - radio "AI" [ref=e53]
+              - generic [ref=e54]:
+                - textbox "Seat 1 name" [ref=e55]: Player 1
+                - generic [ref=e56]:
+                  - generic "Zeus" [ref=e57]:
+                    - img "Zeus portrait" [ref=e58]
+                  - text: "Patron: Zeus"
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - combobox "Seat 2 pantheon" [ref=e63]:
+                  - option "Greek"
+                  - option "Norse" [selected]
+                  - option "Egyptian"
+                  - option "Japanese"
+                  - option "Celtic"
+                  - option "Mesoamerican"
+                - radiogroup "Seat 2 controller" [ref=e64]:
+                  - radio "Human" [ref=e65]
+                  - radio "AI" [checked] [ref=e66]
+              - generic [ref=e67]:
+                - text: AI empire · no patron (as in other skirmishes) ·
+                - generic [ref=e68]:
+                  - strong [ref=e69]: Raiders
+                  - text: — Values raids more, keeps an extra hero on the road and raises troops before comforts.
+    - generic [ref=e70]:
+      - button "Back" [ref=e71]:
+        - img [ref=e72]
+        - text: Back
+      - generic [ref=e74]: Continental · Medium · 2 empires · last empire standing
+      - button "Create World" [ref=e75]:
+        - img [ref=e76]
+        - text: Create World
+```

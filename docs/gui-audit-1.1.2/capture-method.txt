@@ -1,0 +1,1 @@
+Latest 1.1.2 source via fresh Vite server. Screens staged only in isolated browser context through an in-memory store exposure; not a traversal/functionality test. Separate Playwright tests exercise visible controls. No source implementation or user saves modified.

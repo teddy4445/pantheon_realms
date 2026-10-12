@@ -1,0 +1,1664 @@
+[
+  {
+    "id": "greek",
+    "battle": {
+      "townId": "eastharbor",
+      "level": 3,
+      "wallCol": 10,
+      "structures": [
+        {
+          "id": "gate",
+          "kind": "gate",
+          "cells": [
+            {
+              "col": 10,
+              "row": 5
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "keep",
+          "kind": "keep",
+          "cells": [],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_n",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 0
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_s",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 10
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "wall_1",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 1
+            },
+            {
+              "col": 10,
+              "row": 2
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_2",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 3
+            },
+            {
+              "col": 10,
+              "row": 4
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_3",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 6
+            },
+            {
+              "col": 10,
+              "row": 7
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_4",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 8
+            },
+            {
+              "col": 10,
+              "row": 9
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        }
+      ],
+      "moat": [
+        {
+          "col": 9,
+          "row": 0
+        },
+        {
+          "col": 9,
+          "row": 1
+        },
+        {
+          "col": 9,
+          "row": 2
+        },
+        {
+          "col": 9,
+          "row": 3
+        },
+        {
+          "col": 9,
+          "row": 4
+        },
+        {
+          "col": 9,
+          "row": 6
+        },
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 9,
+          "row": 8
+        },
+        {
+          "col": 9,
+          "row": 9
+        },
+        {
+          "col": 9,
+          "row": 10
+        }
+      ],
+      "reserves": []
+    },
+    "screen": "battle",
+    "drawn": {
+      "a0": {
+        "anchor": {
+          "col": 0,
+          "row": 2
+        },
+        "x": 171,
+        "y": 403.4,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "30",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a1": {
+        "anchor": {
+          "col": 0,
+          "row": 5
+        },
+        "x": 209.8,
+        "y": 552.7,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "15",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a2": {
+        "anchor": {
+          "col": 1,
+          "row": 8
+        },
+        "x": 209.8,
+        "y": 701.9,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "3",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g0": {
+        "anchor": {
+          "col": 14,
+          "row": 2
+        },
+        "x": 1257.7,
+        "y": 403.4,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g1": {
+        "anchor": {
+          "col": 14,
+          "row": 5
+        },
+        "x": 1296.5,
+        "y": 552.7,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g2": {
+        "anchor": {
+          "col": 13,
+          "row": 8
+        },
+        "x": 1218.9,
+        "y": 701.9,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      }
+    }
+  },
+  {
+    "id": "norse",
+    "battle": {
+      "townId": "eastharbor",
+      "level": 3,
+      "wallCol": 10,
+      "structures": [
+        {
+          "id": "gate",
+          "kind": "gate",
+          "cells": [
+            {
+              "col": 10,
+              "row": 5
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "keep",
+          "kind": "keep",
+          "cells": [],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_n",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 0
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_s",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 10
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "wall_1",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 1
+            },
+            {
+              "col": 10,
+              "row": 2
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_2",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 3
+            },
+            {
+              "col": 10,
+              "row": 4
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_3",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 6
+            },
+            {
+              "col": 10,
+              "row": 7
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_4",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 8
+            },
+            {
+              "col": 10,
+              "row": 9
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        }
+      ],
+      "moat": [
+        {
+          "col": 9,
+          "row": 0
+        },
+        {
+          "col": 9,
+          "row": 1
+        },
+        {
+          "col": 9,
+          "row": 2
+        },
+        {
+          "col": 9,
+          "row": 3
+        },
+        {
+          "col": 9,
+          "row": 4
+        },
+        {
+          "col": 9,
+          "row": 6
+        },
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 9,
+          "row": 8
+        },
+        {
+          "col": 9,
+          "row": 9
+        },
+        {
+          "col": 9,
+          "row": 10
+        }
+      ],
+      "reserves": []
+    },
+    "screen": "battle",
+    "drawn": {
+      "a0": {
+        "anchor": {
+          "col": 0,
+          "row": 2
+        },
+        "x": 171,
+        "y": 403.4,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "30",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a1": {
+        "anchor": {
+          "col": 0,
+          "row": 5
+        },
+        "x": 209.8,
+        "y": 552.7,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "15",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a2": {
+        "anchor": {
+          "col": 1,
+          "row": 8
+        },
+        "x": 209.8,
+        "y": 701.9,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "3",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g0": {
+        "anchor": {
+          "col": 14,
+          "row": 2
+        },
+        "x": 1257.7,
+        "y": 403.4,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g1": {
+        "anchor": {
+          "col": 14,
+          "row": 5
+        },
+        "x": 1296.5,
+        "y": 552.7,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g2": {
+        "anchor": {
+          "col": 13,
+          "row": 8
+        },
+        "x": 1218.9,
+        "y": 701.9,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      }
+    }
+  },
+  {
+    "id": "egyptian",
+    "battle": {
+      "townId": "eastharbor",
+      "level": 3,
+      "wallCol": 10,
+      "structures": [
+        {
+          "id": "gate",
+          "kind": "gate",
+          "cells": [
+            {
+              "col": 10,
+              "row": 5
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "keep",
+          "kind": "keep",
+          "cells": [],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_n",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 0
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_s",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 10
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "wall_1",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 1
+            },
+            {
+              "col": 10,
+              "row": 2
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_2",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 3
+            },
+            {
+              "col": 10,
+              "row": 4
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_3",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 6
+            },
+            {
+              "col": 10,
+              "row": 7
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_4",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 8
+            },
+            {
+              "col": 10,
+              "row": 9
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        }
+      ],
+      "moat": [
+        {
+          "col": 9,
+          "row": 0
+        },
+        {
+          "col": 9,
+          "row": 1
+        },
+        {
+          "col": 9,
+          "row": 2
+        },
+        {
+          "col": 9,
+          "row": 3
+        },
+        {
+          "col": 9,
+          "row": 4
+        },
+        {
+          "col": 9,
+          "row": 6
+        },
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 9,
+          "row": 8
+        },
+        {
+          "col": 9,
+          "row": 9
+        },
+        {
+          "col": 9,
+          "row": 10
+        }
+      ],
+      "reserves": []
+    },
+    "screen": "battle",
+    "drawn": {
+      "a0": {
+        "anchor": {
+          "col": 0,
+          "row": 2
+        },
+        "x": 171,
+        "y": 403.4,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "30",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a1": {
+        "anchor": {
+          "col": 0,
+          "row": 5
+        },
+        "x": 209.8,
+        "y": 552.7,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "15",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a2": {
+        "anchor": {
+          "col": 1,
+          "row": 8
+        },
+        "x": 209.8,
+        "y": 701.9,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "3",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g0": {
+        "anchor": {
+          "col": 14,
+          "row": 2
+        },
+        "x": 1257.7,
+        "y": 403.4,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g1": {
+        "anchor": {
+          "col": 14,
+          "row": 5
+        },
+        "x": 1296.5,
+        "y": 552.7,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g2": {
+        "anchor": {
+          "col": 14,
+          "row": 8
+        },
+        "x": 1257.7,
+        "y": 701.9,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      }
+    }
+  },
+  {
+    "id": "japanese",
+    "battle": {
+      "townId": "eastharbor",
+      "level": 3,
+      "wallCol": 10,
+      "structures": [
+        {
+          "id": "gate",
+          "kind": "gate",
+          "cells": [
+            {
+              "col": 10,
+              "row": 5
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "keep",
+          "kind": "keep",
+          "cells": [],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_n",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 0
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_s",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 10
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "wall_1",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 1
+            },
+            {
+              "col": 10,
+              "row": 2
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_2",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 3
+            },
+            {
+              "col": 10,
+              "row": 4
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_3",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 6
+            },
+            {
+              "col": 10,
+              "row": 7
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_4",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 8
+            },
+            {
+              "col": 10,
+              "row": 9
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        }
+      ],
+      "moat": [
+        {
+          "col": 9,
+          "row": 0
+        },
+        {
+          "col": 9,
+          "row": 1
+        },
+        {
+          "col": 9,
+          "row": 2
+        },
+        {
+          "col": 9,
+          "row": 3
+        },
+        {
+          "col": 9,
+          "row": 4
+        },
+        {
+          "col": 9,
+          "row": 6
+        },
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 9,
+          "row": 8
+        },
+        {
+          "col": 9,
+          "row": 9
+        },
+        {
+          "col": 9,
+          "row": 10
+        }
+      ],
+      "reserves": []
+    },
+    "screen": "battle",
+    "drawn": {
+      "a0": {
+        "anchor": {
+          "col": 0,
+          "row": 2
+        },
+        "x": 171,
+        "y": 403.4,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "30",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a1": {
+        "anchor": {
+          "col": 0,
+          "row": 5
+        },
+        "x": 209.8,
+        "y": 552.7,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "15",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a2": {
+        "anchor": {
+          "col": 1,
+          "row": 8
+        },
+        "x": 209.8,
+        "y": 701.9,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "3",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g0": {
+        "anchor": {
+          "col": 14,
+          "row": 2
+        },
+        "x": 1257.7,
+        "y": 403.4,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g1": {
+        "anchor": {
+          "col": 14,
+          "row": 5
+        },
+        "x": 1296.5,
+        "y": 552.7,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g2": {
+        "anchor": {
+          "col": 14,
+          "row": 8
+        },
+        "x": 1257.7,
+        "y": 701.9,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      }
+    }
+  },
+  {
+    "id": "celtic",
+    "battle": {
+      "townId": "eastharbor",
+      "level": 3,
+      "wallCol": 10,
+      "structures": [
+        {
+          "id": "gate",
+          "kind": "gate",
+          "cells": [
+            {
+              "col": 10,
+              "row": 5
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "keep",
+          "kind": "keep",
+          "cells": [],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_n",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 0
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_s",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 10
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "wall_1",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 1
+            },
+            {
+              "col": 10,
+              "row": 2
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_2",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 3
+            },
+            {
+              "col": 10,
+              "row": 4
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_3",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 6
+            },
+            {
+              "col": 10,
+              "row": 7
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_4",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 8
+            },
+            {
+              "col": 10,
+              "row": 9
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        }
+      ],
+      "moat": [
+        {
+          "col": 9,
+          "row": 0
+        },
+        {
+          "col": 9,
+          "row": 1
+        },
+        {
+          "col": 9,
+          "row": 2
+        },
+        {
+          "col": 9,
+          "row": 3
+        },
+        {
+          "col": 9,
+          "row": 4
+        },
+        {
+          "col": 9,
+          "row": 6
+        },
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 9,
+          "row": 8
+        },
+        {
+          "col": 9,
+          "row": 9
+        },
+        {
+          "col": 9,
+          "row": 10
+        }
+      ],
+      "reserves": []
+    },
+    "screen": "battle",
+    "drawn": {
+      "a0": {
+        "anchor": {
+          "col": 0,
+          "row": 2
+        },
+        "x": 171,
+        "y": 403.4,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "30",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a1": {
+        "anchor": {
+          "col": 0,
+          "row": 5
+        },
+        "x": 209.8,
+        "y": 552.7,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "15",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a2": {
+        "anchor": {
+          "col": 1,
+          "row": 8
+        },
+        "x": 209.8,
+        "y": 701.9,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "3",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g0": {
+        "anchor": {
+          "col": 14,
+          "row": 2
+        },
+        "x": 1257.7,
+        "y": 403.4,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g1": {
+        "anchor": {
+          "col": 14,
+          "row": 5
+        },
+        "x": 1296.5,
+        "y": 552.7,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g2": {
+        "anchor": {
+          "col": 13,
+          "row": 8
+        },
+        "x": 1218.9,
+        "y": 701.9,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      }
+    }
+  },
+  {
+    "id": "mesoamerican",
+    "battle": {
+      "townId": "eastharbor",
+      "level": 3,
+      "wallCol": 10,
+      "structures": [
+        {
+          "id": "gate",
+          "kind": "gate",
+          "cells": [
+            {
+              "col": 10,
+              "row": 5
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "keep",
+          "kind": "keep",
+          "cells": [],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_n",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 0
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "tower_s",
+          "kind": "tower",
+          "cells": [
+            {
+              "col": 10,
+              "row": 10
+            }
+          ],
+          "hp": 2,
+          "maxHp": 2
+        },
+        {
+          "id": "wall_1",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 1
+            },
+            {
+              "col": 10,
+              "row": 2
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_2",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 3
+            },
+            {
+              "col": 10,
+              "row": 4
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_3",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 6
+            },
+            {
+              "col": 10,
+              "row": 7
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        },
+        {
+          "id": "wall_4",
+          "kind": "wall",
+          "cells": [
+            {
+              "col": 10,
+              "row": 8
+            },
+            {
+              "col": 10,
+              "row": 9
+            }
+          ],
+          "hp": 3,
+          "maxHp": 3
+        }
+      ],
+      "moat": [
+        {
+          "col": 9,
+          "row": 0
+        },
+        {
+          "col": 9,
+          "row": 1
+        },
+        {
+          "col": 9,
+          "row": 2
+        },
+        {
+          "col": 9,
+          "row": 3
+        },
+        {
+          "col": 9,
+          "row": 4
+        },
+        {
+          "col": 9,
+          "row": 6
+        },
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 9,
+          "row": 8
+        },
+        {
+          "col": 9,
+          "row": 9
+        },
+        {
+          "col": 9,
+          "row": 10
+        }
+      ],
+      "reserves": []
+    },
+    "screen": "battle",
+    "drawn": {
+      "a0": {
+        "anchor": {
+          "col": 0,
+          "row": 2
+        },
+        "x": 171,
+        "y": 403.4,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "30",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a1": {
+        "anchor": {
+          "col": 0,
+          "row": 5
+        },
+        "x": 209.8,
+        "y": 552.7,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "15",
+        "deaths": 0,
+        "hits": 0
+      },
+      "a2": {
+        "anchor": {
+          "col": 1,
+          "row": 8
+        },
+        "x": 209.8,
+        "y": 701.9,
+        "mirrored": false,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "3",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g0": {
+        "anchor": {
+          "col": 14,
+          "row": 2
+        },
+        "x": 1257.7,
+        "y": 403.4,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g1": {
+        "anchor": {
+          "col": 14,
+          "row": 5
+        },
+        "x": 1296.5,
+        "y": 552.7,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      },
+      "g2": {
+        "anchor": {
+          "col": 14,
+          "row": 8
+        },
+        "x": 1257.7,
+        "y": 701.9,
+        "mirrored": true,
+        "drawn": "idle",
+        "status": "final",
+        "sprite": "ready",
+        "down": false,
+        "visible": true,
+        "overlays": [],
+        "marks": [],
+        "label": "12",
+        "deaths": 0,
+        "hits": 0
+      }
+    }
+  }
+]

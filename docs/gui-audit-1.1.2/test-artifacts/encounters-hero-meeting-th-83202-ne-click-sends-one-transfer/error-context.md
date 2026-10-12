@@ -1,0 +1,54 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - heading "Pantheon Realms" [level=1] [ref=e7]:
+        - img "Pantheon Realms" [ref=e8]
+      - navigation "Main menu" [ref=e11]:
+        - generic [ref=e12]:
+          - button "Continue No compatible save in progress yet" [disabled] [ref=e13]:
+            - img [ref=e15]
+            - generic [ref=e17]:
+              - generic [ref=e18]: Continue
+              - generic [ref=e19]: No compatible save in progress yet
+          - button "New Game" [ref=e20]:
+            - img [ref=e22]
+            - generic [ref=e25]: New Game
+            - generic [ref=e26]: ›
+          - button "Load Game" [ref=e27]:
+            - img [ref=e29]
+            - generic [ref=e32]: Load Game
+            - generic [ref=e33]: ›
+          - button "Encyclopedia" [ref=e34]:
+            - img [ref=e36]
+            - generic [ref=e39]: Encyclopedia
+            - generic [ref=e40]: ›
+          - button "Settings" [ref=e41]:
+            - img [ref=e43]
+            - generic [ref=e46]: Settings
+            - generic [ref=e47]: ›
+        - button "Hall of Records" [ref=e49]:
+          - img [ref=e51]
+          - generic [ref=e53]: Hall of Records
+      - generic [ref=e55]:
+        - generic "Rules pr-0.2-candidate · content content-0.8.0 (Settings → Saves)" [ref=e56]: v1.1.2 · Browser build
+        - generic [ref=e57]: Saves are stored in this browser. Close the tab to quit.
+  - dialog "Saved Journeys" [ref=e58]:
+    - generic [ref=e60]:
+      - heading "Saved Journeys" [level=2] [ref=e62]
+      - button "Close" [ref=e63]:
+        - img [ref=e64]
+      - generic [ref=e68]:
+        - generic [ref=e69]: No saved journeys yet
+        - generic [ref=e70]: Your saves, the three autosaves written at dawn and the checkpoint written before every battle will be kept here. To bring in a save file from elsewhere, use Import… below.
+      - generic [ref=e71]:
+        - tablist "Save or load" [ref=e72]:
+          - tab "Save" [disabled] [ref=e73]
+          - tab "Load" [selected] [ref=e74]
+        - button "Import…" [active] [ref=e75]:
+          - img [ref=e76]
+          - text: Import…
+        - button "Close" [ref=e78]
+```

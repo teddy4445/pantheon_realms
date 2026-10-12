@@ -5,10 +5,11 @@
  *
  * Dialogs submit commands or session transitions; they never edit state.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   abilityRules,
   climateRuleFor,
+  maxMana,
   quoteNeutralReaction,
   armyStacks,
   campaignEpilogueLines,
@@ -24,20 +25,30 @@ import {
   townFortificationLevel,
   type ArmyRef,
   type ArmyState,
-  type HexCoord, requireScenarioMission, scenarioMission,
+  type ContentCatalog,
+  type HeroState,
+  type HexCoord,
+  type ObjectiveCondition,
+  requireScenarioMission,
+  scenarioMission,
 } from '@pr/rules';
 import { useStore } from '../app/context';
 import { endOfGameSplash } from '../components/moments';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
-import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle } from '../components/kit';
-import { ArtifactIcon, CreaturePortrait, HeroPortrait, MissionThumb, SceneArt, briefingArt, speakerSides } from '../components/art';
+import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle, useModalFocus } from '../components/kit';
+import { ArtifactIcon, CreaturePortrait, Emblem, HeroPortrait, MissionThumb, SceneArt, SpeakerPortrait, briefingArt, speakerBust } from '../components/art';
+import { encounterKitArt, townBackground } from '../assets/manifest';
+import { RewardDialog } from '../components/rewards';
+import { AdventureStage, HeroFigure, TownThumbnail, encounterScene, townScene } from '../components/adventure';
+import { guiThemeFor } from '../assets/guiArt';
+import { useArtState } from '../components/gui';
 import { ClimateChip } from '../components/climate';
-import { DialogueStage, useProtagonist } from './Story';
 import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { Icon } from '../assets/icons';
 import { DialogueLines } from '../screens/Journal';
 import { relativeTime } from '../app/view';
+import { ArtIcon, EmptyArchive } from '../components/frontend';
 import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog } from './WorldDialogs';
 import { SpellBook } from '../components/spellbook';
 import { AbilityBadge } from '../components/badges';
@@ -138,17 +149,30 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
     store.toast(`Loaded “${envelope.name}”`, 'success');
   };
   const sel = selected ? byId.get(selected) : undefined;
-  const order = mode === 'save' ? [...MANUAL_SLOTS] : [...MANUAL_SLOTS, ...AUTO_SLOTS, CHECKPOINT_SLOT];
+  // Saved Journeys (1.1.0 handoff screen 10): manual slots, then the rotating autosaves and the pre-battle checkpoint (load only).
+  const groups: { id: string; title: string; slots: readonly string[] }[] =
+    mode === 'save'
+      ? [{ id: 'manual', title: 'Manual saves', slots: MANUAL_SLOTS }]
+      : [
+          { id: 'manual', title: 'Manual saves', slots: MANUAL_SLOTS },
+          { id: 'auto', title: 'Autosaves', slots: AUTO_SLOTS },
+          { id: 'checkpoint', title: 'Checkpoint', slots: [CHECKPOINT_SLOT] },
+        ];
+  // Only a list that was read and holds nothing is "empty"; reading, unavailable and failed storage say so instead.
+  const archiveEmpty = mode === 'load' && slots !== null && !error && slots.length === 0;
+  const missionOf = (x: SlotInfo | undefined) => x?.envelope?.snapshot.match.mission.missionId ?? null;
+  const when = (iso: string | null) => (iso ? new Date(iso).toLocaleString() : '');
   return (
     <Modal
-      title={mode === 'save' ? 'Save Game' : 'Load Game'}
+      title="Saved Journeys"
       onClose={() => store.closeOverlay()}
-      width="52rem"
+      width="62rem"
       testId="save-load"
+      surface="parchment"
       footer={
         <>
-          <div className="tabs">
-            <button type="button" role="tab" className="tab" aria-selected={mode === 'save'} onClick={() => setMode('save')} disabled={!session}>
+          <div className="tabs" role="tablist" aria-label="Save or load">
+            <button type="button" role="tab" className="tab" aria-selected={mode === 'save'} onClick={() => setMode('save')} disabled={!session} title={session ? undefined : 'Start or load a game to save it'}>
               Save
             </button>
             <button type="button" role="tab" className="tab" aria-selected={mode === 'load'} onClick={() => setMode('load')}>
@@ -170,119 +194,207 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
         </>
       }
     >
-      {error ? <p className="note danger">Saves are unavailable: {error}</p> : null}
-      {slots === null ? <p className="dim">Reading saves…</p> : null}
-      <div className="save-layout">
-        <ul className="save-list" role="listbox" aria-label="Save slots">
-          {order.map((id) => {
-            const s = byId.get(id);
-            const kindLabel = id.startsWith('auto') ? 'Autosave' : id === CHECKPOINT_SLOT ? 'Checkpoint' : `Slot ${id.split('-')[1]}`;
-            return (
-              <li key={id}>
-                <button type="button" role="option" aria-selected={selected === id} className={`save-row ${selected === id ? 'is-selected' : ''} ${s ? '' : 'is-empty'}`} onClick={() => setSelected(id)} data-testid={`save-${id}`}>
-                  <span className="save-row__kind">{kindLabel}</span>
-                  <span className="save-row__name">{s ? s.name : 'Empty'}</span>
-                  <span className="save-row__meta faint small">
-                    {s?.metadata ? `${s.metadata.missionName} · Day ${s.metadata.day} · ${s.metadata.heroName} Lv ${s.metadata.heroLevel}` : ''}
-                  </span>
-                  {s ? (
-                    s.compatibility.status === 'ok' ? (
-                      <span className="faint small">{relativeTime(s.savedAt)}</span>
-                    ) : (
-                      <Chip tone="bad" title={s.compatibility.reason}>
-                        {s.compatibility.status}
-                      </Chip>
-                    )
-                  ) : null}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="save-detail">
-          {selected ? (
-            <>
-              {sel?.envelope ? <MissionThumb catalog={store.catalog} missionId={sel.envelope.snapshot.match.mission.missionId} style={{ width: '100%', height: '8rem' }} /> : null}
-              {sel ? (
-                <>
-                  <div className="save-detail__name">{sel.name}</div>
-                  {sel.metadata ? (
-                    <div className="small">
-                      {sel.metadata.campaignName ?? sel.metadata.scenarioName} — {sel.metadata.missionName}
-                      <br />
-                      Week {sel.metadata.week}, day {sel.metadata.dayOfWeek} · {sel.metadata.heroName} level {sel.metadata.heroLevel} · {sel.metadata.pantheonName}
-                      <br />
-                      <span className="faint">
-                        {sel.metadata.branch} · rules {sel.metadata.rulesVersion} · {Math.round(sel.bytes / 1024)} KB
+      {error ? (
+        <p className="note danger" role="alert">
+          Saves are unavailable: {error}
+        </p>
+      ) : null}
+      {slots === null ? (
+        <p className="dim" role="status">
+          Reading saves…
+        </p>
+      ) : null}
+      {archiveEmpty ? (
+        <EmptyArchive title="No saved journeys yet" testId="save-empty">
+          Your saves, the three autosaves written at dawn and the checkpoint written before every battle will be kept here. To bring in a save file from elsewhere, use Import… below.
+        </EmptyArchive>
+      ) : (
+        <div className="save-layout fe-saves">
+          <div className="save-list fe-saves__list" role="listbox" aria-label="Save slots">
+            {groups.map((g) => (
+              <div key={g.id} role="group" aria-labelledby={`save-group-${g.id}`} className="fe-saves__group">
+                <div className="fe-saves__heading" id={`save-group-${g.id}`}>
+                  {g.title}
+                </div>
+                {g.slots.map((id) => {
+                  const s = byId.get(id);
+                  const kindLabel = id.startsWith('auto') ? `Autosave ${id.split('-')[1]}` : id === CHECKPOINT_SLOT ? 'Before battle' : `Slot ${id.split('-')[1]}`;
+                  const mission = missionOf(s);
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      role="option"
+                      aria-selected={selected === id}
+                      className={`save-row fe-save-row ${selected === id ? 'is-selected' : ''} ${s ? '' : 'is-empty'}`}
+                      onClick={() => setSelected(id)}
+                      data-testid={`save-${id}`}
+                    >
+                      <span className="fe-save-row__thumb" aria-hidden="true">
+                        {mission ? <MissionThumb catalog={store.catalog} missionId={mission} style={{ width: '100%', height: '100%' }} /> : <span className="fe-save-row__laurel" />}
                       </span>
-                    </div>
-                  ) : null}
-                  {sel.compatibility.status !== 'ok' ? <p className="danger small">{sel.compatibility.reason}. The file is kept unchanged.</p> : null}
-                </>
-              ) : (
-                <p className="dim">Empty slot.</p>
-              )}
-              {canSave && MANUAL_SLOTS.includes(selected as (typeof MANUAL_SLOTS)[number]) ? (
-                <>
-                  <label className="field__label" htmlFor="save-name">
-                    Name
-                  </label>
-                  <input id="save-name" className="input" value={name} placeholder={defaultName} maxLength={60} onChange={(e) => setName(e.target.value)} />
+                      <span className="fe-save-row__text">
+                        <span className="save-row__kind">{kindLabel}</span>
+                        <span className="save-row__name">{s ? s.name : 'Empty slot'}</span>
+                        {s?.metadata ? (
+                          <span className="save-row__meta small">
+                            {s.metadata.pantheonName} · Day {s.metadata.day} · {s.metadata.heroName} Lv {s.metadata.heroLevel}
+                          </span>
+                        ) : null}
+                      </span>
+                      {s ? (
+                        s.compatibility.status === 'ok' ? (
+                          <span className="fe-save-row__when small" title={when(s.savedAt)}>
+                            {relativeTime(s.savedAt)}
+                          </span>
+                        ) : (
+                          <span className="fe-save-row__when">
+                            <Chip tone="bad" title={s.compatibility.reason}>
+                              {s.compatibility.status}
+                            </Chip>
+                          </span>
+                        )
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+          <div className="save-detail fe-saves__detail" aria-live="polite">
+            {selected ? (
+              <>
+                {missionOf(sel) ? (
+                  <figure className="fe-saves__art">
+                    <MissionThumb catalog={store.catalog} missionId={missionOf(sel)!} style={{ width: '100%', height: '100%' }} />
+                    <figcaption>Illustration of the mission — not a picture of the saved game</figcaption>
+                  </figure>
+                ) : null}
+                {sel ? (
+                  <>
+                    <div className="save-detail__name">{sel.name}</div>
+                    {sel.metadata ? (
+                      <dl className="fe-saves__facts">
+                        <div>
+                          <dt>{sel.metadata.campaignName ? 'Campaign' : 'Scenario'}</dt>
+                          <dd>{sel.metadata.campaignName ?? sel.metadata.scenarioName}</dd>
+                        </div>
+                        <div>
+                          <dt>Mission</dt>
+                          <dd>{sel.metadata.missionName}</dd>
+                        </div>
+                        <div>
+                          <dt>Day</dt>
+                          <dd>
+                            Day {sel.metadata.day} — week {sel.metadata.week}, day {sel.metadata.dayOfWeek}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Hero</dt>
+                          <dd>
+                            {sel.metadata.heroName}, level {sel.metadata.heroLevel}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Pantheon</dt>
+                          <dd>{sel.metadata.pantheonName}</dd>
+                        </div>
+                        <div>
+                          <dt>Saved</dt>
+                          <dd>{when(sel.savedAt) || '—'}</dd>
+                        </div>
+                        <div>
+                          <dt>File</dt>
+                          <dd className="faint">
+                            {sel.metadata.branch} · rules {sel.metadata.rulesVersion} · {Math.round(sel.bytes / 1024)} KB
+                          </dd>
+                        </div>
+                      </dl>
+                    ) : null}
+                    {sel.compatibility.status !== 'ok' ? (
+                      <p className="danger small" data-testid="save-incompatible">
+                        {sel.compatibility.reason}. The file is kept unchanged.
+                      </p>
+                    ) : null}
+                  </>
+                ) : (
+                  <p className="dim">Empty slot.</p>
+                )}
+                {canSave && MANUAL_SLOTS.includes(selected as (typeof MANUAL_SLOTS)[number]) ? (
+                  <div className="fe-saves__save">
+                    <label className="field__label" htmlFor="save-name">
+                      Name
+                    </label>
+                    <input id="save-name" className="input" value={name} placeholder={defaultName} maxLength={60} onChange={(e) => setName(e.target.value)} />
+                    <Button
+                      variant="primary"
+                      block
+                      onClick={() => (sel ? store.confirm('Overwrite this save?', `“${sel.name}” will be replaced by the current game.`, 'Overwrite', () => void doSave(selected), { danger: true }) : void doSave(selected))}
+                      data-testid="save-confirm"
+                    >
+                      {sel ? 'Overwrite' : 'Save here'}
+                    </Button>
+                  </div>
+                ) : null}
+                {mode === 'load' && sel ? (
                   <Button
                     variant="primary"
                     block
-                    onClick={() => (sel ? store.confirm('Overwrite this save?', `“${sel.name}” will be replaced.`, 'Overwrite', () => void doSave(selected)) : void doSave(selected))}
-                    data-testid="save-confirm"
+                    disabled={sel.compatibility.status !== 'ok'}
+                    disabledReason={sel.compatibility.status === 'ok' ? null : sel.compatibility.reason}
+                    onClick={() => (session ? store.confirm('Load this save?', 'Unsaved progress in the current game will be lost.', 'Load', () => void doLoad(selected), { danger: true }) : void doLoad(selected))}
+                    data-testid="load-confirm"
                   >
-                    {sel ? 'Overwrite' : 'Save here'}
+                    Load
                   </Button>
-                </>
-              ) : null}
-              {mode === 'load' && sel ? (
-                <Button
-                  variant="primary"
-                  block
-                  disabled={sel.compatibility.status !== 'ok'}
-                  disabledReason={sel.compatibility.status === 'ok' ? null : sel.compatibility.reason}
-                  onClick={() => (session ? store.confirm('Load this save?', 'Unsaved progress in the current game will be lost.', 'Load', () => void doLoad(selected)) : void doLoad(selected))}
-                  data-testid="load-confirm"
-                >
-                  Load
-                </Button>
-              ) : null}
-              {sel ? (
-                <div className="row gap">
-                  <Button size="small" onClick={() => void store.saves.exportSave(sel.id, sel.name).then((ok) => store.toast(ok ? 'Exported' : 'Export cancelled'))}>
-                    Export…
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="danger"
-                    onClick={() =>
-                      store.confirm('Delete this save?', `“${sel.name}” will be permanently deleted.`, 'Delete', async () => {
-                        await store.saves.remove(sel.id);
-                        store.continueChecked = false;
-                        setSelected(null);
-                        void refresh();
-                      }, { danger: true })
-                    }
-                  >
-                    Delete
-                  </Button>
-                </div>
-              ) : null}
-            </>
-          ) : (
-            <p className="dim">{mode === 'save' ? 'Choose a manual slot. Autosaves rotate automatically at dawn; a checkpoint is written before every battle.' : 'Choose a save to see its details.'}</p>
-          )}
+                ) : null}
+                {sel ? (
+                  <div className="row gap fe-saves__file">
+                    <Button size="small" onClick={() => void store.saves.exportSave(sel.id, sel.name).then((ok) => store.toast(ok ? 'Exported' : 'Export cancelled'))}>
+                      Export…
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="danger"
+                      onClick={() =>
+                        store.confirm(
+                          'Delete this save?',
+                          `“${sel.name}” will be permanently deleted.`,
+                          'Delete',
+                          async () => {
+                            await store.saves.remove(sel.id);
+                            store.continueChecked = false;
+                            setSelected(null);
+                            void refresh();
+                          },
+                          { danger: true },
+                        )
+                      }
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <p className="dim fe-saves__hint">{mode === 'save' ? 'Choose a manual slot. Autosaves rotate automatically at dawn; a checkpoint is written before every battle.' : 'Choose a save to see its details.'}</p>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </Modal>
   );
 }
 
 // ---------------------------------------------------------------------------
 
+/**
+ * The shared confirmation (1.1.0 handoff screen 14): a small parchment dialog
+ * with the consequence in plain words. The safe action (Cancel, or the
+ * screen's own wording such as "Keep editing") always takes the first focus,
+ * so Enter or Space never confirms a destructive action by accident; Escape
+ * cancels.
+ */
 function ConfirmDialog({ o }: { o: Extract<Overlay, { kind: 'confirm' }> }) {
   const store = useStore();
   return (
@@ -291,10 +403,14 @@ function ConfirmDialog({ o }: { o: Extract<Overlay, { kind: 'confirm' }> }) {
       onClose={() => store.closeOverlay()}
       width="30rem"
       testId="confirm"
+      surface="parchment"
+      compact
       footer={
         <>
           <span className="grow" />
-          <Button onClick={() => store.closeOverlay()}>Cancel</Button>
+          <Button onClick={() => store.closeOverlay()} data-autofocus="" data-testid="confirm-cancel">
+            {o.cancelLabel ?? 'Cancel'}
+          </Button>
           <Button
             variant={o.danger ? 'danger' : 'primary'}
             onClick={() => {
@@ -308,7 +424,11 @@ function ConfirmDialog({ o }: { o: Extract<Overlay, { kind: 'confirm' }> }) {
         </>
       }
     >
-      <p>{o.body}</p>
+      <div className={`confirm__lead ${o.danger ? 'confirm__lead--danger' : ''}`}>
+        {/* Destructive choices carry the frontend kit's red wax seal (decorative; the words say what happens). */}
+        {o.danger ? <ArtIcon id="frontendkit.icon.warning" className="confirm__seal" /> : null}
+        <p className="confirm__body">{o.body}</p>
+      </div>
       {o.content ?? null}
       {o.detail?.length ? (
         <ul className="bullets small">
@@ -323,108 +443,176 @@ function ConfirmDialog({ o }: { o: Extract<Overlay, { kind: 'confirm' }> }) {
 
 // ---------------------------------------------------------------------------
 
+/** Objective → icon, from the objective's condition (presentation only; never from its wording). */
+function objectiveIcon(cond: ObjectiveCondition): string {
+  switch (cond.type) {
+    case 'counter_at_least':
+      return cond.counter.startsWith('recruited:') ? 'icon.ui.recruit' : cond.counter.startsWith('trained:') || cond.counter.startsWith('upgraded:') ? 'icon.ui.upgrade' : 'icon.ui.flag';
+    case 'hero_army_contains':
+      return 'icon.ui.recruit';
+    case 'site_cleared':
+    case 'hero_defeated':
+      return 'icon.ui.sword2';
+    case 'site_activated':
+      return 'icon.ui.beacon';
+    case 'player_has_minor_god':
+      return 'icon.ui.gift';
+    case 'all':
+    case 'any':
+      return cond.conditions[0] ? objectiveIcon(cond.conditions[0]) : 'icon.ui.flag';
+    default:
+      return 'icon.ui.flag';
+  }
+}
+
 /**
- * Mission briefing as a full-screen scene: the mission's painted briefing art
- * behind (its bottom 30 % is kept for the dialogue), the title at the top left,
- * the objectives at the right and the briefing lines in the dialogue box with the
- * speaker's bust. Begin is always available.
+ * Scenario introduction (1.1.0 encounter scene): the mission's painting dimmed
+ * behind an unrolled parchment scroll (a separate, non-interactive picture; the
+ * live content stays inside its safe rectangle between the rollers). Header:
+ * campaign and mission order (or Skirmish / Random map), the mission's name and
+ * subtitle, the player's emblem, and the mission facts. Left: the mission
+ * illustration and the protagonist. Right: the summary and every visible
+ * objective (locked ones stay hidden) with an icon from its condition, its
+ * optional label and its current status; the list scrolls. Bottom: the
+ * briefing lines with their real speakers, Back / Next, and Begin — which only
+ * closes the briefing (the game was created before it opened). On narrow
+ * screens the same content stacks on a plain parchment page.
  */
 function BriefingDialog() {
   const store = useStore();
   const state = store.session!.state;
   const catalog = store.catalog;
+  const playerId = store.session!.humanPlayerId;
   const mission = requireScenarioMission(catalog, state);
   const objectives = missionObjectiveDefs(catalog, state).filter((o) => state.mission.objectives[o.id]?.status !== 'locked');
   const campaign = mission.campaignId ? catalog.campaigns[mission.campaignId] : undefined;
-  const protagonist = useProtagonist();
   const lines = mission.briefing;
   const [index, setIndex] = useState(0);
   const line = lines[Math.min(index, Math.max(0, lines.length - 1))];
-  const sides = useMemo(() => speakerSides(lines, protagonist), [lines, protagonist]);
   const art = briefingArt(mission.thumbnailAssetId);
   const template = catalog.mapTemplates[mission.mapTemplateId];
   const kicker = campaign ? `${campaign.name} · Mission ${mission.order}` : state.customMission ? 'Random map' : 'Skirmish';
   const last = index >= lines.length - 1;
+  const scroll = encounterKitArt('encounterkit.intro.scroll')?.url ?? null;
+  // Until the scroll is decoded (or if it cannot load), the writing area is plain paper (GUI audit 1.1.2).
+  const scrollArt = useArtState(scroll);
+  const pantheonId = state.players[playerId]?.pantheonId;
+  // The protagonist: the campaign's hero when present, else the player's first hero.
+  const heroes = Object.values(state.heroes).filter((h) => h.ownerId === playerId && h.status === 'active');
+  const lead = (campaign ? heroes.find((h) => h.definitionId === campaign.heroDefinitionId) : undefined) ?? heroes[0];
+  const ref = useRef<HTMLDivElement>(null);
+  const trap = useModalFocus(ref);
+  const titleId = useId();
+  const difficulty = state.scenario.difficultyId ? catalog.difficulties?.[state.scenario.difficultyId] : undefined;
+  const statusLabel: Record<string, string> = { completed: 'Done', failed: 'Failed' };
   return (
-    <div className="briefing-scene" role="dialog" aria-modal="true" aria-label={`${kicker}: ${mission.name}`} data-testid="briefing">
-      <SceneArt
-        art={art}
-        scrim="bottom"
-        fallback={<MissionThumb catalog={catalog} missionId={mission.id} assetId={mission.thumbnailAssetId} style={{ width: '100%', height: '100%', border: 0, borderRadius: 0 }} />}
-      />
-      <header className="briefing-scene__head">
-        <div className="briefing-scene__kicker">{kicker}</div>
-        <h1 className="briefing-scene__title">{mission.name}</h1>
-        <div className="briefing-scene__subtitle">{mission.subtitle}</div>
-      </header>
-      <aside className="briefing-scene__side panel" aria-label="Mission objectives">
-        <div className="briefing-scene__side-body scroll">
-          <p className="briefing-scene__summary">{mission.summary}</p>
-          <SectionTitle>Objectives</SectionTitle>
-          <ul className="bullets">
-            {objectives.map((o) => (
-              <li key={o.id}>
-                <strong>{o.title}</strong> {o.category === 'optional' ? <Chip>optional</Chip> : null} <span className="dim small">— {missionText(catalog, state, o.description)}</span>
-              </li>
-            ))}
-          </ul>
-          {mission.newDecisions.length ? (
-            <>
-              <SectionTitle>New in this mission</SectionTitle>
-              <div className="row gap wrap">
-                {mission.newDecisions.map((d) => (
-                  <Chip key={d} tone="info">
-                    {d}
-                  </Chip>
-                ))}
-              </div>
-            </>
-          ) : null}
-          <p className="faint small" data-testid="briefing-facts">
-            {mission.targetPlaytime}
-            {template ? ` · ${template.width}×${template.height} map` : ''}
-            {state.scenario.difficultyId && catalog.difficulties?.[state.scenario.difficultyId] ? ` · ${catalog.difficulties[state.scenario.difficultyId]!.name} difficulty` : ''}
-          </p>
-        </div>
-      </aside>
-      {line ? (
-        <DialogueStage
-          line={line}
-          side={sides.get(line.speaker) ?? 'left'}
-          footer={
-            <>
-              <span className="faint small">
-                {index + 1} / {lines.length}
+    <div className="briefing-scene brief" role="dialog" aria-modal="true" aria-labelledby={titleId} data-testid="briefing" ref={ref} onKeyDown={trap}>
+      <SceneArt art={art} scrim="full" fallback={<MissionThumb catalog={catalog} missionId={mission.id} assetId={mission.thumbnailAssetId} style={{ width: '100%', height: '100%', border: 0, borderRadius: 0 }} />} />
+      <div className={`brief__scroll ${scroll ? 'has-art' : ''}`} data-art={scrollArt}>
+        {scroll ? <img className="brief__paper" src={scroll} alt="" aria-hidden="true" draggable={false} decoding="async" /> : null}
+        <div className="brief__safe">
+          <header className="brief__head">
+            {pantheonId ? (
+              <span className="brief__emblem" aria-hidden="true">
+                <Emblem catalog={catalog} pantheonId={pantheonId} size="100%" />
               </span>
+            ) : null}
+            <div className="brief__titles">
+              <div className="brief__kicker briefing-scene__kicker">{kicker}</div>
+              <h1 className="brief__title briefing-scene__title" id={titleId}>
+                {mission.name}
+              </h1>
+              <div className="brief__subtitle briefing-scene__subtitle">{mission.subtitle}</div>
+            </div>
+            <p className="brief__facts" data-testid="briefing-facts">
+              {mission.targetPlaytime}
+              {template ? ` · ${template.width}×${template.height} map` : ''}
+              {difficulty ? ` · ${difficulty.name} difficulty` : ''}
+            </p>
+          </header>
+          <div className="brief__body">
+            <div className="brief__left">
+              <figure className="brief__art">
+                {art ? <img src={art.url} alt={`${mission.name} — mission illustration`} draggable={false} decoding="async" /> : <MissionThumb catalog={catalog} missionId={mission.id} assetId={mission.thumbnailAssetId} style={{ width: '100%', height: '100%' }} />}
+              </figure>
+              {lead ? (
+                <div className="brief__hero">
+                  <HeroPortrait catalog={catalog} definitionId={lead.definitionId} portraitAssetId={lead.portraitAssetId} name={lead.name} size="3.2rem" />
+                  <span>
+                    <span className="brief__label">Your hero</span>
+                    <span className="brief__hero-name">{lead.name}</span>
+                  </span>
+                </div>
+              ) : null}
+            </div>
+            <section className="brief__right" aria-label="Mission objectives">
+              <p className="brief__summary briefing-scene__summary">{mission.summary}</p>
+              <h2 className="brief__obj-title">Your objectives</h2>
+              <ul className="brief__objectives" tabIndex={0} aria-label="Objectives">
+                {objectives.map((o) => {
+                  const st = state.mission.objectives[o.id]?.status;
+                  return (
+                    <li key={o.id} className={`brief__objective ${st === 'completed' ? 'is-done' : st === 'failed' ? 'is-failed' : ''}`}>
+                      <ArtIcon id={objectiveIcon(o.condition)} glyph="flag" className="brief__obj-icon" />
+                      <span className="brief__obj-text">
+                        <span className="brief__obj-name">
+                          {o.title}
+                          {o.category === 'optional' ? <span className="brief__optional">Optional</span> : null}
+                          {st && statusLabel[st] ? <span className="brief__state">{statusLabel[st]}</span> : null}
+                        </span>
+                        <span className="brief__obj-desc">{missionText(catalog, state, o.description)}</span>
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+              {mission.newDecisions.length ? (
+                <details className="brief__details">
+                  <summary>New in this mission</summary>
+                  <ul className="bullets small">
+                    {mission.newDecisions.map((d) => (
+                      <li key={d}>{d}</li>
+                    ))}
+                  </ul>
+                </details>
+              ) : null}
+            </section>
+          </div>
+          <footer className="brief__foot">
+            {line ? (
+              <div className="brief__line">
+                <SpeakerPortrait catalog={catalog} line={line} size="3rem" />
+                <div className="brief__line-text">
+                  <div className="brief__speaker">{line.speaker}</div>
+                  <p aria-live="polite">{line.text}</p>
+                </div>
+              </div>
+            ) : (
               <span className="grow" />
+            )}
+            <div className="brief__nav">
+              {lines.length > 1 ? (
+                <span className="small brief__count">
+                  {index + 1} / {lines.length}
+                </span>
+              ) : null}
               {index > 0 ? (
                 <Button size="small" variant="ghost" onClick={() => setIndex((i) => i - 1)} data-testid="briefing-prev">
                   Back
                 </Button>
               ) : null}
-              {!last ? (
+              {line && !last ? (
                 <Button size="small" onClick={() => setIndex((i) => i + 1)} data-testid="briefing-next">
                   Next
                 </Button>
               ) : null}
-              <Button variant="primary" size="large" onClick={() => store.closeOverlay()} autoFocus data-testid="briefing-begin">
-                Begin
-              </Button>
-            </>
-          }
-        />
-      ) : (
-        <div className="story-stage">
-          <div className="story-box panel">
-            <div className="story-box__footer">
-              <span className="grow" />
-              <Button variant="primary" size="large" onClick={() => store.closeOverlay()} autoFocus data-testid="briefing-begin">
+              <Button variant="primary" size="large" onClick={() => store.closeOverlay()} data-autofocus="true" data-testid="briefing-begin">
                 Begin
               </Button>
             </div>
-          </div>
+          </footer>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -604,22 +792,38 @@ function HelpDialog({ topicId }: { topicId: string }) {
 
 // ---------------------------------------------------------------------------
 
+/**
+ * The hero meeting (1.1.0 encounter scene): the camp of the initiating hero's
+ * pantheon (decorative scenery, not the tile), each real hero's painted bust
+ * (portrait → bust; the same hero's portrait in a socket when no bust exists)
+ * above their own troop strip, the exchange mark by the fire between them. With
+ * a town, the right side is that town's garrison under its own painting and
+ * name — never an invented castellan. The rules are the existing transfer:
+ * select a stack (optionally a quantity), click a destination; the move is
+ * quoted (quoteTransfer) and committed at once with one TransferStack. Cancel
+ * clears the pending selection only; Done closes the meeting.
+ */
 function TransferDialog({ o }: { o: Extract<Overlay, { kind: 'transfer' }> }) {
   const store = useStore();
   const catalog = store.catalog;
   const state = store.session!.state;
   const playerId = store.session!.humanPlayerId;
   const hero = state.heroes[o.heroId];
-  const left: { ref: ArmyRef; label: string; army: ArmyState } | null = hero ? { ref: { kind: 'hero', heroId: hero.id }, label: hero.name, army: hero.army } : null;
   const other = o.otherHeroId ? state.heroes[o.otherHeroId] : undefined;
   const town = o.townId ? state.towns[o.townId] : undefined;
+  const left: { ref: ArmyRef; label: string; army: ArmyState } | null = hero ? { ref: { kind: 'hero', heroId: hero.id }, label: hero.name, army: hero.army } : null;
   const right: { ref: ArmyRef; label: string; army: ArmyState } | null = other ? { ref: { kind: 'hero', heroId: other.id }, label: other.name, army: other.army } : town ? { ref: { kind: 'garrison', townId: town.id }, label: `${town.name} garrison`, army: town.garrison } : null;
   const [sel, setSel] = useState<{ side: 'l' | 'r'; slot: number } | null>(null);
   const [qty, setQty] = useState<number | null>(null);
-  if (!left || !right) return null;
+  const [error, setError] = useState<string | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const trap = useModalFocus(ref);
+  const titleId = useId();
+  if (!left || !right || !hero) return null;
   const sides = { l: left, r: right };
   const selStack = sel ? sides[sel.side].army.slots[sel.slot] : null;
   const click = (side: 'l' | 'r', slot: number) => {
+    setError(null);
     if (!sel) {
       if (sides[side].army.slots[slot]) {
         setSel({ side, slot });
@@ -636,43 +840,125 @@ function TransferDialog({ o }: { o: Extract<Overlay, { kind: 'transfer' }> }) {
     const stack = from.army.slots[sel.slot];
     if (!stack) return setSel(null);
     const n = qty ?? stack.count;
+    // The rules decide (merge, swap, split, last creature, ownership, adjacency); the screen only asks.
     const q = quoteTransfer(catalog, state, playerId, from.ref, sel.slot, to.ref, slot, n);
     if (!q.legal) {
-      store.toast(q.reason ?? 'Cannot transfer', 'error');
+      setError(q.reason ?? 'Cannot transfer');
       return;
     }
-    store.dispatch({ kind: 'TransferStack', from: from.ref, fromSlot: sel.slot, to: to.ref, toSlot: slot, quantity: n });
-    setSel(null);
-    setQty(null);
+    // One gesture, one command: the selection is cleared with it.
+    if (!store.dispatch({ kind: 'TransferStack', from: from.ref, fromSlot: sel.slot, to: to.ref, toSlot: slot, quantity: n })) {
+      setSel(null);
+      setQty(null);
+    }
   };
   const targets = (side: 'l' | 'r') => (sel ? sides[side].army.slots.map((_, i) => i).filter((i) => !(sel.side === side && sel.slot === i)) : []);
+  const pantheonOf = (h: HeroState) => catalog.heroes[h.definitionId]?.pantheonId ?? state.players[h.ownerId]?.pantheonId ?? 'greek';
+  const camp = encounterKitArt(`encounterkit.meeting.${pantheonOf(hero)}`)?.url ?? null;
+  const archetype = town ? catalog.townArchetypes[town.archetypeId] : undefined;
+  const townArt = town && archetype ? townBackground(archetype.backgroundAssetId, town.buildings['civic_hall']).url : null;
+  const total = (a: ArmyState) => armyStacks(a).reduce((n, st) => n + st.count, 0);
+  const roleOf = (side: 'l' | 'r') => (!sel ? null : sel.side === side ? 'Moving from here' : 'Click a slot to move here');
   return (
-    <Modal title="Exchange troops" onClose={() => store.closeOverlay()} width="54rem" testId="transfer" footer={<><span className="grow" /><Button variant="primary" onClick={() => store.closeOverlay()}>Done</Button></>}>
-      <div className="transfer">
-        {(['l', 'r'] as const).map((side) => (
-          <div key={side} className="transfer__side">
-            <div className="section-title">{sides[side].label}</div>
-            <ArmyStrip catalog={catalog} army={sides[side].army} selected={sel?.side === side ? sel.slot : null} onSlot={(i) => click(side, i)} dropTargets={targets(side)} label={sides[side].label} testId={`transfer-${side}`} />
-            <div className="faint small">{armyStacks(sides[side].army).reduce((n, s) => n + s.count, 0)} creatures</div>
+    <div className="modal-layer meet-layer" role="dialog" aria-modal="true" aria-labelledby={titleId} data-testid="transfer" onKeyDown={trap}>
+      <div className="meet" ref={ref}>
+        <div className="meet__scene">
+          {camp ? <img className="meet__camp" src={camp} alt="" draggable={false} decoding="async" /> : null}
+          <div className="meet__shade" aria-hidden="true" />
+          <header className="meet__head">
+            <div className="meet__kicker">{town ? `Garrison of ${town.name}` : 'A meeting of heroes'}</div>
+            <h2 className="meet__title" id={titleId}>
+              Exchange troops
+            </h2>
+            <p className="meet__lead">Select a stack, optionally choose how many, then click the destination slot.</p>
+          </header>
+          <div className="meet__stage">
+            <div className="meet__figure meet__figure--left">
+              <MeetingFigure catalog={catalog} hero={hero} side="left" />
+            </div>
+            <div className="meet__fire" aria-hidden="true">
+              <ArtIcon id="icon.ui.swap" glyph="swap" className="meet__swap" />
+              <span>Exchange troops</span>
+            </div>
+            <div className="meet__figure meet__figure--right">
+              {other ? (
+                <MeetingFigure catalog={catalog} hero={other} side="right" />
+              ) : town ? (
+                <span className="meet__town">{town ? <TownThumbnail catalog={catalog} town={town} /> : townArt ? <img src={townArt} alt="" draggable={false} decoding="async" /> : null}</span>
+              ) : null}
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="transfer__bar">
-        {selStack && sel ? (
-          <>
-            <span className="small">
-              Moving {qty ?? selStack.count} of {selStack.count} {catalog.creatures[selStack.creatureId]?.pluralName}. Click a slot on either side.
+          <div className="meet__armies">
+            {(['l', 'r'] as const).map((side) => {
+              const role = roleOf(side);
+              const garrison = side === 'r' && !other && !!town;
+              return (
+                <section key={side} className={`meet__army transfer__side ${sel?.side === side ? 'is-source' : sel ? 'is-target' : ''}`} aria-label={sides[side].label}>
+                  <div className="meet__army-head">
+                    <span className="meet__name">{garrison ? town!.name : sides[side].label}</span>
+                    <span className="meet__role">{garrison ? 'Town garrison' : side === 'l' ? 'Your hero' : 'Meeting hero'}</span>
+                  </div>
+                  <ArmyStrip catalog={catalog} army={sides[side].army} selected={sel?.side === side ? sel.slot : null} onSlot={(i) => click(side, i)} dropTargets={targets(side)} label={sides[side].label} testId={`transfer-${side}`} />
+                  <div className="meet__army-foot">
+                    <span>{total(sides[side].army)} creatures</span>
+                    {role ? <span className="meet__hint">{role}</span> : null}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        </div>
+        <footer className="meet__bar transfer__bar">
+          {selStack && sel ? (
+            <>
+              <span className="small meet__status" role="status">
+                Moving {qty ?? selStack.count} of {selStack.count} {catalog.creatures[selStack.creatureId]?.pluralName} from {sides[sel.side].label}. Click a slot on either side.
+              </span>
+              {selStack.count > 1 ? <QuantitySelector label="Quantity to move" value={qty ?? selStack.count} min={1} max={selStack.count} onChange={setQty} /> : null}
+              <Button size="small" variant="ghost" onClick={() => setSel(null)} data-testid="transfer-cancel">
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <span className={`small meet__status ${error ? 'is-error' : ''}`} role="status">
+              {error ?? 'Matching stacks merge; different stacks swap. A hero must keep at least one creature.'}
             </span>
-            {selStack.count > 1 ? <QuantitySelector label="Quantity to move" value={qty ?? selStack.count} min={1} max={selStack.count} onChange={setQty} /> : null}
-            <Button size="small" variant="ghost" onClick={() => setSel(null)}>
-              Cancel
-            </Button>
-          </>
-        ) : (
-          <span className="dim small">Select a stack, optionally choose a quantity to split, then click the destination slot. Matching stacks merge; different stacks swap. A hero must keep at least one creature.</span>
-        )}
+          )}
+          {selStack && error ? (
+            <span className="small meet__status is-error" role="alert">
+              {error}
+            </span>
+          ) : null}
+          <span className="grow" />
+          <Button variant="primary" onClick={() => store.closeOverlay()} data-testid="transfer-done">
+            Done
+          </Button>
+        </footer>
       </div>
-    </Modal>
+    </div>
+  );
+}
+
+/** A hero standing in the meeting: the painted bust (busts face right; the right one is mirrored), else that hero's own portrait in a socket. */
+function MeetingFigure({ catalog, hero, side }: { catalog: ContentCatalog; hero: HeroState; side: 'left' | 'right' }) {
+  const bust = speakerBust({ portraitAssetId: hero.portraitAssetId });
+  if (bust) {
+    const gap = bust.alphaBox ? Math.max(0, 1 - bust.alphaBox[3]) : 0;
+    return (
+      <img
+        className={`meet__bust meet__bust--${side}`}
+        src={bust.url}
+        alt=""
+        draggable={false}
+        data-asset={bust.id}
+        style={{ aspectRatio: `${bust.width} / ${bust.height}`, transform: `translateY(${(gap * 100).toFixed(2)}%)${side === 'right' ? ' scaleX(-1)' : ''}` }}
+      />
+    );
+  }
+  return (
+    <span className="meet__medallion" data-asset={hero.portraitAssetId}>
+      <HeroPortrait catalog={catalog} definitionId={hero.definitionId} portraitAssetId={hero.portraitAssetId} name={hero.name} size="100%" />
+    </span>
   );
 }
 
@@ -728,18 +1014,29 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
       store.toast(choice === 'join' ? `${names} joined ${hero?.name}.` : `The ${label.toLowerCase()} fled from ${hero?.name}. The way is clear.`, 'success');
     }
   };
+  const title = reaction?.kind === 'join' ? `${label} — they offer to join you` : reaction?.kind === 'flee' ? `${label} — they flee from you` : town ? `Besiege ${town.name}?` : `Attack ${label}?`;
+  const heroPantheon = hero ? (catalog.heroes[hero.definitionId]?.pantheonId ?? state.players[hero.ownerId]?.pantheonId ?? null) : null;
+  // The scene: the besieged town's own painting, else the landscape of the destination's climate and ground — never a pantheon's.
+  const scene = town ? townScene(catalog, town) : encounterScene(state, dest);
+  // Whom the right side shows standing: the enemy hero, else the leading stacks (the full army is listed below with exact counts).
+  const leading = [...army].sort((a, b) => (catalog.creatures[b.creatureId]?.tier ?? 0) - (catalog.creatures[a.creatureId]?.tier ?? 0)).slice(0, 2);
   return (
-    <Modal
-      title={reaction?.kind === 'join' ? `${label} — they offer to join you` : reaction?.kind === 'flee' ? `${label} — they flee from you` : town ? `Besiege ${town.name}?` : `Attack ${label}?`}
-      onClose={() => store.closeOverlay()}
-      width={reaction?.kind ? '62rem' : '54rem'}
+    <AdventureStage
+      theme={guiThemeFor(heroPantheon)}
+      scene={scene}
+      title={title}
+      subtitle={site ? site.name : town ? `${town.name} · siege` : enemyHero ? `${enemyHero.name} blocks your path` : 'An enemy force blocks your path'}
+      pantheonId={heroPantheon}
+      catalog={catalog}
       testId="encounter"
+      onClose={() => store.closeOverlay()}
+      className="ak-encounter-stage"
       footer={
         <>
+          <span className="grow" />
           <Button icon="retreat" onClick={() => store.closeOverlay()} data-testid="encounter-withdraw">
             Withdraw
           </Button>
-          <span className="grow" />
           {reaction?.kind === 'join' ? (
             <Button variant="primary" size="large" icon="check" onClick={() => react('join')} autoFocus data-testid="encounter-join">
               Accept them
@@ -759,92 +1056,94 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
         </>
       }
     >
-      {reaction?.kind ? (
-        <p className="success" data-testid="neutral-offer">
-          {reaction.kind === 'join'
-            ? `Your army is far stronger. These creatures would rather join ${hero?.name} — for free — than fight. Accepting adds them to the army; letting them go leaves the way clear. Either way you keep the reward, but no experience is gained.`
-            : `Your army is far stronger. These creatures will flee rather than fight. Letting them go leaves the way clear and keeps the reward, but gains no experience.`}
-        </p>
-      ) : null}
-      <p className="encounter-lead">
-        {reaction?.kind ? 'If you fight anyway, ' : ''}
-        {hero?.name} will engage {enemyHero ? `${enemyHero.name}’s army` : `the ${label.toLowerCase()}`}
-        {site ? ` at ${site.name}` : ''}. A checkpoint is saved before the battle begins.
-      </p>
-      {climate ? (
-        <p className="small encounter-climate" data-testid="encounter-climate">
-          <ClimateChip climate={climate} testId="encounter-climate-chip" /> {climate.summary.slice(climate.name.length + 2)} Both armies alike.
-        </p>
-      ) : null}
-      <div className="encounter-versus">
-        <section className="encounter-side encounter-side--mine" aria-label="Your army">
-          <header className="encounter-side__head">
-            {hero ? <HeroPortrait catalog={catalog} definitionId={hero.definitionId} name={hero.name} size="3.4rem" /> : null}
-            <div>
-              <div className="encounter-side__label">Your army</div>
-              <div className="encounter-side__name">{hero?.name}</div>
-            </div>
-          </header>
-          <div className="encounter-army">
-            {(hero ? armyStacks(hero.army) : []).map((s, i) => (
-              <div key={i} className="encounter-army__stack">
-                <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="3.6rem" count={s.count} />
-                <div className="encounter-army__name">{catalog.creatures[s.creatureId]?.pluralName}</div>
-              </div>
-            ))}
+      <div className="ak-encounter">
+        <div className="ak-encounter__figures" aria-hidden="true">
+          <div className="ak-encounter__figure">{hero ? <HeroFigure catalog={catalog} definitionId={hero.definitionId} portraitAssetId={hero.portraitAssetId} name={hero.name} /> : null}</div>
+          <div className="ak-encounter__vs">
+            <Icon name="attack" className="ak-encounter__vs-icon" />
           </div>
-        </section>
-        <div className="encounter-vs" aria-hidden="true">
-          <Icon name="attack" className="encounter-vs__icon" />
-          <span>VS</span>
-        </div>
-        <section className="encounter-side encounter-side--foe" aria-label={town ? 'Defenders' : 'Opponent'}>
-          <header className="encounter-side__head">
+          <div className="ak-encounter__figure ak-encounter__figure--foe">
             {enemyHero ? (
-              <HeroPortrait catalog={catalog} definitionId={enemyHero.definitionId} name={enemyHero.name} size="3.4rem" />
+              <HeroFigure catalog={catalog} definitionId={enemyHero.definitionId} portraitAssetId={enemyHero.portraitAssetId} name={enemyHero.name} mirror />
             ) : (
-              <span className="encounter-side__glyph">
-                <Icon name={town ? 'town' : 'bestiary'} />
+              <span className="ak-encounter__foes">
+                {leading.map((s, i) => (
+                  <span key={i} className="ak-encounter__foe">
+                    <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="100%" />
+                  </span>
+                ))}
               </span>
             )}
-            <div>
-              <div className="encounter-side__label">{town ? 'Defenders' : enemyHero ? 'Enemy hero' : 'Guards'}</div>
-              <div className="encounter-side__name">{town ? town.name : (enemyHero?.name ?? site?.guard?.commander?.name ?? label)}</div>
+          </div>
+        </div>
+        {reaction?.kind ? (
+          <p className="ak-pane ak-encounter__offer success" data-testid="neutral-offer">
+            {reaction.kind === 'join'
+              ? `Your army is far stronger. These creatures would rather join ${hero?.name} — for free — than fight. Accepting adds them to the army; letting them go leaves the way clear. Either way you keep the reward, but no experience is gained.`
+              : `Your army is far stronger. These creatures will flee rather than fight. Letting them go leaves the way clear and keeps the reward, but gains no experience.`}
+          </p>
+        ) : null}
+        <div className="ak-encounter__armies">
+          <section className="ak-pane encounter-side encounter-side--mine" aria-label="Your army">
+            <h3 className="ak-pane__title">Your army{hero ? ` · ${hero.name}` : ''}</h3>
+            <div className="encounter-army">
+              {(hero ? armyStacks(hero.army) : []).map((s, i) => (
+                <div key={i} className="encounter-army__stack">
+                  <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="3.6rem" count={s.count} />
+                  <div className="encounter-army__name">{catalog.creatures[s.creatureId]?.pluralName}</div>
+                </div>
+              ))}
             </div>
-          </header>
-          <div className="encounter-army">
-            {army.map((s, i) => (
-              <div key={i} className="encounter-army__stack">
-                <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="3.6rem" count={s.count} />
-                <div className="encounter-army__name">{catalog.creatures[s.creatureId]?.pluralName}</div>
-              </div>
+          </section>
+          <section className="ak-pane encounter-side encounter-side--foe" aria-label={town ? 'Defenders' : 'Opponent'}>
+            <h3 className="ak-pane__title">
+              {town ? 'Defenders' : enemyHero ? 'Enemy hero' : 'Guards'}
+              <span className="ak-encounter__foe-name"> · {town ? town.name : (enemyHero?.name ?? site?.guard?.commander?.name ?? label)}</span>
+            </h3>
+            <div className="encounter-army">
+              {army.map((s, i) => (
+                <div key={i} className="encounter-army__stack">
+                  <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="3.6rem" count={s.count} />
+                  <div className="encounter-army__name">{catalog.creatures[s.creatureId]?.pluralName}</div>
+                </div>
+              ))}
+            </div>
+            {town && enemyHero ? <div className="encounter-side__note">Led by {enemyHero.name}</div> : !enemyHero && site?.guard?.commander ? <div className="encounter-side__note">Commander: {site.guard.commander.name}</div> : null}
+          </section>
+        </div>
+        <p className="encounter-lead ak-encounter__lead">
+          {reaction?.kind ? 'If you fight anyway, ' : ''}
+          {hero?.name} will engage {enemyHero ? `${enemyHero.name}’s army` : `the ${label.toLowerCase()}`}
+          {site ? ` at ${site.name}` : ''}. A checkpoint is saved before the battle begins.
+        </p>
+        {climate ? (
+          <p className="small encounter-climate" data-testid="encounter-climate">
+            <ClimateChip climate={climate} testId="encounter-climate-chip" /> {climate.summary.slice(climate.name.length + 2)} Both armies alike.
+          </p>
+        ) : null}
+        {town ? (
+          <div className="ak-pane encounter-note siege-brief" data-testid="siege-brief">
+            <p>
+              <strong>Siege.</strong> {FORT_TEXT[level] ?? FORT_TEXT[0]} Your Catapult removes one structure point at the start of every round — the gate first, or the section you aim it at on your turn (click it in the fortification list); Cyclopes can batter the walls instead of shooting. Shots into the town across an intact wall deal half damage.{level >= 2 ? ' The keep and towers fire at the stack their shot hurts most, shooters first.' : ''}
+            </p>
+            <p className="faint">The defender fights with at most seven stacks (identical stacks may be combined first) and cannot retreat or surrender. Winning captures {town.name}. Values are proposed.</p>
+          </div>
+        ) : null}
+        <QuickBattlePanel preview={preview} />
+        {reward?.resources || reward?.artifactIds?.length ? (
+          <div className="encounter-reward">
+            <span className="encounter-reward__label">Reward on victory</span>
+            <CostList cost={reward.resources ?? {}} empty="" />
+            {(reward.artifactIds ?? []).map((a) => (
+              <span key={a} className="encounter-reward__artifact">
+                {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="1.6rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
+                {catalog.artifacts[a]?.name}
+              </span>
             ))}
           </div>
-          {town && enemyHero ? <div className="encounter-side__note">Led by {enemyHero.name}</div> : !enemyHero && site?.guard?.commander ? <div className="encounter-side__note">Commander: {site.guard.commander.name}</div> : null}
-        </section>
+        ) : null}
       </div>
-      {town ? (
-        <div className="encounter-note siege-brief" data-testid="siege-brief">
-          <p>
-            <strong>Siege.</strong> {FORT_TEXT[level] ?? FORT_TEXT[0]} Your Catapult removes one structure point at the start of every round — the gate first, or the section you aim it at on your turn (click it in the fortification list); Cyclopes can batter the walls instead of shooting. Shots into the town across an intact wall deal half damage.{level >= 2 ? ' The keep and towers fire at the stack their shot hurts most, shooters first.' : ''}
-          </p>
-          <p className="faint">The defender fights with at most seven stacks (identical stacks may be combined first) and cannot retreat or surrender. Winning captures {town.name}. Values are proposed.</p>
-        </div>
-      ) : null}
-      <QuickBattlePanel preview={preview} />
-      {reward?.resources || reward?.artifactIds?.length ? (
-        <div className="encounter-reward">
-          <span className="encounter-reward__label">Reward on victory</span>
-          <CostList cost={reward.resources ?? {}} empty="" />
-          {(reward.artifactIds ?? []).map((a) => (
-            <span key={a} className="encounter-reward__artifact">
-              {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="1.6rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
-              {catalog.artifacts[a]?.name}
-            </span>
-          ))}
-        </div>
-      ) : null}
-    </Modal>
+    </AdventureStage>
   );
 }
 
@@ -964,6 +1263,8 @@ export function OverlayLayer() {
       return store.session ? <MissionFailedDialog /> : null;
     case 'help':
       return <HelpDialog topicId={top.topicId} />;
+    case 'reward':
+      return <RewardDialog key={top.receipt.id} receipt={top.receipt} />;
     case 'transfer':
       return store.session ? <TransferDialog o={top} /> : null;
     case 'encounter':
@@ -975,10 +1276,15 @@ export function OverlayLayer() {
     case 'spellbook': {
       const caster = top.caster ?? store.session?.state.heroes[top.heroId];
       const cast = top.cast;
+      // The hero's own pantheon dresses the book; the pool is the rules' maxMana.
+      const owner = store.session?.state.heroes[top.heroId];
+      const bookPantheon = owner ? (store.catalog.heroes[owner.definitionId]?.pantheonId ?? store.session!.state.players[owner.ownerId]?.pantheonId ?? null) : null;
       return store.session && caster ? (
         <SpellBook
           catalog={store.catalog}
           hero={caster}
+          pantheonId={bookPantheon}
+          manaMax={owner ? maxMana(store.catalog, store.session.state, owner) : null}
           onClose={() => store.closeOverlay()}
           cast={
             cast

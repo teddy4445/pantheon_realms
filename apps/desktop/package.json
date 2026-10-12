@@ -1,6 +1,6 @@
 {
   "name": "@pr/desktop",
-  "version": "1.0.0",
+  "version": "1.1.4",
   "private": true,
   "description": "Pantheon Realms — turn-based mythological strategy.",
   "main": "dist/main.cjs",

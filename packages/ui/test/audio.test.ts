@@ -116,13 +116,17 @@ describe('audio preferences', () => {
     expect(p.interfaceVolume).toBe(35);
     expect(p.combatVolume).toBe(35);
     expect(p.masterVolume).toBe(70);
-    expect(p.schemaVersion).toBe(3);
+    expect(p.schemaVersion).toBe(4);
     expect((p as unknown as Record<string, unknown>).effectsVolume).toBeUndefined();
   });
   it('schema 3: map tile lines move to the pointer only (an old "always" becomes "hover"; a later choice is kept)', () => {
     expect(sanitizePreferences({ schemaVersion: 2, hexOverlay: 'always' }).hexOverlay).toBe('hover');
     expect(sanitizePreferences({ schemaVersion: 2, hexOverlay: 'off' }).hexOverlay).toBe('off');
     expect(sanitizePreferences({ schemaVersion: 3, hexOverlay: 'always' }).hexOverlay).toBe('always');
+    // Schema 4 (1.1.0): the old default stack labels become counts once; a later choice is kept.
+    expect(sanitizePreferences({ schemaVersion: 3, unitLabels: 'both' }).unitLabels).toBe('count');
+    expect(sanitizePreferences({ schemaVersion: 3, unitLabels: 'health' }).unitLabels).toBe('health');
+    expect(sanitizePreferences({ schemaVersion: 4, unitLabels: 'both' }).unitLabels).toBe('both');
     expect(sanitizePreferences({}).hexOverlay).toBe('hover');
   });
   it('clamps volumes and maps preferences onto mixer levels', () => {

@@ -1,0 +1,282 @@
+[
+  {
+    "key": "frontendkit.brand.logo",
+    "file": "brand-logo.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\brand-logo.png",
+    "prompt": "Use case: background-extraction. Reference is the Pantheon Realms title-screen concept. Create the ornate logo as ONE independent isolated production PNG, preserving its exact two-line wording PANTHEON / REALMS, antique gold serif lettering, dark blue enamel plaque, compass sun crest above and restrained gold flourishes. Exclude absolutely all scenery, buildings, interface buttons and menu. Wide 3:1 canvas, full logo centered with breathing space, genuinely transparent alpha outside its silhouette. Crisp readable lettering, no extra text. Match the reference logo closely.",
+    "transparent": true,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\01-title-hall.png"
+    ]
+  },
+  {
+    "key": "frontendkit.backdrop.title",
+    "file": "backdrop-title.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\backdrop-title.png",
+    "prompt": "Use case: precise-object-edit. Reference is title screen. Deliver ONLY its independent background painting, retain the same camera, six pantheon realms arranged three down left and three down right, arched mythic hall, sunset in center and stone floor. Remove the ENTIRE PANTHEON REALMS logo plaque/crest and ALL six menu buttons, their icons and their frame, seamlessly reconstruct sky/scenery/floor behind them. No text, no user interface, no floating symbols in center, no logo or menu residue. Landscape16:10. Preserve the beautiful composition. Central vertical strip reserved for live logo/menu must be calm.",
+    "transparent": false,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\01-title-hall.png"
+    ]
+  },
+  {
+    "key": "frontendkit.banner.greek",
+    "file": "banner-greek.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-greek.png",
+    "prompt": "Use case: stylized-concept. One independent completed greek pantheon selection banner, for Gather the Empires UI. Reference supplies the actual faction emblem identity; reproduce its main gold lightning bolt inside laurel wreath on this banner. Flat front-facing short vertical pennant, ratio2:3, pointed bottom, royal blue cloth, thin antique gold trim, small top rail, no long poles. Large centered emblem in upper55 percent. Lower25 percent quiet blank cloth reserved for live faction label. Readable bold emblem and little fine decoration. Painted fantasy strategy UI, restrained bevel, same proportions across set. Full silhouette with8 percent transparent margin. Genuinely transparent background, no text or letters. Only ONE banner.",
+    "transparent": true,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\emblem.greek.png"
+    ]
+  },
+  {
+    "key": "frontendkit.banner.norse",
+    "file": "banner-norse.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-norse.png",
+    "prompt": "Use case: stylized-concept. One independent completed norse pantheon selection banner, for Gather the Empires UI. Reference supplies the actual faction emblem identity; reproduce its main gold Thor hammer and restrained Nordic knotwork on this banner. Flat front-facing short vertical pennant, ratio2:3, pointed bottom, deep burgundy cloth, thin antique gold trim, small top rail, no long poles. Large centered emblem in upper55 percent. Lower25 percent quiet blank cloth reserved for live faction label. Readable bold emblem and little fine decoration. Painted fantasy strategy UI, restrained bevel, same proportions across set. Full silhouette with8 percent transparent margin. Genuinely transparent background, no text or letters. Only ONE banner.",
+    "transparent": true,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\emblem.norse.png"
+    ]
+  },
+  {
+    "key": "frontendkit.banner.egyptian",
+    "file": "banner-egyptian.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-egyptian.png",
+    "prompt": "Use case: stylized-concept. One independent completed egyptian pantheon selection banner, for Gather the Empires UI. Reference supplies the actual faction emblem identity; reproduce its main gold ankh beneath ruby sun on this banner. Flat front-facing short vertical pennant, ratio2:3, pointed bottom, black navy cloth, thin antique gold trim, small top rail, no long poles. Large centered emblem in upper55 percent. Lower25 percent quiet blank cloth reserved for live faction label. Readable bold emblem and little fine decoration. Painted fantasy strategy UI, restrained bevel, same proportions across set. Full silhouette with8 percent transparent margin. Genuinely transparent background, no text or letters. Only ONE banner.",
+    "transparent": true,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\emblem.egyptian.png"
+    ]
+  },
+  {
+    "key": "frontendkit.banner.japanese",
+    "file": "banner-japanese.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-japanese.png",
+    "prompt": "Use case: stylized-concept. One independent completed japanese pantheon selection banner, for Gather the Empires UI. Reference supplies the actual faction emblem identity; reproduce its main gold torii before rising sun on this banner. Flat front-facing short vertical pennant, ratio2:3, pointed bottom, deep crimson cloth, thin antique gold trim, small top rail, no long poles. Large centered emblem in upper55 percent. Lower25 percent quiet blank cloth reserved for live faction label. Readable bold emblem and little fine decoration. Painted fantasy strategy UI, restrained bevel, same proportions across set. Full silhouette with8 percent transparent margin. Genuinely transparent background, no text or letters. Only ONE banner.",
+    "transparent": true,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\emblem.japanese.png"
+    ]
+  },
+  {
+    "key": "frontendkit.banner.celtic",
+    "file": "banner-celtic.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-celtic.png",
+    "prompt": "Use case: stylized-concept. One independent completed celtic pantheon selection banner, for Gather the Empires UI. Reference supplies the actual faction emblem identity; reproduce its main gold triple spiral triskelion on this banner. Flat front-facing short vertical pennant, ratio2:3, pointed bottom, forest green cloth, thin antique gold trim, small top rail, no long poles. Large centered emblem in upper55 percent. Lower25 percent quiet blank cloth reserved for live faction label. Readable bold emblem and little fine decoration. Painted fantasy strategy UI, restrained bevel, same proportions across set. Full silhouette with8 percent transparent margin. Genuinely transparent background, no text or letters. Only ONE banner.",
+    "transparent": true,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\emblem.celtic.png"
+    ]
+  },
+  {
+    "key": "frontendkit.banner.mesoamerican",
+    "file": "banner-mesoamerican.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-mesoamerican.png",
+    "prompt": "Use case: stylized-concept. One independent completed mesoamerican pantheon selection banner, for Gather the Empires UI. Reference supplies the actual faction emblem identity; reproduce its main gold turquoise feathered serpent head on this banner. Flat front-facing short vertical pennant, ratio2:3, pointed bottom, deep teal cloth, thin antique gold trim, small top rail, no long poles. Large centered emblem in upper55 percent. Lower25 percent quiet blank cloth reserved for live faction label. Readable bold emblem and little fine decoration. Painted fantasy strategy UI, restrained bevel, same proportions across set. Full silhouette with8 percent transparent margin. Genuinely transparent background, no text or letters. Only ONE banner.",
+    "transparent": true,
+    "refs": [
+      "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\emblem.mesoamerican.png"
+    ]
+  },
+  {
+    "key": "frontendkit.icon.interface",
+    "file": "icon-interface.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-interface.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a square framed interface panel with a broad horizontal heading bar and two smaller inset panes, representing interface layout. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.display",
+    "file": "icon-display.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-display.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a clear circular sun with eight short bold rays, representing display and brightness. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.audio",
+    "file": "icon-audio.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-audio.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one side-facing flared horn with two curved sound waves, representing sound volume. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.accessibility",
+    "file": "icon-accessibility.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-accessibility.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a simplified human figure with circular head, outstretched arms and separated legs, representing accessibility. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.controls",
+    "file": "icon-controls.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-controls.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a compact game controller silhouette with one cross-shaped directional pad and two round buttons, representing controls. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.bestiary",
+    "file": "icon-bestiary.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-bestiary.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a heraldic griffin head in profile with short feather crest and hooked beak, representing creature bestiary. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.select",
+    "file": "icon-select.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-select.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a simple large arrow-shaped mouse pointer angled toward upper left, representing selection. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.erase",
+    "file": "icon-erase.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-erase.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a clearly recognizable slanted rectangular eraser with one contrasting dark band. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.terrain",
+    "file": "icon-terrain.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-terrain.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. three bold angular mountain peaks, the center peak taller, representing terrain. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.forest",
+    "file": "icon-forest.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-forest.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. three stylized fir trees of staggered height, representing forest brush. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.water",
+    "file": "icon-water.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-water.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. three bold horizontal curved wave bands, representing water brush. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.road",
+    "file": "icon-road.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-road.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a single winding S-shaped road with bold parallel edges and a few large paving blocks. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.hex",
+    "file": "icon-hex.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-hex.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one simple thick outlined hexagonal terrain tile, no inner detail. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.generate",
+    "file": "icon-generate.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-generate.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one six-sided gaming die seen on three faces with large black dot pips, representing random generation. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.new-map",
+    "file": "icon-new-map.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-new-map.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one partially unfurled blank parchment scroll with a small plus sign in lower right. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.import",
+    "file": "icon-import.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-import.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one bold DOWNWARD arrow entering an open document tray, representing importing a map or save. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.export",
+    "file": "icon-export.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-export.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one bold UPWARD arrow leaving an open document tray, representing exporting a map or save. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.delete",
+    "file": "icon-delete.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-delete.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. a compact lidded waste bin with two broad vertical ribs, representing delete. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.undo",
+    "file": "icon-undo.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-undo.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one thick curved counterclockwise arrow pointing left, no enclosing circle. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.redo",
+    "file": "icon-redo.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-redo.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one thick curved clockwise arrow pointing right, no enclosing circle. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.artifacts",
+    "file": "icon-artifacts.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-artifacts.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one heavy gold ring with a large faceted sapphire gem, representing artifacts. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.warning",
+    "file": "icon-warning.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-warning.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one round red wax seal with a thin gold rim and large raised gold EXCLAMATION MARK at center, representing discard-changes warning. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.icon.records",
+    "file": "icon-records.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-records.png",
+    "prompt": "Use case: stylized-concept. Production fantasy strategy UI ICON. one round antique gold achievement medallion in a modest laurel wreath, center blank for a LIVE rank number. ONE isolated centered icon, front-facing simplified sculpted silhouette, warm antique gold face, subtle dark bronze bevel shadow, cream edge highlights, strong broad forms legible at32px. Harmonizes with Pantheon Realms navy and gold classic game UI. Square canvas, icon occupies80 percent with transparent padding. Genuinely transparent background, no plaque or surrounding frame unless explicitly part of subject, no background glow, no scenery, no text, no extra symbols. Crisp clean edges. Avoid fine filigree and realism.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.chrome.header",
+    "file": "chrome-header.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\chrome-header.png",
+    "prompt": "Use case: stylized-concept. ONE blank wide rectangular dark navy carved-stone title bar for fantasy strategy UI. Thin gold straight border, modest gold corner brackets, quiet dark center75 percent reserved for live title text. No icon, no lettering, no faction symbols. Front-facing flat, ratio3:1, generous transparent exterior. Genuinely transparent background. Design edge geometry so left/right endcaps can remain fixed while center stretches horizontally. Match Pantheon Realms gold navy UI.",
+    "transparent": true,
+    "refs": []
+  },
+  {
+    "key": "frontendkit.chrome.round-socket",
+    "file": "chrome-round-socket.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\chrome-round-socket.png",
+    "prompt": "Use case: stylized-concept. ONE empty round icon socket: thin antique gold double ring with restrained bronze bevel, navy enamel disk inside; centered perfectly circular, front facing, no symbols or lettering. Fantasy game UI. Square canvas ring fills80percent leaving transparent outer margin. Genuinely transparent outside circle; interior opaque navy. Bold clean consistent outline readable at48px.",
+    "transparent": true,
+    "refs": []
+  }
+]

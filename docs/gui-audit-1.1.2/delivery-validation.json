@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "catalogScreens": 98,
+  "atlases": 6,
+  "stateMappings": 18,
+  "localLinksChecked": 245,
+  "missingLinks": [],
+  "gateChecks": [
+    {
+      "pantheon": "greek",
+      "breachCenterMaxAlpha": 0,
+      "gateRegionChangedPixels": {
+        "damaged": 2898,
+        "rubble": 3309
+      },
+      "sha256": "322fd0fbe2a0dad0fd5b9f380dc1320626bb18b1244cb0d143bf4c4e5c431ccf"
+    },
+    {
+      "pantheon": "norse",
+      "breachCenterMaxAlpha": 0,
+      "gateRegionChangedPixels": {
+        "damaged": 2795,
+        "rubble": 3376
+      },
+      "sha256": "abbec526cb3628302c411a288e68680ba9fdde7f6500545dec794671c292c9aa"
+    },
+    {
+      "pantheon": "egyptian",
+      "breachCenterMaxAlpha": 0,
+      "gateRegionChangedPixels": {
+        "damaged": 2014,
+        "rubble": 2797
+      },
+      "sha256": "dba1d0c732b10aef4f4380d1443b6bf8606ed55b66ee3ccc4aa96645b286ac0a"
+    },
+    {
+      "pantheon": "japanese",
+      "breachCenterMaxAlpha": 0,
+      "gateRegionChangedPixels": {
+        "damaged": 2244,
+        "rubble": 2478
+      },
+      "sha256": "bea045dee9ed8123a407e8c28ddd49157f4baf314c909effed7a985b8a24932c"
+    },
+    {
+      "pantheon": "celtic",
+      "breachCenterMaxAlpha": 0,
+      "gateRegionChangedPixels": {
+        "damaged": 2575,
+        "rubble": 2763
+      },
+      "sha256": "6f64ea170f119afed8d6eab87b9bb9fcc828df2ce5142fde1ded6c53e6d25b59"
+    },
+    {
+      "pantheon": "mesoamerican",
+      "breachCenterMaxAlpha": 1,
+      "gateRegionChangedPixels": {
+        "damaged": 2438,
+        "rubble": 2582
+      },
+      "sha256": "387adf54e80b82a7f4ca0b704af6329447793fe60f761ee4a70b21b52061deb0"
+    }
+  ],
+  "scope": "File integrity, alpha and isolated prototype image changes only. Production source integration and movement-through-breach acceptance remain for Claude."
+}

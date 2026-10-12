@@ -1,0 +1,68 @@
+{
+  "tavern": {
+    "component": "packages/ui/src/screens/Town.tsx#TavernModal",
+    "scene": "theme.tavern",
+    "foreground": "Actual candidate bust or same hero portrait fallback",
+    "portraitFrame": "adventurekit.chrome.hero-medallion",
+    "icons": [
+      "icon.ui.tavern",
+      "icon.stat.attack",
+      "icon.stat.defense",
+      "icon.stat.power",
+      "icon.stat.knowledge",
+      "icon.res.gold"
+    ],
+    "behavior": "hireOptions + quoteHireHero + existing confirmation + HireHero. Preserve returning hero and weekly/scenario limits."
+  },
+  "recruitment": {
+    "component": "packages/ui/src/screens/Recruitment.tsx; packages/ui/src/dialogs/WorldDialogs.tsx#CampDialog",
+    "scene": "theme.recruitment",
+    "foreground": "Actual creature portrait or existing animated detail; actual building art optional",
+    "icons": [
+      "icon.ui.recruit",
+      "icon.ui.upgrade"
+    ],
+    "behavior": "quoteRecruitment/quoteUpgrade or quoteCampRecruitment; do not merge their different commands. Destination, shared population and seven tiers stay visible."
+  },
+  "market": {
+    "component": "packages/ui/src/screens/Town.tsx#MarketModal",
+    "scene": "theme.market",
+    "ornament": "adventurekit.chrome.balance",
+    "icons": [
+      "icon.res.gold",
+      "icon.res.wood",
+      "icon.res.stone",
+      "icon.res.crystal",
+      "icon.ui.swap"
+    ],
+    "behavior": "Gold intermediary only. Favor not tradable. quoteTrade supplies costs/rates/legality. Buy/sell and resource selectors remain."
+  },
+  "levelup": {
+    "component": "packages/ui/src/screens/LevelUp.tsx",
+    "scene": "theme.levelup",
+    "card": "adventurekit.chrome.skill-card",
+    "portraitFrame": "adventurekit.chrome.hero-medallion",
+    "icons": "Actual catalog.skills[].iconAssetId, attribute icon, actual god gifts",
+    "behavior": "Current skill click commits ChooseLevelUp once. Preserve god gift first, no-offer Continue, queued levels and decisionId guard. Concept confirm button is superseded."
+  },
+  "spellbook": {
+    "component": "packages/ui/src/components/spellbook.tsx",
+    "book": "gui.book.open",
+    "backdrop": "theme.levelup, dimmed; current scene can stay behind modal",
+    "icons": "Actual known spells via iconAssetId; resource mana icon and faction emblem",
+    "behavior": "Preserve read-only versus cast mode, all/battle/adventure + tier filters, known spells only, cast.options and cast.onCast. No baked illustrative combat damage."
+  },
+  "encounter": {
+    "component": "packages/ui/src/dialogs/Overlays.tsx#EncounterDialog",
+    "scene": "terrain-map.json, NOT hero pantheon",
+    "frame": "theme.frame",
+    "foreground": "Actual hero/creature portraits or animated details",
+    "icons": [
+      "icon.ui.sword2",
+      "icon.action.retreat",
+      "icon.ui.check",
+      "icon.ui.auto"
+    ],
+    "behavior": "Current code shows exact counts: preserve them. Preserve quick battle, join/flee/release, siege, climate, victory rewards and checkpoint behavior. No fabricated danger score."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "greek": {
+    "frame": "gui.frame.greek",
+    "banner": "gui.banner.greek",
+    "recruitment": "gui.recruit.greek",
+    "merchant": "gui.merchant.greek",
+    "emblem": "emblem.greek"
+  },
+  "norse": {
+    "frame": "gui.frame.norse",
+    "banner": "gui.banner.norse",
+    "recruitment": "gui.recruit.norse",
+    "merchant": "gui.merchant.norse",
+    "emblem": "emblem.norse"
+  },
+  "egyptian": {
+    "frame": "gui.frame.egyptian",
+    "banner": "gui.banner.egyptian",
+    "recruitment": "gui.recruit.egyptian",
+    "merchant": "gui.merchant.egyptian",
+    "emblem": "emblem.egyptian"
+  },
+  "japanese": {
+    "frame": "gui.frame.japanese",
+    "banner": "gui.banner.japanese",
+    "recruitment": "gui.recruit.japanese",
+    "merchant": "gui.merchant.japanese",
+    "emblem": "emblem.japanese"
+  },
+  "celtic": {
+    "frame": "gui.frame.celtic",
+    "banner": "gui.banner.celtic",
+    "recruitment": "gui.recruit.celtic",
+    "merchant": "gui.merchant.celtic",
+    "emblem": "emblem.celtic"
+  },
+  "mesoamerican": {
+    "frame": "gui.frame.mesoamerican",
+    "banner": "gui.banner.mesoamerican",
+    "recruitment": "gui.recruit.mesoamerican",
+    "merchant": "gui.merchant.mesoamerican",
+    "emblem": "emblem.mesoamerican"
+  }
+}

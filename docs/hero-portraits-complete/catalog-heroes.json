@@ -1,0 +1,3655 @@
+{
+  "heroes": [
+    {
+      "id": "alexios",
+      "pantheonId": "greek",
+      "name": "Alexios",
+      "title": "Strategos of Asterion",
+      "classId": "strategos",
+      "biography": "The expedition commander sent to relight the three beacons of the Asterion coast. His command portrait, skills and artifacts persist through The Three Beacons.",
+      "portraitAssetId": "hero.greek.alexios.portrait",
+      "availability": "campaign",
+      "provenance": {
+        "source": "v0.3-campaign"
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Hoplites",
+        "summary": "Hoplites and Veteran Hoplites in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "hoplite"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "hoplite"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "hoplite"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "hoplite"
+            }
+          ]
+        },
+        "familyId": "hoplite"
+      }
+    },
+    {
+      "id": "melas",
+      "pantheonId": "greek",
+      "name": "Melas",
+      "title": "Former Coastal Commander",
+      "classId": "champion",
+      "biography": "A former coastal commander who carried the great beacon’s lens to the storm plateau, believing one light should command the whole coast.",
+      "portraitAssetId": "hero.greek.melas.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "v0.3-campaign"
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Peltasts",
+        "summary": "Peltasts and Veteran Peltasts in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "peltast"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "peltast"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "peltast"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "peltast"
+            }
+          ]
+        },
+        "familyId": "peltast"
+      }
+    },
+    {
+      "id": "scout_captain",
+      "pantheonId": "greek",
+      "name": "Scout Captain",
+      "title": "Plateau Patrol",
+      "classId": "champion",
+      "biography": "Leader of the patrol that sweeps the middle plateau between the first crossings and the ward gate.",
+      "portraitAssetId": "hero.greek.scout_captain.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "v0.3-campaign"
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Griffins",
+        "summary": "Griffins and Windcrest Griffins in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "griffin"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "griffin"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "griffin"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "griffin"
+            }
+          ]
+        },
+        "familyId": "griffin"
+      }
+    },
+    {
+      "id": "heracles",
+      "pantheonId": "greek",
+      "name": "Heracles",
+      "title": "Hero of Labors",
+      "classId": "champion",
+      "biography": "Concept-board hero. Class assignment is provisional. A son of Zeus who finished twelve impossible labours and still walks the roads looking for a thirteenth. Hireable in skirmish; not part of The Three Beacons.",
+      "portraitAssetId": "hero.greek.heracles.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board"
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Minotaurs",
+        "summary": "Minotaurs and Labyrinth Wardens in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "minotaur"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "minotaur"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "minotaur"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "minotaur"
+            }
+          ]
+        },
+        "familyId": "minotaur"
+      }
+    },
+    {
+      "id": "achilles",
+      "pantheonId": "greek",
+      "name": "Achilles",
+      "title": "Swift Champion",
+      "classId": "champion",
+      "biography": "Concept-board hero. Class assignment is provisional. The fastest spear of his generation, whose charge breaks a line before it has finished forming. Hireable in skirmish; not part of The Three Beacons.",
+      "portraitAssetId": "hero.greek.achilles.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board"
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Cavalry",
+        "summary": "Cavalry and Companion Cavalry in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "cavalry"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "cavalry"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "cavalry"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "cavalry"
+            }
+          ]
+        },
+        "familyId": "cavalry"
+      }
+    },
+    {
+      "id": "odysseus",
+      "pantheonId": "greek",
+      "name": "Odysseus",
+      "title": "Cunning Voyager",
+      "classId": "strategos",
+      "biography": "Concept-board hero. Class assignment is provisional. A king of a small rocky island who took ten years to sail home and outwitted everyone who tried to stop him. Hireable in skirmish; not part of The Three Beacons.",
+      "portraitAssetId": "hero.greek.odysseus.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board"
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Gold",
+        "summary": "+250 Gold per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "gold",
+            "amount": 250
+          }
+        ]
+      }
+    },
+    {
+      "id": "atalanta",
+      "pantheonId": "greek",
+      "name": "Atalanta",
+      "title": "Huntress of Arcadia",
+      "classId": "strategos",
+      "biography": "Concept-board hero. Class assignment is provisional. Raised by the bears of Arcadia, she outruns every hunter and never misses the first shot. Hireable in skirmish; not part of The Three Beacons.",
+      "portraitAssetId": "hero.greek.atalanta.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board"
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Wood",
+        "summary": "+2 Wood per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "wood",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "perseus",
+      "pantheonId": "greek",
+      "name": "Perseus",
+      "title": "Slayer of the Gorgon",
+      "classId": "oracle",
+      "biography": "Concept-board hero. Class assignment is provisional. He cut off the Gorgon’s head with a borrowed sword and a polished shield, and keeps both close. Hireable in skirmish; not part of The Three Beacons.",
+      "portraitAssetId": "hero.greek.perseus.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board"
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Lightning",
+        "summary": "Knows Lightning from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "lightning",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "lightning",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "lightning"
+      }
+    },
+    {
+      "id": "norse_sigurd",
+      "pantheonId": "norse",
+      "name": "Sigurd",
+      "title": "Dragonslayer & Destiny",
+      "classId": "huscarl",
+      "biography": "Concept-board hero. A wanderer who once stood against a wyrm and now leads others against worse. Hireable in skirmish.",
+      "portraitAssetId": "hero.norse.sigurd.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Norse board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Lindworms",
+        "summary": "Lindworms and Storm Lindworms in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_lindworm"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_lindworm"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_lindworm"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_lindworm"
+            }
+          ]
+        },
+        "familyId": "norse_lindworm"
+      }
+    },
+    {
+      "id": "norse_brynhild",
+      "pantheonId": "norse",
+      "name": "Brynhild",
+      "title": "Valkyrie & Devotion",
+      "classId": "huscarl",
+      "biography": "Concept-board hero. A shieldmaiden bound by an oath she chose herself. Hireable in skirmish.",
+      "portraitAssetId": "hero.norse.brynhild.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Norse board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Valkyries",
+        "summary": "Valkyries and Battle Valkyries in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_valkyrie"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_valkyrie"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_valkyrie"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_valkyrie"
+            }
+          ]
+        },
+        "familyId": "norse_valkyrie"
+      }
+    },
+    {
+      "id": "norse_ragnar",
+      "pantheonId": "norse",
+      "name": "Ragnar",
+      "title": "Conquest & Glory",
+      "classId": "jarl",
+      "biography": "Concept-board hero. A raider-king who measures a season by the harbors that answer to him. Hireable in skirmish.",
+      "portraitAssetId": "hero.norse.ragnar.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Norse board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Gold",
+        "summary": "+250 Gold per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "gold",
+            "amount": 250
+          }
+        ]
+      }
+    },
+    {
+      "id": "norse_lagertha",
+      "pantheonId": "norse",
+      "name": "Lagertha",
+      "title": "Leadership & Resilience",
+      "classId": "jarl",
+      "biography": "Concept-board hero. A war-leader who has never lost a retreat she ordered. Hireable in skirmish.",
+      "portraitAssetId": "hero.norse.lagertha.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Norse board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Frost Wolves",
+        "summary": "Frost Wolves and Fenrir Wolves in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_frost_wolf"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_frost_wolf"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_frost_wolf"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_frost_wolf"
+            }
+          ]
+        },
+        "familyId": "norse_frost_wolf"
+      }
+    },
+    {
+      "id": "norse_hervor",
+      "pantheonId": "norse",
+      "name": "Hervor",
+      "title": "Ancestral Power & Vengeance",
+      "classId": "volva",
+      "biography": "Concept-board hero. She woke a grave to claim a sword; the runes have answered her since. The hero of The Winter Oath; hireable in skirmish.",
+      "portraitAssetId": "hero.norse.hervor.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Norse board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Spark",
+        "summary": "Knows Spark from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "spark",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "spark",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "spark"
+      }
+    },
+    {
+      "id": "norse_grey_jarl",
+      "pantheonId": "norse",
+      "name": "The Grey Jarl",
+      "title": "Barrow-king of the Long Winter",
+      "classId": "huscarl",
+      "biography": "Hrolf, a king of a thousand winters ago, swore to hold the winter under his mound in exchange for a kingdom when it ended. The winter never ended. Final opponent of The Winter Oath.",
+      "portraitAssetId": "hero.norse.grey_jarl.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "The Winter Oath campaign character (owner decision 2026-10-01: build the campaign)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Draugar",
+        "summary": "Draugar and Deathless Draugar in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_draugr"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_draugr"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_draugr"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_draugr"
+            }
+          ]
+        },
+        "familyId": "norse_draugr"
+      }
+    },
+    {
+      "id": "norse_ulfhild",
+      "pantheonId": "norse",
+      "name": "Ulfhild",
+      "title": "Jarl of Hvitstrand",
+      "classId": "jarl",
+      "biography": "A living jarl who swore to keep the Grey Jarl’s winter for a frozen sea that keeps her rivals’ ships in harbour. Rival empire in The Winter Oath, mission 5.",
+      "portraitAssetId": "hero.norse.ulfhild.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "The Winter Oath campaign character (owner decision 2026-10-01: build the campaign)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Frost Trolls",
+        "summary": "Frost Trolls and Ancient Frost Trolls in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_frost_troll"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_frost_troll"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_frost_troll"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_frost_troll"
+            }
+          ]
+        },
+        "familyId": "norse_frost_troll"
+      }
+    },
+    {
+      "id": "norse_hrafn",
+      "pantheonId": "norse",
+      "name": "Hrafn the Hollow",
+      "title": "Oathless Einherjar",
+      "classId": "huscarl",
+      "biography": "Chosen by the Valkyries once, he walked out of their hall for the Grey Jarl’s promise of a war that never ends. Holds the Glacier Gate in The Winter Oath, mission 6.",
+      "portraitAssetId": "hero.norse.hrafn.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "The Winter Oath campaign character (owner decision 2026-10-01: build the campaign)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Jotnar",
+        "summary": "Jotnar and Runic Jotnar in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_jotunn"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_jotunn"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_jotunn"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_jotunn"
+            }
+          ]
+        },
+        "familyId": "norse_jotunn"
+      }
+    },
+    {
+      "id": "norse_bone_helm",
+      "pantheonId": "norse",
+      "name": "Bone-Helm",
+      "title": "Captain of the Nail-ship",
+      "classId": "huscarl",
+      "biography": "Draugr captain of the ship of nails, who walks the frozen sound with his crew. Patrol in The Winter Oath, mission 4.",
+      "portraitAssetId": "hero.norse.bone_helm.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "The Winter Oath campaign character (owner decision 2026-10-01: build the campaign)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Nidhogg Wyrms",
+        "summary": "Nidhogg Wyrms and World-Serpent Wyrms in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_nidhogg_wyrm"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_nidhogg_wyrm"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_nidhogg_wyrm"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_nidhogg_wyrm"
+            }
+          ]
+        },
+        "familyId": "norse_nidhogg_wyrm"
+      }
+    },
+    {
+      "id": "norse_barrow_captain",
+      "pantheonId": "norse",
+      "name": "Barrow Captain",
+      "title": "Warden of the Glacier Plateau",
+      "classId": "huscarl",
+      "biography": "The Grey Jarl’s oldest captain, who sweeps the plateau before the barrow-gate. Patrol in The Winter Oath, mission 7.",
+      "portraitAssetId": "hero.norse.barrow_captain.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "The Winter Oath campaign character (owner decision 2026-10-01: build the campaign)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Draugar",
+        "summary": "Draugar and Deathless Draugar in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "norse_draugr"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "norse_draugr"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "norse_draugr"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "norse_draugr"
+            }
+          ]
+        },
+        "familyId": "norse_draugr"
+      }
+    },
+    {
+      "id": "egyptian_imhotep",
+      "pantheonId": "egyptian",
+      "name": "Imhotep",
+      "title": "Master Architect",
+      "classId": "lector_priest",
+      "biography": "Concept-board hero. Builder, physician and scholar; the city was raised on his measurements. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.imhotep.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Egyptian board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Stone",
+        "summary": "+2 Stone per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "stone",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "egyptian_hatshepsut",
+      "pantheonId": "egyptian",
+      "name": "Hatshepsut",
+      "title": "Visionary Pharaoh",
+      "classId": "vizier",
+      "biography": "Concept-board hero. She rules by planning, trade and patience, and her expeditions come home rich. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.hatshepsut.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Egyptian board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Gold",
+        "summary": "+250 Gold per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "gold",
+            "amount": 250
+          }
+        ]
+      }
+    },
+    {
+      "id": "egyptian_ramses",
+      "pantheonId": "egyptian",
+      "name": "Ramses",
+      "title": "Conquering King",
+      "classId": "medjay",
+      "biography": "Concept-board hero. A warrior-king who carves his victories in stone before the dust has settled. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.ramses.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Egyptian board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Sphinxes",
+        "summary": "Sphinxes and Great Sphinxes in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "egyptian_sphinx"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "egyptian_sphinx"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "egyptian_sphinx"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "egyptian_sphinx"
+            }
+          ]
+        },
+        "familyId": "egyptian_sphinx"
+      }
+    },
+    {
+      "id": "egyptian_cleopatra",
+      "pantheonId": "egyptian",
+      "name": "Cleopatra",
+      "title": "Diplomat & Strategist",
+      "classId": "vizier",
+      "biography": "Concept-board hero. Speaks every language at her court and wins most battles before they begin. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.cleopatra.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Egyptian board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Crystal",
+        "summary": "+1 Crystal per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "crystal",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "egyptian_nefertiti",
+      "pantheonId": "egyptian",
+      "name": "Nefertiti",
+      "title": "Culture & Unity",
+      "classId": "lector_priest",
+      "biography": "Concept-board hero. A queen of the sun-cult whose hymns steady armies and open sealed doors. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.nefertiti.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Egyptian board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Ankh of Renewal",
+        "summary": "Knows Ankh of Renewal from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "ankh_of_renewal",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "ankh_of_renewal",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "ankh_of_renewal"
+      }
+    },
+    {
+      "id": "egyptian_ahmose",
+      "pantheonId": "egyptian",
+      "name": "Ahmose",
+      "title": "Liberator of the Two Lands",
+      "classId": "medjay",
+      "biography": "Proposed hero. A young prince who took up his fallen father’s war and drove the foreign kings out of the delta. His jackal-masked guard marched at his side. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.ahmose.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Egyptian heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Jackal Guardians",
+        "summary": "Jackal Guardians and Anubian Wardens in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "egyptian_jackal_guardian"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "egyptian_jackal_guardian"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "egyptian_jackal_guardian"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "egyptian_jackal_guardian"
+            }
+          ]
+        },
+        "familyId": "egyptian_jackal_guardian"
+      }
+    },
+    {
+      "id": "egyptian_tiye",
+      "pantheonId": "egyptian",
+      "name": "Tiye",
+      "title": "Great Royal Wife",
+      "classId": "vizier",
+      "biography": "Proposed hero. A commoner’s daughter who became the most trusted voice at court; foreign kings wrote their letters to her. Cedar from distant ports arrives where she sends for it. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.tiye.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Egyptian heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Wood",
+        "summary": "+2 Wood per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "wood",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "egyptian_peseshet",
+      "pantheonId": "egyptian",
+      "name": "Peseshet",
+      "title": "Overseer of Physicians",
+      "classId": "lector_priest",
+      "biography": "Proposed hero. She led the women physicians of the old kingdom and taught the midwives of Sais. Her words close wounds as surely as her needle. Hireable in skirmish.",
+      "portraitAssetId": "hero.egyptian.peseshet.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Egyptian heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Mend",
+        "summary": "Knows Mend from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "mend",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "mend",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "mend"
+      }
+    },
+    {
+      "id": "japanese_momotaro",
+      "pantheonId": "japanese",
+      "name": "Momotaro",
+      "title": "People's Hero",
+      "classId": "onmyoji",
+      "biography": "Concept-board hero. Born from a peach, raised by farmers, and followed by a dog, a monkey and a pheasant who all give advice. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.momotaro.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Japanese board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Kitsune",
+        "summary": "Kitsune and Nine-Tailed Kitsune in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_kitsune"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_kitsune"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_kitsune"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_kitsune"
+            }
+          ]
+        },
+        "familyId": "japanese_kitsune"
+      }
+    },
+    {
+      "id": "japanese_yamato_takeru",
+      "pantheonId": "japanese",
+      "name": "Yamato Takeru",
+      "title": "Imperial Explorer",
+      "classId": "samurai",
+      "biography": "Concept-board hero. A prince sent to every edge of the map, who keeps coming back from it. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.yamato_takeru.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Japanese board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Gold",
+        "summary": "+250 Gold per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "gold",
+            "amount": 250
+          }
+        ]
+      }
+    },
+    {
+      "id": "japanese_tomoe_gozen",
+      "pantheonId": "japanese",
+      "name": "Tomoe Gozen",
+      "title": "Legendary Archer",
+      "classId": "samurai",
+      "biography": "Concept-board hero. A mounted warrior famed with bow and blade, first into every breach. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.tomoe_gozen.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Japanese board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Kirin",
+        "summary": "Kirin and Celestial Kirin in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_kirin"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_kirin"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_kirin"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_kirin"
+            }
+          ]
+        },
+        "familyId": "japanese_kirin"
+      }
+    },
+    {
+      "id": "japanese_benkei",
+      "pantheonId": "japanese",
+      "name": "Benkei",
+      "title": "Devoted Guardian",
+      "classId": "daimyo",
+      "biography": "Concept-board hero. A warrior-monk who once held a bridge alone and now holds armies together. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.benkei.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Japanese board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Oni",
+        "summary": "Oni and Oni Warlords in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_oni"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_oni"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_oni"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_oni"
+            }
+          ]
+        },
+        "familyId": "japanese_oni"
+      }
+    },
+    {
+      "id": "japanese_yoshitsune",
+      "pantheonId": "japanese",
+      "name": "Yoshitsune",
+      "title": "Brilliant Strategist",
+      "classId": "daimyo",
+      "biography": "Concept-board hero. Trained by mountain tengu; his marches arrive where no one expects them. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.yoshitsune.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Japanese board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Tengu",
+        "summary": "Tengu and Great Tengu in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_tengu"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_tengu"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_tengu"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_tengu"
+            }
+          ]
+        },
+        "familyId": "japanese_tengu"
+      }
+    },
+    {
+      "id": "japanese_kusunoki_masashige",
+      "pantheonId": "japanese",
+      "name": "Kusunoki Masashige",
+      "title": "Loyal Defender",
+      "classId": "daimyo",
+      "biography": "Proposed hero. He held a mountain fortress with a few hundred men against an army, rolling logs and stones down on every assault. Walls rise wherever he camps. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.kusunoki_masashige.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Japanese heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Stone",
+        "summary": "+2 Stone per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "stone",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "japanese_abe_no_seimei",
+      "pantheonId": "japanese",
+      "name": "Abe no Seimei",
+      "title": "Master of Onmyō",
+      "classId": "onmyoji",
+      "biography": "Proposed hero. The court’s greatest diviner, said to be the son of a fox-woman. Fox-fire answers him before he finishes the charm. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.abe_no_seimei.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Japanese heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Kitsune-bi",
+        "summary": "Knows Kitsune-bi from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "kitsune_fire",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "kitsune_fire",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "kitsune_fire"
+      }
+    },
+    {
+      "id": "japanese_hangaku_gozen",
+      "pantheonId": "japanese",
+      "name": "Hangaku Gozen",
+      "title": "Archer of Torisaka",
+      "classId": "samurai",
+      "biography": "Proposed hero. She held the walls of Torisaka from the gate-tower with her bow until an arrow found her. The river-folk of her northern home fight beside her. Hireable in skirmish.",
+      "portraitAssetId": "hero.japanese.hangaku_gozen.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Japanese heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Kappa",
+        "summary": "Kappa and River Elder Kappa in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_kappa"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_kappa"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_kappa"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_kappa"
+            }
+          ]
+        },
+        "familyId": "japanese_kappa"
+      }
+    },
+    {
+      "id": "celtic_cu_chulainn",
+      "pantheonId": "celtic",
+      "name": "Cu Chulainn",
+      "title": "Hound of Ulster",
+      "classId": "fian",
+      "biography": "Concept-board hero. A young champion whose battle-fury is legendary and whose speed is worse. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.cu_chulainn.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Celtic board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Cu Sith",
+        "summary": "Cu Sith and Great Cu Sith in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_cu_sith"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_cu_sith"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_cu_sith"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_cu_sith"
+            }
+          ]
+        },
+        "familyId": "celtic_cu_sith"
+      }
+    },
+    {
+      "id": "celtic_fionn_mac_cumhaill",
+      "pantheonId": "celtic",
+      "name": "Fionn mac Cumhaill",
+      "title": "Leader of the Fianna",
+      "classId": "chieftain",
+      "biography": "Concept-board hero. He tasted the salmon of knowledge once and has been hard to surprise ever since. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.fionn_mac_cumhaill.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Celtic board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Horned Stag Spirits",
+        "summary": "Horned Stag Spirits and Great Stag Spirits in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_horned_stag_spirit"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_horned_stag_spirit"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_horned_stag_spirit"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_horned_stag_spirit"
+            }
+          ]
+        },
+        "familyId": "celtic_horned_stag_spirit"
+      }
+    },
+    {
+      "id": "celtic_scathach",
+      "pantheonId": "celtic",
+      "name": "Scathach",
+      "title": "Warrior Teacher",
+      "classId": "fian",
+      "biography": "Concept-board hero. She trained the best warriors of her age on an island of shadow and still takes students. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.scathach.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Celtic board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Kelpies",
+        "summary": "Kelpies and Dread Kelpies in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_kelpie"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_kelpie"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_kelpie"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_kelpie"
+            }
+          ]
+        },
+        "familyId": "celtic_kelpie"
+      }
+    },
+    {
+      "id": "celtic_deirdre",
+      "pantheonId": "celtic",
+      "name": "Deirdre",
+      "title": "Sorrow & Resolve",
+      "classId": "druid",
+      "biography": "Concept-board hero. Foretold at her birth to bring sorrow, she learned the old words to answer the prophecy. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.deirdre.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Celtic board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Cauldron of the Dagda",
+        "summary": "Knows Cauldron of the Dagda from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "cauldron_of_dagda",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "cauldron_of_dagda",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "cauldron_of_dagda"
+      }
+    },
+    {
+      "id": "celtic_boudicca",
+      "pantheonId": "celtic",
+      "name": "Boudicca",
+      "title": "Rebel Queen",
+      "classId": "chieftain",
+      "biography": "Concept-board hero. A queen who raised a whole country behind her chariot. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.boudicca.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Celtic board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Favor",
+        "summary": "+1 Favor per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "favor",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "celtic_medb",
+      "pantheonId": "celtic",
+      "name": "Medb",
+      "title": "Queen of Connacht",
+      "classId": "chieftain",
+      "biography": "Proposed hero. She went to war over a bull so that her wealth would equal her husband’s, and her treasury has never stopped growing. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.medb.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Celtic heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Gold",
+        "summary": "+250 Gold per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "gold",
+            "amount": 250
+          }
+        ]
+      }
+    },
+    {
+      "id": "celtic_amergin",
+      "pantheonId": "celtic",
+      "name": "Amergin",
+      "title": "Poet of the Landing",
+      "classId": "druid",
+      "biography": "Proposed hero. The bard who sang the land into accepting his people as they stepped ashore. When he chants, the hunt of the Otherworld rides. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.amergin.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Celtic heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Wild Hunt",
+        "summary": "Knows Wild Hunt from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "wild_hunt",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "wild_hunt",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "wild_hunt"
+      }
+    },
+    {
+      "id": "celtic_fergus_mac_roich",
+      "pantheonId": "celtic",
+      "name": "Fergus mac Roich",
+      "title": "Exiled King of Ulster",
+      "classId": "fian",
+      "biography": "Proposed hero. A giant of a man who lost his throne by a trick and fought the war that followed on the other side. The keening women follow his host. Hireable in skirmish.",
+      "portraitAssetId": "hero.celtic.fergus_mac_roich.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Celtic heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Banshees",
+        "summary": "Banshees and Battle Banshees in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_banshee"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_banshee"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_banshee"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_banshee"
+            }
+          ]
+        },
+        "familyId": "celtic_banshee"
+      }
+    },
+    {
+      "id": "mesoamerican_hunahpu",
+      "pantheonId": "mesoamerican",
+      "name": "Hunahpu",
+      "title": "Trickster & Resilience",
+      "classId": "jaguar_knight",
+      "biography": "Concept-board hero. One of the Hero Twins who outplayed the lords of the underworld at their own game. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.hunahpu.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Mesoamerican board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Camazotz",
+        "summary": "Camazotz and Blood Moon Camazotz in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_camazotz"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_camazotz"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_camazotz"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_camazotz"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_camazotz"
+      }
+    },
+    {
+      "id": "mesoamerican_xbalanque",
+      "pantheonId": "mesoamerican",
+      "name": "Xbalanque",
+      "title": "Skill & Opportunity",
+      "classId": "jaguar_knight",
+      "biography": "Concept-board hero. The other Hero Twin, patient and exact, who finishes what his brother starts. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.xbalanque.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Mesoamerican board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Jaguar Spirits",
+        "summary": "Jaguar Spirits and Sun Jaguars in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_jaguar_spirit"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_jaguar_spirit"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_jaguar_spirit"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_jaguar_spirit"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_jaguar_spirit"
+      }
+    },
+    {
+      "id": "mesoamerican_nezahualcoyotl",
+      "pantheonId": "mesoamerican",
+      "name": "Nezahualcoyotl",
+      "title": "Poet King & Harmony",
+      "classId": "tlatoani",
+      "biography": "Concept-board hero. A ruler, engineer and poet whose aqueducts and verses both outlived him. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.nezahualcoyotl.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Mesoamerican board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Gold",
+        "summary": "+250 Gold per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "gold",
+            "amount": 250
+          }
+        ]
+      }
+    },
+    {
+      "id": "mesoamerican_topiltzin_quetzalcoatl",
+      "pantheonId": "mesoamerican",
+      "name": "Topiltzin Quetzalcoatl",
+      "title": "Reform & Enlightenment",
+      "classId": "day_keeper",
+      "biography": "Concept-board hero. A priest-king who took the feathered serpent’s name and its teachings with it. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.topiltzin_quetzalcoatl.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Mesoamerican board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Rain of Tlaloc",
+        "summary": "Knows Rain of Tlaloc from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "rain_of_tlaloc",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "rain_of_tlaloc",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "rain_of_tlaloc"
+      }
+    },
+    {
+      "id": "mesoamerican_eight_deer_jaguar_claw",
+      "pantheonId": "mesoamerican",
+      "name": "Eight Deer Jaguar Claw",
+      "title": "Tactics & Divine Right",
+      "classId": "tlatoani",
+      "biography": "Concept-board hero. A Mixtec lord whose campaigns fill whole painted books. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.eight_deer_jaguar_claw.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "concept-board",
+        "note": "Name and title from the owner Mesoamerican board; class assignment proposed."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Eagle Warrior Spirits",
+        "summary": "Eagle Warrior Spirits and Solar Eagle Warriors in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_eagle_warrior_spirit"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_eagle_warrior_spirit"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_eagle_warrior_spirit"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_eagle_warrior_spirit"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_eagle_warrior_spirit"
+      }
+    },
+    {
+      "id": "mesoamerican_moctezuma_ilhuicamina",
+      "pantheonId": "mesoamerican",
+      "name": "Moctezuma Ilhuicamina",
+      "title": "Archer of the Sky",
+      "classId": "tlatoani",
+      "biography": "Proposed hero. A ruler who built dikes across the lake and stone causeways into his city. Quarries work day and night under his stewards. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.moctezuma_ilhuicamina.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Mesoamerican heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "resource",
+        "name": "Stone",
+        "summary": "+2 Stone per day while this hero is in play.",
+        "effects": [
+          {
+            "type": "daily_income",
+            "resource": "stone",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "mesoamerican_lady_six_sky",
+      "pantheonId": "mesoamerican",
+      "name": "Lady Six Sky",
+      "title": "Warrior Queen of Naranjo",
+      "classId": "jaguar_knight",
+      "biography": "Proposed hero. She came to a broken city as a bride and ruled it as a conqueror, carved on its monuments standing on a captive. The beasts of the cenotes answer her. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.lady_six_sky.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Mesoamerican heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Cenote Crocodiles",
+        "summary": "Cenote Crocodiles and Temple Crocodiles in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_cenote_crocodile"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_cenote_crocodile"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_cenote_crocodile"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_cenote_crocodile"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_cenote_crocodile"
+      }
+    },
+    {
+      "id": "mesoamerican_chilam_balam",
+      "pantheonId": "mesoamerican",
+      "name": "Chilam Balam",
+      "title": "Jaguar Prophet",
+      "classId": "day_keeper",
+      "biography": "Proposed hero. The jaguar-priest whose prophecies were copied for centuries. He reads the count of days and calls down black glass from the sky. Hireable in skirmish.",
+      "portraitAssetId": "hero.mesoamerican.chilam_balam.portrait",
+      "availability": "hireable",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Owner request 2026-10-04: more Mesoamerican heroes. Name, title, class, story and specialty proposed (unplaytested)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Obsidian Rain",
+        "summary": "Knows Obsidian Rain from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "obsidian_rain",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "obsidian_rain",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "obsidian_rain"
+      }
+    },
+    {
+      "id": "egyptian_seshet",
+      "pantheonId": "egyptian",
+      "name": "Seshet",
+      "title": "Lector of the House of Life",
+      "classId": "lector_priest",
+      "biography": "A lector priestess of Abedju who reads the hymns that send the sun through the night. The hero of The Twelfth Hour.",
+      "portraitAssetId": "hero.egyptian.seshet.portrait",
+      "availability": "campaign",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Wrath of Sekhmet",
+        "summary": "Knows Wrath of Sekhmet from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "wrath_of_sekhmet",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "wrath_of_sekhmet",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "wrath_of_sekhmet"
+      }
+    },
+    {
+      "id": "egyptian_djedkhonsu",
+      "pantheonId": "egyptian",
+      "name": "Djedkhonsu",
+      "title": "The Hollow Lector",
+      "classId": "lector_priest",
+      "biography": "Once the highest reader of the House of Life, he learned the name of the coiled dark and bargained with it for an endless dusk to rule. Final opponent of The Twelfth Hour.",
+      "portraitAssetId": "hero.egyptian.djedkhonsu.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Scarab Swarm",
+        "summary": "Knows Scarab Swarm from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "scarab_swarm",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "scarab_swarm",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "scarab_swarm"
+      }
+    },
+    {
+      "id": "egyptian_paser",
+      "pantheonId": "egyptian",
+      "name": "Paser",
+      "title": "The Red Vizier",
+      "classId": "vizier",
+      "biography": "A vizier who crowned himself in the dusk and calls Djedkhonsu his priest. Rival empire in The Twelfth Hour, mission 5.",
+      "portraitAssetId": "hero.egyptian.paser.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Ushabti",
+        "summary": "Ushabti and Royal Ushabti in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "egyptian_ushabti"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "egyptian_ushabti"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "egyptian_ushabti"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "egyptian_ushabti"
+            }
+          ]
+        },
+        "familyId": "egyptian_ushabti"
+      }
+    },
+    {
+      "id": "egyptian_ankhwen",
+      "pantheonId": "egyptian",
+      "name": "Ankhwen",
+      "title": "Captain of the Drowned Barge",
+      "classId": "medjay",
+      "biography": "A river captain who drowned in the first dark morning and came back hungry for orders. Patrol in The Twelfth Hour, mission 4.",
+      "portraitAssetId": "hero.egyptian.ankhwen.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Crocodile Beasts",
+        "summary": "Crocodile Beasts and Sobek Warbeasts in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "egyptian_crocodile_beast"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "egyptian_crocodile_beast"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "egyptian_crocodile_beast"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "egyptian_crocodile_beast"
+            }
+          ]
+        },
+        "familyId": "egyptian_crocodile_beast"
+      }
+    },
+    {
+      "id": "egyptian_hekaib",
+      "pantheonId": "egyptian",
+      "name": "Hekaib",
+      "title": "Sword of the Hollow Lector",
+      "classId": "medjay",
+      "biography": "Djedkhonsu’s champion, who holds the rookery gate. The Twelfth Hour, mission 6.",
+      "portraitAssetId": "hero.egyptian.hekaib.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Jackal Guardians",
+        "summary": "Jackal Guardians and Anubian Wardens in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "egyptian_jackal_guardian"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "egyptian_jackal_guardian"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "egyptian_jackal_guardian"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "egyptian_jackal_guardian"
+            }
+          ]
+        },
+        "familyId": "egyptian_jackal_guardian"
+      }
+    },
+    {
+      "id": "egyptian_iti",
+      "pantheonId": "egyptian",
+      "name": "Iti",
+      "title": "Warden of the Horizon",
+      "classId": "medjay",
+      "biography": "Keeper of the road between the two horizon-stones. Patrol in The Twelfth Hour, mission 7.",
+      "portraitAssetId": "hero.egyptian.iti.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Bennu",
+        "summary": "Bennu and Radiant Bennu in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "egyptian_bennu"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "egyptian_bennu"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "egyptian_bennu"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "egyptian_bennu"
+            }
+          ]
+        },
+        "familyId": "egyptian_bennu"
+      }
+    },
+    {
+      "id": "japanese_akane",
+      "pantheonId": "japanese",
+      "name": "Akane",
+      "title": "Diviner of the Western Shrine",
+      "classId": "onmyoji",
+      "biography": "A shrine diviner who reads the lantern-smoke at the festival of the dead. The hero of The Lantern Road.",
+      "portraitAssetId": "hero.japanese.akane.portrait",
+      "availability": "campaign",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Kitsune-bi",
+        "summary": "Knows Kitsune-bi from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "kitsune_fire",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "kitsune_fire",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "kitsune_fire"
+      }
+    },
+    {
+      "id": "japanese_yamikage",
+      "pantheonId": "japanese",
+      "name": "Yamikage",
+      "title": "The Lantern-Eater",
+      "classId": "onmyoji",
+      "biography": "A spirit of the borderlands who learned to swallow light, and swallowed the lanterns of seven provinces. Final opponent of The Lantern Road.",
+      "portraitAssetId": "hero.japanese.yamikage.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Raijin’s Drums",
+        "summary": "Knows Raijin’s Drums from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "raijin_drums",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "raijin_drums",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "raijin_drums"
+      }
+    },
+    {
+      "id": "japanese_kurogane",
+      "pantheonId": "japanese",
+      "name": "Kurogane",
+      "title": "The Iron Daimyo",
+      "classId": "daimyo",
+      "biography": "A lord who fences the wandering dead into his army and calls them loyal. Rival empire in The Lantern Road, mission 5.",
+      "portraitAssetId": "hero.japanese.kurogane.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Jorogumo",
+        "summary": "Jorogumo and Queen Jorogumo in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_jorogumo"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_jorogumo"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_jorogumo"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_jorogumo"
+            }
+          ]
+        },
+        "familyId": "japanese_jorogumo"
+      }
+    },
+    {
+      "id": "japanese_gonryo",
+      "pantheonId": "japanese",
+      "name": "Gonryō",
+      "title": "Captain of the Fog Fleet",
+      "classId": "samurai",
+      "biography": "A sea captain whose ships sail out of the fog and never into port. Patrol in The Lantern Road, mission 4.",
+      "portraitAssetId": "hero.japanese.gonryo.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Kappa",
+        "summary": "Kappa and River Elder Kappa in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_kappa"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_kappa"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_kappa"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_kappa"
+            }
+          ]
+        },
+        "familyId": "japanese_kappa"
+      }
+    },
+    {
+      "id": "japanese_oboro",
+      "pantheonId": "japanese",
+      "name": "Oboro",
+      "title": "General of the Hazy Moon",
+      "classId": "samurai",
+      "biography": "Yamikage’s general, who holds the kirin meadow’s gate. The Lantern Road, mission 6.",
+      "portraitAssetId": "hero.japanese.oboro.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Orochi",
+        "summary": "Orochi and Imperial Orochi in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_orochi"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_orochi"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_orochi"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_orochi"
+            }
+          ]
+        },
+        "familyId": "japanese_orochi"
+      }
+    },
+    {
+      "id": "japanese_kagero",
+      "pantheonId": "japanese",
+      "name": "Kagerō",
+      "title": "Warden of the Last Torii",
+      "classId": "samurai",
+      "biography": "A warden who walks the road between the sun stone and the moon stone. Patrol in The Lantern Road, mission 7.",
+      "portraitAssetId": "hero.japanese.kagero.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Tengu",
+        "summary": "Tengu and Great Tengu in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "japanese_tengu"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "japanese_tengu"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "japanese_tengu"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "japanese_tengu"
+            }
+          ]
+        },
+        "familyId": "japanese_tengu"
+      }
+    },
+    {
+      "id": "celtic_orla",
+      "pantheonId": "celtic",
+      "name": "Orla",
+      "title": "Druid of the Hazel Grove",
+      "classId": "druid",
+      "biography": "A druid of the hazel grove who keeps the calendar of fires. The hero of The Silver Branch.",
+      "portraitAssetId": "hero.celtic.orla.portrait",
+      "availability": "campaign",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Wild Hunt",
+        "summary": "Knows Wild Hunt from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "wild_hunt",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "wild_hunt",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "wild_hunt"
+      }
+    },
+    {
+      "id": "celtic_dubhghall",
+      "pantheonId": "celtic",
+      "name": "Dubhghall",
+      "title": "The Withered King",
+      "classId": "chieftain",
+      "biography": "A king who swore himself to the dark half of the year and broke the silver branch so it would never end. Final opponent of The Silver Branch.",
+      "portraitAssetId": "hero.celtic.dubhghall.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Banshees",
+        "summary": "Banshees and Battle Banshees in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_banshee"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_banshee"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_banshee"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_banshee"
+            }
+          ]
+        },
+        "familyId": "celtic_banshee"
+      }
+    },
+    {
+      "id": "celtic_fiachra",
+      "pantheonId": "celtic",
+      "name": "Fiachra",
+      "title": "The Usurper of the Ford",
+      "classId": "chieftain",
+      "biography": "A chieftain who took the high seat in the long winter and keeps it with the Withered King’s help. Rival empire in The Silver Branch, mission 5.",
+      "portraitAssetId": "hero.celtic.fiachra.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Fomorian Giants",
+        "summary": "Fomorian Giants and Ancient Fomorians in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_fomorian_giant"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_fomorian_giant"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_fomorian_giant"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_fomorian_giant"
+            }
+          ]
+        },
+        "familyId": "celtic_fomorian_giant"
+      }
+    },
+    {
+      "id": "celtic_corc",
+      "pantheonId": "celtic",
+      "name": "Corc",
+      "title": "Raider of the Grey Sea",
+      "classId": "fian",
+      "biography": "A sea-raider who came with the mist and stayed for the plunder. Patrol in The Silver Branch, mission 4.",
+      "portraitAssetId": "hero.celtic.corc.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Selkies",
+        "summary": "Selkies and Storm Selkies in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_selkie"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_selkie"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_selkie"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_selkie"
+            }
+          ]
+        },
+        "familyId": "celtic_selkie"
+      }
+    },
+    {
+      "id": "celtic_tadhg",
+      "pantheonId": "celtic",
+      "name": "Tadhg the Grey",
+      "title": "Champion of the Withered King",
+      "classId": "fian",
+      "biography": "The Withered King’s champion, who holds the stags’ wood. The Silver Branch, mission 6.",
+      "portraitAssetId": "hero.celtic.tadhg.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Pooka",
+        "summary": "Pooka and Elder Pooka in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_pooka"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_pooka"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_pooka"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_pooka"
+            }
+          ]
+        },
+        "familyId": "celtic_pooka"
+      }
+    },
+    {
+      "id": "celtic_ciar",
+      "pantheonId": "celtic",
+      "name": "Ciar",
+      "title": "Warden of the Mound",
+      "classId": "fian",
+      "biography": "Keeper of the road between the summer stone and the winter stone. Patrol in The Silver Branch, mission 7.",
+      "portraitAssetId": "hero.celtic.ciar.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Banshees",
+        "summary": "Banshees and Battle Banshees in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "celtic_banshee"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "celtic_banshee"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "celtic_banshee"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "celtic_banshee"
+            }
+          ]
+        },
+        "familyId": "celtic_banshee"
+      }
+    },
+    {
+      "id": "mesoamerican_itzel",
+      "pantheonId": "mesoamerican",
+      "name": "Itzel",
+      "title": "Day-Keeper of Xochitla",
+      "classId": "day_keeper",
+      "biography": "A day-keeper who counts the calendar and knows which fire belongs to which day. The hero of The New Fire.",
+      "portraitAssetId": "hero.mesoamerican.itzel.portrait",
+      "availability": "campaign",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Obsidian Rain",
+        "summary": "Knows Obsidian Rain from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "obsidian_rain",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "obsidian_rain",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "obsidian_rain"
+      }
+    },
+    {
+      "id": "mesoamerican_itztli",
+      "pantheonId": "mesoamerican",
+      "name": "Itztli",
+      "title": "The Night-Knife",
+      "classId": "day_keeper",
+      "biography": "An obsidian priest who wants the age to end in darkness so that the next one will be his. Final opponent of The New Fire.",
+      "portraitAssetId": "hero.mesoamerican.itztli.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "spell",
+        "name": "Ember Burst",
+        "summary": "Knows Ember Burst from the start and casts it with +1 Spell Power, one more at hero levels 3, 6 and 9.",
+        "effects": [
+          {
+            "type": "spell_power_bonus",
+            "spellId": "ember_burst",
+            "amount": 1
+          }
+        ],
+        "growth": {
+          "everyLevels": 3,
+          "effects": [
+            {
+              "type": "spell_power_bonus",
+              "spellId": "ember_burst",
+              "amount": 1
+            }
+          ]
+        },
+        "spellId": "ember_burst"
+      }
+    },
+    {
+      "id": "mesoamerican_tecuani",
+      "pantheonId": "mesoamerican",
+      "name": "Tecuani",
+      "title": "Lord of Itzcalli",
+      "classId": "tlatoani",
+      "biography": "A city lord who swore to the Night-Knife in exchange for the next age’s throne. Rival empire in The New Fire, mission 5.",
+      "portraitAssetId": "hero.mesoamerican.tecuani.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Xiuhcoatl",
+        "summary": "Xiuhcoatl and Divine Xiuhcoatl in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_xiuhcoatl"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_xiuhcoatl"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_xiuhcoatl"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_xiuhcoatl"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_xiuhcoatl"
+      }
+    },
+    {
+      "id": "mesoamerican_acatl",
+      "pantheonId": "mesoamerican",
+      "name": "Acatl",
+      "title": "Captain of the Lake Canoes",
+      "classId": "jaguar_knight",
+      "biography": "A canoe captain who raids the lake towns in the Night-Knife’s name. Patrol in The New Fire, mission 4.",
+      "portraitAssetId": "hero.mesoamerican.acatl.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Cenote Crocodiles",
+        "summary": "Cenote Crocodiles and Temple Crocodiles in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_cenote_crocodile"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_cenote_crocodile"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_cenote_crocodile"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_cenote_crocodile"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_cenote_crocodile"
+      }
+    },
+    {
+      "id": "mesoamerican_mazatl",
+      "pantheonId": "mesoamerican",
+      "name": "Mazatl",
+      "title": "Keeper of the Fire Mountain",
+      "classId": "jaguar_knight",
+      "biography": "The Night-Knife’s champion, who holds the fire mountain. The New Fire, mission 6.",
+      "portraitAssetId": "hero.mesoamerican.mazatl.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Stone Colossi",
+        "summary": "Stone Colossi and Sun Colossi in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_stone_colossus"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_stone_colossus"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_stone_colossus"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_stone_colossus"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_stone_colossus"
+      }
+    },
+    {
+      "id": "mesoamerican_tlacatl",
+      "pantheonId": "mesoamerican",
+      "name": "Tlacatl",
+      "title": "Warden of the Smoking Gate",
+      "classId": "jaguar_knight",
+      "biography": "Keeper of the road between the morning-star stone and the evening-star stone. Patrol in The New Fire, mission 7.",
+      "portraitAssetId": "hero.mesoamerican.tlacatl.portrait",
+      "availability": "enemy",
+      "provenance": {
+        "source": "proposed-this-build",
+        "note": "Campaign character (owner request 2026-10-02: campaigns for the four remaining pantheons)."
+      },
+      "specialty": {
+        "kind": "creature",
+        "name": "Feathered Serpents",
+        "summary": "Feathered Serpents and Celestial Feathered Serpents in this hero’s army: +1 Attack and +1 Defense in battle, one more of each at hero levels 4 and 8.",
+        "effects": [
+          {
+            "type": "creature_stat",
+            "stat": "attack",
+            "amount": 1,
+            "familyId": "mesoamerican_feathered_serpent"
+          },
+          {
+            "type": "creature_stat",
+            "stat": "defense",
+            "amount": 1,
+            "familyId": "mesoamerican_feathered_serpent"
+          }
+        ],
+        "growth": {
+          "everyLevels": 4,
+          "effects": [
+            {
+              "type": "creature_stat",
+              "stat": "attack",
+              "amount": 1,
+              "familyId": "mesoamerican_feathered_serpent"
+            },
+            {
+              "type": "creature_stat",
+              "stat": "defense",
+              "amount": 1,
+              "familyId": "mesoamerican_feathered_serpent"
+            }
+          ]
+        },
+        "familyId": "mesoamerican_feathered_serpent"
+      }
+    }
+  ],
+  "classes": {
+    "champion": {
+      "id": "champion",
+      "name": "Champion",
+      "startingAttributes": {
+        "attack": 2,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 1
+      },
+      "startingSkills": [
+        {
+          "skillId": "offense",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "attack",
+        "defense",
+        "attack",
+        "knowledge"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A front-line commander who sharpens the army’s strikes."
+    },
+    "strategos": {
+      "id": "strategos",
+      "name": "Strategos",
+      "startingAttributes": {
+        "attack": 1,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 2
+      },
+      "startingSkills": [
+        {
+          "skillId": "leadership",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "defense",
+        "attack",
+        "knowledge",
+        "power"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A disciplined general whose steadiness keeps a line together."
+    },
+    "oracle": {
+      "id": "oracle",
+      "name": "Oracle",
+      "startingAttributes": {
+        "attack": 0,
+        "defense": 0,
+        "power": 3,
+        "knowledge": 3
+      },
+      "startingSkills": [
+        {
+          "skillId": "wisdom",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "power",
+        "knowledge",
+        "power",
+        "defense"
+      ],
+      "startsWithSpellbook": true,
+      "summary": "A seer-commander who leads through divine insight and spellcraft."
+    },
+    "huscarl": {
+      "id": "huscarl",
+      "name": "Huscarl",
+      "startingAttributes": {
+        "attack": 2,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 1
+      },
+      "startingSkills": [
+        {
+          "skillId": "offense",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "attack",
+        "defense",
+        "attack",
+        "knowledge"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A sworn household warrior who leads from the shield wall (mirrors Champion; proposed)."
+    },
+    "jarl": {
+      "id": "jarl",
+      "name": "Jarl",
+      "startingAttributes": {
+        "attack": 1,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 2
+      },
+      "startingSkills": [
+        {
+          "skillId": "leadership",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "defense",
+        "attack",
+        "knowledge",
+        "power"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A war-leader whose word keeps the host together (mirrors Strategos; proposed)."
+    },
+    "volva": {
+      "id": "volva",
+      "name": "Völva",
+      "startingAttributes": {
+        "attack": 0,
+        "defense": 0,
+        "power": 3,
+        "knowledge": 3
+      },
+      "startingSkills": [
+        {
+          "skillId": "wisdom",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "power",
+        "knowledge",
+        "power",
+        "defense"
+      ],
+      "startsWithSpellbook": true,
+      "summary": "A seeress who reads the runes and casts them in battle (mirrors Oracle; proposed)."
+    },
+    "medjay": {
+      "id": "medjay",
+      "name": "Medjay",
+      "startingAttributes": {
+        "attack": 2,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 1
+      },
+      "startingSkills": [
+        {
+          "skillId": "offense",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "attack",
+        "defense",
+        "attack",
+        "knowledge"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A desert scout-warrior of the royal guard who leads from the front (mirrors Champion; proposed)."
+    },
+    "vizier": {
+      "id": "vizier",
+      "name": "Vizier",
+      "startingAttributes": {
+        "attack": 1,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 2
+      },
+      "startingSkills": [
+        {
+          "skillId": "leadership",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "defense",
+        "attack",
+        "knowledge",
+        "power"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A royal administrator who keeps armies supplied and steady (mirrors Strategos; proposed)."
+    },
+    "lector_priest": {
+      "id": "lector_priest",
+      "name": "Lector Priest",
+      "startingAttributes": {
+        "attack": 0,
+        "defense": 0,
+        "power": 3,
+        "knowledge": 3
+      },
+      "startingSkills": [
+        {
+          "skillId": "wisdom",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "power",
+        "knowledge",
+        "power",
+        "defense"
+      ],
+      "startsWithSpellbook": true,
+      "summary": "A reader of sacred texts whose words work as spells (mirrors Oracle; proposed)."
+    },
+    "samurai": {
+      "id": "samurai",
+      "name": "Samurai",
+      "startingAttributes": {
+        "attack": 2,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 1
+      },
+      "startingSkills": [
+        {
+          "skillId": "offense",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "attack",
+        "defense",
+        "attack",
+        "knowledge"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A sworn swordsman who leads from the front rank (mirrors Champion; proposed)."
+    },
+    "daimyo": {
+      "id": "daimyo",
+      "name": "Daimyo",
+      "startingAttributes": {
+        "attack": 1,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 2
+      },
+      "startingSkills": [
+        {
+          "skillId": "leadership",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "defense",
+        "attack",
+        "knowledge",
+        "power"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A domain lord who keeps a disciplined army together (mirrors Strategos; proposed)."
+    },
+    "onmyoji": {
+      "id": "onmyoji",
+      "name": "Onmyōji",
+      "startingAttributes": {
+        "attack": 0,
+        "defense": 0,
+        "power": 3,
+        "knowledge": 3
+      },
+      "startingSkills": [
+        {
+          "skillId": "wisdom",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "power",
+        "knowledge",
+        "power",
+        "defense"
+      ],
+      "startsWithSpellbook": true,
+      "summary": "A diviner of yin and yang who casts spells in battle (mirrors Oracle; proposed)."
+    },
+    "fian": {
+      "id": "fian",
+      "name": "Fian",
+      "startingAttributes": {
+        "attack": 2,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 1
+      },
+      "startingSkills": [
+        {
+          "skillId": "offense",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "attack",
+        "defense",
+        "attack",
+        "knowledge"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A warrior of the wandering war-bands who leads the charge (mirrors Champion; proposed)."
+    },
+    "chieftain": {
+      "id": "chieftain",
+      "name": "Chieftain",
+      "startingAttributes": {
+        "attack": 1,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 2
+      },
+      "startingSkills": [
+        {
+          "skillId": "leadership",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "defense",
+        "attack",
+        "knowledge",
+        "power"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A clan leader whose presence holds the war-band together (mirrors Strategos; proposed)."
+    },
+    "druid": {
+      "id": "druid",
+      "name": "Druid",
+      "startingAttributes": {
+        "attack": 0,
+        "defense": 0,
+        "power": 3,
+        "knowledge": 3
+      },
+      "startingSkills": [
+        {
+          "skillId": "wisdom",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "power",
+        "knowledge",
+        "power",
+        "defense"
+      ],
+      "startsWithSpellbook": true,
+      "summary": "A keeper of lore and the old words that work as spells (mirrors Oracle; proposed)."
+    },
+    "jaguar_knight": {
+      "id": "jaguar_knight",
+      "name": "Jaguar Knight",
+      "startingAttributes": {
+        "attack": 2,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 1
+      },
+      "startingSkills": [
+        {
+          "skillId": "offense",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "attack",
+        "defense",
+        "attack",
+        "knowledge"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "An elite warrior of the jaguar order who leads from the front (mirrors Champion; proposed)."
+    },
+    "tlatoani": {
+      "id": "tlatoani",
+      "name": "Tlatoani",
+      "startingAttributes": {
+        "attack": 1,
+        "defense": 2,
+        "power": 1,
+        "knowledge": 2
+      },
+      "startingSkills": [
+        {
+          "skillId": "leadership",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "defense",
+        "attack",
+        "knowledge",
+        "power"
+      ],
+      "startsWithSpellbook": false,
+      "summary": "A city ruler — \"the one who speaks\" — who keeps the host in order (mirrors Strategos; proposed)."
+    },
+    "day_keeper": {
+      "id": "day_keeper",
+      "name": "Day Keeper",
+      "startingAttributes": {
+        "attack": 0,
+        "defense": 0,
+        "power": 3,
+        "knowledge": 3
+      },
+      "startingSkills": [
+        {
+          "skillId": "wisdom",
+          "rank": 1
+        }
+      ],
+      "primaryGainCycle": [
+        "power",
+        "knowledge",
+        "power",
+        "defense"
+      ],
+      "startsWithSpellbook": true,
+      "summary": "A calendar priest who reads the days and casts spells in battle (mirrors Oracle; proposed)."
+    }
+  }
+}

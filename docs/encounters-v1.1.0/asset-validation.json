@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "newAssets": 8,
+  "verifiedRuntimeFiles": 690,
+  "runtimeMiB": 101.1,
+  "heroPortraitMappings": 89,
+  "bustsAvailable": 35,
+  "concepts": "Reference screens assembled in HTML/CSS from the supplied assets; screenshots are preview-only."
+}

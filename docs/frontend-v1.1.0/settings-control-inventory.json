@@ -1,0 +1,43 @@
+{
+  "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\packages\\ui\\src\\screens\\Settings.tsx",
+  "sections": [
+    "gameplay",
+    "interface",
+    "display",
+    "audio",
+    "accessibility",
+    "controls",
+    "storage"
+  ],
+  "fieldLabels": [
+    "Adventure animation",
+    "Enemy movement",
+    "Battle speed",
+    "Confirm End Day while heroes can move",
+    "Combat log detail",
+    "Tutorial hints",
+    "Show all tips again",
+    "Interface scale",
+    "Text size",
+    "Hex grid overlay",
+    "Minimap",
+    "Battle stack labels",
+    "Bestiary animation",
+    "Window mode",
+    "Game cursors",
+    "Graphics quality",
+    "Adaptive resolution",
+    "Frame rate",
+    "Mute all",
+    "Mute in the background",
+    "Calmer sound",
+    "Test",
+    "Motion",
+    "High contrast",
+    "Color-independent ownership",
+    "Save storage",
+    "Manage saves",
+    "Versions"
+  ],
+  "note": "Dynamic audio labels and keybind actions must also be retained; inspect source rather than treating this extraction as exhaustive."
+}

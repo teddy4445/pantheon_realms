@@ -17,6 +17,7 @@ test('headers carry no screen code; random-map seats show the patron without a p
   await page.getByTestId('mode-random').click();
   await expect(page.locator('.screen-header__code')).toHaveCount(0);
   await expect(page.locator('.screen-header')).not.toContainText(/\bS\d\d\b/);
+  await page.getByTestId('random-chapter-empires').click();
   await expect(page.getByTestId('seat-0-patron')).toHaveCount(0);
   await expect(page.getByTestId('seat-0-patron-name')).toHaveText('Patron: Zeus');
   await page.getByTestId('seat-0-pantheon').selectOption('norse');
@@ -72,11 +73,15 @@ test('map HUD 24 px lower; pantheon page: plain Favor, pantheon-named miracles, 
   const endDay = await page.getByTestId('end-day').boundingBox();
   const left = await page.locator('.adv-left').boundingBox();
   expect(top && endDay && left).toBeTruthy();
-  // Both sit 24 px lower than before (they were a few pixels under the top bar).
-  for (const box of [endDay!, left!]) {
-    expect(box.y - (top!.y + top!.height)).toBeGreaterThanOrEqual(24);
-    expect(box.y - (top!.y + top!.height)).toBeLessThan(60);
-  }
+  // The left panel sits 24 px lower than before (it was a few pixels under the top bar).
+  expect(left!.y - (top!.y + top!.height)).toBeGreaterThanOrEqual(24);
+  expect(left!.y - (top!.y + top!.height)).toBeLessThan(60);
+  // 1.1.0: End Day closes the command sidebar (its foot), inside the window.
+  const command = await page.locator('.adv-command').boundingBox();
+  expect(command).toBeTruthy();
+  expect(endDay!.x).toBeGreaterThanOrEqual(command!.x - 1);
+  expect(endDay!.y + endDay!.height).toBeLessThanOrEqual(page.viewportSize()!.height + 1);
+  await expect(page.getByTestId('end-day')).toBeInViewport();
   await page.getByTitle('Pantheon (P)').click();
   const panel = page.locator('.pantheon-miracles');
   await expect(panel).toBeVisible();

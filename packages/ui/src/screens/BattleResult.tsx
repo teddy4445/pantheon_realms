@@ -8,11 +8,13 @@
  * level-up decisions first, then returns to the adventure map.
  */
 import { useEffect } from 'react';
-import { RESOURCE_KEYS, scenarioMission } from '@pr/rules';
+import { scenarioMission } from '@pr/rules';
 import { useStore } from '../app/context';
-import { Button, Chip, Panel, SectionTitle } from '../components/kit';
-import { ArtifactIcon, CreaturePortrait } from '../components/art';
-import { CostList } from '../components/game';
+import { Button, Panel, SectionTitle } from '../components/kit';
+import { guiThemeFor } from '../assets/guiArt';
+import { CreaturePortrait } from '../components/art';
+import { RewardTray } from '../components/rewards';
+import { artifactPlace, resourceItems, type ReceiptItem } from '../app/rewards';
 import { ResultSplash } from '../components/moments';
 import { resultSplashArt } from '../assets/momentArt';
 
@@ -39,7 +41,29 @@ export function BattleResultScreen() {
   // The player's own pantheon painting behind the result (a win or a loss; a stalemate keeps the plain screen).
   const playerRecord = r.playerSide === 'attacker' ? r.attacker : r.playerSide === 'defender' ? r.defender : null;
   const splash = playerRecord?.playerId && r.outcome !== 'stalemate' ? resultSplashArt(state.players[playerRecord.playerId]?.pantheonId, playerWon) : null;
-  const hasRewards = RESOURCE_KEYS.some((k) => r.rewards.resources[k] > 0) || r.rewards.artifactIds.length > 0 || r.rewards.entitlementIds.length > 0;
+  // The committed rewards of this battle (granted once by the rules), as tray items: resources, each hero's
+  // experience (with its cap), artifacts (where they went) and covenants. Casualties stay in the side tables.
+  const winnerHeroIds = r.xpAwarded.map((x) => x.heroId);
+  const placeOf = (artifactId: string): string => {
+    for (const id of winnerHeroIds) {
+      const h = state.heroes[id];
+      if (!h) continue;
+      if (Object.values(h.equipment).some((e) => e?.artifactId === artifactId)) return artifactPlace('equipped', h.name);
+      if (h.backpack.some((e) => e.artifactId === artifactId)) return artifactPlace('backpack', h.name);
+    }
+    return state.mission.flags[`cache:${artifactId}`] ? artifactPlace('cache', '') : 'Taken from the field';
+  };
+  const trayItems: ReceiptItem[] = [
+    ...resourceItems(r.rewards.resources),
+    ...r.xpAwarded
+      .filter((x) => x.amount > 0)
+      .map((x) => ({ kind: 'xp' as const, key: `xp:${x.heroId}`, iconId: 'icon.stat.xp', amount: `+${x.amount.toLocaleString('en-US')}`, label: r.xpAwarded.length > 1 ? `${state.heroes[x.heroId]?.name ?? 'Hero'} · Experience` : 'Experience', ...(x.capped ? { note: 'Mission cap reached' } : {}) })),
+    ...r.rewards.artifactIds.map((a, i) => ({ kind: 'artifact' as const, key: `art:${a}:${i}`, iconId: catalog.artifacts[a]?.iconAssetId ?? '', amount: '', label: catalog.artifacts[a]?.name ?? a, note: placeOf(a), artifactId: a })),
+    ...r.rewards.entitlementIds.map((e) => ({ kind: 'entitlement' as const, key: `ent:${e}`, iconId: 'icon.ui.gift', amount: '', label: catalog.entitlements[e]?.name ?? e, note: 'Covenant' })),
+  ];
+  const xpNotes = r.xpAwarded
+    .filter((x) => x.capped)
+    .map((x) => (x.amount > 0 ? `${state.heroes[x.heroId]?.name ?? 'The hero'} reached this mission’s experience cap: ${x.amount.toLocaleString('en-US')} experience counted.` : `${state.heroes[x.heroId]?.name ?? 'The hero'} is at this mission’s experience cap: no experience gained.`));
   const pending = state.pendingDecisions.some((d) => state.heroes[d.heroId]?.ownerId === store.session!.humanPlayerId);
   const onContinue = () => {
     if (pending) {
@@ -81,7 +105,7 @@ export function BattleResultScreen() {
             { side: r.attacker, key: 'attacker' as const },
             { side: r.defender, key: 'defender' as const },
           ].map(({ side, key }) => (
-            <Panel key={key} title={`${side.name}${r.playerSide === key ? ' (you)' : ''}`} className="result-side" bodyClassName="scroll">
+            <Panel key={key} title={`${side.name}${r.playerSide === key ? ' (you)' : ''}`} className="result-side" bodyClassName="scroll" framed="compact" theme={side.playerId ? guiThemeFor(state.players[side.playerId]?.pantheonId) : undefined}>
               <table className="table">
                 <thead>
                   <tr>
@@ -96,37 +120,19 @@ export function BattleResultScreen() {
             </Panel>
           ))}
         </div>
-        <Panel title="Outcome" className="result-outcome">
+        <Panel title="Outcome" className="result-outcome" framed="compact" surface="parchment">
           <p>{r.heroOutcome}</p>
-          {r.xpAwarded.length ? (
-            <>
-              <SectionTitle>Experience</SectionTitle>
-              {r.xpAwarded.map((x) => (
-                <div key={x.heroId} className="small">
-                  {state.heroes[x.heroId]?.name ?? x.heroId}: +{x.amount} XP {x.capped ? <Chip tone="warn">Mission cap reached</Chip> : null}
-                </div>
-              ))}
-            </>
+          {trayItems.length ? (
+            <div className="result-rewards" data-testid="result-rewards">
+              <SectionTitle>{playerWon ? 'Spoils of victory' : 'Gained'}</SectionTitle>
+              <RewardTray items={trayItems} label="Battle rewards" />
+            </div>
           ) : null}
-          {hasRewards ? (
-            <>
-              <SectionTitle>Rewards</SectionTitle>
-              <CostList cost={r.rewards.resources} empty="—" />
-              {r.rewards.artifactIds.map((a) => (
-                <div key={a} className="small row gap result-outcome__artifact">
-                  {catalog.artifacts[a] ? <ArtifactIcon iconAssetId={catalog.artifacts[a]!.iconAssetId} kind={catalog.artifacts[a]!.slot} size="2rem" rarity={catalog.artifacts[a]!.rarity} /> : null}
-                  <span>
-                    Artifact: <strong>{catalog.artifacts[a]?.name}</strong> — {catalog.artifacts[a]?.summary}
-                  </span>
-                </div>
-              ))}
-              {r.rewards.entitlementIds.map((e) => (
-                <div key={e} className="small">
-                  Covenant: <strong>{catalog.entitlements[e]?.name}</strong>
-                </div>
-              ))}
-            </>
-          ) : null}
+          {xpNotes.map((n) => (
+            <p key={n} className="small warn result-outcome__cap">
+              {n}
+            </p>
+          ))}
           {r.objectivesAdvanced.length ? (
             <>
               <SectionTitle>Objectives</SectionTitle>

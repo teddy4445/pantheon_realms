@@ -6,7 +6,7 @@ import type { PreferencesStore } from '@pr/platform';
 import { setAdaptiveResolution, setGraphicsQuality } from '@pr/presentation/core';
 import { applyInterfaceCursors } from '../assets/cursors';
 
-export const PREFERENCES_SCHEMA_VERSION = 3;
+export const PREFERENCES_SCHEMA_VERSION = 4;
 
 export type AnimSpeed = 'instant' | 'fast' | 'normal';
 export type BattleSpeed = '0.5' | '1' | '1.5' | '2' | 'instant';
@@ -84,7 +84,8 @@ export const DEFAULT_PREFERENCES: Preferences = {
   showPreviews: true,
   mapLabels: true,
   minimap: true,
-  unitLabels: 'both',
+  // 1.1.0 (concept 08): counts stay on the board; health shows on the hovered and the active stack.
+  unitLabels: 'count',
   codexAutoplay: true,
   windowMode: 'windowed',
   graphicsQuality: 'high',
@@ -130,6 +131,9 @@ export function sanitizePreferences(raw: unknown): Preferences {
   for (const k of ['masterVolume', 'musicVolume', 'ambienceVolume', 'interfaceVolume', 'combatVolume', 'voiceVolume'] as const) out[k] = Math.min(100, Math.max(0, out[k] as number));
   // Schema 3 (owner request 2026-10-04): no lines between map tiles — the outline follows the pointer.
   if ((typeof r.schemaVersion === 'number' ? r.schemaVersion : 0) < 3 && out.hexOverlay === 'always') out.hexOverlay = 'hover';
+  // Schema 4 (1.1.0 battle interface, concept 08): the old default "Count and health" becomes "Count" once
+  // (health on hover and for the active stack); "Count and health" stays available as the persistent option.
+  if ((typeof r.schemaVersion === 'number' ? r.schemaVersion : 0) < 4 && out.unitLabels === 'both') out.unitLabels = 'count';
   out.schemaVersion = PREFERENCES_SCHEMA_VERSION;
   out.uiScale = Math.min(1.6, Math.max(0.8, out.uiScale as number));
   if (!['low', 'medium', 'high'].includes(out.graphicsQuality as string)) out.graphicsQuality = DEFAULT_PREFERENCES.graphicsQuality;

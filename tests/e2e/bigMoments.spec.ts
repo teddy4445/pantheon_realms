@@ -297,14 +297,16 @@ test('level-up shows the hero’s own pantheon banner with the words live on its
   expect(await plaque.locator('.plaque-text__title').evaluate((el) => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
   expect(await imagesLoaded(page)).toEqual([]);
   await page.screenshot({ path: 'test-results/moment-levelup.png' });
-  // No panel title and no Confirm: the large skill icon sits left of its details, and picking an offer is the choice.
+  // No Confirm (1.1.0 adventure screen): each offer is a skill plaque — the skill's own icon in the medallion above
+  // its live text — and picking an offer is the choice.
   await expect(page.getByText('Choose your advancement')).toHaveCount(0);
   await expect(page.getByTestId('levelup-confirm')).toHaveCount(0);
+  await expect(page.getByTestId('hero-medallion')).toContainText(h.name);
   const offer = page.getByTestId('offer-0');
-  const icon = (await offer.locator('.offer-card__icon').boundingBox())!;
-  const body = (await offer.locator('.offer-card__body').boundingBox())!;
-  expect(icon.width).toBeGreaterThan(60);
-  expect(icon.x + icon.width).toBeLessThanOrEqual(body.x + 1);
+  const icon = (await offer.locator('.ak-plaque__icon').boundingBox())!;
+  const body = (await offer.locator('.ak-plaque__copy').boundingBox())!;
+  expect(icon.width).toBeGreaterThan(30);
+  expect(icon.y + icon.height).toBeLessThanOrEqual(body.y + 1);
   await offer.click();
   await waitFor(page, (x) => x.state.pendingDecisions.length < pending, 'level-up chosen');
 });

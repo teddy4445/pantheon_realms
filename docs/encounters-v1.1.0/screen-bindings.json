@@ -1,0 +1,49 @@
+{
+  "hero-meeting": {
+    "component": "packages/ui/src/dialogs/Overlays.tsx#TransferDialog",
+    "backgroundByPantheon": {
+      "greek": "encounterkit.meeting.greek",
+      "norse": "encounterkit.meeting.norse",
+      "egyptian": "encounterkit.meeting.egyptian",
+      "japanese": "encounterkit.meeting.japanese",
+      "celtic": "encounterkit.meeting.celtic",
+      "mesoamerican": "encounterkit.meeting.mesoamerican"
+    },
+    "heroArt": "hero-art-map.json",
+    "slots": "gui.control.socket",
+    "transferIcon": "icon.ui.swap",
+    "frame": "gui.frame.<acting pantheon>",
+    "garrisonFallback": "Actual town background + town name, no invented second hero",
+    "behavior": "Keep quoteTransfer and TransferStack; Done closes only. Existing destination click commits immediately. No new Apply transaction or artifact exchange."
+  },
+  "scenario-introduction": {
+    "component": "packages/ui/src/dialogs/Overlays.tsx#BriefingDialog",
+    "scroll": "encounterkit.intro.scroll",
+    "missionArt": "briefingArt(mission.thumbnailAssetId), fallback MissionThumb",
+    "hero": "Actual protagonist portrait or existing speaker bust",
+    "objectives": [
+      "icon.ui.recruit",
+      "icon.ui.upgrade",
+      "icon.ui.sword2",
+      "icon.ui.beacon",
+      "icon.ui.flag"
+    ],
+    "behavior": "Show current unlocked objectives, resolve mission text, preserve dialogue pages and Begin closeOverlay. Do not recreate session or reveal unrevealed map."
+  },
+  "reward-presentation": {
+    "components": [
+      "packages/ui/src/dialogs/WorldDialogs.tsx",
+      "packages/ui/src/screens/BattleResult.tsx"
+    ],
+    "tray": "encounterkit.reward.tray",
+    "resources": "icon.res.<resource key>",
+    "experience": "icon.stat.xp",
+    "mana": "icon.stat.mana",
+    "movement": "icon.stat.movement",
+    "attributes": "icon.stat.<attribute>",
+    "artifacts": "catalog.artifacts[id].iconAssetId",
+    "creatures": "catalog.creatures[id].presentation.portraitAssetId",
+    "entitlements": "icon.ui.gift with actual entitlement name",
+    "behavior": "Present committed outcome once. Continue only dismisses/preserves pending decision queue. Selection previews must say possible rewards. Costs separate. Respect artifact cache locations and XP caps."
+  }
+}

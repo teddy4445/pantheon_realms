@@ -57,9 +57,10 @@ import { matches } from '../app/keys';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
 import { HeroPortrait, MarkerIcon, siteMarkerAsset, siteMarkerTint } from '../components/art';
-import { ArmyPreview, ResourceBar } from '../components/game';
+import { ArmyPreview, ArmyStrip, ResourceBar } from '../components/game';
 import { Icon } from '../assets/icons';
 import { resolveAsset } from '../assets/manifest';
+import { preloadReadingSkins } from '../assets/guiArt';
 import {
   dailyIncome,
   dayLabel,
@@ -551,6 +552,12 @@ export function AdventureScreen() {
   useEffect(() => {
     if (selected && store.selectedHeroId !== selected.id) store.selectedHeroId = selected.id;
   }, [selected, store]);
+
+  // The paper under the journal, spellbook and codex text, decoded once a match is on the map (GUI audit 1.1.2).
+  useEffect(() => {
+    const t = window.setTimeout(preloadReadingSkins, 1500);
+    return () => window.clearTimeout(t);
+  }, []);
 
   // Contextual tips (Settings → Tutorial hints); shown once each.
   const outOfMoves = humanTurn && !!selected && selected.movementPoints === 0 && state.day > 1;
@@ -1047,44 +1054,112 @@ export function AdventureScreen() {
       ) : null}
       {coins ? <Burst key={coins.key} kind="coins" className="burst--resbar" style={{ left: coins.x, top: coins.y }} onDone={() => setCoins(null)} /> : null}
 
-      <aside className="adv-left">
-        <Panel className="adv-list" label="Heroes">
-          {heroes.map((h) => {
-            const budget = movementBudget(catalog, state, h);
-            return (
-              <button key={h.id} type="button" className={`hero-tab ${selected?.id === h.id ? 'is-selected' : ''}`} onClick={() => selectHero(h)} onDoubleClick={() => store.goto('hero', { heroId: h.id })} data-testid={`hero-tab-${h.id}`}>
-                <HeroPortrait catalog={catalog} definitionId={h.definitionId} name={h.name} size="3rem" />
-                <span className="hero-tab__bars">
-                  <Bar value={h.movementPoints} max={Math.max(budget.total, h.movementPoints)} kind="move" label={`${h.name} movement`} />
-                  <Bar value={h.mana} max={Math.max(1, maxMana(catalog, state, h))} kind="mana" label={`${h.name} mana`} />
-                </span>
-              </button>
-            );
-          })}
-        </Panel>
-        <Panel className="adv-list" label="Towns">
-          {Object.values(state.towns)
-            .filter((t) => t.ownerId === playerId)
-            .map((t) => (
-              <button key={t.id} type="button" className="town-tab" onClick={() => store.goto('town', { townId: t.id })} onContextMenu={(e) => { e.preventDefault(); ctrl.current?.focus(t.coord); }} data-testid={`town-tab-${t.id}`}>
-                <Icon name="town" />
-                <span>{t.name}</span>
-                {t.buildUsedDay !== state.day ? (
-                  <span className="town-tab__badge" title="A building can be constructed today" aria-label="A building can be constructed today" data-testid={`town-build-${t.id}`}>
-                    <Icon name="build" />
+      {/* 1.1.0 command sidebar (concept 04): minimap, heroes and towns, the selected hero and army, commands and End Day in one stable place. */}
+      <aside className="adv-command" aria-label="Command">
+        {store.prefs.minimap ? (
+          <div className="adv-command__minimap adv-minimap">
+            <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} footprint={() => ctrl.current?.viewFootprint() ?? null} />
+          </div>
+        ) : null}
+        <section className="adv-command__group" aria-label="Heroes">
+          <div className="adv-command__label">Heroes</div>
+          <div className="adv-list adv-command__heroes">
+            {heroes.map((h) => {
+              const budget = movementBudget(catalog, state, h);
+              return (
+                <button key={h.id} type="button" className={`hero-tab ${selected?.id === h.id ? 'is-selected' : ''}`} onClick={() => selectHero(h)} onDoubleClick={() => store.goto('hero', { heroId: h.id })} aria-pressed={selected?.id === h.id} aria-label={`${h.name}, ${h.movementPoints} of ${Math.max(budget.total, h.movementPoints)} movement`} data-testid={`hero-tab-${h.id}`}>
+                  <HeroPortrait catalog={catalog} definitionId={h.definitionId} name={h.name} size="3rem" />
+                  <span className="hero-tab__bars">
+                    <Bar value={h.movementPoints} max={Math.max(budget.total, h.movementPoints)} kind="move" label={`${h.name} movement`} />
+                    <Bar value={h.mana} max={Math.max(1, maxMana(catalog, state, h))} kind="mana" label={`${h.name} mana`} />
                   </span>
-                ) : null}
-              </button>
-            ))}
-        </Panel>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+        {selected ? (
+          <section className="adv-command__hero" aria-label={`Selected hero: ${selected.name}`}>
+            <button type="button" className="adv-command__portrait" onClick={() => store.goto('hero', { heroId: selected.id })} title={`Open ${selected.name} (H)`} aria-label={`Open ${selected.name}`}>
+              <HeroPortrait catalog={catalog} definitionId={selected.definitionId} name={selected.name} size="100%" />
+            </button>
+            <div className="adv-command__hero-text">
+              <div className="adv-command__hero-name">{selected.name}</div>
+              <div className="adv-command__meter" title="Movement points left today">
+                <Icon name="movement" className="inline-icon" />
+                <span className="num">
+                  {selected.movementPoints}/{Math.max(movementBudget(catalog, state, selected).total, selected.movementPoints)}
+                </span>
+              </div>
+              <Bar value={selected.movementPoints} max={Math.max(movementBudget(catalog, state, selected).total, selected.movementPoints)} kind="move" label="Movement" />
+              <div className="adv-command__meter" title="Spell points">
+                <Icon name="mana" className="inline-icon" />
+                <span className="num">
+                  {selected.mana}/{Math.max(1, maxMana(catalog, state, selected))}
+                </span>
+              </div>
+              <Bar value={selected.mana} max={Math.max(1, maxMana(catalog, state, selected))} kind="mana" label="Spell points" />
+            </div>
+            <div className="adv-command__army">
+              <ArmyStrip catalog={catalog} army={selected.army} label={`${selected.name}'s army`} onSlot={() => store.goto('hero', { heroId: selected.id })} onInfo={(creatureId) => store.openOverlay({ kind: 'stack-info', creatureId })} testId="adv-army" />
+            </div>
+          </section>
+        ) : null}
+        <section className="adv-command__group" aria-label="Towns">
+          <div className="adv-command__label">Towns</div>
+          <div className="adv-list adv-command__towns">
+            {Object.values(state.towns)
+              .filter((t) => t.ownerId === playerId)
+              .map((t) => (
+                <button key={t.id} type="button" className="town-tab" onClick={() => store.goto('town', { townId: t.id })} onContextMenu={(e) => { e.preventDefault(); ctrl.current?.focus(t.coord); }} title={`Enter ${t.name} (right-click: show on the map)`} data-testid={`town-tab-${t.id}`}>
+                  <Icon name="town" />
+                  <span>{t.name}</span>
+                  {t.buildUsedDay !== state.day ? (
+                    <span className="town-tab__badge" title="A building can be constructed today" aria-label="A building can be constructed today" data-testid={`town-build-${t.id}`}>
+                      <Icon name="build" />
+                    </span>
+                  ) : null}
+                </button>
+              ))}
+          </div>
+        </section>
+        <nav className="adv-command__grid adv-bottom__tools" aria-label="Commands">
+          <Button icon="hero" onClick={() => selected && store.goto('hero', { heroId: selected.id })} disabled={!selected} disabledReason="No hero selected" title="Hero (H)">
+            Hero
+          </Button>
+          <Button icon="town" onClick={() => { const t = Object.values(state.towns).find((x) => x.ownerId === playerId); if (t) store.goto('town', { townId: t.id }); }} title="Town (T)">
+            Town
+          </Button>
+          <Button icon="pantheon" onClick={() => store.goto('pantheon')} title="Pantheon (P)">
+            Pantheon
+          </Button>
+          {interventionsOn ? (
+            <Button icon="favor" onClick={() => store.openOverlay({ kind: 'interventions' })} title="Divine interventions (I)" data-testid="open-interventions">
+              Miracles
+            </Button>
+          ) : null}
+          <Button icon="journal" onClick={() => store.goto('journal')} title="Journal (J)">
+            Journal
+          </Button>
+          <Button icon="spell" onClick={openSpells} disabled={!selected} disabledReason="No hero selected" title="Spells (C)" data-testid="open-spells">
+            Spells
+          </Button>
+          <Button icon="bestiary" onClick={() => store.goto('encyclopedia')} title="Encyclopedia (B)">
+            Bestiary
+          </Button>
+          <Button icon="pause" onClick={() => store.openOverlay({ kind: 'pause' })} title="Menu (Esc)">
+            Menu
+          </Button>
+        </nav>
+        <div className="adv-endday">
+          <Button variant="primary" size="large" icon="hourglass" className="btn--endday" onClick={endDay} disabled={!humanTurn || !!pending} disabledReason={pending ? 'Resolve the pending level-up first' : 'Wait for the other side'} data-testid="end-day">
+            End Day
+          </Button>
+        </div>
       </aside>
-      {store.prefs.minimap ? (
-        <Panel className="adv-minimap">
-          <Minimap catalog={catalog} state={state} playerId={playerId} onPick={(c) => ctrl.current?.focus(c)} footprint={() => ctrl.current?.viewFootprint() ?? null} />
-        </Panel>
-      ) : null}
 
-      <aside className="adv-right">
+      {/* Over the map, at the left: what the rivals did, the inspected tile, the mission's objectives. */}
+      <aside className="adv-left adv-info">
         {store.rivalSummary && store.rivalSummary.viewerId === playerId ? (
           <Panel
             className="adv-rivals"
@@ -1135,41 +1210,7 @@ export function AdventureScreen() {
         )}
       </aside>
 
-      <div className="adv-endday">
-        <Button variant="primary" size="large" icon="hourglass" onClick={endDay} disabled={!humanTurn || !!pending} disabledReason={pending ? 'Resolve the pending level-up first' : 'Wait for the other side'} data-testid="end-day">
-          End Day
-        </Button>
-      </div>
-
       <footer className="adv-bottom">
-        <div className="adv-bottom__tools">
-          <Button icon="hero" onClick={() => selected && store.goto('hero', { heroId: selected.id })} disabled={!selected} title="Hero (H)">
-            Hero
-          </Button>
-          <Button icon="town" onClick={() => { const t = Object.values(state.towns).find((x) => x.ownerId === playerId); if (t) store.goto('town', { townId: t.id }); }} title="Town (T)">
-            Town
-          </Button>
-          <Button icon="pantheon" onClick={() => store.goto('pantheon')} title="Pantheon (P)">
-            Pantheon
-          </Button>
-          {interventionsOn ? (
-            <Button icon="favor" onClick={() => store.openOverlay({ kind: 'interventions' })} title="Divine interventions (I)" data-testid="open-interventions">
-              Miracles
-            </Button>
-          ) : null}
-          <Button icon="journal" onClick={() => store.goto('journal')} title="Journal (J)">
-            Journal
-          </Button>
-          <Button icon="spell" onClick={openSpells} disabled={!selected} title="Spells (C)" data-testid="open-spells">
-            Spells
-          </Button>
-          <Button icon="bestiary" onClick={() => store.goto('encyclopedia')} title="Encyclopedia (B)">
-            Bestiary
-          </Button>
-          <Button icon="pause" onClick={() => store.openOverlay({ kind: 'pause' })} title="Menu (Esc)">
-            Menu
-          </Button>
-        </div>
         <div className="adv-bottom__status">
           {casting ? (
             <span className="small" data-testid="casting-hint">

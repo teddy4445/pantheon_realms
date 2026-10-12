@@ -1,0 +1,34 @@
+{
+  "catalogHeroes": 74,
+  "portraitIdentities": 89,
+  "existingBusts": 35,
+  "missingBusts": 54,
+  "missingCatalogBusts": 54,
+  "additionalPortraits": 15,
+  "factions": {
+    "celtic": {
+      "total": 16,
+      "missing": 11
+    },
+    "egyptian": {
+      "total": 16,
+      "missing": 11
+    },
+    "greek": {
+      "total": 10,
+      "missing": 6
+    },
+    "japanese": {
+      "total": 16,
+      "missing": 11
+    },
+    "mesoamerican": {
+      "total": 16,
+      "missing": 11
+    },
+    "norse": {
+      "total": 15,
+      "missing": 4
+    }
+  }
+}

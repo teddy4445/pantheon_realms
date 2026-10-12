@@ -1,0 +1,1087 @@
+{
+  "firstRun": [
+    {
+      "title": "hero meeting: the camp of the acting hero, each hero as themselves, every slot; one click sends one transfer",
+      "file": "encounters.spec.ts",
+      "line": 37,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration": 163053,
+          "error": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+        }
+      ]
+    },
+    {
+      "title": "garrison exchange: the town under its own painting and name, no invented second hero",
+      "file": "encounters.spec.ts",
+      "line": 112,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 71054,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "briefing scroll: every visible objective, real speakers, and Begin closes it without a new game",
+      "file": "encounters.spec.ts",
+      "line": 134,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 65515,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "a chest pays once: a passing reward tray from the committed gold, even on a double-clicked Confirm",
+      "file": "encounters.spec.ts",
+      "line": 185,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration": 189282,
+          "error": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+        }
+      ]
+    },
+    {
+      "title": "a quest hut shows its receipt once: the tray of committed rewards; Continue only closes it; a reload shows none",
+      "file": "encounters.spec.ts",
+      "line": 212,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 103132,
+          "error": "Error: Hex 27,11 is not on screen"
+        }
+      ]
+    },
+    {
+      "title": "title hall and New Game: the Records link, the live version, four illustrated modes from the catalog",
+      "file": "frontend110.spec.ts",
+      "line": 55,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 42218,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Campaign Chronicles: six campaigns, a read-only mission outline, the campaign difficulty; Begin opens the first mission",
+      "file": "frontend110.spec.ts",
+      "line": 105,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 29668,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Skirmish Atlas: an authored map goes to its seats (from map.players), the legacy scenario to the pantheon choice",
+      "file": "frontend110.spec.ts",
+      "line": 140,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 27997,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Random Map: nine types by exact id, Twin Continents for two empires, every choice survives the chapters, no seed; the match uses them",
+      "file": "frontend110.spec.ts",
+      "line": 164,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 36959,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "encyclopedia: eight sections, the pantheon filter with Neutral, search with no results and Clear; filter and scroll kept after a creature page",
+      "file": "frontend110.spec.ts",
+      "line": 230,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 31114,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "settings: seven sections; Apply, Revert and Restore defaults; Back and Escape with changes ask, and Keep editing has the focus",
+      "file": "frontend110.spec.ts",
+      "line": 298,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 26702,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Saved Journeys: an empty archive from the title (Save disabled); an older save is kept with its reason; overwrite and load ask with Cancel focused",
+      "file": "frontend110.spec.ts",
+      "line": 355,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 55304,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "map library: your maps apart from the built-in templates; the empty archive offers Import; a copy, then Save, fills the library",
+      "file": "frontend110.spec.ts",
+      "line": 431,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 31988,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "nested web base: the pre-game art loads relative to the page, never from the site root or a local disk path",
+      "file": "frontend110.spec.ts",
+      "line": 456,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 51779,
+          "error": "Error: route.fetch: read ECONNRESET\nCall log:\n\u001b[2m  - \u2192 GET http://127.0.0.1:5196/frontend-v1.1.0/random-lake_isle.png\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36\u001b[22m\n\u001b[2m    - accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - accept-language: en-US\u001b[22m\n\u001b[2m    - referer: http://127.0.0.1:5196/nested/deeper/?e2e\u001b[22m\n\u001b[2m    - sec-ch-ua: \"Chromium\";v=\"154\", \"Google Chrome\";v=\"154\", \"Not A(Brand\";v=\"99\"\u001b[22m\n\u001b[2m    - sec-ch-ua-mobile: ?0\u001b[22m\n\u001b[2m    - sec-ch-ua-platform: \"Windows\"\u001b[22m\n"
+        }
+      ]
+    },
+    {
+      "title": "frontend kit: every piece decodes; finished pennants, section and editor icons, the warning seal and the records medallion are in place",
+      "file": "frontend110.spec.ts",
+      "line": 481,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 100841,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at 1600x1000: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 109455,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at 1280x720: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 111736,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at 1920x1080: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration": 155934,
+          "error": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at narrow-800x900: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration": 158259,
+          "error": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at zoom200-1600x1000: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 69884,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "treasure: a tile only selects, Decide later claims nothing, Confirm claims once (double click), a claimed chest stays closed",
+      "file": "gui110.spec.ts",
+      "line": 64,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 71037,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "quest hut: what is asked and what is given read as one exchange; a missing delivery explains itself",
+      "file": "gui110.spec.ts",
+      "line": 107,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 55281,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "marketplace: pay and receive apart, rate and holdings after the trade; a double click trades once",
+      "file": "gui110.spec.ts",
+      "line": 128,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 25581,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "town: buildings answer hover and focus, the construction list holds every location, building highlights only the new one",
+      "file": "gui110.spec.ts",
+      "line": 157,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 26601,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "battle: counts stay on the board; health shows on the active and the hovered stack; the inspection card never blocks the field",
+      "file": "gui110.spec.ts",
+      "line": 189,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 17600,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "setup: six banners are one radio group with arrow keys; the patron and roster follow the choice",
+      "file": "gui110.spec.ts",
+      "line": 215,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 13881,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "journal and encyclopedia: an open book with every objective; the codex keeps all sections and opens each pantheon",
+      "file": "gui110.spec.ts",
+      "line": 235,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 24235,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "accessibility: focus is trapped in a dialog and returns to its opener; reduced motion and high contrast hold",
+      "file": "gui110.spec.ts",
+      "line": 267,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 25173,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "an older save loads into the 1.1.0 interface (the delivered 1.0.0 siege review save, when present)",
+      "file": "gui110.spec.ts",
+      "line": 297,
+      "status": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "duration": 1253,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "resolution 1920\u00d71080: adventure, town, journal and a dialog keep their primary actions on screen",
+      "file": "gui110.spec.ts",
+      "line": 312,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 73687,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "resolution 1600\u00d71000: adventure, town, journal and a dialog keep their primary actions on screen",
+      "file": "gui110.spec.ts",
+      "line": 312,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 77069,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "resolution 1280\u00d7720: adventure, town, journal and a dialog keep their primary actions on screen",
+      "file": "gui110.spec.ts",
+      "line": 312,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 26530,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "greek: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 62105,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "norse: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 63882,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "egyptian: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "timedOut",
+          "duration": 260431,
+          "error": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m"
+        }
+      ]
+    },
+    {
+      "title": "japanese: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 90445,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "celtic: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 66349,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "mesoamerican: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 66466,
+          "error": ""
+        }
+      ]
+    }
+  ],
+  "rerun": [
+    {
+      "title": "hero meeting: the camp of the acting hero, each hero as themselves, every slot; one click sends one transfer",
+      "file": "encounters.spec.ts",
+      "line": 37,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 46390,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "a chest pays once: a passing reward tray from the committed gold, even on a double-clicked Confirm",
+      "file": "encounters.spec.ts",
+      "line": 185,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 64608,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "a quest hut shows its receipt once: the tray of committed rewards; Continue only closes it; a reload shows none",
+      "file": "encounters.spec.ts",
+      "line": 212,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 67394,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "nested web base: the pre-game art loads relative to the page, never from the site root or a local disk path",
+      "file": "frontend110.spec.ts",
+      "line": 456,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 15396,
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 264\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/vite/dist/client/env.mjs\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/contracts.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/browser.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/desktop.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/core.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/manifest.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/500.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/600.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/700.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/400.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/500.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/400-italic.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/400.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/600.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/700.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/tokens.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/base.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/components.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/screens.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/gui.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/frontend.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/encounters.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/adventure.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/guiArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/App.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/store.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/preferences.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/graphicsProbe.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/scene/SceneHost.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/audio/gameAudio.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/palette.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/environmentArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/graphics.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/hexmath.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/sprites.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/fxLooks.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/placeholders/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/final-manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/siege-v2/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/hero-portraits-complete/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/catalog.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/validation/validators.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/threeBeacons.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/winterOath.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/godPerks.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/context.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/MainMenu.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Setup.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Adventure.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Hero.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Town.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Recruitment.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Pantheon.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Battle.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/BattleResult.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/LevelUp.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Journal.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Encyclopedia.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Settings.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/UnitDetail.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Overlays.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Story.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/moments.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/MapSetup.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/RandomSetup.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Summary.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/MapEditor.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/keys.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/gui.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/rewards.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/game.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/cursors.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/rivalSummary.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/battleLog.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/session/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/saves.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/records.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/storyArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/moments.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/rewards.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/audio/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/audio/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/audio/sounds.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/abilities.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/heroesMagic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/specialties.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/lore.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/neutrals.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/town.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/pantheonKit.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/egyptian/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/japanese/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/celtic/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/mesoamerican/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/creatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/lore.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/town.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/arcCampaigns.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/skirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/climates.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/temperaments.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/expanded.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/arcana.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/kit.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/view.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/art.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/temperament.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/mapPreview.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/frontend.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/cursorContext.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/momentArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/burst.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/icons.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/badges.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/adventure.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/godGifts.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/godIcons.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/climate.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/miraclebook.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/stackMarks.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/hints.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/spellbook.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/QuickBattle.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/seats.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/cursors/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/ids.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/resources.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/rng.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/hash.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/clone.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/hex.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/common.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/logic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/creatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/towns.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/pantheons.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/world.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/campaign.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/rulesProfile.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/skirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/customMap.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/catalog.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/state/match.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/commands/commands.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/events/events.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/engine/tx.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/engine/processor.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/town.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/requirements.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/heroes.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/army.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/world.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/effects.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/scenario.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/economy.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/heroes.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/divine.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/quests.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/adventure.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/turn.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/magic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/services.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/world.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/sites.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/interventions.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/gifts.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/stats.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/story.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/common.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/geometry.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/damage.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/flow.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/actions.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/factory.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/resolution.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/siege.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/deployment.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/climate.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/factories/entities.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/ownership.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/missionText.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/session/src/session.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/session/src/save.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/audio/src/manifest.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/audio/src/director.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/gods.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/signatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/twelfthHour.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/lanternRoad.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/silverBranch.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/newFire.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/frostgate.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/burning_oasis.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/circle_of_gates.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/barrows.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/golden_fords.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/six_thrones.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/placeholders.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/missionFactory.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/campaign.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/randomSkirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/arc.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/observation.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/evaluation.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/tactical.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/strategic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/temperament.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/growth.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/controller.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/quickBattle.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/handoff.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/assessment.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/services.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/generator.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/skirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/custom.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/unownedTowns.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/editorTools.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/files/cinzel-latin-600-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/engineHost.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/tween.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/figure.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/adventure.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/battle.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/viewer.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/textures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/nature.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/staticSprites.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/fx.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/roads.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/groundCache.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/groundEdges.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/siegeLayout.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/siegeScenery.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/nature-policy.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/files/cinzel-latin-700-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/files/cinzel-latin-500-normal.woff2\",\u001b[39m\n\u001b[31m+ ]\u001b[39m"
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at 1920x1080: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 79309,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at narrow-800x900: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 41362,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "egyptian: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 78310,
+          "error": ""
+        }
+      ]
+    }
+  ],
+  "latestPerTest": [
+    {
+      "title": "hero meeting: the camp of the acting hero, each hero as themselves, every slot; one click sends one transfer",
+      "file": "encounters.spec.ts",
+      "line": 37,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 46390,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "garrison exchange: the town under its own painting and name, no invented second hero",
+      "file": "encounters.spec.ts",
+      "line": 112,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 71054,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "briefing scroll: every visible objective, real speakers, and Begin closes it without a new game",
+      "file": "encounters.spec.ts",
+      "line": 134,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 65515,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "a chest pays once: a passing reward tray from the committed gold, even on a double-clicked Confirm",
+      "file": "encounters.spec.ts",
+      "line": 185,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 64608,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "a quest hut shows its receipt once: the tray of committed rewards; Continue only closes it; a reload shows none",
+      "file": "encounters.spec.ts",
+      "line": 212,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 67394,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "title hall and New Game: the Records link, the live version, four illustrated modes from the catalog",
+      "file": "frontend110.spec.ts",
+      "line": 55,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 42218,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Campaign Chronicles: six campaigns, a read-only mission outline, the campaign difficulty; Begin opens the first mission",
+      "file": "frontend110.spec.ts",
+      "line": 105,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 29668,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Skirmish Atlas: an authored map goes to its seats (from map.players), the legacy scenario to the pantheon choice",
+      "file": "frontend110.spec.ts",
+      "line": 140,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 27997,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Random Map: nine types by exact id, Twin Continents for two empires, every choice survives the chapters, no seed; the match uses them",
+      "file": "frontend110.spec.ts",
+      "line": 164,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 36959,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "encyclopedia: eight sections, the pantheon filter with Neutral, search with no results and Clear; filter and scroll kept after a creature page",
+      "file": "frontend110.spec.ts",
+      "line": 230,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 31114,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "settings: seven sections; Apply, Revert and Restore defaults; Back and Escape with changes ask, and Keep editing has the focus",
+      "file": "frontend110.spec.ts",
+      "line": 298,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 26702,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "Saved Journeys: an empty archive from the title (Save disabled); an older save is kept with its reason; overwrite and load ask with Cancel focused",
+      "file": "frontend110.spec.ts",
+      "line": 355,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 55304,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "map library: your maps apart from the built-in templates; the empty archive offers Import; a copy, then Save, fills the library",
+      "file": "frontend110.spec.ts",
+      "line": 431,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 31988,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "nested web base: the pre-game art loads relative to the page, never from the site root or a local disk path",
+      "file": "frontend110.spec.ts",
+      "line": 456,
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 15396,
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 264\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/vite/dist/client/env.mjs\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/contracts.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/browser.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/platform/src/desktop.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/core.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/manifest.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/500.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/600.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/700.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/400.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/500.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/400-italic.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/400.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/600.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/700.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/tokens.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/base.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/components.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/screens.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/gui.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/frontend.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/encounters.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/styles/adventure.css\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/guiArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/App.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/store.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/preferences.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/graphicsProbe.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/scene/SceneHost.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/audio/gameAudio.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/palette.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/environmentArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/graphics.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/hexmath.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/sprites.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/fxLooks.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/placeholders/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/final-manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/siege-v2/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/hero-portraits-complete/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui-v1.1.0/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/catalog.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/validation/validators.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/threeBeacons.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/winterOath.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/godPerks.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/context.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/MainMenu.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Setup.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Adventure.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Hero.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Town.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Recruitment.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Pantheon.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Battle.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/BattleResult.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/LevelUp.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Journal.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Encyclopedia.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Settings.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/UnitDetail.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Overlays.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Story.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/moments.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/MapSetup.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/RandomSetup.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Summary.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/MapEditor.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/keys.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/gui.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/rewards.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/game.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/cursors.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/rivalSummary.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/battleLog.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/session/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/saves.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/records.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/storyArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/moments.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/rewards.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/audio/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/audio/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/audio/sounds.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/abilities.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/heroesMagic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/specialties.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/lore.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/neutrals.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/town.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/pantheonKit.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/egyptian/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/japanese/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/celtic/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/mesoamerican/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/creatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/lore.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/town.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/pantheon.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/arcCampaigns.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/skirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/climates.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/temperaments.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/expanded.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/arcana.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/kit.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/view.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/art.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/temperament.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/mapPreview.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/frontend.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/cursorContext.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/momentArt.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/burst.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/icons.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/badges.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/adventure.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/godGifts.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/godIcons.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/climate.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/miraclebook.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/stackMarks.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/hints.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/spellbook.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/QuickBattle.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/components/seats.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/cursors/manifest.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/ids.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/resources.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/rng.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/hash.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/clone.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/core/hex.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/common.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/logic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/creatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/towns.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/pantheons.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/world.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/campaign.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/rulesProfile.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/skirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/customMap.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/catalog.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/state/match.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/commands/commands.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/events/events.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/engine/tx.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/engine/processor.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/town.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/requirements.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/heroes.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/army.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/world.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/effects.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/resolvers/scenario.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/economy.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/heroes.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/divine.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/quests.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/adventure.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/turn.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/magic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/services.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/world.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/sites.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/interventions.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/gifts.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/stats.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/story.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/common.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/geometry.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/damage.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/flow.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/actions.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/factory.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/resolution.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/siege.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/deployment.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/climate.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/factories/entities.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/ownership.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/missionText.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/session/src/session.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/session/src/save.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/audio/src/manifest.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/audio/src/director.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/gods.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/signatures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/twelfthHour.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/lanternRoad.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/silverBranch.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/newFire.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/frostgate.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/burning_oasis.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/circle_of_gates.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/barrows.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/golden_fords.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/skirmish/maps/six_thrones.prmap.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/placeholders.tsx\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/missionFactory.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/campaign.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/campaign/src/randomSkirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/arc.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/observation.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/evaluation.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/tactical.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/strategic.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/temperament.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/growth.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/controller.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/quickBattle.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/handoff.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/assessment.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/ai/src/services.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/generator.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/skirmish.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/custom.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/unownedTowns.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/editorTools.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/files/cinzel-latin-600-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/index.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/engineHost.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/tween.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/figure.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/adventure.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/battle.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/viewer.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/textures.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/nature.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/staticSprites.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/fx.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/roads.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/groundCache.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/groundEdges.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/siegeLayout.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/siegeScenery.ts\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/nature-policy.json?import\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/files/cinzel-latin-700-normal.woff2\",\u001b[39m\n\u001b[31m+   \"http://127.0.0.1:5196/@fs/C:/Users/lazeb/Desktop/pantheon_realms/node_modules/@fontsource/cinzel/files/cinzel-latin-500-normal.woff2\",\u001b[39m\n\u001b[31m+ ]\u001b[39m"
+        }
+      ]
+    },
+    {
+      "title": "frontend kit: every piece decodes; finished pennants, section and editor icons, the warning seal and the records medallion are in place",
+      "file": "frontend110.spec.ts",
+      "line": 481,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 100841,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at 1600x1000: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 109455,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at 1280x720: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 111736,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at 1920x1080: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 79309,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at narrow-800x900: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 41362,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "every pre-game screen at zoom200-1600x1000: no horizontal page scroll, the footer and its actions in the window",
+      "file": "frontend110.spec.ts",
+      "line": 554,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 69884,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "treasure: a tile only selects, Decide later claims nothing, Confirm claims once (double click), a claimed chest stays closed",
+      "file": "gui110.spec.ts",
+      "line": 64,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 71037,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "quest hut: what is asked and what is given read as one exchange; a missing delivery explains itself",
+      "file": "gui110.spec.ts",
+      "line": 107,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 55281,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "marketplace: pay and receive apart, rate and holdings after the trade; a double click trades once",
+      "file": "gui110.spec.ts",
+      "line": 128,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 25581,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "town: buildings answer hover and focus, the construction list holds every location, building highlights only the new one",
+      "file": "gui110.spec.ts",
+      "line": 157,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 26601,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "battle: counts stay on the board; health shows on the active and the hovered stack; the inspection card never blocks the field",
+      "file": "gui110.spec.ts",
+      "line": 189,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 17600,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "setup: six banners are one radio group with arrow keys; the patron and roster follow the choice",
+      "file": "gui110.spec.ts",
+      "line": 215,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 13881,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "journal and encyclopedia: an open book with every objective; the codex keeps all sections and opens each pantheon",
+      "file": "gui110.spec.ts",
+      "line": 235,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 24235,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "accessibility: focus is trapped in a dialog and returns to its opener; reduced motion and high contrast hold",
+      "file": "gui110.spec.ts",
+      "line": 267,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 25173,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "an older save loads into the 1.1.0 interface (the delivered 1.0.0 siege review save, when present)",
+      "file": "gui110.spec.ts",
+      "line": 297,
+      "status": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "duration": 1253,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "resolution 1920\u00d71080: adventure, town, journal and a dialog keep their primary actions on screen",
+      "file": "gui110.spec.ts",
+      "line": 312,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 73687,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "resolution 1600\u00d71000: adventure, town, journal and a dialog keep their primary actions on screen",
+      "file": "gui110.spec.ts",
+      "line": 312,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 77069,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "resolution 1280\u00d7720: adventure, town, journal and a dialog keep their primary actions on screen",
+      "file": "gui110.spec.ts",
+      "line": 312,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 26530,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "greek: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 62105,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "norse: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 63882,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "egyptian: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 78310,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "japanese: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 90445,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "celtic: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 66349,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "title": "mesoamerican: Lodge candidates and the hero screen show each hero's own bust",
+      "file": "heroPortraits.spec.ts",
+      "line": 67,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 66466,
+          "error": ""
+        }
+      ]
+    }
+  ]
+}

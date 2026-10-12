@@ -1,0 +1,53 @@
+import {chromium} from 'file:///C:/Users/lazeb/Desktop/blannder_models/landing/node_modules/playwright/index.mjs';
+import fs from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+import assert from 'node:assert/strict';
+const dir=path.dirname(fileURLToPath(import.meta.url));
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const results={status:'pending',scope:'Delivery gallery and interaction reference only; not game integration',viewports:[],errors:[],links:[]};
+try{
+  const page=await browser.newPage({viewport:{width:1600,height:1000}});
+  page.on('pageerror',e=>results.errors.push(e.message));
+  page.on('requestfailed',r=>results.errors.push(r.url()+' '+r.failure()?.errorText));
+  await page.goto(pathToFileURL(path.join(dir,'index.html')).href);
+  await page.evaluate(()=>{document.querySelectorAll('img').forEach(i=>i.loading='eager');});
+  await page.waitForFunction(()=>[...document.images].every(i=>i.complete),null,{timeout:60000});
+  const imageState=await page.evaluate(()=>[...document.images].map(i=>({src:i.getAttribute('src'),ok:i.naturalWidth>0})));
+  assert(imageState.every(x=>x.ok));results.galleryImages=imageState.length;
+  for(const href of await page.locator('a').evaluateAll(a=>a.map(x=>x.getAttribute('href')))){
+    if(!href||href.startsWith('#')||href.includes('://'))continue;
+    const p=path.resolve(dir,decodeURIComponent(href.split('#')[0]));assert(fs.existsSync(p),p);results.links.push(href);
+  }
+  await page.screenshot({path:path.join(dir,'qa-gallery-desktop.png')});
+  results.viewports.push({page:'gallery',width:1600,overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)});
+  await page.setViewportSize({width:390,height:844});
+  results.viewports.push({page:'gallery',width:390,overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)});
+  await page.goto(pathToFileURL(path.join(dir,'interactive-preview.html')).href);
+  await page.setViewportSize({width:1600,height:1000});
+  await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth));
+  assert.equal(await page.locator('.tile').count(),9);
+  assert.equal(await page.locator('#size').inputValue(),'large');
+  await page.selectOption('#count','2');await page.selectOption('#size','small');
+  await page.getByRole('radio',{name:'Twin Continents',exact:true}).click();
+  await page.selectOption('#count','4');
+  assert.equal(await page.locator('#size').inputValue(),'large');
+  assert.equal(await page.getByRole('radio',{name:'Continental',exact:true}).getAttribute('aria-checked'),'true');
+  assert.equal(await page.getByRole('radio',{name:'Twin Continents',exact:true}).getAttribute('aria-disabled'),'true');
+  await page.getByRole('tab',{name:'Rules',exact:true}).click();
+  await page.selectOption('#victory','hold_relic');await page.selectOption('#days','10');
+  await page.getByRole('tab',{name:'Land',exact:true}).click();
+  await page.getByRole('radio',{name:'Continental',exact:true}).focus();await page.keyboard.press('ArrowRight');
+  assert.equal(await page.getByRole('radio',{name:'Highlands',exact:true}).getAttribute('aria-checked'),'true');
+  await page.getByRole('tab',{name:'Rules',exact:true}).click();
+  assert.equal(await page.locator('#days').inputValue(),'10');
+  await page.getByRole('tab',{name:'Land',exact:true}).click();
+  await page.getByRole('button',{name:'Review selection'}).click();assert((await page.locator('#feedback').textContent()).includes('No game was started'));
+  await page.screenshot({path:path.join(dir,'qa-atlas-desktop.png'),fullPage:true});
+  results.viewports.push({page:'atlas',width:1600,overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)});
+  await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(dir,'qa-atlas-mobile.png'),fullPage:true});
+  results.viewports.push({page:'atlas',width:390,overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)});
+  assert(results.viewports.every(v=>!v.overflow));assert.equal(results.errors.length,0);
+  results.interactions=['9 terrain choices','Twin Continents restriction','4+ empire size fallback','keyboard radio navigation','chapter draft preservation','no-game-start reference'];results.status='passed';
+}catch(e){results.status='failed';results.error=String(e);process.exitCode=1;}finally{fs.writeFileSync(path.join(dir,'gallery-validation.json'),JSON.stringify(results,null,2));await browser.close();}
+console.log(JSON.stringify(results));

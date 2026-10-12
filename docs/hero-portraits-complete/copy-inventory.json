@@ -1,0 +1,1609 @@
+{
+  "files": [
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.amergin.portrait.webp",
+      "bytes": 33880,
+      "sha256": "86907c0ee0e796a79608385aaf3928eb7e0be36d230bd8ff88576d58668218e2"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.amergin.portrait.png",
+      "bytes": 226072,
+      "sha256": "02452bde0b9ee9b052a6eededd3e6d800c84a3d3f32e8609999ca7ca55682439"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.amergin.bust.png",
+      "bytes": 3308968,
+      "sha256": "f1e748dc6cb763a0af43dc363a953ea5d6115d31329374a29751f1fa601f6752"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.amergin.bust.png",
+      "bytes": 3308968,
+      "sha256": "f1e748dc6cb763a0af43dc363a953ea5d6115d31329374a29751f1fa601f6752"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.boudicca.portrait.webp",
+      "bytes": 30138,
+      "sha256": "f238009900a5e6d2aa05a7aa906bb7e03e99539fd799338f422af8c2148db374"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.boudicca.portrait.png",
+      "bytes": 211476,
+      "sha256": "dd0f97d2c52e1741172b53c856c8caf3e3b69574a03789333a25b0fc2b1bc691"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.boudicca.bust.png",
+      "bytes": 3265578,
+      "sha256": "dfb5c780ed94ccd4217b9372f005f6603bd271e9c97986fe42882971ded334cb"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.boudicca.bust.png",
+      "bytes": 3265578,
+      "sha256": "dfb5c780ed94ccd4217b9372f005f6603bd271e9c97986fe42882971ded334cb"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.cathal.portrait.webp",
+      "bytes": 23006,
+      "sha256": "d6c1d10e80d84344609c332e8c7b5b94ee42383be021d9bbd7c45f7f9fcff98e"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.cathal.portrait.png",
+      "bytes": 2887249,
+      "sha256": "d61f83cbc1caee2bd4f31fc8b63f3ad2de8b36fe9e0052774bfd054c101adbd8"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.celtic.cathal.bust.webp",
+      "bytes": 281100,
+      "sha256": "2c2126f3461f558c6cc48d72b900b16c3a85adca139966fef69d7464b0005ba0"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.ciar.portrait.webp",
+      "bytes": 29904,
+      "sha256": "5e5ba9d08e79b980df5189636b1fb9c499c433b076d4d41f1f5fa8bc64221cf6"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.ciar.portrait.png",
+      "bytes": 213994,
+      "sha256": "6de6917fc71b7f484d05cfc471cad3eb48a3e9a8b70a3f456ef78b07d4d95880"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.ciar.bust.png",
+      "bytes": 3285217,
+      "sha256": "88cff91b73cc5dc3e727920a560c7f7d08e329f132e413c1c5cd8b56b9faeead"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.ciar.bust.png",
+      "bytes": 3285217,
+      "sha256": "88cff91b73cc5dc3e727920a560c7f7d08e329f132e413c1c5cd8b56b9faeead"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.corc.portrait.webp",
+      "bytes": 29596,
+      "sha256": "fc311b3ddd5701de20fec92a1b9b1bf84d2e96d54bcb377682d1a7029e4b400a"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.corc.portrait.png",
+      "bytes": 214863,
+      "sha256": "ba72e0ae090c5403e7c0100c8c35ad3c3fc5dee3991af68f6145178fdb675b0d"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.corc.bust.png",
+      "bytes": 3326805,
+      "sha256": "76a2151aa6095648ac2cd42abae1369f3fc08f63ca7a94ea5d70823bf96b9b9a"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.corc.bust.png",
+      "bytes": 3326805,
+      "sha256": "76a2151aa6095648ac2cd42abae1369f3fc08f63ca7a94ea5d70823bf96b9b9a"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.cu_chulainn.portrait.webp",
+      "bytes": 28742,
+      "sha256": "6cfe36b9440a9db517350b0772a43f8719e19a9e85a8acf8ded4b004a2a3681b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.cu_chulainn.portrait.png",
+      "bytes": 208654,
+      "sha256": "525fd7e06b35c4f119d4bada4c563dd405084b496772049983f4be1ba5e1384d"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.cu_chulainn.bust.png",
+      "bytes": 3057892,
+      "sha256": "60b4c1409276bc094995f58bb4a056a501618cba51371efd2bf6473f9deb9849"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.cu_chulainn.bust.png",
+      "bytes": 3057892,
+      "sha256": "60b4c1409276bc094995f58bb4a056a501618cba51371efd2bf6473f9deb9849"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.deirdre.portrait.webp",
+      "bytes": 30530,
+      "sha256": "78a1b9026e6e3602fc13390370add6f057cc2ebe82133a69b3e9b505454f32d1"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.deirdre.portrait.png",
+      "bytes": 214969,
+      "sha256": "16263c79993b3c612d7a212fad200f703e50f7a98b454e9b81d9c6e726f263e4"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.deirdre.bust.png",
+      "bytes": 3258521,
+      "sha256": "f3e32a335d024866366005a01738918d286dde32e050ff4114305540a5be9867"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.deirdre.bust.png",
+      "bytes": 3258521,
+      "sha256": "f3e32a335d024866366005a01738918d286dde32e050ff4114305540a5be9867"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.dubhghall.portrait.webp",
+      "bytes": 33224,
+      "sha256": "ebfac8b75e87901913d0e023c4bf6b6ae9290d8a68af1ce9c2e64305af5d9b2e"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.dubhghall.portrait.png",
+      "bytes": 227070,
+      "sha256": "1a87ff80c8580e4230ae3dd2a652d888849742eaab441327e08186ca2fc1fc40"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.celtic.dubhghall.bust.webp",
+      "bytes": 380656,
+      "sha256": "97bca1a35cae1a51be8f4012a2607c233bbf30fe5ddc9532eb7329f354f4b5ef"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.fergus_mac_roich.portrait.webp",
+      "bytes": 31238,
+      "sha256": "84296e4f1d728d3542fd2a1f9d0cf7d8b52a14d02f76627aa98c24f1e40155f5"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.fergus_mac_roich.portrait.png",
+      "bytes": 218926,
+      "sha256": "b6c70aae2d1df440054af4a4530fdfc58fd44591a00ebc3ca454efbff75bb0a1"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.fergus_mac_roich.bust.png",
+      "bytes": 3287060,
+      "sha256": "1f6bf54ca14a81f1027c06b141f955d3ca3f3f18a4b00789a848832ebb249993"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.fergus_mac_roich.bust.png",
+      "bytes": 3287060,
+      "sha256": "1f6bf54ca14a81f1027c06b141f955d3ca3f3f18a4b00789a848832ebb249993"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.fiachra.portrait.webp",
+      "bytes": 28108,
+      "sha256": "94b769d768f7545d540d06da53276a05837723d5c19adf0da45b2e2fde1391b5"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.fiachra.portrait.png",
+      "bytes": 211298,
+      "sha256": "6d286ad186da158d811dcb1f5691898735eff87d874aca1a9e58e3d0ed52e332"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.celtic.fiachra.bust.webp",
+      "bytes": 305586,
+      "sha256": "0e19ba420125010371f20c7892db5e0a0c2be6cf182d42f8ebb36cdf86a21d99"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.webp",
+      "bytes": 30566,
+      "sha256": "df0c1bcfdfe4b1ee9bf6e0b742b54b748ed9d7e4b75112e2e9ff18e33cdc98de"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.png",
+      "bytes": 216349,
+      "sha256": "5e2357c806ccd929c2815d32f9cf2a967ce61df749b74cb55cb2150aae7e027f"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.fionn_mac_cumhaill.bust.png",
+      "bytes": 3178863,
+      "sha256": "9de9d719ca660f002787501231c796864cff3258e21fcfa4ad7e43aa4496cd73"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.fionn_mac_cumhaill.bust.png",
+      "bytes": 3178863,
+      "sha256": "9de9d719ca660f002787501231c796864cff3258e21fcfa4ad7e43aa4496cd73"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.medb.portrait.webp",
+      "bytes": 29130,
+      "sha256": "1a5d2dfd3a90115010beb262251eef4705b13a7a75eabd15c76ed699e2acb96f"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.medb.portrait.png",
+      "bytes": 213763,
+      "sha256": "0fc0d28784ca652b9c68fd47dccba3ce8e52354a59dc207fd37299dcb825d556"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.medb.bust.png",
+      "bytes": 3283657,
+      "sha256": "733db10e4a4bae54a9d11644a38c51ecf08f2841e098086ba9b29be2286be5a8"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.medb.bust.png",
+      "bytes": 3283657,
+      "sha256": "733db10e4a4bae54a9d11644a38c51ecf08f2841e098086ba9b29be2286be5a8"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.orla.portrait.webp",
+      "bytes": 34466,
+      "sha256": "547eafbdf863e78b4579258399524ce1db222e1ca3ca6a72f95616c3f630f670"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.orla.portrait.png",
+      "bytes": 223604,
+      "sha256": "d633aedaecd8a33b58e44676f765fe17ada8d189f655295e49eb93f5758e11e7"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.celtic.orla.bust.webp",
+      "bytes": 316232,
+      "sha256": "56aed124534694354791c71fe4591062a6efd719e1c2bac2d40589ba30574c03"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.sadb.portrait.webp",
+      "bytes": 19630,
+      "sha256": "f7ccf274a41f18d17c93f875c8ddd5b0c1986abbf6860c5b05c138ef23668125"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.sadb.portrait.png",
+      "bytes": 2666374,
+      "sha256": "1c0597faa81bf37e858e716d8d57fbc9ea8f6bdc259b0e2a5bc5edd3e8d5200e"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.celtic.sadb.bust.webp",
+      "bytes": 288930,
+      "sha256": "9916a4e474d876e15198b990b720b12247b1a9b440c0f9a07fcfd51f006b1758"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.scathach.portrait.webp",
+      "bytes": 25068,
+      "sha256": "8ff8e0fb8b33986c38f3026e14590d00ad8b9a09e208dfdccae1d5244b0dcbf8"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.scathach.portrait.png",
+      "bytes": 200917,
+      "sha256": "9f0fac6f84f2f379f81d718eb104fe86a2f56ddf62063f71078c4606214c0f21"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.scathach.bust.png",
+      "bytes": 3246663,
+      "sha256": "5d6fbf276ed820262af8de3df58fb04d0255700f80c503c23a4fe059ac995966"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.scathach.bust.png",
+      "bytes": 3246663,
+      "sha256": "5d6fbf276ed820262af8de3df58fb04d0255700f80c503c23a4fe059ac995966"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.celtic.tadhg.portrait.webp",
+      "bytes": 27316,
+      "sha256": "9d304a8a60f31602604cec153c6dfc2625183cf36315383bedd5928a2d7027c4"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.celtic.tadhg.portrait.png",
+      "bytes": 209756,
+      "sha256": "86df5493760f615c983c17f9721ec3351b34d8f5843c7c5a74565291f777c129"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.celtic.tadhg.bust.png",
+      "bytes": 3328868,
+      "sha256": "12e5ff60f265ae707475ac8d12d0fe5db8e41282c44f59d7ddfadcfefeba26bc"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.celtic.tadhg.bust.png",
+      "bytes": 3328868,
+      "sha256": "12e5ff60f265ae707475ac8d12d0fe5db8e41282c44f59d7ddfadcfefeba26bc"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.ahmose.portrait.webp",
+      "bytes": 30038,
+      "sha256": "314c43b4a33086d67a748d2f16485e5c5d8afea140ca77ac0a7b01c63d000367"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.ahmose.portrait.png",
+      "bytes": 206863,
+      "sha256": "e8e2acc3af937257f566e9069aa31c1b70953c95d9adc3e4f835e801aad04e9e"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.ahmose.bust.png",
+      "bytes": 2840080,
+      "sha256": "1720c95784c9745036c4e97116686d9bd1978ecb2fb37f1e5dc185c24f0be787"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.ahmose.bust.png",
+      "bytes": 2840080,
+      "sha256": "1720c95784c9745036c4e97116686d9bd1978ecb2fb37f1e5dc185c24f0be787"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.ankhwen.portrait.webp",
+      "bytes": 26376,
+      "sha256": "40f8616cf8946acac26809327dd6ed751fa242593e0795027b19f07ef9ccc36b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.ankhwen.portrait.png",
+      "bytes": 201361,
+      "sha256": "0f4c2eb57ed0273895912dec884f4379ab7f45146e7366996dea8affd47a0513"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.ankhwen.bust.png",
+      "bytes": 3079354,
+      "sha256": "ddecbe1447799a1c1690b7a96b2e9d48ac1bf9c8f8e13612f9ea3b4f4a45e83d"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.ankhwen.bust.png",
+      "bytes": 3079354,
+      "sha256": "ddecbe1447799a1c1690b7a96b2e9d48ac1bf9c8f8e13612f9ea3b4f4a45e83d"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.cleopatra.portrait.webp",
+      "bytes": 27876,
+      "sha256": "2942b40f1ae57fefb70b416c2fe1ae13b369f9f6cab3e4b0b2f826b3619b7d3d"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.cleopatra.portrait.png",
+      "bytes": 199565,
+      "sha256": "465464dda3d9f3557c07b42199b2b51170c853ab30cb4d66c575348a7157eceb"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.cleopatra.bust.png",
+      "bytes": 2667185,
+      "sha256": "75f477d01caedf6657d21e8c3eae9c9b4718b684a2789ad69ccc25f7a425df0b"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.cleopatra.bust.png",
+      "bytes": 2667185,
+      "sha256": "75f477d01caedf6657d21e8c3eae9c9b4718b684a2789ad69ccc25f7a425df0b"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.djedkhonsu.portrait.webp",
+      "bytes": 24902,
+      "sha256": "a1fcd9d41b1eba789005ca593c9579a6ecd679c97bbb50e2d55c7841df7fb6aa"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.djedkhonsu.portrait.png",
+      "bytes": 198463,
+      "sha256": "e4fc0b28a3a283e0277626f55fd5da5bcb336be7c91b503949fee1be5b25a660"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.egyptian.djedkhonsu.bust.webp",
+      "bytes": 303262,
+      "sha256": "89f80e662020403e897ec51d6bc90165683fb16ab4107af34f4c9c3ff513d8ff"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.hatshepsut.portrait.webp",
+      "bytes": 30606,
+      "sha256": "2d52e6cacbf32bb23d7cfec609cf82c1ee6cce53e6f27d6a0377de0ac8beac3a"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.hatshepsut.portrait.png",
+      "bytes": 211309,
+      "sha256": "febf5d612d19f915fd8e4c79e8a78aed509d63f5642386b4a1325688e9990d71"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.hatshepsut.bust.png",
+      "bytes": 2756563,
+      "sha256": "3646c4dc1460f369f4808de0a1ffc54c948f46b8d81ae56ec35f842a2470a9ff"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.hatshepsut.bust.png",
+      "bytes": 2756563,
+      "sha256": "3646c4dc1460f369f4808de0a1ffc54c948f46b8d81ae56ec35f842a2470a9ff"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.hekaib.portrait.webp",
+      "bytes": 29632,
+      "sha256": "dc6b0b6ded4900ca76bcea835af3a75a6e473c7a726f5cdc530c41f35b2ccafa"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.hekaib.portrait.png",
+      "bytes": 209035,
+      "sha256": "ff73f49f40e4d08c04ed287f8f675c939817f8ac3053e0864ce59b553592fad2"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.hekaib.bust.png",
+      "bytes": 2964689,
+      "sha256": "d3eed92e80ebda018327e0e275df0abea8ce2bdb863a14342aef07792605b290"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.hekaib.bust.png",
+      "bytes": 2964689,
+      "sha256": "d3eed92e80ebda018327e0e275df0abea8ce2bdb863a14342aef07792605b290"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.imhotep.portrait.webp",
+      "bytes": 26044,
+      "sha256": "fe7eaa19c14f55f3adc032b35345f970f4f9816e3f322b68e0f638a8d6476b75"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.imhotep.portrait.png",
+      "bytes": 199742,
+      "sha256": "3e6676b6dcbd77fd97109a5b0c6ac5c8785d6693912dcec11281eeaed6463172"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.imhotep.bust.png",
+      "bytes": 2609985,
+      "sha256": "47d7ddead5dd1fc22ab90ebf0710505a99e22c59f7327413292bcf54bd0b6565"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.imhotep.bust.png",
+      "bytes": 2609985,
+      "sha256": "47d7ddead5dd1fc22ab90ebf0710505a99e22c59f7327413292bcf54bd0b6565"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.iti.portrait.webp",
+      "bytes": 27336,
+      "sha256": "cf98068b65cf022c4001283e9bb4477dacb7bc513e55faceaff52880eaf6bbc6"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.iti.portrait.png",
+      "bytes": 200166,
+      "sha256": "7322afb897ee802c72ee01efabc0ebf31f8b6ad29263ed9178264d7df473dabc"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.iti.bust.png",
+      "bytes": 2872889,
+      "sha256": "954bc21d86485201e3dcf91b22a05b4dbe7adc9ea3ba8cea9c37e59b587a15ae"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.iti.bust.png",
+      "bytes": 2872889,
+      "sha256": "954bc21d86485201e3dcf91b22a05b4dbe7adc9ea3ba8cea9c37e59b587a15ae"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.nebet.portrait.webp",
+      "bytes": 25606,
+      "sha256": "9465d521267907b376744a376b3eb60ca0ae6634825f774c626f30dd36829b66"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.nebet.portrait.png",
+      "bytes": 2984571,
+      "sha256": "7af612dec0b5824117fb9a65e23e8b392e937e14b161c5989a56258cd074e6a5"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.egyptian.nebet.bust.webp",
+      "bytes": 257352,
+      "sha256": "ccada4aa6487b7d2155a4c6307935858f962c11b4f004b4b646f764d84863af9"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.nefertiti.portrait.webp",
+      "bytes": 28722,
+      "sha256": "527599d85cf59499d48d47b6ea19ba50104e2fe47579fbb7ad6e8d031846f0d1"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.nefertiti.portrait.png",
+      "bytes": 206445,
+      "sha256": "02c8749f3f0f76b9f7546e882a82d3d6df538e06d05a1cf3303b983d1287c93a"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.nefertiti.bust.png",
+      "bytes": 2676729,
+      "sha256": "8796bdcdaf7c8fc516eb348bb96f2c39c11ea4537ea2057a4bff91c832899e56"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.nefertiti.bust.png",
+      "bytes": 2676729,
+      "sha256": "8796bdcdaf7c8fc516eb348bb96f2c39c11ea4537ea2057a4bff91c832899e56"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.paser.portrait.webp",
+      "bytes": 27706,
+      "sha256": "1081fc635d1f757005af7eb11bb6edd451de33665f131faa495717e942c8cb30"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.paser.portrait.png",
+      "bytes": 203411,
+      "sha256": "3fef5616faffa92ecfc3ad0bc009e5965018e9667039f55fd7eb55487f3c5f92"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.egyptian.paser.bust.webp",
+      "bytes": 240750,
+      "sha256": "787cc26d282b9e201f5fbe89d8609a405d3b6460001139d5461374d60fa3adaf"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.pawah.portrait.webp",
+      "bytes": 21636,
+      "sha256": "c6f4cb67717ea1ee9305b9692b26c813287e65295b452f39ed0a3dbd0ae3ca40"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.pawah.portrait.png",
+      "bytes": 2891660,
+      "sha256": "ba07c525437b48280dca1a6fd20c39d0d386f81701d9b6e2d4118839bbc2133b"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.egyptian.pawah.bust.webp",
+      "bytes": 195116,
+      "sha256": "dbaa59980b6423ab44e6becdde63d98c430efe13dd53879160f5c47425af9d8a"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.peseshet.portrait.webp",
+      "bytes": 29622,
+      "sha256": "256f42ac2112def878b8590749c8364f910f210ba26aec82170ee4d0ec565616"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.peseshet.portrait.png",
+      "bytes": 210156,
+      "sha256": "1724467cbbf2198dc1f567366e6b3a5a93032c163c7a51d43a1eb2aa2de863aa"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.peseshet.bust.png",
+      "bytes": 2877550,
+      "sha256": "4aa2ce9bde4c9f6f0db9f18f6bb6df0bae4e3af274a65870b0147087cbaea894"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.peseshet.bust.png",
+      "bytes": 2877550,
+      "sha256": "4aa2ce9bde4c9f6f0db9f18f6bb6df0bae4e3af274a65870b0147087cbaea894"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.ramses.portrait.webp",
+      "bytes": 32246,
+      "sha256": "21f9dabc2a7b0ddfd367f86334b8281227c5d70ec9a857e80fee036f6332344d"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.ramses.portrait.png",
+      "bytes": 215152,
+      "sha256": "6c64d38bf99f0101046b69706a5a262402d4752eaa5c3e135bdcd9e8121e812f"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.ramses.bust.png",
+      "bytes": 2936287,
+      "sha256": "fe63ffc27856be865853b63bb7007b756f1e184521dfb91b03b3a7a6b369acaf"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.ramses.bust.png",
+      "bytes": 2936287,
+      "sha256": "fe63ffc27856be865853b63bb7007b756f1e184521dfb91b03b3a7a6b369acaf"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.seshet.portrait.webp",
+      "bytes": 29378,
+      "sha256": "462bf76a258b1753553c4a43f897c20303b62a64325906b2216de3d658449f1b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.seshet.portrait.png",
+      "bytes": 206295,
+      "sha256": "35f95c16fb1a173b8a495469f984fdcfd38b1bff75854fd1e960a710ed6b08bd"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.egyptian.seshet.bust.webp",
+      "bytes": 184840,
+      "sha256": "df58b3071d5c0ad041677e7ecb243bc04f7855c476603d1e83f5763cb73ec566"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.egyptian.tiye.portrait.webp",
+      "bytes": 29204,
+      "sha256": "d5aea28c6d7404779b6ba624f3ddb73855e1821ac00ff1d9cddb55e558899cce"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.egyptian.tiye.portrait.png",
+      "bytes": 204188,
+      "sha256": "8f12cca2514593e11b66809740671c3e6e0fc737c950d533ca493324a5d65be2"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.egyptian.tiye.bust.png",
+      "bytes": 2807759,
+      "sha256": "140cd8dc18c6fd5c2a162d44c33fc4b0d5ffc116735ce92cb9cdc034b8f7069b"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.egyptian.tiye.bust.png",
+      "bytes": 2807759,
+      "sha256": "140cd8dc18c6fd5c2a162d44c33fc4b0d5ffc116735ce92cb9cdc034b8f7069b"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.achilles.portrait.webp",
+      "bytes": 30456,
+      "sha256": "15548d048fc44dba0233cf132fa555c7f109bf92b628866ba67f7826d7828e77"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.achilles.portrait.png",
+      "bytes": 411629,
+      "sha256": "291ef893224664f4c50a3c313f7bdb7e53365c7962e05a433f77674baa53c273"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.greek.achilles.bust.png",
+      "bytes": 3145901,
+      "sha256": "aba433eee1418313ca238acdc6803ca4e24466c8261da6fab739d6f91c8e12e8"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.greek.achilles.bust.png",
+      "bytes": 3145901,
+      "sha256": "aba433eee1418313ca238acdc6803ca4e24466c8261da6fab739d6f91c8e12e8"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.alexios.portrait.webp",
+      "bytes": 30728,
+      "sha256": "99d32c1b5b9e0e0f7be85f88e2cb649b49d69c0711dd2447449664cbccaa7973"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.alexios.portrait.png",
+      "bytes": 403618,
+      "sha256": "901c5f1d0c3c409f62c1b4ee9c90f3e00b0b594e23f46ecd0195ca630ac51540"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.greek.alexios.bust.webp",
+      "bytes": 210874,
+      "sha256": "85567b3d56fe7a791450ab33ae02d0becdcb6ca0e8030244b3ec7223aeb79bdd"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.atalanta.portrait.webp",
+      "bytes": 28696,
+      "sha256": "464d35042c9ede0e894f1ce3953f243b88e4e5fc97e54fab630d70cc80995e3b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.atalanta.portrait.png",
+      "bytes": 394949,
+      "sha256": "6a06f94dfeaf2763a5ad51ef5e9819cd00edf3c5427b2dfd6310d742bb0fa87e"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.greek.atalanta.bust.png",
+      "bytes": 2969107,
+      "sha256": "14c8aa2f8458daf53e9d48747b17a1d0e7ea6cb9b5078387a90465fbe0cb7748"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.greek.atalanta.bust.png",
+      "bytes": 2969107,
+      "sha256": "14c8aa2f8458daf53e9d48747b17a1d0e7ea6cb9b5078387a90465fbe0cb7748"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.heracles.portrait.webp",
+      "bytes": 30202,
+      "sha256": "b0b15ad95f1aadff7f4c16f9bfc03fea406132630730a519ddba3c5aac259f66"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.heracles.portrait.png",
+      "bytes": 414464,
+      "sha256": "b27292370ceeec2c2f45486a15c38207a3f23db3dd66b4797c5a4ba3c60733d9"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.greek.heracles.bust.png",
+      "bytes": 3218221,
+      "sha256": "e9b55b506d516cc786953521a8e86222e3baadc7d06cbe340ed276820639d234"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.greek.heracles.bust.png",
+      "bytes": 3218221,
+      "sha256": "e9b55b506d516cc786953521a8e86222e3baadc7d06cbe340ed276820639d234"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.ione.portrait.webp",
+      "bytes": 24908,
+      "sha256": "5d9c042fea67426ce8f23e346ab5553ceeec8736b6efcaf90c7ec016de007e2d"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.ione.portrait.png",
+      "bytes": 2894608,
+      "sha256": "59b4173f4295a97b9647ed3967c524b5ded06ec351210e59fa3103d00a22659f"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.greek.ione.bust.webp",
+      "bytes": 290082,
+      "sha256": "622f8e31948a31b772432131f218d6e3a97cd66a8991986bba134db0ff9d657c"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.melas.portrait.webp",
+      "bytes": 30252,
+      "sha256": "75a1909313bc8c50eb9bc8602adf958de4c43d70d7bb7d624054781cda9f3929"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.melas.portrait.png",
+      "bytes": 412116,
+      "sha256": "f9fd4baea6df7321a44b2d7d0d51662ee62d7efe2195dc92364c2f17be03c061"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.greek.melas.bust.webp",
+      "bytes": 281288,
+      "sha256": "aeb662f1971ac1634a972a53b00b4ef111e579eaf12f1a6849705fe77ec67119"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.odysseus.portrait.webp",
+      "bytes": 27064,
+      "sha256": "b38569519a30b1ad577580aa8b2c4a61e8fe07747d1f2b0b7f7920d798fe2088"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.odysseus.portrait.png",
+      "bytes": 381469,
+      "sha256": "076cef622928b02e4fc63fa156f1f0256f1cb7e190c94af6794167350a5ca436"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.greek.odysseus.bust.png",
+      "bytes": 2914084,
+      "sha256": "7b8e69759acc7645a39f930513e27602c59eff89e577417a055e1254542e1e68"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.greek.odysseus.bust.png",
+      "bytes": 2914084,
+      "sha256": "7b8e69759acc7645a39f930513e27602c59eff89e577417a055e1254542e1e68"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.perseus.portrait.webp",
+      "bytes": 30200,
+      "sha256": "1e4ef23fb0570ff0b355ab3b251c0cd8bdcd257eac83ffacacefd928fdee8d9c"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.perseus.portrait.png",
+      "bytes": 408457,
+      "sha256": "155d363676bc7dccd7fcfb699df3e400a9852c562e7888cc33a93ecc2dc70808"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.greek.perseus.bust.png",
+      "bytes": 3097481,
+      "sha256": "c341908dc3dab7d9e2b5b3c50639de261483b6fb25a6a88cf211a8933d426696"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.greek.perseus.bust.png",
+      "bytes": 3097481,
+      "sha256": "c341908dc3dab7d9e2b5b3c50639de261483b6fb25a6a88cf211a8933d426696"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.scout_captain.portrait.webp",
+      "bytes": 26338,
+      "sha256": "768e1d8203ba32c12464190e7ef6ac47c8617d6b86a72fddb5a68ba0452a252f"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.scout_captain.portrait.png",
+      "bytes": 381297,
+      "sha256": "e8a4bfa3bac31d0c159710486dfc09bfd7a374d3b1212d3d55ac1b01a9ab5fc8"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.greek.scout_captain.bust.png",
+      "bytes": 2985865,
+      "sha256": "140debd0a0edca092c6d9b830edf1b4a32915628ced040d6b2a59c7c64ae9a95"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.greek.scout_captain.bust.png",
+      "bytes": 2985865,
+      "sha256": "140debd0a0edca092c6d9b830edf1b4a32915628ced040d6b2a59c7c64ae9a95"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.greek.thaleia.portrait.webp",
+      "bytes": 22274,
+      "sha256": "e17e2fe939c8bbb6c558dd23cda6abbe207476c3d9941541d4729fb2b0513985"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.greek.thaleia.portrait.png",
+      "bytes": 2807832,
+      "sha256": "6a49193626988cec4e0173a47b5d486d61368396f6dd478a7a352704b3dfa570"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.greek.thaleia.bust.webp",
+      "bytes": 228006,
+      "sha256": "c61611f7ebb3c2ce1aaad16eb469b8574b46634c8a424f6373b663fe3453aecf"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.abe_no_seimei.portrait.webp",
+      "bytes": 30918,
+      "sha256": "344a228969a9d091e28a0dbc45b6bd9944b51c7a0dcd914704a1ef01106516f5"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.abe_no_seimei.portrait.png",
+      "bytes": 216464,
+      "sha256": "eb8bfc5000ed38f12b6965159562b7094d8d56d3a755bdb42b1e206672f5d34e"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.abe_no_seimei.bust-v2.png",
+      "bytes": 2996751,
+      "sha256": "2e84f396655aa79e372e21a2504feb663984569f8688dac96698d248734b2afd"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.abe_no_seimei.bust-v2.png",
+      "bytes": 2996751,
+      "sha256": "2e84f396655aa79e372e21a2504feb663984569f8688dac96698d248734b2afd"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.akane.portrait.webp",
+      "bytes": 28888,
+      "sha256": "cd5950e30b89aa5ca2047c5f15cb810b74747813cb334cc770b43e8fad986ec8"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.akane.portrait.png",
+      "bytes": 209703,
+      "sha256": "3f7fbb2a5e3e95013851c27960750d84216a2a7237baa569eac943766cceffd3"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.japanese.akane.bust.webp",
+      "bytes": 237410,
+      "sha256": "55f2d5b290dfd3b036b001bc065c5be77aa3be7af9e09899dc420a84514866f3"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.benkei.portrait.webp",
+      "bytes": 30362,
+      "sha256": "0402d1394e3df558e1307b8909ff15c812fc52c86c0f6d37d9037b1d08022eb9"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.benkei.portrait.png",
+      "bytes": 210696,
+      "sha256": "d7893637a1fe9c91936e11d87d9833a1e638d11f7152d136cfe7fc24cfa95173"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.benkei.bust.png",
+      "bytes": 3062755,
+      "sha256": "933a79f2a3488d64b5a03cf934f787fef7059b98cacb3a710dca172d381c4c5a"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.benkei.bust.png",
+      "bytes": 3062755,
+      "sha256": "933a79f2a3488d64b5a03cf934f787fef7059b98cacb3a710dca172d381c4c5a"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.genzo.portrait.webp",
+      "bytes": 21480,
+      "sha256": "645effa22bb7be4ef7b6dbb6edfd5483bd39870a129c5e76a63f7b65ae753487"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.genzo.portrait.png",
+      "bytes": 2822931,
+      "sha256": "37ebdef9ef58cf0540a4e33d3211a5ad29b403dcd8a3e0cf77f1e4bbe64f98eb"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.japanese.genzo.bust.webp",
+      "bytes": 337798,
+      "sha256": "2904bccfd6d2dba853a5f7c7b2594b7ff7e1dd086e279f4c923635b8d0e6064a"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.gonryo.portrait.webp",
+      "bytes": 28028,
+      "sha256": "14ae4dbcac59bd270b1a7b2b75fd6cafbc037037e8caef15646ea053fd58012a"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.gonryo.portrait.png",
+      "bytes": 208585,
+      "sha256": "842734fbb2c41b505715f4121cdfab02fc4d8f334ffddf20695493020ab5c07d"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.gonryo.bust.png",
+      "bytes": 3245789,
+      "sha256": "e613d7e0cb4931d99490e0932dfa0e5bc96298a753533db0e26285c5e99d00ab"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.gonryo.bust.png",
+      "bytes": 3245789,
+      "sha256": "e613d7e0cb4931d99490e0932dfa0e5bc96298a753533db0e26285c5e99d00ab"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.hangaku_gozen.portrait.webp",
+      "bytes": 32112,
+      "sha256": "cdbe230ae21ccebf3cc66891d54b3a2bf2069c1d816e4e6e0db2dc7c0da5f283"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.hangaku_gozen.portrait.png",
+      "bytes": 219007,
+      "sha256": "064e5846d15c7dc5b9bdeccb6bfe2d1e63701b727ca38bb03def72157cd60207"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.hangaku_gozen.bust.png",
+      "bytes": 3160179,
+      "sha256": "8c59e3ec010da074c4e6678eb178f80c9007961f0c0e8e0d437c1a491c978a37"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.hangaku_gozen.bust.png",
+      "bytes": 3160179,
+      "sha256": "8c59e3ec010da074c4e6678eb178f80c9007961f0c0e8e0d437c1a491c978a37"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.kagero.portrait.webp",
+      "bytes": 28614,
+      "sha256": "181048fb59909f69e15dae9a35ff4177bd99530ad41f2d8156ab19997082eb6b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.kagero.portrait.png",
+      "bytes": 210356,
+      "sha256": "844821a6b59d26963d649d1a79cadc6890eaa4cc14f09bc00f218288d6b2288f"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.kagero.bust.png",
+      "bytes": 3190553,
+      "sha256": "4931f6999578c2d29db6f368e1ad7a736b7abb22bbdd64a6bf229ebe871222cd"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.kagero.bust.png",
+      "bytes": 3190553,
+      "sha256": "4931f6999578c2d29db6f368e1ad7a736b7abb22bbdd64a6bf229ebe871222cd"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.kurogane.portrait.webp",
+      "bytes": 29338,
+      "sha256": "27a34e55d7a3f4829f1a59e6caf5960be7122ca2cfe82f16c2423a3a0fa9ed9c"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.kurogane.portrait.png",
+      "bytes": 213787,
+      "sha256": "2d897d2d0ebcbac7d9e4a3d5e0856764980bfa01c3c1c7e3ace3d0de7e7cc797"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.japanese.kurogane.bust.webp",
+      "bytes": 335636,
+      "sha256": "d02eb7029cfd6fa09e52bca38b3e54ad808d1d0c644d40dced4e76c5b91398bd"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.kusunoki_masashige.portrait.webp",
+      "bytes": 32240,
+      "sha256": "3ede219ef7b887aedb60f58e28fe4f5e7aaed48c6b688c66ff2224bc418dfb4b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.kusunoki_masashige.portrait.png",
+      "bytes": 216399,
+      "sha256": "f49673c3b32c36dba27e3620dc252241b3f550560e1dbbd4de2f8bdb6d6b77db"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.kusunoki_masashige.bust.png",
+      "bytes": 3077597,
+      "sha256": "58ed1083316057538759bac81b4a6ec8e7c05cc737bcc6566f99d95a01c69ae9"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.kusunoki_masashige.bust.png",
+      "bytes": 3077597,
+      "sha256": "58ed1083316057538759bac81b4a6ec8e7c05cc737bcc6566f99d95a01c69ae9"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.momotaro.portrait.webp",
+      "bytes": 30878,
+      "sha256": "488a8ca474e762b64d405c42b0c3a07bd666dca5e347a69277c7c42bb824c18e"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.momotaro.portrait.png",
+      "bytes": 217037,
+      "sha256": "4711d019c227b1d60d7d9d9b7977671231ab18a364caa6fa2dc041295483308f"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.momotaro.bust.png",
+      "bytes": 3011270,
+      "sha256": "f8492639f79b7eb92802a66337267ff57a27a3b3c738a6d4d573da29984a68c3"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.momotaro.bust.png",
+      "bytes": 3011270,
+      "sha256": "f8492639f79b7eb92802a66337267ff57a27a3b3c738a6d4d573da29984a68c3"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.oboro.portrait.webp",
+      "bytes": 29362,
+      "sha256": "43ce7b4f181e60a80d15ba14d1e7cb881d780e74b5d6102f511e416653a62841"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.oboro.portrait.png",
+      "bytes": 215851,
+      "sha256": "15b852f9ac9bb4d533e53b337ce0e5b68393ff11f048c7c4b84496ee1ab6d3dd"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.oboro.bust.png",
+      "bytes": 3217021,
+      "sha256": "9c65b3176856b656d190b79c6e0533ce5cbdc730941cc4e78efea9abd00f9504"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.oboro.bust.png",
+      "bytes": 3217021,
+      "sha256": "9c65b3176856b656d190b79c6e0533ce5cbdc730941cc4e78efea9abd00f9504"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.shiro.portrait.webp",
+      "bytes": 23888,
+      "sha256": "05f6b790354da1ae9e6182da25ea24d6ea0051cfa4952c9b5d94c41585de4a45"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.shiro.portrait.png",
+      "bytes": 2776449,
+      "sha256": "4d2ca937e6e383e83f3fc42672ed8994612683dac44232ee028e690813c32408"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.japanese.shiro.bust.webp",
+      "bytes": 281224,
+      "sha256": "11629616efedea08f0e896195faa6035c6e9b615544d01d2f546e4f85716cd85"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.tomoe_gozen.portrait.webp",
+      "bytes": 30836,
+      "sha256": "ec22db7617e654cc8e3a4ad5e99375f64f625fdba1f820e5392cc8b744a83a05"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.tomoe_gozen.portrait.png",
+      "bytes": 218052,
+      "sha256": "eda009d8b7e4c98173e12337436866a374086202abc37f6493273a6d9f17553b"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.tomoe_gozen.bust.png",
+      "bytes": 3394974,
+      "sha256": "8befffbb2765abb831b4bc8767ee36b9bc7c9f57855d24276e46a61a9aca0db9"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.tomoe_gozen.bust.png",
+      "bytes": 3394974,
+      "sha256": "8befffbb2765abb831b4bc8767ee36b9bc7c9f57855d24276e46a61a9aca0db9"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.yamato_takeru.portrait.webp",
+      "bytes": 30222,
+      "sha256": "0384647ec4de72724edddfc5047dd77ed799c3d711d4dbbe9fa26209d76e114b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.yamato_takeru.portrait.png",
+      "bytes": 215971,
+      "sha256": "2e29273100f324f2d7fe7479dad673df0bdc1dd96bdbc6efcbcbd61e392a50fd"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.yamato_takeru.bust.png",
+      "bytes": 3223063,
+      "sha256": "3cf6ad13ae2b59f3ba4398dc8f8bd99178af2181efc2bda6e9c2d89945368c7e"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.yamato_takeru.bust.png",
+      "bytes": 3223063,
+      "sha256": "3cf6ad13ae2b59f3ba4398dc8f8bd99178af2181efc2bda6e9c2d89945368c7e"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.yamikage.portrait.webp",
+      "bytes": 25810,
+      "sha256": "511a67826da2a11d69004d4c3156f81622801ad9f4054fdd4229fb34cdba704f"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.yamikage.portrait.png",
+      "bytes": 201732,
+      "sha256": "3426b953f524af66e7ad51749eef62528139c7072113902a639038a0fc0fd572"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.japanese.yamikage.bust.webp",
+      "bytes": 342434,
+      "sha256": "0e7913764b0095613fffb09008b541545532de923f6e2292dc3910c8e533f0ed"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.japanese.yoshitsune.portrait.webp",
+      "bytes": 30058,
+      "sha256": "cfe88aaeab9ad947267583b450a5f1ce47a3faedea06db0bfdecbe891b7a9ad1"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.japanese.yoshitsune.portrait.png",
+      "bytes": 213527,
+      "sha256": "13dabfec77945111402f9e8e7c25e22a792fd19a8dab35f81233d0421e79420c"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.japanese.yoshitsune.bust.png",
+      "bytes": 3176448,
+      "sha256": "b3c5fcc142755637d71b2c90f20d589145e725c0afdc08e5e6630ea55821470b"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.japanese.yoshitsune.bust.png",
+      "bytes": 3176448,
+      "sha256": "b3c5fcc142755637d71b2c90f20d589145e725c0afdc08e5e6630ea55821470b"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.acatl.portrait.webp",
+      "bytes": 29774,
+      "sha256": "5c29a95788adfd6ca42a82f341c6a0d6e4da311db35a6ef6dc77359f8dd00992"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.acatl.portrait.png",
+      "bytes": 209017,
+      "sha256": "1ad35ebc96b4ce8270b5651b770b8cee05e95b80c051812c51a5b533a891ebfa"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.acatl.bust.png",
+      "bytes": 2987286,
+      "sha256": "8700d076dd71336d8e380c7ca1a2cb447f4d55b3e5d30acfc38033e08ba92ebf"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.acatl.bust.png",
+      "bytes": 2987286,
+      "sha256": "8700d076dd71336d8e380c7ca1a2cb447f4d55b3e5d30acfc38033e08ba92ebf"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.chilam_balam.portrait.webp",
+      "bytes": 34190,
+      "sha256": "1ee2c0b31df7e3a803ab49847d594582e50a9d9df234eaa01420d32c8dd1f282"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.chilam_balam.portrait.png",
+      "bytes": 222368,
+      "sha256": "b97c135fc6daa53652aa2a9fb60dff89ab5b2f4f051d14b9d863ab10530768bd"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.chilam_balam.bust.png",
+      "bytes": 3215323,
+      "sha256": "e1be6247ee28e0becaa6f1a5b5dc92800c15ddcff328535283acff96c691f5be"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.chilam_balam.bust.png",
+      "bytes": 3215323,
+      "sha256": "e1be6247ee28e0becaa6f1a5b5dc92800c15ddcff328535283acff96c691f5be"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.chimal.portrait.webp",
+      "bytes": 22880,
+      "sha256": "480ff4b2348a6c4cce8cf91374e66c5a3cf18d911c7dcf7eb2306f372b82eb2a"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.chimal.portrait.png",
+      "bytes": 2747296,
+      "sha256": "5660c3474c3c206d707dbdd8943b20f94f49beed98879df950d35da3e46f2da2"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.mesoamerican.chimal.bust.webp",
+      "bytes": 302630,
+      "sha256": "eeb7e2c77c810164b1bd42251baea561b68a769461bd6b736bb023028233f8f8"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.webp",
+      "bytes": 32758,
+      "sha256": "008ee7d01a7c33053591645c7c30d33be6f0c8ab4a523d8d2b756c2345cfa193"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.png",
+      "bytes": 216171,
+      "sha256": "47f3e72e37e319cde7c168307cc9cb478c8c19016b7141b283a2987d9b1e5129"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.eight_deer_jaguar_claw.bust.png",
+      "bytes": 3243476,
+      "sha256": "460fc84cb2166b7f50a216b128a03533657b68522e4b62a3f233dbf84dd2869d"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.eight_deer_jaguar_claw.bust.png",
+      "bytes": 3243476,
+      "sha256": "460fc84cb2166b7f50a216b128a03533657b68522e4b62a3f233dbf84dd2869d"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.hunahpu.portrait.webp",
+      "bytes": 28344,
+      "sha256": "e80fc22c35d9e0c701e40b3deb1ee9065c86b38155bf636e72239ff42c7a63af"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.hunahpu.portrait.png",
+      "bytes": 205333,
+      "sha256": "3e256b0b094e1810eeaa8d77658f0988c5c793d92a35ac13afe5ce98351f11b9"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.hunahpu.bust.png",
+      "bytes": 2968694,
+      "sha256": "53c022b3e104c0ceaba73ac0d91384a7595a19e47c1882df91fd7367d4be90ff"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.hunahpu.bust.png",
+      "bytes": 2968694,
+      "sha256": "53c022b3e104c0ceaba73ac0d91384a7595a19e47c1882df91fd7367d4be90ff"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.itzel.portrait.webp",
+      "bytes": 30764,
+      "sha256": "3dc187dff6842f81c601539c800d3296af9a62579b3e0f09799439a8459fde55"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.itzel.portrait.png",
+      "bytes": 209784,
+      "sha256": "715b180706c50a8aa4ec92bc657b3a028d65e42d8f167d84e4ed96072d3ab40b"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.mesoamerican.itzel.bust.webp",
+      "bytes": 222432,
+      "sha256": "08c86aa181a01ddc0a2c9e927c8b75d6b62e5c37e692b42ca058f8b5dce2f3eb"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.itztli.portrait.webp",
+      "bytes": 29606,
+      "sha256": "7b0487f4c779670672d8afd19deea5fc31c3e177799a19a08c283cdc9a7b46df"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.itztli.portrait.png",
+      "bytes": 214749,
+      "sha256": "c74c370f7545f32a2ac4f701488eb7128b8916f374ecfd0cc2c0d28425f955eb"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.mesoamerican.itztli.bust.webp",
+      "bytes": 331676,
+      "sha256": "4a03111e4cec83a58a283667b936401310fe8b625075a05e454ce75518f588c5"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.lady_six_sky.portrait.webp",
+      "bytes": 32440,
+      "sha256": "1b525ef7ba2ef94510f1971c3f4cd5eacc0d1bc8e6a662e378c37657f6c4f8a8"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.lady_six_sky.portrait.png",
+      "bytes": 214560,
+      "sha256": "7b9be2f8a2daa82553dc1d83222c4f5fb3a695ecbd3306cb11ab60dade3ad75c"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.lady_six_sky.bust.png",
+      "bytes": 2913559,
+      "sha256": "a28c5653d65a93e3f169a2029afa3e427eb05e2a69149953822a35c6c0aeb7dd"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.lady_six_sky.bust.png",
+      "bytes": 2913559,
+      "sha256": "a28c5653d65a93e3f169a2029afa3e427eb05e2a69149953822a35c6c0aeb7dd"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.mazatl.portrait.webp",
+      "bytes": 29266,
+      "sha256": "5a1a258f9632ac8fb2c320918173ad158032ba49efba73b7d3cc4f217177b2e4"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.mazatl.portrait.png",
+      "bytes": 207366,
+      "sha256": "94593b96c3ec829cded26963892dc2e0456bf71fdb4e47caad070787979bca17"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.mazatl.bust.png",
+      "bytes": 2979203,
+      "sha256": "d47797064cc2fdcdb944ae4b2e944962fc4eb492ca2ebb33727d0294b94d6ede"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.mazatl.bust.png",
+      "bytes": 2979203,
+      "sha256": "d47797064cc2fdcdb944ae4b2e944962fc4eb492ca2ebb33727d0294b94d6ede"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.webp",
+      "bytes": 33022,
+      "sha256": "831e158863cce84e9ebb152c85b2a5e25cd45ea46bc657dc05c3aa88889473c2"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.png",
+      "bytes": 219731,
+      "sha256": "bce746b61ecca5c43ae9077ae46be0b568b6a7291b01af10b932abfaff858c3a"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.moctezuma_ilhuicamina.bust.png",
+      "bytes": 3138736,
+      "sha256": "7cd8fe97d67a4e7351cdd4bdfb2ff624750be3b9bdc2bbf7216566ae2c6cac6d"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.moctezuma_ilhuicamina.bust.png",
+      "bytes": 3138736,
+      "sha256": "7cd8fe97d67a4e7351cdd4bdfb2ff624750be3b9bdc2bbf7216566ae2c6cac6d"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.webp",
+      "bytes": 31104,
+      "sha256": "d58d20ff15f37d504e03be662f0be711837dddd0242a5acf34ec143df54c3252"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.png",
+      "bytes": 211679,
+      "sha256": "decf394486011513d51d1cf0715eb3c3504e85bfe9ddaa8f7a60dee697ad073d"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.nezahualcoyotl.bust.png",
+      "bytes": 3151382,
+      "sha256": "bb4f61262ed1d56983a1ed7f1766ff58430d0a7f55dc3bb720d508a32af59999"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.nezahualcoyotl.bust.png",
+      "bytes": 3151382,
+      "sha256": "bb4f61262ed1d56983a1ed7f1766ff58430d0a7f55dc3bb720d508a32af59999"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.tecuani.portrait.webp",
+      "bytes": 29876,
+      "sha256": "fb143a42423d53e4b401653c81b5bcf30548330f341cb53f639de0621a2d8a4b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.tecuani.portrait.png",
+      "bytes": 211086,
+      "sha256": "0f1919b7948f969a053fe5d915aca254a6475e14622ee5d0a878be4899f573cc"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.mesoamerican.tecuani.bust.webp",
+      "bytes": 353936,
+      "sha256": "aaaec6a6988f589882a446287468c98a7490ac9fe4800ab88c8819d3a8317ad3"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.tlacatl.portrait.webp",
+      "bytes": 30912,
+      "sha256": "fb80587a54ed4b7929879defa15758d3138a1f262872df02196e6e5fb21cde45"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.tlacatl.portrait.png",
+      "bytes": 214084,
+      "sha256": "9fd92ad2ac38621d6d0d4210dc2c13fd50e9cf573d8ddb9a781f8d3add20933e"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.tlacatl.bust.png",
+      "bytes": 3241953,
+      "sha256": "5ff702562f47dc76a4fd398f7328376f7da4c369b70a1cd49d7972b3d9c09251"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.tlacatl.bust.png",
+      "bytes": 3241953,
+      "sha256": "5ff702562f47dc76a4fd398f7328376f7da4c369b70a1cd49d7972b3d9c09251"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.webp",
+      "bytes": 32414,
+      "sha256": "be684c6a3a328abe238f02d46a46c43e4b3b702266c294123ad7b6b2101d8aa9"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.png",
+      "bytes": 217237,
+      "sha256": "4b82c39a31439fbc02108df3ce618c758948ca6301dd08f67cc6f3b8cdee62bb"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.topiltzin_quetzalcoatl.bust.png",
+      "bytes": 3087534,
+      "sha256": "27c532bb47983327964c70b7433d42a8200e2a217622d8ba5ccd336b065cf12e"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.topiltzin_quetzalcoatl.bust.png",
+      "bytes": 3087534,
+      "sha256": "27c532bb47983327964c70b7433d42a8200e2a217622d8ba5ccd336b065cf12e"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.xbalanque.portrait.webp",
+      "bytes": 30206,
+      "sha256": "9e453c11998b4a17ee0987bcac5138a9e7b9a82a78233c5617cfbb752ae1fb0a"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.xbalanque.portrait.png",
+      "bytes": 212022,
+      "sha256": "8face165b530e7e218439bc7047509881ae8dc4bb60a5128ce8b290cff477613"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.mesoamerican.xbalanque.bust.png",
+      "bytes": 3144373,
+      "sha256": "714f83338a683c4154ddc4a9c7c5e33facd3b5e2c7c29218a19d7b6a8ee64df6"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.mesoamerican.xbalanque.bust.png",
+      "bytes": 3144373,
+      "sha256": "714f83338a683c4154ddc4a9c7c5e33facd3b5e2c7c29218a19d7b6a8ee64df6"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.mesoamerican.xoco.portrait.webp",
+      "bytes": 23638,
+      "sha256": "c7abe28ebc0b107f9bea789eb08a1d7f55c73d1b8d58294f4373354817c22019"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.mesoamerican.xoco.portrait.png",
+      "bytes": 3062532,
+      "sha256": "fe8ea10f8126ca3067434a627bedabd6f001753ea06bf6eac0664d36dea90ccd"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.mesoamerican.xoco.bust.webp",
+      "bytes": 305656,
+      "sha256": "f8a7c27bd53d3ea279192bb21a6182f7758fef53672d73e1582114d72b92f2e3"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.barrow_captain.portrait.webp",
+      "bytes": 31284,
+      "sha256": "b64aeb2f5ab67e7ffdc35c8b4e277c5e7a35a7298adc4e93946b7cb7723540af"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.barrow_captain.portrait.png",
+      "bytes": 288729,
+      "sha256": "2e7b06452f16a98c1ab08e6fbdf8b334ab3dd10811bafdb28e65336d436fb82b"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.barrow_captain.bust.webp",
+      "bytes": 270700,
+      "sha256": "fd7df8dce0518794915e7c23d593b0c36ae618bf5d946e7ce6de5b15a0b114f1"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.bone_helm.portrait.webp",
+      "bytes": 31336,
+      "sha256": "0d906c8ba2e56d4fd65e3166fd4026efa47bdc8d98d23abe0564c69d70da46db"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.bone_helm.portrait.png",
+      "bytes": 288602,
+      "sha256": "ddfe4bc5638d2a47838920cca3c7d82d417f0d073d07853ba9831d288aa8f0bd"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.bone_helm.bust.webp",
+      "bytes": 359192,
+      "sha256": "685f7d85e723641263e7663b83ca39ebacabc5d8602ac03d42fa256ff0cbf757"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.brynhild.portrait.webp",
+      "bytes": 27930,
+      "sha256": "dd96f0057be9073398c3fcbb902f7d0cd09324625afd3fba3a14fb51fe3f6fb4"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.brynhild.portrait.png",
+      "bytes": 269172,
+      "sha256": "e4d0735d31b699936dc4c9e4a667027ef34e55897abe56a5270a9a34528e0286"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.norse.brynhild.bust.png",
+      "bytes": 3180128,
+      "sha256": "f4913369f48ae1963f0e33d8bca306bda8ebba4d3a9ec5704e6fa68d66678806"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.norse.brynhild.bust.png",
+      "bytes": 3180128,
+      "sha256": "f4913369f48ae1963f0e33d8bca306bda8ebba4d3a9ec5704e6fa68d66678806"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.eydis.portrait.webp",
+      "bytes": 25922,
+      "sha256": "2f3330b6aaf8c58e6c69c5afd4eb55410ba5d1791d97e7732c1b2543f75d6fa1"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.eydis.portrait.png",
+      "bytes": 2983386,
+      "sha256": "8ddfc98aa1e77f595063ca9e1764cb81d365ace9e36b2a466e0ab0d1684b01d4"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.eydis.bust.webp",
+      "bytes": 281886,
+      "sha256": "317ea1aaae280792d4f5d6cd12376fb517ae37f569aeec317986b0199c1e2e16"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.grey_jarl.portrait.webp",
+      "bytes": 29842,
+      "sha256": "3a8fd253bfb5f95d33c4578a64c54721726dc51486dd109b7e4dcf25c7b0606d"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.grey_jarl.portrait.png",
+      "bytes": 283033,
+      "sha256": "eb68b5df316ab9ef4c72fb827615c2b1412b412ca3904510143d91c22c5a73bb"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.grey_jarl.bust.webp",
+      "bytes": 374598,
+      "sha256": "f9df75cb28d1f78bfda704e8da692a45f11f7d164f420c4beb64726a0f81d68d"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.hervor.portrait.webp",
+      "bytes": 27590,
+      "sha256": "2c27ca66176fa2d6de1623f2da0313087dddfee6f3c09a8a3f6c7ab870d29067"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.hervor.portrait.png",
+      "bytes": 265877,
+      "sha256": "b95e4459c78864688ce8c483ccff3590e6dbb6d458c5a4049f5461a2a762924a"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.hervor.bust.webp",
+      "bytes": 283880,
+      "sha256": "1bb280266667be657d49e3d79d607c0166f1df80e695f06f1a66e4bc99feec41"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.hrafn.portrait.webp",
+      "bytes": 27298,
+      "sha256": "f372e9a0af59777f2f3a890c430f3da2384c8d8e5a878a234163d6c63538ef1a"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.hrafn.portrait.png",
+      "bytes": 272573,
+      "sha256": "b5231a9078d88f0024153ee3879bb0fc6e4c405c8b369498d956ed4cc3eb657d"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.hrafn.bust.webp",
+      "bytes": 351990,
+      "sha256": "f2f736197157b984bee5babf6c1fccd0e328427b3493322c73f13881b704f1bc"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.jokul.portrait.webp",
+      "bytes": 27036,
+      "sha256": "8d1834ae338289b94b12f9ec2c76482465f48cfef1714fc2f5370fdf770185f6"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.jokul.portrait.png",
+      "bytes": 3133773,
+      "sha256": "f8c37dddbfb76c8b36c3fdaf4f20d0d7980ea5d8463bcd0cda4534374b2ac9d7"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.jokul.bust.webp",
+      "bytes": 359866,
+      "sha256": "9d4948451ee54966f061c5d23eccdcda2fa82177112aec4ea80b3605f0192c97"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.lagertha.portrait.webp",
+      "bytes": 26116,
+      "sha256": "99dfb3caf92cf2c66eb7dfb73811fee2f36da46fd68725d5c5d8dab1c4c5bebe"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.lagertha.portrait.png",
+      "bytes": 262823,
+      "sha256": "bfa2edf8ba7edadc4305111f2331dcb2967bd66382732d197a4fd9bf2b3f50f6"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.norse.lagertha.bust.png",
+      "bytes": 3273753,
+      "sha256": "3e6e2444d8cc690f338ad997394fd136db87757c2e80a5ab8e023600f210051f"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.norse.lagertha.bust.png",
+      "bytes": 3273753,
+      "sha256": "3e6e2444d8cc690f338ad997394fd136db87757c2e80a5ab8e023600f210051f"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.ragnar.portrait.webp",
+      "bytes": 27496,
+      "sha256": "675bb01913bd21be697f66b6632f4a09e20c15f3001296c8c0c72c7e0401bac8"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.ragnar.portrait.png",
+      "bytes": 268261,
+      "sha256": "0c264d359b7ab4e185a572c0356a38017ae25a6f2a5368eb001aa2ab0e66e4d1"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.norse.ragnar.bust.png",
+      "bytes": 3240017,
+      "sha256": "8a82b942b42abe9f0d8f2886be0023557a4a3b76d6362ff2c00c31f7f9d79191"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.norse.ragnar.bust.png",
+      "bytes": 3240017,
+      "sha256": "8a82b942b42abe9f0d8f2886be0023557a4a3b76d6362ff2c00c31f7f9d79191"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.sigurd.portrait.webp",
+      "bytes": 26546,
+      "sha256": "160a293731ecb4ea96662509252727dbda95215b86ce401874420ae9f98a4b2d"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.sigurd.portrait.png",
+      "bytes": 268185,
+      "sha256": "48299cea63c95c313272376d4f9f636759d9ec3c95f4c4cc2cd942c32a9be082"
+    },
+    {
+      "destinationRelative": "assets-runtime/hero-portraits-complete/hero.norse.sigurd.bust.png",
+      "bytes": 3253714,
+      "sha256": "e4a16a578940045ae73f09fdc544f200be2c468cd6b975ccd991c040781b3c04"
+    },
+    {
+      "destinationRelative": "assets-source/hero-portraits-complete/hero.norse.sigurd.bust.png",
+      "bytes": 3253714,
+      "sha256": "e4a16a578940045ae73f09fdc544f200be2c468cd6b975ccd991c040781b3c04"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.skeggi.portrait.webp",
+      "bytes": 24276,
+      "sha256": "3115a6769b487d47e8f737bb578f110cdbd3fbe3f5db4851a234c8c87e3a488b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.skeggi.portrait.png",
+      "bytes": 2980964,
+      "sha256": "bf905eede337acd4257f0b72c414a76f26b24042e62207bfb2643b3b51d61403"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.skeggi.bust.webp",
+      "bytes": 255164,
+      "sha256": "ce50caec73d48bc67095e6dd3f7d971f4b15f28ec928069cb570934b3bb92b6a"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.svanhild.portrait.webp",
+      "bytes": 24618,
+      "sha256": "680b3fdae2fca05701013f2bfc13815f2529a681ac2a228a6c43d2de87ccaa80"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.svanhild.portrait.png",
+      "bytes": 2886663,
+      "sha256": "03975e6ff92014d08f79f984802d76e64ea0cb7fd19b7920bd04353fbe68fd6b"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.svanhild.bust.webp",
+      "bytes": 320542,
+      "sha256": "3b547050b36de796396ca198a45a326574bfce1d17db8eaf2775da6a4f7c1124"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.troll_wife.portrait.webp",
+      "bytes": 27796,
+      "sha256": "789d50edc0d9e3bb5e7b5d3fa591b2805d4277ec0edf25ba128a9771a7a3881b"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.troll_wife.portrait.png",
+      "bytes": 3250694,
+      "sha256": "ee534484ab02d4d6c03c9a345db681e46a3de2a17e3736cdbbfb52c8e1669ab1"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.troll_wife.bust.webp",
+      "bytes": 349146,
+      "sha256": "0edf0a4dc3892f578fad8d57573cbb4870342b6333efb42a24d0833bd159437b"
+    },
+    {
+      "destinationRelative": "assets-runtime/ui/icons/final/hero.norse.ulfhild.portrait.webp",
+      "bytes": 24864,
+      "sha256": "060aac5f6915c474dbf210e9ea73871f1c79ac5b7c8a87a853d9ccbf3c599010"
+    },
+    {
+      "destinationRelative": "assets-source/icons/final/hero.norse.ulfhild.portrait.png",
+      "bytes": 259925,
+      "sha256": "13b423d47a3f509cb20f98d6055dd6ca1db2c0c32d2725f9b04cb4f275cbe893"
+    },
+    {
+      "destinationRelative": "assets-runtime/art/busts/hero.norse.ulfhild.bust.webp",
+      "bytes": 318688,
+      "sha256": "99f95989e8a9fb4428aba2178b79c685f5ab4f50eb898afdce5ec1e12ed87d1b"
+    }
+  ]
+}

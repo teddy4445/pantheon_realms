@@ -1,0 +1,99 @@
+PANTHEON REALMS — GUI CONCEPT REVIEW AND IMPLEMENTATION NOTES
+10 October 2026
+
+PURPOSE AND STATUS
+This package contains 14 generated visual concepts in response to the request for a less technical, more classic fantasy strategy interface. They are proposals for review, not screenshots of implemented features. No game source, production artwork or save data was changed for this task.
+
+Open C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/index.html to compare each proposal against the current game capture. The PNGs are native 1586 x 992 output from the built-in image generator; no upscaling or code-based image retouching was used. Corrected final variants are selected by concepts.json and the gallery. Earlier unselected variants remain in the folder for traceability.
+
+Source game: C:/Users/lazeb/Desktop/pantheon_realms
+Baseline GUI catalog: C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/GUI_Review.html
+Concept folder: C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10
+
+DESIGN DIRECTION
+A cohesive mythological command interface: compact illustrated dialogs, restrained bronze or iron frames, quiet parchment reading surfaces, tactile controls, larger creatures and artifacts, and short contextual explanations. The reference is the usability and material character of classic Heroes III interfaces; all proposed art is original.
+
+Layout and hierarchy matter more than added ornament. Avoid turning every border gold or adding complicated carved detail behind text. Use a common frame anatomy and control placement across factions, with faction materials confined mainly to edges, banners and emblems.
+
+THE MAP CHOICE WINDOW
+Concepts 01–03 address the map-popup problem directly.
+
+1. Keep the adventure map visible under a modest dimming layer. Suspend map commands while a modal choice is open.
+2. Center a content-sized frame. An illustration establishes the encounter; a brief sentence explains it; illustrated reward or payment groups make the choice legible.
+3. Keep exact quantities beside their icons. Icons never replace all labels.
+4. For a choice, selecting a tile changes selection only. Confirm executes the chosen action exactly once. Do not execute both a tile action and the confirmation.
+5. Decide later or Return later must preserve the existing encounter rules and consume nothing unless current rules explicitly say otherwise. Preserve which encounters permit deferral.
+6. Display requirements and missing amounts beside an unavailable action, with readable text and a lock or other shape cue. Do not rely only on gray color.
+7. Keyboard focus moves through choices; Enter confirms only a valid focused/selected action; Escape uses the appropriate existing cancel/close behavior. Keep focus inside the modal and return it to the invoking map element afterward.
+8. Reuse the same basic structure for treasure, event choices, quest requests, camp recruitment and rewards. A quest exchange is not a mutually exclusive reward selection.
+9. At narrower resolutions, stack choices or scroll the body while keeping title and confirmation controls accessible. Never make the whole scene unreadably small to fit.
+10. All rewards, conditions, quantities, recipients and narrative text come from current game data. The illustration must not promise a reward the actual choice does not grant.
+
+SHARED INTERACTION AND READABILITY RULES
+- World camera stays at the existing fixed angle. Map panning and current supported zoom behavior are independent of this UI redesign; do not introduce camera rotation.
+- Use stable adventure sidebar locations for minimap, heroes/towns, army, commands and End Day.
+- Maintain sensible UI scaling. Target at least 16 px body text at a 1080p baseline, with readable smaller labels only where appropriate. Test existing supported window sizes and scaling options.
+- Body text should sit on quiet, high-contrast surfaces. Use decorative serif type for short titles; choose a highly readable face for longer text and numbers.
+- Use consistent Normal, Hover, Focus, Pressed, Selected and Unavailable states. Selected states combine outline with an icon or marker.
+- Tooltips must be reachable by keyboard focus and inspection controls, not mouse hover alone. Hover delay around 250–400 ms is a proposed starting point, not a rule for instant tactical previews.
+- Essential numbers such as recruitment total, missing resources, stack quantity and active unit remain visible. Move secondary explanations and detailed breakdowns into inspection.
+- Preserve access to all game actions, encyclopedia categories, setup settings and objectives even when the illustration shows only the primary subset.
+- Prevent repeated actions during pending operations. Confirmation feedback must reflect successful game state changes.
+
+MOTION AND SOUND PROPOSALS (NOT DEMONSTRATED BY STATIC PNGs)
+- Button press: a small inset movement and a short click; preserve reduced-motion behavior.
+- Hover/focus: a brief edge brightening rather than a large scale jump.
+- Equipment: a short socket highlight after a successful equip action.
+- Recruiting: a brief army-slot highlight and quantity update.
+- Town construction: a short dust/light appearance or crossfade on the actual newly built structure. Do not block repeated town actions with a long cinematic.
+- Journal/spellbook: optional quick page motion; immediate content changes with reduced motion.
+- Use existing sound/motion preferences. Audio reinforces visual feedback and is never the only indication of success or failure.
+Suggested durations are approximately 80–150 ms for buttons and 150–300 ms for panel transitions; assess in the running game.
+
+MATERIAL THEMES
+Greek: aged bronze, blue cloth, restrained classical corners.
+Norse: dark carved wood, iron, muted blue-gray cloth.
+Egyptian: sandstone accents, lapis, gold.
+Japanese: black lacquer, red cord, restrained gold.
+Celtic: oak, bronze and green enamel.
+Mesoamerican: carved stone and turquoise, gold accents.
+The six styles retain the same hit areas and control structure. Do not move commands when the faction changes.
+
+IMPLEMENTATION BOUNDARIES FOR CLAUDE
+Use these images as composition and art-direction references. They are flattened mockups, not usable full-screen UI textures. Keep text live and localized, build real controls, and use separate illustration/frame/icon assets. Reuse the existing game artwork where suitable; any new production artwork needs its own asset pass.
+
+Read the corresponding current source files before editing. Preserve game rules, resource calculations, item effects, save compatibility, faction IDs, unit families, keyboard shortcuts and controller/accessibility behavior already supported by the game.
+
+The images contain illustrative details that MUST NOT be treated as game data:
+- Some background portraits, town names and emblems differ between concepts. Use actual hero/town associations from state.
+- Hero concept 05 shows only 20 visible backpack cells while labeling the existing capacity as 30. The final implementation must expose all 30 through a suitable grid or scrolling; do not reduce capacity. Preserve all equipment slots even where the concept socket arrangement is schematic.
+- Some recruitment/town background army strips are illustrative and include extra or misplaced portraits. Runtime armies must have exactly the existing seven stack slots; a hero portrait is separate from those slots.
+- Item effects, creature statistics, building costs, resource holdings and battle numbers are illustrative unless independently verified against current data.
+- Journal 11 has generated wording such as Veteran Hoplites and level 3, and abbreviated objective lists. Use current mission text and conditions; retain every primary and optional objective.
+- Bestiary 12 uses the corrected six-faction version. Keep all existing encyclopedia sections, including those not shown in the abbreviated top ribbon.
+- Town 07 is a composition example. Preserve the current buildable-building set and placement rules; do not add decorative buildings that imply unimplemented services. Any scenic architecture must not masquerade as an interactive structure.
+- Briefing 13 summarizes objectives; it does not merge or remove the game's actual objectives.
+- Map environment art and unit sprites in these concepts are illustrative. This request does not authorize changing map generation or replacing the existing world assets.
+
+RECOMMENDED IMPLEMENTATION ORDER
+1. Shared frame/button/socket/tooltip styles plus treasure/event/quest dialogs.
+2. Adventure command sidebar.
+3. Hero equipment and recruitment layouts.
+4. Town interactions and battle information hierarchy.
+5. Pantheon selection, marketplace, journal, bestiary and story presentation.
+6. Faction material variants and motion/audio polish.
+
+REVIEW CHECKS FOR AN APPROVED IMPLEMENTATION
+- Every visible reward and cost agrees with current game state.
+- Choice confirmation cannot execute twice; defer/cancel does not consume resources.
+- All six pantheons retain their real roster and identity.
+- Inventory and army capacities remain unchanged.
+- Text, numbers, tooltips and focus outlines remain readable at supported sizes.
+- No hidden action or objective is lost because its panel was simplified.
+- Fixed map angle and battle targeting remain usable with the new panels.
+- Reduced-motion and audio settings are respected.
+- Compare screenshots at the same game state before and after; run relevant existing tests for touched behavior.
+
+PER-CONCEPT INDEX
+The following entries give the final image, original GUI catalog IDs, intended change, and source locations.
+

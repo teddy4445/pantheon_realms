@@ -50,7 +50,7 @@ export function DialogueStage({
   return (
     <div className={`story-stage ${bust ? `has-bust has-bust--${side}` : ''} ${backdrop ? 'is-backdrop' : ''}`}>
       {bust ? <StoryBust key={`${line.speaker}:${side}`} art={bust} side={side} name={line.speaker} /> : null}
-      <div className="story-box panel">
+      <div className="story-box panel gui-window gui-window--compact gui-window--parchment gui-surface--parchment">
         {title ? <div className="story-box__title">{title}</div> : null}
         <div className="story-box__body">
           {bust ? (
@@ -144,7 +144,7 @@ export function HintPanel() {
   const playScreens = ['adventure', 'battle', 'battle-result', 'town', 'recruitment', 'hero', 'level-up', 'pantheon'];
   if (!hint || store.story.length > 0 || !store.session || !playScreens.includes(store.screen.id)) return null;
   return (
-    <aside className="hint-panel panel" role="note" aria-label={`Tip: ${hint.title}`} data-testid="hint-panel" data-hint={hint.id}>
+    <aside className="hint-panel panel" role="note" aria-label={`Tip: ${hint.title}`} data-testid="hint-panel" data-hint={hint.id} data-screen={store.screen.id}>
       <div className="hint-panel__title">Tip · {hint.title}</div>
       <p>{hint.text}</p>
       <div className="row gap">

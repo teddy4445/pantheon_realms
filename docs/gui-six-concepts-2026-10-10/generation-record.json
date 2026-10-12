@@ -1,0 +1,36 @@
+{
+  "mode": "Built-in image generator",
+  "records": [
+    {
+      "title": "Tavern recruitment",
+      "file": "01-tavern-recruitment.png",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-7b21ff6b-35cd-4577-a69f-b282e7338504.png"
+    },
+    {
+      "title": "Creature dwelling",
+      "file": "02-creature-dwelling.png",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-2204ce5a-9ed6-480c-8e39-beeafafac392.png"
+    },
+    {
+      "title": "Marketplace",
+      "file": "03-marketplace.png",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-4756d3ac-5efc-4d86-8235-49c2a4763e4b.png"
+    },
+    {
+      "title": "Hero level-up",
+      "file": "04-hero-level-up.png",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ddcb5f16-f8f5-40f0-b333-24d445af723a.png"
+    },
+    {
+      "title": "Spellbook",
+      "file": "05-spellbook.png",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-213c4fdb-361f-498e-a27d-987878327155.png"
+    },
+    {
+      "title": "Enemy encounter preview",
+      "file": "06-enemy-encounter.png",
+      "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-ddf8e36f-44c0-40a0-918b-771ed816d138.png"
+    }
+  ],
+  "correction": "Edit this Pantheon Realms Barracks UI screenshot. Make ONLY one correction: bottom-left 'Your army' strip currently has EIGHT slots (three occupied + five empty). Replace that row with exactly SEVEN evenly-sized square slots total: first Hoplite portrait with 20, second Peltast portrait with 12, third Griffin portrait with 4, then exactly FOUR empty squares. Slightly enlarge and evenly space all seven slots within the same existing frame. Keep ALL scenery, characters, right panel, typography, text, costs, buttons, lighting, proportions and overall resolution/composition otherwise unchanged. No changes outside the army-slot row."
+}

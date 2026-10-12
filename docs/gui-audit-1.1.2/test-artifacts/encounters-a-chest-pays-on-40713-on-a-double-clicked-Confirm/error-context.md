@@ -1,0 +1,119 @@
+# Page snapshot
+
+```yaml
+- main [ref=e3]:
+  - generic [ref=e4]:
+    - application "Adventure map. Click a tile to preview a route, click again to move." [ref=e5]:
+      - generic: Loading…
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: Random Map — Continental
+        - generic [ref=e9]: Skirmish
+      - group "Resources" [ref=e10]:
+        - generic "Gold (+750 per day)" [ref=e11]:
+          - img [ref=e12]
+          - generic [ref=e14]:
+            - generic [ref=e15]: 10,000
+            - generic [ref=e16]: +750/day
+        - generic "Wood (+0 per day)" [ref=e17]:
+          - img [ref=e18]
+          - generic [ref=e20]:
+            - generic [ref=e21]: "20"
+            - generic [ref=e22]: Wood
+        - generic "Stone (+0 per day)" [ref=e23]:
+          - img [ref=e24]
+          - generic [ref=e26]:
+            - generic [ref=e27]: "20"
+            - generic [ref=e28]: Stone
+        - generic "Crystal (+0 per day)" [ref=e29]:
+          - img [ref=e30]
+          - generic [ref=e32]:
+            - generic [ref=e33]: "10"
+            - generic [ref=e34]: Crystal
+        - generic "Favor (+0 per day)" [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e38]:
+            - generic [ref=e39]: "10"
+            - generic [ref=e40]: Favor
+      - generic "Day 1 of the mission" [ref=e41]:
+        - img [ref=e42]
+        - generic [ref=e44]:
+          - generic [ref=e45]: Week 1 · Day 1
+          - generic [ref=e46]: Day 1
+    - complementary "Command" [ref=e47]:
+      - generic "Minimap — click to move the camera" [ref=e50]
+      - region "Heroes" [ref=e51]:
+        - generic [ref=e52]: Heroes
+        - button "Odysseus, 3000 of 3000 movement" [pressed] [ref=e54]:
+          - generic "Odysseus" [ref=e55]:
+            - img "Odysseus portrait" [ref=e56]
+          - generic [ref=e57]:
+            - meter "Odysseus movement" [ref=e58]
+            - meter "Odysseus mana" [ref=e60]
+      - 'region "Selected hero: Odysseus" [ref=e62]':
+        - button "Open Odysseus" [ref=e63]:
+          - generic "Odysseus" [ref=e64]:
+            - img "Odysseus portrait" [ref=e65]
+        - generic [ref=e66]:
+          - generic [ref=e67]: Odysseus
+          - generic "Movement points left today" [ref=e68]:
+            - img [ref=e69]
+            - generic [ref=e71]: 3000/3000
+          - meter "Movement" [ref=e72]
+          - generic "Spell points" [ref=e74]:
+            - img [ref=e75]
+            - generic [ref=e77]: 20/20
+          - meter "Spell points" [ref=e78]
+        - list "Odysseus's army" [ref=e81]:
+          - 'listitem "Slot 1: 20 Hoplites" [ref=e82]':
+            - generic "Hoplite" [ref=e84]:
+              - img "A spear-and-shield soldier in a bronze helmet and pale linen tunic." [ref=e85]
+            - generic [ref=e86]: "20"
+            - 'img "Ability: Charge Guard" [ref=e88]'
+          - 'listitem "Slot 2: 8 Peltasts" [ref=e89]':
+            - generic "Peltast" [ref=e91]:
+              - img "A lightly armored skirmisher with a crescent shield and a bundle of javelins." [ref=e92]
+            - generic [ref=e93]: "8"
+            - 'img "Ability: Shooter" [ref=e95]'
+          - 'listitem "Slot 3: empty" [ref=e96]'
+          - 'listitem "Slot 4: empty" [ref=e97]'
+          - 'listitem "Slot 5: empty" [ref=e98]'
+          - 'listitem "Slot 6: empty" [ref=e99]'
+          - 'listitem "Slot 7: empty" [ref=e100]'
+      - region "Towns" [ref=e101]:
+        - generic [ref=e102]: Towns
+        - button "Myrtos A building can be constructed today" [ref=e104]:
+          - img [ref=e105]
+          - generic [ref=e107]: Myrtos
+          - generic "A building can be constructed today" [ref=e108]:
+            - img [ref=e109]
+      - navigation "Commands" [ref=e111]:
+        - button "Hero" [ref=e112]:
+          - img [ref=e113]
+          - text: Hero
+        - button "Town" [ref=e115]:
+          - img [ref=e116]
+          - text: Town
+        - button "Pantheon" [ref=e118]:
+          - img [ref=e119]
+          - text: Pantheon
+        - button "Miracles" [ref=e121]:
+          - img [ref=e122]
+          - text: Miracles
+        - button "Journal" [ref=e124]:
+          - img [ref=e125]
+          - text: Journal
+        - button "Spells" [ref=e127]:
+          - img [ref=e128]
+          - text: Spells
+        - button "Bestiary" [ref=e130]:
+          - img [ref=e131]
+          - text: Bestiary
+        - button "Menu" [ref=e133]:
+          - img [ref=e134]
+          - text: Menu
+      - button "End Day" [ref=e137]:
+        - img [ref=e138]
+        - text: End Day
+    - complementary
+```

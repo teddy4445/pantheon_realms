@@ -1,0 +1,327 @@
+{
+  "assets": {
+    "adventurekit.tavern.greek": {
+      "file": "adventure-gui-v1.1.0/tavern-greek.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "233c46fe77bbd5502e29257130c332669c73cb1f273d8ee98628dad05a154ae3",
+      "bytes": 2272305,
+      "kind": "tavern",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.recruit.greek": {
+      "file": "adventure-gui-v1.1.0/recruit-greek.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "7fe8de7531189b41471be45ea1f2e393cbf9b61c964b8b810d684017e1f66b6b",
+      "bytes": 2605866,
+      "kind": "recruit",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.tavern.norse": {
+      "file": "adventure-gui-v1.1.0/tavern-norse.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "4c82173c96ffdb4df03e9d0a68a3c7bd6abf63835884ee02ba60528c5b8dcaff",
+      "bytes": 2224159,
+      "kind": "tavern",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.recruit.norse": {
+      "file": "adventure-gui-v1.1.0/recruit-norse.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "35b86ecec3f8af815fcf4a5c68de0d394713da7dcd382f565ef6217ea1575d2d",
+      "bytes": 2674141,
+      "kind": "recruit",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.tavern.egyptian": {
+      "file": "adventure-gui-v1.1.0/tavern-egyptian.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "7dc99543c987a17d7edf15dafd2191941e3f314ec85e23a881911d093570660d",
+      "bytes": 2321129,
+      "kind": "tavern",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.recruit.egyptian": {
+      "file": "adventure-gui-v1.1.0/recruit-egyptian.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "0180e0ef642d331b112aaa913c0fdd5e707cc0521c286d6bff2978572ab0d97b",
+      "bytes": 2613365,
+      "kind": "recruit",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.tavern.japanese": {
+      "file": "adventure-gui-v1.1.0/tavern-japanese.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "97df742bbc2e3bcefc299e8e759abe5c7aa2773249bfab31cfc79df68e190271",
+      "bytes": 2086024,
+      "kind": "tavern",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.recruit.japanese": {
+      "file": "adventure-gui-v1.1.0/recruit-japanese.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "1bcae8dda597ceed1d1ca76d23d5e567f4b46371ddc6822c99f6c8a3fa9d2fbe",
+      "bytes": 2603785,
+      "kind": "recruit",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.tavern.celtic": {
+      "file": "adventure-gui-v1.1.0/tavern-celtic.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "8da7a08800660f9d0e5751ece16d5dd1ad011fd4d466c7c5144b8022c8971240",
+      "bytes": 2239264,
+      "kind": "tavern",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.recruit.celtic": {
+      "file": "adventure-gui-v1.1.0/recruit-celtic.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "b6d827124deead4d55b69834167fd8678633d5a66cd1b808e3c568c282a1a111",
+      "bytes": 2647970,
+      "kind": "recruit",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.tavern.mesoamerican": {
+      "file": "adventure-gui-v1.1.0/tavern-mesoamerican.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "ffedd42501b47ff58cafb6e74d18672b4d52a2316aa4b647aa980e0be450c909",
+      "bytes": 2287798,
+      "kind": "tavern",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.recruit.mesoamerican": {
+      "file": "adventure-gui-v1.1.0/recruit-mesoamerican.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "b50efe5507dae0a1ba18083f4183a8fd92b6e9541c4b1f7641da9d25d3849d5f",
+      "bytes": 2630661,
+      "kind": "recruit",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.encounter.temperate": {
+      "file": "adventure-gui-v1.1.0/encounter-temperate.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "7ae606fea5238c0bde9fa79c4b7fb7b1229e39de783fbeb42b29025fdb21eca7",
+      "bytes": 3020403,
+      "kind": "encounter",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.encounter.alpine": {
+      "file": "adventure-gui-v1.1.0/encounter-alpine.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "8334712d1262153132483c74b932593fbebfadbb2ec65ea37e61dc9d16b773c5",
+      "bytes": 3027480,
+      "kind": "encounter",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.encounter.desert": {
+      "file": "adventure-gui-v1.1.0/encounter-desert.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "40430c035e6aa66f35547f9054f9a4678454c3636de7a71ad094aeaaaca86fa5",
+      "bytes": 2808608,
+      "kind": "encounter",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.encounter.woodland": {
+      "file": "adventure-gui-v1.1.0/encounter-woodland.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "bc5b5a1581e4121f39144add1acd1e929af778e1496958787532f182eb1538e3",
+      "bytes": 3195404,
+      "kind": "encounter",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.encounter.jungle": {
+      "file": "adventure-gui-v1.1.0/encounter-jungle.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "dd493b43212ac3aca12534cca450997a17ef3fe7935d37230d54de8718969f3b",
+      "bytes": 2922272,
+      "kind": "encounter",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.encounter.volcanic": {
+      "file": "adventure-gui-v1.1.0/encounter-volcanic.png",
+      "width": 1672,
+      "height": 941,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sha256": "f85ce259aa817f355d9ce5f9dfd9a33394358c4b789d4d2346ff51f81440946d",
+      "bytes": 2466438,
+      "kind": "encounter",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling."
+    },
+    "adventurekit.chrome.skill-card": {
+      "file": "adventure-gui-v1.1.0/skill-card.png",
+      "width": 1774,
+      "height": 887,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "e4cbb4c8be2f7cb327b24ada86fd84f56a6dfd5d528612b209d98bc80f411ca9",
+      "bytes": 1984947,
+      "kind": "chrome",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling.",
+      "contentRect": [
+        0.12,
+        0.54,
+        0.88,
+        0.86
+      ]
+    },
+    "adventurekit.chrome.hero-medallion": {
+      "file": "adventure-gui-v1.1.0/hero-medallion.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "63b793a5dc02ca3e7881195f2d695939d208103e84cbfefce6ba1bc9165c5c73",
+      "bytes": 1194496,
+      "kind": "chrome",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling.",
+      "portraitNote": "Place actual portrait below the transparent circular opening; use CSS circle clipping. Name is live text."
+    },
+    "adventurekit.chrome.balance": {
+      "file": "adventure-gui-v1.1.0/balance.png",
+      "width": 1536,
+      "height": 1024,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "sha256": "f15c581a32a49cb8f39f87b69ee19cdb65762e067cb0366e730428e91cfb4e0c",
+      "bytes": 1911046,
+      "kind": "chrome",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No code retouching, cropping or upscaling.",
+      "note": "Empty decorative scale; values and resource icons remain live. Keep aspect ratio."
+    }
+  }
+}

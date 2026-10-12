@@ -119,17 +119,20 @@ test('the Herald speaks the Eastharbor briefing with its own painted bust', asyn
   await page.getByTestId('setup-begin').click();
   const briefing = page.getByTestId('briefing');
   await expect(briefing).toContainText('Eastharbor’s war-leader marches for the gold mine. Hold the coast.');
-  const bust = briefing.getByTestId('story-bust');
-  await expect(bust).toHaveAttribute('src', /story\.herald\.bust/);
-  await expect(bust).toBeVisible();
-  await expect.poll(() => bust.evaluate((e) => (e as HTMLImageElement).naturalWidth), { timeout: 15_000 }).toBe(768);
+  // The briefing scroll (1.1.0) names the Herald beside the line with the Herald's own painted picture.
+  await expect(briefing.locator('.brief__speaker')).toHaveText(/Herald/);
+  const pic = briefing.locator('.brief__line .portrait img').first();
+  await expect(pic).toHaveAttribute('src', /story\.herald\.(bust|portrait)/);
+  await expect(pic).toBeVisible();
+  await expect.poll(() => pic.evaluate((e) => (e as HTMLImageElement).naturalWidth), { timeout: 15_000 }).toBeGreaterThan(0);
   await page.waitForTimeout(1500);
   await page.screenshot({ path: 'test-results/r19b-herald.png' });
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
 test('each of the twelve quieter opening paintings keeps the logo and every menu button legible (16:9 and 16:10)', async ({ page }) => {
-  test.setTimeout(240_000);
+  // 24 title loads with a screenshot each: 10–14 s per load on SwiftShader in the cloud container (2026-10-11).
+  test.setTimeout(420_000);
   const errors = errorsOf(page);
   expect(UI.backgrounds).toHaveLength(12);
   for (const id of UI.backgrounds) {
@@ -137,6 +140,9 @@ test('each of the twelve quieter opening paintings keeps the logo and every menu
     // Test-side only: whichever painting the menu picks, serve this one.
     await page.unroute('**/ui/backgrounds/*.webp');
     await page.route('**/ui/backgrounds/*.webp', (route) => route.fulfill({ path: file, contentType: 'image/webp' }));
+    // 1.1.0: the frontend kit's title background is in the rotation too; it is served the same painting here.
+    await page.unroute('**/frontend-kit-v1.1.0/backdrop-title.png');
+    await page.route('**/frontend-kit-v1.1.0/backdrop-title.png', (route) => route.fulfill({ path: file, contentType: 'image/webp' }));
     for (const size of [{ width: 1280, height: 720 }, { width: 1280, height: 800 }]) {
       await page.setViewportSize(size);
       await page.goto('/?e2e', { waitUntil: 'networkidle' });
@@ -150,7 +156,7 @@ test('each of the twelve quieter opening paintings keeps the logo and every menu
         const bg = document.querySelector('.main-menu__bg') as HTMLElement | null;
         return bg ? getComputedStyle(bg).backgroundImage : '';
       });
-      expect(loaded, id).toContain('ui/backgrounds/');
+      expect(loaded, id).toMatch(/ui\/backgrounds\/|frontend-kit-v1\.1\.0\/backdrop-title\.png/);
       await page.getByTestId('menu-load').hover();
       await page.waitForTimeout(1300);
       await page.screenshot({ path: `test-results/r19b-menu-${id.replace('menu.background.', '')}-${size.height}.png` });

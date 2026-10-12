@@ -1,0 +1,24 @@
+/* Scoped reference, not a global replacement. Use the game's existing font and URL resolver. */
+.pr-ui { --pr-gold:#d6b76d; --pr-ink:#0b1a2a; --pr-paper:#f0dcb1; color:var(--pr-paper); }
+.pr-ui .pr-panel { background:linear-gradient(135deg,#243342,#101d2c); border:2px solid #ac8741; box-shadow:inset 0 0 0 2px #07121e,0 6px 18px #0008; border-radius:3px; }
+.pr-ui .pr-rule { border:0; height:1px; background:linear-gradient(90deg,transparent,var(--pr-gold),transparent); }
+.pr-ui .pr-icon { width:2rem;height:2rem;object-fit:contain;flex:none; }
+.pr-ui .pr-tab { display:flex;align-items:center;gap:.65rem;background:#0d2030;border:1px solid #6e634c;color:inherit;min-height:44px;padding:.5rem .9rem;cursor:pointer; }
+.pr-ui .pr-tab[aria-selected="true"],.pr-ui .pr-banner[aria-pressed="true"] { border-color:#ffe0a1;box-shadow:inset 0 0 0 2px #bd9146;background:#284356; }
+.pr-ui :where(button,input,select,a):focus-visible { outline:3px solid #fff2b5;outline-offset:3px; }
+.pr-ui button:hover:not(:disabled) { filter:brightness(1.14); }
+.pr-ui button:disabled { opacity:.45;cursor:not-allowed; }
+.pr-ui input[type="checkbox"] { accent-color:#d2aa53;width:1.2rem;height:1.2rem; }
+.pr-ui input[type="range"] { accent-color:#d2aa53;min-height:32px;width:100%; }
+.pr-ui input[type="text"],.pr-ui input[type="search"],.pr-ui select { color:var(--pr-paper);background:#0d1b2a;border:1px solid #a98a51;padding:.6rem;max-width:100%; }
+.pr-ui .pr-scroll { scrollbar-color:#b08c4d #132130;scrollbar-width:thin;overflow:auto; }
+.pr-ui .pr-banner { background:transparent;border:2px solid transparent;padding:.5rem;color:inherit;cursor:pointer; }
+.pr-ui .pr-banner img { width:100%;height:220px;object-fit:contain;display:block; }
+.pr-ui .pr-danger { border-color:#d49d6d;background:#612c28;color:#fff0db; }
+.pr-ui .pr-round { position:relative;aspect-ratio:1;display:grid;place-items:center; }
+.pr-ui .pr-round>img { position:absolute;inset:0;width:100%;height:100%;object-fit:contain; }
+.pr-ui .pr-round>span { position:relative;color:#ffe4ad;font-weight:bold; }
+.pr-ui .pr-round.pr-rank>span { color:#281a0b; }
+.pr-ui .pr-chevron { width:.5rem;height:.5rem;display:inline-block;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(-45deg); }
+.pr-ui .pr-portrait { aspect-ratio:1;width:100%;object-fit:contain; }
+@media(prefers-reduced-motion:reduce) { .pr-ui * { animation:none!important;transition:none!important;scroll-behavior:auto!important; } }

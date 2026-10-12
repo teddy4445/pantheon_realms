@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "imagesDecoded": 178,
+  "identities": 89,
+  "newPortraits": 54,
+  "factionCounts": {
+    "celtic": 11,
+    "egyptian": 11,
+    "greek": 6,
+    "japanese": 11,
+    "mesoamerican": 11,
+    "norse": 4
+  },
+  "searchPassed": true,
+  "desktopOverflow": false,
+  "mobileOverflow": false,
+  "errors": []
+}

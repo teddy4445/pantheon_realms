@@ -1,0 +1,38 @@
+[
+  {
+    "id": "greek",
+    "file": "gate.greek-v5.png",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-38c79269-8f4b-42a2-bda6-514d2801feae.png",
+    "prompt": "Precise cleanup edit of the attached three-column greek gate atlas. Preserve the LEFT intact and MIDDLE damaged gate, all scale, positions, lighting and faction materials. In ONLY the RIGHTMOST breached gate erase every fragment across the ENTIRE horizontal middle band from y=385 to y=645 of this 1024px-high canvas. The upper and lower gate stumps must be disconnected with 260 pixels of TRUE TRANSPARENT AIR between them, all the way left-to-right across the complete wall thickness. No continuous rear wall, no dangling door, no floating stones, no arch bridging this gap. The upper jagged broken edge ends above y=385 and the lower jagged broken edge begins below y=645. Preserve north/south wall tails and the two other gate states. Output same 1536x1024 three-column sprite atlas with genuine transparent background and transparent breach; no terrain, shadow backdrop, labels or glow. This is a functional horizontal passage for game units, not merely a hole in a facade."
+  },
+  {
+    "id": "egyptian",
+    "file": "gate.egyptian-v5.png",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-6309874b-44d6-4814-8d5f-6e0bf01802c1.png",
+    "prompt": "Precise cleanup edit of the attached three-column egyptian gate atlas. Preserve the LEFT intact and MIDDLE damaged gate, all scale, positions, lighting and faction materials. In ONLY the RIGHTMOST breached gate erase every fragment across the ENTIRE horizontal middle band from y=385 to y=645 of this 1024px-high canvas. The upper and lower gate stumps must be disconnected with 260 pixels of TRUE TRANSPARENT AIR between them, all the way left-to-right across the complete wall thickness. No continuous rear wall, no dangling door, no floating stones, no arch bridging this gap. The upper jagged broken edge ends above y=385 and the lower jagged broken edge begins below y=645. Preserve north/south wall tails and the two other gate states. Output same 1536x1024 three-column sprite atlas with genuine transparent background and transparent breach; no terrain, shadow backdrop, labels or glow. This is a functional horizontal passage for game units, not merely a hole in a facade."
+  },
+  {
+    "id": "mesoamerican",
+    "file": "gate.mesoamerican-v5.png",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-6223ae82-aca7-4703-8734-4755e0a9fb4c.png",
+    "prompt": "Precise cleanup edit of the attached three-column mesoamerican gate atlas. Preserve the LEFT intact and MIDDLE damaged gate, all scale, positions, lighting and faction materials. In ONLY the RIGHTMOST breached gate erase every fragment across the ENTIRE horizontal middle band from y=385 to y=645 of this 1024px-high canvas. The upper and lower gate stumps must be disconnected with 260 pixels of TRUE TRANSPARENT AIR between them, all the way left-to-right across the complete wall thickness. No continuous rear wall, no dangling door, no floating stones, no arch bridging this gap. The upper jagged broken edge ends above y=385 and the lower jagged broken edge begins below y=645. Preserve north/south wall tails and the two other gate states. Output same 1536x1024 three-column sprite atlas with genuine transparent background and transparent breach; no terrain, shadow backdrop, labels or glow. This is a functional horizontal passage for game units, not merely a hole in a facade."
+  },
+  {
+    "id": "norse",
+    "file": "gate.norse-v5.png",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-4b328c10-b27f-4188-9d4e-09fa8c1a0d04.png",
+    "prompt": "Precise cleanup edit of the attached three-column norse gate atlas. Preserve the LEFT intact and MIDDLE damaged gate, all scale, positions, lighting and faction materials. In ONLY the RIGHTMOST breached gate remove every fragment across the ENTIRE horizontal middle band from y=385 to y=645 of this 1024px-high canvas. The upper and lower gate stumps must be disconnected with generous TRUE TRANSPARENT AIR between them, all the way left-to-right across the complete wall thickness. No continuous rear wall, no dangling door, no floating stones, no arch bridging this gap. The upper jagged broken edge should end above y=385 and the lower jagged broken edge begin below y=645. Preserve north/south wall tails and the two other gate states. Output same 1536x1024 three-column sprite atlas with genuine transparent background and transparent breach; no terrain, shadow backdrop, labels or glow. This is a functional horizontal passage for game units, not merely a hole in a facade."
+  },
+  {
+    "id": "japanese",
+    "file": "gate.japanese-v5.png",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e5ca7c29-f966-458f-9515-561460b36820.png",
+    "prompt": "Precise cleanup edit of the attached three-column japanese gate atlas. Preserve the LEFT intact and MIDDLE damaged gate, all scale, positions, lighting and faction materials. In ONLY the RIGHTMOST breached gate remove every fragment across the ENTIRE horizontal middle band from y=385 to y=645 of this 1024px-high canvas. The upper and lower gate stumps must be disconnected with generous TRUE TRANSPARENT AIR between them, all the way left-to-right across the complete wall thickness. No continuous rear wall, no dangling door, no floating stones, no arch bridging this gap. The upper jagged broken edge should end above y=385 and the lower jagged broken edge begin below y=645. Preserve north/south wall tails and the two other gate states. Output same 1536x1024 three-column sprite atlas with genuine transparent background and transparent breach; no terrain, shadow backdrop, labels or glow. This is a functional horizontal passage for game units, not merely a hole in a facade."
+  },
+  {
+    "id": "celtic",
+    "file": "gate.celtic-v5.png",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-1c9dbe42-1046-49a0-bba7-d44ba1514c68.png",
+    "prompt": "Precise cleanup edit of the attached three-column celtic gate atlas. Preserve the LEFT intact and MIDDLE damaged gate, all scale, positions, lighting and faction materials. In ONLY the RIGHTMOST breached gate remove every fragment across the ENTIRE horizontal middle band from y=385 to y=645 of this 1024px-high canvas. The upper and lower gate stumps must be disconnected with generous TRUE TRANSPARENT AIR between them, all the way left-to-right across the complete wall thickness. No continuous rear wall, no dangling door, no floating stones, no arch bridging this gap. The upper jagged broken edge should end above y=385 and the lower jagged broken edge begin below y=645. Preserve north/south wall tails and the two other gate states. Output same 1536x1024 three-column sprite atlas with genuine transparent background and transparent breach; no terrain, shadow backdrop, labels or glow. This is a functional horizontal passage for game units, not merely a hole in a facade."
+  }
+]

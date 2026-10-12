@@ -1,0 +1,51 @@
+{
+  "version": "1.1.2",
+  "date": "2026-10-11",
+  "commit": "87456807228fb0072777cb09e1d586f85a797ffc",
+  "environment": "Fresh local source on Vite 5196, isolated Chrome with SwiftShader. Installed Electron and release build not audited.",
+  "currentCatalogScreens": 98,
+  "previousInventoryStates": 98,
+  "notCaptured": [],
+  "firstRunStats": {
+    "startTime": "2026-10-11T05:36:17.482Z",
+    "duration": 3138770.644,
+    "expected": 30,
+    "skipped": 1,
+    "unexpected": 7,
+    "flaky": 0
+  },
+  "rerunStats": {
+    "startTime": "2026-10-11T06:38:18.864Z",
+    "duration": 402028.126,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "latestPerTestCounts": {
+    "expected": 36,
+    "unexpected": 1,
+    "skipped": 1,
+    "flaky": 0
+  },
+  "implementationChangesApplied": false,
+  "newArt": {
+    "selectedAtlases": 6,
+    "stateMappings": 18,
+    "runtime": "assets-runtime/siege-gates-v3/manifest.json"
+  },
+  "findings": [
+    "Siege gate orientation/registration requires replacement and final join verification",
+    "Start Battle painted face clips icon/label stack",
+    "Campaign Difficulty label has low contrast on parchment",
+    "Journal needs readable fallback while book image loads; fully decoded layout is correct",
+    "Town renders an internal placeholder-art caption",
+    "Battle controls become interactive before critical textures appear under cold load"
+  ],
+  "limitations": [
+    "Screenshots stage representative states; they are not full campaign playthroughs.",
+    "Not every possible hero, screen state, faction combination or accessibility setting was visually inspected.",
+    "See test-summary.json for unresolved failures and skipped tests.",
+    "Gate prototype changes are isolated to a browser response and staged HP; production source is unchanged."
+  ]
+}

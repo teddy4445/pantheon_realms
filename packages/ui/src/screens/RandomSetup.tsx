@@ -12,8 +12,15 @@
  * seed, so changing any setting (or starting again) gives a new map; the
  * generator itself stays deterministic for a seed. The game opens straight on
  * the adventure map (no briefing).
+ *
+ * 1.1.0 (pre-game handoff, concept 05): three chapters over ONE draft — Land
+ * (the nine map types as paintings, size, guards, treasure, roads and map
+ * options), Empires (count, seats, difficulty, AI temperaments) and Rules
+ * (victory, starting wealth, turn order). Switching chapters never resets a
+ * choice; Create World is available from every chapter with the reason when it
+ * cannot start. The paintings are archetypes, not previews of the new map.
  */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   createRandomSkirmish,
   skirmishSizeAllows,
@@ -36,7 +43,8 @@ import {
 import { RESOURCE_KEYS, RESOURCE_LABELS } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented, Toggle } from '../components/kit';
-import { ScreenHeader } from '../components/game';
+import { FrontendShell, IllustratedChoice, radioKeys } from '../components/frontend';
+import { frontendArt } from '../assets/manifest';
 import { DifficultyPicker } from './Setup';
 import { SeatRow, patchSeat, patronsOf, type SeatDraft } from '../components/seats';
 
@@ -76,6 +84,9 @@ export function RandomSetupScreen() {
   const [aiTemperaments, setAiTemperaments] = useState(true);
   const [rotating, setRotating] = useState(true);
   const [difficulty, setDifficulty] = useState('normal');
+  const [chapter, setChapter] = useState<'land' | 'empires' | 'rules'>('land');
+  const [busy, setBusy] = useState(false);
+  const typeRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [seats, setSeats] = useState<SeatDraft[]>(() =>
     Array.from({ length: MAX_SEATS }, (_, i) => i).map((i) => {
       const pantheonId = playable[i % Math.max(1, playable.length)] ?? 'greek';
@@ -122,7 +133,15 @@ export function RandomSetupScreen() {
         : '';
 
   const start = () => {
-    if (reason) return;
+    if (reason || busy) return;
+    setBusy(true);
+    try {
+      startNow();
+    } finally {
+      setBusy(false);
+    }
+  };
+  const startNow = () => {
     // A fresh seed every time (a rare seed the generator cannot lay out is replaced by another).
     let generated: RandomSkirmish | null = null;
     let lastError = '';
@@ -148,51 +167,110 @@ export function RandomSetupScreen() {
     store.startGenerated(generated, active[0]!.controller === 'human' ? active[0]!.godId : null, { difficultyId: anyAi ? difficulty : 'normal', playerNames, patronGodIds });
   };
 
+  const typeInfo = SKIRMISH_MAP_TYPES.find((x) => x.id === mapType) ?? SKIRMISH_MAP_TYPES[0]!;
+  const typeArt = frontendArt(`frontend.random.${typeInfo.id}`);
+  const chapters = [
+    { id: 'land' as const, label: 'Land' },
+    { id: 'empires' as const, label: 'Empires' },
+    { id: 'rules' as const, label: 'Rules' },
+  ];
   return (
-    <div className="setup-screen">
-      <ScreenHeader title="Random Map" />
-      <div className="random-setup">
-        <Panel className="random-setup__panel" bodyClassName="random-setup__body">
-          <div className="random-setup__scroll scroll">
-            <SectionTitle>Map</SectionTitle>
-            <div className="random-setup__top random-setup__top--full">
-              <div className="setting-block">
-                <div className="setting-block__label">Map type</div>
-                <div className="map-type-grid" role="radiogroup" aria-label="Map type" data-testid="random-type">
-                  {SKIRMISH_MAP_TYPES.map((t) => {
-                    const allowed = skirmishTypeAllows(t.id, count);
-                    return (
-                      <button
-                        key={t.id}
-                        type="button"
-                        role="radio"
-                        aria-checked={mapType === t.id}
-                        aria-disabled={!allowed}
-                        disabled={!allowed}
-                        className={`map-type ${mapType === t.id ? 'is-selected' : ''}`}
-                        onClick={() => setMapType(t.id)}
-                        data-testid={`random-type-${t.id}`}
-                        title={allowed ? `Learns from ${t.inspiredBy}` : `For ${t.maxEmpires} empires`}
-                      >
-                        <span className="map-type__name">{t.label}</span>
-                        <span className="map-type__text">{t.summary}{allowed ? '' : ` (For ${t.maxEmpires} empires.)`}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+    <FrontendShell
+      backdrop="atlas"
+      title="Random Map"
+      className="setup-screen fe-random-screen"
+      footer={
+        <>
+          <Button onClick={() => store.back()} icon="back">
+            Back
+          </Button>
+          <div className="fe-random__summary small" aria-live="polite">
+            {typeInfo.label} · {SKIRMISH_SIZE_LABEL[size]} · {count} empires · {victoryType === 'hold_relic' ? `hold the relic ${relicDays} days` : 'last empire standing'}
+          </div>
+          {reason || error ? (
+            <div className="random-setup__reason" role="status" data-testid="random-start-reason">
+              {reason || error}
             </div>
-            <div className="random-setup__grid">
-              <div className="setting-block">
-                <div className="setting-block__label">Size</div>
-                <Segmented
-                  label="Map size"
-                  value={size}
-                  options={(['small', 'medium', 'large', 'huge'] as const).map((id) => ({ id, label: SKIRMISH_SIZE_LABEL[id], disabled: !skirmishSizeAllows(id, count), title: !skirmishSizeAllows(id, count) ? 'Four or more empires need a large or huge map' : undefined }))}
-                  onChange={setSize}
-                  testId="random-size"
-                />
-              </div>
+          ) : null}
+          <Button variant="primary" size="large" icon="play" className="random-setup__start" disabled={!!reason || busy} disabledReason={reason} onClick={start} data-testid="random-start">
+            {busy ? 'Creating…' : 'Create World'}
+          </Button>
+        </>
+      }
+    >
+      <div className="random-setup fe-random">
+        <div className="tabs fe-random__chapters" role="tablist" aria-label="Random map chapters">
+          {chapters.map((c) => (
+            <button key={c.id} type="button" role="tab" className="tab" aria-selected={chapter === c.id} aria-controls={`random-chapter-${c.id}-panel`} onClick={() => setChapter(c.id)} data-testid={`random-chapter-${c.id}`}>
+              {c.label}
+            </button>
+          ))}
+        </div>
+        <Panel className="random-setup__panel fe-random__panel" bodyClassName="random-setup__body" framed>
+          <div className="random-setup__scroll scroll" id={`random-chapter-${chapter}-panel`} role="tabpanel" aria-label={chapters.find((c) => c.id === chapter)?.label}>
+            {chapter === 'land' ? (
+              <>
+                <div className="fe-random__land">
+                  <div className="setting-block">
+                    <div className="setting-block__label">Map type</div>
+                    <div className="map-type-grid fe-random__types" role="radiogroup" aria-label="Map type" data-testid="random-type">
+                      {SKIRMISH_MAP_TYPES.map((t, i) => {
+                        const allowed = skirmishTypeAllows(t.id, count);
+                        return (
+                          <IllustratedChoice
+                            key={t.id}
+                            buttonRef={(el) => {
+                              typeRefs.current[i] = el;
+                            }}
+                            artId={`frontend.random.${t.id}`}
+                            name={t.label}
+                            selected={mapType === t.id}
+                            tabIndex={mapType === t.id ? 0 : -1}
+                            onKeyDown={radioKeys(SKIRMISH_MAP_TYPES, i, (x) => skirmishTypeAllows(x.id, count) && setMapType(x.id), typeRefs, 3)}
+                            onSelect={() => setMapType(t.id)}
+                            disabledReason={allowed ? null : `For ${t.maxEmpires} empires`}
+                            title={t.summary}
+                            className={`map-type fe-choice--type ${mapType === t.id ? 'is-selected' : ''}`}
+                            testId={`random-type-${t.id}`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <section className="fe-random__type gui-surface--parchment" aria-label={`${typeInfo.label} map type`} data-testid="random-type-detail">
+                    {typeArt ? <img className="fe-random__type-art" src={typeArt.url} alt={typeArt.alt} draggable={false} /> : null}
+                    <div className="fe-random__type-caption">Illustrative landscape — every map is generated anew</div>
+                    <h2 className="fe-random__type-name">{typeInfo.label}</h2>
+                    <p className="fe-random__type-text">{typeInfo.summary}</p>
+                          <div className="setting-block">
+                            <div className="setting-block__label">Size</div>
+                            <Segmented
+                              label="Map size"
+                              value={size}
+                              options={(['small', 'medium', 'large', 'huge'] as const).map((id) => ({ id, label: SKIRMISH_SIZE_LABEL[id], disabled: !skirmishSizeAllows(id, count), title: !skirmishSizeAllows(id, count) ? 'Four or more empires need a large or huge map' : undefined }))}
+                              onChange={setSize}
+                              testId="random-size"
+                            />
+                          </div>
+                          <div className="setting-block">
+                            <div className="setting-block__label">Empires</div>
+                            <Segmented
+                              label="Number of empires"
+                              value={String(count) as '2' | '3' | '4' | '5' | '6'}
+                              options={(['2', '3', '4', '5', '6'] as const).map((id) => ({ id, label: id }))}
+                              onChange={(v) => {
+                                const n = Number(v);
+                                setCount(n);
+                                if (!skirmishSizeAllows(size, n)) setSize('large');
+                                if (!skirmishTypeAllows(mapType, n)) setMapType('continental');
+                              }}
+                              testId="random-count"
+                            />
+                          </div>
+                  </section>
+                </div>
+                <SectionTitle>The land</SectionTitle>
+                <div className="random-setup__grid">
               <div className="setting-block">
                 <div className="setting-block__label">Wandering monsters</div>
                 <Segmented
@@ -286,10 +364,12 @@ export function RandomSetupScreen() {
                     : `${unownedTowns === 'both' ? 'Two towns' : 'A town'} in each empire’s outer lands start${unownedTowns === 'both' ? '' : 's'} without a lord or a hero, held by ${unownedTowns === 'both' ? 'their' : 'its'} own militia — ${unownedTowns === 'own' ? 'of the empire’s own pantheon' : unownedTowns === 'other' ? 'of another pantheon' : 'one of the empire’s own pantheon, one of another'}. Take ${unownedTowns === 'both' ? 'them' : 'it'} to build and recruit there.`}
                 </p>
               </div>
-            </div>
-
-            <SectionTitle>Game</SectionTitle>
-            <div className="random-setup__grid">
+                </div>
+              </>
+            ) : null}
+            {chapter === 'empires' ? (
+              <>
+                <div className="random-setup__grid">
               <div className="setting-block">
                 <div className="setting-block__label">Empires</div>
                 <Segmented
@@ -305,6 +385,28 @@ export function RandomSetupScreen() {
                   testId="random-count"
                 />
               </div>
+              {anyAi ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : null}
+              {anyAi ? (
+                <div className="setting-block">
+                  <div className="setting-block__label">AI rivals</div>
+                  <div className="row gap">
+                    <Toggle checked={aiTemperaments} onChange={setAiTemperaments} label="Pantheon temperaments" />
+                    <span className="small">Pantheon temperaments — each AI empire plays in its pantheon’s way: Norse raid, Egyptians build, Celts study magic. Only the AI’s choices change, never a rule.</span>
+                  </div>
+                </div>
+              ) : null}
+                </div>
+                <SectionTitle>Seats</SectionTitle>
+            <div className="random-setup__seats">
+              {active.map((s, i) => (
+                <SeatRow key={i} catalog={catalog} index={i} seat={s} color={SEAT_COLORS[i]!} pantheons={playable} temperaments={aiTemperaments} onChange={(patch) => setSeat(i, patch)} />
+              ))}
+            </div>
+            {humans > 1 ? <p className="note small">Hot-seat: {humans} players share this computer and take turns. The map is hidden at every hand-over.</p> : null}
+              </>
+            ) : null}
+            {chapter === 'rules' ? (
+              <div className="random-setup__grid">
               <div className="setting-block">
                 <div className="setting-block__label">Victory</div>
                 <Segmented
@@ -353,38 +455,11 @@ export function RandomSetupScreen() {
                   </div>
                 </div>
               ) : null}
-              {anyAi ? <DifficultyPicker catalog={catalog} value={difficulty} onChange={setDifficulty} /> : null}
-              {anyAi ? (
-                <div className="setting-block">
-                  <div className="setting-block__label">AI rivals</div>
-                  <div className="row gap">
-                    <Toggle checked={aiTemperaments} onChange={setAiTemperaments} label="Pantheon temperaments" />
-                    <span className="small">Pantheon temperaments — each AI empire plays in its pantheon’s way: Norse raid, Egyptians build, Celts study magic. Only the AI’s choices change, never a rule.</span>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-
-            <SectionTitle>Empires</SectionTitle>
-            <div className="random-setup__seats">
-              {active.map((s, i) => (
-                <SeatRow key={i} catalog={catalog} index={i} seat={s} color={SEAT_COLORS[i]!} pantheons={playable} temperaments={aiTemperaments} onChange={(patch) => setSeat(i, patch)} />
-              ))}
-            </div>
-            {humans > 1 ? <p className="note small">Hot-seat: {humans} players share this computer and take turns. The map is hidden at every hand-over.</p> : null}
-          </div>
-          <div className="random-setup__actions">
-            <Button variant="primary" size="large" icon="play" className="random-setup__start" disabled={!!reason} disabledReason={reason} onClick={start} data-testid="random-start">
-              Start
-            </Button>
-            {reason || error ? (
-              <div className="random-setup__reason" role="status" data-testid="random-start-reason">
-                {reason || error}
               </div>
             ) : null}
           </div>
         </Panel>
       </div>
-    </div>
+    </FrontendShell>
   );
 }

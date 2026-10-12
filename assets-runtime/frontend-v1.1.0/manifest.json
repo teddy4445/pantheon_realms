@@ -1,0 +1,395 @@
+{
+  "schema": "pantheon-realms-frontend-art-v1",
+  "targetVersion": "1.1.0",
+  "status": "art handoff; not integrated",
+  "assets": {
+    "frontend.backdrop.title-hall": {
+      "file": "frontend-v1.1.0/backdrop-title-hall.png",
+      "width": 1586,
+      "height": 992,
+      "bytes": 2738673,
+      "sha256": "9df85a046ffecb8cf026cc1746eda0872ebe46526b55b2df9e2dca6ae7f2f61e",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-title-hall.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\backdrop-title-hall.png",
+      "screens": [
+        "title-hall",
+        "new-game"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching",
+      "quietRegionNormalized": [
+        0.1,
+        0.55,
+        0.9,
+        0.93
+      ]
+    },
+    "frontend.backdrop.atlas": {
+      "file": "frontend-v1.1.0/backdrop-atlas.png",
+      "width": 1586,
+      "height": 992,
+      "bytes": 2603986,
+      "sha256": "eb43e2e62c64f4d7fd9c91ad8c75bfbff41021e08adf2dd4a1e42a1f2a397f20",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-atlas.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\backdrop-atlas.png",
+      "screens": [
+        "campaign",
+        "skirmish",
+        "random-map",
+        "empire-setup",
+        "map-editor",
+        "map-library"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching",
+      "quietRegionNormalized": [
+        0.2,
+        0.15,
+        0.8,
+        0.85
+      ]
+    },
+    "frontend.backdrop.library": {
+      "file": "frontend-v1.1.0/backdrop-library.png",
+      "width": 1586,
+      "height": 992,
+      "bytes": 2107716,
+      "sha256": "be7c76bd91f2191376b8164ab075f0f8abe4cf9a222fe91b2538582703cd7e04",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-library.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\backdrop-library.png",
+      "screens": [
+        "encyclopedia",
+        "creature-detail",
+        "settings",
+        "save-archive",
+        "hall-of-records",
+        "shared-dialog"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching",
+      "quietRegionNormalized": [
+        0.2,
+        0.15,
+        0.8,
+        0.85
+      ]
+    },
+    "frontend.mode.campaign": {
+      "file": "frontend-v1.1.0/mode-campaign.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 2747384,
+      "sha256": "c59143174f0a31bc0f32ac0b99a521e7cc92d84988874f4c9ccf52960616341d",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-campaign.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\mode-campaign.png",
+      "screens": [
+        "new-game"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.mode.skirmish": {
+      "file": "frontend-v1.1.0/mode-skirmish.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 2777848,
+      "sha256": "63a399600f98d1cbeea2a6f4d6e6aa5fb888976c0de35c37787138c26985f11f",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-skirmish.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\mode-skirmish.png",
+      "screens": [
+        "new-game"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.mode.random-map": {
+      "file": "frontend-v1.1.0/mode-random-map.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 2829543,
+      "sha256": "a7ef0a5b9adb746573d6f2518404cc50a9419efac2834ada71381f39ea193553",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-random-map.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\mode-random-map.png",
+      "screens": [
+        "new-game"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.mode.map-editor": {
+      "file": "frontend-v1.1.0/mode-map-editor.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 2985697,
+      "sha256": "08219cf9de52dc452b8e9558af37d99eee959af999375df8c783634af87a127e",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-map-editor.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\mode-map-editor.png",
+      "screens": [
+        "new-game"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.empty.archive": {
+      "file": "frontend-v1.1.0/empty-archive.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2553113,
+      "sha256": "a0255a5cb0e5d8b33902cec463b10ba15c7197607d5ba482bf6b2da76aeff7a8",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\empty-archive.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\empty-archive.png",
+      "screens": [
+        "save-archive",
+        "map-library",
+        "hall-of-records"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "contain",
+      "alt": "",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.continental": {
+      "file": "frontend-v1.1.0/random-continental.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3376996,
+      "sha256": "77ef52fc9eaf8a6c5979f2a541caa1e8d909c6d781af98c291578ad5a5d5f118",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-continental.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-continental.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative continental terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.highlands": {
+      "file": "frontend-v1.1.0/random-highlands.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3235046,
+      "sha256": "4ee262e6c86b3a776ea50abc7be2dac10275f85f6ef5c3e677f470d7ab1ff08e",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-highlands.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-highlands.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative highlands terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.lake_isle": {
+      "file": "frontend-v1.1.0/random-lake_isle.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3244334,
+      "sha256": "699d6c6a25a344bf7b6273ca343722106a79d7503b5a5a6c6ce34ad3035e24f8",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-lake_isle.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-lake_isle.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative lake isle terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.wild_forest": {
+      "file": "frontend-v1.1.0/random-wild_forest.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3333521,
+      "sha256": "937042c90ab7d764626d05ddb19aed5e83a40074280d156e7da0423761ef410e",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-wild_forest.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-wild_forest.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative wild forest terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.marshlands": {
+      "file": "frontend-v1.1.0/random-marshlands.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3337232,
+      "sha256": "8cc8711200c537c5a3c300afd0d5db6112287827e05c6b1f208028c42853d099",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-marshlands.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-marshlands.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative marshlands terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.crossroads": {
+      "file": "frontend-v1.1.0/random-crossroads.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3399642,
+      "sha256": "8f72bcc07c8cb7887e491b80028b0dfa9902bdb81b740d40912d7e4a9bce85a1",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-crossroads.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-crossroads.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative crossroads terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.archipelago": {
+      "file": "frontend-v1.1.0/random-archipelago.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3169469,
+      "sha256": "d4cf573bbc46037ca9d132d355957968e0f2e468d0395de5754bc02d53894233",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-archipelago.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-archipelago.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative archipelago terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.twin_continents": {
+      "file": "frontend-v1.1.0/random-twin_continents.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3234360,
+      "sha256": "752aca31faa1b2eb2f428ad8acff6f3cd292384eae403bb112254b8f206515ee",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-twin_continents.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-twin_continents.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative twin continents terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    },
+    "frontend.random.central_valley": {
+      "file": "frontend-v1.1.0/random-central_valley.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 3459129,
+      "sha256": "d9bfc5bf5efabf000713c69d266c55521e548b73401b6c3b3c905ce503714f3c",
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-central_valley.png",
+      "runtimeAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\frontend-v1.1.0\\random-central_valley.png",
+      "screens": [
+        "random-map"
+      ],
+      "role": "Decorative artwork; live controls and text remain HTML",
+      "fit": "cover",
+      "alt": "Illustrative central valley terrain",
+      "provenance": "Native built-in image generator PNG; no resampling or code retouching"
+    }
+  }
+}

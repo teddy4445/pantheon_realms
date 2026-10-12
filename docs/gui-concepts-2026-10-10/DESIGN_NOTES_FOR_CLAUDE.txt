@@ -1,0 +1,216 @@
+PANTHEON REALMS — GUI CONCEPT REVIEW AND IMPLEMENTATION NOTES
+10 October 2026
+
+PURPOSE AND STATUS
+This package contains 14 generated visual concepts in response to the request for a less technical, more classic fantasy strategy interface. They are proposals for review, not screenshots of implemented features. No game source, production artwork or save data was changed for this task.
+
+Open C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/index.html to compare each proposal against the current game capture. The PNGs are native 1586 x 992 output from the built-in image generator; no upscaling or code-based image retouching was used. Corrected final variants are selected by concepts.json and the gallery. Earlier unselected variants remain in the folder for traceability.
+
+Source game: C:/Users/lazeb/Desktop/pantheon_realms
+Baseline GUI catalog: C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-review-2026-10-10/GUI_Review.html
+Concept folder: C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10
+
+DESIGN DIRECTION
+A cohesive mythological command interface: compact illustrated dialogs, restrained bronze or iron frames, quiet parchment reading surfaces, tactile controls, larger creatures and artifacts, and short contextual explanations. The reference is the usability and material character of classic Heroes III interfaces; all proposed art is original.
+
+Layout and hierarchy matter more than added ornament. Avoid turning every border gold or adding complicated carved detail behind text. Use a common frame anatomy and control placement across factions, with faction materials confined mainly to edges, banners and emblems.
+
+THE MAP CHOICE WINDOW
+Concepts 01–03 address the map-popup problem directly.
+
+1. Keep the adventure map visible under a modest dimming layer. Suspend map commands while a modal choice is open.
+2. Center a content-sized frame. An illustration establishes the encounter; a brief sentence explains it; illustrated reward or payment groups make the choice legible.
+3. Keep exact quantities beside their icons. Icons never replace all labels.
+4. For a choice, selecting a tile changes selection only. Confirm executes the chosen action exactly once. Do not execute both a tile action and the confirmation.
+5. Decide later or Return later must preserve the existing encounter rules and consume nothing unless current rules explicitly say otherwise. Preserve which encounters permit deferral.
+6. Display requirements and missing amounts beside an unavailable action, with readable text and a lock or other shape cue. Do not rely only on gray color.
+7. Keyboard focus moves through choices; Enter confirms only a valid focused/selected action; Escape uses the appropriate existing cancel/close behavior. Keep focus inside the modal and return it to the invoking map element afterward.
+8. Reuse the same basic structure for treasure, event choices, quest requests, camp recruitment and rewards. A quest exchange is not a mutually exclusive reward selection.
+9. At narrower resolutions, stack choices or scroll the body while keeping title and confirmation controls accessible. Never make the whole scene unreadably small to fit.
+10. All rewards, conditions, quantities, recipients and narrative text come from current game data. The illustration must not promise a reward the actual choice does not grant.
+
+SHARED INTERACTION AND READABILITY RULES
+- World camera stays at the existing fixed angle. Map panning and current supported zoom behavior are independent of this UI redesign; do not introduce camera rotation.
+- Use stable adventure sidebar locations for minimap, heroes/towns, army, commands and End Day.
+- Maintain sensible UI scaling. Target at least 16 px body text at a 1080p baseline, with readable smaller labels only where appropriate. Test existing supported window sizes and scaling options.
+- Body text should sit on quiet, high-contrast surfaces. Use decorative serif type for short titles; choose a highly readable face for longer text and numbers.
+- Use consistent Normal, Hover, Focus, Pressed, Selected and Unavailable states. Selected states combine outline with an icon or marker.
+- Tooltips must be reachable by keyboard focus and inspection controls, not mouse hover alone. Hover delay around 250–400 ms is a proposed starting point, not a rule for instant tactical previews.
+- Essential numbers such as recruitment total, missing resources, stack quantity and active unit remain visible. Move secondary explanations and detailed breakdowns into inspection.
+- Preserve access to all game actions, encyclopedia categories, setup settings and objectives even when the illustration shows only the primary subset.
+- Prevent repeated actions during pending operations. Confirmation feedback must reflect successful game state changes.
+
+MOTION AND SOUND PROPOSALS (NOT DEMONSTRATED BY STATIC PNGs)
+- Button press: a small inset movement and a short click; preserve reduced-motion behavior.
+- Hover/focus: a brief edge brightening rather than a large scale jump.
+- Equipment: a short socket highlight after a successful equip action.
+- Recruiting: a brief army-slot highlight and quantity update.
+- Town construction: a short dust/light appearance or crossfade on the actual newly built structure. Do not block repeated town actions with a long cinematic.
+- Journal/spellbook: optional quick page motion; immediate content changes with reduced motion.
+- Use existing sound/motion preferences. Audio reinforces visual feedback and is never the only indication of success or failure.
+Suggested durations are approximately 80–150 ms for buttons and 150–300 ms for panel transitions; assess in the running game.
+
+MATERIAL THEMES
+Greek: aged bronze, blue cloth, restrained classical corners.
+Norse: dark carved wood, iron, muted blue-gray cloth.
+Egyptian: sandstone accents, lapis, gold.
+Japanese: black lacquer, red cord, restrained gold.
+Celtic: oak, bronze and green enamel.
+Mesoamerican: carved stone and turquoise, gold accents.
+The six styles retain the same hit areas and control structure. Do not move commands when the faction changes.
+
+IMPLEMENTATION BOUNDARIES FOR CLAUDE
+Use these images as composition and art-direction references. They are flattened mockups, not usable full-screen UI textures. Keep text live and localized, build real controls, and use separate illustration/frame/icon assets. Reuse the existing game artwork where suitable; any new production artwork needs its own asset pass.
+
+Read the corresponding current source files before editing. Preserve game rules, resource calculations, item effects, save compatibility, faction IDs, unit families, keyboard shortcuts and controller/accessibility behavior already supported by the game.
+
+The images contain illustrative details that MUST NOT be treated as game data:
+- Some background portraits, town names and emblems differ between concepts. Use actual hero/town associations from state.
+- Hero concept 05 shows only 20 visible backpack cells while labeling the existing capacity as 30. The final implementation must expose all 30 through a suitable grid or scrolling; do not reduce capacity. Preserve all equipment slots even where the concept socket arrangement is schematic.
+- Some recruitment/town background army strips are illustrative and include extra or misplaced portraits. Runtime armies must have exactly the existing seven stack slots; a hero portrait is separate from those slots.
+- Item effects, creature statistics, building costs, resource holdings and battle numbers are illustrative unless independently verified against current data.
+- Journal 11 has generated wording such as Veteran Hoplites and level 3, and abbreviated objective lists. Use current mission text and conditions; retain every primary and optional objective.
+- Bestiary 12 uses the corrected six-faction version. Keep all existing encyclopedia sections, including those not shown in the abbreviated top ribbon.
+- Town 07 is a composition example. Preserve the current buildable-building set and placement rules; do not add decorative buildings that imply unimplemented services. Any scenic architecture must not masquerade as an interactive structure.
+- Briefing 13 summarizes objectives; it does not merge or remove the game's actual objectives.
+- Map environment art and unit sprites in these concepts are illustrative. This request does not authorize changing map generation or replacing the existing world assets.
+
+RECOMMENDED IMPLEMENTATION ORDER
+1. Shared frame/button/socket/tooltip styles plus treasure/event/quest dialogs.
+2. Adventure command sidebar.
+3. Hero equipment and recruitment layouts.
+4. Town interactions and battle information hierarchy.
+5. Pantheon selection, marketplace, journal, bestiary and story presentation.
+6. Faction material variants and motion/audio polish.
+
+REVIEW CHECKS FOR AN APPROVED IMPLEMENTATION
+- Every visible reward and cost agrees with current game state.
+- Choice confirmation cannot execute twice; defer/cancel does not consume resources.
+- All six pantheons retain their real roster and identity.
+- Inventory and army capacities remain unchanged.
+- Text, numbers, tooltips and focus outlines remain readable at supported sizes.
+- No hidden action or objective is lost because its panel was simplified.
+- Fixed map angle and battle targeting remain usable with the new panels.
+- Reduced-motion and audio settings are respected.
+- Compare screenshots at the same game state before and after; run relevant existing tests for touched behavior.
+
+PER-CONCEPT INDEX
+The following entries give the final image, original GUI catalog IDs, intended change, and source locations.
+
+
+01 — Treasure chest choice
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\01-treasure-choice.png
+Baseline IDs: W03
+Design intent: Replace stacked text rows with an illustrated reward choice.
+Behavior: Select one reward tile, show a check and highlight, then confirm once. Decide later closes without claiming. Gold/experience amounts and the recipient come from current game state.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx
+
+
+02 — Map event: The Frozen Longship
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\02-map-event-choice.png
+Baseline IDs: W02
+Design intent: Use a distinct scene illustration to make the map encounter memorable.
+Behavior: Keep choice consequences visible as icons plus text. Norse trim varies the material while retaining the same dialog anatomy. Unavailable choices must explain why.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx
+
+
+03 — Map quest: The Hermit's Request
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\03-quest-offer-v2.png
+Baseline IDs: W04
+Design intent: Make quest requirements and rewards read as a visual exchange.
+Behavior: Keep required, owned and missing quantities together. Disable submission with a textual reason. Rewards remain separate from the payment; do not imply both are choices.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/WorldDialogs.tsx
+
+
+04 — Adventure map and command sidebar
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\04-adventure-command.png
+Baseline IDs: S06, N03
+Design intent: Consolidate navigation into one command sidebar.
+Behavior: Keep the fixed map angle and pan controls. Minimap, hero/town selection, army and End Day share one stable area. Hover and keyboard focus supply concise contextual help.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Adventure.tsx
+
+
+05 — Hero equipment folio
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\05-hero-folio-v2.png
+Baseline IDs: S07, H01, H02
+Design intent: Use a compact equipment folio with larger artifact sockets.
+Behavior: Preserve every real equipment slot, inventory capacity and army slot. The illustrative grid geometry and item modifiers in the image are not a data specification. Populate artifacts and stats from the existing catalog.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Hero.tsx
+
+
+06 — Recruitment chamber
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\06-recruitment-chamber.png
+Baseline IDs: S09
+Design intent: Focus recruitment on one creature and one clear purchase decision.
+Behavior: Show all seven families, availability, quantity, cost, destination and current army. Distinguish no dwelling, no weekly population, no funds and no army space. Upgrades use the existing training rules.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Recruitment.tsx
+
+
+07 — Town interaction and construction preview
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\07-town-buildings.png
+Baseline IDs: S08, T01, T08
+Design intent: Make the town buildings themselves the primary controls.
+Behavior: Use hover/focus outlines and a short building tooltip; open the construction list from the town hall. Keep a visible discoverable construction control and optional build-site hints. Do not hide unbuilt buildings from the accessible construction list.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Town.tsx
+
+
+08 — Tactical battle interface
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\08-battle-command.png
+Baseline IDs: S11B, B01
+Design intent: Give battle commands a stable frame and reduce permanent labels.
+Behavior: Show stack counts continuously; reveal HP, effects and wall durability through selection/inspection. Preserve turn order, movement/attack previews, shortcuts and an option for persistent tactical detail.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Battle.tsx
+
+
+09 — Pantheon selection
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\09-pantheon-banners.png
+Baseline IDs: S04
+Design intent: Choose a faction through banners, its patron and creature roster.
+Behavior: Exactly six existing pantheons and seven creatures per roster. Keep all current setup controls, including hot seat and difficulty; move secondary controls into a compact setup drawer when necessary.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Setup.tsx
+
+
+10 — Marketplace exchange
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\10-merchant-counter.png
+Baseline IDs: T02
+Design intent: Present trading as resources crossing a merchant's counter.
+Behavior: Keep current resource-to-gold and gold-to-resource rules. Clearly show amount paid, amount received, exchange rate and resulting holdings. Do not invent direct resource barter.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Town.tsx
+
+
+11 — Quest journal
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\11-quest-journal.png
+Baseline IDs: S14-objectives, S14-story
+Design intent: Turn objectives and story into an illustrated quest journal.
+Behavior: Use a readable list of quest thumbnails and a selected detail page, with explicit status icons, progress and Show on map. All five mission objectives and optional quests remain available through the list.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Journal.tsx
+
+
+12 — Bestiary and creature inspection
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\12-bestiary-codex-v2.png
+Baseline IDs: S16-creatures, S18
+Design intent: Make the encyclopedia feel like a bestiary with large creature illustrations.
+Behavior: Preserve all encyclopedia sections and search/filter access. All six faction tabs and base/upgraded creatures remain explicit controls. Read every statistic and ability from current game data.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/Encyclopedia.tsx
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/screens/UnitDetail.tsx
+
+
+13 — Mission briefing and story dialogue
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\13-story-briefing.png
+Baseline IDs: D01, D13
+Design intent: Lead the briefing with the character and scene.
+Behavior: Use three concise visual objective summaries while keeping the full objectives available. Preserve dialogue navigation, Begin behavior and exact quest requirements. Do not turn decorative summary copy into new mission rules.
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Overlays.tsx
+Current code: C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Story.tsx
+
+
+14 — Six pantheon themes and interaction states
+Final image: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\14-shared-materials-and-states.png
+Baseline IDs: Shared visual system
+Design intent: Use one control anatomy with six restrained material treatments.
+Behavior: Create reusable frame, button, socket and tooltip assets. Normal, hover, focus, pressed, selected and unavailable states need clear distinction. The board illustrates five mouse/action states; add an equally clear keyboard focus state in implementation.
+
+PROMPTS AND TOOL
+Built-in image_gen was used for all images and all corrections.
+Full initial prompts: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\generation-prompts.json
+Correction prompts: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10\revision-prompts.json

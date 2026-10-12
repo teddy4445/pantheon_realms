@@ -1,0 +1,86 @@
+{
+  "journal": [
+    {
+      "class": "gui-folio-wrap ",
+      "rect": {
+        "x": 135.0625,
+        "y": 92.125,
+        "width": 1329.859375,
+        "height": 886.5625,
+        "top": 92.125,
+        "right": 1464.921875,
+        "bottom": 978.6875,
+        "left": 135.0625
+      },
+      "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+      "overflow": "visible",
+      "clipPath": "none",
+      "color": "rgb(220, 207, 176)",
+      "contain": "none",
+      "position": "static"
+    },
+    {
+      "class": "gui-folio",
+      "rect": {
+        "x": 135.0625,
+        "y": 92.125,
+        "width": 1329.859375,
+        "height": 886.5625,
+        "top": 92.125,
+        "right": 1464.921875,
+        "bottom": 978.6875,
+        "left": 135.0625
+      },
+      "background": "rgba(0, 0, 0, 0) url(\"http://127.0.0.1:5196/ui-v1.1.0/book-open.png\") no-repeat scroll 50% 50% / contain padding-box border-box",
+      "overflow": "visible",
+      "clipPath": "none",
+      "color": "rgb(43, 32, 20)",
+      "contain": "none",
+      "position": "relative"
+    },
+    {
+      "class": "gui-folio__page gui-folio__page--left gui-surface--parchment",
+      "rect": {
+        "x": 268.046875,
+        "y": 225.109375,
+        "width": 452.140625,
+        "height": 611.734375,
+        "top": 225.109375,
+        "right": 720.1875,
+        "bottom": 836.84375,
+        "left": 268.046875
+      },
+      "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+      "overflow": "auto",
+      "clipPath": "none",
+      "color": "rgb(43, 32, 20)",
+      "contain": "none",
+      "position": "absolute"
+    },
+    {
+      "class": "gui-folio__page gui-folio__page--right gui-surface--parchment",
+      "rect": {
+        "x": 879.78125,
+        "y": 225.109375,
+        "width": 452.140625,
+        "height": 611.734375,
+        "top": 225.109375,
+        "right": 1331.921875,
+        "bottom": 836.84375,
+        "left": 879.78125
+      },
+      "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+      "overflow": "auto",
+      "clipPath": "none",
+      "color": "rgb(43, 32, 20)",
+      "contain": "none",
+      "position": "absolute"
+    }
+  ],
+  "difficulty": [
+    {
+      "text": "Difficulty",
+      "color": "rgb(245, 228, 183)"
+    }
+  ]
+}

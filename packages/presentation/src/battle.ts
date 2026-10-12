@@ -24,9 +24,12 @@ import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
 import { creatureSprites, spriteManifest, type EffectDefinition, type StaticSpriteDefinition } from './sprites';
 import { loadStrip, loadTexture } from './textures';
-import { colorOf, groundShadow, stillHeight, stillSprite } from './staticSprites';
+import { colorOf, groundShadow, stillHeight, stillSprite, stillTexture } from './staticSprites';
 import { FxPainter, StatusAura, type FxTarget } from './fx';
 import { battleObstacleId } from './nature';
+import { SIEGE_ROW, siegeKeepPoint, siegePaintingRect, siegeWallPoint } from './siegeLayout';
+import { connectedWall, paintedWall, siegeGroundLayer } from './siegeScenery';
+import { GATE_FIT, gateJambs, isWallGate, wallGateParts, wallGateShift, type GateNeighbour } from './siegeGate';
 import type { FxLook, FxSound, StatusOverlay } from './fxLooks';
 
 /** Hex radius in board pixels before the fit-to-view scale. */
@@ -200,7 +203,21 @@ export interface BattleCallbacks {
   iconUrl?(assetId: string): string | null;
   /** Optional: how a divine intervention looks in this battle (null: not shown). */
   miracleFx?(interventionId: string, playerId: string): BattleMiracleFx | null;
+  /**
+   * Optional (1.1.4, GUI audit): the board's essential pictures — its battlefield painting and the
+   * standing frame of every stack on it — are drawn (or have failed and been replaced by
+   * silhouettes): `true`; a new board is loading: `false`. Waits for nothing else.
+   */
+  onBoardReady?(ready: boolean): void;
 }
+
+interface SiegeDrawn {
+  gate: { file: string; frame: number[]; hp: number; row: number; passage: { x: number; y: number }; depths: number[]; north: GateNeighbour; south: GateNeighbour } | null;
+  wallRows: number[];
+}
+
+/** A new board is shown as ready after this long even if its pictures never answer (a hung request). */
+const BOARD_READY_CAP_MS = 15_000;
 
 interface StackEntry {
   root: Container;
@@ -286,6 +303,7 @@ export class BattleSceneController implements SceneController {
   /** Highlights, hover and the active stack's ring. */
   private readonly marks = new Container();
   private readonly backdrop = new Container();
+  private readonly siegeFloor = new Container();
   /** The width (hexes) the active ring was drawn for; its pulse is a scale. */
   private ringWidth = 0;
   /** The ground colour around the painted field (behind everything). */
@@ -309,6 +327,11 @@ export class BattleSceneController implements SceneController {
   /** The last magic effects played (asset ID prefixes; read-only diagnostics). */
   private fxLog: string[] = [];
   private boardKey = '';
+  /** The board whose essential pictures were awaited, and whether they are in. */
+  private readyFor = '';
+  private boardIsReady = false;
+  /** The battlefield painting's load (settles on success or failure). */
+  private backdropLoad: Promise<unknown> = Promise.resolve();
   private highlightKey = '';
   private stacks = new Map<string, StackEntry>();
   private obstacleSprites: Container[] = [];
@@ -346,7 +369,7 @@ export class BattleSceneController implements SceneController {
     this.wake = () => engine.wake?.();
     this.objects.sortableChildren = true;
     this.badges.sortableChildren = true;
-    this.field.addChild(this.backdrop, this.cells, this.grid);
+    this.field.addChild(this.backdrop, this.cells, this.siegeFloor, this.grid);
     this.marks.addChild(this.highlight, this.hover, this.activeRing);
     this.board.addChild(this.field, this.marks, this.objects, this.badges, this.fx, this.floats);
     this.root.addChild(this.board, this.screenLayer);
@@ -384,7 +407,7 @@ export class BattleSceneController implements SceneController {
     const bottom = cellPoint({ col: 0, row: this.rows - 1 }, RB, S);
     // A siege also shows the attackers' catapult west of the field and the keep east of it.
     const west = this.siegeLayout ? HEX_W * 1.5 : 0;
-    const east = this.siegeLayout ? HEX_W * 2 : 0;
+    const east = this.siegeLayout ? HEX_W * 3.2 : 0;
     return { x0: -HEX_W / 2 - west, y0: -RB * S - RB * 1.6, x1: last.x + HEX_W / 2 + east, y1: bottom.y + RB * S + RB * 0.35 };
   }
 
@@ -432,6 +455,7 @@ export class BattleSceneController implements SceneController {
     this.background = colorOf(ARCHETYPE_GROUND[view.archetype] ?? '#7e8a4f');
     const siegeArt = graphicsProfile().paintedGround ? this.siegeGround(view) : null;
     const art = siegeArt ?? (graphicsProfile().paintedGround ? battlefieldArt(view.archetype, view.climate) : null);
+    this.backdropLoad = Promise.resolve();
     if (!art) return;
     const [shiftX, shiftY] = (siegeArt && SIEGE_GROUND_SHIFT[view.siege?.pantheonId ?? '']) || [0, 0];
     const first = this.cellXY({ col: 0, row: 0 });
@@ -449,13 +473,18 @@ export class BattleSceneController implements SceneController {
     const cy = (minY + maxY) / 2;
     const battleId = view.battleId;
     if (art.edge) this.background = multiplyRgb(this.background, colorOf(art.edge));
-    void loadTexture(art.url).then(
+    this.backdropLoad = loadTexture(art.url).then(
       (tex) => {
         if (this.disposed || !this.boardKey.startsWith(battleId)) return;
         const s = new Sprite(tex);
-        s.width = w;
-        s.height = h;
-        s.position.set(cx - w / 2 + shiftX * w, cy - h / 2 + shiftY * h);
+        if (siegeArt?.layout === 'siege-v2') {
+          const rect = siegePaintingRect(view.cols, view.rows);
+          s.width = rect.width; s.height = rect.height; s.position.set(rect.x, rect.y);
+        } else {
+          s.width = w;
+          s.height = h;
+          s.position.set(cx - w / 2 + shiftX * w, cy - h / 2 + shiftY * h);
+        }
         this.backdrop.addChild(s);
       },
       () => undefined,
@@ -470,6 +499,11 @@ export class BattleSceneController implements SceneController {
     this.siegeLayout = !!view.siege && view.siege.structures.length > 0;
     this.layout();
     this.buildBackdrop(view);
+    for (const c of this.siegeFloor.removeChildren()) c.destroy({ children: true });
+    if (view.siege?.structures.length) {
+      const gateRow = view.siege.structures.find(s => s.kind === 'gate')?.cells[0]?.row ?? Math.floor(view.rows / 2);
+      this.siegeFloor.addChild(siegeGroundLayer(view.siege.pantheonId, view.siege.wallCol, view.rows, view.cols, view.siege.moat, gateRow));
+    }
     const moat = new Set((view.siege?.moat ?? []).map((c) => `${c.col}:${c.row}`));
     const siegeArt = graphicsProfile().paintedGround && !!this.siegeGround(view);
     const painted = graphicsProfile().paintedGround && (siegeArt || !!battlefieldArt(view.archetype, view.climate));
@@ -485,7 +519,7 @@ export class BattleSceneController implements SceneController {
         // A painted siege battlefield shows the town's streets itself; otherwise the town is drawn as paving.
         const inTown = !!view.siege && view.siege.structures.length > 0 && col > view.siege.wallCol && !siegeArt;
         const deploy = col < 2 || col >= view.cols - 2;
-        if (inMoat) g.poly(poly).fill({ color: 0x2e5871, alpha: 0.9 });
+        if (inMoat) { /* The continuous ditch layer shows this cell; highlights still identify legal targets. */ }
         else if (inTown) g.poly(poly).fill({ color: 0x8c8474, alpha: painted ? 0.55 : 1 });
         else if (!painted) {
           const n = tileNoise(col * 3 + 1, row * 5 + 2) * 0.045 - (deploy ? 0.03 : 0);
@@ -497,7 +531,7 @@ export class BattleSceneController implements SceneController {
         this.grid.poly(hexPolygon(x, y, RB * 0.975, S));
       }
     }
-    this.grid.stroke({ width: 1.2, color: 0x141a14, alpha: 0.5 });
+    this.grid.stroke({ width: 1, color: 0x282a23, alpha: this.siegeLayout ? 0.24 : 0.5 });
     // Obstacles: rocks, trees, logs, columns — drawn where the rules placed them.
     for (const o of this.obstacleSprites) o.destroy({ children: true });
     this.obstacleSprites = [];
@@ -703,6 +737,13 @@ export class BattleSceneController implements SceneController {
     const figure = new SpriteFigure({ set: creatureSprites(v.creatureId), hexWidth: HEX_W, accent: colorOf(v.accent) });
     figure.mirror = v.facing === -1;
     root.addChild(figure.view);
+    // A stack whose picture cannot be drawn (missing or failed to load) stands as a plain silhouette,
+    // never as an empty, clickable disc (GUI audit 1.1.2).
+    void figure.loaded.then(() => {
+      if (figure.status !== 'missing' || root.destroyed) return;
+      root.addChildAt(stackSilhouette(w), root.getChildIndex(figure.view));
+      this.wake();
+    });
     root.addChild(aura.front);
     // Count badge at the front foot.
     const badge = new Container();
@@ -932,6 +973,47 @@ export class BattleSceneController implements SceneController {
       this.highlightKey = view.highlightKey;
     }
     this.syncStacks(view.stacks);
+    this.watchReadiness();
+  }
+
+  /**
+   * A new board reports ready once its painting and the standing frame of each stack on it are in
+   * (failures count as in: a stack without its picture gets a silhouette). Stacks that join later
+   * (a summons) never make a readable board "loading" again.
+   */
+  private watchReadiness(): void {
+    if (this.readyFor === this.boardKey) return;
+    const board = (this.readyFor = this.boardKey);
+    this.boardIsReady = false;
+    this.cb.onBoardReady?.(false);
+    const waits: Promise<unknown>[] = [this.backdropLoad];
+    for (const e of this.stacks.values()) waits.push(e.figure.firstFrame);
+    // A siege's walls, gate, towers, keep, moat and bridge belong to the readable board too.
+    const siege = this.siegeView;
+    if (siege && siege.structures.length) {
+      const defs = new Set<StaticSpriteDefinition>();
+      for (const st of siege.structures) {
+        const d = this.siegeDef(st, this.shownHp.get(st.id) ?? st.hp);
+        if (d) defs.add(d);
+      }
+      for (const id of ['ground.ditch', 'ground.ditch.top', 'ground.ditch.bottom', 'ground.bridge']) {
+        const d = spriteManifest().siege[id];
+        if (d) defs.add(d);
+      }
+      for (const d of defs) waits.push(stillTexture({ ...d, frame: undefined }).catch(() => null));
+    }
+    const cap = new Promise<void>((done) => setTimeout(done, BOARD_READY_CAP_MS));
+    void Promise.race([Promise.all(waits), cap]).then(() => {
+      if (this.disposed || this.readyFor !== board) return;
+      this.boardIsReady = true;
+      this.wake();
+      this.cb.onBoardReady?.(true);
+    });
+  }
+
+  /** Whether the current board's essential pictures are drawn (read-only, for the screen and tests). */
+  get boardReady(): boolean {
+    return this.boardIsReady;
   }
 
   // ------------------------------------------------------------------ siege structures
@@ -939,8 +1021,7 @@ export class BattleSceneController implements SceneController {
   /** Where a structure stands (the keep sits beyond the east edge). */
   private structurePos(st: SiegeStructureView): { x: number; y: number } {
     if (st.cells.length === 0) {
-      const w = this.cellXY({ col: this.cols, row: 5 });
-      return { x: w.x + RB * 1.1, y: w.y };
+      return siegeKeepPoint(this.cols, this.rows);
     }
     let x = 0;
     let y = 0;
@@ -955,6 +1036,9 @@ export class BattleSceneController implements SceneController {
   private structureTop(st: SiegeStructureView): { x: number; y: number } {
     const p = this.structurePos(st);
     const def = this.siegeDef(st, this.shownHp.get(st.id) ?? st.hp);
+    if (st.kind === 'wall') return { x: p.x - 20, y: p.y - 42 };
+    // A gate painted into the wall: the label stands over its lintel block.
+    if (isWallGate(def)) return { x: p.x - 6, y: p.y + gateJambs(this.siegeView?.pantheonId).north * SIEGE_ROW * GATE_FIT - 2 };
     return { x: p.x, y: p.y + RB * S * 0.3 - Math.max(RB, stillHeight(def, HEX_W)) };
   }
 
@@ -978,9 +1062,7 @@ export class BattleSceneController implements SceneController {
    * and join into a continuous wall (owner report 2026-10-05).
    */
   private wallPoint(col: number, row: number): { x: number; y: number } {
-    const c = this.cellXY({ col, row });
-    const even = this.cellXY({ col, row: 0 });
-    return { x: even.x + HEX_W * 0.25, y: c.y };
+    return siegeWallPoint(col, row);
   }
 
   /** Draw every structure at its shown HP (intact, damaged or rubble). */
@@ -994,40 +1076,90 @@ export class BattleSceneController implements SceneController {
     this.clearStructurePieces();
     const view = this.siegeView;
     if (!view || view.structures.length === 0) return;
+    const shown = (s: SiegeStructureView) => this.shownHp.get(s.id) ?? s.hp;
+    // A gate painted as an opening in the wall (siege-gates-v3) draws the wall cells either side of
+    // it while their sections stand, and is cut back to its own jambs when one falls (siegeGate.ts).
+    const gate = view.structures.find((s) => s.kind === 'gate' && s.cells.length === 1);
+    const gateDef = gate ? this.siegeDef(gate, shown(gate)) : null;
+    const gateRow = gate && isWallGate(gateDef) ? gate.cells[0]!.row : null;
+    const neighbour = (row: number): GateNeighbour => {
+      const s = view.structures.find((x) => x.kind === 'wall' && x.cells.some((c) => c.row === row));
+      return s && shown(s) > 0 ? 'standing' : 'fallen';
+    };
+    const drawnByGate = (row: number) => gateRow !== null && Math.abs(row - gateRow) === 1 && neighbour(row) === 'standing';
+    const drawn: SiegeDrawn = { gate: null, wallRows: [] };
+    this.siegeDrawn = drawn;
     for (const st of view.structures) {
-      const hp = this.shownHp.get(st.id) ?? st.hp;
+      const hp = shown(st);
       const def = this.siegeDef(st, hp);
+      if (st === gate && gateRow !== null && isWallGate(def)) {
+        const at = this.wallPoint(st.cells[0]!.col, gateRow);
+        const north = neighbour(gateRow - 1);
+        const south = neighbour(gateRow + 1);
+        const parts = wallGateParts(def, view.pantheonId, north, south, hp <= 0, graphicsProfile().shadows);
+        for (const part of parts) {
+          part.root.position.set(at.x + wallGateShift(view.pantheonId), at.y);
+          part.root.zIndex = at.y + part.depth;
+          this.objects.addChild(part.root);
+          this.structurePieces.push(part.root);
+        }
+        drawn.gate = { file: def.file, frame: [...def.frame], hp, row: gateRow, passage: { x: at.x + wallGateShift(view.pantheonId), y: at.y }, depths: parts.map((x) => at.y + x.depth), north, south };
+        this.structureLabel(st, hp);
+        continue;
+      }
       const spots = st.kind === 'keep' || st.cells.length === 0 ? [this.structurePos(st)] : st.cells.map((c) => this.wallPoint(c.col, c.row));
-      for (const p of spots) {
+      for (const [index, p] of spots.entries()) {
+        if (st.kind === 'wall' && drawnByGate(st.cells[index]!.row)) continue;
+        if (st.kind === 'wall') drawn.wallRows.push(st.cells[index]!.row);
         // Pieces join the depth-sorted objects so creatures pass in front and behind correctly.
         const piece = new Container();
-        piece.position.set(p.x, p.y + RB * S * 0.3);
+        piece.position.set(p.x, p.y);
         piece.zIndex = piece.y;
         // The shared keep was cut small; a pantheon's own keep (Brief 15) is painted at the board's scale.
         const own = !!def && Object.entries(spriteManifest().siege).some(([k, v]) => v === def && k.split('.').length === 3);
-        piece.addChild(stillSprite(def, HEX_W, st.kind === 'keep' && !own ? 1.6 : 1));
+        if (st.kind === 'wall') {
+          const row=st.cells[index]!.row;
+          const northTower=view.structures.find(s=>s.kind==='tower' && s.cells.some(c=>c.row===row-1));
+          const joinNorth=!!northTower && (this.shownHp.get(northTower.id) ?? northTower.hp)>0;
+          piece.addChild(def?.layout === 'wall-strip' && def.frame
+            ? paintedWall(def,row,graphicsProfile().shadows,joinNorth)
+            : connectedWall(view.pantheonId, hp, st.maxHp, row, graphicsProfile().shadows));
+        } else {
+          if (graphicsProfile().shadows) piece.addChild(groundShadow(st.kind === 'keep' ? 56 : 35, st.kind === 'keep' ? 20 : 13, 0.3));
+          piece.addChild(stillSprite(def, HEX_W, st.kind === 'keep' && !own ? 1.6 : 1));
+        }
         this.objects.addChild(piece);
         this.structurePieces.push(piece);
       }
-      if (hp > 0) {
-        const top = this.structureTop(st);
-        const t = new Text({ text: `${hp}/${st.maxHp}`, style: { fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: '700', fill: '#f5e4b7', stroke: { color: '#1a1208', width: 3 } } });
-        t.anchor.set(0.5, 1);
-        t.position.set(top.x, top.y - 4);
-        this.floats.addChild(t);
-        this.structureLabels.push(t);
-      }
+      this.structureLabel(st, hp);
     }
   }
 
+  /** The "Wall 1/2" label over a damaged structure (hidden while it is whole). */
+  private structureLabel(st: SiegeStructureView, hp: number): void {
+    if (hp <= 0) return;
+    const top = this.structureTop(st);
+    const t = new Text({ text: `${st.kind[0]!.toUpperCase()}${st.kind.slice(1)} ${hp}/${st.maxHp}`, style: { fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: '700', fill: '#f5e4b7', stroke: { color: '#1a1208', width: 3 } } });
+    t.visible = hp < st.maxHp;
+    t.anchor.set(0.5, 1);
+    t.position.set(top.x, top.y - 4);
+    this.floats.addChild(t);
+    this.structureLabels.push(t);
+    this.structureLabelInfo.push({ label: t, structure: st, damaged: hp < st.maxHp });
+  }
+
+  /** What the last structure drawing put on the board (read-only diagnostics, `siegeDebug`). */
+  private siegeDrawn: SiegeDrawn = { gate: null, wallRows: [] };
   private structurePieces: Container[] = [];
   private structureLabels: Text[] = [];
+  private structureLabelInfo: { label: Text; structure: SiegeStructureView; damaged: boolean }[] = [];
 
   private clearStructurePieces(): void {
     for (const p of this.structurePieces) p.destroy({ children: true });
     for (const l of this.structureLabels) l.destroy();
     this.structurePieces = [];
     this.structureLabels = [];
+    this.structureLabelInfo = [];
   }
 
   private structureById(id: string): SiegeStructureView | undefined {
@@ -1729,7 +1861,14 @@ export class BattleSceneController implements SceneController {
   }
 
   private onMove(e: PointerEvent): void {
-    const hit = this.cellAt(this.local(e));
+    const local = this.local(e);
+    const hit = this.cellAt(local);
+    for (const { label, structure, damaged } of this.structureLabelInfo) {
+      const p = this.structurePos(structure);
+      const onCell = structure.cells.some(c => c.col === hit?.cell.col && c.row === hit.cell.row);
+      const onKeep = structure.kind === 'keep' && Math.abs(local.x-p.x)<60 && local.y<p.y+15 && local.y>p.y-120;
+      label.visible = damaged || onCell || onKeep;
+    }
     const key = hit ? `${hit.cell.col}:${hit.cell.row}:${Math.sign(hit.offset.x)}:${Math.sign(hit.offset.y)}:${Math.round(Math.atan2(hit.offset.y, hit.offset.x) / (Math.PI / 3))}` : '';
     if (key === this.lastHover) return;
     this.lastHover = key;
@@ -1749,6 +1888,7 @@ export class BattleSceneController implements SceneController {
   }
 
   private onLeave(): void {
+    for (const info of this.structureLabelInfo) info.label.visible = info.damaged;
     if (this.lastHover === '') return;
     this.lastHover = '';
     this.hover.visible = false;
@@ -1775,8 +1915,22 @@ export class BattleSceneController implements SceneController {
     return g;
   }
 
-  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number }> {
-    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number }> = {};
+  /**
+   * Read-only: how the siege is drawn — the gate picture (file, frame, the passage centre in page
+   * pixels, the depth of its north and south parts, its neighbours' shown state), the wall rows drawn
+   * as painted strips, the stacks' depths — and whether the board's essential pictures are in.
+   */
+  siegeDebug(): unknown {
+    const z = this.board.scale.x;
+    const page = (p: { x: number; y: number }) => ({ x: Math.round((p.x * z + this.board.x) * 10) / 10, y: Math.round((p.y * z + this.board.y) * 10) / 10 });
+    const g = this.siegeDrawn.gate;
+    const stacks: Record<string, { depth: number; x: number; y: number; col: number; row: number }> = {};
+    for (const [id, e] of this.stacks) stacks[id] = { depth: e.root.zIndex, x: e.root.x, y: e.root.y, col: e.shownAnchor.col, row: e.shownAnchor.row };
+    return { ready: this.boardIsReady, gate: g ? { ...g, passagePage: page(g.passage) } : null, wallRows: [...this.siegeDrawn.wallRows].sort((a, b) => a - b), stacks };
+  }
+
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string }> = {};
     const z = this.board.scale.x;
     for (const [id, e] of this.stacks) {
       out[id] = {
@@ -1791,6 +1945,7 @@ export class BattleSceneController implements SceneController {
         visible: e.root.visible,
         overlays: e.aura.kinds,
         marks: e.shownMarks ? e.shownMarks.replace('…', '').split(',').filter(Boolean) : [],
+        label: e.badgeText.text,
         deaths: e.deathPlays,
         hits: e.hitPlays,
       };
@@ -1881,4 +2036,15 @@ export class BattleSceneController implements SceneController {
     this.stacks.clear();
     this.root.destroy({ children: true });
   }
+}
+
+/** A neutral standing silhouette (head, shoulders, body) for a stack drawn without its picture. */
+function stackSilhouette(width: number): Graphics {
+  const g = new Graphics();
+  const k = width > 1 ? 1.25 : 1;
+  const h = RB * 1.35 * k;
+  const body = RB * 0.42 * k;
+  g.roundRect(-body, -h * 0.72, body * 2, h * 0.72, body * 0.8).fill({ color: 0x1d2430, alpha: 0.82 }).stroke({ width: 1.5, color: 0xd9c38a, alpha: 0.75 });
+  g.circle(0, -h * 0.84, RB * 0.22 * k).fill({ color: 0x1d2430, alpha: 0.82 }).stroke({ width: 1.5, color: 0xd9c38a, alpha: 0.75 });
+  return g;
 }

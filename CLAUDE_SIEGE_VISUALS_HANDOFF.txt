@@ -1,0 +1,212 @@
+PANTHEON REALMS — CLAUDE CODE HANDOFF
+Six-pantheon siege visuals, revision 2 | 2026-10-10
+
+REQUEST TO CLAUDE CODE
+
+Integrate and verify the completed siege visual revision for Greek, Norse,
+Egyptian, Japanese, Celtic and Mesoamerican battles in the game you maintain.
+Use the existing delivered artwork and implementation. Finish by checking the
+actual game and producing the normal local game build. Report the build/output
+paths and anything still needed for a packaged desktop release.
+
+IMPORTANT CURRENT STATE
+
+The changes are ALREADY implemented in this working copy:
+C:\Users\lazeb\Desktop\pantheon_realms
+
+They are working-tree changes, not a published release. Inspect git status and
+the current code before applying anything. If this is your current project,
+verify and retain the implementation; do not add it a second time.
+
+If your project is a DIFFERENT checkout or folder, copy the new asset folders
+and new implementation files listed below into equivalent locations in your
+local project. Merge the changes to existing files carefully against your
+current code. Do not replace entire existing files blindly or discard unrelated
+work. Runtime URLs must stay relative to your project; do not reference the
+source project's absolute Windows paths from the game.
+
+The installed game executable has NOT been replaced. The previous successful
+bundle check omitted copying the full runtime library and is not a distributable
+game. A normal build/package is still necessary for the installed application.
+
+1. DELIVERED ARTWORK AND REFERENCES
+
+Copy these two complete folders if integrating into a separate project:
+
+Source artwork, prompts and technical notes:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-source\siege-v2
+
+Runtime artwork and authoritative atlas metadata:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\siege-v2
+
+Runtime manifest:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\siege-v2\manifest.json
+
+Each pantheon has ground.<pantheon>.png, kit.<pantheon>.png and
+wall.<pantheon>.png. The six filename IDs are:
+greek, norse, egyptian, japanese, celtic, mesoamerican.
+
+The shared groundworks-capped.png supplies the moat, rounded end caps and bridge.
+In total: 19 PNG files, six background entries, 72 fortification state definitions
+and four ground-piece definitions. The manifest specifies texture frames and
+anchors; use those values rather than guessing equal atlas cells.
+
+Native dimensions:
+- Ground paintings and wall atlases: 1536 x 1024.
+- Gate/tower/keep atlases: 1254 x 1254.
+- Shared groundworks atlas: 1536 x 1024.
+
+These are native generated assets, not upscaled paintings. They do not satisfy
+the earlier 4096 x 3200 background target; the user approved native delivery with
+this resolution shortfall documented. Preserve the alpha channels on sprite
+atlases. Do not crop, rescale, regenerate or run a generic import over these
+files as part of routine integration. Keep the older siege artwork available.
+
+Actual game screenshot gallery, including Greek before/after:
+C:\Users\lazeb\Desktop\blannder_models\siege-review-2026-10-10\review.html
+
+All twelve final screenshots live beside that gallery:
+siege-after-<pantheon>.png (intact)
+siege-after-<pantheon>-mixed.png (damaged and breached)
+
+Isolated review saves are also in that folder:
+siege-<pantheon>.prsave.json and siege-<pantheon>-mixed.prsave.json.
+Use them in an isolated review browser profile; do not replace the user's saves.
+
+2. NEW CODE FILES TO COPY IF YOUR CHECKOUT DOES NOT HAVE THEM
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\presentation\src\siegeLayout.ts
+Shared wall positions, row spacing, background framing, keep position and theme palettes.
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\presentation\src\siegeScenery.ts
+Painted wall strips, moat/bridge/road placement, caps and fallback scenery.
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\presentation\test\siegeScenery.test.ts
+Asset coverage, frame bounds and layout regression checks.
+
+C:\Users\lazeb\Desktop\pantheon_realms\tools\assets\import_siege_v2.py
+Metadata-only registration tool. It measures alpha bounds and copies source PNGs
+unchanged; it does not retouch artwork. Pillow, numpy and scipy are required only
+when rerunning this importer. Existing runtime files are already registered.
+
+3. EXISTING FILES WHOSE CHANGES MUST BE MERGED
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\presentation\src\battle.ts
+- Render the whole-view siege ground painting with the siege-v2 layout.
+- Add the ground scenery layer and continuous painted walls.
+- Place gate/towers/keep using atlas frames and shared ground registration.
+- Reserve sufficient right-side space for the keep.
+- Reduce siege grid emphasis and show structure labels on hover or while damaged.
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\presentation\src\staticSprites.ts
+- Support cached Texture rectangle views of atlas frames through stillTexture.
+- Reuse that path from stillSprite.
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\presentation\src\sprites.ts
+- Add optional frame rectangle and wall-strip layout metadata to static sprites.
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\presentation\src\environmentArt.ts
+- Add the optional siege-v2 environment layout marker.
+
+C:\Users\lazeb\Desktop\pantheon_realms\packages\ui\src\assets\manifest.ts
+- Import assets-runtime/siege-v2/manifest.json.
+- Resolve new siege ground entries before the old environment art.
+- Merge new fortification sprite definitions over previous definitions.
+- Keep relative asset URLs working in both browser and Electron builds.
+
+C:\Users\lazeb\Desktop\pantheon_realms\tools\check-boundaries.mjs
+- Permit the UI asset-registration module to import the new runtime manifest.
+
+4. BEHAVIOR TO PRESERVE
+
+The background is a whole-view painting, not a tiny center crop stretched across
+the battlefield. Do not apply a second vertical camera squash to it.
+
+Wall rows must join into one continuous surface. The current implementation uses
+uniform texture scale and a shared world-space repeat phase, while retaining the
+existing individual damageable structure IDs. Do not stretch a full wall atlas
+independently into every hex. The north wall extension closes the tower join.
+
+The gate opening, approach road, bridge and moat must agree with the actual gate
+row, wall column and moat cells. The moat uses repeated middle sections with
+rounded caps only at its outer ends. The bridge crosses at the real gate.
+
+Gate, towers, walls and keep select intact, damaged or rubble art from their
+existing structure state. Destroyed wall sections remain visually breached.
+Ground contact and scale should remain stable when switching damage states.
+
+Keep the quieter grid, contact shadows and extra framing space for the keep.
+Intact structures expose their labels on hover; damaged labels remain visible.
+The existing HUD continues to expose structure status.
+
+This is a presentation and artwork change. Preserve combat rules, targeting,
+movement costs, siege levels and save formats. Do not change them to compensate
+for an art-placement problem. Do not modify the landing page for this task.
+
+5. VERIFICATION AND LOCAL BUILD
+
+Run commands from YOUR game project root. For the delivered working copy:
+Set-Location -LiteralPath 'C:\Users\lazeb\Desktop\pantheon_realms'
+
+Inspect the working tree and implementation first:
+git status --short
+git diff --check
+
+Run checks after integration:
+npm run lint:boundaries
+npm run typecheck
+npx vitest run packages/presentation/test/siegeScenery.test.ts packages/presentation/test/sprites.test.ts packages/rules/test/siege.test.ts packages/ui/test/groundArt.test.ts --maxWorkers=1
+
+Launch the game locally:
+npm run dev
+
+Visually check all six pantheons in intact and mixed damage/breach states.
+Compare with the delivered twelve captures. Check specifically:
+- Correct faction ground, walls, towers, gate and keep load without missing textures.
+- Wall joins, north tower connection, bridge and gate alignment are coherent.
+- The keep stays in frame; units and targeting remain readable.
+- Damaged and destroyed states change artwork without shifting ground anchors.
+- Hover labels work and structure interactions still target the correct cells.
+- Lower siege levels omit unavailable structures/moat as the rules require.
+- Resizing the window does not crop essential structures or break alignment.
+
+Build the real client with its runtime assets:
+npm run build
+
+Current client output location:
+C:\Users\lazeb\Desktop\pantheon_realms\apps\client\dist
+
+The Vite configuration copies assets-runtime as its public directory. Confirm the
+built output contains siege-v2 PNGs and that the built client resolves them. Do
+not set copyPublicDir:false for the final deliverable: that setting was used only
+for a compilation check. Check available disk space before duplicating the full
+runtime library; space was limited during the artwork work.
+
+To run the rebuilt desktop application locally, the existing root script is:
+npm run desktop
+
+If a distributable desktop package is needed, the existing root script is:
+npm run desktop:dist
+
+Read the current desktop packaging configuration for its actual output location.
+Do not publish/upload a release or overwrite the user's installed application as
+part of this handoff. Report the generated build/package path for the user.
+
+6. VERIFIED ALREADY / WHAT REMAINS
+
+Completed in the delivered working copy on 2026-10-10:
+- Core and client TypeScript checks passed.
+- Architecture boundary check and git diff --check passed.
+- All 38 focused tests passed across the four suites above.
+- Final Vite production compilation passed, transforming 973 modules.
+- Twelve actual game captures were reviewed at 1600 x 1000: intact and mixed
+  damage/breach states for all six pantheons.
+- Source and runtime PNG copies were verified byte-for-byte identical.
+
+Not claimed as completed: a full runtime-inclusive release package, replacement
+of the installed executable, exhaustive window-size coverage, or a full playthrough.
+
+Your completion report should identify the destination project, changes merged
+or already present, verification results, build/package paths, and any remaining
+issues. Include at least one actual updated game screenshot. Preserve all six
+pantheons as one consistent integration rather than shipping only one theme.

@@ -1,0 +1,10 @@
+import {build} from 'file:///C:/Users/lazeb/Desktop/blannder_models/landing/node_modules/esbuild/lib/main.js';
+import fs from 'node:fs/promises';
+import {createRequire} from 'node:module';
+const root='C:/Users/lazeb/Desktop/pantheon_realms';
+const out=root+'/docs/hero-portraits-complete';
+const alias=Object.fromEntries(['rules','content','mapgen','campaign','ai','session','presentation'].map(k=>['@pr/'+k,root+'/packages/'+k+'/src/index.ts']));
+await build({stdin:{contents:"import {buildCatalog} from '@pr/content'; const c=buildCatalog(); module.exports={heroes:Object.values(c.heroes),classes:c.heroClasses};",resolveDir:root,loader:'ts'},bundle:true,platform:'node',format:'cjs',outfile:out+'/catalog-audit.cjs',alias,logLevel:'warning'});
+const data=createRequire(import.meta.url)(out+'/catalog-audit.cjs');
+await fs.writeFile(out+'/catalog-heroes.json',JSON.stringify(data,null,2));
+console.log(JSON.stringify({heroes:data.heroes.length,first:data.heroes[0]}));

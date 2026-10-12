@@ -1,12 +1,691 @@
 # Development Status
 
-_Last updated: 2026-10-07 · **app 1.0.0** (Windows installer; owner Teddy Lazebnik): **the owner's third list of 2026-10-07** (campaign difficulty Story / Normal / Hard with the campaign simulator checking each level, a seat-fairness test that gates the authored maps — The Circle of Gates measured unfair and shipped unchanged —, a floor check per random-map layout, the map's ground drawn from a texture cache and calm frame pacing; below) · before it, **app 0.14.0**: **the owner's second list of 2026-10-07** (quick battles with exact expected losses, a late-game computer player and a summary of the rivals' turns, the campaigns checked by simulation, pantheon balance inside 0.45–0.55, a morale penalty for mixed armies, finished sieges, the gods' gifts at hero levels 10 and 15, the map editor's symmetry brush and generate-then-edit; below) · before it, **app 0.13.6**: **the owner's twelve requests** (one scenario-list style, unowned towns on random and skirmish maps, one hero hire a week, pantheon-named miracles, better-aligned roads, varied ground borders, map creatures facing both ways, interface clean-ups; below) · before it, **app 0.13.5**: **climate-aware nature scenery** (318 painted stills: each climate's trees, shrubs, rocks, deadwood, mountains and border clumps on the map, sea, lake and river scenery, battle obstacles in the map's climate) and **the hero screen's new equipment figure** (below) · before it, **app 0.13.4**: **the frame rate on the map and in battle** (the map, the battle and their figures in PixiJS render groups — a map frame sent 2.1 MB to the GPU, now 8 KB —, pictures decoded off the main thread, the fog redrawn only when it changes, the movement range and the computer's routes without their spikes, High capped at 60 frames per second, adaptive resolution and a frame-rate readout in Settings → Display; the frame rate on the owner's laptop is a target until measured there) and **GPT-6 Brief 17 in the game** (painted ground transitions and shore foam, 24 town backgrounds by town-hall level, the three markers, the neutral map hero, 16 story portraits) (below) · before it, **app 0.13.3**: **GPT-6 Brief 17**, the last art request (ground transitions and shore foam — the map is ready for them —, the town backgrounds, the last stand-in markers, the neutral map hero, 16 story portraits), **the status, action and miracle icons in battle** (marks over each stack, icons before the floating words, miracle icons on the map), **a steadier AI** (a lone big creature judged at its real strength; a home guard in every town) and **all five road types of Brief 16 in the game** (dirt approved by the owner; cobble, sand, snow and boardwalk awaiting in-game acceptance) (below) · before it, **app 0.13.2**: **the ground crisp again** (only the edges between grounds slightly softened), **GPT-6 Brief 16** (painted road tiles: five road types × every way a road crosses a hex; the game reads them already) and **Briefs 14 and 15 in the game** (six skirmish-map paintings, each pantheon's walls, gate, towers, keep and siege battlefield, the catapult's throw; below the asked resolutions, accepted) (below) · before it, **app 0.13.1**: **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.7`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 3_
+_Last updated: 2026-10-12 · **app 1.1.4** (Windows installer: the 1.1.2 GUI audit’s fixes — each pantheon’s new siege gate as an opening in the wall on the gate cell, Start battle readable on its painted face, ink labels on parchment, paper under the book and scroll text while their pictures load, no internal caption on the town, battles that take no orders before their pictures are drawn; below) · before it, **app 1.1.3** (Windows installer: the owner’s five pre-game fixes — the title always on the kit’s hall painting with its slim menu panel, the encyclopedia’s sections in a rail at the left and its cards in painted frames, no footer Back on New Game, leather and parchment grain on the pantheon screens, a two-page creature page with the creature on its pantheon’s court; below) · before it, **app 1.1.2** (Windows installer: 1.1.1 with the two sessions’ work merged and the painted primary buttons fixed where their footers squashed them; below) · before it, **app 1.1.1** (Windows installer built in the cloud container: the 1.1.0 interface redesign, the pre-game screens and their frontend kit, the encounter scenes and reward receipts of a second session merged in, six adventure screens — Heroes’ Lodge, recruitment and creature camps, Marketplace, level-up, spellbook, encounter preview — and the 54 hero busts that complete the character portraits; below) · before it, **siege visual revision 2** (each pantheon's whole-view siege ground, gate/tower/keep atlas and continuous wall strip, the shared moat and bridge; checked in the game and built; in the 1.1.1 installer; below) · before it, **app 1.0.0** (Windows installer; owner Teddy Lazebnik): **the owner's third list of 2026-10-07** (campaign difficulty Story / Normal / Hard with the campaign simulator checking each level, a seat-fairness test that gates the authored maps — The Circle of Gates measured unfair and shipped unchanged —, a floor check per random-map layout, the map's ground drawn from a texture cache and calm frame pacing; below) · before it, **app 0.14.0**: **the owner's second list of 2026-10-07** (quick battles with exact expected losses, a late-game computer player and a summary of the rivals' turns, the campaigns checked by simulation, pantheon balance inside 0.45–0.55, a morale penalty for mixed armies, finished sieges, the gods' gifts at hero levels 10 and 15, the map editor's symmetry brush and generate-then-edit; below) · before it, **app 0.13.6**: **the owner's twelve requests** (one scenario-list style, unowned towns on random and skirmish maps, one hero hire a week, pantheon-named miracles, better-aligned roads, varied ground borders, map creatures facing both ways, interface clean-ups; below) · before it, **app 0.13.5**: **climate-aware nature scenery** (318 painted stills: each climate's trees, shrubs, rocks, deadwood, mountains and border clumps on the map, sea, lake and river scenery, battle obstacles in the map's climate) and **the hero screen's new equipment figure** (below) · before it, **app 0.13.4**: **the frame rate on the map and in battle** (the map, the battle and their figures in PixiJS render groups — a map frame sent 2.1 MB to the GPU, now 8 KB —, pictures decoded off the main thread, the fog redrawn only when it changes, the movement range and the computer's routes without their spikes, High capped at 60 frames per second, adaptive resolution and a frame-rate readout in Settings → Display; the frame rate on the owner's laptop is a target until measured there) and **GPT-6 Brief 17 in the game** (painted ground transitions and shore foam, 24 town backgrounds by town-hall level, the three markers, the neutral map hero, 16 story portraits) (below) · before it, **app 0.13.3**: **GPT-6 Brief 17**, the last art request (ground transitions and shore foam — the map is ready for them —, the town backgrounds, the last stand-in markers, the neutral map hero, 16 story portraits), **the status, action and miracle icons in battle** (marks over each stack, icons before the floating words, miracle icons on the map), **a steadier AI** (a lone big creature judged at its real strength; a home guard in every town) and **all five road types of Brief 16 in the game** (dirt approved by the owner; cobble, sand, snow and boardwalk awaiting in-game acceptance) (below) · before it, **app 0.13.2**: **the ground crisp again** (only the edges between grounds slightly softened), **GPT-6 Brief 16** (painted road tiles: five road types × every way a road crosses a hex; the game reads them already) and **Briefs 14 and 15 in the game** (six skirmish-map paintings, each pantheon's walls, gate, towers, keep and siege battlefield, the catapult's throw; below the asked resolutions, accepted) (below) · before it, **app 0.13.1**: **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.7`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 4_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## App 1.1.4 — GUI audit fixes and the six-pantheon siege gates (2026-10-11)
+
+Owner request (2026-10-11): implement another tool's handoff, "PANTHEON REALMS
+— 1.1.2 GUI AUDIT AND SIX-PANTHEON SIEGE GATE REPLACEMENT"
+(`docs/gui-audit-1.1.2/CLAUDE_HANDOFF.txt`, with its audit results,
+screenshots and gate validation), then "make sure to have a new installer for
+tests". 1.1.3 had already shipped, so this is **1.1.4** (`package.json`,
+`apps/desktop/package.json`, the lockfile; release notes in `CHANGELOG.md`).
+Rules, content values, AI, saves (format and schema), preferences, the fixed
+world camera, combat cells and siege HP are unchanged. The delivery's
+documentation and screenshots stay in `docs/gui-audit-1.1.2/` on the PC; only
+`assets-runtime/siege-gates-v3/` (its `manifest.json` and the six selected
+atlases) is a game asset. Its drafts and provenance (`assets-source/siege-gates-v3/`)
+are never registered.
+
+1. **Siege gates (handoff FIX 1).** `ui/src/assets/manifest.ts` imports
+   `assets-runtime/siege-gates-v3/manifest.json` and spreads its `siege` (only
+   the 18 keys `gate.<intact|damaged|rubble>.<pantheon>`) last, after the
+   sprite manifest and siege-v2; the boundary check allows that import. The
+   frames and anchors are used as delivered (anchor = painted passage centre,
+   different per frame; nothing trimmed or re-centred); `StaticSpriteDefinition`
+   gained the optional `registration`. `presentation/src/siegeGate.ts` draws a
+   registered gate: the passage centre on `siegeWallPoint(wallCol, gateRow)`
+   plus a −3 px presentation shift that lines the gate's wall axis up with the
+   v2 walkway; one painted passage pitch = one board row × `GATE_FIT` 1.33.
+   At exactly one row per pitch the gate read as a low insert in the taller,
+   coarser v2 wall; 1.33 matches their masonry and face height. The doorway
+   still centres on the gate cell, and the breach's clear gap lies inside it.
+   The picture is cut into a north part (connector, lintel, door; depth just
+   behind the gate cell) and a south part (south jamb and connector; in front
+   of it), so a creature in the gateway is drawn in front of the far jamb and
+   behind the near one. While the wall section beside the gate stands, the
+   gate's connector draws that cell (rows 4 and 6). `drawStructures` skips the
+   painted strip there, so the wall is never doubled. When the section falls,
+   the connector is cut back to the gate's own jamb (`JAMBS`, measured per
+   pantheon on the pictures) and the section's rubble strip shows. Ground,
+   road and moat are unchanged (`siegeGroundLayer` follows the gate row), so
+   the road runs from the bridge through the doorway into the town. The gate
+   picture has no ground and no bridge. The state comes from the rules' HP
+   (full / partial / 0, as before), so saves load in the state they hold. The
+   label "Gate n/m" stands over the lintel. Without the pack the v2 gate
+   stills draw as before (`isWallGate`).
+2. **Start battle (FIX 2).** A primary command in the battle bar (Start
+   battle, Auto: on) keeps the painted face's own layout: icon beside the
+   label, centred on the face, face 2.6 rem, hit target ≥ 44 px; the other
+   commands stay icon-over-label tiles (`styles/gui.css`).
+3. **Parchment labels (FIX 3).** `.setting-block__label` is ink
+   (`--gui-ink-head`) inside `.gui-surface--parchment` / `.panel--parchment`
+   and stays gold on the dark panels (and on a dark plate inside parchment).
+4. **Readable cold load of books and scrolls (FIX 4).** `guiArt.ts`:
+   `artReady(url)` decodes a picture once and remembers the answer;
+   `preloadReadingSkins()` decodes the open book and the parchment 1.5 s after
+   the adventure map opens (first tried at the title, where it only added
+   network activity to every start). `components/gui.tsx`: `useArtState(url)` and `Folio`'s
+   `data-art` (pending / ready / failed). Until ready, each page is plain paper
+   a little larger than its text (box-shadow outside the scroll box, so
+   scrolling and focus are unchanged); the book fades in when decoded; a
+   failed book keeps the paper. Narrow windows keep their single parchment
+   page. The briefing scroll (`BriefingDialog`) does the same with its
+   writing rectangle. `ui-v1.1.0/book-open.png` is reused; the Journal itself
+   is not changed.
+5. **Town caption (FIX 5).** "Placeholder town art · owner concept reference"
+   is shown only when the town's painting is not final (never over the
+   delivered town art).
+6. **Battle readiness (FIX 6).** `BattleSceneController` reports
+   `onBoardReady(false)` for a new board and `onBoardReady(true)` once its
+   battlefield painting, its siege pieces (current states, moat and bridge)
+   and each stack's idle strip have loaded or failed (cap 15 s). Nothing else
+   from the catalog is waited for. `SpriteFigure.firstFrame` shows the idle
+   frame as soon as that strip arrives, instead of after every strip; a fallen
+   stack never stands up in it. A stack whose picture is missing or failed
+   stands as a silhouette. The battle screen veils the field ("Preparing the
+   battlefield…", `battle-loading`, takes the clicks) and withholds commands,
+   Auto and shortcuts; the Menu stays. `AppStore.boardLoading` makes battle
+   commands wait and the AI wait. Under `?e2e`, `busy` includes it.
+   `SceneViewport` reports a failed view (`onError`), so a missing WebGL never
+   blocks a battle.
+7. **Optional polish.** The creature viewer never enlarges a strip past 2.25
+   screen pixels per painted pixel (`MAX_MAGNIFY`, `viewer.ts`). The troop
+   exchange with a town shows `TownThumbnail` (its town-hall stage with each
+   constructed building on its slot, as on the town screen). Tips on the
+   recruitment screen dock at the bottom left (clear of Recruit and Train), and
+   every tip docks at the top on narrow windows (≤ 720 px).
+8. **Found while checking real zoom.** `EngineHost.fit` sets the resolution
+   for a new device pixel ratio (browser zoom changes it) and redraws at once
+   after a resize.
+
+Read-only test hooks (`?e2e`): `__prSiege()` (gate picture, frame, passage
+centre in page pixels, part depths, neighbours, wall rows drawn, stack depths
+and positions, board readiness) and `boardLoading` in `__prInspect()` /
+`__prScreen()`.
+
+Tests: `tests/e2e/audit114.spec.ts` (new, 15):
+
+- Each pantheon: intact, damaged, breached, and breached with both neighbours
+  fallen. Checked: only the v5 atlas and the state's frame; the passage centre
+  identical in every state (< 0.6 px); north part behind and south part in
+  front of the passage; wall rows 4/6 drawn by the gate while standing and as
+  rubble when fallen; no strip on the gate cell; v2 pieces still requested; no
+  draft requested.
+- A hoplite walking from the bridge through the breach into the town (the
+  rules move it; sampled while crossing, drawn between the two parts).
+- Start battle and Auto: on: the label inside the painted face, one line,
+  44 px, focus and Enter; at 1600 × 1000 and 1280 × 720.
+- Settings labels: ≥ 4.5:1 on their surface on the campaign page, the pantheon
+  drawer, map seats and random map.
+- The journal with the book held back (paper, ink ≥ 4.5:1), then released
+  (book), narrow, then the book request failing (paper, focus).
+- The briefing with the scroll failing.
+- No caption on the town.
+- A battle with its creature strips and painting held back: notice shown,
+  busy, no commands, a click on the field changes nothing, Menu enabled.
+  Released: drawn, then an order is taken.
+- The same pictures failing: silhouettes, playable, Menu.
+- `PR_OLD_SIEGE_SAVES`: the twelve 2026-10-10 siege review saves (older build)
+  load with the gate frame and neighbours their HP says.
+
+`packages/presentation/test/siegeGate.test.ts` (new, 3): the 18 keys and their
+files, frames and anchors; v2 walls/towers/keeps kept; scale and jamb limits.
+`encounters.spec` › garrison exchange now expects the town thumbnail.
+
+### Checks run (this container)
+
+Commands run on 2026-10-11/12 (cloud container, SwiftShader, two cores):
+
+- `npm run check`: boundary check passed (the gate manifest import added to
+  its allow-list), type-check clean, **62 files / 515 unit tests passed**.
+- `npm run build`: production client 1.1.4; no `C:\Users`, `C:/Users` or
+  `lazeb` string in `apps/client/dist`.
+- **Full Playwright suite** (`npx playwright test`, production preview of
+  that build, one worker, `PR_OLD_SAVE` = the 2026-10-10 Greek siege review
+  save, `PR_OLD_SIEGE_SAVES` = its folder of twelve, 3.4 h): **207 passed, 3
+  failed, 2 did not run** of 212. The three failures were test timeouts, not
+  failed assertions:
+  - `brief13` › adventure screens (7.1 min against 7 min; it ran while the
+    first Windows installer was being built alongside);
+  - `brief15` › the catapult: 4.1 min against 4 min. Its 30 screenshots during
+    the animated battle take about 7 s each here, and it also failed this way
+    in a 2026-10-10 run.
+  - `round19b` › the twelve opening paintings: 4.0 min against 4 min; 24 title
+    loads, measured at 10–14 s each.
+
+  The 2 that did not run were the serial tests after them. The four GUI
+  suites of the audit's `playwright.audit.config.ts` all passed: frontend110
+  15, gui110 12, encounters 5, heroPortraits 6. That includes the nested web
+  base test against the built client and the old-save test with the review
+  save; the 15 `audit114` tests passed too.
+- Then the reading-skin preload moved from the title to the adventure map
+  (above), and those three tests got time limits for what they do here: 10,
+  8 and 7 min. With that build, `brief13` (4/4), `brief15` (6/6) and the
+  `round19b` paintings test passed (5.1, 5.4 and 5.2 min); `audit114` journal
+  and briefing and `gui110` journal and resolutions passed 6/6. The rest of
+  the suite was not re-run after that one move.
+- Captures (`zz` probes, not in the repository): every gate state per
+  pantheon; the breach walk; the twelve old saves. Battle, campaign, journal,
+  exchange, town, recruitment tip and creature page at 1280 × 720,
+  1600 × 1000, 1920 × 1080 and 390 × 844, plus the creature page at
+  2560 × 1440. Keyboard focus on Start battle, reduced motion, browser zoom
+  as 1280 × 800 at DPR 1.25, and a 2× screen.
+- Desktop: `npm run desktop:build`, `electron-builder --linux dir`. Inside
+  `unshare -rn` (loopback only):
+  - packaged smoke: **DESKTOP SMOKE OK**;
+  - the six 1.1.x art packs decode (36/17/33/8/21/54); footer "v1.1.4 ·
+    Desktop build";
+  - the six gate atlases decode at 1536 × 1024;
+  - an older Norse siege save (gate 0/2, wall 2 fallen), imported through
+    Load → Import with the native dialog stubbed in the harness only, draws
+    the v5 rubble frame with the north connector cut back;
+  - the window's real zoom factor at 125 % (devicePixelRatio 1.25, CSS
+    viewport 1024 × 720): no horizontal scroll, the board refitted, sharp
+    after the `EngineHost.fit` fix.
+
+  No `lazeb` in either `app.asar`.
+- **Windows installer** `Pantheon-Realms-Setup-1.1.4-x64.exe` (`--win nsis`
+  under Wine, unsigned, from the final source): 1,030,521,805 bytes, SHA-256
+  `935cd4d8b2a825fd60a940bc564afc12e3ce7419e6c368e4bf51e320d3b4ecf4`.
+  - Copied to the PC in 43 parts and joined in place as
+    `pantheon_realms\installer\Pantheon-Realms-Setup-1.1.4-x64.exe` (SHA-256
+    checked on the PC, identical).
+  - An earlier build of the same day (SHA-256 `07ab1487…`, the preload still
+    at the title) was delivered first and then replaced.
+  - The emptied parts are in `installer\_to_delete-empty-parts-1.1.4\` and
+    `…-1.1.4b\`.
+  - Not run on Windows here; not tagged, published or uploaded. C: had about
+    1.5 GB free afterwards.
+- Review set on the PC: `blannder_models\gui-review-2026-10-10\delivery-1.1.4\`.
+- Not done: the new gate pictures themselves are unchanged (no retouching;
+  Norse, Celtic and Mesoamerican gates are lighter than their siege-v2 walls,
+  as delivered). A damaged wall section beside the gate shows its damage only
+  on its other row while the gate's connector draws the row next to the gate.
+
+## App 1.1.3 — the owner's five pre-game fixes (2026-10-11)
+
+Owner request (2026-10-11), five fixes "to move from 1.1.1 to 1.1.2": the
+title still showed the old pictures instead of the new one; the encyclopedia's
+first menu to the left and cards that wrap their objects, with the generated
+frames and a very minimal background instead of a whitish box; no Back in the
+blue strip at the bottom of New Game (the header has one); more texture on the
+pantheon screen's background; a nicer, better structured creature page. A
+second session had already built and delivered a 1.1.2 installer that morning (its section below); asked, the owner
+chose to ship these fixes as **1.1.3** on top of it. Its two changed CSS files,
+version, changelog and status were taken into this tree first. Version 1.1.3
+in `package.json`, `apps/desktop/package.json` and the lockfile; release notes
+in `CHANGELOG.md`. Rules, content values, AI, saves, preferences, the fixed
+map camera and siege-v2 are unchanged.
+
+1. **Title.** `menuBackground()` (`ui/src/assets/manifest.ts`) returns the
+   frontend kit's title painting (`frontendkit.backdrop.title`) whenever its
+   file exists; 1.1.0–1.1.2 drew it at random among thirteen pictures, so
+   twelve starts in thirteen showed an older painting. The twelve remain the
+   fallback. Over the hall the menu is the kit's slim panel between the
+   pillars (`.main-menu--kit` in `styles/frontend.css`, as the kit's own QA
+   capture composes it), not the 2026-10-05 ornate frame, which stays for the
+   fallback paintings. Same controls and IDs.
+2. **Encyclopedia** (`screens/Encyclopedia.tsx`, `styles/frontend.css`): the
+   eight sections are a rail at the left under the search (`.codex-rail`,
+   `role="tablist"` with `aria-orientation="vertical"`, arrow/Home/End keys;
+   a horizontal row under 900 px), the pantheon filter and the page to its
+   right. Cards (`.codex-frame`) lose the paper fill and wear a painted frame
+   as a nine-slice: in a pantheon's section that pantheon's own 1.1.0 frame
+   (`gui.frame.<pantheon>`, via `data-gui-theme` on the section), elsewhere the
+   painted socket rim (`gui.control.socket`); a faint warm tint inside the
+   frame line is the only fill. Creature portraits sit in the socket rim, gods
+   in the kit's round medallion; each bestiary family shows its two forms side
+   by side with an arrow and a Base / Upgraded label. The page's parchment is
+   tiled at its own grain. Returning from a creature's page re-applies the
+   saved scroll for about a second (fonts, pictures and equal card heights can
+   still grow the page), unless the player scrolls first.
+3. **New Game**: the footer with Back is gone; the header's Back remains
+   (`GameModeScreen`, `screens/Setup.tsx`).
+4. **Pantheon screens**: the painted leather (and parchment) at their own
+   grain instead of flat navy, with lighter overlays and vignettes — the
+   pantheon choice (`.fe-pantheon-screen`: patron, creatures, setup drawer,
+   roster tiles, the parchment summary, more of the atlas painting behind) and
+   the gods screen in a match (`.pantheon-screen`: every panel, god cards and
+   the signature). Both readings of "the pantheon screen" are covered.
+5. **Creature page** (`screens/UnitDetail.tsx`): two framed pages in the
+   creature's pantheon frame (neutral: the neutral frame). Left: name; pantheon,
+   tier and size; the summary; both forms as socketed tiles (current one
+   checked); the statistics as a grid of tiles (attack, defense, damage,
+   health, speed, growth, plus shots and range for shooters); the cost; each
+   ability as a row with its badge; the lore. Right: the animated creature on
+   its pantheon's recruitment court (`adventurekit.recruit.<pantheon>`; neutral
+   creatures `adventurekit.encounter.temperate`) — `UnitViewerController.setBackdrop`
+   (`presentation/src/viewer.ts`) loads it through `textures.ts`, cover-fits it
+   with a light shade and drops the stone plinth; a CSS inset shadow over the
+   stage is the vignette (no filter over the canvas) — and the controls in one
+   labelled band: Animation, Playback, Speed, View. Every test selector kept;
+   new `unit-stats`.
+
+Tests: `tests/e2e/owner113.spec.ts` (new: the title painting on every start,
+the kit panel under the logo and centred, no ornate frame; New Game without a
+footer; the rail at the left with vertical keyboard order and the search
+above; the Greek and Norse frames, the socket rim for neutral and shared
+cards, no paper fill, town slots without fill; the creature page's two Greek
+frames, tiles, forms, labelled controls, the other form; leather and
+parchment on both pantheon screens). Updated: `menu.spec` and `frontend110`
+(the title painting is now fixed; New Game has no footer).
+
+### Checks run (this container)
+
+Commands run on 2026-10-11 (cloud container, SwiftShader):
+
+- `npm run check`: boundary check passed, type-check clean, **61 files / 512
+  unit tests passed**.
+- `npm run build`: production client 1.1.3; no `C:\Users`, `C:/Users` or
+  `lazeb` string in `apps/client/dist`.
+- **Full Playwright suite** (`npx playwright test`, production preview, one
+  worker, 2.0 h): **195 passed, 1 failed, 1 skipped** of 197 (the five new
+  `owner113` tests included). The failure was `frontend110` › encyclopedia
+  scroll kept after a creature page: Playwright's click scrolled the
+  partly hidden last card into view (6 px) before opening it, and the page
+  then correctly restored that new position; the test now reads the position
+  after bringing the card fully into view. Skipped: `gui110` › old save (needs
+  `PR_OLD_SAVE`).
+- After that run the encyclopedia page also got `overflow-anchor: none`; on
+  that final build `owner113` (5), `frontend110` (15) and `menu` (4) passed,
+  24/24. The other suites were not re-run after that one CSS rule.
+- Captures (final build): title, New Game, the eight encyclopedia sections and
+  the neutral bestiary, four creature pages and the pantheon choice at
+  1600 × 1000, 1366 × 768 and 390 × 844; the gods screen in a match for all
+  six pantheons; before/after pairs at 1600 × 1000 (before = 1.1.2 on the same
+  machine; the gods screen's before is the 1.1.0 capture of 2026-10-10).
+- Desktop: `npm run desktop:build`, `electron-builder --linux dir`; packaged
+  smoke inside `unshare -rn` (loopback only): **DESKTOP SMOKE OK** (saves,
+  records, 1,629 sprites, WebGL map, 550 art and 662 interface pictures,
+  audio running, packaged, no dev tools); all six 1.1.x art packs decode in
+  the packaged app (36/17/33/8/21/54); footer "v1.1.3 · Desktop build"; no
+  `lazeb` in either `app.asar`.
+- **Windows installer** `Pantheon-Realms-Setup-1.1.3-x64.exe` (`--win nsis`
+  under Wine, unsigned): 1,018,593,169 bytes, SHA-256
+  `f2b903c033ca269b0ee5b653dce37301b98ec5f354ff842520afff1ac084da31`. Copied
+  to the PC in 43 parts and joined there as
+  `pantheon_realms\installer\Pantheon-Realms-Setup-1.1.3-x64.exe` (SHA-256
+  checked on the PC, identical; the emptied parts are in
+  `installer\_to_delete-empty-parts-1.1.3\`). Not run on Windows here; not
+  tagged, published or uploaded. C: had about 2.3 GB free afterwards.
+- Review set on the PC: `blannder_models\gui-review-2026-10-10\delivery-1.1.3\`
+  (README, before/after pairs, the after screens at three sizes, the packaged
+  app's screens).
+- Seen on the PC, not part of this request and not implemented: another
+  tool's `docs/gui-audit-1.1.2/` (a GUI audit with a handoff) and
+  `assets-runtime/siege-gates-v3/` (new siege gate art).
+
+## App 1.1.2 — the two sessions merged; painted buttons fixed (2026-10-11)
+
+Version 1.1.2 in `package.json`, `apps/desktop/package.json` and the lockfile
+(the owner: "now the other finished, merge and make a new installer 1.1.2").
+Release notes: `CHANGELOG.md`. Rules, content values, AI, the save format and
+schema, preferences, the fixed map camera and siege-v2 are unchanged.
+
+**What was merged.** Two sessions worked on this checkout on 2026-10-10 (see
+1.1.1 below). The second session (the one writing this section) had built its
+own pre-game screens and the encounter scenes; 1.1.1 already carried its
+encounter work (reward receipts, hero meeting, briefing scroll, battle-result
+tray). The remaining difference was the 14 pre-game screens, built twice. The
+owner was shown both side by side and chose to keep 1.1.1's; the second
+session's version is not in this tree. 1.1.2 is the 1.1.1 tree as the first
+session left it on the PC (pulled 2026-10-11 02:50 UTC, nothing changed there
+after 20:15 UTC) plus the fix below.
+
+**Fixed.** gui.css draws the primary button's painted face inside a box at
+least `max(face, 44 px)` tall (transparent hit bands above and below). Two
+footers set a smaller `min-height` on every button with a more specific
+selector (`.ak-foot .btn` 2.75rem, `.meet__bar .btn` 2.6rem), so at a 11–14 px
+root size the face was squeezed into a thin strip (found by an audit of every
+visible primary button: Marketplace "Confirm trade" 30 px high at 1280 × 720,
+37 px at 1600 × 900, against 44 px). Those rules now set the face height
+(`--btn-face-h`) for primary buttons and keep `min-height` for the others
+(`styles/adventure.css`, `styles/encounters.css`). After the fix the audit
+found no squeezed primary button on the map, town, Lodge, Marketplace,
+recruitment (1280 × 720, 1600 × 900) or any pre-game screen (1280 × 720,
+1366 × 768, 390 × 844), and no horizontal page scroll.
+
+### Checks run (cloud container, SwiftShader; 2026-10-11)
+
+- Boundary check passed; type-check clean (core, client, desktop).
+- `vitest run`: 511 of 512 passed. The failure is `uiArt.test.ts` › "registers
+  every delivered source file": this container's copy has no
+  `assets-source/ui/` (604 source files not transferred); the first session
+  measured 512/512 with them. No unit-tested code changed.
+- `npm run build`: production client built; `__APP_VERSION__` 1.1.2.
+- Playwright on that build (production preview, one worker): `encounters`,
+  `gui110`, `audio`, `menu`, `mapSites` — **29 passed, 1 skipped** (gui110 old
+  save: needs `PR_OLD_SAVE`). The audio suite ran with the delivered Ogg files
+  (154 MB copied from the PC for this build). The other suites were not re-run:
+  the code change is two CSS rules; 1.1.1's full run (190/192, see below) is the
+  last full measurement.
+- Desktop: `npm run desktop:build`; `electron-builder --win nsis --x64 --linux
+  dir --x64` under Wine 9.0 (`wine64` and `wine32:i386`; the NSIS uninstaller
+  step needs 32-bit Wine). Packaged-layout smoke (`tools/desktop-smoke.mjs`,
+  `PR_SMOKE_EXE=…/linux-unpacked/pantheon-realms`) inside `unshare -rn` with only
+  loopback up: **DESKTOP SMOKE OK** (`prgame://app/index.html`, auto and manual
+  save, records, 1,629 sprites, WebGL map, 550 art and 662 interface pictures,
+  audio running, packaged, no dev tools). `app.asar` 928,305,489 bytes, 3,660
+  entries, no `lazeb` string.
+- **Windows installer** `Pantheon-Realms-Setup-1.1.2-x64.exe`, 1,018,586,404
+  bytes, SHA-256
+  `b0735f9890364bd1403b2b09672ee0e32e5a5d25e541f24a7da171064897d974`
+  (unsigned). Copied to the PC as `installer/Pantheon-Realms-Setup-1.1.2-x64.exe`
+  (hash checked there). Not run on Windows here; not tagged, published or
+  uploaded.
+
+## App 1.1.1 — encounter scenes, adventure screens, hero portraits, and two sessions merged (2026-10-10)
+
+Version 1.1.1 in `package.json`, `apps/desktop/package.json` and the lockfile
+(the owner asked for "a new installer with all the new improvements from today
+as 1.1.1"); 1.1.0 was never released on its own, so 1.1.1 carries the 1.1.0
+interface redesign and the pre-game screens (both described below) plus the
+two deliveries that followed. Release notes: `CHANGELOG.md`. Rules, content
+values, AI, the save format and schema, the fixed map camera and siege-v2 are
+unchanged.
+
+**Two sessions on one working tree.** At 17:46–17:47 UTC another session
+wrote its own implementation of the pre-game handoff plus the encounter
+handoff (`docs/encounters-v1.1.0`) over 27 of the files this session had just
+synced to the PC, and added 8. Its 35 files were backed up and compared with
+the tree before either session; on the owner's instruction ("try your best to
+merge the two sessions") the merged tree keeps this session's tested in-game
+GUI, pre-game screens and frontend kit, and takes the other session's
+encounter work: `app/rewards.ts` (receipts read from one command's committed
+events and the state before and after it), `components/rewards.tsx` (tray,
+receipt dialog), `AppStore.claimReward` (closes the choice dialog by kind,
+small rewards as a tray notice, major ones as a receipt; never re-dispatches),
+the reward receipt in the toasts, the hero-meeting `TransferDialog`, the
+briefing scroll `BriefingDialog`, the battle result's reward tray, the
+encounter styles (`styles/encounters.css`, lifted from its `frontend.css`),
+`tests/e2e/encounters.spec.ts` (the chest step adapted to this tree's
+select-then-Confirm chest) and `packages/ui/test/rewards.test.ts`. Adapted to
+this tree: `useModalFocus` for its `useDialogFocus`, `ArtIcon` gained the
+`glyph` fallback, `encounterKitArt()` registers `encounterkit.*` from the
+delivered manifest (`ui/src/assets/manifest.ts`; boundary rule added) instead
+of its generated table. Not taken (moved, not deleted, to
+`_merge-leftovers-2026-10-10/` at the repository root): its generated art
+table `frontendArt.generated.ts`, the generator
+`tools/assets/frontend_art_table.mjs` and `components/cropped.tsx` (this tree
+reads the delivered manifests directly and drops disk paths from the bundle
+with the `dropDiskPaths` Vite plugin), and its own versions of the pre-game
+screens. Its `package.json` (1.0.0, script `art:frontend-table`) is replaced.
+
+**Adventure screens** (`docs/adventure-gui-v1.1.0`, 21 runtime PNGs under
+`adventurekit.*`, `adventureKitArt()`; all 1,920 files of its
+`copy-inventory.json` present and hash-equal in this tree). One stage
+(`ui/src/components/adventure.tsx`: `AdventureStage`, `HeroFigure`,
+`HeroMedallion`, `SkillPlaque`, `CreatureStage`, scene helpers;
+`styles/adventure.css`, scoped `.ak-*`) for the Heroes' Lodge, town
+recruitment and creature camps, the Marketplace, the level-up, the spellbook
+and the encounter preview. Each keeps its quotes and commands (`hireOptions`
+/ `quoteHireHero` / confirm + `HireHero`; `quoteRecruitment` / `RecruitUnits`
+and `quoteUpgrade` / `UpgradeStack`; `quoteCampRecruitment` /
+`RecruitFromCamp`; `quoteTrade` / `TradeResources`; `ChooseLevelUp` on the
+skill click; `cast.onCast`; `MoveHero(confirmEncounter)`, `quickBattle`,
+`encounterChoice`). Themes: the town's pantheon for the Lodge, recruitment and
+market; the hero's for the level-up, the book and the encounter frame. The
+encounter landscape comes from the map's climate and the destination's ground
+(`encounterBiome`: tundra, high pass and fjord alpine; desert; jungle;
+mountain ground alpine; forest ground or autumn woodland; else temperate) —
+no climate of the game is volcanic, so that painting is registered but unused;
+a siege shows the besieged town's own painting. Changed by design: the Lodge
+shows one candidate's details at a time (the 2026-10-07 "price and Hire on
+the right of each row" layout is replaced by the approved concept; up to
+eight candidates stand in view, each name plate sizes its lettering to the
+name on at most two lines, so "Topiltzin Quetzalcoatl" is never cut), the
+level-up offers are skill plaques (icon above the text), the spellbook's
+right page shows the chosen spell (in casting mode one click still casts; the
+page also has a Cast button).
+
+**Hero character portraits** (`docs/hero-portraits-complete`, owner delivery
+of 2026-10-10): the 54 busts the story-art manifest lacked
+(`assets-runtime/hero-portraits-complete`, 1024 × 1536 PNGs with alpha, hashes
+checked against the delivery manifest) are read as an additive pack in
+`ui/src/assets/manifest.ts` (`HERO_BUSTS`, consulted only for `*.bust` IDs the
+story-art manifest does not have, by `resolveArt` and `resolveAsset`; boundary
+rule and `dropDiskPaths` cover its manifest). `speakerBust` therefore finds a
+bust for every one of the 74 catalog heroes (`packages/ui/test/heroPortraits.test.ts`
+checks all of them, the 54 files' PNG headers, sizes and alpha, that no
+delivered bust changed, and that the delivery's 15 art-only identities are not
+catalog heroes; Abe no Seimei uses the manifest's `bust-v2` file). Shown
+through the existing `.portrait → .bust` route in the Lodge, dialogue,
+meeting and encounter (`tests/e2e/heroPortraits.spec.ts`: for each pantheon
+the Lodge candidates, the hero screen and a meeting of two of its heroes,
+each picture decoded, at 1600 × 900 and 390 × 844), and newly on the hero screen (`hero-bust`, beside the
+name), on the encyclopedia's hero cards and beside the level-up choice on
+windows at least 1400 × 760; images load lazily when shown.
+
+**Briefing.** The encounter pack's scroll replaces the 1.1.0 briefing's
+three-objective summary (it shows every visible objective, as that handoff
+asks); `briefing-goals` / `briefing-full` and their styles are gone.
+
+**Also fixed while testing:** the pantheon choice's names had dropped to
+1rem under the kit's pennant label (`round11` caught it); back to 1.3rem. The
+encounter stylesheet lifted from the other session lost a comment opener when
+it was cut out; the production CSS minifier refused it (the dev server had
+silently dropped one rule) — fixed before any build was kept.
+
+**Shipped copies without desktop paths.** Five delivered JSON files
+(`frontend-v1.1.0/manifest.json`, `frontend-kit-v1.1.0/manifest.json` and
+`complete-assets.json`, `adventure-gui-v1.1.0/complete-assets.json`,
+`encounters-v1.1.0/dependencies.json`) carry the delivery machine's absolute
+paths (`sourceAbsolute`, `runtimeAbsolute`) as provenance. The bundle never
+contained them (`dropDiskPaths`), but `publicDir` copied the files into the
+build and so into the installer. A second build step
+(`dropDiskPathsFromCopies`, `apps/client/vite.config.ts`) now rewrites each
+copied JSON file that holds a local disk path without those values after the
+build; `assets-runtime/` keeps the delivered bytes.
+
+### Checks run (this container)
+
+Commands run on 2026-10-10/11 on the final tree (cloud container, SwiftShader):
+
+- `npm run check`: boundary check passed, type-check clean, **61 files / 512
+  unit tests passed** (includes `heroPortraits.test.ts` and `rewards.test.ts`).
+- `npm run build`: production client built; no `C:\Users`, `C:/Users` or
+  `lazeb` string anywhere in `apps/client/dist` (bundle and copied JSON, after
+  `dropDiskPathsFromCopies`); `assets-runtime/` unchanged.
+- **Full Playwright suite** (`npx playwright test`, production preview, one
+  worker, 2.1 h): **190 passed, 1 failed, 1 skipped** of 192. The failure was
+  `menu.spec.ts` › main menu, which still expected the older `logo-text`
+  lettering although the title shows the frontend kit's logo layer since the
+  kit was added; the expectation was updated and `menu.spec.ts` then passed
+  4/4 on the same build. Skipped: `gui110.spec.ts` › old save (needs
+  `PR_OLD_SAVE`, an owner save file; not available here).
+- After the full run the Lodge's name plates were changed (the longest
+  names were cut; see above) and the copied JSON stripped; on that final
+  build: `heroPortraits.spec.ts` 6/6 at 1600 × 900 and 6/6 at 390 × 844 (now
+  also: names fit their plates, two lines at most, every candidate in view on
+  desktop, a two-hero meeting per pantheon), `encounters.spec.ts` 5/5 at
+  1600 × 900, 1366 × 768 and 390 × 844, `frontend110.spec.ts` (incl. the
+  packaged-manifest fetch) and `menu.spec.ts` passed. The other suites were
+  not re-run after those two changes.
+- Captures for review (final build): the six adventure screens for all six
+  pantheons at 1600 × 1000, Greek also at 1366 × 768 and 390 × 844, creature
+  camp at three sizes, hero screen and encyclopedia heroes; encounter scenes
+  at three sizes; hero portraits (Lodge, hero screen, meeting) per pantheon
+  at two sizes.
+- Desktop: `npm run desktop:build`, `electron-builder --linux dir`; the
+  packaged-layout smoke (`tools/desktop-smoke.mjs`, `PR_SMOKE_EXE=…/linux-unpacked/pantheon-realms`)
+  run inside a network namespace with no outside network (`unshare -rn`,
+  loopback only): **DESKTOP SMOKE OK** (`prgame://app/index.html`, auto and
+  manual save written, records, 1,629 sprites, map drawn with WebGL, 550 art
+  and 662 interface pictures decoded, audio running, packaged, no dev tools).
+  A cloud-only check in the same packaged app decoded every file of the six
+  1.1.x packs from its own files (ui 36/36, frontend 17/17, frontend kit
+  33/33, encounters 8/8, adventure 21/21, hero portraits 54/54); footer
+  "v1.1.1 · Desktop build". No `lazeb` string in either `app.asar`.
+- **Windows installer** `Pantheon-Realms-Setup-1.1.1-x64.exe` built in the
+  cloud container with `electron-builder --win nsis` under Wine (unsigned):
+  1,018,593,135 bytes, SHA-256
+  `fc24b3864b5b985cd2848bba3bd506bebcde7db09180ba78c326a68cf41e3e0e`
+  (larger than 1.0.0 by the new packs: hero busts 163 MB, adventure 50 MB,
+  encounters 17 MB). Copied to the PC in 43 parts and joined there:
+  `C:\Users\lazeb\Desktop\blannder_models\gui-review-2026-10-10\delivery-1.1.1\installer\`
+  (SHA-256 checked on the PC, identical). Not run on Windows here; not
+  tagged, published or uploaded.
+- Review set on the PC: `…\gui-review-2026-10-10\delivery-1.1.1\` (README,
+  the 1.1.1 captures as JPEG, the earlier 1.1.0 in-game and pre-game sets as
+  zips).
+- Not measured this round: frame timing (`tests/perf`), load time, balance
+  and campaign simulations (no rule, content or AI change).
+
+## App 1.1.0 — interface redesign (2026-10-10)
+
+The owner-approved GUI handoff (`docs/gui-v1.1.0/CLAUDE_CODE_HANDOFF_1.1.0.txt`,
+14 concepts in `docs/gui-concepts-2026-10-10/`, 36 production layers in
+`assets-runtime/ui-v1.1.0/`) implemented over the working tree of the siege
+visual revision 2 (not committed; HEAD `8745680`). Rules, content values, AI,
+the save format and schema, the fixed map camera and siege-v2 are unchanged.
+Version 1.1.0 in `package.json`, `apps/desktop/package.json` and the lockfile;
+the screens read it from the build (`__APP_VERSION__`). Superseded the same day by 1.1.1
+(above), which carries this work; 1.1.0 was never released on its own. Release notes:
+`CHANGELOG.md`.
+
+**Code.** `ui/src/assets/guiArt.ts` registers the pack as its own typed `gui.*`
+namespace (relative URLs, manifest metadata: nine-slice borders, measured
+surface insets, safe page and content rectangles, the stage's ground point) and
+installs the material variables; `ui/src/styles/gui.css` is the 1.1.0 skin
+(frame-over-surface windows, painted primary buttons with code-drawn states and
+44 px hit bands, socket rims, choice tiles, exchange, tooltip, banner, folio,
+stage, merchant header, and each screen recipe); `ui/src/components/gui.tsx`
+holds the shared pieces (theme selection, sockets, select-then-confirm choices
+with `useOnce`, encounter headers, faction banners, the folio, one tooltip
+layer). Screens changed: map decisions (`WorldDialogs.tsx`), adventure sidebar,
+hero, recruitment, town and its shops, battle, battle result, pantheon setup,
+journal, encyclopedia, unit detail, level-up, briefing and story; every other
+window takes the shared skin through the kit (`Modal`, `Panel`, `Button`).
+`tools/check-boundaries.mjs` allows `guiArt.ts` to read the pack's manifest.
+`presentation/src/battle.ts` only adds the shown stack label to the read-only
+`?e2e` stack inspector.
+
+**Behaviour that changed (by design).** A reward tile only selects; Confirm
+runs the command once and Decide later closes without claiming (chest, map
+event); a shop or market purchase cannot be repeated by a double click;
+construction from the town's new list or pop-up; the battle's stack labels
+default to the count with health on the acting and the hovered stack
+(preferences schema 4 migrates the old default once; "Count and health,
+always" stays); Escape closes a closable dialog only; the Tooltips setting now
+switches the themed tooltip off.
+
+**Window coverage.** All 98 windows of `docs/gui-v1.1.0/window-coverage.json`
+captured after the change at 1600 × 1000 with the owner's review scripts
+(94) plus a short script for the four they did not reach (B02, B04, S12A,
+S12B); 94 have before/after pairs (the before set lacks those four).
+Principal screens in all six themes (adventure, pause, town, building, list
+of buildings, market, recruitment, hero, journal, pantheon, briefing, battle,
+miracle book, retreat, setup): 90 captures. Delivered to the PC with the 1.1.1
+review set: `C:\Users\lazeb\Desktop\blannder_models\gui-review-2026-10-10\delivery-1.1.1\gui-1.1.0\`
+(JPEG copies).
+
+**Pre-game screens (second handoff of 2026-10-10, `docs/frontend-v1.1.0/`).**
+The 17 pre-game paintings are copied byte-identical into
+`assets-runtime/frontend-v1.1.0/` (runtime), `assets-source/frontend-v1.1.0/`
+and `docs/frontend-v1.1.0/` (concepts, recipes, coverage, the handoff) and
+registered in `ui/src/assets/manifest.ts` under `frontend.*` (`frontendArt`,
+relative `./frontend-v1.1.0/...` URLs; absolute or drive paths are refused;
+`tools/check-boundaries.mjs` allows the manifest import). Outside a match the
+document wears a new neutral theme (`data-gui-theme="neutral"`, a code-drawn
+dark blue and bronze nine-slice in `guiArt.ts`); a pantheon's frame appears
+only on its own panels. Shared pieces: `ui/src/components/frontend.tsx`
+(`FrontendShell`: backdrop, title plaque, one main region, a footer that stays
+in view; `IllustratedChoice`; `radioKeys`; `EmptyArchive`) and
+`ui/src/styles/frontend.css`. Screens: title (Hall of Records link — the
+optional addition, implemented; footer version only; the frontend kit's title
+background joins the twelve opening paintings in the random rotation), New Game, Campaign
+Chronicles, Skirmish Atlas, Random Map (Land / Empires / Rules over one draft;
+no seed field), seats, encyclopedia (filter, search, return state), creature
+page, settings (rail, parchment page, footer; Escape now asks before
+discarding — it used to leave), Saved Journeys, map library, map editor
+frame, Hall of Records, the shared confirmation (parchment; the safe action
+focused). The complete frontend kit that followed the pack (`assets-runtime/frontend-kit-v1.1.0`, 33 pieces, `frontendkit.*`,
+`frontendKitArt`; masters and prompts in `assets-source/frontend-kit-v1.1.0`; every one of the 1,891 files of
+`complete-copy-inventory.json` present and hash-equal in this checkout) supplies the title background and logo
+(separate layers), the six finished pennants (`FactionBanner`, `MiniBanner`: pantheon choice, seats, battle
+sides), the section, settings and editor icons (`ArtIcon`, `Button artUrl`), the warning seal on destructive
+confirmations, the records medallion and the blank title plate (a nine-slice behind each pre-game title).
+Store: `AppStore.leaveGuard` (Settings' Escape) and
+`confirm(..., { cancelLabel })`. No rule, content value, save format, schema,
+camera or siege change; `random-map-types.json`'s nine IDs are the game's own.
+
+**Measured contrast** (WCAG, on the darkest 2 % of the parchment and on the
+stone panel): parchment ink 10.2:1, soft ink 6.9, faint ink 4.5, headings
+7.3, warning 5.0, error 4.9, success 5.1 (darkened from 4.2), keyboard
+focus on parchment 5.5; stone: body text 10.3, gold headings 11.5, focus
+ring 14.1, faint text 5.3 (raised from #7c7462, 3.5:1); painted button text
+on its face 11.2; selected outline on parchment by its border 5.1:1.
+
+## Siege visual revision 2 (2026-10-10)
+
+Delivered into the working tree on 2026-10-10 (not committed; HEAD `8745680`):
+for each of the six pantheons a whole-view siege ground painting, a gate /
+tower / keep atlas and a continuous wall-strip atlas, each with intact, damaged
+and rubble states, plus a shared moat / end-cap / bridge atlas —
+`assets-runtime/siege-v2/` (19 PNGs and `manifest.json`: 6 grounds, 72
+fortification states, 4 ground pieces, measured atlas frames and anchors;
+sources and prompts in `assets-source/siege-v2/`, byte-identical). Native
+1536 × 1024 (grounds, walls, groundworks) and 1254 × 1254 (kits), below Brief
+15's 4096 × 3200 (accepted by the owner; never enlarged). Code:
+`presentation/src/siegeLayout.ts` (shared wall positions, painting frame, keep
+point, palettes), `siegeScenery.ts` (painted wall strips with one world-space
+repeat phase, moat with caps only at its outer ends, bridge and road on the
+real gate row, code-drawn fallbacks), and changes in `battle.ts` (ground layer,
+atlas pieces, contact shadows, more room for the keep, quieter siege grid,
+structure labels on hover or while damaged), `staticSprites.ts`
+(`stillTexture`: cached atlas-frame views), `sprites.ts` (`frame`, `layout`),
+`environmentArt.ts` (`layout: 'siege-v2'`), `ui/src/assets/manifest.ts` (the
+siege-v2 grounds resolve first; its siege entries overlay the Brief 15 ones,
+which stay in the sprite manifest) and `tools/check-boundaries.mjs`.
+Presentation only: rules, targeting, movement costs, siege levels and saves
+are unchanged; `SIEGE_GROUND_SHIFT` now applies only to the older siege
+paintings. Re-register after replacing an atlas: `python
+tools/assets/import_siege_v2.py` (Pillow, numpy, scipy; metadata only).
+
+### Checks run (this container, the owner's working tree copied byte for byte)
+
+* Working tree against HEAD: exactly the six changed files and the new files
+  listed above; `git diff --check` clean (with the owner's `core.autocrlf`).
+* `npm run lint:boundaries`, `npm run typecheck`: pass. The four focused
+  suites (`siegeScenery`, `sprites`, `rules/siege`, `ui/groundArt`): **38/38**.
+  All unit tests: **502/502** (59 files; `assets-source/icons/final` was
+  present by file name only in the container).
+* Playwright, release build: `siege.spec.ts` 2/2, `round0108.spec.ts` sieges
+  2/2 (the Catapult aimed at a tower; the defender combining stacks),
+  `brief15.spec.ts` **5/5 after updating its expected files** — it asserted the
+  Brief 15 `.webp` siege stills and battlefields, which siege-v2 now replaces;
+  it now expects each pantheon's `siege-v2/kit`, `wall`, `ground` and the
+  shared `groundworks-capped` pictures (level 3 failed before the update).
+* The twelve delivered review saves (six pantheons, intact and damaged /
+  breached) opened in the game at 1600 × 1000: no page errors or failed
+  requests, each siege loads its own kit, wall and ground and the shared moat
+  atlas; 0.3–1.0 % of pixels differ from the delivered captures (idle
+  animation, text). Intact labels appear on hover (all six); after deployment
+  the moat, bridge and labels stay and the catapult's shots change the art.
+  Live window resizing 1920 × 1080, 1366 × 768, 1280 × 720, 1024 × 768: the
+  board corners and both wall ends stay on screen, the keep in frame.
+  Fortification levels 1 and 2 built headlessly for every pantheon: no towers,
+  the keep and the moat only at level 2, no moat atlas requested at level 1.
+  The Greek review save under `npm run dev` draws the same siege.
+* `npm run build`: 973 modules; `apps/client/dist` 3,266 files (110 bundle
+  files and the 3,155 runtime files, all 19 siege-v2 PNGs referenced);
+  built twice, identical.
+* `npm run desktop:build` and `electron-builder --win nsis --x64 --linux dir
+  --x64` (wine for NSIS): `Pantheon-Realms-Setup-1.0.0-x64.exe`, 597,081,857
+  bytes, SHA-256
+  `c0dbfd8320644302086e8f6cbb2daa87bef5a041be75df676636160880cf985b`; the
+  packed renderer equals the build (3,265 files, only `.gitkeep` left out);
+  packaged-layout desktop smoke offline OK (1,629 sprites, 550 art, 662
+  interface images, 91 sounds, saves and records); all 19 siege-v2 files
+  served from `prgame://app/` and decoded offline. Unsigned; version still
+  1.0.0; not copied to the owner's PC; not run on Windows.
+
+Seen, not changed: at levels 1 and 2 (no towers) the wall strip ends square at
+rows 0 and 10; a few wall strips show where their picture repeats (e.g. the
+Egyptian south section); in SwiftShader the siege pictures appear a few
+seconds after the battle opens (the field shows the plain ground and the
+paving overlay until then).
+
+Delivery on the owner's PC: `apps\client\dist` rebuilt (the old one dated
+from 2026-10-01) and checked file by file against this build (3,266 SHA-256
+matches); `tests/e2e/brief15.spec.ts` updated as above.
 
 ## The owner's third list of 2026-10-07; app 1.0.0
 

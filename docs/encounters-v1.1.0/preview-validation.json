@@ -1,0 +1,128 @@
+{
+  "status": "passed",
+  "generatedAt": "2026-10-10T16:22:55.321Z",
+  "scope": "Static assembled reference preview only; game integration not implemented or tested",
+  "runtimeErrors": [],
+  "brokenImages": [],
+  "factions": [
+    {
+      "faction": "greek",
+      "broken": [],
+      "portraits": [
+        "Alexios",
+        "Ione"
+      ],
+      "slots": 14
+    },
+    {
+      "faction": "norse",
+      "broken": [],
+      "portraits": [
+        "Hervor",
+        "Hrafn"
+      ],
+      "slots": 14
+    },
+    {
+      "faction": "egyptian",
+      "broken": [],
+      "portraits": [
+        "Djedkhonsu",
+        "Nebet"
+      ],
+      "slots": 14
+    },
+    {
+      "faction": "japanese",
+      "broken": [],
+      "portraits": [
+        "Akane",
+        "Genzo"
+      ],
+      "slots": 14
+    },
+    {
+      "faction": "celtic",
+      "broken": [],
+      "portraits": [
+        "Cathal",
+        "Dubhghall"
+      ],
+      "slots": 14
+    },
+    {
+      "faction": "mesoamerican",
+      "broken": [],
+      "portraits": [
+        "Chimal",
+        "Itzel"
+      ],
+      "slots": 14
+    }
+  ],
+  "responsive": [
+    {
+      "width": 1366,
+      "screen": "meeting",
+      "scroll": 1366,
+      "viewport": 1366
+    },
+    {
+      "width": 1366,
+      "screen": "intro",
+      "scroll": 1366,
+      "viewport": 1366
+    },
+    {
+      "width": 1366,
+      "screen": "reward",
+      "scroll": 1366,
+      "viewport": 1366
+    },
+    {
+      "width": 768,
+      "screen": "meeting",
+      "scroll": 768,
+      "viewport": 768
+    },
+    {
+      "width": 768,
+      "screen": "intro",
+      "scroll": 768,
+      "viewport": 768
+    },
+    {
+      "width": 768,
+      "screen": "reward",
+      "scroll": 768,
+      "viewport": 768
+    },
+    {
+      "width": 390,
+      "screen": "meeting",
+      "scroll": 390,
+      "viewport": 390
+    },
+    {
+      "width": 390,
+      "screen": "intro",
+      "scroll": 390,
+      "viewport": 390
+    },
+    {
+      "width": 390,
+      "screen": "reward",
+      "scroll": 390,
+      "viewport": 390
+    }
+  ],
+  "controls": [
+    "troop quantity and destination feedback",
+    "dialogue next/back",
+    "begin briefing feedback",
+    "reward dismiss feedback"
+  ],
+  "screenshots": 3,
+  "mobileScreenshots": 3,
+  "localLinksVerified": 14
+}

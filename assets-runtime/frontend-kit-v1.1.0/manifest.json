@@ -1,0 +1,698 @@
+{
+  "schema": "pantheon-realms-frontend-kit-v1",
+  "assets": {
+    "frontendkit.brand.logo": {
+      "file": "frontend-kit-v1.1.0/brand-logo-v2.png",
+      "width": 2172,
+      "height": 724,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        361,
+        12,
+        1810,
+        708
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\brand-logo-v2.png",
+      "bytes": 1438572,
+      "sha256": "1ea07f6979bf0ebd8e331251b63811a09dc3773e9c35e8fb476bfae2bdee7e53",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.backdrop.title": {
+      "file": "frontend-kit-v1.1.0/backdrop-title.png",
+      "width": 1586,
+      "height": 992,
+      "hasTransparency": false,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "visibleBoundsPixels": [
+        0,
+        0,
+        1586,
+        992
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\backdrop-title.png",
+      "bytes": 3054938,
+      "sha256": "3926fdca0ff79c801f2cc903e26125f6a1d762682b7d7ed01cac161a2681927c",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.banner.greek": {
+      "file": "frontend-kit-v1.1.0/banner-greek.png",
+      "width": 1024,
+      "height": 1536,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBoundsPixels": [
+        55,
+        69,
+        970,
+        1451
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-greek.png",
+      "bytes": 2473959,
+      "sha256": "bc58da595585445c60058323384216a1dc4f1744fbbf9c8ed7122cc382fb617b",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.banner.norse": {
+      "file": "frontend-kit-v1.1.0/banner-norse.png",
+      "width": 1024,
+      "height": 1536,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBoundsPixels": [
+        71,
+        61,
+        953,
+        1428
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-norse.png",
+      "bytes": 2503799,
+      "sha256": "011eb5a1188ec43fa079d020ea117f2ffa117659848a4d66feeff6ccf0f50d3c",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.banner.egyptian": {
+      "file": "frontend-kit-v1.1.0/banner-egyptian.png",
+      "width": 1024,
+      "height": 1536,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBoundsPixels": [
+        79,
+        90,
+        945,
+        1453
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-egyptian.png",
+      "bytes": 2328499,
+      "sha256": "8b7ee0b91bf1225a3fdf616770bbde997612e7c31cd82c9fec0a0320d9a7b97d",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.banner.japanese": {
+      "file": "frontend-kit-v1.1.0/banner-japanese.png",
+      "width": 1024,
+      "height": 1536,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBoundsPixels": [
+        25,
+        59,
+        999,
+        1482
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-japanese.png",
+      "bytes": 2424841,
+      "sha256": "385425b689c7181119092b970d4bf6affb737950a4fa31db7e56c3bb0b12560f",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.banner.celtic": {
+      "file": "frontend-kit-v1.1.0/banner-celtic.png",
+      "width": 1024,
+      "height": 1536,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBoundsPixels": [
+        44,
+        61,
+        981,
+        1446
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-celtic.png",
+      "bytes": 2564909,
+      "sha256": "4b74da80b0d3cec821c607ff4eb3349cea5fe926f57d2350cc0390968371ff90",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.banner.mesoamerican": {
+      "file": "frontend-kit-v1.1.0/banner-mesoamerican.png",
+      "width": 1024,
+      "height": 1536,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "visibleBoundsPixels": [
+        58,
+        70,
+        967,
+        1470
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\banner-mesoamerican.png",
+      "bytes": 2338889,
+      "sha256": "88753251f929954945e4d8eee13cb48a0152f2d0e31de5edb6d627c25edd80f1",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.interface": {
+      "file": "frontend-kit-v1.1.0/icon-interface.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        86,
+        128,
+        1168,
+        1126
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-interface.png",
+      "bytes": 1654381,
+      "sha256": "db73061a1828e1320b7acd2773d8f913229090bfcdf10002eab3b82ee1adda0a",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.display": {
+      "file": "frontend-kit-v1.1.0/icon-display.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        47,
+        49,
+        1208,
+        1187
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-display.png",
+      "bytes": 1253566,
+      "sha256": "11830c9919135ae12324bc4f132a492bf838cc0be360ca049d86f465328a641f",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.audio": {
+      "file": "frontend-kit-v1.1.0/icon-audio.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        26,
+        122,
+        1231,
+        1134
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-audio.png",
+      "bytes": 1166622,
+      "sha256": "9908d6e13a934753026ed830f6285ba9194abf1718727fec4dbd891d508ee206",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.accessibility": {
+      "file": "frontend-kit-v1.1.0/icon-accessibility.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        129,
+        68,
+        1125,
+        1188
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-accessibility.png",
+      "bytes": 1116265,
+      "sha256": "2155fdde143c8fcf7dae4cd13634896d49c54531ec902bf0ed2bb57f86660320",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.controls": {
+      "file": "frontend-kit-v1.1.0/icon-controls.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        17,
+        236,
+        1235,
+        1056
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-controls.png",
+      "bytes": 1506567,
+      "sha256": "8c3c57942d7f6ec0407e87ca979f1ea1b2df12f4fce2dc6d0789aef377d32db8",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.bestiary": {
+      "file": "frontend-kit-v1.1.0/icon-bestiary.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        132,
+        32,
+        1167,
+        1234
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-bestiary.png",
+      "bytes": 1657739,
+      "sha256": "f57e1f6fd83783258d58688f4ee590b33441c0489fb544c41240126ddf3739ad",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.select": {
+      "file": "frontend-kit-v1.1.0/icon-select.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        190,
+        60,
+        1060,
+        1210
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-select.png",
+      "bytes": 944426,
+      "sha256": "1f8dc0322db74757a2d7ae6577641f0f784f3383b708c3cb8e3781b8f896ca07",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.erase": {
+      "file": "frontend-kit-v1.1.0/icon-erase.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        54,
+        85,
+        1207,
+        1192
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-erase.png",
+      "bytes": 1309812,
+      "sha256": "4ffbe54e52ed6468d2eb57c7eddf6977d59ad09847769939895f6447bdbfcdc7",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.terrain": {
+      "file": "frontend-kit-v1.1.0/icon-terrain.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        22,
+        167,
+        1232,
+        1089
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-terrain.png",
+      "bytes": 1234477,
+      "sha256": "b0e53a0e5ae701d1fb258ba42a0e30e351170f35de77f6fca41cfe6282ada2c8",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.forest": {
+      "file": "frontend-kit-v1.1.0/icon-forest.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        108,
+        90,
+        1140,
+        1144
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-forest.png",
+      "bytes": 1358312,
+      "sha256": "2a6c1550ea57bf4637385bb7b421034464cf6e06f8a0367c2f84b90b59feab52",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.water": {
+      "file": "frontend-kit-v1.1.0/icon-water.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        56,
+        226,
+        1200,
+        1102
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-water.png",
+      "bytes": 1079793,
+      "sha256": "4bf9a12793fec4b3c32b1e936fabcdc6bf5137ff080db372a2b915bb36308613",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.road": {
+      "file": "frontend-kit-v1.1.0/icon-road.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        144,
+        57,
+        1131,
+        1202
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-road.png",
+      "bytes": 1499695,
+      "sha256": "099e52f97cac0cd0166d26f1fd0c0575928600b38f9ac110f3b6566d526cff6f",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.hex": {
+      "file": "frontend-kit-v1.1.0/icon-hex.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        119,
+        45,
+        1136,
+        1209
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-hex.png",
+      "bytes": 1392089,
+      "sha256": "2e0800483bd7787ef27dd7163eec8c55f5651ab2e0704cef8411705199235f3d",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.generate": {
+      "file": "frontend-kit-v1.1.0/icon-generate.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        111,
+        71,
+        1138,
+        1182
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-generate.png",
+      "bytes": 1664954,
+      "sha256": "a7aece7a25bd7c5d90ebcba0c9041c6c69934529c9e6898edc933693461d2fa3",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.new-map": {
+      "file": "frontend-kit-v1.1.0/icon-new-map.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        99,
+        47,
+        1198,
+        1195
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-new-map.png",
+      "bytes": 1784896,
+      "sha256": "de54145321968d392f9b139b32df86c55b89480c1f948cc6a0846ed262b743c5",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.import": {
+      "file": "frontend-kit-v1.1.0/icon-import.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        54,
+        75,
+        1200,
+        1182
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-import.png",
+      "bytes": 1452351,
+      "sha256": "9490fc4c0a2be2d4fc7fb2280661fe97cbeb6217855a369ace37e542aefb5b11",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.export": {
+      "file": "frontend-kit-v1.1.0/icon-export.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        109,
+        78,
+        1145,
+        1141
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-export.png",
+      "bytes": 1409094,
+      "sha256": "1400c63af9e1482e4163bfb212f5c14b109bbc60506a52352b22be928da5bd7f",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.delete": {
+      "file": "frontend-kit-v1.1.0/icon-delete.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        144,
+        57,
+        1110,
+        1194
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-delete.png",
+      "bytes": 1632987,
+      "sha256": "abdf89ae54ce54ff258f37a7414492b41a15530ad6b92965ec51032d3ad0a6d9",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.undo": {
+      "file": "frontend-kit-v1.1.0/icon-undo.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        45,
+        132,
+        1206,
+        1127
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-undo.png",
+      "bytes": 885194,
+      "sha256": "39656eadd764697a8ffa80513c3aa8e590cab9e258378c66e14d38736ce0e6ab",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.redo": {
+      "file": "frontend-kit-v1.1.0/icon-redo.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        65,
+        78,
+        1230,
+        1165
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-redo.png",
+      "bytes": 843335,
+      "sha256": "0aecb5a995956c09b981a431c5e7d5904671d1e34549c451b252558f4cd06168",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.artifacts": {
+      "file": "frontend-kit-v1.1.0/icon-artifacts.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        58,
+        66,
+        1197,
+        1184
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-artifacts.png",
+      "bytes": 1601362,
+      "sha256": "6de8aee5f0933cb8db7eeecf62569a04905d379c3fb249a40e68a1c393c5df48",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.warning": {
+      "file": "frontend-kit-v1.1.0/icon-warning.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        41,
+        23,
+        1210,
+        1220
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-warning.png",
+      "bytes": 2035925,
+      "sha256": "0286e4dde68d9c2ace3ccfd9744310199abfe3f51863cf6d90f3432895622172",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.icon.records": {
+      "file": "frontend-kit-v1.1.0/icon-records.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        42,
+        97,
+        1214,
+        1154
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\icon-records.png",
+      "bytes": 2034324,
+      "sha256": "114bf48766279476df3ed003323310496c80a8ea6b8ff9b13288025b89695036",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.chrome.header": {
+      "file": "frontend-kit-v1.1.0/chrome-header.png",
+      "width": 2172,
+      "height": 724,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        8,
+        168,
+        2165,
+        517
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\chrome-header.png",
+      "bytes": 1375053,
+      "sha256": "5c6926dd86d4aec53bcb95cf163496d9e08792a56e575b59b6e12aa7231ea91f",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    },
+    "frontendkit.chrome.round-socket": {
+      "file": "frontend-kit-v1.1.0/chrome-round-socket.png",
+      "width": 1254,
+      "height": 1254,
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPixels": [
+        45,
+        44,
+        1206,
+        1207
+      ],
+      "sourceAbsolute": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-kit-v1.1.0\\chrome-round-socket.png",
+      "bytes": 1784253,
+      "sha256": "dac669aaaa5f5f3962374570e74cbc1c018d5bb1cc14f1b6bdb584f63f944757",
+      "status": "final",
+      "provenance": "Native built-in image generator output. No pixel retouching or resampling."
+    }
+  }
+}

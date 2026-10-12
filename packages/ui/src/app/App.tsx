@@ -28,6 +28,9 @@ import { RandomSetupScreen } from '../screens/RandomSetup';
 import { SummaryScreen, HighScoresScreen } from '../screens/Summary';
 import { MapEditorScreen } from '../screens/MapEditor';
 import { matches } from './keys';
+import { TooltipLayer, contextTheme } from '../components/gui';
+import { RewardTray } from '../components/rewards';
+import { CostList } from '../components/game';
 
 const SCREENS: Record<ScreenId, ComponentType> = {
   'main-menu': MainMenuScreen,
@@ -83,7 +86,9 @@ function useGlobalKeys(store: AppStore) {
           return;
         }
         if (screen === 'adventure' || screen === 'battle') store.openOverlay({ kind: 'pause' });
-        else if (IN_GAME_BACKABLE.includes(screen)) store.back();
+        else if (IN_GAME_BACKABLE.includes(screen)) {
+          if (!store.leaveGuard?.()) store.back();
+        }
         e.preventDefault();
         return;
       }
@@ -131,11 +136,24 @@ function Toasts() {
   const store = useStore();
   return (
     <div className="toasts" aria-live="polite">
-      {store.toasts.map((t) => (
-        <div key={t.id} className={`toast panel ${t.tone === 'error' ? 'toast--error' : ''}`}>
-          {t.text}
-        </div>
-      ))}
+      {store.toasts.map((t) =>
+        t.receipt ? (
+          // A small reward from one completed action: the passing tray, read from the committed result.
+          <div key={t.id} className="toast panel toast--reward" data-testid="reward-toast">
+            <span className="toast__title">{t.text}</span>
+            <RewardTray items={t.receipt.items} label={t.text} compact plain />
+            {t.receipt.costs ? (
+              <span className="toast__costs small">
+                Paid <CostList cost={t.receipt.costs} />
+              </span>
+            ) : null}
+          </div>
+        ) : (
+          <div key={t.id} className={`toast panel ${t.tone === 'error' ? 'toast--error' : ''}`}>
+            {t.text}
+          </div>
+        ),
+      )}
     </div>
   );
 }
@@ -146,10 +164,31 @@ function SceneLayer() {
   return <SceneHostLayer showFrameRate={store.prefs.showFrameRate} />;
 }
 
+/**
+ * 1.1.0 materials: the window frames follow the viewing player's pantheon during
+ * a match (the pantheon being chosen on setup screens; Greek elsewhere). Screens
+ * and dialogs tied to another owner (a town, a battle side) set their own.
+ */
+function ThemeSync() {
+  const store = useStore();
+  const theme = contextTheme(store);
+  useEffect(() => {
+    document.documentElement.dataset.guiTheme = theme;
+  }, [theme]);
+  return null;
+}
+
+/** Themed tooltips (hover after a short delay, keyboard focus at once) unless the player turned tooltips off. */
+function Tooltips() {
+  const store = useStore();
+  return store.prefs.tooltips ? <TooltipLayer delayMs={320} /> : null;
+}
+
 function Shell({ store }: { store: AppStore }) {
   useGlobalKeys(store);
   return (
     <>
+      <ThemeSync />
       <SceneLayer />
       <Router />
       <OverlayLayer />
@@ -157,6 +196,7 @@ function Shell({ store }: { store: AppStore }) {
       <HintPanel />
       <StoryLayer />
       <Toasts />
+      <Tooltips />
     </>
   );
 }

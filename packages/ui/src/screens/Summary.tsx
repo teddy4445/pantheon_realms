@@ -11,12 +11,14 @@ import { contenderIds, ensureStats, matchScore, scenarioMission, type MatchState
 import { campaignScore } from '@pr/session';
 import { useStore } from '../app/context';
 import { clearHighScores, loadHighScores, sortTable, type HighScoreEntry, type ScoreTable } from '../app/records';
-import { Button, Chip, Panel, SectionTitle, Tabs, EmptyState } from '../components/kit';
+import { Button, Chip, Panel, SectionTitle, Tabs } from '../components/kit';
 import { Emblem } from '../components/art';
 import { ScreenHeader } from '../components/game';
+import { EmptyArchive, FrontendShell } from '../components/frontend';
 import { formatNumber, relativeTime } from '../app/view';
 import { viewerWon } from '../app/moments';
 import { resultSplashArt } from '../assets/momentArt';
+import { resolveAsset } from '../assets/manifest';
 import { ResultSplash } from '../components/moments';
 
 type Metric = 'armyValue' | 'income' | 'towns' | 'gold';
@@ -287,24 +289,61 @@ export function HighScoresScreen() {
     };
   }, [store]);
   const list = useMemo(() => (entries ? sortTable(entries, table) : []), [entries, table]);
+  // Hall of Records (1.1.0 handoff screen 13): the same local tables on the library backdrop; nothing online.
+  const rankArt = resolveAsset('frontendkit.icon.records').url || null;
+  const tabs = <Tabs label="Table" tabs={[{ id: 'skirmish' as const, label: 'Skirmish' }, { id: 'campaign' as const, label: 'Campaign' }]} value={table} onChange={setTable} />;
   return (
-    <div className="screen highscores-screen" data-testid="high-scores">
-      <ScreenHeader
-        title="High Scores"
-        subtitle="The best finished games on this computer"
-        right={<Tabs label="Table" tabs={[{ id: 'skirmish' as const, label: 'Skirmish' }, { id: 'campaign' as const, label: 'Campaign' }]} value={table} onChange={setTable} />}
-      />
-      <Panel className="highscores-panel" bodyClassName="scroll">
+    <FrontendShell
+      backdrop="library"
+      title="Hall of Records"
+      className="highscores-screen fe-records"
+      testId="high-scores"
+      label="Hall of Records"
+      onBack={() => store.back()}
+      footer={
+        <>
+          <Button onClick={() => store.back()} icon="back">
+            Back
+          </Button>
+          <span className="fe-records__note small">The best finished games on this computer. Clearing the tables keeps every save.</span>
+          <Button
+            variant="ghost"
+            disabled={!entries?.length}
+            disabledReason="There are no records to clear"
+            onClick={() =>
+              store.confirm(
+                'Clear all records?',
+                'Both tables on this computer are emptied. Saves are not affected.',
+                'Clear',
+                () => {
+                  void clearHighScores(store.platform.records).then(() => setEntries([]));
+                },
+                { danger: true },
+              )
+            }
+          >
+            Clear tables
+          </Button>
+        </>
+      }
+    >
+      <div className="fe-records__tabs">{tabs}</div>
+      <Panel className="highscores-panel fe-records__panel" bodyClassName="scroll" framed surface="parchment">
         {entries === null ? (
-          <EmptyState>Loading…</EmptyState>
+          <p className="dim" role="status">
+            Reading the records…
+          </p>
         ) : list.length === 0 ? (
-          <EmptyState>{table === 'campaign' ? 'Finish a campaign to set the first score.' : 'Finish a skirmish to set the first score.'}</EmptyState>
+          <EmptyArchive title={table === 'campaign' ? 'No campaign records yet' : 'No skirmish records yet'} testId="records-empty">
+            {table === 'campaign' ? 'Finish a campaign to set the first score.' : 'Finish a skirmish or a random map to set the first score.'}
+          </EmptyArchive>
         ) : (
-          <table className="table" data-testid="highscore-table">
+          <table className="table fe-records__table" data-testid="highscore-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th className="num">#</th>
                 <th>Player</th>
+                <th>Pantheon</th>
                 <th>{table === 'campaign' ? 'Campaign' : 'Map'}</th>
                 <th>Result</th>
                 <th className="num">Days</th>
@@ -316,11 +355,17 @@ export function HighScoresScreen() {
             <tbody>
               {list.map((e, i) => (
                 <tr key={e.key}>
-                  <td className="num">{i + 1}</td>
+                  <td className="num fe-records__rank">
+                    {/* The rank in the frontend kit's laurel medallion (live number). */}
+                    <span className="fe-rank" style={rankArt ? { backgroundImage: `url("${rankArt}")` } : undefined}>
+                      {i + 1}
+                    </span>
+                  </td>
+                  <td>{e.playerName}</td>
                   <td>
                     <span className="row gap">
                       {catalog.pantheons[e.pantheonId] ? <Emblem catalog={catalog} pantheonId={e.pantheonId} size="1.4rem" /> : null}
-                      {e.playerName}
+                      {catalog.pantheons[e.pantheonId]?.name ?? '—'}
                     </span>
                   </td>
                   <td>{e.title}</td>
@@ -328,29 +373,15 @@ export function HighScoresScreen() {
                   <td className="num">{e.days}</td>
                   <td>{e.difficultyId ? (catalog.difficulties?.[e.difficultyId]?.name ?? e.difficultyId) : '—'}</td>
                   <td className="num">{formatNumber(e.score)}</td>
-                  <td className="small dim">{relativeTime(e.recordedAt)}</td>
+                  <td className="small" title={e.recordedAt ? new Date(e.recordedAt).toLocaleString() : undefined}>
+                    {relativeTime(e.recordedAt)}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </Panel>
-      <footer className="setup-footer">
-        <Button onClick={() => store.back()} icon="back">
-          Back
-        </Button>
-        <Button
-          variant="ghost"
-          disabled={!entries?.length}
-          onClick={() =>
-            store.confirm('Clear all high scores?', 'Both tables on this computer are emptied. Saves are not affected.', 'Clear', () => {
-              void clearHighScores(store.platform.records).then(() => setEntries([]));
-            }, { danger: true })
-          }
-        >
-          Clear tables
-        </Button>
-      </footer>
-    </div>
+    </FrontendShell>
   );
 }

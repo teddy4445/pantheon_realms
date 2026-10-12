@@ -1,0 +1,1605 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\playwright.audit.config.ts",
+    "rootDir": "C:/Users/lazeb/Desktop/pantheon_realms/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "docs/gui-audit-1.1.2/test-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-audit-1.1.2/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/lazeb/Desktop/pantheon_realms/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "frontend110.spec.ts",
+          "gui110.spec.ts",
+          "encounters.spec.ts",
+          "heroPortraits.spec.ts"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "encounters.spec.ts",
+      "file": "encounters.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "hero meeting: the camp of the acting hero, each hero as themselves, every slot; one click sends one transfer",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 163053,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\fixtures.ts",
+                        "column": 24,
+                        "line": 55
+                      },
+                      "message": "Error: page.waitForEvent: Test timeout of 150000ms exceeded.\n=========================== logs ===========================\nwaiting for event \"filechooser\"\n============================================================\n\n   at fixtures.ts:55\n\n  53 | export async function importAndLoad(page: Page, file: string): Promise<void> {\n  54 |   await page.getByTestId('menu-load').click();\n> 55 |   const chooser = page.waitForEvent('filechooser');\n     |                        ^\n  56 |   await page.getByRole('button', { name: /Import/ }).click();\n  57 |   await (await chooser).setFiles(file);\n  58 |   const slot = page.getByTestId('save-manual-1');\n    at importAndLoad (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\fixtures.ts:55:24)\n    at load (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:33:3)\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:67:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:39:45.552Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\encounters-hero-meeting-th-83202-ne-click-sends-one-transfer\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d684103f37d2fb013521-b6e71d640bf04ff2c467",
+          "file": "encounters.spec.ts",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "garrison exchange: the town under its own painting and name, no invented second hero",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 71054,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:42:52.173Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d684103f37d2fb013521-2adecbf379fe08189a81",
+          "file": "encounters.spec.ts",
+          "line": 112,
+          "column": 1
+        },
+        {
+          "title": "briefing scroll: every visible objective, real speakers, and Begin closes it without a new game",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 65515,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:44:04.920Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d684103f37d2fb013521-f833ba5de60df621fa33",
+          "file": "encounters.spec.ts",
+          "line": 134,
+          "column": 1
+        },
+        {
+          "title": "a chest pays once: a passing reward tray from the committed gold, even on a double-clicked Confirm",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 189282,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\helpers.ts",
+                        "column": 24,
+                        "line": 60
+                      },
+                      "message": "Error: page.waitForTimeout: Test timeout of 180000ms exceeded.\n\n   at helpers.ts:60\n\n  58 |   for (let i = 0; i < 30 && !p; i++) {\n  59 |     p = await page.evaluate(([a, b]) => (globalThis as unknown as { __prProject: (k: string, a: number, b: number) => { x: number; y: number } | null }).__prProject('adventure', a!, b!), [q, r]);\n> 60 |     if (!p) await page.waitForTimeout(100);\n     |                        ^\n  61 |   }\n  62 |   if (!p) throw new Error(`Hex ${q},${r} is not on screen`);\n  63 |   await page.mouse.move(p.x, p.y);\n    at clickHex (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\helpers.ts:60:24)\n    at walkTo (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:181:3)\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:193:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:45:12.376Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\encounters-a-chest-pays-on-40713-on-a-double-clicked-Confirm\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\encounters-a-chest-pays-on-40713-on-a-double-clicked-Confirm\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d684103f37d2fb013521-00422116ec95959b3575",
+          "file": "encounters.spec.ts",
+          "line": 185,
+          "column": 1
+        },
+        {
+          "title": "a quest hut shows its receipt once: the tray of committed rewards; Continue only closes it; a reload shows none",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 103132,
+                  "error": {
+                    "message": "Error: Hex 27,11 is not on screen",
+                    "stack": "Error: Hex 27,11 is not on screen\n    at clickHex (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\helpers.ts:62:17)\n    at walkTo (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:181:3)\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:228:3",
+                    "location": {
+                      "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\helpers.ts",
+                      "column": 17,
+                      "line": 62
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mhelpers.ts:62\n\n  60 |     if (!p) await page.waitForTimeout(100);\n  61 |   }\n> 62 |   if (!p) throw new Error(`Hex ${q},${r} is not on screen`);\n     |                 ^\n  63 |   await page.mouse.move(p.x, p.y);\n  64 |   await page.waitForTimeout(60);\n  65 |   await page.mouse.down({ button });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\helpers.ts",
+                        "column": 17,
+                        "line": 62
+                      },
+                      "message": "Error: Hex 27,11 is not on screen\n\n   at helpers.ts:62\n\n  60 |     if (!p) await page.waitForTimeout(100);\n  61 |   }\n> 62 |   if (!p) throw new Error(`Hex ${q},${r} is not on screen`);\n     |                 ^\n  63 |   await page.mouse.move(p.x, p.y);\n  64 |   await page.waitForTimeout(60);\n  65 |   await page.mouse.down({ button });\n    at clickHex (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\helpers.ts:62:17)\n    at walkTo (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:181:3)\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\encounters.spec.ts:228:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:49:50.844Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\encounters-a-quest-hut-sho-ff1e8-oses-it-a-reload-shows-none\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\encounters-a-quest-hut-sho-ff1e8-oses-it-a-reload-shows-none\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\helpers.ts",
+                    "column": 17,
+                    "line": 62
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d684103f37d2fb013521-bac786d3533bc0b0a080",
+          "file": "encounters.spec.ts",
+          "line": 212,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "frontend110.spec.ts",
+      "file": "frontend110.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "title hall and New Game: the Records link, the live version, four illustrated modes from the catalog",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 42218,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:51:55.399Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-ffa2f7703ab93de7dedd",
+          "file": "frontend110.spec.ts",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "Campaign Chronicles: six campaigns, a read-only mission outline, the campaign difficulty; Begin opens the first mission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 29668,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:52:39.819Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-ff15bb3996f5ba955db2",
+          "file": "frontend110.spec.ts",
+          "line": 105,
+          "column": 1
+        },
+        {
+          "title": "Skirmish Atlas: an authored map goes to its seats (from map.players), the legacy scenario to the pantheon choice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 27997,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:53:09.626Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-d271430e23be3c4b1885",
+          "file": "frontend110.spec.ts",
+          "line": 140,
+          "column": 1
+        },
+        {
+          "title": "Random Map: nine types by exact id, Twin Continents for two empires, every choice survives the chapters, no seed; the match uses them",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 36959,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:53:38.124Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-32a8a98c07c450bf3044",
+          "file": "frontend110.spec.ts",
+          "line": 164,
+          "column": 1
+        },
+        {
+          "title": "encyclopedia: eight sections, the pantheon filter with Neutral, search with no results and Clear; filter and scroll kept after a creature page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 31114,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:54:15.374Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-111acdf45a6efe58df9e",
+          "file": "frontend110.spec.ts",
+          "line": 230,
+          "column": 1
+        },
+        {
+          "title": "settings: seven sections; Apply, Revert and Restore defaults; Back and Escape with changes ask, and Keep editing has the focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 26702,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:54:46.926Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-9a816aed8f3bbc0253f7",
+          "file": "frontend110.spec.ts",
+          "line": 298,
+          "column": 1
+        },
+        {
+          "title": "Saved Journeys: an empty archive from the title (Save disabled); an older save is kept with its reason; overwrite and load ask with Cancel focused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 55304,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:55:13.701Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-3cbdd8b0dce1b5bd5bcf",
+          "file": "frontend110.spec.ts",
+          "line": 355,
+          "column": 1
+        },
+        {
+          "title": "map library: your maps apart from the built-in templates; the empty archive offers Import; a copy, then Save, fills the library",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 31988,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:56:09.668Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-16de6f2252ea47d74340",
+          "file": "frontend110.spec.ts",
+          "line": 431,
+          "column": 1
+        },
+        {
+          "title": "nested web base: the pre-game art loads relative to the page, never from the site root or a local disk path",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 51779,
+                  "error": {
+                    "message": "Error: route.fetch: read ECONNRESET\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:5196/frontend-v1.1.0/random-lake_isle.png\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36\u001b[22m\n\u001b[2m    - accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - accept-language: en-US\u001b[22m\n\u001b[2m    - referer: http://127.0.0.1:5196/nested/deeper/?e2e\u001b[22m\n\u001b[2m    - sec-ch-ua: \"Chromium\";v=\"154\", \"Google Chrome\";v=\"154\", \"Not A(Brand\";v=\"99\"\u001b[22m\n\u001b[2m    - sec-ch-ua-mobile: ?0\u001b[22m\n\u001b[2m    - sec-ch-ua-platform: \"Windows\"\u001b[22m\n",
+                    "stack": "Error: route.fetch: read ECONNRESET\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:5196/frontend-v1.1.0/random-lake_isle.png\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36\u001b[22m\n\u001b[2m    - accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - accept-language: en-US\u001b[22m\n\u001b[2m    - referer: http://127.0.0.1:5196/nested/deeper/?e2e\u001b[22m\n\u001b[2m    - sec-ch-ua: \"Chromium\";v=\"154\", \"Google Chrome\";v=\"154\", \"Not A(Brand\";v=\"99\"\u001b[22m\n\u001b[2m    - sec-ch-ua-mobile: ?0\u001b[22m\n\u001b[2m    - sec-ch-ua-platform: \"Windows\"\u001b[22m\n\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts:463:34",
+                    "location": {
+                      "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts",
+                      "column": 34,
+                      "line": 463
+                    },
+                    "snippet": "  461 |     const u = new URL(route.request().url());\n  462 |     u.pathname = u.pathname.replace('/nested/deeper', '');\n> 463 |     const response = await route.fetch({ url: u.toString() });\n      |                                  ^\n  464 |     await route.fulfill({ response });\n  465 |   });\n  466 |   await page.goto('/nested/deeper/?e2e', { waitUntil: 'networkidle' });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts",
+                        "column": 34,
+                        "line": 463
+                      },
+                      "message": "Error: route.fetch: read ECONNRESET\nCall log:\n\u001b[2m  - → GET http://127.0.0.1:5196/frontend-v1.1.0/random-lake_isle.png\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36\u001b[22m\n\u001b[2m    - accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - accept-language: en-US\u001b[22m\n\u001b[2m    - referer: http://127.0.0.1:5196/nested/deeper/?e2e\u001b[22m\n\u001b[2m    - sec-ch-ua: \"Chromium\";v=\"154\", \"Google Chrome\";v=\"154\", \"Not A(Brand\";v=\"99\"\u001b[22m\n\u001b[2m    - sec-ch-ua-mobile: ?0\u001b[22m\n\u001b[2m    - sec-ch-ua-platform: \"Windows\"\u001b[22m\n\n\n  461 |     const u = new URL(route.request().url());\n  462 |     u.pathname = u.pathname.replace('/nested/deeper', '');\n> 463 |     const response = await route.fetch({ url: u.toString() });\n      |                                  ^\n  464 |     await route.fulfill({ response });\n  465 |   });\n  466 |   await page.goto('/nested/deeper/?e2e', { waitUntil: 'networkidle' });\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts:463:34"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts",
+                        "column": 33,
+                        "line": 33
+                      },
+                      "message": "Error: locator.evaluateAll: Test ended.\n\n  31 | /** Every <img> under the locator has decoded (not just requested). */\n  32 | async function picturesDecoded(page: Page, selector: string): Promise<{ total: number; broken: string[] }> {\n> 33 |   return page.locator(selector).evaluateAll(async (els) => {\n     |                                 ^\n  34 |     const imgs = els.flatMap((e) => (e instanceof HTMLImageElement ? [e] : [...e.querySelectorAll('img')]));\n  35 |     for (const i of imgs) i.loading = 'eager';\n  36 |     await Promise.all(imgs.map((i) => i.decode().catch(() => undefined)));\n    at picturesDecoded (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts:33:33)\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts:470:23"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:56:41.986Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\frontend110-nested-web-bas-52415-e-root-or-a-local-disk-path\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts",
+                    "column": 34,
+                    "line": 463
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-2823b6cefcf97f231dd3",
+          "file": "frontend110.spec.ts",
+          "line": 456,
+          "column": 1
+        },
+        {
+          "title": "frontend kit: every piece decodes; finished pennants, section and editor icons, the warning seal and the records medallion are in place",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 100841,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:57:54.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-5f896eb01e43a30463c9",
+          "file": "frontend110.spec.ts",
+          "line": 481,
+          "column": 1
+        },
+        {
+          "title": "every pre-game screen at 1600x1000: no horizontal page scroll, the footer and its actions in the window",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 109455,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T05:59:36.507Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-4b49d663312e647fd8b0",
+          "file": "frontend110.spec.ts",
+          "line": 554,
+          "column": 3
+        },
+        {
+          "title": "every pre-game screen at 1280x720: no horizontal page scroll, the footer and its actions in the window",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 111736,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:01:26.195Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-7db92dac88ee41cd3422",
+          "file": "frontend110.spec.ts",
+          "line": 554,
+          "column": 3
+        },
+        {
+          "title": "every pre-game screen at 1920x1080: no horizontal page scroll, the footer and its actions in the window",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 155934,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts",
+                        "column": 44,
+                        "line": 561
+                      },
+                      "message": "Error: page.screenshot: Test ended.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\n\n  559 |     await page.goto('/?e2e', { waitUntil: 'networkidle' });\n  560 |     await noHorizontalOverflow(page);\n> 561 |     const shot = async (n: string) => page.screenshot({ path: `${OUT}/${size.name}/${n}.png` });\n      |                                            ^\n  562 |     await shot('title');\n  563 |     await page.getByTestId('menu-new').click();\n  564 |     await noHorizontalOverflow(page);\n    at shot (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts:561:44)\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts:585:13"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:03:18.256Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\frontend110-every-pre-game-5bb92-d-its-actions-in-the-window\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-86cc6613ce4bf97476d8",
+          "file": "frontend110.spec.ts",
+          "line": 554,
+          "column": 3
+        },
+        {
+          "title": "every pre-game screen at narrow-800x900: no horizontal page scroll, the footer and its actions in the window",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 158259,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 150000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts",
+                        "column": 53,
+                        "line": 581
+                      },
+                      "message": "Error: locator.click: Test ended.\nCall log:\n\u001b[2m  - waiting for getByTestId('random-chapter-rules')\u001b[22m\n\n\n  579 |     await page.getByTestId('mode-random').click();\n  580 |     for (const c of ['land', 'empires', 'rules']) {\n> 581 |       await page.getByTestId(`random-chapter-${c}`).click();\n      |                                                     ^\n  582 |       await noHorizontalOverflow(page);\n  583 |       await footerVisible(page);\n  584 |       await expect(page.getByTestId('random-start')).toBeInViewport();\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\frontend110.spec.ts:581:53"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:06:34.799Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\frontend110-every-pre-game-75753-d-its-actions-in-the-window\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-7a7ae637fba21e0bcc9c",
+          "file": "frontend110.spec.ts",
+          "line": 554,
+          "column": 3
+        },
+        {
+          "title": "every pre-game screen at zoom200-1600x1000: no horizontal page scroll, the footer and its actions in the window",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 69884,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:09:34.339Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "02999c0a2f210358b522-bf3d7d24fd5a234d5113",
+          "file": "frontend110.spec.ts",
+          "line": 554,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "gui110.spec.ts",
+      "file": "gui110.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "treasure: a tile only selects, Decide later claims nothing, Confirm claims once (double click), a claimed chest stays closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 71037,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:10:44.866Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-a00a7c24179e259aa65b",
+          "file": "gui110.spec.ts",
+          "line": 64,
+          "column": 1
+        },
+        {
+          "title": "quest hut: what is asked and what is given read as one exchange; a missing delivery explains itself",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 55281,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:11:55.950Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-0f1eb74a1eff7e67c434",
+          "file": "gui110.spec.ts",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "marketplace: pay and receive apart, rate and holdings after the trade; a double click trades once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 25581,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:12:51.707Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-c2c1feb4337c75cd65d6",
+          "file": "gui110.spec.ts",
+          "line": 128,
+          "column": 1
+        },
+        {
+          "title": "town: buildings answer hover and focus, the construction list holds every location, building highlights only the new one",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 26601,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:13:17.343Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-0b4941f6decc91b48dfb",
+          "file": "gui110.spec.ts",
+          "line": 157,
+          "column": 1
+        },
+        {
+          "title": "battle: counts stay on the board; health shows on the active and the hovered stack; the inspection card never blocks the field",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17600,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:13:43.982Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-5d39ddc19f23923d99fc",
+          "file": "gui110.spec.ts",
+          "line": 189,
+          "column": 1
+        },
+        {
+          "title": "setup: six banners are one radio group with arrow keys; the patron and roster follow the choice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13881,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:14:02.179Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-aee59f8869513d6cb1db",
+          "file": "gui110.spec.ts",
+          "line": 215,
+          "column": 1
+        },
+        {
+          "title": "journal and encyclopedia: an open book with every objective; the codex keeps all sections and opens each pantheon",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 24235,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:14:16.124Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-e48a2a6b2a7fb829902c",
+          "file": "gui110.spec.ts",
+          "line": 235,
+          "column": 1
+        },
+        {
+          "title": "accessibility: focus is trapped in a dialog and returns to its opener; reduced motion and high contrast hold",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 25173,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:14:40.446Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-f83763dd3d30f7599b42",
+          "file": "gui110.spec.ts",
+          "line": 267,
+          "column": 1
+        },
+        {
+          "title": "an older save loads into the 1.1.0 interface (the delivered 1.0.0 siege review save, when present)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "PR_OLD_SAVE not set",
+                  "location": {
+                    "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\gui110.spec.ts",
+                    "line": 299,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 1253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:15:05.746Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "PR_OLD_SAVE not set",
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\gui110.spec.ts",
+                        "line": 299,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-e494626b7d6b3b6451aa",
+          "file": "gui110.spec.ts",
+          "line": 297,
+          "column": 1
+        },
+        {
+          "title": "resolution 1920×1080: adventure, town, journal and a dialog keep their primary actions on screen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 73687,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:15:07.214Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-10841027372bd9520225",
+          "file": "gui110.spec.ts",
+          "line": 312,
+          "column": 3
+        },
+        {
+          "title": "resolution 1600×1000: adventure, town, journal and a dialog keep their primary actions on screen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 77069,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:16:21.065Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-604fb59b396e20e1568d",
+          "file": "gui110.spec.ts",
+          "line": 312,
+          "column": 3
+        },
+        {
+          "title": "resolution 1280×720: adventure, town, journal and a dialog keep their primary actions on screen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 26530,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:17:38.208Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a1756cf2473a5e37e20d-a7173c2c361432ba087b",
+          "file": "gui110.spec.ts",
+          "line": 312,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "heroPortraits.spec.ts",
+      "file": "heroPortraits.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "greek: Lodge candidates and the hero screen show each hero's own bust",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 62105,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:18:04.902Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d96e9ec5d9d02af701a3-dd66b7b9c929d0cf068d",
+          "file": "heroPortraits.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "norse: Lodge candidates and the hero screen show each hero's own bust",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 63882,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:19:07.049Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d96e9ec5d9d02af701a3-1866e634cdfc14601417",
+          "file": "heroPortraits.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "egyptian: Lodge candidates and the hero screen show each hero's own bust",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 260431,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\heroPortraits.spec.ts",
+                        "column": 33,
+                        "line": 55
+                      },
+                      "message": "Error: locator.evaluateAll: Test timeout of 240000ms exceeded.\n\n  53 |\n  54 | async function decoded(page: Page, selector: string): Promise<boolean[]> {\n> 55 |   return page.locator(selector).evaluateAll(async (els) =>\n     |                                 ^\n  56 |     Promise.all(\n  57 |       (els as HTMLImageElement[]).map(async (img) => {\n  58 |         img.loading = 'eager';\n    at decoded (C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\heroPortraits.spec.ts:55:33)\n    at C:\\Users\\lazeb\\Desktop\\pantheon_realms\\tests\\e2e\\heroPortraits.spec.ts:125:19"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:20:10.995Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\gui-audit-1.1.2\\test-artifacts\\heroPortraits-egyptian-Lod-a330e-n-show-each-hero-s-own-bust\\error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d96e9ec5d9d02af701a3-6b20b505d2708d43f128",
+          "file": "heroPortraits.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "japanese: Lodge candidates and the hero screen show each hero's own bust",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 90445,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:24:50.479Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d96e9ec5d9d02af701a3-cca187140a17832a82ad",
+          "file": "heroPortraits.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "celtic: Lodge candidates and the hero screen show each hero's own bust",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 66349,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:26:22.296Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d96e9ec5d9d02af701a3-b0815c8031f1cfead0d8",
+          "file": "heroPortraits.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "mesoamerican: Lodge candidates and the hero screen show each hero's own bust",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 66466,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T06:27:28.682Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d96e9ec5d9d02af701a3-d13ad3235ecc3bf92afc",
+          "file": "heroPortraits.spec.ts",
+          "line": 67,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-11T05:36:17.482Z",
+    "duration": 3138770.644,
+    "expected": 30,
+    "skipped": 1,
+    "unexpected": 7,
+    "flaky": 0
+  }
+}

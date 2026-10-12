@@ -5,12 +5,15 @@
  * whether the map's unowned towns are used (2026-10-07).
  * The seat count is the map's. Start compiles the map for these seats and opens
  * the adventure map, like a random map (no briefing).
+ *
+ * 1.1.0 ("Gather the Empires"): the map's painting and facts beside one row per
+ * seat under its pantheon's banner; Back and Start stay in the footer.
  */
 import { useState } from 'react';
 import { SKIRMISH_PLAYER_COLORS, compileSkirmishMap } from '@pr/session';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Segmented } from '../components/kit';
-import { ScreenHeader } from '../components/game';
+import { FrontendShell } from '../components/frontend';
 import { SkirmishMapThumb } from '../components/mapPreview';
 import { SeatRow, patchSeat, patronsOf, type SeatDraft } from '../components/seats';
 import { DifficultyPicker, skirmishMapFacts } from './Setup';
@@ -30,15 +33,18 @@ export function MapSetupScreen() {
   const [unowned, setUnowned] = useState<'none' | 'own' | 'other'>('none');
   if (!def) {
     return (
-      <div className="setup-screen">
-        <ScreenHeader title="Skirmish Map" />
-        <p className="note">This map is not in this build.</p>
-        <footer className="setup-footer">
+      <FrontendShell
+        backdrop="atlas"
+        title="Skirmish Map"
+        className="setup-screen"
+        footer={
           <Button onClick={() => store.back()} icon="back">
             Back
           </Button>
-        </footer>
-      </div>
+        }
+      >
+        <p className="note">This map is not in this build.</p>
+      </FrontendShell>
     );
   }
   const freeSpots = def.map.sites.filter((x) => x.kind === 'town' && x.owner === undefined).length;
@@ -70,10 +76,28 @@ export function MapSetupScreen() {
     store.startGenerated(compiled, seats[0]!.controller === 'human' ? seats[0]!.godId : null, { difficultyId: anyAi ? difficulty : 'normal', playerNames, patronGodIds });
   };
   return (
-    <div className="setup-screen">
-      <ScreenHeader title={def.name} />
+    <FrontendShell
+      backdrop="atlas"
+      title={def.name}
+      className="setup-screen"
+      footer={
+        <>
+          <Button onClick={() => store.back()} icon="back">
+            Back
+          </Button>
+          {reason ? (
+            <div className="random-setup__reason" role="status" data-testid="map-setup-reason">
+              {reason}
+            </div>
+          ) : null}
+          <Button variant="primary" size="large" icon="play" className="random-setup__start" disabled={!!reason} disabledReason={reason} onClick={start} data-testid="map-setup-start">
+            Start
+          </Button>
+        </>
+      }
+    >
       <div className="map-setup">
-        <Panel className="map-setup__map" bodyClassName="scroll" title="The map" headerIcon="map">
+        <Panel className="map-setup__map" bodyClassName="scroll" title="The map" framed="compact" surface="parchment">
           <SkirmishMapThumb doc={def.map} assetId={def.thumbnailAssetId} large style={{ width: '100%', aspectRatio: '16 / 9', height: 'auto' }} />
           <div className="tagline">{def.tagline}</div>
           <dl className="map-detail__facts">
@@ -85,7 +109,7 @@ export function MapSetupScreen() {
             ))}
           </dl>
         </Panel>
-        <Panel className="random-setup__panel map-setup__seats" bodyClassName="random-setup__body">
+        <Panel className="random-setup__panel map-setup__seats" bodyClassName="random-setup__body" framed>
           <div className="random-setup__scroll scroll">
             <SectionTitle>Empires</SectionTitle>
             <p className="small dim">
@@ -127,21 +151,8 @@ export function MapSetupScreen() {
               </>
             ) : null}
           </div>
-          <div className="random-setup__actions">
-            <Button onClick={() => store.back()} icon="back">
-              Back
-            </Button>
-            <Button variant="primary" size="large" icon="play" className="random-setup__start" disabled={!!reason} disabledReason={reason} onClick={start} data-testid="map-setup-start">
-              Start
-            </Button>
-            {reason ? (
-              <div className="random-setup__reason" role="status" data-testid="map-setup-reason">
-                {reason}
-              </div>
-            ) : null}
-          </div>
         </Panel>
       </div>
-    </div>
+    </FrontendShell>
   );
 }

@@ -1,0 +1,95 @@
+PANTHEON REALMS — 1.1.2 GUI AUDIT AND SIX-PANTHEON SIEGE GATE REPLACEMENT
+Prepared 2026-10-11. Read audit-results.json and index.html alongside this document.
+
+PURPOSE AND SCOPE
+Review the current implementation, fix the concrete problems below, and integrate the new gate art. This delivery adds documentation, screenshots and assets only; it does not apply game source fixes. The review used the latest local source, package version 1.1.2, commit 87456807228fb0072777cb09e1d586f85a797ffc, served by Vite in isolated Chrome profiles. It is not certification of the installed Electron executable or a packaged GitHub Pages build. Representative rare states were staged in memory for screenshots; separate existing Playwright tests exercised real UI actions. Do not mistake a staged screenshot for a completed gameplay test.
+
+FUNCTIONAL RESULT
+The initial run recorded 30 passed, 7 failed and 1 skipped. A clean rerun passed 6 of those 7 failures, including hero meeting transfers, chest and quest reward receipts, Egyptian portraits, 1920 x 1080 and 800 x 900 pre-game layouts. Combined latest outcomes: 36 passed, 1 environment-incompatible failure, 1 skipped. All six faction portrait integration tests passed.
+The remaining nested-web test reaches its explicit “no local disk paths in requests” assertion and rejects Vite's expected /@fs/C:/... development-module URLs. The pre-game artwork decoding and nested artwork-path assertions before that point passed. Run this test against a built static client before treating it as a shipping asset-path defect; do not remove useful production assertions just to make a dev-server run green. The skipped old-save test did not find its expected fixture. Neither packaged-path safety nor old-save compatibility is certified by this audit.
+
+SOURCE AND DESTINATION PATHS
+Source project: C:\Users\lazeb\Desktop\pantheon_realms
+Handoff and screenshot review: C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-audit-1.1.2\
+New runtime gate pack: C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\siege-gates-v3\
+Editable-generation provenance/native masters: C:\Users\lazeb\Desktop\pantheon_realms\assets-source\siege-gates-v3\
+If your Claude Code checkout is a DIFFERENT project, COPY the manifest and its six referenced PNGs into YOUR_PROJECT\assets-runtime\siege-gates-v3\. Copy the source pack to YOUR_PROJECT\assets-source\siege-gates-v3\ if you retain art provenance. Do not reference C: paths from shipped game code. Keep runtime paths relative to the game's asset base. Copy this review into YOUR_PROJECT\docs\gui-audit-1.1.2\ for implementation context.
+
+FIX 1 — SIEGE GATE ORIENTATION, REGISTRATION AND BREACH (HIGH PRIORITY)
+Evidence: siege-after-<pantheon>.png shows the existing 1.1.2 implementation. Its broad gatehouse faces a different direction from the narrow vertical wall and horizontal bridge. It reads as a separate miniature building, not an opening in the wall.
+The new gate faces screen-left (the attackers), with north/south wall connectors and a screen-left-to-right passage. There are six independent faction atlases and three states each: intact, damaged, rubble/breached. The final selected files are gate.greek-v5.png, gate.norse-v5.png, gate.egyptian-v5.png, gate.japanese-v5.png, gate.celtic-v5.png and gate.mesoamerican-v5.png. Earlier revisions are drafts; do not register them.
+All six are native 1536 x 1024 RGBA PNGs, three 512 x 1024 frames across. No upscaling, code retouching or baked ground was used. The v5 suffix is an artwork revision, not a game version. The pack folder remains siege-gates-v3 to distinguish this gate-only delivery from the previously integrated siege-v2 environment pack.
+
+Implementation entry points:
+  packages/ui/src/assets/manifest.ts — currently imports siege-v2/manifest.json and spreads SIEGE_V2.siege into registerSpriteManifest.
+  packages/presentation/src/battle.ts — siegeDef / drawStructures select HP-state sprites and place gate, tower and keep art.
+  packages/presentation/src/siegeLayout.ts — siegeWallPoint, siegeSpan, SIEGE_HEX and SIEGE_ROW.
+  packages/presentation/src/sprites.ts — StaticSpriteDefinition frame, anchor and pixelsPerHex.
+Import the new manifest and spread its .siege LAST after existing siege sprite mappings. It contains ONLY 18 gate keys, gate.intact.<pantheon>, gate.damaged.<pantheon>, gate.rubble.<pantheon>. Keep v2 backgrounds, walls, towers, keep, palette and ground system.
+
+Minimal registration sketch for packages/ui/src/assets/manifest.ts:
+  import siegeGateV3 from '../../../../assets-runtime/siege-gates-v3/manifest.json';
+  const GATE_V3 = siegeGateV3 as unknown as { siege: SpriteManifest['siege'] };
+  // Inside the existing registerSpriteManifest object:
+  siege: {
+    ...(spriteManifestFile as unknown as SpriteManifest).siege,
+    ...SIEGE_V2.siege,
+    ...GATE_V3.siege,
+  }
+Keep the existing relative asset resolver and surrounding registration fields. This is a patch sketch, not a replacement for the entire manifest module.
+Use the supplied individual frame rectangles and anchors. The drawings are not equally centered inside their cells; do NOT replace every anchor with [0.5, 0.5]. Do not auto-trim each damage state and then recenter its silhouette: this makes the gate jump as HP changes. Register the north wall axis and passage center, as recorded in manifest.json.
+The supplied scale is a starting fit tested with the current renderer, not permission to ignore joins. At current constants SIEGE_RADIUS=40, SIEGE_HEX is about 69.282 and SIEGE_ROW is 44.4. Anchor the passage at siegeWallPoint(wallCol, gateRow). Derive bridge, road, wall and gate placement from that same gate row. Adjust presentation offsets if needed; never move the combat cells to fit a painting.
+Render ground/road below the structure. Keep a visible continuous approach from bridge to doorway and onward into the town. The new atlases deliberately have no bridge or ground plane. Do not put a second bridge into the sprite. Avoid drawing intact wall fill across the breached gate cell. Keep debris to the north/south ends. A destroyed gate must look traversable in the same place where the rules permit passage.
+Gate connector tails overlap adjoining wall art. Restrict that decorative overlap when an adjacent wall section is destroyed, so a gate tail cannot visually restore a destroyed neighbor. This is a renderer clipping/section-ownership requirement, not a change to siege HP or pathfinding. Check depth sorting with units passing behind the near jamb and in front of the far jamb. Keep selection, target overlays and movement preview readable.
+Reuse the existing HP-state thresholds. Verify full HP = intact, nonzero damaged HP = damaged, zero HP = rubble, and that loading a save preserves those states. Do not infer HP from the displayed image.
+The siege-prototype-* images are isolated browser previews of manifest substitution and staged HP changes, NOT screenshots of an implemented source change. They help review scale/orientation; final acceptance still includes movement through the breach and adjacent wall destruction.
+
+FIX 2 — START BATTLE LABEL CLIPPED BY ITS PAINTED BUTTON (HIGH PRIORITY)
+Evidence: siege-after-greek.png, bottom center; repeated across the faction siege captures at 1600 x 1000. The icon is visible while the text descends into/out of the bottom painted edge.
+Inspect packages/ui/src/screens/Battle.tsx battle-actions / deploy-confirm, packages/ui/src/styles/screens.css battle tile-button sizing, and packages/ui/src/styles/gui.css .btn--primary. The primary face is 2.4rem while the battle tile stacks a large icon plus text. The adventure footer's separate 1.1.2 adjustment does not resolve this battle context.
+Give the deployment action a horizontal icon-and-label layout, or make its painted face and footer tall enough for the vertical contents. Center text within the actual painted face, not the transparent outer pixels. Preserve an accessible hit target of at least 44px, focus indication, keyboard activation and disabled state. Check the other battle commands for the same conflict. Existing button art is sufficient; no new button PNG is needed.
+
+FIX 3 — PARCHMENT LABEL CONTRAST (MEDIUM PRIORITY)
+Evidence: screenshots/S03A.png and screenshots/campaign-confirmed.png, the Difficulty label on the parchment mission pane. Computed text is rgb(245,228,183), close to the parchment color (see focus-evidence.json).
+packages/ui/src/styles/screens.css .setting-block__label hardcodes var(--gold-200). Use the parchment ink token within .gui-surface--parchment and other parchment contexts, while retaining the gold label on dark panels. Check campaign, skirmish map details and random-map settings using the same shared label. Normal-sized text should meet 4.5:1 contrast. Do not globally turn all labels dark.
+
+FIX 4 — READABLE COLD-LOAD / FAILED-IMAGE FALLBACK (MEDIUM PRIORITY)
+The Journal's finished layout is CORRECT. screenshots/journal-decoded.png proves the book and mission art decode and fit the two-page layout. Do not rebuild or replace this book.
+However, screenshots/journal-confirmed.png and journal-narrow.png capture dark ink exposed directly on the dark background before the parchment image arrived. This was especially visible under load. A later explicit image decode resolved it (journal-asset-check.json). It is a loading/fallback problem, not a permanently missing file.
+In packages/ui/src/components/gui.tsx Folio and packages/ui/src/styles/gui.css, give text-bearing page rectangles a readable parchment-color fallback while the book is pending or failed. Preload/decode critical UI skins through the existing asset resolver before exposing ink-on-parchment content; fade the decorative art in when ready. Prefer a styled fallback to hiding all objectives behind a spinner. A failed background image must never leave low-contrast text. Do the same for similar codex/dialog surfaces.
+Test both cold load and an intentionally failed book request. Preserve narrow-width stacking, page scrolling and focus. Existing assets-runtime/ui-v1.1.0/book-open.png is valid 1536 x 1024 and should be reused. No replacement book raster is required.
+
+FIX 5 — REMOVE INTERNAL TOWN ART CAPTION (LOW PRIORITY)
+packages/ui/src/screens/Town.tsx currently renders “Placeholder town art · owner concept reference” unconditionally near line 1513. It is visible over finished town art in screenshots/S08.png, S08B.png and T01.png. Remove this production caption, or restrict it to an actual development placeholder state. Do not replace finished town art to address a caption bug.
+
+FIX 6 — BATTLE COLD-LOAD READINESS (MEDIUM PRIORITY)
+screenshots/battle-cold-load.png is a real screenshot from the passing battle interaction test: targeting and command controls are active, but unit sprites and the battlefield painting have not appeared yet. The later fully loaded battle is visible in screenshots/B01.png and S11B.png. This is a load-timing observation under this machine's heavy load, not proof that the assets are permanently missing.
+Check Battle.tsx / the battle presentation controller's readiness signal against actual critical texture readiness. Keep a loading treatment or explicit temporary unit silhouettes until the board can be read. Do not expose actionable, apparently empty stacks without a visible loading indication. Preload the current battle's units and background, handle asset failure, and retain an escape/back path. Do not wait for unrelated assets from the whole catalog. Add a delayed-asset test so interaction readiness cannot silently precede the essential visuals.
+
+SCREENSHOT NOTES
+The gallery covers all 98 named states in the previous inventory. S11A uses the fully loaded current Greek siege capture; S11B shows a tactical turn with the combat log open. Some rare result/announcement states use illustrative in-memory data. In particular the campaign-complete view was staged on an early campaign snapshot: its progression-dependent button is not evidence of an actual campaign-completion bug. Functional progression needs a real completed campaign fixture. These screenshots document composition and available UI, not exhaustive progression correctness.
+
+OPTIONAL VISUAL POLISH, NOT CONFIRMED FUNCTIONAL FAILURES
+Creature detail (screenshots/S18.png): the gameplay sprite becomes soft when enlarged far beyond its native footprint. Cap the enlargement, preserve aspect ratio and use existing high-resolution creature portrait art where the detail layout calls for a portrait. Keep live animation in a smaller preview. Do not request 102 replacement portraits just to solve CSS scaling.
+Army exchange (screenshots/D09.png): a town-ground thumbnail reads as an empty plot rather than the player's built town. Prefer a lightweight static composition of the existing town background plus its actual constructed buildings, or an existing recognizable town exterior. Keep army controls prominent.
+Tutorial hints: check placement over recruitment/train actions and at small widths. A tip should not hide the control it explains; use an offset placement with a clear dismiss button.
+
+WHAT IS ALREADY PRESENT
+The new pre-game artwork, six faction selection banners, settings navigation, encyclopedia artwork, schematic equipment screen, painted marketplace and Lodge, story/briefing surfaces, town overlays and the complete hero portrait integration are present in the source and representative captures. Do not rebuild all these screens or replace the delivered kits wholesale. See the coverage matrix and functional results for specific limits. Empty spellbooks, locked hiring, disabled editor play and unavailable favors can be correct states; do not “fix” them by bypassing rules.
+
+ACCEPTANCE BEFORE SHIPPING
+1. Re-run the four existing GUI suites listed in playwright.audit.config.ts in your normal supported environment. Resolve or explain remaining failures; consult both first-run and clean-rerun reports rather than claiming every first-run timeout is a regression.
+2. Visually inspect pre-game, adventure, town, hero, journal, encounter, reward, editor and battle states at 1280 x 720, 1600 x 1000 and 1920 x 1080; include narrow layout, keyboard-only use and reduced motion. Test real browser zoom separately from deviceScaleFactor.
+3. For every pantheon, capture siege intact/damaged/breached states with the new pack, both adjoining wall sections intact and destroyed, and a unit moving through the breach. No gate drift, doubled walls, opaque background rectangle, road discontinuity or residual blocking rubble.
+4. Verify Start Battle and all primary actions are fully readable and reachable. Check focus/hover and disabled states without changing combat rules.
+5. Verify packaged Electron and a nested web base, offline asset loading, and a fresh save plus an older save. The audit used fresh Vite source, so it does not replace these release checks.
+6. Preserve current user saves, portrait IDs, localization-ready text, accessibility semantics, balance, camera projection and game rules. Follow the destination repository's normal version/changelog and architecture documentation process.
+
+DELIVERY CONTENTS
+index.html: illustrated review and links to evidence.
+catalog.json / coverage.csv: named current screen states and remaining coverage gaps.
+audit-results.json / test-summary.json / test-report.json / test-rerun-report.json: evidence and exact test status.
+gate-validation.json: dimensions, alpha metadata, SHA-256 hashes and frame anchors for the selected 18 state mappings.
+delivery-validation.json: all 98 screenshot files verified, 245 local review links resolved, all six breach centers transparent, and all six gate-region images change between the three preview states.
+assets-source/siege-gates-v3/generation-records.json: final built-in image-generator prompts and original generated file provenance. earlier-generation-records.json preserves earlier drafts.
+Do not ship audit screenshots, provenance paths, rejected drafts or test harnesses as gameplay assets. Only the six referenced PNGs and runtime-relative registration are required by the game.

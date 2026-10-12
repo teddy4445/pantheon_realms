@@ -1,0 +1,401 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "id": "gui.frame.greek",
+      "file": "frame-greek.png",
+      "kind": "frame",
+      "theme": "greek",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create one EMPTY rectangular ornamental WINDOW BORDER. Landscape 3:2. aged bronze rim with restrained Greek meander corner engraving; dark royal-blue enamel in corner accents. Frame aligned parallel to canvas edges, outer bounds within 2% canvas margins, all four sides complete. Frame thickness about 5% of short dimension, only corner ornaments extend up to 11%. Straight middle edge sections intentionally simple for 9-slice scaling. Entire large rectangular CENTER IS FULLY TRANSPARENT (real alpha), exterior is also fully transparent. NO backing surface, no parchment or dark fill, no title plaque, no symbols in center, no header, no scene. Symmetric rectangular border with simple straight runs. Upper and lower edges equally thin. This must be a usable transparent frame overlay."
+    },
+    {
+      "id": "gui.banner.greek",
+      "file": "banner-greek.png",
+      "kind": "banner",
+      "theme": "greek",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create ONE isolated blank vertical hanging faction banner, portrait 2:3 canvas. deep royal blue cloth, bronze top rod; restrained border stitching and small decorative corner details in theme aged bronze rim with restrained Greek meander corner engraving; dark royal-blue enamel in corner accents. Symmetrical broad shield-tail bottom, nearly flat drape with only gentle folds. Entire central 65% a quiet unmarked cloth field for a separate existing emblem and live faction label. No emblem, no icon, no text. Banner fills 85% of width and 90% height with complete rod and tip visible. Genuinely transparent exterior. Same banner anatomy across faction pack. Orthographic straight-on, no perspective tilt."
+    },
+    {
+      "id": "gui.recruit.greek",
+      "file": "recruit-greek.png",
+      "kind": "recruitment-stage",
+      "theme": "greek",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/06-recruitment-chamber.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint an EMPTY recruitment creature preview backdrop, portrait 3:4. white limestone colonnaded training courtyard, blue cloth pennants, distant Aegean sea. No people, no animals, no creatures, no weapons blocking center. Clear flat ground at bottom center, calm unobstructed central 50% for separately rendered animated creature. Foreground ground/contact location at x50%,y88%; perspective coherent at same eye-level as creature portrait preview. Architecture frames edges rather than filling center. Soft even directional daylight, stylized painted scenery matching game's warm readable forms. NO UI border or buttons, no writing on banners, full opaque rectangular image. This is background-only scenery, not a town construction asset."
+    },
+    {
+      "id": "gui.merchant.greek",
+      "file": "merchant-greek.png",
+      "kind": "merchant-vignette",
+      "theme": "greek",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/10-merchant-counter.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint a wide 3:1 MARKETPLACE HEADER VIGNETTE only. Greek merchant, middle-aged bearded man in ivory tunic and blue mantle, bronze balances and amphorae. Merchant placed on left third leaning welcomingly at a counter, central and right parts show modest wares and softly distant faction architecture. Waist-up framing, face fully visible, friendly competent expression. Avoid extravagant regal armor or god identity. Illustrated fantasy game art, slightly simplified strong silhouettes. Full opaque rectangle, no UI panels, no overlays, no quantities or text, no blank sign. Counter runs horizontally along lower edge. The trading UI will be entirely separate below this image."
+    },
+    {
+      "id": "gui.frame.norse",
+      "file": "frame-norse.png",
+      "kind": "frame",
+      "theme": "norse",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create one EMPTY rectangular ornamental WINDOW BORDER. Landscape 3:2. forged iron rim, restrained carved dark-oak knot corners, muted blue-gray accents. Frame aligned parallel to canvas edges, outer bounds within 2% canvas margins, all four sides complete. Frame thickness about 5% of short dimension, only corner ornaments extend up to 11%. Straight middle edge sections intentionally simple for 9-slice scaling. Entire large rectangular CENTER IS FULLY TRANSPARENT (real alpha), exterior is also fully transparent. NO backing surface, no parchment or dark fill, no title plaque, no symbols in center, no header, no scene. Symmetric rectangular border with simple straight runs. Upper and lower edges equally thin. This must be a usable transparent frame overlay."
+    },
+    {
+      "id": "gui.banner.norse",
+      "file": "banner-norse.png",
+      "kind": "banner",
+      "theme": "norse",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create ONE isolated blank vertical hanging faction banner, portrait 2:3 canvas. muted slate blue wool cloth, iron top rod; restrained border stitching and small decorative corner details in theme forged iron rim, restrained carved dark-oak knot corners, muted blue-gray accents. Symmetrical broad shield-tail bottom, nearly flat drape with only gentle folds. Entire central 65% a quiet unmarked cloth field for a separate existing emblem and live faction label. No emblem, no icon, no text. Banner fills 85% of width and 90% height with complete rod and tip visible. Genuinely transparent exterior. Same banner anatomy across faction pack. Orthographic straight-on, no perspective tilt."
+    },
+    {
+      "id": "gui.recruit.norse",
+      "file": "recruit-norse.png",
+      "kind": "recruitment-stage",
+      "theme": "norse",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/06-recruitment-chamber.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint an EMPTY recruitment creature preview backdrop, portrait 3:4. sturdy timber longhouse training yard, mountains and cold northern fjord, shield racks pushed to edges. No people, no animals, no creatures, no weapons blocking center. Clear flat ground at bottom center, calm unobstructed central 50% for separately rendered animated creature. Foreground ground/contact location at x50%,y88%; perspective coherent at same eye-level as creature portrait preview. Architecture frames edges rather than filling center. Soft even directional daylight, stylized painted scenery matching game's warm readable forms. NO UI border or buttons, no writing on banners, full opaque rectangular image. This is background-only scenery, not a town construction asset."
+    },
+    {
+      "id": "gui.merchant.norse",
+      "file": "merchant-norse.png",
+      "kind": "merchant-vignette",
+      "theme": "norse",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/10-merchant-counter.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint a wide 3:1 MARKETPLACE HEADER VIGNETTE only. Norse merchant, red-haired woman in wool cloak and simple fur collar, timber counter and iron trade weights. Merchant placed on left third leaning welcomingly at a counter, central and right parts show modest wares and softly distant faction architecture. Waist-up framing, face fully visible, friendly competent expression. Avoid extravagant regal armor or god identity. Illustrated fantasy game art, slightly simplified strong silhouettes. Full opaque rectangle, no UI panels, no overlays, no quantities or text, no blank sign. Counter runs horizontally along lower edge. The trading UI will be entirely separate below this image."
+    },
+    {
+      "id": "gui.frame.egyptian",
+      "file": "frame-egyptian.png",
+      "kind": "frame",
+      "theme": "egyptian",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create one EMPTY rectangular ornamental WINDOW BORDER. Landscape 3:2. warm sandstone rim with restrained bronze lotus corner pieces and lapis accent inlay. Frame aligned parallel to canvas edges, outer bounds within 2% canvas margins, all four sides complete. Frame thickness about 5% of short dimension, only corner ornaments extend up to 11%. Straight middle edge sections intentionally simple for 9-slice scaling. Entire large rectangular CENTER IS FULLY TRANSPARENT (real alpha), exterior is also fully transparent. NO backing surface, no parchment or dark fill, no title plaque, no symbols in center, no header, no scene. Symmetric rectangular border with simple straight runs. Upper and lower edges equally thin. This must be a usable transparent frame overlay."
+    },
+    {
+      "id": "gui.banner.egyptian",
+      "file": "banner-egyptian.png",
+      "kind": "banner",
+      "theme": "egyptian",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create ONE isolated blank vertical hanging faction banner, portrait 2:3 canvas. deep lapis blue cloth, gold top rod; restrained border stitching and small decorative corner details in theme warm sandstone rim with restrained bronze lotus corner pieces and lapis accent inlay. Symmetrical broad shield-tail bottom, nearly flat drape with only gentle folds. Entire central 65% a quiet unmarked cloth field for a separate existing emblem and live faction label. No emblem, no icon, no text. Banner fills 85% of width and 90% height with complete rod and tip visible. Genuinely transparent exterior. Same banner anatomy across faction pack. Orthographic straight-on, no perspective tilt."
+    },
+    {
+      "id": "gui.recruit.egyptian",
+    "file": "recruit-egyptian-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "egyptian",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/06-recruitment-chamber.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint an EMPTY recruitment creature preview backdrop, portrait 3:4. warm sandstone column courtyard, restrained lotus capitals, linen shades, distant Nile palms. No people, no animals, no creatures, no weapons blocking center. Clear flat ground at bottom center, calm unobstructed central 50% for separately rendered animated creature. Foreground ground/contact location at x50%,y88%; perspective coherent at same eye-level as creature portrait preview. Architecture frames edges rather than filling center. Soft even directional daylight, stylized painted scenery matching game's warm readable forms. NO UI border or buttons, no writing on banners, full opaque rectangular image. This is background-only scenery, not a town construction asset."
+    },
+    {
+      "id": "gui.merchant.egyptian",
+      "file": "merchant-egyptian.png",
+      "kind": "merchant-vignette",
+      "theme": "egyptian",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/10-merchant-counter.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint a wide 3:1 MARKETPLACE HEADER VIGNETTE only. Egyptian merchant, middle-aged brown-skinned man in linen and modest lapis collar, clay jars and bronze scale. Merchant placed on left third leaning welcomingly at a counter, central and right parts show modest wares and softly distant faction architecture. Waist-up framing, face fully visible, friendly competent expression. Avoid extravagant regal armor or god identity. Illustrated fantasy game art, slightly simplified strong silhouettes. Full opaque rectangle, no UI panels, no overlays, no quantities or text, no blank sign. Counter runs horizontally along lower edge. The trading UI will be entirely separate below this image."
+    },
+    {
+      "id": "gui.frame.japanese",
+      "file": "frame-japanese.png",
+      "kind": "frame",
+      "theme": "japanese",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create one EMPTY rectangular ornamental WINDOW BORDER. Landscape 3:2. black lacquer rim with fine gold lines, restrained red cord corner fastenings. Frame aligned parallel to canvas edges, outer bounds within 2% canvas margins, all four sides complete. Frame thickness about 5% of short dimension, only corner ornaments extend up to 11%. Straight middle edge sections intentionally simple for 9-slice scaling. Entire large rectangular CENTER IS FULLY TRANSPARENT (real alpha), exterior is also fully transparent. NO backing surface, no parchment or dark fill, no title plaque, no symbols in center, no header, no scene. Symmetric rectangular border with simple straight runs. Upper and lower edges equally thin. This must be a usable transparent frame overlay."
+    },
+    {
+      "id": "gui.banner.japanese",
+      "file": "banner-japanese.png",
+      "kind": "banner",
+      "theme": "japanese",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create ONE isolated blank vertical hanging faction banner, portrait 2:3 canvas. dark crimson silk cloth, black lacquer top rod; restrained border stitching and small decorative corner details in theme black lacquer rim with fine gold lines, restrained red cord corner fastenings. Symmetrical broad shield-tail bottom, nearly flat drape with only gentle folds. Entire central 65% a quiet unmarked cloth field for a separate existing emblem and live faction label. No emblem, no icon, no text. Banner fills 85% of width and 90% height with complete rod and tip visible. Genuinely transparent exterior. Same banner anatomy across faction pack. Orthographic straight-on, no perspective tilt."
+    },
+    {
+      "id": "gui.recruit.japanese",
+    "file": "recruit-japanese-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "japanese",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/06-recruitment-chamber.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint an EMPTY recruitment creature preview backdrop, portrait 3:4. timber dojo courtyard with tiled eaves and quiet rock garden, red cloth accents, distant misty hills. No people, no animals, no creatures, no weapons blocking center. Clear flat ground at bottom center, calm unobstructed central 50% for separately rendered animated creature. Foreground ground/contact location at x50%,y88%; perspective coherent at same eye-level as creature portrait preview. Architecture frames edges rather than filling center. Soft even directional daylight, stylized painted scenery matching game's warm readable forms. NO UI border or buttons, no writing on banners, full opaque rectangular image. This is background-only scenery, not a town construction asset."
+    },
+    {
+      "id": "gui.merchant.japanese",
+      "file": "merchant-japanese.png",
+      "kind": "merchant-vignette",
+      "theme": "japanese",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/10-merchant-counter.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint a wide 3:1 MARKETPLACE HEADER VIGNETTE only. Japanese merchant, woman in indigo kosode with simple tied hair, lacquer boxes and folded cloth on wooden counter. Merchant placed on left third leaning welcomingly at a counter, central and right parts show modest wares and softly distant faction architecture. Waist-up framing, face fully visible, friendly competent expression. Avoid extravagant regal armor or god identity. Illustrated fantasy game art, slightly simplified strong silhouettes. Full opaque rectangle, no UI panels, no overlays, no quantities or text, no blank sign. Counter runs horizontally along lower edge. The trading UI will be entirely separate below this image."
+    },
+    {
+      "id": "gui.frame.celtic",
+      "file": "frame-celtic.png",
+      "kind": "frame",
+      "theme": "celtic",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create one EMPTY rectangular ornamental WINDOW BORDER. Landscape 3:2. aged bronze rim over dark oak with restrained green enamel triple-spiral corner details. Frame aligned parallel to canvas edges, outer bounds within 2% canvas margins, all four sides complete. Frame thickness about 5% of short dimension, only corner ornaments extend up to 11%. Straight middle edge sections intentionally simple for 9-slice scaling. Entire large rectangular CENTER IS FULLY TRANSPARENT (real alpha), exterior is also fully transparent. NO backing surface, no parchment or dark fill, no title plaque, no symbols in center, no header, no scene. Symmetric rectangular border with simple straight runs. Upper and lower edges equally thin. This must be a usable transparent frame overlay."
+    },
+    {
+      "id": "gui.banner.celtic",
+      "file": "banner-celtic.png",
+      "kind": "banner",
+      "theme": "celtic",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create ONE isolated blank vertical hanging faction banner, portrait 2:3 canvas. forest green woven cloth, dark oak top rod; restrained border stitching and small decorative corner details in theme aged bronze rim over dark oak with restrained green enamel triple-spiral corner details. Symmetrical broad shield-tail bottom, nearly flat drape with only gentle folds. Entire central 65% a quiet unmarked cloth field for a separate existing emblem and live faction label. No emblem, no icon, no text. Banner fills 85% of width and 90% height with complete rod and tip visible. Genuinely transparent exterior. Same banner anatomy across faction pack. Orthographic straight-on, no perspective tilt."
+    },
+    {
+      "id": "gui.recruit.celtic",
+    "file": "recruit-celtic-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "celtic",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/06-recruitment-chamber.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint an EMPTY recruitment creature preview backdrop, portrait 3:4. oak palisade training clearing beside timber hall, distant emerald woodland and standing stones. No people, no animals, no creatures, no weapons blocking center. Clear flat ground at bottom center, calm unobstructed central 50% for separately rendered animated creature. Foreground ground/contact location at x50%,y88%; perspective coherent at same eye-level as creature portrait preview. Architecture frames edges rather than filling center. Soft even directional daylight, stylized painted scenery matching game's warm readable forms. NO UI border or buttons, no writing on banners, full opaque rectangular image. This is background-only scenery, not a town construction asset."
+    },
+    {
+      "id": "gui.merchant.celtic",
+      "file": "merchant-celtic.png",
+      "kind": "merchant-vignette",
+      "theme": "celtic",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/10-merchant-counter.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint a wide 3:1 MARKETPLACE HEADER VIGNETTE only. Celtic merchant, older woman in green wool cloak with bronze brooch, baskets and woven textiles on oak counter. Merchant placed on left third leaning welcomingly at a counter, central and right parts show modest wares and softly distant faction architecture. Waist-up framing, face fully visible, friendly competent expression. Avoid extravagant regal armor or god identity. Illustrated fantasy game art, slightly simplified strong silhouettes. Full opaque rectangle, no UI panels, no overlays, no quantities or text, no blank sign. Counter runs horizontally along lower edge. The trading UI will be entirely separate below this image."
+    },
+    {
+      "id": "gui.frame.mesoamerican",
+      "file": "frame-mesoamerican.png",
+      "kind": "frame",
+      "theme": "mesoamerican",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create one EMPTY rectangular ornamental WINDOW BORDER. Landscape 3:2. carved dark stone rim with restrained gold and turquoise stepped corner inlay. Frame aligned parallel to canvas edges, outer bounds within 2% canvas margins, all four sides complete. Frame thickness about 5% of short dimension, only corner ornaments extend up to 11%. Straight middle edge sections intentionally simple for 9-slice scaling. Entire large rectangular CENTER IS FULLY TRANSPARENT (real alpha), exterior is also fully transparent. NO backing surface, no parchment or dark fill, no title plaque, no symbols in center, no header, no scene. Symmetric rectangular border with simple straight runs. Upper and lower edges equally thin. This must be a usable transparent frame overlay."
+    },
+    {
+      "id": "gui.banner.mesoamerican",
+      "file": "banner-mesoamerican.png",
+      "kind": "banner",
+      "theme": "mesoamerican",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Create ONE isolated blank vertical hanging faction banner, portrait 2:3 canvas. deep turquoise woven cloth, dark wood rod with gold ends; restrained border stitching and small decorative corner details in theme carved dark stone rim with restrained gold and turquoise stepped corner inlay. Symmetrical broad shield-tail bottom, nearly flat drape with only gentle folds. Entire central 65% a quiet unmarked cloth field for a separate existing emblem and live faction label. No emblem, no icon, no text. Banner fills 85% of width and 90% height with complete rod and tip visible. Genuinely transparent exterior. Same banner anatomy across faction pack. Orthographic straight-on, no perspective tilt."
+    },
+    {
+      "id": "gui.recruit.mesoamerican",
+    "file": "recruit-mesoamerican-v2.png",
+      "kind": "recruitment-stage",
+      "theme": "mesoamerican",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/06-recruitment-chamber.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint an EMPTY recruitment creature preview backdrop, portrait 3:4. stone terrace training courtyard with stepped temple edges and distant tropical canopy, turquoise woven banners. No people, no animals, no creatures, no weapons blocking center. Clear flat ground at bottom center, calm unobstructed central 50% for separately rendered animated creature. Foreground ground/contact location at x50%,y88%; perspective coherent at same eye-level as creature portrait preview. Architecture frames edges rather than filling center. Soft even directional daylight, stylized painted scenery matching game's warm readable forms. NO UI border or buttons, no writing on banners, full opaque rectangular image. This is background-only scenery, not a town construction asset."
+    },
+    {
+      "id": "gui.merchant.mesoamerican",
+      "file": "merchant-mesoamerican.png",
+      "kind": "merchant-vignette",
+      "theme": "mesoamerican",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/10-merchant-counter.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Paint a wide 3:1 MARKETPLACE HEADER VIGNETTE only. Mesoamerican merchant, middle-aged brown-skinned man in woven mantle with modest turquoise beads, cacao sacks and clay bowls on stone counter. Merchant placed on left third leaning welcomingly at a counter, central and right parts show modest wares and softly distant faction architecture. Waist-up framing, face fully visible, friendly competent expression. Avoid extravagant regal armor or god identity. Illustrated fantasy game art, slightly simplified strong silhouettes. Full opaque rectangle, no UI panels, no overlays, no quantities or text, no blank sign. Counter runs horizontally along lower edge. The trading UI will be entirely separate below this image."
+    },
+    {
+      "id": "gui.surface.stone",
+      "file": "surface-stone.png",
+      "kind": "surface",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. A single square dark charcoal-blue fine-grained stone UI material field, entirely opaque, ultra-low contrast and almost uniform, subtly hand-painted, no obvious cracks, no large stones, no border, no symbols. Usable under ivory text. Even light across whole image, no vignette, no repeating motif. Texture need not tile; it will be cover-scaled beneath panels."
+    },
+    {
+      "id": "gui.surface.parchment",
+      "file": "surface-parchment.png",
+      "kind": "surface",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. A single square warm pale ivory parchment UI reading surface, entirely opaque, low-noise subtle paper fibres, almost uniform value, no stains, no torn edges, no writing, no decorative corners, no vignette or border. Dark ink text will be live above it. Entire sheet equally readable, not antique dirty parchment."
+    },
+    {
+      "id": "gui.surface.leather",
+      "file": "surface-leather.png",
+      "kind": "surface",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. A single square very dark desaturated blue-gray leather UI material, subtle fine grain and even lighting, low contrast, no seams, no stitching, no creases, no border, no symbols. Opaque full image, suitable beneath equipment icons, no strong highlights."
+    },
+    {
+      "id": "gui.book.open",
+      "file": "book-open.png",
+      "kind": "book",
+      "theme": "shared",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. ONE large OPEN BLANK PARCHMENT BOOK for a readable codex GUI. Landscape 3:2, straight-on orthographic absolutely flat, no desk or hands. Two broad pale quiet blank pages with narrow central spine, dark brown leather cover, restrained bronze corners. No illustration, no text, no ruled lines, no ink, no bookmarks over pages. Flat reading zones left x8–45% y9–89%, right x55–92% y9–89%, nearly equal brightness. Entire exterior truly transparent, book fills95% of canvas. Avoid highly warped curved pages because live text overlays must be straight."
+    },
+    {
+      "id": "gui.equipment.figure",
+      "file": "equipment-figure.png",
+      "kind": "figure",
+      "theme": "shared",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. ONE neutral simplified FRONT HUMAN EQUIPMENT SILHOUETTE, symbolic schematic unisex adult form, modest anatomical detail no face no genitals, no realistic skin, legs slightly apart and hands separated from torso, entire body visible. Thin muted aged-gold contour enclosing flat low-contrast charcoal fill. Portrait 2:3. No equipment sockets, no labels, no icons, no clothes or armor, no frame. Transparent exterior. Quiet background-compatible figure for live equipment slots, not a character portrait."
+    },
+    {
+      "id": "gui.control.button",
+      "file": "control-button.png",
+      "kind": "button",
+      "theme": "shared",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. ONE blank horizontal rectangular strategy game button, landscape4:1 shape centered in wide canvas with only 3% exterior transparent padding. Quiet deep blue inset enamel face, thin aged-bronze double rim, tiny chamfered corners, subtly raised bevel from top-left light. No text, no icons, no pictograms, no crest or spikes. Simple straight central edges for nine-slice. Whole central80% quiet for live icon and text. Entire exterior real alpha. One neutral NORMAL state only; hover and pressed states added by code."
+    },
+    {
+      "id": "gui.control.socket",
+      "file": "control-socket.png",
+      "kind": "socket",
+      "theme": "shared",
+      "transparent": true,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. ONE square empty inset equipment SOCKET frame. Antique bronze thin double rim, chamfered corners, subtle bevel indicating recessed interior. Center totally transparent, exterior totally transparent. No backing fill, no item, no symbol, no glyph, no labels. Outer frame within3% canvas margins, rim thickness5%, corners contained within12%. Straight-on orthographic square. Usable behind inventory artifacts and portrait slots."
+    },
+    {
+      "id": "gui.encounter.treasure",
+      "file": "encounter-treasure.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Wide landscape 2:1 encounter illustration only: open iron-bound wooden treasure chest with gold coins and rolled travel journals under an old tree on a quiet grassy roadside, hills in background. Strong central readable chest silhouette, warm soft daylight, not photorealistic. No people, no numbers, no UI or frame. Full opaque rectangle. Gold and journals both visibly present, no specific unique artifacts promised."
+    },
+    {
+      "id": "gui.encounter.treasure-empty",
+      "file": "encounter-treasure-empty.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Wide landscape 2:1 encounter illustration only: an EMPTY open iron-bound wooden treasure chest on a quiet grassy roadside under an old tree, hills in background. Clearly empty interior, no coins, no journals, no treasure. Warm soft daylight, stylized painted game art. Strong readable chest silhouette. No people, no writing, no UI or frame. Full opaque rectangle. This is claimed/empty treasure state."
+    },
+    {
+      "id": "gui.encounter.longship",
+      "file": "encounter-longship.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Wide landscape 2:1 illustration of The Frozen Longship encounter: icebound Viking longship with open cargo chest and timber bundles, four ghostly drowned oarsmen standing near the wreck, distant snowy fjord. Stylized blue-gray nordic painting, restrained mysterious atmosphere, non-gory. No hero portrait, no rewards UI, no words or text, no frame. Full opaque rectangular header scene. Clearly four oarsmen but do not number them."
+    },
+    {
+      "id": "gui.encounter.hermit",
+      "file": "encounter-hermit.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Wide landscape 2:1 quest illustration: friendly elderly wandering hermit in plain brown hood at left of a rustic woodland hut, welcome gesture, simple wooden table, softly lit greenery. Quiet neutral fantasy identity suitable for a generic quest giver. No reward objects, no resource quantities, no specific weapon, no text or UI. Full opaque rectangular image, warm stylized painted adventure game look."
+    },
+    {
+      "id": "gui.encounter.crossroads",
+      "file": "encounter-crossroads.png",
+      "kind": "encounter",
+      "theme": "shared",
+      "transparent": false,
+      "refs": [
+        "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/14-shared-materials-and-states.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: individual production bitmap layer for Pantheon Realms PC fantasy strategy GUI v1.1.0. Match supplied concept only for restrained illustrated fantasy material style. Original artwork; compact tactile classic strategy game craftsmanship. Deliver ONLY the requested isolated component, never a complete screenshot or a sheet of components. NO text, NO letters, NO numbers, NO labels, NO UI controls unless the requested object is a blank control. No embedded game content, no mockup background, no watermark. Straight-on orthographic UI artwork; crisp edges, readable large shapes; modest ornament limited to corners, not excessive baroque filigree. Do not bake shadows onto an opaque background for transparent assets. Wide landscape 2:1 generic map encounter header: a quiet ancient branching road, blank weathered waystone and a rolled parchment beside a travel satchel in foreground, softly misted hills beyond. No directional writing, no characters, no treasure, no implied promised reward, no faction-specific temple, no UI or frame. Neutral original stylized fantasy painting, soft subdued daylight, full opaque rectangle. Used as a nonliteral safe illustration for story choices without their own art."
+    }
+  ]
+}

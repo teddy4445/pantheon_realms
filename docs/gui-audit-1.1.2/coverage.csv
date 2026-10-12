@@ -1,0 +1,99 @@
+﻿ID,Name,Current screenshot,Coverage,Source
+B01,Battle log,screenshots/B01.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Battle.tsx
+B02,Battle miracles book,screenshots/B02.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Battle.tsx
+B03,Battle spell casting,screenshots/B03.png,Current staged screenshot; see separate functional results,packages/ui/src/components/spellbook.tsx
+B04,Retreat confirmation,screenshots/B04.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Battle.tsx
+B05,Surrender confirmation,screenshots/B05.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Battle.tsx
+B06,Siege defender selection,screenshots/B06.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Battle.tsx
+D01,Mission briefing,screenshots/D01.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D02,Pause menu,screenshots/D02.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D03,Save game,screenshots/D03.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D04,Load game,screenshots/D04.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D05,Keyboard shortcuts,screenshots/D05.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+D06,Creature stack inspection,screenshots/D06.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D07,Hero spellbook,screenshots/D07.png,Current staged screenshot; see separate functional results,packages/ui/src/components/spellbook.tsx
+D08,Divine interventions,screenshots/D08.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+D09,Army exchange,screenshots/D09.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D10,Hot seat handover,screenshots/D10.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+D11,Confirmation dialog,screenshots/D11.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D12,Mission help dialog,screenshots/D12.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D13,Story dialogue,screenshots/D13.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Story.tsx
+D14,Contextual tip,screenshots/D14.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Story.tsx
+D15,Mission debrief,screenshots/D15.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D16,Campaign complete,screenshots/D16.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D17,Mission failed,screenshots/D17.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+D18,Skirmish victory,screenshots/D18.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+D19,Skirmish defeat,screenshots/D19.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+E01,New map,screenshots/E01.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+E02,Generate map,screenshots/E02.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+E03,Open map library,screenshots/E03.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+E04,Play editor map,screenshots/E04.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+E05,Leave unsaved map,screenshots/E05.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+H01,Artifact detail and comparison,screenshots/H01.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Hero.tsx
+H02,Army splitting controls,screenshots/H02.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Hero.tsx
+M01,New week announcement,screenshots/M01.png,Current staged screenshot; see separate functional results,packages/ui/src/components/moments.tsx
+M02,Divine miracle announcement,screenshots/M02.png,Current staged screenshot; see separate functional results,packages/ui/src/components/moments.tsx
+N01,Notification toast,screenshots/N01.png,Current staged screenshot; see separate functional results,packages/ui/src/app/App.tsx
+N02,Rival turn summary,screenshots/N02.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Adventure.tsx
+N03,Map tile and site inspection,screenshots/N03.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Adventure.tsx
+S01,Main menu,screenshots/S01.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MainMenu.tsx
+S02,New game modes,screenshots/S02.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Setup.tsx
+S03A,Campaign selection,screenshots/S03A.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Setup.tsx
+S03B,Skirmish map selection,screenshots/S03B.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Setup.tsx
+S04,Pantheon and match setup,screenshots/S04.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Setup.tsx
+S06,Adventure map,screenshots/S06.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Adventure.tsx
+S07,Hero and equipment,screenshots/S07.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Hero.tsx
+S08,Town management,screenshots/S08.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+S08B,Developed town,screenshots/S08B.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+S09,Recruitment,screenshots/S09.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Recruitment.tsx
+S10,Pantheon and gods,screenshots/S10.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Pantheon.tsx
+S11A,Battle deployment and siege,screenshots/S11A.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Battle.tsx
+S11B,Tactical battle,screenshots/S11B.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Battle.tsx
+S12A,Battle victory result,screenshots/S12A.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/BattleResult.tsx
+S12B,Battle defeat result,screenshots/S12B.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/BattleResult.tsx
+S13,Hero level up,screenshots/S13.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/LevelUp.tsx
+S13B,Level up with divine gifts,screenshots/S13B.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/LevelUp.tsx
+S14-campaign,Journal Campaign,screenshots/S14-campaign.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Journal.tsx
+S14-help,Journal Mission help,screenshots/S14-help.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Journal.tsx
+S14-objectives,Journal Objectives,screenshots/S14-objectives.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Journal.tsx
+S14-story,Journal Story,screenshots/S14-story.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Journal.tsx
+S16-abilities,Encyclopedia Abilities,screenshots/S16-abilities.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S16-artifacts,Encyclopedia Artifacts,screenshots/S16-artifacts.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S16-creatures,Encyclopedia Bestiary,screenshots/S16-creatures.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S16-gods,Encyclopedia Gods,screenshots/S16-gods.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S16-heroes,Encyclopedia Heroes,screenshots/S16-heroes.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S16-skills,Encyclopedia Skills,screenshots/S16-skills.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S16-spells,Encyclopedia Spells,screenshots/S16-spells.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S16-town,Encyclopedia Towns,screenshots/S16-town.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Encyclopedia.tsx
+S17-accessibility,Settings Accessibility,screenshots/S17-accessibility.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Settings.tsx
+S17-audio,Settings Audio,screenshots/S17-audio.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Settings.tsx
+S17-controls,Settings Controls,screenshots/S17-controls.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Settings.tsx
+S17-display,Settings Display,screenshots/S17-display.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Settings.tsx
+S17-gameplay,Settings Gameplay,screenshots/S17-gameplay.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Settings.tsx
+S17-interface,Settings Interface,screenshots/S17-interface.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Settings.tsx
+S17-storage,Settings Saves,screenshots/S17-storage.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Settings.tsx
+S18,Creature detail,screenshots/S18.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/UnitDetail.tsx
+S19,Random map setup,screenshots/S19.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/RandomSetup.tsx
+S20,Match and campaign summary,screenshots/S20.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Summary.tsx
+S21,High scores,screenshots/S21.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Summary.tsx
+S22-check,Map editor validation,screenshots/S22-check.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+S22-empires,Map editor Empires,screenshots/S22-empires.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+S22-map,Map editor Map,screenshots/S22-map.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+S22-site,Map editor site properties,screenshots/S22-site.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapEditor.tsx
+S23,Authored map match setup,screenshots/S23.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/MapSetup.tsx
+T01,Building action panel,screenshots/T01.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T02,Marketplace,screenshots/T02.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T03,Heroes lodge,screenshots/T03.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T04,Artifact merchant,screenshots/T04.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T05,Workshop wares,screenshots/T05.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T06,Temple offering,screenshots/T06.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T07,Divine gifts,screenshots/T07.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T08,Construction and upgrade proposal,screenshots/T08.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+T09,Town army split dialog,screenshots/T09.png,Current staged screenshot; see separate functional results,packages/ui/src/screens/Town.tsx
+W01,Neutral creature camp,screenshots/W01.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+W02,Map event choice,screenshots/W02.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+W03,Treasure chest,screenshots/W03.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+W04,Quest hut,screenshots/W04.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/WorldDialogs.tsx
+W05,Beacon activation,screenshots/W05.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx
+W06,Adventure spell casting,screenshots/W06.png,Current staged screenshot; see separate functional results,packages/ui/src/components/spellbook.tsx
+W07,Pre-battle encounter,screenshots/W07.png,Current staged screenshot; see separate functional results,packages/ui/src/dialogs/Overlays.tsx

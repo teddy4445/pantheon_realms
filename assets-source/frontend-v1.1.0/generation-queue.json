@@ -1,0 +1,309 @@
+[
+  {
+    "key": "concept-title-hall",
+    "kind": "concept",
+    "file": "01-title-hall.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\01-title-hall.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. A quiet mythic hall framing a glowing distant world at twilight. Balanced hints of all SIX cultures around the edges: Greek, Norse, Egyptian, Japanese, Celtic, Mesoamerican. Central title PANTHEON REALMS. Below title a narrow elegant vertical carved menu: Continue, New Game, Load Game, Encyclopedia, Settings, Quit. No technical build diagnostics. All controls readable; background calm behind the menu.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-new-game",
+    "kind": "concept",
+    "file": "02-new-game.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\02-new-game.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Title Choose your journey. Four large painted folio panels in a 2x2 arrangement with distinct illustrations: Campaign a heroic story scroll; Skirmish two opposing war banners; Random Map a magical uncharted atlas; Map Editor a quill and drafting tools over a terrain map. Exact four labels Campaign, Skirmish, Random Map, Map Editor. Short text below each. Back bottom left. Preserve generous image area.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-campaign",
+    "kind": "concept",
+    "file": "03-campaign.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\03-campaign.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Title Campaign Chronicles. Left page has six compact selectable illustrated campaign rows labeled Greek, Norse, Egyptian, Japanese, Celtic, Mesoamerican. Greek selected. Large right page painted Greek campaign cover, story paragraph and a decorative numbered mission sequence presented as a read-only story outline. Bottom difficulty choice Story / Normal / Hard and Begin Campaign button. Back button. Do not show selectable mission nodes, chapter replay, invented unlocks or invented completion badges.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-skirmish",
+    "kind": "concept",
+    "file": "04-skirmish.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\04-skirmish.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Title Skirmish Atlas. Left folio page a 2x3 grid of painted terrain thumbnails with names beneath, one gold selection frame. Right page one larger evocative landscape painting, selected map title, concise objective text, icon-led facts Empires, Size, Victory, Climate. Lower right Continue button and bottom left Back. Painting is scenic illustration, not a precise map diagram. No technical IDs or raw JSON.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-random-map",
+    "kind": "concept",
+    "file": "05-random-map.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\05-random-map.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Title Shape an Uncharted Realm. Three engraved chapter tabs Land / Empires / Rules. Land selected. Left two-thirds has EXACTLY NINE illustrated landscape tiles in 3x3 grid, labels Continental, Highlands, Lake Isle, Wild Forest, Marshlands, Crossroads, Archipelago, Twin Continents, Central Valley. Right parchment page selected Highlands illustration, short description, Size Small Medium Large Huge and Empires selector 2 3 4 5 6. Text Illustrative landscape. Footer Back and Create World. No seed number, no coordinate grid, no claim of live generated preview.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-empire-setup",
+    "kind": "concept",
+    "file": "06-empire-setup.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\06-empire-setup.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Title Gather the Empires. Six faction banners across top labeled Greek Norse Egyptian Japanese Celtic Mesoamerican. Below parchment setup board four horizontal seat rows, each with banner, player name field, Human or AI control and a god portrait selector for human players. Right modest selected map painting, difficulty Easy Normal Hard only if AI exists. Bottom Back and Begin. Strong decorative board framing but calm aligned controls. No network lobby, chat, ready checks, usernames or online indicators.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-encyclopedia",
+    "kind": "concept",
+    "file": "07-encyclopedia.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\07-encyclopedia.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Large illuminated book title Encyclopedia. TOP TWO ROWS of FOUR tabs with all EIGHT labels: Bestiary, Gods, Heroes, Towns, Spells, Skills, Artifacts, Abilities. Left narrow rail shows all SIX faction labels Greek, Norse, Egyptian, Japanese, Celtic, Mesoamerican PLUS Neutral. Main open parchment displays seven creature family rows with base and upgraded portrait pairs, readable names, small tier medallions. Search field top of content. Back bottom. Avoid arbitrary numeric statistics; this is an index rather than detail.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-creature-detail",
+    "kind": "concept",
+    "file": "08-creature-detail.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\08-creature-detail.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Open book creature detail titled Griffin. Left parchment page large name, base/upgraded portrait selectors, clear icon-led attributes and ability/lore areas. Right page majestic stylized griffin standing in a restrained neutral stage with wide space around wings; viewer controls below labeled Idle, Move, Attack, Defend, Hit, Death, Victory. Play/pause, speed and facing buttons. Bottom Back. No fake video seek timeline, no locked states, no invented stats numbers. Match the existing book reference style.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-settings",
+    "kind": "concept",
+    "file": "09-settings.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\09-settings.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Title Settings. Left vertical carved chapter tabs with EXACTLY SEVEN labels Gameplay, Interface, Display, Audio, Accessibility, Controls, Saves. Audio selected. Main parchment contains five aligned gold-track sliders Master, Music, Ambience, Interface, Combat, numeric percentage fields to right. Lower checkboxes Mute all, Mute in background, Calmer sound, and Test Sound. Footer Restore defaults, Revert, Apply, Back. Visible unsaved changes small message. Quiet backdrop; highly legible; no ornate object over any control.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-save-archive",
+    "kind": "concept",
+    "file": "10-save-archive.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\10-save-archive.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Wide framed parchment modal titled Saved Journeys over dim quiet hall. Left scrollable slots, Manual saves / Autosaves / Checkpoint labels. Show one occupied sample row and some Empty slot rows. Right selected journey panel with small scenic mission illustration, save name, day/hero/faction metadata, Load primary button, secondary Export and Delete. Footer Import, Close. Save tab visibly unavailable from title screen. No cloud symbols, accounts or fake captured gameplay thumbnails.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-map-library",
+    "kind": "concept",
+    "file": "11-map-library.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\11-map-library.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Modal title Map Library on top of dimmed atlas editor. Parchment rows of locally authored maps with small terrain icons, name, size and empires. Selected row has a gold edge and right detail pane. Separate section Templates. Footer buttons Import, Open, Export, Delete, Close. Labels Local maps and Templates. No online marketplace or cloud. Room for helpful Empty library message with a small blank scroll case illustration.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-map-editor",
+    "kind": "concept",
+    "file": "12-map-editor.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\12-map-editor.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Full fantasy map editor screen. Large central fixed-angle stylized hex terrain canvas with forest, hills, lakes, towns and roads. Compact top engraved buttons New, Generate, Open, Save, Export, Play. Left toolbox Select, Erase, Terrain, Roads, Sites. Right parchment inspector tabs Map, Empires, Site, Check with modest map options. Bottom context hint and validation count. Ornamental border stays thin and outside canvas. Functional authoring tool, no website cards, no unrequested 3D rotation gizmo.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-hall-of-records",
+    "kind": "concept",
+    "file": "13-hall-of-records.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\13-hall-of-records.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. Title Hall of Records. A handsome parchment ledger in carved dark stone frame. Two tabs Skirmish and Campaign. Table has columns Rank, Player, Pantheon, Map, Result, Days, Difficulty, Score, Date. Three restrained illustrative example rows, gold/bronze rank seals but no giant victory trophies. Footer Back and discreet Clear Records. Local records subtitle. No online leaderboard, account portraits or friend invitations.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "concept-shared-dialog",
+    "kind": "concept",
+    "file": "14-shared-dialog.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\docs\\frontend-v1.1.0\\concepts\\14-shared-dialog.png",
+    "transparent": false,
+    "prompt": "Use case: ui-mockup. Original Pantheon Realms fantasy strategy game, a cohesive classic late-1990s illustrated strategy-game interface: aged warm parchment, restrained carved dark blue stone, thin antique-gold bevels, tactile engraved controls, jewel-colored faction accents, beautifully painted mythic artwork. Strong hierarchy, readable roomy text, compact purposeful ornament, no website navbar, no dashboard metric cards, no modern pill controls, no photorealism. Landscape 16:10 full screen, target 1600x1000. Entire image is one polished game screen, no device frame or explanatory annotations. One compact confirmation modal centered over softly dimmed settings ledger. Title Discard changes? Body Your changes have not been applied. Two clear rectangular gold-edged buttons Keep editing and Discard. Subtle warning wax-seal icon, warm parchment, restrained dark stone frame, no enormous red alert or technical traceback. Footer-free background settings remains recognizable but inaccessible under modal.",
+    "refs": [
+      "C:/Users/lazeb/Desktop/pantheon_realms/docs/gui-concepts-2026-10-10/12-bestiary-codex-v2.png"
+    ]
+  },
+  {
+    "key": "frontend.backdrop.title-hall",
+    "kind": "asset",
+    "file": "backdrop-title-hall.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-title-hall.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Wide 16:10 atmospheric hall of six mythic traditions. Sparse peripheral reliefs evoke Greek laurel, Norse knotwork, Egyptian sun, Japanese cloud, Celtic oak and Mesoamerican stepped geometry with equal visual weight. Distant subtle gold horizon. Dark muted low-detail CENTER SIXTY PERCENT reserved for menu. No characters or foreground furniture across center. Render background only.",
+    "refs": []
+  },
+  {
+    "key": "frontend.backdrop.atlas",
+    "kind": "asset",
+    "file": "backdrop-atlas.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-atlas.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Wide 16:10 oblique cartographer desk, mostly quiet dark worn leather surface across central 75 percent. Dim peripheral rolled parchment at far left edge, small antique brass compass at far lower right corner and soft warm light along upper edge. Empty central surface is uninterrupted dark low contrast. No map lines behind future UI. Render background only.",
+    "refs": []
+  },
+  {
+    "key": "frontend.backdrop.library",
+    "kind": "asset",
+    "file": "backdrop-library.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\backdrop-library.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Wide 16:10 dim mythic library alcove. Book shelves glimpsed only at far left and right edges, soft warm amber light, desaturated navy brown quiet center occupying 75 percent. No prominent central objects, no lettering on book spines. Empty atmospheric backdrop behind a large UI book.",
+    "refs": []
+  },
+  {
+    "key": "frontend.mode.campaign",
+    "kind": "asset",
+    "file": "mode-campaign.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-campaign.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 compact emblematic vignette: a rolled illustrated chronicle and a bronze heroic helmet beside a small mythic horizon, warm gold spotlight. Clearly about beginning a story. Large readable forms and little peripheral detail. No pages containing text.",
+    "refs": []
+  },
+  {
+    "key": "frontend.mode.skirmish",
+    "kind": "asset",
+    "file": "mode-skirmish.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-skirmish.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 compact dramatic vignette: opposing blue and red war standards on spears overlooking a small open field, distant stylized armies represented by a handful of tiny banners. Large silhouettes, visual tactical confrontation. No gore or lettering.",
+    "refs": []
+  },
+  {
+    "key": "frontend.mode.random-map",
+    "kind": "asset",
+    "file": "mode-random-map.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-random-map.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 compact magical atlas vignette: small floating miniature terrain of hills, islands and forest forming above an open blank atlas, brass compass nearby, soft teal golden light. Concept of uncharted world generation. No dice numbers or text.",
+    "refs": []
+  },
+  {
+    "key": "frontend.mode.map-editor",
+    "kind": "asset",
+    "file": "mode-map-editor.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\mode-map-editor.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 compact cartographer vignette: antique quill and brass dividers over a tiny painted terrain plan with forest mountains road, a few terrain tokens at the margin. Large shapes, readable at small scale, no writing.",
+    "refs": []
+  },
+  {
+    "key": "frontend.empty.archive",
+    "kind": "asset",
+    "file": "empty-archive.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\empty-archive.png",
+    "transparent": true,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Single isolated small closed blank leather folio beside an empty scroll case, antique gold fittings, three large readable shapes, softly painted stylized fantasy prop, front three-quarter view. Genuinely transparent background, no shadow plane, no UI container, no lettering. Decorative empty-state illustration.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.continental",
+    "kind": "asset",
+    "file": "random-continental.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-continental.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Continental: Open country with forests, hills and fens; the gold mine or shrine stands at the heart.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout. Pure inland landscape without surrounding ocean or waterways.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.highlands",
+    "kind": "asset",
+    "file": "random-highlands.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-highlands.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Highlands: A ring of mountains shelters every home valley. Two guarded passes lead out.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.lake_isle",
+    "kind": "asset",
+    "file": "random-lake_isle.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-lake_isle.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Lake Isle: A great lake fills the center. The contested site stands on an island reached by one causeway per empire.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.wild_forest",
+    "kind": "asset",
+    "file": "random-wild_forest.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-wild_forest.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Wild Forest: Deep forest everywhere; travel is slow and roads are lifelines. Clearings hold the treasures.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.marshlands",
+    "kind": "asset",
+    "file": "random-marshlands.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-marshlands.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Marshlands: Fens and black pools split the land. The paths between them are worth fighting for.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.crossroads",
+    "kind": "asset",
+    "file": "random-crossroads.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-crossroads.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Crossroads: Peaks ring a rich center that can be entered only through one strongly guarded gate per empire.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.archipelago",
+    "kind": "asset",
+    "file": "random-archipelago.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-archipelago.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Archipelago: Every empire rules its own island. A sandbar leads to the central isle; twin portals cross the straits.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.twin_continents",
+    "kind": "asset",
+    "file": "random-twin_continents.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-twin_continents.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Twin Continents: A strait splits the world in two. The only land bridge runs through the contested center; twin portals cross the water.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  },
+  {
+    "key": "frontend.random.central_valley",
+    "kind": "asset",
+    "file": "random-central_valley.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\frontend-v1.1.0\\random-central_valley.png",
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Production artwork for Pantheon Realms, painted classic fantasy strategy game, rich readable stylized forms, antique gold and navy with warm parchment light, painterly rather than photorealistic. No lettering, numbers, logos, UI, buttons, labels, borders or watermark. Native clean illustration. Landscape 4:3 terrain archetype thumbnail, high oblique view of a miniature continuous terrain diorama with edges outside frame. Central Valley: A rich valley of mines lies below a ring of ridges, reached through two guarded passes per empire.. Make these terrain relationships visually clear with a few large forms. Broad readable forest masses, warm paths, stylized rock, calm teal water where applicable. Neutral faction geography, no armies, no lettering, no grid. Illustrative archetype rather than literal generated layout.",
+    "refs": []
+  }
+]

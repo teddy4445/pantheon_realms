@@ -1,0 +1,145 @@
+ART COMPLETENESS UPDATE: Read UI-ART-COMPLETENESS.txt FIRST. The complete kit supplies the separate matching title background, new logo, six decorated banners, settings/editor/dialog icons, all creature art mappings and a complete copy helper. It supersedes the old logo/banner and optional dependency-copy instructions below.
+Full path: C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\UI-ART-COMPLETENESS.txt
+
+PANTHEON REALMS — PRE-GAME GUI HANDOFF FOR VERSION 1.1.0
+Prepared 2026-10-10. This is artwork and an implementation brief, not an implemented release.
+
+REQUEST TO CLAUDE CODE
+Extend the existing 1.1.0 GUI redesign to the screens outside gameplay. Make the title menu, game setup, encyclopedia, settings, saves and map editor feel like a cohesive illustrated fantasy strategy game. Use the supplied concepts as composition references and the separate production art as layers around real controls. Keep the game's rules, content, saves, platform behavior and navigation intact.
+
+START HERE — TWO PROJECTS
+The artwork is in C:\Users\lazeb\Desktop\pantheon_realms. Your working checkout may be elsewhere. Copy files into YOUR local project before referencing them. Do not hardcode this desktop path into game code, and do not assume these files already exist in your checkout.
+
+Review gallery:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\index.html
+Fourteen concept PNGs:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0\concepts
+Seventeen native text-free production PNGs and prompt history:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-source\frontend-v1.1.0
+Runtime copies and asset manifest:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\frontend-v1.1.0
+Asset manifest:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\frontend-v1.1.0\manifest.json
+Screen recipes, coverage, type mapping, existing art inventory, validation and copy helper:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\frontend-v1.1.0
+
+Existing required GUI pack (reuse its materials, frames, book, controls and six banners):
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\ui-v1.1.0
+C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-v1.1.0\CLAUDE_CODE_HANDOFF_1.1.0.txt
+C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-v1.1.0\component-reference.css
+C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-v1.1.0\existing-art-inventory.json
+Existing mission briefing concept (reuse rather than create another route):
+C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-concepts-2026-10-10
+
+Run Copy-To-Project.ps1 -DestinationRoot YOUR_CHECKOUT first for a dry run, then with -Apply. Replace YOUR_CHECKOUT with your actual absolute path. It copies this pack and its existing GUI dependency, skips identical files, and refuses conflicting files before copying anything. Add -IncludeExistingArt only if the target is missing the existing campaign, creature, god, hero and other art referenced by reuse-inventory.json. It does not edit your code or merge game manifests. Inspect source/target differences before resolving any conflicts; do not overwrite unrelated work.
+
+DELIVERY CONTENTS AND WHAT TO USE
+Concepts: fourteen full-screen illustrations. These are reference mockups, never backgrounds with interactive controls baked in. Their incidental text, numbers, campaign names, map names, patron availability and portraits are illustrative. The catalog and existing rules are authoritative. Known concept deviations are listed in concept-review.json; follow those corrections when implementing.
+Production art: three quiet full-window backgrounds, four mode-card illustrations, nine random-map type illustrations, one transparent empty-archive prop. No text is baked into these assets. Preserve native dimensions and alpha; no upscaling, keying, pixel retouching or extraction from concepts is required.
+Reuse: existing logos, menu icons, six emblems/banners, portraits, cover paintings, story thumbnails, building art, ability badges and creature sprite animations. Do not replace those with the invented characters inside the concepts. No new font binaries are delivered. Use existing licensed fonts if available, Georgia/serif fallback for headings and the existing readable body font.
+
+ASSET INTEGRATION
+Merge assets-runtime/frontend-v1.1.0/manifest.json into the existing UI asset resolver in packages/ui/src/assets/manifest.ts, using the unique frontend.* namespace. Do not replace the existing manifests or overwrite siege-v2. The new JSON has a top-level assets dictionary and metadata; adapt to the resolver's actual type if it expects only file/alt/etc. All file paths are relative to assets-runtime, for example frontend-v1.1.0/random-highlands.png. With existing Vite publicDir and base './', the URL resolves to ./frontend-v1.1.0/random-highlands.png, NOT ./assets-runtime/frontend-v1.1.0/.... Verify both browser and desktop packaged builds and a nested deployment base.
+
+Placement:
+- frontend.backdrop.title-hall: title menu; optional quiet mode selection background. Use cover, centered, with an additional CSS shade if necessary. It supplements the current menu background system; do not delete the twelve existing images.
+- frontend.backdrop.atlas: campaign, scenario, random map and editor surroundings. Keep it behind opaque/semi-opaque readable surfaces.
+- frontend.backdrop.library: encyclopedia, settings, saved journeys, records and help surroundings.
+- frontend.mode.campaign / .skirmish / .random-map / .map-editor: the four New Game choices, in that order. Put live label and description below each image.
+- frontend.random.<mapTypeId>: exactly the nine IDs in random-map-types.json. Use SKIRMISH_MAP_TYPES order and data, never infer terrain rules from the painting. These are illustrations, not accurate generated maps or deterministic previews.
+- frontend.empty.archive: decorative empty save/map-library/records state. Use contain, around 120–180 CSS pixels, with an empty-state explanation and useful real action beside it. Transparent outside; no CSS blend mode or black background.
+
+DESIGN SYSTEM
+Use illustrated surfaces, carved rectangular controls, thin gold edges and a hierarchy of title, image, short copy and action. Keep ornament around content, not behind text. Avoid webpage navigation bars, oversize rounded cards, repeated technical chips, skeleton dashboards and large unused margins. Do not turn every setting into an icon-only mystery. Native controls can be visually restyled while preserving semantics.
+Default shell is neutral dark blue/bronze, without branding every pre-game screen Greek. Selected faction can tint its banner, portrait frame and heading. Reuse the six distinct gui.frame.<faction> and gui.banner.<faction> assets for faction-specific panels. Do not show Greek symbols for Japanese/Celtic/Mesoamerican content.
+Use an actual responsive grid inside the artwork. Do not position all text against absolute screenshot coordinates. One outer frame per major region; use lightweight CSS rules for dense internal rows. Follow the prior pack's tested nine-slice and per-faction surface insets, not a stretched full rectangular frame. Book content must fit the safe page rectangles; never stretch the spine across text. At small widths use a single parchment page with the same data and controls, rather than shrinking an entire book until unreadable.
+Recommended scales: 1600x1000 reference, validate 1280x720 and 1920x1080, plus a narrow layout and 200% text zoom. Body text approximately 16–18 CSS px at default scale; controls at least 40 px high, 44 px on touch. Allow long localized labels and scroll panels. Keep footer actions visible without covering last rows. Dim background under modals and trap focus. Highlight selection with gold outline AND check/text; keyboard focus must be distinct from selection. Tooltips also appear on keyboard focus. All actions remain usable without hover.
+Motion: brief 120–180ms focus/selection transitions; optional subtle backdrop crossfade. No constant camera movement, mandatory page-turn delay, parallax or automatic creature motion when reduced motion is active. The adventure map keeps its fixed angle; existing left/right/up/down panning and supported zoom remain. Turn-order rotation in Random Setup is a gameplay option, not camera rotation.
+
+SCREEN-BY-SCREEN IMPLEMENTATION
+01 MAIN MENU / TITLE HALL — packages/ui/src/screens/MainMenu.tsx
+Existing Continue, New Game, Load Game, Encyclopedia, Settings; Quit only where platform.canQuit. Use the existing brand logo and menu icons, not the generated mockup logo/icons. Continue retains latest-compatible-save lookup, loading and unavailable reasons, compatibility recheck and storage errors. A failed lookup must not look clickable. Keep detailed app/rules/content/save information in Settings > Saves; a small live release version may remain in the footer. Never hardcode 1.1.0 before the actual release is integrated. Records link is optional, described below.
+
+02 NEW GAME — Setup.tsx
+Four illustrated mode choices: Campaign, Skirmish, Random Map, Map Editor. Reuse current store routes. Replace stale campaign description listing only Greek/Norse with concise catalog-driven copy; do not hardcode campaign/mission counts. Entire card is one button with real name/description. Back returns title. No fake online modes, login or downloads.
+
+03 CAMPAIGN CHRONICLES — Setup.tsx
+Six available pantheon campaigns in a compact left list, selected cover and current story on the right. Derive campaign titles, availability, summaries, mission names and counts from catalog. A decorative chronological mission outline is READ-ONLY. Difficulty stays Story/Normal/Hard as provided by difficultyLevels(..., 'campaign'), including exact effects. Begin calls the existing startCampaign for missionIds[0] and existing default starting patron. Do not add replay, unlock rules, arbitrary mission selection, a separate god choice, or persistent completion badges without real data. Starting proceeds to existing mission briefing. Preserve disabled/unavailable campaign states.
+
+04 SKIRMISH ATLAS — Setup.tsx
+Use existing authored-map paintings from Brief 14, a selectable gallery and selected map facts. Keep actual authored map IDs in values and catalog names on labels. Display player count, cell count/size, victory, biome, starting wealth and reveal status where available. Painted landscapes are atmospheric, not exact tactical plans. Preserve two existing paths: authored map => MapSetup; legacy scenario => PantheonSelect. Retain unavailable scenario explanations. Selection should not begin the game immediately.
+
+05 RANDOM MAP — RandomSetup.tsx; definitions packages/mapgen/src/skirmish.ts
+Replace nine text-heavy type choices with nine paintings, names and concise real summaries. Proposed three chapters keep the SAME draft state and current Create logic:
+Land: type, size, wandering monsters, guard strength, treasure, roads, reveal map, two-way portals, climate rules, unowned towns.
+Empires: count 2–6, human/AI seats, names, faction and human patron choices, AI difficulty when relevant, pantheon AI temperaments.
+Rules: elimination/hold_relic victory, 5/7/10 relic days when relevant, starting wealth, rotating turn order for three or more empires.
+Count may also be summarized on Land; if editable there, use the SAME state, never a second copy. Preserve existing enum choices/defaults from source (including unowned towns), exact availability restrictions and validation. Four or more empires require Large/Huge. Twin Continents supports at most two. Preserve automatic fallback/clamping currently done when size/type becomes incompatible. At least one human and valid human patron are required. Disable impossible choices with a short explanation; do not silently start another configuration.
+No seed field: the owner intentionally removed it. Create uses current fresh-seed generation and bounded retries. All visual setup choices must survive chapter switching. Show an inline failure and keep draft if generation fails. Use a real in-progress state only during actual work; prevent duplicate start. Do not invent a percent-complete indicator. The thumbnails are archetypes, not the new world's exact positions. Terrain relationships: continental inland; highlands guarded home valleys; lake_isle central island/causeways; wild_forest roads through dense forest; marshlands fens and narrow paths; crossroads guarded rich center; archipelago separate islands/sandbars/portals; twin_continents two landmasses and center crossing; central_valley rich valley inside ridges. Exact procedural rules remain code-driven.
+
+06 PANTHEON / MATCH SETUP — Setup.tsx and MapSetup.tsx; components/seats.tsx
+Reuse six banners and actual god portraits. Distinguish legacy two-seat setup from authored-map seats and random-map seats. Do not force four players because the concept illustrates four rows. Authored seat count comes from map.players; Random supports 2–6. Preserve names, human/AI choice, allowed faction kits, human patron requirement and human-at-least-one validation. Legacy scenario retains its current default patron flow. Difficulty applies only when AI exists; all-human hotseat uses existing normal/default behavior. Unowned towns control appears only when supported/free spots exist. Preserve any map-missing state and Back route. Authored/random maps start adventure directly; do not insert a fake briefing or online ready lobby.
+
+07 ENCYCLOPEDIA INDEX — Encyclopedia.tsx
+Eight sections: Bestiary, Gods, Heroes, Towns, Spells, Skills, Artifacts, Abilities. Six pantheon filters PLUS neutral creatures, plus existing content not associated with a faction where applicable. Use local catalog data and current groups. Bestiary shows seven creature families per faction and base/upgraded forms, current cost/growth/stat information. Use existing portraits; never use the generated mockup creatures as replacement units. Other sections use their own god/hero/building/spell/skill/artifact/ability fields and exact gameplay text. A search field and compact category/faction navigation are proposed presentation improvements, not discovery/progression systems. Keep filters/scroll when returning from detail. Search has a useful no-results state and clear action. No knowledge locks, new unlock mechanics or hidden categories. Prefer two rows or overflow tabs to dropping long labels.
+
+08 CREATURE DETAIL — UnitDetail.tsx
+Keep stats/cost/growth/ability/lore on the left and actual animated sprite viewer on the right, as current screen contract requests. Base/upgraded is an explicit click/keyboard selection; do not rely on hover. Resolve each actual creature ID. Animation choices come from requiredAnimations(catalog, creature): idle/move/attack/defend/hit/death/victory and optional shoot/takeoff/fly/landing/cast/ability only when supported. Preserve facing, playback rate, restart, autoplay, loading/missing-sprite fallback, reduced-motion still and return route. A static giant generated illustration is not a substitute for the existing animated viewer. The concept shows appearance, not authoritative tier/stats/animations.
+
+09 SETTINGS — Settings.tsx
+All seven sections must remain:
+Gameplay: adventure animation, visible enemy movement, battle speed, end-day confirmation, log detail, hints and reset dismissed hints.
+Interface: UI scale 0.8–1.6, text size, hex overlay, minimap, battle stack labels, bestiary autoplay.
+Display: platform-dependent window mode, game cursors, graphics quality, Test again probe, adaptive resolution, frame rate readout, actual apply/restart timing hints.
+Audio: master/music/ambience/interface/combat sliders, mute all/background, calmer sound, Test. Keep 0–100 values with current step5. Provide text values beside sliders and keyboard control.
+Accessibility: motion system/reduced/full, high contrast, always-on color-independent ownership explanation.
+Controls: binding contexts and actual actions; rebind capture, Escape cancellation, reserved keys and same-context conflicts. No illustrated text keycaps as the only input.
+Saves: storage availability/platform location, Open saves, real app/rules/content/save-schema information.
+Keep the existing draft/apply transaction. Audio previews draft; exiting restores committed preferences. Apply writes prefs/window mode and reports persistence errors. Revert/Restore defaults remain distinct. Back with dirty draft confirms discard; safe action returns to editing. Do not remove advanced controls merely because the audio example contains fewer fields.
+
+10 SAVED JOURNEYS — dialogs/Overlays.tsx
+Keep Save/Load, manual slots, rotating autosaves and pre-battle checkpoint. Save disabled without a session (title-menu load). A populated slot uses MissionThumb, which is mission art and MUST NOT be labelled as an actual saved screenshot. Real metadata, compatible/incompatible reason, Empty slot and no-selection instructions remain. Loading/unavailable/error states must not falsely suggest no saves exist. Load disabled for incompatible data, preserve file unchanged. Import refreshes list; Export/Delete retained. Confirm overwrite, delete and loading over a current session; retain current name length60. Do not auto-delete outdated saves or migrate schemas as part of visual work.
+
+11 MAP LIBRARY — MapEditor.tsx overlay
+Local documents and built-in templates are distinct. Reuse existing import/export/storage operations, validation errors, delete confirmation and template-copy flow. Import JSON files, not a fictitious online workshop. Use generic illustration if no real map thumbnail exists; don't promise generated thumbnails or previews without implementation. Empty state has Import and existing create/save guidance. Modal close returns editor and preserves draft.
+
+12 CARTOGRAPHER / MAP EDITOR — MapEditor.tsx
+Restyle the shell without changing terrain canvas geometry or interaction. Retain New, Generate, Open, Save, Export, Undo, Redo, Play, Back and actual disabled reasons. Thin ornament keeps canvas dominant. Preserve brush size, symmetry, terrain, road lay/erase, select/erase/site tools and four inspectors Map/Empires/Site/Check. Keep descriptions, biome, victory and relic days, starting wealth, reveal, size; all site-specific fields, rewards and ownership; validation issue navigation; new/generate/play dialogs and unsaved-exit confirmation. Undo/Redo are required even though the concept simplifies toolbar. Keyboard arrows/right-drag pan, supported wheel/+/– zoom; no angle-changing controls. Play stays blocked by actual errors. Do not discard imported fields or rewrite map formats during skin work.
+
+13 HALL OF RECORDS — Summary.tsx HighScoresScreen
+Existing local records only. Preserve Campaign/Skirmish tabs, rank/player/pantheon/map-or-campaign/result/days/difficulty/score/date, loading/empty states and clear confirmation. Clearing records does not delete saves. The new menu could expose an unobtrusive Records action to this already existing route; this is an OPTIONAL navigation addition and should be explicitly included in Claude's change summary if implemented. No online leaderboard, achievements, accounts or fabricated records. Concept table rows are placeholders.
+
+14 SHARED CONFIRMATIONS / HELP / ERRORS
+Small parchment dialogs instead of web alerts; live text with concise consequence and clear actions. Preserve Modal focus behavior and existing callback semantics. Safe action receives initial focus for destructive operations. Enter/Escape must not accidentally confirm destruction. Keep important compatibility, storage and validation reasons readable. Errors remain until resolved or dismissed as appropriate; screen-reader status for async results. Help/key bindings use actual current bindings, not hardcoded art. Empty-state art is decoration with empty alt; primary message and recovery action are accessible text.
+
+MISSION BRIEFING AND OTHER BOUNDARIES
+Reuse the earlier GUI pack's story briefing concept/recipe and existing mission/story art on the existing route. Do not introduce a new loading screen unless there is genuine asynchronous work needing it; simple live progress text is sufficient. Credits, online lobby, account/store/achievement pages are not current routes and are outside this handoff. Actual desktop exit confirmation and existing shortcut/help overlays are covered by shared dialog recipe. In-game town/battle/adventure visuals and siege-v2 are not changed by this pack.
+
+IMPLEMENTATION ORDER
+1. Inspect current target checkout and prior 1.1.0 work; preserve uncommitted changes. Copy assets, validate manifest and resolver paths. Reuse components already implemented from the prior pack.
+2. Shared FrontendShell, readable parchment surfaces, tabs, selection, focus, framed buttons and reusable illustrated choice tile. Use CSS states rather than extra raster button variants.
+3. Title/modes/campaign/skirmish/random/match setup; verify every existing start route against real data.
+4. Encyclopedia/all eight categories/detail; settings/all seven sections; saves; editor/library; records/dialogs.
+5. Responsive/accessibility/packaging checks and documented visual comparison. Only then coordinate the actual version1.1.0 bump with the wider release. This art task itself has not changed package versions.
+
+ACCEPTANCE AND TEST PLAN FOR CLAUDE
+Use repository's current scripts, TypeScript build and relevant existing UI tests. Do not guess package-manager commands; read package.json in target. Preserve stable test IDs where practical.
+- All six factions work in campaign/encyclopedia/setup with correct existing emblems, portraits and content. Eight encyclopedia categories and neutral content reachable.
+- All nine random types select by exact ID. Twin Continents rejects incompatible empire counts; size restrictions remain. All Land/Empires/Rules values survive switching, generation errors and Back where currently supported. No seed field. Generated match uses selected options.
+- Campaign begins first mission with current difficulty/patron, no new mission skipping. Authored and random paths still start as intended. Missing/unavailable content remains understandable.
+- Settings Apply/Revert/defaults/discard/audio preview, rebinding/reserved keys and browser/desktop display availability work. Test large text, high contrast and reduced motion.
+- Continue, empty/incompatible saves, import/export/overwrite/delete/load-discard, storage unavailable and all-human hotseat are exercised. No save-schema changes.
+- Map editor new/generate/import/export/library/templates/undo/redo/play/validation/unsaved changes remain functional. Fixed-angle view and unobstructed pointer area.
+- All new and reused assets resolve offline, in packaged desktop and nested web base; no C: paths shipped into runtime URLs. Lazy-load unselected categories and detail artwork; do not preload every portrait/animation at title.
+- Visual checks at1600x1000,1280x720,1920x1080, narrow layout and200% text. Keyboard-only operation, visible focus, no horizontal page overflow, no hidden footer, localization stress strings. No raster text controls or decorative image as substitute for real input.
+- Record implemented screenshots and actual checks. Do not claim this handoff's gallery validation is a game integration test. Report remaining issues and intentionally deferred optional Records navigation.
+
+TRACEABILITY
+screen-recipes.json: exact source files and concept mappings.
+window-coverage.json: current catalog screens/dialog variants linked to a recipe.
+random-map-types.json: exact nine type IDs/labels/summaries and asset keys.
+reuse-inventory.json: verified existing artwork with full paths/hashes, for reuse/copy.
+concept-review.json: visual QA and non-authoritative mockup deviations.
+asset-validation.json and gallery-validation.json: delivery checks, not a claim of implementation.
+assets-source/frontend-v1.1.0/generation-queue.json: full final generation prompts.
+Built-in image generator used; native outputs preserved, no code retouching or upscaling.

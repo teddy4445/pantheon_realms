@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "newAssets": 21,
+  "runtimeFiles": 1920,
+  "runtimeMiB": 377.4,
+  "icons": 391,
+  "creatureForms": 102,
+  "factionForms": 84,
+  "heroes": 89,
+  "sixScreensBySixPantheons": 36,
+  "scope": "Art, metadata and standalone preview only. Game code not changed."
+}

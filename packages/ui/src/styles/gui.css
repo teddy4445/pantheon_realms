@@ -1,0 +1,2690 @@
+/*
+ * Release 1.1.0 interface materials (GUI redesign, owner-approved concepts of
+ * 2026-10-10; art in assets-runtime/ui-v1.1.0, URLs installed as variables by
+ * assets/guiArt.ts → installGuiStyles).
+ *
+ * One anatomy for every window: a faction frame drawn as a transparent
+ * nine-slice overlay (border-image, no fill, never under the pointer) over a
+ * separate quiet surface — stone for command chrome, parchment for narrative,
+ * leather for equipment — placed at the frame's measured inset. Controls keep
+ * identical positions and hit areas in all six themes; only the frame's
+ * material changes. States (hover, focus, pressed, selected, unavailable) are
+ * drawn by code. No CSS filter over the game canvas (see components.css).
+ */
+
+:root {
+  /* Decorative border width of a full window (64 px at the 1080p baseline). */
+  --gui-bw: 4rem;
+  --gui-pad: 2.5rem;
+  /* Ink and paper for parchment surfaces (contrast ≥ 4.5:1 measured on the paper's mid tone). */
+  --gui-ink: #2b2014;
+  --gui-ink-soft: #4d3b25;
+  --gui-ink-faint: #6b5539;
+  --gui-ink-head: #4f3510;
+  --gui-paper-card: rgba(255, 247, 226, 0.5);
+  --gui-paper-rule: rgba(110, 78, 30, 0.45);
+  --gui-focus: #fff1b0;
+  --gui-select: #f2cf6e;
+  --gui-tip-delay: 320ms;
+  /* Faint text meets 4.5:1 on the stone panels too (was #7c7462, 3.5:1). */
+  --text-faint: #9c937d;
+}
+
+/* ============================================================
+   Framed window (dialogs and principal screen windows)
+   ============================================================ */
+.gui-window {
+  --gui-k: calc(var(--gui-bw) / var(--gui-frame-ref, 64));
+  position: relative;
+  isolation: isolate;
+  min-width: min(17.5rem, 100%);
+  padding: var(--gui-pad);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+/* The surface: an inset layer under the frame's straight edges (measured per theme). */
+.gui-window::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: calc(var(--gui-inset-t, 20) * var(--gui-k));
+  right: calc(var(--gui-inset-r, 12) * var(--gui-k));
+  bottom: calc(var(--gui-inset-b, 26) * var(--gui-k));
+  left: calc(var(--gui-inset-l, 12) * var(--gui-k));
+  background: var(--gui-surface-stone) center / cover no-repeat, #0d1826;
+  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+/* The frame: transparent nine-slice art, corners intact, middle runs stretched; never intercepts clicks. */
+.gui-window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  /* Faction frames draw at the full border width; the neutral shell's thin rule at a fraction of it. */
+  border: calc(var(--gui-bw) * var(--gui-frame-scale, 1)) solid transparent;
+  border-image-source: var(--gui-frame);
+  border-image-slice: var(--gui-frame-slice, 256 320 256 320);
+  border-image-width: calc(var(--gui-bw) * var(--gui-frame-scale, 1));
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+.gui-window--compact {
+  --gui-bw: 2.75rem;
+  --gui-pad: 1.75rem;
+}
+.gui-window--parchment::before {
+  background: var(--gui-surface-parchment) center / cover no-repeat, #ead6a6;
+}
+.gui-window--leather::before {
+  background: var(--gui-surface-leather) center / cover no-repeat, #0c1622;
+}
+.gui-window > .panel__corner {
+  display: none;
+}
+
+/* A restrained material border for sub-panels, rows, tooltips and tall narrow sidebars. */
+.gui-plate {
+  position: relative;
+  background: linear-gradient(180deg, rgba(14, 26, 43, 0.72), rgba(6, 12, 22, 0.82)), var(--gui-surface-stone) center / cover;
+  border: 1px solid rgba(194, 154, 82, 0.55);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 2px rgba(234, 208, 143, 0.14), 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* ============================================================
+   Parchment reading surface: ink text, paper cards
+   ============================================================ */
+.gui-surface--parchment {
+  --text: var(--gui-ink-soft);
+  --text-strong: var(--gui-ink);
+  --text-dim: var(--gui-ink-soft);
+  --text-faint: var(--gui-ink-faint);
+  --warning: #8a4b00;
+  --danger: #9c2a17;
+  --success: #285c1d;
+  color: var(--gui-ink);
+  text-shadow: none;
+}
+.gui-surface--parchment :is(h1, h2, h3, h4, .panel__title, .section-title, .story-text strong) {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}
+.gui-surface--parchment .section-title::before,
+.gui-surface--parchment .section-title::after {
+  opacity: 0.85;
+}
+.gui-surface--parchment .panel:not(.gui-window) {
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 240, 0.35);
+  color: var(--gui-ink);
+}
+.gui-surface--parchment .panel:not(.gui-window) > .panel__corner {
+  display: none;
+}
+.gui-surface--parchment .note {
+  background: rgba(255, 246, 220, 0.55);
+  border-color: var(--gui-paper-rule);
+  border-left-color: #8a6224;
+  color: var(--gui-ink);
+}
+.gui-surface--parchment .warn {
+  color: #7e4300;
+}
+.gui-surface--parchment .table th,
+.gui-surface--parchment .table td {
+  border-bottom-color: rgba(110, 78, 30, 0.25);
+}
+.gui-surface--parchment .table thead th {
+  color: var(--gui-ink-head);
+}
+.gui-surface--parchment .inline-icon {
+  color: #7a5414;
+}
+/* 1.1.4 (GUI audit): the settings label (Difficulty, Map type…) is gold on the dark panels and
+   ink on parchment, where gold measured about 1.1:1; a dark plate inside parchment keeps the gold. */
+.gui-surface--parchment .setting-block__label,
+.panel--parchment .setting-block__label {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}
+.gui-surface--parchment .gui-plate .setting-block__label {
+  color: var(--gold-200);
+}
+.gui-surface--parchment a,
+.gui-surface--parchment .link {
+  color: #6a3f06;
+}
+
+/* ============================================================
+   Dialogs: one frame around title, body and footer
+   ============================================================ */
+.modal-layer {
+  /* The map stays visible under a modest dimming; the layer owns the pointer while open. */
+  background: radial-gradient(circle at 50% 45%, rgba(5, 9, 15, 0.38), rgba(5, 9, 15, 0.7));
+}
+.modal.gui-modal {
+  min-width: min(26rem, 94vw);
+  max-width: min(64rem, 94vw);
+  max-height: 92vh;
+}
+.modal .panel.gui-window {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 92vh;
+  border: 0;
+  padding: calc(var(--gui-pad) * 0.9) var(--gui-pad) calc(var(--gui-pad) * 0.95);
+}
+.modal .gui-window > .panel__header {
+  justify-content: center;
+  padding: 0.1rem 2.6rem 0.65rem;
+  background: none;
+  flex: none;
+}
+.modal .gui-window > .panel__header::after {
+  left: 12%;
+  right: 12%;
+}
+.modal .gui-window .panel__title {
+  flex: 0 1 auto;
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+}
+.modal .gui-window--parchment .panel__title {
+  color: var(--gui-ink-head);
+  text-shadow: 0 1px 0 rgba(255, 245, 215, 0.6);
+}
+.modal .gui-window--parchment > .panel__header::after {
+  background: linear-gradient(90deg, transparent, rgba(110, 78, 30, 0.6) 18%, rgba(122, 90, 38, 0.8) 50%, rgba(110, 78, 30, 0.6) 82%, transparent);
+}
+.modal .gui-window > .panel__body {
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 0.85rem 0.35rem 0.4rem;
+}
+.gui-modal__close.btn {
+  position: absolute !important;
+  top: calc(var(--gui-pad) * 0.62);
+  right: calc(var(--gui-pad) * 0.72);
+  z-index: 6;
+  width: 2.2rem;
+  height: 2.2rem;
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  padding: 0;
+  border-radius: 50%;
+  border-color: var(--gold-500);
+  background: radial-gradient(circle at 50% 35%, #25426a, #0b1626);
+  box-shadow: inset 0 0 0 2px rgba(5, 9, 15, 0.6), 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.gui-modal__close.btn:hover:not(:disabled) {
+  border-color: var(--gold-200);
+  background: radial-gradient(circle at 50% 35%, #2f5384, #10203a);
+  box-shadow: inset 0 0 0 2px rgba(5, 9, 15, 0.6), var(--glow-gold);
+}
+.gui-modal__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 0.75rem 0.35rem 0;
+  margin-top: 0.35rem;
+  border-top: 1px solid rgba(194, 154, 82, 0.35);
+  flex: none;
+}
+.gui-window--parchment .gui-modal__footer {
+  border-top-color: var(--gui-paper-rule);
+}
+/* Primary actions stay reachable: the body scrolls, title and footer do not. */
+@media (max-height: 640px) {
+  .modal .panel.gui-window {
+    --gui-pad: 1.6rem;
+  }
+}
+
+/* Header illustration (encounters, merchant): full width of the reading area. */
+.gui-art-header {
+  position: relative;
+  display: block;
+  margin: -0.25rem 0 0.75rem;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(60, 40, 12, 0.65), 0 0 0 3px rgba(194, 154, 82, 0.45), 0 4px 12px rgba(0, 0, 0, 0.35);
+  background: #1a140c;
+}
+.gui-art-header > img {
+  display: block;
+  width: 100%;
+  max-height: min(14rem, 26vh);
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+.gui-art-header--wide > img {
+  aspect-ratio: 3 / 1;
+}
+@media (max-height: 760px) {
+  .gui-art-header > img {
+    aspect-ratio: 3 / 1;
+  }
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+/* Primary: the painted face (gui.control.button) as a nine-slice; the image's transparent
+   breathing space sits outside the element (outset), so the element box is the painted face. */
+.btn--primary {
+  --btn-face-h: 2.4rem;
+  /* The hit target is at least 44 px tall: transparent bands above and below the painted face,
+     taken back by negative margins so the layout keeps the face's height. */
+  --btn-hit: max(var(--btn-face-h), 44px);
+  --btn-band: calc((var(--btn-hit) - var(--btn-face-h)) / 2);
+  margin-block: calc(-1 * var(--btn-band));
+  color: #fff1c8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  isolation: isolate;
+  min-height: var(--btn-hit);
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+}
+.btn--primary::before {
+  content: '';
+  position: absolute;
+  inset: var(--btn-band) 0;
+  z-index: -1;
+  border: 0 solid transparent;
+  border-image-source: var(--gui-button);
+  border-image-slice: 268 177 268 177 fill;
+  border-image-width: calc(var(--btn-face-h) * 0.709) calc(var(--btn-face-h) * 0.4683);
+  border-image-outset: calc(var(--btn-face-h) * 0.4577) calc(var(--btn-face-h) * 0.1772);
+  border-image-repeat: stretch;
+  transition: box-shadow var(--motion-fast);
+  pointer-events: none;
+}
+.btn--primary.btn--small {
+  --btn-face-h: 1.9rem;
+  padding-left: 1.05rem;
+  padding-right: 1.05rem;
+}
+.btn--primary.btn--large {
+  --btn-face-h: 3rem;
+  padding-left: 2.1rem;
+  padding-right: 2.1rem;
+}
+.btn--primary:hover:not(:disabled) {
+  background: none;
+  color: #fffaf0;
+  border-color: transparent;
+  box-shadow: none;
+}
+.btn--primary:hover:not(:disabled)::before {
+  /* Hover brightens the rim, never the whole parent. */
+  box-shadow: 0 0 0.55rem rgba(255, 223, 140, 0.55), inset 0 0 0 1px rgba(255, 233, 170, 0.45);
+}
+.btn--primary:active:not(:disabled) {
+  background: none;
+  transform: translateY(1px);
+  box-shadow: none;
+}
+.btn--primary:active:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  inset: var(--btn-band) 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+}
+.btn--primary:disabled,
+.btn--primary[aria-disabled='true'] {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  color: #d4cab3;
+}
+.btn--primary:disabled::after {
+  /* Unavailable: a muted veil on the face plus a lock (shape cue, not colour alone). */
+  content: '';
+  position: absolute;
+  inset: var(--btn-band) 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(48, 50, 56, 0.78), rgba(26, 28, 32, 0.82));
+  pointer-events: none;
+}
+
+/* Every other control smaller than 44 px gets a transparent hit band around it, painted under its
+   neighbours (z-index -1), so it never takes a click meant for the control beside it. */
+.btn:not(.btn--primary)::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: min(0px, calc((100% - 44px) / 2));
+  bottom: min(0px, calc((100% - 44px) / 2));
+  left: min(0px, calc((100% - 44px) / 2));
+  right: min(0px, calc((100% - 44px) / 2));
+}
+/* Secondary: a restrained stone control with a bronze rim. */
+.btn:not(.btn--primary):not(.btn--ghost) {
+  background: linear-gradient(180deg, rgba(33, 52, 78, 0.78), rgba(10, 19, 33, 0.9)), var(--gui-surface-stone) center / cover;
+}
+.btn:not(.btn--primary):not(.btn--ghost):hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(44, 70, 104, 0.78), rgba(14, 26, 44, 0.9)), var(--gui-surface-stone) center / cover;
+}
+.btn--danger:not(:disabled) {
+  background: linear-gradient(180deg, rgba(110, 40, 28, 0.86), rgba(54, 16, 10, 0.92)), var(--gui-surface-stone) center / cover !important;
+}
+/* Unavailable controls: a lock shape and a reason, not only dimmed text. */
+.btn:disabled:not(.btn--icon):not(.gui-no-lock) > .btn__lock {
+  display: inline-block;
+}
+.btn__lock {
+  display: none;
+  width: 0.85em;
+  height: 0.85em;
+  flex: none;
+  opacity: 0.85;
+}
+/* Selected (toggle) state: outline plus a check mark. */
+.btn[aria-pressed='true'] {
+  outline: 2px solid var(--gui-select);
+  outline-offset: -5px;
+}
+.btn[aria-pressed='true']::after {
+  content: '';
+  width: 0.9em;
+  height: 0.9em;
+  margin-left: 0.15em;
+  background: var(--orn-check) center / contain no-repeat;
+  flex: none;
+}
+.btn:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 3px;
+}
+/* The focus ring follows the painted face (the element is taller: its hit bands). */
+.btn--primary:focus-visible {
+  outline: none;
+}
+.btn--primary:focus-visible::before {
+  box-shadow: 0 0 0 3px var(--gui-focus), 0 0 0 5px rgba(5, 9, 15, 0.85);
+}
+/* Narrow icon controls use the socket skin instead of a squeezed word button. */
+.btn--icon:not(.btn--primary) {
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Sockets (artifacts, resources, creatures, equipment)
+   ============================================================ */
+.gui-socket {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--socket, 4.6rem);
+  height: var(--socket, 4.6rem);
+  padding: calc(var(--socket, 4.6rem) * 0.16);
+  border: 0;
+  border-radius: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(32, 56, 88, 0.85), rgba(6, 12, 22, 0.94) 72%);
+  background-clip: content-box;
+  color: var(--text-strong);
+  isolation: isolate;
+  cursor: var(--cur-pointer, pointer);
+}
+.gui-socket::after {
+  /* The painted square rim; its centre is empty. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gui-socket) center / contain no-repeat;
+  pointer-events: none;
+  z-index: 2;
+}
+.gui-socket > img,
+.gui-socket > svg,
+.gui-socket > .portrait,
+.gui-socket > .gui-socket__art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+.gui-socket--empty {
+  cursor: var(--cur-default, default);
+}
+.gui-socket--empty > .gui-socket__ghost {
+  width: 55%;
+  height: 55%;
+  opacity: 0.32;
+  color: var(--gold-400);
+}
+.gui-socket__qty {
+  position: absolute;
+  right: 9%;
+  bottom: 8%;
+  z-index: 3;
+  min-width: 1.4rem;
+  padding: 0 0.3rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: calc(var(--socket, 4.6rem) * 0.19);
+  line-height: 1.35;
+  text-align: center;
+  color: var(--text-strong);
+  background: linear-gradient(180deg, #172b47, #05090f);
+  border: 1px solid var(--gold-400);
+  border-radius: 0.4rem;
+}
+button.gui-socket:hover:not(:disabled):not(.gui-socket--empty)::before,
+.gui-socket.is-selected::before,
+.gui-socket.is-drop::before,
+.gui-socket.is-invalid::before {
+  content: '';
+  position: absolute;
+  inset: 10%;
+  z-index: 3;
+  border-radius: 3px;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 2px rgba(255, 228, 160, 0.75), 0 0 0.6rem rgba(255, 220, 140, 0.45);
+}
+.gui-socket.is-selected::before {
+  box-shadow: inset 0 0 0 3px var(--gui-select), 0 0 0.8rem rgba(255, 220, 140, 0.6);
+}
+.gui-socket.is-drop::before {
+  box-shadow: inset 0 0 0 3px rgba(62, 188, 208, 0.85), 0 0 0.6rem rgba(62, 188, 208, 0.55);
+}
+.gui-socket.is-invalid::before {
+  box-shadow: inset 0 0 0 3px rgba(210, 90, 69, 0.85);
+}
+.gui-socket:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Choices (rewards, event options): select, then confirm once
+   ============================================================ */
+.gui-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.gui-choices__legend {
+  grid-column: 1 / -1;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: var(--gui-ink-head);
+}
+.gui-choice {
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 4.6rem;
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  font: inherit;
+  color: var(--gui-ink);
+  background: rgba(255, 248, 228, 0.72);
+  border: 2px solid rgba(122, 90, 38, 0.6);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 240, 0.6), 0 2px 6px rgba(60, 40, 12, 0.18);
+  cursor: var(--cur-pointer, pointer);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast), background var(--motion-fast);
+}
+.gui-choice:hover:not([aria-disabled='true']) {
+  border-color: #8f6a2f;
+  background: rgba(255, 250, 235, 0.88);
+}
+.gui-choice[aria-checked='true'] {
+  border-color: #6c4b13;
+  background: rgba(255, 244, 205, 0.95);
+  box-shadow: inset 0 0 0 2px var(--gui-select), 0 0 0.7rem rgba(214, 170, 69, 0.55);
+}
+.gui-choice:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.gui-choice[aria-disabled='true'] {
+  cursor: var(--cur-blocked, not-allowed);
+  color: var(--gui-ink-faint);
+  background: rgba(215, 205, 182, 0.55);
+  border-style: dashed;
+}
+.gui-choice__body {
+  min-width: 0;
+  flex: 1;
+}
+.gui-choice__title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--gui-ink-head);
+}
+.gui-choice__detail {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+.gui-choice__reason {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7e2a10;
+}
+.gui-choice__check {
+  position: absolute;
+  top: -0.55rem;
+  right: -0.55rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--orn-check) center / 62% no-repeat, radial-gradient(circle at 50% 35%, #d8b56c, #7a5a26);
+  border: 1px solid #4a3410;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+}
+.gui-choice[aria-checked='true'] .gui-choice__check {
+  visibility: visible;
+}
+.gui-choice .gui-socket {
+  --socket: 3.6rem;
+}
+
+/* Exchange (quests): what is asked and what is given, side by side — not a choice. */
+.gui-exchange {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.6rem;
+  align-items: stretch;
+}
+.gui-exchange__side {
+  padding: 0.6rem 0.75rem;
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 4px;
+}
+.gui-exchange__head {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gui-ink-head);
+  margin-bottom: 0.4rem;
+}
+.gui-exchange__arrow {
+  align-self: center;
+  width: 2rem;
+  height: 2rem;
+  color: #7a5414;
+}
+.gui-req {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.15rem 0.55rem;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: 0.86rem;
+}
+.gui-req__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.gui-req__missing {
+  color: #9c2a17;
+  font-weight: 700;
+}
+.gui-req__ok {
+  color: #285c1d;
+  font-weight: 700;
+}
+@media (max-width: 760px) {
+  .gui-exchange {
+    grid-template-columns: 1fr;
+  }
+  .gui-exchange__arrow {
+    transform: rotate(90deg);
+    justify-self: center;
+  }
+}
+
+/* ============================================================
+   Tabs as a rail
+   ============================================================ */
+.tabs {
+  gap: 0.25rem;
+  border-bottom-color: rgba(194, 154, 82, 0.55);
+}
+.tab {
+  background: linear-gradient(180deg, rgba(23, 45, 75, 0.62), rgba(7, 14, 26, 0.72)), var(--gui-surface-stone) center / cover;
+}
+.tab[aria-selected='true'] {
+  background: linear-gradient(180deg, rgba(122, 90, 38, 0.62), rgba(29, 53, 87, 0.8) 60%, rgba(17, 34, 59, 0.95));
+}
+.tab:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 1px;
+}
+
+/* ============================================================
+   Tooltips (hover after a short delay, and keyboard focus)
+   ============================================================ */
+.gui-tip {
+  position: fixed;
+  z-index: 120;
+  max-width: min(22rem, 80vw);
+  padding: 0.45rem 0.7rem;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--text-strong);
+  background: linear-gradient(180deg, rgba(17, 32, 54, 0.98), rgba(7, 14, 26, 0.98));
+  border: 1px solid rgba(194, 154, 82, 0.75);
+  border-radius: 3px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(5, 9, 15, 0.8);
+  pointer-events: none;
+  white-space: pre-line;
+  animation: fade-in var(--motion-fast) ease-out;
+}
+
+/* ============================================================
+   Toasts: compact, minimally framed
+   ============================================================ */
+.toast.panel {
+  background: linear-gradient(180deg, rgba(17, 32, 54, 0.97), rgba(7, 14, 26, 0.97)), var(--gui-surface-stone) center / cover;
+}
+
+/* ============================================================
+   Faction banner choice (setup)
+   ============================================================ */
+.gui-banner-choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.25rem 0.25rem 0.4rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: #fff1c8;
+  font: inherit;
+  cursor: var(--cur-pointer, pointer);
+}
+/* The banner art (2:3) with the emblem in its safe rectangle and the name on the cloth below it. */
+.gui-banner {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  container-type: inline-size;
+  background: var(--gui-banner) center / contain no-repeat;
+  transition: transform var(--motion-fast);
+}
+.gui-banner__content {
+  position: absolute;
+  top: 24%;
+  bottom: 44%;
+  left: 27%;
+  right: 27%;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.gui-banner__emblem {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
+}
+.gui-banner__name {
+  position: absolute;
+  top: 60%;
+  left: 11%;
+  right: 11%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  /* The largest size at which the name fits across the cloth (never above 1.3rem). */
+  font-size: min(1.3rem, calc(78cqw / (var(--chars, 8) * 0.68)));
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff3d0;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.9), 0 2px 5px rgba(0, 0, 0, 0.85);
+  line-height: 1.1;
+  pointer-events: none;
+}
+.gui-banner__caption {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1.03rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+.gui-banner__note {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.gui-banner-choice:hover .gui-banner {
+  transform: translateY(-3px);
+}
+.gui-banner-choice[aria-checked='true'] .gui-banner::after {
+  content: '';
+  position: absolute;
+  top: 8%;
+  right: 4%;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--orn-check) center / 62% no-repeat, radial-gradient(circle at 50% 35%, #f0d48a, #8a6224);
+  border: 1px solid #4a3410;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+/* Selected: a gold glow under the banner plus the check (shape, not colour alone). */
+.gui-banner-choice[aria-checked='true'] {
+  background: radial-gradient(60% 55% at 50% 42%, rgba(242, 207, 110, 0.35), transparent 72%);
+  box-shadow: inset 0 0 0 2px var(--gui-select);
+}
+.gui-banner-choice[aria-checked='true'] .gui-banner__caption {
+  color: var(--gold-100, #fff3d6);
+}
+.gui-banner-choice:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 2px;
+}
+.gui-banner-choice.is-prep .gui-banner {
+  filter: saturate(0.5) brightness(0.8);
+}
+
+/* ============================================================
+   Open book folio (journal, codex, spells, miracles)
+   ============================================================ */
+.gui-folio {
+  --folio-paper: #e9d6a8;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 3 / 2;
+  margin: 0 auto;
+  color: var(--gui-ink);
+}
+/* The painted book fades in once decoded (data-art="ready", components/gui.tsx). */
+.gui-folio::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gui-book) center / contain no-repeat;
+  opacity: 0;
+  transition: opacity 260ms ease-out;
+  pointer-events: none;
+}
+.gui-folio[data-art='ready']::before {
+  opacity: 1;
+}
+.gui-folio__page {
+  position: absolute;
+  top: 15%;
+  bottom: 16%;
+  overflow: auto;
+  padding: 0 0.35rem 0 0.1rem;
+  scrollbar-color: rgba(110, 78, 30, 0.6) transparent;
+  transition: background-color 260ms ease-out, box-shadow 260ms ease-out;
+}
+/* Until then (or if it cannot load), each page is plain paper a little larger than its text, so ink
+   never sits on the dark screen; the spine stays dark between the two pages. */
+.gui-folio:not([data-art='ready']) .gui-folio__page {
+  background-color: var(--folio-paper);
+  box-shadow: 0 0 0 clamp(0.6rem, 2.2cqi, 1.6rem) var(--folio-paper), 0 0 0 calc(clamp(0.6rem, 2.2cqi, 1.6rem) + 2px) rgba(110, 78, 30, 0.55);
+  border-radius: 1px;
+}
+:root[data-motion='reduced'] .gui-folio::before,
+:root[data-motion='reduced'] .gui-folio__page {
+  transition: none;
+}
+.gui-folio__page--left {
+  left: 10%;
+  width: 34%;
+}
+.gui-folio__page--right {
+  left: 56%;
+  width: 34%;
+}
+/* Narrow windows: one parchment page instead of shrinking text across the spine. */
+@container folio (max-width: 52rem) {
+  .gui-folio {
+    aspect-ratio: auto;
+    background: var(--gui-surface-parchment) center / cover, #ead6a6;
+    padding: 1.2rem 1.4rem;
+    border-radius: 3px;
+  }
+  .gui-folio::before {
+    display: none;
+  }
+  .gui-folio__page,
+  .gui-folio:not([data-art='ready']) .gui-folio__page {
+    position: static;
+    width: auto;
+    overflow: visible;
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .gui-folio__page--right {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gui-paper-rule);
+  }
+}
+.gui-folio-wrap {
+  container-name: folio;
+  container-type: inline-size;
+}
+
+/* ============================================================
+   Recruitment stage and merchant header
+   ============================================================ */
+.gui-stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--gui-recruit) center / cover no-repeat, #0c1622;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8), 0 0 0 1px rgba(194, 154, 82, 0.55);
+}
+.gui-merchant {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  background: var(--gui-merchant) center / cover no-repeat, #1a140c;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(60, 40, 12, 0.65), 0 0 0 3px rgba(194, 154, 82, 0.45);
+}
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+:root[data-contrast='high'] .gui-surface--parchment {
+  --text: #1a120a;
+  --text-dim: #2b2014;
+  color: #140d06;
+}
+:root[data-contrast='high'] .gui-window--parchment::before {
+  background: #f3e6c4;
+}
+:root[data-contrast='high'] .gui-choice {
+  background: #fff8e6;
+  border-color: #3d2a0c;
+}
+:root[data-motion='reduced'] .gui-banner,
+:root[data-motion='reduced'] .gui-banner-choice:hover .gui-banner,
+:root[data-motion='reduced'] .btn--primary {
+  transition: none;
+}
+
+/* ============================================================
+   Shared skin for every screen (applied through the existing classes)
+   ============================================================ */
+/* Panels: the stone material under the plate (restrained border, no ornate frame on small panels). */
+.panel:not(.gui-window):not(.panel--parchment):not(.panel--glass) {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(52, 88, 132, 0.2), transparent 62%),
+    radial-gradient(150% 130% at 50% 45%, transparent 62%, rgba(0, 0, 0, 0.32)),
+    linear-gradient(180deg, rgba(18, 33, 55, 0.86), rgba(8, 15, 27, 0.9)),
+    var(--gui-surface-stone) center / cover;
+}
+.panel--parchment:not(.gui-window) {
+  background: linear-gradient(180deg, rgba(255, 250, 235, 0.12), rgba(120, 90, 40, 0.08)), var(--gui-surface-parchment) center / cover, #e8d6a8;
+}
+/* Top bars: stone command chrome. */
+.screen-header,
+.adv-top,
+.battle-top {
+  background:
+    radial-gradient(60% 140% at 50% 0%, rgba(52, 88, 132, 0.26), transparent 70%),
+    linear-gradient(180deg, rgba(17, 32, 54, 0.9), rgba(7, 14, 26, 0.92)),
+    var(--gui-surface-stone) center / cover;
+}
+.modal__footer.gui-modal__footer {
+  background: none;
+}
+/* Army and item slots: the painted socket rim as a nine-slice (any aspect ratio), centre empty. */
+.slot::after,
+.h3-slot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0 solid transparent;
+  border-image-source: var(--gui-socket);
+  border-image-slice: 240;
+  border-image-width: 1.05rem;
+  border-image-outset: 0.28rem;
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+.slot {
+  overflow: visible;
+  border-color: rgba(194, 154, 82, 0.35);
+}
+.slot__art {
+  overflow: hidden;
+  border-radius: 2px;
+}
+.slot__count,
+.slot__index {
+  z-index: 3;
+}
+.slot--empty::after {
+  opacity: 0.72;
+}
+
+/* ============================================================
+   B. Adventure command sidebar (concept 04)
+   ============================================================ */
+.adventure {
+  --adv-cmd-w: clamp(15.5rem, 19.5rem, 30vw);
+}
+/* The map keeps its fixed angle; its view simply ends at the sidebar (the sidebar never hides map tiles). */
+.adventure__scene {
+  right: var(--adv-cmd-w);
+}
+.adv-top {
+  right: var(--adv-cmd-w);
+}
+.adv-command {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  width: var(--adv-cmd-w);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.65rem 0.7rem 0.75rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background:
+    linear-gradient(90deg, rgba(5, 9, 15, 0.55), rgba(5, 9, 15, 0) 0.6rem),
+    linear-gradient(180deg, rgba(14, 27, 45, 0.86), rgba(7, 14, 26, 0.92)),
+    var(--gui-surface-stone) center / cover,
+    #0b1626;
+  border-left: 1px solid var(--gold-500);
+  box-shadow: -1px 0 0 rgba(5, 9, 15, 0.9), -3px 0 0 -1px rgba(194, 154, 82, 0.3), -8px 0 22px rgba(0, 0, 0, 0.5);
+}
+.adv-command__minimap {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  padding: 0.35rem;
+  border: 1px solid rgba(194, 154, 82, 0.55);
+  border-radius: 3px;
+  background: rgba(3, 6, 11, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), 0 2px 6px rgba(0, 0, 0, 0.45);
+  flex: none;
+}
+.adv-command__label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  margin-bottom: 0.25rem;
+}
+.adv-command__group {
+  flex: none;
+}
+.adv-command__heroes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 7.6rem), 1fr));
+  gap: 0.3rem;
+}
+.adv-command__heroes .hero-tab {
+  padding: 0.2rem;
+  gap: 0.35rem;
+}
+.adv-command__towns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.adv-command__towns .town-tab {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.45rem;
+}
+.adv-command__hero {
+  display: grid;
+  grid-template-columns: 4.6rem 1fr;
+  gap: 0.35rem 0.55rem;
+  padding: 0.45rem;
+  border: 1px solid rgba(194, 154, 82, 0.5);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(23, 45, 75, 0.55), rgba(7, 14, 26, 0.7));
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8);
+  flex: none;
+}
+.adv-command__portrait {
+  width: 4.6rem;
+  height: 4.6rem;
+  padding: 0;
+  border: 1px solid var(--gold-400);
+  border-radius: 3px;
+  background: none;
+  cursor: var(--cur-pointer, pointer);
+  overflow: hidden;
+}
+.adv-command__portrait:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 2px;
+}
+.adv-command__hero-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.adv-command__hero-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gold-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.adv-command__meter {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--text-strong);
+}
+.adv-command__army {
+  grid-column: 1 / -1;
+}
+.adv-command__army .army {
+  gap: 0.22rem;
+}
+.adv-command__army .slot__count {
+  font-size: 0.66rem;
+  min-width: 1.05rem;
+  line-height: 1rem;
+  padding: 0 0.18rem;
+}
+.adv-command__army .slot__index {
+  display: none;
+}
+.adv-command__army .slot::after {
+  border-image-width: 0.7rem;
+  border-image-outset: 0.18rem;
+}
+.adv-command__grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.3rem !important;
+  flex: none;
+}
+.adv-command__grid > .btn {
+  min-width: 0 !important;
+  width: 100%;
+  min-height: 3.5rem !important;
+  padding: 0.3rem 0.1rem 0.2rem !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.05em !important;
+}
+.adv-command__grid > .btn svg {
+  width: 1.65rem !important;
+  height: 1.65rem !important;
+}
+.adv-command .adv-endday {
+  position: static;
+  transform: none;
+  margin-top: auto;
+  flex: none;
+}
+.adv-command .adv-endday .btn {
+  width: 100%;
+  min-width: 0;
+}
+/* End Day: the gold command (concept 04), the same anatomy as every primary button. */
+.btn--primary.btn--endday {
+  color: #2a1a05;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.55);
+  font-size: 1.15rem;
+  letter-spacing: 0.14em;
+}
+.btn--primary.btn--endday::before {
+  border-image-source: none;
+  border: 1px solid #f1d99a;
+  border-radius: 3px;
+  background: var(--gold-bevel);
+  box-shadow: inset 0 1px 0 rgba(255, 250, 225, 0.75), inset 0 -2px 3px rgba(90, 60, 20, 0.45), inset 0 0 0 2px rgba(122, 90, 38, 0.55), 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+.btn--primary.btn--endday:hover:not(:disabled)::before {
+  background: var(--gold-bevel-hover);
+  box-shadow: inset 0 1px 0 rgba(255, 250, 225, 0.85), inset 0 0 0 2px rgba(122, 90, 38, 0.55), var(--glow-gold-strong);
+}
+.btn--primary.btn--endday:disabled {
+  color: #d4cab3;
+  text-shadow: none;
+}
+/* Information over the map, at the left. */
+.adv-left.adv-info {
+  left: 0.8rem;
+  width: min(21rem, 30vw);
+  /* 24 px under the top bar, as the owner asked on 2026-10-07. */
+  top: calc(var(--topbar-h) + 0.9rem + 24px);
+  bottom: calc(var(--bottombar-h) + 0.4rem);
+  overflow-y: auto;
+}
+.adv-bottom {
+  left: calc((100% - var(--adv-cmd-w)) / 2);
+}
+.turn-banner,
+.day-banner {
+  left: calc((100% - var(--adv-cmd-w)) / 2) !important;
+}
+.turn-banner {
+  top: calc(var(--topbar-h) + 1.2rem) !important;
+}
+@media (max-height: 760px) {
+  .adv-command {
+    gap: 0.4rem;
+    padding-top: 0.45rem;
+  }
+  .adv-command__hero {
+    grid-template-columns: 3.6rem 1fr;
+  }
+  .adv-command__portrait {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+}
+
+/* ============================================================
+   C. Hero equipment folio (concept 05)
+   ============================================================ */
+.hero-screen .plate {
+  background: linear-gradient(180deg, rgba(16, 30, 50, 0.84), rgba(7, 14, 26, 0.9)), var(--gui-surface-stone) center / cover;
+}
+.hero-screen .plate.gui-leather {
+  background: radial-gradient(ellipse at 50% 45%, rgba(18, 34, 56, 0.25), rgba(4, 8, 14, 0.55) 85%), var(--gui-surface-leather) center / cover, #0c1622;
+}
+.h3-doll__stage {
+  background: radial-gradient(ellipse at 50% 45%, rgba(16, 32, 58, 0.35), rgba(5, 10, 18, 0.25) 80%);
+}
+/* The quiet figure is contained (its own proportions), the sockets keep the stage's percentages. */
+.h3-body {
+  object-fit: contain;
+  opacity: 0.92;
+}
+.h3-doll__stage .h3-slot {
+  /* 13 % of the stage: head and neck (11 % of its height apart) never touch, at any window size. */
+  width: clamp(2.6rem, 13%, 4.2rem);
+  border-radius: 3px;
+}
+.h3-slot--pack {
+  border-radius: 3px;
+}
+
+/* ============================================================
+   C. Recruitment chamber (concept 06)
+   ============================================================ */
+.recruit-layout--chamber {
+  grid-template-columns: minmax(19rem, 1.05fr) minmax(16rem, 1fr) minmax(19rem, 0.95fr);
+}
+.recruit-column {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.recruit-column > .recruit-tiers {
+  flex: 3 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.recruit-column > .recruit-upgrades {
+  flex: 1.3 1 0;
+  min-height: 7rem;
+  display: flex;
+  flex-direction: column;
+}
+.recruit-column > .panel > .panel__body {
+  flex: 1;
+  min-height: 0;
+}
+.form-card__socket {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  padding: 0.2rem;
+  flex: none;
+}
+.form-card__socket::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 0 solid transparent;
+  border-image-source: var(--gui-socket);
+  border-image-slice: 240;
+  border-image-width: 0.95rem;
+  border-image-outset: 0.22rem;
+  pointer-events: none;
+}
+.form-card__socket .portrait::after {
+  display: none;
+}
+.form-card.is-locked .form-card__name {
+  color: var(--text-dim);
+}
+.recruit-centre {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.recruit-stage {
+  container-type: size;
+  flex: 1 1 auto;
+  min-height: 14rem;
+  width: 100%;
+  border-radius: 3px;
+}
+/* Fit the whole frame inside the stage (never crop a tall or winged silhouette); feet at (50 %, 86 %). */
+.recruit-stage__unit {
+  --s: min(calc(62cqh / var(--fh)), calc(92cqw / var(--fw)));
+  position: absolute;
+  width: calc(var(--s) * var(--fw));
+  height: calc(var(--s) * var(--fh));
+  left: calc(50% - var(--ax) * var(--s) * var(--fw));
+  top: calc(86% - var(--ay) * var(--s) * var(--fh));
+  background-repeat: no-repeat;
+  background-size: calc(var(--s) * var(--fw) * var(--frames)) 100%;
+  background-position: 0 0;
+  image-rendering: auto;
+  animation: recruit-idle var(--dur) steps(var(--frames)) infinite;
+  filter: drop-shadow(0 0.4rem 0.35rem rgba(0, 0, 0, 0.45));
+}
+@keyframes recruit-idle {
+  to {
+    background-position: calc(-1 * var(--s) * var(--fw) * var(--frames)) 0;
+  }
+}
+:root[data-motion='reduced'] .recruit-stage__unit {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-motion='system'] .recruit-stage__unit {
+    animation: none;
+  }
+}
+.recruit-dest-army {
+  flex: none;
+  padding: 0.45rem 0.55rem 0.55rem;
+  border: 1px solid rgba(194, 154, 82, 0.5);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(16, 30, 50, 0.86), rgba(7, 14, 26, 0.92)), var(--gui-surface-stone) center / cover;
+}
+.recruit-dest-army__label {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+  margin-bottom: 0.35rem;
+}
+.recruit-dest-army .army {
+  gap: 0.3rem;
+}
+.panel--parchment.gui-surface--parchment {
+  border-color: var(--gold-600);
+}
+.panel--parchment.gui-surface--parchment > .panel__header {
+  background: linear-gradient(180deg, rgba(122, 90, 38, 0.18), rgba(122, 90, 38, 0));
+}
+.panel--parchment.gui-surface--parchment .panel__title {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}
+.recruit-detail.gui-surface--parchment > .panel__header {
+  background: linear-gradient(180deg, rgba(122, 90, 38, 0.18), rgba(122, 90, 38, 0));
+}
+.recruit-detail.gui-surface--parchment .panel__title {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}
+.recruit-detail .icon-link {
+  color: #7a5414;
+}
+.recruit-detail__form {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b4a16;
+}
+.form-card__socket--large::after {
+  border-image-width: 1.3rem;
+  border-image-outset: 0.3rem;
+}
+.recruit-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+}
+.recruit-dest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.recruit-dest__opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.25rem;
+  font: inherit;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--gui-ink);
+  background: rgba(255, 248, 228, 0.65);
+  border: 2px solid rgba(122, 90, 38, 0.5);
+  border-radius: 2rem;
+  cursor: var(--cur-pointer, pointer);
+}
+.recruit-dest__opt .portrait {
+  border-radius: 50%;
+}
+.recruit-dest__opt.is-selected {
+  border-color: #6c4b13;
+  box-shadow: inset 0 0 0 2px var(--gui-select);
+}
+.recruit-dest__opt.is-selected::after {
+  content: '';
+  position: absolute;
+  top: -0.4rem;
+  right: -0.35rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: var(--orn-check) center / 62% no-repeat, radial-gradient(circle at 50% 35%, #d8b56c, #7a5a26);
+  border: 1px solid #4a3410;
+}
+.recruit-dest__opt:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.recruit-dest__town {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, #25426a, #0b1626);
+  color: var(--gold-300);
+}
+.recruit-dest__town svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.gui-surface--parchment .recruit-summary {
+  background: rgba(255, 248, 228, 0.55);
+  border-color: var(--gui-paper-rule);
+  box-shadow: none;
+}
+.gui-surface--parchment .qty__value {
+  color: var(--gui-ink);
+  background: rgba(255, 250, 236, 0.88);
+  border-color: rgba(110, 78, 30, 0.6);
+  box-shadow: inset 0 1px 3px rgba(60, 40, 12, 0.35);
+}
+
+/* ============================================================
+   D. Town (concept 07): buildings are the controls
+   ============================================================ */
+/* The building's tooltip: a small parchment card under it, after a short hover and at once on focus. */
+.town-slot__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  padding: 0.3rem 0.6rem 0.35rem;
+  font-family: var(--font-display);
+  color: var(--gui-ink);
+  background: var(--gui-surface-parchment) center / cover, #ead6a6;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.55), 0 4px 12px rgba(0, 0, 0, 0.5);
+  white-space: normal;
+  width: max-content;
+  max-width: 15rem;
+  text-align: center;
+  transition: opacity var(--motion-fast) ease 0s;
+}
+.town-slot__name {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--gui-ink-head);
+}
+.town-slot__hint {
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  color: var(--gui-ink);
+}
+.town-slot__can {
+  color: #285c1d;
+}
+.town-slot:hover .town-slot__label {
+  transition-delay: var(--gui-tip-delay);
+}
+.town-slot:focus-visible .town-slot__label,
+.town-slot.is-selected .town-slot__label {
+  opacity: 1;
+  transition-delay: 0s;
+}
+/* Hover and keyboard focus outline the building itself; focus adds a two-tone ring visible on any scenery. */
+.town-slot:focus-visible {
+  outline: 2px solid var(--gui-focus);
+  outline-offset: 3px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 5px rgba(5, 9, 15, 0.75);
+}
+.town-slot:focus-visible .town-slot__art {
+  filter: drop-shadow(0 0 2px #fff6cf) drop-shadow(0 0 10px rgba(255, 226, 150, 0.95)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.45));
+}
+.town-slot:focus-visible .town-slot__plot {
+  border-color: var(--gold-300);
+  box-shadow: 0 0 12px rgba(234, 208, 143, 0.55);
+}
+/* Only the building just raised or upgraded: a brief light, then nothing. */
+.town-slot.is-new .town-slot__art {
+  animation: town-raised 2.2s ease-out 1;
+}
+@keyframes town-raised {
+  0% {
+    filter: drop-shadow(0 0 0 rgba(255, 236, 170, 0)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.45));
+    transform: translateY(4px);
+  }
+  18% {
+    filter: drop-shadow(0 0 18px rgba(255, 236, 170, 1)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.45));
+    transform: translateY(-2px);
+  }
+  100% {
+    filter: drop-shadow(0 0 0 rgba(255, 236, 170, 0)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.45));
+    transform: none;
+  }
+}
+:root[data-motion='reduced'] .town-slot.is-new .town-slot__art {
+  animation: none;
+  filter: drop-shadow(0 0 8px rgba(255, 236, 170, 0.95)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.45));
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-motion='system'] .town-slot.is-new .town-slot__art {
+    animation: none;
+    filter: drop-shadow(0 0 8px rgba(255, 236, 170, 0.95)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.45));
+  }
+}
+/* With the pop-up open the building's name is already its title. */
+.town-slot.is-selected:not(:hover):not(:focus-visible) .town-slot__label {
+  opacity: 0;
+}
+/* The economy bar: a stone plate with the construction control. */
+.town-hud {
+  background: linear-gradient(180deg, rgba(14, 27, 46, 0.84), rgba(6, 12, 22, 0.9)), var(--gui-surface-stone) center / cover;
+  border-radius: 4px;
+}
+.town-hud__construct.btn {
+  min-height: 2rem;
+  padding: 0.15rem 0.6rem;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+}
+.town-hud__badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.25rem;
+  margin-left: 0.15rem;
+  border-radius: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #10230c;
+  background: #8fd47a;
+  border: 1px solid #2f6a22;
+}
+/* The building pop-up: a small framed parchment card. */
+.town-scene {
+  --bld-pop-w: 22rem;
+}
+.bld-pop.gui-window {
+  position: absolute;
+  --gui-bw: 2.3rem;
+  --gui-pad: 1.2rem;
+  padding: 0.95rem 1.15rem 1rem;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.bld-pop.gui-window::before {
+  box-shadow: 0 0.6rem 1.6rem rgba(0, 0, 0, 0.55);
+}
+.bld-pop.gui-window .bld-pop__head {
+  padding: 0.15rem 0.2rem 0.4rem 0.35rem;
+  border-bottom-color: var(--gui-paper-rule);
+}
+.bld-pop.gui-window .bld-pop__title {
+  color: var(--gui-ink-head);
+}
+.bld-pop.gui-window .bld-pop__close {
+  position: relative;
+  z-index: 6;
+  color: #f6e3b0;
+  background: radial-gradient(circle at 50% 35%, #25426a, #0b1626);
+  border-color: var(--gold-500);
+}
+.bld-pop.gui-window .bld-pop__close:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.bld-pop.gui-window .bld-pop__body {
+  padding: 0.45rem 0.3rem;
+}
+.bld-pop.gui-window .bld-pop__next {
+  border-top-color: var(--gui-paper-rule);
+}
+.bld-pop.gui-window .bld-pop__sub {
+  color: var(--gui-ink-head);
+}
+.bld-pop.gui-window .bld-pop__line {
+  color: var(--gui-ink-soft);
+}
+.bld-pop.gui-window .bld-pop__pip {
+  border-color: #6c4b13;
+  background: rgba(255, 248, 228, 0.6);
+}
+.bld-pop.gui-window .bld-pop__pip.is-on {
+  background: linear-gradient(135deg, #e9c770, #8a6224);
+  border-color: #5a3f12;
+}
+.bld-pop.gui-window .bld-pop__actions {
+  padding: 0.45rem 0.25rem 0.1rem;
+  border-top-color: var(--gui-paper-rule);
+}
+.bld-pop__level {
+  align-items: center;
+}
+.bld-pop__level-text {
+  margin-right: 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--gui-ink-soft);
+}
+.bld-pop__preview {
+  display: block;
+  align-self: center;
+  width: 62%;
+  max-height: 7.5rem;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 4px rgba(60, 40, 12, 0.35));
+}
+.bld-pop__missing,
+.build-row__missing {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: #8e2614;
+}
+.bld-pop__missing li,
+.build-row__missing li,
+.bld-pop__reason,
+.build-row__reason,
+.shop-reason,
+.market__reason {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+.bld-pop__reason,
+.build-row__reason {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: #7e4300;
+}
+.bld-pop.gui-window .btn--primary.btn--block {
+  margin-top: 0.25rem;
+}
+/* The construction list. */
+.construction__day {
+  margin: 0 0 0.4rem;
+}
+.construction__group + .construction__group {
+  margin-top: 0.6rem;
+}
+.construction__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.build-row {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 4px;
+}
+.build-row.is-ready {
+  border-color: #6c8a2f;
+  box-shadow: inset 3px 0 0 #4f7a22;
+}
+.build-row.is-done,
+.build-row.is-planned {
+  opacity: 0.86;
+}
+.build-row__art {
+  display: grid;
+  place-items: center;
+  width: 5.2rem;
+  height: 3.9rem;
+}
+.build-row__art > img,
+.build-row__art > svg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.build-row__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.build-row__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gui-ink-head);
+}
+.build-row__meta {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--gui-ink-soft);
+}
+.build-row__summary {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.3;
+  color: var(--gui-ink);
+}
+.build-row__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  min-width: 6.5rem;
+}
+@media (max-width: 760px) {
+  .build-row {
+    grid-template-columns: 3.6rem 1fr;
+  }
+  .build-row__art {
+    width: 3.6rem;
+    height: 2.8rem;
+  }
+  .build-row__actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/* ============================================================
+   G. Marketplace and shops (concept 10)
+   ============================================================ */
+.market {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.8fr) 1.2fr;
+  gap: 0.9rem;
+  align-items: stretch;
+}
+.market__side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+}
+.market__tabs {
+  margin: 0;
+}
+.market__tabs .tab {
+  flex: 1;
+  white-space: nowrap;
+}
+.market__goods {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.market__good-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3.6rem;
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  font: inherit;
+  color: var(--text-strong);
+  background: linear-gradient(180deg, rgba(23, 45, 75, 0.7), rgba(7, 14, 26, 0.85)), var(--gui-surface-stone) center / cover;
+  border: 1px solid rgba(194, 154, 82, 0.5);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8);
+  cursor: var(--cur-pointer, pointer);
+}
+.market__good-btn:hover {
+  border-color: var(--gold-300);
+}
+.market__good-btn[aria-checked='true'] {
+  border: 2px solid var(--gui-select);
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.8), 0 0 0.6rem rgba(242, 207, 110, 0.45);
+}
+.market__good-btn:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 2px;
+}
+.market__good-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: none;
+}
+.market__good-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.market__good-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--gold-100, #fff3d6);
+}
+.market__good-meta {
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+.market__note {
+  margin: 0;
+  color: var(--text-dim);
+}
+.market__counter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.75rem 0.9rem 0.8rem;
+  background: var(--gui-surface-parchment) center / cover, #ead6a6;
+  border: 1px solid rgba(90, 62, 22, 0.8);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.market__holdings {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+.market__holdings-title,
+.market__after-title {
+  margin-right: auto;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gui-ink-head);
+}
+.market__holding {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1rem 0.45rem;
+  background: rgba(255, 248, 228, 0.6);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 3px;
+}
+.market__flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+.market__goods-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.45rem 0.3rem;
+  background: rgba(255, 248, 228, 0.45);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 4px;
+}
+.market__label {
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+.market__big-icon {
+  width: 3.6rem;
+  height: 3.6rem;
+}
+.market__amount {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gui-ink);
+}
+.market__arrow {
+  width: 2.6rem;
+  height: 1.75rem;
+  color: #8a6224;
+}
+.market__rate {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  color: var(--gui-ink-head);
+  border-top: 1px solid var(--gui-paper-rule);
+  border-bottom: 1px solid var(--gui-paper-rule);
+  padding: 0.2rem 0;
+}
+.market__after {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.8rem;
+  font-family: var(--font-ui);
+  font-size: 0.84rem;
+}
+.market__after-title {
+  flex-basis: 100%;
+}
+.market__after-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.market__reason,
+.shop-reason {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: #9c2a17;
+}
+.shop-reason {
+  color: var(--warning, #e0a24a);
+}
+.gui-surface--parchment .shop-reason {
+  color: #7e4300;
+}
+@media (max-width: 860px) {
+  .market {
+    grid-template-columns: 1fr;
+  }
+  .market__goods {
+    flex-direction: row;
+  }
+  .market__good-btn {
+    flex: 1;
+    min-width: 0;
+  }
+  .market__good-meta {
+    display: none;
+  }
+}
+.hire-card__buy .shop-reason {
+  max-width: 9rem;
+  font-size: 0.74rem;
+  text-align: left;
+}
+
+/* ============================================================
+   E. Tactical battle (concept 08): a stable command frame
+   ============================================================ */
+/* Decorative chrome never takes the battlefield's clicks: only its controls do. */
+.battle-top,
+.turn-order {
+  pointer-events: none;
+}
+.battle-top :is(button, a, [title], .chip, .siege-status__item, .portrait),
+.turn-order .turn-order__item,
+.turn-order .turn-order__sep {
+  pointer-events: auto;
+}
+.gui-banner--mini {
+  flex: none;
+  width: 2.6rem;
+  height: 3.9rem;
+  aspect-ratio: auto;
+  margin: -0.35rem 0 -0.5rem;
+  cursor: default;
+  pointer-events: none;
+}
+.gui-banner--mini:hover {
+  transform: none;
+}
+.gui-banner--mini .gui-banner__content {
+  inset: 22% 22% 30%;
+}
+.gui-banner--mini .gui-banner__emblem {
+  max-width: 1.5rem;
+}
+.battle-side {
+  border-left-width: 3px;
+}
+.turn-order {
+  border-color: var(--gold-500);
+  background: linear-gradient(180deg, rgba(17, 32, 54, 0.92), rgba(7, 14, 26, 0.9)), var(--gui-surface-stone) center / cover;
+}
+.turn-order__item.is-active .portrait {
+  border-color: var(--gui-select);
+  box-shadow: 0 0 0 1px rgba(5, 9, 15, 0.9), 0 0 0.7rem rgba(242, 207, 110, 0.75);
+}
+/* The command bar: one stone frame with a gold rim; commands keep their positions. */
+.battle-bottom.gui-command {
+  border: 1px solid var(--gold-500);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(5, 9, 15, 0.85), inset 0 0 0 3px rgba(194, 154, 82, 0.22), 0 -2px 0 rgba(5, 9, 15, 0.7), 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+.battle-bottom.gui-command > .panel__corner {
+  display: none;
+}
+.battle-bottom .active-card {
+  padding-right: 0.8rem;
+  border-right: 1px solid rgba(194, 154, 82, 0.35);
+}
+.battle-bottom .battle-tools {
+  padding-left: 0.8rem;
+  border-left: 1px solid rgba(194, 154, 82, 0.35);
+}
+.battle-actions > .small,
+.battle-actions > span:not(.btn) {
+  flex-basis: 100%;
+  text-align: center;
+}
+/* Inspection: the hovered stack's health and effects, never under the pointer's path. */
+.battle-inspect {
+  pointer-events: none;
+}
+.battle-inspect__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin: 0.15rem 0 0.25rem;
+}
+.battle-inspect__hp {
+  margin-bottom: 0.2rem;
+}
+/* Tile commands (icon over label): the lock sits in the corner, so the tile keeps its size. */
+.battle-actions > .btn:not(.btn--small),
+.battle-tools > .btn:not(.btn--small):not(.btn--icon),
+.adv-command__grid > .btn {
+  position: relative;
+}
+.battle-actions > .btn:not(.btn--small) > .btn__lock,
+.battle-tools > .btn:not(.btn--small):not(.btn--icon) > .btn__lock,
+.adv-command__grid > .btn > .btn__lock {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.25rem;
+  width: 0.7rem !important;
+  height: 0.7rem !important;
+}
+/* 1.1.4 (GUI audit): a primary command in the battle bar (Start battle, Auto: on) keeps the painted
+   face's own layout, icon beside the label and both centred on the face. As an icon-over-label tile
+   its label fell onto the face's bottom rim. The face grows a little; the hit target stays ≥ 44 px. */
+.battle-actions > .btn.btn--primary:not(.btn--small),
+.battle-tools > .btn.btn--primary:not(.btn--small):not(.btn--icon) {
+  --btn-face-h: 2.6rem;
+  flex-direction: row;
+  gap: 0.45rem;
+  min-width: 0;
+  min-height: var(--btn-hit);
+  padding: 0 1.45rem;
+  font-size: 0.76rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.battle-actions > .btn.btn--primary:not(.btn--small) svg,
+.battle-tools > .btn.btn--primary:not(.btn--small):not(.btn--icon) svg {
+  width: 1.3rem !important;
+  height: 1.3rem !important;
+}
+.battle-actions > .btn.btn--primary:not(.btn--small) > .btn__lock,
+.battle-tools > .btn.btn--primary:not(.btn--small):not(.btn--icon) > .btn__lock {
+  position: static;
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+}
+
+/* ============================================================
+   F. Pantheon selection (concept 09)
+   ============================================================ */
+.pantheon-banners {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, min(11rem, 17vh)));
+  justify-content: center;
+  gap: 0.4rem clamp(0.4rem, 1.6vw, 1.6rem);
+  padding: 0.35rem 1.6rem 0.5rem;
+}
+.pantheon-stage {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: clamp(10rem, 22vh, 16rem) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: start;
+  gap: 0.7rem 0.9rem;
+  padding: 0.2rem 1.6rem 0.6rem;
+}
+.pantheon-stage__patron {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0.45rem;
+}
+.pantheon-stage__patron > .portrait {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1;
+  border-radius: 3px;
+}
+.pantheon-stage__patron > .portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pantheon-stage__patron figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  padding-top: 0.35rem;
+  text-align: center;
+}
+.pantheon-stage__patron-label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.pantheon-stage__patron-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gold-200);
+}
+.pantheon-stage__patron-domain {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.pantheon-stage__info {
+  min-width: 0;
+  padding: 0.8rem 1.1rem 0.9rem;
+  border: 1px solid rgba(90, 62, 22, 0.8);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.5), 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+.pantheon-stage__lead {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.pantheon-stage__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pantheon-stage__epithet {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gui-ink-soft);
+}
+.pantheon-stage__summary {
+  margin: 0.45rem 0 0.2rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.pantheon-stage__info .god-pill {
+  background: rgba(255, 248, 228, 0.6);
+  border-color: var(--gui-paper-rule);
+  color: var(--gui-ink);
+}
+.pantheon-roster {
+  grid-column: 1 / -1;
+  padding: 0.35rem 0.6rem 0.5rem;
+  border: 1px solid rgba(194, 154, 82, 0.5);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(14, 26, 43, 0.82), rgba(6, 12, 22, 0.88)), var(--gui-surface-stone) center / cover;
+}
+.pantheon-roster__title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-200);
+  margin-bottom: 0.3rem;
+}
+.pantheon-roster__list {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pantheon-roster__tile.roster-cell {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.3rem 0.35rem;
+  text-align: center;
+}
+.pantheon-roster__tile .roster-cell__tier {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  z-index: 3;
+}
+.pantheon-roster__names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.pantheon-roster__base {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--gold-100, #fff3d6);
+}
+.pantheon-roster__up {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+.setup-drawer {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1.6rem;
+  margin: 0 1.6rem;
+  padding: 0.5rem 0.9rem;
+}
+.setup-drawer .rival-picker,
+.setup-drawer .match-settings {
+  padding: 0;
+}
+.setup-drawer .rival-temperament {
+  margin: 0;
+  flex-basis: 100%;
+}
+@media (max-width: 1100px), (max-height: 760px) {
+  .pantheon-roster__list {
+    grid-template-columns: repeat(7, minmax(4.5rem, 1fr));
+    overflow-x: auto;
+  }
+  .pantheon-roster__tile .portrait {
+    width: 3.6rem !important;
+    height: 3.6rem !important;
+  }
+  .pantheon-stage {
+    grid-template-columns: clamp(8rem, 20vh, 12rem) minmax(0, 1fr);
+  }
+}
+/* The drawer keeps every setup option but stays one compact band: settings side by side, notes inline. */
+.setup-drawer .match-settings {
+  flex-wrap: nowrap;
+  gap: 1.6rem;
+}
+.setup-drawer .setting-block {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+}
+.setup-drawer .setting-block__details.bullets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  flex-basis: 100%;
+  padding-left: 1rem;
+}
+.setup-drawer .rival-temperament {
+  padding: 0;
+}
+.setup-drawer .rival-temperament + .match-settings,
+.setup-drawer .rival-picker + .match-settings {
+  margin-top: 0;
+}
+
+/* ============================================================
+   H. Journal (concept 11): an open book
+   ============================================================ */
+.journal-body.journal-book {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: auto;
+}
+.journal-book > .gui-folio-wrap {
+  width: min(100%, calc((100vh - 8.5rem) * 1.5));
+  flex: none;
+}
+.gui-folio__page {
+  font-size: 0.92rem;
+}
+.journal-page__head .gui-art-header {
+  margin: 0 0 0.5rem;
+}
+.journal-page__head .gui-art-header > img {
+  max-height: 7.5rem;
+}
+.journal-page__title {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  color: var(--gui-ink-head);
+}
+.journal-page__summary {
+  margin: 0 0 0.5rem;
+  font-style: italic;
+  color: var(--gui-ink-soft);
+}
+.journal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.6rem;
+}
+.journal-list__head {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gui-ink-head);
+  border-bottom: 1px solid var(--gui-paper-rule);
+  padding-bottom: 0.15rem;
+}
+button.objective {
+  width: 100%;
+  align-items: flex-start;
+  text-align: left;
+  font: inherit;
+  color: var(--gui-ink);
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 4px;
+  padding: 0.45rem 0.55rem;
+  cursor: var(--cur-pointer, pointer);
+}
+button.objective:hover {
+  background: rgba(255, 250, 235, 0.85);
+}
+button.objective.is-selected {
+  background: rgba(255, 244, 205, 0.95);
+  border-color: #6c4b13;
+  box-shadow: inset 0 0 0 2px var(--gui-select), 0 0 0.6rem rgba(214, 170, 69, 0.45);
+}
+button.objective:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.objective__text {
+  display: block;
+}
+.gui-surface--parchment .objective__title,
+.gui-surface--parchment .dialogue__speaker {
+  color: var(--gui-ink-head);
+}
+.gui-surface--parchment .objective__progress {
+  color: var(--gui-ink-soft);
+}
+.gui-surface--parchment .status-icon {
+  background: rgba(255, 248, 228, 0.75);
+}
+.gui-surface--parchment .status-icon.is-active,
+.gui-surface--parchment .status-icon.is-current {
+  color: #8a4b00;
+}
+.gui-surface--parchment .status-icon.is-available {
+  color: #0f5d6b;
+}
+.journal-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--gui-ink-head);
+}
+.journal-progress__bar {
+  display: block;
+  width: 70%;
+  height: 0.55rem;
+  border: 1px solid #5a3f12;
+  border-radius: 999px;
+  background: rgba(60, 40, 12, 0.25);
+  overflow: hidden;
+}
+.journal-progress__bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(180deg, #f0d48a, #a8761e);
+}
+.journal-entry__kind {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+.journal-entry__title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.1rem 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--gui-ink-head);
+}
+.journal-entry__text {
+  font-size: 1.02rem;
+  line-height: 1.45;
+  margin: 0 0 0.6rem;
+}
+.journal-entry__facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.8rem;
+  margin: 0 0 0.6rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 4px;
+}
+.journal-entry__facts > div {
+  display: contents;
+}
+.journal-entry__facts dt {
+  font-family: var(--font-display);
+  color: var(--gui-ink-head);
+}
+.journal-entry__facts dd {
+  margin: 0;
+}
+.journal-entry__hint {
+  font-style: italic;
+  color: var(--gui-ink-soft);
+}
+.journal-entry__actions {
+  margin-top: 0.4rem;
+}
+
+/* ============================================================
+   H. Encyclopedia (concept 12): parchment codex pages
+   ============================================================ */
+.codex-factions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1.2rem 0;
+}
+.codex-faction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.6rem;
+  padding: 0.2rem 0.75rem 0.2rem 0.3rem;
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-100, #fff3d6);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--faction, #2a4a74) 40%, rgba(14, 26, 43, 0.9)), rgba(6, 12, 22, 0.92)), var(--gui-surface-stone) center / cover;
+  border: 1px solid rgba(194, 154, 82, 0.6);
+  border-radius: 3px;
+  cursor: var(--cur-pointer, pointer);
+}
+.codex-faction:hover {
+  border-color: var(--gold-300);
+}
+.codex-faction:focus-visible {
+  outline: 3px solid var(--gui-focus);
+  outline-offset: 2px;
+}
+.codex-body.codex-page {
+  margin: 0.6rem 1.2rem 1rem;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 3px;
+  background: var(--gui-surface-parchment) center / cover fixed, #ead6a6;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.5), inset 0 0 3rem rgba(110, 78, 30, 0.25), 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+.codex-page .codex-divider__name {
+  color: var(--gui-ink-head);
+  text-shadow: 0 1px 0 rgba(255, 245, 215, 0.6);
+}
+.codex-page .codex-divider__epithet,
+.codex-page .codex-meta,
+.codex-page .codex-card__lore {
+  color: var(--gui-ink-soft);
+}
+.codex-page .codex-divider__line {
+  box-shadow: none;
+}
+.codex-page .codex-divider:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 4px;
+}
+.codex-page .codex-card__name,
+.codex-page .bestiary-card__name,
+.codex-page .bestiary-tier__head,
+.codex-page .codex-building__name,
+.codex-page .panel__title,
+.codex-page .codex-ranks dt,
+.codex-page .specialty__name {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}
+.codex-page .codex-card__sub {
+  color: #6a4510;
+}
+.codex-page .codex-card__text,
+.codex-page .codex-ranks dd,
+.codex-page .codex-bullets {
+  color: var(--gui-ink);
+}
+.codex-page .bestiary-card {
+  color: var(--gui-ink);
+  background: rgba(255, 250, 236, 0.75);
+  border-color: rgba(110, 78, 30, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 240, 0.6);
+}
+.codex-page .bestiary-card:hover {
+  border-color: #6c4b13;
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 240, 0.6), 0 0 0.6rem rgba(214, 170, 69, 0.5);
+}
+.codex-page .bestiary-card:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.codex-page .inline-icon {
+  color: #7a5414;
+}
+.codex-page .specialty {
+  background: rgba(255, 248, 228, 0.6);
+  border-color: var(--gui-paper-rule);
+}
+:root[data-contrast='high'] .codex-body.codex-page {
+  background: #f3e6c4;
+}
+/* Unit detail: both forms as explicit controls. */
+.unit-forms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.3rem;
+}
+.unit-form {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+  font: inherit;
+  color: var(--gui-ink);
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 4px;
+  cursor: var(--cur-pointer, pointer);
+}
+.unit-form.is-current {
+  cursor: default;
+  background: rgba(255, 244, 205, 0.95);
+  border-color: #6c4b13;
+  box-shadow: inset 0 0 0 2px var(--gui-select);
+}
+.unit-form:focus-visible {
+  outline: 3px solid #1c4d8a;
+  outline-offset: 2px;
+}
+.unit-form__text {
+  display: flex;
+  flex-direction: column;
+}
+.unit-form__kind {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gui-ink-soft);
+}
+.unit-form__name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--gui-ink-head);
+}
+.unit-info.gui-surface--parchment .unit-head__name {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}
+/* Parchment pages: paper cards win over the stone panel skin, and display names read in ink. */
+.gui-surface--parchment .panel:not(.gui-window):not(.panel--glass):not(.panel--parchment) {
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 240, 0.35);
+  color: var(--gui-ink);
+}
+.gui-surface--parchment :is(.ability__name, .hire-card__name, .gift-row__name, .list-card__title, .mission-row__title, .overview-row__title, .offer-card__name, .god-card__name, .event-option__label, .form-card__name, .quote, .tagline, .h3-skill__name, .levelup-gain) {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}
+.gui-surface--parchment .icon-link {
+  color: #6a3f06;
+}
+
+/* ============================================================
+   I. Story, briefing and results (concept 13)
+   ============================================================ */
+/* The mission briefing is the encounter pack's introduction scroll (styles/encounters.css). */
+/* The dialogue box: parchment under the faction frame, the speaker on a small plate. */
+.story-box.gui-window {
+  --gui-bw: 2.6rem;
+  --gui-pad: 1.5rem;
+  border-color: transparent;
+}
+.story-box.gui-window .story-box__speaker {
+  display: inline-block;
+  padding: 0.1rem 0.75rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f6e3b0;
+  background: linear-gradient(180deg, #23426b, #0d1b2f);
+  border: 1px solid var(--gold-500);
+  border-radius: 2px;
+}
+.story-box.gui-window .story-box__text p {
+  color: var(--gui-ink);
+  font-size: 1.12rem;
+}
+.story-box.gui-window .story-box__title {
+  color: var(--gui-ink-head);
+  border-bottom-color: var(--gui-paper-rule);
+}
+:root[data-contrast='high'] .story-box.gui-window::before {
+  background: #f3e6c4;
+}
+/* A framed parchment window's title sits on the paper (no stone band). */
+.gui-window--parchment > .panel__header {
+  background: none;
+  border-bottom-color: var(--gui-paper-rule);
+}
+.gui-window--parchment > .panel__header .panel__title {
+  color: var(--gui-ink-head);
+  text-shadow: none;
+}

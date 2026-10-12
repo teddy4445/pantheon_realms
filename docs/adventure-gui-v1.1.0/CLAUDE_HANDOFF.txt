@@ -1,0 +1,164 @@
+PANTHEON REALMS — SIX ADVENTURE GUI FEATURES, ALL SIX PANTHEONS
+Production art and implementation handoff · 2026-10-10 · supplements the 1.1.0 GUI work
+
+REQUEST TO CLAUDE CODE
+Implement the six approved visual directions: hero recruitment at the Tavern/Lodge, creature dwelling recruitment, Marketplace, hero level-up, Spellbook, and enemy encounter preview. Support Greek, Norse, Egyptian, Japanese, Celtic and Mesoamerican content with one reusable implementation per screen. Use the separate delivered artwork and the actual game's entities and rules. This delivery provides art, layout references, asset mappings and copy tools; it has NOT changed game code or the release version.
+
+START HERE — THESE ARE FULL SOURCE PATHS
+Source project: C:\Users\lazeb\Desktop\pantheon_realms
+Interactive production preview:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\adventure-gui-v1.1.0\index.html
+This handoff:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\adventure-gui-v1.1.0\CLAUDE_HANDOFF.txt
+All six original approved flattened concepts:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\gui-six-concepts-2026-10-10\index.html
+36 assembled production-screen captures and six mobile captures:
+C:\Users\lazeb\Desktop\pantheon_realms\docs\adventure-gui-v1.1.0\previews
+New original PNGs and generation prompts:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-source\adventure-gui-v1.1.0
+New runtime PNGs:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\adventure-gui-v1.1.0
+New-only manifest:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\adventure-gui-v1.1.0\manifest.json
+Complete additive dictionary including all reused dependencies:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\adventure-gui-v1.1.0\complete-assets.json
+
+SOURCE AND DESTINATION ARE TWO DIFFERENT PROJECTS
+Copy assets and documentation into YOUR local project first. Never leave runtime references pointing to this desktop checkout. Preserve relative paths under assets-runtime. Use the supplied helper:
+& 'C:\Users\lazeb\Desktop\pantheon_realms\docs\adventure-gui-v1.1.0\Copy-To-Project.ps1' -DestinationRoot 'D:\your-local-project' -DryRun
+Review the report, then repeat without -DryRun using your real checkout path. The helper preflights every source hash and destination conflict, skips identical files and refuses differing existing files before copying. Reconcile changed destination artwork deliberately. It never merges game code or overwrites your authoritative asset registry.
+
+The complete runtime dependency inventory is about 377 MiB before review screenshots and source masters. It deliberately includes the prior GUI/frontend art inventory, including native animation strips, so this checkout does not depend on files only present in the source project. Copying uses original bytes; it does not upscale or recompress.
+
+READ THESE MACHINE-READABLE MAPS
+All under C:\Users\lazeb\Desktop\pantheon_realms\docs\adventure-gui-v1.1.0\
+- theme-map.json: exact scenery, frame, emblem, banner and book IDs for each of six factions.
+- screen-bindings.json: actual source components and asset roles for each screen.
+- element-bindings.json: visible element -> supplied file/asset family/native control.
+- icon-map.json: independent original icon records (391 icons in the audited inventory).
+- creature-art-map.json: 102 creature forms, including 84 faction forms (7 base + 7 upgraded per faction), plus 18 neutral forms. Contains portraits, paired IDs, actual ability names, and native animation metadata.
+- hero-art-map.json: 89 portrait mappings and available same-hero busts. Missing bust -> that hero's own portrait, never another hero.
+- terrain-map.json: six new encounter scenery families with selection guidance and special-case fallbacks.
+- copy-inventory.json: precise runtime paths, byte sizes and SHA-256 hashes.
+- asset-validation.json and preview-validation.json: delivery verification, scoped to assets/standalone preview.
+
+WHAT IS NEW, WHAT IS REUSED, WHAT IS LIVE
+21 new separate production PNGs:
+  adventurekit.tavern.greek / norse / egyptian / japanese / celtic / mesoamerican
+    -> adventure-gui-v1.1.0/tavern-<pantheon>.png
+  adventurekit.recruit.greek / norse / egyptian / japanese / celtic / mesoamerican
+    -> adventure-gui-v1.1.0/recruit-<pantheon>.png
+  adventurekit.encounter.temperate / alpine / desert / woodland / jungle / volcanic
+    -> adventure-gui-v1.1.0/encounter-<biome>.png
+  adventurekit.chrome.skill-card -> adventure-gui-v1.1.0/skill-card.png
+  adventurekit.chrome.hero-medallion -> adventure-gui-v1.1.0/hero-medallion.png
+  adventurekit.chrome.balance -> adventure-gui-v1.1.0/balance.png
+
+The six taverns and six recruitment courts contain no characters or interface. Encounter scenery contains no armies. These are decorative stages, not authoritative town construction layouts or interactive battle boards. Architecture in them does not grant buildings or imply that a building has been constructed.
+
+Reused, independently supplied layers:
+- gui.merchant.<pantheon>: six wide merchant paintings, already matching the game's visual style. Their merchants and background are one decorative image; prices/resources/controls are separate.
+- gui.frame.<pantheon>: six alpha frames; gui.surface.parchment / leather / stone; gui.control.button and gui.control.socket.
+- gui.book.open: blank book with two clean writing areas and preserved transparency.
+- encounterkit.meeting.<pantheon>: six camp paintings for level-up atmosphere / a dimmed book backdrop. These do not imply that the hero moved to a camp.
+- emblem.<pantheon>, frontendkit.banner.<pantheon>, frontendkit.chrome.header and round-socket.
+- Existing hero busts/portraits, creature portraits/animation strips, actual building art, resource/stat/ability/skill/spell icons, god portraits and gift-related art.
+
+Labels, values, costs, troop counts, checkmarks, disabled reasons, selection/focus, sliders, tabs and buttons remain real accessible UI. All numbers in preview.js are fixture values, including shared example recruitment prices and hero attributes. Do not copy fixture arrays into gameplay. Do not extract icons, text or characters from the approved screenshots. No additional raster image is required to assemble the production preview.
+
+The production preview intentionally uses the actual game's square creature portraits instead of the invented large painted soldiers/monsters in the original concepts. For a full-body creature view, reuse AnimatedUnitDetail/the existing sprite renderer and the supplied native strips. Do not enlarge a 256px portrait into a cinematic scene, or treat the mockup's giant Minotaur as missing canonical creature art. Optional richer full-body illustrations would be a separate future art expansion, not a dependency of these screens.
+
+1. HERO RECRUITMENT — TAVERN / HEROES' LODGE
+Current location: packages/ui/src/screens/Town.tsx, TavernModal.
+Use the TOWN'S actual archetype/pantheon for the room and frame. Capturing a town must not automatically turn its architecture into the owning player's faction. Each candidate retains its own actual portrait, identity, class and specialty, even in a different faction's town.
+
+Composition: room behind candidate portraits/busts; selected hero details to the right; clear Hire and Leave actions. At narrow width, place candidate buttons above details. Support any candidate count, including zero, one and more than two. The two heroes in the reference are examples, not a restriction.
+
+Read candidates from hireOptions. Preserve returningHeroId, actual level, current attributes and army for returning heroes. For new heroes read the actual definition/class and active scenario rules. Keep biography, class summary, SpecialtyLine and specialty-enabled state accessible in details. Do not invent a Wisdom/offense icon for every hero.
+
+Read availability/cost/rejection from quoteHireHero; preserve scenario.heroHiringEnabled and its reason, heroHiredThisWeek and the one-per-week constraint. New heroes currently receive HIRE_STARTING_TROOPS (10 in the inspected source) of townTierOneBase, not the three mixed stacks shown in the first concept. Returning heroes retain surrender survivors or receive the existing fallback escort, with the actual movement state described by the current confirmation.
+
+Keep the existing store.confirm and HireHero command. Selecting a portrait only changes the inspected candidate; it never hires. Confirm sends exactly one command, closes on success and uses current state if the offer became unavailable. Preserve cost/disabled reasons and empty offers.
+
+2. CREATURE DWELLING / RECRUITMENT
+Current locations: packages/ui/src/screens/Recruitment.tsx; packages/ui/src/dialogs/WorldDialogs.tsx, CampDialog.
+Composition: faction courtyard, actual selected creature portrait or native animated detail, creature information, quantity and cost, seven family selectors and army destination. Theme town recruitment by town archetype. A neutral camp uses its actual site/creature information and a suitable neutral terrain treatment, not a fabricated town faction.
+
+Preserve all seven tiers, locked dwellings, base/upgraded paired forms, shared weekly population pools, weeklyGrowthFor and real availability. Selecting Upgraded must not unlock it or duplicate its population. Keep CreatureStats, full ability descriptions, shots/range when relevant, and upgrade prerequisites available. All 84 faction forms and 18 neutral forms have mapped artwork. Use the live catalog for names/IDs and the map as art lookup metadata; if content changed, reconcile by IDs.
+
+Keep hero/garrison destination selection and capacity checks. quoteRecruitment determines maxQuantity, legal state, cost and destinationLabel; RecruitUnits is the town command. Preserve the user's existing immediate recruitment/upgrade behavior: no additional confirmation screen. Clamp/revalidate quantity against the latest state before dispatch. Preserve quoteUpgrade and the actual garrison/visiting-hero Upgrade flow, rather than making the base/upgraded tabs perform upgrades.
+
+CampDialog remains quoteCampRecruitment + RecruitFromCamp and its existing range/site/stock rules. Do not route camp actions through town RecruitUnits. Actual building thumbnails can use BuildingArt for the selected live dwelling; do not show another tier's building or imply unbuilt structures exist because the decorative courtyard has architecture.
+
+3. MARKETPLACE
+Current location: packages/ui/src/screens/Town.tsx, MarketModal.
+Use gui.merchant.<town pantheon> in the upper scene. Place give/receive panels below or over dark surfaces. The independent balance scale is optional decoration between the panels; its empty pans can carry resource icons as live layers. Do not remove the merchant from the existing painting or extract it from a screenshot.
+
+Keep BOTH Sell for Gold and Buy with Gold, plus wood/stone/crystal selection. Existing rules trade resources through Gold only. Favor is NOT tradable; do not create wood-for-stone direct trades or add Ore/Gems from another game.
+
+marketRates and playerMarketCount explain current rates; quoteTrade remains authoritative for pay, receive, affordability and legality. Costs can change with owned Marketplaces. The 100-Gold-per-Wood in the concept/preview is illustrative. In buy mode the input quantity means units of the selected resource; Gold cost comes from the quote. Preserve wallet display and disabled reasons when quantity is zero/unaffordable. TradeResources runs only on explicit Trade/Confirm trade, never on changing the slider, mode or resource. Recompute after success and prevent stale/double submissions.
+
+4. HERO LEVEL-UP
+Current location: packages/ui/src/screens/LevelUp.tsx.
+Theme by the HERO'S pantheon. Use its camp atmosphere, actual portrait in the medallion, current level/primary gain and actual offered skill icons on the blank skill plaques. The camp is decorative, not a travel event. Keep actual banner.level_up.<pantheon> or its existing BannerPlaque where appropriate; it is included in the complete dictionary if present.
+
+IMPORTANT CORRECTION TO THE FLATTENED CONCEPT: the current game commits when a skill is clicked. Preserve that behavior and do not add the mockup's extra Confirm choice button. The assembled production preview reflects immediate selection. Call ChooseLevelUp exactly once with the current decisionId, offerIndex and applicable perkIndex. Keep the existing guard against a double-click choosing the next queued level.
+
+Offers are rolled/stored by the rules; opening/repainting must never reroll. Support zero, one or multiple offers. With zero skill offers, keep Continue to accept the primary gain. At gift levels (currently 10/15 in expanded rules), preserve the offered god-gift choice FIRST, including actual god identity, GiftBadge, selected state and summary; skill choice then submits both. Keep pending levels ordered and the original return screen. Do not erase this branch because the compact reference shows a normal level.
+
+5. SPELLBOOK
+Current location: packages/ui/src/components/spellbook.tsx, SpellBook.
+The blank gui.book.open is shared across factions; surround it with the hero's faction frame/emblem and current scene or dim camp. Put real content into its documented safePageRects: left [0.10,0.15,0.44,0.84], right [0.56,0.15,0.90,0.84]. Retain the native 3:2 book proportion. On mobile use stacked parchment pages instead of squeezing text between the spine and border.
+
+Keep hero.knownSpellIds, actual spellbook ownership and the existing no-book/no-known-spells/no-filter-results messages. Retain All/Battle/Adventure AND tier filters; provide scrolling/pagination for every known spell, not only the six reference examples. Show actual icon, name, tier, mana, spell context, faction crest and summary/lore. Selecting a spell may reveal the larger right-page details; it must not fabricate a higher-resolution illustration. The original icons are suitable independent assets.
+
+Preserve read-only versus casting modes. A hero-screen book must not display an enabled Cast button that creates combat/map commands. In casting mode preserve cast.options, context, castable state and reasons; the existing cast.onCast(spellId) owns the callback into the screen/targeting flow. If using separate selection and Choose/Cast buttons, call onCast only on the explicit cast action, once. Never spend mana on hover, filter, selection, page-turn or close. Preserve one-spell-per-round and actual target legality. Damage descriptions should use existing effect/preview helpers and account for mitigation where applicable, not copy the sample '55 damage' as universal.
+
+6. ENEMY ENCOUNTER PREVIEW
+Current location: packages/ui/src/dialogs/Overlays.tsx, EncounterDialog.
+Theme the chrome by the acting hero if available; preserve both sides' actual identities. Choose scene from destination biome/climate, not the hero's pantheon. New scenes are decorative encounter backdrops, not battle-ground textures and not replacements for battle-board geometry, walls or camera settings. See terrain-map.json. Existing environment selection lives in packages/presentation/src/environmentArt.ts. Handle authored sites, water/marsh/siege with appropriate current art where the new six scenery families do not fit. Do not invent new Terrain enum values or movement costs.
+
+IMPORTANT CORRECTION TO CONCEPT: the inspected EncounterDialog shows exact enemy counts. Keep those counts and existing information visibility. Do not replace them with 'several', 'a few' or 'unknown' merely because the concept used that wording. Do not invent a dangerous/easy rating or win percentage without an existing supported calculation. The production reference therefore shows counts and omits an invented danger score.
+
+Preserve quoteMovement, quoteNeutralReaction and useQuickBattlePreview. Keep Withdraw, Quick battle and Attack. When available, keep Accept them, Let them go and Fight anyway for join/flee reactions. Keep the existing reward/no-XP behavior explanation for neutral resolution. Preserve QuickBattlePanel expected outcomes/losses and disabled/error states. Do not delete quick battle because the original concept had two buttons.
+
+For a siege, preserve actual town/commander/garrison composition, fortification level, siege rules, climate information and victory rewards. Read defenders from existing state logic, not just the two largest portraits. Keep checkpoint behavior and original MoveHero(confirmEncounter) / quickBattle / encounterChoice handlers. Closing the preview does not move the hero. One accepted action triggers at most one command, and painting animation never repeats it.
+
+GUI LAYERING AND SIZING
+Use components.css as a visual reference, not a global stylesheet to paste over the application. Scope new styles beneath a feature root and adapt existing kit.tsx controls. Never ship preview.js as a rules engine. Keep current Modal semantics, focus trap, focus return, keyboard shortcuts and screen-stack handling.
+
+Order: scenery; optional native CSS readability shade; actual heroes/creatures; noninteractive frame ornament; live UI above it. Decorative PNGs use pointer-events:none and empty alt. No frame can cover labels, army counts, focus rings or hit targets. The preview applies negative frame inset and generous content padding to respect the ornaments. For unusual aspect ratios, use the established flat border fallback rather than stretching/clipping critical controls.
+
+Preserve alpha with normal blending; hidden RGB outside transparent pixels may look brown/black in some viewers. Do not color-key. New medallion has a transparent center and exterior. Skill card has opaque parchment/navy interior and alpha exterior. Scale is alpha outside metal. The new 18 backgrounds are opaque. Asset dimensions and hashes are in the manifest, not assumed to be 4K. No raster retouching/upscaling was performed.
+
+Portrait medallion: actual portrait below frame, CSS circle crop; live name over the bottom navy plaque. Skill plaque: real icon over the empty top medallion; live text in normalized [0.12,0.54,0.88,0.86]. Selected/hover/disabled/focus are CSS states, not additional missing images. Buttons, steppers, radio choices, range sliders, scrollbar and empty army slots can use supplied frames/surfaces plus native CSS; controls do not need new raster versions per faction.
+
+Keep text readable at 1366x768 and at increased text scale. On phones, stack scenery/selection/details vertically and allow the outer modal content to scroll; do not hide gameplay options just to preserve a desktop composition. For the map beneath these windows, preserve the fixed camera angle. Mouse panning can move left/right/up/down; these art changes do not introduce camera orbit or rotation.
+
+Motion: use brief 120–220ms hover/selection/fade feedback; optional existing idle creature animation with its supplied frame count, frame dimensions, anchor and fps. No slow cinematic lockouts. Honor reduced motion, showing a static first frame. Existing sounds may be reused; no new audio or video is delivered or required.
+
+ASSET REGISTRY / PACKAGING
+Read each new manifest record and merge adventurekit.* IDs additively into packages/ui/src/assets/manifest.ts or the established typed resolver. complete-assets.json is a dependency inventory, not permission to overwrite newer target metadata or the entire authoritative registry. Preserve existing asset keys, sprite metadata and resolver precedence.
+
+The source project uses assets-runtime as publicDir with relative base './'. Example runtime URL: ./adventure-gui-v1.1.0/tavern-greek.png. Do not use /assets-runtime/... or C:\... in the shipped app. Use the current asset URL helper so Electron and subdirectory builds still work. The documentation preview uses ../../assets-runtime/... only because it is standalone under docs. Source-side build.py is an audit helper with this machine's paths; it is not required for runtime and should not be invoked as part of the destination build.
+
+SUGGESTED IMPLEMENTATION ORDER
+1. Copy and resolve all files; inspect index.html with each faction/screen. Add manifest IDs, theme resolver and scoped UI primitives.
+2. Apply Tavern, Marketplace and recruitment layouts while retaining their existing quote/command paths and all missing/disabled states.
+3. Apply level-up and SpellBook layouts, preserving queued choices, god gifts, read-only/cast modes and all filters.
+4. Apply encounter layout with neutral reactions, quick battle and siege branches intact.
+5. Check desktop/mobile/text scaling, then actual game interaction and packaged asset loading. Do not bump the game version solely because this art folder is named v1.1.0; follow the release task's version instructions.
+
+ACCEPTANCE CHECKS IN THE DESTINATION GAME
+- All six faction themes and all 84 faction creature forms resolve; neutral portraits work; missing bust falls back to the correct hero portrait. No mixed-up faction identity.
+- Tavern: zero/many candidates, disabled hiring, weekly limit, insufficient funds, fresh/returning hero and double-click confirmation.
+- Recruitment: seven tiers, locked/upgraded dwellings, shared population, zero stock, insufficient resources, full army, garrison/hero destinations, upgrades and neutral camp commands.
+- Market: buy/sell every tradable resource, rate changes with market count, quantity clamping and no Favor/direct resource swaps. One click -> one valid command.
+- Level-up: no/one/multiple offers, required god gifts, queued levels, reopen without reroll, double-click guard and correct return navigation.
+- Book: no book/no spells, long spell lists, all/tier filters, insufficient mana, wrong context, read-only mode, valid/invalid targets and cancel without spending mana.
+- Encounter: exact current counts, join/flee, rewards, quick-battle preview/error, siege/fortifications, climate, withdraw and checkpoint. No fabricated information or missing actions.
+- Keyboard navigation, focus trap/return, readable disabled reasons, 390px layout, 200% text scaling and reduced motion; fixed map camera unchanged.
+- Relative-base packaged build loads every referenced file. Run the destination project's appropriate typecheck/tests/build, with meaningful interaction tests for changed handlers. The delivered browser checks prove the reference assembly, not game integration.
+
+DELIVERY BOUNDARY
+All required visual building blocks for these production layouts are provided or explicitly mapped to copied existing assets. Concept art, source prompts and native PNGs are retained. Art generation used the built-in image tool. Game code, game data/balance, save schema and version remain unchanged by this delivery.

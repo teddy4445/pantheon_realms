@@ -116,6 +116,8 @@ export class EngineHost {
   private active: SceneController | null = null;
   private frame = 0;
   private resizeObserver: ResizeObserver | null = null;
+  /** The device pixel ratio the resolution was last set for. */
+  private appliedDpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
   private lastFrame = performance.now();
   /** When the next frame is due under the frame-rate cap. */
   private nextDue = 0;
@@ -210,6 +212,7 @@ export class EngineHost {
 
   private applyResolution(p: GraphicsProfile = graphicsProfile()): void {
     const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+    this.appliedDpr = dpr;
     this.renderer.resolution = renderResolution(p, dpr) * this.adaptState.scale;
     this.resizes += 1;
     this.renderer.resize(this.size.width, this.size.height);
@@ -264,14 +267,26 @@ export class EngineHost {
     return this.size.height;
   }
 
+  /**
+   * Keep the drawing buffer the size of its viewport element. Browser zoom changes both the CSS size
+   * and the device pixel ratio: the resolution follows the new ratio (crisp, as at start), and the
+   * view is drawn again at once — 1.1.4, real-zoom check of the GUI audit: a still view kept showing
+   * the frame laid out for the old size until the next input.
+   */
   private fit(container: HTMLElement): void {
     const w = Math.max(1, Math.round(container.clientWidth));
     const h = Math.max(1, Math.round(container.clientHeight));
-    if (w === this.size.width && h === this.size.height) return;
+    const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
+    if (w === this.size.width && h === this.size.height && dpr === this.appliedDpr) return;
     this.size = { width: w, height: h };
+    if (dpr !== this.appliedDpr) {
+      this.appliedDpr = dpr;
+      this.renderer.resolution = renderResolution(graphicsProfile(), dpr) * this.adaptState.scale;
+    }
     this.resizes += 1;
     this.renderer.resize(w, h);
     this.active?.resize?.(w, h);
+    this.wake();
   }
 
   /** Place the canvas inside a viewport element and keep it sized to it. */

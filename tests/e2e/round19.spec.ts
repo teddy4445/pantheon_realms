@@ -103,6 +103,7 @@ test('AI temperaments: the skirmish setup names the rival’s way of playing; th
   await page.getByTestId('mode-random').click();
   await page.getByTestId('random-count-3').click();
   await page.getByTestId('random-size-small').click();
+  await page.getByTestId('random-chapter-empires').click();
   await page.getByTestId('seat-1-pantheon').selectOption('egyptian');
   await page.getByTestId('seat-2-pantheon').selectOption('mesoamerican');
   await expect(page.getByTestId('seat-1-temperament')).toContainText('Builders');

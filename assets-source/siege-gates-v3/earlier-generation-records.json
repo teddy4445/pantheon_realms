@@ -1,0 +1,38 @@
+[
+  {
+    "id": "greek",
+    "prompt": "Production transparent game sprite atlas, 1536x1024, THREE columns one row: intact CLOSED gateway, damaged CLOSED gateway, breached gateway. Reference is the REQUIRED camera/orientation. Keep its narrow VERTICAL north-south wall, WEST entrance on LEFT edge, passage moving HORIZONTALLY LEFT to RIGHT. Never turn this into a front-facing wide castle.\nGreek pale limestone, blue band, bronze reinforced doors and modest terracotta coping. Same structure in all three states, SAME scale and exact center within each cell. Use the reference's compact central gate section ONLY; remove the long plain wall tails above/below it. Wall connectors extend only a short distance past the jambs (10% each). No separate towers. High elevated orthographic camera, wall axis vertical, visible oblique WEST-facing door surface on left. Painterly readable game sprite with simplified masonry. Left state intact. Middle chips and cracks but door still blocking. Right state door AND overhead span removed, low broken north/south jambs, rubble only at outer edges, fully TRANSPARENT middle corridor from LEFT to RIGHT so moving units are visible. Keep north/south connector points unchanged in all three. Center each gate in its cell, generous transparent gutters. No labels, text, numbers, terrain, bridge, road, border or shadows outside the object. TRUE alpha outside and through breach.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-aee58304-a9b7-4411-ab95-f29e5295034d.png",
+    "file": "gate.greek-v3.png"
+  },
+  {
+    "id": "norse",
+    "prompt": "Precise edit to ONLY the THIRD / RIGHTMOST breached Norse gate in this atlas. Keep left intact and center damaged states pixel-for-pixel unchanged. Keep camera, scale and registration. The rightmost breached gate incorrectly has a continuous rear timber-and-stone strip spanning its middle. REMOVE ALL timber, stone and door remains crossing the central horizontal passage at mid-height (roughly y=450 to y=570 on this 1024px tall sheet), all the way from the left edge of the gate to the right edge. The upper and lower broken gate ends must be genuinely DISCONNECTED by clear transparent space. No floating stones. Keep the upper/lower wall stubs and trim, debris rests on their edges only. Maintain true alpha and dimensions.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-7eeaada4-61e2-4bee-8bf1-a5f384a59cf8.png",
+    "file": "gate.norse-v4.png"
+  },
+  {
+    "id": "egyptian",
+    "prompt": "Edit this three-state gate atlas ONLY to clearly express EGYPTIAN architecture. Preserve every object's exact pixel position, dimensions, three-column layout, camera, vertical wall axis, west-facing narrow door, all damage/breach shapes and transparency. Replace white Greek limestone with golden ochre sandstone. Replace red terracotta coping with smooth golden sandstone caps. Remove ALL Greek meander ornament; replace with simple Egyptian winged-sun reliefs and restrained turquoise/lapis bands. Make the closed doors dark bronze with a small ankh relief. No red roof tiles. Keep breach open and transparent. No landscape/text. Same native size and true alpha.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-f0bc7df1-830e-4960-8d20-fdca6cd4b64a.png",
+    "file": "gate.egyptian-v4.png"
+  },
+  {
+    "id": "japanese",
+    "prompt": "Production transparent game sprite atlas 1536x1024. THREE equal columns one row. Reference fixes camera and orientation: a narrow VERTICAL north-south wall, WEST door on LEFT side, travel HORIZONTALLY left-to-right. Japanese pale plaster over grey stone, dark charcoal tile coping, red lacquer timbers and iron-studded timber door; small restrained roof, no tall pagoda. Show THREE identical-scale states: left INTACT closed; middle DAMAGED still closed; right BREACHED with door and central overhead stone removed, low broken jambs NORTH and SOUTH, clear transparent horizontal passage. Same doorway center in each cell. Use only compact center section of reference; short wall connectors above/below jambs. No separate towers. Do NOT turn facade toward bottom or make a wide horizontal castle. Steep bird's-eye orthographic painted strategy game sprite, simplified solid readable forms. Texture and palette must belong to japanese, not Greek. Each state centered in its cell with full transparent margins, identical scale and footprint. No captions, scenery, ground plane, smoke, bridge, roads or cast shadow. True alpha in background and breached opening.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-7d4c5e2c-f82a-4976-b502-6366dc2f7637.png",
+    "file": "gate.japanese-v3.png"
+  },
+  {
+    "id": "celtic",
+    "prompt": "Production transparent game sprite atlas 1536x1024. THREE equal columns one row. Reference fixes camera and orientation: a narrow VERTICAL north-south wall, WEST door on LEFT side, travel HORIZONTALLY left-to-right. Celtic moss-grey stone, green inset band, modest bronze knotwork, weathered oak doors, flat stone coping; no trees. Show THREE identical-scale states: left INTACT closed; middle DAMAGED still closed; right BREACHED with door and central overhead stone removed, low broken jambs NORTH and SOUTH, clear transparent horizontal passage. Same doorway center in each cell. Use only compact center section of reference; short wall connectors above/below jambs. No separate towers. Do NOT turn facade toward bottom or make a wide horizontal castle. Steep bird's-eye orthographic painted strategy game sprite, simplified solid readable forms. Texture and palette must belong to celtic, not Greek. Each state centered in its cell with full transparent margins, identical scale and footprint. No captions, scenery, ground plane, smoke, bridge, roads or cast shadow. True alpha in background and breached opening.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-2fcd7f8b-f181-4095-9883-60e91602d34e.png",
+    "file": "gate.celtic-v3.png"
+  },
+  {
+    "id": "mesoamerican",
+    "prompt": "Production transparent game sprite atlas 1536x1024. THREE equal columns one row. Reference fixes camera and orientation: a narrow VERTICAL north-south wall, WEST door on LEFT side, travel HORIZONTALLY left-to-right. Mesoamerican stepped warm limestone, turquoise and red geometric trim, carved simple serpent lintel, heavy dark timber doors; no pyramid or huge feather decoration. Show THREE identical-scale states: left INTACT closed; middle DAMAGED still closed; right BREACHED with door and central overhead stone removed, low broken jambs NORTH and SOUTH, clear transparent horizontal passage. Same doorway center in each cell. Use only compact center section of reference; short wall connectors above/below jambs. No separate towers. Do NOT turn facade toward bottom or make a wide horizontal castle. Steep bird's-eye orthographic painted strategy game sprite, simplified solid readable forms. Texture and palette must belong to mesoamerican, not Greek. Each state centered in its cell with full transparent margins, identical scale and footprint. No captions, scenery, ground plane, smoke, bridge, roads or cast shadow. True alpha in background and breached opening.",
+    "source": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-76640b54-dd53-4d13-924a-66913970d090.png",
+    "file": "gate.mesoamerican-v3.png"
+  }
+]

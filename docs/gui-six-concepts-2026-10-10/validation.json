@@ -1,0 +1,56 @@
+[
+  {
+    "file": "01-tavern-recruitment.png",
+    "size": [
+      1672,
+      941
+    ],
+    "bytes": 2493134,
+    "unchanged": true
+  },
+  {
+    "file": "02-creature-dwelling.png",
+    "size": [
+      1672,
+      941
+    ],
+    "bytes": 2315167,
+    "unchanged": true
+  },
+  {
+    "file": "03-marketplace.png",
+    "size": [
+      1672,
+      941
+    ],
+    "bytes": 2480528,
+    "unchanged": true
+  },
+  {
+    "file": "04-hero-level-up.png",
+    "size": [
+      1672,
+      941
+    ],
+    "bytes": 2329191,
+    "unchanged": true
+  },
+  {
+    "file": "05-spellbook.png",
+    "size": [
+      1672,
+      941
+    ],
+    "bytes": 2541430,
+    "unchanged": true
+  },
+  {
+    "file": "06-enemy-encounter.png",
+    "size": [
+      1672,
+      941
+    ],
+    "bytes": 2611003,
+    "unchanged": true
+  }
+]

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pantheon Realms 1.1.0 — component proof</title><link rel="stylesheet" href="component-reference.css"></head>
+<body><main>
+<p><a href="index.html">← Art pack and Claude handoff</a></p>
+<h1>From painted layers to a living interface.</h1>
+<p class="muted">Component proof for the 1.1.0 handoff. These are real layered PNGs with live HTML text and controls. Example quantities below are sample data; this page does not modify the game.</p>
+<div class="tools"><label>Theme <select id="theme"><option value="greek">Greek</option><option value="norse">Norse</option><option value="egyptian">Egyptian</option><option value="japanese">Japanese</option><option value="celtic">Celtic</option><option value="mesoamerican">Mesoamerican</option></select></label><label>Dialog width <input id="width" type="range" min="360" max="1000" value="820"><output id="width-value">820px</output></label><label><input id="dark" type="checkbox"> Dark material</label></div>
+<section class="pr-panel encounter" id="encounter" aria-labelledby="encounter-title">
+<h2 id="encounter-title">A choice along the road</h2>
+<img class="encounter-header" id="encounter-art" src="../../assets-runtime/ui-v1.1.0/encounter-treasure.png" alt="An open treasure chest containing coins and scrolls">
+<p>Choose how this discovery will help your journey.</p>
+<fieldset class="choices"><legend>Choose one reward</legend>
+<label class="choice"><input type="radio" name="reward" value="Gold"><img src="../../assets-runtime/ui/icons/final/icon.res.gold.png" alt=""><span><strong>1,000 Gold</strong><small>For your kingdom</small><span class="check" aria-hidden="true">✓ Selected</span></span></label>
+<label class="choice"><input type="radio" name="reward" value="Experience"><img src="../../assets-runtime/ui/icons/final/icon.stat.xp.png" alt=""><span><strong>500 Experience</strong><small>For your hero</small><span class="check" aria-hidden="true">✓ Selected</span></span></label>
+</fieldset>
+<div class="actions"><button class="text-action" id="later">Decide later</button><button class="pr-button" id="confirm" disabled>Confirm</button></div>
+<div class="status" id="status" role="status" aria-live="polite">Choose a reward to enable confirmation.</div>
+</section>
+<p class="small-note">This is a component example, not a modal. Claude must add the game's focus trap, state validation and real command dispatch. Reset the sample with “Decide later”.</p>
+<h2>One control, six readable states</h2>
+<div class="row" id="states"><button class="pr-button">Normal</button><button class="pr-button" data-state="hover">Hover</button><button class="pr-button" data-state="focus">Focus</button><button class="pr-button" data-state="pressed">Pressed</button><button class="pr-button" aria-pressed="true">Selected</button><button class="pr-button" disabled title="Example: requirements not met">Unavailable</button></div>
+<p class="small-note">Painted face and live text are separate. Focus and selection use visible shape cues; unavailable actions need an adjacent reason in the game.</p>
+<h2>Six materials, one frame geometry</h2><div class="theme-grid" id="frames"></div>
+<h2>Blank banners + existing emblems + live names</h2><div class="banner-grid" id="banners"></div>
+<h2>Folio with live page content</h2>
+<section class="folio" aria-label="Book component example"><div class="folio-page left"><h3>The journey continues</h3><p>Each objective, reward and story passage comes from the current campaign.</p><ul><li>Keep all primary objectives.</li><li>Keep optional objectives visible.</li><li>Show actual progress and rewards.</li></ul><p>No text is painted into this page.</p></div><div class="folio-page right"><h3>Know your allies</h3><img src="../../assets-runtime/ui/icons/final/creature.greek.tier1.base.portrait.webp" alt="Existing Greek tier-one creature portrait"><p>Use the existing bestiary portrait, statistics and base/upgraded variants.</p><p>At narrow widths this becomes a readable single-column parchment layout.</p></div></section>
+<h2>Recruitment and the merchant's counter</h2>
+<div class="stage-row"><div id="stage" class="stage" role="img" aria-label="Empty Greek recruitment stage"></div><div><img id="merchant" class="merchant" src="../../assets-runtime/ui-v1.1.0/merchant-greek.png" alt="Greek merchant illustration"><section class="pr-panel dark"><h3>Trade with your town</h3><p>Live resource icons, exchange rates, quantities and affordability belong here.</p><p>The matching creature renderer sits over the empty stage on the left. Its feet use the stage's ground anchor; its animation comes from the existing sprite manifest.</p><button class="pr-button" disabled>Trade</button><p>No game transaction is connected in this preview.</p></section></div></div>
+<h2>Simple equipment figure and reusable sockets</h2>
+<div class="pr-panel dark" style="display:flex;gap:30px;align-items:center;flex-wrap:wrap"><img src="../../assets-runtime/ui-v1.1.0/equipment-figure.png" alt="Schematic equipment figure" style="height:330px;max-width:45%;object-fit:contain"><div><div class="row"><button class="pr-socket" aria-label="Inspect bronze spear"><img src="../../assets-runtime/ui/icons/final/icon.artifact.bronze_spear.png" alt=""></button><button class="pr-socket" aria-label="Inspect bronze buckler"><img src="../../assets-runtime/ui/icons/final/icon.artifact.bronze_buckler.png" alt=""></button></div><p>Sample sockets only. The game keeps every<br>equipment slot, 30 backpack cells and seven army slots.</p></div></div>
+<p><a href="CLAUDE_CODE_HANDOFF_1.1.0.txt">Read the full integration and release brief →</a></p>
+</main><script>
+const root='../../assets-runtime/ui-v1.1.0/';
+const factions=['greek','norse','egyptian','japanese','celtic','mesoamerican'];
+const title=f=>f.charAt(0).toUpperCase()+f.slice(1);
+const surfaceInsets={greek:'20px 11px 28px 11px',norse:'26px 17px 28px 17px',egyptian:'23px 14px 26px 14px',japanese:'19px 14px 26px 14px',celtic:'19px 16px 27px 16px',mesoamerican:'15px 11px 23px 11px'};
+const theme=document.querySelector('#theme'),encounter=document.querySelector('#encounter');
+const confirmButton=document.querySelector('#confirm'),status=document.querySelector('#status');
+let claimed=false;window.demoConfirmCount=0;
+document.querySelector('#frames').innerHTML=factions.map(f=>`<section class="pr-panel dark theme-demo" style="--frame:url('${root}frame-${f}.png');--surface-inset:${surfaceInsets[f]}"><div><h3>${title(f)}</h3><span>Resizable corner artwork</span></div></section>`).join('');
+document.querySelector('#banners').innerHTML=factions.map(f=>`<div class="banner"><img src="${root}banner-${f}.png" alt=""><div class="banner-content"><img src="../../assets-runtime/ui/icons/final/emblem.${f}.png" alt="${title(f)} emblem"><span>${title(f)}</span></div></div>`).join('');
+function setTheme(){const f=theme.value;document.documentElement.style.setProperty('--frame',`url('${root}frame-${f}.png')`);document.documentElement.style.setProperty('--surface-inset',surfaceInsets[f]);const v2=['egyptian','japanese','celtic','mesoamerican'].includes(f)?'-v2':'';document.querySelector('#stage').style.backgroundImage=`url('${root}recruit-${f}${v2}.png')`;document.querySelector('#stage').setAttribute('aria-label',`Empty ${title(f)} recruitment stage`);document.querySelector('#merchant').src=root+`merchant-${f}.png`;document.querySelector('#merchant').alt=title(f)+' merchant illustration';}
+theme.addEventListener('change',setTheme);setTheme();
+document.querySelector('#width').addEventListener('input',e=>{encounter.style.setProperty('--demo-width',e.target.value+'px');document.querySelector('#width-value').value=e.target.value+'px';});
+document.querySelector('#dark').addEventListener('change',e=>encounter.classList.toggle('dark',e.target.checked));
+document.querySelectorAll('[name=reward]').forEach(r=>r.addEventListener('change',()=>{if(!claimed){confirmButton.disabled=false;status.textContent='Selected only. Confirm to apply this sample choice.';}}));
+confirmButton.addEventListener('click',()=>{const reward=document.querySelector('[name=reward]:checked');if(claimed||!reward)return;claimed=true;window.demoConfirmCount++;confirmButton.disabled=true;document.querySelectorAll('[name=reward]').forEach(r=>r.disabled=true);status.textContent=reward.value+' confirmed once in this sample. No game data was changed.';document.querySelector('#encounter-art').src=root+'encounter-treasure-empty.png';document.querySelector('#encounter-art').alt='An empty treasure chest';});
+document.querySelector('#later').addEventListener('click',()=>{claimed=false;document.querySelectorAll('[name=reward]').forEach(r=>{r.checked=false;r.disabled=false;});confirmButton.disabled=true;status.textContent='Sample reset. No game data was changed.';document.querySelector('#encounter-art').src=root+'encounter-treasure.png';document.querySelector('#encounter-art').alt='An open chest of coins and scrolls';});
+</script></body></html>

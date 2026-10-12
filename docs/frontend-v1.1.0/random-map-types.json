@@ -1,0 +1,56 @@
+[
+  {
+    "id": "continental",
+    "label": "Continental",
+    "summary": "Open country with forests, hills and fens; the gold mine or shrine stands at the heart.",
+    "asset": "frontend.random.continental"
+  },
+  {
+    "id": "highlands",
+    "label": "Highlands",
+    "summary": "A ring of mountains shelters every home valley. Two guarded passes lead out.",
+    "asset": "frontend.random.highlands"
+  },
+  {
+    "id": "lake_isle",
+    "label": "Lake Isle",
+    "summary": "A great lake fills the center. The contested site stands on an island reached by one causeway per empire.",
+    "asset": "frontend.random.lake_isle"
+  },
+  {
+    "id": "wild_forest",
+    "label": "Wild Forest",
+    "summary": "Deep forest everywhere; travel is slow and roads are lifelines. Clearings hold the treasures.",
+    "asset": "frontend.random.wild_forest"
+  },
+  {
+    "id": "marshlands",
+    "label": "Marshlands",
+    "summary": "Fens and black pools split the land. The paths between them are worth fighting for.",
+    "asset": "frontend.random.marshlands"
+  },
+  {
+    "id": "crossroads",
+    "label": "Crossroads",
+    "summary": "Peaks ring a rich center that can be entered only through one strongly guarded gate per empire.",
+    "asset": "frontend.random.crossroads"
+  },
+  {
+    "id": "archipelago",
+    "label": "Archipelago",
+    "summary": "Every empire rules its own island. A sandbar leads to the central isle; twin portals cross the straits.",
+    "asset": "frontend.random.archipelago"
+  },
+  {
+    "id": "twin_continents",
+    "label": "Twin Continents",
+    "summary": "A strait splits the world in two. The only land bridge runs through the contested center; twin portals cross the water.",
+    "asset": "frontend.random.twin_continents"
+  },
+  {
+    "id": "central_valley",
+    "label": "Central Valley",
+    "summary": "A rich valley of mines lies below a ring of ridges, reached through two guarded passes per empire.",
+    "asset": "frontend.random.central_valley"
+  }
+]

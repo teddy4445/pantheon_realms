@@ -1,0 +1,49 @@
+[
+  {
+    "key": "encounterkit.meeting.celtic",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-be7ff141-6f9d-4b84-b297-fa26fd756cf7.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\meeting-celtic.png",
+    "exit": 0
+  },
+  {
+    "key": "encounterkit.meeting.mesoamerican",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-532a186e-f6a9-4eff-8a97-106b28234098.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\meeting-mesoamerican.png",
+    "exit": 0
+  },
+  {
+    "key": "encounterkit.intro.scroll",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-cc01f769-37d3-4711-b396-798f14a3adc6.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\intro-scroll.png"
+  },
+  {
+    "key": "encounterkit.meeting.greek",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-fbe11033-8b37-4a34-b05e-be199cb58447.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\meeting-greek.png",
+    "exit": 0
+  },
+  {
+    "key": "encounterkit.meeting.norse",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-87c7766c-73d9-4236-a2ab-02323052796c.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\meeting-norse.png",
+    "exit": 0
+  },
+  {
+    "key": "encounterkit.meeting.egyptian",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-89f9334f-b266-448b-9264-91c4d17d9c70.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\meeting-egyptian.png",
+    "exit": 0
+  },
+  {
+    "key": "encounterkit.meeting.japanese",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-c300deef-f701-4880-b19f-0a5ba4fd2982.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\meeting-japanese.png",
+    "exit": 0
+  },
+  {
+    "key": "encounterkit.reward.tray",
+    "original": "C:\\Users\\lazeb\\.codex\\generated_images\\01a0f6e7-d6d1-7111-938b-0a4f17ff42f3\\exec-e94dcbb0-eaed-4b06-8559-08bc4e9c9abc.png",
+    "destination": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\encounters-v1.1.0\\reward-tray.png",
+    "exit": 0
+  }
+]

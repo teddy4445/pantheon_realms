@@ -11,7 +11,7 @@ import { importAndLoad } from './fixtures';
 
 /**
  * Story art (delivery 2026-10-02) in the real screens: campaign covers and
- * cards, the briefing scene with speaker busts (mirrored on the right), and the
+ * cards, the briefing scroll with each speaker's own portrait, and the
  * campaign's ending picture behind the epilogue — at a large and a small
  * window size. Every picture must load (no broken paths). Screenshots are kept
  * for review.
@@ -41,42 +41,36 @@ for (const size of SIZES) {
     await page.waitForTimeout(500);
     let imgs = await imagesLoaded(page);
     expect(imgs.broken).toEqual([]);
-    const cover = await page.evaluate(() => getComputedStyle(document.querySelector('.setup-screen')!).backgroundImage);
-    expect(cover).toContain('campaign.winter_oath.cover.webp');
+    // 1.1.0 Campaign Chronicles: the cover is the selected campaign's painting in its parchment page.
+    await expect(page.getByTestId('campaign-cover')).toHaveAttribute('src', /campaign\.winter_oath\.cover\.webp$/);
+    await expect.poll(() => page.getByTestId('campaign-cover').evaluate((e) => (e as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
     await page.screenshot({ path: `test-results/story-campaign-select-${size.name}.png` });
 
-    // The Three Beacons: mission 1 briefing — Thaleia (right, mirrored) then Alexios (left).
+    // The Three Beacons: mission 1 briefing on the scroll (1.1.0) — Thaleia, then Alexios, each with their own portrait.
     await page.getByTestId('scenario-three_beacons').click();
     await page.getByTestId('setup-begin').click();
     await waitFor(page, (s) => s.overlays.includes('briefing'), 'briefing', 30_000, true);
     const art = page.getByTestId('scene-art');
     await expect(art).toBeVisible();
     expect(await art.getAttribute('src')).toContain('mission.three_beacons.m01.briefing.webp');
-    const bust = page.getByTestId('story-bust');
-    // Wide windows: the bust stands beside the box; small ones (no room beside the objectives): the box shows the
-    // speaker's small portrait — the square one delivered with Brief 17 (2026-10-06), the bust where there is none.
-    const wide = size.name === 'large';
-    const shown = wide ? bust : page.locator('.briefing-scene .story-box__mini img');
-    await expect(shown).toBeVisible();
-    expect(await shown.getAttribute('src')).toContain(wide ? 'hero.greek.thaleia.bust.webp' : 'hero.greek.thaleia.portrait.webp');
-    expect(await bust.getAttribute('data-side')).toBe('right');
-    expect(await bust.getAttribute('style')).toContain('scaleX(-1)');
-    if (wide) expect(await bust.evaluate((e) => getComputedStyle(e).transform)).toMatch(/matrix\(-1/);
-    else await expect(bust).toBeHidden();
+    // The mission illustration on the scroll is the same painting; the scroll is its own picture.
+    await expect(page.locator('.brief__art img')).toHaveAttribute('src', /mission\.three_beacons\.m01\.briefing\.webp/);
+    const speaker = page.locator('.brief__line .portrait img').first();
+    await expect(speaker).toBeVisible();
+    await expect(speaker).toHaveAttribute('src', /hero\.greek\.thaleia\.(portrait|bust)\.webp/);
+    await expect(page.locator('.brief__speaker')).toHaveText('Thaleia');
     await page.waitForTimeout(400);
     imgs = await imagesLoaded(page);
     expect(imgs.broken).toEqual([]);
     // The title stays inside the window and above the dialogue.
-    const head = await page.locator('.briefing-scene__head').boundingBox();
-    const box = await page.locator('.briefing-scene .story-box').boundingBox();
+    const head = await page.locator('.brief__head').boundingBox();
+    const foot = await page.locator('.brief__foot').boundingBox();
     expect(head!.x + head!.width).toBeLessThanOrEqual(size.width);
-    expect(head!.y + head!.height).toBeLessThan(box!.y);
+    expect(head!.y + head!.height).toBeLessThan(foot!.y);
     await page.screenshot({ path: `test-results/story-briefing-thaleia-${size.name}.png` });
     await page.getByTestId('briefing-next').click();
-    await expect(bust).toHaveAttribute('src', /hero\.greek\.alexios\.bust\.webp/);
-    if (!wide) await expect(shown).toHaveAttribute('src', /hero\.greek\.alexios\.portrait\.webp/);
-    expect(await bust.getAttribute('data-side')).toBe('left');
-    expect(await bust.getAttribute('style')).not.toContain('scaleX(-1)');
+    await expect(speaker).toHaveAttribute('src', /hero\.greek\.alexios\.(portrait|bust)\.webp/);
+    await expect(page.locator('.brief__speaker')).toHaveText('Alexios');
     await page.waitForTimeout(400);
     await page.screenshot({ path: `test-results/story-briefing-alexios-${size.name}.png` });
     await page.getByTestId('briefing-begin').click();

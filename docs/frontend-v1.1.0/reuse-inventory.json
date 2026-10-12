@@ -1,0 +1,4135 @@
+{
+  "note": "Copy missing bytes only; preserve target manifests and resolver rules. Not all reused assets are required at title: lazy-load by screen. Additional animation sheets remain existing game dependencies, not delivered twice.",
+  "assets": [
+    {
+      "id": "brand.app-icon",
+      "file": "ui/branding/app-icon-256.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/branding/app-icon-256.png",
+      "originManifest": "ui/manifest.json",
+      "bytes": 80321,
+      "sha256": "c0a77a9ba7fdfe7606e946448da1641269b536c12e0086b1dc3950d31ff64556",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "brand.emblem",
+      "file": "ui/branding/emblem-256.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/branding/emblem-256.png",
+      "originManifest": "ui/manifest.json",
+      "bytes": 55077,
+      "sha256": "dae1cfc96ecd89c9799261731f62a00ed3192c9c981f0cfbb9628d1549b660d9",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "brand.logo.full",
+      "file": "ui/branding/full-logo.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/branding/full-logo.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 103744,
+      "sha256": "2a86a51399821ef0f33e1e798af9daf26c66ef732eb3807b4cad21ce73d7d5db",
+      "width": 1460,
+      "height": 474
+    },
+    {
+      "id": "brand.logo.text",
+      "file": "ui/branding/logo-text.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/branding/logo-text.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 69848,
+      "sha256": "0175a11099d30414932fb5132d17d163b3ded39640a618d315f74d5d806574f9",
+      "width": 1047,
+      "height": 294
+    },
+    {
+      "id": "menu.background.celtic-battle",
+      "file": "ui/backgrounds/opening-celtic-battle.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-celtic-battle.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 168566,
+      "sha256": "2ee2626156cc80553f7c10c1bf5a1af643b43df6301fdaaa914e747e5191c74d",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.celtic-landscape",
+      "file": "ui/backgrounds/opening-celtic-landscape.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-celtic-landscape.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 261986,
+      "sha256": "63d25a2b61d7c4f376fac052a8ba033d160bfcb4fd8de71e64f4b3e69c5a245f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.egyptian-battle",
+      "file": "ui/backgrounds/opening-egyptian-battle.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-egyptian-battle.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 170488,
+      "sha256": "68c777b9618a22e9bcf3f272150ff1171654f648dc1c12df1efb4c889aad749c",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.egyptian-landscape",
+      "file": "ui/backgrounds/opening-egyptian-landscape.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-egyptian-landscape.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 215766,
+      "sha256": "7d243db2d3c82511d6ff854cfc988b67800a37a4dc796005698404e04e8e9ce2",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.greek-battle",
+      "file": "ui/backgrounds/opening-greek-battle.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-greek-battle.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 191118,
+      "sha256": "46ad1155b5a6c7b9fa1b095633ecac4baf19c331743217efaa9c258b923ff2fa",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.greek-landscape",
+      "file": "ui/backgrounds/opening-greek-landscape.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-greek-landscape.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 216672,
+      "sha256": "d4fb019400acb82d3844010aa37d80a5b8d5083a540c6587bf0ba90d46248b7b",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.japanese-battle",
+      "file": "ui/backgrounds/opening-japanese-battle.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-japanese-battle.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 212158,
+      "sha256": "48ef95317a1788bb52bd1d00bce0b351ddbe698589557f4e76f51d0c5b0b30d1",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.japanese-landscape",
+      "file": "ui/backgrounds/opening-japanese-landscape.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-japanese-landscape.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 193100,
+      "sha256": "c39e37f14e5f895333b69274e0a42e1111fc90b5bf58990ea40017b2bb16fcb1",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.mesoamerican-battle",
+      "file": "ui/backgrounds/opening-mesoamerican-battle.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-mesoamerican-battle.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 256544,
+      "sha256": "124ad46c4c98ec552dcbf215c225797265d68889c619f2bd0ab82019e52e8443",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.mesoamerican-landscape",
+      "file": "ui/backgrounds/opening-mesoamerican-landscape.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-mesoamerican-landscape.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 222688,
+      "sha256": "d3dc664e442b3650dd7aadc5cbd4655a7a6fa0b2b5525543ee9784fecebe64a5",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.norse-battle",
+      "file": "ui/backgrounds/opening-norse-battle.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-norse-battle.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 194022,
+      "sha256": "04769ac80699b3f5d813162906929b52780fb2ae7716f2436034c78259f737f4",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.background.norse-landscape",
+      "file": "ui/backgrounds/opening-norse-landscape.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/backgrounds/opening-norse-landscape.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 188200,
+      "sha256": "1915216d5ab309ec76babb67bc92ec0c490e0f4b3d28af244cdda0239d95fcae",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "menu.frame",
+      "file": "ui/frames/intro-frame.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/frames/intro-frame.webp",
+      "originManifest": "ui/manifest.json",
+      "bytes": 334478,
+      "sha256": "a4cf3d1cb7d14257ece1b47ac70a8397bca7840167f76e78d0d6f6e94bc1a80a",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "id": "campaign.lantern_road.cover",
+      "file": "art/covers/campaign.lantern_road.cover.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.lantern_road.cover.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 313230,
+      "sha256": "f4e1a0d3b84009ecbf1501ee4086a08309fd0115c027148a2909d26eefe9e5bd",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "campaign.lantern_road.thumbnail",
+      "file": "art/cards/campaign.lantern_road.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/campaign.lantern_road.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 71134,
+      "sha256": "1285cc8372678b27e72ec4c5138ed5940117f46b00b39f85a552fd3b8f712dc7",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "campaign.new_fire.cover",
+      "file": "art/covers/campaign.new_fire.cover.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.new_fire.cover.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 260626,
+      "sha256": "7777ce0f8628bc127730c8ff50dc320379a1e78a2effec664c685874d5737ded",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "campaign.new_fire.thumbnail",
+      "file": "art/cards/campaign.new_fire.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/campaign.new_fire.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 60220,
+      "sha256": "4b059ef47a3a86c219400278476b125e8d0e13153279407d2ab8d77acdad3f3e",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "campaign.silver_branch.cover",
+      "file": "art/covers/campaign.silver_branch.cover.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.silver_branch.cover.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 331472,
+      "sha256": "81b9fdc353dde1f8bdb16f45f5e9eb7790e38b10826be0596443e33e055cd3d0",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "campaign.silver_branch.thumbnail",
+      "file": "art/cards/campaign.silver_branch.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/campaign.silver_branch.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 75150,
+      "sha256": "c407cc417abe06656a914fb8a388384a5eec229b2ecd9b42c46b6999ecbef90f",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "campaign.three_beacons.cover",
+      "file": "art/covers/campaign.three_beacons.cover.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.three_beacons.cover.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 312594,
+      "sha256": "4fdefc0b993eecc24e7c28a02b183d7fae990441e8de9742f3dc642f476fe0bf",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "campaign.three_beacons.thumbnail",
+      "file": "art/cards/campaign.three_beacons.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/campaign.three_beacons.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 72460,
+      "sha256": "aa19083eeb287f218929b35e670b45c9d33a31ea385acfc0231e394f86c2398e",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "campaign.twelfth_hour.cover",
+      "file": "art/covers/campaign.twelfth_hour.cover.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.twelfth_hour.cover.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 337772,
+      "sha256": "d6c43907d5f331b720396f0387f31b99455c3d7eb6651b65dae6c3933f33ef30",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "campaign.twelfth_hour.thumbnail",
+      "file": "art/cards/campaign.twelfth_hour.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/campaign.twelfth_hour.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 68958,
+      "sha256": "324f4032c840339bed07311ebce769dc7069b29dd0f42601d176ffdd4992f67d",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "campaign.winter_oath.cover",
+      "file": "art/covers/campaign.winter_oath.cover.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.winter_oath.cover.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 411946,
+      "sha256": "9bcba3d294e6fe75a245f533ef210080325dcd3e4bd0fedeb3a9dc1efe0e6a9c",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "campaign.winter_oath.thumbnail",
+      "file": "art/cards/campaign.winter_oath.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/campaign.winter_oath.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 81878,
+      "sha256": "5151aea70deacd6c93849daae8aa56e98653a066aca9e9757af1f79ec0158601",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "hero.celtic.cathal.bust",
+      "file": "art/busts/hero.celtic.cathal.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.cathal.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 281100,
+      "sha256": "2c2126f3461f558c6cc48d72b900b16c3a85adca139966fef69d7464b0005ba0",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.celtic.dubhghall.bust",
+      "file": "art/busts/hero.celtic.dubhghall.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.dubhghall.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 380656,
+      "sha256": "97bca1a35cae1a51be8f4012a2607c233bbf30fe5ddc9532eb7329f354f4b5ef",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.celtic.fiachra.bust",
+      "file": "art/busts/hero.celtic.fiachra.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.fiachra.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 305586,
+      "sha256": "0e19ba420125010371f20c7892db5e0a0c2be6cf182d42f8ebb36cdf86a21d99",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.celtic.orla.bust",
+      "file": "art/busts/hero.celtic.orla.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.orla.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 316232,
+      "sha256": "56aed124534694354791c71fe4591062a6efd719e1c2bac2d40589ba30574c03",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.celtic.sadb.bust",
+      "file": "art/busts/hero.celtic.sadb.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.sadb.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 288930,
+      "sha256": "9916a4e474d876e15198b990b720b12247b1a9b440c0f9a07fcfd51f006b1758",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.egyptian.djedkhonsu.bust",
+      "file": "art/busts/hero.egyptian.djedkhonsu.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.djedkhonsu.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 303262,
+      "sha256": "89f80e662020403e897ec51d6bc90165683fb16ab4107af34f4c9c3ff513d8ff",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.egyptian.nebet.bust",
+      "file": "art/busts/hero.egyptian.nebet.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.nebet.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 257352,
+      "sha256": "ccada4aa6487b7d2155a4c6307935858f962c11b4f004b4b646f764d84863af9",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.egyptian.paser.bust",
+      "file": "art/busts/hero.egyptian.paser.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.paser.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 240750,
+      "sha256": "787cc26d282b9e201f5fbe89d8609a405d3b6460001139d5461374d60fa3adaf",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.egyptian.pawah.bust",
+      "file": "art/busts/hero.egyptian.pawah.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.pawah.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 195116,
+      "sha256": "dbaa59980b6423ab44e6becdde63d98c430efe13dd53879160f5c47425af9d8a",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.egyptian.seshet.bust",
+      "file": "art/busts/hero.egyptian.seshet.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.seshet.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 184840,
+      "sha256": "df58b3071d5c0ad041677e7ecb243bc04f7855c476603d1e83f5763cb73ec566",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.greek.alexios.bust",
+      "file": "art/busts/hero.greek.alexios.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.alexios.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 210874,
+      "sha256": "85567b3d56fe7a791450ab33ae02d0becdcb6ca0e8030244b3ec7223aeb79bdd",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.greek.ione.bust",
+      "file": "art/busts/hero.greek.ione.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.ione.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 290082,
+      "sha256": "622f8e31948a31b772432131f218d6e3a97cd66a8991986bba134db0ff9d657c",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.greek.melas.bust",
+      "file": "art/busts/hero.greek.melas.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.melas.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 281288,
+      "sha256": "aeb662f1971ac1634a972a53b00b4ef111e579eaf12f1a6849705fe77ec67119",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.greek.thaleia.bust",
+      "file": "art/busts/hero.greek.thaleia.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.thaleia.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 228006,
+      "sha256": "c61611f7ebb3c2ce1aaad16eb469b8574b46634c8a424f6373b663fe3453aecf",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.japanese.akane.bust",
+      "file": "art/busts/hero.japanese.akane.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.akane.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 237410,
+      "sha256": "55f2d5b290dfd3b036b001bc065c5be77aa3be7af9e09899dc420a84514866f3",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.japanese.genzo.bust",
+      "file": "art/busts/hero.japanese.genzo.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.genzo.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 337798,
+      "sha256": "2904bccfd6d2dba853a5f7c7b2594b7ff7e1dd086e279f4c923635b8d0e6064a",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.japanese.kurogane.bust",
+      "file": "art/busts/hero.japanese.kurogane.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.kurogane.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 335636,
+      "sha256": "d02eb7029cfd6fa09e52bca38b3e54ad808d1d0c644d40dced4e76c5b91398bd",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.japanese.shiro.bust",
+      "file": "art/busts/hero.japanese.shiro.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.shiro.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 281224,
+      "sha256": "11629616efedea08f0e896195faa6035c6e9b615544d01d2f546e4f85716cd85",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.japanese.yamikage.bust",
+      "file": "art/busts/hero.japanese.yamikage.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.yamikage.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 342434,
+      "sha256": "0e7913764b0095613fffb09008b541545532de923f6e2292dc3910c8e533f0ed",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.mesoamerican.chimal.bust",
+      "file": "art/busts/hero.mesoamerican.chimal.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.chimal.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 302630,
+      "sha256": "eeb7e2c77c810164b1bd42251baea561b68a769461bd6b736bb023028233f8f8",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.mesoamerican.itzel.bust",
+      "file": "art/busts/hero.mesoamerican.itzel.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.itzel.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 222432,
+      "sha256": "08c86aa181a01ddc0a2c9e927c8b75d6b62e5c37e692b42ca058f8b5dce2f3eb",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.mesoamerican.itztli.bust",
+      "file": "art/busts/hero.mesoamerican.itztli.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.itztli.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 331676,
+      "sha256": "4a03111e4cec83a58a283667b936401310fe8b625075a05e454ce75518f588c5",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.mesoamerican.tecuani.bust",
+      "file": "art/busts/hero.mesoamerican.tecuani.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.tecuani.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 353936,
+      "sha256": "aaaec6a6988f589882a446287468c98a7490ac9fe4800ab88c8819d3a8317ad3",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.mesoamerican.xoco.bust",
+      "file": "art/busts/hero.mesoamerican.xoco.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.xoco.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 305656,
+      "sha256": "f8a7c27bd53d3ea279192bb21a6182f7758fef53672d73e1582114d72b92f2e3",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.barrow_captain.bust",
+      "file": "art/busts/hero.norse.barrow_captain.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.barrow_captain.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 270700,
+      "sha256": "fd7df8dce0518794915e7c23d593b0c36ae618bf5d946e7ce6de5b15a0b114f1",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.bone_helm.bust",
+      "file": "art/busts/hero.norse.bone_helm.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.bone_helm.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 359192,
+      "sha256": "685f7d85e723641263e7663b83ca39ebacabc5d8602ac03d42fa256ff0cbf757",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.eydis.bust",
+      "file": "art/busts/hero.norse.eydis.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.eydis.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 281886,
+      "sha256": "317ea1aaae280792d4f5d6cd12376fb517ae37f569aeec317986b0199c1e2e16",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.grey_jarl.bust",
+      "file": "art/busts/hero.norse.grey_jarl.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.grey_jarl.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 374598,
+      "sha256": "f9df75cb28d1f78bfda704e8da692a45f11f7d164f420c4beb64726a0f81d68d",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.hervor.bust",
+      "file": "art/busts/hero.norse.hervor.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.hervor.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 283880,
+      "sha256": "1bb280266667be657d49e3d79d607c0166f1df80e695f06f1a66e4bc99feec41",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.hrafn.bust",
+      "file": "art/busts/hero.norse.hrafn.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.hrafn.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 351990,
+      "sha256": "f2f736197157b984bee5babf6c1fccd0e328427b3493322c73f13881b704f1bc",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.jokul.bust",
+      "file": "art/busts/hero.norse.jokul.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.jokul.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 359866,
+      "sha256": "9d4948451ee54966f061c5d23eccdcda2fa82177112aec4ea80b3605f0192c97",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.skeggi.bust",
+      "file": "art/busts/hero.norse.skeggi.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.skeggi.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 255164,
+      "sha256": "ce50caec73d48bc67095e6dd3f7d971f4b15f28ec928069cb570934b3bb92b6a",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.svanhild.bust",
+      "file": "art/busts/hero.norse.svanhild.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.svanhild.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 320542,
+      "sha256": "3b547050b36de796396ca198a45a326574bfce1d17db8eaf2775da6a4f7c1124",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.troll_wife.bust",
+      "file": "art/busts/hero.norse.troll_wife.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.troll_wife.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 349146,
+      "sha256": "0edf0a4dc3892f578fad8d57573cbb4870342b6333efb42a24d0833bd159437b",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "hero.norse.ulfhild.bust",
+      "file": "art/busts/hero.norse.ulfhild.bust.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.ulfhild.bust.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 318688,
+      "sha256": "99f95989e8a9fb4428aba2178b79c685f5ab4f50eb898afdce5ec1e12ed87d1b",
+      "width": 768,
+      "height": 1152
+    },
+    {
+      "id": "mission.lantern_road.m01.briefing",
+      "file": "art/missions/mission.lantern_road.m01.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m01.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 334632,
+      "sha256": "ccbcb09488933151e369cb7df23777faebfe3b569644742c1d1bb932aab0b6fc",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.lantern_road.m01.thumbnail",
+      "file": "art/cards/mission.lantern_road.m01.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.lantern_road.m01.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 71054,
+      "sha256": "5c3e86316f43470cc433c177a8bd955029182ef6eb017f479500cc2c0607298b",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.lantern_road.m02.briefing",
+      "file": "art/missions/mission.lantern_road.m02.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m02.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 396172,
+      "sha256": "7460ec06a744f7077e1a364f2a770b04e6b19141fb13dc258b1061ec86394891",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.lantern_road.m02.thumbnail",
+      "file": "art/cards/mission.lantern_road.m02.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.lantern_road.m02.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 81918,
+      "sha256": "434dc35402b6a5bcdd87146e5a1ef1ead25012ec6b61da7e2dc6a259fb4751d7",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.lantern_road.m03.briefing",
+      "file": "art/missions/mission.lantern_road.m03.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m03.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 345980,
+      "sha256": "5e45d5dcfa5563ddefb8084a1e3d53a13935d6cec6e83696ae0af66666c7610c",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.lantern_road.m03.thumbnail",
+      "file": "art/cards/mission.lantern_road.m03.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.lantern_road.m03.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 73092,
+      "sha256": "2b4d5ff115f556fe221e30e1fb02411dda9d659f6de75744b385a59340ab1bb8",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.lantern_road.m04.briefing",
+      "file": "art/missions/mission.lantern_road.m04.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m04.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 256736,
+      "sha256": "accd80e58cea965e655de0dae22fc716ffb9f0c498af6e1edb742c1408c1dad3",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.lantern_road.m04.thumbnail",
+      "file": "art/cards/mission.lantern_road.m04.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.lantern_road.m04.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 56764,
+      "sha256": "90b41a4f8f3e2cf826d0c9548c503655c06cc7b69cc7f133d805769be6e61598",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.lantern_road.m05.briefing",
+      "file": "art/missions/mission.lantern_road.m05.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m05.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 330866,
+      "sha256": "08675ce925a5a4c724cea64dc376a1511efcbece0b876d39fd46a82f91957274",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.lantern_road.m05.thumbnail",
+      "file": "art/cards/mission.lantern_road.m05.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.lantern_road.m05.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 68442,
+      "sha256": "0a9d41bd804e8869e0f3b6b4731af594d17e375da41ced37166f8b146ec6c43c",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.lantern_road.m06.briefing",
+      "file": "art/missions/mission.lantern_road.m06.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m06.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 385220,
+      "sha256": "7d4f273cef605c07e058ead6d06f4e7defd46e53832f402076a068cf7737dc44",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.lantern_road.m06.thumbnail",
+      "file": "art/cards/mission.lantern_road.m06.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.lantern_road.m06.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 85444,
+      "sha256": "a04de09c2a21f3f3b092d3d71cd1a0430f7dd6ff62a5115503b2736a6cf0a596",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.lantern_road.m07.briefing",
+      "file": "art/missions/mission.lantern_road.m07.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m07.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 363624,
+      "sha256": "e9bbdec14b79fb13d8d27b6711b75ec6cdf9d37f89554abacdb8d82ac1a6e7ac",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.lantern_road.m07.thumbnail",
+      "file": "art/cards/mission.lantern_road.m07.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.lantern_road.m07.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 77464,
+      "sha256": "b6001f657fc054e3062607d1a523312119ce24a7112cec5455cefa489f101868",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.new_fire.m01.briefing",
+      "file": "art/missions/mission.new_fire.m01.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m01.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 301554,
+      "sha256": "64096e7cdd29a3156a2c3837ff15baf8a5dcfba24bf74d27c30d4d58a73a45a2",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.new_fire.m01.thumbnail",
+      "file": "art/cards/mission.new_fire.m01.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.new_fire.m01.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 65912,
+      "sha256": "f91a47ec7cc401db0c9332d889485947400246242f8e539c0a17261252e6f1f1",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.new_fire.m02.briefing",
+      "file": "art/missions/mission.new_fire.m02.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m02.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 384934,
+      "sha256": "8b9073741a47ea675a2e3ec2f2e103c53b76ec3a206225a35302d19ca03e3b86",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.new_fire.m02.thumbnail",
+      "file": "art/cards/mission.new_fire.m02.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.new_fire.m02.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 82548,
+      "sha256": "2922019eb7bc790edf5353cac1365fd78a29529db75dab66eb93c7c3003ce9a7",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.new_fire.m03.briefing",
+      "file": "art/missions/mission.new_fire.m03.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m03.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 415248,
+      "sha256": "8e8baacb9b9d14edb5a27219ab68518c146a49eebe39fd297b456e9713efca9a",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.new_fire.m03.thumbnail",
+      "file": "art/cards/mission.new_fire.m03.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.new_fire.m03.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 85848,
+      "sha256": "cc2d7bcd7b6ba2271130afe9e63084abfa08a441882a7afd8ec10d886dc565bd",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.new_fire.m04.briefing",
+      "file": "art/missions/mission.new_fire.m04.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m04.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 273090,
+      "sha256": "4c2c509fb077a6e2f6a04133167d017f4d83fa39c8ee181e3245dda9c4a05d8c",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.new_fire.m04.thumbnail",
+      "file": "art/cards/mission.new_fire.m04.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.new_fire.m04.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 59194,
+      "sha256": "0703dc3c7a1d6ab091dd1eafdbaec41a9242578943d0979416d7623b729bce65",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.new_fire.m05.briefing",
+      "file": "art/missions/mission.new_fire.m05.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m05.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 374038,
+      "sha256": "a6e6dd3b423473968784c14d5b9436ba0c560f6ecaf0b6e187b98d0960b15841",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.new_fire.m05.thumbnail",
+      "file": "art/cards/mission.new_fire.m05.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.new_fire.m05.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 77818,
+      "sha256": "7170e08a49733055b57de7ddd51bedc4be459c7752d7489d4cfba738c171dcab",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.new_fire.m06.briefing",
+      "file": "art/missions/mission.new_fire.m06.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m06.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 328466,
+      "sha256": "bd5c09b1af1dd7f839ab818d919306886dc4d6ee8c349530e83b7bd0b6963876",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.new_fire.m06.thumbnail",
+      "file": "art/cards/mission.new_fire.m06.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.new_fire.m06.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 74224,
+      "sha256": "cb8c715ae83b620bc5e88e1ecf5e4fb8608f6baba93e8b3fd0360b8022731a2b",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.new_fire.m07.briefing",
+      "file": "art/missions/mission.new_fire.m07.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m07.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 267780,
+      "sha256": "3deaccd1407fbc04562192a77a427e6e4eedbf63ad3366baf54bd256e31102d0",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.new_fire.m07.thumbnail",
+      "file": "art/cards/mission.new_fire.m07.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.new_fire.m07.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 65968,
+      "sha256": "f05d8b1a1ef24744f7afd313c43442a20d6a22206b5fb5dfd68d2fdb003cee0f",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.silver_branch.m01.briefing",
+      "file": "art/missions/mission.silver_branch.m01.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m01.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 378412,
+      "sha256": "4d3a0dfbe09f4de78b014587482f1316ac7b9c156321efda56400ea7a62bd773",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.silver_branch.m01.thumbnail",
+      "file": "art/cards/mission.silver_branch.m01.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.silver_branch.m01.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 77132,
+      "sha256": "3881ae830e3a18028821f3770e66f986bda56060fa292f4a97cf300bf5238b7f",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.silver_branch.m02.briefing",
+      "file": "art/missions/mission.silver_branch.m02.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m02.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 358392,
+      "sha256": "f2152422be573abad8a0b8b755635d95312865439970b1e9ce66c229509839dd",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.silver_branch.m02.thumbnail",
+      "file": "art/cards/mission.silver_branch.m02.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.silver_branch.m02.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 74930,
+      "sha256": "b4c39ffd102843ce4b067a0a51f822cb79701f6649d624d0b39a437ce0bc5c7e",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.silver_branch.m03.briefing",
+      "file": "art/missions/mission.silver_branch.m03.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m03.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 369742,
+      "sha256": "eabb6bb4ac9befe5ad5fd55ef68c1b8fcbafcf21b661188e7d0214cb3a394ef4",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.silver_branch.m03.thumbnail",
+      "file": "art/cards/mission.silver_branch.m03.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.silver_branch.m03.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 75348,
+      "sha256": "686ddc03917353753d342b9b1129feb4fb976dadc0f4a34287a5fb5de8eae44e",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.silver_branch.m04.briefing",
+      "file": "art/missions/mission.silver_branch.m04.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m04.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 340238,
+      "sha256": "05b17f234bfdf8a30522df280e04acfef59b7bef0a0ed067b855e016804930d4",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.silver_branch.m04.thumbnail",
+      "file": "art/cards/mission.silver_branch.m04.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.silver_branch.m04.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 69846,
+      "sha256": "45087aa3e15f5d5105106768d78aba6ecfc8b31bdc7075f3f25de2a8b4062155",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.silver_branch.m05.briefing",
+      "file": "art/missions/mission.silver_branch.m05.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m05.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 349760,
+      "sha256": "b95c32bd75238bb8e71442f2f2f7a0f0cd01827844bc0ec45dce4e3cbb3381ac",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.silver_branch.m05.thumbnail",
+      "file": "art/cards/mission.silver_branch.m05.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.silver_branch.m05.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 80098,
+      "sha256": "cab4660447f35c76195a06c736ec852274bdd25c637ddd6e9e5117ce763ae26f",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.silver_branch.m06.briefing",
+      "file": "art/missions/mission.silver_branch.m06.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m06.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 405946,
+      "sha256": "af7450d63781cc4a46262d46fe54c5588770e398f472c61c9a9fd4968b43be4e",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.silver_branch.m06.thumbnail",
+      "file": "art/cards/mission.silver_branch.m06.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.silver_branch.m06.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 81410,
+      "sha256": "d4a6104d7c783bdf00673cdd30178db1819c78248c5c08421d6c455a929f88a6",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.silver_branch.m07.briefing",
+      "file": "art/missions/mission.silver_branch.m07.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m07.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 382304,
+      "sha256": "5a1ccc876caf47d7a17c26e38a5bdbf5e1f53f70d4c301e8eebbb18169c18e14",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.silver_branch.m07.thumbnail",
+      "file": "art/cards/mission.silver_branch.m07.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.silver_branch.m07.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 76866,
+      "sha256": "26648db36f7fc690bcd16b02e7a5e4f4075035ba66544ff15ff1aecc4a9758ed",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.barrows.briefing",
+      "file": "art/missions/mission.skirmish.barrows.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.barrows.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 336934,
+      "sha256": "402fab38efa2a26b9840f1d5dacad8da56478634ffbcb79b0aa02afd1470f4a7",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.skirmish.barrows.thumbnail",
+      "file": "art/cards/mission.skirmish.barrows.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.barrows.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 68830,
+      "sha256": "2051e10c576a869415be571a0a30eb86feaff4b86bd77cfe01c1d3d50d3affdd",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.burning_oasis.briefing",
+      "file": "art/missions/mission.skirmish.burning_oasis.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.burning_oasis.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 356174,
+      "sha256": "84eac3c3d773c62eb90eda3e85f422a40e41be5d948e052fef8195838f852669",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.skirmish.burning_oasis.thumbnail",
+      "file": "art/cards/mission.skirmish.burning_oasis.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.burning_oasis.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 75636,
+      "sha256": "7ef7f3fb5667aea2006f143354de70fe8476cb0ac5a70059615c822ed2f86c66",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.circle_of_gates.briefing",
+      "file": "art/missions/mission.skirmish.circle_of_gates.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.circle_of_gates.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 364880,
+      "sha256": "d7c5e2917bc6e42e72548019fb3f54e8121507fc215e3f1bd55d7df06c61366f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.skirmish.circle_of_gates.thumbnail",
+      "file": "art/cards/mission.skirmish.circle_of_gates.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.circle_of_gates.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 82112,
+      "sha256": "d220050754c30ce38b74ee2c90c19eebf657cb1f6e6ea950611e40368bbd91ee",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.frostgate.briefing",
+      "file": "art/missions/mission.skirmish.frostgate.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.frostgate.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 427604,
+      "sha256": "848e5dab815b133037d975235e40c51cfd44a9f11c352af7dd3d4b622142ed7b",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.skirmish.frostgate.thumbnail",
+      "file": "art/cards/mission.skirmish.frostgate.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.frostgate.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 82810,
+      "sha256": "11f510f487eb27527e503a6d4f66f18b3fdc63d77781cd5b51895573789d68b9",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.golden_fords.briefing",
+      "file": "art/missions/mission.skirmish.golden_fords.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.golden_fords.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 469006,
+      "sha256": "12a963ee436544507ea07e2b55db1d3fd59a1c1c0b3faf47b6b80ed9f0449317",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.skirmish.golden_fords.thumbnail",
+      "file": "art/cards/mission.skirmish.golden_fords.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.golden_fords.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 95792,
+      "sha256": "5b08ca19619330d333cf363354c674d7f3556f18d05c93812ea7a76c20821ef1",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.random.briefing",
+      "file": "art/missions/mission.skirmish.random.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.random.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 407282,
+      "sha256": "a36ee662917b9e375900bf605e17134ed1b4e2762afcc02b42885df416391d80",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.skirmish.random.thumbnail",
+      "file": "art/cards/mission.skirmish.random.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.random.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 85086,
+      "sha256": "7e41a15c8948ff6933db7e3d90f92c77145d51bedf813871af3fc92f94655fff",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.six_thrones.briefing",
+      "file": "art/missions/mission.skirmish.six_thrones.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.six_thrones.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 377120,
+      "sha256": "23e2cb7035a42a0d0067129b3ed4096ba865bf309e733987860936a3f68e8514",
+      "width": 1672,
+      "height": 940
+    },
+    {
+      "id": "mission.skirmish.six_thrones.thumbnail",
+      "file": "art/cards/mission.skirmish.six_thrones.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.six_thrones.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 81866,
+      "sha256": "291d2253f1f28ac6332b4c90b3cf350af5b4708644467e879e9957a32118b500",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.skirmish.twin_harbors.briefing",
+      "file": "art/missions/mission.skirmish.twin_harbors.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.twin_harbors.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 434016,
+      "sha256": "75775ca30dc138d4409c5f42fa505656053187b34b9934ff2e15ba27641a5a9f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.skirmish.twin_harbors.thumbnail",
+      "file": "art/cards/mission.skirmish.twin_harbors.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.skirmish.twin_harbors.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 85160,
+      "sha256": "2eaa7b40c016bb43d1b91364212215fa823b3fab3696485e517d6accb2ef772b",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.three_beacons.m01.briefing",
+      "file": "art/missions/mission.three_beacons.m01.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.three_beacons.m01.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 321156,
+      "sha256": "57f86fbb4607d6ed15703f0a82cf22e7c5d1465b086b470d7b920464e88426dd",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.three_beacons.m01.thumbnail",
+      "file": "art/cards/mission.three_beacons.m01.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.three_beacons.m01.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 71154,
+      "sha256": "7a7cd717a728e7d68ef92c2bbe1448c58f93c2abef68bcaeb30c24b4552befbb",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.three_beacons.m02.briefing",
+      "file": "art/missions/mission.three_beacons.m02.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.three_beacons.m02.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 411300,
+      "sha256": "c6c9b2f7e2c0c55993da2d35d42c089a8ce3ca30ec12da8d75a0a16a04c6f78e",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.three_beacons.m02.thumbnail",
+      "file": "art/cards/mission.three_beacons.m02.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.three_beacons.m02.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 85890,
+      "sha256": "ee3ab08d5938a9c8bd45fc66664ed97db2793a9e1aa2161d941db5a64c91e286",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.three_beacons.m03.briefing",
+      "file": "art/missions/mission.three_beacons.m03.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.three_beacons.m03.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 278246,
+      "sha256": "a45b3fcd32205f183b3644fce98cfb18cf10ae6ca4c988d3d7d14cbe48bc802c",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.three_beacons.m03.thumbnail",
+      "file": "art/cards/mission.three_beacons.m03.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.three_beacons.m03.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 68328,
+      "sha256": "5e6f46f4deceba51495388c8ddb3639145abaee48d3c8b787ecfb4666c864d7c",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.twelfth_hour.m01.briefing",
+      "file": "art/missions/mission.twelfth_hour.m01.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m01.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 265830,
+      "sha256": "fb50928bda062bd7d2e34f3381e0efb10cd6b78571227f4e5f7a280597468635",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.twelfth_hour.m01.thumbnail",
+      "file": "art/cards/mission.twelfth_hour.m01.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.twelfth_hour.m01.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 55214,
+      "sha256": "76176c06b454d85815c0b7f96df34dccff6267a3a9e977118eafc5009e79428a",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.twelfth_hour.m02.briefing",
+      "file": "art/missions/mission.twelfth_hour.m02.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m02.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 267558,
+      "sha256": "5d7f81bc1d5f2ff8efa329c460adc64c1127872820af04f0137eb915850ac604",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.twelfth_hour.m02.thumbnail",
+      "file": "art/cards/mission.twelfth_hour.m02.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.twelfth_hour.m02.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 57386,
+      "sha256": "c046f022889ce53443215d64ad72de42312f4f217f0ad4b6419565985131978f",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.twelfth_hour.m03.briefing",
+      "file": "art/missions/mission.twelfth_hour.m03.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m03.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 349174,
+      "sha256": "de9847caf4632c01b75002eb0c646f70bcb112a8a99c188ab2de3cf93cbfafc4",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.twelfth_hour.m03.thumbnail",
+      "file": "art/cards/mission.twelfth_hour.m03.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.twelfth_hour.m03.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 71418,
+      "sha256": "443d6d09030b440259e27e7565c95c1cb74fd5ab9a7ea70c33338647ceedb3f0",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.twelfth_hour.m04.briefing",
+      "file": "art/missions/mission.twelfth_hour.m04.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m04.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 268328,
+      "sha256": "20ccb558da1ad0a3c90777b961a5eaaab46e882ea2c68994dbe5088df3151b5f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.twelfth_hour.m04.thumbnail",
+      "file": "art/cards/mission.twelfth_hour.m04.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.twelfth_hour.m04.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 58376,
+      "sha256": "25c15a7dde96563c022885c20bde459f8a2cc8df48839353f4d3125295dedf0a",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.twelfth_hour.m05.briefing",
+      "file": "art/missions/mission.twelfth_hour.m05.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m05.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 352738,
+      "sha256": "46c723ac3ea03abb4144ab813d3bf865eeb17df3f5bdd28143469f601ce700d8",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.twelfth_hour.m05.thumbnail",
+      "file": "art/cards/mission.twelfth_hour.m05.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.twelfth_hour.m05.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 70320,
+      "sha256": "029fc8bdda7bcb29d446f2def6f9e69945661a7e6c0f2e227cec4c8ab381f595",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.twelfth_hour.m06.briefing",
+      "file": "art/missions/mission.twelfth_hour.m06.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m06.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 318542,
+      "sha256": "b0b835ad55f120dc0de18995b54584cc5573213af9bd85d65efb5edbfe64070d",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.twelfth_hour.m06.thumbnail",
+      "file": "art/cards/mission.twelfth_hour.m06.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.twelfth_hour.m06.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 66454,
+      "sha256": "5634ce85f4a5236d9c9888b4d25bb3c3595c4b5b31bcfbfdff5653f98922038d",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.twelfth_hour.m07.briefing",
+      "file": "art/missions/mission.twelfth_hour.m07.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m07.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 306218,
+      "sha256": "30f518e4a0e29b07ef67b4fcf64875f893fbb74f318a36b8af045a086eb0c066",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.twelfth_hour.m07.thumbnail",
+      "file": "art/cards/mission.twelfth_hour.m07.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.twelfth_hour.m07.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 60240,
+      "sha256": "e7292b7952b19526d31a2a1a178e4817b26ebff6405341e03a10de3976f96e73",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.winter_oath.m01.briefing",
+      "file": "art/missions/mission.winter_oath.m01.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m01.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 384048,
+      "sha256": "429bace7e6da6720d2f55a510b1d02017f0a5aa4b9e2512126915147bff98217",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.winter_oath.m01.thumbnail",
+      "file": "art/cards/mission.winter_oath.m01.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.winter_oath.m01.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 80936,
+      "sha256": "f780664776e5c95b37596a7fe5408278c380dbea5c2acecc6992a184ff905454",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.winter_oath.m02.briefing",
+      "file": "art/missions/mission.winter_oath.m02.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m02.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 413334,
+      "sha256": "fcf8e8214279e6b5106fd465236ae10b4e13b5998aef8362a7cbe07166d42b49",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.winter_oath.m02.thumbnail",
+      "file": "art/cards/mission.winter_oath.m02.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.winter_oath.m02.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 85456,
+      "sha256": "e23ef8a5f7c7a18fc30e28cddda59e534d3d849a41199ad39eb1f8154e904019",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.winter_oath.m03.briefing",
+      "file": "art/missions/mission.winter_oath.m03.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m03.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 365800,
+      "sha256": "51544eb982f6d5b7c518f9eacf5a2bff99158b08bc9cdd822954ccf5f3e73c51",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.winter_oath.m03.thumbnail",
+      "file": "art/cards/mission.winter_oath.m03.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.winter_oath.m03.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 80272,
+      "sha256": "24c45c0adede904bb7e78feed637b0b7ebba693e2fdcb27f1e4796dcf9ca2983",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.winter_oath.m04.briefing",
+      "file": "art/missions/mission.winter_oath.m04.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m04.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 337956,
+      "sha256": "25f9cc749eab584849371dcf765b9c2f8c238dfbac5e83b948d3e95704a580aa",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.winter_oath.m04.thumbnail",
+      "file": "art/cards/mission.winter_oath.m04.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.winter_oath.m04.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 72082,
+      "sha256": "ccc66a4dc2eabb20c6fe8d48b76c1b825fb858b3fdf3d08ff699882b27605bf0",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.winter_oath.m05.briefing",
+      "file": "art/missions/mission.winter_oath.m05.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m05.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 391650,
+      "sha256": "842cad0a9c135fc09eddd364f00c6b95dc369e62411e85e7146604fd4c436623",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.winter_oath.m05.thumbnail",
+      "file": "art/cards/mission.winter_oath.m05.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.winter_oath.m05.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 83290,
+      "sha256": "13e1fffba60801cb7929c1238f9ca23c78a7bf7278f6527f616b70db7b09fa9c",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.winter_oath.m06.briefing",
+      "file": "art/missions/mission.winter_oath.m06.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m06.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 371336,
+      "sha256": "575fc6d5a3da57848bda66da0779e06336e298ceeb4166b19dd55ccf1db9dfd0",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.winter_oath.m06.thumbnail",
+      "file": "art/cards/mission.winter_oath.m06.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.winter_oath.m06.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 79314,
+      "sha256": "a470072c79a7f1ac25826e5e2c2d985e43a62b787b0d8ab2c890d618bbf3bfa7",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "mission.winter_oath.m07.briefing",
+      "file": "art/missions/mission.winter_oath.m07.briefing.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m07.briefing.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 385272,
+      "sha256": "e70382c5593f90678d42b9a2a845718f7b6ca13a9815e9665ef58dd2d16c9295",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "mission.winter_oath.m07.thumbnail",
+      "file": "art/cards/mission.winter_oath.m07.thumbnail.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/cards/mission.winter_oath.m07.thumbnail.webp",
+      "originManifest": "art/manifest.json",
+      "bytes": 79334,
+      "sha256": "c11e7ae53bf6b02b888ffd72bab27703e8a1c70a24c0d06abe2530352f148db9",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "creature.celtic.tier1.base.portrait",
+      "file": "ui/icons/final/creature.celtic.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier1.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 20782,
+      "sha256": "1972c8dd4488b1f1c5e194b29e98b312389baf4cd749adbf8af53c6e8c711630",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier1.upgraded.portrait",
+      "file": "ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier1.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25590,
+      "sha256": "6c2dceb381d994cce5135312792c0122811b8575cf318bec46e900d15a03ceb3",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier2.base.portrait",
+      "file": "ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier2.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24752,
+      "sha256": "affcfc7a6ca1f7ac2900e95306748edf3208af0d4399f04d7dc7e22a64a20bd8",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier2.upgraded.portrait",
+      "file": "ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier2.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27218,
+      "sha256": "4863b32bfbe14ca7c8f202c8a12305f52a8e3b41f6045024e1afbe94e39d7298",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier3.base.portrait",
+      "file": "ui/icons/final/creature.celtic.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier3.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30300,
+      "sha256": "4b67ece36f4044255a8c1deddaa10b7f827c4e1f58740c56bd590b8142ed0162",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier3.upgraded.portrait",
+      "file": "ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier3.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31106,
+      "sha256": "ddf809c83331f190a3f4334cbb44728bfad836ef46fa1a08c1f575125c710718",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier4.base.portrait",
+      "file": "ui/icons/final/creature.celtic.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier4.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28224,
+      "sha256": "7e13e5d1dab2ac5f8586ee6bd8f756238627571fadcde0806e7eb8867597f7d7",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier4.upgraded.portrait",
+      "file": "ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier4.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25076,
+      "sha256": "93294cd048b3aade7c8ecef3d20cf8c3046de01231a5f16ec20011e4d2d92ede",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier5.base.portrait",
+      "file": "ui/icons/final/creature.celtic.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier5.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29520,
+      "sha256": "7e284d08c92328a2fc37152acd68bb92b3f0d35c693f022399b2b421a823c8b3",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier5.upgraded.portrait",
+      "file": "ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier5.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33666,
+      "sha256": "529fd025486be3ccd7f5ec3895edaf1cb8ca8f92992b2aac0b9d73c6ace4d319",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier6.base.portrait",
+      "file": "ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier6.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32136,
+      "sha256": "19ba2a5f14a260852f78225415f6bf9f327922e6ba6c4f2cb20a201e7bc9f6e5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier6.upgraded.portrait",
+      "file": "ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier6.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33342,
+      "sha256": "7936321706e5e439ebfe4c8233699adc983c2931b6fc106165ca37a1df1830b3",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier7.base.portrait",
+      "file": "ui/icons/final/creature.celtic.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier7.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31750,
+      "sha256": "4c8bbb8e56539b408478cdcdb7c3359b464ac796de0d449ea1f8179ccb6738f4",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.celtic.tier7.upgraded.portrait",
+      "file": "ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.celtic.tier7.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 35914,
+      "sha256": "5b7368ff27d325346745b6ab04c799b2ec5073c97abadfc87fb7a8bd8898a3b6",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier1.base.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier1.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24976,
+      "sha256": "19e7a9abad4f8a7659e57e2bc43024a1334ece75e7b3cfcf5b644d99d842c8ea",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier1.upgraded.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier1.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27244,
+      "sha256": "6099e9ae2018d16323b57247d48976b46f690651e2c3bae33aae3befc257a02e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier2.base.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier2.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21540,
+      "sha256": "73f4a09f3a27e672b6ad5e07aa8b0aa33723e7dff130a6e7c553917d88a54cc9",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier2.upgraded.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier2.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23570,
+      "sha256": "c694fbdbec29e1a5bc3c1c0449f387061fc632dcc4fc664db5bce1c4eeb8c8b1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier3.base.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier3.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22944,
+      "sha256": "fa2ef7a37f419112aa867cd3bd614ede312fe66624cf3ed3c30a2277a47da36e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier3.upgraded.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier3.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24102,
+      "sha256": "fe2e5422d2de41373d5174cd189482e9ebad28157620c38bfada6b73c854b7ac",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier4.base.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier4.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23468,
+      "sha256": "23a7adc1104951fbdd07e0fba8275036e20c639be304ff69f8cb5c0f43bf8e25",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier4.upgraded.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier4.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28286,
+      "sha256": "39f42f5a44b584b1ef8897dd80c0f4818c05112a73ecf77d687caba1221edaa8",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier5.base.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier5.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27320,
+      "sha256": "855984e38d884f799fd53eb0190753e6366053bf4deb7883c27c1996ac6595ea",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier5.upgraded.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier5.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30802,
+      "sha256": "620613cd20e21e755ad5118b5d4a5fd3f41cb728ef916e1031eb7ae5795e5f9a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier6.base.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier6.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23342,
+      "sha256": "cb229ecd3715abd39c9206db129ae097d0b4b914a280a707921c287d198f71ad",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier6.upgraded.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier6.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24686,
+      "sha256": "2b232e60e4b44cdedecb06ded78f541a5979409b65872ead0cd4cf802b7354f7",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier7.base.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier7.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23092,
+      "sha256": "9a1b9e49285bdee03557d49a5dfb333bbc522998b3fc293e87676cd3a7cdd4ad",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.egyptian.tier7.upgraded.portrait",
+      "file": "ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.egyptian.tier7.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25486,
+      "sha256": "42a56f9ec95dbe0865a7cd5b19255e5db23c4c19ae863a2ca8759ea4555aed04",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier1.base.portrait",
+      "file": "ui/icons/final/creature.greek.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier1.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21336,
+      "sha256": "c14074e773909813ff01f6284ba771db9d1a4f4a05833dec1fe1835b36c6e3a6",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier1.upgraded.portrait",
+      "file": "ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier1.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23806,
+      "sha256": "7e4abe349f34454e19d3918f0f6ece3e490988fb59a989cef09d894ad6bb88fc",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier2.base.portrait",
+      "file": "ui/icons/final/creature.greek.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier2.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24262,
+      "sha256": "b79724541e0b18c65accc263cdad07a93c3429aa83162b5b165051cd8d1b39ea",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier2.upgraded.portrait",
+      "file": "ui/icons/final/creature.greek.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier2.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25608,
+      "sha256": "cad0437db507ea5993a61d9344615c9120e8a5eec8400eeb54c5ecfa32fdd393",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier3.base.portrait",
+      "file": "ui/icons/final/creature.greek.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier3.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24062,
+      "sha256": "23a3c9a5620009701641d8671e0867b370b893fe791209e29512276d768b0b05",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier3.upgraded.portrait",
+      "file": "ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier3.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27658,
+      "sha256": "cf642268aa677712e37fb0552ebdc0dc5f1ddf4bb556f7368879c53e9ce7ceba",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier4.base.portrait",
+      "file": "ui/icons/final/creature.greek.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier4.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23998,
+      "sha256": "0b948df11e84edc226170f425df5f41d8d64c8f898ef80209118ad1cab4a805a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier4.upgraded.portrait",
+      "file": "ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier4.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27044,
+      "sha256": "a83126b82654a6d8b2319fc3d94a6aae69238666ff14c98df90972fcf1f1ce59",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier5.base.portrait",
+      "file": "ui/icons/final/creature.greek.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier5.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25680,
+      "sha256": "0475e60c6ad455a102f26fd84bf89004fd99ec3c654cfd03f69ba5f5ac996b68",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier5.upgraded.portrait",
+      "file": "ui/icons/final/creature.greek.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier5.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26764,
+      "sha256": "7c8d9e218f9c07905dfd616628e56191966c3b57dca768dbdf3c7ced53af68dd",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier6.base.portrait",
+      "file": "ui/icons/final/creature.greek.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier6.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21880,
+      "sha256": "2da50f00750cf31724ddec62d7f738c6cd86c5ac76146563fb217b963ff4f20b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier6.upgraded.portrait",
+      "file": "ui/icons/final/creature.greek.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier6.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25910,
+      "sha256": "04af81cbd47a89fc372df4eb4844e8356df8f13b3f8563f168d466df86e50f39",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier7.base.portrait",
+      "file": "ui/icons/final/creature.greek.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier7.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21978,
+      "sha256": "74f994ba17c61ef3862fd0d55120a688ec088e0893abca29151a6eb0f0e6ef54",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.greek.tier7.upgraded.portrait",
+      "file": "ui/icons/final/creature.greek.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.greek.tier7.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24066,
+      "sha256": "cc40057e647e22014c3a089ac5592538963e7e627687435321a6d9ac1480db54",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier1.base.portrait",
+      "file": "ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier1.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 18812,
+      "sha256": "918118b14d3887f2671ef00bd8a7a7c63167b8e3271f7ac8c0cf515cc01be0cd",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier1.upgraded.portrait",
+      "file": "ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier1.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 19786,
+      "sha256": "20eed750c0ff2540fc21095d83a3ed0c0c64b0489bf3befef1ba6cbaeba2d29a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier2.base.portrait",
+      "file": "ui/icons/final/creature.japanese.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier2.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25774,
+      "sha256": "5d7aedfc640a8b8c0367f8d19b96e7e1dcdaaac1917a334bcc72847136fedf1c",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier2.upgraded.portrait",
+      "file": "ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier2.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31014,
+      "sha256": "5da85c2dbffb35cf6cfb760531b2c310459c4d58f384c1ab848895cdc2789f83",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier3.base.portrait",
+      "file": "ui/icons/final/creature.japanese.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier3.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27420,
+      "sha256": "3ac66fca85d50c03f4f89bcb975fa1d7e75ccc491cbed1f2e2fbbf05ae3366db",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier3.upgraded.portrait",
+      "file": "ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier3.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31204,
+      "sha256": "f01879a8164d7f6b871d88842dc15f4ab848eec78edcdb98b9b323a30b4b9400",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier4.base.portrait",
+      "file": "ui/icons/final/creature.japanese.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier4.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26756,
+      "sha256": "e3ca376e31d04ae16e4765bbb9efd65512de9d365c263d7562394490716bd730",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier4.upgraded.portrait",
+      "file": "ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier4.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31316,
+      "sha256": "58d1a8ff9ea1bcd19f91fc5f9bad6409fcda4a3e5d150df1c1fb4e130240d40e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier5.base.portrait",
+      "file": "ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier5.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27820,
+      "sha256": "7475ab295bdfac4ddac38e107b48405ca82eea96bf348b4761e1b885e3e3fbf9",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier5.upgraded.portrait",
+      "file": "ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier5.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 35204,
+      "sha256": "7c97d4cb7bee608ffba1cb56e7890f59466a227da0010fa36f0d42aa52d9c742",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier6.base.portrait",
+      "file": "ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier6.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26244,
+      "sha256": "d8b770c823227d1a8cbc1b454fd996c744661974a27771482f8ed9b470cd3a4e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier6.upgraded.portrait",
+      "file": "ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier6.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28474,
+      "sha256": "973a83d77d30737100b1f0dea1370820f4feb306343eb75c8a2dd5a1cea16809",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier7.base.portrait",
+      "file": "ui/icons/final/creature.japanese.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier7.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26386,
+      "sha256": "630e0e776524e58445594b8be97bde5dcd9a15de7c76da8fe2a9b3d16a3359b1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.japanese.tier7.upgraded.portrait",
+      "file": "ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.japanese.tier7.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30468,
+      "sha256": "a7fd77cf403fa86f9b49cd4f85f7925f9caa223b1aa9f2c3b4c4428169b26483",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier1.base.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier1.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30910,
+      "sha256": "8a37853e216e684a143467eb75f88c197aa67879c1edcd5bd1d2414c98d2f184",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier1.upgraded.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier1.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 35722,
+      "sha256": "216cd70058402e6c40ba1b7810b592a9b813e0719fc79496a0e4b72d0568d54a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier2.base.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier2.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30158,
+      "sha256": "4bd4ed669ae2e23970fa7ed1961d9d89887053ed639c8f6b12d211d407fd31c0",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier2.upgraded.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier2.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33210,
+      "sha256": "f7b1ebd9d0c8ccae336b5e783f43824be9cdc2026d72762ade6161f5d943f0d1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier3.base.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier3.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32900,
+      "sha256": "4e1102f5027d4071735f70f40806ec0eb969f72fda72e3f07281bd65cb802265",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier3.upgraded.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier3.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34228,
+      "sha256": "8353b5745e7c4dce26f5908b9b8d6df8e5ffdf399a05d1139ad26749b1793b9e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier4.base.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier4.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29238,
+      "sha256": "09318e2a186f1e39481b99649927125cde2dc316a14381c7e6705fdab95d042c",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier4.upgraded.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier4.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33338,
+      "sha256": "90f1915db5bc0d01224ef2e1314e2732a4d8c7c3a99a4f2ea343fdd3f850f8e5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier5.base.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier5.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25802,
+      "sha256": "8fa6afb76288850cb0711806ceabce6cb120976cc027ab7d648fc93811f45bef",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier5.upgraded.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier5.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26716,
+      "sha256": "b3ff5248ba1a66522b1616588e215a2f1144935a27006b66fe08ef88bd10c93d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier6.base.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier6.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34038,
+      "sha256": "e6729717f9aaed662b3417ce52287e4567d7be28b6ceaf2e1e53a1ddd29b59c8",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier6.upgraded.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier6.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 35140,
+      "sha256": "ba1803720a69c071824eb20f0b3aebb036d114d613f5369eb643bf032f379afd",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier7.base.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier7.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26436,
+      "sha256": "d3f8d8ee93507c7f0be8bc739e37465e620fe26e2c0720326061cd207ef36ca3",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.mesoamerican.tier7.upgraded.portrait",
+      "file": "ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.mesoamerican.tier7.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32292,
+      "sha256": "e547de75399df52c1a83607c0d5edc432b9fbd83317845122f11fa6c5716ced7",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.basilisk.base.portrait",
+      "file": "ui/icons/final/creature.neutral.basilisk.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.basilisk.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24424,
+      "sha256": "9491d8a42bce6c676418a3e6c6cfa3b30006865c0b3ca90e210908a58822d4e3",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.basilisk.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.basilisk.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.basilisk.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23104,
+      "sha256": "c791de4ac440bd3cb100dfe02a50eb4314d03160df6abab4451e1e597e8241bc",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.brigand.base.portrait",
+      "file": "ui/icons/final/creature.neutral.brigand.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.brigand.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22582,
+      "sha256": "9dce4031872eed9524d947b305dec7154ad4bdfd8ed29e803ced6d37fdd31c64",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.brigand.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.brigand.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.brigand.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22496,
+      "sha256": "332f1bb7932df99751fb6b2aab3097ce2a7a8672bb65bf5b35be12fc14ac2987",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.centaur.base.portrait",
+      "file": "ui/icons/final/creature.neutral.centaur.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.centaur.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 20784,
+      "sha256": "bc2b81ea35f89cf3ec7aaff0eae316c4f4f2c03926e876234de6aa5af9e82f71",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.centaur.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.centaur.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.centaur.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21826,
+      "sha256": "0b0c087df34f03477c876f4167c08d0a639ebf5b023f0050d800abb0b870d28b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.clay_golem.base.portrait",
+      "file": "ui/icons/final/creature.neutral.clay_golem.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.clay_golem.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22298,
+      "sha256": "d5e3f7d0d9149ca346e28c3504c4efb1be4d78ee4ec515ae5169ad52bbeef5f5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.clay_golem.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.clay_golem.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.clay_golem.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24852,
+      "sha256": "c3a595f7ed080b4a8f2b1238484d699dc3f2caf4aa14ba8d3ed60828bfd706dc",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.elder_drake.base.portrait",
+      "file": "ui/icons/final/creature.neutral.elder_drake.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.elder_drake.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27978,
+      "sha256": "84e5626cf7391c1cdd00a6a496195bd539112e1c93161cb49de064523759b90f",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.elder_drake.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.elder_drake.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.elder_drake.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27376,
+      "sha256": "1cd594dd8fe9051d3fdf95e150bbfee25a210852a2757268871c8347f300ab7d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.hill_slinger.base.portrait",
+      "file": "ui/icons/final/creature.neutral.hill_slinger.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.hill_slinger.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24960,
+      "sha256": "ac5bdf6ff4127a18fa773ea0f045e82b4d3d595cb9b38b481de208b1532bb3bc",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.hill_slinger.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.hill_slinger.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.hill_slinger.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24106,
+      "sha256": "2284fa2393e958c395bb0b0d13e21ab7d75ef054af6b1d134bbced0f6387b17f",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.ogre.base.portrait",
+      "file": "ui/icons/final/creature.neutral.ogre.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.ogre.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21988,
+      "sha256": "832eef9148306c99b047556efcdd0abd05b566757e7795859abea4e959efc2c2",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.ogre.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.ogre.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.ogre.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25810,
+      "sha256": "84e09a22588dc9c789d5d86e6006952c1918e64713e13e6e2301e1cbf1f41c82",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.wild_boar.base.portrait",
+      "file": "ui/icons/final/creature.neutral.wild_boar.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.wild_boar.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22310,
+      "sha256": "d225723e3a7b07fba46a219cd88c9042845e958b8717ba5536de8519dbf6d626",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.wild_boar.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.wild_boar.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.wild_boar.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24752,
+      "sha256": "0fa90ecb47771fc86c823cfca7eb4442f26de88e783b12898fa9b9451bbabf3b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.wyvern.base.portrait",
+      "file": "ui/icons/final/creature.neutral.wyvern.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.wyvern.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23456,
+      "sha256": "c19540488b0929a83a4b1e8bd7d686e909bd23960975c248f482f4fa17cb4525",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.neutral.wyvern.upgraded.portrait",
+      "file": "ui/icons/final/creature.neutral.wyvern.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.neutral.wyvern.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25596,
+      "sha256": "6e041c9b055bbbec4fcc13565976db76ccba8a03c1a3affeb47847391e130abe",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier1.base.portrait",
+      "file": "ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier1.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24312,
+      "sha256": "a4d8ff169ad759d4c9c2d45f06b028d704422700eca15516fd1328dc79b33e6a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier1.upgraded.portrait",
+      "file": "ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier1.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26236,
+      "sha256": "18919c96c73e56c7e71cda391cbffda68eeb6d925600c8f2678c197dee032842",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier2.base.portrait",
+      "file": "ui/icons/final/creature.norse.tier2.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier2.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25142,
+      "sha256": "3aa36b2f9efe6d84e301923eafc267df1997597a6d73c36501995cc49ac05d20",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier2.upgraded.portrait",
+      "file": "ui/icons/final/creature.norse.tier2.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier2.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25446,
+      "sha256": "3ec9d5aa7057a0602495c689b055612f92d60a9c8a186d17b3b428c2fc3d0624",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier3.base.portrait",
+      "file": "ui/icons/final/creature.norse.tier3.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier3.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25844,
+      "sha256": "5b600c224545c77baab4f052cf895826fdda56faf0cb4dfec7c6529e2bdc509a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier3.upgraded.portrait",
+      "file": "ui/icons/final/creature.norse.tier3.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier3.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29716,
+      "sha256": "a57903c3968990ad925c07bc0c1d9e1b2ad09d5b286a5d13a8d4008cc9850ff4",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier4.base.portrait",
+      "file": "ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier4.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30420,
+      "sha256": "1526ca28d4fd382e3b224a7db015aecabf0886c5537ead90110e9897eda489bd",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier4.upgraded.portrait",
+      "file": "ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier4.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30754,
+      "sha256": "77954c754db6cb82b1046a4d07960a58a2af9bcba9362620ea1e9f33f6acf1a5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier5.base.portrait",
+      "file": "ui/icons/final/creature.norse.tier5.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier5.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25564,
+      "sha256": "1d26c276ec88cf73f5751f67c1378a0a10eed26a7cbb4705e50f80ac3e4d678d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier5.upgraded.portrait",
+      "file": "ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier5.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25268,
+      "sha256": "6c16b1ab242e10f675ecf47036d4b68fa897444c98601e52536e09b4a187e90c",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier6.base.portrait",
+      "file": "ui/icons/final/creature.norse.tier6.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier6.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28062,
+      "sha256": "11bd6d9e9ce06912cb9dea282cd365ad60d86c9e00fefbb5f604e469a645d5f0",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier6.upgraded.portrait",
+      "file": "ui/icons/final/creature.norse.tier6.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier6.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29614,
+      "sha256": "bff108c5997d67d487652543f9eda982bc039951fd0d8c700a12fdba89e97845",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier7.base.portrait",
+      "file": "ui/icons/final/creature.norse.tier7.base.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier7.base.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22914,
+      "sha256": "9211a3f078e2ad6109fda3bbc3c4369fa6f1d60a3ca6e1461eec5f471f41db93",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "creature.norse.tier7.upgraded.portrait",
+      "file": "ui/icons/final/creature.norse.tier7.upgraded.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/creature.norse.tier7.upgraded.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27502,
+      "sha256": "ed58c7426d7f09da52e3e47d43e6de8a14028a7b6a4341149c0f32255e9b235d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "emblem.celtic",
+      "file": "ui/icons/final/emblem.celtic.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/emblem.celtic.png",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 102123,
+      "sha256": "60bf59247ba21bf0b1e486b7e6e929663bf3a033eeea00476c7772fd87ccc741",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "emblem.egyptian",
+      "file": "ui/icons/final/emblem.egyptian.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/emblem.egyptian.png",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 73371,
+      "sha256": "8e45e4022cbc7a9249f2351f474d06054da8d4df014be73d868d8d588eb3266d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "emblem.greek",
+      "file": "ui/icons/final/emblem.greek.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/emblem.greek.png",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 123079,
+      "sha256": "475b47b310179bef2d0cc6facc2015c8d8b0f5e28cc7662f47923c995dee64b5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "emblem.japanese",
+      "file": "ui/icons/final/emblem.japanese.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/emblem.japanese.png",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 103822,
+      "sha256": "648e618bf9cc52b07504add978ebaae6aaf67ffba1cbb0ec977d4811305ffe5a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "emblem.mesoamerican",
+      "file": "ui/icons/final/emblem.mesoamerican.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/emblem.mesoamerican.png",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 79300,
+      "sha256": "5e9221bf2baf280a291cef7ff187f3ab622b939974db13ece10c2c0ff851f74b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "emblem.norse",
+      "file": "ui/icons/final/emblem.norse.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/emblem.norse.png",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 94893,
+      "sha256": "9d715816870be9a7dbc86fcffba0c1cb3ae3cfdf9463745a26a0f42474e5b27e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.arawn.portrait",
+      "file": "ui/icons/final/god.celtic.arawn.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.arawn.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26480,
+      "sha256": "1465ee5bcdbe24f229be86b88977bdcef35c9b8f8e379e7ccae752d9adf96eac",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.brigid.portrait",
+      "file": "ui/icons/final/god.celtic.brigid.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.brigid.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33782,
+      "sha256": "da707c0c6b434b0ff9e9955ede60c4e63f7684f2454e66f6684a75a06b56aea0",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.cernunnos.portrait",
+      "file": "ui/icons/final/god.celtic.cernunnos.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.cernunnos.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33130,
+      "sha256": "2bfe80f9ba30db35b21b1162a2dba81a4ee019ea662ee530fd353e3247d3c01b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.dagda.portrait",
+      "file": "ui/icons/final/god.celtic.dagda.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.dagda.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31896,
+      "sha256": "d53cf596b9001927cc64f3ca67f9eaf527273b58a03d8ba92f8473eec65b5ceb",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.danu.portrait",
+      "file": "ui/icons/final/god.celtic.danu.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.danu.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33894,
+      "sha256": "5bf8306ddf748f2eb2ec8637dd2710ed53de0c475db87ca1d90d6e8bcc115354",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.epona.portrait",
+      "file": "ui/icons/final/god.celtic.epona.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.epona.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29014,
+      "sha256": "015b6ae9485e835fb29bed54c3cd619028b61a0d3194b6077d932d353727f32a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.lugh.portrait",
+      "file": "ui/icons/final/god.celtic.lugh.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.lugh.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28662,
+      "sha256": "63a17294f1fe8ccc0c62d2903c10b65b9e9f188254b239882c65fbb6bb0cf585",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.manannan.portrait",
+      "file": "ui/icons/final/god.celtic.manannan.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.manannan.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30550,
+      "sha256": "026b3d9ccc33b14c3370ef2fc45b2db1edc808a70cd10f8ca42ce74fde60fb9e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.morrigan.portrait",
+      "file": "ui/icons/final/god.celtic.morrigan.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.morrigan.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27462,
+      "sha256": "6b1767ad6dba6d7e4f264ddf5acb7f7a4c46871816599bfff9bc178ce08081d4",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.celtic.nuada.portrait",
+      "file": "ui/icons/final/god.celtic.nuada.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.celtic.nuada.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30858,
+      "sha256": "6b2263be72bf4c6312c04fa6c66f3f0b6a70ff02c789e2eb08491d543045bf2b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.anubis.portrait",
+      "file": "ui/icons/final/god.egyptian.anubis.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.anubis.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27364,
+      "sha256": "d3b825a084f8fc3987251c8fa7fe2ce8799362e4d5c2cc514de7de06f445eb28",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.bastet.portrait",
+      "file": "ui/icons/final/god.egyptian.bastet.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.bastet.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32028,
+      "sha256": "e1f5977d2bd0fd6db0275d919f15ca9c55a046287bb5667212a1e884d5f40278",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.hathor.portrait",
+      "file": "ui/icons/final/god.egyptian.hathor.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.hathor.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33760,
+      "sha256": "bf5232c67d3d73957f555352afb1b7a6ef3a3c222d9356d641d8a85c7e6e2174",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.horus.portrait",
+      "file": "ui/icons/final/god.egyptian.horus.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.horus.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31368,
+      "sha256": "e9134cda0178b9edf46ac90373b3cccbe0230fac38de4167dd95c21a4548886e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.isis.portrait",
+      "file": "ui/icons/final/god.egyptian.isis.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.isis.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30492,
+      "sha256": "57f08923f89bd2422b853c3ae4fc5bd62f5beb63c088699a67a28b5d35a40fcf",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.osiris.portrait",
+      "file": "ui/icons/final/god.egyptian.osiris.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.osiris.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30988,
+      "sha256": "909b41b0a057824fa07aff7b86ac48e15ebfd39fbf98fe4b339d1d8c8ef892fd",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.ra.portrait",
+      "file": "ui/icons/final/god.egyptian.ra.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.ra.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31738,
+      "sha256": "3d567d1341bd30a97e54613dd6ed2b4ff346359484b71ce6d7f75fb0787e7df1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.set.portrait",
+      "file": "ui/icons/final/god.egyptian.set.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.set.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25324,
+      "sha256": "1cdd17fdac29baf1a5392315900f97a63eca233fb00589aa63b0cf5194cafcb9",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.sobek.portrait",
+      "file": "ui/icons/final/god.egyptian.sobek.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.sobek.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 36130,
+      "sha256": "ee92aeef2a76b5f93d3b102d9895af95c3890f8f20ef5bb86d071a6ec1c50004",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.egyptian.thoth.portrait",
+      "file": "ui/icons/final/god.egyptian.thoth.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.egyptian.thoth.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29152,
+      "sha256": "357f19cb984cccba7cbbd0e05e9c5946124295c3b9c0fd2119bbe829d0d2508e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.apollo.portrait",
+      "file": "ui/icons/final/god.greek.apollo.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.apollo.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25804,
+      "sha256": "8b2841a83cf55a24a45d064f39e5061a04344972065a25aa8c2e85d8b35749eb",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.ares.portrait",
+      "file": "ui/icons/final/god.greek.ares.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.ares.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25308,
+      "sha256": "6510bc637a991f9ad68a3329c4e04a9c1806148e80f5ee56422d11b640e3516b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.artemis.portrait",
+      "file": "ui/icons/final/god.greek.artemis.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.artemis.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28034,
+      "sha256": "ec94299e4200cc5b8fd86548aeb8e74468325ae66479d166d35a6f6d6ec88153",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.athena.portrait",
+      "file": "ui/icons/final/god.greek.athena.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.athena.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30058,
+      "sha256": "1ba0f6772ec04807a2b01a311c4290b8755f2d799a7b8ec96987996fa71f27ed",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.demeter.portrait",
+      "file": "ui/icons/final/god.greek.demeter.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.demeter.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31458,
+      "sha256": "5655c60051a5cc430a60e5c6fc1f4f0f99349720190ad753266db93421f0a6b4",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.hades.portrait",
+      "file": "ui/icons/final/god.greek.hades.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.hades.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25780,
+      "sha256": "70dae9c2f9096f1ac6ce33acd6fa185e0f18ed1c85bdf61376062f14144e8b5e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.hera.portrait",
+      "file": "ui/icons/final/god.greek.hera.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.hera.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27830,
+      "sha256": "2cc462e7d740a77bbfbc7aa43be4d314653f51588e05e434df90e8b7de31d765",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.hermes.portrait",
+      "file": "ui/icons/final/god.greek.hermes.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.hermes.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28408,
+      "sha256": "3bdf7119ab0f7311789f4a36f1bedf237696f84773609ccc5d4da951f2f1eeb5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.poseidon.portrait",
+      "file": "ui/icons/final/god.greek.poseidon.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.poseidon.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34332,
+      "sha256": "eb92b37d371ccb534a485706465b7da60aaa18262df79fb22fe9d840edf7b884",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.greek.zeus.portrait",
+      "file": "ui/icons/final/god.greek.zeus.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.greek.zeus.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30360,
+      "sha256": "668445f118069d943f7b56797690e94df1a7f6905cb6f7b9e26b0e07315a1911",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.amaterasu.portrait",
+      "file": "ui/icons/final/god.japanese.amaterasu.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.amaterasu.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32374,
+      "sha256": "1c98d6bd46b7a0218de6ace525e2691c44f30a065029b1ba84db1d02071658a9",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.benzaiten.portrait",
+      "file": "ui/icons/final/god.japanese.benzaiten.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.benzaiten.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32832,
+      "sha256": "a4bb8f36255f07693fa32ada6d992aa218b2853e1b999793866598875a977a51",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.fujin.portrait",
+      "file": "ui/icons/final/god.japanese.fujin.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.fujin.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28102,
+      "sha256": "6b73d910f294b5f538cc7178dc1a888e741c1ec24404bef29bf1e3836672287d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.hachiman.portrait",
+      "file": "ui/icons/final/god.japanese.hachiman.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.hachiman.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33492,
+      "sha256": "a5b1fc3f6b499a165b9000ebf60df89cfb7c03951cfa8e1aea3c3d05f08ff27a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.inari.portrait",
+      "file": "ui/icons/final/god.japanese.inari.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.inari.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33392,
+      "sha256": "237ab248431f7adcfffb4f81f1e97cde4b7933c7ef6ef6ff679bf74d599883c1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.izanagi.portrait",
+      "file": "ui/icons/final/god.japanese.izanagi.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.izanagi.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29560,
+      "sha256": "cddb0b0c6d1e70007ee12ac94580c8d15bb34a97983021d52dd5a4557c505c90",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.izanami.portrait",
+      "file": "ui/icons/final/god.japanese.izanami.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.izanami.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26126,
+      "sha256": "4cf2e4beae1a81518aab6dd1213e1feb77f317b21bb84ead439f50a0663d00f6",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.raijin.portrait",
+      "file": "ui/icons/final/god.japanese.raijin.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.raijin.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33618,
+      "sha256": "89d3d3a9c5cda913f694ef8085cf45a9889f0d830c6e6021ed87ec1498aa40e1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.susanoo.portrait",
+      "file": "ui/icons/final/god.japanese.susanoo.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.susanoo.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33692,
+      "sha256": "831cd2eab0b85e61239c0216f9e26daf525b6e74a408039a254a01681ec628ac",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.japanese.tsukuyomi.portrait",
+      "file": "ui/icons/final/god.japanese.tsukuyomi.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.japanese.tsukuyomi.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26280,
+      "sha256": "cd6a2e86eba11b12030d126fe9897582f8781cacc5658a77959a7e48e7d606bc",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.chalchiuhtlicue.portrait",
+      "file": "ui/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.chalchiuhtlicue.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34492,
+      "sha256": "9b6c6efe2fe07738c2482743737e86ae4315ea9f56298b829575759e1897d385",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.coatlicue.portrait",
+      "file": "ui/icons/final/god.mesoamerican.coatlicue.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.coatlicue.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34334,
+      "sha256": "a1c4b5b2122cf2133cd6c583987962425133ce21e6cf8f7381b9494b58a9edec",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.huitzilopochtli.portrait",
+      "file": "ui/icons/final/god.mesoamerican.huitzilopochtli.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.huitzilopochtli.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 36352,
+      "sha256": "91a19bc79c2855a3f6cb6089f169d946891e438e84a3c8c314f1c8af0cbdd833",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.mictlantecuhtli.portrait",
+      "file": "ui/icons/final/god.mesoamerican.mictlantecuhtli.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.mictlantecuhtli.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30526,
+      "sha256": "084577ae763c641eeb432afc9ca8388d0b659f753702acf5b99c5e0d99c27846",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.mixcoatl.portrait",
+      "file": "ui/icons/final/god.mesoamerican.mixcoatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.mixcoatl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31710,
+      "sha256": "7fe4d7b03f6600c5721f1180a106d742ccdbe2a860c7a16ba1fcd41c5280e6cf",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.quetzalcoatl.portrait",
+      "file": "ui/icons/final/god.mesoamerican.quetzalcoatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.quetzalcoatl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34878,
+      "sha256": "5cea3846c142bde79e347b6295c0a3aa39c85cd0ab183068d3dc40029424c225",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.tezcatlipoca.portrait",
+      "file": "ui/icons/final/god.mesoamerican.tezcatlipoca.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.tezcatlipoca.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29364,
+      "sha256": "e398fc4aa2af7f5b846ea8d9ff70a0a49d6bbc9bab4025b1330ec769161c5c15",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.tlaloc.portrait",
+      "file": "ui/icons/final/god.mesoamerican.tlaloc.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.tlaloc.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 35150,
+      "sha256": "19b965df9875aaeef6cff4d348476b0b3fd1dbb4e7243be7af5a29a8b2aca07e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.xiuhtecuhtli.portrait",
+      "file": "ui/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.xiuhtecuhtli.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33610,
+      "sha256": "888cf18b9611dc494cffedab8ed4c1407f04f5a99c5885ae35e0e75bf07d2bfb",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.mesoamerican.xolotl.portrait",
+      "file": "ui/icons/final/god.mesoamerican.xolotl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.mesoamerican.xolotl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26844,
+      "sha256": "98a81d4f8eb7a878eb9121a31a61b66dd73c0347dcc7a3efe99206cea1b097c1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.baldr.portrait",
+      "file": "ui/icons/final/god.norse.baldr.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.baldr.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28932,
+      "sha256": "7eeb57e12492ecbf3b26cd7ec2ce39f7da9a6974c02ce389f3188c29cae95bc6",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.freyja.portrait",
+      "file": "ui/icons/final/god.norse.freyja.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.freyja.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31828,
+      "sha256": "efdbe335b2fb8bae480707b88a6ad9ac54e6056c756476ed65b1637551d1b9b0",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.frigg.portrait",
+      "file": "ui/icons/final/god.norse.frigg.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.frigg.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27424,
+      "sha256": "0672e62ef10981ff91618edf2fa3c655268ef66870f5bbc9bedde7a9bcfbe4c0",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.heimdall.portrait",
+      "file": "ui/icons/final/god.norse.heimdall.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.heimdall.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28466,
+      "sha256": "ff7df674bf0daeb2cfebffb23eb5f6f908d459a7c8e12d016517e2a2b73526fc",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.hel.portrait",
+      "file": "ui/icons/final/god.norse.hel.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.hel.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25618,
+      "sha256": "c00079cecaa37f7328331efac9d6d5c75127a815052f4559bcd8c89b14f1a7b1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.loki.portrait",
+      "file": "ui/icons/final/god.norse.loki.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.loki.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28192,
+      "sha256": "49352618663cf02de491409f68c8043af7732b97d1db943d515d051a6b8c9e2a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.njord.portrait",
+      "file": "ui/icons/final/god.norse.njord.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.njord.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31558,
+      "sha256": "053982fcfc3ebb8c0555584fa561eca7a34a86bdee14345fafa1a0bc5968fd9a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.odin.portrait",
+      "file": "ui/icons/final/god.norse.odin.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.odin.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30164,
+      "sha256": "159185f97a7e8ee262f77557e758677049f0ed14b0cef7e6322bf12a3036ab35",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.thor.portrait",
+      "file": "ui/icons/final/god.norse.thor.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.thor.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30910,
+      "sha256": "ede0a3e9361f5ff6b555e85c6897e2f7270ca4a6b53a6974494e8e6ad276a823",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "god.norse.tyr.portrait",
+      "file": "ui/icons/final/god.norse.tyr.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/god.norse.tyr.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30404,
+      "sha256": "cad20838665675bab6d387fac8b29da8d84f397556343b3959547dc9ca97dc71",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.amergin.portrait",
+      "file": "ui/icons/final/hero.celtic.amergin.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.amergin.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33880,
+      "sha256": "86907c0ee0e796a79608385aaf3928eb7e0be36d230bd8ff88576d58668218e2",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.boudicca.portrait",
+      "file": "ui/icons/final/hero.celtic.boudicca.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.boudicca.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30138,
+      "sha256": "f238009900a5e6d2aa05a7aa906bb7e03e99539fd799338f422af8c2148db374",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.cathal.portrait",
+      "file": "ui/icons/final/hero.celtic.cathal.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.cathal.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23006,
+      "sha256": "d6c1d10e80d84344609c332e8c7b5b94ee42383be021d9bbd7c45f7f9fcff98e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.ciar.portrait",
+      "file": "ui/icons/final/hero.celtic.ciar.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.ciar.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29904,
+      "sha256": "5e5ba9d08e79b980df5189636b1fb9c499c433b076d4d41f1f5fa8bc64221cf6",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.corc.portrait",
+      "file": "ui/icons/final/hero.celtic.corc.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.corc.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29596,
+      "sha256": "fc311b3ddd5701de20fec92a1b9b1bf84d2e96d54bcb377682d1a7029e4b400a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.cu_chulainn.portrait",
+      "file": "ui/icons/final/hero.celtic.cu_chulainn.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.cu_chulainn.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28742,
+      "sha256": "6cfe36b9440a9db517350b0772a43f8719e19a9e85a8acf8ded4b004a2a3681b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.deirdre.portrait",
+      "file": "ui/icons/final/hero.celtic.deirdre.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.deirdre.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30530,
+      "sha256": "78a1b9026e6e3602fc13390370add6f057cc2ebe82133a69b3e9b505454f32d1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.dubhghall.portrait",
+      "file": "ui/icons/final/hero.celtic.dubhghall.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.dubhghall.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33224,
+      "sha256": "ebfac8b75e87901913d0e023c4bf6b6ae9290d8a68af1ce9c2e64305af5d9b2e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.fergus_mac_roich.portrait",
+      "file": "ui/icons/final/hero.celtic.fergus_mac_roich.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.fergus_mac_roich.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31238,
+      "sha256": "84296e4f1d728d3542fd2a1f9d0cf7d8b52a14d02f76627aa98c24f1e40155f5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.fiachra.portrait",
+      "file": "ui/icons/final/hero.celtic.fiachra.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.fiachra.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28108,
+      "sha256": "94b769d768f7545d540d06da53276a05837723d5c19adf0da45b2e2fde1391b5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.fionn_mac_cumhaill.portrait",
+      "file": "ui/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.fionn_mac_cumhaill.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30566,
+      "sha256": "df0c1bcfdfe4b1ee9bf6e0b742b54b748ed9d7e4b75112e2e9ff18e33cdc98de",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.medb.portrait",
+      "file": "ui/icons/final/hero.celtic.medb.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.medb.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29130,
+      "sha256": "1a5d2dfd3a90115010beb262251eef4705b13a7a75eabd15c76ed699e2acb96f",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.orla.portrait",
+      "file": "ui/icons/final/hero.celtic.orla.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.orla.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34466,
+      "sha256": "547eafbdf863e78b4579258399524ce1db222e1ca3ca6a72f95616c3f630f670",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.sadb.portrait",
+      "file": "ui/icons/final/hero.celtic.sadb.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.sadb.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 19630,
+      "sha256": "f7ccf274a41f18d17c93f875c8ddd5b0c1986abbf6860c5b05c138ef23668125",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.scathach.portrait",
+      "file": "ui/icons/final/hero.celtic.scathach.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.scathach.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25068,
+      "sha256": "8ff8e0fb8b33986c38f3026e14590d00ad8b9a09e208dfdccae1d5244b0dcbf8",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.celtic.tadhg.portrait",
+      "file": "ui/icons/final/hero.celtic.tadhg.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.celtic.tadhg.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27316,
+      "sha256": "9d304a8a60f31602604cec153c6dfc2625183cf36315383bedd5928a2d7027c4",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.ahmose.portrait",
+      "file": "ui/icons/final/hero.egyptian.ahmose.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.ahmose.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30038,
+      "sha256": "314c43b4a33086d67a748d2f16485e5c5d8afea140ca77ac0a7b01c63d000367",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.ankhwen.portrait",
+      "file": "ui/icons/final/hero.egyptian.ankhwen.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.ankhwen.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26376,
+      "sha256": "40f8616cf8946acac26809327dd6ed751fa242593e0795027b19f07ef9ccc36b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.cleopatra.portrait",
+      "file": "ui/icons/final/hero.egyptian.cleopatra.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.cleopatra.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27876,
+      "sha256": "2942b40f1ae57fefb70b416c2fe1ae13b369f9f6cab3e4b0b2f826b3619b7d3d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.djedkhonsu.portrait",
+      "file": "ui/icons/final/hero.egyptian.djedkhonsu.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.djedkhonsu.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24902,
+      "sha256": "a1fcd9d41b1eba789005ca593c9579a6ecd679c97bbb50e2d55c7841df7fb6aa",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.hatshepsut.portrait",
+      "file": "ui/icons/final/hero.egyptian.hatshepsut.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.hatshepsut.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30606,
+      "sha256": "2d52e6cacbf32bb23d7cfec609cf82c1ee6cce53e6f27d6a0377de0ac8beac3a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.hekaib.portrait",
+      "file": "ui/icons/final/hero.egyptian.hekaib.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.hekaib.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29632,
+      "sha256": "dc6b0b6ded4900ca76bcea835af3a75a6e473c7a726f5cdc530c41f35b2ccafa",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.imhotep.portrait",
+      "file": "ui/icons/final/hero.egyptian.imhotep.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.imhotep.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26044,
+      "sha256": "fe7eaa19c14f55f3adc032b35345f970f4f9816e3f322b68e0f638a8d6476b75",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.iti.portrait",
+      "file": "ui/icons/final/hero.egyptian.iti.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.iti.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27336,
+      "sha256": "cf98068b65cf022c4001283e9bb4477dacb7bc513e55faceaff52880eaf6bbc6",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.nebet.portrait",
+      "file": "ui/icons/final/hero.egyptian.nebet.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.nebet.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25606,
+      "sha256": "9465d521267907b376744a376b3eb60ca0ae6634825f774c626f30dd36829b66",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.nefertiti.portrait",
+      "file": "ui/icons/final/hero.egyptian.nefertiti.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.nefertiti.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28722,
+      "sha256": "527599d85cf59499d48d47b6ea19ba50104e2fe47579fbb7ad6e8d031846f0d1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.paser.portrait",
+      "file": "ui/icons/final/hero.egyptian.paser.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.paser.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27706,
+      "sha256": "1081fc635d1f757005af7eb11bb6edd451de33665f131faa495717e942c8cb30",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.pawah.portrait",
+      "file": "ui/icons/final/hero.egyptian.pawah.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.pawah.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21636,
+      "sha256": "c6f4cb67717ea1ee9305b9692b26c813287e65295b452f39ed0a3dbd0ae3ca40",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.peseshet.portrait",
+      "file": "ui/icons/final/hero.egyptian.peseshet.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.peseshet.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29622,
+      "sha256": "256f42ac2112def878b8590749c8364f910f210ba26aec82170ee4d0ec565616",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.ramses.portrait",
+      "file": "ui/icons/final/hero.egyptian.ramses.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.ramses.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32246,
+      "sha256": "21f9dabc2a7b0ddfd367f86334b8281227c5d70ec9a857e80fee036f6332344d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.seshet.portrait",
+      "file": "ui/icons/final/hero.egyptian.seshet.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.seshet.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29378,
+      "sha256": "462bf76a258b1753553c4a43f897c20303b62a64325906b2216de3d658449f1b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.egyptian.tiye.portrait",
+      "file": "ui/icons/final/hero.egyptian.tiye.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.egyptian.tiye.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29204,
+      "sha256": "d5aea28c6d7404779b6ba624f3ddb73855e1821ac00ff1d9cddb55e558899cce",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.achilles.portrait",
+      "file": "ui/icons/final/hero.greek.achilles.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.achilles.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30456,
+      "sha256": "15548d048fc44dba0233cf132fa555c7f109bf92b628866ba67f7826d7828e77",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.alexios.portrait",
+      "file": "ui/icons/final/hero.greek.alexios.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.alexios.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30728,
+      "sha256": "99d32c1b5b9e0e0f7be85f88e2cb649b49d69c0711dd2447449664cbccaa7973",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.atalanta.portrait",
+      "file": "ui/icons/final/hero.greek.atalanta.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.atalanta.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28696,
+      "sha256": "464d35042c9ede0e894f1ce3953f243b88e4e5fc97e54fab630d70cc80995e3b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.heracles.portrait",
+      "file": "ui/icons/final/hero.greek.heracles.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.heracles.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30202,
+      "sha256": "b0b15ad95f1aadff7f4c16f9bfc03fea406132630730a519ddba3c5aac259f66",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.ione.portrait",
+      "file": "ui/icons/final/hero.greek.ione.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.ione.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24908,
+      "sha256": "5d9c042fea67426ce8f23e346ab5553ceeec8736b6efcaf90c7ec016de007e2d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.melas.portrait",
+      "file": "ui/icons/final/hero.greek.melas.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.melas.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30252,
+      "sha256": "75a1909313bc8c50eb9bc8602adf958de4c43d70d7bb7d624054781cda9f3929",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.odysseus.portrait",
+      "file": "ui/icons/final/hero.greek.odysseus.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.odysseus.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27064,
+      "sha256": "b38569519a30b1ad577580aa8b2c4a61e8fe07747d1f2b0b7f7920d798fe2088",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.perseus.portrait",
+      "file": "ui/icons/final/hero.greek.perseus.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.perseus.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30200,
+      "sha256": "1e4ef23fb0570ff0b355ab3b251c0cd8bdcd257eac83ffacacefd928fdee8d9c",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.scout_captain.portrait",
+      "file": "ui/icons/final/hero.greek.scout_captain.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.scout_captain.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26338,
+      "sha256": "768e1d8203ba32c12464190e7ef6ac47c8617d6b86a72fddb5a68ba0452a252f",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.greek.thaleia.portrait",
+      "file": "ui/icons/final/hero.greek.thaleia.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.greek.thaleia.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22274,
+      "sha256": "e17e2fe939c8bbb6c558dd23cda6abbe207476c3d9941541d4729fb2b0513985",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.abe_no_seimei.portrait",
+      "file": "ui/icons/final/hero.japanese.abe_no_seimei.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.abe_no_seimei.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30918,
+      "sha256": "344a228969a9d091e28a0dbc45b6bd9944b51c7a0dcd914704a1ef01106516f5",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.akane.portrait",
+      "file": "ui/icons/final/hero.japanese.akane.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.akane.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28888,
+      "sha256": "cd5950e30b89aa5ca2047c5f15cb810b74747813cb334cc770b43e8fad986ec8",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.benkei.portrait",
+      "file": "ui/icons/final/hero.japanese.benkei.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.benkei.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30362,
+      "sha256": "0402d1394e3df558e1307b8909ff15c812fc52c86c0f6d37d9037b1d08022eb9",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.genzo.portrait",
+      "file": "ui/icons/final/hero.japanese.genzo.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.genzo.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 21480,
+      "sha256": "645effa22bb7be4ef7b6dbb6edfd5483bd39870a129c5e76a63f7b65ae753487",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.gonryo.portrait",
+      "file": "ui/icons/final/hero.japanese.gonryo.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.gonryo.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28028,
+      "sha256": "14ae4dbcac59bd270b1a7b2b75fd6cafbc037037e8caef15646ea053fd58012a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.hangaku_gozen.portrait",
+      "file": "ui/icons/final/hero.japanese.hangaku_gozen.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.hangaku_gozen.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32112,
+      "sha256": "cdbe230ae21ccebf3cc66891d54b3a2bf2069c1d816e4e6e0db2dc7c0da5f283",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.kagero.portrait",
+      "file": "ui/icons/final/hero.japanese.kagero.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.kagero.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28614,
+      "sha256": "181048fb59909f69e15dae9a35ff4177bd99530ad41f2d8156ab19997082eb6b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.kurogane.portrait",
+      "file": "ui/icons/final/hero.japanese.kurogane.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.kurogane.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29338,
+      "sha256": "27a34e55d7a3f4829f1a59e6caf5960be7122ca2cfe82f16c2423a3a0fa9ed9c",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.kusunoki_masashige.portrait",
+      "file": "ui/icons/final/hero.japanese.kusunoki_masashige.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.kusunoki_masashige.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32240,
+      "sha256": "3ede219ef7b887aedb60f58e28fe4f5e7aaed48c6b688c66ff2224bc418dfb4b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.momotaro.portrait",
+      "file": "ui/icons/final/hero.japanese.momotaro.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.momotaro.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30878,
+      "sha256": "488a8ca474e762b64d405c42b0c3a07bd666dca5e347a69277c7c42bb824c18e",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.oboro.portrait",
+      "file": "ui/icons/final/hero.japanese.oboro.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.oboro.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29362,
+      "sha256": "43ce7b4f181e60a80d15ba14d1e7cb881d780e74b5d6102f511e416653a62841",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.shiro.portrait",
+      "file": "ui/icons/final/hero.japanese.shiro.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.shiro.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23888,
+      "sha256": "05f6b790354da1ae9e6182da25ea24d6ea0051cfa4952c9b5d94c41585de4a45",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.tomoe_gozen.portrait",
+      "file": "ui/icons/final/hero.japanese.tomoe_gozen.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.tomoe_gozen.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30836,
+      "sha256": "ec22db7617e654cc8e3a4ad5e99375f64f625fdba1f820e5392cc8b744a83a05",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.yamato_takeru.portrait",
+      "file": "ui/icons/final/hero.japanese.yamato_takeru.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.yamato_takeru.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30222,
+      "sha256": "0384647ec4de72724edddfc5047dd77ed799c3d711d4dbbe9fa26209d76e114b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.yamikage.portrait",
+      "file": "ui/icons/final/hero.japanese.yamikage.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.yamikage.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25810,
+      "sha256": "511a67826da2a11d69004d4c3156f81622801ad9f4054fdd4229fb34cdba704f",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.japanese.yoshitsune.portrait",
+      "file": "ui/icons/final/hero.japanese.yoshitsune.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.japanese.yoshitsune.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30058,
+      "sha256": "cfe88aaeab9ad947267583b450a5f1ce47a3faedea06db0bfdecbe891b7a9ad1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.acatl.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.acatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.acatl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29774,
+      "sha256": "5c29a95788adfd6ca42a82f341c6a0d6e4da311db35a6ef6dc77359f8dd00992",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.chilam_balam.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.chilam_balam.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.chilam_balam.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 34190,
+      "sha256": "1ee2c0b31df7e3a803ab49847d594582e50a9d9df234eaa01420d32c8dd1f282",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.chimal.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.chimal.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.chimal.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 22880,
+      "sha256": "480ff4b2348a6c4cce8cf91374e66c5a3cf18d911c7dcf7eb2306f372b82eb2a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.eight_deer_jaguar_claw.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.eight_deer_jaguar_claw.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32758,
+      "sha256": "008ee7d01a7c33053591645c7c30d33be6f0c8ab4a523d8d2b756c2345cfa193",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.hunahpu.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.hunahpu.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.hunahpu.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 28344,
+      "sha256": "e80fc22c35d9e0c701e40b3deb1ee9065c86b38155bf636e72239ff42c7a63af",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.itzel.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.itzel.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.itzel.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30764,
+      "sha256": "3dc187dff6842f81c601539c800d3296af9a62579b3e0f09799439a8459fde55",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.itztli.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.itztli.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.itztli.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29606,
+      "sha256": "7b0487f4c779670672d8afd19deea5fc31c3e177799a19a08c283cdc9a7b46df",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.lady_six_sky.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.lady_six_sky.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.lady_six_sky.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32440,
+      "sha256": "1b525ef7ba2ef94510f1971c3f4cd5eacc0d1bc8e6a662e378c37657f6c4f8a8",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.mazatl.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.mazatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.mazatl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29266,
+      "sha256": "5a1a258f9632ac8fb2c320918173ad158032ba49efba73b7d3cc4f217177b2e4",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.moctezuma_ilhuicamina.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.moctezuma_ilhuicamina.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 33022,
+      "sha256": "831e158863cce84e9ebb152c85b2a5e25cd45ea46bc657dc05c3aa88889473c2",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.nezahualcoyotl.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.nezahualcoyotl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31104,
+      "sha256": "d58d20ff15f37d504e03be662f0be711837dddd0242a5acf34ec143df54c3252",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.tecuani.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.tecuani.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.tecuani.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29876,
+      "sha256": "fb143a42423d53e4b401653c81b5bcf30548330f341cb53f639de0621a2d8a4b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.tlacatl.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.tlacatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.tlacatl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30912,
+      "sha256": "fb80587a54ed4b7929879defa15758d3138a1f262872df02196e6e5fb21cde45",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.topiltzin_quetzalcoatl.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.topiltzin_quetzalcoatl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 32414,
+      "sha256": "be684c6a3a328abe238f02d46a46c43e4b3b702266c294123ad7b6b2101d8aa9",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.xbalanque.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.xbalanque.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.xbalanque.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 30206,
+      "sha256": "9e453c11998b4a17ee0987bcac5138a9e7b9a82a78233c5617cfbb752ae1fb0a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.mesoamerican.xoco.portrait",
+      "file": "ui/icons/final/hero.mesoamerican.xoco.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.mesoamerican.xoco.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 23638,
+      "sha256": "c7abe28ebc0b107f9bea789eb08a1d7f55c73d1b8d58294f4373354817c22019",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.barrow_captain.portrait",
+      "file": "ui/icons/final/hero.norse.barrow_captain.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.barrow_captain.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31284,
+      "sha256": "b64aeb2f5ab67e7ffdc35c8b4e277c5e7a35a7298adc4e93946b7cb7723540af",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.bone_helm.portrait",
+      "file": "ui/icons/final/hero.norse.bone_helm.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.bone_helm.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 31336,
+      "sha256": "0d906c8ba2e56d4fd65e3166fd4026efa47bdc8d98d23abe0564c69d70da46db",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.brynhild.portrait",
+      "file": "ui/icons/final/hero.norse.brynhild.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.brynhild.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27930,
+      "sha256": "dd96f0057be9073398c3fcbb902f7d0cd09324625afd3fba3a14fb51fe3f6fb4",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.eydis.portrait",
+      "file": "ui/icons/final/hero.norse.eydis.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.eydis.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 25922,
+      "sha256": "2f3330b6aaf8c58e6c69c5afd4eb55410ba5d1791d97e7732c1b2543f75d6fa1",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.grey_jarl.portrait",
+      "file": "ui/icons/final/hero.norse.grey_jarl.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.grey_jarl.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 29842,
+      "sha256": "3a8fd253bfb5f95d33c4578a64c54721726dc51486dd109b7e4dcf25c7b0606d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.hervor.portrait",
+      "file": "ui/icons/final/hero.norse.hervor.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.hervor.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27590,
+      "sha256": "2c27ca66176fa2d6de1623f2da0313087dddfee6f3c09a8a3f6c7ab870d29067",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.hrafn.portrait",
+      "file": "ui/icons/final/hero.norse.hrafn.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.hrafn.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27298,
+      "sha256": "f372e9a0af59777f2f3a890c430f3da2384c8d8e5a878a234163d6c63538ef1a",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.jokul.portrait",
+      "file": "ui/icons/final/hero.norse.jokul.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.jokul.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27036,
+      "sha256": "8d1834ae338289b94b12f9ec2c76482465f48cfef1714fc2f5370fdf770185f6",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.lagertha.portrait",
+      "file": "ui/icons/final/hero.norse.lagertha.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.lagertha.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26116,
+      "sha256": "99dfb3caf92cf2c66eb7dfb73811fee2f36da46fd68725d5c5d8dab1c4c5bebe",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.ragnar.portrait",
+      "file": "ui/icons/final/hero.norse.ragnar.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.ragnar.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27496,
+      "sha256": "675bb01913bd21be697f66b6632f4a09e20c15f3001296c8c0c72c7e0401bac8",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.sigurd.portrait",
+      "file": "ui/icons/final/hero.norse.sigurd.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.sigurd.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 26546,
+      "sha256": "160a293731ecb4ea96662509252727dbda95215b86ce401874420ae9f98a4b2d",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.skeggi.portrait",
+      "file": "ui/icons/final/hero.norse.skeggi.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.skeggi.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24276,
+      "sha256": "3115a6769b487d47e8f737bb578f110cdbd3fbe3f5db4851a234c8c87e3a488b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.svanhild.portrait",
+      "file": "ui/icons/final/hero.norse.svanhild.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.svanhild.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24618,
+      "sha256": "680b3fdae2fca05701013f2bfc13815f2529a681ac2a228a6c43d2de87ccaa80",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.troll_wife.portrait",
+      "file": "ui/icons/final/hero.norse.troll_wife.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.troll_wife.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 27796,
+      "sha256": "789d50edc0d9e3bb5e7b5d3fa591b2805d4277ec0edf25ba128a9771a7a3881b",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "hero.norse.ulfhild.portrait",
+      "file": "ui/icons/final/hero.norse.ulfhild.portrait.webp",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/hero.norse.ulfhild.portrait.webp",
+      "originManifest": "ui/final-manifest.json",
+      "bytes": 24864,
+      "sha256": "060aac5f6915c474dbf210e9ea73871f1c79ac5b7c8a87a853d9ccbf3c599010",
+      "width": 256,
+      "height": 256
+    }
+  ]
+}

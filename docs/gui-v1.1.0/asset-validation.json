@@ -1,0 +1,15 @@
+{
+  "newNativeAssets": 36,
+  "newRuntimeBytes": 87750312,
+  "transparentAssets": 16,
+  "verifiedReuseAssets": 1238,
+  "all84FactionCreaturePortraitsVerified": true,
+  "all6EmblemsVerified": true,
+  "windowCoverage": 98,
+  "conceptRecipes": 14,
+  "missingExistingManifestFiles": [],
+  "sourceAndRuntimeHashesMatch": true,
+  "artworkEditedByCode": false,
+  "gameSourceChangedByThisPack": false,
+  "integrationTests": "Not run: pack has not been integrated. Preview/browser verification recorded separately."
+}

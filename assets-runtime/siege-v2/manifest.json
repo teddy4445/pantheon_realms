@@ -1,0 +1,1423 @@
+{
+  "version": 2,
+  "ground": {
+    "battlefield.siege.ground.greek": {
+      "file": "siege-v2/ground.greek.png",
+      "width": 1536,
+      "height": 1024
+    },
+    "battlefield.siege.ground.norse": {
+      "file": "siege-v2/ground.norse.png",
+      "width": 1536,
+      "height": 1024
+    },
+    "battlefield.siege.ground.egyptian": {
+      "file": "siege-v2/ground.egyptian.png",
+      "width": 1536,
+      "height": 1024
+    },
+    "battlefield.siege.ground.japanese": {
+      "file": "siege-v2/ground.japanese.png",
+      "width": 1536,
+      "height": 1024
+    },
+    "battlefield.siege.ground.celtic": {
+      "file": "siege-v2/ground.celtic.png",
+      "width": 1536,
+      "height": 1024
+    },
+    "battlefield.siege.ground.mesoamerican": {
+      "file": "siege-v2/ground.mesoamerican.png",
+      "width": 1536,
+      "height": 1024
+    }
+  },
+  "siege": {
+    "gate.intact.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        37,
+        68,
+        405,
+        337
+      ],
+      "width": 405,
+      "height": 337,
+      "anchor": [
+        0.5,
+        0.82261
+      ],
+      "pixelsPerHex": 290.03361,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.damaged.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        38,
+        481,
+        402,
+        344
+      ],
+      "width": 402,
+      "height": 344,
+      "anchor": [
+        0.5,
+        0.82622
+      ],
+      "pixelsPerHex": 290.03361,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.rubble.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        15,
+        902,
+        427,
+        303
+      ],
+      "width": 427,
+      "height": 303,
+      "anchor": [
+        0.5,
+        0.80271
+      ],
+      "pixelsPerHex": 290.03361,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.intact.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        513,
+        39,
+        228,
+        365
+      ],
+      "width": 228,
+      "height": 365,
+      "anchor": [
+        0.5,
+        0.86367
+      ],
+      "pixelsPerHex": 291.17178,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.damaged.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        513,
+        451,
+        228,
+        375
+      ],
+      "width": 228,
+      "height": 375,
+      "anchor": [
+        0.5,
+        0.86731
+      ],
+      "pixelsPerHex": 291.17178,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.rubble.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        474,
+        936,
+        311,
+        274
+      ],
+      "width": 311,
+      "height": 274,
+      "anchor": [
+        0.5,
+        0.81839
+      ],
+      "pixelsPerHex": 291.17178,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.intact.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        811,
+        15,
+        421,
+        402
+      ],
+      "width": 421,
+      "height": 402,
+      "anchor": [
+        0.5,
+        0.85025
+      ],
+      "pixelsPerHex": 209.7977,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.damaged.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        819,
+        443,
+        410,
+        405
+      ],
+      "width": 410,
+      "height": 405,
+      "anchor": [
+        0.5,
+        0.85136
+      ],
+      "pixelsPerHex": 209.7977,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.rubble.greek": {
+      "file": "siege-v2/kit.greek.png",
+      "frame": [
+        810,
+        909,
+        430,
+        302
+      ],
+      "width": 430,
+      "height": 302,
+      "anchor": [
+        0.5,
+        0.80066
+      ],
+      "pixelsPerHex": 209.7977,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "wall.intact.greek": {
+      "file": "siege-v2/wall.greek.png",
+      "frame": [
+        204,
+        0,
+        290,
+        1024
+      ],
+      "width": 290,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 290,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.damaged.greek": {
+      "file": "siege-v2/wall.greek.png",
+      "frame": [
+        675,
+        0,
+        299,
+        1024
+      ],
+      "width": 299,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 299,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.rubble.greek": {
+      "file": "siege-v2/wall.greek.png",
+      "frame": [
+        1191,
+        0,
+        226,
+        1024
+      ],
+      "width": 226,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 226,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "gate.intact.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        41,
+        61,
+        364,
+        387
+      ],
+      "width": 364,
+      "height": 387,
+      "anchor": [
+        0.5,
+        0.84517
+      ],
+      "pixelsPerHex": 290.71284,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.damaged.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        26,
+        487,
+        402,
+        384
+      ],
+      "width": 402,
+      "height": 384,
+      "anchor": [
+        0.5,
+        0.84396
+      ],
+      "pixelsPerHex": 290.71284,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.rubble.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        19,
+        933,
+        428,
+        273
+      ],
+      "width": 428,
+      "height": 273,
+      "anchor": [
+        0.5,
+        0.78051
+      ],
+      "pixelsPerHex": 290.71284,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.intact.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        501,
+        16,
+        214,
+        412
+      ],
+      "width": 214,
+      "height": 412,
+      "anchor": [
+        0.5,
+        0.8932
+      ],
+      "pixelsPerHex": 257.46701,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.damaged.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        497,
+        454,
+        227,
+        395
+      ],
+      "width": 227,
+      "height": 395,
+      "anchor": [
+        0.5,
+        0.88861
+      ],
+      "pixelsPerHex": 257.46701,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.rubble.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        482,
+        872,
+        275,
+        326
+      ],
+      "width": 275,
+      "height": 326,
+      "anchor": [
+        0.5,
+        0.86503
+      ],
+      "pixelsPerHex": 257.46701,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.intact.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        793,
+        10,
+        446,
+        427
+      ],
+      "width": 446,
+      "height": 427,
+      "anchor": [
+        0.5,
+        0.85377
+      ],
+      "pixelsPerHex": 217.60413,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.damaged.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        794,
+        460,
+        445,
+        412
+      ],
+      "width": 445,
+      "height": 412,
+      "anchor": [
+        0.5,
+        0.84845
+      ],
+      "pixelsPerHex": 217.60413,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.rubble.norse": {
+      "file": "siege-v2/kit.norse.png",
+      "frame": [
+        795,
+        908,
+        442,
+        308
+      ],
+      "width": 442,
+      "height": 308,
+      "anchor": [
+        0.5,
+        0.79727
+      ],
+      "pixelsPerHex": 217.60413,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "wall.intact.norse": {
+      "file": "siege-v2/wall.norse.png",
+      "frame": [
+        176,
+        0,
+        321,
+        1024
+      ],
+      "width": 321,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 321,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.damaged.norse": {
+      "file": "siege-v2/wall.norse.png",
+      "frame": [
+        636,
+        0,
+        305,
+        1024
+      ],
+      "width": 305,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 305,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.rubble.norse": {
+      "file": "siege-v2/wall.norse.png",
+      "frame": [
+        1124,
+        0,
+        233,
+        1024
+      ],
+      "width": 233,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 233,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "gate.intact.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        33,
+        48,
+        404,
+        375
+      ],
+      "width": 404,
+      "height": 375,
+      "anchor": [
+        0.5,
+        0.84507
+      ],
+      "pixelsPerHex": 281.88278,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.damaged.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        33,
+        465,
+        404,
+        378
+      ],
+      "width": 404,
+      "height": 378,
+      "anchor": [
+        0.5,
+        0.8463
+      ],
+      "pixelsPerHex": 281.88278,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.rubble.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        30,
+        885,
+        415,
+        314
+      ],
+      "width": 415,
+      "height": 314,
+      "anchor": [
+        0.5,
+        0.81497
+      ],
+      "pixelsPerHex": 281.88278,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.intact.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        502,
+        46,
+        239,
+        374
+      ],
+      "width": 239,
+      "height": 374,
+      "anchor": [
+        0.5,
+        0.88578
+      ],
+      "pixelsPerHex": 249.97706,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.damaged.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        502,
+        476,
+        239,
+        361
+      ],
+      "width": 239,
+      "height": 361,
+      "anchor": [
+        0.5,
+        0.88166
+      ],
+      "pixelsPerHex": 249.97706,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.rubble.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        495,
+        943,
+        267,
+        245
+      ],
+      "width": 267,
+      "height": 245,
+      "anchor": [
+        0.5,
+        0.82563
+      ],
+      "pixelsPerHex": 249.97706,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.intact.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        807,
+        33,
+        431,
+        399
+      ],
+      "width": 431,
+      "height": 399,
+      "anchor": [
+        0.5,
+        0.84772
+      ],
+      "pixelsPerHex": 211.74931,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.damaged.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        808,
+        462,
+        430,
+        388
+      ],
+      "width": 430,
+      "height": 388,
+      "anchor": [
+        0.5,
+        0.8434
+      ],
+      "pixelsPerHex": 211.74931,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.rubble.egyptian": {
+      "file": "siege-v2/kit.egyptian.png",
+      "frame": [
+        805,
+        913,
+        434,
+        296
+      ],
+      "width": 434,
+      "height": 296,
+      "anchor": [
+        0.5,
+        0.79473
+      ],
+      "pixelsPerHex": 211.74931,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "wall.intact.egyptian": {
+      "file": "siege-v2/wall.egyptian.png",
+      "frame": [
+        229,
+        0,
+        334,
+        1024
+      ],
+      "width": 334,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 334,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.damaged.egyptian": {
+      "file": "siege-v2/wall.egyptian.png",
+      "frame": [
+        683,
+        0,
+        339,
+        1024
+      ],
+      "width": 339,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 339,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.rubble.egyptian": {
+      "file": "siege-v2/wall.egyptian.png",
+      "frame": [
+        1204,
+        0,
+        274,
+        1024
+      ],
+      "width": 274,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 274,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "gate.intact.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        21,
+        110,
+        407,
+        368
+      ],
+      "width": 407,
+      "height": 368,
+      "anchor": [
+        0.5,
+        0.83793
+      ],
+      "pixelsPerHex": 289.35437,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.damaged.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        20,
+        562,
+        415,
+        341
+      ],
+      "width": 415,
+      "height": 341,
+      "anchor": [
+        0.5,
+        0.8251
+      ],
+      "pixelsPerHex": 289.35437,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.rubble.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        21,
+        980,
+        426,
+        237
+      ],
+      "width": 426,
+      "height": 237,
+      "anchor": [
+        0.5,
+        0.74835
+      ],
+      "pixelsPerHex": 289.35437,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.intact.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        513,
+        96,
+        239,
+        361
+      ],
+      "width": 239,
+      "height": 361,
+      "anchor": [
+        0.5,
+        0.88299
+      ],
+      "pixelsPerHex": 247.16833,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.damaged.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        511,
+        522,
+        251,
+        353
+      ],
+      "width": 251,
+      "height": 353,
+      "anchor": [
+        0.5,
+        0.88034
+      ],
+      "pixelsPerHex": 247.16833,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.rubble.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        504,
+        966,
+        264,
+        239
+      ],
+      "width": 264,
+      "height": 239,
+      "anchor": [
+        0.5,
+        0.82326
+      ],
+      "pixelsPerHex": 247.16833,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.intact.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        864,
+        31,
+        368,
+        446
+      ],
+      "width": 368,
+      "height": 446,
+      "anchor": [
+        0.5,
+        0.87883
+      ],
+      "pixelsPerHex": 188.33003,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.damaged.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        867,
+        517,
+        370,
+        389
+      ],
+      "width": 370,
+      "height": 389,
+      "anchor": [
+        0.5,
+        0.86108
+      ],
+      "pixelsPerHex": 188.33003,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.rubble.japanese": {
+      "file": "siege-v2/kit.japanese.png",
+      "frame": [
+        850,
+        925,
+        386,
+        299
+      ],
+      "width": 386,
+      "height": 299,
+      "anchor": [
+        0.5,
+        0.81926
+      ],
+      "pixelsPerHex": 188.33003,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "wall.intact.japanese": {
+      "file": "siege-v2/wall.japanese.png",
+      "frame": [
+        148,
+        0,
+        334,
+        1024
+      ],
+      "width": 334,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 334,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.damaged.japanese": {
+      "file": "siege-v2/wall.japanese.png",
+      "frame": [
+        604,
+        0,
+        337,
+        1024
+      ],
+      "width": 337,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 337,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.rubble.japanese": {
+      "file": "siege-v2/wall.japanese.png",
+      "frame": [
+        1119,
+        0,
+        287,
+        1024
+      ],
+      "width": 287,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 287,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "gate.intact.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        37,
+        60,
+        392,
+        376
+      ],
+      "width": 392,
+      "height": 376,
+      "anchor": [
+        0.5,
+        0.84213
+      ],
+      "pixelsPerHex": 287.9959,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.damaged.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        35,
+        476,
+        399,
+        381
+      ],
+      "width": 399,
+      "height": 381,
+      "anchor": [
+        0.5,
+        0.8442
+      ],
+      "pixelsPerHex": 287.9959,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.rubble.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        21,
+        928,
+        424,
+        283
+      ],
+      "width": 424,
+      "height": 283,
+      "anchor": [
+        0.5,
+        0.79025
+      ],
+      "pixelsPerHex": 287.9959,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.intact.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        491,
+        19,
+        234,
+        403
+      ],
+      "width": 234,
+      "height": 403,
+      "anchor": [
+        0.5,
+        0.87653
+      ],
+      "pixelsPerHex": 291.17178,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.damaged.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        491,
+        445,
+        239,
+        395
+      ],
+      "width": 239,
+      "height": 395,
+      "anchor": [
+        0.5,
+        0.87403
+      ],
+      "pixelsPerHex": 291.17178,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.rubble.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        468,
+        895,
+        311,
+        313
+      ],
+      "width": 311,
+      "height": 313,
+      "anchor": [
+        0.5,
+        0.84102
+      ],
+      "pixelsPerHex": 291.17178,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.intact.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        797,
+        42,
+        427,
+        395
+      ],
+      "width": 427,
+      "height": 395,
+      "anchor": [
+        0.5,
+        0.84157
+      ],
+      "pixelsPerHex": 218.09203,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.damaged.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        801,
+        488,
+        424,
+        373
+      ],
+      "width": 424,
+      "height": 373,
+      "anchor": [
+        0.5,
+        0.83223
+      ],
+      "pixelsPerHex": 218.09203,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.rubble.celtic": {
+      "file": "siege-v2/kit.celtic.png",
+      "frame": [
+        793,
+        920,
+        447,
+        289
+      ],
+      "width": 447,
+      "height": 289,
+      "anchor": [
+        0.5,
+        0.78346
+      ],
+      "pixelsPerHex": 218.09203,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "wall.intact.celtic": {
+      "file": "siege-v2/wall.celtic.png",
+      "frame": [
+        226,
+        0,
+        295,
+        1024
+      ],
+      "width": 295,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 295,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.damaged.celtic": {
+      "file": "siege-v2/wall.celtic.png",
+      "frame": [
+        657,
+        0,
+        323,
+        1024
+      ],
+      "width": 323,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 323,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.rubble.celtic": {
+      "file": "siege-v2/wall.celtic.png",
+      "frame": [
+        1124,
+        0,
+        278,
+        1024
+      ],
+      "width": 278,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 278,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "gate.intact.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        33,
+        55,
+        429,
+        367
+      ],
+      "width": 429,
+      "height": 367,
+      "anchor": [
+        0.5,
+        0.83292
+      ],
+      "pixelsPerHex": 297.5052,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.damaged.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        33,
+        468,
+        429,
+        376
+      ],
+      "width": 429,
+      "height": 376,
+      "anchor": [
+        0.5,
+        0.83691
+      ],
+      "pixelsPerHex": 297.5052,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "gate.rubble.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        29,
+        903,
+        438,
+        299
+      ],
+      "width": 438,
+      "height": 299,
+      "anchor": [
+        0.5,
+        0.79492
+      ],
+      "pixelsPerHex": 297.5052,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.intact.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        510,
+        52,
+        253,
+        362
+      ],
+      "width": 253,
+      "height": 362,
+      "anchor": [
+        0.5,
+        0.86873
+      ],
+      "pixelsPerHex": 278.06437,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.damaged.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        509,
+        474,
+        258,
+        358
+      ],
+      "width": 258,
+      "height": 358,
+      "anchor": [
+        0.5,
+        0.86726
+      ],
+      "pixelsPerHex": 278.06437,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "tower.rubble.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        495,
+        922,
+        297,
+        266
+      ],
+      "width": 297,
+      "height": 266,
+      "anchor": [
+        0.5,
+        0.82135
+      ],
+      "pixelsPerHex": 278.06437,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.intact.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        816,
+        51,
+        416,
+        376
+      ],
+      "width": 416,
+      "height": 376,
+      "anchor": [
+        0.5,
+        0.83952
+      ],
+      "pixelsPerHex": 210.28561,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.damaged.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        816,
+        472,
+        416,
+        376
+      ],
+      "width": 416,
+      "height": 376,
+      "anchor": [
+        0.5,
+        0.83952
+      ],
+      "pixelsPerHex": 210.28561,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "keep.rubble.mesoamerican": {
+      "file": "siege-v2/kit.mesoamerican.png",
+      "frame": [
+        808,
+        903,
+        431,
+        312
+      ],
+      "width": 431,
+      "height": 312,
+      "anchor": [
+        0.5,
+        0.8066
+      ],
+      "pixelsPerHex": 210.28561,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native PNG atlas, measured frame and footprint; no pixel retouching or enlargement."
+    },
+    "wall.intact.mesoamerican": {
+      "file": "siege-v2/wall.mesoamerican.png",
+      "frame": [
+        195,
+        0,
+        276,
+        1024
+      ],
+      "width": 276,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 276,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.damaged.mesoamerican": {
+      "file": "siege-v2/wall.mesoamerican.png",
+      "frame": [
+        651,
+        0,
+        281,
+        1024
+      ],
+      "width": 281,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 281,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "wall.rubble.mesoamerican": {
+      "file": "siege-v2/wall.mesoamerican.png",
+      "frame": [
+        1130,
+        0,
+        262,
+        1024
+      ],
+      "width": 262,
+      "height": 1024,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 262,
+      "layout": "wall-strip",
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10 siege revision 2; native continuous wall strip. Global row UVs connect cells without repeating capped blocks."
+    },
+    "ground.ditch": {
+      "file": "siege-v2/groundworks-capped.png",
+      "frame": [
+        245,
+        205,
+        523,
+        614
+      ],
+      "width": 523,
+      "height": 614,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 523,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10; shared registered moat and bridge, native atlas sampling."
+    },
+    "ground.bridge": {
+      "file": "siege-v2/groundworks-capped.png",
+      "frame": [
+        768,
+        399,
+        731,
+        259
+      ],
+      "width": 731,
+      "height": 259,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 731,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10; shared registered moat and bridge, native atlas sampling."
+    },
+    "ground.ditch.top": {
+      "file": "siege-v2/groundworks-capped.png",
+      "frame": [
+        245,
+        0,
+        523,
+        205
+      ],
+      "width": 523,
+      "height": 205,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 523,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10; shared registered moat and bridge, native atlas sampling."
+    },
+    "ground.ditch.bottom": {
+      "file": "siege-v2/groundworks-capped.png",
+      "frame": [
+        245,
+        819,
+        523,
+        205
+      ],
+      "width": 523,
+      "height": 205,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "pixelsPerHex": 523,
+      "status": "final",
+      "provenance": "Built-in image generator, 2026-10-10; shared registered moat and bridge, native atlas sampling."
+    }
+  }
+}

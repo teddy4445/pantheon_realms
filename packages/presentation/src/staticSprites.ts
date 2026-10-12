@@ -2,9 +2,20 @@
  * Small helpers shared by the 2D views: still sprites from the manifest
  * (loaded in the background, drawn once ready), soft ground shadows, colours.
  */
-import { Graphics, Sprite, Texture, type Container } from 'pixi.js';
+import { Graphics, Rectangle, Sprite, Texture, type Container } from 'pixi.js';
 import type { StaticSpriteDefinition } from './sprites';
 import { loadFile } from './textures';
+const stillFrames = new Map<string, Texture>();
+
+/** Shared atlas views keep native pixels and never allocate duplicate image sources. */
+export async function stillTexture(def: StaticSpriteDefinition): Promise<Texture> {
+  const texture=await loadFile(def.file);
+  if(!def.frame)return texture;
+  const key=`${def.file}:${def.frame.join(',')}`;
+  let frame=stillFrames.get(key);
+  if(!frame){frame=new Texture({source:texture.source,frame:new Rectangle(...def.frame)});stillFrames.set(key,frame);}
+  return frame;
+}
 
 /** A manifest still, anchored and scaled so `pixelsPerHex` source pixels span `hexWidth` view units. */
 export function stillSprite(def: StaticSpriteDefinition | null, hexWidth: number, size = 1): Sprite {
@@ -13,7 +24,7 @@ export function stillSprite(def: StaticSpriteDefinition | null, hexWidth: number
   s.anchor.set(def.anchor[0], def.anchor[1]);
   s.scale.set((hexWidth / def.pixelsPerHex) * size);
   s.visible = false;
-  void loadFile(def.file).then(
+  void stillTexture(def).then(
     (t) => {
       if (s.destroyed) return;
       s.texture = t;

@@ -9,6 +9,15 @@
  *
  * All art is resolved by asset ID (assets-runtime/ui/manifest.json); without
  * the files the screen still works with a text title and a plain panel.
+ *
+ * 1.1.0: the title hall (frontend.backdrop.title-hall) joins the opening
+ * paintings; a small Hall of Records entry opens the existing high-score
+ * tables (optional navigation from the pre-game handoff); the footer keeps the
+ * live release only — rules, content and save versions are in Settings → Saves.
+ *
+ * 1.1.3 (owner): the title always shows the frontend kit's title painting
+ * (`menuBackground`), with the menu as the kit's slim panel between the hall's
+ * pillars; the older paintings and the ornate frame are only the fallback.
  */
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useStore } from '../app/context';
@@ -24,9 +33,15 @@ export function MainMenuScreen() {
   }, [store, store.continueChecked]);
   const [preview, setPreview] = useState<string | null>(null);
   const bg = menuBackground();
-  // The lettering only (the emblem stays the app icon).
-  const logo = resolveAsset('brand.logo.text');
-  const frame = resolveAsset('menu.frame');
+  // 1.1.0 frontend kit: the title logo is its own transparent layer (plaque, lettering and crest), over any
+  // background; the earlier lettering stays as the fallback.
+  const kitLogo = resolveAsset('frontendkit.brand.logo');
+  const logo = kitLogo.url ? kitLogo : resolveAsset('brand.logo.text');
+  // 1.1.3: over the kit's title painting (a hall with its own pillars and arch) the menu is the kit's slim
+  // panel between the pillars, as the frontend kit composes it; the older ornate frame stays for the
+  // older paintings (the fallback when the kit's painting is missing).
+  const kitTitle = bg.id === 'frontendkit.backdrop.title';
+  const frame = kitTitle ? { url: '' } : resolveAsset('menu.frame');
   const win = menuFrameInterior();
   const meta = continueSlot?.metadata;
   const continueDisabledReason = !continueChecked
@@ -56,12 +71,12 @@ export function MainMenuScreen() {
   } as CSSProperties;
 
   return (
-    <div className={`main-menu ${frame.url ? 'has-frame' : ''}`}>
+    <div className={`main-menu ${frame.url ? 'has-frame' : ''} ${kitTitle ? 'main-menu--kit' : ''}`}>
       <div className="main-menu__bg" style={bg.url ? { backgroundImage: `url(${bg.url})` } : undefined} data-background={bg.id} aria-hidden="true" />
       <div className="main-menu__shade" aria-hidden="true" />
       <header className="main-menu__brand">
         <h1 className="main-menu__title">
-          {logo.url ? <img className="main-menu__logo" src={logo.url} alt="Pantheon Realms" draggable={false} /> : 'Pantheon Realms'}
+          {logo.url ? <img className={`main-menu__logo ${kitLogo.url ? 'main-menu__logo--kit' : ''}`} src={logo.url} alt="Pantheon Realms" draggable={false} /> : 'Pantheon Realms'}
         </h1>
       </header>
       <div className="main-menu__stage">
@@ -111,6 +126,9 @@ export function MainMenuScreen() {
                 />
               ) : null}
             </div>
+            <div className="menu-frame__records">
+              <MenuButton variant="compact" icon="star" artUrl={resolveAsset('frontendkit.icon.records').url || null} label="Hall of Records" testId="menu-records" onPreview={describe('The best finished games on this computer')} onClick={() => store.goto('high-scores')} />
+            </div>
           </nav>
         </div>
         <div className="main-menu__caption" aria-live="polite">
@@ -118,8 +136,8 @@ export function MainMenuScreen() {
         </div>
       </div>
       <footer className="main-menu__footer">
-        <span>
-          v{platform.appVersion} · {platform.kind === 'desktop' ? 'Desktop' : 'Browser'} build · Rules {catalog.versions.rulesVersion} · Content {catalog.versions.contentVersion}
+        <span title={`Rules ${catalog.versions.rulesVersion} · content ${catalog.versions.contentVersion} (Settings → Saves)`}>
+          v{platform.appVersion} · {platform.kind === 'desktop' ? 'Desktop' : 'Browser'} build
         </span>
         {platform.kind === 'browser' ? <span className="dim">Saves are stored in this browser. Close the tab to quit.</span> : null}
       </footer>

@@ -6,7 +6,7 @@
 // PixiJS, Electron, DOM-only modules or Node built-ins. Relative imports must
 // stay inside their own package, with one documented exception (the UI reads
 // the committed asset manifests: placeholders, UI art, final icons, painted art,
-// 2D sprites, sound, cursors).
+// 2D sprites, sound, cursors, the siege-v2 pieces and the 1.1.0 interface layers).
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -35,6 +35,14 @@ const RELATIVE_EXCEPTIONS = [
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/ui/final-manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/art/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/sprites/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/siege-v2/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/siege-gates-v3/manifest.json' },
+  { from: 'packages/ui/src/assets/guiArt.ts', to: 'assets-runtime/ui-v1.1.0/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/frontend-v1.1.0/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/frontend-kit-v1.1.0/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/encounters-v1.1.0/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/adventure-gui-v1.1.0/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/hero-portraits-complete/manifest.json' },
   { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
   { from: 'packages/ui/src/assets/cursors.ts', to: 'assets-runtime/ui/cursors/manifest.json' },
 ];
