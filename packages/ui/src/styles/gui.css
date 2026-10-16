@@ -893,7 +893,8 @@ button.gui-socket:hover:not(:disabled):not(.gui-socket--empty)::before,
   .gui-folio__page,
   .gui-folio:not([data-art='ready']) .gui-folio__page {
     position: static;
-    width: auto;
+    /* Over the page rectangle's inline width (Folio's safe rects), so the single page uses the full width. */
+    width: auto !important;
     overflow: visible;
     background-color: transparent;
     box-shadow: none;
@@ -1204,6 +1205,13 @@ button.gui-socket:hover:not(:disabled):not(.gui-socket--empty)::before,
   top: calc(var(--topbar-h) + 0.9rem + 24px);
   bottom: calc(var(--bottombar-h) + 0.4rem);
   overflow-y: auto;
+  /* No scroll rail over the map (owner request 2026-10-14: the panels' frames overflow the column
+     by a few pixels, and a classic scrollbar drew a gold line between the panels). The column still
+     scrolls with the wheel or the keyboard when it is really too tall. */
+  scrollbar-width: none;
+}
+.adv-left.adv-info::-webkit-scrollbar {
+  display: none;
 }
 .adv-bottom {
   left: calc((100% - var(--adv-cmd-w)) / 2);
@@ -2687,4 +2695,216 @@ button.objective:focus-visible {
 .gui-window--parchment > .panel__header .panel__title {
   color: var(--gui-ink-head);
   text-shadow: none;
+}
+
+/* Planned journey (owner request 2026-10-14): the kept destination's status and its Continue journey
+   / Cancel controls, over the map's bottom edge. Navy surface with the antique gold edge (kit). */
+.journey-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem 0.3rem 0.75rem;
+  border: 1px solid #a8894e;
+  border-radius: 0.45rem;
+  background: linear-gradient(180deg, rgba(18, 43, 61, 0.96), rgba(7, 23, 37, 0.96));
+  box-shadow: inset 0 1px 0 rgba(255, 236, 190, 0.14), 0 4px 14px rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+  text-shadow: none;
+}
+.journey-bar__text {
+  font-size: 0.95rem;
+  color: var(--gold-100, #f3e6c4);
+}
+.journey-bar__text strong {
+  color: var(--gold-200, #ead08f);
+  font-weight: 600;
+}
+.journey-bar.is-blocked .journey-bar__text {
+  color: #f0b9a5;
+}
+.journey-bar.is-rerouted {
+  border-color: #e0b85a;
+}
+.journey-bar .btn--small {
+  min-height: 2.1rem;
+}
+.journey-bar .btn--small svg {
+  width: 1.35em !important;
+  height: 1.35em !important;
+}
+
+/* ============================================================
+   H2. Journal: campaign content v2 (2026-10-15) — the ledger
+   (deadlines, known threats, evidence & decisions, what earlier
+   chapters carried) and a missed optional opportunity, which is
+   quiet and never styled like a mission defeat.
+   ============================================================ */
+.ledger-section {
+  margin-bottom: 0.9rem;
+}
+.ledger-section__title {
+  margin: 0 0 0.4rem;
+  padding-bottom: 0.15rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  color: var(--gui-ink-head);
+  border-bottom: 1px solid var(--gui-paper-rule);
+}
+.ledger-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.ledger-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  color: var(--gui-ink);
+  background: var(--gui-paper-card);
+  border: 1px solid var(--gui-paper-rule);
+  border-radius: 4px;
+}
+.ledger-item__icon {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+.ledger-item__glyph {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-top: 0.1rem;
+  color: #6b4a1c;
+}
+.ledger-item__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.ledger-item__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.45rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--gui-ink-head);
+}
+.ledger-item__line {
+  line-height: 1.35;
+}
+.ledger-item__note {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--gui-ink-soft);
+}
+.ledger-item__locate {
+  align-self: flex-start;
+  margin-top: 0.2rem;
+}
+.ledger-tag {
+  padding: 0.02rem 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b4a1c;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+}
+.ledger-tag.is-running,
+.ledger-tag.is-active {
+  color: #8a4b00;
+}
+.ledger-tag.is-met,
+.ledger-tag.is-withdrawn,
+.ledger-tag.is-defeated {
+  color: #2f6b2a;
+}
+.ledger-tag.is-expired,
+.ledger-tag.is-waiting,
+.ledger-tag.is-announced {
+  color: #5a4630;
+  border-style: dashed;
+}
+.ledger-deadline.is-running {
+  border-color: #8a4b00;
+  box-shadow: inset 3px 0 0 #c98a1e;
+}
+.ledger-item.is-withdrawn,
+.ledger-item.is-defeated,
+.ledger-item.is-met,
+.ledger-item.is-expired {
+  background: rgba(240, 230, 205, 0.55);
+}
+.ledger-empty {
+  margin: 0.2rem 0 0.4rem;
+  font-style: italic;
+  color: var(--gui-ink-soft);
+}
+.ledger-subhead {
+  margin: 0.3rem 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gui-ink-head);
+}
+.ledger-carried .ledger-list + .ledger-subhead {
+  margin-top: 0.7rem;
+}
+.journal-running {
+  list-style: none;
+  margin: 0 0 0.6rem;
+  padding: 0.35rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.9rem;
+  color: var(--gui-ink);
+  background: rgba(201, 138, 30, 0.12);
+  border: 1px solid rgba(138, 75, 0, 0.55);
+  border-radius: 4px;
+}
+.journal-running li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+.journal-running__icon {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.1rem;
+  color: #8a4b00;
+}
+.status-icon.is-missed {
+  color: var(--text-faint);
+  border-style: dashed;
+  background: transparent;
+}
+.gui-surface--parchment .status-icon.is-missed {
+  color: #6d5a3c;
+  background: rgba(255, 248, 228, 0.6);
+}
+button.objective.is-missed {
+  background: rgba(240, 230, 205, 0.55);
+  border-style: dashed;
+}
+button.objective.is-missed .objective__title {
+  color: var(--gui-ink-soft);
+}
+.journal-entry__missed {
+  padding: 0.4rem 0.55rem;
+  font-style: italic;
+  color: var(--gui-ink-soft);
+  border: 1px dashed var(--gui-paper-rule);
+  border-radius: 4px;
 }

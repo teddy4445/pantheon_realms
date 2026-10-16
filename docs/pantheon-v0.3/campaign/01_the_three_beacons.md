@@ -107,6 +107,8 @@ The debrief explains the fixed next-mission reinforcement roster. The normal man
 
 ## 6. Mission 2 - Wings over the Pass
 
+> **Owner change (2026-10-14, app 1.1.5).** Mission 2 is played in Passhaven alone. Its only objective is `m02_train_griffins`: build the Griffin Aerie and the Windcrest Aerie, recruit Griffins and train at least 2 of them into Windcrest Griffins (counter `trained:griffin` >= 2). Completing it awards the 2,000 quest XP and wins the mission. Passhaven starts with the Griffin covenant assigned. The watchtower, sentinel, pass and nest objectives, the covenant claim, the god objective, `m02_windcrest` and the beacon activation (`m02_restore`) were removed; the ridge, its guards, the nest, the watchtower and the mines stay on the map as optional ground. Athena/Ares may still be chosen here (optional) or in Mission 3. The map template, seed and anchors below are unchanged. The text below records the earlier design.
+
 ### Opening
 
 Ione: "The second beacon stands beyond the raiders. The Griffins once kept that road safe. Free their nesting ground, and they may stand with us again."

@@ -1,0 +1,300 @@
+[
+  {
+    "role": "recruitment-background",
+    "pantheon": "greek",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\adventure-gui-v1.1.0\\recruit-greek.png",
+    "file": "reuse/backgrounds/recruit-greek.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "visibleBoundsPx": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "visibleBoundsNormalized": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "borderMaxAlpha": 255,
+    "sha256": "7fe8de7531189b41471be45ea1f2e393cbf9b61c964b8b810d684017e1f66b6b"
+  },
+  {
+    "role": "recruitment-background",
+    "pantheon": "norse",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\adventure-gui-v1.1.0\\recruit-norse.png",
+    "file": "reuse/backgrounds/recruit-norse.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "visibleBoundsPx": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "visibleBoundsNormalized": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "borderMaxAlpha": 255,
+    "sha256": "35b86ecec3f8af815fcf4a5c68de0d394713da7dcd382f565ef6217ea1575d2d"
+  },
+  {
+    "role": "recruitment-background",
+    "pantheon": "egyptian",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\adventure-gui-v1.1.0\\recruit-egyptian.png",
+    "file": "reuse/backgrounds/recruit-egyptian.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "visibleBoundsPx": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "visibleBoundsNormalized": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "borderMaxAlpha": 255,
+    "sha256": "0180e0ef642d331b112aaa913c0fdd5e707cc0521c286d6bff2978572ab0d97b"
+  },
+  {
+    "role": "recruitment-background",
+    "pantheon": "japanese",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\adventure-gui-v1.1.0\\recruit-japanese.png",
+    "file": "reuse/backgrounds/recruit-japanese.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "visibleBoundsPx": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "visibleBoundsNormalized": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "borderMaxAlpha": 255,
+    "sha256": "1bcae8dda597ceed1d1ca76d23d5e567f4b46371ddc6822c99f6c8a3fa9d2fbe"
+  },
+  {
+    "role": "recruitment-background",
+    "pantheon": "celtic",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\adventure-gui-v1.1.0\\recruit-celtic.png",
+    "file": "reuse/backgrounds/recruit-celtic.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "visibleBoundsPx": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "visibleBoundsNormalized": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "borderMaxAlpha": 255,
+    "sha256": "b6d827124deead4d55b69834167fd8678633d5a66cd1b808e3c568c282a1a111"
+  },
+  {
+    "role": "recruitment-background",
+    "pantheon": "mesoamerican",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\adventure-gui-v1.1.0\\recruit-mesoamerican.png",
+    "file": "reuse/backgrounds/recruit-mesoamerican.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "visibleBoundsPx": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "visibleBoundsNormalized": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "borderMaxAlpha": 255,
+    "sha256": "b50efe5507dae0a1ba18083f4183a8fd92b6e9541c4b1f7641da9d25d3849d5f"
+  },
+  {
+    "role": "stat.attack",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\stat.attack.png",
+    "file": "reuse/icons/stat.attack.png"
+  },
+  {
+    "role": "stat.defense",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\stat.defense.png",
+    "file": "reuse/icons/stat.defense.png"
+  },
+  {
+    "role": "stat.damage",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\stat.damage.png",
+    "file": "reuse/icons/stat.damage.png"
+  },
+  {
+    "role": "stat.hp",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\stat.hp.png",
+    "file": "reuse/icons/stat.hp.png"
+  },
+  {
+    "role": "stat.speed",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\stat.speed.png",
+    "file": "reuse/icons/stat.speed.png"
+  },
+  {
+    "role": "stat.shots",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\stat.shots.png",
+    "file": "reuse/icons/stat.shots.png"
+  },
+  {
+    "role": "stat.range",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\stat.range.png",
+    "file": "reuse/icons/stat.range.png"
+  },
+  {
+    "role": "res.gold",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\res.gold.png",
+    "file": "reuse/icons/res.gold.png"
+  },
+  {
+    "role": "res.wood",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\res.wood.png",
+    "file": "reuse/icons/res.wood.png"
+  },
+  {
+    "role": "res.stone",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\res.stone.png",
+    "file": "reuse/icons/res.stone.png"
+  },
+  {
+    "role": "res.crystal",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\res.crystal.png",
+    "file": "reuse/icons/res.crystal.png"
+  },
+  {
+    "role": "res.favor",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\res.favor.png",
+    "file": "reuse/icons/res.favor.png"
+  },
+  {
+    "role": "marker.locked",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\marker.locked.png",
+    "file": "reuse/icons/marker.locked.png"
+  },
+  {
+    "role": "marker.check",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\marker.check.png",
+    "file": "reuse/icons/marker.check.png"
+  },
+  {
+    "role": "world.town",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\world.town.png",
+    "file": "reuse/icons/world.town.png"
+  },
+  {
+    "role": "world.army",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\world.army.png",
+    "file": "reuse/icons/world.army.png"
+  },
+  {
+    "role": "control-button",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\control-button.png",
+    "file": "reuse/chrome/control-button.png"
+  },
+  {
+    "role": "control-socket",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\control-socket.png",
+    "file": "reuse/chrome/control-socket.png"
+  },
+  {
+    "role": "surface-stone",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\surface-stone.png",
+    "file": "reuse/chrome/surface-stone.png"
+  },
+  {
+    "role": "surface-leather",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\surface-leather.png",
+    "file": "reuse/chrome/surface-leather.png"
+  },
+  {
+    "role": "faction-frame",
+    "pantheon": "greek",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\frame-greek.png",
+    "file": "reuse/chrome/frame-greek.png"
+  },
+  {
+    "role": "faction-frame",
+    "pantheon": "norse",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\frame-norse.png",
+    "file": "reuse/chrome/frame-norse.png"
+  },
+  {
+    "role": "faction-frame",
+    "pantheon": "egyptian",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\frame-egyptian.png",
+    "file": "reuse/chrome/frame-egyptian.png"
+  },
+  {
+    "role": "faction-frame",
+    "pantheon": "japanese",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\frame-japanese.png",
+    "file": "reuse/chrome/frame-japanese.png"
+  },
+  {
+    "role": "faction-frame",
+    "pantheon": "celtic",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\frame-celtic.png",
+    "file": "reuse/chrome/frame-celtic.png"
+  },
+  {
+    "role": "faction-frame",
+    "pantheon": "mesoamerican",
+    "source": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui-v1.1.0\\frame-mesoamerican.png",
+    "file": "reuse/chrome/frame-mesoamerican.png"
+  }
+]

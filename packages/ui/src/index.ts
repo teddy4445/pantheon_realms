@@ -24,6 +24,10 @@ import './styles/gui.css';
 import './styles/frontend.css';
 import './styles/encounters.css';
 import './styles/adventure.css';
+import './styles/neutral.css';
+import './styles/chronicle.css';
+import './styles/battlev2.css';
+import './styles/editorv2.css';
 import { NEUTRAL_THEME, installGuiStyles } from './assets/guiArt';
 
 import { createElement } from 'react';
@@ -104,6 +108,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
           humanTurn: store.session?.isHumanTurn() ?? false,
           state: store.session?.state ?? null,
           campaign: store.session?.campaign ?? null,
+          // The player's planned journeys (presentation intent saved with the game).
+          journeys: store.session?.presentation.journeys ?? null,
           audio: store.audio?.status() ?? null,
         }),
       );
@@ -119,6 +125,8 @@ export async function bootstrap(root: Root, platform: PlatformServices): Promise
     (g as { __prFx?: () => unknown }).__prFx = () => ({ battle: inspectors.battle?.fx() ?? null, adventure: inspectors.adventure?.fx() ?? null });
     // Read-only: how the map draws the borders between grounds (painted, softened or crisp).
     (g as { __prGround?: () => unknown }).__prGround = () => inspectors.adventure?.ground() ?? null;
+    // Read-only: how the planned route is drawn (painted markers, counts, destination cue, day parchment).
+    (g as { __prRoute?: () => unknown }).__prRoute = () => inspectors.adventure?.route?.() ?? null;
     // Read-only: the map's nature scenery (counts per role, IDs, water bodies) and the battle's obstacle stills.
     (g as { __prScenery?: () => unknown }).__prScenery = () => ({ map: inspectors.adventure?.scenery() ?? null, battle: inspectors.battle?.obstacles?.() ?? null });
     // Read-only: the renderer's frame timing (frame rate, slow frames since the view opened).

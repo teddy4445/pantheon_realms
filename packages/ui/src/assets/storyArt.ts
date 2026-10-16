@@ -41,7 +41,9 @@ export function briefingArt(thumbnailAssetId: string | undefined): StoryArtRecor
  * The ending picture for a finished campaign: the chosen epilogue variant
  * (`ending.<campaign>.<flag>`, the same variant `campaignEpilogueLines` plays) or,
  * for a campaign with one epilogue, `ending.<campaign>.epilogue`. A campaign with
- * alternatives but no chosen flag shows none — never the other ending.
+ * alternatives but no chosen flag shows none — never the other ending. Content
+ * v1 runs only: a content-v2 run plays `epilogueV2` over its own `art`
+ * (`campaignEpilogue` in app/chronicle.ts), never a v1 ending picture.
  */
 export function campaignEndingArtId(camp: { readonly id: string; readonly epilogueVariants?: readonly { readonly flag: string }[] }, flags: Readonly<Record<string, boolean | undefined>>): string | null {
   if (camp.epilogueVariants?.length) {

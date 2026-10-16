@@ -10,6 +10,7 @@ import type { ContentCatalog } from '../../definitions/catalog';
 import type { BattleStackState, BattleState } from '../../state/match';
 import {
   effectiveSpeed,
+  findAbility,
   footprintFree,
   hasFlight,
   isAlive,
@@ -21,6 +22,7 @@ import {
 } from './common';
 import { footprintCells } from '../../core/hex';
 import { touchesMoat } from './siege';
+import { reachLine } from './neutralAbilities';
 
 export interface ReachNode {
   readonly cell: BattleCell;
@@ -96,6 +98,8 @@ export interface MeleeOption {
   readonly from: BattleCell;
   /** Hexes traversed on the shortest legal approach (0 when striking in place). */
   readonly distance: number;
+  /** A Long Reach strike from two hexes away (handoff 2026-10-15), not an adjacent blow. */
+  readonly reach?: boolean;
 }
 
 /** Legal landing anchors from which `stack` can strike `target` this activation. */
@@ -109,11 +113,14 @@ export function meleeOptions(
   if (!isAlive(target) || target.side === stack.side) return [];
   const targetCells = stackCells(catalog, target);
   const out: MeleeOption[] = [];
+  const reaches = !!findAbility(catalog, stack.creatureId, 'long_reach');
   if (footprintDistance(stackCells(catalog, stack), targetCells) === 1) out.push({ from: stack.anchor, distance: 0 });
+  else if (reaches && reachLine(catalog, battle, stack, stack.anchor, target)) out.push({ from: stack.anchor, distance: 0, reach: true });
   const r = reach ?? reachableAnchors(catalog, battle, stack);
   for (const node of r.values()) {
     if (node.moat) continue;
     if (footprintDistance(stackCells(catalog, stack, node.cell), targetCells) === 1) out.push({ from: node.cell, distance: node.dist });
+    else if (reaches && reachLine(catalog, battle, stack, node.cell, target)) out.push({ from: node.cell, distance: node.dist, reach: true });
   }
   return out.sort((a, b) => a.distance - b.distance || a.from.row - b.from.row || a.from.col - b.from.col);
 }

@@ -14,7 +14,7 @@
  * the pointer is found by inverting the board transform, so sprite sizes never
  * change what a click selects.
  */
-import { Container, FillPattern, Graphics, Matrix, Rectangle, Sprite, Texture, type FillStyle } from 'pixi.js';
+import { Container, FillPattern, Graphics, Matrix, Rectangle, Sprite, Text, Texture, type FillStyle } from 'pixi.js';
 import { TERRAIN_BY_CODE, TERRAIN_CODES, type HexCoord, type Terrain, type WorldMapDefinition } from '@pr/rules';
 import { buildDecor, deriveStreams } from '@pr/mapgen';
 import { facesLeft, planNatureSceneryCached, type NatureItem, type NaturePlan } from './nature';
@@ -23,11 +23,12 @@ import { MAP_SQUASH, SQRT3, axialPoint, directionOf, hexPolygon, pointAxial, poi
 import { BIOME_TINT, HIGHLIGHT_REACH, PATH_ENCOUNTER, PATH_LATER, PATH_TODAY, SELECT_RING, UNKNOWN_COLOR, biomeTerrainRgb, hexToRgb, tileNoise } from './palette';
 import { TweenPlayer, linear } from './tween';
 import { TERRAIN_TEXTURE_WORLD, terrainArt, type EnvironmentArt } from './environmentArt';
+import { ROUTE_MARKER_IDS, routeMarkerArt, type RouteMarkerArt, type RouteMarkerId } from './routeArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
-import { creatureSprites, heroSprites, siteSprite, spriteManifest, spriteUrl, type EffectDefinition, type GroundEdgesData, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
+import { creatureSprites, heroSprites, pickSiteSprite, spriteManifest, spriteUrl, type EffectDefinition, type GroundEdgesData, type SiteArchetype, type StaticSpriteDefinition } from './sprites';
 import { loadStrip, loadTexture, stripFrames } from './textures';
-import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite } from './staticSprites';
+import { colorOf, groundShadow, rgbOf, stillHeight, stillSprite, stillTexture } from './staticSprites';
 import { FxPainter, type FxTarget } from './fx';
 import { PLANK_COLOR, ROAD_PARTS, ROAD_STEP, marksAlong, offsetRun, roadRuns, roadStyleFor, roadTileSlot, roadTypeFor, smoothRoadTypes, smoothRun, type RoadPoint, type RoadType } from './roads';
 import type { FxLook } from './fxLooks';
@@ -48,6 +49,8 @@ const HEX_W = SQRT3 * R;
 const ZOOM_MIN = 0.42;
 const ZOOM_MAX = 2.2;
 const ZOOM_DEFAULT = 1;
+/** Below this zoom the route markers keep their on-screen size (drawn larger in the world) so a distant route stays readable. */
+const ROUTE_MARK_ZOOM = 0.9;
 
 export type { SiteArchetype } from './sprites';
 
@@ -69,6 +72,18 @@ export interface AdventureSiteView {
   readonly claimed: boolean;
   /** Key colour of key tents and gates (hex). */
   readonly tint?: string;
+  /**
+   * The site's preferred pictures, best first (`siteSpriteCandidates`: a sluice's state picture,
+   * the site's own art, a ferry landing, a neutral hiring site): the first the sprite manifest has
+   * is drawn, else the kind's picture (`archetype`, `variant`).
+   */
+  readonly sprites?: readonly string[];
+  /**
+   * The quest marker over the site of an open objective (journal state): its icon's asset ID and
+   * picture (a campaign objective's own icon — evidence, supply, evacuation, pact — or the generic
+   * quest marker). Absent: no marker.
+   */
+  readonly quest?: { readonly id: string; readonly url: string | null } | null;
 }
 
 export interface AdventureHeroView {
@@ -95,6 +110,28 @@ export interface AdventurePathView {
   /** Last index reachable today (−1 none). */
   readonly stopIndex: number;
   readonly encounter: boolean;
+  /** The day each step is reached (1 = today; rules `routeStepDays`), when known. */
+  readonly days?: readonly number[] | null;
+  /** The arrival day shown on the destination's parchment (rules `routeDays`: today = 1). */
+  readonly arrivalDay?: number | null;
+  /** The planned destination has no legal route right now: its seal shows locked, without a route. */
+  readonly blocked?: boolean;
+  /** The destination tile (the last step; the planned tile when blocked). */
+  readonly destination?: HexCoord;
+}
+
+/** Read-only route state for tests and diagnostics. */
+export interface RouteDebug {
+  /** 'painted' with the kit's pictures, 'drawn' with the fallback shapes, 'none' without a route. */
+  readonly mode: 'painted' | 'drawn' | 'none';
+  readonly today: number;
+  readonly later: number;
+  readonly hourglasses: number;
+  readonly destination: 'seal' | 'battle' | 'blocked' | null;
+  readonly badge: string | null;
+  readonly ring: 'painted' | 'drawn';
+  /** Markers left out at a distant zoom. */
+  readonly thinned: number;
 }
 
 export interface AdventureView {
@@ -164,6 +201,12 @@ interface SiteEntry {
   sprite: Sprite;
   def: StaticSpriteDefinition | null;
   key: string;
+  /** The sprite ID drawn (null: none in the manifest), and the kind and variant it stands for. */
+  spriteId: string | null;
+  kindKey: string;
+  /** The quest marker over the site (an open objective's), and the icon it shows. */
+  quest: Container | null;
+  questKey: string;
   glow: Graphics | null;
   seal: Graphics | null;
   banner: Graphics | null;
@@ -226,10 +269,13 @@ export class AdventureSceneController implements SceneController {
   private readonly reach = new Graphics();
   private readonly ground = new Container();
   private readonly pathLayer = new Graphics();
+  /** The painted route (recruitment & route kit): chevrons, hourglasses, the destination seal and its day parchment. */
+  private readonly routeLayer = new Container();
   /** The route a moving hero still has to walk (drawn once per walk, one piece per step; passed pieces are hidden). */
   private readonly trailLayer = new Container();
   private readonly hover = new Graphics();
-  private readonly selectRing = new Graphics();
+  private readonly selectRing = new Container();
+  private readonly selectRingShape = new Graphics();
   private readonly objects = new Container();
   private readonly fog = new Graphics();
   /** Soft-edged fog (one low-resolution picture, redrawn when the fog changes). */
@@ -289,7 +335,10 @@ export class AdventureSceneController implements SceneController {
     this.groundCache = new GroundCache(engine.renderer, this.groundLayer, engine.antialias);
     this.root.addChild(this.world, this.screenLayer);
     this.painter = new FxPainter(this.effects, this.tweens, R, S, { layer: this.screenLayer, size: () => this.view });
-    this.ground.addChild(this.selectRing, this.pathLayer, this.trailLayer, this.hover);
+    this.ground.addChild(this.selectRing, this.pathLayer, this.routeLayer, this.trailLayer, this.hover);
+    this.selectRing.addChild(this.selectRingShape);
+    // Markers never take the pointer: clicks go to the tile under them.
+    for (const layer of [this.routeLayer, this.trailLayer, this.selectRing]) layer.eventMode = 'none';
     // The hover outline is one hex drawn once and moved to the tile under the pointer.
     this.hover.poly(hexPolygon(0, 0, R * 0.97, S)).stroke({ width: 2, color: 0xf5e4b7, alpha: 0.95 });
     this.objects.sortableChildren = true;
@@ -304,9 +353,9 @@ export class AdventureSceneController implements SceneController {
     this.world.enableRenderGroup();
     // Drawn shapes that change (the reach after each command, a route, the trail during a walk) each sit in a
     // small group of their own: redrawing one never re-sends the others.
-    for (const layer of [this.groundLayer, this.marks, this.reach, this.pathLayer, this.trailLayer, this.objects, this.fogLayer, this.effects]) layer.enableRenderGroup();
+    for (const layer of [this.groundLayer, this.marks, this.reach, this.pathLayer, this.routeLayer, this.trailLayer, this.objects, this.fogLayer, this.effects]) layer.enableRenderGroup();
     // The selection ring is drawn once; its pulse is a scale.
-    this.selectRing.ellipse(0, 0, HEX_W * 0.44, HEX_W * 0.44 * S * 0.5).stroke({ width: 3, color: colorOf(SELECT_RING), alpha: 0.95 });
+    this.selectRingShape.ellipse(0, 0, HEX_W * 0.44, HEX_W * 0.44 * S * 0.5).stroke({ width: 3, color: colorOf(SELECT_RING), alpha: 0.95 });
     this.hover.visible = false;
     this.selectRing.visible = false;
     this.view = { width: engine.width, height: engine.height };
@@ -339,7 +388,7 @@ export class AdventureSceneController implements SceneController {
       this.fogKey = '';
       this.exploredKey = '';
       this.visibleKey = '';
-    }
+    } else if (this.map && view.map !== this.map) this.adoptMap(view.map, view.sites);
     if (view.fogKey !== this.fogKey || view.grid !== this.gridMode) {
       this.fogKey = view.fogKey;
       // The view's key changes with every command: redraw only what the fog itself changed
@@ -361,12 +410,42 @@ export class AdventureSceneController implements SceneController {
     this.syncHeroes(view.heroes);
     this.lastSites = view.sites;
     this.syncSites(view.sites);
-    const pk = view.path ? `${view.path.steps.map((s) => `${s.q},${s.r}`).join(';')}|${view.path.stopIndex}|${view.path.encounter}|${this.selectedHero ?? ''}` : '';
+    const vp = view.path;
+    const pk = vp ? `${vp.steps.map((s) => `${s.q},${s.r}`).join(';')}|${vp.stopIndex}|${vp.encounter}|${vp.days?.join(',') ?? ''}|${vp.arrivalDay ?? ''}|${vp.blocked ? 'blocked' : ''}|${vp.destination ? `${vp.destination.q},${vp.destination.r}` : ''}|${this.selectedHero ?? ''}` : '';
     if (pk !== this.pathKey) {
       this.buildPath(view.path);
       this.pathKey = pk;
     }
   }
+
+  /**
+   * The same map whose ground changed during play (campaign v2: `OperateSluice` replaces
+   * `state.world.map` with the channel cells switched between water and marsh). The ground layer
+   * and everything planned from the terrain — painted transitions and shore foam, roads (boardwalks
+   * follow the marsh), the nature scenery and its water bodies, the grid and the soft fog — are
+   * drawn again; the camera, sites, heroes and route stay as they are. Every command copies the
+   * state, so a new map object with the same ground keeps the one drawn (and its caches).
+   */
+  private adoptMap(map: WorldMapDefinition, sites: readonly AdventureSiteView[]): void {
+    const prev = this.map!;
+    if (map.terrain === prev.terrain && map.roads.length === prev.roads.length && map.roads.every((k, i) => k === prev.roads[i])) return;
+    this.map = map;
+    if (this.fogCanvas?.map === prev) this.fogCanvas.map = map;
+    this.groundChanges += 1;
+    this.drawTerrain();
+    for (const list of this.decorByTile.values()) for (const d of list) d.destroy({ children: true });
+    this.decorByTile.clear();
+    this.buildDecor(map, sites);
+    // The fog is applied again in full below: the new scenery's visibility, the grid and the roads.
+    this.fogKey = '';
+    this.exploredKey = '';
+    this.visibleKey = '';
+  }
+
+  /** Times the ground was redrawn for a changed terrain (read-only diagnostics). */
+  private groundChanges = 0;
+  /** Counts `buildMap` calls: a picture that arrives for an earlier map is dropped (the same map with new ground keeps it). */
+  private mapBuild = 0;
 
   private terrainOf(map: WorldMapDefinition, i: number): Terrain {
     return TERRAIN_BY_CODE[map.terrain[i] ?? 'p'] ?? 'plains';
@@ -408,6 +487,7 @@ export class AdventureSceneController implements SceneController {
     for (const list of this.decorByTile.values()) for (const d of list) d.destroy({ children: true });
     this.decorByTile.clear();
     this.map = map;
+    const build = ++this.mapBuild;
     this.terrainArts.clear();
     this.terrainTextures.clear();
     const painted = graphicsProfile().paintedGround;
@@ -422,7 +502,7 @@ export class AdventureSceneController implements SceneController {
       // A ground painting spans about two tiles: drawn 5–20 times smaller than its pixels, so with mipmaps.
       void loadTexture(art.url, { mipmaps: true }).then(
         (tex) => {
-          if (this.disposed || this.map !== map) return;
+          if (this.disposed || this.mapBuild !== build) return;
           tex.source.style.addressModeU = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
           tex.source.style.addressModeV = art.wrap === 'repeat' ? 'repeat' : 'mirror-repeat';
           tex.source.style.update();
@@ -564,6 +644,7 @@ export class AdventureSceneController implements SceneController {
   /** The surf line over every water hex a shore reaches into, in the shore mask's cell (Brief 17 Part B). */
   private drawGroundFoam(map: WorldMapDefinition, pieces: readonly GroundEdgePiece[]): number {
     const def = spriteManifest().ground?.foam;
+    const build = this.mapBuild;
     if (!def) return 0;
     const tex = this.groundFoamTex;
     if (!tex) {
@@ -573,7 +654,7 @@ export class AdventureSceneController implements SceneController {
           (t) => {
             this.groundFoamTex = t;
             this.groundFoamState = 'idle';
-            if (!this.disposed && this.map === map) this.queueTerrain();
+            if (!this.disposed && this.map && this.mapBuild === build) this.queueTerrain();
           },
           () => {
             this.groundFoamState = 'failed';
@@ -604,10 +685,11 @@ export class AdventureSceneController implements SceneController {
   }
 
   /** How the ground borders and roads are drawn right now (read-only diagnostics for tests): painted road tiles drawn, if any. */
-  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number; roadTypes: Record<string, number>; roadTileTypes: Record<string, string>; cache: GroundCacheStats } {
+  groundDebug(): { edges: 'painted' | 'softened' | 'crisp'; pieces: number; foam: number; roadTiles: number; roadTypes: Record<string, number>; roadTileTypes: Record<string, string>; cache: GroundCacheStats; terrain: string; groundChanges: number } {
     const roadTypes: Record<string, number> = {};
     for (const t of Object.values(this.roadTileTypes)) roadTypes[t] = (roadTypes[t] ?? 0) + 1;
-    return { ...this.groundMode, roadTiles: this.roadTiles.children.length, roadTypes, roadTileTypes: { ...this.roadTileTypes }, cache: this.groundCache.stats() };
+    // `terrain`: the terrain codes the ground is drawn from; `groundChanges`: redraws for a changed terrain (a sluice).
+    return { ...this.groundMode, roadTiles: this.roadTiles.children.length, roadTypes, roadTileTypes: { ...this.roadTileTypes }, cache: this.groundCache.stats(), terrain: this.map?.terrain ?? '', groundChanges: this.groundChanges };
   }
 
   /** The material of every painted road tile now drawn, by `q,r` (read-only diagnostics). */
@@ -777,6 +859,8 @@ export class AdventureSceneController implements SceneController {
     waterItems: { id: string; tile: number; body: string | null; area: number }[];
     /** Location guards drawn beside their sites and whether each faces left (mirrored). */
     guards: { id: string; mirrored: boolean }[];
+    /** Every location drawn: the sprite ID of its picture, whether it shows now, and its quest marker's icon (asset ID). */
+    sites: { id: string; sprite: string | null; shown: boolean; quest: string | null }[];
   } {
     const plan = this.naturePlan;
     const byRole: Record<string, number> = {};
@@ -814,6 +898,7 @@ export class AdventureSceneController implements SceneController {
           return { id: it.id, tile: it.tile, body: c.kind, area: c.area };
         }),
       guards: [...this.sites.entries()].filter(([, e]) => !!e.guard).map(([id, e]) => ({ id, mirrored: e.guard!.mirror })),
+      sites: [...this.sites.entries()].map(([id, e]) => ({ id, sprite: e.spriteId, shown: e.root.visible, quest: e.questKey ? e.questKey.slice(0, e.questKey.indexOf('|')) : null })),
     };
   }
 
@@ -958,11 +1043,12 @@ export class AdventureSceneController implements SceneController {
     if (keys.some((k) => !sheets[k])) return false;
     const missing = keys.filter((k) => !this.roadSheets.has(k));
     if (missing.length > 0) {
+      const build = this.mapBuild;
       if (!this.roadSheetsLoading) {
         this.roadSheetsLoading = true;
         void Promise.allSettled(missing.map((k) => loadTexture(spriteUrl(sheets[k]!.file)).then((tex) => this.roadSheets.set(k, tex)))).then(() => {
           this.roadSheetsLoading = false;
-          if (!this.disposed && this.map === map && this.explored && keys.every((k) => this.roadSheets.has(k))) this.drawRoads(map, this.explored);
+          if (!this.disposed && this.map && this.mapBuild === build && this.explored && keys.every((k) => this.roadSheets.has(k))) this.drawRoads(this.map, this.explored);
         });
       }
       return false;
@@ -1069,10 +1155,135 @@ export class AdventureSceneController implements SceneController {
     g.fill({ color: colorOf(HIGHLIGHT_REACH), alpha: 0.2 });
   }
 
+  // ------------------------------------------------------------------ the planned route
+
+  /** The kit's route pictures, loaded once for the whole map (cached by URL in `textures`). */
+  private routeArt: Partial<Record<RouteMarkerId, { tex: Texture; art: RouteMarkerArt }>> = {};
+  private routeArtState: 'idle' | 'loading' | 'ready' | 'failed' = 'idle';
+  private lastPath: AdventurePathView | null = null;
+  /** Painted markers that a distant zoom leaves out (every other chevron, the later hourglasses). */
+  private routeThin: Container[] = [];
+  /** Every painted marker (each in a holder at its point): a distant zoom draws them larger, so they stay readable. */
+  private routeMarks: Container[] = [];
+  private routeFar = false;
+  /** How much larger the markers are drawn at the current zoom (1 from a near zoom; they keep their size on screen farther out). */
+  private routeGrow = 1;
+  /** The destination seal (its gentle pulse), and what the route shows (diagnostics). */
+  private routeSeal: Container | null = null;
+  private routeInfo: Omit<RouteDebug, 'ring' | 'thinned'> = { mode: 'none', today: 0, later: 0, hourglasses: 0, destination: null, badge: null };
+  private ringPainted = false;
+
+  private ensureRouteArt(): void {
+    if (this.routeArtState !== 'idle') return;
+    const want = ROUTE_MARKER_IDS.map((id) => ({ id, art: routeMarkerArt(id) })).filter((w): w is { id: RouteMarkerId; art: RouteMarkerArt } => !!w.art);
+    if (!want.some((w) => w.id === 'chevronToday')) {
+      this.routeArtState = 'failed';
+      return;
+    }
+    this.routeArtState = 'loading';
+    void Promise.allSettled(
+      want.map((w) =>
+        loadTexture(w.art.url, { mipmaps: true }).then((tex) => {
+          this.routeArt[w.id] = { tex, art: w.art };
+        }),
+      ),
+    ).then(() => {
+      if (this.disposed) return;
+      const a = this.routeArt;
+      this.routeArtState = a.chevronToday && a.chevronLater && a.destination ? 'ready' : 'failed';
+      this.applyRingArt();
+      this.buildPath(this.lastPath);
+      this.wake();
+    });
+  }
+
+  /** The selected hero's ring: the painted hollow ring, laid like the drawn one, once its picture is in. */
+  private applyRingArt(): void {
+    const ring = this.routeArt.selectionRing;
+    if (!ring || this.ringPainted) return;
+    const [l, , r] = ring.art.visibleBounds;
+    const sp = new Sprite(ring.tex);
+    const [, t, , b] = ring.art.visibleBounds;
+    sp.anchor.set((l + r) / 2, (t + b) / 2);
+    // The painted ring covers the drawn ring's ellipse: HEX_W × 0.88 across, flattened as the ground ring.
+    const k = (HEX_W * 0.88) / Math.max(1, (r - l) * ring.tex.width);
+    sp.scale.set(k, k * S * 0.5);
+    sp.eventMode = 'none';
+    this.selectRingShape.visible = false;
+    this.selectRing.addChild(sp);
+    this.ringPainted = true;
+  }
+
+  /**
+   * A marker laid on the ground: sized by its painted part (`visibleWidth` world units across),
+   * turned in the ground plane by `angle` (0 = the picture's own up), then foreshortened once by
+   * the map's ground squash — never turned after squashing.
+   */
+  private groundMarker(m: { tex: Texture; art: RouteMarkerArt }, x: number, y: number, visibleWidth: number, angle: number, squash = S): Sprite {
+    const [l, t, r, b] = m.art.visibleBounds;
+    const sp = new Sprite(m.tex);
+    sp.anchor.set((l + r) / 2, (t + b) / 2);
+    const k = visibleWidth / Math.max(1, (r - l) * m.tex.width);
+    sp.setFromMatrix(new Matrix().scale(k, k).rotate(angle).scale(1, squash).translate(x, y));
+    sp.eventMode = 'none';
+    return sp;
+  }
+
+  /** A route arrowhead with a soft dark copy under it (the same picture, tinted): it reads on snow, sand and roads alike. */
+  private chevron(m: { tex: Texture; art: RouteMarkerArt }, visibleWidth: number, angle: number): Container[] {
+    const shade = this.groundMarker(m, R * 0.035, R * 0.06, visibleWidth * 1.06, angle);
+    shade.tint = 0x000000;
+    shade.alpha = 0.42;
+    return [shade, this.groundMarker(m, 0, 0, visibleWidth, angle)];
+  }
+
+  /** A holder at (x, y) for a marker drawn around its own origin (scaled as one at a distant zoom). */
+  private markAt(x: number, y: number, ...children: Container[]): Container {
+    const h = new Container();
+    h.position.set(x, y);
+    h.eventMode = 'none';
+    h.addChild(...children);
+    this.routeLayer.addChild(h);
+    this.routeMarks.push(h);
+    return h;
+  }
+
+  /** A marker standing upright (hourglass, parchment): sized by its painted height, its painted foot at (x, y). */
+  private uprightMarker(m: { tex: Texture; art: RouteMarkerArt }, x: number, y: number, visibleHeight: number, anchorY: 'foot' | 'centre' = 'foot'): Sprite {
+    const [l, t, r, b] = m.art.visibleBounds;
+    const sp = new Sprite(m.tex);
+    sp.anchor.set((l + r) / 2, anchorY === 'foot' ? b : (t + b) / 2);
+    sp.scale.set(visibleHeight / Math.max(1, (b - t) * m.tex.height));
+    sp.position.set(x, y);
+    sp.eventMode = 'none';
+    return sp;
+  }
+
   private buildPath(path: AdventurePathView | null): void {
+    this.lastPath = path;
     const g = this.pathLayer;
     g.clear();
-    if (!path || path.steps.length === 0) return;
+    for (const c of this.routeLayer.removeChildren()) c.destroy({ children: true });
+    this.routeThin = [];
+    this.routeMarks = [];
+    this.routeSeal = null;
+    this.routeFar = false;
+    this.routeInfo = { mode: 'none', today: 0, later: 0, hourglasses: 0, destination: null, badge: null };
+    if (!path || (path.steps.length === 0 && !(path.blocked && path.destination))) return;
+    this.ensureRouteArt();
+    if (this.routeArtState === 'ready') {
+      this.buildPaintedPath(path);
+      return;
+    }
+    if (path.steps.length === 0) {
+      // Blocked journey without the pictures: a hollow ring with a bar across, at the destination.
+      const p = this.hexCenter(path.destination!);
+      g.ellipse(p.x, p.y, R * 0.3, R * 0.3 * S).stroke({ width: R * 0.08, color: colorOf(PATH_LATER), alpha: 0.8 });
+      g.moveTo(p.x - R * 0.2, p.y + R * 0.2 * S).lineTo(p.x + R * 0.2, p.y - R * 0.2 * S).stroke({ width: R * 0.08, color: colorOf(PATH_ENCOUNTER) });
+      this.routeInfo = { ...this.routeInfo, mode: 'drawn', destination: 'blocked' };
+      return;
+    }
+    this.routeInfo = { ...this.routeInfo, mode: 'drawn', destination: path.encounter ? 'battle' : 'seal' };
     const today = colorOf(PATH_TODAY);
     const later = colorOf(PATH_LATER);
     const enc = colorOf(PATH_ENCOUNTER);
@@ -1104,6 +1315,106 @@ export class AdventureSceneController implements SceneController {
         if (i > path.stopIndex) g.ellipse(p.x, p.y, R * 0.07, R * 0.07 * S).fill({ color: dark });
       }
     });
+  }
+
+  /**
+   * The route in the kit's painted markers, from the pathfinder's own steps: a small arrowhead on
+   * every step but the last, turned toward the next step — gold for today, bronze for later days,
+   * with an upright hourglass where a later day begins (shape, not colour alone). The destination
+   * gets the compass seal on the ground and an upright parchment with the arrival day; a battle
+   * there keeps the crossed swords instead of the seal, a blocked destination its seal with a lock.
+   */
+  private buildPaintedPath(path: AdventurePathView): void {
+    const art = this.routeArt as Required<typeof this.routeArt>;
+    const steps = path.steps;
+    const last = steps.length - 1;
+    const pts = steps.map((c) => this.hexCenter(c));
+    const days = path.days && path.days.length === steps.length ? path.days : null;
+    const dayOf = (i: number) => (days ? days[i]! : i <= path.stopIndex ? 1 : 2);
+    let today = 0;
+    let later = 0;
+    let hourglasses = 0;
+    for (let i = 0; i < last; i++) {
+      const a = pts[i]!;
+      const b = pts[i + 1]!;
+      // The step's direction on the ground (undo the squash), then the picture's "up" turned onto it.
+      const angle = Math.atan2(b.x - a.x, -(b.y - a.y) / S);
+      const d = dayOf(i);
+      const isLater = d > 1;
+      const m = isLater ? (art.chevronLater ?? art.chevronToday) : art.chevronToday;
+      const sp = this.markAt(a.x, a.y, ...this.chevron(m, HEX_W * (isLater ? 0.27 : 0.3), angle));
+      if (isLater) later++;
+      else today++;
+      const newDay = i === 0 ? d > 1 : d > dayOf(i - 1);
+      if (newDay && art.hourglass) {
+        const hg = this.markAt(a.x + HEX_W * 0.2, a.y + R * 0.1, this.uprightMarker(art.hourglass, 0, 0, HEX_W * 0.3));
+        hourglasses++;
+        // At a distance only the first later day keeps its hourglass.
+        if (hourglasses > 1) this.routeThin.push(hg);
+      } else if (i % 2 === 1 && i !== path.stopIndex) this.routeThin.push(sp);
+    }
+    const dest = path.destination ?? steps[last];
+    let destination: RouteDebug['destination'] = null;
+    let badge: string | null = null;
+    if (dest) {
+      const p = this.hexCenter(dest);
+      if (path.encounter) {
+        // A battle waits there: the crossed swords stay (the compass never hides a battle).
+        const k = R * 0.32;
+        const enc = colorOf(PATH_ENCOUNTER);
+        this.pathLayer.moveTo(p.x - k, p.y - k * S).lineTo(p.x + k, p.y + k * S).moveTo(p.x - k, p.y + k * S).lineTo(p.x + k, p.y - k * S).stroke({ width: R * 0.14, color: enc, cap: 'round' });
+        destination = 'battle';
+      } else {
+        const holder = this.markAt(p.x, p.y, this.groundMarker(art.destination, 0, 0, HEX_W * 0.54, 0));
+        if (path.blocked) {
+          holder.alpha = 0.6;
+          // The lock: shackle and body, upright over the seal.
+          const lock = new Graphics();
+          const w = R * 0.22;
+          lock.roundRect(-w / 2, -w * 0.15, w, w * 0.8, w * 0.12).fill({ color: 0x2a1d10 }).stroke({ width: R * 0.03, color: 0xe9cf8d });
+          lock.arc(0, -w * 0.15, w * 0.3, Math.PI, 0).stroke({ width: R * 0.05, color: 0xe9cf8d });
+          lock.position.set(0, -R * 0.12);
+          this.markAt(p.x, p.y, lock);
+          destination = 'blocked';
+        } else {
+          this.routeSeal = holder;
+          destination = 'seal';
+        }
+      }
+      // The arrival day on its upright parchment (live text; never painted into the picture).
+      if (!path.blocked && path.arrivalDay != null && art.dayBadge) {
+        const bx = p.x + HEX_W * 0.34;
+        const by = p.y - R * 0.62;
+        const parchment = this.uprightMarker(art.dayBadge, 0, 0, HEX_W * 0.38, 'centre');
+        const n = new Text({
+          text: String(path.arrivalDay),
+          style: { fontFamily: 'Cinzel, Georgia, serif', fontSize: Math.round(HEX_W * 0.27), fontWeight: '700', fill: 0x3b2412 },
+          resolution: 3,
+        });
+        n.anchor.set(0.5, 0.52);
+        n.eventMode = 'none';
+        this.markAt(bx, by, parchment, n);
+        badge = String(path.arrivalDay);
+      }
+    }
+    this.routeInfo = { mode: 'painted', today, later, hourglasses, destination, badge };
+    this.applyRouteZoom(true);
+  }
+
+  /** At a distant zoom the route thins out (every other chevron, one hourglass), so the map is not covered in arrows. */
+  private applyRouteZoom(force = false): void {
+    const far = this.cam.zoom < 0.72;
+    const grow = Math.round(Math.max(1, ROUTE_MARK_ZOOM / Math.max(0.05, this.cam.zoom)) * 100) / 100;
+    if (far === this.routeFar && grow === this.routeGrow && !force) return;
+    this.routeFar = far;
+    this.routeGrow = grow;
+    for (const m of this.routeThin) m.visible = !far;
+    for (const m of this.routeMarks) m.scale.set(grow);
+  }
+
+  /** Read-only route state (tests, diagnostics). */
+  routeDebug(): RouteDebug {
+    return { ...this.routeInfo, ring: this.ringPainted ? 'painted' : 'drawn', thinned: this.routeFar ? this.routeThin.length : 0 };
   }
 
   // ------------------------------------------------------------------ sites & heroes
@@ -1148,8 +1459,27 @@ export class AdventureSceneController implements SceneController {
         if (e) e.root.visible = false;
         continue;
       }
-      const def = siteSprite(v.archetype, v.variant);
-      const key = `${v.archetype}|${v.variant ?? ''}`;
+      // The site's own picture when the manifest has it (art, state, ferry, hiring site), else its kind's.
+      const pick = pickSiteSprite(v.sprites, v.archetype, v.variant);
+      const def = pick.def;
+      const kindKey = `${v.archetype}|${v.variant ?? ''}`;
+      const key = `${kindKey}|${pick.id ?? ''}`;
+      if (e && e.key !== key && e.kindKey === kindKey && def && e.root.visible) {
+        // The same location with a new picture (a sluice opened or closed): the new picture replaces the old
+        // one once it is on the GPU, so the location never blinks out; its marks are placed again for its height.
+        const old = e.sprite;
+        const next = stillSprite(def, HEX_W);
+        e.root.addChildAt(next, e.root.getChildIndex(old) + 1);
+        const drop = () => {
+          if (!old.destroyed) old.destroy();
+        };
+        void stillTexture(def).then(drop, drop);
+        Object.assign(e, { sprite: next, def, key, spriteId: pick.id, questKey: '', bannerKey: '' });
+        e.quest?.destroy({ children: true });
+        e.quest = null;
+        e.banner?.destroy();
+        e.banner = null;
+      }
       if (e && e.key !== key) {
         this.disposeSite(e);
         this.sites.delete(v.id);
@@ -1164,7 +1494,7 @@ export class AdventureSceneController implements SceneController {
         const sprite = stillSprite(def, HEX_W);
         root.addChild(sprite);
         this.objects.addChild(root);
-        e = { root, sprite, def, key, glow: null, seal: null, banner: null, bannerKey: '', guard: null, guardKey: '' };
+        e = { root, sprite, def, key, spriteId: pick.id, kindKey, quest: null, questKey: '', glow: null, seal: null, banner: null, bannerKey: '', guard: null, guardKey: '' };
         this.sites.set(v.id, e);
       }
       e.root.visible = true;
@@ -1178,7 +1508,10 @@ export class AdventureSceneController implements SceneController {
         e.root.addChild(g);
         e.glow = g;
       }
-      if (e.glow) e.glow.visible = v.lit;
+      if (e.glow) {
+        e.glow.visible = v.lit;
+        e.glow.position.set(0, -h * 0.55);
+      }
       // A closed gate shows a barrier in its key colour (or neutral iron).
       const closed = (v.archetype === 'gate' || v.archetype === 'key_gate') && !v.open;
       if (closed && !e.seal) {
@@ -1216,6 +1549,14 @@ export class AdventureSceneController implements SceneController {
         }
         e.guardKey = gk;
       }
+      // The quest marker of an open objective's site (journal state): its icon on a small disc over the picture.
+      const qk = v.quest?.url ? `${v.quest.id}|${v.quest.url}` : '';
+      if (qk !== e.questKey) {
+        e.quest?.destroy({ children: true });
+        e.quest = qk ? this.questMarker(v.quest!.url!, h) : null;
+        if (e.quest) e.root.addChild(e.quest);
+        e.questKey = qk;
+      }
     }
     for (const [id, e] of this.sites) {
       if (!seen.has(id)) {
@@ -1223,6 +1564,34 @@ export class AdventureSceneController implements SceneController {
         this.sites.delete(id);
       }
     }
+  }
+
+  /**
+   * A quest marker standing over a site (drawn once; it never animates): a navy disc with a gold
+   * rim and the objective's icon, loaded through `textures.ts` and shown once it is on the GPU.
+   */
+  private questMarker(url: string, siteHeight: number): Container {
+    const c = new Container();
+    c.eventMode = 'none';
+    const size = HEX_W * 0.42;
+    c.addChild(new Graphics().circle(0, 0, size * 0.6).fill({ color: 0x14203a, alpha: 0.85 }).stroke({ width: 2, color: 0xd9b45a, alpha: 0.95 }));
+    const icon = new Sprite(Texture.EMPTY);
+    icon.anchor.set(0.5);
+    icon.visible = false;
+    c.addChild(icon);
+    // A 192-pixel icon drawn about a fifth of that size: with mipmaps, so it stays smooth at every zoom.
+    void loadTexture(url, { mipmaps: true }).then(
+      (t) => {
+        if (icon.destroyed) return;
+        icon.texture = t;
+        icon.scale.set((size * 0.9) / Math.max(1, t.width, t.height));
+        icon.visible = true;
+        this.wake();
+      },
+      () => undefined,
+    );
+    c.position.set(0, -siteHeight - size * 0.5);
+    return c;
   }
 
   private placeHero(e: HeroEntry, c: HexCoord): void {
@@ -1406,7 +1775,7 @@ export class AdventureSceneController implements SceneController {
       e.figure.pose.y = 0;
       if (teleportTo) await this.playTeleport(e, teleportTo, speed, follow);
     } finally {
-      if (trail) for (const c of this.trailLayer.removeChildren()) c.destroy();
+      if (trail) for (const c of this.trailLayer.removeChildren()) c.destroy({ children: true });
       e.locked -= 1;
       if (e.locked === 0) {
         this.placeHero(e, e.coord);
@@ -1423,7 +1792,25 @@ export class AdventureSceneController implements SceneController {
    * passes them — drawn once per walk instead of once per step.
    */
   private drawTrail(path: readonly HexCoord[]): void {
-    for (const c of this.trailLayer.removeChildren()) c.destroy();
+    for (const c of this.trailLayer.removeChildren()) c.destroy({ children: true });
+    const chevron = this.routeArtState === 'ready' ? this.routeArt.chevronToday : undefined;
+    if (chevron) {
+      // The painted route walked today: the same gold arrowheads as the planned route, one per
+      // step (the last tile, where the hero stops, has none), hidden as the hero passes them.
+      const last = path.length - 1;
+      for (let i = 0; i <= last; i++) {
+        const piece = new Container();
+        piece.eventMode = 'none';
+        if (i < last) {
+          const a = this.hexCenter(path[i]!);
+          const b = this.hexCenter(path[i + 1]!);
+          piece.position.set(a.x, a.y);
+          piece.addChild(...this.chevron(chevron, HEX_W * 0.3, Math.atan2(b.x - a.x, -(b.y - a.y) / S)));
+        }
+        this.trailLayer.addChild(piece);
+      }
+      return;
+    }
     const col = colorOf(PATH_TODAY);
     const dark = 0x0f141f;
     const last = path.length - 1;
@@ -1886,10 +2273,16 @@ export class AdventureSceneController implements SceneController {
     const sel = this.selectedHero ? this.heroes.get(this.selectedHero) : undefined;
     const ring = this.selectRing;
     if (sel && sel.root.visible) {
-      ring.scale.set(1 + Math.sin(this.time / 260) * 0.04);
+      // A gentle breath, held still under reduced motion or without ambient motion.
+      ring.scale.set(motion && !this.calm ? 1 + Math.sin(this.time / 260) * 0.04 : 1);
       ring.position.set(sel.root.x, sel.root.y);
       ring.visible = true;
     } else ring.visible = false;
+    if (this.routeSeal) {
+      const k = (motion && !this.calm ? 1 + Math.sin(this.time / 420) * 0.03 : 1) * this.routeGrow;
+      this.routeSeal.scale.set(k);
+    }
+    this.applyRouteZoom();
     if (motion) {
       for (const s of this.sites.values()) {
         if (s.glow && s.glow.visible) {

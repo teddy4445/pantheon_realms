@@ -125,6 +125,8 @@ export interface CommanderSpec {
 }
 
 export interface GuardDefinition {
+  /** A required story fight (campaign v2): never joins or flees, whatever the strength ratio. */
+  readonly required?: boolean;
   readonly army: readonly StackSpec[];
   /** Optional stationary commander (e.g. Melas). Neutral guards have none. */
   readonly commander?: CommanderSpec;
@@ -165,7 +167,22 @@ export type SiteKind =
    * normal price. Stock starts at `initialStock` and grows by `weeklyGrowth`
    * each new week (proposed this build).
    */
-  | { readonly type: 'creature_camp'; readonly creatureId: CreatureId; readonly weeklyGrowth: number; readonly initialStock: number }
+  | {
+      readonly type: 'creature_camp';
+      readonly creatureId: CreatureId;
+      readonly weeklyGrowth: number;
+      readonly initialStock: number;
+      /**
+       * Weekly refill (campaign expansion handoff 2026-10-15): 'growth' (default) adds
+       * `weeklyGrowth` each new week; 'weekly' gives a finite stock of `weeklyGrowth` per
+       * week that never accumulates (a neutral hiring site); 'none' never refills. Stock
+       * is the site's, shared by every player; visiting, capturing or loading never refills it.
+       */
+      readonly restock?: 'growth' | 'weekly' | 'none';
+      /** Hiring opens only once this mission flag is set (a pact); `lockedReason` says how. */
+      readonly requiresFlag?: string;
+      readonly lockedReason?: string;
+    }
   /** One-time map event: the first hero to arrive chooses one option. */
   | { readonly type: 'map_event'; readonly title: string; readonly text: string; readonly options: readonly MapEventOptionDefinition[] }
   /** Capturable relic shrine (hold-the-relic victory). */
@@ -175,7 +192,33 @@ export type SiteKind =
    * out of its twin `exitSiteId` at once, at no movement cost. Blocked while
    * another hero stands on the twin. To travel back, step off and on again.
    */
-  | { readonly type: 'portal'; readonly exitSiteId: SiteId }
+  | {
+      readonly type: 'portal';
+      readonly exitSiteId: SiteId;
+      /** A ferry landing (presentation and wording; the crossing works like a portal pair). */
+      readonly ferry?: boolean;
+      /** The crossing runs only once this mission flag is set (e.g. the ferry route liberated). */
+      readonly requiresFlag?: string;
+      readonly lockedReason?: string;
+    }
+  /**
+   * A sluice (campaign v2): operating it (OperateSluice, a hero on the site) switches
+   * its channel cells between two terrains — e.g. water when closed, marsh when open —
+   * so the route rule and the picture change together. Refused while any hero stands on
+   * a channel cell that would become impassable.
+   */
+  | {
+      readonly type: 'sluice';
+      readonly channel: readonly HexCoord[];
+      readonly openTerrain: Terrain;
+      readonly closedTerrain: Terrain;
+      readonly startsOpen: boolean;
+      /** Exactly what changes (shown before confirming). */
+      readonly openText: string;
+      readonly closeText: string;
+      /** Set while open (objectives and dialogue may read it). */
+      readonly openFlag: string;
+    }
   // --- Adventure-map sites added 2026-10-02 (owner request; random maps; proposed values) ---
   /** Learning stone: every hero that stops here once gains `xp` experience. */
   | { readonly type: 'learning_stone'; readonly xp: number }
@@ -214,6 +257,14 @@ export interface MapEventOptionDefinition {
   readonly summary: string;
   readonly reward: RewardDefinition;
   readonly cost?: ResourceCost;
+  /**
+   * An authored resolution without a battle (campaign v2: paying passage, a negotiated
+   * surrender): these sites' guards stand down and count as cleared. Never a hidden
+   * combat simulation.
+   */
+  readonly clearsSiteIds?: readonly SiteId[];
+  /** Offered only when every one of these flags is set (e.g. evidence in hand). */
+  readonly requiresFlags?: readonly string[];
 }
 
 export interface SiteDefinition {
@@ -227,6 +278,13 @@ export interface SiteDefinition {
   /** Hidden sites get no precise journal marker until revealed. */
   readonly markerHiddenUntilRevealed?: boolean;
   readonly objectiveIds?: readonly ObjectiveId[];
+  /**
+   * Presentation only (never read by the rules): the map picture variant, e.g.
+   * 'supply_depot', 'ferry', 'neutral_dwelling.pegasus' (sprite `map.site.<art>`).
+   */
+  readonly art?: string;
+  /** Presentation only: the quest-marker icon of an objective site (evidence, supply, evacuation, pact). */
+  readonly marker?: 'evidence' | 'supply' | 'evacuation' | 'pact';
 }
 
 export interface EntitlementDefinition {
@@ -238,6 +296,15 @@ export interface EntitlementDefinition {
 }
 
 export interface HostileHeroDefinition {
+  /**
+   * Campaign v2: the patrol's home camp. Taking that site (its guard cleared) stops
+   * this patrol for good — it withdraws — so pressure is finite and visible.
+   */
+  readonly homeSiteId?: SiteId;
+  /** What the patrol is after, for the journal ("raids the supply road"). */
+  readonly purpose?: string;
+  /** An announced counterattack: it stays in place until this mission flag is set, then marches. */
+  readonly dormantUntilFlag?: string;
   readonly commander: CommanderSpec;
   /**
    * Wandering monster: an army without a commander (no attributes, skills or

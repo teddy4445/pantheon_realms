@@ -21,6 +21,7 @@ import {
   processCommand,
   quoteActivation,
   quoteConstruction,
+  quoteSluice,
   quoteCovenantAssignment,
   quoteGodSelection,
   quoteMovement,
@@ -228,6 +229,20 @@ function goTo(c: Ctx, dest: HexCoord, fight: boolean): boolean {
   if (hexEquals(hero.position, target)) return false;
   const q = quoteMovement(c.catalog, c.state, c.heroId, target);
   if (!q.reachable) {
+    // Content v2: a ferry landing whose far side is nearer the target (a route connector).
+    const mission = requireScenarioMission(c.catalog, c.state);
+    const here0 = axialDistance(hero.position, target);
+    for (const s of mission.sites) {
+      if (s.kind.type !== 'portal') continue;
+      if (s.kind.requiresFlag && !c.state.mission.flags[s.kind.requiresFlag]) continue;
+      const exit = mission.sites.find((x) => x.id === (s.kind as { exitSiteId: string }).exitSiteId);
+      if (!exit || axialDistance(exit.coord, target) >= here0 - 1 || hexEquals(hero.position, s.coord)) continue;
+      const pq = quoteMovement(c.catalog, c.state, c.heroId, s.coord);
+      if (pq.reachable && pq.stopIndex >= 0 && !pq.endsInEncounter) {
+        push(c, { kind: 'MoveHero', heroId: c.heroId, destination: s.coord });
+        return true;
+      }
+    }
     const fog = c.state.fog[c.playerId];
     const known = !fog || fog.explored[cellIndex(c.state.world.map, target)] === 1;
     // Explore toward it: the reachable tile nearest to it with no fight on the way.
@@ -257,7 +272,7 @@ function goTo(c: Ctx, dest: HexCoord, fight: boolean): boolean {
   if (arrivesInFight) {
     if (!fight) return false;
     const payload: CommandPayload = { kind: 'MoveHero', heroId: c.heroId, destination: target, confirmEncounter: true };
-    const run = runQuickBattle(c.catalog, c.state, c.playerId, payload);
+    const run = runQuickBattle(c.catalog, c.state, c.playerId, payload, undefined, { playerSimulation: true });
     if (run.ok && run.result.winner === (run.result.attacker.playerId === c.playerId ? 'attacker' : 'defender')) {
       push(c, payload);
       return true;
@@ -343,12 +358,21 @@ function siteCoord(c: Ctx, siteId: string): HexCoord | null {
   return requireScenarioMission(c.catalog, c.state).sites.find((s) => s.id === siteId)?.coord ?? null;
 }
 
-/** Sites whose activation reward or map-event option sets `flag`. */
-function flagSources(c: Ctx, flag: string): { siteId: string; option: number | null }[] {
-  const out: { siteId: string; option: number | null }[] = [];
+/**
+ * Sites that set `flag`: an activation's reward or a map-event option (content v1), and
+ * for content v2 a guard's reward (clear it), a pickup's reward (visit it), a sluice's
+ * open flag (operate it) and a quest hut's reward.
+ */
+function flagSources(c: Ctx, flag: string): { siteId: string; option: number | null; how?: 'clear' | 'visit' | 'sluice' }[] {
+  const out: { siteId: string; option: number | null; how?: 'clear' | 'visit' | 'sluice' }[] = [];
+  const flags = c.state.mission.flags;
   for (const s of requireScenarioMission(c.catalog, c.state).sites) {
     if (s.kind.type === 'activation' && (s.kind.reward.flags ?? []).includes(flag)) out.push({ siteId: s.id, option: null });
-    if (s.kind.type === 'map_event') s.kind.options.forEach((o, i) => (o.reward.flags ?? []).includes(flag) && out.push({ siteId: s.id, option: i }));
+    if (s.kind.type === 'map_event')
+      s.kind.options.forEach((o, i) => (o.reward.flags ?? []).includes(flag) && (o.requiresFlags ?? []).every((f) => flags[f]) && out.push({ siteId: s.id, option: i }));
+    if (s.guard && (s.guard.reward.flags ?? []).includes(flag)) out.push({ siteId: s.id, option: null, how: 'clear' });
+    if ((s.kind.type === 'pickup' || s.kind.type === 'quest_hut') && (s.kind.reward.flags ?? []).includes(flag)) out.push({ siteId: s.id, option: null, how: 'visit' });
+    if (s.kind.type === 'sluice' && s.kind.openFlag === flag) out.push({ siteId: s.id, option: null, how: 'sluice' });
   }
   return out;
 }
@@ -442,6 +466,25 @@ function pursue(c: Ctx, cond: ObjectiveCondition): boolean {
         const at = siteCoord(c, src.siteId);
         if (!at) continue;
         const hero = st.heroes[c.heroId];
+        if (src.how === 'clear') {
+          if (pursue(c, { type: 'site_cleared', siteId: src.siteId })) return true;
+          continue;
+        }
+        if (src.how === 'visit') {
+          if (!st.world.sites[src.siteId]?.claimed && goTo(c, at, true)) return true;
+          continue;
+        }
+        if (src.how === 'sluice') {
+          if (hero && hexEquals(hero.position, at)) {
+            if (quoteSluice(c.catalog, st, c.heroId, src.siteId).legal) {
+              push(c, { kind: 'OperateSluice', heroId: c.heroId, siteId: src.siteId });
+              return true;
+            }
+            continue;
+          }
+          if (goTo(c, at, true)) return true;
+          continue;
+        }
         if (src.option !== null && hero && hexEquals(hero.position, at) && !st.world.sites[src.siteId]?.claimed) {
           push(c, { kind: 'ResolveMapEvent', heroId: c.heroId, siteId: src.siteId, optionIndex: src.option });
           return true;
@@ -513,7 +556,7 @@ export function pilotCandidates(catalog: ContentCatalog, state: MatchState, play
 const SPENDING = new Set(['BuildStructure', 'RecruitUnits', 'UpgradeStack', 'BuyArtifact', 'TrainHero', 'HireHero', 'BuySpellbook', 'RecruitFromCamp', 'InvokeIntervention', 'ReceiveDivineGift', 'TradeResources', 'CompleteQuestHut']);
 
 function winsQuickly(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, payload: CommandPayload): boolean {
-  const run = runQuickBattle(catalog, state, playerId, payload);
+  const run = runQuickBattle(catalog, state, playerId, payload, undefined, { playerSimulation: true });
   if (!run.ok) return true; // no battle on arrival today (approach only)
   return run.result.winner === (run.result.attacker.playerId === playerId ? 'attacker' : 'defender');
 }
@@ -525,7 +568,7 @@ const commandOf = (state: MatchState, playerId: PlayerId, payload: CommandPayloa
 export function fightOut(catalog: ContentCatalog, state: MatchState, playerId: PlayerId, mem: PilotMemory): MatchState {
   let s = state;
   for (let i = 0; i < 4000 && s.battle; i++) {
-    const r = stepBattleAI(catalog, s);
+    const r = stepBattleAI(catalog, s, { playerSimulation: true });
     if (r.state === s) break;
     s = r.state;
   }

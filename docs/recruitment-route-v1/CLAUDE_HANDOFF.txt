@@ -1,0 +1,212 @@
+PANTHEON REALMS — RECRUITMENT & PERSISTENT JOURNEY HANDOFF
+Prepared 14 October 2026. Inspected game package version: 1.1.5.
+Approved direction: recruitment-upgrade-unlocked.png, recruitment-upgrade-locked.png, adventure-route-concept.png.
+This package supplies materials and instructions. The game code has NOT been modified.
+
+START HERE
+Delivery folder:
+C:\Users\lazeb\Desktop\blannder_models\recruitment-route-kit-2026-10-14
+Game project:
+C:\Users\lazeb\Desktop\pantheon_realms
+
+These are different projects. Copy the nine NEW images from the delivery's new-assets folder into your local game project; do not reference blannder_models, .codex, Temp, or absolute C: paths from shipped code. Recommended destinations:
+  assets-source/ui/recruitment-route-v1/<filename>.png
+  assets-runtime/recruitment-route-v1/<filename>.png
+Register runtime-relative URLs through the game's asset resolver. Preserve native source PNGs. The existing generic art/icon importers do not automatically know these custom IDs: add a focused registration/import step; do not run a wholesale sprite recut.
+
+The source folder, file mapping, dimensions, alpha bounds and checksums are in asset-manifest.json. Use proposedRuntimeFile relative to assets-runtime. Keep the UI's base URL/Electron conventions.
+Copy this handoff, manifests and reference images to docs/recruitment-route-v1 in the game project for review.
+index.html is a local review gallery. Open it directly; no build needed.
+
+WHAT IS NEW / WHAT IS REUSED
+Nine new text-free RGBA PNGs, native 1254 x 1254:
+  new-assets/icon-recruit-all.png       Three shields and spears; Recruit all action.
+  new-assets/icon-train-troops.png      Anvil and hammer; troop training action.
+  new-assets/icon-resume-route.png      Boot and arrow; Continue journey action.
+  new-assets/route-chevron-current.png Gold arrowhead; reachable this turn.
+  new-assets/route-chevron-later.png    Bronze arrowhead; beyond today's allowance.
+  new-assets/route-destination.png      Compass/laurel; selected destination.
+  new-assets/route-day-badge.png        BLANK parchment; dynamic arrival number.
+  new-assets/route-hourglass.png        Non-color cue for later-day travel.
+  new-assets/route-selection-ring.png   Hollow circle; project to a ground ellipse.
+
+Use measured visibleBounds for sizing/alignment, rather than counting transparent margin as visible icon size. Native images have subtle antialias alpha at edges. Preserve it; do not remove backgrounds again. No baked digits or localization strings.
+
+Included, copied without repainting:
+  reuse/backgrounds: six separate existing recruitment backdrops.
+  reuse/portraits: 84 existing creature portraits, 7 tiers x 2 forms x 6 pantheons.
+  reuse/creatures: 84 existing native source idle strips plus their 84 original JSON sidecars.
+  reuse/icons: 16 existing stat/resource/lock/check/town/army icons.
+  reuse/chrome: six faction frames, four existing surfaces/controls, original layout manifest.
+
+These reused assets already belong to the game. Prefer their registered IDs when available. The copies make this delivery independently inspectable and protect against ambiguous filenames. reuse-map.json records ORIGINAL FULL PATHS. creature-map.json records full source paths, faction/tier/form, strip dimensions, frame count, fps, anchors and measured union of visible pixels across all idle frames. Match creatures through the live catalog's family/creature IDs; never guess an ID from its display name.
+
+Do not invent 84 replacement creature designs or use the concept's Hoplite illustration for every faction. Actual animated units are included. The six background IDs are adventurekit.recruit.greek, .norse, .egyptian, .japanese, .celtic and .mesoamerican.
+Original backgrounds live at:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\adventure-gui-v1.1.0\recruit-<pantheon>.png
+Original portraits:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\ui\icons\final\creature.<pantheon>.tier<N>.<base|upgraded>.portrait.webp
+Native source idle files:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-source\sprites\final\sprite.creature.<pantheon>.tier<N>.<base|upgraded>.idle.png
+
+RECRUITMENT — APPROVED LAYOUT
+Apply to all six pantheons, not only Greek. Use current faction frame/background and current creature identities.
+Keep titles and controls live HTML; the concept image is reference, never a clickable screenshot backdrop.
+
+At desktop sizes (1280x720, 1366x768, 1600x900, 1920x1080):
+  1. Compact title/resource strip.
+  2. All seven dwelling cards in a single row, with larger portrait crops, tier/family name and available count or lock reason.
+  3. Main area: approximately 56% creature stage / 44% detail panel.
+  4. Bottom fixed dock: seven army slots, compact selected-family training control, Recruit all summary/action.
+No scrollbar inside recruitment details or training. Do not merely hide overflow and lose content. Reduce header/blank space first. Use responsive grid with min-height:0, responsive portrait sizes, concise ability chips and small information popovers for exact long rules.
+Long names may wrap to two lines. Maintain legible 14px-or-larger body text on supported desktop sizes. Do not shrink the entire screenshot to solve layout.
+Below desktop width, use deliberate Creature/Recruit/Train views and a persistent action dock instead of compressing seven large cards and all text into unreadable columns. All seven tiers remain reachable with a compact 4+3 selector. Test large UI scale separately.
+
+Creature showcase:
+  Make the creature's VISIBLE silhouette occupy about 75–85% of usable stage height, while fitting the width and leaving space for weapons/wings.
+  Lay the variant medallions over the left edge of the stage, not as a tall row stealing creature height.
+  Use the actual idle strip and its anchor; keep the ground contact stable across frames.
+  Existing CreatureStage fits the entire sprite frame using --fw/--fh. Transparent padding and constrained flex height can make the subject tiny. Fit against the measured union of visible bounds in creature-map.json. Let s = min(stageWidth*0.90/visibleWidth, stageHeight*0.82/visibleHeight). Use one s for the whole clip; NEVER rescale each animation frame independently. Offset from the preserved feet anchor so feet sit at the shared ground baseline.
+  Frame cropping is runtime sprite playback only. Do not recut or repaint existing sprite files.
+  Native source frames are 207–348px tall (visible silhouette 120–247px). They are sharper than the smaller imported runtime strips, but are NOT new high-resolution illustrations. A large on-screen display can be softer than the AI concept. Use source-resolution recruitment-only copies with original timing and avoid changing map/battle sprite scales. Do not claim these are newly painted high-res creatures.
+  Respect reduced motion: hold a valid first idle frame. No clipped wings/spear tips. Compare humanoid, griffin, large monster and two-hex units.
+  Dim/soften background with a UI overlay behind figure/panels if needed; do not bake text into it.
+
+Variant behavior:
+  No dwelling: tier portrait muted, lock visible, required building named on hover/focus. No purchase.
+  Base dwelling only: base selected; upgraded portrait remains visible but locked; explain required upgraded dwelling. Training disabled with concise requirement.
+  Upgraded dwelling: both portraits open/unlocked; upgraded selected on first entry or first selection of that family, unless player explicitly chose base. Preserve explicit form choice while changing quantity/destination.
+  Do not allow a locked portrait to become the active purchasable form; optional inspection can use a separate info popover.
+  Open/closed means gameplay availability, NOT stock. Zero stock is "0 available", not a missing-dwelling lock.
+  Base and upgraded share ONE population pool. Never sum them as two available populations.
+
+Details:
+  Name, short role, six stats (attack, defense, damage, HP, speed, footprint), abilities, pool/growth, unit cost, destination, quantity, total, Recruit action.
+  Ranged/special stats belong in compact extra badges or accessible detail popover, not a growing scrolling paragraph.
+  Reuse current exact rules/stats/cost resources. Concept numbers were illustrative.
+  Preserve all visiting friendly heroes and garrison as destinations; if numerous, use a compact portrait selector with keyboard navigation.
+  Show portrait selection ring/checkmark, not many large text pills. Keep destination name visible once.
+  Minor controls use icons with title/tooltip, aria-label and focus state. Main purchase actions retain "Recruit N", "Recruit all". Plus/minus, back, close and check are the existing vector/control system, not additional raster art.
+  Availability, costs and quantity remain live. At zero max, quantity=0 and actions disabled with reason.
+  Training defaults to the selected family's applicable stack in selected destination. If multiple candidate stacks/armies exist, use a compact explicit selector, not an endless upgrade list. Use quoteUpgrade and retain per-stack quantity control; do not silently upgrade every army.
+
+RECRUIT ALL — PRECISE CONTRACT
+All available town creatures, not just the selected tier.
+Default each family's form to upgraded if available; respect an explicit player's base choice for that family.
+Always one form per shared family pool. Exclude unbuilt/empty families. Target the currently selected hero or garrison.
+Show inline total troop count and ALL resource costs before click. A hover/focus expandable breakdown lists each family/form/count.
+Use one deterministic batch quote against a temporary evolving state so resource spending, new stacks, existing-stack merges and capacity are accounted for cumulatively. Seven individually legal quotes against the same initial state are not sufficient.
+If the FULL available batch cannot fit or be afforded, disable "Recruit all" with a useful explanation ("Needs 2 more slots", "Short 300 gold", etc.). Keep individual recruitment available. Never silently buy a partial subset or favor arbitrary tier order.
+On click, revalidate and apply as one atomic rules transaction (or the project's equivalent all-or-nothing batch command). No partial spend if one component becomes invalid. Preserve multiplayer/replay determinism and reject stale quotes.
+Existing Recruitment.tsx explicitly states recruiting/upgrading do not ask for approval. Preserve that: inline preview, ONE click executes; no extra confirmation modal.
+Success updates pools, resources and destination army once, with one concise toast.
+
+CHROME / COMPONENT MATERIALS
+Use the provided existing control-button, control-socket, faction frame and dark surfaces through their original nine-slice metadata. Do not stretch an entire frame as a single image.
+Panels can use a near-opaque navy CSS gradient (#122b3d to #071725), 1px antique gold edge (#a8894e), thin inset highlight. No new raster required for panel geometry.
+Keep gold focus/selected outline, muted disabled surface and visible check/lock. Small hover lift/glint 120–160ms; no permanent intense glow. Honor reduced motion.
+Gold amount, count badges, labels, slider track/knob and day number are runtime primitives/live text. Do not crop them out of concept images.
+Use original portrait sockets, resources and icons instead of drawing substitute emojis.
+
+MAP ROUTE — VISUAL CONTRACT
+Replace thick lime/yellow line and dots with the provided painted assets.
+Use the actual pathfinder's ordered steps. Do NOT trace the artistic route in adventure-route-concept.png; the generated map has illustrative geometry.
+One small arrow per visible route tile, around 0.22–0.30 of tile width after transparent-margin normalization. Orient arrow toward the next step. All chevrons point UP in their source PNG, so account for the source direction when calculating rotation.
+Rotate in the map's ground plane, then apply the existing isometric projection once. Do not rotate an already-squashed ellipse as if it were screen-space direction. Use current hex projection/camera transform; never change the map camera angle.
+Today: gold chevrons. Future: bronze chevrons plus an upright hourglass at the first later-day step (and day boundaries where useful). Do not rely on color alone.
+Destination: compass seal about 0.45–0.60 tile width; project to ground, not a giant standing coin. Add blank parchment badge as separate screen-upright element with a dynamic number. Today=1, next day=2, matching existing routeDays semantics. A small tooltip can say "Arrives tomorrow" / "Arrives in 3 turns".
+Recompute the number after day change or movement-cost changes; never bake "2" into the texture.
+Selected hero: hollow gold ring at feet, projected by existing ground transform. Keep owner-color identification elsewhere in existing hero flag/nameplate. Do not obscure horse feet with a solid disc.
+Layer above terrain/roads but below units/buildings, honor fog and occlusion. Markers are pointer-events:none and must not intercept map clicks.
+Do not show the concept-board heading or bottom legend as permanent gameplay HUD.
+Retain explicit battle/blocked destination cues using existing encounter/lock glyphs; the travel compass must not conceal an impending battle.
+Replace BOTH normal path rendering and walking trail rendering so the neon line does not reappear while moving.
+Small optional destination pulse only; disable under reduced motion. At distant zoom simplify the marker density rather than filling the map with bright arrows.
+The source PNGs are intentionally larger than display size. Load once/cache; atlas/downsample through the normal asset build if desired, preserving originals/alpha. Do not load nine 1254px textures repeatedly per tile.
+
+CRITICAL USER REQUIREMENT — KEEP JOURNEYS BETWEEN DAYS
+"When a hero moves over a few days to a location, keep the path so the user can continue without marking it again."
+
+Persist the chosen destination PER HERO, scoped to match and controlling player. Do not keep it only in Recruitment or Adventure component useState.
+Suggested presentation/session intent record:
+  { version:1, matchId, playerId, heroId, target:{q,r}, targetSiteId?:string, status:"planned"|"paused"|"blocked" }
+Keep the intended destination as authoritative intent. The remaining tile list is a cache only: re-quote from current position with current terrain, movement modifiers, known obstacles and movement points.
+A mere hover is temporary preview and must not overwrite the saved destination. An explicit tile selection replaces that hero's intent. Starting or partially completing movement retains it.
+
+Day boundary:
+  End day must NOT delete destinations. Refill movement through current rules as usual.
+  On the next human turn, re-quote selected hero's saved destination and redraw the remaining path with updated today/later styling and arrival number.
+  Enable "Continue journey" (boot-arrow icon and tooltip with current shortcut). Pressing the existing continue_move binding (default Space) does the same.
+  It moves only as far as this day's legal allowance and the existing encounter rules allow. It does not auto-end the day or auto-commit battle/dialog choices.
+  Merely starting the new day does NOT move any hero. Player keeps control.
+  Preserve routes for other heroes when selecting a different hero. Return to a hero restores their route.
+
+Persistence:
+  Include planned journeys in the save/session presentation payload, scoped per match/player/hero. Save/load, autosave, screen changes, town visits, menus, and switching heroes preserve them.
+  Version the optional field; old saves with no journeys load as an empty dictionary.
+  Use the existing save/session architecture; do not introduce a second unscoped localStorage store or leak other players' route plans.
+  In multiplayer a private route plan is intent, not a rules mutation. Movement still uses authoritative validated commands. Do not bypass turn ownership, revision checks, or replays.
+
+Invalidation and interruptions:
+  Arrival: clear that hero's route after actual movement/interaction completes, not merely when an optimistic quote says arrival is possible.
+  New explicit destination replaces only that hero's goal.
+  Explicit Cancel journey clears only that hero's route. Ordinary right-click inspection/panning should not cancel it; change the present right-click clear behavior.
+  No movement left: keep route, disabled Continue with "Continue next day".
+  Combat, reward dialog, cutscene or other interruption: pause; if hero survives and goal remains meaningful, keep goal and re-quote after resolution.
+  Temporarily blocked: retain destination, show blocked status and reason; do not silently clear or move via an unknown/unsafe alternate route. When legal again, Continue can resume.
+  Path changed due to a newly visible blocker or movement modifier: recalculate legally with current information. Surface a meaningful reroute/encounter change before continuation; do not reveal hidden map data.
+  Hero defeated/removed/transferred to another owner: remove or retire the old owner's intent. New match clears old match intents.
+  Town/site destination: retain its identity when available and resolve its current accessible entrance/gate through game rules, not by walking into painted buildings.
+  Teleport/recall: pause and re-quote from new position; do not replay stale path coordinates.
+  Missing/invalid target after map changes: show route unavailable and offer cancel/reselect. Do not crash.
+  Holding Space must not queue duplicate movement, and UI overlays/text inputs must keep their existing key guards.
+
+OBSERVED CODE LOCATIONS (verify current code before changing)
+All paths below relative to C:\Users\lazeb\Desktop\pantheon_realms:
+  packages/ui/src/screens/Recruitment.tsx
+    firstId / pickTier currently don't consistently prefer upgraded when both forms are available.
+    quoteRecruitment / quoteUpgrade and shared family pool already exist.
+    Preserve existing no-confirmation behavior for recruitment/upgrades.
+  packages/ui/src/components/adventure.tsx
+    CreatureStage around line 298: native strip dimensions/anchor, CSS-based animation.
+  packages/ui/src/assets/manifest.ts
+    creatureIdleStrip around line 375; add optional recruitment-resolution source mapping without changing battle rendering.
+  packages/ui/src/styles/adventure.css
+    .ak-recruit__detail and .ak-recruit__upgrades currently use overflow-y:auto.
+    .ak-recruit__bottom max-height and narrow-screen stacking affect available space.
+  packages/ui/src/styles/gui.css
+    .recruit-stage__unit around line 1331 sizes against whole frame, not visible bounds.
+  packages/ui/src/screens/Adventure.tsx
+    target is local useState around line 539.
+    selectHero around 814 explicitly setTarget(null).
+    endDay around 933 explicitly setTarget(null).
+    right-click inspection around 841 also clears target.
+    tryMove around 821 clears after q.reachesDestinationToday.
+    existing continue_move key handler around 984 can resume saved intent instead of local target.
+  packages/presentation/src/adventure.ts
+    buildPath around 1072, pathLayer, drawTrail around 1425, selectRing.
+  packages/ui/src/app/store.ts
+    appropriate centralized UI/session intent ownership.
+  packages/ui/src/app/saves.ts and packages/session/src/save.ts
+    existing envelope/snapshot persistence; extend compatibly.
+Line numbers are inspection hints, not a patch specification.
+
+ACCEPTANCE CHECKS
+1. All six factions, seven tiers, base and upgraded forms render matching art. No incorrect Greek fallback.
+2. Test 1280x720, 1366x768, 1600x900, 1920x1080, plus narrow layout and larger UI scale. No essential control clipped; no scrolling detail/training panels on desktop.
+3. Humanoid, winged, mounted and large/two-hex creatures remain prominent, fully visible, grounded and stable during idle.
+4. Test no dwelling, base only, upgraded, zero stock, no hero, multiple visiting heroes, full army, shared pool, special-resource costs, insufficient money and training disabled reasons.
+5. Recruit all quotes all families once, fits/merges stacks correctly, is atomic and spends exactly the displayed resources. No hidden partial purchases or extra confirmation modal.
+6. Three-day journey: select once, move day1, end day, Continue day2, end day, Continue day3, arrive. No reselect required; only actual arrival clears it.
+7. Switch between two heroes with different destinations; each retains its own goal. Visit town/open settings/return. Save and reload between days. Verify old saves still load.
+8. Block route, change movement bonus, encounter combat, teleport, remove hero, start a new match, and test multiplayer ownership. No stale path execution or leaked route.
+9. Space respects remapping, inputs/dialog guards and movement-in-progress; no duplicate command.
+10. Review gold/bronze/hourglass markers on grass, desert, snow, dark terrain, roads, fog boundaries and zoom levels. No painted opaque background or neon trail remains.
+11. Run npm run check and relevant rules/UI/session/renderer tests after implementation. Add focused batch-recruit and journey-persistence tests, then visual screenshots of the target sizes. These game tests were NOT run by the art-delivery task because it did not modify the game.
+12. Report changed files, asset registrations, screenshots and any remaining native sprite-resolution softness. Do not report the concept as the implemented screen.
+
+DELIVERY VALIDATION
+The nine new images were generated through the built-in image generator. No code-based pixel retouching, resizing or upscaling was used. Python only copied files, read metadata/alpha bounds and created manifests. index.html renders originals for review.
+All 84 creature forms, their sidecars and portraits were found and copied; all six recruitment backgrounds were found.
+Game integration and gameplay behavior are Claude's next task.
+

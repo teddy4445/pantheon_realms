@@ -6,7 +6,7 @@
  * presentation queue. Does NOT own game truth: all game data is read from
  * session.state, and all changes go through session.dispatch (commands).
  */
-import { DEFAULT_CAMPAIGN_DIFFICULTY, KEY_COLOR_LABEL, campaignEpilogueLines, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type MatchState, type Rejection } from '@pr/rules';
+import { DEFAULT_CAMPAIGN_DIFFICULTY, KEY_COLOR_LABEL, matchScore, scenarioMission, type ContentCatalog, type DialogueLine, type GameEvent, type CommandPayload, type HexCoord, type KeyColor, type MatchState, type Rejection } from '@pr/rules';
 import { approachNotes, heroesInView, rivalNotes, summarizeRivalNotes, type RivalNote, type RivalSummaryLine } from './rivalSummary';
 import { clearBattleLogs, recordBattleEvents } from './battleLog';
 import { GameSession, campaignScore, type RandomSkirmish, type SaveSnapshot } from '@pr/session';
@@ -22,9 +22,10 @@ const FINAL_BLOW_BEAT_MS = 1200;
 const LEVEL_UP_FROM: readonly ScreenId[] = ['adventure', 'town', 'hero', 'recruitment', 'pantheon', 'journal'];
 import type { ReactNode } from 'react';
 import type { GameAudio } from '../audio/gameAudio';
-import { campaignEndingArtId } from '../assets/storyArt';
+import { campaignEpilogue, type RunState } from './chronicle';
 import { momentsFromEvents, type Moment } from './moments';
 import { buildReceipt, type RewardReceipt } from './rewards';
+import { sceneIllustrationId } from './missionLedger';
 
 export type ScreenId =
   | 'main-menu'
@@ -77,6 +78,8 @@ export interface ScreenEntry {
   readonly id: ScreenId;
   readonly key: number;
   params: Record<string, unknown>;
+  /** Dialogs set aside while this screen is shown (an inspection opened from a dialog); restored by `back()`. */
+  readonly overlaysBelow?: readonly Overlay[];
 }
 
 /** Who the spellbook belongs to (a hero, or a scripted battle commander). */
@@ -126,6 +129,8 @@ export type Overlay =
   | { kind: 'chest'; heroId: string; siteId: string }
   /** Quest hut: the quest and its reward (random maps). */
   | { kind: 'quest-hut'; heroId: string; siteId: string }
+  /** Sluice (campaign v2): its state, exactly what operating it changes, and Operate. */
+  | { kind: 'sluice'; heroId: string; siteId: string }
   /** Adventure-map divine interventions. */
   | { kind: 'interventions' }
   /** End of a skirmish (victory or defeat). */
@@ -142,7 +147,7 @@ export interface StoryEntry {
   readonly lines: readonly DialogueLine[];
   /** Opened after the scene closes (the campaign epilogue leads to the summary). */
   readonly then?: 'campaign-complete';
-  /** Full-screen story picture behind the scene (the chosen ending of a campaign). */
+  /** Full-screen story picture behind the scene (the chosen ending of a campaign; a v2 chapter's event illustration). */
   readonly backdropAssetId?: string | null;
 }
 
@@ -229,6 +234,14 @@ export class AppStore {
    * the match and hero are the same and the day is before `untilDay`; never saved.
    */
   mapAuras: { matchId: string; heroId: string; id: string; untilDay: number }[] = [];
+  /**
+   * Presentation only: the remaining route of each planned journey as the player
+   * last saw it (key `matchId|playerId|heroId` → route signature). A journey whose
+   * newly quoted route is not the rest of this one has changed (a blocker came into
+   * view, the movement rules changed, a teleport): the map screen says so and the
+   * next Continue first acknowledges it. Never saved; the journey itself is.
+   */
+  readonly routeSeen = new Map<string, string>();
   /** Story scenes waiting to be shown (the dialogue window shows the first). */
   story: StoryEntry[] = [];
   /** Big moments waiting to be shown (miracle cards, new-week banners; the moment layer shows the first). */
@@ -246,6 +259,15 @@ export class AppStore {
   private prevState: MatchState | null = null;
   /** Result of the last high-score recording (summary screen). */
   lastRecord: { table: 'campaign' | 'skirmish'; rank: number | null; score: number } | null = null;
+  /**
+   * The primary campaign run kept while a practice replay of one of its chapters is
+   * played (campaign expansion 2026-10-15): the session's snapshot as JSON text, so
+   * nothing in the replay can reach it, restored exactly by `returnFromPractice`.
+   * `campaign` is a separate copy of its run for the chronicle view. Never saved by
+   * itself; dropped when another game is started or loaded (the replay's own saves
+   * keep it).
+   */
+  practiceReturn: { readonly text: string; readonly campaign: RunState; readonly practiceRunId: string; readonly missionId: string } | null = null;
   private presenters = new Set<Presenter>();
   /** Called synchronously with each batch before the screens re-render (a view can hold what the batch will animate). */
   private preparers = new Set<(events: readonly GameEvent[]) => void>();
@@ -282,8 +304,12 @@ export class AppStore {
     return this.stack[this.stack.length - 1]!;
   }
 
-  goto(id: ScreenId, params: Record<string, unknown> = {}): void {
-    this.stack = [...this.stack, { id, key: keySeq++, params }];
+  goto(id: ScreenId, params: Record<string, unknown> = {}, opts: { setOverlaysAside?: boolean } = {}): void {
+    // An inspection opened from a dialog (the Bestiary from a camp's creature card)
+    // sets the open dialogs aside so they do not cover it, and Back brings them back.
+    const aside = opts.setOverlaysAside && this.overlays.length ? this.overlays : null;
+    if (aside) this.overlays = [];
+    this.stack = [...this.stack, { id, key: keySeq++, params, ...(aside ? { overlaysBelow: aside } : {}) }];
     this.notify();
   }
 
@@ -300,7 +326,9 @@ export class AppStore {
   /** Return to the caller, preserving its params (selection, quantities, tabs). */
   back(): void {
     if (this.stack.length > 1) {
+      const leaving = this.stack[this.stack.length - 1]!;
       this.stack = this.stack.slice(0, -1);
+      if (leaving.overlaysBelow) this.overlays = [...leaving.overlaysBelow, ...this.overlays];
       this.notify();
     }
   }
@@ -377,6 +405,8 @@ export class AppStore {
     this.moments = [];
     this.hints = [];
     this.lastRecord = null;
+    // A held primary run belongs to its practice replay only (loading that replay's own checkpoint keeps it).
+    if (this.practiceReturn && session.campaign?.campaignRunId !== this.practiceReturn.practiceRunId) this.practiceReturn = null;
     this.shownViewer = session.state.players[session.state.activePlayerId]?.controller === 'human' ? session.state.activePlayerId : null;
     clearBattleLogs();
     this.rivalSummary = null;
@@ -429,6 +459,7 @@ export class AppStore {
     this.unsubSession?.();
     this.unsubSession = null;
     this.session = null;
+    this.practiceReturn = null;
     this.moments = [];
     if (this.aiTimer) clearTimeout(this.aiTimer);
     this.aiTimer = null;
@@ -477,9 +508,93 @@ export class AppStore {
     if (s.battle) this.resetTo('battle');
     else this.resetTo('adventure');
     if (s.pendingDecisions.length > 0) this.goto('level-up');
+    this.openCampaignResult();
     this.notify();
     this.checkHandoff();
     this.scheduleAI();
+  }
+
+  // ------------------------------------------------------------ campaign continue & practice
+
+  /**
+   * A campaign game whose current chapter is already won (a save written at its result,
+   * or the run restored after a practice replay) shows that result again: the next
+   * chapter choice or the campaign's completion; a practice replay its own result.
+   */
+  private openCampaignResult(): void {
+    const session = this.session;
+    const run = session?.campaign;
+    if (!session || !run || session.state.outcome.status !== 'victory') return;
+    if (run.branch === 'practice') {
+      this.openOverlay({ kind: 'debrief' });
+      return;
+    }
+    if (!run.completions.some((c) => c.missionId === run.currentMissionId)) return;
+    this.openOverlay({ kind: session.hasNextMission() ? 'debrief' : 'campaign-complete' });
+  }
+
+  /**
+   * Continue the campaign: content v2 — the chosen chapter (required when two are
+   * available), v1 — the next mission. The campaign state machine validates the
+   * choice; a refusal leaves the result open and says why.
+   */
+  continueCampaign(chosenMissionId?: string): Rejection | null {
+    const session = this.session;
+    if (!session?.campaign) return { code: 'invalid_command', message: 'No campaign in progress' };
+    try {
+      session.continueToNextMission(chosenMissionId);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      this.toast(message, 'error');
+      return { code: 'invalid_command', message };
+    }
+    this.closeAllOverlays();
+    this.resetTo('adventure');
+    this.openOverlay({ kind: 'briefing' });
+    this.scheduleAI();
+    return null;
+  }
+
+  /**
+   * Replay a chapter of the primary run as practice (a separate branch that never
+   * advances the run or pays its rewards again). The primary run is kept — in memory
+   * exactly, and as an autosave so quitting during the replay never loses it — and
+   * comes back with `returnFromPractice`.
+   */
+  startPracticeReplay(missionId: string): Rejection | null {
+    const session = this.session;
+    const run = session?.campaign;
+    if (!session || !run) return { code: 'invalid_command', message: 'No campaign in progress' };
+    if (run.branch !== 'primary') return { code: 'invalid_command', message: 'A practice replay is already being played' };
+    const text = JSON.stringify(session.snapshot());
+    try {
+      session.startPractice(missionId);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      this.toast(message, 'error');
+      return { code: 'invalid_command', message };
+    }
+    this.practiceReturn = { text, campaign: JSON.parse(JSON.stringify(run)) as RunState, practiceRunId: session.campaign!.campaignRunId, missionId };
+    void this.saves.autosave(JSON.parse(text) as SaveSnapshot, 'Campaign — before practice replay').catch(() => undefined);
+    this.continueChecked = false;
+    this.closeAllOverlays();
+    this.resetTo('adventure');
+    this.openOverlay({ kind: 'briefing' });
+    return null;
+  }
+
+  /** Leave a practice replay: the primary run comes back exactly as it was kept, with its result open. */
+  returnFromPractice(): boolean {
+    const session = this.session;
+    const keep = this.practiceReturn;
+    if (!session || !keep) return false;
+    this.practiceReturn = null;
+    this.closeAllOverlays();
+    session.load(JSON.parse(keep.text) as SaveSnapshot);
+    this.resetTo('adventure');
+    this.openCampaignResult();
+    this.scheduleAI();
+    return true;
   }
 
   // ------------------------------------------------------------ big moments
@@ -542,9 +657,11 @@ export class AppStore {
     const ids = events.flatMap((e) => (e.kind === 'StoryScene' ? [e.sceneId] : []));
     if (ids.length === 0) return;
     const mission = scenarioMission(this.catalog, session.state);
+    // A v2 chapter that carries several legacy chapters shows their paintings behind later scenes (none otherwise).
+    const backdropAssetId = sceneIllustrationId(mission, session.state);
     const entries = ids.flatMap((id): StoryEntry[] => {
       const scene = mission?.storyScenes?.find((x) => x.id === id);
-      return scene ? [{ key: `${session.state.matchId}:${id}`, title: null, lines: scene.lines }] : [];
+      return scene ? [{ key: `${session.state.matchId}:${id}`, title: null, lines: scene.lines, ...(backdropAssetId ? { backdropAssetId } : {}) }] : [];
     });
     // Let the movement or blow that triggered the scene finish first.
     void this.whenIdle().then(() => {
@@ -919,9 +1036,10 @@ export class AppStore {
         if (last) {
           void this.recordResults();
           const camp = this.catalog.campaigns[session.campaign.campaignId];
-          // The closing scene plays first; the campaign summary follows it.
-          const lines = camp ? campaignEpilogueLines(camp, session.state.mission.flags) : [];
-          if (camp && lines.length) this.playStory({ key: `epilogue:${camp.id}`, title: `${camp.name} — Epilogue`, lines, then: 'campaign-complete', backdropAssetId: campaignEndingArtId(camp, session.state.mission.flags) });
+          // The closing scene plays first; the campaign summary follows it. Content v2 plays its own
+          // epilogue (and the variant of the final choice) over its own painting, never a v1 ending.
+          const { lines, artId } = camp ? campaignEpilogue(camp, session.campaign, session.state.mission.flags) : { lines: [], artId: null };
+          if (camp && lines.length) this.playStory({ key: `epilogue:${camp.id}`, title: `${camp.name} — Epilogue`, lines, then: 'campaign-complete', backdropAssetId: artId });
           else this.openOverlay({ kind: 'campaign-complete' });
         } else this.openOverlay({ kind: 'debrief' });
       } else this.openOverlay({ kind: 'debrief' });

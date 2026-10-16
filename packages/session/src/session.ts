@@ -10,13 +10,18 @@
  * read-only states and immutable events.
  */
 import {
+  MANUAL_BATTLE_MESSAGE,
   NEUTRAL_PLAYER_ID,
+  hexEquals,
+  manualBattlesRequired,
   processCommand,
+  siteAt,
   settleHeroesAtTownGates,
   type CommandPayload,
   type ContentCatalog,
   type GameCommand,
   type GameEvent,
+  type HexCoord,
   type MatchState,
   type PlayerId,
   type Rejection,
@@ -30,7 +35,8 @@ import {
   startPracticeReplay,
   createGeneratedMatch,
   createMissionMatch,
-  nextMissionId,
+  availableChapters,
+  hasNextMission as campaignHasNext,
   type CampaignState,
   type CompletionRecord,
   type GeneratedScenario,
@@ -38,6 +44,16 @@ import {
 } from '@pr/campaign';
 import { battleActor, chooseBattleAction, isAiControlledBattleTurn, runQuickBattle, stepBattleAI, stepStrategicAI } from '@pr/ai';
 import type { SaveSnapshot } from './save';
+import {
+  EMPTY_PRESENTATION,
+  journeyOf,
+  reconcileJourneys,
+  sanitizePresentation,
+  withJourney,
+  withoutJourney,
+  type JourneyIntent,
+  type SessionPresentation,
+} from './journeys';
 
 export type CheckpointKind = 'pre_encounter' | 'dawn' | 'mission_start';
 
@@ -57,6 +73,8 @@ let sessionSerial = 0;
 export class GameSession {
   private _state: MatchState;
   private _campaign: CampaignState | null;
+  /** Each human player's planned journeys (presentation intent, saved with the match; never a rule). */
+  private _presentation: SessionPresentation = EMPTY_PRESENTATION;
   private readonly listeners = new Set<SessionListener>();
   private readonly checkpointListeners = new Set<CheckpointListener>();
   private seq = 0;
@@ -66,17 +84,19 @@ export class GameSession {
   private lastHumanId: PlayerId | null = null;
   readonly sessionId: string;
 
-  private constructor(readonly catalog: ContentCatalog, state: MatchState, campaign: CampaignState | null) {
+  private constructor(readonly catalog: ContentCatalog, state: MatchState, campaign: CampaignState | null, presentation: unknown = undefined) {
     this._state = state;
     this._campaign = campaign;
+    this._presentation = sanitizePresentation(presentation, state);
     sessionSerial += 1;
     this.sessionId = `s${sessionSerial}`;
   }
 
   // ------------------------------------------------------------------ factories
 
-  static newCampaign(catalog: ContentCatalog, campaignId: string, startingGodId: string | null, runId: string, difficultyId: string | null = null): GameSession {
-    const { campaign, start } = startCampaign(catalog, campaignId, { runId, startingGodId, difficultyId });
+  /** A new campaign run: content v2 when the campaign has a chapter graph, unless `contentVersion` pins v1 (tests of the legacy missions). */
+  static newCampaign(catalog: ContentCatalog, campaignId: string, startingGodId: string | null, runId: string, difficultyId: string | null = null, contentVersion?: 1 | 2): GameSession {
+    const { campaign, start } = startCampaign(catalog, campaignId, { runId, startingGodId, difficultyId, ...(contentVersion ? { contentVersion } : {}) });
     return new GameSession(catalog, start.match, campaign);
   }
 
@@ -105,7 +125,7 @@ export class GameSession {
   static fromSnapshot(catalog: ContentCatalog, snapshot: SaveSnapshot): GameSession {
     // Saves from before 2026-10-03 may have heroes on a town's own tile: move them to its gate.
     settleHeroesAtTownGates(catalog, snapshot.match);
-    return new GameSession(catalog, snapshot.match, snapshot.campaign);
+    return new GameSession(catalog, snapshot.match, snapshot.campaign, snapshot.presentation);
   }
 
   // ------------------------------------------------------------------ accessors
@@ -133,7 +153,50 @@ export class GameSession {
   }
 
   snapshot(): SaveSnapshot {
-    return { match: this._state, campaign: this._campaign };
+    return this.snapshotOf(this._state);
+  }
+
+  /** A snapshot of `match` with this session's campaign and (when any) planned journeys. */
+  private snapshotOf(match: MatchState): SaveSnapshot {
+    const any = Object.values(this._presentation.journeys).some((byHero) => Object.keys(byHero).length > 0);
+    return any ? { match, campaign: this._campaign, presentation: this._presentation } : { match, campaign: this._campaign };
+  }
+
+  // ------------------------------------------------------------------ planned journeys
+
+  get presentation(): SessionPresentation {
+    return this._presentation;
+  }
+
+  /** The planned journey of one of `playerId`'s heroes (null when none). */
+  journey(heroId: string, playerId: PlayerId = this.humanPlayerId): JourneyIntent | null {
+    return journeyOf(this._presentation, playerId, heroId);
+  }
+
+  /**
+   * Plan (or replace) a hero's journey: an explicit choice of destination by the player
+   * who commands the hero. A mere hover never calls this.
+   */
+  planJourney(heroId: string, target: HexCoord, playerId: PlayerId = this.humanPlayerId): JourneyIntent | null {
+    const hero = this._state.heroes[heroId];
+    if (!hero || hero.ownerId !== playerId || hero.status !== 'active' || this._state.players[playerId]?.controller !== 'human') return null;
+    const site = siteAt(this.catalog, this._state, target);
+    const j: JourneyIntent = {
+      version: 1,
+      matchId: this._state.matchId,
+      playerId,
+      heroId,
+      target: { q: target.q, r: target.r },
+      ...(site ? { targetSiteId: site.def.id } : {}),
+      status: 'planned',
+    };
+    this._presentation = withJourney(this._presentation, j);
+    return j;
+  }
+
+  /** Cancel one hero's journey (explicit Cancel journey); other heroes keep theirs. */
+  cancelJourney(heroId: string, playerId: PlayerId = this.humanPlayerId): void {
+    this._presentation = withoutJourney(this._presentation, playerId, heroId);
   }
 
   subscribe(listener: SessionListener): () => void {
@@ -162,26 +225,49 @@ export class GameSession {
     return `${this.sessionId}:c${this.seq}:r${this._state.revision}`;
   }
 
-  /** Submit a human command. Returns the rejection unchanged when invalid. */
-  dispatch(payload: CommandPayload, actor?: PlayerId): DispatchResult {
+  /**
+   * Submit a human command. Returns the rejection unchanged when invalid.
+   * `automated` marks an order chosen by auto-combat rather than the player; the
+   * rules refuse it for a human side of a campaign battle (handoff 2026-10-15).
+   */
+  dispatch(payload: CommandPayload, actor?: PlayerId, automated = false): DispatchResult {
     const before = this._state;
     if (!actor) {
       // In a battle the side that acts now commands (two human sides in a hot-seat battle).
       const battleSide = before.battle && payload.kind.startsWith('Battle') ? battleActor(before) : null;
       actor = battleSide && before.players[battleSide]?.controller === 'human' ? battleSide : this.humanPlayerId;
     }
-    const command = { ...payload, commandId: this.nextCommandId(), expectedRevision: before.revision, actorPlayerId: actor } as GameCommand;
+    const base = { ...payload, commandId: this.nextCommandId(), expectedRevision: before.revision, actorPlayerId: actor };
+    const command = (automated ? { ...base, automated: true } : base) as GameCommand;
     const res = processCommand({ catalog: this.catalog }, before, command);
     if (!res.ok) return { ok: false, rejection: res.rejection };
     this._state = res.state;
     if (before.players[actor]?.controller === 'human') this.lastHumanId = actor;
-    if (res.events.some((e) => e.kind === 'BattleStarted')) this.checkpoint('pre_encounter', { match: before, campaign: this._campaign });
+    if (res.events.some((e) => e.kind === 'BattleStarted')) this.checkpoint('pre_encounter', this.snapshotOf(before));
+    // Following a planned journey again resumes it (a paused journey is planned once more).
+    if (payload.kind === 'MoveHero' && !this._state.battle) {
+      const j = journeyOf(this._presentation, actor, payload.heroId);
+      if (j && j.status === 'paused') this._presentation = withJourney(this._presentation, { ...j, status: 'planned' });
+    }
     this.afterCommit(res.events);
     this.publish(res.events, 'human');
     return { ok: true, events: res.events };
   }
 
   private afterCommit(events: readonly GameEvent[]): void {
+    // Journeys follow the state: lost or arrived heroes drop theirs; heroes in a battle, or
+    // carried elsewhere (a portal, Homecoming), pause theirs — re-quoted from where they are.
+    const b = this._state.battle;
+    const interrupted = new Set<string>(b ? [b.sides.attacker.commander?.heroId, b.sides.defender.commander?.heroId].filter((h): h is string => !!h) : []);
+    for (const e of events) {
+      if (e.kind !== 'HeroTeleported') continue;
+      // A journey to the portal itself ends when the hero goes through it.
+      const owner = this._state.heroes[e.heroId]?.ownerId;
+      const j = owner ? journeyOf(this._presentation, owner, e.heroId) : null;
+      if (owner && j && e.viaSiteId && (j.targetSiteId === e.viaSiteId || hexEquals(j.target, e.from))) this._presentation = withoutJourney(this._presentation, owner, e.heroId);
+      else interrupted.add(e.heroId);
+    }
+    this._presentation = reconcileJourneys(this.catalog, this._state, this._presentation, interrupted);
     if (this._campaign) {
       const won = events.find((e) => e.kind === 'BattleEnded' && e.winner === (this._state.lastBattleResult?.playerSide ?? '__'));
       if (won) this._campaign = noteBattleWon(this._campaign);
@@ -221,21 +307,30 @@ export class GameSession {
       result = stepStrategicAI(this.catalog, s, this.aiTried);
       if (result.command?.kind === 'EndTurn') this.aiTurnOwner = null;
     }
-    if (result.events.some((e) => e.kind === 'BattleStarted')) this.checkpoint('pre_encounter', { match: s, campaign: this._campaign });
+    if (result.events.some((e) => e.kind === 'BattleStarted')) this.checkpoint('pre_encounter', this.snapshotOf(s));
     this._state = result.state;
     this.afterCommit(result.events);
     this.publish(result.events, 'ai');
     return { ok: true, events: result.events };
   }
 
-  /** Auto-combat for the human side: the tactical AI chooses, the normal processor validates. */
+  /**
+   * Auto-combat for the human side: the tactical AI chooses, the normal processor
+   * validates. The order is marked automated, so in a campaign battle the rules
+   * refuse it (`manual_battle_required`) and nothing changes.
+   */
   autoBattleStep(): DispatchResult {
     const s = this._state;
     if (!s.battle || isAiControlledBattleTurn(s)) return { ok: false, rejection: { code: 'illegal_action', message: 'Not your stack' } };
     const payload = chooseBattleAction(this.catalog, s);
     const actor = battleActor(s) ?? this.humanPlayerId;
     if (!payload) return { ok: false, rejection: { code: 'illegal_action', message: 'No action' } };
-    return this.dispatch(payload, actor === NEUTRAL_PLAYER_ID ? this.humanPlayerId : actor);
+    return this.dispatch(payload, actor === NEUTRAL_PLAYER_ID ? this.humanPlayerId : actor, true);
+  }
+
+  /** Campaign battles are fought by hand: no auto-combat, no quick battle (handoff 2026-10-15). */
+  get manualBattlesOnly(): boolean {
+    return manualBattlesRequired(this._state);
   }
 
   /**
@@ -249,9 +344,10 @@ export class GameSession {
     const before = this._state;
     const actor = this.humanPlayerId;
     if (before.players[actor]?.controller !== 'human' || before.activePlayerId !== actor) return { ok: false, rejection: { code: 'not_your_turn', message: 'It is not your turn' } };
+    if (manualBattlesRequired(before)) return { ok: false, rejection: { code: 'manual_battle_required', message: MANUAL_BATTLE_MESSAGE } };
     const run = runQuickBattle(this.catalog, before, actor, payload);
     if (!run.ok) return { ok: false, rejection: { code: 'invalid_command', message: run.reason } };
-    this.checkpoint('pre_encounter', { match: before, campaign: this._campaign });
+    this.checkpoint('pre_encounter', this.snapshotOf(before));
     this._state = run.state;
     this.lastHumanId = actor;
     this.afterCommit(run.events);
@@ -269,15 +365,26 @@ export class GameSession {
   }
 
   hasNextMission(): boolean {
-    return !!this._campaign && this._campaign.branch === 'primary' && nextMissionId(this.catalog, this._campaign) !== null;
+    return !!this._campaign && this._campaign.branch === 'primary' && campaignHasNext(this.catalog, this._campaign);
+  }
+
+  /**
+   * Content v2: the chapters the player may start next (after the current one is
+   * complete), validated by the campaign state machine. Empty in a practice replay.
+   */
+  availableChapters(): string[] {
+    if (!this._campaign || this._campaign.branch !== 'primary') return [];
+    return availableChapters(this.catalog, this._campaign).map((c) => c.missionId);
   }
 
   /** Initialize the next mission from the committed record (deterministic, idempotent). */
-  continueToNextMission(): void {
+  continueToNextMission(chosenMissionId?: string): void {
     if (!this._campaign) throw new Error('Not a campaign');
-    const { campaign, start } = startNextMission(this.catalog, this._campaign);
+    if (this._campaign.branch !== 'primary') throw new Error('A practice replay never advances the campaign');
+    const { campaign, start } = startNextMission(this.catalog, this._campaign, chosenMissionId);
     this._campaign = campaign;
     this._state = start.match;
+    this._presentation = EMPTY_PRESENTATION;
     this.checkpoint('mission_start', this.snapshot());
     this.publish([], 'start');
   }
@@ -308,6 +415,7 @@ export class GameSession {
       this._state = match;
     }
     this.lastHumanId = null;
+    this._presentation = EMPTY_PRESENTATION;
     this.publish([], 'start');
   }
 
@@ -316,6 +424,7 @@ export class GameSession {
     const { campaign, start } = startPracticeReplay(this.catalog, this._campaign, missionId);
     this._campaign = campaign;
     this._state = start.match;
+    this._presentation = EMPTY_PRESENTATION;
     this.publish([], 'start');
   }
 
@@ -323,6 +432,7 @@ export class GameSession {
   load(snapshot: SaveSnapshot): void {
     this._state = snapshot.match;
     this._campaign = snapshot.campaign;
+    this._presentation = sanitizePresentation(snapshot.presentation, snapshot.match);
     this.aiTried.clear();
     this.aiTurnOwner = null;
     this.lastHumanId = null;

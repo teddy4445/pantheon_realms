@@ -1,19 +1,22 @@
 import { expect, test } from '@playwright/test';
 import { clickHex, endDay, inspect, readStory, startCampaign, waitFor } from './helpers';
+import { startLegacyCampaign } from './fixtures';
+import { fightByHand } from './handBattle';
 
 /**
  * App-level journey through Mission 1 using only the real UI input paths:
  * setup flow → town build → recruitment → movement → pre-battle dialog →
- * tactical battle (auto-combat) → result → save → load → Continue.
+ * tactical battle (fought by hand) → result → save → load → Continue.
  */
 test('Three Beacons M01 journey through the UI', async ({ page }) => {
-  test.setTimeout(300_000);
+  test.setTimeout(900_000);
   // Faster battle playback keeps the software-rendered run short (results are identical at any speed).
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-settings').click();
   await page.getByLabel('Battle speed').selectOption('2');
   await page.getByTestId('settings-apply').click();
-  await startCampaign(page);
+  // A legacy (content v1) run: Mission 1 of the original three (new runs play the v2 chapters).
+  await startLegacyCampaign(page);
 
   // Town: build the Veteran Barracks (confirmation dialog), once per day.
   await page.getByTestId('town-tab-asterion').click();
@@ -53,15 +56,16 @@ test('Three Beacons M01 journey through the UI', async ({ page }) => {
     await clickHex(page, 10, 7);
     await clickHex(page, 10, 7);
     await page.waitForTimeout(400);
-    await waitFor(page, (x) => !x.busy, 'movement playback', 15_000);
+    await waitFor(page, (x) => !x.busy, 'movement playback', 60_000);
   }
   await waitFor(page, (x) => x.overlays.includes('encounter'), 'pre-battle dialog');
   await page.getByTestId('encounter-attack').click();
-  await waitFor(page, (x) => x.screen === 'battle', 'battle screen', 15_000);
+  await waitFor(page, (x) => x.screen === 'battle', 'battle screen', 60_000);
   expect((await inspect(page)).state.battle).not.toBeNull();
 
-  // Tactical battle resolved by auto-combat through the normal processor.
-  await page.getByTestId('battle-auto').click();
+  // Tactical battle fought by hand: campaign battles have no auto-combat (2026-10-15).
+  await expect(page.getByTestId('battle-auto')).toHaveCount(0);
+  await fightByHand(page);
   s = await waitFor(page, (x) => x.screen === 'battle-result', 'battle result', 120_000);
   expect(s.state.lastBattleResult.winner).toBe('attacker');
   expect(s.state.world.sites.m01_ford.cleared).toBe(true);
@@ -76,15 +80,15 @@ test('Three Beacons M01 journey through the UI', async ({ page }) => {
   // Rewards were granted exactly once (reopening the result would not add more).
   expect(s.state.players.player.wallet.gold).toBe(goldAfterBattle);
 
-  // Save into manual slot 1, then load it back.
+  // Save into manual slot 2 (slot 1 holds the imported legacy run), then load it back.
   await page.keyboard.press('Escape');
   await page.getByRole('button', { name: /Save Game/ }).click();
-  await page.getByTestId('save-manual-1').click();
+  await page.getByTestId('save-manual-2').click();
   await page.getByTestId('save-confirm').click();
-  await expect(page.getByTestId('save-manual-1')).toContainText('Day');
+  await expect(page.getByTestId('save-manual-2')).toContainText('Day');
   const saved = (await inspect(page)).state;
   await page.getByRole('tab', { name: 'Load' }).click();
-  await page.getByTestId('save-manual-1').click();
+  await page.getByTestId('save-manual-2').click();
   await page.getByTestId('load-confirm').click();
   await page.getByTestId('confirm-ok').click();
   s = await waitFor(page, (x) => x.screen === 'adventure' && x.overlays.length === 0, 'loaded game');

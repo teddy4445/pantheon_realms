@@ -144,6 +144,7 @@ function completeObjective(tx: Tx, def: ObjectiveDefinition): void {
     const heroId = mission?.player.hero.heroId ?? null;
     grantReward(tx, missionPlayerId(tx.catalog, tx.state), heroId, def.reward, `objective:${def.id}`, def.title);
   }
+  if (def.completesMission) setFlag(tx, MISSION_VICTORY_FLAG);
   for (const next of def.unlocks ?? []) {
     const ns = tx.state.mission.objectives[next];
     if (ns && ns.status === 'locked') {
@@ -175,8 +176,8 @@ export function evaluateObjectives(tx: Tx): void {
   for (let pass = 0; pass < 8; pass++) {
     let changed = false;
     for (const def of defs) {
-      const st = tx.state.mission.objectives[def.id];
-      if (!st) continue;
+      // A save made before the mission gained this objective: it starts as the mission declares.
+      const st = (tx.state.mission.objectives[def.id] ??= { status: def.initialStatus, completedOnDay: null, rewardGranted: false });
       if (st.status === 'locked' && def.requires?.length) {
         if (!def.requires.every((id) => tx.state.mission.objectives[id]?.status === 'completed')) continue;
         st.status = 'active';

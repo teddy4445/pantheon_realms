@@ -57,10 +57,16 @@ export class SaveManager {
       .sort((a, b) => (b.savedAt ?? '').localeCompare(a.savedAt ?? ''));
   }
 
-  /** Most recent compatible playable save (manual, auto or checkpoint). */
+  /**
+   * Most recent compatible playable save (manual, auto or checkpoint). A campaign's
+   * practice replay never stands in for the run it was started from: Continue
+   * resumes the most recent primary-run or skirmish save, and a practice save only
+   * when there is no other.
+   */
   async continueTarget(): Promise<SlotInfo | null> {
     const all = await this.list();
-    return all.find((s) => s.compatibility.status === 'ok' && s.envelope && s.envelope.snapshot.match.outcome.status === 'running' && !s.envelope.snapshot.match.battle) ?? null;
+    const playable = all.filter((s) => s.compatibility.status === 'ok' && s.envelope && s.envelope.snapshot.match.outcome.status === 'running' && !s.envelope.snapshot.match.battle);
+    return playable.find((s) => s.envelope!.snapshot.campaign?.branch !== 'practice') ?? playable[0] ?? null;
   }
 
   async write(id: string, kind: SaveKind, name: string, snapshot: SaveSnapshot): Promise<SaveEnvelope> {

@@ -69,11 +69,15 @@ export class GameDriver {
     return res.rejection;
   }
 
-  /** Resolve the current battle with the tactical AI on BOTH sides (auto-combat). */
+  /**
+   * Resolve the current battle with the tactical AI on BOTH sides. The driver
+   * stands in for the player, so its orders are not automation (campaign battles
+   * refuse auto-combat; the scripted player still gives orders).
+   */
   autoBattle(maxSteps = 2000): void {
     for (let i = 0; i < maxSteps && this.state.battle; i++) {
       if (!battleActor(this.state)) break;
-      const r = stepBattleAI(this.catalog, this.state);
+      const r = stepBattleAI(this.catalog, this.state, { playerSimulation: true });
       this.state = r.state;
       this.events.push(...r.events);
     }
@@ -82,7 +86,7 @@ export class GameDriver {
 
   /** One tactical AI action for whichever side is active. */
   autoBattleStep(): void {
-    const r = stepBattleAI(this.catalog, this.state);
+    const r = stepBattleAI(this.catalog, this.state, { playerSimulation: true });
     this.state = r.state;
     this.events.push(...r.events);
   }

@@ -11,7 +11,9 @@
  */
 export * from './palette';
 export * from './environmentArt';
+export * from './routeArt';
 export * from './graphics';
 export * from './hexmath';
 export * from './sprites';
 export * from './fxLooks';
+export * from './projectiles';

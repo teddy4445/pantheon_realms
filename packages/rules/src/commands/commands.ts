@@ -50,6 +50,11 @@ export type CommandPayload =
       quantity: number;
       destination: RecruitDestination;
     }
+  /**
+   * Recruit all: several families at once, one form each, into one destination — atomic
+   * (every line or none). See quoteRecruitBatch / recruitAllItems.
+   */
+  | { kind: 'RecruitBatch'; townId: TownId; items: { creatureId: CreatureId; quantity: number }[]; destination: RecruitDestination }
   | { kind: 'UpgradeStack'; townId: TownId; army: ArmyRef; slot: number; quantity: number }
   | { kind: 'TransferStack'; from: ArmyRef; fromSlot: number; to: ArmyRef; toSlot: number; quantity: number }
   | { kind: 'SelectGod'; godId: GodId }
@@ -69,7 +74,20 @@ export type CommandPayload =
   /** Buy item `index` of a town's weekly stock: the Artifact Merchant's (default) or the Workshop's. */
   | { kind: 'BuyArtifact'; townId: TownId; heroId: HeroId; index: number; shop?: 'merchant' | 'workshop' }
   // --- World map and divine interventions (proposed this build) ---
-  | { kind: 'RecruitFromCamp'; heroId: HeroId; siteId: SiteId; quantity: number }
+  /**
+   * Hire at a creature camp. `creatureId` (battle FX & neutral upgrades, 2026-10-15) picks
+   * the form at a neutral hiring site that hires both forms of its family; omitted, the
+   * camp's listed creature (old commands, the AI and old saves are unchanged).
+   */
+  | { kind: 'RecruitFromCamp'; heroId: HeroId; siteId: SiteId; quantity: number; creatureId?: CreatureId }
+  /**
+   * Train `quantity` of the visiting hero's base stack of `fromCreatureId` into its upgraded
+   * form at a neutral hiring site that hires both forms: the price difference, no stock used.
+   * `slot` picks the stack (default: the hero's first stack of that creature).
+   */
+  | { kind: 'TrainAtCamp'; heroId: HeroId; siteId: SiteId; fromCreatureId: CreatureId; quantity: number; slot?: number }
+  /** Campaign v2: open or close a sluice (the hero stands on it). */
+  | { kind: 'OperateSluice'; heroId: HeroId; siteId: SiteId }
   | { kind: 'ResolveMapEvent'; heroId: HeroId; siteId: SiteId; optionIndex: number }
   | { kind: 'OpenChest'; heroId: HeroId; siteId: SiteId; choice: 'gold' | 'xp' }
   | { kind: 'CompleteQuestHut'; heroId: HeroId; siteId: SiteId }
@@ -102,6 +120,11 @@ export type GameCommand = CommandPayload & {
   readonly commandId: CommandId;
   readonly expectedRevision: number;
   readonly actorPlayerId: PlayerId;
+  /**
+   * Chosen by automation (the tactical AI: auto-combat, quick battles), not by the player.
+   * Refused for a human side of a campaign battle (`automationForbidden`, 2026-10-15).
+   */
+  readonly automated?: boolean;
 };
 
 export const BATTLE_COMMAND_KINDS: ReadonlySet<CommandKind> = new Set<CommandKind>([

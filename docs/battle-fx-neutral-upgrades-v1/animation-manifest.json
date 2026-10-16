@@ -1,0 +1,3061 @@
+{
+  "schema": "pantheon-frame-regions-proposal-1",
+  "pixelEditing": false,
+  "sets": {
+    "dawncrest_pegasus": {
+      "baseId": "pegasus",
+      "facing": "right",
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-dawncrest_pegasus.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                16,
+                15,
+                260,
+                251
+              ],
+              "anchor": [
+                130.0,
+                247
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ]
+            },
+            {
+              "rect": [
+                284,
+                13,
+                218,
+                253
+              ],
+              "anchor": [
+                109.0,
+                249
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ]
+            },
+            {
+              "rect": [
+                516,
+                33,
+                240,
+                233
+              ],
+              "anchor": [
+                120.0,
+                229
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ]
+            },
+            {
+              "rect": [
+                771,
+                16,
+                237,
+                251
+              ],
+              "anchor": [
+                118.5,
+                247
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-dawncrest_pegasus.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                12,
+                279,
+                259,
+                234
+              ],
+              "anchor": [
+                134.0,
+                232
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ]
+            },
+            {
+              "rect": [
+                276,
+                278,
+                237,
+                235
+              ],
+              "anchor": [
+                117.0,
+                232
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ]
+            },
+            {
+              "rect": [
+                514,
+                276,
+                251,
+                237
+              ],
+              "anchor": [
+                122.0,
+                235
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ]
+            },
+            {
+              "rect": [
+                765,
+                277,
+                249,
+                236
+              ],
+              "anchor": [
+                124.5,
+                233
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-dawncrest_pegasus.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                7,
+                569,
+                263,
+                194
+              ],
+              "anchor": [
+                139.0,
+                190
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ]
+            },
+            {
+              "rect": [
+                275,
+                513,
+                234,
+                257
+              ],
+              "anchor": [
+                118.0,
+                253
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ]
+            },
+            {
+              "rect": [
+                509,
+                516,
+                276,
+                248
+              ],
+              "anchor": [
+                127.0,
+                244
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ]
+            },
+            {
+              "rect": [
+                785,
+                525,
+                227,
+                239
+              ],
+              "anchor": [
+                104.5,
+                235
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-dawncrest_pegasus.png",
+          "fps": 5,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                12,
+                778,
+                261,
+                246
+              ],
+              "anchor": [
+                134.0,
+                242
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ]
+            },
+            {
+              "rect": [
+                277,
+                785,
+                229,
+                239
+              ],
+              "anchor": [
+                116.0,
+                235
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ]
+            },
+            {
+              "rect": [
+                522,
+                776,
+                248,
+                248
+              ],
+              "anchor": [
+                114.0,
+                244
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ]
+            },
+            {
+              "rect": [
+                773,
+                777,
+                234,
+                250
+              ],
+              "anchor": [
+                116.5,
+                247
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-dawncrest_pegasus.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                13,
+                1027,
+                265,
+                252
+              ],
+              "anchor": [
+                133.0,
+                249
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ]
+            },
+            {
+              "rect": [
+                280,
+                1045,
+                239,
+                232
+              ],
+              "anchor": [
+                113.0,
+                228
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ]
+            },
+            {
+              "rect": [
+                523,
+                1061,
+                238,
+                217
+              ],
+              "anchor": [
+                113.0,
+                213
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ]
+            },
+            {
+              "rect": [
+                770,
+                1034,
+                236,
+                241
+              ],
+              "anchor": [
+                119.5,
+                237
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-dawncrest_pegasus.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                16,
+                1279,
+                259,
+                238
+              ],
+              "anchor": [
+                130.0,
+                234
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ]
+            },
+            {
+              "rect": [
+                275,
+                1297,
+                240,
+                215
+              ],
+              "anchor": [
+                118.0,
+                211
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ]
+            },
+            {
+              "rect": [
+                515,
+                1353,
+                248,
+                159
+              ],
+              "anchor": [
+                121.0,
+                155
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ]
+            },
+            {
+              "rect": [
+                763,
+                1408,
+                252,
+                91
+              ],
+              "anchor": [
+                126.5,
+                87
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Explicit pose reuse, not separately generated victory art."
+        },
+        "ability": {
+          "alias": "defend",
+          "note": "Existing ability mechanics unchanged; presentation pose reuse."
+        },
+        "takeoff": {
+          "file": "new-assets/atlas-dawncrest_pegasus-flight.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                18,
+                152,
+                358,
+                214
+              ],
+              "anchor": [
+                179.0,
+                210
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                0,
+                0
+              ]
+            },
+            {
+              "rect": [
+                388,
+                18,
+                330,
+                347
+              ],
+              "anchor": [
+                165.0,
+                343
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                0,
+                1
+              ]
+            },
+            {
+              "rect": [
+                740,
+                26,
+                312,
+                342
+              ],
+              "anchor": [
+                156.0,
+                338
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                0,
+                2
+              ]
+            },
+            {
+              "rect": [
+                1090,
+                14,
+                344,
+                352
+              ],
+              "anchor": [
+                172.0,
+                348
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                0,
+                3
+              ]
+            }
+          ],
+          "stageLift": 0
+        },
+        "fly": {
+          "file": "new-assets/atlas-dawncrest_pegasus-flight.png",
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                27,
+                370,
+                346,
+                337
+              ],
+              "anchor": [
+                170.0,
+                333
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                1,
+                0
+              ]
+            },
+            {
+              "rect": [
+                387,
+                399,
+                333,
+                291
+              ],
+              "anchor": [
+                166.0,
+                287
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                1,
+                1
+              ]
+            },
+            {
+              "rect": [
+                728,
+                445,
+                356,
+                247
+              ],
+              "anchor": [
+                168.0,
+                243
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                1,
+                2
+              ]
+            },
+            {
+              "rect": [
+                1094,
+                454,
+                339,
+                244
+              ],
+              "anchor": [
+                168.0,
+                240
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                1,
+                3
+              ]
+            }
+          ],
+          "stageLift": 18
+        },
+        "landing": {
+          "file": "new-assets/atlas-dawncrest_pegasus-flight.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                19,
+                714,
+                338,
+                331
+              ],
+              "anchor": [
+                178.0,
+                327
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                2,
+                0
+              ]
+            },
+            {
+              "rect": [
+                386,
+                724,
+                338,
+                320
+              ],
+              "anchor": [
+                167.0,
+                316
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                2,
+                1
+              ]
+            },
+            {
+              "rect": [
+                739,
+                766,
+                340,
+                281
+              ],
+              "anchor": [
+                157.0,
+                277
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                2,
+                2
+              ]
+            },
+            {
+              "rect": [
+                1105,
+                758,
+                321,
+                289
+              ],
+              "anchor": [
+                157.0,
+                285
+              ],
+              "sourceScale": 0.65,
+              "sourceCell": [
+                2,
+                3
+              ]
+            }
+          ],
+          "stageLift": 0
+        }
+      },
+      "defaultStageScale": 1
+    },
+    "crownroot_runner": {
+      "baseId": "root_runner",
+      "facing": "right",
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-crownroot_runner.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                21,
+                21,
+                219,
+                237
+              ],
+              "anchor": [
+                109.5,
+                233
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ]
+            },
+            {
+              "rect": [
+                276,
+                22,
+                220,
+                235
+              ],
+              "anchor": [
+                110.0,
+                231
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ]
+            },
+            {
+              "rect": [
+                526,
+                22,
+                227,
+                236
+              ],
+              "anchor": [
+                113.5,
+                232
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ]
+            },
+            {
+              "rect": [
+                789,
+                23,
+                220,
+                234
+              ],
+              "anchor": [
+                110.0,
+                230
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-crownroot_runner.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                16,
+                279,
+                233,
+                225
+              ],
+              "anchor": [
+                114.5,
+                221
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ]
+            },
+            {
+              "rect": [
+                271,
+                278,
+                231,
+                225
+              ],
+              "anchor": [
+                115.0,
+                221
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ]
+            },
+            {
+              "rect": [
+                519,
+                279,
+                238,
+                226
+              ],
+              "anchor": [
+                120.5,
+                222
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ]
+            },
+            {
+              "rect": [
+                761,
+                297,
+                252,
+                196
+              ],
+              "anchor": [
+                138.0,
+                192
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-crownroot_runner.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                19,
+                533,
+                226,
+                220
+              ],
+              "anchor": [
+                111.5,
+                216
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ]
+            },
+            {
+              "rect": [
+                277,
+                531,
+                241,
+                214
+              ],
+              "anchor": [
+                109.0,
+                210
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ]
+            },
+            {
+              "rect": [
+                526,
+                527,
+                240,
+                219
+              ],
+              "anchor": [
+                113.5,
+                215
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ]
+            },
+            {
+              "rect": [
+                785,
+                531,
+                217,
+                222
+              ],
+              "anchor": [
+                114.0,
+                218
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-crownroot_runner.png",
+          "fps": 5,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                22,
+                786,
+                232,
+                217
+              ],
+              "anchor": [
+                108.5,
+                213
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ]
+            },
+            {
+              "rect": [
+                270,
+                766,
+                242,
+                230
+              ],
+              "anchor": [
+                116.0,
+                226
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ]
+            },
+            {
+              "rect": [
+                522,
+                793,
+                241,
+                213
+              ],
+              "anchor": [
+                117.5,
+                209
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ]
+            },
+            {
+              "rect": [
+                787,
+                782,
+                222,
+                224
+              ],
+              "anchor": [
+                112.0,
+                220
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-crownroot_runner.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                16,
+                1037,
+                232,
+                204
+              ],
+              "anchor": [
+                114.5,
+                200
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ]
+            },
+            {
+              "rect": [
+                270,
+                1021,
+                230,
+                192
+              ],
+              "anchor": [
+                116.0,
+                188
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ]
+            },
+            {
+              "rect": [
+                528,
+                1059,
+                227,
+                191
+              ],
+              "anchor": [
+                111.5,
+                187
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ]
+            },
+            {
+              "rect": [
+                777,
+                1054,
+                231,
+                192
+              ],
+              "anchor": [
+                122.0,
+                188
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-crownroot_runner.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                21,
+                1279,
+                228,
+                213
+              ],
+              "anchor": [
+                109.5,
+                209
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ]
+            },
+            {
+              "rect": [
+                270,
+                1294,
+                229,
+                194
+              ],
+              "anchor": [
+                116.0,
+                190
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ]
+            },
+            {
+              "rect": [
+                515,
+                1326,
+                232,
+                161
+              ],
+              "anchor": [
+                124.5,
+                157
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ]
+            },
+            {
+              "rect": [
+                760,
+                1359,
+                245,
+                119
+              ],
+              "anchor": [
+                139.0,
+                115
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Explicit pose reuse, not separately generated victory art."
+        },
+        "ability": {
+          "alias": "attack",
+          "note": "Existing ability mechanics unchanged; presentation pose reuse."
+        }
+      },
+      "defaultStageScale": 1
+    },
+    "crested_serpopard": {
+      "baseId": "serpopard",
+      "facing": "right",
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-crested_serpopard.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                10,
+                46,
+                224,
+                217
+              ],
+              "anchor": [
+                112.0,
+                213
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ]
+            },
+            {
+              "rect": [
+                270,
+                47,
+                218,
+                216
+              ],
+              "anchor": [
+                109.0,
+                212
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ]
+            },
+            {
+              "rect": [
+                522,
+                50,
+                239,
+                213
+              ],
+              "anchor": [
+                119.5,
+                209
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ]
+            },
+            {
+              "rect": [
+                771,
+                50,
+                237,
+                213
+              ],
+              "anchor": [
+                118.5,
+                209
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-crested_serpopard.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                8,
+                312,
+                234,
+                204
+              ],
+              "anchor": [
+                114.0,
+                200
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ]
+            },
+            {
+              "rect": [
+                257,
+                315,
+                249,
+                197
+              ],
+              "anchor": [
+                122.0,
+                193
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ]
+            },
+            {
+              "rect": [
+                508,
+                328,
+                256,
+                183
+              ],
+              "anchor": [
+                133.5,
+                179
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ]
+            },
+            {
+              "rect": [
+                764,
+                331,
+                254,
+                179
+              ],
+              "anchor": [
+                125.5,
+                175
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-crested_serpopard.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                13,
+                536,
+                215,
+                218
+              ],
+              "anchor": [
+                109.0,
+                214
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ]
+            },
+            {
+              "rect": [
+                230,
+                548,
+                297,
+                199
+              ],
+              "anchor": [
+                149.0,
+                195
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ]
+            },
+            {
+              "rect": [
+                527,
+                559,
+                263,
+                195
+              ],
+              "anchor": [
+                114.5,
+                191
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ]
+            },
+            {
+              "rect": [
+                793,
+                535,
+                217,
+                222
+              ],
+              "anchor": [
+                96.5,
+                218
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-crested_serpopard.png",
+          "fps": 5,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                22,
+                822,
+                224,
+                176
+              ],
+              "anchor": [
+                100.0,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ]
+            },
+            {
+              "rect": [
+                271,
+                785,
+                226,
+                212
+              ],
+              "anchor": [
+                108.0,
+                208
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ]
+            },
+            {
+              "rect": [
+                519,
+                821,
+                225,
+                180
+              ],
+              "anchor": [
+                122.5,
+                176
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ]
+            },
+            {
+              "rect": [
+                780,
+                800,
+                219,
+                206
+              ],
+              "anchor": [
+                109.5,
+                202
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-crested_serpopard.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                15,
+                1033,
+                229,
+                209
+              ],
+              "anchor": [
+                107.0,
+                205
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ]
+            },
+            {
+              "rect": [
+                272,
+                1064,
+                218,
+                175
+              ],
+              "anchor": [
+                107.0,
+                171
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ]
+            },
+            {
+              "rect": [
+                514,
+                1078,
+                238,
+                161
+              ],
+              "anchor": [
+                127.5,
+                157
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ]
+            },
+            {
+              "rect": [
+                766,
+                1060,
+                243,
+                184
+              ],
+              "anchor": [
+                123.5,
+                180
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-crested_serpopard.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                12,
+                1299,
+                216,
+                180
+              ],
+              "anchor": [
+                110.0,
+                176
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ]
+            },
+            {
+              "rect": [
+                245,
+                1354,
+                225,
+                122
+              ],
+              "anchor": [
+                134.0,
+                118
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ]
+            },
+            {
+              "rect": [
+                490,
+                1373,
+                247,
+                101
+              ],
+              "anchor": [
+                151.5,
+                97
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ]
+            },
+            {
+              "rect": [
+                752,
+                1383,
+                260,
+                86
+              ],
+              "anchor": [
+                137.5,
+                82
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Explicit pose reuse, not separately generated victory art."
+        },
+        "ability": {
+          "alias": "attack",
+          "note": "Existing ability mechanics unchanged; presentation pose reuse."
+        }
+      },
+      "defaultStageScale": 1
+    },
+    "dreamtusk_baku": {
+      "baseId": "baku",
+      "facing": "right",
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-dreamtusk_baku.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                28,
+                62,
+                239,
+                198
+              ],
+              "anchor": [
+                119.5,
+                194
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ]
+            },
+            {
+              "rect": [
+                268,
+                64,
+                236,
+                196
+              ],
+              "anchor": [
+                119.5,
+                192
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ]
+            },
+            {
+              "rect": [
+                504,
+                62,
+                245,
+                199
+              ],
+              "anchor": [
+                121.5,
+                195
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ]
+            },
+            {
+              "rect": [
+                749,
+                68,
+                255,
+                193
+              ],
+              "anchor": [
+                127.5,
+                189
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-dreamtusk_baku.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                22,
+                311,
+                256,
+                183
+              ],
+              "anchor": [
+                125.5,
+                179
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ]
+            },
+            {
+              "rect": [
+                278,
+                308,
+                252,
+                175
+              ],
+              "anchor": [
+                109.5,
+                171
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ]
+            },
+            {
+              "rect": [
+                530,
+                312,
+                243,
+                178
+              ],
+              "anchor": [
+                95.5,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ]
+            },
+            {
+              "rect": [
+                773,
+                323,
+                249,
+                173
+              ],
+              "anchor": [
+                103.5,
+                169
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-dreamtusk_baku.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                23,
+                580,
+                270,
+                156
+              ],
+              "anchor": [
+                124.5,
+                152
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ]
+            },
+            {
+              "rect": [
+                293,
+                539,
+                230,
+                195
+              ],
+              "anchor": [
+                94.5,
+                191
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ]
+            },
+            {
+              "rect": [
+                523,
+                530,
+                247,
+                208
+              ],
+              "anchor": [
+                102.5,
+                204
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ]
+            },
+            {
+              "rect": [
+                770,
+                564,
+                242,
+                175
+              ],
+              "anchor": [
+                106.5,
+                171
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-dreamtusk_baku.png",
+          "fps": 5,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                20,
+                795,
+                260,
+                184
+              ],
+              "anchor": [
+                127.5,
+                180
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ]
+            },
+            {
+              "rect": [
+                280,
+                792,
+                241,
+                191
+              ],
+              "anchor": [
+                107.5,
+                187
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ]
+            },
+            {
+              "rect": [
+                535,
+                806,
+                238,
+                176
+              ],
+              "anchor": [
+                90.5,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ]
+            },
+            {
+              "rect": [
+                781,
+                805,
+                232,
+                177
+              ],
+              "anchor": [
+                95.5,
+                173
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-dreamtusk_baku.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                15,
+                1017,
+                254,
+                218
+              ],
+              "anchor": [
+                132.5,
+                214
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ]
+            },
+            {
+              "rect": [
+                274,
+                1010,
+                237,
+                225
+              ],
+              "anchor": [
+                113.5,
+                221
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ]
+            },
+            {
+              "rect": [
+                514,
+                1052,
+                253,
+                178
+              ],
+              "anchor": [
+                111.5,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ]
+            },
+            {
+              "rect": [
+                771,
+                1069,
+                241,
+                165
+              ],
+              "anchor": [
+                105.5,
+                161
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-dreamtusk_baku.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                24,
+                1293,
+                251,
+                182
+              ],
+              "anchor": [
+                123.5,
+                178
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ]
+            },
+            {
+              "rect": [
+                275,
+                1332,
+                242,
+                143
+              ],
+              "anchor": [
+                112.5,
+                139
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ]
+            },
+            {
+              "rect": [
+                517,
+                1340,
+                248,
+                130
+              ],
+              "anchor": [
+                108.5,
+                126
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ]
+            },
+            {
+              "rect": [
+                765,
+                1362,
+                246,
+                105
+              ],
+              "anchor": [
+                111.5,
+                101
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Explicit pose reuse, not separately generated victory art."
+        },
+        "ability": {
+          "alias": "defend",
+          "note": "Existing ability mechanics unchanged; presentation pose reuse."
+        }
+      },
+      "defaultStageScale": 1
+    },
+    "ridgeback_afanc": {
+      "baseId": "afanc",
+      "facing": "right",
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-ridgeback_afanc.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                16,
+                61,
+                252,
+                180
+              ],
+              "anchor": [
+                126.0,
+                176
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ]
+            },
+            {
+              "rect": [
+                277,
+                61,
+                238,
+                182
+              ],
+              "anchor": [
+                119.0,
+                178
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ]
+            },
+            {
+              "rect": [
+                516,
+                57,
+                240,
+                186
+              ],
+              "anchor": [
+                120.0,
+                182
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ]
+            },
+            {
+              "rect": [
+                760,
+                62,
+                251,
+                179
+              ],
+              "anchor": [
+                125.5,
+                175
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-ridgeback_afanc.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                13,
+                312,
+                262,
+                168
+              ],
+              "anchor": [
+                129.0,
+                164
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ]
+            },
+            {
+              "rect": [
+                276,
+                312,
+                255,
+                171
+              ],
+              "anchor": [
+                120.0,
+                167
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ]
+            },
+            {
+              "rect": [
+                531,
+                318,
+                251,
+                166
+              ],
+              "anchor": [
+                105.0,
+                162
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ]
+            },
+            {
+              "rect": [
+                782,
+                317,
+                233,
+                167
+              ],
+              "anchor": [
+                103.5,
+                163
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-ridgeback_afanc.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                16,
+                563,
+                254,
+                149
+              ],
+              "anchor": [
+                126.0,
+                145
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ]
+            },
+            {
+              "rect": [
+                280,
+                550,
+                237,
+                166
+              ],
+              "anchor": [
+                116.0,
+                162
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ]
+            },
+            {
+              "rect": [
+                522,
+                534,
+                244,
+                176
+              ],
+              "anchor": [
+                114.0,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ]
+            },
+            {
+              "rect": [
+                771,
+                553,
+                238,
+                164
+              ],
+              "anchor": [
+                114.5,
+                160
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-ridgeback_afanc.png",
+          "fps": 5,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                12,
+                781,
+                256,
+                172
+              ],
+              "anchor": [
+                130.0,
+                168
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ]
+            },
+            {
+              "rect": [
+                271,
+                773,
+                252,
+                168
+              ],
+              "anchor": [
+                125.0,
+                164
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ]
+            },
+            {
+              "rect": [
+                532,
+                776,
+                243,
+                181
+              ],
+              "anchor": [
+                104.0,
+                177
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ]
+            },
+            {
+              "rect": [
+                775,
+                786,
+                239,
+                173
+              ],
+              "anchor": [
+                110.5,
+                169
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-ridgeback_afanc.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                17,
+                1031,
+                265,
+                182
+              ],
+              "anchor": [
+                125.0,
+                178
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ]
+            },
+            {
+              "rect": [
+                282,
+                1025,
+                230,
+                180
+              ],
+              "anchor": [
+                114.0,
+                176
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ]
+            },
+            {
+              "rect": [
+                512,
+                1031,
+                247,
+                182
+              ],
+              "anchor": [
+                124.0,
+                178
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ]
+            },
+            {
+              "rect": [
+                762,
+                1056,
+                244,
+                153
+              ],
+              "anchor": [
+                123.5,
+                149
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-ridgeback_afanc.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                15,
+                1286,
+                238,
+                156
+              ],
+              "anchor": [
+                127.0,
+                152
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ]
+            },
+            {
+              "rect": [
+                264,
+                1298,
+                251,
+                148
+              ],
+              "anchor": [
+                132.0,
+                144
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ]
+            },
+            {
+              "rect": [
+                515,
+                1313,
+                249,
+                121
+              ],
+              "anchor": [
+                121.0,
+                117
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ]
+            },
+            {
+              "rect": [
+                767,
+                1345,
+                236,
+                88
+              ],
+              "anchor": [
+                118.5,
+                84
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Explicit pose reuse, not separately generated victory art."
+        },
+        "ability": {
+          "alias": "defend",
+          "note": "Existing ability mechanics unchanged; presentation pose reuse."
+        }
+      },
+      "defaultStageScale": 1
+    },
+    "crownfin_ahuitzotl": {
+      "baseId": "ahuitzotl",
+      "facing": "right",
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-crownfin_ahuitzotl-v2.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                12,
+                62,
+                238,
+                204
+              ],
+              "anchor": [
+                119.0,
+                200
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ]
+            },
+            {
+              "rect": [
+                269,
+                64,
+                215,
+                204
+              ],
+              "anchor": [
+                107.5,
+                200
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ]
+            },
+            {
+              "rect": [
+                513,
+                59,
+                219,
+                209
+              ],
+              "anchor": [
+                109.5,
+                205
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ]
+            },
+            {
+              "rect": [
+                763,
+                68,
+                242,
+                198
+              ],
+              "anchor": [
+                121.0,
+                194
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-crownfin_ahuitzotl-v2.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                22,
+                338,
+                238,
+                173
+              ],
+              "anchor": [
+                109.0,
+                169
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ]
+            },
+            {
+              "rect": [
+                269,
+                344,
+                240,
+                173
+              ],
+              "anchor": [
+                107.5,
+                169
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ]
+            },
+            {
+              "rect": [
+                519,
+                338,
+                249,
+                182
+              ],
+              "anchor": [
+                103.5,
+                178
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ]
+            },
+            {
+              "rect": [
+                768,
+                333,
+                244,
+                180
+              ],
+              "anchor": [
+                116.0,
+                176
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-crownfin_ahuitzotl-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                25,
+                572,
+                240,
+                176
+              ],
+              "anchor": [
+                106.0,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ]
+            },
+            {
+              "rect": [
+                276,
+                549,
+                234,
+                208
+              ],
+              "anchor": [
+                100.5,
+                204
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ]
+            },
+            {
+              "rect": [
+                521,
+                570,
+                235,
+                176
+              ],
+              "anchor": [
+                101.5,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ]
+            },
+            {
+              "rect": [
+                792,
+                567,
+                217,
+                190
+              ],
+              "anchor": [
+                92.0,
+                186
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-crownfin_ahuitzotl-v2.png",
+          "fps": 5,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                24,
+                798,
+                240,
+                215
+              ],
+              "anchor": [
+                107.0,
+                211
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ]
+            },
+            {
+              "rect": [
+                279,
+                814,
+                236,
+                199
+              ],
+              "anchor": [
+                97.5,
+                195
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ]
+            },
+            {
+              "rect": [
+                524,
+                800,
+                248,
+                214
+              ],
+              "anchor": [
+                98.5,
+                210
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ]
+            },
+            {
+              "rect": [
+                784,
+                812,
+                223,
+                205
+              ],
+              "anchor": [
+                100.0,
+                201
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-crownfin_ahuitzotl-v2.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                21,
+                1049,
+                234,
+                200
+              ],
+              "anchor": [
+                110.0,
+                196
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ]
+            },
+            {
+              "rect": [
+                271,
+                1057,
+                239,
+                191
+              ],
+              "anchor": [
+                105.5,
+                187
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ]
+            },
+            {
+              "rect": [
+                518,
+                1062,
+                247,
+                192
+              ],
+              "anchor": [
+                104.5,
+                188
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ]
+            },
+            {
+              "rect": [
+                781,
+                1074,
+                227,
+                191
+              ],
+              "anchor": [
+                103.0,
+                187
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-crownfin_ahuitzotl-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                34,
+                1308,
+                225,
+                187
+              ],
+              "anchor": [
+                97.0,
+                183
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ]
+            },
+            {
+              "rect": [
+                268,
+                1331,
+                247,
+                163
+              ],
+              "anchor": [
+                108.5,
+                159
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ]
+            },
+            {
+              "rect": [
+                529,
+                1338,
+                231,
+                152
+              ],
+              "anchor": [
+                93.5,
+                148
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ]
+            },
+            {
+              "rect": [
+                770,
+                1367,
+                239,
+                122
+              ],
+              "anchor": [
+                114.0,
+                118
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ]
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Explicit pose reuse, not separately generated victory art."
+        },
+        "ability": {
+          "alias": "attack",
+          "note": "Existing ability mechanics unchanged; presentation pose reuse."
+        }
+      },
+      "defaultStageScale": 1
+    }
+  },
+  "rendering": "Constant sourceScale per atlas. Native rect and pixel anchor. Mirror around anchor. Death holds last. StageScale and flight scale are initial visual calibration, not verified in the live game."
+}

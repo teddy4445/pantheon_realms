@@ -13,6 +13,7 @@ import type { Tx } from '../../engine/tx';
 import { effectiveMorale, effectiveSpeed, isAlive, sideStacks } from './common';
 import { resolveBattle } from './resolution';
 import { siegeRoundStart } from './siege';
+import { expireOnActivation } from './neutralAbilities';
 
 function sidePriority(round: number, side: BattleSideId): number {
   const attackerFirst = round % 2 === 1;
@@ -126,6 +127,8 @@ export function advanceActivation(tx: Tx, battle: BattleState): void {
 /** Returns true when the stack actually receives the activation. */
 function activate(tx: Tx, battle: BattleState, stack: BattleStackState): boolean {
   stack.defending = false; // Defend lasts until the start of the next scheduled activation.
+  // Sheltering Wings, Distract and Reed Guard last until their user's next scheduled activation.
+  expireOnActivation(battle, stack);
   battle.activeIsBonus = false;
   battle.freeShiftUsed = false;
   if (!stack.moraleRolledThisRound) {

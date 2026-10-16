@@ -1203,3 +1203,174 @@ neutral boulder). The delivery's `tools/test-selector.mjs` checks are part of
 the hero screen's slot buttons. Replacing it is a file of the same name and
 shape; the slot centres are `DOLL` in `ui/src/screens/Hero.tsx`.
 
+## 18. Brief 18 (2026-10-14): The Silent Oracle's story art
+
+`assets-source/art/briefs/GPT6_BRIEF_18_SILENT_ORACLE.md` orders the story
+art of the second Greek campaign (owner request 2026-10-14): four dialogue
+busts and their square portraits (Theron the Hierophant, the Oracle Myrrine,
+Doros, Phaidon), the campaign cover (and so its card), seven mission pictures
+(briefing background and card) and the two endings
+(`ending.silent_oracle.oracle_speaks`, `ending.silent_oracle.cities_decide`) —
+18 files, under the names the game already looks for. Alexios, Thaleia, Ione,
+Melas and the Scout Captain reuse their delivered art; every map, creature,
+site and sound of the campaign is already final.
+
+**Delivered and imported on 2026-10-14.** The 18 masters (busts 1024 × 1536
+RGBA with real alpha, square portraits 1254 × 1254, cover 1672 × 940, mission
+pictures and endings 1672 × 941 — m03 1671 × 941; no ICC profile, treated as
+sRGB) went into `assets-source/art/final/` and `assets-source/icons/final/`
+and through the unchanged importers, no `--prune`: 22 runtime files from
+`import_story_art.py` (four busts reduced to 768 × 1152 with their alpha and
+padding; the cover and seven briefings at their native size; the campaign card
+and seven mission cards at 640 × 360; two endings) and four 256 × 256 WebP
+portraits from `import_icons.py --new` (with the expected "not in the icon
+catalog" warning; `npm run icons:catalog`'s inventory step then added the four
+portraits and the eight new cards to `assets-source/icons/icon-inventory.json`).
+The owner's PC shell stops a command after three minutes, so
+`import_story_art.py` ran in three parts — each over a third of the 512
+masters, in its own temporary root holding a byte-identical copy of the script
+— and the three parts' manifests and reports were joined into what one run
+writes: all 550 runtime files already there came out byte for byte the same,
+their 550 manifest entries unchanged, plus the 22 new ones (no warnings).
+`packages/ui/test/awaitingArt.ts` keeps its helpers with both lists empty, so
+the story-art and portrait tests require every file. Phaidon never speaks; his
+bust is a catalog hero's (it stands in his encounter scene), so the bust test
+accepts a bust that belongs to a story speaker **or** a catalog hero. Named
+guard commanders (Doros, Theron, and the other campaigns' scripted commanders)
+now show their portrait in the battle header, as the brief promised
+(`Battle.tsx` `commanderPortrait`; guards without a commander still show none).
+
+## 19. Recruitment & route kit (2026-10-14)
+
+Delivered as `C:\Users\lazeb\Desktop\blannder_models\recruitment-route-kit-2026-10-14`
+(a separate folder; nothing in the game points at it). **Nine new text-free
+RGBA pictures**, native 1254 × 1254 from the built-in image generator, not
+retouched: `icon-recruit-all`, `icon-train-troops`, `icon-resume-route`,
+`route-chevron-current`, `route-chevron-later` (both point UP), `route-hourglass`,
+`route-day-badge` (blank — the number is live text), `route-destination`,
+`route-selection-ring`. Everything else the screens use already belongs to the
+game (the six recruitment courts `adventurekit.recruit.*`, the 84 creature
+portraits, the native idle strips, the icons and faction frames); the kit's
+`reuse/` copies are for review only and were not imported.
+
+`npm run recruitroute:import` (`tools/assets/import_recruitment_route.py`; a
+focused step, no wholesale sprite recut; `-- --kit DIR` the first time):
+
+- copies the nine PNGs byte for byte to `assets-source/ui/recruitment-route-v1/`
+  (checked against the kit's `asset-manifest.json` SHA-256) and the handoff,
+  its manifests, the creature map and the three approved concepts to
+  `docs/recruitment-route-v1/`;
+- writes each picture to `assets-runtime/recruitment-route-v1/<name>.png`,
+  reduced with premultiplied alpha (256 px; the destination seal and the ring
+  512 px), the antialiased edge kept, with its measured `visibleBounds`
+  (alpha > 32) — sizes on screen go by the painted part, not the margin;
+- copies every creature form's native idle strip
+  (`assets-source/sprites/final/sprite.creature.*.idle.png`, 102 forms: the 84
+  pantheon forms and the neutral ones) byte for byte to
+  `assets-runtime/recruitment-route-v1/creatures/<creatureId>.idle.png` with its
+  frame count, rate and anchor and the union of its visible pixels over every
+  frame (all 84 unions equal the kit's `creature-map.json`);
+- registers all of it in `assets-runtime/recruitment-route-v1/manifest.json`
+  (relative paths). `packages/ui/src/assets/manifest.ts` reads it:
+  `recruitroute.*` through `resolveAsset`/`routeKitArt`, the map's six markers
+  through `registerRouteArt` (`@pr/presentation/core`), the recruitment stage's
+  strip through `creatureStageStrip` (map and battle keep `creatureIdleStrip`).
+
+The recruitment strips are the delivered sprites at their source resolution
+(frames 207–348 px tall, visible 120–247 px), about 1.35× the runtime strips —
+not new paintings. The stage scales a figure's visible part to about 82 % of its
+height (about 1.8× the source at 1280 × 720, about 2.9× at 1920 × 1080 for a
+hoplite), so they look softer than the concept paintings; sharper creatures
+would need new, larger idle strips.
+
+## 20. Campaign expansion kit (2026-10-15)
+
+Delivered as the campaign expansion kit folder beside the game (nothing in the
+game points at it). **31 accepted native PNGs**, not retouched: six neutral
+creature portraits (1254 × 1254), six core animation atlases (1024 × 1536,
+four authored poses per state; the Serpopard's is `v3`) and the Pegasus flight
+atlas, ten map-site pictures (six hiring sites, the sluice open and closed, a
+ferry landing, a supply depot), six campaign icons (evidence, pact, supply,
+evacuation, branch, manual battle) and two backgrounds (chronicle and neutral
+recruitment, native 1672 × 941, never upscaled). Everything else the chapters
+use already belongs to the game (`reuse-map.json`: the 45 mission paintings,
+covers, busts, portraits); `reference/iterations` (superseded attempts) is
+never copied.
+
+`npm run campaignv2:import` (`tools/assets/import_campaign_v2.py`; `-- --kit DIR`
+the first time; needs Pillow):
+
+- copies the 31 PNGs byte for byte to `assets-source/campaign-v2/` **and**
+  `assets-runtime/campaign-v2/` (checked against the kit's `asset-manifest.json`
+  SHA-256 and size), and the handoff, manifests and design files to
+  `docs/campaign-v2/` (design source of the 37 chapters:
+  `docs/campaign-v2/design/mission-content.json`, `campaign-graph.json`,
+  `neutral-content.json`, `screen-specs.json`);
+- writes display copies of the map sites and icons, trimmed to their painted
+  pixels and reduced (premultiplied Lanczos, never enlarged), to
+  `assets-runtime/campaign-v2/display/*.webp`; the native files stay as delivered;
+- turns `animation-manifest.json`'s measured frame regions into sprite sets in
+  the game's frame-region variant (`SpriteStrip.regions`: source rectangle,
+  pixel anchor, constant `sourceScale` per animation; `packages/presentation/src/sprites.ts`):
+  victory = idle; ability = defend for Pegasus, Baku and Afanc, attack for the
+  others; Pegasus takeoff (3 poses — the clipped pose at sourceCell [0,2] is
+  excluded), fly (4) and landing (4) from the flight atlas at `sourceScale` 0.62
+  (checked in game against the core frames: no size jump at takeoff or landing);
+  pixels per hex matched to the existing creatures of the same footprint;
+- registers all of it in `assets-runtime/campaign-v2/manifest.json` (relative
+  paths only). `packages/ui/src/assets/manifest.ts` reads it: `campaignv2.*`
+  through `resolveAsset` / `campaignV2Art`, and its `creatures` and `sites`
+  merged into the sprite manifest the views use (`map.site.neutral_dwelling.<id>`,
+  `map.site.sluice.<open|closed>`, `map.site.ferry`, `map.site.supply_depot`).
+
+The six new creatures have no horizontal idle strip: the recruitment stage and
+the hiring-site dialog show their portrait; the battle and the Bestiary viewer
+draw the atlases. The runtime folder adds about 66 MB of native PNGs to the
+build (the portraits and backgrounds are shown at their native size or smaller).
+
+## 21. Battle FX & neutral upgrades (2026-10-15/16)
+
+Delivered as the battle FX & neutral-upgrade folder beside the game (nothing in
+the game points at it). **25 accepted native PNGs**, not retouched: twelve
+projectile/impact sheets (4 × 4 cells; row 0 base travel, row 1 base impact,
+row 2 upgraded travel, row 3 upgraded impact; the siege sheet's rows are the
+tower arrow and the catapult stone — two actors, not a pair; the atlatl and sling
+sheets have their own native sizes), six upgraded neutral portraits
+(1254 × 1254), six upgraded core atlases (1024 × 1536, idle/move/attack/defend/
+hit/death × 4 poses; Ahuitzotl's corrected `-v2` sheet only) and the Dawncrest
+Pegasus flight atlas (takeoff/fly/landing × 4). `reference/iterations`, preview
+screenshots and base comparison copies are never imported.
+
+`npm run battlefx:import` (`tools/assets/import_battle_fx_upgrades.py`;
+`-- --kit DIR` the first time):
+
+- copies the 25 PNGs byte for byte to `assets-source/battle-fx-neutral-upgrades-v1/`
+  **and** `assets-runtime/battle-fx-neutral-upgrades-v1/` (delivered names, SHA-256
+  and size checked against `asset-manifest.json`), and the handoff and JSON
+  metadata to `docs/battle-fx-neutral-upgrades-v1/`;
+- writes `assets-runtime/battle-fx-neutral-upgrades-v1/manifest.json` (relative
+  paths only) from the delivery's merge fragments and `projectile-profiles.json`:
+  `assets` (`neutralupgrade.portrait.<creatureId>`), `creatures` (the six upgraded
+  frame-region sets), `effects` (`battlefx.<unit>.hit`, impact regions with pixel
+  anchors), `projectiles` (`battlefx.<unit>`, the first travel pose) and
+  `projectileProfiles` (by attacking creature ID — the 22 shooter forms — plus
+  `siege_turret` and `catapult`: travel regions, playback static/loop, path,
+  duration range, frame rates, sizes, release point);
+- applies a small documented **in-game calibration** (`CALIBRATION`, metadata
+  only): Dawncrest flight `sourceScale` 0.65 → 0.78 (its body kept its ground
+  size), Dawncrest and Dreamtusk body scale (pixels per hex 130 and 128; the
+  others keep the delivered 82 % of the base registration), two Dawncrest death
+  anchors +3 / +4 px, and the small physical impacts (javelins, darts, slings,
+  tower arrow) drawn at 0.7 hex instead of 0.5.
+
+`packages/ui/src/assets/manifest.ts` merges it into the sprite manifest (creatures,
+projectiles, effects, `projectileProfiles`) and resolves the portraits; it never
+replaces the base manifest or the campaign-v2 overlay. The battle view
+(`packages/presentation/src/battle.ts`, helpers in `projectiles.ts`) plays a
+profile per shot: release at the shoot strip's release frame from a calibrated
+per-unit socket, the profile's path and clamped duration, travel frame 0 moved
+through the world (physical) or the four poses looped (magic), then the impact
+once at the contact point with the hit reaction and damage words, fading over its
+last 100 ms. Unknown future shooters keep the generic arrow. All of it is
+cosmetic: no rule, damage, splash or random draw changes.
+

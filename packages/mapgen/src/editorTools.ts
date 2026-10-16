@@ -202,9 +202,12 @@ export function customMapFromGenerated(catalog: ContentCatalog, g: GeneratedForE
         break;
       }
       case 'pickup': {
-        // An artifact cache keeps its artifact; supplies become the editor's Supply Cache.
+        // An artifact cache keeps its artifact; supplies become the editor's Supply Cache
+        // (a supply depot, 2026-10-15, stays a depot with its supplies).
         const reward = rewardOf(k.reward);
-        site = reward?.artifactId
+        site = s.art === 'supply_depot'
+          ? { ...withGuard({ ...base, kind: 'supply_depot', name: s.name } as CustomSite), ...(reward ? { reward } : {}) }
+          : reward?.artifactId
           ? { ...withGuard({ ...base, kind: 'artifact' as CustomSiteKind, name: s.name } as CustomSite), reward }
           : withGuard({ ...base, kind: 'resource_cache', name: s.name } as CustomSite);
         break;
@@ -225,10 +228,14 @@ export function customMapFromGenerated(catalog: ContentCatalog, g: GeneratedForE
         site = { ...base, kind: 'windmill', name: s.name };
         break;
       case 'creature_camp':
-        site = { ...base, kind: 'creature_camp', creatureId: k.creatureId, name: s.name };
+        // A neutral hiring site (weekly stock, its own picture) stays one (2026-10-15).
+        site = k.restock === 'weekly' && s.art === `neutral_dwelling.${k.creatureId}` ? { ...base, kind: 'neutral_dwelling', creatureId: k.creatureId, name: s.name } : { ...base, kind: 'creature_camp', creatureId: k.creatureId, name: s.name };
         break;
       case 'portal':
-        site = { ...base, kind: 'portal', twinId: renamed.get(k.exitSiteId) ?? k.exitSiteId };
+        site = { ...base, kind: k.ferry ? 'ferry' : 'portal', twinId: renamed.get(k.exitSiteId) ?? k.exitSiteId };
+        break;
+      case 'sluice':
+        site = withGuard({ ...base, kind: 'sluice', name: s.name, channel: k.channel.map(move), openTerrain: k.openTerrain === 'void' ? 'marsh' : k.openTerrain, closedTerrain: k.closedTerrain === 'void' ? 'water' : k.closedTerrain, startsOpen: k.startsOpen } as CustomSite);
         break;
       case 'relic':
         site = withGuard({ ...base, id: 'relic', kind: 'relic' } as CustomSite);

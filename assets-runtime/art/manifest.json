@@ -824,6 +824,18 @@
    "width": 640,
    "height": 360
   },
+  "campaign.silent_oracle.cover": {
+   "file": "art/covers/campaign.silent_oracle.cover.webp",
+   "kind": "cover",
+   "width": 1672,
+   "height": 940
+  },
+  "campaign.silent_oracle.thumbnail": {
+   "file": "art/cards/campaign.silent_oracle.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
   "campaign.silver_branch.cover": {
    "file": "art/covers/campaign.silver_branch.cover.webp",
    "kind": "cover",
@@ -892,6 +904,18 @@
   },
   "ending.new_fire.old_sun": {
    "file": "art/endings/ending.new_fire.old_sun.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941
+  },
+  "ending.silent_oracle.cities_decide": {
+   "file": "art/endings/ending.silent_oracle.cities_decide.webp",
+   "kind": "ending",
+   "width": 1672,
+   "height": 941
+  },
+  "ending.silent_oracle.oracle_speaks": {
+   "file": "art/endings/ending.silent_oracle.oracle_speaks.webp",
    "kind": "ending",
    "width": 1672,
    "height": 941
@@ -1070,6 +1094,18 @@
     0.9941
    ]
   },
+  "hero.greek.doros.bust": {
+   "file": "art/busts/hero.greek.doros.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0026,
+    0.9941,
+    1.0
+   ]
+  },
   "hero.greek.ione.bust": {
    "file": "art/busts/hero.greek.ione.bust.webp",
    "kind": "bust",
@@ -1094,6 +1130,30 @@
     1.0
    ]
   },
+  "hero.greek.myrrine.bust": {
+   "file": "art/busts/hero.greek.myrrine.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0553,
+    0.9941,
+    1.0
+   ]
+  },
+  "hero.greek.phaidon.bust": {
+   "file": "art/busts/hero.greek.phaidon.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.0,
+    0.0039,
+    1.0,
+    1.0
+   ]
+  },
   "hero.greek.thaleia.bust": {
    "file": "art/busts/hero.greek.thaleia.bust.webp",
    "kind": "bust",
@@ -1103,6 +1163,18 @@
     0.0068,
     0.0228,
     0.9922,
+    1.0
+   ]
+  },
+  "hero.greek.theron.bust": {
+   "file": "art/busts/hero.greek.theron.bust.webp",
+   "kind": "bust",
+   "width": 768,
+   "height": 1152,
+   "alphaBox": [
+    0.002,
+    0.0332,
+    1.0,
     1.0
    ]
   },
@@ -1606,6 +1678,90 @@
   },
   "mission.new_fire.m07.thumbnail": {
    "file": "art/cards/mission.new_fire.m07.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.silent_oracle.m01.briefing": {
+   "file": "art/missions/mission.silent_oracle.m01.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.silent_oracle.m01.thumbnail": {
+   "file": "art/cards/mission.silent_oracle.m01.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.silent_oracle.m02.briefing": {
+   "file": "art/missions/mission.silent_oracle.m02.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.silent_oracle.m02.thumbnail": {
+   "file": "art/cards/mission.silent_oracle.m02.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.silent_oracle.m03.briefing": {
+   "file": "art/missions/mission.silent_oracle.m03.briefing.webp",
+   "kind": "briefing",
+   "width": 1671,
+   "height": 941
+  },
+  "mission.silent_oracle.m03.thumbnail": {
+   "file": "art/cards/mission.silent_oracle.m03.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.silent_oracle.m04.briefing": {
+   "file": "art/missions/mission.silent_oracle.m04.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.silent_oracle.m04.thumbnail": {
+   "file": "art/cards/mission.silent_oracle.m04.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.silent_oracle.m05.briefing": {
+   "file": "art/missions/mission.silent_oracle.m05.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.silent_oracle.m05.thumbnail": {
+   "file": "art/cards/mission.silent_oracle.m05.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.silent_oracle.m06.briefing": {
+   "file": "art/missions/mission.silent_oracle.m06.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.silent_oracle.m06.thumbnail": {
+   "file": "art/cards/mission.silent_oracle.m06.thumbnail.webp",
+   "kind": "card",
+   "width": 640,
+   "height": 360
+  },
+  "mission.silent_oracle.m07.briefing": {
+   "file": "art/missions/mission.silent_oracle.m07.briefing.webp",
+   "kind": "briefing",
+   "width": 1672,
+   "height": 941
+  },
+  "mission.silent_oracle.m07.thumbnail": {
+   "file": "art/cards/mission.silent_oracle.m07.thumbnail.webp",
    "kind": "card",
    "width": 640,
    "height": 360

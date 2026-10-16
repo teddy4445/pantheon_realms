@@ -1,6 +1,7 @@
 /**
- * The four campaigns built on the Winter Oath arc (owner request 2026-10-02):
- * Egyptian, Japanese, Celtic and Mesoamerican, seven missions each. Data checks,
+ * The campaigns built on the Winter Oath arc: Egyptian, Japanese, Celtic and
+ * Mesoamerican (owner request 2026-10-02) and The Silent Oracle, the second Greek
+ * campaign (owner request 2026-10-14), seven missions each. Data checks,
  * map generation, and a headless journey through all seven missions of each
  * with carryover. Battles are fought by the tactical AI on both sides
  * (auto-combat), so every journey also checks that each mission can be won with
@@ -25,9 +26,12 @@ interface ArcCase {
   readonly secondGod: string;
   readonly towns: readonly string[];
   readonly endingFlags: readonly [string, string];
+  /** Mission 3's elite recruits (default 2, the objective's count): Greek Companion Cavalry are few and fragile, so the journey brings the week's four. */
+  readonly elites?: number;
 }
 
 const CASES: readonly ArcCase[] = [
+  { campaignId: 'silent_oracle', pantheonId: 'greek', heroId: 'alexios', patron: 'zeus', firstGod: 'athena', secondGod: 'hermes', towns: ['elaia', 'thymbra', 'aetos', 'halia', 'akte', 'kerata', 'kalliste'], endingFlags: ['oracle_speaks', 'cities_decide'], elites: 4 },
   { campaignId: 'twelfth_hour', pantheonId: 'egyptian', heroId: 'seshet', patron: 'egyptian_ra', firstGod: 'egyptian_isis', secondGod: 'egyptian_thoth', towns: ['abedju', 'nekheb', 'edfu', 'per_djehuty', 'tjebu', 'iunu', 'abu'], endingFlags: ['coil_bound', 'coil_cut'] },
   { campaignId: 'lantern_road', pantheonId: 'japanese', heroId: 'akane', patron: 'japanese_amaterasu', firstGod: 'japanese_hachiman', secondGod: 'japanese_inari', towns: ['kagaribi', 'mizuhara', 'kumoyama', 'shiogama', 'akashi', 'takamori', 'hikari'], endingFlags: ['lanterns_lit', 'road_open'] },
   { campaignId: 'silver_branch', pantheonId: 'celtic', heroId: 'orla', patron: 'celtic_dagda', firstGod: 'celtic_brigid', secondGod: 'celtic_lugh', towns: ['dun_caill', 'dun_bera', 'rath_eala', 'inis_ron', 'dun_ard', 'coill_dubh', 'dun_brugh'], endingFlags: ['branch_mended', 'branch_planted'] },
@@ -45,7 +49,9 @@ for (const c of CASES) {
   const fam = rosterOf(c.pantheonId);
   const base = (tier: number) => fam[tier]!.baseCreatureId;
   const up = (tier: number) => fam[tier]!.upgradedCreatureId;
-  const b = (slot: string, level = 1) => `${c.pantheonId}_${slot}_l${level}`;
+  // A town location's level: the archetype's own chain (kit towns `<pantheon>_<slot>_l<n>`, the Greek polis its own names).
+  const archetype = catalog.townArchetypes[catalog.pantheons[c.pantheonId]!.townArchetypeId]!;
+  const b = (slot: string, level = 1) => archetype.slots.find((s) => s.id === slot)!.chain[level - 1]!;
 
   const status = (d: GameDriver, id: string) => d.state.mission.objectives[id]?.status;
   const march = (d: GameDriver, to: HexCoord, maxDays = 14) => {
@@ -143,7 +149,7 @@ for (const c of CASES) {
     it('plays all seven missions with carryover', { timeout: 1_500_000 }, () => {
       const log: string[] = [];
       const note = (d: GameDriver, label: string) => log.push(`${label}: day ${d.state.day}, L${d.hero(HERO).level} ${d.hero(HERO).xp}xp — ${army(d)}`);
-      let { campaign, start } = startCampaign(catalog, c.campaignId, { runId: `${c.campaignId}-1`, startingGodId: c.patron });
+      let { campaign, start } = startCampaign(catalog, c.campaignId, { runId: `${c.campaignId}-1`, startingGodId: c.patron, contentVersion: 1 });
       let d = new GameDriver(start.match, catalog);
       expect(d.player.pantheon.patronGodId).toBe(c.patron);
 
@@ -195,7 +201,7 @@ for (const c of CASES) {
       march(d, { q: 3, r: 9 });
       build(d, t3, b('dwelling_t4'));
       build(d, t3, b('dwelling_t4', 2));
-      d.do({ kind: 'RecruitUnits', townId: t3, creatureId: up(4), quantity: 2, destination: { kind: 'hero', heroId: HERO } });
+      d.do({ kind: 'RecruitUnits', townId: t3, creatureId: up(4), quantity: c.elites ?? 2, destination: { kind: 'hero', heroId: HERO } });
       expect(status(d, 'm03_elite')).toBe('completed');
       march(d, { q: 20, r: 9 });
       march(d, { q: 23, r: 9 });

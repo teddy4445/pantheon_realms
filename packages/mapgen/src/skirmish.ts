@@ -66,6 +66,7 @@ import {
   edgeKey,
   hashValue,
   hexKey,
+  parseHexKey,
   seedFromLabel,
   type ArtifactRarity,
   type ContentCatalog,
@@ -77,6 +78,7 @@ import {
   type MissionDefinition,
   type MissionRivalSetup,
   type MissionTownSetup,
+  type NeutralSiteTable,
   type ResourceCost,
   type RewardDefinition,
   type ScenarioFeatures,
@@ -87,6 +89,7 @@ import {
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
 import { UNOWNED_GARRISON_VALUE, otherPantheons, unownedTownGarrison, unownedTownSetup } from './unownedTowns';
+import { habitatVerdict, neutralSiteDefinition, neutralSpeciesForBiome, type GroundAt } from './neutralSites';
 
 export const SKIRMISH_GENERATOR_VERSION = 'pr-skirmishgen-0.7';
 /** Seeds the terrain noise and site choices (unchanged since 0.5, so a seed keeps its map). */
@@ -185,7 +188,23 @@ export interface SkirmishGenOptions {
   readonly aiTemperaments?: boolean;
   /** Unowned towns per empire (default none). */
   readonly unownedTowns?: UnownedTowns;
+  /**
+   * New neutral creatures (campaign expansion 2026-10-15; default off): with the
+   * hiring-site table (content's `NEUTRAL_V2_HABITATS` / `NEUTRAL_V2_SITE_STOCK`),
+   * one species on small and medium maps, two on large and huge, whose habitat suits
+   * the map, each with one hiring site in every empire's lands where the ground fits
+   * its habitat. Absent: the map is exactly the one the seed gives without them.
+   */
+  readonly neutralSites?: NeutralSiteTable;
 }
+
+/** The biome (ground art, sky, habitats) of a random map type. */
+export function skirmishMapBiome(mapType: SkirmishMapType): WorldMapDefinition['biome'] {
+  return mapType === 'highlands' ? 'high_pass' : mapType === 'crossroads' ? 'storm_plateau' : mapType === 'lake_isle' || mapType === 'marshlands' || mapType === 'archipelago' || mapType === 'twin_continents' ? 'coast' : 'temperate';
+}
+
+/** How many neutral species a random map gets with the neutral creatures on (each has a hiring site in every empire's lands). */
+export const SKIRMISH_NEUTRAL_SPECIES: Readonly<Record<SkirmishMapSize, number>> = { small: 1, medium: 1, large: 2, huge: 2 };
 
 export interface GeneratedSkirmish {
   readonly mission: MissionDefinition;
@@ -1207,6 +1226,44 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     if (p) addRoad(p);
   }
 
+  // --- New neutral creatures (2026-10-15; only when the setup asks) --------------
+  // Chosen from their own random stream after the terrain, sites and roads are final,
+  // so everything else stays the map this seed gives without them. Each species stands
+  // once in the first region on open, reachable ground that fits its habitat (never on a
+  // road, clear of every other site) and is copied to every empire by the symmetry.
+  const neutralPicks: { creatureId: string; pos: HexCoord }[] = [];
+  const neutralTable = opts.neutralSites;
+  if (neutralTable) {
+    const nrng = new RngCursor(seedFromLabel(`${tag}|neutrals`));
+    const biome = skirmishMapBiome(mapType);
+    const species = neutralSpeciesForBiome(catalog, neutralTable, biome);
+    for (let i = species.length - 1; i > 0; i--) {
+      const j = nrng.nextInt(i + 1);
+      [species[i], species[j]] = [species[j]!, species[i]!];
+    }
+    const groundRel: GroundAt = (c) => tAt(c) ?? 'void';
+    const roadCells = new Set<string>();
+    for (const k of roadEdges) for (const x of k.split('|')) roadCells.add(hexKey(rel(parseHexKey(x))));
+    const reach = reachFrom(A);
+    const busy = [...chosen.map((x) => x.pos), ...portalBase, ...inner, ...valley, ...gates.map((g) => g.pos), ...(pocket ? [pocket.treasury, pocket.gate] : []), ...freeTowns.map((f) => f.pos)];
+    for (const id of species) {
+      if (neutralPicks.length >= SKIRMISH_NEUTRAL_SPECIES[opts.size]) break;
+      const habitat = neutralTable.habitats[id]!;
+      const plural = catalog.creatures[id]!.pluralName;
+      const cands = regionA.filter((c) => {
+        const d = axialDistance(c, A);
+        if (d < Math.max(4, Math.min(homeR, 6)) || d > R + 3 || relDist(c) < centerR + 2 || relDist(c) > Rh - 2) return false;
+        if (zoneOf(c) === 'center') return false;
+        const k = hexKey(c);
+        if (!passableT(tAt(c)) || hard.has(k) || roadCells.has(k) || !reach.has(k)) return false;
+        if (busy.some((b) => axialDistance(b, c) < 2) || monsterHomes.some((h) => axialDistance(h, c) < 3) || neutralPicks.some((p) => axialDistance(p.pos, c) < 3)) return false;
+        if (!group.every((g, i) => i === 0 || axialDistance(g(c), c) >= 4)) return false;
+        return habitatVerdict(habitat, plural, biome, groundRel, c).fits;
+      });
+      if (cands.length > 0) neutralPicks.push({ creatureId: id, pos: cands[nrng.nextInt(cands.length)]! });
+    }
+  }
+
   // --- Mission content ---------------------------------------------------------
   const sites: SiteDefinition[] = [];
   const kits = opts.seats.map((s) => catalog.skirmishKits[s.pantheonId]!);
@@ -1419,6 +1476,16 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     });
   });
 
+  // Neutral hiring sites (only with the new neutral creatures on): one per species in every region.
+  for (const pick of neutralPicks) {
+    const built = neutralSiteDefinition(catalog, neutralTable, pick.creatureId);
+    group.forEach((g, i) => {
+      const id = `neutral_${pick.creatureId}_${i + 1}`;
+      sites.push({ id, anchorId: id, coord: abs(g(pick.pos)), ...built });
+    });
+  }
+  const neutralNames = neutralPicks.map((p) => catalog.creatures[p.creatureId]!.pluralName);
+
   // Players: seat 0 is the scenario's player seat; the others are rival seats (human or AI).
   const wallet = scaleCost(START_WALLET, WEALTH_PERCENT[wealth]);
   const setupFor = (i: number) => {
@@ -1458,7 +1525,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
   });
   const sizeLabel = SKIRMISH_SIZE_LABEL[opts.size];
   const typeInfo = SKIRMISH_MAP_TYPES.find((t) => t.id === mapType)!;
-  const settingsKey = [mapType, guards, treasure, wealth, roadsSetting, opts.revealMap ? 'revealed' : 'fog', ...(opts.portals === false ? ['noportals'] : []), ...(opts.turnOrder && opts.turnOrder !== (n >= 3 ? 'rotating' : 'fixed') ? [opts.turnOrder] : []), ...(unownedSetting !== 'none' ? [`free${unownedSetting}`] : [])].join('-');
+  const settingsKey = [mapType, guards, treasure, wealth, roadsSetting, opts.revealMap ? 'revealed' : 'fog', ...(opts.portals === false ? ['noportals'] : []), ...(opts.turnOrder && opts.turnOrder !== (n >= 3 ? 'rotating' : 'fixed') ? [opts.turnOrder] : []), ...(unownedSetting !== 'none' ? [`free${unownedSetting}`] : []), ...(neutralTable ? ['neutrals'] : [])].join('-');
   const id = `random_${opts.size}_${n}p_${seed}${settingsKey === 'continental-normal-normal-normal-full-fog' ? '' : `_${settingsKey}`}`;
   const relicSite = sites.find((s) => s.id === 'relic');
   const mission: MissionDefinition = {
@@ -1468,7 +1535,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     order: 1,
     name: `Random Map — ${typeInfo.label}`,
     subtitle: `${sizeLabel} · ${n} empires · seed ${seed}`,
-    summary: `A generated ${sizeLabel.toLowerCase()} ${typeInfo.label.toLowerCase()} map for ${n} empires. ${typeInfo.summary} ${victory.type === 'hold_relic' ? `Win by holding the central shrine for ${victory.days} days, or by defeating every rival.` : 'Win by defeating every rival empire.'} Every empire gets the same terrain, roads and treasures around its town (symmetric map${n === 5 ? '; a sixth region is wild land, so two empires have one rival neighbour fewer' : ''}). Guards ${guards}, treasure ${treasure}, starting wealth ${wealth}.${neutralTowns.length ? ` ${neutralTowns.length / n === 1 ? 'One unowned town' : 'Two unowned towns'} per empire wait to be taken.` : ''} Proposed feature; values unplaytested.`,
+    summary: `A generated ${sizeLabel.toLowerCase()} ${typeInfo.label.toLowerCase()} map for ${n} empires. ${typeInfo.summary} ${victory.type === 'hold_relic' ? `Win by holding the central shrine for ${victory.days} days, or by defeating every rival.` : 'Win by defeating every rival empire.'} Every empire gets the same terrain, roads and treasures around its town (symmetric map${n === 5 ? '; a sixth region is wild land, so two empires have one rival neighbour fewer' : ''}). Guards ${guards}, treasure ${treasure}, starting wealth ${wealth}.${neutralTowns.length ? ` ${neutralTowns.length / n === 1 ? 'One unowned town' : 'Two unowned towns'} per empire wait to be taken.` : ''}${neutralNames.length ? ` New neutral creatures hire out in every empire’s lands: ${neutralNames.join(' and ')}.` : ''} Proposed feature; values unplaytested.`,
     mapTemplateId: RANDOM_TEMPLATE_ID,
     soundscape: mapType === 'highlands' || mapType === 'crossroads' ? 'high_pass' : 'coast',
     targetPlaytime: n === 2 ? '30–60 minutes (unmeasured)' : '45–90 minutes (unmeasured)',
@@ -1515,6 +1582,9 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
       ...(neutralTowns.length
         ? [{ id: 'unowned_towns', title: 'Unowned towns', text: 'Unowned towns start without a lord or a hero; their own militia holds them. Defeat it (a siege) and the town is yours: build, recruit and hire there like in your home town — whatever its pantheon. An army of several pantheons fights with lower morale (−1 for each pantheon beyond the first, at most −2; neutral creatures never count). Proposed; values unplaytested.' }]
         : []),
+      ...(neutralNames.length
+        ? [{ id: 'neutral_sites', title: 'Neutral hiring sites', text: `Hiring sites of new neutral creatures (${neutralNames.join(', ')}) stand in every empire’s lands, where their habitat fits. Any pantheon may hire there: a few each week, shared by every empire; those not hired do not carry over. Proposed; values unplaytested.` }]
+        : []),
     ],
     protectedHeroFailure: false,
     thumbnailAssetId: 'mission.skirmish.random.thumbnail',
@@ -1536,7 +1606,7 @@ export function generateSkirmish(catalog: ContentCatalog, opts: SkirmishGenOptio
     terrain: terrainStr,
     roads,
     logicalHash: hashValue({ templateId: RANDOM_TEMPLATE_ID, width: W, height: H, terrain: terrainStr, roads }),
-    biome: mapType === 'highlands' ? 'high_pass' : mapType === 'crossroads' ? 'storm_plateau' : mapType === 'lake_isle' || mapType === 'marshlands' || mapType === 'archipelago' || mapType === 'twin_continents' ? 'coast' : 'temperate',
+    biome: skirmishMapBiome(mapType),
   };
   const checks = validateSkirmishMap(map, mission, mapType);
   const failed = checks.filter((c) => !c.pass);

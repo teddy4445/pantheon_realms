@@ -577,6 +577,16 @@ export function planNatureScenery(map: WorldMapDefinition, opts: NaturePlanOptio
 
 let lastPlan: { key: string; plan: NaturePlan } | null = null;
 
+/** A short fingerprint of a terrain string (FNV-1a): equal ground, equal key. */
+function terrainKey(terrain: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < terrain.length; i++) {
+    h ^= terrain.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return `${terrain.length}:${(h >>> 0).toString(36)}`;
+}
+
 /**
  * `planNatureScenery`, remembered for the last map: the map view is built again
  * after every battle, and the plan (13 ms on Twin Harbors, 34 ms on a huge map,
@@ -585,7 +595,8 @@ let lastPlan: { key: string; plan: NaturePlan } | null = null;
  */
 export function planNatureSceneryCached(map: WorldMapDefinition, opts: NaturePlanOptions & { readonly artKey?: string } = {}): NaturePlan {
   const coords = (list: readonly HexCoord[] | undefined) => (list ?? []).map((c) => `${c.q},${c.r}`).join(';');
-  const key = [map.templateId, map.logicalHash, map.seed, map.biome, map.width, map.height, opts.decor ?? 'all', opts.artKey ?? '', coords(opts.sites), coords(opts.towns)].join('|');
+  // The terrain itself is part of the key: a sluice changes a channel's ground during play (campaign v2).
+  const key = [map.templateId, map.logicalHash, terrainKey(map.terrain), map.seed, map.biome, map.width, map.height, opts.decor ?? 'all', opts.artKey ?? '', coords(opts.sites), coords(opts.towns)].join('|');
   if (lastPlan?.key === key) return lastPlan.plan;
   const plan = planNatureScenery(map, opts);
   lastPlan = { key, plan };

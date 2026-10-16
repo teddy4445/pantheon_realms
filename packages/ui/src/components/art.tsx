@@ -265,6 +265,9 @@ export function siteMarkerAsset(
       return 'icon.marker.shrine';
     case 'portal':
       return 'icon.marker.portal';
+    // Campaign v2: a sluice is worked like a beacon (no marker of its own was delivered).
+    case 'sluice':
+      return 'icon.marker.story';
     // Sites added 2026-10-02: their own marker once delivered (`npm run icons:catalog`), else the nearest existing one.
     case 'learning_stone':
       return ownMarker('icon.marker.learning-stone', 'icon.marker.story');

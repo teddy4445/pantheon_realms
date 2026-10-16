@@ -10,7 +10,7 @@
  * creature's first attack) no longer stalls on decoding and uploading it.
  */
 import { Rectangle, Texture, type TextureSource } from 'pixi.js';
-import { spriteUrl, type SpriteStrip } from './sprites';
+import { spriteUrl, stripKey, type SpriteStrip } from './sprites';
 
 const images = new Map<string, Promise<Texture>>();
 const strips = new Map<string, Texture[]>();
@@ -130,22 +130,33 @@ export function loadFile(file: string, opts?: { urgent?: boolean }): Promise<Tex
 
 /** The frames of a strip once its image is loaded. */
 export async function loadStrip(strip: SpriteStrip): Promise<Texture[]> {
-  const hit = strips.get(strip.file);
+  const key = stripKey(strip);
+  const hit = strips.get(key);
   if (hit) return hit;
   // Animation strips (figures, effects) go to the GPU before scenery stills.
   const base = await loadFile(strip.file, { urgent: true });
-  const again = strips.get(strip.file);
+  const again = strips.get(key);
   if (again) return again;
   const frames: Texture[] = [];
-  const n = Math.max(1, strip.frames);
-  for (let i = 0; i < n; i++) {
-    frames.push(new Texture({ source: base.source, frame: new Rectangle(i * strip.frameWidth, 0, Math.min(strip.frameWidth, base.width - i * strip.frameWidth), Math.min(strip.frameHeight, base.height)) }));
+  if (strip.regions) {
+    // Frame-region atlas (campaign expansion kit): each measured rectangle as delivered,
+    // clamped to the image (the import checks every rectangle lies inside it).
+    for (const r of strip.regions) {
+      const x = Math.max(0, Math.min(r.rect[0], base.width - 1));
+      const y = Math.max(0, Math.min(r.rect[1], base.height - 1));
+      frames.push(new Texture({ source: base.source, frame: new Rectangle(x, y, Math.min(r.rect[2], base.width - x), Math.min(r.rect[3], base.height - y)) }));
+    }
+  } else {
+    const n = Math.max(1, strip.frames);
+    for (let i = 0; i < n; i++) {
+      frames.push(new Texture({ source: base.source, frame: new Rectangle(i * strip.frameWidth, 0, Math.min(strip.frameWidth, base.width - i * strip.frameWidth), Math.min(strip.frameHeight, base.height)) }));
+    }
   }
-  strips.set(strip.file, frames);
+  strips.set(key, frames);
   return frames;
 }
 
 /** Frames of a strip if already cut (synchronous; null while loading). */
 export function stripFrames(strip: SpriteStrip): Texture[] | null {
-  return strips.get(strip.file) ?? null;
+  return strips.get(stripKey(strip)) ?? null;
 }

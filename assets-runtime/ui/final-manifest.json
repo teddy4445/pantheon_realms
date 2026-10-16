@@ -814,6 +814,10 @@
       "file": "ui/icons/final/hero.greek.atalanta.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.atalanta.portrait.png."
     },
+    "hero.greek.doros.portrait": {
+      "file": "ui/icons/final/hero.greek.doros.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-14 from assets-source/icons/final/hero.greek.doros.portrait.png."
+    },
     "hero.greek.heracles.portrait": {
       "file": "ui/icons/final/hero.greek.heracles.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.heracles.portrait.png."
@@ -826,6 +830,10 @@
       "file": "ui/icons/final/hero.greek.melas.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.melas.portrait.png."
     },
+    "hero.greek.myrrine.portrait": {
+      "file": "ui/icons/final/hero.greek.myrrine.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-14 from assets-source/icons/final/hero.greek.myrrine.portrait.png."
+    },
     "hero.greek.odysseus.portrait": {
       "file": "ui/icons/final/hero.greek.odysseus.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.odysseus.portrait.png."
@@ -834,6 +842,10 @@
       "file": "ui/icons/final/hero.greek.perseus.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.perseus.portrait.png."
     },
+    "hero.greek.phaidon.portrait": {
+      "file": "ui/icons/final/hero.greek.phaidon.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-14 from assets-source/icons/final/hero.greek.phaidon.portrait.png."
+    },
     "hero.greek.scout_captain.portrait": {
       "file": "ui/icons/final/hero.greek.scout_captain.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-04 from assets-source/icons/final/hero.greek.scout_captain.portrait.png."
@@ -841,6 +853,10 @@
     "hero.greek.thaleia.portrait": {
       "file": "ui/icons/final/hero.greek.thaleia.portrait.webp",
       "provenance": "Owner-delivered final art, imported 2026-10-06 from assets-source/icons/final/hero.greek.thaleia.portrait.png."
+    },
+    "hero.greek.theron.portrait": {
+      "file": "ui/icons/final/hero.greek.theron.portrait.webp",
+      "provenance": "Owner-delivered final art, imported 2026-10-14 from assets-source/icons/final/hero.greek.theron.portrait.png."
     },
     "hero.japanese.abe_no_seimei.portrait": {
       "file": "ui/icons/final/hero.japanese.abe_no_seimei.portrait.webp",

@@ -1,0 +1,170 @@
+{
+  "acceptedNewImages": 25,
+  "shooterForms": 22,
+  "siegeActors": 2,
+  "projectileProfiles": 24,
+  "fxAtlasFrames": 192,
+  "creatureCorePoses": 144,
+  "flightPoses": 12,
+  "creatureAtlasChecks": [
+    {
+      "file": "atlas-dawncrest_pegasus.png",
+      "expectedBodies": 24,
+      "detectedBodies": 24,
+      "opaqueCanvasClipping": false
+    },
+    {
+      "file": "atlas-crownroot_runner.png",
+      "expectedBodies": 24,
+      "detectedBodies": 24,
+      "opaqueCanvasClipping": false
+    },
+    {
+      "file": "atlas-crested_serpopard.png",
+      "expectedBodies": 24,
+      "detectedBodies": 24,
+      "opaqueCanvasClipping": false
+    },
+    {
+      "file": "atlas-dreamtusk_baku.png",
+      "expectedBodies": 24,
+      "detectedBodies": 24,
+      "opaqueCanvasClipping": false
+    },
+    {
+      "file": "atlas-ridgeback_afanc.png",
+      "expectedBodies": 24,
+      "detectedBodies": 24,
+      "opaqueCanvasClipping": false
+    },
+    {
+      "file": "atlas-crownfin_ahuitzotl-v2.png",
+      "expectedBodies": 24,
+      "detectedBodies": 24,
+      "opaqueCanvasClipping": false
+    },
+    {
+      "file": "atlas-dawncrest_pegasus-flight.png",
+      "expectedBodies": 12,
+      "detectedBodies": 12,
+      "opaqueCanvasClipping": false
+    }
+  ],
+  "fxGridChecks": [
+    {
+      "file": "fx-greek-javelin.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 1
+    },
+    {
+      "file": "fx-arcane-bolt.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 2
+    },
+    {
+      "file": "fx-cyclops-boulder.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 2
+    },
+    {
+      "file": "fx-frost-breath.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 3
+    },
+    {
+      "file": "fx-egyptian-javelin-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 2
+    },
+    {
+      "file": "fx-granite-block-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 2
+    },
+    {
+      "file": "fx-holy-fire.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 15
+    },
+    {
+      "file": "fx-spectral-wail.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 2
+    },
+    {
+      "file": "fx-atlatl-dart.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 1
+    },
+    {
+      "file": "fx-serpent-fire.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 7
+    },
+    {
+      "file": "fx-sling-ammunition.png",
+      "size": [
+        1266,
+        1242
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 1
+    },
+    {
+      "file": "fx-siege.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frameCount": 16,
+      "maxAlphaAtGridBoundary": 2
+    }
+  ],
+  "sourcePixelsUnmodified": true,
+  "gameCodeModified": false,
+  "notVerified": [
+    "Live game alignment, scale and timing",
+    "Upgrade balance and recruitment implementation",
+    "Save/replay migration and campaign regression checks"
+  ]
+}

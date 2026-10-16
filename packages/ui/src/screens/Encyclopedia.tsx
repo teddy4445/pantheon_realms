@@ -31,7 +31,7 @@
  * socket rim.
  */
 import { useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
-import { ARTIFACT_SLOT_LABEL, type ArtifactSlot, type ContentCatalog, type CreatureTier, type PantheonDefinition } from '@pr/rules';
+import { ARTIFACT_SLOT_LABEL, familyForms, type ArtifactSlot, type ContentCatalog, type CreatureTier, type PantheonDefinition } from '@pr/rules';
 import { useStore } from '../app/context';
 import { Panel, SectionTitle } from '../components/kit';
 import { ArtifactIcon, CreaturePortrait, Emblem, GodPortrait, BuildingArt, SkillIcon, SpecialtyLine, SpellIcon } from '../components/art';
@@ -43,6 +43,7 @@ import { guiThemeFor } from '../assets/guiArt';
 import { Icon } from '../assets/icons';
 import { AbilityBadge, SetBadge } from '../components/badges';
 import { heroStory } from '../app/view';
+import { neutralFacts } from '../app/neutralCodex';
 
 type Tab = 'creatures' | 'gods' | 'heroes' | 'town' | 'spells' | 'skills' | 'artifacts' | 'abilities';
 
@@ -83,7 +84,8 @@ function codexIndex(catalog: ContentCatalog): CodexEntry[] {
   const family = (familyId: string, faction: string) => {
     const f = catalog.families[familyId];
     if (!f) return;
-    add('creatures', `fam:${familyId}`, faction, f.name, catalog.creatures[f.baseCreatureId]?.name, catalog.creatures[f.upgradedCreatureId]?.name);
+    // An expansion neutral is also found by its habitat (campaign expansion 2026-10-15; both forms share the family's).
+    add('creatures', `fam:${familyId}`, faction, f.name, ...familyForms(f).map((id) => catalog.creatures[id]?.name), neutralFacts(catalog, f.baseCreatureId)?.habitat);
   };
   for (const id of catalog.pantheonOrder) {
     const p = catalog.pantheons[id];
@@ -161,23 +163,26 @@ function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalo
   const store = useStore();
   const fam = catalog.families[familyId];
   if (!fam) return null;
+  // An expansion neutral (campaign expansion 2026-10-15): its habitat and where it is hired; both forms side by side
+  // since the neutral upgrades of 2026-10-15 (one card across the panel only for a single-form family).
+  const facts = neutralFacts(catalog, fam.baseCreatureId);
   return (
-    <div className="bestiary-tier codex-frame" data-eq="tier">
+    <div className="bestiary-tier codex-frame" data-eq="tier" data-testid={`codex-family-${fam.id}`}>
       <div className="bestiary-tier__head">
         <span className="tier-badge">T{tier as CreatureTier}</span> {fam.name} family
-        <span className="codex-meta"> · growth {fam.baseGrowth}/week</span>
+        <span className="codex-meta">{facts ? ` · up to ${fam.baseGrowth} a week at each hiring site` : ` · growth ${fam.baseGrowth}/week`}</span>
       </div>
-      <div className="bestiary-tier__pair">
-        {[fam.baseCreatureId, fam.upgradedCreatureId].map((cid, i) => {
+      <div className={`bestiary-tier__pair ${facts?.singleForm ? 'ncx-pair--single' : ''}`}>
+        {familyForms(fam).map((cid, i, forms) => {
           const c = catalog.creatures[cid];
           if (!c) return null;
           return (
-            <button key={cid} type="button" className={`bestiary-card ${i === 0 ? 'bestiary-card--base' : 'bestiary-card--up'}`} onClick={() => store.goto('unit-detail', { creatureId: cid })} data-testid={`codex-${cid}`}>
+            <button key={cid} type="button" className={`bestiary-card ${i === 0 ? 'bestiary-card--base' : 'bestiary-card--up'} ${forms.length === 1 ? 'bestiary-card--single' : ''}`} onClick={() => store.goto('unit-detail', { creatureId: cid })} data-testid={`codex-${cid}`}>
               <span className="codex-socket">
                 <CreaturePortrait catalog={catalog} creatureId={cid} size="5.6rem" />
               </span>
               <div className="bestiary-card__text">
-                <div className="bestiary-card__kind">{i === 0 ? 'Base form' : 'Upgraded form'}</div>
+                <div className="bestiary-card__kind">{forms.length === 1 ? 'Single form' : i === 0 ? 'Base form' : 'Upgraded form'}</div>
                 <div className="bestiary-card__name">{c.name}</div>
                 {c.stats ? (
                   <div className="bestiary-card__stats">
@@ -195,6 +200,23 @@ function CreatureTierPanel({ catalog, tier, familyId }: { catalog: ContentCatalo
           );
         })}
       </div>
+      {facts ? (
+        <div className="ncx-facts" data-testid={`codex-facts-${fam.baseCreatureId}`}>
+          {facts.habitat ? (
+            <p className="ncx-fact">
+              <span className="ncx-fact__k">Habitat</span> {facts.habitat}
+            </p>
+          ) : null}
+          <p className="ncx-fact">
+            <span className="ncx-fact__k">Hiring</span> {facts.hiring.text}
+          </p>
+          {facts.forms ? (
+            <p className="ncx-fact" data-testid={`codex-forms-${fam.baseCreatureId}`}>
+              <span className="ncx-fact__k">Forms</span> {facts.forms}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

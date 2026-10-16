@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { GameDriver } from '@pr/testing';
-import { legalActions, siteAt, type HexCoord } from '@pr/rules';
+import { legalActions, movementBudget, quoteMovement, routeDays, siteAt, type HexCoord } from '@pr/rules';
 import { CURSOR_IDS, cursorCss, cursorDelivered, meleeAngle } from '../src/assets/cursors';
 import manifest from '../../../assets-runtime/ui/cursors/manifest.json';
 import { adventureCursor, battleCursor } from '../src/app/cursorContext';
@@ -82,6 +82,29 @@ describe('adventure map cursor', () => {
     for (const k of ['cursor.map.move', 'cursor.map.move_later', 'cursor.blocked', 'cursor.map.visit']) expect(kinds, k).toContain(k);
   });
 
+  it('beyond today: the day the hero gets there rides with the cursor (owner request 2026-10-14)', () => {
+    const budget = movementBudget(d.catalog, s, hero).total;
+    let seen = 0;
+    for (let q = 0; q < s.world.map.width; q++) {
+      for (let r = 0; r < s.world.map.height; r++) {
+        const c = { q, r };
+        const choice = adventureCursor(d.catalog, s, 'player', hero, c, ctx);
+        const quote = quoteMovement(d.catalog, s, hero.id, c);
+        if (!quote.reachable || quote.reachesDestinationToday) {
+          expect(choice.days, `${q},${r}`).toBeUndefined();
+          continue;
+        }
+        const days = routeDays(d.catalog, s, hero.id, quote)!;
+        expect(choice.days).toBe(days);
+        expect(days).toBeGreaterThanOrEqual(2);
+        // Never fewer days than the whole route's points need at one full day each (after today's).
+        expect(days).toBeGreaterThanOrEqual(1 + Math.ceil((quote.totalCost - hero.movementPoints) / budget));
+        seen++;
+      }
+    }
+    expect(seen).toBeGreaterThan(10);
+  });
+
   it('busy on another empire’s turn, grabbing while the map is dragged, default off the map', () => {
     expect(adventureCursor(d.catalog, s, 'player', hero, hero.position, { ...ctx, humanTurn: false }).id).toBe('cursor.ui.busy');
     expect(adventureCursor(d.catalog, s, 'player', hero, hero.position, { ...ctx, dragging: true }).id).toBe('cursor.ui.grabbing');
@@ -110,6 +133,10 @@ describe('battlefield cursor', () => {
     const strike = pick(enemy.anchor, { col: enemy.anchor.col - 1, row: enemy.anchor.row });
     if (la!.shootTargets.includes(enemy.id)) expect(['cursor.battle.shoot', 'cursor.battle.shoot_weak']).toContain(strike.id);
     else expect(strike).toEqual({ id: 'cursor.battle.melee', angle: 0 });
+    // On a mirrored board (a human defender on the left) the same strike from the west points the other way on screen.
+    if (!la!.shootTargets.includes(enemy.id)) {
+      expect(battleCursor(d.catalog, d.state, la, { kind: 'normal' }, enemy.anchor, { col: enemy.anchor.col - 1, row: enemy.anchor.row }, { ...ctx, mirrored: true })).toEqual({ id: 'cursor.battle.melee', angle: 180 });
+    }
     expect(battleCursor(d.catalog, d.state, null, { kind: 'normal' }, enemy.anchor, null, ctx).id).toBe('cursor.ui.busy');
     expect(pick({ col: 7, row: 5 }, null).id).toMatch(/cursor\.(battle\.move|battle\.fly|blocked|battle\.info)/);
   });

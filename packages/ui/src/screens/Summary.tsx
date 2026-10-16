@@ -219,7 +219,12 @@ export function SummaryScreen() {
           </table>
           {store.lastRecord?.rank && store.lastRecord.table === 'skirmish' && scoreFor === session.humanPlayerId ? <Chip tone="ok">High score — rank {store.lastRecord.rank}</Chip> : null}
           <p className="faint small">Score formula (proposed this build): victory 2,000; up to 1,500 for a fast win (−25 per day); army value ÷ 100; 300 per town; 100 per site; 100 per battle won; 2 per creature defeated; times the difficulty multiplier.</p>
-          {campaign ? (
+          {campaign?.branch === 'practice' ? (
+            <p className="note small" data-testid="summary-practice">
+              Practice replay: this game is kept apart from your campaign; its score and results do not count towards it.
+            </p>
+          ) : null}
+          {campaign && campaign.branch !== 'practice' ? (
             <>
               <SectionTitle>Campaign</SectionTitle>
               <table className="table small" data-testid="campaign-scores">

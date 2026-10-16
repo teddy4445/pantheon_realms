@@ -100,6 +100,8 @@ export function AdventureStage({
   mode = 'modal',
   shade = 'default',
   sceneStyle,
+  compact = false,
+  aside,
 }: {
   theme: GuiTheme;
   /** The painted scene behind (relative URL), or null for the plain dark stage. */
@@ -118,12 +120,16 @@ export function AdventureStage({
   /** 'default': dark at the top and the bottom; 'dim': the whole scene darkened (camp behind the book); 'top': a picture above dark panels (market). */
   shade?: 'default' | 'dim' | 'top';
   sceneStyle?: CSSProperties;
+  /** A thinner frame and a one-line title strip (recruitment 2026-10-14: the space goes to the content). */
+  compact?: boolean;
+  /** Live content at the right of the title strip (the treasury). */
+  aside?: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const trap = useModalFocus(ref);
   const titleId = useId();
   const stage = (
-    <div ref={ref} className={`ak-stage gui-window ak-stage--${shade} ${className}`}>
+    <div ref={ref} className={`ak-stage gui-window ak-stage--${shade} ${compact ? 'ak-stage--compact' : ''} ${className}`}>
       <span className="ak-stage__backdrop" aria-hidden="true">
         {scene ? <img className="ak-stage__scene" src={scene} alt="" draggable={false} decoding="async" style={sceneStyle} /> : null}
         <span className="ak-stage__shade" />
@@ -140,6 +146,7 @@ export function AdventureStage({
           </h2>
           {subtitle ? <p className="ak-head__sub">{subtitle}</p> : null}
         </div>
+        {aside ? <div className="ak-head__aside">{aside}</div> : null}
       </header>
       {onClose ? <Button icon="close" variant="ghost" size="small" onClick={onClose} aria-label="Close" className="ak-close" /> : null}
       <div className="ak-body">{children}</div>
@@ -293,10 +300,31 @@ export function KitOrnament({ id, className = '' }: { id: string; className?: st
  * A creature standing in a scene: its own native idle strip (frame count, size,
  * anchor and rate from the sprite manifest), feet at (50 %, 86 %) of the box,
  * scaled to fit and never cropped; the first frame still under reduced motion.
- * Nothing is enlarged into a new illustration.
+ * Nothing is enlarged into a new illustration. A creature without an idle strip
+ * (the campaign kit's neutrals: frame-region atlases only) stands as its
+ * `portrait` instead — the delivered picture fitted inside the stage, never
+ * shown larger than its native size, no filter.
  */
-export function CreatureStage({ creatureId, name, className = '' }: { creatureId: string; name: string; className?: string }) {
+export function CreatureStage({
+  creatureId,
+  name,
+  className = '',
+  portrait,
+}: {
+  creatureId: string;
+  name: string;
+  className?: string;
+  /** The creature's large portrait (e.g. `creaturePicture`), shown when it has no idle strip. */
+  portrait?: { readonly url: string; readonly alt: string; readonly width?: number | null; readonly height?: number | null; readonly assetId?: string } | null;
+}) {
   const strip = creatureIdleStrip(creatureId);
+  if (!strip && portrait?.url) {
+    return (
+      <div className={`recruit-stage ak-creature-stage ak-creature-stage--portrait ${className}`} data-testid="recruit-stage" data-fallback="portrait">
+        <img className="ak-creature-stage__portrait" src={portrait.url} alt={portrait.alt || name} width={portrait.width ?? undefined} height={portrait.height ?? undefined} draggable={false} decoding="async" data-asset={portrait.assetId} />
+      </div>
+    );
+  }
   if (!strip) return <div className={`recruit-stage ak-creature-stage ${className}`} role="img" aria-label={name} />;
   const style = {
     ['--fw' as string]: strip.frameWidth,

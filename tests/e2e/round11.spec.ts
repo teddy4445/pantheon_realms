@@ -217,10 +217,11 @@ test('town: economy panel on the painting, a pop-up beside the building with ico
 
 test('journal: status icons instead of tags; a step met before it opens reads as completed; no header subtitle', async ({ page }) => {
   await usePrefs(page, { graphicsTested: true, tutorialHints: false });
-  const d = GameDriver.mission('three_beacons_m02', { matchId: 'e2e-r11-journal' });
-  // A god chosen before "Choose a patron's ally" opens: the step is already met.
-  d.state.players['player']!.pantheon.minorGodIds = ['athena'];
-  expect(d.state.mission.objectives['m02_pantheon']?.status).toBe('locked');
+  // The Winter Oath, Mission 1: Draugar trained before "Bind a deathless guard" opens — the step is already met.
+  // (The Three Beacons' Mission 2 had such a step until the owner reduced it to one objective, 2026-10-14.)
+  const d = GameDriver.mission('winter_oath_m01', { matchId: 'e2e-r11-journal' });
+  d.state.mission.counters['trained:norse_draugr'] = 8;
+  expect(d.state.mission.objectives['m01_train']?.status).toBe('locked');
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await importAndLoad(page, writeSave(d, 'r11 journal'));
   await waitFor(page, (x) => x.screen === 'adventure', 'map');
@@ -228,8 +229,8 @@ test('journal: status icons instead of tags; a step met before it opens reads as
   await waitFor(page, (x) => x.screen === 'journal', 'journal');
   await expect(page.locator('.screen-header__subtitle')).toHaveCount(0);
   await expect(page.locator('.journal-body .objective .chip')).toHaveCount(0);
-  await expect(page.getByTestId('objective-m02_pantheon').locator('.status-icon')).toHaveAttribute('data-status', 'completed');
-  await expect(page.getByTestId('objective-m02_pantheon')).not.toContainText(/Done early|Opens after/);
+  await expect(page.getByTestId('objective-m01_train').locator('.status-icon')).toHaveAttribute('data-status', 'completed');
+  await expect(page.getByTestId('objective-m01_train')).not.toContainText(/Done early|Opens after/);
   expect(await page.locator('.journal-body .status-icon[data-status="active"]').count()).toBeGreaterThan(0);
   await page.screenshot({ path: 'test-results/round11-journal.png' });
 });

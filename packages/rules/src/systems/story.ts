@@ -61,6 +61,10 @@ export function evaluateStory(tx: Tx): void {
   const played = (tx.state.mission.scenesPlayed ??= []);
   for (const scene of scenes) {
     if (played.includes(scene.id)) continue;
+    // Order-aware lines (campaign v2): a scene can wait on, or exclude, known facts.
+    const flags = tx.state.mission.flags;
+    if (scene.ifFlags && !scene.ifFlags.every((f) => flags[f])) continue;
+    if (scene.unlessFlags && scene.unlessFlags.some((f) => flags[f])) continue;
     if (!triggered(tx, scene.trigger)) continue;
     played.push(scene.id);
     tx.emit({ kind: 'StoryScene', sceneId: scene.id });

@@ -73,6 +73,34 @@ export {
   type CustomVictory,
 } from '@pr/mapgen';
 
+// Campaign expansion (2026-10-15): neutral hiring sites, sluices, ferries and supply depots on
+// custom maps (editor palette and checks), and the default-off neutral pool of random maps.
+export {
+  CUSTOM_CHANNEL_TERRAINS,
+  SKIRMISH_NEUTRAL_SPECIES,
+  SLUICE_MAX_CHANNEL,
+  SLUICE_REACH,
+  SUPPLY_DEPOT_REWARD,
+  customHabitatGround,
+  customHabitatVerdict,
+  customSluiceConnectivity,
+  customSluiceGround,
+  habitatTagLabel,
+  habitatTagsAt,
+  habitatVerdict,
+  neutralSiteCreatures,
+  neutralSiteStock,
+  neutralSpeciesForBiome,
+  skirmishMapBiome,
+  type CustomChannelTerrain,
+  type CustomValidateOptions,
+  type GroundAt,
+  type HabitatVerdict,
+  type NeutralHabitat,
+  type NeutralSiteTable,
+  type SluiceConnectivity,
+} from '@pr/mapgen';
+
 /** One seat of an authored skirmish map: its pantheon and who plays it. */
 export interface SkirmishMapSeat {
   readonly pantheonId: string;

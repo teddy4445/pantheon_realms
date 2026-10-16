@@ -1,0 +1,206 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Claude integration handoff</title><style>body{max-width:980px;margin:40px auto;padding:0 24px;background:#f3eddf;color:#243039;font:17px/1.65 system-ui}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}a{color:#825b22}</style><a href="index.html">← Visual reference package</a><pre>PANTHEON REALMS — CAMPAIGN EXPANSION AND NEUTRAL CREATURES
+Implementation handoff • 15 October 2026
+
+The owner has requested the new visuals and the campaign/screen integration based on the 37-mission review. Implement that design as the new campaign content version. Preserve the existing heroes and supporting cast. Do not replace the game with this package&#x27;s HTML preview. Do not treat an earlier “discussion draft” footer in the archived research as an instruction to stop: the current request authorizes this handoff. It does not authorize deleting old saves or old campaign definitions.
+
+THIS IS AN ASSET/DESIGN DELIVERY, NOT AN ALREADY IMPLEMENTED GAME PATCH.
+The source game was inspected. No game code was changed by this delivery. Values described as candidate balance and pacing targets have not been playtested. No new public release number has been assigned.
+
+1. EXACT LOCATIONS AND HOW TO COPY
+
+Source package (separate project):
+C:\Users\lazeb\Desktop\blannder_models\campaign-expansion-kit-2026-10-15
+
+Destination game project:
+C:\Users\lazeb\Desktop\pantheon_realms
+
+Copy the 31 accepted PNGs from:
+C:\Users\lazeb\Desktop\blannder_models\campaign-expansion-kit-2026-10-15\new-assets
+into BOTH:
+C:\Users\lazeb\Desktop\pantheon_realms\assets-source\campaign-v2
+C:\Users\lazeb\Desktop\pantheon_realms\assets-runtime\campaign-v2
+
+Preserve filenames. This is a copy, not a move. Do not delete or overwrite unrelated existing artwork. Runtime manifest paths are relative to assets-runtime, for example campaign-v2/portrait-baku.png. Never put C: paths in the shipped application. Run the project&#x27;s established asset packaging process so these files are included in the installed game, not only in the development server.
+
+Copy the design JSON, manifests and this handoff into an appropriately named documentation directory inside the game project, such as docs/campaign-v2. These are design/adapter inputs, not ready-made replacements for existing content catalogs.
+
+Package entry points:
+- index.html: standalone local reference screens and atlas player; open directly in a browser, no build needed.
+- asset-manifest.json: exact filenames, proposed destinations, native dimensions, alpha metadata and SHA-256 hashes of all 31 accepted images.
+- animation-manifest.json: measured source rectangles, pixel anchors, FPS, aliases and excluded frames. THIS IS NOT THE CURRENT GAME SPRITE SCHEMA.
+- reuse-map.json: 150 existing assets with original full paths, relative runtime paths, hashes and purpose. Copies are included under reuse/ for an independent reference package. Prefer their current registered asset IDs in the game; avoid duplicating them in the runtime folder.
+- design/mission-content.json: all 37 mission cards, full story/task/map/pressure/choice/neutral/victory descriptions, original chapter mapping and briefing art.
+- design/campaign-graph.json: exact new chapter prerequisites.
+- design/neutral-content.json: six new species, candidate balance, precise proposed ability rules, habitat and asset mapping.
+- design/screen-specs.json: affected screens, their content and required states.
+- design/CAMPAIGN_DESIGN_REVIEW.html and .txt: complete original research and regional campaign proposals. Their historical status footer is retained as provenance.
+- reference/atlas-player.js: small rendering example for the supplied frame rectangles; adapt its math, not its demonstration state machine.
+- generation-log-complete.json: generation prompts and original output locations, including rejected iterations. Only asset-manifest.json identifies deliverables.
+- validation.json and reference/browser-check.json: package and preview checks, not evidence of in-game playtesting.
+
+Never copy reference/iterations into the game. Those are superseded generation attempts, not alternate selectable assets. Native background resolution is 1672 × 941, below the originally requested 1920 × 1080. They were not upscaled. Six core atlases are 1024 × 1536. Treat dimensions in the manifest as authoritative; do not advertise these as 4K or high-frame-count animation.
+
+2. WHAT IS NEW, AND WHAT IS REUSED
+
+New: six full creature portraits, six core animation atlases, one Pegasus flight atlas, six neutral hiring landmarks, open/closed sluice landmarks, a ferry landing, a supply depot, six campaign icons and two quiet backgrounds.
+
+The new campaign background is text-free parchment/navigation scenery. The neutral hiring background provides a broad creature stage and a quiet panel area. All titles, prices, objective counts, locked states, dialogue and controls must be live UI. Use the current gold/navy game chrome and current fonts; do not bake screenshots into interactive screens.
+
+The six icons are evidence, pact, supply, evacuation, chapter branch and manual battle. Use their actual names from the manifest; the accepted manual battle icon ends in -v2. Existing ability/action icons, recruitment chrome, reward tray, intro scroll, faction banners and meeting backdrops already cover the remaining interface needs. Generic ability icons are symbolic labels only: using the old flight/ward/charge artwork does not grant that old ability&#x27;s rule.
+
+All 45 existing mission paintings remain represented. Each new mission lists its briefingArt. Use the first as the cover and additional paintings as event illustrations inside merged chapters. Reuse current hero/cast busts, seven campaign covers and six faction identities. There are no new heroes, gods, hero portraits or town factions to invent. Old ending illustrations must not imply an outcome the new choices no longer support; use an appropriate existing campaign painting behind live epilogue text if necessary.
+
+3. CAMPAIGN STORY AND CHAPTER STRUCTURE
+
+Keep the established premise: six separate worlds collided through a mysterious event. The gods failed to agree; direct divine combat would unravel the damaged world. Existing mortal champions pursue their gods&#x27; claims through mythical armies, local alliances and conquest. Keep the collision&#x27;s ultimate cause unresolved. Avoid inventing a universal seventh villain or turning the opening into an address to the player.
+
+New playable count: tutorial 2; Greek 6; Norse 6; Egyptian 6; Japanese 6; Celtic 6; Mesoamerican 5 = 37. Existing protagonists: Alexios, Hervor, Seshet, Akane, Orla and Itzel. Alexios also leads the tutorial. All original 45 chapter story beats are preserved in the mapped 37 missions. Do not simply drop eight old chapters or rename old maps.
+
+The authoritative per-mission text is design/mission-content.json. Implement every card&#x27;s story, tasks, terrain connections, pressure, local choice and finish condition. The reference review gives campaign-wide supporting cast, continuity and narrative arcs. Keep map objectives observable and journaled, not only spoken in an introductory paragraph.
+
+New runtime mission IDs are proposed as &lt;campaign&gt;_v2_mNN. Keep old IDs and definitions available for legacy saves. campaign-graph.json uses requiresAll: every listed predecessor is required. Two available chapters are an order choice, not mutually exclusive alternative endings. No campaign runs two chapter maps at once. The player completes one, carries bounded progress forward, then chooses the next available chapter.
+
+Dependency shapes, by local chapter number:
+- Three Beacons: 1 → 2.
+- Silent Oracle: 1 → {2,3}; complete both → {4,5}; complete both → 6.
+- Winter Oath: 1 → 2 → {3,4}; complete both → 5 → 6.
+- Twelfth Hour: 1 → {2,3}; complete both → 4 → 5 → 6.
+- Lantern Road: 1 → 2 → {3,4}; complete both → 5 → 6.
+- Silver Branch: 1 → 2 → {3,4}; complete both → 5 → 6.
+- New Fire: 1 → 2 → {3,4}; complete both → 5.
+
+Write conditional opening/event lines for chapters that can occur in either order. A character cannot mention an uncompleted investigation as a known fact. Track evidence and choices separately from chapter completion. Consolidate branch facts without duplicating rewards; the currently completed chronological chapter supplies the bounded hero carryover for the next entry. Replays/practice branches cannot advance the main run or farm carryover rewards. Keep existing god-choice and entitlement rules unless the new mission explicitly changes them.
+
+4. MAPS MUST BECOME REGIONS, NOT CORRIDORS
+
+The old repeated Restore/Hunt/Covenant/Seek/Rival/Refuge/Finale pipeline and its river/mountain strips are part of the problem. Do not solve it by rotating a strip or exchanging terrain textures. Author each region graph from its mission card before adding decorations or guards.
+
+Beyond the first tutorial minutes, each main map needs a complete useful circuit, two plausible approaches to its principal objective, and a shortcut opened through play. Routes must differ in safety, distance, income, allies or information. Do not make every route a key gate followed by the same mandatory fight. Optional dead ends are short reward pockets. Some finales return to a changed home region rather than marching to the right edge.
+
+Roads meet actual town gates, bridge landings, ferry approaches and site interaction cells. Forest placement follows its biome. The two sluice images are states of the same site; opening must change the relevant water/route rule and visual together. Use a common ground anchor and fixed display size; inspect alignment of the two separate paintings before shipping. The ferry is a route connector, not a promise of free movement over every water tile. Reuse the game&#x27;s existing crossings/sites where sufficient.
+
+Use finite, signalled enemy pressure. A patrol has a home and a purpose; taking its camp stops that source. Do not generate endless mandatory waves. Start a scenario timer only when its announced triggering phase begins, show the deadline before confirmation, and save the trigger day. Never delete essential evidence or introduce an invisible failure deadline. Make loss of an optional reward visibly different from mission defeat.
+
+Pacing targets in the cards are unplaytested. Most middle maps target a handful of meaningful mandatory tactical encounters; finales can have more. Leave ordinary resource pickups unguarded when no interesting battle is gained. Test navigation with the actual fixed camera. Map input pans left/right/up/down; do not introduce camera rotation to compensate for bad placement.
+
+5. MANUAL BATTLES ONLY IN CAMPAIGN
+
+Every combat involving the human campaign side must enter tactical combat: field armies, neutrals, sieges, garrisons and scripted story fights. Remove Quick battle, automatic casualty previews, full-battle autoplay and instant auto-finish paths for this mode. Keep normal enemy AI turns, battle animation-speed options, retreat and surrender under their usual legal conditions. AI-versus-AI world simulation may remain automatic. Skirmish keeps its existing policy.
+
+This requires a guard at the actual command/rules entry, not just hiding a button. The audited UI exposes store.quickBattle and the exact-result preview in packages/ui/src/Overlays.tsx and dialogs/QuickBattle.tsx. Inspect their current locations and callers, including keyboard shortcuts, save resume, test/debug dispatch and any alternate encounter screen. A forbidden command must leave campaign state and RNG state unchanged. Qualitative threat information is fine; do not simulate a whole battle to present exact predicted survivors.
+
+Explicit joining, paying for passage, negotiations and surrender can resolve encounters without battle when the mission allows them; those are authored outcomes, not hidden combat simulation. Required story fights must not disappear through a routine flee/join roll. Make the distinction explicit in the mission definitions.
+
+6. SIX NEUTRAL CREATURES
+
+All six are unaffiliated and recruitable by any pantheon at appropriate sites. “Neutral” does not mean an ordinary real-world animal: their mythology provides flavor, not faction ownership. Keep them out of the seven-tier town rosters. They are optional sidegrades; every mandatory campaign objective must remain achievable with the current creatures.
+
+Pegasus: flying escort, high meadows/limestone uplands; folded-wing core and separate flight art.
+Root-Runner: ground scout/distraction, wooded roots and mossy groves; Ratatoskr-inspired animal, not the named divine messenger.
+Serpopard: long-reach predator, sandstone/river edges; no forest shrine on open dunes.
+Baku: protective support, misty forest groves; nightmare-eater theme.
+Afanc: slow defensive freshwater beast, lakes/reed pools; not open-ocean decoration.
+Ahuitzotl: limited pull/ambush, warm freshwater cenotes and jungle banks; tail-hand must remain readable.
+
+Use design/neutral-content.json for proposed rules and starter values. They are deliberately marked unplaytested. The audited rules have no fear status; Baku therefore cleanses a real temporary hostile debuff in the initial implementation. Keep the nightmare-cleansing lore, but do not ship a button whose stated fear-cleansing effect has no possible target. If a fear status is added later, extend the same eligibility predicate explicitly. Do not silently grant an unrelated old ability because its icon was reused.
+
+These are six single-form species. There are no new upgrade portraits or upgrade units. The current CreatureFamilyDefinition.upgradedCreatureId and FamilySpec.upgraded are required fields. Add safe optional-upgrade support across content construction, recruitment, encyclopedia, army training and serialization. Do not manufacture six identical “upgraded” clones to satisfy the current types. Existing two-form families must retain their current behavior.
+
+Hiring sites have finite per-week stock shared between players for that site. Re-entering, capturing, loading or changing ownership cannot refill it. Validate stock, resources, destination capacity and ownership atomically. Recruit all affordable calculates legal quantities and exact aggregate cost before confirmation; it must not discard existing stacks or recruit into an invalid destination. Show a useful full-army or insufficient-resource state. A town without an appropriate neutral site does not gain these units automatically.
+
+Use one or two meaningful hiring opportunities on most middle maps, at most three on larger regions. Follow each mission card&#x27;s neutral field; many intentionally reuse existing centaurs/slingers/etc. Cross-cultural habitat placement is allowed: a Root-Runner can appear in a Celtic forest. New species should not appear everywhere because every campaign has a neutral icon.
+
+7. ATLAS INTEGRATION — IMPORTANT
+
+Current code in packages/presentation/src/sprites.ts describes horizontal uniform strips. This delivery instead supplies measured rectangles inside native multi-row atlases. A naive 4 × 6 grid will cut off several poses. Add a backward-compatible frame-region variant to the renderer, preserving the old strip format and all current sprites.
+
+Each concrete animation has file, fps, loop and frames. Each frame has rect [sourceX, sourceY, width, height], anchor [pixelX,pixelY], sourceScale and sourceCell. At a fixed world ground position, draw the source rectangle at constant scale, offset by its anchor. Do not normalize each frame to its own bounding-box width/height: that makes the creature grow and shrink. Mirror the drawing transform around the same world anchor for left-facing units. Convert delivery file prefixes new-assets/ to runtime campaign-v2/ during registration.
+
+Core states are idle, move, attack, defend, hit and death, four authored poses each. Idle/move loop. One-shot combat states play once; death holds its final pose. Victory explicitly aliases idle. Ability aliases defend for Pegasus/Baku/Afanc and attack for the others. No separate shoot or cast animation is needed for these non-shooters; only bind it if an actual rule calls it. The preview&#x27;s repeated one-shot playback is a QA convenience, not game behavior.
+
+Pegasus adds takeoff, fly and landing. The top-row third flight pose (zero-based sourceCell [0,2]) has a clipped wing and is excluded. Playback uses 3 takeoff + 4 fly + 4 landing poses. Do not register all 12 by grid count. The supplied .62 flight sourceScale is a starting visual match to its smaller core atlas; calibrate actual mount/body scale in game. Takeoff → looping flight → landing must return to the core ground anchor without a size jump. Flight animations do not change legal movement or permit illegal landings.
+
+The new images are limited-frame painted sprite animations, not rigged 3D models or motion-capture sequences. They need timing/scale review against current units at the real zoom levels. Use high-resolution portraits for encyclopedia and recruitment detail, rather than magnifying a tiny battle frame into a full-screen illustration. Battle and map-guard rendering can use measured atlas frames; no new eight-direction art is supplied or required for the fixed-view presentation.
+
+Never let visual animation completion determine damage, initiative, death, ability charges or movement legality. Those are deterministic rules events. Save/replay must work with animation disabled and reduced-motion enabled. Preserve transparent edges; do not replace alpha with black. Inspect on dark and light terrain. Source images have not been code-retouched or upscaled.
+
+8. SCREENS TO UPDATE
+
+Campaign selection / chronicle: retain seven campaign covers and existing protagonists; show current progress and available chapter choices on parchment with restrained gold links. Locked, available, completed, current and replay states must be visually distinct without relying only on color. Selecting a chapter opens its summary, known task and tactical-battle notice. The current Setup.tsx mission list is explicitly read-only; make actual selection dispatch through campaign state validation. Do not just add clickable decorative nodes. Hide unrevealed story text in the real game; the reference gallery deliberately exposes the whole design for review.
+
+New run / continue / load: new runs choose campaign content v2; old saves display their legacy content version and remain playable. Keep difficulty and patron choice rules intact. Show the actual mission count from definitions. Offer replay separately from main progression.
+
+Scenario introduction: use the existing intro scroll, mission painting and speaker bust. Explain the immediate situation, current objectives, loss conditions and any announced deadline. A large readable illustration with a compact objective list is enough. Keep timings skippable and text accessible; do not force a cinematic for every retry.
+
+Adventure HUD and quest markers: objective icons distinguish evidence, supply, refuge/evacuation and pact work. Use existing landmark sprites where possible and the new sites only for their actual functions. A hover/click description names the site, known state, legal interaction and remaining stock if known. Do not expose unrevealed enemies or map coordinates as debug labels.
+
+Journal: keep completed evidence persistent; separate required tasks, optional opportunities and known consequences. Show region/site names and a locate action for revealed sites. Unknown information is unknown, not a misleading zero count. Update goals after story transitions, keep past entries inspectable and identify deadlines using the saved trigger day. Use all six new icons as appropriate, with live labels.
+
+Story choice / negotiation: reuse current meeting backdrops and cast busts. Show a short exchange and two meaningful choices with known costs/consequences. Never make hover the only way to understand a choice. If a choice spends a resource, validate the final cost and record the decision once. A screen reopen or double click cannot pay twice. The supplied journal/choice preview is a layout reference, not the final script for every campaign.
+
+Neutral site recruitment: large portrait/creature stage, one compact panel containing role, stats, exact ability tooltip, stock, price, destination, quantity and recruit/recruit-all controls. Reuse the existing seven-slot army strip. No locked upgrade tab for these single-form units. Put detailed lore behind an optional disclosure, not in a second obligatory scrolling panel. Existing faction recruitment must still show base and upgraded forms only when actually available.
+
+Encyclopedia / unit details / army inspectors: add a Neutral category and six entries. Show portrait, habitat, role, actual statistics, ability rule and current recruitment source. Single-form units have no empty upgrade comparison. Keep existing basic/upgraded hover behavior for existing faction creatures. Add the new ability labels and accessible tooltips to battle inspection.
+
+Pre-battle / tactical HUD: campaign encounters show a single clear Fight action plus only legal retreat/diplomacy choices. Use the manual-battle icon sparingly; a persistent technical warning is unnecessary. Add new ability buttons to the existing tactical action bar, with legal-target highlights and disabled reasons. Keep existing selection, facing, hit, death and victory presentation consistent.
+
+Mission result / reward / epilogue: use existing reward tray and appropriate mission painting. Present objective outcome, hero carryover, newly opened chapters, choices remembered and bounded rewards. Then offer the available next chapter choices, not a hardcoded “next index.” A defeat screen names the real loss condition and offers retry/load. Do not show old ending text or paintings that contradict the saved new outcome.
+
+Map editor and random/skirmish setup: add six neutral units, six hiring sites and the new interactive landmark states to the appropriate palettes. Enforce biome masks and footprints. Existing random maps may opt into the neutral encounter pool through data; do not globally flood all generators with the units or change skirmish automatic-resolution policy. Editor previews need the same runtime asset IDs, not local delivery paths.
+
+Accessibility and fit: check 1280 × 720, 1366 × 768, 1920 × 1080 and supported UI scaling. Recruitment&#x27;s primary controls must remain visible without nested scrolling. A longer journal can scroll deliberately; do not shrink text until unreadable. Give icons accessible names, keyboard focus, controller/keyboard equivalents where the game supports them, and reduced-motion behavior. The standalone preview is responsive but is not a drop-in layout specification for the engine.
+
+9. PERSISTENT MULTI-DAY HERO JOURNEYS
+
+Keep each hero&#x27;s selected destination and planned route at day end. Next day, the same hero can Continue journey without selecting the destination again. Save the destination, target/site identity where applicable, and route intent per hero, not in one global selected-hero variable. Save/load and switching heroes preserve it.
+
+Recompute the remaining legal route when movement resumes using current terrain, gate/sluice state and knowledge. Do not grant extra movement or walk through a newly blocked cell. If the destination moves, vanishes or becomes unreachable, pause and explain why; do not silently redirect the hero to another objective or clear other heroes&#x27; routes. A player-selected new destination explicitly replaces that hero&#x27;s plan. Retreat, defeat, teleport and mission transitions require deliberate route invalidation/recalculation. The next-day control continues only with the player&#x27;s normal movement command; do not force movement on End turn.
+
+10. ENGINE AND SAVE INTEGRATION
+
+Start with these current areas (paths relative to the destination game root):
+packages/content/src/campaign/{threeBeacons,silentOracle,winterOath,twelfthHour,lanternRoad,silverBranch,newFire,arc,arcCampaigns}.ts
+packages/campaign/src/campaign.ts
+packages/campaign/src/missionFactory.ts
+packages/rules/src/definitions/campaign.ts
+packages/content/src/common/neutrals.ts
+packages/content/src/common/abilities.ts
+packages/content/src/greek/creatures.ts (shared FamilySpec construction)
+packages/rules/src/definitions/creatures.ts
+packages/rules/src/systems/battle/{actions,common,flow,geometry}.ts
+packages/presentation/src/sprites.ts
+packages/ui/src/assets/manifest.ts
+packages/ui/src/screens/{Setup,Recruitment,Encyclopedia,UnitDetail,Journal,Summary,BattleResult,MapEditor,RandomSetup}.tsx
+packages/ui/src/Overlays.tsx and its QuickBattle dialog; follow current imports if files moved.
+
+Version new campaign definitions and save state explicitly. The current CampaignState tracks currentMissionId/currentEntryHash/currentEntryCarryover, completions, runId, primary/practice branch and status. CompletionRecord has entry/result hashes, carryover and nextEntryKey. Preserve idempotent completion and deterministic replay when replacing linear advancement with available-node selection. Add content-version and chosen-next-entry information without invalidating older saves.
+
+Keep v1 saves bound to v1 definitions. Do not reinterpret old *_m03 as a new merged chapter, silently mark half a merged mission complete, or delete the old definitions after introducing v2 IDs. New saves resolve their assets/content from v2. Missing optional fields in legacy saves get safe defaults. If a legacy-to-v2 importer is later offered, it needs an explicit separate mapping and a backup; it is not required for this delivery.
+
+Use stable objective/evidence/choice IDs, not display text as keys. Make completion/reward/stock updates transactional and idempotent. Choice costs cannot be paid twice on reload. Timers, neutral stock, site open/closed state and route intent survive saves. No mandatory artifact or creature can be irretrievably sold, consumed or left behind without an authored recovery path.
+
+11. IMPLEMENTATION ORDER AND ACCEPTANCE
+
+Implement in reviewable stages while completing the full authorized scope:
+1) Register accepted assets and the compatible atlas adapter; support single-form neutrals.
+2) Add rules-layer campaign manual-battle policy and save-version compatibility.
+3) Implement the 37 distinct mission definitions/maps, stateful choices and chapter graph.
+4) Add six neutral species, site stocks, legal ability rules and editor registrations.
+5) Connect chronicle, introductions, journal/choices, recruitment, encyclopedia, battle HUD and results.
+6) Verify multi-day routes, screen fit, content packaging and difficulty pacing.
+
+Required checks:
+- All 31 new asset paths resolve from a built/installed game; no dependency on blannder_models or external C: paths. Existing reused art remains correctly registered.
+- Every concrete atlas source rectangle stays inside its image; all required states resolve; the clipped Pegasus pose never plays. Inspect left/right facing and light/dark terrain. Match ground/flight/body scale with existing units and check for frame jitter/edge cropping.
+- All 37 missions exist and every one of the 45 legacy source chapters is represented exactly once in the mapping. Chapter graph has no cycles or unreachable terminal nodes. Both possible orders of every parallel pair produce coherent dialogue and the same mandatory progression facts.
+- Every mandatory objective is reachable and recoverable as designed; two principal approaches and useful circuits really exist under movement rules. Road entrances are visually and logically aligned. No infinite compulsory patrol source remains after its camp falls.
+- Direct attempts to auto-resolve a human campaign encounter are rejected without state/RNG mutation. All encounter types, shortcuts and resumed saves obey the rule. Skirmish and AI-only simulation retain expected behavior.
+- Six neutral species work for all factions; single-form paths never demand a nonexistent upgrade. Stock/cost/army capacity transactions remain correct on capture, reload and rapid repeated inputs. New abilities reject illegal targets and do not multiply once-per-battle charges by creature count.
+- Root-Runner suppression, two-hex Serpopard reach, Baku cleanse eligibility, Afanc brace and Ahuitzotl pull are deterministic, saveable and tested at map/board edges. Pegasus never lands in blocked space. Inspect full two-hex footprints, not only the anchor cell.
+- Old v1 saves load with their old campaign definitions; v2 branching saves reload exactly; retry/practice/double completion cannot duplicate rewards or unlock extra nodes.
+- A selected hero route remains across end day and reload; a changed crossing recalculates safely; switching heroes never swaps routes.
+- Actual UI capture at 1280 × 720 and 1366 × 768 confirms all primary recruitment controls and tactical actions fit. Keyboard navigation, readable focus, tooltips, reduced motion and long localized text remain usable.
+- Playtest each campaign&#x27;s branch pairs and finale. Numbers and times in this package are initial targets, not a substitute for balance testing. Report any remaining art/timing limitations honestly.
+
+Please return a concise implementation summary, changed code areas, tests actually run, screenshots of the updated screens, and any unresolved issues. Do not report “implemented” for a screen that merely displays a concept screenshot or for a campaign map that still uses the old corridor template.
+</pre>

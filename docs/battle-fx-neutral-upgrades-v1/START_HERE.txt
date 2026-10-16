@@ -1,0 +1,14 @@
+PANTHEON REALMS — BATTLE FX + NEUTRAL UPGRADES
+
+Open index.html for the animated preview.
+Give Claude Code CLAUDE_HANDOFF.txt and this entire folder (or the ZIP).
+25 accepted new PNGs: 12 FX sheets, 6 portraits, 6 core creature sheets, 1 flight sheet.
+The game project is separate: C:/Users/lazeb/Desktop/pantheon_realms
+No game code has been modified.
+
+Suggested message to Claude Code:
+Implement the delivery in C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/CLAUDE_HANDOFF.txt.
+Read the handoff and manifests before modifying the game. Copy the accepted art
+into this game's local source/runtime folders as specified. Integrate all 24 FX
+profiles and six upgraded neutral forms, recruitment and encyclopedia views.
+Keep existing base IDs/saves and campaign manual-only battles. Validate in game.

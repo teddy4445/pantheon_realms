@@ -9,6 +9,11 @@ hot-seat, results screens) — proposals, not owner decisions.
 Norse campaign the owner asked for (built with proposed, unplaytested values);
 `CAMPAIGNS_3_TO_6_OUTLINE.md` the Egyptian, Japanese, Celtic and Mesoamerican
 campaigns built on its reusable arc (`packages/content/src/campaign/arc.ts`).
+The Silent Oracle (`campaign/silentOracle.ts`, owner request 2026-10-14) is
+the second Greek campaign on the same arc, listed right after The Three
+Beacons (the tutorial); its story art is GPT-6 Brief 18
+(`assets-source/art/briefs/GPT6_BRIEF_18_SILENT_ORACLE.md`; delivered and imported
+2026-10-14, ASSET_PIPELINE.md §18).
 The design documents in `docs/` are the source of truth; do not reopen
 decisions they settle.
 
@@ -22,6 +27,11 @@ decisions they settle.
 * All game state changes go through `processCommand`. React, Pixi views,
   animation callbacks and the AI never mutate `MatchState`; animation never
   decides an outcome (instant and normal playback give identical results).
+* A player's planned journeys (2026-10-14) are session presentation intent
+  (`session/src/journeys.ts`, saved as the optional `SaveSnapshot.presentation`),
+  never rules state: only the destination is kept, routes are re-quoted, and
+  following one is an ordinary `MoveHero`. Keep per-player privacy (a journey
+  belongs to one player and match) and never move a hero without the player.
 * The simulation core (`rules`, `content`, `mapgen`, `campaign`, `ai`,
   `session`) stays DOM-free and Node-free. Run `npm run check`.
 * Content is data: new gods, heroes, buildings, creatures and abilities are
@@ -31,7 +41,7 @@ decisions they settle.
   pantheon or god can use. Site kinds (e.g. the two-way `portal`) and
   objective conditions are shared data too.
 * Skirmish-only features stay behind `ScenarioFeatures` / `scope: 'expanded'`;
-  The Three Beacons keeps them off (The Winter Oath and the four arc campaigns turn expanded content on).
+  The Three Beacons keeps them off (The Winter Oath and the five arc campaigns turn expanded content on).
   Climate rules (`climateRules`) and AI temperaments (`aiTemperaments`) are on in
   skirmishes and random maps only; a temperament changes the AI's choices,
   never a rule. Story scenes are data on the mission and
@@ -75,6 +85,7 @@ npm run build        # browser build (apps/client/dist)
 npm run test:e2e     # Playwright UI tests (builds + previews automatically)
 npm run desktop      # build and launch Electron
 npm run desktop:dist # installers via electron-builder
+installer\build-installer.cmd   # (Windows, owner's PC; installer/ is not in git) builds the installer from this checkout into installer\: npm ci when needed, desktop:dist, SHA-256; --check runs npm run check first
 xvfb-run -a node tools/desktop-smoke.mjs   # headless desktop smoke (after desktop:build)
 PR_SMOKE_EXE=apps/desktop/release/linux-unpacked/pantheon-realms xvfb-run -a node tools/desktop-smoke.mjs  # packaged-layout smoke
 npm run balance      # AI-vs-AI balance report (tools/balance/README.md); re-run after any value change
@@ -231,3 +242,33 @@ whose tooltips keep the content's sentences.
 
 UI tests build scenario fixtures as ordinary save files (`tests/e2e/fixtures.ts`)
 and bring them in through Load → Import — never through privileged hooks.
+
+**Campaign content v2 (campaign expansion, 2026-10-15; app 1.2.0):** the 37
+chapters (`packages/content/src/campaign/v2/`, one builder per campaign,
+registered in `index.ts`; guide `docs/campaign-v2/AUTHORING.md`, design source
+`docs/campaign-v2/design/`) are authored region maps — never a
+`MapTemplateDefinition` or an arc-builder corridor. New runs play them; a run
+without `contentVersion` is a v1 run and stays on the v1 missions to the end:
+never reinterpret, merge, migrate or delete the v1 missions, campaigns or saves,
+and keep `catalog.versions.contentVersion` unchanged unless the owner decides
+otherwise (old saves are checked against it). Facts (`carriedFlags` →
+`fact:<flag>`) are kept apart from completion; a practice replay is its own
+branch and never advances the run. Campaign battles are manual by rule
+(`automationForbidden` in the processor; never only a hidden button). The six
+neutrals of the kit (Pegasus, Root-Runner, Serpopard, Baku, Afanc, Ahuitzotl)
+were single-form at first; on the owner's request of 2026-10-15 each family now
+has exactly one delivered upgrade (Dawncrest Pegasus, Crownroot Runner, Crested
+Serpopard, Dreamtusk Baku, Ridgeback Afanc, Crownfin Ahuitzotl; app 1.3.0,
+ASSET_PIPELINE.md §21) — never invent an upgrade without delivered art. Their
+sprites are frame-region atlases (`SpriteStrip.regions`, constant `sourceScale`,
+pixel anchors) from `assets-runtime/campaign-v2/` and
+`assets-runtime/battle-fx-neutral-upgrades-v1/`. A neutral hiring site offers
+both forms from ONE shared weekly stock (`RecruitFromCamp.creatureId`, validated
+against the site's family; omitted = the base form) and trains a visiting base
+stack (`TrainAtCamp`); other camps keep their single listed creature
+(`campSiteForms`). Shooters fly their own missile and impact
+(`projectileProfiles` by creature ID; presentation only). Check a chapter with
+`npx vitest run packages/content/test/v2/<campaign>.test.ts` and the autopilot
+in both chapter orders (`tools/campaign-v2/sim.measure.ts`;
+`npm run campaign-sim -- --content 2`).
+

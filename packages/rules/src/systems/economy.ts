@@ -24,6 +24,7 @@ import type { RecruitDestination } from '../commands/commands';
 import type { ArmyRef, MatchState, TownState } from '../state/match';
 import { evaluateAll, missingRequirements } from '../resolvers/requirements';
 import {
+  familyForSlot,
   isBuildUsedToday,
   playerMarketCount,
   recruitableCreatureIds,
@@ -265,6 +266,177 @@ export function commitRecruitment(
   if (destination.kind === 'hero') clampMovement(tx, destination.heroId);
 }
 
+// ---------------------------------------------------------------------------
+// Recruit all (one atomic batch)
+// ---------------------------------------------------------------------------
+
+/** One family's share of a batch: one form, the quantity to recruit. */
+export interface RecruitBatchItem {
+  readonly creatureId: CreatureId;
+  readonly quantity: number;
+}
+
+export interface RecruitBatchLine extends RecruitBatchItem {
+  readonly familyId: string;
+  readonly unitCost: ResourceBundle;
+  readonly totalCost: ResourceBundle;
+  /** The destination slot this line merges into or occupies once the lines before it are placed; null when it does not fit. */
+  readonly slot: number | null;
+  /** True when the line joins a stack of the same creature already there (or placed earlier in the batch). */
+  readonly merges: boolean;
+}
+
+export interface RecruitBatchQuote {
+  readonly legal: boolean;
+  readonly code: RejectionCode | null;
+  readonly reason: string | null;
+  readonly lines: readonly RecruitBatchLine[];
+  readonly totalCount: number;
+  readonly totalCost: ResourceBundle;
+  /** Resources still missing for the whole batch (zero when affordable). */
+  readonly shortfall: ResourceBundle;
+  /** Army slots still missing for the whole batch (zero when everything fits). */
+  readonly slotsShort: number;
+  readonly destinationLabel: string;
+}
+
+/**
+ * The batch "Recruit all" offers in a town: every family with a built dwelling and
+ * creatures this week, in tier order, its whole shared pool, in one form — the form
+ * the player chose for that family when it can be recruited, else the upgraded form
+ * when its dwelling stands, else the base form. Pure; deterministic.
+ */
+export function recruitAllItems(
+  catalog: ContentCatalog,
+  state: MatchState,
+  townId: TownId,
+  chosenForm: Readonly<Record<string, CreatureId>> = {},
+): RecruitBatchItem[] {
+  const town = state.towns[townId];
+  if (!town) return [];
+  const archetype = catalog.townArchetypes[town.archetypeId];
+  const recruitable = new Set(recruitableCreatureIds(catalog, town));
+  const out: RecruitBatchItem[] = [];
+  const dwellings = (archetype?.slots ?? []).filter((s) => s.kind === 'dwelling').sort((a, b) => (a.tier ?? 0) - (b.tier ?? 0));
+  for (const slot of dwellings) {
+    const familyId = familyForSlot(catalog, slot);
+    const family = familyId ? catalog.families[familyId] : undefined;
+    if (!family) continue;
+    const pool = town.population[family.id] ?? 0;
+    if (pool < 1) continue;
+    const chosen = chosenForm[family.id];
+    const creatureId =
+      chosen && recruitable.has(chosen) && (chosen === family.baseCreatureId || chosen === family.upgradedCreatureId)
+        ? chosen
+        : family.upgradedCreatureId && recruitable.has(family.upgradedCreatureId)
+          ? family.upgradedCreatureId
+          : recruitable.has(family.baseCreatureId)
+            ? family.baseCreatureId
+            : null;
+    if (creatureId) out.push({ creatureId, quantity: pool });
+  }
+  return out;
+}
+
+function batchReason(slotsShort: number, short: ResourceBundle): string {
+  const parts: string[] = [];
+  if (slotsShort > 0) parts.push(`Needs ${slotsShort} more army ${slotsShort === 1 ? 'slot' : 'slots'}`);
+  const missing = RESOURCE_KEYS.filter((k) => short[k] > 0).map((k) => `${short[k]} ${k}`);
+  if (missing.length) parts.push(`Short ${missing.join(', ')}`);
+  return parts.join(' · ');
+}
+
+/**
+ * Quote a batch against the state as it will evolve: the lines are placed one after
+ * another (a later line can merge into a stack an earlier one created), and the whole
+ * cost is checked against the wallet once. All or nothing: any illegal line makes the
+ * batch illegal — it never buys a subset.
+ */
+export function quoteRecruitBatch(
+  catalog: ContentCatalog,
+  state: MatchState,
+  playerId: PlayerId,
+  townId: TownId,
+  items: readonly RecruitBatchItem[],
+  destination: RecruitDestination,
+): RecruitBatchQuote {
+  const town = state.towns[townId];
+  const player = state.players[playerId];
+  const wallet = player?.wallet ?? resources();
+  const lines: RecruitBatchLine[] = [];
+  let totalCost = resources();
+  let totalCount = 0;
+  let destinationLabel = 'Garrison';
+  const result = (code: RejectionCode | null, reason: string | null, slotsShort = 0): RecruitBatchQuote => ({
+    legal: code === null,
+    code,
+    reason,
+    lines,
+    totalCount,
+    totalCost,
+    shortfall: shortfall(wallet, totalCost),
+    slotsShort,
+    destinationLabel,
+  });
+  if (!town || !player) return result('not_found', 'Unknown town');
+  if (town.ownerId !== playerId) return result('not_owner', 'You do not own this town');
+  let army;
+  if (destination.kind === 'hero') {
+    const hero = state.heroes[destination.heroId];
+    if (!hero || hero.ownerId !== playerId || hero.status !== 'active') return result('not_found', 'Unknown hero');
+    destinationLabel = hero.name;
+    if (!heroInTown(catalog, state, hero, town.id)) return result('not_present', `${hero.name} must be in ${town.name} to receive recruits`);
+    army = hero.army;
+  } else {
+    army = town.garrison;
+    destinationLabel = `${town.name} garrison`;
+  }
+  if (items.length === 0) return result('invalid_quantity', 'No creatures to recruit this week');
+  const recruitable = new Set(recruitableCreatureIds(catalog, town));
+  // A scratch copy of the destination's slots: placement evolves line by line.
+  const sim = { slots: army.slots.map((s) => (s ? { stackId: s.stackId, creatureId: s.creatureId, count: s.count } : null)) };
+  const families = new Set<string>();
+  let slotsShort = 0;
+  let firstProblem: { code: RejectionCode; reason: string } | null = null;
+  for (const item of items) {
+    const creature = catalog.creatures[item.creatureId];
+    if (!creature) return result('not_found', 'Unknown creature');
+    if (families.has(creature.familyId)) return result('invalid_command', `${creature.pluralName}: one form per family in a batch`);
+    families.add(creature.familyId);
+    if (!Number.isInteger(item.quantity) || item.quantity < 1) return result('invalid_quantity', 'Choose at least one creature');
+    if (!recruitable.has(creature.id)) return result('not_recruitable', `${creature.name} requires its dwelling in this town`);
+    const pool = town.population[creature.familyId] ?? 0;
+    if (pool < item.quantity) firstProblem ??= { code: 'no_population', reason: `Only ${pool} ${creature.pluralName} available this week` };
+    const unitCost = resources(creature.cost ?? {});
+    const lineCost = scaleResources(unitCost, item.quantity);
+    totalCost = addResources(totalCost, lineCost);
+    totalCount += item.quantity;
+    const slot = placementSlot(sim as typeof army, creature.id);
+    const merges = slot !== null && sim.slots[slot] !== null;
+    if (slot === null) slotsShort += 1;
+    else if (merges) sim.slots[slot]!.count += item.quantity;
+    else sim.slots[slot] = { stackId: `batch-${lines.length}`, creatureId: creature.id, count: item.quantity };
+    lines.push({ creatureId: creature.id, quantity: item.quantity, familyId: creature.familyId, unitCost, totalCost: lineCost, slot, merges });
+  }
+  if (firstProblem) return result(firstProblem.code, firstProblem.reason, slotsShort);
+  const short = shortfall(wallet, totalCost);
+  const poor = RESOURCE_KEYS.some((k) => short[k] > 0);
+  if (slotsShort > 0 || poor) return result(slotsShort > 0 ? 'no_capacity' : 'insufficient_resources', batchReason(slotsShort, short), slotsShort);
+  return result(null, null);
+}
+
+/**
+ * Recruit a whole batch in one command. The processor applies a command to a draft and
+ * keeps it only when every step succeeds, so the batch is atomic: each line is committed
+ * through commitRecruitment against the evolving draft (population, wallet and slots as
+ * the earlier lines left them), and any failure rejects the whole command unchanged.
+ */
+export function commitRecruitBatch(tx: Tx, townId: TownId, items: readonly RecruitBatchItem[], destination: RecruitDestination): void {
+  const q = quoteRecruitBatch(tx.catalog, tx.state, tx.actorId, townId, items, destination);
+  if (!q.legal) reject(q.code ?? 'illegal_action', q.reason ?? 'Cannot recruit this batch');
+  for (const item of items) commitRecruitment(tx, townId, item.creatureId, item.quantity, destination);
+}
+
 /** Army changes never refill movement; cap remaining points at the new maximum. */
 export function clampMovement(tx: Tx, heroId: string): void {
   const hero = tx.state.heroes[heroId];
@@ -322,7 +494,7 @@ export function quoteUpgrade(
   });
   if (!town || !army || !stack || !base) return fail('not_found', 'No stack in that slot');
   if (town.ownerId !== playerId) return fail('not_owner', 'You do not own this town');
-  if (!up) return fail('illegal_action', `${base.name} is already the upgraded form`);
+  if (!up) return fail('illegal_action', base.form === 'base' ? `${base.name} has no upgraded form` : `${base.name} is already the upgraded form`);
   if (armyRef.kind === 'hero') {
     const hero = state.heroes[armyRef.heroId];
     if (!hero || hero.ownerId !== playerId) return fail('not_owner', 'Not your hero');

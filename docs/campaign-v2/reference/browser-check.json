@@ -1,0 +1,49 @@
+{
+  "pageErrors": [],
+  "desktopOverflow": false,
+  "greekAfterFirst": [
+    "Complete",
+    "Available",
+    "Available",
+    "Locked",
+    "Locked",
+    "Locked"
+  ],
+  "canvases": [
+    {
+      "id": "canvas-pegasus",
+      "frame": "0",
+      "sourceLoaded": true
+    },
+    {
+      "id": "canvas-root_runner",
+      "frame": "2",
+      "sourceLoaded": true
+    },
+    {
+      "id": "canvas-serpopard",
+      "frame": "2",
+      "sourceLoaded": true
+    },
+    {
+      "id": "canvas-baku",
+      "frame": "2",
+      "sourceLoaded": true
+    },
+    {
+      "id": "canvas-afanc",
+      "frame": "2",
+      "sourceLoaded": true
+    },
+    {
+      "id": "canvas-ahuitzotl",
+      "frame": "2",
+      "sourceLoaded": true
+    }
+  ],
+  "assetImages": {
+    "count": 31,
+    "broken": []
+  },
+  "mobileOverflow": false
+}

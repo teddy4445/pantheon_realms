@@ -85,7 +85,7 @@ export type GameEventPayload =
   | { kind: 'BattleStarted'; battleId: BattleId; label: string }
   | { kind: 'BattleRoundStarted'; round: number }
   | { kind: 'BattleStackActivated'; stackId: BattleStackId; bonus: boolean }
-  | { kind: 'BattleStackMoved'; stackId: BattleStackId; path: BattleCell[]; flying: boolean }
+  | { kind: 'BattleStackMoved'; stackId: BattleStackId; path: BattleCell[]; flying: boolean; forced?: 'pull'; byStackId?: BattleStackId }
   | {
       kind: 'BattleAttack';
       attackerId: BattleStackId;
@@ -97,7 +97,18 @@ export type GameEventPayload =
       luck: boolean;
     }
   | { kind: 'BattleSpellCast'; side: BattleSideId; spellId: SpellId; targetId: BattleStackId; damage: number; healed: number }
-  | { kind: 'BattleAbilityUsed'; stackId: BattleStackId; abilityId: string; targetId: BattleStackId }
+  | { kind: 'BattleAbilityUsed'; stackId: BattleStackId; abilityId: string; targetId: BattleStackId; removedStatus?: string }
+  /** Campaign v2: an announced deadline started (its deadline day is saved). */
+  | { kind: 'TimerStarted'; timerId: string; label: string; deadlineDay: number }
+  | { kind: 'TimerResolved'; timerId: string; met: boolean }
+  /** Campaign v2: a patrol's home camp fell; the patrol withdrew for good. */
+  | { kind: 'PatrolWithdrawn'; heroId: HeroId; siteId: SiteId }
+  | { kind: 'SluiceOperated'; siteId: SiteId; heroId: HeroId; open: boolean }
+  | { kind: 'MissionFlagCleared'; flag: string }
+  /** Campaign v2: a guard stood down through an authored choice (paid passage, a negotiated surrender). */
+  | { kind: 'GuardStoodDown'; siteId: SiteId; heroId: HeroId }
+  /** A protective or distracting status took effect (Sheltering Wings reduced a blow, Distract stopped a retaliation, Reed Guard stopped a pull). */
+  | { kind: 'BattleStatusConsumed'; stackId: BattleStackId; status: 'damage_ward' | 'retaliation_suppressed' | 'pull_immunity'; amount?: number }
   | { kind: 'BattleStackShapeshifted'; stackId: BattleStackId; aspect: string | null; free: boolean }
   | { kind: 'BattleCasualtiesRecovered'; side: BattleSideId; stackId: BattleStackId; creatureId: CreatureId; count: number }
   | { kind: 'BattleStackDefended'; stackId: BattleStackId }
@@ -121,6 +132,8 @@ export type GameEventPayload =
   // World map, interventions, story, outcome (proposed this build)
   | { kind: 'CampRecruited'; siteId: SiteId; heroId: HeroId; creatureId: CreatureId; quantity: number }
   | { kind: 'CampRestocked'; siteId: SiteId; stock: number }
+  /** A base stack trained into its upgraded form at a neutral hiring site (no stock used). */
+  | { kind: 'CampTrained'; siteId: SiteId; heroId: HeroId; fromId: CreatureId; toId: CreatureId; quantity: number }
   | { kind: 'MapEventResolved'; siteId: SiteId; heroId: HeroId; optionIndex: number; label: string }
   | { kind: 'CreaturesJoined'; heroId: HeroId; creatureId: CreatureId; count: number }
   | { kind: 'AttributeGained'; heroId: HeroId; attribute: HeroAttribute; amount: number }

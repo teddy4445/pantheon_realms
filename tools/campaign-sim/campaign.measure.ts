@@ -7,7 +7,7 @@ import { it } from 'vitest';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadCatalog } from '@pr/content';
-import { playJourney, type MissionRun } from './sim';
+import { playJourney, playJourneyV2, type MissionRun } from './sim';
 
 interface Opts {
   readonly campaigns: readonly string[];
@@ -18,6 +18,8 @@ interface Opts {
   readonly shard: number;
   readonly shards: number;
   readonly outDir: string;
+  /** Campaign content version: 1 (the legacy missions, default) or 2 (the chapter graphs, both orders). */
+  readonly content?: 1 | 2;
 }
 
 it('campaign simulation shard', () => {
@@ -31,7 +33,9 @@ it('campaign simulation shard', () => {
   const t0 = Date.now();
   let last = t0;
   jobs.forEach((j, i) => {
-    results.push(...playJourney(catalog, j.campaignId, j.run, o.maxDay, j.difficultyId));
+    // Content v2: even runs take the first available chapter at each choice, odd runs the last.
+    if (o.content === 2) results.push(...playJourneyV2(catalog, j.campaignId, j.run, o.maxDay, j.difficultyId, j.run % 2 === 0 ? 'first' : 'last'));
+    else results.push(...playJourney(catalog, j.campaignId, j.run, o.maxDay, j.difficultyId));
     if (Date.now() - last > 15000) {
       last = Date.now();
       process.stdout.write(`[campaign-sim] shard ${o.shard + 1}/${o.shards}: ${i + 1}/${jobs.length} journeys\n`);

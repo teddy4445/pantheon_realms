@@ -112,7 +112,65 @@ function summarize(catalog: ContentCatalog, campaignId: string, difficultyId: st
   };
 }
 
-/** One journey through a campaign: every mission once, with carry-over while the missions are won. */
+/**
+ * The chapters of a content-v2 campaign in a playable order: at every choice the
+ * first available chapter (`order` 'first') or the last ('last'), so the two
+ * orders of every parallel pair are both measured.
+ */
+export function chapterOrder(catalog: ContentCatalog, campaignId: string, order: 'first' | 'last'): string[] {
+  const chapters = catalog.campaigns[campaignId]!.chapters ?? [];
+  const done = new Set<string>();
+  const out: string[] = [];
+  while (out.length < chapters.length) {
+    const avail = chapters.filter((c) => !done.has(c.missionId) && c.requiresAll.every((r) => done.has(r)));
+    if (avail.length === 0) break;
+    const pick = order === 'first' ? avail[0]! : avail[avail.length - 1]!;
+    done.add(pick.missionId);
+    out.push(pick.missionId);
+  }
+  return out;
+}
+
+/**
+ * A content-v2 journey (campaign expansion, 2026-10-15): the chapters in the given
+ * order with the campaign state machine's own transitions (carry-over from the
+ * latest completion, campaign facts). After a chapter that is not won, the rest
+ * start directly with no facts.
+ */
+export function playJourneyV2(catalog: ContentCatalog, campaignId: string, run: number, maxDay: number, difficultyId: string | null, order: 'first' | 'last', onMission?: (r: MissionRun) => void): MissionRun[] {
+  const out: MissionRun[] = [];
+  const godId = patronOf(catalog, campaignId);
+  const sequence = chapterOrder(catalog, campaignId, order);
+  const s0 = startCampaign(catalog, campaignId, { runId: `sim2-${campaignId}-${order}-${run}`, startingGodId: godId, difficultyId, contentVersion: 2 });
+  let campaign: CampaignState | null = s0.campaign;
+  let state: MatchState = s0.start.match;
+  for (let i = 0; i < sequence.length; i++) {
+    const t0 = Date.now();
+    const start: MissionRun['start'] = campaign ? 'carried' : 'direct';
+    const res = playMission(catalog, state, maxDay);
+    const r = summarize(catalog, campaignId, difficultyId, i + 1, run, start, res, (Date.now() - t0) / 1000);
+    out.push(r);
+    onMission?.(r);
+    const next = sequence[i + 1];
+    if (!next) break;
+    if (campaign && res.outcome === 'victory') {
+      try {
+        campaign = recordCompletion(catalog, campaign, res.state);
+        const n = startNextMission(catalog, campaign, next);
+        campaign = n.campaign;
+        state = n.start.match;
+        continue;
+      } catch {
+        campaign = null;
+      }
+    }
+    campaign = null;
+    state = createMissionMatch(catalog, next, { matchId: `sim2-${campaignId}-${run}:${next}:direct`, startingGodId: godId, carryover: null, difficultyId, facts: [] }).match;
+  }
+  return out;
+}
+
+/** One journey through a campaign: every mission once, with carry-over while the missions are won (content v1). */
 export function playJourney(catalog: ContentCatalog, campaignId: string, run: number, maxDay: number, difficultyId: string | null = null, onMission?: (r: MissionRun) => void): MissionRun[] {
   const camp = catalog.campaigns[campaignId]!;
   const out: MissionRun[] = [];
@@ -120,7 +178,7 @@ export function playJourney(catalog: ContentCatalog, campaignId: string, run: nu
   let campaign: CampaignState | null = null;
   let state: MatchState;
   {
-    const s = startCampaign(catalog, campaignId, { runId: `sim-${campaignId}-${run}`, startingGodId: godId, difficultyId });
+    const s = startCampaign(catalog, campaignId, { runId: `sim-${campaignId}-${run}`, startingGodId: godId, difficultyId, contentVersion: 1 });
     campaign = s.campaign;
     state = s.start.match;
   }

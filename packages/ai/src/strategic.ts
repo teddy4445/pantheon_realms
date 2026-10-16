@@ -654,6 +654,8 @@ function explorationTargets(catalog: ContentCatalog, belief: MatchState, playerI
 function patrolCandidates(catalog: ContentCatalog, belief: MatchState, playerId: PlayerId, hero: HeroState): CommandPayload[] {
   const ai = hero.ai!;
   const out: CommandPayload[] = [];
+  // Campaign v2: an announced counterattack waits in its camp until its trigger flag is set.
+  if (ai.dormantUntilFlag && !belief.mission.flags[ai.dormantUntilFlag]) return out;
   const mine = heroStrength(catalog, belief, hero);
   // Attack a visible enemy inside the region above the documented threshold.
   for (const enemy of Object.values(belief.heroes).sort((a, b) => (a.id < b.id ? -1 : 1))) {

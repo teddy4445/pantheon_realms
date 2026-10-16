@@ -100,9 +100,9 @@ function stepOffAndBack(d: GameDriver, hero: HeroState, site: SiteDefinition) {
 }
 
 describe('hero specialties', () => {
-  it('every one of the 74 heroes has a specialty of one of the three kinds, with exact rule text', () => {
+  it('every one of the 77 heroes has a specialty of one of the three kinds, with exact rule text', () => {
     const heroes = Object.values(catalog.heroes);
-    expect(heroes).toHaveLength(74); // 62, plus 12 proposed on 2026-10-04
+    expect(heroes).toHaveLength(77); // 62, plus 12 proposed on 2026-10-04, plus The Silent Oracle's three opponents (2026-10-14)
     const kinds = new Map<string, number>();
     for (const h of heroes) {
       expect(h.specialty, h.id).toBeDefined();
@@ -110,7 +110,7 @@ describe('hero specialties', () => {
       kinds.set(h.specialty!.kind, (kinds.get(h.specialty!.kind) ?? 0) + 1);
     }
     expect([...kinds.keys()].sort()).toEqual(['creature', 'resource', 'spell']);
-    expect([...kinds.values()].reduce((a, b) => a + b, 0)).toBe(74);
+    expect([...kinds.values()].reduce((a, b) => a + b, 0)).toBe(77);
   });
 
   it('creature specialties grow at levels 4 and 8 and only touch their own family', () => {

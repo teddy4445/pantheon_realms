@@ -98,7 +98,7 @@ describe('campaign difficulty levels', () => {
     const next = startNextMission(catalog, recordCompletion(catalog, campaign, won));
     expect(next.start.match.scenario.difficultyId).toBe('campaign_hard');
     expect(restartCurrentMission(catalog, next.campaign).entryHash).toBe(next.campaign.currentEntryHash);
-    const practice = startPracticeReplay(catalog, next.campaign, 'winter_oath_m01');
+    const practice = startPracticeReplay(catalog, next.campaign, campaign.currentMissionId);
     expect(practice.start.match.scenario.difficultyId).toBe('campaign_hard');
   });
 

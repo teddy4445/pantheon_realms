@@ -1,0 +1,3971 @@
+{
+  "schema": "pantheon-projectile-profiles-proposal-1",
+  "profiles": {
+    "peltast": {
+      "unitId": "peltast",
+      "displayName": "Peltast",
+      "family": "greek-javelin",
+      "variant": "base",
+      "projectileDescription": "bronze-point wooden javelin, dark shaft, blue binding",
+      "impactDescription": "a tiny metallic star flash with a few short ochre dust strokes, not an explosion",
+      "file": "new-assets/fx-greek-javelin.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            164.5,
+            161.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            158.0,
+            160.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            157.0,
+            160.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            154.5,
+            160.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            165.0,
+            158.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            160.0,
+            160.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            160.0,
+            158.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            146.0,
+            169.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "veteran_peltast": {
+      "unitId": "veteran_peltast",
+      "displayName": "Veteran Peltast",
+      "family": "greek-javelin",
+      "variant": "upgraded",
+      "projectileDescription": "reinforced javelin with broader steel point and bronze bands",
+      "impactDescription": "a sharper small white-gold contact spark with 3 metal flecks",
+      "file": "new-assets/fx-greek-javelin.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            168.0,
+            150.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            161.5,
+            150.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            161.0,
+            150.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            156.5,
+            150.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            172.0,
+            125.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            155.0,
+            129.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            163.0,
+            127.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            144.5,
+            122.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "temple_adept": {
+      "unitId": "temple_adept",
+      "displayName": "Temple Adept",
+      "family": "arcane-bolt",
+      "variant": "base",
+      "projectileDescription": "elongated pale-blue magical bolt with a warm gold core and short tapering ribbon",
+      "impactDescription": "small pale-blue and gold geometric starburst with a thin collapsing ring",
+      "file": "new-assets/fx-arcane-bolt.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            164.0,
+            178.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            162.5,
+            174.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            160.0,
+            168.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            158.5,
+            174.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            169.5,
+            161.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            157.5,
+            160.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            161.0,
+            165.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            146.5,
+            163.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "temple_seer": {
+      "unitId": "temple_seer",
+      "displayName": "Temple Seer",
+      "family": "arcane-bolt",
+      "variant": "upgraded",
+      "projectileDescription": "brighter white-blue bolt with two thin gold ribbons around its core",
+      "impactDescription": "layered white-gold geometric starburst with two very fine blue rings and sparse gold flecks",
+      "file": "new-assets/fx-arcane-bolt.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            159.5,
+            163.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            157.5,
+            169.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            159.5,
+            169.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            156.5,
+            164.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            164.0,
+            147.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            161.0,
+            141.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            168.5,
+            147.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            153.5,
+            150.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "cyclops": {
+      "unitId": "cyclops",
+      "displayName": "Cyclops",
+      "family": "cyclops-boulder",
+      "variant": "base",
+      "projectileDescription": "round irregular grey-brown shaped boulder with readable facets, solid physical stone",
+      "impactDescription": "compact grey stone chips bouncing outward with a small low ochre dust puff",
+      "file": "new-assets/fx-cyclops-boulder.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            150.5,
+            168.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            154.5,
+            169.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            147.5,
+            168.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            147.0,
+            169.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            169.0,
+            174.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            160.0,
+            159.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            164.0,
+            163.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            154.0,
+            175.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 10,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "high-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.62,
+      "impactSizeHex": 0.8,
+      "durationMsRange": [
+        320,
+        650
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "stormforged_cyclops": {
+      "unitId": "stormforged_cyclops",
+      "displayName": "Stormforged Cyclops",
+      "family": "cyclops-boulder",
+      "variant": "upgraded",
+      "projectileDescription": "same grey boulder with restrained bronze-gold engraved seams, no lightning",
+      "impactDescription": "compact stone chips and low dust with a very brief warm glow along two stone fragment seams, no lightning",
+      "file": "new-assets/fx-cyclops-boulder.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            152.0,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            156.0,
+            165.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            149.0,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            154.5,
+            166.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            168.0,
+            153.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            160.0,
+            138.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            167.5,
+            140.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            156.0,
+            158.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 10,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "high-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.62,
+      "impactSizeHex": 0.8,
+      "durationMsRange": [
+        320,
+        650
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "norse_lindworm": {
+      "unitId": "norse_lindworm",
+      "displayName": "Lindworm",
+      "family": "frost-breath",
+      "variant": "base",
+      "projectileDescription": "small pointed icy-blue breath comet with a short white mist tail and a few ice shards",
+      "impactDescription": "small burst of pale ice crystals followed by a soft breath puff that dissipates",
+      "file": "new-assets/fx-frost-breath.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            167.0,
+            165.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            170.0,
+            160.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            154.0,
+            167.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            155.0,
+            164.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            158.5,
+            181.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            158.0,
+            169.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            158.5,
+            176.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            165.5,
+            181.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "norse_storm_lindworm": {
+      "unitId": "norse_storm_lindworm",
+      "displayName": "Storm Lindworm",
+      "family": "frost-breath",
+      "variant": "upgraded",
+      "projectileDescription": "denser blue-white frost comet with a brighter angular ice core",
+      "impactDescription": "sharper blue-white ice crystal burst with a thin cold ripple and small fading mist",
+      "file": "new-assets/fx-frost-breath.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            163.0,
+            156.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            162.0,
+            150.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            160.0,
+            156.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            154.5,
+            161.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            164.0,
+            154.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            167.0,
+            145.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            171.0,
+            148.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            166.0,
+            162.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "egyptian_jackal_guardian": {
+      "unitId": "egyptian_jackal_guardian",
+      "displayName": "Jackal Guardian",
+      "family": "egyptian-javelin",
+      "variant": "base",
+      "projectileDescription": "bronze-point javelin with a charcoal shaft and blue-gold bindings",
+      "impactDescription": "tiny bronze contact spark and sandy dust flecks",
+      "file": "new-assets/fx-egyptian-javelin-v2.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            169.5,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            164.5,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            158.5,
+            166.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            162.0,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            179.5,
+            155.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            163.5,
+            160.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            163.0,
+            172.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            153.5,
+            169.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "egyptian_anubian_warden": {
+      "unitId": "egyptian_anubian_warden",
+      "displayName": "Anubian Warden",
+      "family": "egyptian-javelin",
+      "variant": "upgraded",
+      "projectileDescription": "gold-banded javelin with a dark broad spearhead and blue binding",
+      "impactDescription": "small warm gold point flash and 3 sand-colored contact flecks, no magic symbols",
+      "file": "new-assets/fx-egyptian-javelin-v2.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            162.0,
+            155.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            160.0,
+            155.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            160.0,
+            155.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            156.5,
+            155.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            179.5,
+            140.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            169.0,
+            135.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            164.5,
+            149.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            154.0,
+            155.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "egyptian_desert_colossus": {
+      "unitId": "egyptian_desert_colossus",
+      "displayName": "Desert Colossus",
+      "family": "granite-block",
+      "variant": "base",
+      "projectileDescription": "angular red-granite block, heavy roughly cuboid carved masonry stone",
+      "impactDescription": "compact angular red-stone fragments and low ochre dust",
+      "file": "new-assets/fx-granite-block-v2.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            211.0,
+            166.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            212.0,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            215.0,
+            165.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            220.5,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            156.5,
+            169.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            152.5,
+            162.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            159.0,
+            166.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            165.5,
+            181.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 10,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "high-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.62,
+      "impactSizeHex": 0.8,
+      "durationMsRange": [
+        320,
+        650
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "egyptian_divine_colossus": {
+      "unitId": "egyptian_divine_colossus",
+      "displayName": "Divine Colossus",
+      "family": "granite-block",
+      "variant": "upgraded",
+      "projectileDescription": "worked red-granite block with small gold and lapis inlay bands on two faces",
+      "impactDescription": "red-stone debris with a few tiny gold and lapis glints and a low dust puff",
+      "file": "new-assets/fx-granite-block-v2.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            212.5,
+            163.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            213.5,
+            163.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            215.0,
+            162.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            219.5,
+            161.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            154.5,
+            147.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            155.5,
+            146.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            153.5,
+            150.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            159.5,
+            154.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 10,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "high-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.62,
+      "impactSizeHex": 0.8,
+      "durationMsRange": [
+        320,
+        650
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "japanese_kirin": {
+      "unitId": "japanese_kirin",
+      "displayName": "Kirin",
+      "family": "holy-fire",
+      "variant": "base",
+      "projectileDescription": "slim gold-white holy fire comet, soft curled luminous flame ribbon, no orange smoke",
+      "impactDescription": "small gold-white flame bloom with delicate curled wisps",
+      "file": "new-assets/fx-holy-fire.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            169.0,
+            162.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            156.0,
+            172.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            152.0,
+            175.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            154.0,
+            168.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            157.0,
+            157.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            160.5,
+            155.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            161.5,
+            158.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            160.5,
+            168.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "japanese_celestial_kirin": {
+      "unitId": "japanese_celestial_kirin",
+      "displayName": "Celestial Kirin",
+      "family": "holy-fire",
+      "variant": "upgraded",
+      "projectileDescription": "white-fire comet with pale gold core and two thin flowing white-gold wisps",
+      "impactDescription": "white-gold petal-shaped flame wisps and a very fine halo dissolving into specks",
+      "file": "new-assets/fx-holy-fire.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            162.0,
+            154.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            156.5,
+            157.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            152.5,
+            157.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            151.5,
+            157.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            161.0,
+            143.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            163.5,
+            133.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            157.0,
+            138.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            161.0,
+            146.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "celtic_banshee": {
+      "unitId": "celtic_banshee",
+      "displayName": "Banshee",
+      "family": "spectral-wail",
+      "variant": "base",
+      "projectileDescription": "two translucent pale teal-silver sound crescents facing right, narrow directed wave pulse, no solid missile",
+      "impactDescription": "small pale teal spectral ripple and curling vapor wisps",
+      "file": "new-assets/fx-spectral-wail.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            182.0,
+            187.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            175.5,
+            187.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            173.5,
+            186.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            159.5,
+            189.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            175.5,
+            183.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            171.0,
+            172.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            173.5,
+            180.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            166.5,
+            174.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "celtic_battle_banshee": {
+      "unitId": "celtic_battle_banshee",
+      "displayName": "Battle Banshee",
+      "family": "spectral-wail",
+      "variant": "upgraded",
+      "projectileDescription": "three silver spectral sound crescents facing right with restrained dark crimson edge wisps",
+      "impactDescription": "small silver spectral shreds with muted crimson edges, no blood and no skull",
+      "file": "new-assets/fx-spectral-wail.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            188.0,
+            159.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            180.0,
+            158.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            176.5,
+            154.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            157.5,
+            161.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            178.0,
+            147.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            171.5,
+            143.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            174.5,
+            147.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            168.0,
+            149.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "mesoamerican_eagle_warrior_spirit": {
+      "unitId": "mesoamerican_eagle_warrior_spirit",
+      "displayName": "Eagle Warrior Spirit",
+      "family": "atlatl-dart",
+      "variant": "base",
+      "projectileDescription": "long slim wooden atlatl dart with dark obsidian-like point and teal feather fletching, NOT a bow arrow, no launcher",
+      "impactDescription": "tiny point flash, two dark chips and a little dust flick",
+      "file": "new-assets/fx-atlatl-dart.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            272
+          ],
+          "anchor": [
+            181.5,
+            150.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            272
+          ],
+          "anchor": [
+            184.0,
+            149.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            272
+          ],
+          "anchor": [
+            184.0,
+            142.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            272
+          ],
+          "anchor": [
+            186.0,
+            151.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            272,
+            362,
+            271
+          ],
+          "anchor": [
+            184.5,
+            148.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            362,
+            272,
+            362,
+            271
+          ],
+          "anchor": [
+            186.5,
+            148.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            724,
+            272,
+            362,
+            271
+          ],
+          "anchor": [
+            171.5,
+            167.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            272,
+            362,
+            271
+          ],
+          "anchor": [
+            168.0,
+            161.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "mesoamerican_solar_eagle_warrior": {
+      "unitId": "mesoamerican_solar_eagle_warrior",
+      "displayName": "Solar Eagle Warrior",
+      "family": "atlatl-dart",
+      "variant": "upgraded",
+      "projectileDescription": "long slim atlatl dart with dark point, gold bands and golden feather fletching",
+      "impactDescription": "small warm contact glint with sparse feather-like golden motes, no explosion",
+      "file": "new-assets/fx-atlatl-dart.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            543,
+            362,
+            271
+          ],
+          "anchor": [
+            181.5,
+            145.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            362,
+            543,
+            362,
+            271
+          ],
+          "anchor": [
+            183.5,
+            147.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            724,
+            543,
+            362,
+            271
+          ],
+          "anchor": [
+            183.5,
+            140.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            543,
+            362,
+            271
+          ],
+          "anchor": [
+            185.5,
+            148.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            814,
+            362,
+            272
+          ],
+          "anchor": [
+            184.0,
+            137.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            362,
+            814,
+            362,
+            272
+          ],
+          "anchor": [
+            182.0,
+            130.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            724,
+            814,
+            362,
+            272
+          ],
+          "anchor": [
+            169.0,
+            139.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            814,
+            362,
+            272
+          ],
+          "anchor": [
+            185.0,
+            137.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "mesoamerican_xiuhcoatl": {
+      "unitId": "mesoamerican_xiuhcoatl",
+      "displayName": "Xiuhcoatl",
+      "family": "serpent-fire",
+      "variant": "base",
+      "projectileDescription": "compact orange fireball with restrained turquoise rim and curling flame tail",
+      "impactDescription": "tight orange flame curl with turquoise sparks and short-lived embers",
+      "file": "new-assets/fx-serpent-fire.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            152.5,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            155.5,
+            167.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            144.5,
+            165.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            153.0,
+            165.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            166.5,
+            153.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            161.5,
+            151.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            153.0,
+            151.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            156.0,
+            159.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "mesoamerican_divine_xiuhcoatl": {
+      "unitId": "mesoamerican_divine_xiuhcoatl",
+      "displayName": "Divine Xiuhcoatl",
+      "family": "serpent-fire",
+      "variant": "upgraded",
+      "projectileDescription": "bright blue-gold flame projectile, white-hot tiny center and blue corona, curled tail",
+      "impactDescription": "compact blue-gold flame bloom and falling tiny blue-gold embers",
+      "file": "new-assets/fx-serpent-fire.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            154.0,
+            162.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            149.0,
+            161.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            146.0,
+            163.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            152.0,
+            165.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            167.5,
+            150.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            167.5,
+            136.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            161.0,
+            137.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            163.0,
+            150.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "loop-4-frames",
+      "path": "direct",
+      "sourcePoint": "mouth",
+      "sizeHex": 0.72,
+      "impactSizeHex": 0.72,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "hill_slinger": {
+      "unitId": "hill_slinger",
+      "displayName": "Hill Slinger",
+      "family": "sling-ammunition",
+      "variant": "base",
+      "projectileDescription": "small rounded grey sling stone, no sling or hand",
+      "impactDescription": "tiny grey chip and dust pop",
+      "file": "new-assets/fx-sling-ammunition.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            316,
+            310
+          ],
+          "anchor": [
+            171.0,
+            170.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            316,
+            0,
+            317,
+            310
+          ],
+          "anchor": [
+            178.5,
+            170.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            633,
+            0,
+            317,
+            310
+          ],
+          "anchor": [
+            170.5,
+            170.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            950,
+            0,
+            316,
+            310
+          ],
+          "anchor": [
+            166.0,
+            170.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            310,
+            316,
+            311
+          ],
+          "anchor": [
+            178.0,
+            178.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            316,
+            310,
+            317,
+            311
+          ],
+          "anchor": [
+            162.5,
+            171.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            633,
+            310,
+            317,
+            311
+          ],
+          "anchor": [
+            147.5,
+            166.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            950,
+            310,
+            316,
+            311
+          ],
+          "anchor": [
+            162.5,
+            178.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "sling_master": {
+      "unitId": "sling_master",
+      "displayName": "Sling Master",
+      "family": "sling-ammunition",
+      "variant": "upgraded",
+      "projectileDescription": "small elongated almond-shaped dull lead sling bullet, no weapon or hand",
+      "impactDescription": "tiny sharp silver contact flash with two metal-colored flecks, no fire",
+      "file": "new-assets/fx-sling-ammunition.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            621,
+            316,
+            311
+          ],
+          "anchor": [
+            177.0,
+            153.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            316,
+            621,
+            317,
+            311
+          ],
+          "anchor": [
+            195.0,
+            153.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            633,
+            621,
+            317,
+            311
+          ],
+          "anchor": [
+            183.5,
+            153.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            950,
+            621,
+            316,
+            311
+          ],
+          "anchor": [
+            178.5,
+            152.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            932,
+            316,
+            310
+          ],
+          "anchor": [
+            177.5,
+            143.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            316,
+            932,
+            317,
+            310
+          ],
+          "anchor": [
+            167.5,
+            132.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            633,
+            932,
+            317,
+            310
+          ],
+          "anchor": [
+            170.0,
+            143.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            950,
+            932,
+            316,
+            310
+          ],
+          "anchor": [
+            186.5,
+            153.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "siege_turret": {
+      "unitId": "siege_turret",
+      "displayName": "Siege Turret",
+      "family": "siege",
+      "variant": "tower-arrow",
+      "projectileDescription": "slim wooden defensive arrow with steel tip and plain pale fletching, pointing right",
+      "impactDescription": "small sharp arrow contact flash with a few wood and metal flecks",
+      "file": "new-assets/fx-siege.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            164.5,
+            157.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            182.0,
+            157.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            0,
+            313,
+            314
+          ],
+          "anchor": [
+            173.0,
+            157.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            0,
+            314,
+            314
+          ],
+          "anchor": [
+            173.0,
+            157.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            0,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            189.0,
+            133.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            183.5,
+            151.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            314,
+            313,
+            313
+          ],
+          "anchor": [
+            170.5,
+            153.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            314,
+            314,
+            313
+          ],
+          "anchor": [
+            180.0,
+            153.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            1,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 12,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "shallow-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.64,
+      "impactSizeHex": 0.5,
+      "durationMsRange": [
+        220,
+        500
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    },
+    "catapult": {
+      "unitId": "catapult",
+      "displayName": "Catapult",
+      "family": "siege",
+      "variant": "catapult-stone",
+      "projectileDescription": "heavy round grey siege stone, physical natural rock",
+      "impactDescription": "compact masonry chip burst and low grey-brown dust puff suitable for wall impact",
+      "file": "new-assets/fx-siege.png",
+      "travelFrames": [
+        {
+          "rect": [
+            0,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            152.5,
+            159.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            158.0,
+            160.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            627,
+            313,
+            313
+          ],
+          "anchor": [
+            155.5,
+            157.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            627,
+            314,
+            313
+          ],
+          "anchor": [
+            167.0,
+            159.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            2,
+            3
+          ]
+        }
+      ],
+      "impactFrames": [
+        {
+          "rect": [
+            0,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            167.5,
+            134.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            314,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            167.5,
+            139.0
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            627,
+            940,
+            313,
+            314
+          ],
+          "anchor": [
+            188.5,
+            157.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            940,
+            940,
+            314,
+            314
+          ],
+          "anchor": [
+            173.0,
+            138.5
+          ],
+          "sourceScale": 1,
+          "sourceCell": [
+            3,
+            3
+          ]
+        }
+      ],
+      "travelFps": 10,
+      "impactFps": 10,
+      "impactLoop": false,
+      "travelPlayback": "static-frame-0-with-world-motion",
+      "path": "high-ballistic",
+      "sourcePoint": "throwing-hand-or-weapon",
+      "sizeHex": 0.62,
+      "impactSizeHex": 0.8,
+      "durationMsRange": [
+        320,
+        650
+      ],
+      "impactFadeLastMs": 100,
+      "blend": "normal-alpha",
+      "particleStackScaling": false,
+      "gameplayChanges": false
+    }
+  },
+  "notes": [
+    "24 profiles: 22 creature forms and 2 siege actors. Siege rows are distinct actors, not an upgrade pair.",
+    "Travel facing +X. Rotate along trajectory; impacts stay centred at contact point.",
+    "Physical projectiles use frame 0 by default; three extra painted poses are supplied as optional alternates.",
+    "Direct paths avoid the current universal arrow arc. All effects cosmetic."
+  ]
+}

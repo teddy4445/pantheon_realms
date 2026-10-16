@@ -1,12 +1,794 @@
 # Development Status
 
-_Last updated: 2026-10-12 · **app 1.1.4** (Windows installer: the 1.1.2 GUI audit’s fixes — each pantheon’s new siege gate as an opening in the wall on the gate cell, Start battle readable on its painted face, ink labels on parchment, paper under the book and scroll text while their pictures load, no internal caption on the town, battles that take no orders before their pictures are drawn; below) · before it, **app 1.1.3** (Windows installer: the owner’s five pre-game fixes — the title always on the kit’s hall painting with its slim menu panel, the encyclopedia’s sections in a rail at the left and its cards in painted frames, no footer Back on New Game, leather and parchment grain on the pantheon screens, a two-page creature page with the creature on its pantheon’s court; below) · before it, **app 1.1.2** (Windows installer: 1.1.1 with the two sessions’ work merged and the painted primary buttons fixed where their footers squashed them; below) · before it, **app 1.1.1** (Windows installer built in the cloud container: the 1.1.0 interface redesign, the pre-game screens and their frontend kit, the encounter scenes and reward receipts of a second session merged in, six adventure screens — Heroes’ Lodge, recruitment and creature camps, Marketplace, level-up, spellbook, encounter preview — and the 54 hero busts that complete the character portraits; below) · before it, **siege visual revision 2** (each pantheon's whole-view siege ground, gate/tower/keep atlas and continuous wall strip, the shared moat and bridge; checked in the game and built; in the 1.1.1 installer; below) · before it, **app 1.0.0** (Windows installer; owner Teddy Lazebnik): **the owner's third list of 2026-10-07** (campaign difficulty Story / Normal / Hard with the campaign simulator checking each level, a seat-fairness test that gates the authored maps — The Circle of Gates measured unfair and shipped unchanged —, a floor check per random-map layout, the map's ground drawn from a texture cache and calm frame pacing; below) · before it, **app 0.14.0**: **the owner's second list of 2026-10-07** (quick battles with exact expected losses, a late-game computer player and a summary of the rivals' turns, the campaigns checked by simulation, pantheon balance inside 0.45–0.55, a morale penalty for mixed armies, finished sieges, the gods' gifts at hero levels 10 and 15, the map editor's symmetry brush and generate-then-edit; below) · before it, **app 0.13.6**: **the owner's twelve requests** (one scenario-list style, unowned towns on random and skirmish maps, one hero hire a week, pantheon-named miracles, better-aligned roads, varied ground borders, map creatures facing both ways, interface clean-ups; below) · before it, **app 0.13.5**: **climate-aware nature scenery** (318 painted stills: each climate's trees, shrubs, rocks, deadwood, mountains and border clumps on the map, sea, lake and river scenery, battle obstacles in the map's climate) and **the hero screen's new equipment figure** (below) · before it, **app 0.13.4**: **the frame rate on the map and in battle** (the map, the battle and their figures in PixiJS render groups — a map frame sent 2.1 MB to the GPU, now 8 KB —, pictures decoded off the main thread, the fog redrawn only when it changes, the movement range and the computer's routes without their spikes, High capped at 60 frames per second, adaptive resolution and a frame-rate readout in Settings → Display; the frame rate on the owner's laptop is a target until measured there) and **GPT-6 Brief 17 in the game** (painted ground transitions and shore foam, 24 town backgrounds by town-hall level, the three markers, the neutral map hero, 16 story portraits) (below) · before it, **app 0.13.3**: **GPT-6 Brief 17**, the last art request (ground transitions and shore foam — the map is ready for them —, the town backgrounds, the last stand-in markers, the neutral map hero, 16 story portraits), **the status, action and miracle icons in battle** (marks over each stack, icons before the floating words, miracle icons on the map), **a steadier AI** (a lone big creature judged at its real strength; a home guard in every town) and **all five road types of Brief 16 in the game** (dirt approved by the owner; cobble, sand, snow and boardwalk awaiting in-game acceptance) (below) · before it, **app 0.13.2**: **the ground crisp again** (only the edges between grounds slightly softened), **GPT-6 Brief 16** (painted road tiles: five road types × every way a road crosses a hex; the game reads them already) and **Briefs 14 and 15 in the game** (six skirmish-map paintings, each pantheon's walls, gate, towers, keep and siege battlefield, the catapult's throw; below the asked resolutions, accepted) (below) · before it, **app 0.13.1**: **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.7`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 4_
+_Last updated: 2026-10-16 · **app 1.3.0** (the battle FX & neutral-upgrade handoff: each of the 22 shooters, the siege towers and the catapult fly their own delivered missile and impact; six upgraded neutral creatures hired and trained at their hiring sites from one shared stock; both forms in the Bestiary — synced to the PC, no installer built; below) · before it, **app 1.2.0** (the campaign expansion and neutral creatures handoff: all seven campaigns as 37 chapters on authored region maps with a chapter graph, chapters in either order, remembered facts and practice replay; manual battles in campaigns enforced by the rules; six single-form neutral creatures with hiring sites, abilities and atlases; the chronicle, result, load, introduction, journal ledger, story choice, neutral recruitment, bestiary, battle and editor screens; older saves load and older runs keep their missions — synced to the PC, no installer built; below) · before it, **app 1.1.6** (the recruitment & persistent journey handoff: a redesigned recruitment screen for all six pantheons with Recruit all as one all-or-nothing command, painted route markers on the map, and each hero's journey kept from day to day, across screens and in saves — no installer built yet; below) · before it, **app 1.1.5** (Windows installer `installer\Pantheon-Realms-Setup-1.1.5-x64.exe` and `installer\build-installer.cmd`, which builds an up-to-date one on the PC; The Silent Oracle — the second Greek campaign, seven missions, listed after the tutorial, its story art — GPT-6 Brief 18 — delivered and imported the same day; named guard commanders' portraits in the battle header; The Three Beacons' second mission reduced to training two Griffins in town; no scroll rail over the map; the player stands on the left in blue when a computer hero attacks; the day of arrival beside the map cursor). 1.1.4: **app 1.1.4** (Windows installer: the 1.1.2 GUI audit’s fixes — each pantheon’s new siege gate as an opening in the wall on the gate cell, Start battle readable on its painted face, ink labels on parchment, paper under the book and scroll text while their pictures load, no internal caption on the town, battles that take no orders before their pictures are drawn; below) · before it, **app 1.1.3** (Windows installer: the owner’s five pre-game fixes — the title always on the kit’s hall painting with its slim menu panel, the encyclopedia’s sections in a rail at the left and its cards in painted frames, no footer Back on New Game, leather and parchment grain on the pantheon screens, a two-page creature page with the creature on its pantheon’s court; below) · before it, **app 1.1.2** (Windows installer: 1.1.1 with the two sessions’ work merged and the painted primary buttons fixed where their footers squashed them; below) · before it, **app 1.1.1** (Windows installer built in the cloud container: the 1.1.0 interface redesign, the pre-game screens and their frontend kit, the encounter scenes and reward receipts of a second session merged in, six adventure screens — Heroes’ Lodge, recruitment and creature camps, Marketplace, level-up, spellbook, encounter preview — and the 54 hero busts that complete the character portraits; below) · before it, **siege visual revision 2** (each pantheon's whole-view siege ground, gate/tower/keep atlas and continuous wall strip, the shared moat and bridge; checked in the game and built; in the 1.1.1 installer; below) · before it, **app 1.0.0** (Windows installer; owner Teddy Lazebnik): **the owner's third list of 2026-10-07** (campaign difficulty Story / Normal / Hard with the campaign simulator checking each level, a seat-fairness test that gates the authored maps — The Circle of Gates measured unfair and shipped unchanged —, a floor check per random-map layout, the map's ground drawn from a texture cache and calm frame pacing; below) · before it, **app 0.14.0**: **the owner's second list of 2026-10-07** (quick battles with exact expected losses, a late-game computer player and a summary of the rivals' turns, the campaigns checked by simulation, pantheon balance inside 0.45–0.55, a morale penalty for mixed armies, finished sieges, the gods' gifts at hero levels 10 and 15, the map editor's symmetry brush and generate-then-edit; below) · before it, **app 0.13.6**: **the owner's twelve requests** (one scenario-list style, unowned towns on random and skirmish maps, one hero hire a week, pantheon-named miracles, better-aligned roads, varied ground borders, map creatures facing both ways, interface clean-ups; below) · before it, **app 0.13.5**: **climate-aware nature scenery** (318 painted stills: each climate's trees, shrubs, rocks, deadwood, mountains and border clumps on the map, sea, lake and river scenery, battle obstacles in the map's climate) and **the hero screen's new equipment figure** (below) · before it, **app 0.13.4**: **the frame rate on the map and in battle** (the map, the battle and their figures in PixiJS render groups — a map frame sent 2.1 MB to the GPU, now 8 KB —, pictures decoded off the main thread, the fog redrawn only when it changes, the movement range and the computer's routes without their spikes, High capped at 60 frames per second, adaptive resolution and a frame-rate readout in Settings → Display; the frame rate on the owner's laptop is a target until measured there) and **GPT-6 Brief 17 in the game** (painted ground transitions and shore foam, 24 town backgrounds by town-hall level, the three markers, the neutral map hero, 16 story portraits) (below) · before it, **app 0.13.3**: **GPT-6 Brief 17**, the last art request (ground transitions and shore foam — the map is ready for them —, the town backgrounds, the last stand-in markers, the neutral map hero, 16 story portraits), **the status, action and miracle icons in battle** (marks over each stack, icons before the floating words, miracle icons on the map), **a steadier AI** (a lone big creature judged at its real strength; a home guard in every town) and **all five road types of Brief 16 in the game** (dirt approved by the owner; cobble, sand, snow and boardwalk awaiting in-game acceptance) (below) · before it, **app 0.13.2**: **the ground crisp again** (only the edges between grounds slightly softened), **GPT-6 Brief 16** (painted road tiles: five road types × every way a road crosses a hex; the game reads them already) and **Briefs 14 and 15 in the game** (six skirmish-map paintings, each pantheon's walls, gate, towers, keep and siege battlefield, the catapult's throw; below the asked resolutions, accepted) (below) · before it, **app 0.13.1**: **Brief 13 icons in the game** (94 interface icons, map markers, effect and status icons and interventions; the town backgrounds, Part A, still open) (below) · before it, **app 0.13.0**: **six authored skirmish maps** (Frostgate, The Burning Oasis, The Circle of Gates, Barrows of the Lost Kings, The Golden Fords, The Six Thrones; seat setup S23; GPT-6 Brief 14 for their pictures), **the owner's ten fixes** (rounded roads styled by the land, soft ground and fog, the pantheon and recruit pages, the End Day button and town icons, dwellings never needing a higher tier, battle playback, the result screen, the catapult and smaller arrows; GPT-6 Brief 15 for siege art) (below) · before it, **app 0.12.0**: **pantheon balance on random maps** (new `random1v1` suite; Norse 0.51, Egyptian 0.53, Japanese 0.47, Mesoamerican 0.47 inside 0.45–0.55, Greek 0.57 and Celtic 0.45 at the edges; AI temperaments softened), **every sound final** (105 Pixabay recordings: menu, battle music per pantheon, siege, results, stingers, effects, ambience), **three new random-map layouts** (Archipelago, Twin Continents, Central Valley; `pr-skirmishgen-0.6`), **the map editor** (S22, `*.prmap.json`), **Brief 12 in the game** (84 dwellings, 42 services, climate icons, site markers, `fx.god.commit`), **the release clean-up** (973 files and 55 unused functions removed) and **GPT-6 Brief 13** (what is still to paint) (below) · before it: **map music per pantheon** (30 licensed tracks, final), **climate rules** and **AI temperaments** (skirmish and random maps), **the god commitment** (icon rows in the dialog, a moment on the card), **GPT-6 Brief 12** (every visual still missing) and **the visual-completion delivery** (33 icons, the Herald's bust, twelve quieter opening paintings) (below; not yet in a Windows installer) · **the owner's briefs 8–11 in the game** (60 god and 74 hero portraits, 72 town building levels, the map heroes' `prepare` and `cast`, god-card icon rows; below; not yet in an installer) · **the owner's magic and Favor strips, town icons and battlefield climates in the game** (177 effect strips under their full `fx.*` IDs, 6 town-action icons, 54 climate battlefields; importer fixed; map aura loops; below; not yet in an installer) · **app 0.11.0** (Windows installer for play-testing): the **owner's delivered 2D art** (all 102 creature forms, six map heroes, map locations, battle objects and effects; below) and the **owner's 21 requests of 2026-10-04** (the Workshop's weekly wares, twelve new heroes, rarer joining and fleeing, square random maps for up to six empires, map and battle fixes, a miracle book, GPT-6 briefs 8–11) · app 0.10.0 with **code-drawn magic and Favor effects** and **34 new placeholder sounds** (five campaign soundscapes; below) · **owner interface pass, third round** (14 requests) · app 0.9.0 (the first installer with the 2D migration) · **GPT-6 queue in sheets** (140 images instead of 1,097) · **2D presentation migration** (PixiJS replaces the 3D layer; every sprite a labelled placeholder; below) · 0.8.0 before it · new in 0.8.0: town gates, the fallen stay on the battlefield, victory celebration, town drag and drop, the 24 delivered cursors and the 6 pantheon emblems · new in 0.7.0: the **owner's interface pass**, the **first 43 creature portraits** and the **2026-10-03 requests** (context cursors, divine gifts, a smarter AI, graphics quality; below) · since 0.5.0: **172 final functional icons**, **hero specialties, all 60 gods, nine new map sites, neutral reactions**, the **92 story pictures**, the **76 ground and sky pictures** and the **41 big-moment pictures** · rules `pr-0.2-candidate` + proposed effects (hero movement 750–1,000, shooting ranges, specialties, reactions) · content `content-0.8.0` (values changed without a version bump; its saves still load, with the new features off) · campaigns `campaign-three-beacons-0.4`, *The Winter Oath* and four arc campaigns (proposed) · mapgen `pr-mapgen-0.3` + random maps **`pr-skirmishgen-0.7`** · save schema 1 (saves from content-0.7.0 refused) · preferences schema 4_
 
 Everything below distinguishes what was **measured** (commands actually run
 in this session) from targets. Placeholder behavior is labeled as such.
 
 Sections dated before the 2D migration are history: their mentions of the
 deleted 3D layer are marked **obsolete** where they occur.
+
+## App 1.3.0 — Shooters' own missiles and impacts; six upgraded neutral creatures (2026-10-16)
+
+The PROJECTILES, IMPACTS & SIX NEUTRAL UPGRADES handoff of 2026-10-15
+(delivery `blannder_models\battle-fx-neutral-upgrades-2026-10-15`). It
+supersedes the campaign-v2 instruction that the six new neutrals are single
+form (owner request). Values are proposed and unplaytested. Saves: format,
+schema and `content-0.8.0` unchanged; older saves load with their armies as
+they were (nothing upgrades itself); upgraded stacks round-trip.
+
+### What is in the game
+
+- **Art** (`npm run battlefx:import`, ASSET_PIPELINE.md §21): the 25 delivered
+  PNGs byte for byte in `assets-source/` and `assets-runtime/battle-fx-neutral-upgrades-v1/`
+  (SHA-256 checked), the handoff and JSON metadata in
+  `docs/battle-fx-neutral-upgrades-v1/`, a namespaced runtime manifest merged
+  into the sprite manifest by `packages/ui/src/assets/manifest.ts` (never
+  replacing it): six upgraded creature sets, 24 impacts, 24 travel stills and 24
+  `projectileProfiles`.
+- **Missiles and impacts** (`packages/presentation/src/battle.ts`, new pure
+  `projectiles.ts`): each of the 22 shooter forms flies its own missile — the
+  catalog's shooters are exactly the delivery's 22 — and lands its own impact;
+  `SiegeTurretShot` uses the tower arrow, the catapult its stone, and a
+  wall-breaking shooter (Cyclops, Colossus and upgrades) its own boulder or
+  block; a shooter's melee blow flies nothing; an unknown future shooter keeps
+  the generic arrow. Paths: high arc (stones), low arc (javelins, darts,
+  arrows, slings), straight (magic, breath, wail, fire), the arc kept inside
+  the board's frame; flight time from the profile's range by distance, scaled
+  by battle speed; released on the shoot strip's release frame from a
+  calibrated per-unit socket (table in `projectiles.ts`); travel frame 0 moved
+  through the world (physical) or four looping poses (magic), rotated along the
+  path and never mirrored twice; the impact once at the contact point with the
+  hit reaction and damage words, fading over its last 100 ms; frame-region
+  effects set each frame's pixel anchor and `sourceScale`. Graphics Low shows
+  the first impact frame; reduced motion is instant playback (no missile).
+  Cosmetic only: no rule, damage or random draw changes.
+- **Six upgraded neutrals** (`packages/content/src/common/neutralsV2.ts`):
+  Dawncrest Pegasus, Crownroot Runner, Crested Serpopard, Dreamtusk Baku,
+  Ridgeback Afanc, Crownfin Ahuitzotl — the upgrade of each existing family
+  (base IDs, family, tier, growth, footprint unchanged), the delivered stats and
+  gold prices, the same abilities (only the Pegasus pair flies), portraits
+  `neutralupgrade.portrait.<id>`.
+- **Rules** (`packages/rules/src/systems/world.ts`): `campSiteForms` decides
+  from data what a camp offers — both forms for a weekly-restocking camp of a
+  neutral family, else its one listed creature (campaign wolf/centaur/golem
+  camps and skirmish camps unchanged). `RecruitFromCamp.creatureId` (optional;
+  omitted = the base form, so older commands and the AI are unchanged) is
+  validated against it — a foreign or malformed ID is refused; both forms draw
+  on the site's one weekly stock, which never doubles. New `TrainAtCamp`
+  (`quoteCampTraining`, event `CampTrained`): a visiting hero's base stack of
+  the site's family upgraded for the gold difference, no stock used, count
+  kept, never merging forms or losing creatures (a partial training needs a
+  free slot or an upgraded stack), movement capped as town training does; the
+  same presence, guard, pact and pending-decision checks; towns never train
+  these neutrals.
+- **Screens**: the hiring dialog's base / upgraded selectors (pointer and
+  keyboard) with the chosen form's portrait, facts, price and the shared stock,
+  Recruit / Recruit all affordable for that form, and a Train strip only when
+  the visiting hero has a base stack; the Bestiary and the unit page show both
+  forms; habitat and site art resolve by family (`creatureHabitat`,
+  `neutralSiteBase`); the editor still lists exactly six neutral hiring sites.
+  Army strips, battle panels, tooltips, rewards and results already resolve by
+  the actual creature ID (checked).
+- **In-game calibration** (metadata only, `CALIBRATION` in the importer, from
+  battle captures): Dawncrest flight `sourceScale` 0.65 → 0.78 (its body was
+  15–20 % smaller in the air); Dawncrest and Dreamtusk body scale (pixels per
+  hex 123.1 → 130 and 116.23 → 128; the Dreamtusk had reached 2.1 hexes on its
+  two); two Dawncrest death anchors +3 / +4 px (the body sank); javelin, dart,
+  sling and tower-arrow impacts 0.5 → 0.7 hex.
+
+### Checks run (this container)
+
+Commands run on 2026-10-15/16 (cloud container, two cores, SwiftShader):
+
+- `npx tsc -p tsconfig.core.json --noEmit` and `npx tsc -p apps/client/tsconfig.json --noEmit`:
+  clean. `npm run lint:boundaries`: passed (the new manifest import added to the
+  allow-list).
+- `npx vitest run`: **98 files, 855 tests passed** (was 94 / 760). New:
+  `presentation/test/projectiles.test.ts` (66: each of the 22 shooters and both
+  siege actors resolve to their profile and impact, the catalog's shooters are
+  exactly the profiled ones, melee and unknown units, paths, durations, angles,
+  sockets, region anchor and scale), `rules/test/neutralUpgrades.test.ts` (16:
+  form choice, foreign and malformed IDs refused, one shared stock across forms
+  and empires, weekly reset without doubling, full / partial / refused training,
+  pact, no town training, the AI's old command), `session/test/neutralUpgradesSave.test.ts`
+  (3: upgraded stacks round-trip, a base-only save unchanged),
+  `content/test/neutralUpgrades.test.ts` (2), and extended `sprites.test.ts`
+  (114 forms; the calibrated scales), `neutralRecruit`, `neutralCodex`,
+  `routeKit`, `editorV2Sites`.
+- `npm run build`: production client 1.3.0; `battle-fx-neutral-upgrades-v1/`
+  in `dist`; no local disk path in `dist`.
+- E2E (Playwright, one worker, dev server):
+  - `v2fx` 9, `v2upgrades` 10, `v2neutral` 11, `v2battle` 8, `siege` 2 in one
+    run after the calibration: **37 passed, 2 failed** — `siege` BAT-14 timed
+    out waiting for the first page of a cold dev server (passed alone on a warm
+    one, 24 s), and the Dawncrest flight test still expected the delivered 0.65
+    flight scale (updated to the calibrated 0.78; passed).
+  - `frontend110` title (1.3.0 in the footer), `battles` (6 pantheon rosters),
+    `brief15` (siege art), `encounters`, `round10` (fallen stay down, cursors):
+    **20 passed, 1 failed** — `encounters` › briefing scroll still expected the
+    v1 objective list of a new campaign (outdated since 1.2.0's chapters);
+    updated to the v2 introduction and passed.
+  - `v2fx` covers all 22 shooters on dark ground, sand and snow (left, right,
+    diagonal, near, far, one- and two-hex targets, a kill), a siege (Cyclops and
+    Divine Colossus at the walls, the catapult, three turret arrows), a speed
+    change, leaving mid-flight, a replay of the same save (same points, path and
+    timing), graphics Low, reduced motion, a mirrored board and 1920 × 1080; it
+    checks one impact per shot, none at launch, the impact at the contact point
+    in the same tick as the hit reaction.
+  - `v2upgrades` covers the hiring selectors (pointer and keyboard), shared
+    stock, training (partial, full, too little gold, no space), the pact lock,
+    160 % interface scale without nested scrolling, the Bestiary and unit pages,
+    each base beside its upgrade in battle on both sides (one scale per pose,
+    feet on the ground point), and the Dawncrest's takeoff, flight and landing
+    at one scale per phase.
+- Captures: `/home/claude/capture/v2-fx/` (85 shots mid-flight and at impact,
+  contact sheets in `crops/`) and `/home/claude/capture/v2-upgrades/` (each
+  hiring and codex state at 1280 × 720, 1366 × 768, 1920 × 1080 and 160 %; the
+  battle pairs; calibration sheets); a selection in the session outputs.
+- Not run this round: the rest of the e2e suite, `npm run balance`, the
+  campaign simulator (the AI and autopilot hire base forms only).
+
+### Remaining / not done
+
+- **Balance (proposed values; rough power per gold, abilities ignored)**: the
+  neutral upgrades gain ×1.69–1.85 power for ×1.29–1.32 cost (pantheon tier-3
+  upgrades ×1.29–1.66 for ×1.24–1.25). Ridgeback Afanc is the best value
+  compared at tier 3 (1.55 power per gold; pantheon tier-3 upgrades 0.95–1.19);
+  Crownroot Runner, a tier-2 unit with speed 9, is 0.73 (pantheon tier-2
+  upgrades 0.42–0.60). Training has no stock limit (35–75 gold each). Every
+  campaign-v2 neutral hiring site now offers the upgrade too, which makes those
+  chapters easier; the campaign autopilot and the AI hire base forms only, so a
+  simulation would not show it. Playtest before keeping these numbers.
+- **Visual**: the small physical impacts are subtle by design even at 0.7 hex;
+  the contact point is a body-height heuristic (no visible-bounds data); a
+  target's count badge drops before the missile lands (existing behaviour); a
+  battle-speed change applies from the next event batch; turrets have no
+  per-tower socket; a future melee wall breaker would get the old generic stone.
+- **PC**: synced on 2026-10-16 with `tools/sync/apply_bundle.py` (bundle
+  `pantheon-realms-1.3.0-sync.tgz` in
+  `blannder_models\gui-review-2026-10-10\delivery-1.3.0-battle-fx\` with the
+  review screenshots; the 25 PNGs copied from the delivery folder on the PC,
+  hash-checked); no PC source file had changed since the 1.2.0 sync (only the
+  owner's desktop build output). No installer built this round; nothing
+  committed.
+
+## App 1.2.0 — The campaign expansion: 37 chapters as regions, six neutral creatures, battles by hand (2026-10-15)
+
+The CAMPAIGN EXPANSION AND NEUTRAL CREATURES handoff of 2026-10-15, implemented
+in the cloud container (the PC was offline for most of it; see "PC" below).
+Values are proposed and unplaytested.
+
+### What is in the game
+
+- **Campaign content v2** (`packages/content/src/campaign/v2/`, guide
+  `docs/campaign-v2/AUTHORING.md`): all seven campaigns rewritten as **37
+  chapters** that carry each of the 45 legacy missions exactly once — The Three
+  Beacons 2 (1 → 2), The Silent Oracle 6 (1 → {2, 3} → {4, 5} → 6), The Winter
+  Oath 6, The Twelfth Hour 6 (1 → {2, 3} → 4 → 5 → 6), The Lantern Road 6, The
+  Silver Branch 6 (1 → 2 → {3, 4} → 5 → 6) and The New Fire 5 (1 → 2 → {3, 4} →
+  5). Every chapter is an **authored region map** compiled from its design card
+  (`regionMap.ts`: paint ops, roads routed between sites) — no map template and
+  no arc corridor — and the tests require: every objective site reachable, two
+  independent approaches to the principal objective (max-flow, no single choke
+  cell), a shortcut opened through play, reachability with every sluice open
+  and closed, patrols with a home site or an announced trigger, deadlines that
+  fail optional objectives only, an end through `completesMission`, facts read
+  only from chapters that can come earlier, both orders of each parallel pair
+  coherent (briefing variants and scenes keyed on `fact:` flags), and
+  `briefingArt` per the cards. Existing heroes and cast only.
+- **Rules vocabulary** (shared data, usable by any mission): sluices
+  (`OperateSluice` switches a channel's terrain; refused while guarded or with
+  a hero in the channel), ferry portals with a liberation flag, supply depots,
+  patrols with `homeSiteId` (they withdraw when it falls) and
+  `dormantUntilFlag`, announced timers (`evaluateTimers`; optional objectives
+  only), map-event options with `requiresFlags` and `clearsSiteIds` (guards
+  stand down with no battle) and the option chosen recorded on the site
+  (`chosenOption`), `required` guards, camps with weekly or no restock and pact
+  locks. A gate whose flag an objective reward or a deadline sets opens in the
+  same command (the processor runs `updateGates` again after the objectives and
+  timers).
+- **Manual battles in campaigns** (`systems/battle/policy.ts`): the processor
+  refuses an `automated` battle command in a campaign mission
+  (`manual_battle_required`) before any state or dice change; the session and
+  the UI offer no Auto, quick battle or casualty preview there; the pre-battle
+  dialog has a single Fight. The computer's own battles and skirmishes are
+  unchanged.
+- **Runs and saves**: `CampaignState.contentVersion` (absent = 1). New runs play
+  v2; a run saved before keeps its v1 missions to the end (v1 definitions stay
+  in the catalog unchanged; nothing is reinterpreted, merged, migrated or
+  deleted). `facts` (carried flags → `fact:<flag>` in later chapters) are kept
+  apart from `completions`; `availableChapters` / `startNextMission(…, id)`
+  validate the graph; practice replay is its own branch and never advances the
+  run; restart rebuilds the entry hash with its facts. The save format, schema
+  and `content-0.8.0` stamp are unchanged (the old siege saves of 2026-10-11 in
+  this container still load); metadata gains the optional
+  `campaignContentVersion` and `chapterNumber`.
+- **Six single-form neutral creatures** (`common/neutralsV2.ts`): Pegasus,
+  Root-Runner, Serpopard, Baku, Afanc, Ahuitzotl, with the kit's stats, habitats
+  and one ability each (Sheltering Wings, Distract, Long Reach — passive —,
+  Devour Dread, Reed Guard, Tail Snare; `neutralAbilities.ts`; statuses end at
+  the user's next activation; once per battle per stack). Hiring sites with a
+  finite weekly stock shared by everyone and never accumulating, some behind a
+  pact. `isSingleForm`/`familyForms`: no fabricated upgrades. The battle AI uses
+  the abilities when its scoring finds them useful (`ai/src/neutralTactics.ts`);
+  two AI-vs-AI battles without neutrals end in identical states before and
+  after.
+- **Sprites**: the frame-region atlas adapter (`SpriteStrip.regions`: source
+  rectangle, pixel anchor, constant `sourceScale`, mirrored for the defender;
+  victory and ability aliases; Pegasus takeoff 3 + fly 4 + landing 4 poses
+  without the clipped [0,2] pose, flight scale 0.62 checked against the core
+  frames). Kit imported by `npm run campaignv2:import` (ASSET_PIPELINE.md §20).
+- **Screens** (each with keyboard access and checked at 1280 × 720, 1366 × 768,
+  1920 × 1080 and a 160 % interface scale):
+  - Campaign Chronicles: the chapter graph (complete / current / available /
+    locked with its reason / practice), the chapter's painting, first line and
+    the legacy missions it carries, the manual-battle line; the v2 summary of
+    each campaign.
+  - Result: Continue to the one chapter, or the choice of two; what the chapter
+    leaves behind and what is carried; practice replay of a finished chapter
+    (the run is kept and restored byte for byte); the v2 epilogue and its
+    variant over the campaign painting.
+  - Continue / Load: Chronicle (v2) or Legacy campaign (v1), the chapter or
+    mission, practice replays apart; Continue prefers the primary run.
+  - Introduction: tasks, deadlines, carried bonuses, loss conditions, manual
+    battles; "Chapter N" kicker.
+  - Journal: Required tasks / Optional opportunities, "Missed" for a failed
+    optional task, the Ledger (deadlines, known threats with Show on map,
+    evidence and decisions, carried facts), the chronicle on the Campaign tab;
+    HUD deadline line.
+  - Map: kit pictures for hiring sites, sluices (dialog with the exact change,
+    refused with its reason), ferries (locked notice), depots; objective markers
+    with the campaign icons; terrain redrawn when a sluice changes it, camera kept.
+  - Story choices: exact cost, gain, guards that stand down, what is recorded,
+    needs (evidence/pact icons); affordable, unaffordable, needs, decided,
+    repeat visit.
+  - Neutral recruitment: portrait over its background, single form, stats,
+    ability rule, habitat, stock and price, the seven slots, Recruit and Recruit
+    all affordable, locked / empty / full / unaffordable states.
+  - Bestiary: the six under Neutral with habitat and hiring source; unit page
+    "Single form" and the atlas animations (preview dispatches nothing).
+  - Battle: ability buttons with the exact rule, uses left, legal targets, the
+    pull slide, status marks, log lines.
+  - Map editor and random maps: the six hiring sites with a habitat check,
+    sluices with channels and an open/closed connectivity check, ferry pairs,
+    depots; an optional "New neutral creatures" random pool, off by default
+    (default output byte-identical: 84 random maps and the six shipped maps
+    hashed before and after).
+
+### Checks run (this container)
+
+Commands run on 2026-10-15 (cloud container, two cores, Chromium with
+SwiftShader; the software renderer drew the map at about 1 frame per second
+during the final runs):
+
+- `npx tsc -p tsconfig.core.json --noEmit` and
+  `npx tsc -p apps/client/tsconfig.json --noEmit`: clean.
+  `npm run lint:boundaries`: passed (the `assets-runtime/campaign-v2/manifest.json`
+  import added to its allow-list).
+- `npx vitest run`: **94 files, 760 tests passed** (was 81 / 676 when the seven
+  content agents finished; the legacy journeys `arcCampaigns`, `threeBeacons`,
+  `winterOath`, `campaignDifficulty` and the save checkpoint test now pin
+  `contentVersion: 1`, as an older run is). New or extended: the seven
+  campaigns' own tests (`packages/content/test/v2/*.test.ts`, 10–13 each) and
+  `campaignV2.test.ts`; `campaignV2Run.test.ts` (graph in both orders, a fork
+  asks for a choice, a locked chapter refused, facts apart from completion,
+  restart, practice never advancing, v1 runs staying v1, v2 summaries);
+  `save.test.ts` (a v2 run round-trips; a v1 save without `contentVersion`
+  loads as v1); `manualBattle.test.ts`; `neutralAbilities.test.ts` (rules and
+  AI); `sprites.test.ts` (108 forms; region atlases inside their PNGs, one scale
+  per animation, the aliases, Pegasus without the [0,2] pose); `v2Sites`,
+  `siteInfo`, `missionLedger`, `chronicle`, `chroniclePractice` (incl. the
+  Bestiary over a dialog), `choiceView` (the recorded choice), `neutralRecruit`,
+  `neutralCodex`, `battleAbilities`, `battlePlayback`, `continueTarget`,
+  `editorV2Sites`, `customMapV2`, `neutralPool`, `routeKit`.
+- `npm run build`: production client 1.2.0, 19.5 s; `campaign-v2/` (31 PNGs,
+  16 display WebPs, manifest) in `dist`; no `C:\Users`, `lazeb` or
+  `/home/claude` string in `dist`.
+- Each campaign's autopilot run in both chapter orders
+  (`tools/campaign-v2/sim.measure.ts`, `RUNS=2`, by the content agents): every
+  chapter of all seven campaigns won in both orders, no validation issue.
+- `npm run campaign-sim -- --content 2 --runs 4 --jobs 1` (444 chapter runs,
+  9.9 min; computer-played, not playtests):
+
+  | Level | Target | Chapters won | Costliest battle (median) | Check |
+  |---|---|---|---|---|
+  | Story | 95–100 %, 0–15 % | 148/148 | 8 % | pass (22 chapters "too easy") |
+  | Normal | 85–100 %, 10–30 % | 147/148 | 39 % | outside the band (fights costlier than the band) |
+  | Hard | 60–95 %, 20–45 % | 136/148 (92 %) | 41 % | outside the band: New Fire ch. 2 0/4 (Itzel caught by Acatl on day 4), Silver Branch ch. 2 0/4 (the boar never found) |
+
+  The single Normal loss: The Silent Oracle ch. 2 (the Bronze Bull, run 0).
+  Hard also lost Twelfth Hour ch. 3 twice and Silent Oracle ch. 2 once.
+- E2E (Playwright, one worker, dev server):
+  - The six new specs plus the two they touch, in one run: `v2battle` 8,
+    `v2chronicle` 7, `v2editor` 3, `v2journal` 8, `v2neutral` 11, `v2sites` 7,
+    `storyArt` 3, `mapEditor` 2 — **49 passed, 0 failed** (55 min).
+  - `campaign.spec` (the legacy Mission 1 → 2 journey, now started from a v1
+    save fixture, and a new v2 run with the Journal chronicle): **2 passed**.
+    Its first two runs failed on the 15 s wait for the hero's walk (about 2 s
+    per hex at this frame rate); the waits are now 60 s.
+  - `journey.spec` (v1 save → build → recruit → battle by hand → save → load →
+    Continue): **passed** after saving into slot 2 (slot 1 holds the imported
+    legacy run).
+  - `frontend110` (16 tests; the chronicle replaces the read-only outline),
+    `brief18` (4; the Silent Oracle's v1 story art still checked from a v1
+    run), `audio` (4): passed — `frontend110`'s title test after the dev server
+    was restarted at 1.2.0, and `brief18`'s second ending test after it waits
+    for a scene that opens late.
+  - Not run this round: the rest of the suite (siege, perf, round*, brief12–17
+    and older specs).
+- Old saves: the twelve siege saves of 2026-10-11 in this container (content
+  `content-0.8.0`) parse as compatible and load.
+- Captures: `/home/claude/capture/v2-{chronicle,journal,sites,neutral,battle,editor,maps}/`
+  (each screen at 1280 × 720, 1366 × 768, 1920 × 1080 and 160 % interface
+  scale); a selection in the session outputs `campaign-v2-screens/`.
+- `node tools/perf/load-time.mjs`: not completed (stopped after 10 minutes at
+  this frame rate); start-up adds the campaign-v2 manifest (31 entries) and the
+  neutral content — unmeasured.
+
+### Remaining / not done
+
+- **PC (done, for the record)**: synced on 2026-10-15 with `tools/sync/apply_bundle.py` from the
+  bundle `pantheon-realms-1.2.0-sync.tgz` (kept in
+  `blannder_models\gui-review-2026-10-10\delivery-1.2.0-campaign-v2\` with the
+  review screenshots): 251 files from the session (code, tests, docs, display
+  art, manifest) and the kit's 31 PNGs copied from the kit folder on the PC into
+  `assets-source/campaign-v2` and `assets-runtime/campaign-v2`, every file
+  checked against its hash; no file there had changed since the 1.1.6 sync
+  (no conflicts), nothing deleted. Afterwards the PC tree and this container's
+  matched in every source, test, tool, doc and kit folder compared (line
+  endings ignored). The script left `sync-report-1.2.0.json` at the checkout
+  root. About 2 GB was free on C: afterwards. Nothing committed; no installer
+  built (`installer\build-installer.cmd` builds one from this checkout).
+- **Balance (computer measurements, not playtests)**: Normal's costliest battle
+  (median 39 %) is above its 10–30 % band; on Hard the autopilot lost Itzel on
+  day 4 of New Fire chapter 2 in 4 of 4 runs (Acatl's patrol, 170 % on Hard,
+  catches her after the jailers) and never found The Silver Branch chapter 2's
+  boar (it charges only a war-band it is sure to beat; the autopilot does not
+  explore toward an unseen target). Many chapters read "too easy" on Story.
+  Values are proposed; tune after playtests.
+- **Approximations of the cards** (kit limits): patrols follow fixed waypoints
+  (no retargeting to the richest bank or the latest district); mixed refuges
+  are one-time events; a few allied towns (Pyrgos, Hvitstrand, Per-Wadjet, the
+  Akashi camps) are unowned towns; the autopilot finishes faster and with fewer
+  battles than the cards' estimates; a Baku grove stands on a coast map.
+- **Not built**: the editor's Generate dialog does not offer the neutral pool;
+  custom maps have no pact locks (no mission flags); Serpopard and Ahuitzotl
+  never appear on random maps (no desert or jungle map type); a decided story
+  choice cannot be reopened on the map; a scene replayed from the Journal shows
+  no backdrop; leaving to the main menu during a practice replay drops the kept
+  run (an autosave "before practice replay" is written).
+- **Size**: `assets-runtime/campaign-v2/` adds 66 MB of native PNGs to the build.
+- Frame rate: this container's software renderer ran at about 1 frame per
+  second on the map during the final runs (main-thread work under 1 ms per
+  frame); movement playback in the UI tests takes about 2 s per hex here.
+
+## App 1.1.6 — Recruitment redesign, painted routes, journeys kept between days (2026-10-14)
+
+Handoff "PANTHEON REALMS — RECRUITMENT & PERSISTENT JOURNEY HANDOFF" (14 October
+2026; approved concepts `recruitment-upgrade-unlocked.png`,
+`recruitment-upgrade-locked.png`, `adventure-route-concept.png`, copied with the
+handoff to `docs/recruitment-route-v1/`). Version 1.1.6; no installer built
+(`installer\build-installer.cmd` builds one on the PC). Rules values and content
+are unchanged; saves gain one optional field.
+
+1. **Kit import** (`npm run recruitroute:import`, new focused step
+   `tools/assets/import_recruitment_route.py`, run in the owner's checkout with
+   `--kit`; see `ASSET_PIPELINE.md` §19): the nine 1254 × 1254 RGBA PNGs to
+   `assets-source/ui/recruitment-route-v1/` (SHA-256 checked against the kit),
+   runtime copies (256/512 px, premultiplied reduction, visible bounds) and
+   102 recruitment-only native idle strips (byte copies, frame grid, timing,
+   anchor, visible union; the 84 pantheon unions equal the kit's
+   `creature-map.json`) in `assets-runtime/recruitment-route-v1/` with its
+   `manifest.json`. Registered through `assets/manifest.ts` (`recruitroute.*`,
+   `creatureStageStrip`, `registerRouteArt`); the boundary check allows the new
+   manifest. No wholesale sprite recut; map and battle sprites unchanged.
+2. **Recruit all** (rules): `RecruitBatch` command, `recruitAllItems`,
+   `quoteRecruitBatch` (simulated army and wallet, cumulative merges, new
+   slots and cost; whole-batch refusal with "Needs N more army slot(s)" /
+   "Short …" / stale pool), commit re-quotes then applies inside one
+   transaction. `packages/rules/test/recruitBatch.test.ts` (10).
+3. **Planned journeys** (session): `packages/session/src/journeys.ts`, the
+   session's `journey` / `planJourney` / `cancelJourney`, reconciliation after
+   every command (arrival, loss, capture, other match → dropped; unreachable →
+   blocked and kept; battle or teleport → paused; a journey to a portal ends
+   through it), `SaveSnapshot.presentation` (version 1, written only when a
+   journey exists; old saves load with none; sanitised on load); new mission,
+   restart and practice clear them. `packages/session/test/journeys.test.ts`
+   (7: three-day journey cleared only on arrival, two heroes and Cancel, save
+   round trip and an old save, sanitising, blocked/paused/lost, a new mission,
+   the portal).
+4. **Map screen**: the selected hero's journey from the session (no component
+   state); End Day, selecting another hero and right-click keep it; a second
+   click on the destination, the journey bar's **Continue journey** (kit icon,
+   tooltip with the current key) or the continue-move key (held key: one move;
+   not while a walk plays; overlays and text fields keep their keys) follow
+   it; **Cancel journey** clears it. The bar says Arrives today / tomorrow /
+   in N turns, steps today, no movement left ("Continue next day"), paused,
+   "Route unavailable — …", or "Route changed" with **Accept new route**
+   (`app/journeyRoute.ts`: same way, the rest of it after walking, or an
+   equally long way → unchanged; another length, a new battle, the hero off the
+   route → changed; `packages/ui/test/journeyRoute.test.ts`, 6). The planning
+   tip moved above the bar and its text describes the new markers.
+5. **Painted route** (`presentation/src/adventure.ts`, `routeArt.ts`): the
+   pathfinder's steps with `routeStepDays`; an arrowhead per step but the last
+   (0.30 tile width today, 0.27 later, measured by the painted part, a soft
+   tinted copy beneath), turned in the ground plane then squashed once; an
+   upright hourglass at each new day's first step; the compass seal (0.54 tile)
+   on the ground with a gentle pulse (still under reduced motion or Low), the
+   blank parchment with the live arrival day; crossed swords instead of the
+   seal before a battle; seal and lock when blocked. The walking trail uses the
+   same arrowheads. The selection ring is the painted ring (its breath also
+   stills under reduced motion). Below zoom 0.72 every other arrowhead and the
+   later hourglasses are left out; below 0.9 the markers keep their screen
+   size. Under the fog and the figures, `eventMode: 'none'`; pictures loaded
+   once through `textures.ts` (mipmapped); the drawn shapes remain the
+   fallback. `routeDebug()` / `__prRoute` (read-only, `?e2e`).
+6. **Recruitment** (`screens/Recruitment.tsx`, `styles/adventure.css` `.rr-*`,
+   `AdventureStage` `compact` and `aside`): compact title strip with the
+   treasury; seven dwelling cards in one row; stage ≈ 56 % / details ≈ 44 %;
+   the creature's native idle strip scaled once for the whole clip so its
+   visible union fills 82 % of the stage height or 90 % of the width beside the
+   medallions, feet on a shared ground line with a soft shadow, first frame held
+   under reduced motion; base/upgraded medallions over the stage's left edge
+   (locked form: lock, requirement on hover/focus, never selectable); upgraded
+   chosen first where recruitable, an explicit base choice kept (screen
+   params); six stats with icons, ranged badges, ability chips (exact rule on
+   hover/focus), pool and growth (one pool for both forms), unit cost,
+   destination as portraits (radio group, arrow keys, check mark, name shown
+   once), quantity (0 and a reason at zero), **Recruit N** with its total; dock:
+   the destination's seven slots (placement highlighted), training for the
+   selected family (its stacks in the destination first, a selector when
+   several, −/+/Max, "Training locked · Requires …"), **Recruit all** (troops and
+   every resource inline, breakdown on hover/focus, reason when off).
+   Container query below 1100 px, 80 rem or 40 rem high (large interface
+   scales too): Creature / Recruit / Train views, 4 + 3 dwellings, a dock with
+   Back, Recruit all and Recruit N always in view.
+7. **Tests updated**: `campaign.spec.ts` trains through `train-max` and
+   `train-hoplite`; `owner115.spec.ts` selects the Griffins' card first.
+
+### Checks run (this container)
+
+- `npm run check`: boundary check passed; typecheck (core, client, desktop)
+  clean; vitest **68 files, 552 tests passed**.
+- New unit tests: `recruitBatch.test.ts` 10, `journeys.test.ts` 7,
+  `journeyRoute.test.ts` 6, `routeKit.test.ts` 3 (the nine pictures, the six
+  markers and three icons, all 102 recruitment strips), `routeDays.test.ts`
+  +1 (`routeStepDays`).
+- E2E (Playwright, Chromium with SwiftShader, dev server):
+- `tests/e2e/plannedJourneys.spec.ts` (new) **5 passed**: the three-day
+    journey (one click, Continue on day 1, End Day keeps it and moves nobody,
+    Space on day 2, arrival on day 3 clears it; painted route with day 3 → 2 →
+    1 on the parchment); two heroes through a town, Settings, right-click and
+    a manual save, End Day and load, Cancel clearing one; a blocked
+    destination kept and shown locked, a held Space moving once; the route on
+    The Winter Oath (snow), The Twelfth Hour (desert), The Silver Branch and
+    The New Fire maps near and far with a fog edge; remapping the key to G
+    (Space no longer walks, G does, the tooltip says G).
+  - `tests/e2e/recruitment.spec.ts` (new, fixtures `recruitFixtures.ts`): six
+    pantheons (seven cards, upgraded first, explicit base kept across quantity
+    and destination, base-only and no-dwelling cases, every tier's own strip);
+    the four desktop sizes with no scrolling panel, every control inside the
+    window and text ≥ 14 px; seven Greek forms whole on the stage; the narrow
+    views and interface scale 145 %; Recruit all (32 troops in one command, one
+    revision, exact spend, no confirmation; short of gold and a full army
+    refused with their reasons); no visiting hero, zero stock, the shared pool,
+    a crystal price. Last full run **5 passed, 1 failed** — the Recruit all test
+    timed out (20 s) clicking the town tab of its third fixture; run again on
+    its own it **passed**.
+  - Existing specs touched by the change: `features`, `gui110`, `journey`,
+    `pantheons`, `round11`, `owner115` — **32 passed, 1 skipped (the old-save
+    check without `PR_OLD_SAVE`), 1 failed**: `owner115`'s days-to-arrive test
+    still expected "N days" in the old route line; it now reads the journey
+    bar ("Arrives tomorrow" / "Arrives in N turns") and **passed**.
+    `campaign.spec.ts` (trains through the new dock) **1 passed**.
+  - Not run this round: the rest of the e2e suite.
+- Screenshots: `blannder_models\gui-review-2026-10-10\delivery-1.1.6-recruit-route\`.
+
+### Remaining / not done
+
+- **Creature sharpness**: the recruitment figures are the delivered native idle
+  strips (207–348 px frames) enlarged about 1.8× (1280 × 720) to 2.9×
+  (1920 × 1080); they are softer than the concept paintings. New larger idle
+  strips would be needed for concept-sharp figures.
+- Not tested in a real multiplayer session (there is none: hot-seat only);
+  journeys are per player and private by construction (unit-tested), and
+  hot-seat hand-overs show only the active player's.
+- A movement bonus that changes a route's length after it was planned is
+  covered by the reroute rule and its unit tests, not by an e2e run.
+- The route's look was checked on snow, desert, temperate and jungle maps and
+  at near/far zoom in the cloud renderer (SwiftShader); the owner's GPU and the
+  frame rate with long routes are unmeasured.
+
+## App 1.1.5 — GPT-6 Brief 18 imported: The Silent Oracle's story art (2026-10-14)
+
+Handoff "PANTHEON REALMS — BRIEF 18: THE SILENT ORACLE, CLAUDE CODE HANDOFF"
+(14 October 2026): integrate the 18 delivered masters through the existing
+pipeline, then empty the test allowlist. The version stays 1.1.5 (no
+installer had been built for it). Saves, preferences, rules and content are
+unchanged.
+
+1. **Sources** (owner's checkout): `assets-source/art/final/` — four busts,
+   the cover, seven mission pictures, two endings; `assets-source/icons/final/`
+   — four square portraits. Measured as the handoff lists them: busts
+   1024 × 1536 RGBA (alpha 0–254), portraits 1254 × 1254 RGB, cover
+   1672 × 940, mission pictures and endings 1672 × 941 (m03 1671 × 941), no
+   ICC profile (sRGB).
+2. **Import**, unchanged scripts, no `--prune`, in the owner's checkout through
+   the PC shell (Python 3, Pillow 12.3.0, libwebp 1.6.0; scipy installed there
+   for the banners' plaque measure):
+   - `tools/assets/import_story_art.py`: the shell ends a command after three
+     minutes and a full run needs about four, so the script ran three times,
+     each over every third of the 512 masters, in its own temporary root (a
+     byte-identical copy of the script, links to the masters,
+     `seamless-verified.txt`) — 72 s, 63 s and 67 s. Joined, the three runs
+     give 572 entries and no warnings (40 busts, 7 covers, 13 endings, 53
+     mission pictures, 60 terrains, 66 battlefields, 10 skies, 14 miracle
+     cards, 12 splashes, 15 banners, 198 town buildings, 24 town
+     backgrounds). All 550 runtime files already in the checkout came out
+     byte for byte the same and their manifest entries unchanged; the 22 new
+     files were copied in, and `assets-runtime/art/manifest.json` and
+     `assets-source/art/IMPORT_REPORT.json` were written as a single run
+     writes them (the report now has a source for every entry, including the
+     180 it listed without one since 2026-10-06).
+   - `tools/assets/icon-catalog/import_icons.py --new`: 4 imported with the
+     expected four "not in the icon catalog" warnings; 608 registered; the 604
+     earlier entries unchanged.
+   - The icon inventory step of `npm run icons:catalog` (`npx vitest run
+     --config tools/assets/icon-catalog/vitest.config.ts`) added the four
+     portraits and the eight new cards to
+     `assets-source/icons/icon-inventory.json` (and refreshed 24 "where
+     shown" texts from the current code); `uiArt.test.ts` checks every
+     registered icon against it. The glyph SVGs it writes equal the PC's
+     `assets-source/icons/current/`.
+3. **Runtime files (26)**: `art/busts/hero.greek.{theron,myrrine,doros,phaidon}.bust.webp`
+   768 × 1152 with alpha (transparent padding kept, `alphaBox` recorded);
+   `ui/icons/final/hero.greek.*.portrait.webp` 256 × 256;
+   `art/covers/campaign.silent_oracle.cover.webp` 1672 × 940 and its card
+   `art/cards/campaign.silent_oracle.thumbnail.webp` 640 × 360;
+   `art/missions/mission.silent_oracle.m0N.briefing.webp` at native size and
+   `art/cards/mission.silent_oracle.m0N.thumbnail.webp` 640 × 360;
+   `art/endings/ending.silent_oracle.{oracle_speaks,cities_decide}.webp`
+   1672 × 941. Nothing enlarged. Registered in `art/manifest.json` (22) and
+   `ui/final-manifest.json` (4).
+4. **Tests**: `packages/ui/test/awaitingArt.ts` keeps the object and helpers
+   with both lists empty. `storyArt.test.ts`: 40 busts; story entries
+   40 + 7 + 7 + 13 + 53 + 53; thirteen ending routes; 45 campaign mission
+   pictures; a bust must belong to a story speaker **or a catalog hero**
+   (Phaidon never speaks — his bust stands in his encounter scene).
+   `heroPortraits.test.ts`: comment only. New `tests/e2e/brief18.spec.ts` (4):
+   the cover, the campaign card and the seven mission cards in order; Doros's
+   bust (right, mirrored) and square portrait in his scene and his portrait
+   in the battle header; each ending's own picture.
+5. **Named guard commanders in the battle header**
+   (`packages/ui/src/screens/Battle.tsx`, `commanderPortrait`): the brief
+   promised Doros's and Theron's square portraits in the battle header, but
+   the header showed a portrait only for a hero on the map. A guard's named
+   commander (battle snapshot with `heroId: null` and its own portrait ID)
+   now shows that portrait too — Doros at the labyrinth gate, Theron in the
+   inner hall, and every other guard with a named commander (for example
+   Melas and the storm guard at the end of The Three Beacons). Guards without
+   a commander still show none;
+   wandering monsters still fight without a commander. Presentation only.
+
+### Windows installer 1.1.5 and the PC build script (2026-10-14)
+
+Owner request: "give me an updated installer and also give me in the same
+folder a file that by running it, it will generate up-to-date installer".
+
+- **Source checked first.** The files the installer is built from —
+  `package.json`, `package-lock.json`, the two root tsconfigs, `apps/client`,
+  `apps/desktop`, `packages/` and all of `assets-runtime/` (270 folders) —
+  were hashed in the cloud container and on the PC: identical, except 15
+  files under `packages/presentation` and `packages/ui` that differed only in
+  line endings (CRLF on the PC); the PC's copies were taken.
+- **Build** (cloud container): `npm run build`, `npm run desktop:build`,
+  `npx electron-builder --config electron-builder.json --win nsis` (under
+  Wine, unsigned) → `Pantheon-Realms-Setup-1.1.5-x64.exe`, 1,035,855,202
+  bytes, SHA-256
+  `c25d5cdc5e9a3a72cfb4a916f6e7c9b1b52ea632c36103050a676600b90c3576`. Its
+  `app.asar` (945,732,429 bytes, 3,694 entries) holds the 26 Brief 18 files,
+  package `pantheon-realms` 1.1.5, no `.claude`, MCP, `tools/`,
+  `assets-source/` or `zz-` file, and no `lazeb` / `C:\Users` string.
+- **Smoke test**: `electron-builder --linux dir` of the same app, then
+  `PR_SMOKE_EXE=…/linux-unpacked/pantheon-realms xvfb-run -a node
+  tools/desktop-smoke.mjs` inside `unshare -rn` (no network): **DESKTOP SMOKE
+  OK** — `prgame://app/index.html`, a manual save written and read back, 572
+  painted-art entries, 1,629 sprites, the map drawn with WebGL, sounds
+  decoded, `isPackaged` true, no DevTools. The Windows installer itself was
+  not run on Windows here.
+- **Delivery**: copied to the PC in 44 parts of 24 MB (30 MB parts were
+  refused by the transfer), joined in `installer\`; each 24 MB range and the
+  whole file's SHA-256 checked on the PC (identical). The emptied parts are in
+  `installer\_to_delete-empty-parts-1.1.5\` (0 bytes; the shell here cannot
+  delete). About 3.5 GB stayed free on C:.
+- **`installer\build-installer.cmd`** (new; `installer/` is not in git, so
+  the script lives only there): double-click to build an up-to-date installer
+  on the PC from its own checkout. It checks Node.js (20 or newer) and npm;
+  asks for about 4 GB free and, when there is less, offers to delete the
+  installers already in the folder (answer `y`); runs `npm ci` only when the
+  installed packages differ from `package-lock.json` (the PC's `node_modules`
+  of 2026-10-05 differs in five packages, so its first run reinstalls them);
+  with `--check` runs `npm run check` first; then `npm run desktop:dist`,
+  moves `Pantheon-Realms-Setup-<version>-x64.exe` into `installer\`, prints
+  its size and SHA-256 and removes `apps\desktop\release`. It prints what to
+  do when Node is missing, the space is short, `npm ci` fails or
+  electron-builder cannot create symbolic links (Windows Developer Mode or
+  run as administrator). Measured only as far as possible here: its control
+  flow ran under Wine's `cmd` with stand-in `node`, `npm` and `powershell`
+  (no dependencies, dependencies present, `--check`, a failed build, space
+  short with the answer no); the version and dependency one-liners ran under
+  Node 22. It has not been run on Windows.
+
+### Checks run (this container and the owner's PC)
+
+- Before the lists were emptied, the guard tests failed as designed (six
+  failures: "delivered — empty AWAITING_BRIEF_18", 173 story entries instead
+  of 151, 40 busts instead of 36): the game's asset resolution sees the files.
+- `npm run check` after the change: boundary check passed, type-check clean,
+  **64 files / 525 unit tests passed**.
+- Playwright against the dev server (one worker): `brief18` 4/4, then 8/8 with
+  `--repeat-each 2` (the first full run failed its two ending tests at the
+  default 1600 × 900 window — the offering's hex at the map's east edge sat
+  under the side panel and the click helper refused it; those tests now use
+  1920 × 1080); `storyArt`, `owner115`, `campaign`, `siege`, `menu`,
+  `frontend110`, `round3`: **37 passed**. The full suite was not run.
+- In the running game (1920 × 1080 unless noted; captures in the review set
+  `blannder_models\gui-review-2026-10-10\delivery-1.1.5-brief18\`): the
+  campaign screen with the cover and the campaign card in the list, at
+  1920 × 1080 and 1024 × 640; the seven mission cards m01–m07 in order; all
+  seven briefings (each `scene-art` is its own `mission.silent_oracle.m0N.briefing.webp`,
+  the dialogue box below the picture); Theron's square portrait on the
+  mission-7 scroll; Theron's bust on the left (mission 4, alone) and on the
+  right, mirrored (mission 7, with Alexios); Doros on the right, mirrored;
+  Myrrine on the right (Unseal the spring) and on the left (Leave the spring
+  sealed); each line's square portrait in the dialogue box; Doros's,
+  Theron's and Phaidon's portraits in the battle header; Phaidon's bust in
+  his encounter, facing Alexios; Theron and Myrrine in the Journal; the two
+  endings — the flowing spring with Myrrine, and the assembly with the sealed
+  spring on the mountain — not swapped. The busts composited on dark and
+  light backgrounds (Myrrine's veil has 4.6 % partly transparent pixels, no
+  fringe or rectangle); the eight cards at 640 × 360. Every image loaded.
+- Not done: no installer, no full Playwright suite, nothing committed.
+
+## App 1.1.5 — The Silent Oracle, Wings over the Pass in town, the player on the left (2026-10-14)
+
+Owner request (2026-10-14, with two screenshots of the map's left column):
+"generate a new campaign for the greeks to be second, as the first is just to
+teach the player how to play the game — it should be also 7 levels but it can
+use the same heros. Make sure to prepare a document I can give GPT 6 to
+generate any new visuals we need for this campign. For the first campign, the
+second level, remove the "wings for the road" task — just ask the player to
+train 2 griffins and that it, no need for out-the-town stuff at all. Remove
+the line showed inside the red box in the attached image. When the player is
+getting attacked by another hero, still make it blue and from the left side of
+the battle and not the other way. In the map, when asking the hero to go
+beyond its range, show a small number next to the icon of how many days needed
+to get to this location." Shipped as **1.1.5** (`package.json`,
+`apps/desktop/package.json`, the lockfile; release notes in `CHANGELOG.md`).
+Saves (format and schema) and preferences are unchanged; `contentVersion` is
+unchanged, so every save still loads.
+
+1. **The Silent Oracle** (`packages/content/src/campaign/silentOracle.ts`): the
+   second Greek campaign, seven missions on the campaign arc (`arc.ts`) —
+   Restore, Hunt, Covenant, Seek, Rival, Refuge, Finale — listed right after
+   The Three Beacons (`catalog.ts` builds it first among the arc campaigns
+   and indexes it second). Original fiction: the Oracle of Kalliste has fallen
+   silent; Theron the Hierophant sealed her spring and speaks in her name.
+   Reused characters: Alexios (hero), Thaleia, Ione, Melas (the mission-5
+   rival empire, `heroId: 'melas'`) and the Scout Captain (mission-4 patrol).
+   New: Theron (final, `greek_theron`), Doros (gate, `greek_doros`), Phaidon
+   (patrol, `greek_phaidon`) — catalog heroes with specialties — and the
+   speaker Myrrine. Two arc options were added for it, both data:
+   `buildingOf` (a town with its own building names: the Greek polis' slot
+   chains) and `heroDefaults` (a might hero's starting profile per mission,
+   same points and skill ranks as the arc's). Gods: Zeus fixed; Athena, Ares,
+   Apollo or Artemis in M3; Hermes, Demeter, Hades, Poseidon or Hera in M5.
+   Covenants `covenant.griffin.silent_oracle3`, `covenant.minotaur.silent_oracle6`.
+   Rewards are Greek artifacts. Expanded content and specialties on. Values
+   proposed and unplaytested. The mode card now says "7 story campaigns across
+   6 pantheons" (`Setup.tsx`; "one for each" only while each pantheon has one).
+   Outline: project doc `claude/campaign-7-silent-oracle-outline.md`.
+2. **GPT-6 Brief 18** (`assets-source/art/briefs/GPT6_BRIEF_18_SILENT_ORACLE.md`,
+   ASSET_PIPELINE.md §18): four busts and square portraits (Theron, Myrrine,
+   Doros, Phaidon), the cover, seven mission pictures, two endings — 18 files
+   under the names the game reads. Not delivered: the game shows its stand-ins.
+   `packages/ui/test/awaitingArt.ts` lists the awaited art; the story-art and
+   portrait tests require everything else and assert the awaited files are
+   still absent (empty the list after the import). *Delivered and imported
+   later the same day — see the section above.*
+3. **The Three Beacons, mission 2** (owner change; recorded in
+   `docs/pantheon-v0.3/campaign/01_the_three_beacons.md` §6): one primary
+   objective, `m02_train_griffins` — "Train 2 Griffins" (counter
+   `trained:griffin` ≥ 2), reward 2,000 quest XP, `completesMission`.
+   Passhaven starts with the Griffin covenant; the beacon activation and the
+   other objectives are gone; the ridge, guards, nest, watchtower, sentinel
+   grove and mines stay as optional ground (template and golden map
+   unchanged). New shared data: `ObjectiveDefinition.completesMission` (an
+   objective can win the mission, as an activation site can). Saves made
+   during the old mission 2: `evaluateObjectives` gives a mission objective
+   that a save does not hold its initial state on the next command, so such a
+   save carries on under the new objective (tested).
+4. **Left column over the map** (`styles/gui.css`): `.adv-left.adv-info` keeps
+   `overflow-y: auto` with `scrollbar-width: none` (and no WebKit bar). The
+   line in the screenshot was a classic (Windows) scroll bar: the panels'
+   corner ornaments overflow the column by about 2 px, enough to show a
+   scroll bar whose gold thumb ran down the column's right edge.
+5. **Player on the left, in blue** (`ui/src/app/battleOrientation.ts`): when
+   the defender is human and the attacker is not, `BattleView.mirrored` and
+   `blueSide: 'defender'`. `BattleSceneController` gives the board container a
+   negative x scale about the frame's centre; count badges, structure labels
+   and floating words are turned upright; whole-field effects take the
+   screen direction; `local()` (pointer → board) and `projectCell` /
+   `siegeDebug` / `stackDebug` (board → page) use the same transform, so
+   cells, hover offsets, the melee side under the pointer and the rules'
+   facings are unchanged. Markers, badges and turn-order marks are blue for
+   `blueSide` (`tone-blue` / `tone-red`), the label colours follow, the
+   header shows the player's side first (left styling), the melee cursor's
+   angle turns with the board, and the battle result lists the player's side
+   first. Sieges of the player's towns are mirrored too (walls on the left).
+   Hot seat (two humans) and AI-only battles keep the attacker on the left.
+6. **Days to arrive** (`rules/systems/adventure.ts` `routeDays`: today =
+   day 1 with the remaining points, each later day a full `movementBudget`):
+   `adventureCursor` returns `days` for a destination not reached today, and
+   the map shows it as a small gold badge just right of the cursor
+   (`route-days`, following the pointer through a ref); the route line under
+   the map adds "· N days".
+
+Read-only test hooks: `__prSiege().mirrored`; `__prBattle()` positions and
+`mirrored` are as seen on screen.
+
+Tests added or changed: `packages/rules/test/routeDays.test.ts` (new, 2);
+`packages/ui/test/battleOrientation.test.ts` (new, 3); `cursors.test.ts`
+(mirrored sword, the day count for every far tile);
+`packages/campaign/test/threeBeacons.test.ts` (M02 won in town, ridge still
+gates the far side, an older save gains the new objective);
+`arcCampaigns.test.ts` (The Silent Oracle: data, maps, endings, the seven-
+mission journey; buildings read from the archetype's chains);
+`mapSites.test.ts` (77 heroes); `storyArt.test.ts` / `heroPortraits.test.ts`
+(the awaited Brief 18 art); `tests/e2e/owner115.spec.ts` (new, 4: M02 through
+the recruitment screen, no scroll rail with real scroll bars, a rival attacks
+— mirrored, blue, a click moves the stack to that cell —, the days badge);
+`round11.spec.ts` (the journal's "done early" step now from The Winter Oath);
+`round3.spec.ts` (The Silent Oracle from New Game); `frontend110.spec.ts`
+(seven campaigns, The Silent Oracle second).
+
+### Checks run (this container)
+
+Commands run on 2026-10-14 (cloud container, SwiftShader, two cores):
+
+- `npm run check`: boundary check passed, type-check clean, **64 files / 525
+  unit tests passed** (was 62 / 515).
+- `npm run build`: production client 1.1.5; no `C:\Users`, `C:/Users` or
+  `lazeb` string in `apps/client/dist`.
+- The Silent Oracle's headless journey (`arcCampaigns.test.ts`, tactical AI on
+  both sides): all seven missions won with carry-over — M1 day 2 (L1), M2 day
+  3 (L2), M3 day 6 (L4), M4 day 4 (L6), M5 day 5 (L7, Pyrgos taken, Melas
+  still in the field), M6 day 4 (L8), M7 day 3 (L9).
+- `node tools/campaign-sim/run.mjs --campaigns silent_oracle,three_beacons
+  --runs 20` (600 mission runs, 2.7 min): The Silent Oracle — Story 140/140
+  missions won (costliest battle median 0–15 %; six missions "too easy"),
+  Normal 139/140 (M5 lost once: Melas caught Alexios on day 3), Hard 136/140
+  (M5 16/20: Melas caught Alexios early; costliest battle per mission, median, 7–57 %). The Three
+  Beacons — every run won at every level; the new Mission 2 is won on day 2
+  (its optional Centaur Sentinels were the only fight). Both levels Story and
+  Normal in their bands; Hard 98 % over these two campaigns, above its band
+  (as before for the computer pilot). Computer-played measurements, not
+  playtests; values unchanged by this measurement.
+- Playwright against the dev server (one worker): `owner115` 4/4 passed.
+  `audit114`, `campaign`, `frontend110`, `gui110`, `round11`, `round3`,
+  `siege`: 55 passed, 2 skipped (the old-save tests, which need
+  `PR_OLD_SAVE` / `PR_OLD_SIEGE_SAVES`), 1 failed — `frontend110` › title hall
+  expected the footer "v1.1.5" from a dev server started at 1.1.4; after a
+  restart it passed. BAT-14 (the player defends a town, now mirrored) and the
+  Tactics siege passed. **The full suite was not re-run** this round.
+- Captures (cloud only, not in the repository): the left column at 1920 × 1080
+  with Windows-style scroll bars before and after (the rail gone); a rival
+  attacking Alexios in the open and besieging Westharbor (both mirrored); the
+  days badge; The Three Beacons' new Mission 2; The Silent Oracle on the
+  campaign screen and its first briefing (stand-in pictures).
+- No desktop build or installer this round (not asked; C: had about 1.5 GB
+  free after 1.1.4).
 
 ## App 1.1.4 — GUI audit fixes and the six-pantheon siege gates (2026-10-11)
 

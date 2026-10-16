@@ -1,0 +1,10 @@
+[
+  {
+    "id": "route-selection-ring",
+    "prompt": "Edit this asset precisely: preserve the gold circle's design, but REMOVE ALL cloudy background, haze, reflection or colored specks outside the ring and inside its hollow center. Both center and exterior must be completely transparent alpha zero. No glow. Clean single narrow gold ring centered with 12% transparent margin all sides. Top-down circle, square PNG. Only the ring itself is visible."
+  },
+  {
+    "id": "icon-recruit-all",
+    "prompt": "Edit this recruitment button emblem into a simple FACTION-NEUTRAL symbol: only THREE ROUND SHIELDS with THREE SHORT SPEARS behind them, bronze-gold borders and midnight-blue faces. Remove all human busts, helmets, faces, cloth and cultural emblems. Compact readable group, large central shield two smaller shields behind. Fit entire object including spear tips with generous 15% transparent margin on all four edges. Genuine transparent background, no text, no numbers. Same painted antique-gold style."
+  }
+]

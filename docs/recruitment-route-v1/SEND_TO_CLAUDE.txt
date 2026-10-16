@@ -1,0 +1,26 @@
+READY TO SEND TO CLAUDE CODE
+
+Implement the approved recruitment redesign and polished adventure-map route markers described in:
+C:\Users\lazeb\Desktop\blannder_models\recruitment-route-kit-2026-10-14\CLAUDE_HANDOFF.txt
+
+Work in:
+C:\Users\lazeb\Desktop\pantheon_realms
+
+The art delivery is a separate folder/project. Copy the supplied new assets into the game using the handoff's destination paths. Reuse the existing six faction backdrops, 84 creature forms and matching portraits; their exact sources and native sprite layout are included in the manifests.
+
+Crucially: save each hero's journey destination across day changes, selecting other heroes, opening screens, and save/load. On the next day the player must be able to press Continue journey (or the current continue-move shortcut) without reselecting the destination. Do not automatically move a hero at day start. Recalculate remaining paths through the existing rules and handle interruptions as specified.
+
+Apply the recruitment UI to all six pantheons. Show upgraded forms unlocked when their dwelling exists, otherwise locked. Keep the creature large and avoid scrolling in desktop recruitment/training panels. Recruit all must respect shared family pools, total resources and army capacity atomically.
+
+Read the full handoff before coding. Complete its acceptance checks and return screenshots of the implemented screens plus test results.
+
+CONTENTS
+- CLAUDE_HANDOFF.txt: complete integration instructions and acceptance checks.
+- index.html: standalone local art review gallery; open directly.
+- new-assets/: 9 new transparent PNGs.
+- reference/: 3 approved concept screens.
+- reuse/: copied existing backgrounds, UI materials, 84 creature portraits, 84 source idle strips and sidecars.
+- asset-manifest.json / reuse-map.json / creature-map.json: exact paths and metadata.
+- generation-prompts.json / generation-refinements.json: built-in generation prompts.
+- validation.json / browser-validation.json: delivery checks (not gameplay tests).
+

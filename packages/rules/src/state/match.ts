@@ -130,6 +130,10 @@ export interface HeroAiState {
   /** Circular region (wandering monsters). */
   regionCenter?: HexCoord;
   regionRadius?: number;
+  /** Campaign v2: the patrol's home camp; taking it makes the patrol withdraw. */
+  homeSiteId?: SiteId;
+  /** Campaign v2: the force waits where it stands until this mission flag is set (an announced counterattack). */
+  dormantUntilFlag?: string;
 }
 
 export interface HeroState {
@@ -223,6 +227,8 @@ export interface SiteState {
   lastCollectedWeek?: number;
   /** Player whose hero cleared the guard (battle, or neutrals that joined or fled). */
   clearedBy?: PlayerId;
+  /** One-time map event: the option index chosen (absent before it is decided, and in saves from before 2026-10-15). */
+  chosenOption?: number;
 }
 
 export interface WorldState {
@@ -266,6 +272,16 @@ export interface MissionState {
   revealedSiteIds: SiteId[];
   /** Story scenes already played, in order (each plays once). */
   scenesPlayed?: string[];
+  /** Announced deadlines (campaign v2): when each started and ends (absent on older saves). */
+  timers?: Record<string, MissionTimerState>;
+}
+
+/** A mission timer's saved state: the trigger day is kept, so the deadline survives saves. */
+export interface MissionTimerState {
+  status: 'waiting' | 'running' | 'met' | 'expired';
+  startedDay?: number;
+  deadlineDay?: number;
+  resolvedDay?: number;
 }
 
 /**
@@ -394,7 +410,20 @@ export interface BattleSideEffects {
   spellPowerBonus?: Record<string, number>;
 }
 
-export type BattleStatusKind = 'defense_bonus' | 'attack_bonus' | 'max_damage_roll' | 'ranged_mitigation' | 'speed_bonus' | 'melee_mitigation' | 'min_damage_roll';
+export type BattleStatusKind =
+  | 'defense_bonus'
+  | 'attack_bonus'
+  | 'max_damage_roll'
+  | 'ranged_mitigation'
+  | 'speed_bonus'
+  | 'melee_mitigation'
+  | 'min_damage_roll'
+  /** Sheltering Wings: the next direct creature-damage event is reduced by `amount` % (then removed). */
+  | 'damage_ward'
+  /** Distract: the next otherwise-legal retaliation is suppressed (then removed). */
+  | 'retaliation_suppressed'
+  /** Reed Guard: immune to one forced pull (then removed). */
+  | 'pull_immunity';
 
 export interface BattleStatusState {
   sourceId: string;
@@ -405,6 +434,12 @@ export interface BattleStatusState {
   denominator: number;
   /** Expires at the start of this round. */
   expiresAtRound: number;
+  /** Also expires at the start of this stack's next scheduled activation (neutral abilities, 2026-10-15). */
+  expiresOnActivationOf?: BattleStackId;
+  /** Applied by the opposing side (a curse, a weakening spell); absent on older saves = derived from the effect. */
+  hostile?: boolean;
+  /** Application order within the battle (earliest first; absent on older saves = 0). */
+  seq?: number;
 }
 
 export interface BattleStackState {
@@ -429,6 +464,8 @@ export interface BattleStackState {
   killedByEnemy: number;
   /** In its alternate Shapeshift aspect. */
   aspect?: boolean;
+  /** Uses of once-per-battle stack abilities by ability ID (absent = none used). */
+  abilityUses?: Record<string, number>;
 }
 
 export interface BattleEncounterRef {
@@ -499,6 +536,8 @@ export interface BattleState {
   activeIsBonus: boolean;
   /** A free Shapeshift was already used in the current activation. */
   freeShiftUsed?: boolean;
+  /** Statuses applied so far (application order for Devour Dread; absent on older saves). */
+  statusSeq?: number;
   status: 'active' | 'ended';
   /** Encounter-specific seed label for the tactical layout stream (not the combat stream). */
   layoutSeed: number;

@@ -151,7 +151,7 @@ export function commitBattleIntervention(tx: Tx, interventionId: string, targetI
     case 'battle_status': {
       const kind = e.stat === 'attack' ? 'attack_bonus' : e.stat === 'defense' ? 'defense_bonus' : 'speed_bonus';
       for (const s of sideStacks(battle, side)) {
-        applyStatus(s, { sourceId: `intervention:${def.id}`, label: def.name, kind, amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+        applyStatus(s, { sourceId: `intervention:${def.id}`, label: def.name, kind, amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: side });
       }
       break;
     }

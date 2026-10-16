@@ -40,9 +40,12 @@ const RELATIVE_EXCEPTIONS = [
   { from: 'packages/ui/src/assets/guiArt.ts', to: 'assets-runtime/ui-v1.1.0/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/frontend-v1.1.0/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/frontend-kit-v1.1.0/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/campaign-v2/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/battle-fx-neutral-upgrades-v1/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/encounters-v1.1.0/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/adventure-gui-v1.1.0/manifest.json' },
   { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/hero-portraits-complete/manifest.json' },
+  { from: 'packages/ui/src/assets/manifest.ts', to: 'assets-runtime/recruitment-route-v1/manifest.json' },
   { from: 'packages/ui/src/audio/gameAudio.ts', to: 'assets-runtime/audio/manifest.json' },
   { from: 'packages/ui/src/assets/cursors.ts', to: 'assets-runtime/ui/cursors/manifest.json' },
 ];

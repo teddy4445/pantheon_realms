@@ -1,0 +1,31 @@
+PANTHEON REALMS — CAMPAIGN EXPANSION KIT
+Prepared 15 October 2026
+
+Open index.html to review the new artwork, animated creatures and example screens.
+Read CLAUDE_HANDOFF.html or CLAUDE_HANDOFF.txt for the complete implementation instructions.
+
+Included:
+- 31 new native PNGs: 6 portraits, 7 animation atlases, 10 map-site images, 6 icons and 2 backgrounds.
+- Six neutral species: Pegasus, Root-Runner, Serpopard, Baku, Afanc and Ahuitzotl.
+- 144 core animation poses + 11 usable Pegasus flight poses. Victory/ability reuse is explicit.
+- 37 full mission designs preserving story beats from all 45 existing chapters.
+- Chapter prerequisites, 13 screen specifications, six proposed creature rule/stat specifications.
+- 150 existing reference assets, including all 45 mission paintings and the existing cast.
+- Source hashes, measured animation regions, browser preview checks and generation provenance.
+
+These are assets and integration specifications. The game itself has not been changed.
+The two backgrounds are native 1672 x 941, not upscaled. Animation timing/scale, candidate creature statistics and campaign pacing still require in-game testing.
+
+PROMPT TO PASTE INTO CLAUDE CODE
+
+Please implement the campaign expansion using this complete package:
+C:\Users\lazeb\Desktop\blannder_models\campaign-expansion-kit-2026-10-15
+
+The game project is a different directory:
+C:\Users\lazeb\Desktop\pantheon_realms
+
+Start by reading CLAUDE_HANDOFF.txt, asset-manifest.json, animation-manifest.json, design/mission-content.json, design/campaign-graph.json, design/neutral-content.json and design/screen-specs.json inside the package. Open index.html for the visual and animation reference. Copy the accepted assets into the game project as instructed; do not leave runtime references to the source project. Reuse the existing assets through their current IDs using reuse-map.json.
+
+Implement all 37 redesigned missions and their nonlinear map layouts, chapter-order choices and persistent story consequences. Preserve the existing heroes and legacy saves. Human-controlled campaign battles must be manual-only, enforced in the actual command/rules path. Add the six single-form neutral creatures and their hiring sites, update the chronicle, briefings, journal, choices, recruitment, encyclopedia, tactical UI, results and editor. Preserve per-hero routes between days and save/load. The HTML preview is a reference, not a replacement game interface.
+
+Follow the handoff's acceptance checks, test both orders of parallel chapters, and report what was actually implemented and tested. Do not use the superseded images under reference/iterations. Do not import a generated atlas as a uniform strip; use the supplied measured frame regions through a compatible renderer adapter.

@@ -1,0 +1,811 @@
+{
+  "schema": "pantheon-campaign-v2-delivery-1",
+  "assets": [
+    {
+      "id": "campaignv2.portrait.pegasus",
+      "kind": "portrait",
+      "deliveryFile": "new-assets/portrait-pegasus.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-pegasus.png",
+      "proposedSourceFile": "assets-source/campaign-v2/portrait-pegasus.png",
+      "proposedRuntimeFile": "campaign-v2/portrait-pegasus.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "bytes": 3080194,
+      "sha256": "195abffb356f5dae8836e5d6e56749e454cbd8f9a149a3a296a526f9ce57bd7f"
+    },
+    {
+      "id": "campaignv2.atlas.pegasus.v2",
+      "kind": "animation-atlas",
+      "deliveryFile": "new-assets/atlas-pegasus-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-pegasus-v2.png",
+      "proposedSourceFile": "assets-source/campaign-v2/atlas-pegasus-v2.png",
+      "proposedRuntimeFile": "campaign-v2/atlas-pegasus-v2.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.469287,
+      "visibleBounds": [
+        31,
+        56,
+        1008,
+        1465
+      ],
+      "bytes": 2307419,
+      "sha256": "ac15731f17c1ae5f24019bb633fbbfa160dfad267e89c26351c8c3fd4f73809a"
+    },
+    {
+      "id": "campaignv2.site.pegasus",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-pegasus.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-pegasus.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-pegasus.png",
+      "proposedRuntimeFile": "campaign-v2/site-pegasus.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.498586,
+      "visibleBounds": [
+        21,
+        193,
+        1232,
+        1133
+      ],
+      "bytes": 2241185,
+      "sha256": "d00e9409e91b7c4815f0bb067f9066275f47499f8609819fb870da129538a10b"
+    },
+    {
+      "id": "campaignv2.portrait.root_runner",
+      "kind": "portrait",
+      "deliveryFile": "new-assets/portrait-root_runner.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-root_runner.png",
+      "proposedSourceFile": "assets-source/campaign-v2/portrait-root_runner.png",
+      "proposedRuntimeFile": "campaign-v2/portrait-root_runner.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "bytes": 3150484,
+      "sha256": "039e8798d08aa2394260d1a1703235d58ef959104ad4c43b7cb420bf588e9290"
+    },
+    {
+      "id": "campaignv2.atlas.root_runner.v2",
+      "kind": "animation-atlas",
+      "deliveryFile": "new-assets/atlas-root_runner-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-root_runner-v2.png",
+      "proposedSourceFile": "assets-source/campaign-v2/atlas-root_runner-v2.png",
+      "proposedRuntimeFile": "campaign-v2/atlas-root_runner-v2.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.585437,
+      "visibleBounds": [
+        47,
+        90,
+        984,
+        1490
+      ],
+      "bytes": 2189023,
+      "sha256": "07236edf5dbda24fd24bae846d588132abe1bff5985e5dcc8dd1244cb2cc248f"
+    },
+    {
+      "id": "campaignv2.site.root_runner",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-root_runner.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-root_runner.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-root_runner.png",
+      "proposedRuntimeFile": "campaign-v2/site-root_runner.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.383126,
+      "visibleBounds": [
+        27,
+        74,
+        1226,
+        1209
+      ],
+      "bytes": 2510987,
+      "sha256": "bf1748f6e6680e3e56ba53fc1abed1e36eca9cf138629e0dd635b2bcd600a460"
+    },
+    {
+      "id": "campaignv2.portrait.serpopard",
+      "kind": "portrait",
+      "deliveryFile": "new-assets/portrait-serpopard.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-serpopard.png",
+      "proposedSourceFile": "assets-source/campaign-v2/portrait-serpopard.png",
+      "proposedRuntimeFile": "campaign-v2/portrait-serpopard.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "bytes": 2797465,
+      "sha256": "ea37df50c70fedd80c3e639d9580a96a690a776323795eb29198acd6b62d1c9e"
+    },
+    {
+      "id": "campaignv2.atlas.serpopard.v3",
+      "kind": "animation-atlas",
+      "deliveryFile": "new-assets/atlas-serpopard-v3.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-serpopard-v3.png",
+      "proposedSourceFile": "assets-source/campaign-v2/atlas-serpopard-v3.png",
+      "proposedRuntimeFile": "campaign-v2/atlas-serpopard-v3.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.65859,
+      "visibleBounds": [
+        30,
+        59,
+        1000,
+        1468
+      ],
+      "bytes": 2137354,
+      "sha256": "2610332e40cc751f97bbf64d049b04a62ebffb1ce4d256efcd68a2583e069abd"
+    },
+    {
+      "id": "campaignv2.site.serpopard",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-serpopard.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-serpopard.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-serpopard.png",
+      "proposedRuntimeFile": "campaign-v2/site-serpopard.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.421607,
+      "visibleBounds": [
+        23,
+        100,
+        1228,
+        1159
+      ],
+      "bytes": 2377038,
+      "sha256": "d92247bd05ac100c93ae9721440dbe289da8aca79baa05d1934550ef56e101a8"
+    },
+    {
+      "id": "campaignv2.portrait.baku",
+      "kind": "portrait",
+      "deliveryFile": "new-assets/portrait-baku.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-baku.png",
+      "proposedSourceFile": "assets-source/campaign-v2/portrait-baku.png",
+      "proposedRuntimeFile": "campaign-v2/portrait-baku.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "bytes": 3039361,
+      "sha256": "090222c2fd10aca1d37ca8af4ab08190c3fc50047c90857b922656d64f5dc099"
+    },
+    {
+      "id": "campaignv2.atlas.baku.v2",
+      "kind": "animation-atlas",
+      "deliveryFile": "new-assets/atlas-baku-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-baku-v2.png",
+      "proposedSourceFile": "assets-source/campaign-v2/atlas-baku-v2.png",
+      "proposedRuntimeFile": "campaign-v2/atlas-baku-v2.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.700232,
+      "visibleBounds": [
+        45,
+        105,
+        988,
+        1466
+      ],
+      "bytes": 2077572,
+      "sha256": "c67a910bccea4f2987b617c0dfb72900607ee9576e6270a9e876543f68a61401"
+    },
+    {
+      "id": "campaignv2.site.baku",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-baku.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-baku.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-baku.png",
+      "proposedRuntimeFile": "campaign-v2/site-baku.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.359172,
+      "visibleBounds": [
+        36,
+        29,
+        1236,
+        1210
+      ],
+      "bytes": 2728767,
+      "sha256": "f8b78ced36d1f392835a41302df5bb32f17f09ebc7cbe46e27fd8f6a9ff81c55"
+    },
+    {
+      "id": "campaignv2.portrait.afanc",
+      "kind": "portrait",
+      "deliveryFile": "new-assets/portrait-afanc.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-afanc.png",
+      "proposedSourceFile": "assets-source/campaign-v2/portrait-afanc.png",
+      "proposedRuntimeFile": "campaign-v2/portrait-afanc.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "bytes": 3236995,
+      "sha256": "cc6a6c72dc3c2cacd0c003c29de445d9158712dff0d3b4df9a2c05efaad23585"
+    },
+    {
+      "id": "campaignv2.atlas.afanc.v2",
+      "kind": "animation-atlas",
+      "deliveryFile": "new-assets/atlas-afanc-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-afanc-v2.png",
+      "proposedSourceFile": "assets-source/campaign-v2/atlas-afanc-v2.png",
+      "proposedRuntimeFile": "campaign-v2/atlas-afanc-v2.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.699107,
+      "visibleBounds": [
+        33,
+        110,
+        1001,
+        1437
+      ],
+      "bytes": 2091234,
+      "sha256": "09030a7774563180fd0179a96fa8139c0cc66ac949b1a512690b403967301125"
+    },
+    {
+      "id": "campaignv2.site.afanc",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-afanc.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-afanc.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-afanc.png",
+      "proposedRuntimeFile": "campaign-v2/site-afanc.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.529308,
+      "visibleBounds": [
+        20,
+        252,
+        1240,
+        1057
+      ],
+      "bytes": 1867492,
+      "sha256": "5d508ddc928c473c27b384a36d9c4947d460898ae2d1603f3034b9e14e1be0ea"
+    },
+    {
+      "id": "campaignv2.portrait.ahuitzotl",
+      "kind": "portrait",
+      "deliveryFile": "new-assets/portrait-ahuitzotl.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-ahuitzotl.png",
+      "proposedSourceFile": "assets-source/campaign-v2/portrait-ahuitzotl.png",
+      "proposedRuntimeFile": "campaign-v2/portrait-ahuitzotl.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "bytes": 3019507,
+      "sha256": "ee3b0126d871662fa0b3e07d27d4dc8342931ac33c1985fcd2ab80a36d02ddca"
+    },
+    {
+      "id": "campaignv2.atlas.ahuitzotl.v2",
+      "kind": "animation-atlas",
+      "deliveryFile": "new-assets/atlas-ahuitzotl-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-ahuitzotl-v2.png",
+      "proposedSourceFile": "assets-source/campaign-v2/atlas-ahuitzotl-v2.png",
+      "proposedRuntimeFile": "campaign-v2/atlas-ahuitzotl-v2.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentFraction": 0.700646,
+      "visibleBounds": [
+        39,
+        142,
+        989,
+        1485
+      ],
+      "bytes": 1993905,
+      "sha256": "ca19e9253bede4d63668dc7378b511b9b8b69105cdc7850d4c0a79f2f3619ffc"
+    },
+    {
+      "id": "campaignv2.site.ahuitzotl",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-ahuitzotl.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-ahuitzotl.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-ahuitzotl.png",
+      "proposedRuntimeFile": "campaign-v2/site-ahuitzotl.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.429213,
+      "visibleBounds": [
+        44,
+        103,
+        1216,
+        1158
+      ],
+      "bytes": 2390304,
+      "sha256": "b2d42e93f0b7ac601298ce7f465230bfe5a82b93a2a1992bec9e5d1e0e12c815"
+    },
+    {
+      "id": "campaignv2.atlas.pegasus.flight",
+      "kind": "animation-atlas",
+      "deliveryFile": "new-assets/atlas-pegasus-flight.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-pegasus-flight.png",
+      "proposedSourceFile": "assets-source/campaign-v2/atlas-pegasus-flight.png",
+      "proposedRuntimeFile": "campaign-v2/atlas-pegasus-flight.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.478311,
+      "visibleBounds": [
+        26,
+        10,
+        1415,
+        1042
+      ],
+      "bytes": 1819402,
+      "sha256": "77ddf79a476bfa5b6338e72d9a1d0343593cc3f8ee445c159d83d79293ebce7c"
+    },
+    {
+      "id": "campaignv2.site.sluice.closed",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-sluice-closed.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-sluice-closed.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-sluice-closed.png",
+      "proposedRuntimeFile": "campaign-v2/site-sluice-closed.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.531176,
+      "visibleBounds": [
+        33,
+        163,
+        1224,
+        1101
+      ],
+      "bytes": 1915382,
+      "sha256": "dc5dfb5a355f9f48cabcaf4a03d7ce5f7d65306a23e2501a4921a0560ac1c8f8"
+    },
+    {
+      "id": "campaignv2.site.sluice.open",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-sluice-open.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-sluice-open.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-sluice-open.png",
+      "proposedRuntimeFile": "campaign-v2/site-sluice-open.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.529314,
+      "visibleBounds": [
+        31,
+        161,
+        1225,
+        1106
+      ],
+      "bytes": 1834242,
+      "sha256": "3cf40dd5e8cc82feef4400c8de05b42fcaf1c489f0d3d78d8e45f8c9c3d1489e"
+    },
+    {
+      "id": "campaignv2.site.ferry",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-ferry.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-ferry.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-ferry.png",
+      "proposedRuntimeFile": "campaign-v2/site-ferry.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.561334,
+      "visibleBounds": [
+        56,
+        243,
+        1206,
+        1072
+      ],
+      "bytes": 1741412,
+      "sha256": "5297ae657e58034224291a3e08e23c213190de7a1f85e4822ff8a04537b23825"
+    },
+    {
+      "id": "campaignv2.site.supply.depot",
+      "kind": "map-site",
+      "deliveryFile": "new-assets/site-supply-depot.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/site-supply-depot.png",
+      "proposedSourceFile": "assets-source/campaign-v2/site-supply-depot.png",
+      "proposedRuntimeFile": "campaign-v2/site-supply-depot.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.505545,
+      "visibleBounds": [
+        31,
+        143,
+        1233,
+        1130
+      ],
+      "bytes": 1944918,
+      "sha256": "d66556333b4a1c2552b5d3cd795653edf703f9c95b3cac4e761f35f6f1f7bf9a"
+    },
+    {
+      "id": "campaignv2.icon.evidence",
+      "kind": "icon",
+      "deliveryFile": "new-assets/icon-evidence.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/icon-evidence.png",
+      "proposedSourceFile": "assets-source/campaign-v2/icon-evidence.png",
+      "proposedRuntimeFile": "campaign-v2/icon-evidence.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.481654,
+      "visibleBounds": [
+        103,
+        106,
+        1182,
+        1162
+      ],
+      "bytes": 1917698,
+      "sha256": "40de7e0c08acb7c153b0a24f739b42f0b1da080501f8e9681262bfa47e3f79a5"
+    },
+    {
+      "id": "campaignv2.icon.pact",
+      "kind": "icon",
+      "deliveryFile": "new-assets/icon-pact.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/icon-pact.png",
+      "proposedSourceFile": "assets-source/campaign-v2/icon-pact.png",
+      "proposedRuntimeFile": "campaign-v2/icon-pact.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.67488,
+      "visibleBounds": [
+        54,
+        161,
+        1200,
+        1140
+      ],
+      "bytes": 1186038,
+      "sha256": "7dca030ac90c543fcd25250e1efab114a2668d7fafbf824706b9daf4dabe838e"
+    },
+    {
+      "id": "campaignv2.icon.supply",
+      "kind": "icon",
+      "deliveryFile": "new-assets/icon-supply.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/icon-supply.png",
+      "proposedSourceFile": "assets-source/campaign-v2/icon-supply.png",
+      "proposedRuntimeFile": "campaign-v2/icon-supply.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.487701,
+      "visibleBounds": [
+        105,
+        34,
+        1149,
+        1221
+      ],
+      "bytes": 1793218,
+      "sha256": "90173586d331a5bf7976139534c5964d037cc8948649e8b46dc241b8f239ff26"
+    },
+    {
+      "id": "campaignv2.icon.evacuation",
+      "kind": "icon",
+      "deliveryFile": "new-assets/icon-evacuation.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/icon-evacuation.png",
+      "proposedSourceFile": "assets-source/campaign-v2/icon-evacuation.png",
+      "proposedRuntimeFile": "campaign-v2/icon-evacuation.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.596127,
+      "visibleBounds": [
+        209,
+        88,
+        1168,
+        1104
+      ],
+      "bytes": 1295248,
+      "sha256": "0a73154b5b59bea303512d042b55f090502b6fc3d72e7b4319c2555ccda6bcdd"
+    },
+    {
+      "id": "campaignv2.icon.branch",
+      "kind": "icon",
+      "deliveryFile": "new-assets/icon-branch.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/icon-branch.png",
+      "proposedSourceFile": "assets-source/campaign-v2/icon-branch.png",
+      "proposedRuntimeFile": "campaign-v2/icon-branch.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.719838,
+      "visibleBounds": [
+        109,
+        162,
+        1145,
+        1120
+      ],
+      "bytes": 916988,
+      "sha256": "d3856430153b6d27bfea88fb4b0a075edea3958f60d8e3f650a3b7a571bc75d9"
+    },
+    {
+      "id": "campaignv2.icon.manual.battle.v2",
+      "kind": "icon",
+      "deliveryFile": "new-assets/icon-manual-battle-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/icon-manual-battle-v2.png",
+      "proposedSourceFile": "assets-source/campaign-v2/icon-manual-battle-v2.png",
+      "proposedRuntimeFile": "campaign-v2/icon-manual-battle-v2.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.83955,
+      "visibleBounds": [
+        324,
+        134,
+        933,
+        1114
+      ],
+      "bytes": 586992,
+      "sha256": "225690bfbbe438e2c2c71dcdbbfee2362dd0f20bfd5b53eef605943194db7306"
+    },
+    {
+      "id": "campaignv2.background.campaign.chronicle",
+      "kind": "background",
+      "deliveryFile": "new-assets/background-campaign-chronicle.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/background-campaign-chronicle.png",
+      "proposedSourceFile": "assets-source/campaign-v2/background-campaign-chronicle.png",
+      "proposedRuntimeFile": "campaign-v2/background-campaign-chronicle.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "bytes": 2727239,
+      "sha256": "2550a01780b220e9d190b69fdd491c129f986bac3193811bf024e55c206b4b11"
+    },
+    {
+      "id": "campaignv2.background.neutral.recruitment",
+      "kind": "background",
+      "deliveryFile": "new-assets/background-neutral-recruitment.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/background-neutral-recruitment.png",
+      "proposedSourceFile": "assets-source/campaign-v2/background-neutral-recruitment.png",
+      "proposedRuntimeFile": "campaign-v2/background-neutral-recruitment.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "bytes": 2939320,
+      "sha256": "16222412c155331fc8471c837e1f8d68f5b7a01650433d7a1fc850b46091dab1"
+    }
+  ]
+}

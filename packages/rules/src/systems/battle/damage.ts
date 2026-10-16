@@ -25,6 +25,7 @@ import {
 } from './common';
 import { stackDistance } from './geometry';
 import { wallPenaltyApplies } from './siege';
+import { previewWarded, reachFactor } from './neutralAbilities';
 
 export { applyDamage, killsFrom } from './common';
 
@@ -34,6 +35,8 @@ export interface StrikeContext {
   readonly mode: StrikeMode;
   /** Traversed hexes on the approach (melee only). */
   readonly chargeHexes: number;
+  /** A Long Reach strike from two hexes away (its damage factor applies). */
+  readonly reach?: boolean;
 }
 
 export interface StrikeFactors {
@@ -120,6 +123,17 @@ export function strikeFactors(
     multipliers.push([combat.meleePenaltyFactor.numerator, combat.meleePenaltyFactor.denominator]);
     notes.push('Shooter in melee (x0.5)');
   }
+  if (ctx.reach && ctx.mode !== 'shot') {
+    const [n, d] = reachFactor(catalog, attacker.creatureId);
+    if (n !== d) {
+      multipliers.push([n, d]);
+      notes.push(`Long Reach (x${n}/${d})`);
+    }
+  }
+  if (target.statuses.some((s) => s.kind === 'damage_ward')) {
+    const w = target.statuses.find((s) => s.kind === 'damage_ward')!;
+    notes.push(`${w.label}: −${w.amount}% from this blow`);
+  }
   if (ctx.mode !== 'shot') {
     for (const s of target.statuses) {
       if (s.kind === 'melee_mitigation') {
@@ -181,9 +195,10 @@ export function previewStrike(
   ctx: StrikeContext,
 ): DamagePreview {
   const f = strikeFactors(catalog, battle, attacker, target, ctx);
-  const min = damageFor(f, f.bMin, false);
-  const max = damageFor(f, f.bMax, false);
-  const luckMax = f.luckChance ? damageFor(f, f.bMax, true) : null;
+  // Sheltering Wings takes its share after the blow is rolled (the reduction rounded down).
+  const min = previewWarded(target, damageFor(f, f.bMin, false));
+  const max = previewWarded(target, damageFor(f, f.bMax, false));
+  const luckMax = f.luckChance ? previewWarded(target, damageFor(f, f.bMax, true)) : null;
   return {
     min,
     max,

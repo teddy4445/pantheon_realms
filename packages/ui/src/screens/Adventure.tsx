@@ -13,6 +13,8 @@ import {
   missionSite,
   parseHexKey,
   quoteMovement,
+  routeDays,
+  routeStepDays,
   reachableTiles,
   siteAt,
   visibleCells,
@@ -42,9 +44,9 @@ import {
   isTownTile,
   axialDistance,
 } from '@pr/rules';
-import { biomeTerrainCss, miracleLook, spellLook } from '@pr/presentation/core';
+import { biomeTerrainCss, miracleLook, siteSpriteCandidates, spellLook } from '@pr/presentation/core';
 import type { AdventureSceneController, AdventureView } from '@pr/presentation';
-import { RANDOM_TEMPLATE_ID } from '@pr/session';
+import { RANDOM_TEMPLATE_ID, type JourneyIntent } from '@pr/session';
 import { useStore } from '../app/context';
 import { adventureCursor } from '../app/cursorContext';
 import { cursorCss } from '../assets/cursors';
@@ -53,14 +55,17 @@ import { weeklyEventOf } from '../app/moments';
 import type { AppStore } from '../app/store';
 import { adventurePlaybackFactor, reducedMotion } from '../app/preferences';
 import { Burst } from '../components/burst';
-import { matches } from '../app/keys';
+import { keyFor, keyLabel, matches } from '../app/keys';
+import { routeChanged, routeSignature } from '../app/journeyRoute';
 import { SceneViewport, inspectors, projectors, toPage, type SceneFactory } from '../scene/SceneHost';
 import { Button, Chip, Bar, Panel } from '../components/kit';
 import { HeroPortrait, MarkerIcon, siteMarkerAsset, siteMarkerTint } from '../components/art';
 import { ArmyPreview, ArmyStrip, ResourceBar } from '../components/game';
 import { Icon } from '../assets/icons';
 import { resolveAsset } from '../assets/manifest';
+import { GENERIC_QUEST_MARKER, portalBlockedText, questMarkerIcon, questMarkerSites, siteStatus, sluiceOperatedText } from '../app/siteInfo';
 import { preloadReadingSkins } from '../assets/guiArt';
+import { DeadlineTracker } from '../components/missionLedger';
 import {
   dailyIncome,
   dayLabel,
@@ -130,7 +135,7 @@ function buildView(
   state: MatchState,
   playerId: string,
   selected: HeroState | null,
-  target: HexCoord | null,
+  journey: JourneyIntent | null,
   showReach: boolean,
   grid: AdventureView['grid'],
   auras: readonly { matchId: string; heroId: string; id: string; untilDay: number }[] = [],
@@ -140,8 +145,11 @@ function buildView(
   const visible = visibleCells(catalog, state, playerId);
   const map = state.world.map;
   const mission = scenarioMission(catalog, state);
+  // Quest markers over the sites of open objectives (the journal's state): a campaign objective's own icon, else the generic one.
+  const quests = questMarkerSites(catalog, state, playerId);
   const sites = (mission?.sites ?? []).map((def) => {
     const st = state.world.sites[def.id];
+    const quest = quests.get(def.id);
     const idx = cellIndex(map, def.coord);
     const shown = explored[idx] === 1 || state.mission.revealedSiteIds.includes(def.id);
     let owner = st?.owner ?? null;
@@ -163,6 +171,10 @@ function buildView(
       // Key gates show their barrier only to empires without the key.
       open: def.kind.type === 'key_gate' ? (state.players[playerId]?.keys ?? []).includes(def.kind.color) : !!st?.open,
       claimed: !!st?.claimed,
+      // The site's own picture first (its art, a sluice's state, a ferry landing, a neutral hiring site), from data only.
+      sprites: siteSpriteCandidates(def, st),
+      // A campaign icon not delivered falls back to the generic quest marker (the ID names the picture drawn).
+      quest: quest ? ((id) => ({ id, url: resolveAsset(id).url }))(resolveAsset(quest.id).url ? quest.id : GENERIC_QUEST_MARKER) : null,
       ...(def.kind.type === 'key_gate' || def.kind.type === 'key_tent' || def.kind.type === 'skill_trainer' ? { tint: def.kind.type === 'skill_trainer' ? '#b5423a' : KEY_COLOR_HEX[def.kind.color] } : {}),
     };
   });
@@ -189,9 +201,13 @@ function buildView(
   let reachable: HexCoord[] | null = null;
   if (selected && showReach) reachable = [...reachableTiles(catalog, state, selected.id).keys()].map(parseHexKey);
   let path: AdventureView['path'] = null;
-  if (selected && target) {
-    const q = quoteMovement(catalog, state, selected.id, target);
-    if (q.reachable) path = { steps: q.path, stopIndex: q.stopIndex, encounter: q.endsInEncounter };
+  if (selected && journey) {
+    // The planned journey, quoted again from where the hero stands now (the destination is the plan; the tiles are not).
+    const q = quoteMovement(catalog, state, selected.id, journey.target);
+    if (q.reachable && q.path.length > 0) {
+      const days = routeStepDays(catalog, state, selected.id, q);
+      path = { steps: q.path, stopIndex: q.stopIndex, encounter: q.endsInEncounter, days, arrivalDay: days ? days[days.length - 1]! : null, destination: q.path[q.path.length - 1]! };
+    } else if (!q.reachable) path = { steps: [], stopIndex: -1, encounter: false, blocked: true, destination: journey.target };
   }
   return {
     map,
@@ -348,6 +364,9 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
   const other = Object.values(state.heroes).find((h) => h.status === 'active' && hexEquals(h.position, c));
   const vis = visibleCells(catalog, state, playerId).has(cellIndex(state.world.map, c));
   const quote = hero && !hexEquals(hero.position, c) ? quoteMovement(catalog, state, hero.id, c) : null;
+  // Campaign v2 sites (sluice, supply depot, ferry landing, neutral hiring site): their known state and what a hero can do there.
+  const v2 = site ? siteStatus(catalog, state, playerId, site.def.id, hero?.id ?? null) : null;
+  const quest = site ? questMarkerSites(catalog, state, playerId).get(site.def.id) : undefined;
   return (
     <div className="tile-info">
       <div className="tile-info__head">
@@ -366,6 +385,11 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
           <MarkerIcon assetId={other.ownerId === playerId ? 'icon.marker.hero' : 'icon.marker.enemy-hero'} />
         ) : null}
         <div className="tile-info__title">{site ? site.def.name : terrainLabel(state, c)}</div>
+        {quest ? (
+          <span className="tile-info__quest" title={quest.label} data-testid="tile-quest-marker" data-marker={quest.id}>
+            <MarkerIcon assetId={resolveAsset(quest.id).url ? quest.id : GENERIC_QUEST_MARKER} label={quest.label} size="1.8rem" />
+          </span>
+        ) : null}
       </div>
       {site || !vis ? (
         <div className="dim small">
@@ -403,7 +427,7 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
       ) : site?.def.guard ? (
         <div className="small success">Guards defeated</div>
       ) : null}
-      {site?.def.kind.type === 'creature_camp' ? (
+      {site?.def.kind.type === 'creature_camp' && !v2 ? (
         <div className="small">
           {(() => {
             const cr = catalog.creatures[site.def.kind.creatureId];
@@ -426,10 +450,22 @@ function TileInfo({ store, state, c, hero }: { store: AppStore; state: MatchStat
         </div>
       ) : null}
       {site?.def.kind.type === 'activation' ? <div className="small">{site.state.activated ? 'Restored' : 'Not yet restored'}</div> : null}
-      {site?.def.kind.type === 'pickup' ? <div className="small">{site.state.claimed ? 'Already collected' : 'Uncollected'}</div> : null}
+      {site?.def.kind.type === 'pickup' && !v2 ? <div className="small">{site.state.claimed ? 'Already collected' : 'Uncollected'}</div> : null}
       {site?.def.kind.type === 'gate' ? <div className="small">{site.state.open ? 'Open' : 'Sealed'}</div> : null}
       <NewSiteInfo site={site} hero={hero} />
-      {site?.def.kind.type === 'portal' ? (
+      {v2 ? (
+        <div className="small" data-testid="site-status">
+          <div className={v2.locked && !v2.refused ? 'warn' : undefined} data-testid="site-state">
+            {v2.state}
+          </div>
+          {v2.action ? (
+            <div className={v2.refused ? 'warn' : undefined} data-testid="site-action">
+              {v2.action}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+      {site?.def.kind.type === 'portal' && !v2 ? (
         <div className="small" data-testid="portal-info">
           Stop on it to step out of its twin at once, at no movement cost. Blocked while a hero stands on the twin. {site.state.visitedBy.includes(playerId) ? 'You have used it.' : 'Its far side is unknown until you go through.'}
         </div>
@@ -523,6 +559,75 @@ function costText(c: Partial<Record<string, number | undefined>>): string {
 }
 
 // ---------------------------------------------------------------------------
+// Planned journey (the bar over the map's bottom edge)
+// ---------------------------------------------------------------------------
+
+/** "Arrives today / tomorrow / in N turns", counting today as the first turn (routeDays). */
+export function arrivalText(days: number | null): string {
+  if (days == null) return 'Arrival unknown';
+  if (days <= 1) return 'Arrives today';
+  if (days === 2) return 'Arrives tomorrow';
+  return `Arrives in ${days} turns`;
+}
+
+function JourneyBar({
+  heroName,
+  status,
+  quote,
+  days,
+  rerouted,
+  shortcut,
+  busy,
+  onContinue,
+  onCancel,
+}: {
+  heroName: string;
+  status: JourneyIntent['status'];
+  quote: ReturnType<typeof quoteMovement>;
+  days: number | null;
+  rerouted: boolean;
+  shortcut: string;
+  busy: boolean;
+  onContinue: () => void;
+  onCancel: () => void;
+}) {
+  const blocked = !quote.reachable;
+  const noMoveToday = !blocked && quote.stopIndex < 0;
+  const reason = blocked ? `Route unavailable: ${quote.reason ?? 'no way there now'}` : noMoveToday ? 'Continue next day' : busy ? 'Wait for the move to finish' : null;
+  let text: string;
+  if (blocked) text = `Route unavailable — ${quote.reason ?? 'no way there now'}. The destination is kept.`;
+  else if (rerouted) text = `Route changed${quote.endsInEncounter ? ': it now ends in battle' : ''} — ${arrivalText(days).toLowerCase()}. Check the new way on the map.`;
+  else {
+    const parts = [arrivalText(days)];
+    if (!quote.reachesDestinationToday && quote.stopIndex >= 0) parts.push(`${quote.stopIndex + 1} of ${quote.path.length} steps today`);
+    if (noMoveToday) parts.push('no movement left today');
+    if (quote.endsInEncounter) parts.push('ends in battle');
+    text = `${status === 'paused' ? 'Journey paused · ' : ''}${parts.join(' · ')}`;
+  }
+  return (
+    <span className={`journey-bar ${blocked ? 'is-blocked' : ''} ${rerouted ? 'is-rerouted' : ''}`} data-testid="journey-bar" data-status={blocked ? 'blocked' : rerouted ? 'rerouted' : status}>
+      <span className="journey-bar__text small" data-testid="journey-status">
+        <strong>{heroName}:</strong> {text}
+      </span>
+      <Button
+        size="small"
+        variant={rerouted ? undefined : 'primary'}
+        icon={rerouted ? 'check' : 'journey'}
+        onClick={onContinue}
+        disabled={!!reason}
+        disabledReason={reason ?? undefined}
+        title={rerouted ? `Accept the new route (${shortcut})` : `Continue journey (${shortcut})`}
+        aria-keyshortcuts={shortcut}
+        data-testid="journey-continue"
+      >
+        {rerouted ? 'Accept new route' : 'Continue journey'}
+      </Button>
+      <Button size="small" variant="ghost" icon="close" onClick={onCancel} title="Cancel journey" aria-label="Cancel journey" data-testid="journey-cancel" />
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Screen
 // ---------------------------------------------------------------------------
 
@@ -535,7 +640,10 @@ export function AdventureScreen() {
   const playerId = player.id;
   const heroes = playerHeroes(state, playerId);
   const selected = heroes.find((h) => h.id === store.selectedHeroId) ?? heroes[0] ?? null;
-  const [target, setTarget] = useState<HexCoord | null>(null);
+  // The selected hero's planned journey: kept by the session per match, player and hero (saved with the
+  // game), so it survives the end of the day, other screens, other heroes and save/load (owner request 2026-10-14).
+  const journey = selected ? session.journey(selected.id, playerId) : null;
+  const target = journey?.target ?? null;
   const [hover, setHover] = useState<HexCoord | null>(null);
   const [dragging, setDragging] = useState(false);
   const [pinned, setPinned] = useState<HexCoord | null>(null);
@@ -576,7 +684,7 @@ export function AdventureScreen() {
   const [auraTick, setAuraTick] = useState(0);
   const calm = reducedMotion(store.prefs);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? target : null, humanTurn, grid, store.mapAuras, calm), [catalog, state, playerId, selected, target, humanTurn, grid, auraTick, calm]);
+  const view = useMemo(() => buildView(catalog, state, playerId, selected, humanTurn ? journey : null, humanTurn, grid, store.mapAuras, calm), [catalog, state, playerId, selected, journey, humanTurn, grid, auraTick, calm]);
 
   // The controller can arrive after the first render (the 2D layer loads on demand),
   // so it reads the latest view and selection from refs when it does.
@@ -611,6 +719,7 @@ export function AdventureScreen() {
         if (ev) store.showHint('weekly_event');
       }
       if (!c) {
+        siteNotices(events);
         afterMoves(moves);
         return;
       }
@@ -646,14 +755,29 @@ export function AdventureScreen() {
         await c.playHeroTeleport(t.heroId, t.to, adventurePlaybackFactor(store.prefs, source === 'ai'), true, spell ? { look: spellLook(spell), id: `fx.spell.${spell.id}` } : undefined);
       }
       await playMagic(c, events, source);
-      const blocked = events.find((e) => e.kind === 'PortalBlocked');
-      if (blocked && blocked.kind === 'PortalBlocked' && store.session?.state.heroes[blocked.heroId]?.ownerId === store.session?.humanPlayerId) {
-        store.toast('The far side of the portal is blocked: a hero stands on its twin.', 'info');
-      }
+      siteNotices(events);
       const started = events.find((e) => e.kind === 'BattleStarted');
       if (started && started.kind === 'BattleStarted') await prepareBeforeBattle(c, started.battleId, source);
       afterMoves(moves);
     });
+    /**
+     * Notices for the sites a batch touched (shown after the walk, with or without the 2D view): a portal
+     * or ferry the viewer's hero could not take — a ferry that does not run says why (its `lockedReason`) —
+     * and a sluice operated (by the viewer's hero, or one in sight).
+     */
+    function siteNotices(events: readonly GameEvent[]) {
+      const session = store.session;
+      if (!session) return;
+      const blocked = events.find((e) => e.kind === 'PortalBlocked');
+      if (blocked && blocked.kind === 'PortalBlocked' && session.state.heroes[blocked.heroId]?.ownerId === session.humanPlayerId) {
+        store.toast(portalBlockedText(catalog, session.state, blocked.siteId), 'info');
+      }
+      for (const e of events) {
+        if (e.kind !== 'SluiceOperated') continue;
+        const text = sluiceOperatedText(catalog, session.state, session.humanPlayerId, e);
+        if (text) store.toast(text, 'success');
+      }
+    }
     /**
      * Map spells and the player's own map miracles (presentation only): the
      * fog-lifting ring, wind or motes on heroes, light over a town, coins over
@@ -757,6 +881,8 @@ export function AdventureScreen() {
         store.openOverlay({ kind: 'chest', heroId: hero.id, siteId: site.def.id });
       } else if (site.def.kind.type === 'quest_hut' && !site.state.claimed && (!site.def.guard || site.state.cleared)) {
         store.openOverlay({ kind: 'quest-hut', heroId: hero.id, siteId: site.def.id });
+      } else if (site.def.kind.type === 'sluice' && (!site.def.guard || site.state.cleared)) {
+        store.openOverlay({ kind: 'sluice', heroId: hero.id, siteId: site.def.id });
       }
     }
   }, [store, catalog]);
@@ -765,7 +891,7 @@ export function AdventureScreen() {
     (c: AdventureSceneController | null) => {
       ctrl.current = c;
       projectors.adventure = c ? (q, r) => toPage(c.projectHex({ q, r })) : undefined;
-      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose(), fx: () => c.fxDebug(), ground: () => c.groundDebug(), scenery: () => c.sceneryDebug() } : undefined;
+      inspectors.adventure = c ? { heroes: () => c.heroAnimationDebug(), camera: () => c.cameraPose(), fx: () => c.fxDebug(), ground: () => c.groundDebug(), scenery: () => c.sceneryDebug(), route: () => c.routeDebug() } : undefined;
       if (c) {
         c.update(viewRef.current);
         const focus = store.focusRequest ?? selectedRef.current?.position ?? null;
@@ -810,10 +936,34 @@ export function AdventureScreen() {
     });
   };
 
+  // Selecting another hero keeps every hero's journey: coming back to one shows its route again.
   const selectHero = (h: HeroState) => {
     store.selectedHeroId = h.id;
-    setTarget(null);
     ctrl.current?.focus(h.position);
+    store.notify();
+  };
+
+  /** The selected hero's remaining route, quoted now from where it stands. */
+  const journeyQuote = selected && target ? quoteMovement(catalog, state, selected.id, target) : null;
+  const routeSig = selected && journeyQuote && journeyQuote.reachable && journeyQuote.path.length > 0 ? routeSignature(selected.position, journeyQuote) : null;
+  const seenKey = selected ? `${state.matchId}|${playerId}|${selected.id}` : '';
+  const seenSig = seenKey ? store.routeSeen.get(seenKey) : undefined;
+  // Not the rest of the route the player last saw: a blocker came into view, the costs changed, the hero was carried off.
+  const rerouted = !!routeSig && !!seenSig && routeChanged(seenSig, routeSig);
+  useEffect(() => {
+    if (seenKey && routeSig && !store.routeSeen.has(seenKey)) store.routeSeen.set(seenKey, routeSig);
+  }, [seenKey, routeSig, store]);
+
+  /** An explicit choice of destination: replaces this hero's journey only. A hover never does. */
+  const planJourney = (heroId: string, c: HexCoord) => {
+    session.planJourney(heroId, c, playerId);
+    store.routeSeen.delete(`${state.matchId}|${playerId}|${heroId}`);
+    store.notify();
+  };
+  const cancelJourney = () => {
+    if (!selected) return;
+    session.cancelJourney(selected.id, playerId);
+    store.routeSeen.delete(seenKey);
     store.notify();
   };
 
@@ -832,16 +982,33 @@ export function AdventureScreen() {
       store.toast(`${selected.name} has no movement left today`, 'error');
       return;
     }
-    const rej = store.dispatch({ kind: 'MoveHero', heroId: selected.id, destination: dest });
-    if (!rej && q.reachesDestinationToday) setTarget(null);
+    // The journey stays planned: the session clears it only once the hero has actually arrived.
+    store.dispatch({ kind: 'MoveHero', heroId: selected.id, destination: dest });
+  };
+
+  /**
+   * Continue journey (the button, Space or a second click on the destination): as far as today's
+   * movement and the encounter rules allow, never past a battle or a choice. A route that changed
+   * since the player last saw it is shown first; the next Continue follows it.
+   */
+  const continueJourney = () => {
+    if (!selected || !target || !humanTurn || store.presentationBusy) return;
+    if (rerouted && routeSig) {
+      store.routeSeen.set(seenKey, routeSig);
+      store.toast(`${selected.name}'s route has changed — the new way is shown. Continue again to follow it.`, 'info');
+      store.notify();
+      return;
+    }
+    store.routeSeen.delete(seenKey);
+    tryMove(target);
   };
 
   const onTileClick = (c: HexCoord, button: number) => {
     const s = store.session?.state;
     if (!s) return;
+    // Right-click inspects a tile; it never cancels a journey (Cancel journey does).
     if (button === 2) {
       setPinned((p) => (p && hexEquals(p, c) ? null : c));
-      setTarget(null);
       return;
     }
     if (!humanTurn) return;
@@ -894,6 +1061,10 @@ export function AdventureScreen() {
         store.openOverlay({ kind: 'camp', heroId: sel.id, siteId: site.def.id });
         return;
       }
+      if (site && site.def.kind.type === 'sluice') {
+        store.openOverlay({ kind: 'sluice', heroId: sel.id, siteId: site.def.id });
+        return;
+      }
       if (site && site.def.kind.type === 'map_event' && !site.state.claimed) {
         store.openOverlay({ kind: 'map-event', heroId: sel.id, siteId: site.def.id });
         return;
@@ -909,9 +1080,10 @@ export function AdventureScreen() {
       store.goto('hero', { heroId: sel.id });
       return;
     }
-    if (target && hexEquals(target, c)) tryMove(c);
+    if (!sel) return;
+    if (target && hexEquals(target, c)) continueJourney();
     else {
-      setTarget(c);
+      planJourney(sel.id, c);
       store.showHint('route_planning');
     }
   };
@@ -934,8 +1106,8 @@ export function AdventureScreen() {
     const s = store.session?.state;
     if (!s) return;
     const canStillMove = playerHeroes(s, playerId).some((h) => reachableTiles(catalog, s, h.id).size > 0);
+    // Journeys are kept over the night; nobody moves by themselves at dawn.
     const go = () => {
-      setTarget(null);
       store.dispatch({ kind: 'EndTurn' });
     };
     if (canStillMove && store.prefs.confirmEndDayWithMovement) {
@@ -974,7 +1146,8 @@ export function AdventureScreen() {
       else if (c && is('zoom_out')) c.zoom(2);
       else if (is('continue_move') && target && humanTurn) {
         e.preventDefault();
-        tryMove(target);
+        // A held key repeats: one press, one move. Nothing new while the last walk still plays.
+        if (!e.repeat) continueJourney();
       } else if (is('end_day') && humanTurn) {
         e.preventDefault();
         endDay();
@@ -1008,12 +1181,51 @@ export function AdventureScreen() {
     [catalog, state, playerId, selected, hover, humanTurn, casting, dragging],
   );
   const sceneCursor = cursorCss(cursorChoice.id, { enabled: store.prefs.gameCursors });
+  // Beyond today's movement: the day the hero gets there, beside the cursor (owner request 2026-10-14).
+  // It follows the pointer through a ref (no re-render per mouse move).
+  const pointerAt = useRef<{ x: number; y: number } | null>(null);
+  const daysRef = useRef<HTMLDivElement | null>(null);
+  const placeDays = () => {
+    const el = daysRef.current;
+    const p = pointerAt.current;
+    if (!el) return;
+    if (!p) {
+      el.style.visibility = 'hidden';
+      return;
+    }
+    el.style.visibility = '';
+    // Just right of the 32 px cursor (its hotspot is the centre), on its lower half.
+    el.style.transform = `translate(${Math.round(p.x + 17)}px, ${Math.round(p.y + 2)}px)`;
+  };
+  const daysBadge = useCallback((el: HTMLDivElement | null) => {
+    daysRef.current = el;
+    placeDays();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const activeName = state.players[state.activePlayerId]?.name ?? state.activePlayerId;
   const mission = scenarioMission(catalog, state);
+  // The selected hero stands on a sluice: the map offers to operate it (the dialog shows what changes, or why not).
+  const standing = selected ? siteAt(catalog, state, selected.position) : undefined;
+  const sluiceHere = standing && standing.def.kind.type === 'sluice' ? standing : undefined;
 
   return (
-    <div className="adventure">
+    <div
+      className="adventure"
+      onPointerMove={(e) => {
+        pointerAt.current = { x: e.clientX, y: e.clientY };
+        placeDays();
+      }}
+      onPointerLeave={() => {
+        pointerAt.current = null;
+        placeDays();
+      }}
+    >
       <SceneViewport factory={factory} onController={onController} className="adventure__scene" label="Adventure map. Click a tile to preview a route, click again to move." cursor={sceneCursor} />
+      {cursorChoice.days ? (
+        <div ref={daysBadge} className="adv-days num" data-testid="route-days" aria-hidden="true" title={`Reached on day ${cursorChoice.days} (today is day 1)`}>
+          {cursorChoice.days}
+        </div>
+      ) : null}
 
       <header className="adv-top">
         <div className="adv-top__mission">
@@ -1193,9 +1405,18 @@ export function AdventureScreen() {
               // A step already achieved before it opens reads as completed (as in the Journal).
               const st = raw === 'locked' && objectiveDoneEarly(catalog, state, o) ? 'completed' : raw;
               if (st === 'locked') return null;
+              // An open objective at a campaign site with its own marker (evidence, supplies, evacuation, pact) shows that icon.
+              const markerDef = o.markerSiteId && (st === 'active' || st === 'available') ? missionSite(catalog, state, o.markerSiteId) : undefined;
+              const icon = markerDef?.marker ? questMarkerIcon(markerDef) : null;
               return (
                 <li key={o.id} className={`is-${st}`}>
-                  <Icon name={st === 'completed' ? 'check' : st === 'failed' ? 'close' : 'flag'} className="inline-icon" />
+                  {icon && resolveAsset(icon.id).url ? (
+                    <span className="objective-mini__marker" data-testid={`objective-marker-${o.id}`} data-marker={icon.id}>
+                      <MarkerIcon assetId={icon.id} label={icon.label} size="1.3rem" />
+                    </span>
+                  ) : (
+                    <Icon name={st === 'completed' ? 'check' : st === 'failed' ? 'close' : 'flag'} className="inline-icon" />
+                  )}
                   <span>{o.title}</span>
                   {o.markerSiteId ? (
                     <button type="button" className="link" onClick={() => { const def = missionSite(catalog, state, o.markerSiteId!); if (def && (state.fog[playerId]?.explored[cellIndex(state.world.map, def.coord)] === 1 || state.mission.revealedSiteIds.includes(def.id))) ctrl.current?.focus(def.coord); else store.toast('Location not yet discovered'); }} aria-label={`Show ${o.title} on map`}>
@@ -1206,6 +1427,7 @@ export function AdventureScreen() {
               );
             })}
           </ul>
+          <DeadlineTracker />
         </Panel>
         )}
       </aside>
@@ -1219,17 +1441,26 @@ export function AdventureScreen() {
                 Cancel
               </Button>
             </span>
-          ) : target && selected ? (
-            <span className="small">
-              {(() => {
-                const q = quoteMovement(catalog, state, selected.id, target);
-                if (!q.reachable) return <span className="danger">{q.reason}</span>;
-                return (
-                  <>
-                    Route {q.totalCost} · {q.reachesDestinationToday ? 'arrives today' : `${q.stopIndex + 1}/${q.path.length} steps today`} {q.endsInEncounter ? '· ends in battle' : ''} — click again or press Space
-                  </>
-                );
-              })()}
+          ) : journey && selected && journeyQuote && humanTurn ? (
+            <JourneyBar
+              heroName={selected.name}
+              status={journey.status}
+              quote={journeyQuote}
+              days={journeyQuote.reachable ? routeDays(catalog, state, selected.id, journeyQuote) : null}
+              rerouted={rerouted}
+              shortcut={keyLabel(keyFor(store.prefs, 'continue_move'))}
+              busy={store.presentationBusy}
+              onContinue={continueJourney}
+              onCancel={cancelJourney}
+            />
+          ) : sluiceHere && selected && humanTurn ? (
+            <span className="journey-bar" data-testid="sluice-bar">
+              <span className="journey-bar__text small">
+                <strong>{selected.name}</strong> stands at {sluiceHere.def.name} · {sluiceHere.state.open ? 'open' : 'closed'}
+              </span>
+              <Button size="small" variant="primary" icon="swap" onClick={() => store.openOverlay({ kind: 'sluice', heroId: selected.id, siteId: sluiceHere.def.id })} data-testid="sluice-offer">
+                {sluiceHere.state.open ? 'Close the sluice…' : 'Open the sluice…'}
+              </Button>
             </span>
           ) : null}
         </div>

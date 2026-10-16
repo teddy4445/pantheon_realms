@@ -1,0 +1,4703 @@
+{
+ "schema": "pantheon-realms-campaign-v2-1",
+ "notice": "Written by tools/assets/import_campaign_v2.py from the campaign expansion kit of 2026-10-15. Relative paths only.",
+ "assets": {
+  "campaignv2.portrait.pegasus": {
+   "file": "campaign-v2/portrait-pegasus.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "195abffb356f5dae8836e5d6e56749e454cbd8f9a149a3a296a526f9ce57bd7f"
+  },
+  "campaignv2.atlas.pegasus.v2": {
+   "file": "campaign-v2/atlas-pegasus-v2.png",
+   "kind": "animation-atlas",
+   "width": 1024,
+   "height": 1536,
+   "sha256": "ac15731f17c1ae5f24019bb633fbbfa160dfad267e89c26351c8c3fd4f73809a"
+  },
+  "campaignv2.site.pegasus": {
+   "file": "campaign-v2/site-pegasus.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "d00e9409e91b7c4815f0bb067f9066275f47499f8609819fb870da129538a10b",
+   "display": {
+    "file": "campaign-v2/display/site-pegasus.webp",
+    "width": 384,
+    "height": 310
+   }
+  },
+  "campaignv2.portrait.root_runner": {
+   "file": "campaign-v2/portrait-root_runner.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "039e8798d08aa2394260d1a1703235d58ef959104ad4c43b7cb420bf588e9290"
+  },
+  "campaignv2.atlas.root_runner.v2": {
+   "file": "campaign-v2/atlas-root_runner-v2.png",
+   "kind": "animation-atlas",
+   "width": 1024,
+   "height": 1536,
+   "sha256": "07236edf5dbda24fd24bae846d588132abe1bff5985e5dcc8dd1244cb2cc248f"
+  },
+  "campaignv2.site.root_runner": {
+   "file": "campaign-v2/site-root_runner.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "bf1748f6e6680e3e56ba53fc1abed1e36eca9cf138629e0dd635b2bcd600a460",
+   "display": {
+    "file": "campaign-v2/display/site-root_runner.webp",
+    "width": 384,
+    "height": 370
+   }
+  },
+  "campaignv2.portrait.serpopard": {
+   "file": "campaign-v2/portrait-serpopard.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "ea37df50c70fedd80c3e639d9580a96a690a776323795eb29198acd6b62d1c9e"
+  },
+  "campaignv2.atlas.serpopard.v3": {
+   "file": "campaign-v2/atlas-serpopard-v3.png",
+   "kind": "animation-atlas",
+   "width": 1024,
+   "height": 1536,
+   "sha256": "2610332e40cc751f97bbf64d049b04a62ebffb1ce4d256efcd68a2583e069abd"
+  },
+  "campaignv2.site.serpopard": {
+   "file": "campaign-v2/site-serpopard.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "d92247bd05ac100c93ae9721440dbe289da8aca79baa05d1934550ef56e101a8",
+   "display": {
+    "file": "campaign-v2/display/site-serpopard.webp",
+    "width": 384,
+    "height": 346
+   }
+  },
+  "campaignv2.portrait.baku": {
+   "file": "campaign-v2/portrait-baku.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "090222c2fd10aca1d37ca8af4ab08190c3fc50047c90857b922656d64f5dc099"
+  },
+  "campaignv2.atlas.baku.v2": {
+   "file": "campaign-v2/atlas-baku-v2.png",
+   "kind": "animation-atlas",
+   "width": 1024,
+   "height": 1536,
+   "sha256": "c67a910bccea4f2987b617c0dfb72900607ee9576e6270a9e876543f68a61401"
+  },
+  "campaignv2.site.baku": {
+   "file": "campaign-v2/site-baku.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "f8b78ced36d1f392835a41302df5bb32f17f09ebc7cbe46e27fd8f6a9ff81c55",
+   "display": {
+    "file": "campaign-v2/display/site-baku.webp",
+    "width": 384,
+    "height": 382
+   }
+  },
+  "campaignv2.portrait.afanc": {
+   "file": "campaign-v2/portrait-afanc.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "cc6a6c72dc3c2cacd0c003c29de445d9158712dff0d3b4df9a2c05efaad23585"
+  },
+  "campaignv2.atlas.afanc.v2": {
+   "file": "campaign-v2/atlas-afanc-v2.png",
+   "kind": "animation-atlas",
+   "width": 1024,
+   "height": 1536,
+   "sha256": "09030a7774563180fd0179a96fa8139c0cc66ac949b1a512690b403967301125"
+  },
+  "campaignv2.site.afanc": {
+   "file": "campaign-v2/site-afanc.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "5d508ddc928c473c27b384a36d9c4947d460898ae2d1603f3034b9e14e1be0ea",
+   "display": {
+    "file": "campaign-v2/display/site-afanc.webp",
+    "width": 384,
+    "height": 270
+   }
+  },
+  "campaignv2.portrait.ahuitzotl": {
+   "file": "campaign-v2/portrait-ahuitzotl.png",
+   "kind": "portrait",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "ee3b0126d871662fa0b3e07d27d4dc8342931ac33c1985fcd2ab80a36d02ddca"
+  },
+  "campaignv2.atlas.ahuitzotl.v2": {
+   "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+   "kind": "animation-atlas",
+   "width": 1024,
+   "height": 1536,
+   "sha256": "ca19e9253bede4d63668dc7378b511b9b8b69105cdc7850d4c0a79f2f3619ffc"
+  },
+  "campaignv2.site.ahuitzotl": {
+   "file": "campaign-v2/site-ahuitzotl.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "b2d42e93f0b7ac601298ce7f465230bfe5a82b93a2a1992bec9e5d1e0e12c815",
+   "display": {
+    "file": "campaign-v2/display/site-ahuitzotl.webp",
+    "width": 384,
+    "height": 348
+   }
+  },
+  "campaignv2.atlas.pegasus.flight": {
+   "file": "campaign-v2/atlas-pegasus-flight.png",
+   "kind": "animation-atlas",
+   "width": 1448,
+   "height": 1086,
+   "sha256": "77ddf79a476bfa5b6338e72d9a1d0343593cc3f8ee445c159d83d79293ebce7c"
+  },
+  "campaignv2.site.sluice.closed": {
+   "file": "campaign-v2/site-sluice-closed.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "dc5dfb5a355f9f48cabcaf4a03d7ce5f7d65306a23e2501a4921a0560ac1c8f8",
+   "display": {
+    "file": "campaign-v2/display/site-sluice-closed.webp",
+    "width": 384,
+    "height": 307
+   }
+  },
+  "campaignv2.site.sluice.open": {
+   "file": "campaign-v2/site-sluice-open.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "3cf40dd5e8cc82feef4400c8de05b42fcaf1c489f0d3d78d8e45f8c9c3d1489e",
+   "display": {
+    "file": "campaign-v2/display/site-sluice-open.webp",
+    "width": 384,
+    "height": 307
+   }
+  },
+  "campaignv2.site.ferry": {
+   "file": "campaign-v2/site-ferry.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "5297ae657e58034224291a3e08e23c213190de7a1f85e4822ff8a04537b23825",
+   "display": {
+    "file": "campaign-v2/display/site-ferry.webp",
+    "width": 384,
+    "height": 283
+   }
+  },
+  "campaignv2.site.supply.depot": {
+   "file": "campaign-v2/site-supply-depot.png",
+   "kind": "map-site",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "d66556333b4a1c2552b5d3cd795653edf703f9c95b3cac4e761f35f6f1f7bf9a",
+   "display": {
+    "file": "campaign-v2/display/site-supply-depot.webp",
+    "width": 384,
+    "height": 324
+   }
+  },
+  "campaignv2.icon.evidence": {
+   "file": "campaign-v2/icon-evidence.png",
+   "kind": "icon",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "40de7e0c08acb7c153b0a24f739b42f0b1da080501f8e9681262bfa47e3f79a5",
+   "display": {
+    "file": "campaign-v2/display/icon-evidence.webp",
+    "width": 192,
+    "height": 188
+   }
+  },
+  "campaignv2.icon.pact": {
+   "file": "campaign-v2/icon-pact.png",
+   "kind": "icon",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "7dca030ac90c543fcd25250e1efab114a2668d7fafbf824706b9daf4dabe838e",
+   "display": {
+    "file": "campaign-v2/display/icon-pact.webp",
+    "width": 192,
+    "height": 165
+   }
+  },
+  "campaignv2.icon.supply": {
+   "file": "campaign-v2/icon-supply.png",
+   "kind": "icon",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "90173586d331a5bf7976139534c5964d037cc8948649e8b46dc241b8f239ff26",
+   "display": {
+    "file": "campaign-v2/display/icon-supply.webp",
+    "width": 171,
+    "height": 192
+   }
+  },
+  "campaignv2.icon.evacuation": {
+   "file": "campaign-v2/icon-evacuation.png",
+   "kind": "icon",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "0a73154b5b59bea303512d042b55f090502b6fc3d72e7b4319c2555ccda6bcdd",
+   "display": {
+    "file": "campaign-v2/display/icon-evacuation.webp",
+    "width": 182,
+    "height": 192
+   }
+  },
+  "campaignv2.icon.branch": {
+   "file": "campaign-v2/icon-branch.png",
+   "kind": "icon",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "d3856430153b6d27bfea88fb4b0a075edea3958f60d8e3f650a3b7a571bc75d9",
+   "display": {
+    "file": "campaign-v2/display/icon-branch.webp",
+    "width": 192,
+    "height": 178
+   }
+  },
+  "campaignv2.icon.manual.battle.v2": {
+   "file": "campaign-v2/icon-manual-battle-v2.png",
+   "kind": "icon",
+   "width": 1254,
+   "height": 1254,
+   "sha256": "225690bfbbe438e2c2c71dcdbbfee2362dd0f20bfd5b53eef605943194db7306",
+   "display": {
+    "file": "campaign-v2/display/icon-manual-battle-v2.webp",
+    "width": 123,
+    "height": 192
+   }
+  },
+  "campaignv2.background.campaign.chronicle": {
+   "file": "campaign-v2/background-campaign-chronicle.png",
+   "kind": "background",
+   "width": 1672,
+   "height": 941,
+   "sha256": "2550a01780b220e9d190b69fdd491c129f986bac3193811bf024e55c206b4b11"
+  },
+  "campaignv2.background.neutral.recruitment": {
+   "file": "campaign-v2/background-neutral-recruitment.png",
+   "kind": "background",
+   "width": 1672,
+   "height": 941,
+   "sha256": "16222412c155331fc8471c837e1f8d68f5b7a01650433d7a1fc850b46091dab1"
+  }
+ },
+ "creatures": {
+  "pegasus": {
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15: native atlas, measured frame regions (animation-manifest.json); not retouched or upscaled.",
+   "facing": "right",
+   "pixelsPerHex": 100.94,
+   "animations": {
+    "idle": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 163,
+     "frameHeight": 181,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        53,
+        56,
+        161,
+        177
+       ],
+       "anchor": [
+        80.5,
+        173.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        308,
+        56,
+        163,
+        176
+       ],
+       "anchor": [
+        81.5,
+        172.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        567,
+        52,
+        162,
+        181
+       ],
+       "anchor": [
+        81.0,
+        177.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        817,
+        55,
+        161,
+        178
+       ],
+       "anchor": [
+        80.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "move": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 195,
+     "frameHeight": 180,
+     "fps": 7,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        41,
+        296,
+        187,
+        177
+       ],
+       "anchor": [
+        92.5,
+        173.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        0
+       ]
+      },
+      {
+       "rect": [
+        297,
+        296,
+        187,
+        179
+       ],
+       "anchor": [
+        92.5,
+        175.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        1
+       ]
+      },
+      {
+       "rect": [
+        548,
+        294,
+        195,
+        180
+       ],
+       "anchor": [
+        100.0,
+        176.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        2
+       ]
+      },
+      {
+       "rect": [
+        808,
+        296,
+        182,
+        178
+       ],
+       "anchor": [
+        89.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        3
+       ]
+      }
+     ]
+    },
+    "attack": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 221,
+     "frameHeight": 212,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        39,
+        558,
+        203,
+        178
+       ],
+       "anchor": [
+        94.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        280,
+        522,
+        212,
+        212
+       ],
+       "anchor": [
+        109.5,
+        208.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        546,
+        540,
+        221,
+        192
+       ],
+       "anchor": [
+        102.0,
+        188.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        811,
+        555,
+        179,
+        183
+       ],
+       "anchor": [
+        86.5,
+        179.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ]
+    },
+    "defend": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 211,
+     "frameHeight": 200,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        804,
+        199,
+        176
+       ],
+       "anchor": [
+        97.5,
+        172.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        296,
+        802,
+        202,
+        180
+       ],
+       "anchor": [
+        93.5,
+        176.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        543,
+        811,
+        211,
+        171
+       ],
+       "anchor": [
+        105.0,
+        167.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        804,
+        782,
+        181,
+        200
+       ],
+       "anchor": [
+        93.5,
+        196.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 201,
+     "frameHeight": 192,
+     "fps": 7,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        42,
+        1037,
+        189,
+        192
+       ],
+       "anchor": [
+        91.5,
+        188.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        0
+       ]
+      },
+      {
+       "rect": [
+        292,
+        1043,
+        193,
+        187
+       ],
+       "anchor": [
+        97.5,
+        183.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        1
+       ]
+      },
+      {
+       "rect": [
+        542,
+        1056,
+        201,
+        174
+       ],
+       "anchor": [
+        106.0,
+        170.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        2
+       ]
+      },
+      {
+       "rect": [
+        807,
+        1038,
+        183,
+        190
+       ],
+       "anchor": [
+        90.5,
+        186.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        3
+       ]
+      }
+     ]
+    },
+    "death": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 231,
+     "frameHeight": 164,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        31,
+        1304,
+        211,
+        164
+       ],
+       "anchor": [
+        102.5,
+        160.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        0
+       ]
+      },
+      {
+       "rect": [
+        277,
+        1309,
+        221,
+        153
+       ],
+       "anchor": [
+        112.5,
+        149.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        1
+       ]
+      },
+      {
+       "rect": [
+        523,
+        1338,
+        229,
+        116
+       ],
+       "anchor": [
+        125.0,
+        112.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        2
+       ]
+      },
+      {
+       "rect": [
+        779,
+        1340,
+        231,
+        105
+       ],
+       "anchor": [
+        118.5,
+        101.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        3
+       ]
+      }
+     ]
+    },
+    "takeoff": {
+     "file": "campaign-v2/atlas-pegasus-flight.png",
+     "frames": 3,
+     "frameWidth": 315,
+     "frameHeight": 306,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        41,
+        148,
+        292,
+        202
+       ],
+       "anchor": [
+        146.0,
+        198.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        418,
+        45,
+        272,
+        306
+       ],
+       "anchor": [
+        136.0,
+        302.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        1101,
+        79,
+        315,
+        265
+       ],
+       "anchor": [
+        157.5,
+        261.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "fly": {
+     "file": "campaign-v2/atlas-pegasus-flight.png",
+     "frames": 4,
+     "frameWidth": 312,
+     "frameHeight": 308,
+     "fps": 6,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        27,
+        371,
+        301,
+        308
+       ],
+       "anchor": [
+        160.0,
+        304.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        1,
+        0
+       ]
+      },
+      {
+       "rect": [
+        399,
+        427,
+        312,
+        243
+       ],
+       "anchor": [
+        155.0,
+        239.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        1,
+        1
+       ]
+      },
+      {
+       "rect": [
+        753,
+        492,
+        304,
+        194
+       ],
+       "anchor": [
+        144.5,
+        190.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        1,
+        2
+       ]
+      },
+      {
+       "rect": [
+        1122,
+        410,
+        296,
+        260
+       ],
+       "anchor": [
+        136.5,
+        256.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        1,
+        3
+       ]
+      }
+     ]
+    },
+    "landing": {
+     "file": "campaign-v2/atlas-pegasus-flight.png",
+     "frames": 4,
+     "frameWidth": 322,
+     "frameHeight": 324,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        22,
+        712,
+        307,
+        324
+       ],
+       "anchor": [
+        165.0,
+        320.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        389,
+        745,
+        322,
+        292
+       ],
+       "anchor": [
+        165.0,
+        288.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        771,
+        813,
+        303,
+        230
+       ],
+       "anchor": [
+        126.5,
+        226.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        1131,
+        791,
+        271,
+        254
+       ],
+       "anchor": [
+        127.5,
+        250.0
+       ],
+       "sourceScale": 0.62,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ]
+    },
+    "victory": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 163,
+     "frameHeight": 181,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        53,
+        56,
+        161,
+        177
+       ],
+       "anchor": [
+        80.5,
+        173.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        308,
+        56,
+        163,
+        176
+       ],
+       "anchor": [
+        81.5,
+        172.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        567,
+        52,
+        162,
+        181
+       ],
+       "anchor": [
+        81.0,
+        177.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        817,
+        55,
+        161,
+        178
+       ],
+       "anchor": [
+        80.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "idle"
+    },
+    "ability": {
+     "file": "campaign-v2/atlas-pegasus-v2.png",
+     "frames": 4,
+     "frameWidth": 211,
+     "frameHeight": 200,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        804,
+        199,
+        176
+       ],
+       "anchor": [
+        97.5,
+        172.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        296,
+        802,
+        202,
+        180
+       ],
+       "anchor": [
+        93.5,
+        176.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        543,
+        811,
+        211,
+        171
+       ],
+       "anchor": [
+        105.0,
+        167.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        804,
+        782,
+        181,
+        200
+       ],
+       "anchor": [
+        93.5,
+        196.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "defend"
+    }
+   }
+  },
+  "root_runner": {
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15: native atlas, measured frame regions (animation-manifest.json); not retouched or upscaled.",
+   "facing": "right",
+   "pixelsPerHex": 144.76,
+   "animations": {
+    "idle": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 161,
+     "frameHeight": 147,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        65,
+        90,
+        151,
+        146
+       ],
+       "anchor": [
+        75.5,
+        142.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        322,
+        90,
+        151,
+        146
+       ],
+       "anchor": [
+        75.5,
+        142.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        572,
+        89,
+        153,
+        147
+       ],
+       "anchor": [
+        76.5,
+        143.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        819,
+        89,
+        161,
+        147
+       ],
+       "anchor": [
+        80.5,
+        143.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "move": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 181,
+     "frameHeight": 165,
+     "fps": 7,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        46,
+        327,
+        177,
+        164
+       ],
+       "anchor": [
+        94.5,
+        160.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        0
+       ]
+      },
+      {
+       "rect": [
+        308,
+        327,
+        180,
+        163
+       ],
+       "anchor": [
+        89.5,
+        159.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        1
+       ]
+      },
+      {
+       "rect": [
+        563,
+        327,
+        181,
+        159
+       ],
+       "anchor": [
+        85.5,
+        155.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        2
+       ]
+      },
+      {
+       "rect": [
+        806,
+        329,
+        179,
+        165
+       ],
+       "anchor": [
+        93.5,
+        161.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        3
+       ]
+      }
+     ]
+    },
+    "attack": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 228,
+     "frameHeight": 171,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        55,
+        581,
+        176,
+        161
+       ],
+       "anchor": [
+        85.5,
+        157.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        292,
+        573,
+        228,
+        147
+       ],
+       "anchor": [
+        105.5,
+        143.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        561,
+        574,
+        200,
+        167
+       ],
+       "anchor": [
+        87.5,
+        163.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        807,
+        576,
+        179,
+        171
+       ],
+       "anchor": [
+        92.5,
+        167.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ]
+    },
+    "defend": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 184,
+     "frameHeight": 171,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        57,
+        833,
+        178,
+        163
+       ],
+       "anchor": [
+        83.5,
+        159.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        322,
+        832,
+        184,
+        164
+       ],
+       "anchor": [
+        75.5,
+        160.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        573,
+        836,
+        170,
+        165
+       ],
+       "anchor": [
+        75.5,
+        161.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        810,
+        830,
+        171,
+        171
+       ],
+       "anchor": [
+        89.5,
+        167.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 182,
+     "frameHeight": 164,
+     "fps": 7,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        62,
+        1090,
+        177,
+        164
+       ],
+       "anchor": [
+        78.5,
+        160.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        0
+       ]
+      },
+      {
+       "rect": [
+        311,
+        1090,
+        179,
+        161
+       ],
+       "anchor": [
+        86.5,
+        157.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        1
+       ]
+      },
+      {
+       "rect": [
+        563,
+        1093,
+        177,
+        164
+       ],
+       "anchor": [
+        85.5,
+        160.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        2
+       ]
+      },
+      {
+       "rect": [
+        805,
+        1094,
+        182,
+        162
+       ],
+       "anchor": [
+        94.5,
+        158.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        3
+       ]
+      }
+     ]
+    },
+    "death": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 197,
+     "frameHeight": 157,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        51,
+        1336,
+        177,
+        157
+       ],
+       "anchor": [
+        89.5,
+        153.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        0
+       ]
+      },
+      {
+       "rect": [
+        300,
+        1346,
+        182,
+        142
+       ],
+       "anchor": [
+        97.5,
+        138.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        1
+       ]
+      },
+      {
+       "rect": [
+        544,
+        1372,
+        197,
+        115
+       ],
+       "anchor": [
+        104.5,
+        111.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        2
+       ]
+      },
+      {
+       "rect": [
+        796,
+        1391,
+        189,
+        97
+       ],
+       "anchor": [
+        103.5,
+        93.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        3
+       ]
+      }
+     ]
+    },
+    "victory": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 161,
+     "frameHeight": 147,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        65,
+        90,
+        151,
+        146
+       ],
+       "anchor": [
+        75.5,
+        142.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        322,
+        90,
+        151,
+        146
+       ],
+       "anchor": [
+        75.5,
+        142.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        572,
+        89,
+        153,
+        147
+       ],
+       "anchor": [
+        76.5,
+        143.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        819,
+        89,
+        161,
+        147
+       ],
+       "anchor": [
+        80.5,
+        143.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "idle"
+    },
+    "ability": {
+     "file": "campaign-v2/atlas-root_runner-v2.png",
+     "frames": 4,
+     "frameWidth": 228,
+     "frameHeight": 171,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        55,
+        581,
+        176,
+        161
+       ],
+       "anchor": [
+        85.5,
+        157.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        292,
+        573,
+        228,
+        147
+       ],
+       "anchor": [
+        105.5,
+        143.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        561,
+        574,
+        200,
+        167
+       ],
+       "anchor": [
+        87.5,
+        163.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        807,
+        576,
+        179,
+        171
+       ],
+       "anchor": [
+        92.5,
+        167.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "attack"
+    }
+   }
+  },
+  "serpopard": {
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15: native atlas, measured frame regions (animation-manifest.json); not retouched or upscaled.",
+   "facing": "right",
+   "pixelsPerHex": 111.56,
+   "animations": {
+    "idle": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 181,
+     "frameHeight": 178,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        43,
+        56,
+        180,
+        178
+       ],
+       "anchor": [
+        90.0,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        295,
+        56,
+        181,
+        178
+       ],
+       "anchor": [
+        90.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        549,
+        56,
+        177,
+        178
+       ],
+       "anchor": [
+        88.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        802,
+        57,
+        177,
+        177
+       ],
+       "anchor": [
+        88.5,
+        173.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "move": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 216,
+     "frameHeight": 177,
+     "fps": 7,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        38,
+        310,
+        196,
+        177
+       ],
+       "anchor": [
+        95.0,
+        173.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        0
+       ]
+      },
+      {
+       "rect": [
+        284,
+        308,
+        209,
+        175
+       ],
+       "anchor": [
+        101.5,
+        171.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        1
+       ]
+      },
+      {
+       "rect": [
+        529,
+        311,
+        216,
+        174
+       ],
+       "anchor": [
+        108.5,
+        170.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        2
+       ]
+      },
+      {
+       "rect": [
+        780,
+        311,
+        213,
+        176
+       ],
+       "anchor": [
+        110.5,
+        172.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        3
+       ]
+      }
+     ]
+    },
+    "attack": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 269,
+     "frameHeight": 189,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        41,
+        555,
+        190,
+        189
+       ],
+       "anchor": [
+        92.0,
+        185.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        283,
+        574,
+        269,
+        166
+       ],
+       "anchor": [
+        102.5,
+        162.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        552,
+        581,
+        197,
+        162
+       ],
+       "anchor": [
+        85.5,
+        158.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        798,
+        554,
+        186,
+        187
+       ],
+       "anchor": [
+        92.5,
+        183.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ]
+    },
+    "defend": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 229,
+     "frameHeight": 173,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        33,
+        820,
+        211,
+        171
+       ],
+       "anchor": [
+        100.0,
+        167.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        284,
+        860,
+        229,
+        125
+       ],
+       "anchor": [
+        101.5,
+        121.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        539,
+        819,
+        208,
+        168
+       ],
+       "anchor": [
+        98.5,
+        164.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        784,
+        820,
+        204,
+        173
+       ],
+       "anchor": [
+        106.5,
+        169.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 215,
+     "frameHeight": 185,
+     "fps": 7,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        31,
+        1078,
+        196,
+        175
+       ],
+       "anchor": [
+        102.0,
+        171.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        0
+       ]
+      },
+      {
+       "rect": [
+        276,
+        1118,
+        215,
+        133
+       ],
+       "anchor": [
+        109.5,
+        129.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        1
+       ]
+      },
+      {
+       "rect": [
+        534,
+        1128,
+        214,
+        127
+       ],
+       "anchor": [
+        103.5,
+        123.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        2
+       ]
+      },
+      {
+       "rect": [
+        786,
+        1070,
+        210,
+        185
+       ],
+       "anchor": [
+        104.5,
+        181.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        3
+       ]
+      }
+     ]
+    },
+    "death": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 233,
+     "frameHeight": 137,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        27,
+        1331,
+        211,
+        137
+       ],
+       "anchor": [
+        106.0,
+        133.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        0
+       ]
+      },
+      {
+       "rect": [
+        270,
+        1338,
+        214,
+        133
+       ],
+       "anchor": [
+        115.5,
+        129.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        1
+       ]
+      },
+      {
+       "rect": [
+        517,
+        1380,
+        233,
+        86
+       ],
+       "anchor": [
+        120.5,
+        82.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        2
+       ]
+      },
+      {
+       "rect": [
+        771,
+        1393,
+        233,
+        75
+       ],
+       "anchor": [
+        119.5,
+        71.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        3
+       ]
+      }
+     ]
+    },
+    "victory": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 181,
+     "frameHeight": 178,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        43,
+        56,
+        180,
+        178
+       ],
+       "anchor": [
+        90.0,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        295,
+        56,
+        181,
+        178
+       ],
+       "anchor": [
+        90.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        549,
+        56,
+        177,
+        178
+       ],
+       "anchor": [
+        88.5,
+        174.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        802,
+        57,
+        177,
+        177
+       ],
+       "anchor": [
+        88.5,
+        173.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "idle"
+    },
+    "ability": {
+     "file": "campaign-v2/atlas-serpopard-v3.png",
+     "frames": 4,
+     "frameWidth": 269,
+     "frameHeight": 189,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        41,
+        555,
+        190,
+        189
+       ],
+       "anchor": [
+        92.0,
+        185.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        283,
+        574,
+        269,
+        166
+       ],
+       "anchor": [
+        102.5,
+        162.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        552,
+        581,
+        197,
+        162
+       ],
+       "anchor": [
+        85.5,
+        158.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        798,
+        554,
+        186,
+        187
+       ],
+       "anchor": [
+        92.5,
+        183.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "attack"
+    }
+   }
+  },
+  "baku": {
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15: native atlas, measured frame regions (animation-manifest.json); not retouched or upscaled.",
+   "facing": "right",
+   "pixelsPerHex": 95.31,
+   "animations": {
+    "idle": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 157,
+     "frameHeight": 133,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        55,
+        102,
+        152,
+        133
+       ],
+       "anchor": [
+        76.0,
+        129.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        307,
+        102,
+        157,
+        133
+       ],
+       "anchor": [
+        78.5,
+        129.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        558,
+        104,
+        152,
+        131
+       ],
+       "anchor": [
+        76.0,
+        127.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        821,
+        103,
+        153,
+        132
+       ],
+       "anchor": [
+        76.5,
+        128.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "move": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 173,
+     "frameHeight": 139,
+     "fps": 7,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        45,
+        332,
+        172,
+        139
+       ],
+       "anchor": [
+        86.0,
+        135.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        0
+       ]
+      },
+      {
+       "rect": [
+        297,
+        334,
+        173,
+        134
+       ],
+       "anchor": [
+        88.5,
+        130.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        1
+       ]
+      },
+      {
+       "rect": [
+        549,
+        333,
+        171,
+        138
+       ],
+       "anchor": [
+        85.0,
+        134.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        2
+       ]
+      },
+      {
+       "rect": [
+        813,
+        333,
+        173,
+        139
+       ],
+       "anchor": [
+        84.5,
+        135.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        3
+       ]
+      }
+     ]
+    },
+    "attack": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 237,
+     "frameHeight": 137,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        42,
+        584,
+        173,
+        133
+       ],
+       "anchor": [
+        89.0,
+        129.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        278,
+        586,
+        192,
+        132
+       ],
+       "anchor": [
+        107.5,
+        128.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        533,
+        588,
+        237,
+        132
+       ],
+       "anchor": [
+        101.0,
+        128.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        816,
+        582,
+        168,
+        137
+       ],
+       "anchor": [
+        81.5,
+        133.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ]
+    },
+    "defend": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 183,
+     "frameHeight": 151,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        47,
+        830,
+        170,
+        145
+       ],
+       "anchor": [
+        84.0,
+        141.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        295,
+        842,
+        183,
+        134
+       ],
+       "anchor": [
+        90.5,
+        130.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        549,
+        825,
+        178,
+        151
+       ],
+       "anchor": [
+        85.0,
+        147.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        807,
+        826,
+        174,
+        149
+       ],
+       "anchor": [
+        90.5,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 196,
+     "frameHeight": 159,
+     "fps": 7,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        44,
+        1065,
+        182,
+        159
+       ],
+       "anchor": [
+        87.0,
+        155.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        0
+       ]
+      },
+      {
+       "rect": [
+        287,
+        1090,
+        196,
+        138
+       ],
+       "anchor": [
+        98.5,
+        134.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        1
+       ]
+      },
+      {
+       "rect": [
+        553,
+        1092,
+        193,
+        139
+       ],
+       "anchor": [
+        81.0,
+        135.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        2
+       ]
+      },
+      {
+       "rect": [
+        809,
+        1071,
+        180,
+        159
+       ],
+       "anchor": [
+        88.5,
+        155.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        3
+       ]
+      }
+     ]
+    },
+    "death": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 198,
+     "frameHeight": 140,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        43,
+        1330,
+        178,
+        140
+       ],
+       "anchor": [
+        88.0,
+        136.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        0
+       ]
+      },
+      {
+       "rect": [
+        289,
+        1350,
+        186,
+        120
+       ],
+       "anchor": [
+        96.5,
+        116.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        1
+       ]
+      },
+      {
+       "rect": [
+        545,
+        1365,
+        198,
+        102
+       ],
+       "anchor": [
+        89.0,
+        98.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        2
+       ]
+      },
+      {
+       "rect": [
+        801,
+        1369,
+        191,
+        98
+       ],
+       "anchor": [
+        96.5,
+        94.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        3
+       ]
+      }
+     ]
+    },
+    "victory": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 157,
+     "frameHeight": 133,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        55,
+        102,
+        152,
+        133
+       ],
+       "anchor": [
+        76.0,
+        129.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        307,
+        102,
+        157,
+        133
+       ],
+       "anchor": [
+        78.5,
+        129.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        558,
+        104,
+        152,
+        131
+       ],
+       "anchor": [
+        76.0,
+        127.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        821,
+        103,
+        153,
+        132
+       ],
+       "anchor": [
+        76.5,
+        128.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "idle"
+    },
+    "ability": {
+     "file": "campaign-v2/atlas-baku-v2.png",
+     "frames": 4,
+     "frameWidth": 183,
+     "frameHeight": 151,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        47,
+        830,
+        170,
+        145
+       ],
+       "anchor": [
+        84.0,
+        141.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        295,
+        842,
+        183,
+        134
+       ],
+       "anchor": [
+        90.5,
+        130.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        549,
+        825,
+        178,
+        151
+       ],
+       "anchor": [
+        85.0,
+        147.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        807,
+        826,
+        174,
+        149
+       ],
+       "anchor": [
+        90.5,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "defend"
+    }
+   }
+  },
+  "afanc": {
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15: native atlas, measured frame regions (animation-manifest.json); not retouched or upscaled.",
+   "facing": "right",
+   "pixelsPerHex": 123.44,
+   "animations": {
+    "idle": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 201,
+     "frameHeight": 124,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        108,
+        190,
+        122
+       ],
+       "anchor": [
+        95.0,
+        118.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        284,
+        109,
+        197,
+        122
+       ],
+       "anchor": [
+        98.5,
+        118.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        539,
+        107,
+        198,
+        124
+       ],
+       "anchor": [
+        99.0,
+        120.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        785,
+        107,
+        201,
+        123
+       ],
+       "anchor": [
+        100.5,
+        119.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "move": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 219,
+     "frameHeight": 123,
+     "fps": 7,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        30,
+        341,
+        210,
+        120
+       ],
+       "anchor": [
+        101.0,
+        116.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        0
+       ]
+      },
+      {
+       "rect": [
+        283,
+        341,
+        213,
+        122
+       ],
+       "anchor": [
+        99.5,
+        118.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        1
+       ]
+      },
+      {
+       "rect": [
+        530,
+        340,
+        219,
+        121
+       ],
+       "anchor": [
+        108.0,
+        117.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        2
+       ]
+      },
+      {
+       "rect": [
+        783,
+        341,
+        214,
+        123
+       ],
+       "anchor": [
+        102.5,
+        119.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        3
+       ]
+      }
+     ]
+    },
+    "attack": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 226,
+     "frameHeight": 128,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        31,
+        578,
+        217,
+        119
+       ],
+       "anchor": [
+        100.0,
+        115.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        287,
+        571,
+        212,
+        126
+       ],
+       "anchor": [
+        95.5,
+        122.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        525,
+        574,
+        226,
+        125
+       ],
+       "anchor": [
+        113.0,
+        121.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        777,
+        573,
+        219,
+        128
+       ],
+       "anchor": [
+        108.5,
+        124.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ]
+    },
+    "defend": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 225,
+     "frameHeight": 129,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        30,
+        807,
+        216,
+        129
+       ],
+       "anchor": [
+        101.0,
+        125.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        283,
+        822,
+        225,
+        117
+       ],
+       "anchor": [
+        99.5,
+        113.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        530,
+        815,
+        220,
+        124
+       ],
+       "anchor": [
+        108.0,
+        120.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        783,
+        813,
+        214,
+        128
+       ],
+       "anchor": [
+        102.5,
+        124.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 231,
+     "frameHeight": 161,
+     "fps": 7,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        40,
+        1033,
+        208,
+        161
+       ],
+       "anchor": [
+        91.0,
+        157.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        0
+       ]
+      },
+      {
+       "rect": [
+        284,
+        1061,
+        219,
+        128
+       ],
+       "anchor": [
+        98.5,
+        124.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        1
+       ]
+      },
+      {
+       "rect": [
+        523,
+        1063,
+        231,
+        127
+       ],
+       "anchor": [
+        115.0,
+        123.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        2
+       ]
+      },
+      {
+       "rect": [
+        784,
+        1070,
+        212,
+        124
+       ],
+       "anchor": [
+        101.5,
+        120.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        3
+       ]
+      }
+     ]
+    },
+    "death": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 230,
+     "frameHeight": 124,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        31,
+        1316,
+        223,
+        124
+       ],
+       "anchor": [
+        100.0,
+        120.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        0
+       ]
+      },
+      {
+       "rect": [
+        284,
+        1328,
+        215,
+        105
+       ],
+       "anchor": [
+        98.5,
+        101.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        1
+       ]
+      },
+      {
+       "rect": [
+        523,
+        1329,
+        230,
+        101
+       ],
+       "anchor": [
+        115.0,
+        97.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        2
+       ]
+      },
+      {
+       "rect": [
+        781,
+        1333,
+        223,
+        93
+       ],
+       "anchor": [
+        104.5,
+        89.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        3
+       ]
+      }
+     ]
+    },
+    "victory": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 201,
+     "frameHeight": 124,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        108,
+        190,
+        122
+       ],
+       "anchor": [
+        95.0,
+        118.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        284,
+        109,
+        197,
+        122
+       ],
+       "anchor": [
+        98.5,
+        118.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        539,
+        107,
+        198,
+        124
+       ],
+       "anchor": [
+        99.0,
+        120.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        785,
+        107,
+        201,
+        123
+       ],
+       "anchor": [
+        100.5,
+        119.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "idle"
+    },
+    "ability": {
+     "file": "campaign-v2/atlas-afanc-v2.png",
+     "frames": 4,
+     "frameWidth": 225,
+     "frameHeight": 129,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        30,
+        807,
+        216,
+        129
+       ],
+       "anchor": [
+        101.0,
+        125.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        283,
+        822,
+        225,
+        117
+       ],
+       "anchor": [
+        99.5,
+        113.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        530,
+        815,
+        220,
+        124
+       ],
+       "anchor": [
+        108.0,
+        120.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        783,
+        813,
+        214,
+        128
+       ],
+       "anchor": [
+        102.5,
+        124.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "defend"
+    }
+   }
+  },
+  "ahuitzotl": {
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15: native atlas, measured frame regions (animation-manifest.json); not retouched or upscaled.",
+   "facing": "right",
+   "pixelsPerHex": 156.67,
+   "animations": {
+    "idle": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 170,
+     "frameHeight": 155,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        138,
+        170,
+        155
+       ],
+       "anchor": [
+        85.0,
+        151.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        299,
+        145,
+        163,
+        149
+       ],
+       "anchor": [
+        81.5,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        550,
+        144,
+        166,
+        149
+       ],
+       "anchor": [
+        83.0,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        805,
+        144,
+        163,
+        149
+       ],
+       "anchor": [
+        81.5,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ]
+    },
+    "move": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 197,
+     "frameHeight": 158,
+     "fps": 7,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        367,
+        181,
+        156
+       ],
+       "anchor": [
+        85.0,
+        152.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        0
+       ]
+      },
+      {
+       "rect": [
+        295,
+        367,
+        187,
+        153
+       ],
+       "anchor": [
+        85.5,
+        149.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        1
+       ]
+      },
+      {
+       "rect": [
+        542,
+        369,
+        197,
+        150
+       ],
+       "anchor": [
+        91.0,
+        146.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        2
+       ]
+      },
+      {
+       "rect": [
+        799,
+        365,
+        186,
+        158
+       ],
+       "anchor": [
+        87.5,
+        154.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        1,
+        3
+       ]
+      }
+     ]
+    },
+    "attack": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 221,
+     "frameHeight": 173,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        592,
+        190,
+        167
+       ],
+       "anchor": [
+        85.0,
+        163.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        285,
+        589,
+        221,
+        170
+       ],
+       "anchor": [
+        95.5,
+        166.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        548,
+        587,
+        190,
+        173
+       ],
+       "anchor": [
+        85.0,
+        169.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        792,
+        597,
+        194,
+        166
+       ],
+       "anchor": [
+        94.5,
+        162.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ]
+    },
+    "defend": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 202,
+     "frameHeight": 167,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        37,
+        844,
+        190,
+        167
+       ],
+       "anchor": [
+        84.0,
+        163.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        0
+       ]
+      },
+      {
+       "rect": [
+        295,
+        875,
+        202,
+        142
+       ],
+       "anchor": [
+        85.5,
+        138.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        1
+       ]
+      },
+      {
+       "rect": [
+        549,
+        849,
+        196,
+        161
+       ],
+       "anchor": [
+        84.0,
+        157.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        2
+       ]
+      },
+      {
+       "rect": [
+        792,
+        853,
+        199,
+        161
+       ],
+       "anchor": [
+        94.5,
+        157.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        3,
+        3
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 205,
+     "frameHeight": 179,
+     "fps": 7,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        40,
+        1081,
+        183,
+        179
+       ],
+       "anchor": [
+        81.0,
+        175.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        0
+       ]
+      },
+      {
+       "rect": [
+        293,
+        1106,
+        194,
+        156
+       ],
+       "anchor": [
+        87.5,
+        152.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        1
+       ]
+      },
+      {
+       "rect": [
+        539,
+        1116,
+        205,
+        148
+       ],
+       "anchor": [
+        94.0,
+        144.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        2
+       ]
+      },
+      {
+       "rect": [
+        802,
+        1101,
+        178,
+        169
+       ],
+       "anchor": [
+        84.5,
+        165.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        4,
+        3
+       ]
+      }
+     ]
+    },
+    "death": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 212,
+     "frameHeight": 142,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        1346,
+        192,
+        142
+       ],
+       "anchor": [
+        85.0,
+        138.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        0
+       ]
+      },
+      {
+       "rect": [
+        286,
+        1354,
+        198,
+        132
+       ],
+       "anchor": [
+        94.5,
+        128.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        1
+       ]
+      },
+      {
+       "rect": [
+        532,
+        1358,
+        208,
+        122
+       ],
+       "anchor": [
+        101.0,
+        118.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        2
+       ]
+      },
+      {
+       "rect": [
+        780,
+        1368,
+        212,
+        114
+       ],
+       "anchor": [
+        106.5,
+        110.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        5,
+        3
+       ]
+      }
+     ]
+    },
+    "victory": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 170,
+     "frameHeight": 155,
+     "fps": 3,
+     "loop": true,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        138,
+        170,
+        155
+       ],
+       "anchor": [
+        85.0,
+        151.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        0
+       ]
+      },
+      {
+       "rect": [
+        299,
+        145,
+        163,
+        149
+       ],
+       "anchor": [
+        81.5,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        1
+       ]
+      },
+      {
+       "rect": [
+        550,
+        144,
+        166,
+        149
+       ],
+       "anchor": [
+        83.0,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        2
+       ]
+      },
+      {
+       "rect": [
+        805,
+        144,
+        163,
+        149
+       ],
+       "anchor": [
+        81.5,
+        145.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        0,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "idle"
+    },
+    "ability": {
+     "file": "campaign-v2/atlas-ahuitzotl-v2.png",
+     "frames": 4,
+     "frameWidth": 221,
+     "frameHeight": 173,
+     "fps": 6,
+     "loop": false,
+     "anchor": [
+      0.5,
+      0.9
+     ],
+     "status": "final",
+     "regions": [
+      {
+       "rect": [
+        36,
+        592,
+        190,
+        167
+       ],
+       "anchor": [
+        85.0,
+        163.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        0
+       ]
+      },
+      {
+       "rect": [
+        285,
+        589,
+        221,
+        170
+       ],
+       "anchor": [
+        95.5,
+        166.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        1
+       ]
+      },
+      {
+       "rect": [
+        548,
+        587,
+        190,
+        173
+       ],
+       "anchor": [
+        85.0,
+        169.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        2
+       ]
+      },
+      {
+       "rect": [
+        792,
+        597,
+        194,
+        166
+       ],
+       "anchor": [
+        94.5,
+        162.0
+       ],
+       "sourceScale": 1.0,
+       "sourceCell": [
+        2,
+        3
+       ]
+      }
+     ],
+     "aliasOf": "attack"
+    }
+   }
+  }
+ },
+ "sites": {
+  "map.site.neutral_dwelling.pegasus": {
+   "file": "campaign-v2/display/site-pegasus.webp",
+   "width": 384,
+   "height": 310,
+   "anchor": [
+    0.5024,
+    0.8809
+   ],
+   "pixelsPerHex": 274.29,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-pegasus.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.neutral_dwelling.root_runner": {
+   "file": "campaign-v2/display/site-root_runner.webp",
+   "width": 384,
+   "height": 370,
+   "anchor": [
+    0.5383,
+    0.8962
+   ],
+   "pixelsPerHex": 274.29,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-root_runner.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.neutral_dwelling.serpopard": {
+   "file": "campaign-v2/display/site-serpopard.webp",
+   "width": 384,
+   "height": 346,
+   "anchor": [
+    0.5343,
+    0.9008
+   ],
+   "pixelsPerHex": 274.29,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-serpopard.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.neutral_dwelling.baku": {
+   "file": "campaign-v2/display/site-baku.webp",
+   "width": 384,
+   "height": 382,
+   "anchor": [
+    0.5128,
+    0.8934
+   ],
+   "pixelsPerHex": 274.29,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-baku.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.neutral_dwelling.afanc": {
+   "file": "campaign-v2/display/site-afanc.webp",
+   "width": 384,
+   "height": 270,
+   "anchor": [
+    0.5191,
+    0.8749
+   ],
+   "pixelsPerHex": 274.29,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-afanc.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.neutral_dwelling.ahuitzotl": {
+   "file": "campaign-v2/display/site-ahuitzotl.webp",
+   "width": 384,
+   "height": 348,
+   "anchor": [
+    0.5153,
+    0.8916
+   ],
+   "pixelsPerHex": 274.29,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-ahuitzotl.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.sluice.closed": {
+   "file": "campaign-v2/display/site-sluice-closed.webp",
+   "width": 384,
+   "height": 307,
+   "anchor": [
+    0.5032,
+    0.8533
+   ],
+   "pixelsPerHex": 256.0,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-sluice-closed.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.sluice.open": {
+   "file": "campaign-v2/display/site-sluice-open.webp",
+   "width": 384,
+   "height": 307,
+   "anchor": [
+    0.5032,
+    0.8533
+   ],
+   "pixelsPerHex": 256.0,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-sluice-open.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.ferry": {
+   "file": "campaign-v2/display/site-ferry.webp",
+   "width": 384,
+   "height": 283,
+   "anchor": [
+    0.5258,
+    0.8811
+   ],
+   "pixelsPerHex": 240.0,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-ferry.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  },
+  "map.site.supply_depot": {
+   "file": "campaign-v2/display/site-supply-depot.webp",
+   "width": 384,
+   "height": 324,
+   "anchor": [
+    0.5295,
+    0.8769
+   ],
+   "pixelsPerHex": 284.44,
+   "status": "final",
+   "provenance": "Campaign expansion kit 2026-10-15 (site-supply-depot.png); trimmed to its painted pixels and reduced for the map (native file kept beside it)."
+  }
+ }
+}

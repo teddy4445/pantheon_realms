@@ -1,5 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { clickHex, endDay, inspect, readStory, startCampaign, waitFor, type Inspect } from './helpers';
+import { startLegacyCampaign } from './fixtures';
+import { fightByHand } from './handBattle';
 
 /**
  * Plays Mission 1 of The Three Beacons to its debrief through the real UI and
@@ -66,26 +68,32 @@ async function marchAndFight(page: Page, dest: Hex, label: string, onResult?: ()
     await clickHex(page, to.q, to.r);
     await clickHex(page, to.q, to.r);
     await page.waitForTimeout(400);
-    const after = await waitFor(page, (x) => !x.busy, 'movement playback', 15_000);
+    const after = await waitFor(page, (x) => !x.busy, 'movement playback', 60_000);
     if (!after.overlays.includes('encounter') && after.state.heroes.alexios.position.q === before.q && after.state.heroes.alexios.position.r === before.r) await endDay(page);
   }
   await waitFor(page, (x) => x.overlays.includes('encounter'), `pre-battle dialog (${label})`);
+  // A single Fight action: no quick battle or casualty preview in a campaign.
+  await expect(page.getByTestId('encounter-quick')).toHaveCount(0);
+  await expect(page.getByTestId('quick-battle')).toHaveCount(0);
   await page.getByTestId('encounter-attack').click();
-  await waitFor(page, (x) => x.screen === 'battle', `battle screen (${label})`, 15_000);
+  await waitFor(page, (x) => x.screen === 'battle', `battle screen (${label})`, 60_000);
   // A scene can open as the battle starts (the lighthouse); read it first.
   await page.waitForTimeout(500);
   await readStory(page);
-  await page.getByTestId('battle-auto').click();
+  // Campaign battles are fought by hand (no Auto button since 2026-10-15).
+  await expect(page.getByTestId('battle-auto')).toHaveCount(0);
+  await fightByHand(page);
   await settleAfterBattle(page, onResult);
 }
 
-test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ page }) => {
-  test.setTimeout(420_000);
+test('Legacy run (content v1): Mission 1 to its debrief, then into Mission 2 through the UI', async ({ page }) => {
+  test.setTimeout(900_000);
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-settings').click();
   await page.getByLabel('Battle speed').selectOption('instant');
   await page.getByTestId('settings-apply').click();
-  await startCampaign(page);
+  // A legacy (content v1) run: Mission 1 of the original three (new runs play the v2 chapters).
+  await startLegacyCampaign(page);
 
   // Asterion: Veteran Barracks, recruit all Hoplites, train at least ten.
   await page.getByTestId('town-tab-asterion').click();
@@ -97,9 +105,9 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   await page.locator('.recruit-detail').getByRole('button', { name: 'Max' }).click();
   await page.getByTestId('recruit-confirm').click();
   await waitFor(page, (x) => (x.state.mission.counters['recruited:hoplite'] ?? 0) >= 8, 'recruit counter');
-  const row = page.locator('.upgrade-row').first();
-  await row.getByRole('button', { name: 'Max' }).click();
-  await row.getByRole('button', { name: /^Upgrade \d+/ }).click();
+  // Training (2026-10-14 layout): the selected family's stack, as many as possible, one click.
+  await page.getByTestId('train-max').click();
+  await page.getByTestId('train-hoplite').click();
   let s = await waitFor(page, (x) => (x.state.mission.counters['trained:hoplite'] ?? 0) >= 10, 'trained counter');
   expect(s.state.mission.objectives.m01_recruit.status).toBe('completed');
   expect(s.state.mission.objectives.m01_upgrade.status).toBe('completed');
@@ -160,4 +168,21 @@ test('Mission 1 to its debrief, then into Mission 2 through the UI', async ({ pa
   expect(s.state.heroes.alexios.army.slots.some((x: { creatureId: string } | null) => x?.creatureId === 'veteran_hoplite' || x?.creatureId === 'hoplite')).toBe(true);
   expect(s.campaign.currentMissionId).toBe('three_beacons_m02');
   expect(s.campaign.completions[0].missionId).toBe('three_beacons_m01');
+});
+
+test('A new campaign starts the chronicle (content v2): chapter 1 briefing, manual battles, the run’s chapters in the Journal', async ({ page }) => {
+  test.setTimeout(180_000);
+  await startCampaign(page);
+  const s = await inspect(page);
+  expect(s.state.mission.missionId).toBe('three_beacons_v2_m01');
+  expect(s.campaign.contentVersion).toBe(2);
+  expect(s.campaign.facts).toEqual([]);
+  // The Journal's Campaign tab shows the chronicle: chapter 1 current, chapter 2 locked.
+  await page.keyboard.press('j');
+  await waitFor(page, (x) => x.screen === 'journal', 'journal');
+  await page.getByRole('tab', { name: /Campaign/ }).click();
+  const chronicle = page.getByTestId('journal-chronicle');
+  await expect(chronicle.getByTestId('chapter-three_beacons_v2_m01')).toHaveAttribute('aria-label', /current/i);
+  await expect(chronicle.getByTestId('chapter-three_beacons_v2_m02')).toHaveAttribute('aria-label', /locked/i);
+  await page.screenshot({ path: 'test-results/journal-chronicle.png' });
 });

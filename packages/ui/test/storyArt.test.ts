@@ -13,6 +13,7 @@ import { campaignEpilogueLines, type DialogueLine } from '@pr/rules';
 import { createRandomSkirmish } from '@pr/campaign';
 import { briefingArt, campaignEndingArtId, speakerBust, speakerSides } from '../src/assets/storyArt';
 import { resolveArt, resolveAsset } from '../src/assets/manifest';
+import { AWAITING_BRIEF_18, awaitingCampaign, awaitingPortrait } from './awaitingArt';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const runtime = path.join(root, 'assets-runtime');
@@ -52,7 +53,7 @@ describe('story art runtime files', () => {
   it('every registered file exists with its registered size; paths stay inside assets-runtime', () => {
     const entries = Object.entries(manifest.assets).filter(([, a]) => STORY_KINDS.includes(a.kind));
     // Busts, covers, campaign cards, endings, mission pictures and their cards (incl. the six skirmish maps of Brief 14).
-    expect(entries.length).toBe(36 + 6 + 6 + 11 + 46 + 46);
+    expect(entries.length).toBe(40 + 7 + 7 + 13 + 53 + 53);
     for (const [id, a] of entries) {
       expect(a.file.startsWith('art/'), `${id}: ${a.file}`).toBe(true);
       expect(a.file).not.toMatch(/\.\.|assets-source|\.codex|blannder|:\\|^\//i);
@@ -79,32 +80,40 @@ describe('story art runtime files', () => {
 });
 
 describe('story art wiring', () => {
-  it('all 36 dialogue busts belong to speakers, and every story speaker has one (the Herald’s own since 2026-10-04)', () => {
+  it('all 40 busts belong to story speakers or catalog heroes, and every story speaker has one (the Herald’s own since 2026-10-04)', () => {
     const busts = Object.keys(manifest.assets).filter((k) => manifest.assets[k]!.kind === 'bust');
-    expect(busts).toHaveLength(36);
+    expect(busts).toHaveLength(40);
     const lines = allLines();
     const used = new Set(lines.map((l) => speakerBust(l)?.id).filter(Boolean));
-    for (const b of busts) expect(used.has(b), `${b} is spoken by someone`).toBe(true);
-    // Every story speaker shows a bust.
-    const missing = [...new Set(lines.filter((l) => !speakerBust(l)).map((l) => `${l.speaker} (${l.portraitAssetId})`))];
+    // A hero who never speaks (The Silent Oracle's Phaidon) still shows his bust where he stands in a scene (HeroFigure).
+    const heroBusts = new Set(Object.values(catalog.heroes).map((h) => speakerBust({ portraitAssetId: h.portraitAssetId })?.id).filter(Boolean));
+    for (const b of busts) expect(used.has(b) || heroBusts.has(b), `${b} is spoken by someone or a catalog hero's`).toBe(true);
+    // Every story speaker shows a bust — except art still awaited from a brief (awaitingArt.ts; none since Brief 18 was imported).
+    const missing = [...new Set(lines.filter((l) => !speakerBust(l) && !awaitingPortrait(l.portraitAssetId)).map((l) => `${l.speaker} (${l.portraitAssetId})`))];
     expect(missing).toEqual([]);
+    const awaited = new Set(lines.filter((l) => awaitingPortrait(l.portraitAssetId)).map((l) => l.portraitAssetId));
+    for (const id of awaited) expect(speakerBust({ portraitAssetId: id }), `${id}: delivered — empty AWAITING_BRIEF_18`).toBeNull();
     // The herald has its own bust (an ordinary messenger), through the same .portrait → .bust route; it borrows no hero's face.
     const herald = lines.filter((l) => l.speaker === 'Herald');
     expect(herald.length).toBeGreaterThan(0);
     expect(herald.every((l) => l.portraitAssetId === 'story.herald.portrait' && speakerBust(l)?.id === 'story.herald.bust')).toBe(true);
   });
 
-  it('six campaign covers and their cards', () => {
+  it('a cover and a card for every campaign (The Silent Oracle’s from Brief 18, imported 2026-10-14)', () => {
     const camps = Object.values(catalog.campaigns);
-    expect(camps).toHaveLength(6);
-    for (const c of camps) {
+    expect(camps).toHaveLength(7);
+    for (const c of camps.filter((x) => awaitingCampaign(x.id))) {
+      expect(resolveArt(`campaign.${c.id}.cover`), `${c.id}: delivered — empty AWAITING_BRIEF_18`).toBeFalsy();
+      expect(resolveAsset(c.thumbnailAssetId).status).toBe('procedural');
+    }
+    for (const c of camps.filter((x) => !awaitingCampaign(x.id))) {
       expect(resolveArt(`campaign.${c.id}.cover`)?.kind, c.id).toBe('cover');
       expect(resolveArt(c.thumbnailAssetId)?.kind, c.thumbnailAssetId).toBe('card');
       expect(resolveAsset(c.thumbnailAssetId).status).toBe('final');
     }
   });
 
-  it('eleven ending routes: one epilogue for The Three Beacons, the chosen one of two elsewhere — never the other', () => {
+  it('thirteen ending routes: one epilogue for The Three Beacons, the chosen one of two elsewhere — never the other', () => {
     let routes = 0;
     for (const c of Object.values(catalog.campaigns)) {
       if (!c.epilogueVariants?.length) {
@@ -120,19 +129,29 @@ describe('story art wiring', () => {
         const flags = { [v.flag]: true };
         const id = campaignEndingArtId(c, flags);
         expect(id).toBe(`ending.${c.id}.${v.flag}`);
+        if (awaitingCampaign(c.id)) {
+          expect(resolveArt(id!), `${id}: delivered — empty AWAITING_BRIEF_18`).toBeFalsy();
+          continue;
+        }
         expect(resolveArt(id!)?.kind, id!).toBe('ending');
         // The picture follows the same variant as the closing lines.
         expect(campaignEpilogueLines(c, flags).slice(-v.lines.length)).toEqual(v.lines);
         routes += 1;
       }
     }
-    expect(routes).toBe(11);
+    expect(routes).toBe(13);
   });
 
-  it('38 campaign mission pictures and 2 skirmish pictures: briefing art and 640 × 360 cards', () => {
+  it('45 campaign mission pictures (The Silent Oracle’s seven from Brief 18) and 2 skirmish pictures: briefing art and 640 × 360 cards', () => {
     const campaignMissions = Object.values(catalog.campaigns).flatMap((c) => c.missionIds.map((id) => catalog.missions[id]!));
-    expect(campaignMissions).toHaveLength(38);
-    for (const m of campaignMissions) {
+    expect(campaignMissions).toHaveLength(45);
+    const awaited = campaignMissions.filter((m) => awaitingCampaign(m.campaignId));
+    expect(awaited).toHaveLength(7 * AWAITING_BRIEF_18.campaigns.length);
+    for (const m of awaited) {
+      expect(m.thumbnailAssetId).toBe(`mission.${m.campaignId}.m0${m.order}.thumbnail`);
+      expect(briefingArt(m.thumbnailAssetId), `${m.id}: delivered — empty AWAITING_BRIEF_18`).toBeFalsy();
+    }
+    for (const m of campaignMissions.filter((x) => !awaitingCampaign(x.campaignId))) {
       expect(resolveArt(m.thumbnailAssetId)?.kind, m.id).toBe('card');
       expect(briefingArt(m.thumbnailAssetId)?.kind, m.id).toBe('briefing');
     }

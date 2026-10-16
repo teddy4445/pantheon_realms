@@ -150,7 +150,7 @@ describe('The Winter Oath — headless campaign journey', () => {
   it('plays all seven missions with carryover, to either ending', { timeout: 1_200_000 }, () => {
     const log: string[] = [];
     const note = (d: GameDriver, label: string) => log.push(`${label}: day ${d.state.day}, L${d.hero(HERO).level} ${d.hero(HERO).xp}xp, wallet ${JSON.stringify(d.player.wallet)} — ${army(d)}`);
-    let { campaign, start } = startCampaign(catalog, 'winter_oath', { runId: 'wo1', startingGodId: 'norse_odin' });
+    let { campaign, start } = startCampaign(catalog, 'winter_oath', { runId: 'wo1', startingGodId: 'norse_odin', contentVersion: 1 });
     let d = new GameDriver(start.match, catalog);
     expect(d.player.pantheon.patronGodId).toBe('norse_odin');
 

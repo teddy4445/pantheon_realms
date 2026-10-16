@@ -45,8 +45,13 @@ import {
   settleHeroesAtTownGates,
   heroInTown,
   scaleStackCount,
+  setChannelTerrain,
+  evaluateTimers,
+  placementSlot,
+  type AuthoredMapDefinition,
+  type SiteDefinition,
 } from '@pr/rules';
-import { generateMap, type DecorItem, type GenerationMode } from '@pr/mapgen';
+import { buildDecor, deriveStreams, generateMap, type DecorItem, type GenerationMode } from '@pr/mapgen';
 
 /** What persists for the campaign hero between missions (campaign/01 §4). */
 export interface HeroCarryover {
@@ -84,6 +89,31 @@ export interface MissionStartOptions {
   readonly playerNames?: Readonly<Record<string, string>>;
   /** Patron gods for rival seats played by humans (hot-seat). AI rivals start without a patron, as before. */
   readonly patronGodIds?: Readonly<Record<string, GodId>>;
+  /**
+   * Campaign facts carried from earlier chapters (content v2): each becomes the mission
+   * flag `fact:<id>` (order-aware dialogue) and may grant the mission's entry bonuses.
+   */
+  readonly facts?: readonly string[];
+}
+
+/** The logical map of an authored region map (content v2): exactly as written, nothing generated. */
+export function authoredWorldMap(m: AuthoredMapDefinition): WorldMapDefinition {
+  const terrain = m.rows.join('');
+  if (m.rows.length !== m.height || m.rows.some((r) => r.length !== m.width)) throw new Error(`${m.id}: rows do not match ${m.width} x ${m.height}`);
+  return {
+    templateId: m.id,
+    templateVersion: m.version,
+    generatorVersion: 'authored-region-1',
+    seed: m.seed,
+    attempt: 0,
+    mode: 'golden',
+    width: m.width,
+    height: m.height,
+    terrain,
+    roads: [...m.roads].sort(),
+    logicalHash: hashValue({ terrain, roads: [...m.roads].sort() }),
+    biome: m.biome,
+  };
 }
 
 /** A generated scenario: its definition and logical map (from @pr/mapgen's skirmish generator). */
@@ -181,6 +211,11 @@ function revealInitial(catalog: ContentCatalog, state: MatchState): void {
 
 export function createMissionMatch(catalog: ContentCatalog, missionId: string, opts: MissionStartOptions): MissionStart {
   const mission: MissionDefinition = getMission(catalog, missionId);
+  if (mission.map) {
+    // Content v2: the authored region map, its decoration from its own seed.
+    const map = authoredWorldMap(mission.map);
+    return buildMissionMatch(catalog, mission, map, buildDecor(map, deriveStreams(mission.map.seed, mission.map.id, 0)), opts, false, mission.map.seed);
+  }
   const template = getMapTemplate(catalog, mission.mapTemplateId);
   const seed = opts.seed ?? template.goldenSeed;
   const gen = generateMap(template, seed, opts.mode ?? 'golden');
@@ -381,6 +416,8 @@ function buildMissionMatch(
       ...(hh.ai.regionCenter ? { regionCenter: { ...hh.ai.regionCenter } } : {}),
       ...(hh.ai.regionRadius !== undefined ? { regionRadius: hh.ai.regionRadius } : {}),
     };
+    if (hh.homeSiteId) h.ai.homeSiteId = hh.homeSiteId;
+    if (hh.dormantUntilFlag) h.ai.dormantUntilFlag = hh.dormantUntilFlag;
     if (hh.monster) h.monster = { bounty: resources(hh.monster.bounty), creatureId: hh.army[0]?.creatureId ?? '' };
     heroes[id] = h;
   });
@@ -406,6 +443,11 @@ function buildMissionMatch(
   for (const o of mission.objectives) objectives[o.id] = { status: o.initialStatus, completedOnDay: null, rewardGranted: false };
   const flags: Record<string, true> = {};
   for (const f of mission.initialFlags ?? []) flags[f] = true;
+  // Campaign facts from earlier chapters (content v2) and the entry bonuses they earn.
+  const facts = new Set(opts.facts ?? []);
+  for (const f of [...facts].sort()) flags[`fact:${f}`] = true;
+  const bonuses = (mission.entryBonuses ?? []).filter((b) => facts.has(b.fact));
+  for (const b of bonuses) for (const f of b.flags ?? []) flags[f] = true;
 
   const baseSeed = `pr-rules|${mission.id}|${seed}|${opts.matchId}`;
   const state: MatchState = {
@@ -454,6 +496,16 @@ function buildMissionMatch(
     stats: { timeline: [], totals: {} },
   };
 
+  applyEntryBonuses(state, mission, bonuses, playerHero.id);
+  // Sluices (content v2): the channel starts in its written state.
+  for (const s of mission.sites) {
+    if (s.kind.type !== 'sluice') continue;
+    const st = state.world.sites[s.id]!;
+    st.open = s.kind.startsOpen;
+    setChannelTerrain(state, s as SiteDefinition & { kind: Extract<SiteDefinition['kind'], { type: 'sluice' }> }, st.open);
+    if (st.open) state.mission.flags[s.kind.openFlag] = true;
+  }
+  if (mission.timers?.length) state.mission.timers = Object.fromEntries(mission.timers.map((t) => [t.id, { status: 'waiting' as const }]));
   // Spell specialties: the hero knows its spell from the start (scenarios with specialties).
   for (const h of Object.values(state.heroes)) grantSpecialtySpell(catalog, state, h);
   // Heroes never stand on a town's own tile: those placed in a town start at its gate.
@@ -469,9 +521,38 @@ function buildMissionMatch(
     if (town) learnSpellsAtTown(tx, h, town);
   }
   for (const town of Object.values(state.towns).sort((a, b) => (a.id < b.id ? -1 : 1))) refreshTownShops(tx, town);
+  // A deadline whose trigger already holds starts on day 1 (its start day is saved).
+  evaluateTimers(tx);
   tx.finalize();
   revealInitial(catalog, state);
   ensureStats(state);
   recordDayStats(catalog, state, (id) => projectedIncome({ catalog, state }, id));
   return { match: state, decor: gen.decor, entryHash: hashValue(state) };
+}
+
+/** Bounded entry bonuses of earlier choices (content v2): gold and troops, applied once at creation. */
+function applyEntryBonuses(state: MatchState, mission: MissionDefinition, bonuses: NonNullable<MissionDefinition['entryBonuses']>, heroId: string): void {
+  const playerId = mission.player.playerId;
+  const player = state.players[playerId];
+  const hero = state.heroes[heroId];
+  const town = state.towns[mission.player.town.townId];
+  let n = 0;
+  for (const b of bonuses) {
+    if (player && b.wallet) {
+      const w = resources(b.wallet);
+      player.wallet = resources({ gold: player.wallet.gold + w.gold, wood: player.wallet.wood + w.wood, stone: player.wallet.stone + w.stone, crystal: player.wallet.crystal + w.crystal, favor: player.wallet.favor + w.favor });
+    }
+    const place = (army: { slots: (MatchState['heroes'][string]['army']['slots'][number])[] } | undefined, stacks: readonly { creatureId: string; count: number }[] | undefined) => {
+      if (!army) return;
+      for (const st of stacks ?? []) {
+        const slot = placementSlot(army as never, st.creatureId);
+        if (slot === null || st.count <= 0) continue;
+        const existing = army.slots[slot];
+        if (existing) existing.count += st.count;
+        else army.slots[slot] = { stackId: `bonus_${mission.id}_${n++}`, creatureId: st.creatureId, count: st.count };
+      }
+    };
+    place(hero?.army, b.heroArmy);
+    place(town?.garrison, b.garrison);
+  }
 }

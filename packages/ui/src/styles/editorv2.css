@@ -1,0 +1,47 @@
+/* Campaign expansion (2026-10-15): editorv2 screens. */
+
+/* --- Map editor palette: the new neutrals' hiring sites (portrait + map picture) --- */
+.editor-v2-neutrals { display: flex; flex-direction: column; gap: 0.3rem; }
+.editor-tool.editor-neutral { display: grid; grid-template-columns: 2.1rem 2.4rem minmax(0, 1fr); align-items: center; gap: 0.35rem; padding: 0.22rem 0.4rem; min-height: 2.6rem; }
+.editor-neutral__portrait { width: 2.1rem; height: 2.1rem; border-radius: 50%; object-fit: cover; object-position: center 30%; border: 1px solid rgba(194, 154, 82, 0.55); background: rgba(0, 0, 0, 0.35); }
+.editor-neutral__site { width: 2.4rem; height: 2.1rem; object-fit: contain; }
+.editor-neutral__text { display: flex; flex-direction: column; min-width: 0; }
+.editor-neutral__name { overflow-wrap: anywhere; }
+.editor-neutral__stock { font-size: 0.7rem; color: var(--text-dim); }
+.editor-v2-hint { margin: 0; color: var(--text-dim); line-height: 1.3; }
+.editor-tool.editor-landmark { flex-direction: column; justify-content: center; text-align: center; gap: 0.15rem; }
+.editor-landmark__pic { width: 2.8rem; height: 2.2rem; object-fit: contain; }
+.map-editor__count--warn { background: var(--gold-400); color: #1b1204; }
+
+/* Habitat readout over the canvas while placing a hiring site. */
+.map-editor__habitat { position: absolute; right: 0.5rem; bottom: 0.4rem; max-width: min(30rem, 62%); padding: 0.2rem 0.55rem; border-radius: var(--radius-s); background: rgba(5, 9, 15, 0.84); color: var(--text); pointer-events: none; border-left: 3px solid var(--gold-400); line-height: 1.3; }
+.map-editor__habitat.is-fit { border-left-color: #60d680; }
+.map-editor__habitat.is-unfit { border-left-color: var(--danger); }
+
+/* --- Site panel --- */
+.editor-v2-pics { display: flex; gap: 0.5rem; align-items: flex-end; }
+.editor-v2-pics__portrait { width: 5rem; height: 5rem; border-radius: var(--radius-s); object-fit: cover; object-position: center 30%; border: 1px solid rgba(194, 154, 82, 0.55); }
+.editor-v2-pics__site { width: 6rem; height: 5rem; object-fit: contain; }
+.editor-habitat { display: flex; gap: 0.45rem; align-items: flex-start; margin: 0; padding: 0.3rem 0.45rem; border-radius: var(--radius-s); border-left: 3px solid var(--gold-400); line-height: 1.35; }
+.editor-habitat--ok { border-left-color: #60d680; background: rgba(30, 80, 40, 0.25); }
+.editor-habitat--warn { border-left-color: var(--gold-400); background: rgba(80, 60, 18, 0.28); }
+.editor-habitat__mark { font-weight: 700; flex: none; }
+.editor-v2-states { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.editor-v2-state { margin: 0; padding: 0.2rem; border: 1px solid rgba(194, 154, 82, 0.25); border-radius: var(--radius-s); text-align: center; }
+.editor-v2-state img { display: block; width: 100%; height: 4.2rem; object-fit: contain; }
+.editor-v2-state.is-start { border-color: var(--gold-300); box-shadow: 0 0 0 1px var(--gold-400); }
+.editor-v2-grounds { display: flex; flex-direction: column; gap: 0.35rem; }
+.editor-v2-grounds label { display: grid; grid-template-columns: 3.6rem minmax(0, 1fr); align-items: center; gap: 0.4rem; }
+.editor-v2-grounds select { min-width: 0; width: 100%; }
+.editor-v2-reward { flex-wrap: wrap; }
+
+/* Sluice connectivity check (Site and Check panels). */
+.editor-v2-check { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.4rem 0.5rem; margin-bottom: 0.5rem; border: 1px solid rgba(194, 154, 82, 0.3); border-radius: var(--radius-s); background: rgba(6, 10, 18, 0.45); }
+.editor-v2-check__title { color: var(--gold-200); }
+.editor-v2-check__row { display: flex; gap: 0.4rem; margin: 0; line-height: 1.35; }
+.editor-v2-check__mark { flex: none; font-weight: 700; }
+.editor-v2-check__row.is-ok .editor-v2-check__mark { color: #60d680; }
+.editor-v2-check__row.is-bad .editor-v2-check__mark { color: var(--danger); }
+
+/* --- Random map setup: the New neutral creatures option --- */
+.editor-v2-random .small { min-width: 0; }

@@ -79,9 +79,9 @@ test('title hall and New Game: the Records link, the live version, four illustra
   const modes = ['campaign', 'skirmish', 'random', 'editor'];
   for (const m of modes) await expect(page.getByTestId(`mode-${m}`)).toBeVisible();
   await expect(page.locator('.fe-modes > button')).toHaveCount(4);
-  // Real names and catalog-driven copy (six campaigns, nine layouts), no fixed Greek/Norse list.
+  // Real names and catalog-driven copy (seven campaigns across six pantheons since 2026-10-14, nine layouts), no fixed Greek/Norse list.
   await expect(page.getByTestId('mode-campaign')).toContainText('Campaign');
-  await expect(page.getByTestId('mode-campaign')).toContainText(/6 story campaigns/);
+  await expect(page.getByTestId('mode-campaign')).toContainText(/7 story campaigns across 6 pantheons/);
   await expect(page.getByTestId('mode-random')).toContainText(`${RANDOM_TYPES.length} layouts`);
   await expect(page.getByTestId('mode-campaign')).not.toContainText(/Greek and Norse/);
   const art = await picturesDecoded(page, '.fe-modes');
@@ -102,14 +102,17 @@ test('title hall and New Game: the Records link, the live version, four illustra
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
-test('Campaign Chronicles: six campaigns, a read-only mission outline, the campaign difficulty; Begin opens the first mission', async ({ page }) => {
+test('Campaign Chronicles: seven campaigns (The Silent Oracle second), the chapter chronicle (content v2), the campaign difficulty; Begin opens the first chapter', async ({ page }) => {
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-new').click();
   await page.getByTestId('mode-campaign').click();
   await waitFor(page, (s) => s.screen === 'scenario-select', 'campaigns');
   await expect(page.locator('.screen-header__title')).toHaveText('Campaign Chronicles');
   const rows = page.getByRole('radiogroup', { name: 'Campaigns' }).getByRole('radio');
-  await expect(rows).toHaveCount(6);
+  await expect(rows).toHaveCount(7);
+  // The tutorial first, then the second Greek campaign (owner request 2026-10-14).
+  await expect(rows.nth(0)).toHaveAttribute('data-testid', 'scenario-three_beacons');
+  await expect(rows.nth(1)).toHaveAttribute('data-testid', 'scenario-silent_oracle');
   // Arrow keys move the selection inside the one group.
   const first = rows.first();
   await first.click();
@@ -119,21 +122,21 @@ test('Campaign Chronicles: six campaigns, a read-only mission outline, the campa
   // Each campaign wears its own pantheon's frame on the detail.
   for (const id of ['three_beacons', 'winter_oath']) {
     await page.getByTestId(`scenario-${id}`).click();
-    const outline = page.locator('.fe-outline');
-    await expect(outline.locator('li').first()).toBeVisible();
-    // Read-only: no control inside the outline.
-    await expect(outline.locator('button, a, input, select')).toHaveCount(0);
+    // Content v2 (campaign expansion 2026-10-15): the chapter chronicle replaces the read-only outline.
+    const chronicle = page.getByTestId('setup-chronicle');
+    await expect(chronicle.getByTestId(`chapter-${id}_v2_m01`)).toBeVisible();
     await expect(page.getByTestId('campaign-cover')).toBeVisible();
   }
   await expect(page.locator('.fe-chronicle')).toHaveAttribute('data-gui-theme', 'norse');
   await page.getByTestId('scenario-three_beacons').click();
   await expect(page.locator('.fe-chronicle')).toHaveAttribute('data-gui-theme', 'greek');
-  await expect(page.locator('.fe-outline li')).toHaveCount(3);
+  // The Three Beacons: two chapters (the legacy three missions merged), only the first open for a new run.
+  await expect(page.getByTestId('chronicle-graph').locator('[data-testid^="chapter-three_beacons_v2_m"]')).toHaveCount(2);
   await page.getByTestId('campaign-difficulty-campaign_hard').click();
   await page.screenshot({ path: `${OUT}/campaign.png` });
   await page.getByTestId('setup-begin').click();
   const s = await waitFor(page, (x) => x.overlays.includes('briefing'), 'briefing', 30_000, true);
-  expect(s.state.scenario.missionId).toBe('three_beacons_m01');
+  expect(s.state.scenario.missionId).toBe('three_beacons_v2_m01');
   expect(s.campaign?.difficultyId).toBe('campaign_hard');
 });
 

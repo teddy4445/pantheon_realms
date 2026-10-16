@@ -11,6 +11,7 @@ import {
   SUPPORT_ROLES,
   equipSlotsFor,
   type ArtifactSlot,
+  type CampaignDefinition,
   type ContentCatalog,
   type EffectDefinition,
   type MissionDefinition,
@@ -68,8 +69,20 @@ function creatureUpgradeValidator(c: ContentCatalog, push: Push): void {
   const incoming = new Map<string, number>();
   for (const fam of Object.values(c.families)) {
     const base = c.creatures[fam.baseCreatureId];
-    const up = c.creatures[fam.upgradedCreatureId];
     if (!base) push(`${fam.id}: missing base form ${fam.baseCreatureId}`);
+    // Single-form families (handoff 2026-10-15) are neutral only; pantheon rosters keep base + one upgrade.
+    if (!fam.upgradedCreatureId) {
+      if (fam.classification !== 'neutral') push(`${fam.id}: only a neutral family may have a single form`);
+      if (base) {
+        if (base.form !== 'base') push(`${base.id}: expected form "base"`);
+        if (base.upgradeId) push(`${base.id}: single-form family but upgradeId ${base.upgradeId}`);
+        if (base.familyId !== fam.id || base.tier !== fam.tier || base.pantheonId !== fam.pantheonId) push(`${fam.id}: form family/tier/pantheon mismatch`);
+        if (fam.implementationStatus === 'implemented' && (!base.stats || !base.cost)) push(`${fam.id}: implemented family needs stats and a cost`);
+        if (fam.upgradedDwellingBuildingId) push(`${fam.id}: single-form family with an upgraded dwelling`);
+      }
+      continue;
+    }
+    const up = c.creatures[fam.upgradedCreatureId];
     if (!up) push(`${fam.id}: missing upgraded form ${fam.upgradedCreatureId}`);
     if (!base || !up) continue;
     if (base.id === up.id) push(`${fam.id}: self-upgrade`);
@@ -340,8 +353,99 @@ function campaignValidator(c: ContentCatalog, push: Push): void {
     if (camp.missionIds.length !== 3 && camp.id === 'three_beacons') push(`${camp.id}: The Three Beacons must have exactly 3 missions`);
     for (const g of camp.startingGodOptions) if (!c.gods[g]) push(`${camp.id}: unknown starting god ${g}`);
     for (const m of camp.missionIds) if (!c.missions[m]) push(`${camp.id}: unknown mission ${m}`);
+    if (camp.chapters) chapterGraphValidator(c, camp, push);
   }
-  for (const m of Object.values(c.missions)) validateMission(c, m, push, true);
+  for (const m of Object.values(c.missions)) validateMission(c, m, push, !m.map);
+}
+
+/**
+ * Content v2 chapter graphs (campaign expansion, 2026-10-15): every chapter is a
+ * v2 mission of the campaign, prerequisites name chapters, one opening chapter,
+ * one final chapter, no cycles, every chapter reachable, and every legacy (v1)
+ * mission of the campaign carried by exactly one chapter.
+ */
+function chapterGraphValidator(c: ContentCatalog, camp: CampaignDefinition, push: Push): void {
+  const chapters = camp.chapters ?? [];
+  const ids = new Set(chapters.map((ch) => ch.missionId));
+  if (ids.size !== chapters.length) push(`${camp.id}: duplicate chapters`);
+  for (const ch of chapters) {
+    const m = c.missions[ch.missionId];
+    if (!m) push(`${camp.id}: unknown chapter mission ${ch.missionId}`);
+    else {
+      if (m.contentVersion !== 2) push(`${camp.id}: chapter ${ch.missionId} is not a content-v2 mission`);
+      if (m.campaignId !== camp.id) push(`${camp.id}: chapter ${ch.missionId} belongs to ${m.campaignId}`);
+    }
+    for (const r of ch.requiresAll) if (!ids.has(r)) push(`${camp.id}/${ch.missionId}: requires unknown chapter ${r}`);
+    if (ch.briefingArt.length === 0) push(`${camp.id}/${ch.missionId}: needs at least one mission painting`);
+  }
+  const roots = chapters.filter((ch) => ch.requiresAll.length === 0);
+  if (roots.length !== 1) push(`${camp.id}: exactly one opening chapter expected, found ${roots.length}`);
+  if (!camp.finalChapterId || !ids.has(camp.finalChapterId)) push(`${camp.id}: unknown final chapter ${camp.finalChapterId}`);
+  // Topological order: no cycles, every chapter reachable from the opening.
+  const done = new Set<string>();
+  for (let pass = 0; pass < chapters.length + 1; pass++) {
+    for (const ch of chapters) if (!done.has(ch.missionId) && ch.requiresAll.every((r) => done.has(r))) done.add(ch.missionId);
+  }
+  for (const ch of chapters) if (!done.has(ch.missionId)) push(`${camp.id}/${ch.missionId}: unreachable (a prerequisite cycle?)`);
+  // Every legacy chapter's story beats are carried exactly once.
+  const carried = new Map<string, string>();
+  for (const ch of chapters) {
+    for (const l of ch.legacyMissionIds) {
+      if (carried.has(l)) push(`${camp.id}: legacy mission ${l} is carried by both ${carried.get(l)} and ${ch.missionId}`);
+      carried.set(l, ch.missionId);
+      if (!camp.missionIds.includes(l)) push(`${camp.id}/${ch.missionId}: ${l} is not a legacy mission of this campaign`);
+    }
+  }
+  for (const l of camp.missionIds) if (!carried.has(l)) push(`${camp.id}: legacy mission ${l} is not carried by any chapter`);
+}
+
+/** Content v2 checks of one mission: its authored map, sites on walkable ground, timers, evidence, patrol homes. */
+function validateV2Mission(c: ContentCatalog, m: MissionDefinition, push: Push): void {
+  const where = m.id;
+  const map = m.map!;
+  if (map.rows.length !== map.height || map.rows.some((r) => r.length !== map.width)) push(`${where}: map rows do not match ${map.width} x ${map.height}`);
+  const terrain = map.rows.join('');
+  const walk = (q: number, r: number) => {
+    if (q < 0 || r < 0 || q >= map.width || r >= map.height) return false;
+    const t = terrain[r * map.width + q];
+    return t !== 'w' && t !== 'm' && t !== 'v';
+  };
+  const siteIds = new Set(m.sites.map((s) => s.id));
+  const objIds = new Set(m.objectives.map((o) => o.id));
+  const channels = new Set(m.sites.flatMap((s) => (s.kind.type === 'sluice' ? s.kind.channel.map((x) => `${x.q},${x.r}`) : [])));
+  for (const s of m.sites) {
+    if (!walk(s.coord.q, s.coord.r) && !channels.has(`${s.coord.q},${s.coord.r}`)) push(`${where}/${s.id}: stands on impassable ground`);
+    if (s.kind.type === 'sluice') {
+      for (const x of s.kind.channel) if (x.q < 0 || x.r < 0 || x.q >= map.width || x.r >= map.height) push(`${where}/${s.id}: channel cell off the map`);
+      if (s.kind.channel.length === 0) push(`${where}/${s.id}: a sluice needs channel cells`);
+    }
+    if (s.kind.type === 'portal' && s.kind.requiresFlag !== undefined && !s.kind.requiresFlag) push(`${where}/${s.id}: empty ferry flag`);
+    if (s.kind.type === 'map_event') for (const o of s.kind.options) for (const id of o.clearsSiteIds ?? []) if (!siteIds.has(id)) push(`${where}/${s.id}: clears unknown site ${id}`);
+  }
+  for (const h of m.hostileHeroes) {
+    if (h.homeSiteId) {
+      const home = m.sites.find((s) => s.id === h.homeSiteId);
+      if (!home) push(`${where}: patrol ${h.commander.name} has an unknown home ${h.homeSiteId}`);
+      else if (!home.guard) push(`${where}: patrol home ${h.homeSiteId} needs a guard (taking it ends the patrol)`);
+    }
+    if (!walk(h.startCoord.q, h.startCoord.r)) push(`${where}: patrol ${h.commander.name} starts on impassable ground`);
+  }
+  for (const t of m.timers ?? []) {
+    if (t.days < 1) push(`${where}/${t.id}: a timer needs at least one day`);
+    if (!t.consequence.trim()) push(`${where}/${t.id}: a timer must state its consequence`);
+    for (const id of t.onExpire.failObjectives ?? []) {
+      const o = m.objectives.find((x) => x.id === id);
+      if (!o) push(`${where}/${t.id}: fails unknown objective ${id}`);
+      else if (o.category !== 'optional') push(`${where}/${t.id}: a deadline may only fail optional objectives (${id})`);
+    }
+  }
+  for (const e of m.evidence ?? []) if (!e.flag) push(`${where}/${e.id}: evidence needs a flag`);
+  for (const b of m.entryBonuses ?? []) {
+    b.heroArmy?.forEach((s) => (c.creatures[s.creatureId] ? null : push(`${where}: entry bonus creature ${s.creatureId} unknown`)));
+    b.garrison?.forEach((s) => (c.creatures[s.creatureId] ? null : push(`${where}: entry bonus creature ${s.creatureId} unknown`)));
+  }
+  if (!m.objectives.some((o) => o.category === 'primary')) push(`${where}: needs at least one primary objective`);
+  void objIds;
 }
 
 /**
@@ -351,6 +455,7 @@ function campaignValidator(c: ContentCatalog, push: Push): void {
  */
 function validateMission(c: ContentCatalog, m: MissionDefinition, push: Push, checkAnchors: boolean): void {
   const where = m.id;
+  if (m.map) validateV2Mission(c, m, push);
   if (checkAnchors && !c.mapTemplates[m.mapTemplateId]) push(`${where}: unknown map template`);
   const template = checkAnchors ? c.mapTemplates[m.mapTemplateId] : undefined;
   const creatureOk = (id: string) => {

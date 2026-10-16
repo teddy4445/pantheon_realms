@@ -16,12 +16,14 @@ import {
   ANIMATION_FALLBACK,
   BASE_ANIMATIONS,
   SITE_ARCHETYPES,
+  STATE_SITE_ARCHETYPES,
   axialPoint,
   cellPoint,
   directionOf,
   directionalStrip,
   pointAxial,
   pointCell,
+  regionsInside,
   registerSpriteManifest,
   requiredAnimations,
   resolveAnimation,
@@ -33,7 +35,12 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const runtime = path.join(root, 'assets-runtime');
-const manifest = JSON.parse(readFileSync(path.join(runtime, 'sprites/manifest.json'), 'utf8')) as SpriteManifest;
+const baseManifest = JSON.parse(readFileSync(path.join(runtime, 'sprites/manifest.json'), 'utf8')) as SpriteManifest;
+/** The campaign expansion kit (2026-10-15) adds the six new neutrals' frame-region atlases, merged as the UI does (ui/src/assets/manifest.ts). */
+const kit = JSON.parse(readFileSync(path.join(runtime, 'campaign-v2/manifest.json'), 'utf8')) as { creatures: SpriteManifest['creatures'] };
+/** The battle FX & neutral upgrades delivery (2026-10-15) adds the six upgraded neutrals' sets, merged the same way. */
+const upgrades = JSON.parse(readFileSync(path.join(runtime, 'battle-fx-neutral-upgrades-v1/manifest.json'), 'utf8')) as { creatures: SpriteManifest['creatures'] };
+const manifest: SpriteManifest = { ...baseManifest, creatures: { ...baseManifest.creatures, ...kit.creatures, ...upgrades.creatures } };
 registerSpriteManifest(manifest);
 const catalog = buildCatalog();
 
@@ -47,9 +54,28 @@ function webpSize(file: string): [number, number] {
   return [(bits & 0x3fff) + 1, ((bits >> 14) & 0x3fff) + 1];
 }
 
+function pngSize(file: string): [number, number] {
+  const b = readFileSync(file);
+  expect(b.toString('latin1', 1, 4)).toBe('PNG');
+  return [b.readUInt32BE(16), b.readUInt32BE(20)];
+}
+
 function checkStrip(where: string, s: SpriteStrip): void {
   const file = path.join(runtime, s.file);
   expect(existsSync(file), `${where}: ${s.file}`).toBe(true);
+  if (s.regions) {
+    // A frame-region atlas (campaign expansion kit): measured rectangles inside the native atlas, never a grid.
+    const [aw, ah] = file.endsWith('.png') ? pngSize(file) : webpSize(file);
+    expect(regionsInside(s, aw, ah), `${where} regions inside ${aw}x${ah}`).toBe(true);
+    expect(s.regions.length, where).toBe(s.frames);
+    for (const r of s.regions) {
+      // The pixel anchor (ground point) lies within its rectangle; one scale per animation (never per frame).
+      expect(r.anchor[0] >= 0 && r.anchor[0] <= r.rect[2] && r.anchor[1] >= 0 && r.anchor[1] <= r.rect[3], `${where} anchor`).toBe(true);
+      expect(r.sourceScale, where).toBe(s.regions[0]!.sourceScale);
+    }
+    expect(s.fps, where).toBeGreaterThan(0);
+    return;
+  }
   const [w, h] = webpSize(file);
   expect(w, `${where} width`).toBe(s.frames * s.frameWidth);
   expect(h, `${where} height`).toBe(s.frameHeight);
@@ -73,7 +99,8 @@ function checkSet(where: string, set: SpriteSetDefinition): void {
 describe('sprite manifest', () => {
   it('every creature form of the catalog has a sprite set whose required animations all resolve', () => {
     const forms = Object.values(catalog.creatures).filter((c) => !!c.stats);
-    expect(forms.length).toBe(102);
+    // 102 pantheon and legacy neutral forms, plus the six expansion neutrals and their six upgrades (2026-10-15).
+    expect(forms.length).toBe(114);
     for (const c of forms) {
       const set = manifest.creatures[c.id];
       expect(set, c.id).toBeDefined();
@@ -83,6 +110,71 @@ describe('sprite manifest', () => {
       // A placeholder never claims to be final, and a final set carries every animation its content needs.
       if (set!.status === 'final') for (const a of requiredAnimations(catalog, c)) expect(set!.animations[a], `${c.id} final ${a}`).toBeDefined();
     }
+  });
+
+  it('the six new neutrals draw their native atlases by measured regions; Pegasus flies without the clipped takeoff pose', () => {
+    for (const id of ['pegasus', 'root_runner', 'serpopard', 'baku', 'afanc', 'ahuitzotl']) {
+      const set = manifest.creatures[id]!;
+      expect(set.status, id).toBe('final');
+      for (const name of ['idle', 'move', 'attack', 'defend', 'hit', 'death']) {
+        const a = set.animations[name as keyof typeof set.animations]!;
+        expect(a.regions?.length, `${id} ${name}`).toBe(4);
+        expect(a.file.startsWith('campaign-v2/'), id).toBe(true);
+      }
+      // Victory and ability are aliases of authored core poses (same atlas rectangles), not new frames.
+      const rects = (n: string) => set.animations[n as keyof typeof set.animations]!.regions!.map((r) => r.rect.join(','));
+      expect(rects('victory'), `${id} victory`).toEqual(rects('idle'));
+      // Ability aliases defend for Pegasus, Baku and Afanc and attack for the others (kit animation-manifest.json).
+      expect(rects('ability'), `${id} ability`).toEqual(rects(['pegasus', 'baku', 'afanc'].includes(id) ? 'defend' : 'attack'));
+    }
+    const peg = manifest.creatures['pegasus']!;
+    const cells = (n: string) => peg.animations[n as keyof typeof peg.animations]!.regions!.map((r) => r.sourceCell!.join(','));
+    // 3 takeoff + 4 fly + 4 landing: the top-row third flight pose [0,2] is excluded (handoff: clipped wing).
+    expect(cells('takeoff')).toEqual(['0,0', '0,1', '0,3']);
+    expect(cells('fly')).toHaveLength(4);
+    expect(cells('landing')).toHaveLength(4);
+    // The flight atlas is drawn at its starting visual match (.62) to the core atlas, constant across the three phases.
+    for (const n of ['takeoff', 'fly', 'landing']) for (const r of peg.animations[n as keyof typeof peg.animations]!.regions!) expect(r.sourceScale).toBeCloseTo(0.62);
+  });
+
+  it('the six upgraded neutrals draw their delivered atlases by measured regions at the base body scale; Dawncrest flight keeps one scale', () => {
+    const pairs: Record<string, string> = { pegasus: 'dawncrest_pegasus', root_runner: 'crownroot_runner', serpopard: 'crested_serpopard', baku: 'dreamtusk_baku', afanc: 'ridgeback_afanc', ahuitzotl: 'crownfin_ahuitzotl' };
+    for (const [baseId, id] of Object.entries(pairs)) {
+      const def = catalog.creatures[id]!;
+      expect(def.form, id).toBe('upgraded');
+      expect(def.baseId, id).toBe(baseId);
+      const set = manifest.creatures[id]!;
+      expect(set.status, id).toBe('final');
+      for (const name of ['idle', 'move', 'attack', 'defend', 'hit', 'death']) {
+        const a = set.animations[name as keyof typeof set.animations]!;
+        expect(a.regions?.length, `${id} ${name}`).toBe(4);
+        expect(a.file.startsWith('battle-fx-neutral-upgrades-v1/atlas-'), id).toBe(true);
+        // One scale for the whole core atlas: no per-frame normalisation (no size pulsing).
+        for (const r of a.regions!) expect(r.sourceScale, `${id} ${name}`).toBe(1);
+      }
+      // The corrected Ahuitzotl sheet only (the first one was rejected).
+      if (id === 'crownfin_ahuitzotl') expect(set.animations.idle!.file).toBe('battle-fx-neutral-upgrades-v1/atlas-crownfin_ahuitzotl-v2.png');
+      const rects = (n: string) => set.animations[n as keyof typeof set.animations]!.regions!.map((r) => r.rect.join(','));
+      expect(rects('victory'), `${id} victory`).toEqual(rects('idle'));
+      expect(rects('ability'), `${id} ability`).toEqual(rects(['pegasus', 'baku', 'afanc'].includes(baseId) ? 'defend' : 'attack'));
+      // The starting body scale: 82 % of the native art relative to the base registration (pixels per hex / 0.82),
+      // except the two bodies calibrated in game (2026-10-16, tools/assets/import_battle_fx_upgrades.py CALIBRATION).
+      const calibrated: Record<string, number> = { dawncrest_pegasus: 130, dreamtusk_baku: 128 };
+      if (calibrated[id]) expect(set.pixelsPerHex, id).toBe(calibrated[id]);
+      else expect(set.pixelsPerHex / manifest.creatures[baseId]!.pixelsPerHex, id).toBeCloseTo(1 / 0.82, 2);
+    }
+    const peg = manifest.creatures['dawncrest_pegasus']!;
+    for (const n of ['takeoff', 'fly', 'landing']) {
+      const a = peg.animations[n as keyof typeof peg.animations]!;
+      expect(a.file).toBe('battle-fx-neutral-upgrades-v1/atlas-dawncrest_pegasus-flight.png');
+      // Delivered at 0.65; calibrated in game to 0.78 so the body keeps its ground-pose size in flight.
+      for (const r of a.regions!) expect(r.sourceScale, n).toBeCloseTo(0.78);
+    }
+    expect(peg.animations.fly!.loop).toBe(true);
+    expect(peg.animations.takeoff!.loop).toBe(false);
+    expect(peg.animations.landing!.loop).toBe(false);
+    // Only the Pegasus pair flies.
+    for (const id of Object.values(pairs)) expect(requiredAnimations(catalog, catalog.creatures[id]!).includes('fly'), id).toBe(id === 'dawncrest_pegasus');
   });
 
   it('six pantheon map avatars and a neutral one, each with idle and walk; pantheon avatars have a hero-screen figure', () => {
@@ -122,7 +214,8 @@ describe('sprite manifest', () => {
   });
 
   it('every map location kind has a sprite; towns have one per pantheon, pickups one per resource', () => {
-    for (const k of SITE_ARCHETYPES) expect(siteSprite(k), k).not.toBeNull();
+    // A kind painted only per state (the campaign-v2 sluice) is checked in v2Sites.test.ts with the kit's manifest.
+    for (const k of SITE_ARCHETYPES) if (!STATE_SITE_ARCHETYPES[k]) expect(siteSprite(k), k).not.toBeNull();
     for (const p of Object.keys(catalog.pantheons)) expect(siteSprite('town', p), p).toBe(manifest.sites[`map.site.town.${p}`]);
     for (const r of ['gold', 'wood', 'stone', 'crystal', 'favor', 'artifact']) expect(manifest.sites[`map.site.pickup.${r}`], r).toBeDefined();
     for (const section of ['sites', 'decor', 'obstacles', 'siege', 'projectiles'] as const) {

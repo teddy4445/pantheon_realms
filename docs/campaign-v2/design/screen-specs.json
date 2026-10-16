@@ -1,0 +1,351 @@
+{
+  "schema": "screen-integration-design-1",
+  "screens": [
+    {
+      "id": "campaign-chronicle",
+      "name": "Campaign selection and chapter chronicle",
+      "when": "Before a new campaign chapter",
+      "content": [
+        "Seven current covers and existing protagonists",
+        "Chapter nodes with requiresAll dependencies",
+        "Selected chapter summary and manual-battle policy"
+      ],
+      "states": [
+        "available",
+        "locked",
+        "complete",
+        "current",
+        "practice replay"
+      ],
+      "newAssets": [
+        "background-campaign-chronicle.png",
+        "icon-branch.png",
+        "icon-manual-battle-v2.png"
+      ],
+      "reuse": [
+        "art/covers/*",
+        "frontend-kit-v1.1.0/banner-*.png"
+      ],
+      "implementationArea": "Setup.tsx; campaign state machine"
+    },
+    {
+      "id": "load-continue",
+      "name": "Continue and save selection",
+      "when": "Opening or loading a run",
+      "content": [
+        "Campaign content version",
+        "Actual current chapter",
+        "Separate replay from primary run"
+      ],
+      "states": [
+        "legacy v1",
+        "new v2",
+        "missing optional legacy fields",
+        "completed run"
+      ],
+      "newAssets": [],
+      "reuse": [
+        "Existing load/save UI"
+      ],
+      "implementationArea": "Save serializer and Setup.tsx"
+    },
+    {
+      "id": "scenario-intro",
+      "name": "Scenario introduction scroll",
+      "when": "Entry and optional recap",
+      "content": [
+        "Current briefing art",
+        "Existing speaker bust",
+        "Immediate task, loss rules and known deadline"
+      ],
+      "states": [
+        "first entry",
+        "retry",
+        "skipped",
+        "reordered branch chapter"
+      ],
+      "newAssets": [
+        "icon-manual-battle-v2.png"
+      ],
+      "reuse": [
+        "encounters-v1.1.0/intro-scroll.png",
+        "art/missions/*",
+        "art/busts/*"
+      ],
+      "implementationArea": "Mission entry overlay"
+    },
+    {
+      "id": "adventure-objectives",
+      "name": "Adventure objective HUD and markers",
+      "when": "On map during a mission",
+      "content": [
+        "Active task with progress",
+        "Known site locator",
+        "Persistent multi-day route"
+      ],
+      "states": [
+        "known",
+        "unknown",
+        "complete",
+        "blocked route",
+        "new day"
+      ],
+      "newAssets": [
+        "icon-evidence.png",
+        "icon-supply.png",
+        "icon-evacuation.png",
+        "icon-pact.png"
+      ],
+      "reuse": [
+        "ui/icons/final/icon.marker.quest.png",
+        "Existing route visuals"
+      ],
+      "implementationArea": "Adventure screen and mission objective selectors"
+    },
+    {
+      "id": "journal",
+      "name": "Journal and evidence ledger",
+      "when": "Review of tasks, clues and choices",
+      "content": [
+        "Required and optional tasks",
+        "Persistent evidence",
+        "Known consequences and deadlines"
+      ],
+      "states": [
+        "discovered",
+        "undiscovered",
+        "complete",
+        "failed optional",
+        "phase changes"
+      ],
+      "newAssets": [
+        "icon-evidence.png",
+        "icon-pact.png",
+        "icon-supply.png",
+        "icon-evacuation.png"
+      ],
+      "reuse": [
+        "frontend-kit-v1.1.0/icon-records.png"
+      ],
+      "implementationArea": "Journal.tsx"
+    },
+    {
+      "id": "choice",
+      "name": "Story choice and negotiation",
+      "when": "Authored decision encounter",
+      "content": [
+        "Existing speaker and location",
+        "Short exchange",
+        "Known cost/consequence for each choice"
+      ],
+      "states": [
+        "affordable",
+        "unaffordable",
+        "already committed",
+        "repeat visit"
+      ],
+      "newAssets": [
+        "icon-pact.png",
+        "icon-evidence.png"
+      ],
+      "reuse": [
+        "encounters-v1.1.0/meeting-*.png",
+        "art/busts/*"
+      ],
+      "implementationArea": "Existing encounter/dialogue overlays"
+    },
+    {
+      "id": "neutral-recruit",
+      "name": "Neutral recruitment",
+      "when": "At an unlocked neutral hiring site",
+      "content": [
+        "Large creature portrait",
+        "Stats/ability",
+        "Shared stock and exact price",
+        "Quantity/destination/seven slots",
+        "Recruit and recruit-all-affordable"
+      ],
+      "states": [
+        "locked pact",
+        "unlocked",
+        "empty stock",
+        "full army",
+        "insufficient resources",
+        "single form"
+      ],
+      "newAssets": [
+        "background-neutral-recruitment.png",
+        "portrait-*.png",
+        "site-*.png"
+      ],
+      "reuse": [
+        "Existing recruitment chrome and action icons"
+      ],
+      "implementationArea": "Recruitment.tsx; neutral site transaction"
+    },
+    {
+      "id": "unit-details",
+      "name": "Encyclopedia and unit details",
+      "when": "Browsing or inspecting a unit",
+      "content": [
+        "Neutral category",
+        "Portrait and habitat",
+        "Exact ability and stats",
+        "Hiring source"
+      ],
+      "states": [
+        "base-only",
+        "existing upgraded forms",
+        "undiscovered lore if current rules use it"
+      ],
+      "newAssets": [
+        "portrait-*.png"
+      ],
+      "reuse": [
+        "frontend-kit-v1.1.0/icon-bestiary.png",
+        "ui/icons/final/icon.ability.*"
+      ],
+      "implementationArea": "Encyclopedia.tsx; UnitDetail.tsx"
+    },
+    {
+      "id": "pre-battle",
+      "name": "Campaign pre-battle encounter",
+      "when": "Before a human campaign fight",
+      "content": [
+        "Fight action",
+        "Qualitative threat",
+        "Only permitted diplomacy/retreat"
+      ],
+      "states": [
+        "field",
+        "neutral",
+        "siege",
+        "garrison",
+        "scripted"
+      ],
+      "newAssets": [
+        "icon-manual-battle-v2.png"
+      ],
+      "reuse": [
+        "Current pre-battle chrome"
+      ],
+      "implementationArea": "Overlays.tsx; actual dispatch guard"
+    },
+    {
+      "id": "battle",
+      "name": "Tactical battle",
+      "when": "During manual combat",
+      "content": [
+        "New units and sequence bindings",
+        "Legal-target indicators",
+        "Ability action and exact tooltip"
+      ],
+      "states": [
+        "idle",
+        "move",
+        "attack",
+        "defend",
+        "hit",
+        "death",
+        "victory alias",
+        "ability alias",
+        "Pegasus flight"
+      ],
+      "newAssets": [
+        "atlas-*-v2.png",
+        "atlas-serpopard-v3.png",
+        "atlas-pegasus-flight.png"
+      ],
+      "reuse": [
+        "Existing battlefield terrain",
+        "Existing tactical action icons"
+      ],
+      "implementationArea": "Battle renderer; actions.ts; sprites.ts"
+    },
+    {
+      "id": "site-interaction",
+      "name": "Landmark interactions",
+      "when": "Approaching a hiring site, sluice, ferry or supply depot",
+      "content": [
+        "Name, known state and legal operation",
+        "Stock or cost where known",
+        "Fixed interaction cell aligned to road"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "unlocked",
+        "depleted",
+        "blocked approach"
+      ],
+      "newAssets": [
+        "site-sluice-closed.png",
+        "site-sluice-open.png",
+        "site-ferry.png",
+        "site-supply-depot.png",
+        "site-pegasus.png",
+        "site-root_runner.png",
+        "site-serpopard.png",
+        "site-baku.png",
+        "site-afanc.png",
+        "site-ahuitzotl.png"
+      ],
+      "reuse": [
+        "sprites/final/sites/*"
+      ],
+      "implementationArea": "Adventure site definitions and renderer"
+    },
+    {
+      "id": "result",
+      "name": "Mission results, rewards and epilogue",
+      "when": "After victory/defeat",
+      "content": [
+        "Actual outcome and remembered choices",
+        "Bounded reward/carryover",
+        "Available next chapters or retry"
+      ],
+      "states": [
+        "victory",
+        "defeat",
+        "branch pair pending",
+        "final campaign complete",
+        "practice result"
+      ],
+      "newAssets": [
+        "icon-branch.png",
+        "icon-pact.png"
+      ],
+      "reuse": [
+        "encounters-v1.1.0/reward-tray.png",
+        "art/missions/*",
+        "art/covers/*"
+      ],
+      "implementationArea": "Summary.tsx; BattleResult.tsx; campaign completion"
+    },
+    {
+      "id": "editor",
+      "name": "Editor and optional random encounter pool",
+      "when": "Editing or generating maps",
+      "content": [
+        "Six neutral creatures",
+        "Six site presets",
+        "Sluice states, ferry and depot",
+        "Biome and footprint validation"
+      ],
+      "states": [
+        "valid habitat",
+        "invalid habitat",
+        "closed/open connectivity",
+        "finite stock"
+      ],
+      "newAssets": [
+        "portrait-*.png",
+        "site-*.png"
+      ],
+      "reuse": [
+        "Current editor chrome"
+      ],
+      "implementationArea": "MapEditor.tsx; RandomSetup.tsx; encounter generation"
+    }
+  ]
+}

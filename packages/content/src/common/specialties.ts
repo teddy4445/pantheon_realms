@@ -37,6 +37,10 @@ export const HERO_SPECIALTY_SPECS: Readonly<Record<string, SpecialtySpec>> = {
   odysseus: r('gold', 250),
   atalanta: r('wood', 2),
   perseus: s('lightning'),
+  // The Silent Oracle's opponents (2026-10-14).
+  greek_theron: s('apollos_arrow'),
+  greek_doros: c('cavalry'),
+  greek_phaidon: c('griffin'),
   // --- Norse ---
   norse_sigurd: c('norse_lindworm'),
   norse_brynhild: c('norse_valkyrie'),
@@ -130,7 +134,7 @@ export function buildSpecialty(spec: SpecialtySpec, lk: SpecialtyLookups): HeroS
       const fam = lk.families[spec.familyId];
       if (!fam) throw new Error(`specialty: unknown family ${spec.familyId}`);
       const base = lk.creatures[fam.baseCreatureId];
-      const up = lk.creatures[fam.upgradedCreatureId];
+      const up = fam.upgradedCreatureId ? lk.creatures[fam.upgradedCreatureId] : undefined;
       const plural = base?.pluralName ?? fam.name;
       const both = up ? `${plural} and ${up.pluralName}` : plural;
       const fx: EffectDefinition[] = [

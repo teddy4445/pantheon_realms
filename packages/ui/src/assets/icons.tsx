@@ -75,7 +75,11 @@ export type IconName =
   | 'market'
   | 'tavern'
   | 'merchant'
-  | 'gift';
+  | 'gift'
+  | 'journey'
+  | 'army'
+  | 'recruitall'
+  | 'train';
 
 const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
 
@@ -177,6 +181,11 @@ const PATHS: Record<IconName, JSX.Element> = {
   tavern: <path {...common} d="M5 8h10v11a2 2 0 01-2 2H7a2 2 0 01-2-2zM15 11h2a2 2 0 012 2v2a2 2 0 01-2 2h-2M5 8c0-2 1.6-3 3-2.2C8.7 4 11.6 4 12.6 5.8 14 5.2 15 6.3 15 8M8.5 12v5M11.5 12v5" />,
   merchant: <path {...common} d="M8 8h8l3 4v6a3 3 0 01-3 3H8a3 3 0 01-3-3v-6zM9.5 8L7.5 3.5h9l-2 4.5M13.6 12.2h-2.4a1.2 1.2 0 000 2.4h1.6a1.2 1.2 0 010 2.4h-2.6M12 11v1.2M12 17v1.2" />,
   gift: <path {...common} d="M4 10h16v4H4zM5.5 14h13v7h-13zM12 10v11M12 10c-1.5-3.5-6-4.5-6-1.5S12 10 12 10zm0 0c1.5-3.5 6-4.5 6-1.5S12 10 12 10z" />,
+  // Recruitment & route kit (2026-10-14): glyphs under the painted icons (ICON_ART).
+  army: <path {...common} d="M8 9a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm8 0a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM3 20v-3a5 5 0 0110 0v3m-2-6.5a5 5 0 0110 3.5v3" />,
+  journey: <path {...common} d="M5 4h5v8l4 3v4H5zM5 15h9M15 9h6m-2.5-2.5L21 9l-2.5 2.5" />,
+  recruitall: <path {...common} d="M7 4v16M12 2v18M17 4v16M5 13a2 3 0 004 0v-3H5zm5 0a2 3 0 004 0v-3h-4zm5 0a2 3 0 004 0v-3h-4z" />,
+  train: <path {...common} d="M4 14h12l-2 3H6zM8 17v3h4v-3M14 4l6 6-2 2-6-6zM11 9l-5 5" />,
 };
 
 /** Illustrative icons drawn from the UI art manifest (asset IDs, never file paths). */
@@ -220,6 +229,10 @@ export const ICON_ART: Partial<Record<IconName, string>> = {
   settings: 'icon.menu.settings',
   credits: 'icon.menu.credits',
   quit: 'icon.menu.quit',
+  army: 'icon.world.army',
+  journey: 'recruitroute.icon-resume-route',
+  recruitall: 'recruitroute.icon-recruit-all',
+  train: 'recruitroute.icon-train-troops',
 };
 
 /** Every icon name, in declaration order (the icon catalog tool lists them). */

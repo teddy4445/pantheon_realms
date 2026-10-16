@@ -1,0 +1,1979 @@
+{
+  "schema": "pantheon-realms-recruitment-route-v1",
+  "provenance": "Recruitment & route kit of 2026-10-14: nine pictures from the built-in image generator, reduced for runtime; creature strips are byte copies of the delivered native idle strips.",
+  "assets": {
+    "recruitroute.icon-recruit-all": {
+      "file": "recruitment-route-v1/icon-recruit-all.png",
+      "width": 256,
+      "height": 256,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.068581,
+        0.035885,
+        0.931419,
+        0.88756
+      ],
+      "role": "Recruit all action (three shields and spears)",
+      "sourceSha256": "fa41b4e80bebb7f8ad8059b0998852d2fe824bb8411361caf5d105a89f2e3579"
+    },
+    "recruitroute.icon-resume-route": {
+      "file": "recruitment-route-v1/icon-resume-route.png",
+      "width": 256,
+      "height": 256,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.114833,
+        0.129187,
+        0.95614,
+        0.8437
+      ],
+      "role": "Continue journey (boot and arrow)",
+      "sourceSha256": "93f224190b6130810d552d1ce88c78fae09499350bd3a688ab00b772ad870297"
+    },
+    "recruitroute.icon-train-troops": {
+      "file": "recruitment-route-v1/icon-train-troops.png",
+      "width": 256,
+      "height": 256,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.058214,
+        0.114833,
+        0.942584,
+        0.897927
+      ],
+      "role": "Train existing troops (anvil and hammer)",
+      "sourceSha256": "31f02530e65fb827751bf683938cd10f629cf931de22495ac82a55b73e510be4"
+    },
+    "recruitroute.route-chevron-current": {
+      "file": "recruitment-route-v1/route-chevron-current.png",
+      "width": 256,
+      "height": 256,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.127592,
+        0.217703,
+        0.872408,
+        0.789474
+      ],
+      "role": "Route step reachable today (gold arrowhead, points up)",
+      "sourceSha256": "9c5efeed3223a0c589bf13a8a1ba3d69a177a652e8850781b1a3ce4af1129555"
+    },
+    "recruitroute.route-chevron-later": {
+      "file": "recruitment-route-v1/route-chevron-later.png",
+      "width": 256,
+      "height": 256,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.197767,
+        0.271132,
+        0.801435,
+        0.733652
+      ],
+      "role": "Route step on a later day (bronze arrowhead, points up)",
+      "sourceSha256": "40275b65121b22f3bf8726ceb6c7edbbb590750d07ba0b1dd3ba3ea66cc45295"
+    },
+    "recruitroute.route-day-badge": {
+      "file": "recruitment-route-v1/route-day-badge.png",
+      "width": 256,
+      "height": 256,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.07496,
+        0.121212,
+        0.924242,
+        0.867624
+      ],
+      "role": "Blank parchment for the live arrival-day number (upright)",
+      "sourceSha256": "29d23d3d5e0b04cf56b832a6579b3736dfc0baf212cda74434fb539d14aa56f9"
+    },
+    "recruitroute.route-destination": {
+      "file": "recruitment-route-v1/route-destination.png",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.041467,
+        0.054226,
+        0.958533,
+        0.935407
+      ],
+      "role": "Journey destination seal (compass and laurel), laid on the ground",
+      "sourceSha256": "0abac6ad377048fa9ed4fae7159975cc025c64c017fb61969d453f33b5bb8780"
+    },
+    "recruitroute.route-hourglass": {
+      "file": "recruitment-route-v1/route-hourglass.png",
+      "width": 256,
+      "height": 256,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.297448,
+        0.151515,
+        0.702552,
+        0.823764
+      ],
+      "role": "Later-day cue beside the first step of a new day (upright)",
+      "sourceSha256": "b4f76d74f32eafa36f1d783445f2568f2f0b361661989e0f42a946c36bace8fc"
+    },
+    "recruitroute.route-selection-ring": {
+      "file": "recruitment-route-v1/route-selection-ring.png",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "visibleBounds": [
+        0.065391,
+        0.069378,
+        0.932217,
+        0.921053
+      ],
+      "role": "Selected hero ring at the feet, laid on the ground",
+      "sourceSha256": "0ccf67c9d298539ec6974ecaa2e0b1882897d322ece657f9a5e9d5aba4adc3f6"
+    }
+  },
+  "creatures": {
+    "ancient_drake": {
+      "file": "recruitment-route-v1/creatures/ancient_drake.idle.png",
+      "frames": 6,
+      "frameWidth": 474,
+      "frameHeight": 290,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8784
+      ],
+      "visibleUnion": [
+        97,
+        69,
+        380,
+        255
+      ],
+      "sourceKey": "creature.neutral.elder_drake.upgraded"
+    },
+    "basilisk": {
+      "file": "recruitment-route-v1/creatures/basilisk.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        114,
+        43,
+        309,
+        196
+      ],
+      "sourceKey": "creature.neutral.basilisk.base"
+    },
+    "brigand": {
+      "file": "recruitment-route-v1/creatures/brigand.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        106,
+        54,
+        235,
+        242
+      ],
+      "sourceKey": "creature.neutral.brigand.base"
+    },
+    "brigand_cutthroat": {
+      "file": "recruitment-route-v1/creatures/brigand_cutthroat.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        104,
+        53,
+        236,
+        241
+      ],
+      "sourceKey": "creature.neutral.brigand.upgraded"
+    },
+    "bronze_golem": {
+      "file": "recruitment-route-v1/creatures/bronze_golem.idle.png",
+      "frames": 6,
+      "frameWidth": 322,
+      "frameHeight": 284,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8794
+      ],
+      "visibleUnion": [
+        89,
+        33,
+        248,
+        250
+      ],
+      "sourceKey": "creature.neutral.clay_golem.upgraded"
+    },
+    "cavalry": {
+      "file": "recruitment-route-v1/creatures/cavalry.idle.png",
+      "frames": 6,
+      "frameWidth": 486,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        161,
+        35,
+        334,
+        196
+      ],
+      "sourceKey": "creature.greek.tier4.base"
+    },
+    "celtic_ancient_fomorian": {
+      "file": "recruitment-route-v1/creatures/celtic_ancient_fomorian.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 207,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8657
+      ],
+      "visibleUnion": [
+        90,
+        15,
+        273,
+        180
+      ],
+      "sourceKey": "creature.celtic.tier7.upgraded"
+    },
+    "celtic_banshee": {
+      "file": "recruitment-route-v1/creatures/celtic_banshee.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 310,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        68,
+        56,
+        263,
+        270
+      ],
+      "sourceKey": "creature.celtic.tier4.base"
+    },
+    "celtic_battle_banshee": {
+      "file": "recruitment-route-v1/creatures/celtic_battle_banshee.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 310,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        70,
+        57,
+        271,
+        270
+      ],
+      "sourceKey": "creature.celtic.tier4.upgraded"
+    },
+    "celtic_cu_sith": {
+      "file": "recruitment-route-v1/creatures/celtic_cu_sith.idle.png",
+      "frames": 6,
+      "frameWidth": 272,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        36,
+        62,
+        218,
+        220
+      ],
+      "sourceKey": "creature.celtic.tier2.base"
+    },
+    "celtic_dread_kelpie": {
+      "file": "recruitment-route-v1/creatures/celtic_dread_kelpie.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        98,
+        24,
+        324,
+        220
+      ],
+      "sourceKey": "creature.celtic.tier3.upgraded"
+    },
+    "celtic_elder_pooka": {
+      "file": "recruitment-route-v1/creatures/celtic_elder_pooka.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 310,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        107,
+        56,
+        234,
+        269
+      ],
+      "sourceKey": "creature.celtic.tier1.upgraded"
+    },
+    "celtic_fomorian_giant": {
+      "file": "recruitment-route-v1/creatures/celtic_fomorian_giant.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 207,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8657
+      ],
+      "visibleUnion": [
+        89,
+        18,
+        270,
+        180
+      ],
+      "sourceKey": "creature.celtic.tier7.base"
+    },
+    "celtic_great_cu_sith": {
+      "file": "recruitment-route-v1/creatures/celtic_great_cu_sith.idle.png",
+      "frames": 6,
+      "frameWidth": 272,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        33,
+        61,
+        219,
+        219
+      ],
+      "sourceKey": "creature.celtic.tier2.upgraded"
+    },
+    "celtic_great_stag_spirit": {
+      "file": "recruitment-route-v1/creatures/celtic_great_stag_spirit.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        136,
+        27,
+        321,
+        220
+      ],
+      "sourceKey": "creature.celtic.tier6.upgraded"
+    },
+    "celtic_horned_stag_spirit": {
+      "file": "recruitment-route-v1/creatures/celtic_horned_stag_spirit.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        135,
+        28,
+        318,
+        221
+      ],
+      "sourceKey": "creature.celtic.tier6.base"
+    },
+    "celtic_kelpie": {
+      "file": "recruitment-route-v1/creatures/celtic_kelpie.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        96,
+        21,
+        325,
+        220
+      ],
+      "sourceKey": "creature.celtic.tier3.base"
+    },
+    "celtic_pooka": {
+      "file": "recruitment-route-v1/creatures/celtic_pooka.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 310,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        109,
+        64,
+        225,
+        270
+      ],
+      "sourceKey": "creature.celtic.tier1.base"
+    },
+    "celtic_selkie": {
+      "file": "recruitment-route-v1/creatures/celtic_selkie.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        76,
+        70,
+        320,
+        220
+      ],
+      "sourceKey": "creature.celtic.tier5.base"
+    },
+    "celtic_storm_selkie": {
+      "file": "recruitment-route-v1/creatures/celtic_storm_selkie.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        84,
+        68,
+        329,
+        220
+      ],
+      "sourceKey": "creature.celtic.tier5.upgraded"
+    },
+    "centaur": {
+      "file": "recruitment-route-v1/creatures/centaur.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        125,
+        34,
+        304,
+        196
+      ],
+      "sourceKey": "creature.neutral.centaur.base"
+    },
+    "centaur_sentinel": {
+      "file": "recruitment-route-v1/creatures/centaur_sentinel.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        123,
+        32,
+        307,
+        196
+      ],
+      "sourceKey": "creature.neutral.centaur.upgraded"
+    },
+    "clay_golem": {
+      "file": "recruitment-route-v1/creatures/clay_golem.idle.png",
+      "frames": 6,
+      "frameWidth": 329,
+      "frameHeight": 278,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.879
+      ],
+      "visibleUnion": [
+        87,
+        35,
+        250,
+        244
+      ],
+      "sourceKey": "creature.neutral.clay_golem.base"
+    },
+    "companion_cavalry": {
+      "file": "recruitment-route-v1/creatures/companion_cavalry.idle.png",
+      "frames": 6,
+      "frameWidth": 479,
+      "frameHeight": 227,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8781
+      ],
+      "visibleUnion": [
+        151,
+        34,
+        337,
+        199
+      ],
+      "sourceKey": "creature.greek.tier4.upgraded"
+    },
+    "cyclops": {
+      "file": "recruitment-route-v1/creatures/cyclops.idle.png",
+      "frames": 6,
+      "frameWidth": 437,
+      "frameHeight": 314,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.879
+      ],
+      "visibleUnion": [
+        144,
+        62,
+        307,
+        276
+      ],
+      "sourceKey": "creature.greek.tier7.base"
+    },
+    "egyptian_anubian_warden": {
+      "file": "recruitment-route-v1/creatures/egyptian_anubian_warden.idle.png",
+      "frames": 6,
+      "frameWidth": 486,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        147,
+        68,
+        367,
+        294
+      ],
+      "sourceKey": "creature.egyptian.tier2.upgraded"
+    },
+    "egyptian_bennu": {
+      "file": "recruitment-route-v1/creatures/egyptian_bennu.idle.png",
+      "frames": 6,
+      "frameWidth": 481,
+      "frameHeight": 285,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8786
+      ],
+      "visibleUnion": [
+        101,
+        59,
+        330,
+        251
+      ],
+      "sourceKey": "creature.egyptian.tier6.base"
+    },
+    "egyptian_crocodile_beast": {
+      "file": "recruitment-route-v1/creatures/egyptian_crocodile_beast.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        51,
+        78,
+        291,
+        198
+      ],
+      "sourceKey": "creature.egyptian.tier5.base"
+    },
+    "egyptian_desert_colossus": {
+      "file": "recruitment-route-v1/creatures/egyptian_desert_colossus.idle.png",
+      "frames": 6,
+      "frameWidth": 463,
+      "frameHeight": 297,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.877
+      ],
+      "visibleUnion": [
+        157,
+        46,
+        308,
+        260
+      ],
+      "sourceKey": "creature.egyptian.tier7.base"
+    },
+    "egyptian_divine_colossus": {
+      "file": "recruitment-route-v1/creatures/egyptian_divine_colossus.idle.png",
+      "frames": 6,
+      "frameWidth": 455,
+      "frameHeight": 302,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8777
+      ],
+      "visibleUnion": [
+        131,
+        45,
+        324,
+        265
+      ],
+      "sourceKey": "creature.egyptian.tier7.upgraded"
+    },
+    "egyptian_great_sphinx": {
+      "file": "recruitment-route-v1/creatures/egyptian_great_sphinx.idle.png",
+      "frames": 6,
+      "frameWidth": 500,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8793
+      ],
+      "visibleUnion": [
+        99,
+        45,
+        348,
+        241
+      ],
+      "sourceKey": "creature.egyptian.tier4.upgraded"
+    },
+    "egyptian_jackal_guardian": {
+      "file": "recruitment-route-v1/creatures/egyptian_jackal_guardian.idle.png",
+      "frames": 6,
+      "frameWidth": 486,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        123,
+        100,
+        344,
+        294
+      ],
+      "sourceKey": "creature.egyptian.tier2.base"
+    },
+    "egyptian_radiant_bennu": {
+      "file": "recruitment-route-v1/creatures/egyptian_radiant_bennu.idle.png",
+      "frames": 6,
+      "frameWidth": 473,
+      "frameHeight": 290,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8794
+      ],
+      "visibleUnion": [
+        87,
+        67,
+        338,
+        255
+      ],
+      "sourceKey": "creature.egyptian.tier6.upgraded"
+    },
+    "egyptian_royal_ushabti": {
+      "file": "recruitment-route-v1/creatures/egyptian_royal_ushabti.idle.png",
+      "frames": 6,
+      "frameWidth": 322,
+      "frameHeight": 284,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8794
+      ],
+      "visibleUnion": [
+        96,
+        52,
+        261,
+        251
+      ],
+      "sourceKey": "creature.egyptian.tier3.upgraded"
+    },
+    "egyptian_sacred_scarab": {
+      "file": "recruitment-route-v1/creatures/egyptian_sacred_scarab.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        58,
+        109,
+        261,
+        241
+      ],
+      "sourceKey": "creature.egyptian.tier1.base"
+    },
+    "egyptian_sobek_warbeast": {
+      "file": "recruitment-route-v1/creatures/egyptian_sobek_warbeast.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        66,
+        38,
+        281,
+        197
+      ],
+      "sourceKey": "creature.egyptian.tier5.upgraded"
+    },
+    "egyptian_solar_scarab": {
+      "file": "recruitment-route-v1/creatures/egyptian_solar_scarab.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        73,
+        75,
+        273,
+        240
+      ],
+      "sourceKey": "creature.egyptian.tier1.upgraded"
+    },
+    "egyptian_sphinx": {
+      "file": "recruitment-route-v1/creatures/egyptian_sphinx.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        86,
+        38,
+        281,
+        197
+      ],
+      "sourceKey": "creature.egyptian.tier4.base"
+    },
+    "egyptian_ushabti": {
+      "file": "recruitment-route-v1/creatures/egyptian_ushabti.idle.png",
+      "frames": 6,
+      "frameWidth": 329,
+      "frameHeight": 278,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8784
+      ],
+      "visibleUnion": [
+        104,
+        47,
+        245,
+        244
+      ],
+      "sourceKey": "creature.egyptian.tier3.base"
+    },
+    "elder_drake": {
+      "file": "recruitment-route-v1/creatures/elder_drake.idle.png",
+      "frames": 6,
+      "frameWidth": 482,
+      "frameHeight": 285,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8786
+      ],
+      "visibleUnion": [
+        101,
+        67,
+        379,
+        251
+      ],
+      "sourceKey": "creature.neutral.elder_drake.base"
+    },
+    "greater_basilisk": {
+      "file": "recruitment-route-v1/creatures/greater_basilisk.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        108,
+        36,
+        298,
+        196
+      ],
+      "sourceKey": "creature.neutral.basilisk.upgraded"
+    },
+    "griffin": {
+      "file": "recruitment-route-v1/creatures/griffin.idle.png",
+      "frames": 6,
+      "frameWidth": 500,
+      "frameHeight": 275,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8771
+      ],
+      "visibleUnion": [
+        91,
+        53,
+        344,
+        241
+      ],
+      "sourceKey": "creature.greek.tier3.base"
+    },
+    "hill_slinger": {
+      "file": "recruitment-route-v1/creatures/hill_slinger.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        126,
+        101,
+        262,
+        294
+      ],
+      "sourceKey": "creature.neutral.hill_slinger.base"
+    },
+    "hoplite": {
+      "file": "recruitment-route-v1/creatures/hoplite.idle.png",
+      "frames": 6,
+      "frameWidth": 397,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        112,
+        57,
+        270,
+        241
+      ],
+      "sourceKey": "creature.greek.tier1.base"
+    },
+    "japanese_celestial_kirin": {
+      "file": "recruitment-route-v1/creatures/japanese_celestial_kirin.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        61,
+        24,
+        285,
+        221
+      ],
+      "sourceKey": "creature.japanese.tier6.upgraded"
+    },
+    "japanese_great_tengu": {
+      "file": "recruitment-route-v1/creatures/japanese_great_tengu.idle.png",
+      "frames": 6,
+      "frameWidth": 328,
+      "frameHeight": 315,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8667
+      ],
+      "visibleUnion": [
+        44,
+        59,
+        268,
+        274
+      ],
+      "sourceKey": "creature.japanese.tier3.upgraded"
+    },
+    "japanese_imperial_orochi": {
+      "file": "recruitment-route-v1/creatures/japanese_imperial_orochi.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 207,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8657
+      ],
+      "visibleUnion": [
+        96,
+        14,
+        318,
+        179
+      ],
+      "sourceKey": "creature.japanese.tier7.upgraded"
+    },
+    "japanese_jorogumo": {
+      "file": "recruitment-route-v1/creatures/japanese_jorogumo.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        61,
+        30,
+        253,
+        219
+      ],
+      "sourceKey": "creature.japanese.tier5.base"
+    },
+    "japanese_kappa": {
+      "file": "recruitment-route-v1/creatures/japanese_kappa.idle.png",
+      "frames": 6,
+      "frameWidth": 272,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        74,
+        20,
+        235,
+        219
+      ],
+      "sourceKey": "creature.japanese.tier2.base"
+    },
+    "japanese_kirin": {
+      "file": "recruitment-route-v1/creatures/japanese_kirin.idle.png",
+      "frames": 6,
+      "frameWidth": 406,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        65,
+        27,
+        285,
+        220
+      ],
+      "sourceKey": "creature.japanese.tier6.base"
+    },
+    "japanese_kitsune": {
+      "file": "recruitment-route-v1/creatures/japanese_kitsune.idle.png",
+      "frames": 6,
+      "frameWidth": 272,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        3,
+        66,
+        202,
+        219
+      ],
+      "sourceKey": "creature.japanese.tier1.base"
+    },
+    "japanese_nine_tailed_kitsune": {
+      "file": "recruitment-route-v1/creatures/japanese_nine_tailed_kitsune.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 310,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        23,
+        81,
+        239,
+        269
+      ],
+      "sourceKey": "creature.japanese.tier1.upgraded"
+    },
+    "japanese_oni": {
+      "file": "recruitment-route-v1/creatures/japanese_oni.idle.png",
+      "frames": 6,
+      "frameWidth": 302,
+      "frameHeight": 246,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8796
+      ],
+      "visibleUnion": [
+        81,
+        35,
+        260,
+        216
+      ],
+      "sourceKey": "creature.japanese.tier4.base"
+    },
+    "japanese_oni_warlord": {
+      "file": "recruitment-route-v1/creatures/japanese_oni_warlord.idle.png",
+      "frames": 6,
+      "frameWidth": 296,
+      "frameHeight": 251,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8789
+      ],
+      "visibleUnion": [
+        77,
+        36,
+        259,
+        221
+      ],
+      "sourceKey": "creature.japanese.tier4.upgraded"
+    },
+    "japanese_orochi": {
+      "file": "recruitment-route-v1/creatures/japanese_orochi.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 207,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8657
+      ],
+      "visibleUnion": [
+        95,
+        12,
+        319,
+        180
+      ],
+      "sourceKey": "creature.japanese.tier7.base"
+    },
+    "japanese_queen_jorogumo": {
+      "file": "recruitment-route-v1/creatures/japanese_queen_jorogumo.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 310,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        76,
+        49,
+        316,
+        269
+      ],
+      "sourceKey": "creature.japanese.tier5.upgraded"
+    },
+    "japanese_river_elder_kappa": {
+      "file": "recruitment-route-v1/creatures/japanese_river_elder_kappa.idle.png",
+      "frames": 6,
+      "frameWidth": 272,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        61,
+        17,
+        244,
+        221
+      ],
+      "sourceKey": "creature.japanese.tier2.upgraded"
+    },
+    "japanese_tengu": {
+      "file": "recruitment-route-v1/creatures/japanese_tengu.idle.png",
+      "frames": 6,
+      "frameWidth": 328,
+      "frameHeight": 315,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8667
+      ],
+      "visibleUnion": [
+        47,
+        65,
+        238,
+        273
+      ],
+      "sourceKey": "creature.japanese.tier3.base"
+    },
+    "labyrinth_warden": {
+      "file": "recruitment-route-v1/creatures/labyrinth_warden.idle.png",
+      "frames": 6,
+      "frameWidth": 403,
+      "frameHeight": 227,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8781
+      ],
+      "visibleUnion": [
+        120,
+        36,
+        302,
+        200
+      ],
+      "sourceKey": "creature.greek.tier6.upgraded"
+    },
+    "mesoamerican_blood_moon_camazotz": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_blood_moon_camazotz.idle.png",
+      "frames": 6,
+      "frameWidth": 394,
+      "frameHeight": 348,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.879
+      ],
+      "visibleUnion": [
+        95,
+        94,
+        313,
+        306
+      ],
+      "sourceKey": "creature.mesoamerican.tier5.upgraded"
+    },
+    "mesoamerican_camazotz": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_camazotz.idle.png",
+      "frames": 6,
+      "frameWidth": 394,
+      "frameHeight": 348,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8782
+      ],
+      "visibleUnion": [
+        98,
+        95,
+        310,
+        307
+      ],
+      "sourceKey": "creature.mesoamerican.tier5.base"
+    },
+    "mesoamerican_celestial_feathered_serpent": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_celestial_feathered_serpent.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 310,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        81,
+        66,
+        308,
+        270
+      ],
+      "sourceKey": "creature.mesoamerican.tier1.upgraded"
+    },
+    "mesoamerican_cenote_crocodile": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_cenote_crocodile.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 207,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8657
+      ],
+      "visibleUnion": [
+        58,
+        53,
+        287,
+        180
+      ],
+      "sourceKey": "creature.mesoamerican.tier4.base"
+    },
+    "mesoamerican_divine_xiuhcoatl": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_divine_xiuhcoatl.idle.png",
+      "frames": 6,
+      "frameWidth": 500,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        146,
+        39,
+        364,
+        221
+      ],
+      "sourceKey": "creature.mesoamerican.tier6.upgraded"
+    },
+    "mesoamerican_eagle_warrior_spirit": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_eagle_warrior_spirit.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        102,
+        86,
+        283,
+        294
+      ],
+      "sourceKey": "creature.mesoamerican.tier3.base"
+    },
+    "mesoamerican_feathered_serpent": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_feathered_serpent.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        64,
+        34,
+        262,
+        219
+      ],
+      "sourceKey": "creature.mesoamerican.tier1.base"
+    },
+    "mesoamerican_jaguar_spirit": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_jaguar_spirit.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        49,
+        74,
+        247,
+        219
+      ],
+      "sourceKey": "creature.mesoamerican.tier2.base"
+    },
+    "mesoamerican_solar_eagle_warrior": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_solar_eagle_warrior.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        102,
+        86,
+        282,
+        295
+      ],
+      "sourceKey": "creature.mesoamerican.tier3.upgraded"
+    },
+    "mesoamerican_stone_colossus": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_stone_colossus.idle.png",
+      "frames": 6,
+      "frameWidth": 377,
+      "frameHeight": 243,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8771
+      ],
+      "visibleUnion": [
+        120,
+        33,
+        269,
+        213
+      ],
+      "sourceKey": "creature.mesoamerican.tier7.base"
+    },
+    "mesoamerican_sun_colossus": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_sun_colossus.idle.png",
+      "frames": 6,
+      "frameWidth": 371,
+      "frameHeight": 247,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8769
+      ],
+      "visibleUnion": [
+        121,
+        41,
+        265,
+        217
+      ],
+      "sourceKey": "creature.mesoamerican.tier7.upgraded"
+    },
+    "mesoamerican_sun_jaguar": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_sun_jaguar.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        51,
+        75,
+        247,
+        220
+      ],
+      "sourceKey": "creature.mesoamerican.tier2.upgraded"
+    },
+    "mesoamerican_temple_crocodile": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_temple_crocodile.idle.png",
+      "frames": 6,
+      "frameWidth": 333,
+      "frameHeight": 207,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8657
+      ],
+      "visibleUnion": [
+        56,
+        53,
+        290,
+        179
+      ],
+      "sourceKey": "creature.mesoamerican.tier4.upgraded"
+    },
+    "mesoamerican_xiuhcoatl": {
+      "file": "recruitment-route-v1/creatures/mesoamerican_xiuhcoatl.idle.png",
+      "frames": 6,
+      "frameWidth": 500,
+      "frameHeight": 254,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8671
+      ],
+      "visibleUnion": [
+        147,
+        40,
+        363,
+        220
+      ],
+      "sourceKey": "creature.mesoamerican.tier6.base"
+    },
+    "minotaur": {
+      "file": "recruitment-route-v1/creatures/minotaur.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        129,
+        35,
+        304,
+        196
+      ],
+      "sourceKey": "creature.greek.tier6.base"
+    },
+    "norse_ancient_frost_troll": {
+      "file": "recruitment-route-v1/creatures/norse_ancient_frost_troll.idle.png",
+      "frames": 6,
+      "frameWidth": 371,
+      "frameHeight": 247,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8769
+      ],
+      "visibleUnion": [
+        107,
+        42,
+        293,
+        217
+      ],
+      "sourceKey": "creature.norse.tier3.upgraded"
+    },
+    "norse_battle_valkyrie": {
+      "file": "recruitment-route-v1/creatures/norse_battle_valkyrie.idle.png",
+      "frames": 6,
+      "frameWidth": 479,
+      "frameHeight": 341,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8768
+      ],
+      "visibleUnion": [
+        120,
+        87,
+        353,
+        299
+      ],
+      "sourceKey": "creature.norse.tier4.upgraded"
+    },
+    "norse_deathless_draugr": {
+      "file": "recruitment-route-v1/creatures/norse_deathless_draugr.idle.png",
+      "frames": 6,
+      "frameWidth": 397,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        117,
+        50,
+        293,
+        240
+      ],
+      "sourceKey": "creature.norse.tier1.upgraded"
+    },
+    "norse_draugr": {
+      "file": "recruitment-route-v1/creatures/norse_draugr.idle.png",
+      "frames": 6,
+      "frameWidth": 397,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        127,
+        45,
+        292,
+        240
+      ],
+      "sourceKey": "creature.norse.tier1.base"
+    },
+    "norse_fenrir_wolf": {
+      "file": "recruitment-route-v1/creatures/norse_fenrir_wolf.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        43,
+        72,
+        264,
+        240
+      ],
+      "sourceKey": "creature.norse.tier2.upgraded"
+    },
+    "norse_frost_troll": {
+      "file": "recruitment-route-v1/creatures/norse_frost_troll.idle.png",
+      "frames": 6,
+      "frameWidth": 377,
+      "frameHeight": 243,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8779
+      ],
+      "visibleUnion": [
+        120,
+        39,
+        298,
+        213
+      ],
+      "sourceKey": "creature.norse.tier3.base"
+    },
+    "norse_frost_wolf": {
+      "file": "recruitment-route-v1/creatures/norse_frost_wolf.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        48,
+        77,
+        255,
+        240
+      ],
+      "sourceKey": "creature.norse.tier2.base"
+    },
+    "norse_jotunn": {
+      "file": "recruitment-route-v1/creatures/norse_jotunn.idle.png",
+      "frames": 6,
+      "frameWidth": 365,
+      "frameHeight": 251,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8782
+      ],
+      "visibleUnion": [
+        93,
+        38,
+        261,
+        220
+      ],
+      "sourceKey": "creature.norse.tier6.base"
+    },
+    "norse_lindworm": {
+      "file": "recruitment-route-v1/creatures/norse_lindworm.idle.png",
+      "frames": 6,
+      "frameWidth": 500,
+      "frameHeight": 275,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8771
+      ],
+      "visibleUnion": [
+        71,
+        65,
+        329,
+        242
+      ],
+      "sourceKey": "creature.norse.tier5.base"
+    },
+    "norse_nidhogg_wyrm": {
+      "file": "recruitment-route-v1/creatures/norse_nidhogg_wyrm.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        91,
+        30,
+        298,
+        196
+      ],
+      "sourceKey": "creature.norse.tier7.base"
+    },
+    "norse_runic_jotunn": {
+      "file": "recruitment-route-v1/creatures/norse_runic_jotunn.idle.png",
+      "frames": 6,
+      "frameWidth": 437,
+      "frameHeight": 314,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.879
+      ],
+      "visibleUnion": [
+        131,
+        61,
+        339,
+        276
+      ],
+      "sourceKey": "creature.norse.tier6.upgraded"
+    },
+    "norse_storm_lindworm": {
+      "file": "recruitment-route-v1/creatures/norse_storm_lindworm.idle.png",
+      "frames": 6,
+      "frameWidth": 500,
+      "frameHeight": 275,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8771
+      ],
+      "visibleUnion": [
+        55,
+        53,
+        332,
+        242
+      ],
+      "sourceKey": "creature.norse.tier5.upgraded"
+    },
+    "norse_valkyrie": {
+      "file": "recruitment-route-v1/creatures/norse_valkyrie.idle.png",
+      "frames": 6,
+      "frameWidth": 479,
+      "frameHeight": 341,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8768
+      ],
+      "visibleUnion": [
+        120,
+        84,
+        350,
+        299
+      ],
+      "sourceKey": "creature.norse.tier4.base"
+    },
+    "norse_world_serpent_wyrm": {
+      "file": "recruitment-route-v1/creatures/norse_world_serpent_wyrm.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 224,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8762
+      ],
+      "visibleUnion": [
+        84,
+        32,
+        307,
+        197
+      ],
+      "sourceKey": "creature.norse.tier7.upgraded"
+    },
+    "ogre": {
+      "file": "recruitment-route-v1/creatures/ogre.idle.png",
+      "frames": 6,
+      "frameWidth": 371,
+      "frameHeight": 246,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8796
+      ],
+      "visibleUnion": [
+        116,
+        42,
+        256,
+        216
+      ],
+      "sourceKey": "creature.neutral.ogre.base"
+    },
+    "ogre_chieftain": {
+      "file": "recruitment-route-v1/creatures/ogre_chieftain.idle.png",
+      "frames": 6,
+      "frameWidth": 371,
+      "frameHeight": 246,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8796
+      ],
+      "visibleUnion": [
+        108,
+        41,
+        261,
+        217
+      ],
+      "sourceKey": "creature.neutral.ogre.upgraded"
+    },
+    "peltast": {
+      "file": "recruitment-route-v1/creatures/peltast.idle.png",
+      "frames": 6,
+      "frameWidth": 486,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        148,
+        89,
+        318,
+        295
+      ],
+      "sourceKey": "creature.greek.tier2.base"
+    },
+    "sling_master": {
+      "file": "recruitment-route-v1/creatures/sling_master.idle.png",
+      "frames": 6,
+      "frameWidth": 410,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        124,
+        101,
+        264,
+        294
+      ],
+      "sourceKey": "creature.neutral.hill_slinger.upgraded"
+    },
+    "stormforged_cyclops": {
+      "file": "recruitment-route-v1/creatures/stormforged_cyclops.idle.png",
+      "frames": 6,
+      "frameWidth": 430,
+      "frameHeight": 319,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8787
+      ],
+      "visibleUnion": [
+        135,
+        65,
+        306,
+        280
+      ],
+      "sourceKey": "creature.greek.tier7.upgraded"
+    },
+    "temple_adept": {
+      "file": "recruitment-route-v1/creatures/temple_adept.idle.png",
+      "frames": 6,
+      "frameWidth": 486,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        177,
+        68,
+        345,
+        295
+      ],
+      "sourceKey": "creature.greek.tier5.base"
+    },
+    "temple_seer": {
+      "file": "recruitment-route-v1/creatures/temple_seer.idle.png",
+      "frames": 6,
+      "frameWidth": 486,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        171,
+        47,
+        349,
+        294
+      ],
+      "sourceKey": "creature.greek.tier5.upgraded"
+    },
+    "tusked_boar": {
+      "file": "recruitment-route-v1/creatures/tusked_boar.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        74,
+        67,
+        268,
+        221
+      ],
+      "sourceKey": "creature.neutral.wild_boar.upgraded"
+    },
+    "veteran_hoplite": {
+      "file": "recruitment-route-v1/creatures/veteran_hoplite.idle.png",
+      "frames": 6,
+      "frameWidth": 397,
+      "frameHeight": 274,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8772
+      ],
+      "visibleUnion": [
+        110,
+        53,
+        276,
+        240
+      ],
+      "sourceKey": "creature.greek.tier1.upgraded"
+    },
+    "veteran_peltast": {
+      "file": "recruitment-route-v1/creatures/veteran_peltast.idle.png",
+      "frames": 6,
+      "frameWidth": 486,
+      "frameHeight": 335,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8788
+      ],
+      "visibleUnion": [
+        148,
+        89,
+        318,
+        295
+      ],
+      "sourceKey": "creature.greek.tier2.upgraded"
+    },
+    "wild_boar": {
+      "file": "recruitment-route-v1/creatures/wild_boar.idle.png",
+      "frames": 6,
+      "frameWidth": 334,
+      "frameHeight": 253,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8674
+      ],
+      "visibleUnion": [
+        73,
+        70,
+        268,
+        221
+      ],
+      "sourceKey": "creature.neutral.wild_boar.base"
+    },
+    "windcrest_griffin": {
+      "file": "recruitment-route-v1/creatures/windcrest_griffin.idle.png",
+      "frames": 6,
+      "frameWidth": 494,
+      "frameHeight": 278,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.877
+      ],
+      "visibleUnion": [
+        86,
+        45,
+        339,
+        244
+      ],
+      "sourceKey": "creature.greek.tier3.upgraded"
+    },
+    "wyvern": {
+      "file": "recruitment-route-v1/creatures/wyvern.idle.png",
+      "frames": 6,
+      "frameWidth": 495,
+      "frameHeight": 278,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.877
+      ],
+      "visibleUnion": [
+        127,
+        74,
+        379,
+        244
+      ],
+      "sourceKey": "creature.neutral.wyvern.base"
+    },
+    "wyvern_matriarch": {
+      "file": "recruitment-route-v1/creatures/wyvern_matriarch.idle.png",
+      "frames": 6,
+      "frameWidth": 481,
+      "frameHeight": 285,
+      "fps": 3,
+      "anchor": [
+        0.5,
+        0.8786
+      ],
+      "visibleUnion": [
+        120,
+        78,
+        373,
+        250
+      ],
+      "sourceKey": "creature.neutral.wyvern.upgraded"
+    }
+  }
+}

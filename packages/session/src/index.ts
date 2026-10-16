@@ -1,8 +1,14 @@
 /** @pr/session — runtime host around MatchState + SaveSnapshot schema. */
 export * from './session';
 export * from './save';
+export * from './journeys';
 export {
+  availableChapters,
   campaignScore,
+  chapterState,
+  contentVersionOf,
+  runChapters,
+  runMissionIds,
   createRandomSkirmish,
   RANDOM_TEMPLATE_ID,
   SKIRMISH_MAP_TYPES,
@@ -59,4 +65,27 @@ export {
   type StartWealth,
   type TreasureLevel,
   type UnownedTowns,
+  CUSTOM_CHANNEL_TERRAINS,
+  SKIRMISH_NEUTRAL_SPECIES,
+  SLUICE_MAX_CHANNEL,
+  SLUICE_REACH,
+  SUPPLY_DEPOT_REWARD,
+  customHabitatGround,
+  customHabitatVerdict,
+  customSluiceConnectivity,
+  customSluiceGround,
+  habitatTagLabel,
+  habitatTagsAt,
+  habitatVerdict,
+  neutralSiteCreatures,
+  neutralSiteStock,
+  neutralSpeciesForBiome,
+  skirmishMapBiome,
+  type CustomChannelTerrain,
+  type CustomValidateOptions,
+  type GroundAt,
+  type HabitatVerdict,
+  type NeutralHabitat,
+  type NeutralSiteTable,
+  type SluiceConnectivity,
 } from '@pr/campaign';

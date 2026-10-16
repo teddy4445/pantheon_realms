@@ -22,6 +22,8 @@ import { FactionBanner } from '../components/gui';
 import { guiThemeFor } from '../assets/guiArt';
 import { FrontendShell, IllustratedChoice, backdropStyle, radioKeys } from '../components/frontend';
 import { SKIRMISH_MAP_TYPES, SKIRMISH_MAX_EMPIRES } from '@pr/session';
+import { chronicleModel, defaultSelection } from '../app/chronicle';
+import { Chronicle } from '../components/chronicle';
 
 /** The patron god a game starts with: the campaign's starting option, else the pantheon's implemented patron. */
 export function defaultPatron(catalog: ContentCatalog, pantheonId: string | null | undefined, campaign?: CampaignDefinition): string | null {
@@ -59,7 +61,8 @@ export function GameModeScreen() {
       id: 'campaign' as const,
       art: 'frontend.mode.campaign',
       title: 'Campaign',
-      text: `${campaigns.length} story ${campaigns.length === 1 ? 'campaign' : 'campaigns'}${campaignPantheons > 1 ? `, one for each of ${campaignPantheons} pantheons` : ''}, with a hero who carries on from mission to mission.`,
+      // Two Greek campaigns since 2026-10-14: "one for each" only while every pantheon has exactly one.
+      text: `${campaigns.length} story ${campaigns.length === 1 ? 'campaign' : 'campaigns'}${campaignPantheons > 1 ? (campaignPantheons === campaigns.length ? `, one for each of ${campaignPantheons} pantheons` : ` across ${campaignPantheons} pantheons`) : ''}, with a hero who carries on from mission to mission.`,
     },
     { id: 'skirmish' as const, art: 'frontend.mode.skirmish', title: 'Skirmish', text: `${skirmishChoices} authored maps against the AI or other players on this computer (hot-seat). All ${pantheons} pantheons.` },
     { id: 'random' as const, art: 'frontend.mode.random-map', title: 'Random Map', text: `A new map every time: ${SKIRMISH_MAP_TYPES.length} layouts, 2 to ${SKIRMISH_MAX_EMPIRES} empires, AI or hot-seat seats and a choice of victory.` },
@@ -105,20 +108,34 @@ export function DifficultyPicker({ catalog, value, onChange, scope = 'skirmish' 
 // S03 Scenario / Campaign selection
 // ---------------------------------------------------------------------------
 
+/** The chapters (content v2) or missions (v1) a new run of this campaign plays, from the definitions. */
+export function campaignRunCount(c: CampaignDefinition): { count: number; noun: 'chapter' | 'mission' } {
+  return c.chapters?.length ? { count: c.chapters.length, noun: 'chapter' } : { count: c.missionIds.length, noun: 'mission' };
+}
+
+function countLabel({ count, noun }: { count: number; noun: string }): string {
+  return `${count} ${noun}${count === 1 ? '' : 's'}`;
+}
+
 /**
  * The chosen campaign (concept 03, "Campaign Chronicles"): its cover, story and
- * hero, a read-only outline of its missions in order (from `missionIds`; never
- * a mission picker) and the campaign difficulty with its exact effects. The
- * panel wears the campaign's pantheon frame.
+ * hero, and the campaign difficulty with its exact effects. A campaign with a
+ * chapter graph (content v2, 2026-10-15) shows its chronicle: the chapters and
+ * their `requiresAll` links, the selected chapter's summary and the
+ * manual-battle line — a new run opens only the single opening chapter, which
+ * Begin starts. A campaign without one keeps the read-only outline of its
+ * missions in order. The panel wears the campaign's pantheon frame.
  */
 function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefinition; difficultyId: string; onDifficulty: (id: string) => void }) {
   const store = useStore();
   const catalog = store.catalog;
-  const missions = c.missionIds.map((id) => catalog.missions[id]!).filter(Boolean);
+  const missions = c.chapters?.length ? [] : c.missionIds.map((id) => catalog.missions[id]!).filter(Boolean);
+  const chronicle = chronicleModel(catalog, c.id, null);
+  const [chapter, setChapter] = useState<string | null>(() => (chronicle ? defaultSelection(chronicle) : null));
   const cover = resolveArt(`campaign.${c.id}.cover`);
   const hero = catalog.heroes[c.heroDefinitionId];
   return (
-    <Panel title={c.name} className="setup-detail fe-chronicle" bodyClassName="scroll fe-chronicle__body" framed surface="parchment" theme={guiThemeFor(c.pantheonId)} label={c.name}>
+    <Panel title={c.name} className={`setup-detail fe-chronicle ${chronicle ? 'fe-chronicle--v2' : ''}`} bodyClassName="scroll fe-chronicle__body" framed surface="parchment" theme={guiThemeFor(c.pantheonId)} label={c.name}>
       <div className="fe-chronicle__lead">
         <figure className="fe-chronicle__cover">
           {cover ? <img src={cover.url} alt={`${c.name} cover painting`} draggable={false} data-testid="campaign-cover" /> : <CampaignThumb catalog={catalog} campaignId={c.id} style={{ width: '100%', height: '100%' }} />}
@@ -128,7 +145,8 @@ function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefiniti
             <Emblem catalog={catalog} pantheonId={c.pantheonId} size="1.6rem" /> {catalog.pantheons[c.pantheonId]?.name} campaign
           </div>
           <div className="tagline">{c.tagline}</div>
-          <p>{c.summary}</p>
+          {/* A new run plays the chapters (content v2): their summary, else the original one. */}
+          <p>{c.summaryV2 ?? c.summary}</p>
           {hero ? (
             <div className="fe-chronicle__hero">
               <SpeakerPortrait catalog={catalog} line={{ speaker: hero.name, portraitAssetId: hero.portraitAssetId }} size="3.2rem" bustFirst />
@@ -140,6 +158,14 @@ function CampaignDetail({ c, difficultyId, onDifficulty }: { c: CampaignDefiniti
           ) : null}
         </div>
       </div>
+      {chronicle ? (
+        <>
+          <SectionTitle>
+            {chronicle.nodes.length} {chronicle.nodes.length === 1 ? 'chapter' : 'chapters'}
+          </SectionTitle>
+          <Chronicle catalog={catalog} model={chronicle} selectedId={chapter} onSelect={setChapter} testId="setup-chronicle" />
+        </>
+      ) : null}
       {missions.length ? (
         <>
           <SectionTitle>
@@ -285,9 +311,11 @@ export function ScenarioSelectScreen() {
       return;
     }
     if (campaign) {
-      // A campaign is played with its own pantheon and patron: straight to the briefing.
+      // A campaign is played with its own pantheon and patron: straight to the briefing of its
+      // single opening chapter (content v2) or first mission (v1).
       const godId = defaultPatron(catalog, campaign.pantheonId, campaign);
-      store.setup = { ...store.setup, mode: 'campaign', campaignId: campaign.id, missionId: campaign.missionIds[0] ?? null, pantheonId: campaign.pantheonId, godId, campaignDifficultyId: campaignDifficulty };
+      const opening = campaign.chapters?.find((ch) => ch.requiresAll.length === 0)?.missionId ?? campaign.missionIds[0] ?? null;
+      store.setup = { ...store.setup, mode: 'campaign', campaignId: campaign.id, missionId: opening, pantheonId: campaign.pantheonId, godId, campaignDifficultyId: campaignDifficulty };
       store.startCampaign(campaign.id, godId, campaignDifficulty);
       return;
     } else if (skirmish) {
@@ -318,7 +346,7 @@ export function ScenarioSelectScreen() {
           </Button>
           {campaign ? (
             <Button variant="primary" size="large" disabled={!playable} disabledReason="This content is not available in this build" onClick={next} data-testid="setup-begin">
-              Begin — Mission Briefing
+              {campaign.chapters?.length ? `Begin — Chapter ${campaign.chapters.find((ch) => ch.requiresAll.length === 0)?.chapter ?? 1} Briefing` : 'Begin — Mission Briefing'}
             </Button>
           ) : map ? (
             <Button variant="primary" size="large" onClick={next} data-testid="setup-next">
@@ -357,7 +385,7 @@ export function ScenarioSelectScreen() {
                   <span className="fe-campaign-row__text">
                     <span className="list-card__title">{c.name}</span>
                     <span className="list-card__meta">
-                      {catalog.pantheons[c.pantheonId]?.name} · {c.missionIds.length} {c.missionIds.length === 1 ? 'mission' : 'missions'}
+                      {catalog.pantheons[c.pantheonId]?.name} · {countLabel(campaignRunCount(c))}
                     </span>
                     {c.status !== 'playable' ? <span className="list-card__meta dim">Not available yet</span> : null}
                   </span>
@@ -365,7 +393,7 @@ export function ScenarioSelectScreen() {
               ))}
             </div>
           </Panel>
-          {campaign ? <CampaignDetail c={campaign} difficultyId={campaignDifficulty} onDifficulty={setCampaignDifficulty} /> : null}
+          {campaign ? <CampaignDetail key={campaign.id} c={campaign} difficultyId={campaignDifficulty} onDifficulty={setCampaignDifficulty} /> : null}
         </div>
       </FrontendShell>
     );
@@ -527,7 +555,7 @@ function PantheonStage({ p, patronId }: { p: PantheonDefinition; patronId: strin
             const fam = catalog.families[r.familyId];
             if (!fam) return null;
             const base = catalog.creatures[fam.baseCreatureId];
-            const up = catalog.creatures[fam.upgradedCreatureId];
+            const up = fam.upgradedCreatureId ? catalog.creatures[fam.upgradedCreatureId] : undefined;
             return (
               <li key={r.tier} className="pantheon-roster__tile roster-cell" data-testid={`roster-${r.tier}`}>
                 <span className="roster-cell__tier">T{r.tier}</span>

@@ -13,7 +13,7 @@ export const HINTS: Readonly<Record<string, HintDefinition>> = {
   route_planning: {
     id: 'route_planning',
     title: 'Planning a route',
-    text: 'The path preview shows where your hero will go. Solid markers are reachable today; faded markers need future days. Click the destination again (or press Space) to march.',
+    text: 'Gold arrows are reachable today; bronze arrows, with an hourglass where a new day begins, need later days, and the parchment shows the day of arrival. Continue journey (or Space, or a second click on the destination) marches. The destination is kept from day to day until the hero gets there.',
   },
   out_of_movement: {
     id: 'out_of_movement',

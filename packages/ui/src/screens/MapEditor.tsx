@@ -9,6 +9,13 @@
  * map. The editor never mutates a match: it only edits its own document.
  * Drawing uses a 2D canvas with the game's own ground textures, site art and
  * hex transform (`@pr/presentation/core` hexmath).
+ *
+ * Campaign expansion (2026-10-15, screen spec `editor`): the six new neutral
+ * creatures' hiring sites (portrait and map picture in the palette, finite weekly
+ * stock from content, a habitat mask while placing and a habitat warning in the
+ * checks), a sluice with its channel and closed/open ground (the connectivity
+ * check with every sluice closed and every sluice open), ferry landing pairs and
+ * a supply depot (`app/editorV2Sites.ts`).
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
 import {
@@ -41,8 +48,17 @@ import {
   type CustomMapSize,
   type CustomSite,
   type CustomSiteKind,
+  CUSTOM_CHANNEL_TERRAINS,
+  SLUICE_MAX_CHANNEL,
+  SLUICE_REACH,
+  SUPPLY_DEPOT_REWARD,
+  customHabitatGround,
+  customHabitatVerdict,
+  customSluiceConnectivity,
+  type CustomChannelTerrain,
+  type HabitatVerdict,
 } from '@pr/session';
-import { KEY_COLOR_LABEL, TERRAIN_CODES, axialNeighbors, hexKey, type ContentCatalog, type HexCoord, type KeyColor, type Terrain } from '@pr/rules';
+import { KEY_COLOR_LABEL, TERRAIN_CODES, axialDistance, axialNeighbors, hexKey, type ContentCatalog, type HexCoord, type KeyColor, type Terrain } from '@pr/rules';
 import { axialPoint, hexCorners, pointAxial, siteSprite, spriteUrl, terrainArt } from '@pr/presentation/core';
 import { useStore } from '../app/context';
 import { Button, Modal, Panel, SectionTitle, Segmented, Tabs, TextInput, Toggle } from '../components/kit';
@@ -51,6 +67,7 @@ import { resolveAsset } from '../assets/manifest';
 import { DifficultyPicker } from './Setup';
 import { SkirmishMapThumb } from '../components/mapPreview';
 import { ArtIcon, EmptyArchive, artUrl, backdropStyle } from '../components/frontend';
+import { NEUTRAL_SITE_TABLE, neutralPalette, v2SiteSprite, v2SiteSpriteUrl, type NeutralPaletteEntry } from '../app/editorV2Sites';
 
 const R = 22; // hex radius in world pixels at zoom 1
 const GROUNDS: readonly Exclude<Terrain, 'void'>[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
@@ -59,7 +76,60 @@ const FALLBACK_COLOR: Record<Terrain, string> = { plains: '#767b2d', forest: '#5
 const BIOMES = ['temperate', 'autumn', 'coast', 'desert', 'fjord', 'high_pass', 'jungle', 'moor', 'storm_plateau', 'tundra'] as const;
 const BIOME_LABEL: Record<(typeof BIOMES)[number], string> = { temperate: 'Temperate', autumn: 'Autumn', coast: 'Coast', desert: 'Desert', fjord: 'Fjord', high_pass: 'High pass', jungle: 'Jungle', moor: 'Moor', storm_plateau: 'Storm plateau', tundra: 'Tundra' };
 
-type Tool = { kind: 'select' } | { kind: 'terrain'; terrain: Exclude<Terrain, 'void'> } | { kind: 'road'; erase: boolean } | { kind: 'erase' } | { kind: 'place'; site: CustomSiteKind };
+type Tool =
+  | { kind: 'select' }
+  | { kind: 'terrain'; terrain: Exclude<Terrain, 'void'> }
+  | { kind: 'road'; erase: boolean }
+  | { kind: 'erase' }
+  | { kind: 'place'; site: CustomSiteKind; creatureId?: string }
+  /** Marking a sluice's channel hexes (2026-10-15): click or drag to add, start on a channel hex to remove. */
+  | { kind: 'channel'; siteId: string };
+
+/** The ground a sluice's channel has when the game starts. */
+function sluiceStartGround(s: Pick<CustomSite, 'openTerrain' | 'closedTerrain' | 'startsOpen'>): CustomChannelTerrain {
+  return s.startsOpen ? (s.openTerrain ?? 'marsh') : (s.closedTerrain ?? 'water');
+}
+
+/** Channel cells of every sluice (keys). */
+function channelKeys(doc: CustomMapDocument): Set<string> {
+  return new Set(doc.sites.flatMap((s) => (s.kind === 'sluice' ? (s.channel ?? []).map((c) => hexKey(c)) : [])));
+}
+
+/**
+ * The ground the editor shows on each channel hex: its sluice's start state. The
+ * document keeps the ground beneath (shown again when a hex leaves the channel); the
+ * game writes the start state when the map is played.
+ */
+function channelGround(doc: CustomMapDocument): Map<string, Terrain> {
+  const out = new Map<string, Terrain>();
+  for (const s of doc.sites) if (s.kind === 'sluice') for (const c of s.channel ?? []) out.set(hexKey(c), sluiceStartGround(s));
+  return out;
+}
+
+/**
+ * A new sluice's first channel: the water it touches, followed through water up to
+ * three hexes from the sluice (at most 12 hexes). Empty on dry land; the author marks
+ * it with Edit channel.
+ */
+function autoChannel(doc: CustomMapDocument, at: HexCoord): HexCoord[] {
+  const out: HexCoord[] = [];
+  const seen = new Set<string>([hexKey(at)]);
+  const taken = new Set([...doc.sites.map((s) => hexKey({ q: s.q, r: s.r })), ...channelKeys(doc)]);
+  const queue = axialNeighbors(at).filter((n) => terrainAt(doc, n) === 'water');
+  for (const n of queue) seen.add(hexKey(n));
+  while (queue.length > 0 && out.length < 12) {
+    const c = queue.shift()!;
+    if (taken.has(hexKey(c))) continue;
+    out.push(c);
+    for (const n of axialNeighbors(c)) {
+      const k = hexKey(n);
+      if (seen.has(k) || terrainAt(doc, n) !== 'water' || axialDistance(n, at) > 3) continue;
+      seen.add(k);
+      queue.push(n);
+    }
+  }
+  return out;
+}
 
 interface View {
   zoom: number;
@@ -165,6 +235,7 @@ export function MapEditorScreen() {
   const [townOwner, setTownOwner] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [pendingPortal, setPendingPortal] = useState<string | null>(null);
+  const [pendingFerry, setPendingFerry] = useState<string | null>(null);
   const [tab, setTab] = useState<'map' | 'empires' | 'site' | 'check'>('map');
   const [dialog, setDialog] = useState<null | 'new' | 'generate' | 'open' | 'play' | 'leave'>(null);
   const [hover, setHover] = useState<HexCoord | null>(null);
@@ -185,9 +256,12 @@ export function MapEditorScreen() {
     setDirty(true);
   }, []);
 
-  const issues = useMemo(() => validateCustomMap(catalog, doc), [catalog, doc]);
+  // The neutral hiring-site table (content data) adds the habitat warnings (2026-10-15).
+  const issues = useMemo(() => validateCustomMap(catalog, doc, { neutralSites: NEUTRAL_SITE_TABLE }), [catalog, doc]);
   const errors = issues.filter((i) => i.severity === 'error');
+  const warnings = issues.filter((i) => i.severity === 'warning');
   const site = doc.sites.find((s) => s.id === selected) ?? null;
+  const palette = useMemo(() => neutralPalette(catalog), [catalog]);
 
   const doUndo = useCallback(() => {
     const prev = undo.current.pop();
@@ -210,10 +284,14 @@ export function MapEditorScreen() {
 
   // --- Editing ------------------------------------------------------------------
   const placeAt = useCallback(
-    (c: HexCoord, kind: CustomSiteKind) => {
+    (c: HexCoord, kind: CustomSiteKind, creatureId?: string) => {
       const t = terrainAt(doc, c);
       if (t === 'water' || t === 'mountain' || t === 'void') {
         store.toast('Sites stand on open ground (not water or mountains)', 'error');
+        return;
+      }
+      if (channelKeys(doc).has(hexKey(c)) && !doc.sites.some((s) => s.q === c.q && s.r === c.r)) {
+        store.toast('Sites stand beside a sluice channel, never in it', 'error');
         return;
       }
       const there = doc.sites.find((s) => s.q === c.q && s.r === c.r);
@@ -240,32 +318,70 @@ export function MapEditorScreen() {
       if (kind === 'quest_hut') s = { ...s, quest: { type: 'deliver', wood: 5, stone: 5 }, reward: { gold: 1500 } };
       if (kind === 'artifact') s = { ...s, reward: { artifactRarity: 'minor' } };
       if (kind === 'watchtower') s = { ...s, radius: 9 };
+      // Campaign expansion sites (2026-10-15).
+      if (kind === 'neutral_dwelling') s = { ...s, creatureId: creatureId ?? palette[0]?.creatureId };
+      if (kind === 'sluice') s = { ...s, channel: autoChannel(doc, c) };
+      if (kind === 'ferry' && pendingFerry) s = { ...s, twinId: pendingFerry };
+      if (kind === 'supply_depot') s = { ...s, reward: { ...SUPPLY_DEPOT_REWARD } };
       setDoc((d) => {
         let sites = d.sites;
         if (kind === 'town' && owner >= 0) sites = sites.filter((x) => !(x.kind === 'town' && x.owner === owner)); // one town per empire: moving it
         if (kind === 'portal' && pendingPortal) sites = sites.map((x) => (x.id === pendingPortal ? { ...x, twinId: id } : x));
+        if (kind === 'ferry' && pendingFerry) sites = sites.map((x) => (x.id === pendingFerry ? { ...x, twinId: id } : x));
         return { ...d, sites: [...sites, s] };
       });
       if (kind === 'portal') setPendingPortal(pendingPortal ? null : id);
+      if (kind === 'ferry') setPendingFerry(pendingFerry ? null : id);
+      if (kind === 'neutral_dwelling') {
+        const v = customHabitatVerdict(catalog, doc, s, NEUTRAL_SITE_TABLE);
+        if (v && !v.fits) store.toast(v.text, 'error');
+      }
+      if (kind === 'sluice' && !(s.channel ?? []).length) store.toast('No water beside the sluice: mark its channel with Edit channel', 'info');
       setSelected(id);
     },
-    [catalog, doc, pendingPortal, setDoc, store, townOwner],
+    [catalog, doc, palette, pendingFerry, pendingPortal, setDoc, store, townOwner],
   );
 
   const removeSite = useCallback(
     (id: string) => {
       setDoc((d) => {
         const s = d.sites.find((x) => x.id === id);
-        const twin = s?.kind === 'portal' ? s.twinId : undefined;
+        const twin = s?.kind === 'portal' || s?.kind === 'ferry' ? s.twinId : undefined;
         return { ...d, sites: d.sites.filter((x) => x.id !== id && x.id !== twin) };
       });
       if (pendingPortal === id) setPendingPortal(null);
+      if (pendingFerry === id) setPendingFerry(null);
+      setTool((t) => (t.kind === 'channel' && t.siteId === id ? { kind: 'select' } : t));
       setSelected(null);
     },
-    [pendingPortal, setDoc],
+    [pendingFerry, pendingPortal, setDoc],
   );
 
   const updateSite = useCallback((id: string, patch: Partial<CustomSite>) => setDoc((d) => ({ ...d, sites: d.sites.map((s) => (s.id === id ? { ...s, ...patch } : s)) })), [setDoc]);
+  /** Add or remove one channel hex of a sluice (the Edit channel tool). */
+  const editChannel = useCallback(
+    (siteId: string, c: HexCoord, add: boolean, first: boolean): boolean => {
+      const s = doc.sites.find((x) => x.id === siteId && x.kind === 'sluice');
+      if (!s) return false;
+      const has = (s.channel ?? []).some((x) => x.q === c.q && x.r === c.r);
+      if (add === has) return false;
+      if (add) {
+        const why = terrainAt(doc, c) === 'void' ? 'That hex is off the map' : doc.sites.some((o) => o.q === c.q && o.r === c.r) ? 'Sites stand beside a channel, never in it' : axialDistance(c, s) > SLUICE_REACH ? `Channel hexes lie within ${SLUICE_REACH} hexes of the sluice` : (s.channel ?? []).length >= SLUICE_MAX_CHANNEL ? `A channel has at most ${SLUICE_MAX_CHANNEL} hexes` : doc.sites.some((o) => o.id !== siteId && o.kind === 'sluice' && (o.channel ?? []).some((x) => x.q === c.q && x.r === c.r)) ? 'That hex belongs to another sluice’s channel' : '';
+        if (why) {
+          if (first) store.toast(why, 'error');
+          return false;
+        }
+      }
+      setDoc((d) => {
+        const site2 = d.sites.find((x) => x.id === siteId);
+        if (!site2) return d;
+        const channel = add ? [...(site2.channel ?? []), { q: c.q, r: c.r }] : (site2.channel ?? []).filter((x) => x.q !== c.q || x.r !== c.r);
+        return { ...d, sites: d.sites.map((x) => (x.id === siteId ? { ...x, channel } : x)) };
+      }, first);
+      return true;
+    },
+    [doc, setDoc, store],
+  );
 
   // Keyboard: undo/redo, delete; Escape closes a dialog, cancels a half-placed portal pair or asks to leave.
   const leaveRef = useRef<() => void>(() => undefined);
@@ -277,6 +393,8 @@ export function MapEditorScreen() {
         e.stopPropagation();
         if (dialog) setDialog(null);
         else if (pendingPortal) setPendingPortal(null);
+        else if (pendingFerry) setPendingFerry(null);
+        else if (tool.kind === 'channel') setTool({ kind: 'select' });
         else leaveRef.current();
         return;
       }
@@ -297,7 +415,7 @@ export function MapEditorScreen() {
     // Capture phase: the editor's own dialogs take Escape before the app shell sees it.
     window.addEventListener('keydown', onKey, true);
     return () => window.removeEventListener('keydown', onKey, true);
-  }, [dialog, doRedo, doUndo, pendingPortal, removeSite, selected, store]);
+  }, [dialog, doRedo, doUndo, pendingFerry, pendingPortal, removeSite, selected, store, tool.kind]);
 
   // --- Library and files ------------------------------------------------------------
   const saveToLibrary = async () => {
@@ -329,6 +447,8 @@ export function MapEditorScreen() {
     setDirty(false);
     setSelected(null);
     setPendingPortal(null);
+    setPendingFerry(null);
+    setTool((t) => (t.kind === 'channel' ? { kind: 'select' } : t));
     setTownOwner(0);
     setDialog(null);
     store.toast(`Opened “${r.doc.name}”`, 'success');
@@ -368,14 +488,14 @@ export function MapEditorScreen() {
         </Button>
         <span className="map-editor__spacer" />
         <span className={`small ${errors.length ? 'map-editor__bad' : 'dim'}`} role="status" data-testid="editor-status">
-          {errors.length ? `${errors.length} problem${errors.length > 1 ? 's' : ''} to fix before playing` : 'Ready to play'}
+          {errors.length ? `${errors.length} problem${errors.length > 1 ? 's' : ''} to fix before playing` : warnings.length ? `Ready to play · ${warnings.length} warning${warnings.length > 1 ? 's' : ''}` : 'Ready to play'}
         </span>
         <Button variant="primary" size="small" icon="play" disabled={errors.length > 0} disabledReason={errors[0]?.text} onClick={() => setDialog('play')} data-testid="editor-play">
           Play
         </Button>
       </div>
       <div className="map-editor__body">
-        <ToolPalette catalog={catalog} doc={doc} tool={tool} setTool={(t) => { setTool(t); if (t.kind !== 'place' || t.site !== 'portal') setPendingPortal(null); }} brush={brush} setBrush={setBrush} symmetry={symmetry} setSymmetry={setSymmetry} townOwner={townOwner} setTownOwner={setTownOwner} pendingPortal={pendingPortal} />
+        <ToolPalette catalog={catalog} doc={doc} tool={tool} setTool={(t) => { setTool(t); if (t.kind !== 'place' || t.site !== 'portal') setPendingPortal(null); if (t.kind !== 'place' || t.site !== 'ferry') setPendingFerry(null); }} brush={brush} setBrush={setBrush} symmetry={symmetry} setSymmetry={setSymmetry} townOwner={townOwner} setTownOwner={setTownOwner} pendingPortal={pendingPortal} pendingFerry={pendingFerry} palette={palette} />
         <EditorCanvas
           catalog={catalog}
           doc={doc}
@@ -391,7 +511,9 @@ export function MapEditorScreen() {
             const t = tool.terrain;
             const seen = new Set<string>();
             const cells = painted.flatMap((c) => symmetricCells(doc, c, symmetry)).filter((c) => !seen.has(hexKey(c)) && !!seen.add(hexKey(c)));
-            const ok = t === 'water' || t === 'mountain' ? cells.filter((c) => !blocked.has(hexKey(c))) : cells;
+            // A sluice channel keeps the ground of its sluice's start state (2026-10-15).
+            const channel = channelKeys(doc);
+            const ok = (t === 'water' || t === 'mountain' ? cells.filter((c) => !blocked.has(hexKey(c))) : cells).filter((c) => !channel.has(hexKey(c)));
             setDoc((d) => paintCells(d, ok, t), first);
           }}
           onRoad={(a, b, first) => {
@@ -404,9 +526,10 @@ export function MapEditorScreen() {
               return { ...d, roads: tool.erase ? d.roads.filter((x) => !change.includes(x)) : [...d.roads, ...change] };
             }, first);
           }}
+          onChannel={(c, add, first) => (tool.kind === 'channel' ? editChannel(tool.siteId, c, add, first) : false)}
           onClickCell={(c) => {
             const there = doc.sites.find((s) => s.q === c.q && s.r === c.r);
-            if (tool.kind === 'place') placeAt(c, tool.site);
+            if (tool.kind === 'place') placeAt(c, tool.site, tool.creatureId);
             else if (tool.kind === 'erase') {
               if (there) removeSite(there.id);
             } else if (tool.kind === 'select') {
@@ -418,6 +541,7 @@ export function MapEditorScreen() {
             const t = terrainAt(doc, c);
             if (t === 'water' || t === 'mountain' || t === 'void') return;
             if (doc.sites.some((s) => s.id !== id && s.q === c.q && s.r === c.r)) return;
+            if (channelKeys(doc).has(hexKey(c))) return;
             setDoc((d) => ({ ...d, sites: d.sites.map((s) => (s.id === id ? { ...s, q: c.q, r: c.r } : s)) }), first);
           }}
           onSelect={(id) => {
@@ -434,15 +558,16 @@ export function MapEditorScreen() {
               { id: 'map', label: 'Map' },
               { id: 'empires', label: 'Empires' },
               { id: 'site', label: 'Site' },
-              { id: 'check', label: 'Check', badge: errors.length ? <span className="map-editor__count">{errors.length}</span> : undefined },
+              { id: 'check', label: 'Check', badge: errors.length ? <span className="map-editor__count">{errors.length}</span> : warnings.length ? <span className="map-editor__count map-editor__count--warn">{warnings.length}</span> : undefined },
             ]}
           />
           <div className="map-editor__tab scroll">
             {tab === 'map' ? <MapPanel doc={doc} setDoc={setDoc} /> : null}
             {tab === 'empires' ? <EmpiresPanel catalog={catalog} doc={doc} setDoc={setDoc} /> : null}
-            {tab === 'site' ? <SitePanel catalog={catalog} doc={doc} site={site} update={updateSite} remove={removeSite} /> : null}
+            {tab === 'site' ? <SitePanel catalog={catalog} doc={doc} site={site} update={updateSite} remove={removeSite} palette={palette} tool={tool} setTool={setTool} /> : null}
             {tab === 'check' ? (
               <CheckPanel
+                doc={doc}
                 issues={issues}
                 onPick={(id) => {
                   setSelected(id);
@@ -464,6 +589,8 @@ export function MapEditorScreen() {
             setDirty(false);
             setSelected(null);
             setPendingPortal(null);
+            setPendingFerry(null);
+            setTool((t) => (t.kind === 'channel' ? { kind: 'select' } : t));
             setDialog(null);
           }}
         />
@@ -481,6 +608,8 @@ export function MapEditorScreen() {
             setDirty(true);
             setSelected(null);
             setPendingPortal(null);
+            setPendingFerry(null);
+            setTool((t) => (t.kind === 'channel' ? { kind: 'select' } : t));
             setTownOwner(0);
             setDialog(null);
             store.toast(leftOut.length ? `Generated. Left out (the editor has no such site): ${leftOut.join(', ')}` : 'Generated — edit it as you like', 'success');
@@ -543,6 +672,8 @@ function ToolPalette({
   townOwner,
   setTownOwner,
   pendingPortal,
+  pendingFerry,
+  palette,
 }: {
   catalog: ContentCatalog;
   doc: CustomMapDocument;
@@ -555,8 +686,11 @@ function ToolPalette({
   townOwner: number;
   setTownOwner: (n: number) => void;
   pendingPortal: string | null;
+  pendingFerry: string | null;
+  palette: readonly NeutralPaletteEntry[];
 }) {
   const is = (t: Tool) => JSON.stringify(t) === JSON.stringify(tool);
+  const neutralTool = tool.kind === 'place' && tool.site === 'neutral_dwelling' ? palette.find((e) => e.creatureId === tool.creatureId) : undefined;
   return (
     <Panel className="map-editor__tools" bodyClassName="map-editor__tools-body scroll" framed="compact">
       <SectionTitle>Tools</SectionTitle>
@@ -624,12 +758,53 @@ function ToolPalette({
       ) : null}
       {pendingPortal ? <p className="small map-editor__hint">Click a second tile for the twin portal.</p> : null}
       <div className="map-editor__grid">
-        {CUSTOM_SITE_KINDS.map((k) => (
+        {CUSTOM_SITE_KINDS.filter((k) => !k.palette).map((k) => (
           <button key={k.id} type="button" className={`editor-tool ${tool.kind === 'place' && tool.site === k.id ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'place', site: k.id })} title={k.summary} data-testid={`tool-place-${k.id}`}>
             {k.label}
           </button>
         ))}
       </div>
+      {/* Campaign expansion (2026-10-15): the new neutrals' hiring sites, from content data. */}
+      <SectionTitle>Neutral hiring sites</SectionTitle>
+      <div className="editor-v2-neutrals" role="group" aria-label="Neutral hiring sites" data-testid="palette-neutrals">
+        {palette.map((e) => (
+          <button
+            key={e.creatureId}
+            type="button"
+            className={`editor-tool editor-neutral ${neutralTool?.creatureId === e.creatureId ? 'is-selected' : ''}`}
+            onClick={() => setTool({ kind: 'place', site: 'neutral_dwelling', creatureId: e.creatureId })}
+            title={`${e.name} hiring site — ${e.habitat} ${e.stock} each week, shared by every empire; never carried over.`}
+            aria-pressed={neutralTool?.creatureId === e.creatureId}
+            data-testid={`tool-neutral-${e.creatureId}`}
+          >
+            {e.portraitUrl ? <img className="editor-neutral__portrait" src={e.portraitUrl} alt="" draggable={false} /> : <span className="editor-neutral__portrait" aria-hidden="true" />}
+            {e.siteUrl ? <img className="editor-neutral__site" src={e.siteUrl} alt="" draggable={false} /> : null}
+            <span className="editor-neutral__text">
+              <span className="editor-neutral__name">{e.name}</span>
+              <span className="editor-neutral__stock">{e.stock} a week</span>
+            </span>
+          </button>
+        ))}
+      </div>
+      {neutralTool ? (
+        <p className="small editor-v2-hint" data-testid="palette-neutral-hint">
+          {neutralTool.plural}: {neutralTool.habitat} Green hexes fit, red ones are forbidden.
+        </p>
+      ) : null}
+      <SectionTitle>Water and supply</SectionTitle>
+      <div className="map-editor__grid editor-v2-landmarks">
+        {CUSTOM_SITE_KINDS.filter((k) => k.palette === 'landmark').map((k) => {
+          const pic = v2SiteSpriteUrl({ kind: k.id });
+          return (
+            <button key={k.id} type="button" className={`editor-tool editor-landmark ${tool.kind === 'place' && tool.site === k.id ? 'is-selected' : ''}`} onClick={() => setTool({ kind: 'place', site: k.id })} title={k.summary} data-testid={`tool-place-${k.id}`}>
+              {pic ? <img className="editor-landmark__pic" src={pic} alt="" draggable={false} /> : null}
+              <span>{k.label}</span>
+            </button>
+          );
+        })}
+      </div>
+      {pendingFerry ? <p className="small map-editor__hint">Click a second shore tile for the other ferry landing.</p> : null}
+      {tool.kind === 'channel' ? <p className="small map-editor__hint" data-testid="channel-hint">Click or drag over hexes to add them to the channel; start on a channel hex to remove. Escape or Done ends.</p> : null}
     </Panel>
   );
 }
@@ -649,6 +824,7 @@ function EditorCanvas({
   setHover,
   onPaint,
   onRoad,
+  onChannel,
   onClickCell,
   onMoveSite,
   onSelect,
@@ -663,6 +839,8 @@ function EditorCanvas({
   setHover: (c: HexCoord | null) => void;
   onPaint: (cells: HexCoord[], first: boolean) => void;
   onRoad: (a: HexCoord, b: HexCoord, first: boolean) => void;
+  /** Add (or remove) a channel hex; true when the map changed. */
+  onChannel: (c: HexCoord, add: boolean, first: boolean) => boolean;
   onClickCell: (c: HexCoord) => void;
   onMoveSite: (id: string, c: HexCoord, first: boolean) => void;
   onSelect: (id: string | null) => void;
@@ -675,8 +853,27 @@ function EditorCanvas({
   });
   const [tick, setTick] = useState(0);
   const redraw = useCallback(() => setTick((t) => t + 1), []);
-  const drag = useRef<null | { mode: 'pan'; sx: number; sy: number; vx: number; vy: number } | { mode: 'paint'; last: HexCoord | null; first: boolean } | { mode: 'move'; id: string; first: boolean }>(null);
+  const drag = useRef<null | { mode: 'pan'; sx: number; sy: number; vx: number; vy: number } | { mode: 'paint'; last: HexCoord | null; first: boolean } | { mode: 'move'; id: string; first: boolean } | { mode: 'channel'; add: boolean; last: HexCoord | null; first: boolean }>(null);
   const cells = useMemo(() => cellsInRect(doc), [doc.width, doc.height]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Habitat mask while placing a neutral hiring site (2026-10-15): where the creature fits.
+  const habitatCreature = tool.kind === 'place' && tool.site === 'neutral_dwelling' ? (tool.creatureId ?? null) : null;
+  /** Channel hexes show their sluice's start state. */
+  const shownChannel = useMemo(() => channelGround(doc), [doc]);
+  const groundShown = (c: HexCoord): Terrain => shownChannel.get(hexKey(c)) ?? terrainAt(doc, c);
+  const habitatGround = useMemo(() => customHabitatGround(doc), [doc]);
+  const habitatMask = useMemo(() => {
+    if (!habitatCreature) return null;
+    const out = new Map<string, HabitatVerdict>();
+    for (const c of cells) {
+      const g = habitatGround(c);
+      if (g === 'water' || g === 'mountain' || g === 'void' || shownChannel.has(hexKey(c))) continue;
+      const v = customHabitatVerdict(catalog, doc, { kind: 'neutral_dwelling', creatureId: habitatCreature, q: c.q, r: c.r }, NEUTRAL_SITE_TABLE, habitatGround);
+      if (v) out.set(hexKey(c), v);
+    }
+    return out;
+  }, [catalog, cells, habitatGround, habitatCreature]); // eslint-disable-line react-hooks/exhaustive-deps
+  /** Neutral hiring sites outside their habitat (a warning badge on the map). */
+  const misplaced = useMemo(() => new Set(doc.sites.filter((s) => s.kind === 'neutral_dwelling' && customHabitatVerdict(catalog, doc, s, NEUTRAL_SITE_TABLE, habitatGround)?.fits === false).map((s) => s.id)), [catalog, doc, habitatGround]);
 
   // Fit the map on a new document size.
   useEffect(() => {
@@ -745,10 +942,22 @@ function EditorCanvas({
     for (const c of cells) {
       const p = axialPoint(c, R);
       if (Math.abs(p.x - view.x) > half.x || Math.abs(p.y - view.y) > half.y) continue;
-      const t = terrainAt(doc, c);
+      const t = groundShown(c);
       path(p.x, p.y);
       ctx.fillStyle = fillFor(t);
       ctx.fill();
+    }
+    // Habitat mask (placing a neutral hiring site): green where it fits, red where its habitat forbids.
+    if (habitatMask) {
+      for (const c of cells) {
+        const v = habitatMask.get(hexKey(c));
+        if (!v || (!v.fits && v.problem !== 'forbidden')) continue;
+        const p = axialPoint(c, R);
+        if (Math.abs(p.x - view.x) > half.x || Math.abs(p.y - view.y) > half.y) continue;
+        path(p.x, p.y);
+        ctx.fillStyle = v.fits ? 'rgba(96, 214, 128, 0.28)' : 'rgba(226, 70, 60, 0.26)';
+        ctx.fill();
+      }
     }
     // Grid lines.
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)';
@@ -777,14 +986,30 @@ function EditorCanvas({
       ctx.lineTo(b.x, b.y);
       ctx.stroke();
     }
-    // Portal links.
+    // Sluice channels (2026-10-15): blue hatched hexes, stronger for the selected sluice.
+    for (const s of doc.sites) {
+      if (s.kind !== 'sluice') continue;
+      const strong = s.id === selected || (tool.kind === 'channel' && tool.siteId === s.id);
+      for (const c of s.channel ?? []) {
+        const p = axialPoint(c, R);
+        path(p.x, p.y);
+        ctx.fillStyle = strong ? 'rgba(90, 170, 255, 0.24)' : 'rgba(90, 170, 255, 0.12)';
+        ctx.fill();
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = strong ? 'rgba(200, 230, 255, 0.95)' : 'rgba(160, 205, 255, 0.6)';
+        ctx.lineWidth = 1.5 / view.zoom;
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+    // Portal links (violet) and ferry crossings (teal).
     ctx.setLineDash([6, 6]);
-    ctx.strokeStyle = 'rgba(190, 120, 255, 0.8)';
     ctx.lineWidth = 2;
     for (const s of doc.sites) {
-      if (s.kind !== 'portal' || !s.twinId || s.id > s.twinId) continue;
+      if ((s.kind !== 'portal' && s.kind !== 'ferry') || !s.twinId || s.id > s.twinId) continue;
       const t = doc.sites.find((x) => x.id === s.twinId);
       if (!t) continue;
+      ctx.strokeStyle = s.kind === 'ferry' ? 'rgba(90, 220, 210, 0.85)' : 'rgba(190, 120, 255, 0.8)';
       const a = axialPoint(s, R);
       const b = axialPoint(t, R);
       ctx.beginPath();
@@ -825,7 +1050,8 @@ function EditorCanvas({
         drew = true;
       } else {
         const townPantheon = s.kind !== 'town' ? null : s.owner !== undefined ? doc.players[s.owner]?.pantheonId : s.pantheon && s.pantheon !== 'nearest' && s.pantheon !== 'other' ? s.pantheon : doc.players[0]?.pantheonId;
-        const def = siteSprite(s.kind === 'town' ? 'town' : SPRITE_KIND[s.kind] ?? 'pickup', s.kind === 'town' ? townPantheon : s.kind === 'resource_cache' ? 'gold' : null);
+        // Campaign expansion sites use the adventure map's own pictures (a sluice in its start state).
+        const def = v2SiteSprite(s) ?? siteSprite(s.kind === 'town' ? 'town' : SPRITE_KIND[s.kind] ?? 'pickup', s.kind === 'town' ? townPantheon : s.kind === 'resource_cache' ? 'gold' : null);
         const img = image(def ? spriteUrl(def.file) : null, redraw);
         if (def && img) {
           const scale = (Math.sqrt(3) * R) / def.pixelsPerHex;
@@ -849,6 +1075,18 @@ function EditorCanvas({
         ctx.strokeStyle = '#fff1d0';
         ctx.lineWidth = 1.5;
         ctx.stroke();
+      }
+      if (misplaced.has(s.id)) {
+        // Outside its habitat: an amber warning mark.
+        ctx.fillStyle = '#d9a21b';
+        ctx.beginPath();
+        ctx.arc(p.x - R * 0.62, p.y - R * 0.55, R * 0.26, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#1b1204';
+        ctx.font = `bold ${Math.round(R * 0.4)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('!', p.x - R * 0.62, p.y - R * 0.53);
       }
       if (s.id === selected) {
         ctx.strokeStyle = '#ffe08a';
@@ -879,7 +1117,7 @@ function EditorCanvas({
       }
     }
     ctx.restore();
-  }, [brush, catalog, cells, doc, hover, redraw, selected, symmetry, tick, tool, view]);
+  }, [brush, catalog, cells, doc, habitatMask, hover, misplaced, redraw, selected, shownChannel, symmetry, tick, tool, view]);
 
   // Resize: redraw.
   useEffect(() => {
@@ -904,6 +1142,11 @@ function EditorCanvas({
       drag.current.first = false;
     } else if (tool.kind === 'road') {
       drag.current = { mode: 'paint', last: c, first: true };
+    } else if (tool.kind === 'channel') {
+      const sl = doc.sites.find((s) => s.id === tool.siteId);
+      const add = !(sl?.channel ?? []).some((x) => x.q === c.q && x.r === c.r);
+      drag.current = { mode: 'channel', add, last: c, first: true };
+      if (onChannel(c, add, true)) drag.current.first = false;
     } else if (tool.kind === 'select') {
       const there = doc.sites.find((s) => s.q === c.q && s.r === c.r);
       onSelect(there?.id ?? null);
@@ -929,6 +1172,9 @@ function EditorCanvas({
     } else if (d.mode === 'move') {
       onMoveSite(d.id, c, d.first);
       d.first = false;
+    } else if (d.mode === 'channel' && (!d.last || d.last.q !== c.q || d.last.r !== c.r)) {
+      if (onChannel(c, d.add, d.first)) d.first = false;
+      d.last = c;
     }
   };
   const onUp = () => {
@@ -969,7 +1215,13 @@ function EditorCanvas({
       />
       {hover ? (
         <div className="map-editor__coord small" data-testid="editor-hover">
-          {GROUND_LABEL[terrainAt(doc, hover) as Exclude<Terrain, 'void'>] ?? ''} · {hover.q},{hover.r}
+          {GROUND_LABEL[groundShown(hover) as Exclude<Terrain, 'void'>] ?? ''} · {hover.q},{hover.r}
+          {shownChannel.has(hexKey(hover)) ? ' · sluice channel' : ''}
+        </div>
+      ) : null}
+      {hover && habitatMask ? (
+        <div className={`map-editor__habitat small ${habitatMask.get(hexKey(hover))?.fits ? 'is-fit' : 'is-unfit'}`} role="status" data-testid="editor-habitat-hint">
+          {habitatMask.get(hexKey(hover))?.text ?? 'Sites stand on open ground (not water or mountains).'}
         </div>
       ) : null}
     </div>
@@ -1074,7 +1326,25 @@ function EmpiresPanel({ catalog, doc, setDoc }: { catalog: ContentCatalog; doc: 
   );
 }
 
-function SitePanel({ catalog, doc, site, update, remove }: { catalog: ContentCatalog; doc: CustomMapDocument; site: CustomSite | null; update: (id: string, patch: Partial<CustomSite>) => void; remove: (id: string) => void }) {
+function SitePanel({
+  catalog,
+  doc,
+  site,
+  update,
+  remove,
+  palette,
+  tool,
+  setTool,
+}: {
+  catalog: ContentCatalog;
+  doc: CustomMapDocument;
+  site: CustomSite | null;
+  update: (id: string, patch: Partial<CustomSite>) => void;
+  remove: (id: string) => void;
+  palette: readonly NeutralPaletteEntry[];
+  tool: Tool;
+  setTool: (t: Tool) => void;
+}) {
   const creatures = useMemo(() => Object.values(catalog.creatures).sort((a, b) => a.tier - b.tier || (a.name < b.name ? -1 : 1)), [catalog]);
   const spells = useMemo(() => Object.values(catalog.spells).filter((s) => s.access === 'sanctum' && s.implementationStatus === 'implemented').sort((a, b) => a.tier - b.tier || (a.name < b.name ? -1 : 1)), [catalog]);
   const skills = useMemo(() => Object.values(catalog.skills).filter((s) => !s.pantheonId).sort((a, b) => (a.name < b.name ? -1 : 1)), [catalog]);
@@ -1284,6 +1554,35 @@ function SitePanel({ catalog, doc, site, update, remove }: { catalog: ContentCat
           {rewardFields(site.reward, (reward) => update(site.id, { reward }), false)}
         </>
       ) : null}
+      {site.kind === 'neutral_dwelling' ? <NeutralSiteFields catalog={catalog} doc={doc} site={site} palette={palette} update={update} /> : null}
+      {site.kind === 'sluice' ? <SluiceFields doc={doc} site={site} update={update} tool={tool} setTool={setTool} /> : null}
+      {site.kind === 'ferry' ? (
+        <p className="small" data-testid="site-ferry-twin">
+          {site.twinId ? `Carries heroes across to ${doc.sites.find((x) => x.id === site.twinId)?.name || site.twinId} (teal dashed line). Erasing one landing removes its twin.` : 'No other landing yet: place the second ferry landing on the far shore.'}
+        </p>
+      ) : null}
+      {site.kind === 'supply_depot' ? (
+        <>
+          <label className="setting-block__label">Supplies (once)</label>
+          <div className="editor-guard editor-v2-reward">
+            {(['gold', 'wood', 'stone', 'crystal'] as const).map((k) => (
+              <label key={k} className="small">
+                {k[0]!.toUpperCase() + k.slice(1)}{' '}
+                <input
+                  type="number"
+                  className="text-input editor-count"
+                  min={0}
+                  max={99999}
+                  value={(site.reward ?? SUPPLY_DEPOT_REWARD)[k] ?? 0}
+                  aria-label={`Depot ${k}`}
+                  onChange={(e) => update(site.id, { reward: { ...(site.reward ?? SUPPLY_DEPOT_REWARD), [k]: Math.max(0, Math.round(Number(e.target.value) || 0)) || undefined } })}
+                  data-testid={`site-depot-${k}`}
+                />
+              </label>
+            ))}
+          </div>
+        </>
+      ) : null}
       {site.kind === 'watchtower' ? (
         <div className="row gap">
           <span className="small">Reveals sites within</span>
@@ -1319,14 +1618,20 @@ function SitePanel({ catalog, doc, site, update, remove }: { catalog: ContentCat
   );
 }
 
-function CheckPanel({ issues, onPick }: { issues: ReturnType<typeof validateCustomMap>; onPick: (id: string) => void }) {
+function CheckPanel({ doc, issues, onPick }: { doc: CustomMapDocument; issues: ReturnType<typeof validateCustomMap>; onPick: (id: string) => void }) {
+  const sluices = doc.sites.some((s) => s.kind === 'sluice');
   if (issues.length === 0)
     return (
-      <p className="small" data-testid="editor-check-ok">
-        Every check passes: the map can be played.
-      </p>
+      <>
+        {sluices ? <SluiceCheck doc={doc} /> : null}
+        <p className="small" data-testid="editor-check-ok">
+          Every check passes: the map can be played.
+        </p>
+      </>
     );
   return (
+    <>
+    {sluices ? <SluiceCheck doc={doc} /> : null}
     <ul className="editor-issues" data-testid="editor-issues">
       {issues.map((i, k) => (
         <li key={k} className={`editor-issue editor-issue--${i.severity}`}>
@@ -1340,6 +1645,140 @@ function CheckPanel({ issues, onPick }: { issues: ReturnType<typeof validateCust
         </li>
       ))}
     </ul>
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Campaign expansion sites (2026-10-15)
+// ---------------------------------------------------------------------------
+
+/** A neutral hiring site: its creature (from content's table), weekly stock, habitat and the habitat check. */
+function NeutralSiteFields({ catalog, doc, site, palette, update }: { catalog: ContentCatalog; doc: CustomMapDocument; site: CustomSite; palette: readonly NeutralPaletteEntry[]; update: (id: string, patch: Partial<CustomSite>) => void }) {
+  const entry = palette.find((e) => e.creatureId === site.creatureId);
+  const verdict = customHabitatVerdict(catalog, doc, site, NEUTRAL_SITE_TABLE);
+  return (
+    <div className="editor-form editor-v2-neutral" data-testid="site-neutral">
+      {entry ? (
+        <div className="editor-v2-pics">
+          {entry.portraitUrl ? <img className="editor-v2-pics__portrait" src={entry.portraitUrl} alt={`${entry.name} portrait`} draggable={false} /> : null}
+          {entry.siteUrl ? <img className="editor-v2-pics__site" src={entry.siteUrl} alt={`${entry.name} hiring site on the map`} draggable={false} /> : null}
+        </div>
+      ) : null}
+      <label className="setting-block__label">Creatures for hire</label>
+      <select className="text-input" value={site.creatureId ?? ''} aria-label="Hiring site creature" onChange={(e) => update(site.id, { creatureId: e.target.value })} data-testid="site-neutral-creature">
+        {palette.map((e) => (
+          <option key={e.creatureId} value={e.creatureId}>
+            {e.name} · {e.role}
+          </option>
+        ))}
+      </select>
+      {entry ? (
+        <>
+          <p className="small" data-testid="site-neutral-stock">
+            Stock: {entry.stock} {entry.stock === 1 ? entry.name : entry.plural} each week, shared by every empire; those not hired do not carry over, and visiting or capturing never refills it.
+          </p>
+          <p className="small dim">Habitat: {entry.habitat}</p>
+        </>
+      ) : null}
+      {verdict ? (
+        <p className={`small editor-habitat ${verdict.fits ? 'editor-habitat--ok' : 'editor-habitat--warn'}`} role="status" data-testid="site-habitat">
+          <span className="editor-habitat__mark" aria-hidden="true">
+            {verdict.fits ? '✓' : '!'}
+          </span>
+          {verdict.text}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+/** A sluice: its channel (Edit channel tool), the closed and open ground, the start state and the connectivity check. */
+function SluiceFields({ doc, site, update, tool, setTool }: { doc: CustomMapDocument; site: CustomSite; update: (id: string, patch: Partial<CustomSite>) => void; tool: Tool; setTool: (t: Tool) => void }) {
+  const editing = tool.kind === 'channel' && tool.siteId === site.id;
+  const n = (site.channel ?? []).length;
+  const closedPic = v2SiteSpriteUrl(site, false);
+  const openPic = v2SiteSpriteUrl(site, true);
+  const groundSelect = (key: 'closedTerrain' | 'openTerrain', value: CustomChannelTerrain, label: string, testId: string) => (
+    <select className="text-input" value={value} aria-label={label} onChange={(e) => update(site.id, { [key]: e.target.value as CustomChannelTerrain })} data-testid={testId}>
+      {CUSTOM_CHANNEL_TERRAINS.map((g) => (
+        <option key={g} value={g}>
+          {GROUND_LABEL[g]}
+          {g === 'water' || g === 'mountain' ? ' (impassable)' : ''}
+        </option>
+      ))}
+    </select>
+  );
+  return (
+    <div className="editor-form editor-v2-sluice" data-testid="site-sluice">
+      <div className="editor-v2-states">
+        {(
+          [
+            ['closed', closedPic, !site.startsOpen],
+            ['open', openPic, !!site.startsOpen],
+          ] as const
+        ).map(([state, pic, now]) => (
+          <figure key={state} className={`editor-v2-state ${now ? 'is-start' : ''}`}>
+            {pic ? <img src={pic} alt={`The sluice ${state}`} draggable={false} /> : null}
+            <figcaption className="small">
+              {state === 'closed' ? 'Closed' : 'Open'}
+              {now ? ' · at the start' : ''}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <label className="setting-block__label">Channel</label>
+      <div className="row gap small">
+        <span data-testid="site-sluice-count">
+          {n} {n === 1 ? 'hex' : 'hexes'} (within {SLUICE_REACH} of the sluice)
+        </span>
+        <Button size="small" variant={editing ? 'primary' : undefined} onClick={() => setTool(editing ? { kind: 'select' } : { kind: 'channel', siteId: site.id })} aria-pressed={editing} data-testid="site-sluice-channel">
+          {editing ? 'Done' : 'Edit channel'}
+        </Button>
+      </div>
+      <div className="editor-v2-grounds">
+        <label className="small">
+          <span>Closed</span>
+          {groundSelect('closedTerrain', site.closedTerrain ?? 'water', 'Channel ground when closed', 'site-sluice-closed')}
+        </label>
+        <label className="small">
+          <span>Open</span>
+          {groundSelect('openTerrain', site.openTerrain ?? 'marsh', 'Channel ground when open', 'site-sluice-open')}
+        </label>
+      </div>
+      <div className="row gap small">
+        <Toggle checked={!!site.startsOpen} onChange={(startsOpen) => update(site.id, { startsOpen: startsOpen || undefined })} label="Sluice starts open" />
+        <span>Starts open</span>
+      </div>
+      <p className="small dim">A hero standing on the sluice opens or closes it; the channel changes ground at once. Every empire’s town must stay reachable with every sluice closed and with every sluice open.</p>
+      <SluiceCheck doc={doc} />
+    </div>
+  );
+}
+
+/** The sluice connectivity check: every empire's town and the objective site, with every sluice closed and with every sluice open. */
+function SluiceCheck({ doc }: { doc: CustomMapDocument }) {
+  const sc = useMemo(() => customSluiceConnectivity(doc), [doc]);
+  if (!sc) return <p className="small dim">Place Empire 1’s town to check the sluices.</p>;
+  return (
+    <section className="editor-v2-check" aria-label="Sluice connectivity" data-testid="sluice-check">
+      <div className="editor-v2-check__title small">
+        Sluice check · {sc.sluices} {sc.sluices === 1 ? 'sluice' : 'sluices'}, {sc.checked} {sc.checked === 1 ? 'town' : 'towns and objectives'}
+      </div>
+      {(['closed', 'open'] as const).map((state) => {
+        const cut = sc[state];
+        return (
+          <p key={state} className={`small editor-v2-check__row ${cut.length ? 'is-bad' : 'is-ok'}`} data-testid={`sluice-check-${state}`}>
+            <span className="editor-v2-check__mark" aria-hidden="true">
+              {cut.length ? '✕' : '✓'}
+            </span>
+            <span>
+              Every sluice {state}: {cut.length ? `cut off — ${cut.map((x) => x.label).join(', ')}` : 'every town and objective can be reached'}
+            </span>
+          </p>
+        );
+      })}
+    </section>
   );
 }
 
@@ -1562,6 +2001,8 @@ function PlayDialog({ catalog, doc, onClose }: { catalog: ContentCatalog; doc: C
         catalog,
         doc,
         seats.map((s) => ({ controller: s.controller, ...(s.controller === 'human' && s.name.trim() ? { name: s.name.trim() } : {}) })),
+        // The neutral hiring sites' weekly stock and habitat text come from content's table.
+        { neutralSites: NEUTRAL_SITE_TABLE },
       );
     } catch (e) {
       store.toast(e instanceof Error ? e.message : String(e), 'error');

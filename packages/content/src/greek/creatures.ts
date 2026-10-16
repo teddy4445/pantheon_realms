@@ -18,6 +18,8 @@ export interface FormSpec {
   abilities: string[];
   summary: string;
   portraitAlt: string;
+  /** A delivered portrait under another asset ID (campaign-v2 neutrals: `campaignv2.portrait.<id>`). */
+  portraitAssetId?: string;
 }
 
 export interface FamilySpec {
@@ -32,7 +34,8 @@ export interface FamilySpec {
   dwelling?: string;
   dwellingUp?: string;
   base: FormSpec;
-  upgraded: FormSpec;
+  /** Absent: a single-form neutral family (no upgrade; handoff 2026-10-15). */
+  upgraded?: FormSpec;
 }
 
 /** Creature statistics; shooters also take their shooting range in hexes (proposed values, 2026-10-02). */
@@ -328,15 +331,15 @@ export function buildFamilies(
       classification: f.pantheonId ? 'pantheon_roster' : 'neutral',
       tier: f.tier,
       baseCreatureId: f.base.id,
-      upgradedCreatureId: f.upgraded.id,
+      ...(f.upgraded ? { upgradedCreatureId: f.upgraded.id } : {}),
       baseGrowth: f.growth,
       ...(f.dwelling ? { dwellingBuildingId: f.dwelling } : {}),
       ...(f.dwellingUp ? { upgradedDwellingBuildingId: f.dwellingUp } : {}),
       implementationStatus: 'implemented',
     };
     families.push(fam);
-    for (const form of ['base', 'upgraded'] as const) {
-      const spec = form === 'base' ? f.base : f.upgraded;
+    for (const form of f.upgraded ? (['base', 'upgraded'] as const) : (['base'] as const)) {
+      const spec = form === 'base' ? f.base : f.upgraded!;
       const asset = assetBase(f, form);
       creatures.push({
         id: spec.id,
@@ -344,7 +347,7 @@ export function buildFamilies(
         pantheonId: f.pantheonId,
         tier: f.tier,
         form,
-        ...(form === 'base' ? { upgradeId: f.upgraded.id } : { baseId: f.base.id }),
+        ...(form === 'base' ? (f.upgraded ? { upgradeId: f.upgraded.id } : {}) : { baseId: f.base.id }),
         name: spec.name,
         pluralName: spec.plural,
         role: f.role,
@@ -356,7 +359,7 @@ export function buildFamilies(
         loreId: `lore.${f.familyId}`,
         presentation: {
           bodyProfile: f.body,
-          portraitAssetId: `${asset}.portrait`,
+          portraitAssetId: spec.portraitAssetId ?? `${asset}.portrait`,
           spriteAssetId: `${asset}.sprites`,
           animationProfileId: `anim.${f.body}`,
           portraitAlt: spec.portraitAlt,

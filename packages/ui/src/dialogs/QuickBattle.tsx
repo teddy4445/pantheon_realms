@@ -17,14 +17,19 @@ export interface QuickBattlePreview {
   readonly ms: number;
 }
 
-/** The preview for an encounter move, computed once per state revision just after the panel paints. */
-export function useQuickBattlePreview(heroId: string, dest: HexCoord): QuickBattlePreview | null {
+/**
+ * The preview for an encounter move, computed once per state revision just after
+ * the panel paints. `enabled` is false in campaigns (manual battles only): no
+ * battle is simulated at all.
+ */
+export function useQuickBattlePreview(heroId: string, dest: HexCoord, enabled = true): QuickBattlePreview | null {
   const store = useStore();
   const session = store.session!;
   const revision = session.state.revision;
   const [preview, setPreview] = useState<(QuickBattlePreview & { key: string }) | null>(null);
   const key = `${session.sessionId}:${revision}:${heroId}:${dest.q},${dest.r}`;
   useEffect(() => {
+    if (!enabled) return;
     let alive = true;
     const t = window.setTimeout(() => {
       const state = session.state;
@@ -44,8 +49,8 @@ export function useQuickBattlePreview(heroId: string, dest: HexCoord): QuickBatt
       window.clearTimeout(t);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
-  return preview && preview.key === key ? preview : null;
+  }, [key, enabled]);
+  return enabled && preview && preview.key === key ? preview : null;
 }
 
 /** The expected result: outcome, the player's losses per creature, experience. */

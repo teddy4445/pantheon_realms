@@ -199,3 +199,26 @@
   .reward-tray.is-ornate .reward-tray__items { position: relative; inset: auto !important; padding: 0.9rem 1rem; background: #0a1426; border: 1px solid var(--gold-500); border-radius: var(--radius-s); }
 }
 
+
+/* ================================================================
+   Encounters 2b: content v2 chapter facts in the introduction
+   (2026-10-15): required tasks, deadline, carried bonuses, loss
+   conditions and the one-line manual-battle notice.
+   ================================================================ */
+.brief__right--v2 { overflow-y: auto; padding-right: 0.4rem; }
+.brief__right--v2:focus-visible { outline: 2px solid #1d3a64; outline-offset: 2px; }
+.brief__v2 { display: flex; flex-direction: column; gap: 0.2rem; }
+.brief__tasks, .brief__facts-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.brief__task, .brief__facts-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 0.45rem; font-size: clamp(0.82rem, 1.3cqi, 0.98rem); line-height: 1.3; color: var(--fe-ink); }
+.brief__task { font-family: var(--font-display); font-weight: 700; color: #2f1d08; }
+.brief__task.is-completed { color: #2f6b2a; text-decoration: line-through; }
+.brief__task-icon { width: 1.05rem; height: 1.05rem; margin-top: 0.12rem; color: #6b4a1c; }
+.brief__sub { margin: 0.35rem 0 0.05rem; font-family: var(--font-display); font-size: clamp(0.9rem, 1.45cqi, 1.05rem); color: #2f1d08; }
+.brief__note { margin: 0.1rem 0 0; font-size: clamp(0.76rem, 1.15cqi, 0.9rem); font-style: italic; color: var(--fe-ink-soft); }
+.brief__fine { color: var(--fe-ink-soft); }
+.manual-battle-notice { display: flex; align-items: center; gap: 0.45rem; margin: 0; font-family: var(--font-ui); font-size: clamp(0.76rem, 1.15cqi, 0.9rem); line-height: 1.25; color: var(--fe-ink); }
+.manual-battle-notice__icon { flex: none; width: 1.5rem; height: 1.5rem; object-fit: contain; }
+.brief__manual { flex: none; }
+@media (max-width: 900px), (max-height: 560px) {
+  .brief__right--v2 { overflow: visible; padding-right: 0; }
+}

@@ -159,7 +159,7 @@ const GREEK_FAMILY_TIER = new Map<string, number>();
 for (const f of GREEK_FAMILY_SPECS) {
   if (!f.pantheonId) continue;
   GREEK_FORMS.set(f.base.id, [f.tier, 'base']);
-  GREEK_FORMS.set(f.upgraded.id, [f.tier, 'upgraded']);
+  if (f.upgraded) GREEK_FORMS.set(f.upgraded.id, [f.tier, 'upgraded']);
   GREEK_FAMILY_TIER.set(f.familyId, f.tier);
 }
 
@@ -187,7 +187,7 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
     const hit = GREEK_FORMS.get(greekCreatureId);
     if (!hit) throw new Error(`${p}: unknown Greek creature ${greekCreatureId}`);
     const f = familyByTier.get(hit[0])!;
-    return hit[1] === 'base' ? f.base.id : f.upgraded.id;
+    return hit[1] === 'base' || !f.upgraded ? f.base.id : f.upgraded.id;
   };
   const mapReq = (r: RequirementDefinition): RequirementDefinition => {
     switch (r.type) {
@@ -225,7 +225,7 @@ export function buildPantheonKit(spec: PantheonKitSpec): PantheonContent {
     if (g.dwelling) {
       const tier = GREEK_FAMILY_TIER.get(g.dwelling.familyId)!;
       const f = familyByTier.get(tier)!;
-      if (g.dwelling.form === 'upgraded') return `Also recruit and train ${f.upgraded.plural}. Shares the ${f.base.name} pool.`;
+      if (g.dwelling.form === 'upgraded' && f.upgraded) return `Also recruit and train ${f.upgraded.plural}. Shares the ${f.base.name} pool.`;
       const gated = g.requirements.some((r) => r.type === 'town_has_covenant');
       return `Recruit ${f.base.plural}. ${f.growth} per week.${gated ? ` Requires an assigned ${f.base.name} covenant.` : ''}`;
     }

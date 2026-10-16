@@ -1,0 +1,2186 @@
+[
+  {
+    "key": "creature.greek.tier1.base",
+    "pantheon": "greek",
+    "tier": 1,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.greek.tier1.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier1.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier1.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier1.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier1.base.idle.json",
+    "frameWidth": 397,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      112,
+      57,
+      270,
+      241
+    ],
+    "visibleHeight": 184
+  },
+  {
+    "key": "creature.greek.tier1.upgraded",
+    "pantheon": "greek",
+    "tier": 1,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.greek.tier1.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier1.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier1.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier1.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier1.upgraded.idle.json",
+    "frameWidth": 397,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      110,
+      53,
+      276,
+      240
+    ],
+    "visibleHeight": 187
+  },
+  {
+    "key": "creature.greek.tier2.base",
+    "pantheon": "greek",
+    "tier": 2,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.greek.tier2.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier2.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier2.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier2.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier2.base.idle.json",
+    "frameWidth": 486,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      148,
+      89,
+      318,
+      295
+    ],
+    "visibleHeight": 206
+  },
+  {
+    "key": "creature.greek.tier2.upgraded",
+    "pantheon": "greek",
+    "tier": 2,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.greek.tier2.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier2.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier2.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier2.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier2.upgraded.idle.json",
+    "frameWidth": 486,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      148,
+      89,
+      318,
+      295
+    ],
+    "visibleHeight": 206
+  },
+  {
+    "key": "creature.greek.tier3.base",
+    "pantheon": "greek",
+    "tier": 3,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.greek.tier3.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier3.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier3.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier3.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier3.base.idle.json",
+    "frameWidth": 500,
+    "frameHeight": 275,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8771
+    ],
+    "visibleUnionPx": [
+      91,
+      53,
+      344,
+      241
+    ],
+    "visibleHeight": 188
+  },
+  {
+    "key": "creature.greek.tier3.upgraded",
+    "pantheon": "greek",
+    "tier": 3,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.greek.tier3.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier3.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier3.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier3.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier3.upgraded.idle.json",
+    "frameWidth": 494,
+    "frameHeight": 278,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.877
+    ],
+    "visibleUnionPx": [
+      86,
+      45,
+      339,
+      244
+    ],
+    "visibleHeight": 199
+  },
+  {
+    "key": "creature.greek.tier4.base",
+    "pantheon": "greek",
+    "tier": 4,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.greek.tier4.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier4.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier4.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier4.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier4.base.idle.json",
+    "frameWidth": 486,
+    "frameHeight": 224,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8762
+    ],
+    "visibleUnionPx": [
+      161,
+      35,
+      334,
+      196
+    ],
+    "visibleHeight": 161
+  },
+  {
+    "key": "creature.greek.tier4.upgraded",
+    "pantheon": "greek",
+    "tier": 4,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.greek.tier4.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier4.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier4.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier4.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier4.upgraded.idle.json",
+    "frameWidth": 479,
+    "frameHeight": 227,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8781
+    ],
+    "visibleUnionPx": [
+      151,
+      34,
+      337,
+      199
+    ],
+    "visibleHeight": 165
+  },
+  {
+    "key": "creature.greek.tier5.base",
+    "pantheon": "greek",
+    "tier": 5,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.greek.tier5.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier5.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier5.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier5.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier5.base.idle.json",
+    "frameWidth": 486,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      177,
+      68,
+      345,
+      295
+    ],
+    "visibleHeight": 227
+  },
+  {
+    "key": "creature.greek.tier5.upgraded",
+    "pantheon": "greek",
+    "tier": 5,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.greek.tier5.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier5.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier5.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier5.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier5.upgraded.idle.json",
+    "frameWidth": 486,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      171,
+      47,
+      349,
+      294
+    ],
+    "visibleHeight": 247
+  },
+  {
+    "key": "creature.greek.tier6.base",
+    "pantheon": "greek",
+    "tier": 6,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.greek.tier6.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier6.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier6.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier6.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier6.base.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 224,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8762
+    ],
+    "visibleUnionPx": [
+      129,
+      35,
+      304,
+      196
+    ],
+    "visibleHeight": 161
+  },
+  {
+    "key": "creature.greek.tier6.upgraded",
+    "pantheon": "greek",
+    "tier": 6,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.greek.tier6.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier6.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier6.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier6.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier6.upgraded.idle.json",
+    "frameWidth": 403,
+    "frameHeight": 227,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8781
+    ],
+    "visibleUnionPx": [
+      120,
+      36,
+      302,
+      200
+    ],
+    "visibleHeight": 164
+  },
+  {
+    "key": "creature.greek.tier7.base",
+    "pantheon": "greek",
+    "tier": 7,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.greek.tier7.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier7.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier7.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier7.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier7.base.idle.json",
+    "frameWidth": 437,
+    "frameHeight": 314,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.879
+    ],
+    "visibleUnionPx": [
+      144,
+      62,
+      307,
+      276
+    ],
+    "visibleHeight": 214
+  },
+  {
+    "key": "creature.greek.tier7.upgraded",
+    "pantheon": "greek",
+    "tier": 7,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.greek.tier7.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.greek.tier7.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.greek.tier7.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.greek.tier7.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.greek.tier7.upgraded.idle.json",
+    "frameWidth": 430,
+    "frameHeight": 319,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8787
+    ],
+    "visibleUnionPx": [
+      135,
+      65,
+      306,
+      280
+    ],
+    "visibleHeight": 215
+  },
+  {
+    "key": "creature.norse.tier1.base",
+    "pantheon": "norse",
+    "tier": 1,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.norse.tier1.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier1.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier1.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier1.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier1.base.idle.json",
+    "frameWidth": 397,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      127,
+      45,
+      292,
+      240
+    ],
+    "visibleHeight": 195
+  },
+  {
+    "key": "creature.norse.tier1.upgraded",
+    "pantheon": "norse",
+    "tier": 1,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.norse.tier1.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier1.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier1.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier1.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier1.upgraded.idle.json",
+    "frameWidth": 397,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      117,
+      50,
+      293,
+      240
+    ],
+    "visibleHeight": 190
+  },
+  {
+    "key": "creature.norse.tier2.base",
+    "pantheon": "norse",
+    "tier": 2,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.norse.tier2.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier2.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier2.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier2.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier2.base.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      48,
+      77,
+      255,
+      240
+    ],
+    "visibleHeight": 163
+  },
+  {
+    "key": "creature.norse.tier2.upgraded",
+    "pantheon": "norse",
+    "tier": 2,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.norse.tier2.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier2.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier2.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier2.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier2.upgraded.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      43,
+      72,
+      264,
+      240
+    ],
+    "visibleHeight": 168
+  },
+  {
+    "key": "creature.norse.tier3.base",
+    "pantheon": "norse",
+    "tier": 3,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.norse.tier3.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier3.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier3.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier3.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier3.base.idle.json",
+    "frameWidth": 377,
+    "frameHeight": 243,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8779
+    ],
+    "visibleUnionPx": [
+      120,
+      39,
+      298,
+      213
+    ],
+    "visibleHeight": 174
+  },
+  {
+    "key": "creature.norse.tier3.upgraded",
+    "pantheon": "norse",
+    "tier": 3,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.norse.tier3.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier3.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier3.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier3.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier3.upgraded.idle.json",
+    "frameWidth": 371,
+    "frameHeight": 247,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8769
+    ],
+    "visibleUnionPx": [
+      107,
+      42,
+      293,
+      217
+    ],
+    "visibleHeight": 175
+  },
+  {
+    "key": "creature.norse.tier4.base",
+    "pantheon": "norse",
+    "tier": 4,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.norse.tier4.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier4.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier4.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier4.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier4.base.idle.json",
+    "frameWidth": 479,
+    "frameHeight": 341,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8768
+    ],
+    "visibleUnionPx": [
+      120,
+      84,
+      350,
+      299
+    ],
+    "visibleHeight": 215
+  },
+  {
+    "key": "creature.norse.tier4.upgraded",
+    "pantheon": "norse",
+    "tier": 4,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.norse.tier4.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier4.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier4.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier4.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier4.upgraded.idle.json",
+    "frameWidth": 479,
+    "frameHeight": 341,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8768
+    ],
+    "visibleUnionPx": [
+      120,
+      87,
+      353,
+      299
+    ],
+    "visibleHeight": 212
+  },
+  {
+    "key": "creature.norse.tier5.base",
+    "pantheon": "norse",
+    "tier": 5,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.norse.tier5.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier5.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier5.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier5.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier5.base.idle.json",
+    "frameWidth": 500,
+    "frameHeight": 275,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8771
+    ],
+    "visibleUnionPx": [
+      71,
+      65,
+      329,
+      242
+    ],
+    "visibleHeight": 177
+  },
+  {
+    "key": "creature.norse.tier5.upgraded",
+    "pantheon": "norse",
+    "tier": 5,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.norse.tier5.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier5.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier5.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier5.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier5.upgraded.idle.json",
+    "frameWidth": 500,
+    "frameHeight": 275,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8771
+    ],
+    "visibleUnionPx": [
+      55,
+      53,
+      332,
+      242
+    ],
+    "visibleHeight": 189
+  },
+  {
+    "key": "creature.norse.tier6.base",
+    "pantheon": "norse",
+    "tier": 6,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.norse.tier6.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier6.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier6.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier6.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier6.base.idle.json",
+    "frameWidth": 365,
+    "frameHeight": 251,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8782
+    ],
+    "visibleUnionPx": [
+      93,
+      38,
+      261,
+      220
+    ],
+    "visibleHeight": 182
+  },
+  {
+    "key": "creature.norse.tier6.upgraded",
+    "pantheon": "norse",
+    "tier": 6,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.norse.tier6.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier6.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier6.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier6.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier6.upgraded.idle.json",
+    "frameWidth": 437,
+    "frameHeight": 314,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.879
+    ],
+    "visibleUnionPx": [
+      131,
+      61,
+      339,
+      276
+    ],
+    "visibleHeight": 215
+  },
+  {
+    "key": "creature.norse.tier7.base",
+    "pantheon": "norse",
+    "tier": 7,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.norse.tier7.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier7.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier7.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier7.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier7.base.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 224,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8762
+    ],
+    "visibleUnionPx": [
+      91,
+      30,
+      298,
+      196
+    ],
+    "visibleHeight": 166
+  },
+  {
+    "key": "creature.norse.tier7.upgraded",
+    "pantheon": "norse",
+    "tier": 7,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.norse.tier7.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.norse.tier7.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.norse.tier7.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.norse.tier7.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.norse.tier7.upgraded.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 224,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8762
+    ],
+    "visibleUnionPx": [
+      84,
+      32,
+      307,
+      197
+    ],
+    "visibleHeight": 165
+  },
+  {
+    "key": "creature.egyptian.tier1.base",
+    "pantheon": "egyptian",
+    "tier": 1,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.egyptian.tier1.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier1.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier1.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier1.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier1.base.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      58,
+      109,
+      261,
+      241
+    ],
+    "visibleHeight": 132
+  },
+  {
+    "key": "creature.egyptian.tier1.upgraded",
+    "pantheon": "egyptian",
+    "tier": 1,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.egyptian.tier1.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier1.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier1.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier1.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier1.upgraded.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8772
+    ],
+    "visibleUnionPx": [
+      73,
+      75,
+      273,
+      240
+    ],
+    "visibleHeight": 165
+  },
+  {
+    "key": "creature.egyptian.tier2.base",
+    "pantheon": "egyptian",
+    "tier": 2,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.egyptian.tier2.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier2.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier2.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier2.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier2.base.idle.json",
+    "frameWidth": 486,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      123,
+      100,
+      344,
+      294
+    ],
+    "visibleHeight": 194
+  },
+  {
+    "key": "creature.egyptian.tier2.upgraded",
+    "pantheon": "egyptian",
+    "tier": 2,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.egyptian.tier2.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier2.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier2.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier2.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier2.upgraded.idle.json",
+    "frameWidth": 486,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      147,
+      68,
+      367,
+      294
+    ],
+    "visibleHeight": 226
+  },
+  {
+    "key": "creature.egyptian.tier3.base",
+    "pantheon": "egyptian",
+    "tier": 3,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.egyptian.tier3.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier3.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier3.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier3.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier3.base.idle.json",
+    "frameWidth": 329,
+    "frameHeight": 278,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8784
+    ],
+    "visibleUnionPx": [
+      104,
+      47,
+      245,
+      244
+    ],
+    "visibleHeight": 197
+  },
+  {
+    "key": "creature.egyptian.tier3.upgraded",
+    "pantheon": "egyptian",
+    "tier": 3,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.egyptian.tier3.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier3.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier3.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier3.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier3.upgraded.idle.json",
+    "frameWidth": 322,
+    "frameHeight": 284,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8794
+    ],
+    "visibleUnionPx": [
+      96,
+      52,
+      261,
+      251
+    ],
+    "visibleHeight": 199
+  },
+  {
+    "key": "creature.egyptian.tier4.base",
+    "pantheon": "egyptian",
+    "tier": 4,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.egyptian.tier4.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier4.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier4.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier4.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier4.base.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 224,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8762
+    ],
+    "visibleUnionPx": [
+      86,
+      38,
+      281,
+      197
+    ],
+    "visibleHeight": 159
+  },
+  {
+    "key": "creature.egyptian.tier4.upgraded",
+    "pantheon": "egyptian",
+    "tier": 4,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.egyptian.tier4.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier4.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier4.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier4.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier4.upgraded.idle.json",
+    "frameWidth": 500,
+    "frameHeight": 274,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8793
+    ],
+    "visibleUnionPx": [
+      99,
+      45,
+      348,
+      241
+    ],
+    "visibleHeight": 196
+  },
+  {
+    "key": "creature.egyptian.tier5.base",
+    "pantheon": "egyptian",
+    "tier": 5,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.egyptian.tier5.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier5.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier5.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier5.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier5.base.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 224,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8762
+    ],
+    "visibleUnionPx": [
+      51,
+      78,
+      291,
+      198
+    ],
+    "visibleHeight": 120
+  },
+  {
+    "key": "creature.egyptian.tier5.upgraded",
+    "pantheon": "egyptian",
+    "tier": 5,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.egyptian.tier5.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier5.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier5.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier5.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier5.upgraded.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 224,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8762
+    ],
+    "visibleUnionPx": [
+      66,
+      38,
+      281,
+      197
+    ],
+    "visibleHeight": 159
+  },
+  {
+    "key": "creature.egyptian.tier6.base",
+    "pantheon": "egyptian",
+    "tier": 6,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.egyptian.tier6.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier6.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier6.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier6.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier6.base.idle.json",
+    "frameWidth": 481,
+    "frameHeight": 285,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8786
+    ],
+    "visibleUnionPx": [
+      101,
+      59,
+      330,
+      251
+    ],
+    "visibleHeight": 192
+  },
+  {
+    "key": "creature.egyptian.tier6.upgraded",
+    "pantheon": "egyptian",
+    "tier": 6,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.egyptian.tier6.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier6.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier6.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier6.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier6.upgraded.idle.json",
+    "frameWidth": 473,
+    "frameHeight": 290,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8794
+    ],
+    "visibleUnionPx": [
+      87,
+      67,
+      338,
+      255
+    ],
+    "visibleHeight": 188
+  },
+  {
+    "key": "creature.egyptian.tier7.base",
+    "pantheon": "egyptian",
+    "tier": 7,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.egyptian.tier7.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier7.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier7.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier7.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier7.base.idle.json",
+    "frameWidth": 463,
+    "frameHeight": 297,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.877
+    ],
+    "visibleUnionPx": [
+      157,
+      46,
+      308,
+      260
+    ],
+    "visibleHeight": 214
+  },
+  {
+    "key": "creature.egyptian.tier7.upgraded",
+    "pantheon": "egyptian",
+    "tier": 7,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.egyptian.tier7.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.egyptian.tier7.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.egyptian.tier7.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.egyptian.tier7.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.egyptian.tier7.upgraded.idle.json",
+    "frameWidth": 455,
+    "frameHeight": 302,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8777
+    ],
+    "visibleUnionPx": [
+      131,
+      45,
+      324,
+      265
+    ],
+    "visibleHeight": 220
+  },
+  {
+    "key": "creature.japanese.tier1.base",
+    "pantheon": "japanese",
+    "tier": 1,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.japanese.tier1.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier1.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier1.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier1.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier1.base.idle.json",
+    "frameWidth": 272,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      3,
+      66,
+      202,
+      219
+    ],
+    "visibleHeight": 153
+  },
+  {
+    "key": "creature.japanese.tier1.upgraded",
+    "pantheon": "japanese",
+    "tier": 1,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.japanese.tier1.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier1.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier1.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier1.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier1.upgraded.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 310,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      23,
+      81,
+      239,
+      269
+    ],
+    "visibleHeight": 188
+  },
+  {
+    "key": "creature.japanese.tier2.base",
+    "pantheon": "japanese",
+    "tier": 2,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.japanese.tier2.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier2.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier2.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier2.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier2.base.idle.json",
+    "frameWidth": 272,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      74,
+      20,
+      235,
+      219
+    ],
+    "visibleHeight": 199
+  },
+  {
+    "key": "creature.japanese.tier2.upgraded",
+    "pantheon": "japanese",
+    "tier": 2,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.japanese.tier2.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier2.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier2.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier2.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier2.upgraded.idle.json",
+    "frameWidth": 272,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      61,
+      17,
+      244,
+      221
+    ],
+    "visibleHeight": 204
+  },
+  {
+    "key": "creature.japanese.tier3.base",
+    "pantheon": "japanese",
+    "tier": 3,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.japanese.tier3.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier3.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier3.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier3.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier3.base.idle.json",
+    "frameWidth": 328,
+    "frameHeight": 315,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8667
+    ],
+    "visibleUnionPx": [
+      47,
+      65,
+      238,
+      273
+    ],
+    "visibleHeight": 208
+  },
+  {
+    "key": "creature.japanese.tier3.upgraded",
+    "pantheon": "japanese",
+    "tier": 3,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.japanese.tier3.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier3.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier3.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier3.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier3.upgraded.idle.json",
+    "frameWidth": 328,
+    "frameHeight": 315,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8667
+    ],
+    "visibleUnionPx": [
+      44,
+      59,
+      268,
+      274
+    ],
+    "visibleHeight": 215
+  },
+  {
+    "key": "creature.japanese.tier4.base",
+    "pantheon": "japanese",
+    "tier": 4,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.japanese.tier4.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier4.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier4.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier4.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier4.base.idle.json",
+    "frameWidth": 302,
+    "frameHeight": 246,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8796
+    ],
+    "visibleUnionPx": [
+      81,
+      35,
+      260,
+      216
+    ],
+    "visibleHeight": 181
+  },
+  {
+    "key": "creature.japanese.tier4.upgraded",
+    "pantheon": "japanese",
+    "tier": 4,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.japanese.tier4.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier4.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier4.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier4.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier4.upgraded.idle.json",
+    "frameWidth": 296,
+    "frameHeight": 251,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8789
+    ],
+    "visibleUnionPx": [
+      77,
+      36,
+      259,
+      221
+    ],
+    "visibleHeight": 185
+  },
+  {
+    "key": "creature.japanese.tier5.base",
+    "pantheon": "japanese",
+    "tier": 5,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.japanese.tier5.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier5.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier5.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier5.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier5.base.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      61,
+      30,
+      253,
+      219
+    ],
+    "visibleHeight": 189
+  },
+  {
+    "key": "creature.japanese.tier5.upgraded",
+    "pantheon": "japanese",
+    "tier": 5,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.japanese.tier5.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier5.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier5.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier5.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier5.upgraded.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 310,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      76,
+      49,
+      316,
+      269
+    ],
+    "visibleHeight": 220
+  },
+  {
+    "key": "creature.japanese.tier6.base",
+    "pantheon": "japanese",
+    "tier": 6,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.japanese.tier6.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier6.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier6.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier6.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier6.base.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      65,
+      27,
+      285,
+      220
+    ],
+    "visibleHeight": 193
+  },
+  {
+    "key": "creature.japanese.tier6.upgraded",
+    "pantheon": "japanese",
+    "tier": 6,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.japanese.tier6.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier6.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier6.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier6.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier6.upgraded.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      61,
+      24,
+      285,
+      221
+    ],
+    "visibleHeight": 197
+  },
+  {
+    "key": "creature.japanese.tier7.base",
+    "pantheon": "japanese",
+    "tier": 7,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.japanese.tier7.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier7.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier7.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier7.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier7.base.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 207,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8657
+    ],
+    "visibleUnionPx": [
+      95,
+      12,
+      319,
+      180
+    ],
+    "visibleHeight": 168
+  },
+  {
+    "key": "creature.japanese.tier7.upgraded",
+    "pantheon": "japanese",
+    "tier": 7,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.japanese.tier7.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.japanese.tier7.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.japanese.tier7.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.japanese.tier7.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.japanese.tier7.upgraded.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 207,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8657
+    ],
+    "visibleUnionPx": [
+      96,
+      14,
+      318,
+      179
+    ],
+    "visibleHeight": 165
+  },
+  {
+    "key": "creature.celtic.tier1.base",
+    "pantheon": "celtic",
+    "tier": 1,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.celtic.tier1.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier1.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier1.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier1.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier1.base.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 310,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      109,
+      64,
+      225,
+      270
+    ],
+    "visibleHeight": 206
+  },
+  {
+    "key": "creature.celtic.tier1.upgraded",
+    "pantheon": "celtic",
+    "tier": 1,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.celtic.tier1.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier1.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier1.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier1.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier1.upgraded.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 310,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      107,
+      56,
+      234,
+      269
+    ],
+    "visibleHeight": 213
+  },
+  {
+    "key": "creature.celtic.tier2.base",
+    "pantheon": "celtic",
+    "tier": 2,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.celtic.tier2.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier2.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier2.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier2.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier2.base.idle.json",
+    "frameWidth": 272,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      36,
+      62,
+      218,
+      220
+    ],
+    "visibleHeight": 158
+  },
+  {
+    "key": "creature.celtic.tier2.upgraded",
+    "pantheon": "celtic",
+    "tier": 2,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.celtic.tier2.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier2.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier2.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier2.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier2.upgraded.idle.json",
+    "frameWidth": 272,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      33,
+      61,
+      219,
+      219
+    ],
+    "visibleHeight": 158
+  },
+  {
+    "key": "creature.celtic.tier3.base",
+    "pantheon": "celtic",
+    "tier": 3,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.celtic.tier3.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier3.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier3.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier3.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier3.base.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      96,
+      21,
+      325,
+      220
+    ],
+    "visibleHeight": 199
+  },
+  {
+    "key": "creature.celtic.tier3.upgraded",
+    "pantheon": "celtic",
+    "tier": 3,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.celtic.tier3.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier3.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier3.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier3.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier3.upgraded.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      98,
+      24,
+      324,
+      220
+    ],
+    "visibleHeight": 196
+  },
+  {
+    "key": "creature.celtic.tier4.base",
+    "pantheon": "celtic",
+    "tier": 4,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.celtic.tier4.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier4.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier4.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier4.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier4.base.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 310,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      68,
+      56,
+      263,
+      270
+    ],
+    "visibleHeight": 214
+  },
+  {
+    "key": "creature.celtic.tier4.upgraded",
+    "pantheon": "celtic",
+    "tier": 4,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.celtic.tier4.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier4.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier4.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier4.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier4.upgraded.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 310,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      70,
+      57,
+      271,
+      270
+    ],
+    "visibleHeight": 213
+  },
+  {
+    "key": "creature.celtic.tier5.base",
+    "pantheon": "celtic",
+    "tier": 5,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.celtic.tier5.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier5.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier5.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier5.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier5.base.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      76,
+      70,
+      320,
+      220
+    ],
+    "visibleHeight": 150
+  },
+  {
+    "key": "creature.celtic.tier5.upgraded",
+    "pantheon": "celtic",
+    "tier": 5,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.celtic.tier5.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier5.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier5.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier5.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier5.upgraded.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      84,
+      68,
+      329,
+      220
+    ],
+    "visibleHeight": 152
+  },
+  {
+    "key": "creature.celtic.tier6.base",
+    "pantheon": "celtic",
+    "tier": 6,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.celtic.tier6.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier6.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier6.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier6.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier6.base.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      135,
+      28,
+      318,
+      221
+    ],
+    "visibleHeight": 193
+  },
+  {
+    "key": "creature.celtic.tier6.upgraded",
+    "pantheon": "celtic",
+    "tier": 6,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.celtic.tier6.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier6.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier6.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier6.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier6.upgraded.idle.json",
+    "frameWidth": 406,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      136,
+      27,
+      321,
+      220
+    ],
+    "visibleHeight": 193
+  },
+  {
+    "key": "creature.celtic.tier7.base",
+    "pantheon": "celtic",
+    "tier": 7,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.celtic.tier7.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier7.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier7.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier7.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier7.base.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 207,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8657
+    ],
+    "visibleUnionPx": [
+      89,
+      18,
+      270,
+      180
+    ],
+    "visibleHeight": 162
+  },
+  {
+    "key": "creature.celtic.tier7.upgraded",
+    "pantheon": "celtic",
+    "tier": 7,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.celtic.tier7.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.celtic.tier7.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.celtic.tier7.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.celtic.tier7.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.celtic.tier7.upgraded.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 207,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8657
+    ],
+    "visibleUnionPx": [
+      90,
+      15,
+      273,
+      180
+    ],
+    "visibleHeight": 165
+  },
+  {
+    "key": "creature.mesoamerican.tier1.base",
+    "pantheon": "mesoamerican",
+    "tier": 1,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier1.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier1.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier1.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier1.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier1.base.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      64,
+      34,
+      262,
+      219
+    ],
+    "visibleHeight": 185
+  },
+  {
+    "key": "creature.mesoamerican.tier1.upgraded",
+    "pantheon": "mesoamerican",
+    "tier": 1,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier1.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier1.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier1.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier1.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier1.upgraded.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 310,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      81,
+      66,
+      308,
+      270
+    ],
+    "visibleHeight": 204
+  },
+  {
+    "key": "creature.mesoamerican.tier2.base",
+    "pantheon": "mesoamerican",
+    "tier": 2,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier2.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier2.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier2.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier2.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier2.base.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      49,
+      74,
+      247,
+      219
+    ],
+    "visibleHeight": 145
+  },
+  {
+    "key": "creature.mesoamerican.tier2.upgraded",
+    "pantheon": "mesoamerican",
+    "tier": 2,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier2.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier2.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier2.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier2.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier2.upgraded.idle.json",
+    "frameWidth": 334,
+    "frameHeight": 253,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8674
+    ],
+    "visibleUnionPx": [
+      51,
+      75,
+      247,
+      220
+    ],
+    "visibleHeight": 145
+  },
+  {
+    "key": "creature.mesoamerican.tier3.base",
+    "pantheon": "mesoamerican",
+    "tier": 3,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier3.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier3.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier3.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier3.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier3.base.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      102,
+      86,
+      283,
+      294
+    ],
+    "visibleHeight": 208
+  },
+  {
+    "key": "creature.mesoamerican.tier3.upgraded",
+    "pantheon": "mesoamerican",
+    "tier": 3,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier3.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier3.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier3.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier3.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier3.upgraded.idle.json",
+    "frameWidth": 410,
+    "frameHeight": 335,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8788
+    ],
+    "visibleUnionPx": [
+      102,
+      86,
+      282,
+      295
+    ],
+    "visibleHeight": 209
+  },
+  {
+    "key": "creature.mesoamerican.tier4.base",
+    "pantheon": "mesoamerican",
+    "tier": 4,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier4.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier4.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier4.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier4.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier4.base.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 207,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8657
+    ],
+    "visibleUnionPx": [
+      58,
+      53,
+      287,
+      180
+    ],
+    "visibleHeight": 127
+  },
+  {
+    "key": "creature.mesoamerican.tier4.upgraded",
+    "pantheon": "mesoamerican",
+    "tier": 4,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier4.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier4.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier4.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier4.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier4.upgraded.idle.json",
+    "frameWidth": 333,
+    "frameHeight": 207,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8657
+    ],
+    "visibleUnionPx": [
+      56,
+      53,
+      290,
+      179
+    ],
+    "visibleHeight": 126
+  },
+  {
+    "key": "creature.mesoamerican.tier5.base",
+    "pantheon": "mesoamerican",
+    "tier": 5,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier5.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier5.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier5.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier5.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier5.base.idle.json",
+    "frameWidth": 394,
+    "frameHeight": 348,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8782
+    ],
+    "visibleUnionPx": [
+      98,
+      95,
+      310,
+      307
+    ],
+    "visibleHeight": 212
+  },
+  {
+    "key": "creature.mesoamerican.tier5.upgraded",
+    "pantheon": "mesoamerican",
+    "tier": 5,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier5.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier5.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier5.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier5.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier5.upgraded.idle.json",
+    "frameWidth": 394,
+    "frameHeight": 348,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.879
+    ],
+    "visibleUnionPx": [
+      95,
+      94,
+      313,
+      306
+    ],
+    "visibleHeight": 212
+  },
+  {
+    "key": "creature.mesoamerican.tier6.base",
+    "pantheon": "mesoamerican",
+    "tier": 6,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier6.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier6.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier6.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier6.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier6.base.idle.json",
+    "frameWidth": 500,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      147,
+      40,
+      363,
+      220
+    ],
+    "visibleHeight": 180
+  },
+  {
+    "key": "creature.mesoamerican.tier6.upgraded",
+    "pantheon": "mesoamerican",
+    "tier": 6,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier6.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier6.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier6.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier6.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier6.upgraded.idle.json",
+    "frameWidth": 500,
+    "frameHeight": 254,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8671
+    ],
+    "visibleUnionPx": [
+      146,
+      39,
+      364,
+      221
+    ],
+    "visibleHeight": 182
+  },
+  {
+    "key": "creature.mesoamerican.tier7.base",
+    "pantheon": "mesoamerican",
+    "tier": 7,
+    "form": "base",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier7.base.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier7.base.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier7.base.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier7.base.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier7.base.idle.json",
+    "frameWidth": 377,
+    "frameHeight": 243,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8771
+    ],
+    "visibleUnionPx": [
+      120,
+      33,
+      269,
+      213
+    ],
+    "visibleHeight": 180
+  },
+  {
+    "key": "creature.mesoamerican.tier7.upgraded",
+    "pantheon": "mesoamerican",
+    "tier": 7,
+    "form": "upgraded",
+    "portrait": "reuse/portraits/creature.mesoamerican.tier7.upgraded.portrait.webp",
+    "portraitSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-runtime\\ui\\icons\\final\\creature.mesoamerican.tier7.upgraded.portrait.webp",
+    "idle": "reuse/creatures/sprite.creature.mesoamerican.tier7.upgraded.idle.png",
+    "idleSource": "C:\\Users\\lazeb\\Desktop\\pantheon_realms\\assets-source\\sprites\\final\\sprite.creature.mesoamerican.tier7.upgraded.idle.png",
+    "metadata": "reuse/creatures/sprite.creature.mesoamerican.tier7.upgraded.idle.json",
+    "frameWidth": 371,
+    "frameHeight": 247,
+    "frames": 6,
+    "fps": 3,
+    "anchor": [
+      0.5,
+      0.8769
+    ],
+    "visibleUnionPx": [
+      121,
+      41,
+      265,
+      217
+    ],
+    "visibleHeight": 176
+  }
+]

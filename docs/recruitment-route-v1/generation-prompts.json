@@ -1,0 +1,47 @@
+[
+  {
+    "id": "route-chevron-current",
+    "ref": "route",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single symmetrical V-shaped directional route chevron pointing exactly UP (north), top-down unprojected orthographic glyph, warm luminous gold face, dark bronze bevel, sharp simple silhouette. No shaft, no compass rose, no circular enclosure, no glow. Square canvas. Reference shows route usage; generate this asset alone."
+  },
+  {
+    "id": "route-chevron-later",
+    "ref": "route",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single symmetrical V-shaped directional route chevron pointing exactly UP (north), top-down unprojected orthographic glyph, muted matte bronze face with pale edge, same general silhouette as gold route arrow in reference. No shaft, no compass rose, no circular enclosure, no glow. Square canvas."
+  },
+  {
+    "id": "route-destination",
+    "ref": "route",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single eight-point compass rose inside a simple golden laurel wreath, TOP-DOWN flat plan view circle (not perspective ellipse), readable geometric broad points and few chunky leaves, open transparent gaps, restrained bronze shadow. No number badge attached; separate asset for projected map-ground destination. Square canvas."
+  },
+  {
+    "id": "route-day-badge",
+    "ref": "route",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single tiny blank ivory parchment scroll badge, a nearly square clean pale writing area with rolled upper and lower edges, thin antique bronze fittings. Center fully blank opaque ivory so runtime can overlay a dark number, outside transparent. Minimal texture, no symbols, no numerals. Square canvas."
+  },
+  {
+    "id": "route-hourglass",
+    "ref": "route",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single small upright golden hourglass pictogram, sturdy gold top/bottom and two simple side supports, ivory sand in the middle, transparent gaps, simplified readable at 16px. Square canvas."
+  },
+  {
+    "id": "route-selection-ring",
+    "ref": "route",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single perfectly circular narrow gold selection ring viewed exactly from above, no perspective. Empty fully transparent center and exterior. Ring stroke about 4 percent of outer diameter, subtle dark outer bronze edge. No compass, no leaves, no badge, no plate, no glow. Square canvas. Game projects it to ellipse."
+  },
+  {
+    "id": "icon-recruit-all",
+    "ref": "recruit",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single compact emblem of three anonymous armored troop busts with round shields and three spear tips, symmetrical grouping, antique gold and midnight blue enamel. Faction-neutral silhouettes: plain simple helmets, no Greek crest, no horns or specific cultural motif. No faces to read, no lettering, no frame enclosing the cluster. A clear buy-all-troops button icon for all six pantheons. Square canvas."
+  },
+  {
+    "id": "icon-train-troops",
+    "ref": "recruit",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single simple golden anvil with a small hammer above it, readable silhouette, dark midnight-blue accent recessed surfaces. No frame, no badge, no words. Troop training action button icon. Square canvas."
+  },
+  {
+    "id": "icon-resume-route",
+    "ref": "route",
+    "prompt": "Use case: stylized-concept. Production game UI asset for Pantheon Realms, matching attached approved concept: hand-painted antique gold, warm ivory highlights, narrow dark bronze edges, clear simplified silhouette that reads at 24–48 pixels, restrained premium classic fantasy strategy-game style. Single isolated asset centered with at least 12 percent clear margin. Genuine transparent RGBA background including internal holes; no solid background, no checkerboard painting, no floor, no text, no letters, no labels, no watermark. Not a sheet. A single golden travel boot with a small forward-pointing arrow beside it to indicate CONTINUE JOURNEY; simple broad readable silhouette, midnight-blue leather accent, bronze outline, no frame, no text, no compass. Square canvas."
+  }
+]

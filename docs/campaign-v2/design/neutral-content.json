@@ -1,0 +1,337 @@
+{
+  "schema": "design-only-neutral-content-1",
+  "notDropInCatalog": true,
+  "balanceNote": "All values are unplaytested candidates using the existing griffin and low-tier neutral values as rough anchors. Validate legal role/body enums and construction in the destination code. Six single-form families require optional upgrade support.",
+  "creatures": [
+    {
+      "id": "pegasus",
+      "name": "Pegasus",
+      "description": "A noble ivory-white winged horse, compact strong equine anatomy, two feathered ivory wings folded partly upward, flowing short silver mane, dark hooves and alert intelligent eyes, subtle pale-gold feather tips. No saddle, rider, armor, jewelry or faction insignia.",
+      "habitat": "a wild high meadow with a pale limestone cliff and spring",
+      "role": "flying escort",
+      "classification": "neutral",
+      "pantheonId": null,
+      "familyId": "pegasus",
+      "creatureId": "pegasus",
+      "form": "base",
+      "upgradedCreatureId": null,
+      "implementationStatus": "proposed",
+      "balanceStatus": "unplaytested_candidate",
+      "tier": 3,
+      "stats": {
+        "attack": 7,
+        "defense": 8,
+        "hp": 25,
+        "damageMin": 3,
+        "damageMax": 5,
+        "speed": 8,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 250
+      },
+      "weeklySiteStock": 5,
+      "movement": "flight",
+      "ability": {
+        "id": "neutral_sheltering_wings",
+        "name": "Sheltering Wings",
+        "exactProposedRule": "Active; once per battle per stack; consumes the activation. Target one adjacent allied living stack other than self, measured between occupied cells. Its next direct melee or ranged creature-damage event before the start of the Pegasus stack’s next activation is reduced by 25%, rounded down in the reduction step. It does not reduce spell, siege-structure or environmental damage. Apply only the strongest copy of this ward. Expiry or consumption removes it. Standard flight movement still requires a legal full-footprint landing.",
+        "badgeRuntimeFile": "ui/icons/final/icon.ability.family_ward.png",
+        "badgeIsReused": true,
+        "requiresRulesImplementation": true
+      },
+      "habitatTags": [
+        "upland_meadow",
+        "limestone_hills"
+      ],
+      "forbiddenHabitatTags": [
+        "open_water",
+        "bare_dunes",
+        "lava"
+      ],
+      "portraitFile": "campaign-v2/portrait-pegasus.png",
+      "siteFile": "campaign-v2/site-pegasus.png",
+      "animationSet": "pegasus",
+      "armyMorale": "Use existing neutral-family morale semantics; do not assign its inspirational pantheon as allegiance.",
+      "stockRule": "Finite shared weekly stock per site; no refill on ownership change, visit or load. A mission may reduce or disable weekly refill explicitly.",
+      "availability": "Optional map-site hire for all pantheons, never a new town roster tier. Initial costs/stock are candidates for playtest."
+    },
+    {
+      "id": "root_runner",
+      "name": "Root-Runner",
+      "description": "A large agile russet-red squirrel inspired by the messenger Ratatoskr, four animal paws, tufted ears, expressive amber eyes, cream chest, magnificently curled bushy tail, a tiny natural twig caught in its fur. Clearly a squirrel, not a humanoid or fox, no clothing, satchel, writing, armor or runic jewelry.",
+      "habitat": "an ancient knotted tree-root hollow among mossy forest boulders",
+      "role": "scout and distraction",
+      "classification": "neutral",
+      "pantheonId": null,
+      "familyId": "root_runner",
+      "creatureId": "root_runner",
+      "form": "base",
+      "upgradedCreatureId": null,
+      "implementationStatus": "proposed",
+      "balanceStatus": "unplaytested_candidate",
+      "tier": 2,
+      "stats": {
+        "attack": 5,
+        "defense": 4,
+        "hp": 14,
+        "damageMin": 2,
+        "damageMax": 4,
+        "speed": 8,
+        "shots": 0,
+        "footprint": 1
+      },
+      "cost": {
+        "gold": 110
+      },
+      "weeklySiteStock": 8,
+      "movement": "ground",
+      "ability": {
+        "id": "neutral_distract",
+        "name": "Distract",
+        "exactProposedRule": "Active; once per battle per stack; consumes the activation. Target one visible hostile living stack at hex distance at most two with an unobstructed line. Suppress its next otherwise-legal retaliation until the start of the Root-Runner’s next activation. A suppressed retaliation is consumed as one retaliation opportunity; it does not suppress all unlimited retaliations. Does not move, damage, stun or skip the target’s normal action. Duplicate applications do not stack.",
+        "badgeRuntimeFile": "ui/icons/final/icon.action.ability.png",
+        "badgeIsReused": true,
+        "requiresRulesImplementation": true
+      },
+      "habitatTags": [
+        "temperate_forest",
+        "conifer_edge",
+        "mossy_grove"
+      ],
+      "forbiddenHabitatTags": [
+        "bare_dunes",
+        "open_water",
+        "lava"
+      ],
+      "portraitFile": "campaign-v2/portrait-root_runner.png",
+      "siteFile": "campaign-v2/site-root_runner.png",
+      "animationSet": "root_runner",
+      "armyMorale": "Use existing neutral-family morale semantics; do not assign its inspirational pantheon as allegiance.",
+      "stockRule": "Finite shared weekly stock per site; no refill on ownership change, visit or load. A mission may reduce or disable weekly refill explicitly.",
+      "availability": "Optional map-site hire for all pantheons, never a new town roster tier. Initial costs/stock are candidates for playtest."
+    },
+    {
+      "id": "serpopard",
+      "name": "Serpopard",
+      "description": "An elegant powerful ochre-spotted leopard-like quadruped with an extraordinarily long muscular sinuous feline neck, small leopard head, four feline legs, long feline tail, dark ear backs, tawny coat, subtly teal reflective eyes. The neck is continuous animal anatomy, not a separate snake. No wings, horns, armor, human parts or jewelry.",
+      "habitat": "a shaded sandstone den at the border of dry desert and a river",
+      "role": "long-reach controller",
+      "classification": "neutral",
+      "pantheonId": null,
+      "familyId": "serpopard",
+      "creatureId": "serpopard",
+      "form": "base",
+      "upgradedCreatureId": null,
+      "implementationStatus": "proposed",
+      "balanceStatus": "unplaytested_candidate",
+      "tier": 3,
+      "stats": {
+        "attack": 8,
+        "defense": 5,
+        "hp": 24,
+        "damageMin": 4,
+        "damageMax": 6,
+        "speed": 6,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 230
+      },
+      "weeklySiteStock": 5,
+      "movement": "ground",
+      "ability": {
+        "id": "neutral_long_reach",
+        "name": "Long Reach",
+        "exactProposedRule": "Passive attack option. Normal adjacent melee is unchanged. May make a melee strike at distance exactly two along a straight hex direction from a source occupied cell to a target occupied cell, with the intervening cell clear of units and blocking terrain. Reach damage is 75% of normal melee damage, rounded with the existing minimum-damage rule. This is not a ranged shot and consumes no ammunition. A target at distance two retaliates only if its own legal attack range permits it; ordinary adjacent-only retaliation cannot jump the gap. No attack through intact walls or closed gates.",
+        "badgeRuntimeFile": "ui/icons/final/icon.ability.no_melee_penalty.png",
+        "badgeIsReused": true,
+        "requiresRulesImplementation": true
+      },
+      "habitatTags": [
+        "sandstone_riverbank",
+        "dry_oasis",
+        "arid_scrub"
+      ],
+      "forbiddenHabitatTags": [
+        "deep_snow",
+        "open_water",
+        "lava"
+      ],
+      "portraitFile": "campaign-v2/portrait-serpopard.png",
+      "siteFile": "campaign-v2/site-serpopard.png",
+      "animationSet": "serpopard",
+      "armyMorale": "Use existing neutral-family morale semantics; do not assign its inspirational pantheon as allegiance.",
+      "stockRule": "Finite shared weekly stock per site; no refill on ownership change, visit or load. A mission may reduce or disable weekly refill explicitly.",
+      "availability": "Optional map-site hire for all pantheons, never a new town roster tier. Initial costs/stock are candidates for playtest."
+    },
+    {
+      "id": "baku",
+      "name": "Baku",
+      "description": "A benevolent but sturdy nightmare-eating Baku, a tapir-like fantasy quadruped with short curved elephant trunk, rounded ears, deep indigo-blue shaggy body, cream muzzle and mane, four powerful paws, a few restrained warm gold fur streaks, sleepy wise eyes. Animal-like and dignified, not cute chibi, not an armored elephant, no ornate harness, no glowing particle cloud.",
+      "habitat": "a quiet cedar grove with moss-covered stones and a small incense bowl",
+      "role": "fear-cleansing support",
+      "classification": "neutral",
+      "pantheonId": null,
+      "familyId": "baku",
+      "creatureId": "baku",
+      "form": "base",
+      "upgradedCreatureId": null,
+      "implementationStatus": "proposed",
+      "balanceStatus": "unplaytested_candidate",
+      "tier": 3,
+      "stats": {
+        "attack": 5,
+        "defense": 9,
+        "hp": 28,
+        "damageMin": 2,
+        "damageMax": 4,
+        "speed": 5,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 240
+      },
+      "weeklySiteStock": 5,
+      "movement": "ground",
+      "ability": {
+        "id": "neutral_devour_dread",
+        "name": "Devour Dread",
+        "exactProposedRule": "Active; once per battle per stack; consumes the activation. Target one allied living stack within two hexes and unobstructed line, including self. Remove exactly one eligible temporary hostile status: negative attack_bonus, defense_bonus or speed_bonus, or hostile min_damage_roll. Track origin/hostility explicitly; do not remove beneficial effects, equipment, permanent army morale, or mission states. Select the earliest applied eligible effect, with a stable ID tie-break. Disable when no eligible effect exists, without spending a charge. The audited game has no fear status; the initial tooltip says temporary hostile debuff, not fear. A future explicit fear status may be added to eligibility.",
+        "badgeRuntimeFile": "ui/icons/final/icon.ability.family_ward.png",
+        "badgeIsReused": true,
+        "requiresRulesImplementation": true
+      },
+      "habitatTags": [
+        "mist_forest",
+        "cedar_grove",
+        "wooded_sanctuary"
+      ],
+      "forbiddenHabitatTags": [
+        "bare_dunes",
+        "open_water",
+        "lava"
+      ],
+      "portraitFile": "campaign-v2/portrait-baku.png",
+      "siteFile": "campaign-v2/site-baku.png",
+      "animationSet": "baku",
+      "armyMorale": "Use existing neutral-family morale semantics; do not assign its inspirational pantheon as allegiance.",
+      "stockRule": "Finite shared weekly stock per site; no refill on ownership change, visit or load. A mission may reduce or disable weekly refill explicitly.",
+      "availability": "Optional map-site hire for all pantheons, never a new town roster tier. Initial costs/stock are candidates for playtest."
+    },
+    {
+      "id": "afanc",
+      "name": "Afanc",
+      "description": "A low heavy Welsh-inspired freshwater beast combining a broad beaver-like muzzle, dark moss-brown fur on shoulders, ridged olive reptilian back, four squat webbed clawed feet, broad flattened scaly tail. Distinct beaver-crocodile animal silhouette, intelligent eyes, no horns, no spikes, no armor, no giant tusks, not simply a crocodile.",
+      "habitat": "a freshwater reed pool with a low rock burrow and gnawed driftwood",
+      "role": "slow defensive guard",
+      "classification": "neutral",
+      "pantheonId": null,
+      "familyId": "afanc",
+      "creatureId": "afanc",
+      "form": "base",
+      "upgradedCreatureId": null,
+      "implementationStatus": "proposed",
+      "balanceStatus": "unplaytested_candidate",
+      "tier": 3,
+      "stats": {
+        "attack": 7,
+        "defense": 10,
+        "hp": 32,
+        "damageMin": 3,
+        "damageMax": 5,
+        "speed": 4,
+        "shots": 0,
+        "footprint": 2
+      },
+      "cost": {
+        "gold": 230
+      },
+      "weeklySiteStock": 5,
+      "movement": "ground",
+      "ability": {
+        "id": "neutral_reed_guard",
+        "name": "Reed Guard",
+        "exactProposedRule": "Active; once per battle per stack; consumes the activation and applies the normal defend effect to the Afanc. Also choose one adjacent allied living stack other than self: it gains +2 Defense and is immune to one forced pull until the start of the Afanc’s next activation. A prevented pull consumes only the pull-protection component; the defense bonus retains its normal expiry. Copies from multiple Afanc stacks do not stack. Does not create water terrain, allow water walking or grant an extra attack.",
+        "badgeRuntimeFile": "ui/icons/final/icon.ability.charge_guard.png",
+        "badgeIsReused": true,
+        "requiresRulesImplementation": true
+      },
+      "habitatTags": [
+        "freshwater_reeds",
+        "lake_bank",
+        "river_pool"
+      ],
+      "forbiddenHabitatTags": [
+        "open_ocean",
+        "bare_dunes",
+        "lava"
+      ],
+      "portraitFile": "campaign-v2/portrait-afanc.png",
+      "siteFile": "campaign-v2/site-afanc.png",
+      "animationSet": "afanc",
+      "armyMorale": "Use existing neutral-family morale semantics; do not assign its inspirational pantheon as allegiance.",
+      "stockRule": "Finite shared weekly stock per site; no refill on ownership change, visit or load. A mission may reduce or disable weekly refill explicitly.",
+      "availability": "Optional map-site hire for all pantheons, never a new town roster tier. Initial costs/stock are candidates for playtest."
+    },
+    {
+      "id": "ahuitzotl",
+      "name": "Ahuitzotl",
+      "description": "A sleek dark teal-black amphibious otter-like quadruped with four webbed paws, alert rounded ears, pale turquoise throat, short wet-looking fur, long supple tail ending in one unmistakable small five-fingered grasping hand. The hand is at tail tip only; no human torso, no extra limbs, no feathers, no armor or gold jewelry.",
+      "habitat": "a clear blue cenote spring among pale limestone and tropical ferns",
+      "role": "ambush and limited pull",
+      "classification": "neutral",
+      "pantheonId": null,
+      "familyId": "ahuitzotl",
+      "creatureId": "ahuitzotl",
+      "form": "base",
+      "upgradedCreatureId": null,
+      "implementationStatus": "proposed",
+      "balanceStatus": "unplaytested_candidate",
+      "tier": 3,
+      "stats": {
+        "attack": 8,
+        "defense": 6,
+        "hp": 24,
+        "damageMin": 3,
+        "damageMax": 6,
+        "speed": 6,
+        "shots": 0,
+        "footprint": 1
+      },
+      "cost": {
+        "gold": 250
+      },
+      "weeklySiteStock": 5,
+      "movement": "ground",
+      "ability": {
+        "id": "neutral_tail_snare",
+        "name": "Tail Snare",
+        "exactProposedRule": "Active; once per battle per stack; consumes the activation. Select a visible hostile living one-hex stack at distance exactly two along a clear straight hex direction. Pull it one hex toward the caster only if the complete destination is legal, empty, inside the board and non-hazardous. No pulling through walls, gates, occupied cells, pits or water hazards; cannot target structures or two-hex/anchored stacks. No damage and no free melee attack or retaliation are generated. If the target is protected from pulls, reject selection and explain why before consuming the action. Save and replay the relocation as a deterministic rules event.",
+        "badgeRuntimeFile": "ui/icons/final/icon.action.ability.png",
+        "badgeIsReused": true,
+        "requiresRulesImplementation": true
+      },
+      "habitatTags": [
+        "tropical_cenote",
+        "jungle_freshwater_bank",
+        "warm_marsh"
+      ],
+      "forbiddenHabitatTags": [
+        "open_ocean",
+        "deep_snow",
+        "bare_dunes",
+        "lava"
+      ],
+      "portraitFile": "campaign-v2/portrait-ahuitzotl.png",
+      "siteFile": "campaign-v2/site-ahuitzotl.png",
+      "animationSet": "ahuitzotl",
+      "armyMorale": "Use existing neutral-family morale semantics; do not assign its inspirational pantheon as allegiance.",
+      "stockRule": "Finite shared weekly stock per site; no refill on ownership change, visit or load. A mission may reduce or disable weekly refill explicitly.",
+      "availability": "Optional map-site hire for all pantheons, never a new town roster tier. Initial costs/stock are candidates for playtest."
+    }
+  ]
+}

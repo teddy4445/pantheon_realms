@@ -1,7 +1,7 @@
 {
   "name": "pantheon-realms",
   "private": true,
-  "version": "1.1.4",
+  "version": "1.3.0",
   "description": "Pantheon Realms — turn-based mythological strategy (TypeScript rules, React UI, PixiJS 2D, Electron).",
   "author": "Teddy Lazebnik",
   "type": "module",
@@ -26,6 +26,9 @@
     "icons:catalog": "vitest run --config tools/assets/icon-catalog/vitest.config.ts && node tools/assets/icon-catalog/render-glyphs.mjs && python3 tools/assets/icon-catalog/build_icon_catalog.py",
     "icons:import": "python3 tools/assets/icon-catalog/import_icons.py",
     "cursors:import": "python3 tools/assets/import_cursors.py",
+    "recruitroute:import": "python3 tools/assets/import_recruitment_route.py",
+    "campaignv2:import": "python3 tools/assets/import_campaign_v2.py",
+    "battlefx:import": "python3 tools/assets/import_battle_fx_upgrades.py",
     "art:import": "python3 tools/assets/import_story_art.py",
     "sprites:plan": "vitest run --config tools/assets/sprites/vitest.config.ts",
     "vfx:list": "vitest run --config tools/assets/vfx/vitest.config.ts",

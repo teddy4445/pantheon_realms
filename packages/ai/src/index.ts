@@ -2,6 +2,7 @@
 export * from './observation';
 export * from './evaluation';
 export * from './tactical';
+export * from './neutralTactics';
 export * from './strategic';
 export * from './temperament';
 export * from './growth';

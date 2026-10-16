@@ -9,8 +9,8 @@
  * state, command identities are derived from the state), so the preview is the
  * result the player gets, not an estimate.
  */
-import { processCommand, type BattleCasualtyLine, type BattleResultRecord, type CommandPayload, type ContentCatalog, type GameCommand, type GameEvent, type MatchState, type PlayerId } from '@pr/rules';
-import { battleActor, stepBattleAI } from './controller';
+import { MANUAL_BATTLE_MESSAGE, manualBattlesRequired, processCommand, type BattleCasualtyLine, type BattleResultRecord, type CommandPayload, type ContentCatalog, type GameCommand, type GameEvent, type MatchState, type PlayerId } from '@pr/rules';
+import { battleActor, stepBattleAI, type BattleAIOptions } from './controller';
 
 export type QuickBattleRun =
   | { readonly ok: true; readonly state: MatchState; readonly events: readonly GameEvent[]; readonly result: BattleResultRecord; readonly steps: number }
@@ -27,8 +27,11 @@ export function quickBattleCommandId(state: MatchState): string {
  * when no battle starts, or when another human seat commands the other side
  * (hot-seat: that player fights their own battle).
  */
-export function runQuickBattle(catalog: ContentCatalog, state: MatchState, actor: PlayerId, payload: CommandPayload, maxSteps = 4000): QuickBattleRun {
+export function runQuickBattle(catalog: ContentCatalog, state: MatchState, actor: PlayerId, payload: CommandPayload, maxSteps = 4000, opts: BattleAIOptions = {}): QuickBattleRun {
   if (state.battle) return { ok: false, reason: 'A battle is already in progress' };
+  // Campaign battles are fought on the battlefield (handoff 2026-10-15). Refused
+  // before anything is processed, so no state or RNG stream moves.
+  if (!opts.playerSimulation && manualBattlesRequired(state)) return { ok: false, reason: MANUAL_BATTLE_MESSAGE };
   const command = { ...payload, commandId: quickBattleCommandId(state), expectedRevision: state.revision, actorPlayerId: actor } as GameCommand;
   const first = processCommand({ catalog }, state, command);
   if (!first.ok) return { ok: false, reason: first.rejection.message };
@@ -42,7 +45,7 @@ export function runQuickBattle(catalog: ContentCatalog, state: MatchState, actor
   let steps = 0;
   for (; steps < maxSteps && s.battle; steps++) {
     if (!battleActor(s)) break;
-    const r = stepBattleAI(catalog, s);
+    const r = stepBattleAI(catalog, s, opts);
     if (r.state === s) break;
     s = r.state;
     events.push(...r.events);

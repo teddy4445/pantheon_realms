@@ -24,6 +24,8 @@ import { useStore } from '../app/context';
 import { MenuButton } from '../components/kit';
 import { menuBackground, menuFrameInterior, resolveAsset } from '../assets/manifest';
 import { relativeTime } from '../app/view';
+import { saveRunInfo } from '../app/chronicle';
+import { SaveRunTags } from '../components/chronicle';
 
 export function MainMenuScreen() {
   const store = useStore();
@@ -44,6 +46,8 @@ export function MainMenuScreen() {
   const frame = kitTitle ? { url: '' } : resolveAsset('menu.frame');
   const win = menuFrameInterior();
   const meta = continueSlot?.metadata;
+  // Campaign saves: content version, the actual chapter and a practice replay marked apart (older saves: from the snapshot).
+  const run = continueSlot ? saveRunInfo(catalog, meta, continueSlot.envelope?.snapshot) : null;
   const continueDisabledReason = !continueChecked
     ? 'Checking saves…'
     : storageError
@@ -95,7 +99,9 @@ export function MainMenuScreen() {
                 meta={
                   meta ? (
                     <>
-                      {meta.missionName} · Day {meta.day} · {meta.heroName} (Lv {meta.heroLevel}) · {relativeTime(continueSlot?.savedAt ?? null)}
+                      {run?.version ? <SaveRunTags info={run} showProgress={false} testId="continue-run" /> : null}
+                      {run?.progress ?? meta.missionName}
+                      {run?.version === 1 ? ` — ${meta.missionName}` : ''} · Day {meta.day} · {meta.heroName} (Lv {meta.heroLevel}) · {relativeTime(continueSlot?.savedAt ?? null)}
                     </>
                   ) : undefined
                 }

@@ -80,12 +80,15 @@ for (const size of SIZES) {
 
 /**
  * A save on the last mission of The Three Beacons with everything but the final
- * beacon done (campaign records for missions 1 and 2 committed headlessly).
+ * beacon done (campaign records for missions 1 and 2 committed headlessly). New
+ * runs play content v2 since 2026-10-15, so this run is explicitly a legacy (v1)
+ * run — its three missions and its own ending picture (the v2 epilogue is
+ * covered in v2chronicle.spec.ts).
  */
 function finalBeaconSave(): string {
   const d = GameDriver.mission('three_beacons_m01');
   const catalog = d.catalog;
-  let { campaign, start } = startCampaign(catalog, 'three_beacons', { runId: 'e2e-epilogue', startingGodId: 'zeus' });
+  let { campaign, start } = startCampaign(catalog, 'three_beacons', { runId: 'e2e-epilogue', startingGodId: 'zeus', contentVersion: 1 });
   let match: MatchState = start.match;
   for (let i = 0; i < 2; i++) {
     match = { ...match, outcome: { status: 'victory', reason: 'Test fixture', day: match.day }, pendingDecisions: [] };
@@ -95,6 +98,7 @@ function finalBeaconSave(): string {
     match = next.start.match;
   }
   const m = match;
+  if (m.mission.missionId !== 'three_beacons_m03' || campaign.contentVersion !== undefined) throw new Error('expected the legacy mission 3');
   for (const [id, o] of Object.entries(m.mission.objectives)) if (id !== 'm03_restore') o.status = 'completed';
   m.mission.objectives['m03_restore']!.status = 'active';
   for (const f of ['relay_north', 'relay_south', 'lens_recovered']) m.mission.flags[f] = true;
@@ -111,7 +115,7 @@ function finalBeaconSave(): string {
 }
 
 test('the campaign’s own ending picture fills the screen behind its epilogue', async ({ page }) => {
-  test.setTimeout(240_000);
+  test.setTimeout(480_000);
   const file = finalBeaconSave();
   await page.goto('/?e2e', { waitUntil: 'networkidle' });
   await page.getByTestId('menu-settings').click();

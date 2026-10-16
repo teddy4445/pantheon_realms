@@ -101,10 +101,17 @@ export function BattleResultScreen() {
           <div className="result-banner__title">{title}</div>
         </div>
         <div className="result-sides">
-          {[
-            { side: r.attacker, key: 'attacker' as const },
-            { side: r.defender, key: 'defender' as const },
-          ].map(({ side, key }) => (
+          {/* The player's side first (left), as on the battlefield (owner request 2026-10-14). */}
+          {(r.playerSide === 'defender'
+            ? [
+                { side: r.defender, key: 'defender' as const },
+                { side: r.attacker, key: 'attacker' as const },
+              ]
+            : [
+                { side: r.attacker, key: 'attacker' as const },
+                { side: r.defender, key: 'defender' as const },
+              ]
+          ).map(({ side, key }) => (
             <Panel key={key} title={`${side.name}${r.playerSide === key ? ' (you)' : ''}`} className="result-side" bodyClassName="scroll" framed="compact" theme={side.playerId ? guiThemeFor(state.players[side.playerId]?.pantheonId) : undefined}>
               <table className="table">
                 <thead>

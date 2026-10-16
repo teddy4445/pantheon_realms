@@ -4,6 +4,218 @@ All notable changes to Pantheon Realms. The version shown in the game comes
 from `package.json` (main menu and Settings → Saves); it is never typed into a
 screen.
 
+## 1.3.0 — 2026-10-16 · Every shooter's own missile, and an upgrade for each of the six new neutrals
+
+Battle FX & neutral-upgrade delivery of 2026-10-15 (25 pictures: twelve
+missile/impact sheets, six portraits, six battle atlases and the Dawncrest
+flight). Proposed, unplaytested values. Saves: format, schema and content stamp
+unchanged; older saves load with their armies as they were (nothing is upgraded
+by itself), and saves with the new forms load in this version.
+
+- **Every shooter throws, casts or breathes its own missile** — javelins for
+  Peltasts and Jackal Guardians, arcane bolts for the Temple Adepts, boulders for
+  the Cyclopes, frost breath for the Lindworms, granite blocks for the Colossi,
+  holy fire for the Kirin, a spectral wail for the Banshees, atlatl darts for the
+  Eagle Warriors, serpent fire for the Xiuhcoatl, sling stones and lead bullets
+  for the slingers, an arrow from the siege towers and a stone from the catapult —
+  each form its own (upgrades look different), and its own small impact on the
+  target. Heavy stones arc high, javelins and darts arc low, magic flies straight;
+  the missile leaves the hand, staff or mouth on the release frame and the impact,
+  the hit and the damage show at the moment it lands. A shooter fighting in melee
+  throws nothing. Looks only: damage, range, ammunition and every rule are
+  unchanged.
+- **Six upgraded neutral creatures**: Dawncrest Pegasus, Crownroot Runner,
+  Crested Serpopard, Dreamtusk Baku, Ridgeback Afanc and Crownfin Ahuitzotl, each
+  with its own portrait and battle animations, the same ability as its base form.
+- **Neutral hiring sites offer both forms** from the one weekly stock shared by
+  everyone (the stock never doubles), with a base / upgraded choice, the chosen
+  form's portrait, stats and price, Recruit and Recruit all affordable — and
+  **Train**: a visiting hero's base stack of that creature can be upgraded there
+  for the price difference (no stock used, nothing lost; a partial training needs
+  a free slot). Other camps still hire only their own creature, and a town never
+  trains these neutrals.
+- The Bestiary and the unit page show both forms of the six families.
+
+## 1.2.0 — 2026-10-15 · The campaign expansion: 37 chapters as regions, six neutral creatures, battles by hand
+
+Campaign expansion and neutral creatures handoff of 2026-10-15 (kit: 31
+pictures — six creature portraits, seven animation atlases, ten map-site
+pictures, six icons, two backgrounds — plus the design of all 37 chapters).
+Values are proposed and unplaytested. **Saves:** the save format, schema and
+content stamp are unchanged, so every older save loads; a campaign run started
+before this version stays on its original missions to the end (nothing is
+reinterpreted, merged or deleted), and new runs play the new chapters.
+
+- **Every campaign rewritten as chapters on real regions** — The Three Beacons
+  (2), The Silent Oracle (6), The Winter Oath (6), The Twelfth Hour (6), The
+  Lantern Road (6), The Silver Branch (6) and The New Fire (5): 37 chapters that
+  carry every original mission once, with the same heroes and cast. Each map is
+  drawn from its chapter's design (lakes, rivers, ridges, settlements where the
+  story puts them), with a circuit through it, at least two ways to the main
+  objective, a shortcut opened through play, and pressure that is announced and
+  finite: patrols with a home camp (take it and they withdraw for good),
+  counterattacks that wait for a named event, deadlines that can cost an
+  optional reward but never the chapter.
+- **Chapters in either order.** Where the story forks, two chapters can be
+  played one at a time in either order before the story goes on; what each
+  leaves behind (evidence found, choices made) is remembered and changes what
+  later chapters say and offer, never which chapter counts as complete.
+- **Campaign chronicle**: the campaign screen shows the chapter graph (complete,
+  current, available, locked with the reason), the selected chapter's painting,
+  first line and the chapters it carries; the result screen offers the next
+  chapter or the choice of two, lists what the chapter leaves behind, and lets a
+  finished chapter be **replayed as practice**, which never advances the run
+  (the run is restored exactly afterwards). The final chapter's ending depends
+  on the last choice. The Journal's Campaign tab shows the chronicle too.
+- **Battles in campaigns are fought by hand.** No Auto, no quick battle and no
+  casualty preview in a campaign; the rules refuse an automated campaign battle
+  outright (state and dice untouched), not only the buttons. Skirmishes keep
+  every option.
+- **The Journal's Ledger** (new tab): running and announced deadlines with
+  their days, known threats (waiting, active, withdrawn, defeated) with a Show
+  on map button, evidence and decisions with their icons, and what earlier
+  chapters carried in. Missed optional tasks read "Missed", never as a defeat.
+  The adventure HUD shows each running deadline under the objectives.
+- **The introduction** of a chapter lists the open tasks, deadlines, carried
+  bonuses and loss conditions with the manual-battle note; briefing lines
+  follow what earlier chapters revealed.
+- **New map places**: sluices that switch a channel between water and marsh
+  (they show exactly what will change before you operate one), ferry landings
+  (some locked until liberated), supply depots, one-time **story choices and
+  negotiations** (each option's exact cost, what it gives, which guards stand
+  down without a battle, what it records; affordable, unaffordable, needs
+  evidence, decided, or left for later), and objective markers on the map.
+- **Six neutral creatures** — Pegasus, Root-Runner, Serpopard, Baku, Afanc and
+  Ahuitzotl — one form each, hired at their own sites in the campaigns (and in
+  the map editor) from a small stock shared by everyone and refreshed weekly,
+  some only after a pact. Each has one ability: the Serpopard's Long Reach
+  (strikes two hexes away) always works; Sheltering Wings, Distract, Devour
+  Dread, Reed Guard and Tail Snare are used once per battle, with the exact rule
+  on the button, legal targets marked, the effect shown on the battlefield and
+  in the log; the computer uses them when they help. Their
+  battle figures are drawn from the delivered atlases at one constant scale,
+  mirrored for the defender; the Pegasus takes off, flies and lands.
+- **Neutral recruitment** at a hiring site: the creature's large portrait on
+  its own background, single form, exact stats and ability, habitat, stock and
+  price, the hero's seven slots showing where the recruits go, **Recruit** and
+  **Recruit all affordable**, and the reason when it is locked, empty, full or
+  unaffordable. The Bestiary lists the six under Neutral with habitat and where
+  they are hired.
+- **Map editor**: the six hiring sites (with a habitat check), sluices with
+  their channels (the editor checks every empire's town stays reachable with
+  every sluice open and closed), ferry pairs and supply depots. Random maps
+  gain an optional **New neutral creatures** pool (off by default; a map made
+  with it off is identical to before).
+- Continue resumes the main run rather than a newer practice replay; save rows
+  show the campaign version (Chronicle or Legacy campaign), the chapter, and
+  practice replays apart.
+- Fixes: a gate opened by an objective or a deadline now opens at once, not on
+  the next action; the Bestiary opened from a creature card no longer lies
+  under the dialog; in battle, a destroyed stack plays its hit and death before
+  it is laid down.
+
+## 1.1.6 — 2026-10-14 · A new recruitment screen, painted routes, and journeys kept from day to day
+
+Recruitment & persistent journey handoff of 2026-10-14 (art: the recruitment &
+route kit — nine new pictures — and the game's own creatures, portraits and
+courts). Saves gain one optional field (planned journeys); older saves load
+with none. Rules values are unchanged; one new command (Recruit all).
+
+- **Journeys are kept.** A hero's chosen destination stays planned after the
+  day ends, while other heroes are selected, through towns, menus and other
+  screens, and in saves (autosave included). The next day **Continue journey**
+  (boot-and-arrow button under the map, or the continue-move key — Space unless
+  remapped) walks today's part of the way; a new day never moves anyone by
+  itself, and nothing is fought or chosen without the player. Only arriving
+  clears it; **Cancel journey** (×) clears only that hero's. Right-click now
+  only inspects a tile. The route is quoted again from where the hero stands
+  each time: a blocked destination is kept and shown locked ("Route
+  unavailable"), a battle or a portal pauses it, a route that changed (a
+  blocker came into view, a hero was carried off) is shown with **Accept new
+  route** before it is followed, a lost or captured hero's journey goes with
+  it, and each player's journeys are their own.
+- **Painted route on the map** in place of the yellow line and dots, during
+  the walk too: a small gold arrowhead on each step reachable today, bronze ones
+  for later days with an upright hourglass where a new day begins, the
+  destination's compass seal laid on the ground with an upright parchment
+  carrying the arrival day (today = 1), the crossed swords kept when a battle
+  waits there, and a hollow gold ring at the selected hero's feet. At a
+  distance the route thins out and its markers keep their size on screen.
+  Markers stay under the fog and the figures and never take a click.
+- **Recruitment, redesigned for all six pantheons**: the seven dwellings in one
+  row (the upgraded portrait where its dwelling stands, a lock and the building
+  to raise where none does, "0 available" for an empty pool); the creature large
+  on its pantheon's court — its own animated figure, sized by what it shows over
+  its whole idle, feet on the ground — with its two forms as medallions; the
+  upgraded form chosen first where it can be recruited, an explicit choice of
+  the base form kept; the details, destination (heroes and garrison as
+  portraits), quantity and **Recruit N** beside it; and a dock with the
+  destination's seven slots, **training** for the selected family (the stack to
+  train, a quantity, Max) and **Recruit all**. No panel scrolls at 1280 × 720 or
+  larger; narrower windows and large interface scales get Creature / Recruit /
+  Train views over a dock that stays in view.
+- **Recruit all** buys every creature the town has this week — each family in
+  its chosen form, one form per shared pool — into the chosen army in one
+  click and ONE all-or-nothing command (no confirmation, one toast). Its total
+  troops and every resource are shown before the click, with a breakdown on
+  hover or focus; when the whole batch does not fit or cannot be paid it is
+  off with the reason ("Needs 1 more army slot", "Short 300 gold") and nothing
+  is bought — single recruiting stays available.
+- The planning tip on the map sits above the journey bar, and the recruitment
+  tips over the court instead of over the dock.
+
+## 1.1.5 — 2026-10-14 · The Silent Oracle, a shorter second tutorial mission, and the player on the left
+
+Owner round of 2026-10-14. Saves (format and schema) and preferences are
+unchanged; a save made during The Three Beacons' second mission loads and
+carries on under its new single objective.
+
+- **The Silent Oracle** — a new seven-mission Greek campaign, listed second,
+  right after The Three Beacons (which teaches the game). A year after the
+  beacons, the Oracle of Kalliste has fallen silent and Theron the Hierophant
+  speaks in her name. Alexios leads again with Thaleia and Ione; Melas returns
+  as the rival lord of mission 5 and his Scout Captain patrols the islands of
+  mission 4. Built on the campaign arc of the other five (pilgrims' road,
+  bronze bull, griffin covenant, hall of echoes, Melas's city, minotaur
+  labyrinth, the Oracle's spring), expanded content on, two endings. Values
+  are proposed and unplaytested (the computer wins it at every level; see
+  `DEVELOPMENT_STATUS.md`). Its story art (GPT-6 Brief 18, delivered and
+  imported the same day): the busts and square portraits of Theron the
+  Hierophant, the Oracle Myrrine, Doros and Phaidon, the cover and campaign
+  card, seven mission pictures with their cards, and the two endings —
+  the flowing spring for "Unseal the spring", the assembly and the sealed
+  spring for "Leave the spring sealed".
+- **The Three Beacons, mission 2 (Wings over the Pass)** asks for one thing:
+  **train 2 Griffins** in Passhaven (build the Griffin Aerie and the Windcrest
+  Aerie, recruit Griffins, train two). Passhaven starts with the Griffin
+  covenant. Nothing outside the town is needed: the pass, the nest, the god
+  choice, the Windcrest-in-the-army step and the beacon are no longer
+  objectives (the ridge and its guards stay on the map as optional ground;
+  Athena or Ares can still be chosen). Training the second Griffin wins the
+  mission and gives its 2,000 experience.
+- **No gold line over the map** between the tile panel and the Objectives
+  panel: the left column no longer draws a scroll rail (it was a Windows
+  scroll bar shown for a few pixels of panel frame); it still scrolls with
+  the wheel when it is really too tall.
+- **Attacked by a computer hero, the player still stands on the left, in
+  blue.** The battle is drawn mirrored — the defender's side on the left —
+  with the player's markers, count badges and turn-order marks blue and the
+  enemy's red; the header lists the player first, and the result screen too.
+  Text stays readable, clicks land on the right cells, the sword cursor
+  points the right way and whole-field effects come from the caster's side.
+  Sieges of the player's towns are mirrored the same way (walls on the left).
+  Rules, cells and facings are unchanged. Hot-seat battles between two
+  people keep the attacker on the left.
+- **Days to arrive**: pointing at a destination the hero cannot reach today
+  shows a small number beside the cursor — the day the hero gets there,
+  today being day 1 — and the route line under the map says "… steps today ·
+  N days" after the first click.
+- The mode card says "7 story campaigns across 6 pantheons".
+- **A named guard commander shows his face in the battle header** (Doros at
+  the labyrinth gate, Theron in the inner hall, and the other campaigns'
+  commanders of guarded sites), as heroes always did; guards without a
+  commander still show none.
+
 ## 1.1.4 — 2026-10-11 · GUI audit fixes and the six-pantheon siege gates
 
 A GUI release over 1.1.3 that answers the 1.1.2 GUI audit

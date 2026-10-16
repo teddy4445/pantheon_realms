@@ -43,10 +43,12 @@ import {
   interventionUsedThisWeek,
   quoteIntervention,
   interventionOf,
+  manualBattlesRequired,
 } from '@pr/rules';
 import type { BattleMiracleFx, BattleSceneController, BattleSpellFx, BattleStackMark, BattleView } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { battleCursor } from '../app/cursorContext';
+import { battleOrientation, sideTone } from '../app/battleOrientation';
 import { battleLogLines } from '../app/battleLog';
 import { cursorCss } from '../assets/cursors';
 import { battlePlaybackFactor, reducedMotion } from '../app/preferences';
@@ -59,6 +61,7 @@ import { ClimateChip } from '../components/climate';
 import { Icon } from '../assets/icons';
 import { MiracleBook, type MiracleOption } from '../components/miraclebook';
 import { stackMarks } from '../app/stackMarks';
+import { abilityActions, abilityFxOf, usesText, type AbilityAction } from '../app/battleAbilities';
 import { resolveAsset } from '../assets/manifest';
 import { MiniBanner, contextTheme } from '../components/gui';
 
@@ -161,6 +164,7 @@ function buildView(
   deploySide: 'attacker' | 'defender' | null = null,
 ): { view: BattleView; attackFrom: BattleCell | null; hoverTarget: string | null } {
   const battle = state.battle!;
+  const orient = battleOrientation(battle);
   const occ = new Map<string, string>();
   for (const s of Object.values(battle.stacks)) if (s.totalHp > 0) for (const c of stackCells(catalog, s)) occ.set(cellKey(c), s.id);
   // "Count" labels (1.1.0 default): health is revealed on the stack under the pointer and on the acting stack.
@@ -186,9 +190,9 @@ function buildView(
       alive: s.totalHp > 0,
       active: deploySide ? deploySel === s.id : battle.activeStackId === s.id,
       label,
-      labelColor: s.side === 'attacker' ? '#dbe8ff' : '#ffd9d2',
+      labelColor: sideTone(orient, s.side) === 'blue' ? '#dbe8ff' : '#ffd9d2',
       statuses: statusOverlays(s.statuses),
-      marks: stackMarks(catalog, s, battle.round),
+      marks: stackMarks(catalog, s, battle.round, battle),
     };
   });
   let moves: BattleCell[] = [];
@@ -259,7 +263,7 @@ function buildView(
   const siege = battle.siege && battle.siege.level > 0 ? { structures: battle.siege.structures, moat: battle.siege.moat, wallCol: battle.siege.wallCol, pantheonId: state.towns[battle.siege.townId]?.pantheonId ?? null } : null;
   const highlightKey = `${deploySel ?? ''}|${zone.length}|${state.revision}|${mode.kind}|${'spellId' in mode ? mode.spellId : 'abilityId' in mode ? mode.abilityId : ''}|${path?.map(cellKey).join(';') ?? ''}|${attackFrom ? cellKey(attackFrom) : ''}|${la?.stackId ?? ''}`;
   return {
-    view: { battleId: battle.battleId, cols: battle.cols, rows: battle.rows, obstacles: battle.obstacles, archetype: battle.archetype, climate: state.world.map.biome, stacks, moves, targets, path, attackFrom, highlightKey, grid, siege, zone },
+    view: { battleId: battle.battleId, cols: battle.cols, rows: battle.rows, obstacles: battle.obstacles, archetype: battle.archetype, climate: state.world.map.biome, stacks, moves, targets, path, attackFrom, highlightKey, grid, siege, zone, mirrored: orient.mirrored, blueSide: orient.blueSide },
     attackFrom,
     hoverTarget,
   };
@@ -318,6 +322,10 @@ export function BattleScreen() {
   useEffect(() => () => store.setBoardLoading(false), [store]);
   const humanTurn = !ended && !!battle && battle.status === 'active' && session.isHumanTurn();
   const humanSide = battle ? Object.values(battle.sides).find((s) => s.controller === 'human') : undefined;
+  // Campaign battles are fought by hand (handoff 2026-10-15): no Auto button or Q
+  // shortcut. The rules refuse automated orders for a human side as well.
+  const manualOnly = manualBattlesRequired(state);
+  const autoOn = auto && !manualOnly;
   const la = humanTurn && !store.presentationBusy && !boardLoading ? legalActions(catalog, state) : null;
   // The Catapult is aimed by the siege attacker on one of its own stacks' turns (2026-10-07).
   const canAimCatapult = !!la && la.side === 'attacker' && !!battle?.siege && battle.siege.level > 0;
@@ -346,6 +354,19 @@ export function BattleScreen() {
   useEffect(() => {
     setMode({ kind: 'normal' });
   }, [battle?.activeStackId, battle?.round]);
+  // Choosing an ability's target (keyboard): focus moves to its first legal target in the
+  // ability card, and back to the ability's button when the choice is cancelled.
+  const abilityReturn = useRef<string | null>(null);
+  const abilityCard = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (mode.kind === 'ability') {
+      abilityCard.current?.querySelector<HTMLButtonElement>('[data-ability-target]')?.focus({ preventScroll: true });
+      return;
+    }
+    const back = abilityReturn.current;
+    abilityReturn.current = null;
+    if (back) document.querySelector<HTMLButtonElement>(`[data-testid="battle-ability-${back}"]`)?.focus({ preventScroll: true });
+  }, [mode]);
   useEffect(() => {
     if (battle?.phase !== 'deployment') setDeploySel(null);
   }, [battle?.phase]);
@@ -392,12 +413,12 @@ export function BattleScreen() {
 
   // Auto-combat for the human side (the tactical AI chooses; the processor validates).
   useEffect(() => {
-    if (!auto || !humanTurn || store.presentationBusy) return;
+    if (!autoOn || !humanTurn || store.presentationBusy) return;
     const t = setTimeout(() => {
       if (store.session === session && session.isHumanTurn() && !store.presentationBusy) session.autoBattleStep();
     }, 90);
     return () => clearTimeout(t);
-  }, [auto, humanTurn, store.presentationBusy, state.revision, session, store]);
+  }, [autoOn, humanTurn, store.presentationBusy, state.revision, session, store]);
 
   const act = (payload: Parameters<typeof store.dispatch>[0]) => {
     setMode({ kind: 'normal' });
@@ -491,6 +512,7 @@ export function BattleScreen() {
         spellFx: (spellId) => spellFxOf(catalog, spellId),
         iconUrl: (assetId) => resolveAsset(assetId).url,
         miracleFx: (interventionId, playerId) => miracleFxOf(catalog, store.session?.state.battle ? store.session.state : (lastLive.current ?? undefined), interventionId, playerId),
+        abilityFx: (ev) => abilityFxOf(catalog, ev),
         onBoardReady: (ready) => setBoardReady(ready),
       }),
     [],
@@ -521,7 +543,7 @@ export function BattleScreen() {
         setShowLog((v) => !v);
         return;
       }
-      if (is('battle_auto') && humanSide) {
+      if (is('battle_auto') && humanSide && !manualOnly) {
         setAuto((a) => !a);
         return;
       }
@@ -555,24 +577,44 @@ export function BattleScreen() {
     const stacks = Object.values(battle.stacks).filter((s) => s.side === sideId && s.totalHp > 0);
     return { side, name: side.commander?.name ?? (sideId === 'defender' ? battle.encounter.label : 'Attacker'), owner: pl?.name ?? 'Neutral', total: stacks.reduce((n, s) => n + aliveCount(catalog, s), 0), color: pl?.color ?? NEUTRAL_ACCENT, mana: commanderMana(state, side), pantheonId: pl?.pantheonId ?? null };
   };
-  // The commanding hero's portrait (Brief 9) beside the side's name; neutral guards have none.
+  // The commander's portrait (Brief 9) beside the side's name: a hero's, or a named guard commander's own
+  // (Doros, Theron, Melas — the battle snapshot keeps its portrait ID); guards without a commander have none.
   const commanderPortrait = (side: (typeof battle.sides)['attacker']) => {
     const c = side.commander;
-    if (!c?.heroId) return null;
-    const h = state.heroes[c.heroId];
+    if (!c) return null;
+    const h = c.heroId ? state.heroes[c.heroId] : undefined;
     return <HeroPortrait catalog={catalog} definitionId={h?.definitionId ?? ''} portraitAssetId={c.portraitAssetId} name={c.name} size="2.7rem" style={{ flex: 'none' }} />;
   };
   const att = sideInfo('attacker');
   const def = sideInfo('defender');
+  // The human's side stands on the left and is blue, also when a computer hero attacks (owner request 2026-10-14).
+  const orient = battleOrientation(battle);
   const hoverStack = built?.hoverTarget ? battle.stacks[built.hoverTarget] : undefined;
   let preview: { main: DamagePreview | null; ret: DamagePreview | null; label: string } | null = null;
   if (la && hoverStack && hoverStack.side !== la.side && mode.kind === 'normal') {
     if (la.shootTargets.includes(hoverStack.id)) preview = { main: previewShot(catalog, state, la.stackId, hoverStack.id), ret: null, label: 'Shot' };
     else if (built?.attackFrom) preview = { main: previewMelee(catalog, state, la.stackId, hoverStack.id, built.attackFrom), ret: previewRetaliation(catalog, state, la.stackId, hoverStack.id), label: 'Melee' };
   }
-  const cursorChoice = battleCursor(catalog, state, la, mode, hover?.cell ?? null, built?.attackFrom ?? null, { battleActive: !ended && battle.status === 'active', deploying: !!deploySide || !!selecting });
+  const cursorChoice = battleCursor(catalog, state, la, mode, hover?.cell ?? null, built?.attackFrom ?? null, { battleActive: !ended && battle.status === 'active', deploying: !!deploySide || !!selecting, mirrored: orient.mirrored });
   const sceneCursor = cursorCss(cursorChoice.id, { angle: cursorChoice.angle, enabled: store.prefs.gameCursors });
   const castable = la ? la.spells.filter((s) => s.castable) : [];
+  // The active stack's abilities: the exact rule, uses left and why one is unavailable, from its
+  // definition and the rules' legal actions (app/battleAbilities.ts); the targets come from the rules.
+  const abilities: AbilityAction[] = la ? abilityActions(catalog, battle, la) : [];
+  const aiming = mode.kind === 'ability' ? (abilities.find((a) => a.abilityId === mode.abilityId) ?? null) : null;
+  const pickAbility = (a: AbilityAction) => {
+    if (!la) return;
+    if (!a.available) {
+      store.toast(`${a.name}: ${a.reason ?? 'not available now'}`, 'error');
+      return;
+    }
+    if (a.selfLabel) {
+      act({ kind: 'BattleUseAbility', stackId: la.stackId, abilityId: a.abilityId, targetId: la.stackId });
+      return;
+    }
+    abilityReturn.current = a.abilityId;
+    setMode({ kind: 'ability', abilityId: a.abilityId });
+  };
   /** The Spell button: the commander's book opened to cast; picking a spell asks for its target next. */
   const openSpells = () => {
     if (!la) return;
@@ -633,6 +675,67 @@ export function BattleScreen() {
         })()
       : null;
 
+  const attSide = (
+    <div className={`battle-side ${orient.leftSide === 'attacker' ? 'battle-side--att' : 'battle-side--def'} tone-${sideTone(orient, 'attacker')}`} style={{ ['--side' as string]: att.color }} data-side="attacker">
+      <MiniBanner pantheonId={att.pantheonId} />
+      {commanderPortrait(att.side)}
+      <div className="battle-side__text">
+      <div className="battle-side__name">{att.name}</div>
+      <div className="small dim">
+        {att.owner} · {att.total} creatures{att.side.commander?.spellbook ? ` · ${att.mana} mana` : ''}
+      </div>
+      <div className="row gap wrap small" style={{ justifyContent: orient.leftSide === 'attacker' ? undefined : 'flex-end' }} data-testid="effects-attacker">
+        {effectChips(att.side.effects).map((c) => (
+          <Chip key={c.key} tone="info" title={c.title}>
+            {c.text}
+          </Chip>
+        ))}
+      </div>
+      </div>
+    </div>
+  );
+  const defSide = (
+    <div className={`battle-side ${orient.leftSide === 'defender' ? 'battle-side--att' : 'battle-side--def'} tone-${sideTone(orient, 'defender')}`} style={{ ['--side' as string]: def.color }} data-side="defender">
+      <MiniBanner pantheonId={def.pantheonId} />
+      {commanderPortrait(def.side)}
+      <div className="battle-side__text">
+      <div className="battle-side__name">{def.name}</div>
+      <div className="small dim">
+        {def.owner} · {def.total} creatures{def.side.commander?.spellbook ? ` · ${def.mana} mana` : ''}
+      </div>
+      <div className="row gap wrap small" style={{ justifyContent: orient.leftSide === 'defender' ? undefined : 'flex-end' }} data-testid="effects-defender">
+        {effectChips(def.side.effects).map((c) => (
+          <Chip key={c.key} tone="info" title={c.title}>
+            {c.text}
+          </Chip>
+        ))}
+      </div>
+      {battle.siege && battle.siege.level > 0 ? (
+        <div className="siege-status small" data-testid="siege-status" aria-label="Fortifications">
+          {battle.siege.structures.map((x) => {
+            const aimed = catapultTarget(battle)?.id === x.id;
+            // The human attacker aims the Catapult by clicking a standing structure (on its own turn).
+            const canAim = canAimCatapult && x.hp > 0 && !aimed;
+            const label = `${structureLabel(x.id).replace('Wall section ', 'W')} ${x.hp}/${x.maxHp}`;
+            const title = `${structureLabel(x.id)}: ${x.hp}/${x.maxHp} structure points${aimed ? ' — the Catapult’s next target' : canAim ? ' — click to aim the Catapult here' : ''}`;
+            const cls = `siege-status__item${x.hp <= 0 ? ' is-down' : ''}${aimed ? ' is-aim' : ''}${canAim ? ' is-aimable' : ''}`;
+            return canAim ? (
+              <button key={x.id} type="button" className={cls} title={title} onClick={() => act({ kind: 'BattleAimCatapult', structureId: x.id })} data-testid={`catapult-aim-${x.id}`}>
+                {label}
+              </button>
+            ) : (
+              <span key={x.id} className={cls} title={title} data-testid={aimed ? 'catapult-target' : undefined} data-structure={x.id}>
+                {aimed ? <Icon name="spell" className="siege-status__aim" aria-hidden="true" /> : null}
+                {label}
+              </span>
+            );
+          })}
+        </div>
+      ) : null}
+      </div>
+    </div>
+  );
+
   return (
     <div className="battle" data-gui-theme={contextTheme(store)}>
       <SceneViewport factory={factory} onController={onController} onError={() => setSceneFailed(true)} className="battle__scene" label="Tactical battlefield" cursor={sceneCursor} />
@@ -645,74 +748,20 @@ export function BattleScreen() {
       ) : null}
       {miracleBook}
       <header className="battle-top">
-        <div className="battle-side battle-side--att" style={{ ['--side' as string]: att.color }}>
-          <MiniBanner pantheonId={att.pantheonId} />
-          {commanderPortrait(att.side)}
-          <div className="battle-side__text">
-          <div className="battle-side__name">{att.name}</div>
-          <div className="small dim">
-            {att.owner} · {att.total} creatures{att.side.commander?.spellbook ? ` · ${att.mana} mana` : ''}
-          </div>
-          <div className="row gap wrap small" data-testid="effects-attacker">
-            {effectChips(att.side.effects).map((c) => (
-              <Chip key={c.key} tone="info" title={c.title}>
-                {c.text}
-              </Chip>
-            ))}
-          </div>
-          </div>
-        </div>
+        {orient.leftSide === 'attacker' ? attSide : defSide}
         <div className="battle-round">
           <div className="battle-round__label">{battle.phase === 'deployment' ? 'Deployment' : battle.phase === 'selection' ? 'Defenders' : 'Round'}</div>
           <div className="battle-round__n num">{battle.round || '—'}</div>
           <div className="faint small">{battle.phase === 'waiting' ? 'Waiting phase' : battle.encounter.label}</div>
           {battle.climate ? <ClimateChip climate={battle.climate} /> : null}
         </div>
-        <div className="battle-side battle-side--def" style={{ ['--side' as string]: def.color }}>
-          <MiniBanner pantheonId={def.pantheonId} />
-          {commanderPortrait(def.side)}
-          <div className="battle-side__text">
-          <div className="battle-side__name">{def.name}</div>
-          <div className="small dim">
-            {def.owner} · {def.total} creatures{def.side.commander?.spellbook ? ` · ${def.mana} mana` : ''}
-          </div>
-          <div className="row gap wrap small" style={{ justifyContent: 'flex-end' }} data-testid="effects-defender">
-            {effectChips(def.side.effects).map((c) => (
-              <Chip key={c.key} tone="info" title={c.title}>
-                {c.text}
-              </Chip>
-            ))}
-          </div>
-          {battle.siege && battle.siege.level > 0 ? (
-            <div className="siege-status small" data-testid="siege-status" aria-label="Fortifications">
-              {battle.siege.structures.map((x) => {
-                const aimed = catapultTarget(battle)?.id === x.id;
-                // The human attacker aims the Catapult by clicking a standing structure (on its own turn).
-                const canAim = canAimCatapult && x.hp > 0 && !aimed;
-                const label = `${structureLabel(x.id).replace('Wall section ', 'W')} ${x.hp}/${x.maxHp}`;
-                const title = `${structureLabel(x.id)}: ${x.hp}/${x.maxHp} structure points${aimed ? ' — the Catapult’s next target' : canAim ? ' — click to aim the Catapult here' : ''}`;
-                const cls = `siege-status__item${x.hp <= 0 ? ' is-down' : ''}${aimed ? ' is-aim' : ''}${canAim ? ' is-aimable' : ''}`;
-                return canAim ? (
-                  <button key={x.id} type="button" className={cls} title={title} onClick={() => act({ kind: 'BattleAimCatapult', structureId: x.id })} data-testid={`catapult-aim-${x.id}`}>
-                    {label}
-                  </button>
-                ) : (
-                  <span key={x.id} className={cls} title={title} data-testid={aimed ? 'catapult-target' : undefined} data-structure={x.id}>
-                    {aimed ? <Icon name="spell" className="siege-status__aim" aria-hidden="true" /> : null}
-                    {label}
-                  </span>
-                );
-              })}
-            </div>
-          ) : null}
-          </div>
-        </div>
+        {orient.leftSide === 'attacker' ? defSide : attSide}
       </header>
       <div className="turn-order" aria-label="Turn order">
         {order.current.slice(0, 11).map((id, i) => {
           const s = battle.stacks[id]!;
           return (
-            <div key={`c-${id}`} className={`turn-order__item side-${s.side} ${i === 0 ? 'is-active' : ''}`} title={`${catalog.creatures[s.creatureId]?.name} (${s.side})`}>
+            <div key={`c-${id}`} className={`turn-order__item side-${s.side} tone-${sideTone(orient, s.side)} ${i === 0 ? 'is-active' : ''}`} title={`${catalog.creatures[s.creatureId]?.name} (${s.side})`}>
               <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="2.6rem" count={aliveCount(catalog, s)} />
             </div>
           );
@@ -723,7 +772,7 @@ export function BattleScreen() {
         {order.next.slice(0, 5).map((id) => {
           const s = battle.stacks[id]!;
           return (
-            <div key={`n-${id}`} className={`turn-order__item side-${s.side} is-next`}>
+            <div key={`n-${id}`} className={`turn-order__item side-${s.side} tone-${sideTone(orient, s.side)} is-next`}>
               <CreaturePortrait catalog={catalog} creatureId={s.creatureId} size="2.1rem" />
             </div>
           );
@@ -734,7 +783,7 @@ export function BattleScreen() {
         <div className="battle-preview panel" role="status">
           <div className="battle-preview__title">
             {preview.label}: {activeDef?.pluralName} → {catalog.creatures[hoverStack.creatureId]?.pluralName} ({aliveCount(catalog, hoverStack)})
-            <MarkRow marks={stackMarks(catalog, hoverStack, battle.round)} testId="target-marks" />
+            <MarkRow marks={stackMarks(catalog, hoverStack, battle.round, battle)} testId="target-marks" />
           </div>
           <PreviewLine label="Expected" p={preview.main} />
           {preview.ret ? <PreviewLine label="Retaliation (if they survive)" p={preview.ret} /> : preview.label === 'Melee' ? <div className="faint small">No retaliation expected.</div> : null}
@@ -749,7 +798,7 @@ export function BattleScreen() {
             <div className="battle-preview battle-inspect panel" role="status" data-testid="battle-inspect">
               <div className="battle-preview__title">
                 {n} {n === 1 ? d?.name : d?.pluralName} <span className="faint small">({hoverStack.side})</span>
-                <MarkRow marks={stackMarks(catalog, hoverStack, battle.round)} testId="inspect-marks" />
+                <MarkRow marks={stackMarks(catalog, hoverStack, battle.round, battle)} testId="inspect-marks" />
               </div>
               <div className="battle-inspect__stats small">
                 <span title={breakdownTitle('Attack', attackBreakdown(catalog, battle, hoverStack))}>
@@ -778,6 +827,22 @@ export function BattleScreen() {
             </div>
           );
         })()
+      ) : null}
+
+      {aiming && la ? (
+        <AbilityCard
+          catalog={catalog}
+          battle={battle}
+          action={aiming}
+          cardRef={abilityCard}
+          // Away from its targets: an ally-only ability's card stands on the enemy's side of the screen.
+          dock={aiming.targets.every((t) => battle.stacks[t]?.side === la.side) === (orient.leftSide === la.side) ? 'right' : 'left'}
+          onHover={(cell) => setHover(cell ? { cell, offset: { x: 0, y: 0 } } : null)}
+          onChoose={(targetId) => {
+            setHover(null);
+            act({ kind: 'BattleUseAbility', stackId: la.stackId, abilityId: aiming.abilityId, targetId });
+          }}
+        />
       ) : null}
 
       {showLog ? (
@@ -818,7 +883,7 @@ export function BattleScreen() {
                   </span>
                 ) : null}
               </div>
-              <MarkRow marks={stackMarks(catalog, active, battle.round)} testId="active-marks" />
+              <MarkRow marks={stackMarks(catalog, active, battle.round, battle)} testId="active-marks" />
               <Bar value={frontHp(catalog, active)} max={activeDef.stats?.hp ?? 1} kind="hp" label="Front creature health" />
             </div>
           </div>
@@ -868,6 +933,15 @@ export function BattleScreen() {
             <>
               <span className="small">{(actingPlayer ? interventionOf(catalog, state, actingPlayer, mode.interventionId) : catalog.interventions?.[mode.interventionId])?.name}: choose an enemy stack.</span>
               <Button size="small" onClick={() => setMode({ kind: 'normal' })}>
+                Cancel
+              </Button>
+            </>
+          ) : mode.kind === 'ability' && la ? (
+            <>
+              <span className="small" data-testid="battle-ability-prompt">
+                {aiming ? aiming.prompt : 'Choose a highlighted target.'}
+              </span>
+              <Button size="small" onClick={() => setMode({ kind: 'normal' })} title="Cancel (Esc)" data-testid="battle-ability-cancel">
                 Cancel
               </Button>
             </>
@@ -921,27 +995,31 @@ export function BattleScreen() {
                   Batter walls
                 </Button>
               ) : null}
-              {la.abilities.map((a) =>
-                a.label ? (
-                  // Self-only abilities (Shapeshift) act at once; free ones keep the activation.
-                  <Button
-                    key={a.abilityId}
-                    icon="ability"
-                    onClick={() => act({ kind: 'BattleUseAbility', stackId: la.stackId, abilityId: a.abilityId, targetId: la.stackId })}
-                    disabled={!!a.reason}
-                    disabledReason={a.reason}
-                    title={a.free ? 'Free: this stack still acts afterwards' : 'Spends this activation'}
-                    data-testid={`battle-ability-${a.abilityId}`}
-                  >
-                    {a.label}
-                    {a.free ? ' (free)' : ''}
-                  </Button>
-                ) : (
-                  <Button key={a.abilityId} icon="ability" onClick={() => setMode({ kind: 'ability', abilityId: a.abilityId })} disabled={!!a.reason || a.targets.length === 0} disabledReason={a.reason} data-testid={`battle-ability-${a.abilityId}`}>
-                    {a.name}
-                  </Button>
-                ),
-              )}
+              {abilities.map((a) => (
+                // Self-only abilities (Shapeshift) act at once; the others ask for a target. An unavailable one
+                // stays focusable (aria-disabled), so its rule and reason can be read from the keyboard too.
+                <Button
+                  key={a.abilityId}
+                  className={`bv2-ability${a.available ? '' : ' is-unavailable'}${a.uses?.left === 0 ? ' is-used' : ''}`}
+                  icon="ability"
+                  artUrl={resolveAsset(a.icon).url}
+                  aria-disabled={a.available ? undefined : true}
+                  title={a.tooltip}
+                  aria-description={a.tooltip}
+                  onClick={() => pickAbility(a)}
+                  data-testid={`battle-ability-${a.abilityId}`}
+                  data-uses-left={a.uses ? a.uses.left : undefined}
+                >
+                  {a.available ? null : <Icon name="lock" glyph className="btn__lock bv2-lock" />}
+                  {a.selfLabel ?? a.name}
+                  {a.free ? ' (free)' : ''}
+                  {a.uses ? (
+                    <span className="bv2-uses" aria-hidden="true">
+                      {a.uses.left === 0 ? 'Used' : `${a.uses.left}/${a.uses.total}`}
+                    </span>
+                  ) : null}
+                </Button>
+              ))}
               <Button icon="retreat" variant="ghost" disabled={!la.canRetreat} disabledReason={battle.encounter.kind === 'town_siege' && la.side === 'defender' ? 'A town defender cannot retreat' : 'Only a hero commander can retreat'} onClick={() => store.confirm('Retreat?', 'Your hero escapes with no army. The surviving troops are lost.', 'Retreat', () => act({ kind: 'BattleRetreat' }), { danger: true })}>
                 Retreat
               </Button>
@@ -954,9 +1032,11 @@ export function BattleScreen() {
           ) : null}
         </div>
         <div className="battle-tools">
-          <Button icon="auto" variant={auto ? 'primary' : undefined} onClick={() => setAuto((a) => !a)} disabled={!humanSide || boardLoading} title="Auto-combat: the tactical AI plays your stacks (Q)" data-testid="battle-auto">
-            {auto ? 'Auto: on' : 'Auto'}
-          </Button>
+          {manualOnly ? null : (
+            <Button icon="auto" variant={autoOn ? 'primary' : undefined} onClick={() => setAuto((a) => !a)} disabled={!humanSide || boardLoading} title="Auto-combat: the tactical AI plays your stacks (Q)" data-testid="battle-auto">
+              {autoOn ? 'Auto: on' : 'Auto'}
+            </Button>
+          )}
           <Button icon="play" size="small" onClick={() => ctrl.current?.skip()} title="Skip animation (Space)">
             Skip
           </Button>
@@ -967,6 +1047,88 @@ export function BattleScreen() {
         </div>
       </footer>
     </div>
+  );
+}
+
+/**
+ * The ability being aimed (campaign expansion, 2026-10-15): its exact rule and restriction from the
+ * definition, the uses left, and one button per legal target from the rules (the keyboard way to choose
+ * what the highlighted stacks on the battlefield offer to the pointer). Focusing a target inspects it.
+ */
+function AbilityCard({
+  catalog,
+  battle,
+  action,
+  cardRef,
+  dock,
+  onHover,
+  onChoose,
+}: {
+  catalog: ContentCatalog;
+  battle: NonNullable<MatchState['battle']>;
+  action: AbilityAction;
+  cardRef: { current: HTMLElement | null };
+  /** The side of the screen it stands on: away from the targets it asks for, so they stay in view. */
+  dock: 'left' | 'right';
+  onHover: (cell: BattleCell | null) => void;
+  onChoose: (targetId: string) => void;
+}) {
+  const badge = resolveAsset(action.icon).url;
+  const seen = new Map<string, number>();
+  const dupes = new Set(action.targets.map((id) => battle.stacks[id]?.creatureId).filter((c, i, all) => c && all.indexOf(c) !== i));
+  return (
+    <section
+      className={`bv2-ability-card bv2-ability-card--${dock} panel`}
+      ref={(el) => {
+        cardRef.current = el;
+      }}
+      aria-label={`${action.name}: rule and targets`}
+      data-testid="battle-ability-card"
+    >
+      <header className="bv2-ability-card__head">
+        {badge ? <img className="bv2-ability-card__badge" src={badge} alt="" draggable={false} /> : null}
+        <span className="bv2-ability-card__name">{action.name}</span>
+        {action.uses ? <span className="bv2-uses bv2-uses--inline">{action.uses.left === 0 ? 'Used' : `${action.uses.left}/${action.uses.total}`}</span> : null}
+      </header>
+      {action.exactRule ? (
+        <p className="bv2-ability-card__rule" data-testid="battle-ability-rule">
+          {action.exactRule}
+        </p>
+      ) : null}
+      {action.restriction ? <p className="bv2-ability-card__restriction small">{action.restriction}</p> : null}
+      {action.uses ? <p className="bv2-ability-card__uses small">Uses: {usesText(action.uses)}.</p> : null}
+      <div className="bv2-ability-card__targets" role="group" aria-label={`${action.name}: legal targets`}>
+        {action.targets.map((id) => {
+          const t = battle.stacks[id];
+          if (!t) return null;
+          const d = catalog.creatures[t.creatureId];
+          const n = aliveCount(catalog, t);
+          const k = (seen.get(t.creatureId) ?? 0) + 1;
+          seen.set(t.creatureId, k);
+          const self = id === battle.activeStackId;
+          const label = `${n} ${n === 1 ? d?.name : d?.pluralName}${dupes.has(t.creatureId) ? ` (${k})` : ''}${self ? ' — this stack' : ''}`;
+          return (
+            <Button
+              key={id}
+              size="small"
+              className="bv2-target"
+              data-ability-target={id}
+              data-testid={`battle-ability-target-${id}`}
+              aria-label={`${action.name} on ${label}`}
+              onMouseEnter={() => onHover(t.anchor)}
+              onMouseLeave={() => onHover(null)}
+              onFocus={() => onHover(t.anchor)}
+              onBlur={() => onHover(null)}
+              onClick={() => onChoose(id)}
+            >
+              <CreaturePortrait catalog={catalog} creatureId={t.creatureId} size="1.5rem" />
+              {label}
+            </Button>
+          );
+        })}
+      </div>
+      <p className="bv2-ability-card__hint faint small">Click a highlighted stack on the battlefield or choose one here · Esc cancels.</p>
+    </section>
   );
 }
 

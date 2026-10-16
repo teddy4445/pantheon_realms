@@ -40,7 +40,9 @@ export type RejectionCode =
   | 'illegal_action'
   | 'not_active_stack'
   | 'already_done'
-  | 'invalid_command';
+  | 'invalid_command'
+  /** Automation tried to act for a human side of a campaign battle (fought by hand only). */
+  | 'manual_battle_required';
 
 export interface Rejection {
   readonly code: RejectionCode;

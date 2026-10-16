@@ -28,7 +28,7 @@ import type {
 } from '../ids';
 import type { ResourceCost } from '../core/resources';
 import type { HeroAttribute, RewardDefinition } from './logic';
-import type { HostileHeroDefinition, SiteDefinition, StackSpec } from './world';
+import type { HostileHeroDefinition, MapTemplateDefinition, SiteDefinition, StackSpec } from './world';
 
 export interface DialogueLine {
   readonly speaker: string;
@@ -87,6 +87,11 @@ export interface ObjectiveDefinition {
   readonly live?: boolean;
   /** Help text shown in the journal. */
   readonly hint?: string;
+  /**
+   * Completing this objective wins the mission (as an activation site's
+   * `completesMission` does), e.g. a mission played entirely in town.
+   */
+  readonly completesMission?: boolean;
 }
 
 export interface MissionTownSetup {
@@ -173,6 +178,86 @@ export interface StorySceneDefinition {
   readonly id: string;
   readonly trigger: StoryTriggerDefinition;
   readonly lines: readonly DialogueLine[];
+  /** Plays only when every one of these flags is set (campaign facts are `fact:<id>` flags). */
+  readonly ifFlags?: readonly string[];
+  /** Plays only when none of these flags is set (order-aware dialogue for chapters played in either order). */
+  readonly unlessFlags?: readonly string[];
+}
+
+// ---------------------------------------------------------------------------
+// Campaign content version 2 (campaign expansion handoff, 2026-10-15)
+// ---------------------------------------------------------------------------
+
+/**
+ * An authored region map (content v2): the terrain of every cell and the roads,
+ * written by the campaign's region builder from the mission card — no generated
+ * corridor template. Fixed for the mission, except where a sluice changes its
+ * channel cells.
+ */
+export interface AuthoredMapDefinition {
+  readonly id: string;
+  readonly version: number;
+  readonly width: number;
+  readonly height: number;
+  /** One string of terrain codes per row (see TERRAIN_CODES). */
+  readonly rows: readonly string[];
+  /** Sorted undirected road edge keys (hex.edgeKey). */
+  readonly roads: readonly string[];
+  readonly biome: MapTemplateDefinition['biome'];
+  /** Seed for the decoration stream (presentation only). */
+  readonly seed: number;
+}
+
+/**
+ * An announced mission deadline. It starts only when `startWhen` first holds (the
+ * day is saved), shows its deadline from then on, and is met when `metWhen` holds
+ * first. When it runs out it sets `onExpire.flags` and fails `onExpire.failObjectives`
+ * — optional objectives only: a timer never fails a mission or deletes essential evidence.
+ */
+export interface MissionTimerDefinition {
+  readonly id: string;
+  readonly label: string;
+  /** What starts the clock (announced in the journal before it starts, when `announce` is set). */
+  readonly startWhen: ObjectiveCondition;
+  readonly days: number;
+  readonly metWhen: ObjectiveCondition;
+  /** Known consequence of missing it (shown with the deadline). */
+  readonly consequence: string;
+  readonly announce?: string;
+  readonly onExpire: { readonly flags?: readonly string[]; readonly failObjectives?: readonly ObjectiveId[] };
+}
+
+/** A piece of evidence or a remembered decision, shown in the journal's ledger once its flag is set. */
+export interface EvidenceDefinition {
+  readonly id: string;
+  readonly flag: string;
+  readonly title: string;
+  readonly text: string;
+  /** Ledger icon: evidence, pact, supply or evacuation. */
+  readonly icon: 'evidence' | 'pact' | 'supply' | 'evacuation' | 'branch';
+}
+
+/** A bounded benefit at a chapter's start, granted when an earlier choice left this campaign fact. */
+export interface EntryBonusDefinition {
+  readonly fact: string;
+  readonly label: string;
+  readonly wallet?: ResourceCost;
+  readonly heroArmy?: readonly StackSpec[];
+  readonly garrison?: readonly StackSpec[];
+  readonly flags?: readonly string[];
+}
+
+/** One chapter node of a content-v2 campaign: playable once every listed chapter is complete. */
+export interface CampaignChapterDefinition {
+  readonly missionId: MissionId;
+  /** Local chapter number (1-based). */
+  readonly chapter: number;
+  /** Every listed chapter must be complete (an order choice, never exclusive branches). */
+  readonly requiresAll: readonly MissionId[];
+  /** The legacy (content v1) missions whose story beats this chapter carries. */
+  readonly legacyMissionIds: readonly MissionId[];
+  /** Mission paintings: the first is the cover, the rest are event illustrations. */
+  readonly briefingArt: readonly AssetId[];
 }
 
 export interface HelpTopicDefinition {
@@ -256,6 +341,24 @@ export interface MissionDefinition {
   /** Campaign-specific: hero defeat/retreat/surrender fails the attempt. */
   readonly protectedHeroFailure: boolean;
   readonly thumbnailAssetId: AssetId;
+  // --- Content v2 (campaign expansion, 2026-10-15); absent on v1 missions ---
+  /** Campaign content version of this mission (absent = 1). */
+  readonly contentVersion?: 2;
+  /** The authored region map (replaces `mapTemplateId` generation when present). */
+  readonly map?: AuthoredMapDefinition;
+  readonly timers?: readonly MissionTimerDefinition[];
+  readonly evidence?: readonly EvidenceDefinition[];
+  /** Mission flags kept as campaign facts on completion (evidence found, choices made). */
+  readonly carriedFlags?: readonly string[];
+  /** Extra briefing lines by campaign facts (`fact:<flag>`), for chapters played in either order. */
+  readonly briefingVariants?: readonly { readonly ifFlags?: readonly string[]; readonly unlessFlags?: readonly string[]; readonly lines: readonly DialogueLine[] }[];
+  readonly entryBonuses?: readonly EntryBonusDefinition[];
+  /** Loss rules in plain words for the introduction (e.g. "Alexios must survive"). */
+  readonly lossConditions?: readonly string[];
+  /** Mission paintings (cover first). */
+  readonly briefingArt?: readonly AssetId[];
+  /** The chapter's principal objective (its known task; reachable two independent ways). */
+  readonly principalObjectiveId?: ObjectiveId;
 }
 
 export interface CampaignDefinition {
@@ -263,6 +366,8 @@ export interface CampaignDefinition {
   readonly name: string;
   readonly tagline: string;
   readonly summary: string;
+  /** Content v2: the campaign's summary as a new run plays it (its chapters); `summary` stays the v1 text. */
+  readonly summaryV2?: string;
   readonly pantheonId: PantheonId;
   /** Starting divine options offered by S05. A single entry is a fixed patron. */
   readonly startingGodOptions: readonly GodId[];
@@ -275,11 +380,43 @@ export interface CampaignDefinition {
   /** Closing scene after the final mission's debrief. */
   readonly epilogue?: readonly DialogueLine[];
   /**
+   * Content v2 chapter graph (campaign expansion, 2026-10-15). When present, new runs
+   * play these chapters (`contentVersion` 2); `missionIds` stays the legacy (v1) order
+   * so older saves keep their own definitions.
+   */
+  readonly chapters?: readonly CampaignChapterDefinition[];
+  /** The v2 chapters' final chapter (the campaign is complete when it is). */
+  readonly finalChapterId?: MissionId;
+  /**
+   * Content v2 closing scene: common lines, then the variant of the final choice made
+   * (first whose flag is set), over `art` — an existing campaign painting that does not
+   * imply an outcome the choices no longer support (never a v1 ending picture).
+   */
+  readonly epilogueV2?: { readonly lines: readonly DialogueLine[]; readonly variants?: readonly { readonly flag: string; readonly lines: readonly DialogueLine[] }[]; readonly art: AssetId };
+  /**
    * Extra closing lines chosen by a flag of the final mission (e.g. the last
    * choice in The Winter Oath). The first variant whose flag is set is played
    * after `epilogue`; story only, never a rule.
    */
   readonly epilogueVariants?: readonly { readonly flag: string; readonly lines: readonly DialogueLine[] }[];
+}
+
+/**
+ * A mission's briefing for the facts in hand (content v2): its own lines, then each
+ * variant whose `ifFlags` are all set and whose `unlessFlags` are all unset — so a
+ * chapter played in either order never names an investigation not yet made.
+ */
+export function missionBriefingLines(mission: Pick<MissionDefinition, 'briefing' | 'briefingVariants'>, flags: Readonly<Record<string, boolean | undefined>>): readonly DialogueLine[] {
+  const extra = (mission.briefingVariants ?? []).filter((v) => (v.ifFlags ?? []).every((f) => flags[f]) && !(v.unlessFlags ?? []).some((f) => flags[f]));
+  return [...mission.briefing, ...extra.flatMap((v) => v.lines)];
+}
+
+/** A content-v2 campaign's closing lines for the final chapter's flags (common lines, then the chosen variant). */
+export function campaignEpilogueV2Lines(camp: CampaignDefinition, flags: Readonly<Record<string, boolean | undefined>>): readonly DialogueLine[] {
+  const e = camp.epilogueV2;
+  if (!e) return [];
+  const variant = e.variants?.find((v) => flags[v.flag]);
+  return [...e.lines, ...(variant?.lines ?? [])];
 }
 
 /** The campaign's closing lines for the final mission's flags (common lines, then the matching variant). */

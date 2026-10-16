@@ -1,0 +1,537 @@
+/* Campaign expansion (2026-10-15): chronicle screens. */
+
+/* ============================================================
+   The chapter chronicle (components/chronicle.tsx): the graph on the
+   chronicle parchment and the selected chapter's summary. Used by the
+   campaign selection (Setup) and the mission result (DebriefDialog).
+   ============================================================ */
+.chronicle {
+  --chron-ink: #2b2014;
+  --chron-ink-soft: #4d3b25;
+  --chron-gold: #9c7534;
+  --chron-link: rgba(110, 78, 30, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.3rem 0 0.8rem;
+  min-width: 0;
+}
+
+/* The map: the painted chronicle parchment (text-free) behind live nodes. */
+.chron-map {
+  position: relative;
+  min-width: 0;
+  height: calc(var(--rows, 1) * 5.4rem + 2.4rem);
+  min-height: 8rem;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 3px;
+  background-color: #d9c49a;
+  background-position: center;
+  background-size: cover;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.35), inset 0 0 2.5rem rgba(60, 40, 12, 0.35), 0 4px 12px rgba(20, 12, 4, 0.35);
+  overflow: hidden;
+}
+.chron-map--compact {
+  height: calc(var(--rows, 1) * 4.9rem + 1.6rem);
+}
+.chron-map__links {
+  position: absolute;
+  inset: 1.2rem 0;
+  width: 100%;
+  height: calc(100% - 2.4rem);
+  pointer-events: none;
+  overflow: visible;
+}
+.chron-map--compact .chron-map__links {
+  inset: 0.8rem 0;
+  height: calc(100% - 1.6rem);
+}
+.chron-link {
+  fill: none;
+  stroke: var(--chron-link);
+  stroke-width: 2.5px;
+  stroke-dasharray: 7 6;
+}
+.chron-link.is-done {
+  stroke: #8a6224;
+  stroke-width: 3.5px;
+  stroke-dasharray: none;
+}
+.chron-map__nodes {
+  position: absolute;
+  inset: 1.2rem 0;
+}
+.chron-map--compact .chron-map__nodes {
+  inset: 0.8rem 0;
+}
+
+/* A chapter node: a numbered seal, the name and its state (icon and word). */
+.chron-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: min(12.5rem, calc(100% / var(--cols, 1) - 1.1rem));
+  min-height: 3.9rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.4rem;
+  text-align: left;
+  font: inherit;
+  color: var(--chron-ink);
+  background: linear-gradient(180deg, rgba(255, 249, 232, 0.96), rgba(239, 224, 190, 0.96));
+  border: 2px solid var(--chron-gold);
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(40, 26, 8, 0.35);
+  cursor: var(--cur-pointer, pointer);
+}
+.chron-map--compact .chron-node {
+  min-height: 3.4rem;
+  width: min(11.5rem, calc(100% / var(--cols, 1) - 0.8rem));
+}
+.chron-node:hover {
+  box-shadow: 0 0 0 2px rgba(194, 154, 82, 0.55), 0 2px 8px rgba(40, 26, 8, 0.4);
+}
+.chron-node:focus-visible {
+  outline: 3px solid var(--gui-focus, #fff1b0);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(43, 32, 20, 0.85);
+}
+.chron-node.is-selected {
+  border-width: 3px;
+  border-color: #5c3f12;
+  box-shadow: 0 0 0 3px rgba(245, 228, 183, 0.95), 0 3px 10px rgba(40, 26, 8, 0.5);
+}
+.chron-node__seal {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff3d6;
+  background: radial-gradient(circle at 50% 35%, #a5763a, #5c3f12);
+  border: 1px solid #3d2a0c;
+  box-shadow: 0 1px 3px rgba(60, 40, 12, 0.5);
+}
+.chron-node__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-width: 0;
+}
+.chron-node__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: max(0.82rem, 12px);
+  line-height: 1.18;
+  color: #3a2709;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.chron-node__branch {
+  position: absolute;
+  top: -0.7rem;
+  right: -0.6rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(30, 18, 4, 0.6));
+}
+
+/* States: each has its own icon and word; the borders differ in style too (solid, double, dashed). */
+.chron-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-ui);
+  font-size: max(0.72rem, 11px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: var(--chron-ink-soft);
+}
+.chron-state__icon {
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+}
+.chron-state.is-completed {
+  color: #2f5a22;
+}
+.chron-state.is-current,
+.chron-state.is-available {
+  color: #6a3f06;
+}
+.chron-state.is-practice {
+  color: #4a2f6a;
+}
+.chron-node.is-completed .chron-node__seal {
+  background: radial-gradient(circle at 50% 35%, #7c9a4e, #2f5a22);
+}
+.chron-node.is-current {
+  border-style: double;
+  border-width: 4px;
+}
+.chron-node.is-available {
+  border-color: #b5832d;
+  background: linear-gradient(180deg, rgba(255, 246, 215, 0.98), rgba(246, 223, 160, 0.96));
+}
+.chron-node.is-available .chron-node__seal {
+  background: radial-gradient(circle at 50% 35%, #e0a94a, #8a5a14);
+}
+.chron-node.is-locked {
+  border-style: dashed;
+  border-color: rgba(92, 63, 18, 0.7);
+  background: linear-gradient(180deg, rgba(236, 226, 203, 0.9), rgba(216, 202, 172, 0.9));
+}
+.chron-node.is-locked .chron-node__seal {
+  background: radial-gradient(circle at 50% 35%, #8f8371, #4b4338);
+}
+.chron-node.is-locked .chron-node__name {
+  color: #4b4338;
+}
+.chron-node.is-practice {
+  border-style: dotted;
+  border-width: 3px;
+  border-color: #4a2f6a;
+}
+
+/* Either order: the branch icon and its sentence under the map. */
+.chronicle__legend {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: var(--fe-note, max(0.9rem, 13px));
+  color: inherit;
+}
+.chronicle__legend .art-icon {
+  flex: none;
+  object-fit: contain;
+}
+
+/* The selected chapter. */
+.chron-summary {
+  display: grid;
+  grid-template-columns: minmax(10rem, 34%) minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+  padding: 0.7rem 0.8rem;
+  color: var(--chron-ink);
+  background: linear-gradient(180deg, rgba(255, 249, 232, 0.97), rgba(240, 226, 194, 0.97));
+  border: 1px solid rgba(110, 78, 30, 0.55);
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 225, 0.5);
+}
+.chron-summary--compact {
+  grid-template-columns: minmax(8rem, 26%) minmax(0, 1fr);
+  gap: 0.7rem;
+  padding: 0.55rem 0.65rem;
+}
+.chron-summary__art {
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(90, 62, 22, 0.85);
+  border-radius: 2px;
+  background: #2b2014;
+}
+.chron-summary__art > img,
+.chron-summary__noart {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.chron-summary.is-locked .chron-summary__art > img {
+  opacity: 0.55;
+}
+.chron-summary__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+.chron-summary__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.8rem;
+  font-family: var(--font-display);
+  font-size: max(0.8rem, 12px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chron-ink-soft);
+}
+.chron-summary__kicker .chron-state {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: max(0.8rem, 12px);
+}
+.chron-summary__either {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-family: var(--font-ui);
+}
+.chron-summary__either .art-icon {
+  object-fit: contain;
+}
+.chron-summary__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: max(1.15rem, 15px);
+  line-height: 1.2;
+  color: #3a2709;
+}
+.chron-summary__text,
+.chron-summary__locked,
+.chron-summary__task {
+  margin: 0;
+  font-size: var(--fe-body, max(0.98rem, 14px));
+  line-height: 1.4;
+  color: var(--chron-ink);
+}
+.chron-summary__locked {
+  font-style: italic;
+  color: var(--chron-ink-soft);
+}
+.chron-summary__line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.4rem 0.5rem;
+  background: rgba(255, 252, 240, 0.6);
+  border-left: 3px solid var(--chron-gold);
+}
+.chron-summary__line > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.chron-summary__speaker {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: max(0.82rem, 12px);
+  color: #4f3510;
+}
+.chron-summary__quote {
+  font-style: italic;
+  font-size: var(--fe-note, max(0.92rem, 13px));
+  line-height: 1.38;
+}
+.chron-summary__facts {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  font-size: var(--fe-note, max(0.9rem, 13px));
+}
+.chron-summary__facts > div {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.6rem;
+}
+.chron-summary__facts dt {
+  font-weight: 600;
+  color: var(--chron-ink-soft);
+}
+.chron-summary__facts dd {
+  margin: 0;
+  color: var(--chron-ink);
+}
+.chron-summary .manual-battle-notice {
+  color: var(--chron-ink);
+  font-size: var(--fe-note, max(0.9rem, 13px));
+}
+.chron-summary__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 900px) {
+  .chron-summary,
+  .chron-summary--compact {
+    grid-template-columns: 1fr;
+  }
+  .chron-summary__art {
+    max-width: 24rem;
+  }
+}
+
+:root[data-contrast='high'] .chron-node,
+:root[data-contrast='high'] .chron-summary {
+  background: #fff8e6;
+  color: #000;
+}
+:root[data-contrast='high'] .chron-link {
+  stroke: #000;
+}
+
+/* ============================================================
+   Mission result (DebriefDialog, content v2): what the chapter leaves
+   behind, the bounded carry-over and the next-chapter choice.
+   ============================================================ */
+.debrief-v2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.debrief-left {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 0.6rem 1.2rem;
+  align-items: start;
+}
+.debrief-left .ledger-list {
+  margin: 0;
+}
+.debrief-carry {
+  margin: 0;
+  display: grid;
+  gap: 0.2rem;
+  font-size: max(0.9rem, 13px);
+}
+.debrief-carry > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+}
+.debrief-carry dt {
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.debrief-carry dd {
+  margin: 0;
+}
+.debrief-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+.debrief-note .art-icon {
+  flex: none;
+  object-fit: contain;
+}
+.debrief-actions--choice {
+  flex-wrap: wrap;
+  row-gap: 0.55rem;
+}
+/* The pair of open chapters: a row of its own above Main Menu and the summary, the two side by side. */
+.debrief-choice {
+  flex: 1 0 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0.35rem 0.6rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(194, 154, 82, 0.35);
+}
+.debrief-choice .debrief-actions__label {
+  grid-column: 1 / -1;
+}
+.debrief-choice .btn {
+  min-width: 0;
+  width: 100%;
+  white-space: normal;
+  justify-content: center;
+  text-align: center;
+}
+.debrief-actions .btn .btn__art {
+  object-fit: contain;
+}
+.debrief-actions__label {
+  font-family: var(--font-display);
+  font-size: max(0.82rem, 12px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+@media (max-width: 900px) {
+  .debrief-left {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Continue and load: content version, chapter and branch of a save.
+   ============================================================ */
+.save-run {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.4rem;
+}
+.save-run__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.05rem 0.45rem;
+  font-size: max(0.72rem, 11px);
+  font-weight: 600;
+  line-height: 1.35;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 78, 30, 0.55);
+  background: rgba(255, 247, 226, 0.6);
+  color: #3a2709;
+  white-space: nowrap;
+}
+.save-run__tag.is-v1 {
+  border-style: dashed;
+}
+.save-run__tag.is-practice {
+  border-color: #4a2f6a;
+  background: rgba(232, 220, 246, 0.85);
+  color: #3a1f5a;
+}
+.save-run__tag.is-complete {
+  border-color: #2f5a22;
+  background: rgba(220, 238, 205, 0.85);
+  color: #1f3f15;
+}
+.save-run__progress {
+  font-size: max(0.82rem, 12px);
+}
+.main-menu .save-run__tag {
+  font-size: max(0.7rem, 11px);
+}
+
+/* Campaign selection with a chronicle: a smaller cover, so the chapter map shows without scrolling. */
+.fe-chronicle--v2 .fe-chronicle__lead {
+  grid-template-columns: minmax(13rem, 30%) 1fr;
+  margin-bottom: 0.3rem;
+}
+@media (max-width: 900px) {
+  .fe-chronicle--v2 .fe-chronicle__lead {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Glyph icons inside these screens: the size of the text beside them. */
+.chronicle .inline-icon,
+.chron-summary .inline-icon,
+.save-run .inline-icon,
+.debrief-note__icon {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.15em;
+}
+
+/* The Journal's Campaign tab: the run's chronicle above the carryover table (read-only). */
+.journal-chronicle {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}

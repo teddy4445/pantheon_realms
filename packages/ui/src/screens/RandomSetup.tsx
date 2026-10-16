@@ -19,6 +19,10 @@
  * (victory, starting wealth, turn order). Switching chapters never resets a
  * choice; Create World is available from every chapter with the reason when it
  * cannot start. The paintings are archetypes, not previews of the new map.
+ *
+ * Campaign expansion (2026-10-15): an optional "New neutral creatures" pool (off
+ * by default) — hiring sites of the six new neutrals, only where their habitat
+ * fits the map (`app/editorV2Sites.ts` passes content's table to the generator).
  */
 import { useRef, useState } from 'react';
 import {
@@ -39,6 +43,9 @@ import {
   type StartWealth,
   type TreasureLevel,
   type UnownedTowns,
+  SKIRMISH_NEUTRAL_SPECIES,
+  neutralSpeciesForBiome,
+  skirmishMapBiome,
 } from '@pr/session';
 import { RESOURCE_KEYS, RESOURCE_LABELS } from '@pr/rules';
 import { useStore } from '../app/context';
@@ -47,6 +54,7 @@ import { FrontendShell, IllustratedChoice, radioKeys } from '../components/front
 import { frontendArt } from '../assets/manifest';
 import { DifficultyPicker } from './Setup';
 import { SeatRow, patchSeat, patronsOf, type SeatDraft } from '../components/seats';
+import { NEUTRAL_SITE_TABLE } from '../app/editorV2Sites';
 
 const SEAT_COLORS = ['#3b73d9', '#c0392b', '#2e9e5b', '#c98a1b', '#8a4fc2', '#1f9fa6'];
 const MAX_SEATS = SKIRMISH_MAX_EMPIRES;
@@ -81,6 +89,8 @@ export function RandomSetupScreen() {
   const [portals, setPortals] = useState(true);
   const [climateRules, setClimateRules] = useState(true);
   const [unownedTowns, setUnownedTowns] = useState<UnownedTowns>('none');
+  // New neutral creatures (2026-10-15): off by default, so a seed gives exactly the map it gave before.
+  const [neutralCreatures, setNeutralCreatures] = useState(false);
   const [aiTemperaments, setAiTemperaments] = useState(true);
   const [rotating, setRotating] = useState(true);
   const [difficulty, setDifficulty] = useState('normal');
@@ -116,8 +126,11 @@ export function RandomSetupScreen() {
     aiTemperaments,
     ...(turnOrder ? { turnOrder } : {}),
     ...(unownedTowns !== 'none' ? { unownedTowns } : {}),
+    ...(neutralCreatures ? { neutralSites: NEUTRAL_SITE_TABLE } : {}),
   };
   const optionsKey = JSON.stringify(options);
+  const neutralNames = neutralSpeciesForBiome(catalog, NEUTRAL_SITE_TABLE, skirmishMapBiome(mapType)).map((id) => catalog.creatures[id]!.pluralName);
+  const neutralCount = SKIRMISH_NEUTRAL_SPECIES[size];
   // A generator error is shown until a setting changes.
   const [failure, setFailure] = useState<{ key: string; text: string } | null>(null);
   const error = failure && failure.key === optionsKey ? failure.text : null;
@@ -363,6 +376,17 @@ export function RandomSetupScreen() {
                     ? 'Every town on the map starts with an empire.'
                     : `${unownedTowns === 'both' ? 'Two towns' : 'A town'} in each empire’s outer lands start${unownedTowns === 'both' ? '' : 's'} without a lord or a hero, held by ${unownedTowns === 'both' ? 'their' : 'its'} own militia — ${unownedTowns === 'own' ? 'of the empire’s own pantheon' : unownedTowns === 'other' ? 'of another pantheon' : 'one of the empire’s own pantheon, one of another'}. Take ${unownedTowns === 'both' ? 'them' : 'it'} to build and recruit there.`}
                 </p>
+              </div>
+              <div className="setting-block" data-testid="random-neutrals">
+                <div className="setting-block__label">Neutral creatures</div>
+                <div className="row gap editor-v2-random">
+                  <Toggle checked={neutralCreatures} onChange={setNeutralCreatures} label="New neutral creatures" />
+                  <span className="small" data-testid="random-neutrals-text">
+                    New neutral creatures — hiring sites any pantheon may use, only where the creature’s habitat fits: {neutralCount === 1 ? 'one kind' : 'two kinds'} on a {SKIRMISH_SIZE_LABEL[size].toLowerCase()} map, a site in each empire’s lands.{' '}
+                    {neutralNames.length ? `${typeInfo.label}: ${neutralNames.length > 1 ? `${neutralNames.slice(0, -1).join(', ')} or ${neutralNames[neutralNames.length - 1]}` : neutralNames[0]}.` : `None lives in ${typeInfo.label} lands.`}
+                  </span>
+                </div>
+                <p className="small faint setting-block__details">Off by default: a map is then laid out exactly as without them.</p>
               </div>
                 </div>
               </>

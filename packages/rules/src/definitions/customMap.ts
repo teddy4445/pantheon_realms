@@ -9,7 +9,7 @@
  * and compiles them into an ordinary mission.
  */
 import type { AssetId } from '../ids';
-import type { KeyColor, MapTemplateDefinition } from './world';
+import type { KeyColor, MapTemplateDefinition, Terrain } from './world';
 
 export const CUSTOM_MAP_FORMAT = 'pantheon-realms-map';
 export const CUSTOM_MAP_VERSION = 1;
@@ -37,7 +37,39 @@ export type CustomSiteKind =
   | 'prison'
   | 'quest_hut'
   | 'watchtower'
-  | 'artifact';
+  | 'artifact'
+  // Added 2026-10-15 (campaign expansion handoff; optional, older documents never hold them):
+  // a hiring site of one of the six new neutrals, a sluice with its channel, a ferry
+  // landing (placed in pairs) and a one-use supply depot.
+  | 'neutral_dwelling'
+  | 'sluice'
+  | 'ferry'
+  | 'supply_depot';
+
+/** Ground a sluice channel switches between (never void). */
+export type CustomChannelTerrain = Exclude<Terrain, 'void'>;
+
+/**
+ * Where a neutral hiring site may stand (campaign expansion 2026-10-15). The data
+ * lives with the creatures in content (`NEUTRAL_V2_HABITATS`); the map editor, its
+ * checks and the random-map generator receive it as data.
+ */
+export interface NeutralHabitat {
+  /** One line for players. */
+  readonly habitat: string;
+  /** Settings it lives in (any one is enough). */
+  readonly tags: readonly string[];
+  /** Settings it never lives in. */
+  readonly forbidden: readonly string[];
+  /** Map biomes (`MapTemplateDefinition['biome']`) whose lands have its settings. */
+  readonly biomes: readonly string[];
+}
+
+/** The hiring-site table: creature → habitat, and creature → weekly stock of one site (`NEUTRAL_V2_SITE_STOCK`). */
+export interface NeutralSiteTable {
+  readonly habitats: Readonly<Record<string, NeutralHabitat>>;
+  readonly stock: Readonly<Record<string, number>>;
+}
 
 /** A neutral army: one stack, or several (`more`). */
 export interface CustomGuard {
@@ -87,9 +119,9 @@ export interface CustomSite {
   readonly pantheon?: string;
   readonly name?: string;
   readonly guard?: CustomGuard | null;
-  /** Portals: the twin portal's site ID. */
+  /** Portals and ferry landings: the twin's site ID. */
   readonly twinId?: string;
-  /** Spell shrines: the spell; skill trainers: the skill; creature camps: the creature. */
+  /** Spell shrines: the spell; skill trainers: the skill; creature camps and neutral hiring sites: the creature. */
   readonly spellId?: string;
   readonly skillId?: string;
   readonly creatureId?: string;
@@ -106,6 +138,13 @@ export interface CustomSite {
   readonly radius?: number;
   /** Optional text shown in the site panel instead of the default description. */
   readonly text?: string;
+  /** Sluices (2026-10-15): the stored cells whose ground the sluice switches. */
+  readonly channel?: readonly { readonly q: number; readonly r: number }[];
+  /** Sluices: the channel's ground while open (default marsh) and while closed (default water). */
+  readonly openTerrain?: CustomChannelTerrain;
+  readonly closedTerrain?: CustomChannelTerrain;
+  /** Sluices: open when the game starts (default closed). */
+  readonly startsOpen?: boolean;
 }
 
 export interface CustomPlayer {

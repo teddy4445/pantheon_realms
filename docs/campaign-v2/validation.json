@@ -1,0 +1,133 @@
+{
+  "acceptedNewImages": 31,
+  "reusedFiles": 150,
+  "missions": 37,
+  "legacyChaptersCovered": 45,
+  "creatures": 6,
+  "coreAnimationStatesPerCreature": 6,
+  "coreFrames": 144,
+  "flightFramesAccepted": 11,
+  "flightFramesExcluded": [
+    {
+      "state": "takeoff",
+      "sourceCell": [
+        0,
+        2
+      ],
+      "reason": "Visual inspection: upper wing is cut at the native canvas edge; omit from playback. Alpha-threshold detection alone did not detect this."
+    }
+  ],
+  "sourcePixelsUnmodified": true,
+  "nativeBackgroundResolution": [
+    {
+      "id": "campaignv2.background.campaign.chronicle",
+      "kind": "background",
+      "deliveryFile": "new-assets/background-campaign-chronicle.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/background-campaign-chronicle.png",
+      "proposedSourceFile": "assets-source/campaign-v2/background-campaign-chronicle.png",
+      "proposedRuntimeFile": "campaign-v2/background-campaign-chronicle.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "bytes": 2727239,
+      "sha256": "2550a01780b220e9d190b69fdd491c129f986bac3193811bf024e55c206b4b11"
+    },
+    {
+      "id": "campaignv2.background.neutral.recruitment",
+      "kind": "background",
+      "deliveryFile": "new-assets/background-neutral-recruitment.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/background-neutral-recruitment.png",
+      "proposedSourceFile": "assets-source/campaign-v2/background-neutral-recruitment.png",
+      "proposedRuntimeFile": "campaign-v2/background-neutral-recruitment.png",
+      "status": "generated-and-inspected",
+      "provenance": "Built-in image generator; native PNG copied unchanged. No code retouching, cropping or upscaling.",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "visibleBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "bytes": 2939320,
+      "sha256": "16222412c155331fc8471c837e1f8d68f5b7a01650433d7a1fc850b46091dab1"
+    }
+  ],
+  "gameCodeModified": false,
+  "notVerified": "Gameplay implementation, difficulty balance, in-game sprite scale and old-save compatibility remain Claude implementation acceptance tests.",
+  "sourceHashChecksPassed": 31,
+  "reusedHashChecksPassed": 150,
+  "playableFrameRegionsChecked": 155,
+  "chapterGraphAcyclic": true,
+  "legacyChapterMappingUnique": true,
+  "screenSpecs": 13,
+  "browserPreview": {
+    "pageErrors": [],
+    "desktopOverflow": false,
+    "greekAfterFirst": [
+      "Complete",
+      "Available",
+      "Available",
+      "Locked",
+      "Locked",
+      "Locked"
+    ],
+    "canvases": [
+      {
+        "id": "canvas-pegasus",
+        "frame": "0",
+        "sourceLoaded": true
+      },
+      {
+        "id": "canvas-root_runner",
+        "frame": "2",
+        "sourceLoaded": true
+      },
+      {
+        "id": "canvas-serpopard",
+        "frame": "2",
+        "sourceLoaded": true
+      },
+      {
+        "id": "canvas-baku",
+        "frame": "2",
+        "sourceLoaded": true
+      },
+      {
+        "id": "canvas-afanc",
+        "frame": "2",
+        "sourceLoaded": true
+      },
+      {
+        "id": "canvas-ahuitzotl",
+        "frame": "2",
+        "sourceLoaded": true
+      }
+    ],
+    "assetImages": {
+      "count": 31,
+      "broken": []
+    },
+    "mobileOverflow": false
+  },
+  "visualInspection": "Portraits/sites/icons/backgrounds inspected at generation; browser alpha composition and sampled idle/move/attack/death/flight poses inspected. One visibly clipped takeoff pose excluded. In-game scale and frame timing remain integration tests."
+}

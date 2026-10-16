@@ -8,7 +8,8 @@
  * Loading never regenerates a map; the stored logical map is authoritative.
  */
 import { canonicalJson, hashString, type ContentCatalog, type MatchState, type VersionBundle, scenarioMission } from '@pr/rules';
-import type { CampaignState } from '@pr/campaign';
+import { contentVersionOf, runMissionIds, type CampaignState } from '@pr/campaign';
+import type { SessionPresentation } from './journeys';
 
 export const SAVE_SCHEMA = 'pantheon-realms-save';
 export const SAVE_SCHEMA_VERSION = 1;
@@ -28,11 +29,24 @@ export interface SaveMetadata {
   readonly dayOfWeek: number;
   readonly rulesVersion: string;
   readonly contentVersion: string;
+  /**
+   * Campaign content version of the run (1: the legacy missions, 2: the chapter graph of
+   * the 2026-10-15 expansion); absent for skirmishes and in saves written before it.
+   */
+  readonly campaignContentVersion?: 1 | 2;
+  /** The run's current chapter (v2) or mission (v1) number, 1-based; absent outside campaigns. */
+  readonly chapterNumber?: number;
 }
 
 export interface SaveSnapshot {
   readonly match: MatchState;
   readonly campaign: CampaignState | null;
+  /**
+   * Optional, versioned presentation intent saved with the match (2026-10-14: each
+   * hero's planned journey). Absent in older saves and when there is none; never part
+   * of the rules. See journeys.ts.
+   */
+  readonly presentation?: SessionPresentation;
 }
 
 export interface SaveEnvelope {
@@ -60,6 +74,8 @@ export function buildMetadata(catalog: ContentCatalog, snapshot: SaveSnapshot): 
   const player = m.players[humanId];
   const hero = Object.values(m.heroes).find((h) => h.ownerId === humanId);
   const campaign = snapshot.campaign ? catalog.campaigns[snapshot.campaign.campaignId] : undefined;
+  const run = snapshot.campaign && campaign ? snapshot.campaign : null;
+  const chapterIndex = run ? runMissionIds(catalog, run).indexOf(run.currentMissionId) : -1;
   return {
     scenarioName: m.scenario.name,
     missionName: mission?.name ?? m.scenario.name,
@@ -73,6 +89,8 @@ export function buildMetadata(catalog: ContentCatalog, snapshot: SaveSnapshot): 
     dayOfWeek: 1 + ((m.day - 1) % 7),
     rulesVersion: m.versions.rulesVersion,
     contentVersion: m.versions.contentVersion,
+    ...(run ? { campaignContentVersion: contentVersionOf(run) } : {}),
+    ...(chapterIndex >= 0 ? { chapterNumber: chapterIndex + 1 } : {}),
   };
 }
 

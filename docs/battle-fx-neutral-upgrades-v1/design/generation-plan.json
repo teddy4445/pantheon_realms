@@ -1,0 +1,180 @@
+{
+  "fx": [
+    {
+      "id": "greek-javelin",
+      "base": "bronze-point wooden javelin, dark shaft, blue binding",
+      "up": "reinforced javelin with broader steel point and bronze bands",
+      "impact": "a tiny metallic star flash with a few short ochre dust strokes, not an explosion",
+      "upImpact": "a sharper small white-gold contact spark with 3 metal flecks",
+      "units": [
+        "peltast",
+        "veteran_peltast"
+      ]
+    },
+    {
+      "id": "arcane-bolt",
+      "base": "elongated pale-blue magical bolt with a warm gold core and short tapering ribbon",
+      "up": "brighter white-blue bolt with two thin gold ribbons around its core",
+      "impact": "small pale-blue and gold geometric starburst with a thin collapsing ring",
+      "upImpact": "layered white-gold geometric starburst with two very fine blue rings and sparse gold flecks",
+      "units": [
+        "temple_adept",
+        "temple_seer"
+      ]
+    },
+    {
+      "id": "cyclops-boulder",
+      "base": "round irregular grey-brown shaped boulder with readable facets, solid physical stone",
+      "up": "same grey boulder with restrained bronze-gold engraved seams, no lightning",
+      "impact": "compact grey stone chips bouncing outward with a small low ochre dust puff",
+      "upImpact": "compact stone chips and low dust with a very brief warm glow along two stone fragment seams, no lightning",
+      "units": [
+        "cyclops",
+        "stormforged_cyclops"
+      ]
+    },
+    {
+      "id": "frost-breath",
+      "base": "small pointed icy-blue breath comet with a short white mist tail and a few ice shards",
+      "up": "denser blue-white frost comet with a brighter angular ice core",
+      "impact": "small burst of pale ice crystals followed by a soft breath puff that dissipates",
+      "upImpact": "sharper blue-white ice crystal burst with a thin cold ripple and small fading mist",
+      "units": [
+        "norse_lindworm",
+        "norse_storm_lindworm"
+      ]
+    },
+    {
+      "id": "egyptian-javelin",
+      "base": "bronze-point javelin with a charcoal shaft and blue-gold bindings",
+      "up": "gold-banded javelin with a dark broad spearhead and blue binding",
+      "impact": "tiny bronze contact spark and sandy dust flecks",
+      "upImpact": "small warm gold point flash and 3 sand-colored contact flecks, no magic symbols",
+      "units": [
+        "egyptian_jackal_guardian",
+        "egyptian_anubian_warden"
+      ]
+    },
+    {
+      "id": "granite-block",
+      "base": "angular red-granite block, heavy roughly cuboid carved masonry stone",
+      "up": "worked red-granite block with small gold and lapis inlay bands on two faces",
+      "impact": "compact angular red-stone fragments and low ochre dust",
+      "upImpact": "red-stone debris with a few tiny gold and lapis glints and a low dust puff",
+      "units": [
+        "egyptian_desert_colossus",
+        "egyptian_divine_colossus"
+      ]
+    },
+    {
+      "id": "holy-fire",
+      "base": "slim gold-white holy fire comet, soft curled luminous flame ribbon, no orange smoke",
+      "up": "white-fire comet with pale gold core and two thin flowing white-gold wisps",
+      "impact": "small gold-white flame bloom with delicate curled wisps",
+      "upImpact": "white-gold petal-shaped flame wisps and a very fine halo dissolving into specks",
+      "units": [
+        "japanese_kirin",
+        "japanese_celestial_kirin"
+      ]
+    },
+    {
+      "id": "spectral-wail",
+      "base": "two translucent pale teal-silver sound crescents facing right, narrow directed wave pulse, no solid missile",
+      "up": "three silver spectral sound crescents facing right with restrained dark crimson edge wisps",
+      "impact": "small pale teal spectral ripple and curling vapor wisps",
+      "upImpact": "small silver spectral shreds with muted crimson edges, no blood and no skull",
+      "units": [
+        "celtic_banshee",
+        "celtic_battle_banshee"
+      ]
+    },
+    {
+      "id": "atlatl-dart",
+      "base": "long slim wooden atlatl dart with dark obsidian-like point and teal feather fletching, NOT a bow arrow, no launcher",
+      "up": "long slim atlatl dart with dark point, gold bands and golden feather fletching",
+      "impact": "tiny point flash, two dark chips and a little dust flick",
+      "upImpact": "small warm contact glint with sparse feather-like golden motes, no explosion",
+      "units": [
+        "mesoamerican_eagle_warrior_spirit",
+        "mesoamerican_solar_eagle_warrior"
+      ]
+    },
+    {
+      "id": "serpent-fire",
+      "base": "compact orange fireball with restrained turquoise rim and curling flame tail",
+      "up": "bright blue-gold flame projectile, white-hot tiny center and blue corona, curled tail",
+      "impact": "tight orange flame curl with turquoise sparks and short-lived embers",
+      "upImpact": "compact blue-gold flame bloom and falling tiny blue-gold embers",
+      "units": [
+        "mesoamerican_xiuhcoatl",
+        "mesoamerican_divine_xiuhcoatl"
+      ]
+    },
+    {
+      "id": "sling-ammunition",
+      "base": "small rounded grey sling stone, no sling or hand",
+      "up": "small elongated almond-shaped dull lead sling bullet, no weapon or hand",
+      "impact": "tiny grey chip and dust pop",
+      "upImpact": "tiny sharp silver contact flash with two metal-colored flecks, no fire",
+      "units": [
+        "hill_slinger",
+        "sling_master"
+      ]
+    },
+    {
+      "id": "siege",
+      "base": "slim wooden defensive arrow with steel tip and plain pale fletching, pointing right",
+      "up": "heavy round grey siege stone, physical natural rock",
+      "impact": "small sharp arrow contact flash with a few wood and metal flecks",
+      "upImpact": "compact masonry chip burst and low grey-brown dust puff suitable for wall impact",
+      "units": [
+        "siege_turret",
+        "catapult"
+      ]
+    }
+  ],
+  "upgrades": [
+    {
+      "id": "dawncrest_pegasus",
+      "baseId": "pegasus",
+      "name": "Dawncrest Pegasus",
+      "features": "A tall backward-swept fan of pale-gold feathers continues from the forehead over the poll into the mane, with broad tiered gold-tipped wing feathers. Keep ivory horse body and exactly two wings; NO horn, no saddle, no armor. The raised swept feather crest is the unmistakable upgrade silhouette.",
+      "habitat": "limestone high meadow at dawn"
+    },
+    {
+      "id": "crownroot_runner",
+      "baseId": "root_runner",
+      "name": "Crownroot Runner",
+      "features": "Large branching three-pronged russet ear tufts form a visible crown, a broad cream shoulder ruff, and an enormous upright fan-like bushy tail with three distinct pointed lobes in the fur silhouette. Keep four squirrel paws and one continuous fluffy tail, amber eyes; NO actual wooden antlers, no clothes or weapons.",
+      "habitat": "ancient mossy forest roots"
+    },
+    {
+      "id": "crested_serpopard",
+      "baseId": "serpopard",
+      "name": "Crested Serpopard",
+      "features": "A broad deep-turquoise and ochre fan-shaped mane/frill projects along the BACK of the long upper neck and behind the small leopard head; clearly larger neck silhouette than base. Keep long sinuous feline neck, tawny spotted leopard body, four feline paws and one tail. No snake second head, no extra legs, no armor.",
+      "habitat": "sandstone den at an arid river edge"
+    },
+    {
+      "id": "dreamtusk_baku",
+      "baseId": "baku",
+      "name": "Dreamtusk Baku",
+      "features": "Two large upward-curled ivory tusks flank the short curved trunk, with a high swept-back cream mane crest and deep indigo body. Four sturdy beast paws; keep the Baku species and gold fur streaks. The curled tusks are visible and separated from trunk in side view. No saddle, no armor, no floating spell effects.",
+      "habitat": "quiet misty cedar grove"
+    },
+    {
+      "id": "ridgeback_afanc",
+      "baseId": "afanc",
+      "name": "Ridgeback Afanc",
+      "features": "A tall stepped ridge of three broad overlapping slate-green bony plates rises above the back and shoulders, with cream side whiskers and a wider flat paddle tail. Keep low heavy moss-brown beaver/reptile body, four short webbed feet. Natural bone plates, NOT metal armor; no horns, no tusks, no extra limbs.",
+      "habitat": "freshwater reed pool and driftwood"
+    },
+    {
+      "id": "crownfin_ahuitzotl",
+      "baseId": "ahuitzotl",
+      "name": "Crownfin Ahuitzotl",
+      "features": "A large swept turquoise fin crest rises from the head to upper shoulders; the long tail ends in a larger unmistakable WEBBED FIVE-FINGER HAND with turquoise fin membranes. Keep sleek dark teal-black otter body, pale turquoise throat, exactly four webbed feet and ONE tail-hand. No humanoid body, no extra tail, no jewelry.",
+      "habitat": "tropical freshwater cenote"
+    }
+  ]
+}

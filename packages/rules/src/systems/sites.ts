@@ -300,6 +300,8 @@ export function quoteNeutralReaction(catalog: ContentCatalog, state: MatchState,
   } else {
     const site = siteAt(catalog, state, dest);
     if (!site || !site.def.guard || site.state.cleared || site.def.kind.type === 'town' || site.def.guard.commander) return none('Only neutral creatures can be scared off');
+    // A required story fight never disappears through a join or flee (campaign v2).
+    if (site.def.guard.required) return none('A story fight: they will not stand aside');
     stacks = (site.state.guard ?? site.def.guard.army).filter((s) => s.count > 0).map((s) => ({ creatureId: s.creatureId, count: s.count }));
     siteId = site.def.id;
   }

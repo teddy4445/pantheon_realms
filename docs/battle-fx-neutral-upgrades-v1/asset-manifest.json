@@ -1,0 +1,480 @@
+{
+  "schema": "pantheon-battle-fx-neutral-upgrades-delivery-1",
+  "assets": [
+    {
+      "id": "battlefx.fx-greek-javelin",
+      "deliveryFile": "new-assets/fx-greek-javelin.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-greek-javelin.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-greek-javelin.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-greek-javelin.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-greek-javelin.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.9555,
+      "bytes": 425089,
+      "sha256": "c77c800f93f6f2cb61dae3a1423c091e73a6fa4a246d959bd891a83cdc6598f3"
+    },
+    {
+      "id": "battlefx.fx-arcane-bolt",
+      "deliveryFile": "new-assets/fx-arcane-bolt.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-arcane-bolt.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-arcane-bolt.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-arcane-bolt.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-arcane-bolt.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        253
+      ],
+      "nearTransparentFraction": 0.7577,
+      "bytes": 1691286,
+      "sha256": "1a737fe630774107bb6da7dd084de353369535bae27c42780faf04638f0d1394"
+    },
+    {
+      "id": "battlefx.fx-cyclops-boulder",
+      "deliveryFile": "new-assets/fx-cyclops-boulder.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-cyclops-boulder.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-cyclops-boulder.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-cyclops-boulder.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-cyclops-boulder.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.7325,
+      "bytes": 1647413,
+      "sha256": "3eb63eb49b5cd0f73c51e4c6f6f4bbc81591d00dfddca79f8d6668e25380589c"
+    },
+    {
+      "id": "battlefx.fx-frost-breath",
+      "deliveryFile": "new-assets/fx-frost-breath.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-frost-breath.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-frost-breath.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-frost-breath.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-frost-breath.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.7458,
+      "bytes": 1619061,
+      "sha256": "31c2cee7563ca728c35900b066b392f05ca760df31fed691154189cf43db1967"
+    },
+    {
+      "id": "battlefx.fx-egyptian-javelin-v2",
+      "deliveryFile": "new-assets/fx-egyptian-javelin-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-egyptian-javelin-v2.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-egyptian-javelin-v2.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-egyptian-javelin-v2.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-egyptian-javelin-v2.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.8971,
+      "bytes": 802938,
+      "sha256": "97ae7f683d4aaa37181ea0f8f875b183273e2127588a917b70734568a37d07a8"
+    },
+    {
+      "id": "battlefx.fx-granite-block-v2",
+      "deliveryFile": "new-assets/fx-granite-block-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-granite-block-v2.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-granite-block-v2.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-granite-block-v2.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-granite-block-v2.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.7237,
+      "bytes": 1465371,
+      "sha256": "fdb7e08de55540554bba96f16ceeaa97dd01cc97d4f42343b2da3585a11f6cfa"
+    },
+    {
+      "id": "battlefx.fx-holy-fire",
+      "deliveryFile": "new-assets/fx-holy-fire.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-holy-fire.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-holy-fire.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-holy-fire.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-holy-fire.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        253
+      ],
+      "nearTransparentFraction": 0.6572,
+      "bytes": 2124460,
+      "sha256": "a2d319a6a80f2c6c02ab7fde0c92b7e68aa0867f83ab1f42d3c6c681979aac45"
+    },
+    {
+      "id": "battlefx.fx-spectral-wail",
+      "deliveryFile": "new-assets/fx-spectral-wail.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-spectral-wail.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-spectral-wail.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-spectral-wail.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-spectral-wail.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "nearTransparentFraction": 0.8003,
+      "bytes": 1594093,
+      "sha256": "49053eca66d08539c37b17c0c338f1b1d19ea695b3d4023fa4e7528d9fd67d74"
+    },
+    {
+      "id": "battlefx.fx-atlatl-dart",
+      "deliveryFile": "new-assets/fx-atlatl-dart.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-atlatl-dart.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-atlatl-dart.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-atlatl-dart.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-atlatl-dart.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.9062,
+      "bytes": 825930,
+      "sha256": "368dbd713586ff068a12db4b01b344837852a581b25c5e516f3942c71333230f"
+    },
+    {
+      "id": "battlefx.fx-serpent-fire",
+      "deliveryFile": "new-assets/fx-serpent-fire.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-serpent-fire.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-serpent-fire.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-serpent-fire.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-serpent-fire.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        253
+      ],
+      "nearTransparentFraction": 0.729,
+      "bytes": 1619680,
+      "sha256": "2fc8d706550b7e561af434f6e73ca513c8bed629d82cf4067073e2f8252211fb"
+    },
+    {
+      "id": "battlefx.fx-sling-ammunition",
+      "deliveryFile": "new-assets/fx-sling-ammunition.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-sling-ammunition.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-sling-ammunition.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-sling-ammunition.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-sling-ammunition.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1266,
+      "height": 1242,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.8858,
+      "bytes": 916285,
+      "sha256": "b0461c920363dc85501292c047faf79b73376b1652b68411e33befcdbc98a3ed"
+    },
+    {
+      "id": "battlefx.fx-siege",
+      "deliveryFile": "new-assets/fx-siege.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/fx-siege.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/fx-siege.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/fx-siege.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/fx-siege.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.8263,
+      "bytes": 1284658,
+      "sha256": "a55e4c2aa48c50c62a5b718262bdabcbba745af547cc91db061821a922deae7f"
+    },
+    {
+      "id": "battlefx.portrait-dawncrest_pegasus",
+      "deliveryFile": "new-assets/portrait-dawncrest_pegasus.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/portrait-dawncrest_pegasus.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/portrait-dawncrest_pegasus.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/portrait-dawncrest_pegasus.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/portrait-dawncrest_pegasus.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "nearTransparentFraction": 0.0,
+      "bytes": 2936608,
+      "sha256": "383b18670173a963f4cd0000d98822d12e85ed28beccdb4e9478237b9902a4a2"
+    },
+    {
+      "id": "battlefx.portrait-crownroot_runner",
+      "deliveryFile": "new-assets/portrait-crownroot_runner.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/portrait-crownroot_runner.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/portrait-crownroot_runner.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/portrait-crownroot_runner.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/portrait-crownroot_runner.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "nearTransparentFraction": 0.0,
+      "bytes": 3096590,
+      "sha256": "a9c6c566eb4aea91e77378540c16a40b0f49f75913ed9bb28a207f2ff1d9cd38"
+    },
+    {
+      "id": "battlefx.portrait-crested_serpopard",
+      "deliveryFile": "new-assets/portrait-crested_serpopard.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/portrait-crested_serpopard.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/portrait-crested_serpopard.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/portrait-crested_serpopard.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/portrait-crested_serpopard.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "nearTransparentFraction": 0.0,
+      "bytes": 2675309,
+      "sha256": "15ebdeb10a2f16003bdfd0da8d6b6ebf0fc4a1798c4059202c950196dcd20bcf"
+    },
+    {
+      "id": "battlefx.portrait-dreamtusk_baku",
+      "deliveryFile": "new-assets/portrait-dreamtusk_baku.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/portrait-dreamtusk_baku.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/portrait-dreamtusk_baku.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/portrait-dreamtusk_baku.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/portrait-dreamtusk_baku.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "nearTransparentFraction": 0.0,
+      "bytes": 2998938,
+      "sha256": "b36b21a8d8437364d660ecde810b6446620ee98b8fb0393f41b4c63893bb8a68"
+    },
+    {
+      "id": "battlefx.portrait-ridgeback_afanc",
+      "deliveryFile": "new-assets/portrait-ridgeback_afanc.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/portrait-ridgeback_afanc.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/portrait-ridgeback_afanc.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/portrait-ridgeback_afanc.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/portrait-ridgeback_afanc.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "nearTransparentFraction": 0.0,
+      "bytes": 3102331,
+      "sha256": "392e03b62f502cf45703b602540f69f10132759a222b4612a57f64bd49e7e20a"
+    },
+    {
+      "id": "battlefx.portrait-crownfin_ahuitzotl",
+      "deliveryFile": "new-assets/portrait-crownfin_ahuitzotl.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/portrait-crownfin_ahuitzotl.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/portrait-crownfin_ahuitzotl.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/portrait-crownfin_ahuitzotl.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/portrait-crownfin_ahuitzotl.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "nearTransparentFraction": 0.0,
+      "bytes": 3074488,
+      "sha256": "48bca2445caad10c037afd4b277b5e4830cc21b476d845b678d6676581f50b85"
+    },
+    {
+      "id": "battlefx.atlas-dawncrest_pegasus",
+      "deliveryFile": "new-assets/atlas-dawncrest_pegasus.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/atlas-dawncrest_pegasus.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/atlas-dawncrest_pegasus.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/atlas-dawncrest_pegasus.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/atlas-dawncrest_pegasus.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "nearTransparentFraction": 0.5015,
+      "bytes": 2895984,
+      "sha256": "3dc4767aee3a374833f0ebd452a2f9c89b612fac23417ac469caa06b96ef7779"
+    },
+    {
+      "id": "battlefx.atlas-crownroot_runner",
+      "deliveryFile": "new-assets/atlas-crownroot_runner.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/atlas-crownroot_runner.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/atlas-crownroot_runner.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/atlas-crownroot_runner.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/atlas-crownroot_runner.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "nearTransparentFraction": 0.5566,
+      "bytes": 2753445,
+      "sha256": "2b6be092708796debf35eb9bbe02d873d7c20dcbb844f5d0c009fadc2b670454"
+    },
+    {
+      "id": "battlefx.atlas-crested_serpopard",
+      "deliveryFile": "new-assets/atlas-crested_serpopard.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/atlas-crested_serpopard.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/atlas-crested_serpopard.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/atlas-crested_serpopard.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/atlas-crested_serpopard.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "nearTransparentFraction": 0.7053,
+      "bytes": 2414500,
+      "sha256": "1964321f954ed3101e707098ea6106f9a12d54f673b599d8d88c44919b5e4a3e"
+    },
+    {
+      "id": "battlefx.atlas-dreamtusk_baku",
+      "deliveryFile": "new-assets/atlas-dreamtusk_baku.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/atlas-dreamtusk_baku.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/atlas-dreamtusk_baku.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/atlas-dreamtusk_baku.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/atlas-dreamtusk_baku.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "nearTransparentFraction": 0.6088,
+      "bytes": 2642864,
+      "sha256": "36bd2d1a00817fd81958b03817d7a16e3c405c776cf753e770a7f39c34dcde60"
+    },
+    {
+      "id": "battlefx.atlas-ridgeback_afanc",
+      "deliveryFile": "new-assets/atlas-ridgeback_afanc.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/atlas-ridgeback_afanc.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/atlas-ridgeback_afanc.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/atlas-ridgeback_afanc.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/atlas-ridgeback_afanc.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "nearTransparentFraction": 0.668,
+      "bytes": 2484832,
+      "sha256": "2bc9839465a3e774251b692ac830a96f102913397577d2d613ca2f62eca1fec2"
+    },
+    {
+      "id": "battlefx.atlas-crownfin_ahuitzotl-v2",
+      "deliveryFile": "new-assets/atlas-crownfin_ahuitzotl-v2.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/atlas-crownfin_ahuitzotl-v2.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/atlas-crownfin_ahuitzotl-v2.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/atlas-crownfin_ahuitzotl-v2.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/atlas-crownfin_ahuitzotl-v2.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "nearTransparentFraction": 0.6621,
+      "bytes": 2506109,
+      "sha256": "81e9e9b5f8a11b22511a3821e2fabef0fafa609dbf2c2f6db404a2eea0bbbf90"
+    },
+    {
+      "id": "battlefx.atlas-dawncrest_pegasus-flight",
+      "deliveryFile": "new-assets/atlas-dawncrest_pegasus-flight.png",
+      "sourceAbsolute": "C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets/atlas-dawncrest_pegasus-flight.png",
+      "targetSourceAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1/atlas-dawncrest_pegasus-flight.png",
+      "targetRuntimeAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1/atlas-dawncrest_pegasus-flight.png",
+      "runtimeFile": "battle-fx-neutral-upgrades-v1/atlas-dawncrest_pegasus-flight.png",
+      "provenance": "Built-in image generator. Native PNG unchanged; no pixel editing or upscaling.",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "nearTransparentFraction": 0.5878,
+      "bytes": 2180283,
+      "sha256": "2fe41036be1fde9991348caf386c4a97ea7e4f552568aab0040e1a6daddc2768"
+    }
+  ]
+}

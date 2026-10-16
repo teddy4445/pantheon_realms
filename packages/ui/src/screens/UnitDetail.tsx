@@ -22,6 +22,7 @@
  */
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { creatureSprites, requiredAnimations } from '@pr/presentation/core';
+import { familyForms } from '@pr/rules';
 import type { UnitViewerController, ViewerSpriteStatus } from '@pr/presentation';
 import { useStore } from '../app/context';
 import { Button, Panel, SectionTitle, Toggle } from '../components/kit';
@@ -35,6 +36,7 @@ import { Icon, type IconName } from '../assets/icons';
 import { guiThemeFor, NEUTRAL_THEME, type FrameTheme } from '../assets/guiArt';
 import { adventureKitArt } from '../assets/manifest';
 import { adventureScene } from '../components/adventure';
+import { neutralFacts } from '../app/neutralCodex';
 
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 
@@ -136,6 +138,8 @@ export function UnitDetailScreen() {
   const pantheon = def.pantheonId ? catalog.pantheons[def.pantheonId] : undefined;
   const frameTheme: FrameTheme = pantheon ? guiThemeFor(pantheon.id) : NEUTRAL_THEME;
   const stats = def.stats;
+  // An expansion neutral (campaign expansion 2026-10-15): its forms, the family's habitat and where it is hired (content data).
+  const neutral = neutralFacts(catalog, def.id);
   const facts: { icon: IconName; label: string; value: ReactNode }[] = stats
     ? [
         { icon: 'attack', label: 'Attack', value: stats.attack },
@@ -143,7 +147,7 @@ export function UnitDetailScreen() {
         { icon: 'damage', label: 'Damage', value: `${stats.damageMin}–${stats.damageMax}` },
         { icon: 'hp', label: 'Health', value: stats.hp },
         { icon: 'speed', label: 'Speed', value: stats.speed },
-        { icon: 'growth', label: 'Growth', value: fam ? `${fam.baseGrowth} / week` : '—' },
+        neutral ? { icon: 'growth', label: 'Site stock', value: fam ? `${fam.baseGrowth} / week` : '—' } : { icon: 'growth', label: 'Growth', value: fam ? `${fam.baseGrowth} / week` : '—' },
         ...(stats.shots > 0 ? [{ icon: 'shots' as IconName, label: 'Shots', value: stats.shots }] : []),
         ...(stats.shots > 0 && stats.range ? [{ icon: 'range' as IconName, label: 'Range', value: `${stats.range} hexes` }] : []),
       ]
@@ -178,8 +182,8 @@ export function UnitDetailScreen() {
             <p className="unit-title__summary">{def.summary}</p>
           </header>
           {fam ? (
-            <div className="unit-forms" role="group" aria-label="Forms">
-              {[fam.baseCreatureId, fam.upgradedCreatureId].map((cid, i) => {
+            <div className={`unit-forms ${neutral?.singleForm ? 'ncx-forms--single' : ''}`} role="group" aria-label="Forms">
+              {familyForms(fam).map((cid, i, forms) => {
                 const c = catalog.creatures[cid];
                 if (!c) return null;
                 const here = cid === def.id;
@@ -196,7 +200,7 @@ export function UnitDetailScreen() {
                       <CreaturePortrait catalog={catalog} creatureId={cid} size="4.6rem" showPlaceholderTag={here} />
                     </span>
                     <span className="unit-form__text">
-                      <span className="unit-form__kind">{i === 0 ? 'Base form' : 'Upgraded form'}</span>
+                      <span className="unit-form__kind">{forms.length === 1 ? 'Single form' : i === 0 ? 'Base form' : 'Upgraded form'}</span>
                       <span className="unit-form__name">{c.name}</span>
                     </span>
                     {here ? <Icon name="check" className="unit-form__check" /> : null}
@@ -224,6 +228,29 @@ export function UnitDetailScreen() {
           <div className="unit-facts">
             <span className="unit-facts__label">Cost</span> {def.cost ? <CostList cost={def.cost} /> : <span className="dim">—</span>}
           </div>
+          {neutral ? (
+            <div className="ncx-unit" data-testid="unit-neutral">
+              {neutral.singleForm ? (
+                <p className="ncx-unit__row" data-testid="unit-single-form">
+                  <span className="unit-facts__label">Single form</span> {def.pluralName} have one form only: there is no upgraded form to recruit, train into or compare.
+                </p>
+              ) : neutral.forms ? (
+                <p className="ncx-unit__row" data-testid="unit-forms-note">
+                  <span className="unit-facts__label">Forms</span> {neutral.forms}
+                </p>
+              ) : null}
+              {neutral.habitat ? (
+                <p className="ncx-unit__row" data-testid="unit-habitat">
+                  <span className="unit-facts__label">Habitat</span> {neutral.habitat}
+                </p>
+              ) : null}
+              <div className="ncx-unit__row" data-testid="unit-hiring">
+                {/* Campaign names and chapter counts only: chapter and site names would reveal the story ahead. */}
+                <span className="unit-facts__label">Hiring</span> {neutral.hiring.text}
+                {neutral.hiring.places.some((p) => p.pact) ? <span className="dim"> Some sites hire only after a pact.</span> : null}
+              </div>
+            </div>
+          ) : null}
           <SectionTitle>Abilities</SectionTitle>
           {def.abilityIds.length === 0 ? (
             <p className="dim">No special abilities.</p>

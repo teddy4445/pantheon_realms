@@ -7,3 +7,4 @@ export { validateCatalog, validateGeneratedMission, VALIDATORS, type ValidationI
 export { THREE_BEACONS } from './campaign/threeBeacons';
 export { WINTER_OATH } from './campaign/winterOath';
 export { buildGodPerks, godPerksOf, PERK_THEMES, DOMAIN_THEME } from './common/godPerks';
+export { NEUTRAL_V2_HABITATS, NEUTRAL_V2_SITE_STOCK } from './common/neutralsV2';

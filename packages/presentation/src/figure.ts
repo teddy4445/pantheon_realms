@@ -35,6 +35,8 @@ interface Playing {
   readonly frames: Texture[];
   readonly loop: boolean;
   time: number;
+  /** Frame on screen (frame-region strips set the anchor and scale per frame). */
+  index: number;
 }
 
 export class SpriteFigure {
@@ -152,6 +154,8 @@ export class SpriteFigure {
   get height(): number {
     const p = this.playing;
     if (!p) return this.baseScale * (this.set?.pixelsPerHex ?? 100);
+    const r = p.strip.regions?.[p.index];
+    if (r) return r.anchor[1] * r.sourceScale * this.baseScale;
     return p.strip.frameHeight * p.strip.anchor[1] * this.baseScale;
   }
 
@@ -162,7 +166,7 @@ export class SpriteFigure {
     const frames = stripFrames(strip);
     if (!frames || frames.length === 0) return null;
     const keep = this.playing && this.playing.strip === strip ? this.playing.time : 0;
-    const p: Playing = { requested: name, resolved, strip, frames, loop, time: keep };
+    const p: Playing = { requested: name, resolved, strip, frames, loop, time: keep, index: -1 };
     this.playing = p;
     this.sprite.anchor.set(strip.anchor[0], strip.anchor[1]);
     // Each strip carries its own scale and tint when it differs from its set's (mixed final/placeholder sets).
@@ -181,6 +185,15 @@ export class SpriteFigure {
     const i = p.loop ? ((index % n) + n) % n : Math.max(0, Math.min(n - 1, index));
     const tex = p.frames[i]!;
     if (this.sprite.texture !== tex) this.sprite.texture = tex;
+    const r = p.strip.regions?.[i];
+    if (r && p.index !== i) {
+      // Frame-region atlas: this pose's own ground point on the figure's origin, at one
+      // constant scale for every pose (no per-frame fitting, so no size jumps). The
+      // facing mirror sits on the pose container, around that same origin.
+      this.sprite.anchor.set(r.anchor[0] / Math.max(1, r.rect[2]), r.anchor[1] / Math.max(1, r.rect[3]));
+      this.sprite.scale.set(this.baseScale * r.sourceScale);
+    }
+    p.index = i;
   }
 
   /** Loop an animation (idle, move, fly, walk, victory) until told otherwise. */

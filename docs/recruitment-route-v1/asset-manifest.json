@@ -1,0 +1,241 @@
+{
+  "schema": "pantheon-realms-recruitment-route-kit-1",
+  "status": "handoff, not installed",
+  "generator": "built-in image generator; native unretouched PNG",
+  "assets": [
+    {
+      "id": "recruitroute.icon-recruit-all",
+      "file": "new-assets/icon-recruit-all.png",
+      "proposedRuntimeFile": "recruitment-route-v1/icon-recruit-all.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        86,
+        45,
+        1168,
+        1113
+      ],
+      "visibleBoundsNormalized": [
+        0.068581,
+        0.035885,
+        0.931419,
+        0.88756
+      ],
+      "borderMaxAlpha": 1,
+      "sha256": "fa41b4e80bebb7f8ad8059b0998852d2fe824bb8411361caf5d105a89f2e3579"
+    },
+    {
+      "id": "recruitroute.icon-resume-route",
+      "file": "new-assets/icon-resume-route.png",
+      "proposedRuntimeFile": "recruitment-route-v1/icon-resume-route.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        144,
+        162,
+        1199,
+        1058
+      ],
+      "visibleBoundsNormalized": [
+        0.114833,
+        0.129187,
+        0.95614,
+        0.8437
+      ],
+      "borderMaxAlpha": 1,
+      "sha256": "93f224190b6130810d552d1ce88c78fae09499350bd3a688ab00b772ad870297"
+    },
+    {
+      "id": "recruitroute.icon-train-troops",
+      "file": "new-assets/icon-train-troops.png",
+      "proposedRuntimeFile": "recruitment-route-v1/icon-train-troops.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        73,
+        144,
+        1182,
+        1126
+      ],
+      "visibleBoundsNormalized": [
+        0.058214,
+        0.114833,
+        0.942584,
+        0.897927
+      ],
+      "borderMaxAlpha": 1,
+      "sha256": "31f02530e65fb827751bf683938cd10f629cf931de22495ac82a55b73e510be4"
+    },
+    {
+      "id": "recruitroute.route-chevron-current",
+      "file": "new-assets/route-chevron-current.png",
+      "proposedRuntimeFile": "recruitment-route-v1/route-chevron-current.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        160,
+        273,
+        1094,
+        990
+      ],
+      "visibleBoundsNormalized": [
+        0.127592,
+        0.217703,
+        0.872408,
+        0.789474
+      ],
+      "borderMaxAlpha": 1,
+      "sha256": "9c5efeed3223a0c589bf13a8a1ba3d69a177a652e8850781b1a3ce4af1129555"
+    },
+    {
+      "id": "recruitroute.route-chevron-later",
+      "file": "new-assets/route-chevron-later.png",
+      "proposedRuntimeFile": "recruitment-route-v1/route-chevron-later.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        248,
+        340,
+        1005,
+        920
+      ],
+      "visibleBoundsNormalized": [
+        0.197767,
+        0.271132,
+        0.801435,
+        0.733652
+      ],
+      "borderMaxAlpha": 1,
+      "sha256": "40275b65121b22f3bf8726ceb6c7edbbb590750d07ba0b1dd3ba3ea66cc45295"
+    },
+    {
+      "id": "recruitroute.route-day-badge",
+      "file": "new-assets/route-day-badge.png",
+      "proposedRuntimeFile": "recruitment-route-v1/route-day-badge.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        94,
+        152,
+        1159,
+        1088
+      ],
+      "visibleBoundsNormalized": [
+        0.07496,
+        0.121212,
+        0.924242,
+        0.867624
+      ],
+      "borderMaxAlpha": 1,
+      "sha256": "29d23d3d5e0b04cf56b832a6579b3736dfc0baf212cda74434fb539d14aa56f9"
+    },
+    {
+      "id": "recruitroute.route-destination",
+      "file": "new-assets/route-destination.png",
+      "proposedRuntimeFile": "recruitment-route-v1/route-destination.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        52,
+        68,
+        1202,
+        1173
+      ],
+      "visibleBoundsNormalized": [
+        0.041467,
+        0.054226,
+        0.958533,
+        0.935407
+      ],
+      "borderMaxAlpha": 1,
+      "sha256": "0abac6ad377048fa9ed4fae7159975cc025c64c017fb61969d453f33b5bb8780"
+    },
+    {
+      "id": "recruitroute.route-hourglass",
+      "file": "new-assets/route-hourglass.png",
+      "proposedRuntimeFile": "recruitment-route-v1/route-hourglass.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        373,
+        190,
+        881,
+        1033
+      ],
+      "visibleBoundsNormalized": [
+        0.297448,
+        0.151515,
+        0.702552,
+        0.823764
+      ],
+      "borderMaxAlpha": 0,
+      "sha256": "b4f76d74f32eafa36f1d783445f2568f2f0b361661989e0f42a946c36bace8fc"
+    },
+    {
+      "id": "recruitroute.route-selection-ring",
+      "file": "new-assets/route-selection-ring.png",
+      "proposedRuntimeFile": "recruitment-route-v1/route-selection-ring.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "visibleBoundsPx": [
+        82,
+        87,
+        1169,
+        1155
+      ],
+      "visibleBoundsNormalized": [
+        0.065391,
+        0.069378,
+        0.932217,
+        0.921053
+      ],
+      "borderMaxAlpha": 0,
+      "sha256": "0ccf67c9d298539ec6974ecaa2e0b1882897d322ece657f9a5e9d5aba4adc3f6"
+    }
+  ]
+}

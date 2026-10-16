@@ -86,7 +86,7 @@
           "assetId": "icon.stat.attack",
           "name": "attack",
           "group": "Interface",
-          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Dialogs (briefing, debrief, pause, save/load, encounters); Encyclopedia; Hero screen; components/godIcons.tsx",
+          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Creature detail; Dialogs (briefing, debrief, pause, save/load, encounters); Encyclopedia; Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.attack.png",
@@ -125,7 +125,7 @@
           "assetId": "icon.stat.defense",
           "name": "defense",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Encyclopedia; Hero screen",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Creature detail; Encyclopedia; Hero screen",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.defense.png",
@@ -138,7 +138,7 @@
           "assetId": "icon.stat.hp",
           "name": "hp",
           "group": "Interface",
-          "where": "Encyclopedia",
+          "where": "Battle; Creature detail; Encyclopedia",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.hp.png",
@@ -151,7 +151,7 @@
           "assetId": "icon.stat.damage",
           "name": "damage",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Battle; Encyclopedia",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Battle; Creature detail; Encyclopedia",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.damage.png",
@@ -164,7 +164,7 @@
           "assetId": "icon.stat.speed",
           "name": "speed",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Encyclopedia",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Artifact fallback glyph (hero screen, merchant, encyclopedia); Battle; Creature detail; Encyclopedia",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.speed.png",
@@ -177,7 +177,7 @@
           "assetId": "icon.stat.shots",
           "name": "shots",
           "group": "Interface",
-          "where": "Battle",
+          "where": "Battle; Creature detail",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.shots.png",
@@ -190,7 +190,7 @@
           "assetId": "icon.stat.range",
           "name": "range",
           "group": "Interface",
-          "where": "Battle",
+          "where": "Battle; Creature detail",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.range.png",
@@ -203,7 +203,7 @@
           "assetId": "icon.ui.growth",
           "name": "growth",
           "group": "Interface",
-          "where": "Map dialogs (camps, events, sites); Town",
+          "where": "Creature detail; Map dialogs (camps, events, sites); Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.growth.png",
@@ -216,7 +216,7 @@
           "assetId": "icon.stat.movement",
           "name": "movement",
           "group": "Interface",
-          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; components/godIcons.tsx",
+          "where": "Adventure map; Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.movement.png",
@@ -229,7 +229,7 @@
           "assetId": "icon.stat.mana",
           "name": "mana",
           "group": "Interface",
-          "where": "Hero screen; components/godIcons.tsx",
+          "where": "Adventure map; Hero screen; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.mana.png",
@@ -294,7 +294,7 @@
           "assetId": "icon.stat.xp",
           "name": "xp",
           "group": "Interface",
-          "where": "Hero screen; Town",
+          "where": "Hero screen; Map dialogs (camps, events, sites); Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.stat.xp.png",
@@ -320,7 +320,7 @@
           "assetId": "icon.world.town",
           "name": "town",
           "group": "Interface",
-          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Town; components/godIcons.tsx",
+          "where": "Adventure map; Recruitment; Town; components/godIcons.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.world.town.png",
@@ -437,7 +437,7 @@
           "assetId": "icon.ui.back",
           "name": "back",
           "group": "Interface",
-          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); New game / setup; Results / high scores; Shared game widgets (resource bar, costs, stat blocks); screens/MapSetup.tsx",
+          "where": "Dialogs (briefing, debrief, pause, save/load, encounters); New game / setup; Random map setup; Results / high scores; Settings; Shared game widgets (resource bar, costs, stat blocks); screens/MapSetup.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.back.png",
@@ -450,7 +450,7 @@
           "assetId": "icon.ui.close",
           "name": "close",
           "group": "Interface",
-          "where": "Adventure map; Battle; Journal; Shared controls (every screen); Town; screens/MapEditor.tsx",
+          "where": "Adventure map; Battle; Encyclopedia; Journal; Shared controls (every screen); Town; components/adventure.tsx; screens/MapEditor.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.close.png",
@@ -528,7 +528,7 @@
           "assetId": "icon.menu.campaign",
           "name": "campaign",
           "group": "Interface",
-          "where": "New game / setup",
+          "where": "(not shown on any screen yet)",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.menu.campaign.png",
@@ -541,7 +541,7 @@
           "assetId": "icon.menu.skirmish",
           "name": "skirmish",
           "group": "Interface",
-          "where": "New game / setup",
+          "where": "(not shown on any screen yet)",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.menu.skirmish.png",
@@ -632,7 +632,7 @@
           "assetId": "icon.ui.auto",
           "name": "auto",
           "group": "Interface",
-          "where": "Battle",
+          "where": "Battle; Dialogs (briefing, debrief, pause, save/load, encounters); dialogs/QuickBattle.tsx; screens/MapEditor.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.auto.png",
@@ -671,7 +671,7 @@
           "assetId": "icon.ui.check",
           "name": "check",
           "group": "Interface",
-          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Journal",
+          "where": "Adventure map; Creature detail; Dialogs (briefing, debrief, pause, save/load, encounters); Journal",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.check.png",
@@ -697,7 +697,7 @@
           "assetId": "icon.ui.swap",
           "name": "swap",
           "group": "Interface",
-          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Hero screen; Town",
+          "where": "Ability badge stand-in (army slots, creature details, encyclopedia) until the ability icon exists; Battle; Dialogs (briefing, debrief, pause, save/load, encounters); Hero screen; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.swap.png",
@@ -710,7 +710,7 @@
           "assetId": "icon.ui.flag",
           "name": "flag",
           "group": "Interface",
-          "where": "Adventure map; Journal",
+          "where": "Adventure map; Dialogs (briefing, debrief, pause, save/load, encounters); Journal",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.flag.png",
@@ -736,7 +736,7 @@
           "assetId": "icon.ui.map",
           "name": "map",
           "group": "Interface",
-          "where": "New game / setup; components/climate.tsx; screens/MapEditor.tsx; screens/MapSetup.tsx",
+          "where": "components/climate.tsx; screens/MapEditor.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.map.png",
@@ -762,7 +762,7 @@
           "assetId": "icon.ui.star",
           "name": "star",
           "group": "Interface",
-          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Journal; Results / high scores; Shared art widgets; components/godIcons.tsx; screens/MapEditor.tsx",
+          "where": "Artifact fallback glyph (hero screen, merchant, encyclopedia); Hero screen; Journal; Main menu; Results / high scores; Shared art widgets; components/godIcons.tsx; components/rewards.tsx; screens/MapEditor.tsx",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.star.png",
@@ -801,7 +801,7 @@
           "assetId": "icon.ui.build",
           "name": "build",
           "group": "Interface",
-          "where": "Adventure map; New game / setup; Town",
+          "where": "Adventure map; Town",
           "current": {
             "type": "art",
             "file": "assets-runtime/ui/icons/final/icon.ui.build.png",
@@ -5858,6 +5858,48 @@
           "priority": "later"
         },
         {
+          "assetId": "hero.greek.theron.portrait",
+          "name": "Theron",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Greek",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.theron.portrait.webp",
+            "status": "final"
+          },
+          "brief": "Theron, Hierophant of Kalliste (Oracle). The high priest of Kalliste, who sealed the Oracle’s spring so that only his voice would be heard, and promised every city on the coast what it most wanted to hear.",
+          "priority": "later"
+        },
+        {
+          "assetId": "hero.greek.doros.portrait",
+          "name": "Doros",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Greek",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.doros.portrait.webp",
+            "status": "final"
+          },
+          "brief": "Doros, Polemarch of the Hushed (Champion). A disgraced general who sold his spear to the Hierophant and holds the labyrinth gate.",
+          "priority": "later"
+        },
+        {
+          "assetId": "hero.greek.phaidon.portrait",
+          "name": "Phaidon",
+          "group": "Hero portrait · enemy",
+          "pantheon": "Greek",
+          "where": "Hero screen; Adventure hero list; Tavern; Battle; Encyclopedia",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.phaidon.portrait.webp",
+            "status": "final"
+          },
+          "brief": "Phaidon, Warden of the Sacred Way (Champion). Keeper of the road between the altars of dawn and dusk below the Oracle’s spring.",
+          "priority": "later"
+        },
+        {
           "assetId": "hero.egyptian.seshet.portrait",
           "name": "Seshet",
           "group": "Hero portrait · campaign",
@@ -6261,6 +6303,20 @@
             "status": "final"
           },
           "brief": "Ione — story character (see the campaign documents).",
+          "priority": "later"
+        },
+        {
+          "assetId": "hero.greek.myrrine.portrait",
+          "name": "Myrrine",
+          "group": "Story portrait",
+          "pantheon": "Greek",
+          "where": "The small portrait in the dialogue box and the Journal (the painted bust stands beside the box)",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/ui/icons/final/hero.greek.myrrine.portrait.webp",
+            "status": "final"
+          },
+          "brief": "Myrrine — story character (see the campaign documents).",
           "priority": "later"
         },
         {
@@ -11579,7 +11635,7 @@
             "file": "assets-runtime/art/cards/mission.three_beacons.m02.thumbnail.webp",
             "status": "final"
           },
-          "brief": "The second beacon stands beyond the raiders. Free the Griffins’ nesting ground, choose Athena or Ares, and raise Windcrest Griffins to light the pass.",
+          "brief": "The Griffins have returned to the cliffs above Passhaven. Build their aerie, train two Windcrest Griffins, and their riders will carry the fire to the pass beacon.",
           "priority": "later"
         },
         {
@@ -11684,6 +11740,97 @@
             "status": "final"
           },
           "brief": "The Grey Jarl waits in his hall on the oath-mound. Climb the plateau, cut both stones to open the barrow-gate, defeat the Jarl, decide the sword’s fate and seal the oath.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silent_oracle.m01.thumbnail",
+          "name": "The Pilgrims’ Road",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/mission.silent_oracle.m01.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "Pilgrims come down from Kalliste with empty hands: the Oracle has not spoken since the spring festival, and grey-hooded men have put out the waystone on the pilgrims’ road. Raise and train a road guard in Elaia, open the ford and rekindle the waystone.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silent_oracle.m02.thumbnail",
+          "name": "The Bronze Bull",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/mission.silent_oracle.m02.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "A bull of living bronze and its herd of clay men trample the barley of Thymbra and keep the pilgrims from the shrine of the twin springs. Raise peltasts of your own, cross the river, hunt the Bronze Bull and relight the shrine.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silent_oracle.m03.thumbnail",
+          "name": "The Eyrie of Aetos",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/mission.silent_oracle.m03.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "The griffins of Aetos have left their eyrie: their covenant was bought by the Hushed. Break the Hushed on the mountain road, free the horse pastures, win the griffin covenant back — by the keeper’s price or by force — and take a god’s favour for the road ahead.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silent_oracle.m04.thumbnail",
+          "name": "The Hall of Echoes",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/mission.silent_oracle.m04.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "On an island off Halia stands the Hall of Echoes, where every word the Oracle ever spoke is kept. Raise temple adepts, take the landing, light both fire-bowls to lower the sea chain and hear what the Oracle last said.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silent_oracle.m05.thumbnail",
+          "name": "The Return of Melas",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/mission.silent_oracle.m05.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "Melas, beaten on the storm plateau, holds the walled city of Pyrgos and has made the coast’s cities swear to the hierophant’s false Voice on an oath stele. Cross the river, take a second god, besiege his city and break the stele.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silent_oracle.m06.thumbnail",
+          "name": "The Labyrinth of Kerata",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/mission.silent_oracle.m06.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "The minotaurs of Kerata, who guard the lower road to Kalliste, are penned in their own labyrinth by the Hushed. Break their jailers, accept the minotaurs’ covenant, raise minotaurs of your own and defeat the polemarch Doros at the labyrinth gate.",
+          "priority": "later"
+        },
+        {
+          "assetId": "mission.silent_oracle.m07.thumbnail",
+          "name": "The Spring of Kalliste",
+          "group": "Mission thumbnail",
+          "where": "Campaign setup; Briefing; Debrief",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/mission.silent_oracle.m07.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "Theron the Hierophant holds the temple of Kalliste and the sealed spring beneath it. Cross the hills, kindle the altars of dawn and dusk, open the sacred way, defeat Theron and decide whether the Oracle speaks again.",
           "priority": "later"
         },
         {
@@ -12061,6 +12208,19 @@
             "status": "final"
           },
           "brief": "A storm has extinguished the three signal beacons protecting the coast of Asterion. Lead Alexios through three short linked missions to reconnect the coast before its settlements abandon one another.",
+          "priority": "later"
+        },
+        {
+          "assetId": "campaign.silent_oracle.thumbnail",
+          "name": "The Silent Oracle",
+          "group": "Campaign thumbnail",
+          "where": "Campaign setup",
+          "current": {
+            "type": "art",
+            "file": "assets-runtime/art/cards/campaign.silent_oracle.thumbnail.webp",
+            "status": "final"
+          },
+          "brief": "A year after the beacons were relit, the Oracle of Kalliste has fallen silent, and a hierophant who calls himself her Voice is turning the cities of the coast against one another. Lead Alexios through seven linked missions — from the pilgrims’ road to the sealed spring under the mountain — to give the Oracle back her voice. Play The Three Beacons first: it teaches the game.",
           "priority": "later"
         },
         {

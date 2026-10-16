@@ -1,0 +1,401 @@
+{
+  "date": "2026-10-15",
+  "projectVersion": "1.2.0",
+  "audit": "Read-only audit of source base/upgraded FormSpec blocks with s(...) statistics. Positive shot counts and shooter abilities cross-checked. Color, trail and impact recommendations are visual proposals, not existing mechanics.",
+  "formsInspected": 108,
+  "shooterForms": 22,
+  "shooterFamilies": 11,
+  "units": [
+    {
+      "id": "peltast",
+      "name": "Peltast",
+      "familyId": "peltast",
+      "form": "base",
+      "pantheon": "greek",
+      "tier": 2,
+      "shots": 12,
+      "range": 16,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Light javelin throwers who strike from range and need protection up close.",
+      "existingPortraitDescription": "A lightly armored skirmisher with a crescent shield and a bundle of javelins.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts",
+      "sourceLine": 99
+    },
+    {
+      "id": "veteran_peltast",
+      "name": "Veteran Peltast",
+      "familyId": "peltast",
+      "form": "upgraded",
+      "pantheon": "greek",
+      "tier": 2,
+      "shots": 16,
+      "range": 17,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Experienced skirmishers who choose their own firing ground and carry more javelins.",
+      "existingPortraitDescription": "A skirmisher with a reinforced helmet, braced throwing arm and a tidy javelin harness.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts",
+      "sourceLine": 109
+    },
+    {
+      "id": "temple_adept",
+      "name": "Temple Adept",
+      "familyId": "temple_adept",
+      "form": "base",
+      "pantheon": "greek",
+      "tier": 5,
+      "shots": 12,
+      "range": 18,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Ritual scholars who hurl focused energy bolts from the back line.",
+      "existingPortraitDescription": "A robed scholar with a staff topped by a geometric bronze focus.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts",
+      "sourceLine": 195
+    },
+    {
+      "id": "temple_seer",
+      "name": "Temple Seer",
+      "familyId": "temple_adept",
+      "form": "upgraded",
+      "pantheon": "greek",
+      "tier": 5,
+      "shots": 16,
+      "range": 19,
+      "abilities": [
+        "shooter",
+        "family_ward"
+      ],
+      "existingSummary": "Seers who can place one shared protective ward per battle.",
+      "existingPortraitDescription": "A robed seer with a sculpted headpiece, layered mantle and a larger staff focus.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts",
+      "sourceLine": 205
+    },
+    {
+      "id": "cyclops",
+      "name": "Cyclops",
+      "familyId": "cyclops",
+      "form": "base",
+      "pantheon": "greek",
+      "tier": 7,
+      "shots": 8,
+      "range": 18,
+      "abilities": [
+        "shooter",
+        "wall_breaker",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "One-eyed giants who hurl shaped boulders and strike hard up close.",
+      "existingPortraitDescription": "A one-eyed giant with a stone satchel and simple bracers.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts",
+      "sourceLine": 261
+    },
+    {
+      "id": "stormforged_cyclops",
+      "name": "Stormforged Cyclops",
+      "familyId": "cyclops",
+      "form": "upgraded",
+      "pantheon": "greek",
+      "tier": 7,
+      "shots": 12,
+      "range": 19,
+      "abilities": [
+        "shooter",
+        "wall_breaker",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Cyclopes bearing forge-marked stones; the name adds no lightning damage.",
+      "existingPortraitDescription": "A cyclops with forged bronze bracers, engraved seams and a faintly luminous boulder.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/greek/creatures.ts",
+      "sourceLine": 271
+    },
+    {
+      "id": "norse_lindworm",
+      "name": "Lindworm",
+      "familyId": "norse_lindworm",
+      "form": "base",
+      "pantheon": "norse",
+      "tier": 5,
+      "shots": 10,
+      "range": 16,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Two-legged wyrms that spit freezing breath from the back line.",
+      "existingPortraitDescription": "A long wingless serpent-dragon with two clawed forelegs and frost on its scales.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/creatures.ts",
+      "sourceLine": 155
+    },
+    {
+      "id": "norse_storm_lindworm",
+      "name": "Storm Lindworm",
+      "familyId": "norse_lindworm",
+      "form": "upgraded",
+      "pantheon": "norse",
+      "tier": 5,
+      "shots": 14,
+      "range": 17,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Storm-coloured lindworms that bite as hard as they breathe.",
+      "existingPortraitDescription": "A slate-blue lindworm with crackling pale markings and a raised crest.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/norse/creatures.ts",
+      "sourceLine": 165
+    },
+    {
+      "id": "egyptian_jackal_guardian",
+      "name": "Jackal Guardian",
+      "familyId": "egyptian_jackal_guardian",
+      "form": "base",
+      "pantheon": "egyptian",
+      "tier": 2,
+      "shots": 10,
+      "range": 16,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Jackal-headed guards of the necropolis who hurl javelins at intruders.",
+      "existingPortraitDescription": "A jackal-headed warrior in a striped headdress with a bundle of javelins.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/egyptian/pantheon.ts",
+      "sourceLine": 118
+    },
+    {
+      "id": "egyptian_anubian_warden",
+      "name": "Anubian Warden",
+      "familyId": "egyptian_jackal_guardian",
+      "form": "upgraded",
+      "pantheon": "egyptian",
+      "tier": 2,
+      "shots": 8,
+      "range": 17,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Senior wardens of the tomb gates, as dangerous with a spear in hand as with a thrown one.",
+      "existingPortraitDescription": "A black-furred jackal warrior in gold-banded armor with a javelin raised to throw.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/egyptian/pantheon.ts",
+      "sourceLine": 128
+    },
+    {
+      "id": "egyptian_desert_colossus",
+      "name": "Desert Colossus",
+      "familyId": "egyptian_desert_colossus",
+      "form": "base",
+      "pantheon": "egyptian",
+      "tier": 7,
+      "shots": 8,
+      "range": 16,
+      "abilities": [
+        "shooter",
+        "wall_breaker",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Walking statues of red granite that hurl stone blocks and batter walls.",
+      "existingPortraitDescription": "A towering seated-king statue of red granite, now standing, with sand pouring from its joints.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/egyptian/pantheon.ts",
+      "sourceLine": 298
+    },
+    {
+      "id": "egyptian_divine_colossus",
+      "name": "Divine Colossus",
+      "familyId": "egyptian_desert_colossus",
+      "form": "upgraded",
+      "pantheon": "egyptian",
+      "tier": 7,
+      "shots": 12,
+      "range": 17,
+      "abilities": [
+        "shooter",
+        "wall_breaker",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Colossi inlaid with gold and faience, carrying more stones and striking harder.",
+      "existingPortraitDescription": "A colossal statue with a gold-inlaid headdress and eyes of lapis, a stone block in each hand.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/egyptian/pantheon.ts",
+      "sourceLine": 308
+    },
+    {
+      "id": "japanese_kirin",
+      "name": "Kirin",
+      "familyId": "japanese_kirin",
+      "form": "base",
+      "pantheon": "japanese",
+      "tier": 6,
+      "shots": 8,
+      "range": 16,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Scaled, antlered holy beasts that cast holy fire and strike just as hard up close.",
+      "existingPortraitDescription": "A deer-like beast with dragon scales, a single antler and flames at its hooves.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/japanese/pantheon.ts",
+      "sourceLine": 261
+    },
+    {
+      "id": "japanese_celestial_kirin",
+      "name": "Celestial Kirin",
+      "familyId": "japanese_kirin",
+      "form": "upgraded",
+      "pantheon": "japanese",
+      "tier": 6,
+      "shots": 12,
+      "range": 17,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Kirin that walk on clouds; more fire and more reach.",
+      "existingPortraitDescription": "A golden-scaled kirin walking on clouds, mane of white fire streaming.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/japanese/pantheon.ts",
+      "sourceLine": 271
+    },
+    {
+      "id": "celtic_banshee",
+      "name": "Banshee",
+      "familyId": "celtic_banshee",
+      "form": "base",
+      "pantheon": "celtic",
+      "tier": 4,
+      "shots": 8,
+      "range": 9,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Keening spirits whose wail strikes from across the field.",
+      "existingPortraitDescription": "A pale grey-cloaked woman with long silver hair, mouth open in a cry.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/celtic/pantheon.ts",
+      "sourceLine": 189
+    },
+    {
+      "id": "celtic_battle_banshee",
+      "name": "Battle Banshee",
+      "familyId": "celtic_banshee",
+      "form": "upgraded",
+      "pantheon": "celtic",
+      "tier": 4,
+      "shots": 12,
+      "range": 10,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Banshees who follow the war-bands and keen for the enemy instead.",
+      "existingPortraitDescription": "A banshee in torn battle-red wrappings, hair streaming like smoke.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/celtic/pantheon.ts",
+      "sourceLine": 199
+    },
+    {
+      "id": "mesoamerican_eagle_warrior_spirit",
+      "name": "Eagle Warrior Spirit",
+      "familyId": "mesoamerican_eagle_warrior_spirit",
+      "form": "base",
+      "pantheon": "mesoamerican",
+      "tier": 3,
+      "shots": 8,
+      "range": 14,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Spirit warriors in eagle helms who hurl atlatl darts from the back line.",
+      "existingPortraitDescription": "A warrior in a feathered eagle-head helmet holding an atlatl and darts.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/mesoamerican/pantheon.ts",
+      "sourceLine": 153
+    },
+    {
+      "id": "mesoamerican_solar_eagle_warrior",
+      "name": "Solar Eagle Warrior",
+      "familyId": "mesoamerican_eagle_warrior_spirit",
+      "form": "upgraded",
+      "pantheon": "mesoamerican",
+      "tier": 3,
+      "shots": 12,
+      "range": 15,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Eagle warriors of the sun’s house, with more darts and longer arms.",
+      "existingPortraitDescription": "An eagle warrior in golden feathers with a sun-ray shield and a bundle of darts.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/mesoamerican/pantheon.ts",
+      "sourceLine": 163
+    },
+    {
+      "id": "mesoamerican_xiuhcoatl",
+      "name": "Xiuhcoatl",
+      "familyId": "mesoamerican_xiuhcoatl",
+      "form": "base",
+      "pantheon": "mesoamerican",
+      "tier": 6,
+      "shots": 6,
+      "range": 16,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Turquoise fire serpents that spit flame across the field and bite just as hard.",
+      "existingPortraitDescription": "A turquoise serpent with a flaming, segmented tail and a snout curling upward.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/mesoamerican/pantheon.ts",
+      "sourceLine": 261
+    },
+    {
+      "id": "mesoamerican_divine_xiuhcoatl",
+      "name": "Divine Xiuhcoatl",
+      "familyId": "mesoamerican_xiuhcoatl",
+      "form": "upgraded",
+      "pantheon": "mesoamerican",
+      "tier": 6,
+      "shots": 8,
+      "range": 17,
+      "abilities": [
+        "shooter",
+        "no_melee_penalty"
+      ],
+      "existingSummary": "Fire serpents of the sun’s own weapon; more flame and a hotter bite.",
+      "existingPortraitDescription": "A blazing blue-and-gold serpent wreathed in a corona of fire.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/mesoamerican/pantheon.ts",
+      "sourceLine": 271
+    },
+    {
+      "id": "hill_slinger",
+      "name": "Hill Slinger",
+      "familyId": "hill_slinger",
+      "form": "base",
+      "pantheon": "neutral",
+      "tier": 2,
+      "shots": 10,
+      "range": 9,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Shepherds who drive off wolves with a sling. Short range, steady aim.",
+      "existingPortraitDescription": "A shepherd in a wool cloak whirling a leather sling, a pouch of stones at the belt.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/neutrals.ts",
+      "sourceLine": 56
+    },
+    {
+      "id": "sling_master",
+      "name": "Sling Master",
+      "familyId": "hill_slinger",
+      "form": "upgraded",
+      "pantheon": "neutral",
+      "tier": 2,
+      "shots": 14,
+      "range": 10,
+      "abilities": [
+        "shooter"
+      ],
+      "existingSummary": "Hill folk who cast shaped lead bullets farther and harder than any stone.",
+      "existingPortraitDescription": "A slinger with a braided double sling and a bag of lead shot.",
+      "sourceFile": "C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/neutrals.ts",
+      "sourceLine": 66
+    }
+  ]
+}

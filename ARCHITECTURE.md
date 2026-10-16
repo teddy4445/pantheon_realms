@@ -125,7 +125,13 @@ same validators. The skirmish offers every pantheon pairing as scenario
 2. Deep-clones a draft and runs the system handler inside a `Tx` (event
    collector, RNG cursors, deterministic ID allocation, `applyOnce`
    idempotency keys).
-3. Runs gate updates, the objective state machine and the mission outcome.
+3. Runs gate updates, patrol withdrawal (a patrol whose home site fell),
+   the objective state machine, announced deadlines (`evaluateTimers`), gate
+   updates again (a flag an objective reward or an expired deadline just set
+   opens its gate in the same command), the mission outcome and story scenes.
+   A campaign battle refuses `automated` commands here
+   (`automationForbidden`, `manual_battle_required`) before any state or dice
+   are touched.
 4. Commits: `revision + 1`, events stamped `${revision}.${n}`, RNG cursors
    written back. A rejected command returns a structured `Rejection` and the
    original state is untouched.
@@ -135,7 +141,27 @@ using the same code as the commit (`quoteConstruction`, `quoteRecruitment`,
 `quoteUpgrade`, `quoteTransfer`, `quoteTrade`, `quoteMovement`,
 `quoteActivation`, `quoteGodSelection`, `quoteHireHero`, `legalActions`,
 `previewMelee/Shot/Retaliation`). Disabled buttons always display the quote's
-reason.
+reason. `routeDays` reads a movement quote as the day the route ends on
+(today = day 1, each later day a full budget), shown beside the map cursor;
+`routeStepDays` gives the day of every step (the map's painted route).
+
+Neutral hiring sites (2026-10-15/16): `campSiteForms` lists what a camp offers —
+both forms of a neutral family for a weekly-restocking camp of a neutral
+creature, else its one listed creature. `RecruitFromCamp.creatureId` (optional;
+omitted = the listed base form, so older commands and the AI are unchanged) is
+validated against that list; both forms draw on the site's ONE weekly stock.
+`TrainAtCamp` (`quoteCampTraining`) upgrades a visiting hero's base stack of the
+site's family for the gold difference, with no stock, never merging forms and
+never losing creatures (a partial training needs a slot or an upgraded stack).
+
+`RecruitBatch` (Recruit all, 2026-10-14) recruits several families in one
+command: `quoteRecruitBatch` walks the items against a simulated copy of the
+destination army and the wallet (merges, new slots and the whole cost
+cumulatively) and refuses the batch as a whole ("Needs 1 more army slot",
+"Short 300 gold", a pool smaller than asked — a stale quote); the commit
+re-quotes, then applies each item through the ordinary recruitment, all inside
+the one transaction — all or nothing. `recruitAllItems` lists what the town
+offers (each family once, in its chosen form, upgraded by default).
 
 ### Battle phases and sieges
 
@@ -383,6 +409,34 @@ Three rules, all from public knowledge only, removed most of that edge:
 * The map generator produces a logical hash; decor comes from its own stream.
 * `canonicalStateHash` is used by tests to prove identical runs.
 
+### Campaign content version 2 (campaign expansion, 2026-10-15)
+
+The 37 chapters live beside the v1 missions, never in their place:
+`packages/content/src/campaign/v2/` (one builder per campaign on the shared
+`kit.ts` and `regionMap.ts`, registered in `index.ts`; authoring guide
+`docs/campaign-v2/AUTHORING.md`). A v2 mission (`<campaign>_v2_mNN`,
+`contentVersion: 2`) carries an authored region `map` (no template),
+`timers`, `evidence`, `carriedFlags`, `briefingVariants`, `entryBonuses`,
+`lossConditions`, `briefingArt` and `principalObjectiveId`; the campaign gains
+`chapters` (`requiresAll` graph), `finalChapterId` and `epilogueV2`. Rules
+vocabulary added for them is shared data any mission may use: `sluice` sites
+(`OperateSluice` rewrites the channel's terrain), ferry portals with
+`requiresFlag`, patrols with a home site and `dormantUntilFlag`, timers that
+may fail optional objectives only, map-event options with `requiresFlags` and
+`clearsSiteIds`, `required` guards, camps with weekly or no restock and pact
+locks, and single-form neutral creatures (`familyForms`, `isSingleForm`) with
+their abilities (`systems/battle/neutralAbilities.ts`).
+
+`CampaignState.contentVersion` (absent = 1) binds a run to its content for its
+whole life: v1 runs keep `missionIds` order and the v1 missions; v2 runs move
+through `availableChapters` / `startNextMission(…, chosenMissionId)` and keep
+`facts` (carried flags, entered into later chapters as `fact:<flag>` mission
+flags) apart from `completions`. `startPracticeReplay` makes a separate
+`practice` branch that never feeds the primary run; restart rebuilds the exact
+entry (facts included, checked by the entry hash). Campaign battles are manual:
+`policy.ts` refuses automated battle commands, the session never offers them,
+and the computer's own battles are unaffected.
+
 ## 5. Session, saves and platform
 
 `GameSession` hosts the only mutable reference to the current `MatchState`.
@@ -394,9 +448,25 @@ table. `newGenerated` starts a random map. It emits
 `SessionUpdate { state, events, source }` to subscribers and checkpoint
 signals (`pre_encounter`, `dawn`, `mission_start`).
 
+**Planned journeys** (`session/src/journeys.ts`, 2026-10-14) are presentation
+intent, never rules: per player and hero, `{ version: 1, matchId, playerId,
+heroId, target, targetSiteId?, status: planned | paused | blocked }`, kept by
+the session (`journey`, `planJourney`, `cancelJourney`). Only the destination
+is kept; the route is quoted again from the hero's position whenever it is
+shown or followed (Continue journey dispatches an ordinary `MoveHero`). After
+every command `reconcileJourneys` drops the journeys of heroes that arrived,
+were lost or changed owner, or of another match; marks unreachable ones
+blocked (kept) and reachable ones planned again; heroes in a battle or carried
+by a portal or Homecoming are paused (a journey to the portal itself ends
+there). A new mission, a restart or a practice replay starts with none.
+
 Saves are `SaveEnvelope` v1 (`pantheon-realms-save`): versions bundle,
-metadata for slot lists, a checksum over the canonical snapshot and the plain
-`SaveSnapshot { match, campaign }`. Loading validates untrusted text
+metadata for slot lists (since 1.2.0 also the run's `campaignContentVersion`
+and `chapterNumber`, optional — older saves are read from their snapshot), a checksum over the canonical snapshot and the plain
+`SaveSnapshot { match, campaign, presentation? }` — `presentation` (version 1:
+the planned journeys) only when there is one, so a save without journeys is
+byte for byte as before and an older save loads with none; unknown versions,
+other matches and lost heroes are dropped on load (`sanitizePresentation`). Loading validates untrusted text
 (format, schema, checksum, rules/content versions, scenario presence) and
 never guesses a migration; a failed read never deletes the file. Slot policy:
 5 manual, 3 rotating autosaves, 1 pre-battle checkpoint.
@@ -457,8 +527,13 @@ redraws the chunks (`SceneController.contextRestored`).
 * `AdventureSceneController` — 2D layers, back to front (black behind the
   map is the renderer's background colour): painted terrain (the delivered ground paintings as
   repeating fills in map space), roads, optional hex grid, reachable
-  overlay, ground markers (selection ring, route preview — dots, then an X
-  for a battle — and hover), objects depth-sorted by screen *y* (map
+  overlay, ground markers (selection ring, the planned route and the walking
+  trail — the recruitment & route kit's painted arrowheads, hourglasses,
+  destination seal and day parchment through `routeArt` (registered by the
+  interface), each laid on the ground by turning it in the ground plane and
+  then applying the map's squash once; the drawn dots and X stay as the
+  fallback, and the crossed swords for a battle — and hover), objects
+  depth-sorted by screen *y* (map
   locations, decoration, guards, one mounted avatar per pantheon), fog and
   effects. Pointer→hex picking inverts the hex projection
   (`hexmath.pointAxial`), so a sprite's size never changes which hex is
@@ -484,7 +559,14 @@ redraws the chunks (`SceneController.contextRestored`).
   (`onBoardReady`: the battlefield painting, the siege pieces and each stack's
   idle frame, failures included — a stack without its picture stands as a
   silhouette — capped at 15 s); until then the battle screen veils the field,
-  withholds commands and the AI waits (`AppStore.boardLoading`).
+  withholds commands and the AI waits (`AppStore.boardLoading`). When a human
+  defends against a computer (`ui/src/app/battleOrientation.ts`), the view
+  draws the board **mirrored** (`BattleView.mirrored`: the board container's
+  x scale turns negative about the frame's centre) so the human stands on the
+  left, and `blueSide` colours that side blue; text and icons are turned back
+  upright, whole-field effects take the screen direction, and the pointer and
+  `projectCell` go through the same transform (`toPage` / `local`), so cells,
+  hover offsets and the rules' facings keep their west-to-east sense.
 * `UnitViewerController` — the animated Unit Detail viewer: the subject's
   strips by state (the buttons come from `requiredAnimations`: the base
   seven `idle, move, attack, defend, hit, death, victory`, plus `shoot`,
@@ -565,6 +647,20 @@ and a missing device or an undecodable file only means silence. Browsers
 start audio after the first click; the desktop app starts it at launch.
 Files are resolved by sound ID from `assets-runtime/audio/manifest.json`
 (see `ASSET_PIPELINE.md` §10).
+
+**Shooter missiles and impacts** (battle FX delivery, 2026-10-15; app 1.3.0):
+`spriteManifest().projectileProfiles` maps an attacking creature ID (the 22
+shooter forms) and the siege actors (`siege_turret`, `catapult`) to a travel
+picture (frame regions; a still moved through the world or four looping poses),
+a path (direct, shallow or high ballistic, its arc kept inside the board's frame),
+a duration clamped to the profile's range and scaled by battle speed, and an
+impact strip played once at the contact point together with the hit reaction.
+`projectiles.ts` holds the pure helpers (profile resolution per event, path and
+duration maths, release sockets per unit, region anchor/scale); `battle.ts`
+plays them. A shooter's melee blow flies nothing; a wall-breaking shooter uses
+its own missile; the catapult's stone is only the catapult's; an unknown unit
+keeps the generic arrow. Effects with frame regions set each frame's pixel
+anchor and `sourceScale` on every frame change. Presentation only.
 
 ## 7. UI
 

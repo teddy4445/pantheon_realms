@@ -13,7 +13,7 @@ import type { ContentCatalog } from '../definitions/catalog';
 import type { SiteDefinition } from '../definitions/world';
 import type { HeroState, MatchState, TownState } from '../state/match';
 import { evaluateAll } from '../resolvers/requirements';
-import { heroVisionRadius } from '../resolvers/heroes';
+import { heroVisionRadius, movementBudget } from '../resolvers/heroes';
 import { cellIndex, cellsWithin, findHeroPath, heroAt, missionSite, movementTarget, siteAt, townGate, type PathResult } from '../resolvers/world';
 import { reject, type Tx } from '../engine/tx';
 import { spend } from './economy';
@@ -54,6 +54,43 @@ export function quoteMovement(catalog: ContentCatalog, state: MatchState, heroId
     encounterLabel,
     movementPoints: points,
   };
+}
+
+/**
+ * The day a route ends on, counting today as day 1 (read-only; the map's day count beside the
+ * cursor). Today the hero walks as far as its remaining points go; every later day starts where it
+ * stopped with the full daily budget (as at dawn). Null when the route cannot be walked.
+ */
+export function routeDays(catalog: ContentCatalog, state: MatchState, heroId: HeroId, q: MovementQuote): number | null {
+  const days = routeStepDays(catalog, state, heroId, q);
+  return days ? days[days.length - 1]! : null;
+}
+
+/**
+ * The day each step of a route is reached, counting today as day 1 (read-only; the map's
+ * route markers: today's steps, later days' steps and where each new day begins). Same
+ * walk as `routeDays`, whose answer is the last entry. Null when the route cannot be walked.
+ */
+export function routeStepDays(catalog: ContentCatalog, state: MatchState, heroId: HeroId, q: MovementQuote): number[] | null {
+  const hero = state.heroes[heroId];
+  if (!hero || !q.reachable || q.path.length === 0) return null;
+  const budget = movementBudget(catalog, state, hero).total;
+  const out: number[] = [];
+  for (let k = 0; k <= q.stopIndex && k < q.path.length; k++) out.push(1);
+  let days = 1;
+  let paid = q.stopIndex >= 0 ? (q.stepCosts[q.stopIndex] ?? 0) : 0;
+  let i = q.stopIndex + 1;
+  while (i < q.path.length) {
+    days++;
+    const start = i;
+    while (i < q.path.length && (q.stepCosts[i] ?? Infinity) - paid <= budget) {
+      out.push(days);
+      i++;
+    }
+    if (i === start) return null; // a single step costs more than a whole day
+    paid = q.stepCosts[i - 1] ?? paid;
+  }
+  return out;
 }
 
 /** Mark cells within vision of the given positions as explored; returns newly explored count. */
@@ -219,6 +256,11 @@ export function arriveAt(tx: Tx, hero: HeroState, coord: HexCoord): void {
 function stepThroughPortal(tx: Tx, hero: HeroState, from: SiteDefinition, exitSiteId: SiteId): void {
   const exit = missionSite(tx.catalog, tx.state, exitSiteId);
   if (!exit || exit.kind.type !== 'portal') return;
+  // A ferry that does not run yet (campaign v2): the hero waits at the landing.
+  if (from.kind.type === 'portal' && from.kind.requiresFlag && !tx.state.mission.flags[from.kind.requiresFlag]) {
+    tx.emit({ kind: 'PortalBlocked', heroId: hero.id, siteId: from.id });
+    return;
+  }
   if (heroAt(tx.state, exit.coord, hero.id)) {
     tx.emit({ kind: 'PortalBlocked', heroId: hero.id, siteId: from.id });
     return;

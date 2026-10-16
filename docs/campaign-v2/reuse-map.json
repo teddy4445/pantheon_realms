@@ -1,0 +1,1052 @@
+[
+  {
+    "runtimeFile": "art/missions/mission.lantern_road.m01.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.lantern_road.m01.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m01.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "ccbcb09488933151e369cb7df23777faebfe3b569644742c1d1bb932aab0b6fc"
+  },
+  {
+    "runtimeFile": "art/missions/mission.lantern_road.m02.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.lantern_road.m02.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m02.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "7460ec06a744f7077e1a364f2a770b04e6b19141fb13dc258b1061ec86394891"
+  },
+  {
+    "runtimeFile": "art/missions/mission.lantern_road.m03.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.lantern_road.m03.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m03.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "5e45d5dcfa5563ddefb8084a1e3d53a13935d6cec6e83696ae0af66666c7610c"
+  },
+  {
+    "runtimeFile": "art/missions/mission.lantern_road.m04.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.lantern_road.m04.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m04.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "accd80e58cea965e655de0dae22fc716ffb9f0c498af6e1edb742c1408c1dad3"
+  },
+  {
+    "runtimeFile": "art/missions/mission.lantern_road.m05.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.lantern_road.m05.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m05.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "08675ce925a5a4c724cea64dc376a1511efcbece0b876d39fd46a82f91957274"
+  },
+  {
+    "runtimeFile": "art/missions/mission.lantern_road.m06.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.lantern_road.m06.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m06.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "7d4f273cef605c07e058ead6d06f4e7defd46e53832f402076a068cf7737dc44"
+  },
+  {
+    "runtimeFile": "art/missions/mission.lantern_road.m07.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.lantern_road.m07.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.lantern_road.m07.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "e9bbdec14b79fb13d8d27b6711b75ec6cdf9d37f89554abacdb8d82ac1a6e7ac"
+  },
+  {
+    "runtimeFile": "art/missions/mission.new_fire.m01.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.new_fire.m01.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m01.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "64096e7cdd29a3156a2c3837ff15baf8a5dcfba24bf74d27c30d4d58a73a45a2"
+  },
+  {
+    "runtimeFile": "art/missions/mission.new_fire.m02.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.new_fire.m02.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m02.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "8b9073741a47ea675a2e3ec2f2e103c53b76ec3a206225a35302d19ca03e3b86"
+  },
+  {
+    "runtimeFile": "art/missions/mission.new_fire.m03.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.new_fire.m03.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m03.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "8e8baacb9b9d14edb5a27219ab68518c146a49eebe39fd297b456e9713efca9a"
+  },
+  {
+    "runtimeFile": "art/missions/mission.new_fire.m04.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.new_fire.m04.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m04.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "4c2c509fb077a6e2f6a04133167d017f4d83fa39c8ee181e3245dda9c4a05d8c"
+  },
+  {
+    "runtimeFile": "art/missions/mission.new_fire.m05.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.new_fire.m05.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m05.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "a6e6dd3b423473968784c14d5b9436ba0c560f6ecaf0b6e187b98d0960b15841"
+  },
+  {
+    "runtimeFile": "art/missions/mission.new_fire.m06.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.new_fire.m06.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m06.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "bd5c09b1af1dd7f839ab818d919306886dc4d6ee8c349530e83b7bd0b6963876"
+  },
+  {
+    "runtimeFile": "art/missions/mission.new_fire.m07.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.new_fire.m07.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.new_fire.m07.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "3deaccd1407fbc04562192a77a427e6e4eedbf63ad3366baf54bd256e31102d0"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silent_oracle.m01.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silent_oracle.m01.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silent_oracle.m01.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "f09110b4981a311be0080a14f1605164c7d9af0549c11257b2db6bbebd206904"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silent_oracle.m02.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silent_oracle.m02.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silent_oracle.m02.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "4fe83a7cf4863290d632d887661bd8f5312738231646eb14ac594e88392049d6"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silent_oracle.m03.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silent_oracle.m03.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silent_oracle.m03.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "6c4a9a72118462d84c0e9454d420a2332de8926b4a3cc3e23b28708ea92665a5"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silent_oracle.m04.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silent_oracle.m04.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silent_oracle.m04.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "e09d259e34566308504f576d5a7a1f39706ae30da023acf8a191717713603fea"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silent_oracle.m05.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silent_oracle.m05.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silent_oracle.m05.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "05d056816c49207e0e02ed7f636c1011aab6c2a589fd7840d5aecab348e6ea3b"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silent_oracle.m06.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silent_oracle.m06.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silent_oracle.m06.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "9af452f177dd2d309cea07024aa68796b6d93a3a76f0dcd26fa0e95a0cc50c1c"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silent_oracle.m07.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silent_oracle.m07.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silent_oracle.m07.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "1f6af7c5931d601aef04607198950f99cd86980d8d58402b64b2b61e13b8b652"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silver_branch.m01.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silver_branch.m01.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m01.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "4d3a0dfbe09f4de78b014587482f1316ac7b9c156321efda56400ea7a62bd773"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silver_branch.m02.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silver_branch.m02.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m02.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "f2152422be573abad8a0b8b755635d95312865439970b1e9ce66c229509839dd"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silver_branch.m03.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silver_branch.m03.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m03.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "eabb6bb4ac9befe5ad5fd55ef68c1b8fcbafcf21b661188e7d0214cb3a394ef4"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silver_branch.m04.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silver_branch.m04.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m04.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "05b17f234bfdf8a30522df280e04acfef59b7bef0a0ed067b855e016804930d4"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silver_branch.m05.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silver_branch.m05.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m05.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "b95c32bd75238bb8e71442f2f2f7a0f0cd01827844bc0ec45dce4e3cbb3381ac"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silver_branch.m06.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silver_branch.m06.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m06.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "af7450d63781cc4a46262d46fe54c5588770e398f472c61c9a9fd4968b43be4e"
+  },
+  {
+    "runtimeFile": "art/missions/mission.silver_branch.m07.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.silver_branch.m07.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.silver_branch.m07.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "5a1ccc876caf47d7a17c26e38a5bdbf5e1f53f70d4c301e8eebbb18169c18e14"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.barrows.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.barrows.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.barrows.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "402fab38efa2a26b9840f1d5dacad8da56478634ffbcb79b0aa02afd1470f4a7"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.burning_oasis.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.burning_oasis.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.burning_oasis.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "84eac3c3d773c62eb90eda3e85f422a40e41be5d948e052fef8195838f852669"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.circle_of_gates.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.circle_of_gates.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.circle_of_gates.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "d7c5e2917bc6e42e72548019fb3f54e8121507fc215e3f1bd55d7df06c61366f"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.frostgate.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.frostgate.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.frostgate.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "848e5dab815b133037d975235e40c51cfd44a9f11c352af7dd3d4b622142ed7b"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.golden_fords.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.golden_fords.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.golden_fords.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "12a963ee436544507ea07e2b55db1d3fd59a1c1c0b3faf47b6b80ed9f0449317"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.random.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.random.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.random.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "a36ee662917b9e375900bf605e17134ed1b4e2762afcc02b42885df416391d80"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.six_thrones.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.six_thrones.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.six_thrones.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "23e2cb7035a42a0d0067129b3ed4096ba865bf309e733987860936a3f68e8514"
+  },
+  {
+    "runtimeFile": "art/missions/mission.skirmish.twin_harbors.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.skirmish.twin_harbors.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.skirmish.twin_harbors.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "75775ca30dc138d4409c5f42fa505656053187b34b9934ff2e15ba27641a5a9f"
+  },
+  {
+    "runtimeFile": "art/missions/mission.three_beacons.m01.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.three_beacons.m01.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.three_beacons.m01.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "57f86fbb4607d6ed15703f0a82cf22e7c5d1465b086b470d7b920464e88426dd"
+  },
+  {
+    "runtimeFile": "art/missions/mission.three_beacons.m02.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.three_beacons.m02.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.three_beacons.m02.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "c6c9b2f7e2c0c55993da2d35d42c089a8ce3ca30ec12da8d75a0a16a04c6f78e"
+  },
+  {
+    "runtimeFile": "art/missions/mission.three_beacons.m03.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.three_beacons.m03.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.three_beacons.m03.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "a45b3fcd32205f183b3644fce98cfb18cf10ae6ca4c988d3d7d14cbe48bc802c"
+  },
+  {
+    "runtimeFile": "art/missions/mission.twelfth_hour.m01.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.twelfth_hour.m01.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m01.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "fb50928bda062bd7d2e34f3381e0efb10cd6b78571227f4e5f7a280597468635"
+  },
+  {
+    "runtimeFile": "art/missions/mission.twelfth_hour.m02.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.twelfth_hour.m02.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m02.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "5d7f81bc1d5f2ff8efa329c460adc64c1127872820af04f0137eb915850ac604"
+  },
+  {
+    "runtimeFile": "art/missions/mission.twelfth_hour.m03.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.twelfth_hour.m03.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m03.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "de9847caf4632c01b75002eb0c646f70bcb112a8a99c188ab2de3cf93cbfafc4"
+  },
+  {
+    "runtimeFile": "art/missions/mission.twelfth_hour.m04.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.twelfth_hour.m04.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m04.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "20ccb558da1ad0a3c90777b961a5eaaab46e882ea2c68994dbe5088df3151b5f"
+  },
+  {
+    "runtimeFile": "art/missions/mission.twelfth_hour.m05.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.twelfth_hour.m05.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m05.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "46c723ac3ea03abb4144ab813d3bf865eeb17df3f5bdd28143469f601ce700d8"
+  },
+  {
+    "runtimeFile": "art/missions/mission.twelfth_hour.m06.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.twelfth_hour.m06.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m06.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "b0b835ad55f120dc0de18995b54584cc5573213af9bd85d65efb5edbfe64070d"
+  },
+  {
+    "runtimeFile": "art/missions/mission.twelfth_hour.m07.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.twelfth_hour.m07.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.twelfth_hour.m07.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "30f518e4a0e29b07ef67b4fcf64875f893fbb74f318a36b8af045a086eb0c066"
+  },
+  {
+    "runtimeFile": "art/missions/mission.winter_oath.m01.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.winter_oath.m01.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m01.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "429bace7e6da6720d2f55a510b1d02017f0a5aa4b9e2512126915147bff98217"
+  },
+  {
+    "runtimeFile": "art/missions/mission.winter_oath.m02.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.winter_oath.m02.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m02.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "fcf8e8214279e6b5106fd465236ae10b4e13b5998aef8362a7cbe07166d42b49"
+  },
+  {
+    "runtimeFile": "art/missions/mission.winter_oath.m03.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.winter_oath.m03.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m03.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "51544eb982f6d5b7c518f9eacf5a2bff99158b08bc9cdd822954ccf5f3e73c51"
+  },
+  {
+    "runtimeFile": "art/missions/mission.winter_oath.m04.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.winter_oath.m04.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m04.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "25f9cc749eab584849371dcf765b9c2f8c238dfbac5e83b948d3e95704a580aa"
+  },
+  {
+    "runtimeFile": "art/missions/mission.winter_oath.m05.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.winter_oath.m05.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m05.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "842cad0a9c135fc09eddd364f00c6b95dc369e62411e85e7146604fd4c436623"
+  },
+  {
+    "runtimeFile": "art/missions/mission.winter_oath.m06.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.winter_oath.m06.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m06.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "575fc6d5a3da57848bda66da0779e06336e298ceeb4166b19dd55ccf1db9dfd0"
+  },
+  {
+    "runtimeFile": "art/missions/mission.winter_oath.m07.briefing.webp",
+    "deliveryFile": "reuse/art/missions/mission.winter_oath.m07.briefing.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/missions/mission.winter_oath.m07.briefing.webp",
+    "purpose": "Existing mission briefing painting; see mission-content.json for chapter mapping.",
+    "sha256": "e70382c5593f90678d42b9a2a845718f7b6ca13a9815e9665ef58dd2d16c9295"
+  },
+  {
+    "runtimeFile": "art/covers/campaign.lantern_road.cover.webp",
+    "deliveryFile": "reuse/art/covers/campaign.lantern_road.cover.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.lantern_road.cover.webp",
+    "purpose": "Existing campaign cover.",
+    "sha256": "f4e1a0d3b84009ecbf1501ee4086a08309fd0115c027148a2909d26eefe9e5bd"
+  },
+  {
+    "runtimeFile": "art/covers/campaign.new_fire.cover.webp",
+    "deliveryFile": "reuse/art/covers/campaign.new_fire.cover.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.new_fire.cover.webp",
+    "purpose": "Existing campaign cover.",
+    "sha256": "7777ce0f8628bc127730c8ff50dc320379a1e78a2effec664c685874d5737ded"
+  },
+  {
+    "runtimeFile": "art/covers/campaign.silent_oracle.cover.webp",
+    "deliveryFile": "reuse/art/covers/campaign.silent_oracle.cover.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.silent_oracle.cover.webp",
+    "purpose": "Existing campaign cover.",
+    "sha256": "64686e16244caf00b6df39925724f69cc6797a8afdf6322f034ed61d7a8e7ce3"
+  },
+  {
+    "runtimeFile": "art/covers/campaign.silver_branch.cover.webp",
+    "deliveryFile": "reuse/art/covers/campaign.silver_branch.cover.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.silver_branch.cover.webp",
+    "purpose": "Existing campaign cover.",
+    "sha256": "81b9fdc353dde1f8bdb16f45f5e9eb7790e38b10826be0596443e33e055cd3d0"
+  },
+  {
+    "runtimeFile": "art/covers/campaign.three_beacons.cover.webp",
+    "deliveryFile": "reuse/art/covers/campaign.three_beacons.cover.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.three_beacons.cover.webp",
+    "purpose": "Existing campaign cover.",
+    "sha256": "4fdefc0b993eecc24e7c28a02b183d7fae990441e8de9742f3dc642f476fe0bf"
+  },
+  {
+    "runtimeFile": "art/covers/campaign.twelfth_hour.cover.webp",
+    "deliveryFile": "reuse/art/covers/campaign.twelfth_hour.cover.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.twelfth_hour.cover.webp",
+    "purpose": "Existing campaign cover.",
+    "sha256": "d6c43907d5f331b720396f0387f31b99455c3d7eb6651b65dae6c3933f33ef30"
+  },
+  {
+    "runtimeFile": "art/covers/campaign.winter_oath.cover.webp",
+    "deliveryFile": "reuse/art/covers/campaign.winter_oath.cover.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/covers/campaign.winter_oath.cover.webp",
+    "purpose": "Existing campaign cover.",
+    "sha256": "9bcba3d294e6fe75a245f533ef210080325dcd3e4bd0fedeb3a9dc1efe0e6a9c"
+  },
+  {
+    "runtimeFile": "art/busts/hero.celtic.cathal.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.celtic.cathal.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.cathal.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "2c2126f3461f558c6cc48d72b900b16c3a85adca139966fef69d7464b0005ba0"
+  },
+  {
+    "runtimeFile": "art/busts/hero.celtic.dubhghall.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.celtic.dubhghall.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.dubhghall.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "97bca1a35cae1a51be8f4012a2607c233bbf30fe5ddc9532eb7329f354f4b5ef"
+  },
+  {
+    "runtimeFile": "art/busts/hero.celtic.fiachra.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.celtic.fiachra.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.fiachra.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "0e19ba420125010371f20c7892db5e0a0c2be6cf182d42f8ebb36cdf86a21d99"
+  },
+  {
+    "runtimeFile": "art/busts/hero.celtic.orla.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.celtic.orla.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.orla.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "56aed124534694354791c71fe4591062a6efd719e1c2bac2d40589ba30574c03"
+  },
+  {
+    "runtimeFile": "art/busts/hero.celtic.sadb.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.celtic.sadb.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.celtic.sadb.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "9916a4e474d876e15198b990b720b12247b1a9b440c0f9a07fcfd51f006b1758"
+  },
+  {
+    "runtimeFile": "art/busts/hero.egyptian.djedkhonsu.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.egyptian.djedkhonsu.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.djedkhonsu.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "89f80e662020403e897ec51d6bc90165683fb16ab4107af34f4c9c3ff513d8ff"
+  },
+  {
+    "runtimeFile": "art/busts/hero.egyptian.nebet.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.egyptian.nebet.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.nebet.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "ccada4aa6487b7d2155a4c6307935858f962c11b4f004b4b646f764d84863af9"
+  },
+  {
+    "runtimeFile": "art/busts/hero.egyptian.paser.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.egyptian.paser.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.paser.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "787cc26d282b9e201f5fbe89d8609a405d3b6460001139d5461374d60fa3adaf"
+  },
+  {
+    "runtimeFile": "art/busts/hero.egyptian.pawah.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.egyptian.pawah.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.pawah.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "dbaa59980b6423ab44e6becdde63d98c430efe13dd53879160f5c47425af9d8a"
+  },
+  {
+    "runtimeFile": "art/busts/hero.egyptian.seshet.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.egyptian.seshet.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.egyptian.seshet.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "df58b3071d5c0ad041677e7ecb243bc04f7855c476603d1e83f5763cb73ec566"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.alexios.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.alexios.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.alexios.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "85567b3d56fe7a791450ab33ae02d0becdcb6ca0e8030244b3ec7223aeb79bdd"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.doros.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.doros.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.doros.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "c73b9ca40e44e1bd2157a04e0cc7ea88a0ae790f7653d9668d98d0d79cad2590"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.ione.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.ione.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.ione.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "622f8e31948a31b772432131f218d6e3a97cd66a8991986bba134db0ff9d657c"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.melas.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.melas.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.melas.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "aeb662f1971ac1634a972a53b00b4ef111e579eaf12f1a6849705fe77ec67119"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.myrrine.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.myrrine.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.myrrine.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "c9477e4dbc42e7b2e903b35abcfa3daf8a8c050c7ed9a3281566e121d8f68f31"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.phaidon.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.phaidon.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.phaidon.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "3e6d0cc532fda32a61f89101965d9bda61af5ca906bd44550c6e540b8648178b"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.thaleia.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.thaleia.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.thaleia.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "c61611f7ebb3c2ce1aaad16eb469b8574b46634c8a424f6373b663fe3453aecf"
+  },
+  {
+    "runtimeFile": "art/busts/hero.greek.theron.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.greek.theron.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.greek.theron.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "e444505f42c922c1b916bcb5bcb35a93a6f7f9cf5c310f910e15a4fe6a9c8029"
+  },
+  {
+    "runtimeFile": "art/busts/hero.japanese.akane.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.japanese.akane.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.akane.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "55f2d5b290dfd3b036b001bc065c5be77aa3be7af9e09899dc420a84514866f3"
+  },
+  {
+    "runtimeFile": "art/busts/hero.japanese.genzo.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.japanese.genzo.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.genzo.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "2904bccfd6d2dba853a5f7c7b2594b7ff7e1dd086e279f4c923635b8d0e6064a"
+  },
+  {
+    "runtimeFile": "art/busts/hero.japanese.kurogane.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.japanese.kurogane.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.kurogane.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "d02eb7029cfd6fa09e52bca38b3e54ad808d1d0c644d40dced4e76c5b91398bd"
+  },
+  {
+    "runtimeFile": "art/busts/hero.japanese.shiro.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.japanese.shiro.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.shiro.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "11629616efedea08f0e896195faa6035c6e9b615544d01d2f546e4f85716cd85"
+  },
+  {
+    "runtimeFile": "art/busts/hero.japanese.yamikage.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.japanese.yamikage.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.japanese.yamikage.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "0e7913764b0095613fffb09008b541545532de923f6e2292dc3910c8e533f0ed"
+  },
+  {
+    "runtimeFile": "art/busts/hero.mesoamerican.chimal.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.mesoamerican.chimal.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.chimal.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "eeb7e2c77c810164b1bd42251baea561b68a769461bd6b736bb023028233f8f8"
+  },
+  {
+    "runtimeFile": "art/busts/hero.mesoamerican.itzel.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.mesoamerican.itzel.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.itzel.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "08c86aa181a01ddc0a2c9e927c8b75d6b62e5c37e692b42ca058f8b5dce2f3eb"
+  },
+  {
+    "runtimeFile": "art/busts/hero.mesoamerican.itztli.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.mesoamerican.itztli.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.itztli.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "4a03111e4cec83a58a283667b936401310fe8b625075a05e454ce75518f588c5"
+  },
+  {
+    "runtimeFile": "art/busts/hero.mesoamerican.tecuani.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.mesoamerican.tecuani.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.tecuani.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "aaaec6a6988f589882a446287468c98a7490ac9fe4800ab88c8819d3a8317ad3"
+  },
+  {
+    "runtimeFile": "art/busts/hero.mesoamerican.xoco.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.mesoamerican.xoco.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.mesoamerican.xoco.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "f8a7c27bd53d3ea279192bb21a6182f7758fef53672d73e1582114d72b92f2e3"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.barrow_captain.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.barrow_captain.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.barrow_captain.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "fd7df8dce0518794915e7c23d593b0c36ae618bf5d946e7ce6de5b15a0b114f1"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.bone_helm.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.bone_helm.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.bone_helm.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "685f7d85e723641263e7663b83ca39ebacabc5d8602ac03d42fa256ff0cbf757"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.eydis.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.eydis.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.eydis.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "317ea1aaae280792d4f5d6cd12376fb517ae37f569aeec317986b0199c1e2e16"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.grey_jarl.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.grey_jarl.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.grey_jarl.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "f9df75cb28d1f78bfda704e8da692a45f11f7d164f420c4beb64726a0f81d68d"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.hervor.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.hervor.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.hervor.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "1bb280266667be657d49e3d79d607c0166f1df80e695f06f1a66e4bc99feec41"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.hrafn.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.hrafn.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.hrafn.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "f2f736197157b984bee5babf6c1fccd0e328427b3493322c73f13881b704f1bc"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.jokul.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.jokul.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.jokul.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "9d4948451ee54966f061c5d23eccdcda2fa82177112aec4ea80b3605f0192c97"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.skeggi.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.skeggi.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.skeggi.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "ce50caec73d48bc67095e6dd3f7d971f4b15f28ec928069cb570934b3bb92b6a"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.svanhild.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.svanhild.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.svanhild.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "3b547050b36de796396ca198a45a326574bfce1d17db8eaf2775da6a4f7c1124"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.troll_wife.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.troll_wife.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.troll_wife.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "0edf0a4dc3892f578fad8d57573cbb4870342b6333efb42a24d0833bd159437b"
+  },
+  {
+    "runtimeFile": "art/busts/hero.norse.ulfhild.bust.webp",
+    "deliveryFile": "reuse/art/busts/hero.norse.ulfhild.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/hero.norse.ulfhild.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "99f95989e8a9fb4428aba2178b79c685f5ab4f50eb898afdce5ec1e12ed87d1b"
+  },
+  {
+    "runtimeFile": "art/busts/story.herald.bust.webp",
+    "deliveryFile": "reuse/art/busts/story.herald.bust.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/art/busts/story.herald.bust.webp",
+    "purpose": "Existing named story cast; preserve identity.",
+    "sha256": "00ec1422450e8ca7db20c1e3fc70eb752729ff373832224a0ef811b2b2fd156e"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/banner-greek.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/banner-greek.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/banner-greek.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "bc58da595585445c60058323384216a1dc4f1744fbbf9c8ed7122cc382fb617b"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/meeting-greek.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/meeting-greek.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/meeting-greek.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "3caf04b6ac2e4dc6175d8cad20c76f29a77e8617ecce8151d0ffd406d80cccfa"
+  },
+  {
+    "runtimeFile": "adventure-gui-v1.1.0/recruit-greek.png",
+    "deliveryFile": "reuse/adventure-gui-v1.1.0/recruit-greek.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/recruit-greek.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "7fe8de7531189b41471be45ea1f2e393cbf9b61c964b8b810d684017e1f66b6b"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/banner-norse.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/banner-norse.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/banner-norse.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "011eb5a1188ec43fa079d020ea117f2ffa117659848a4d66feeff6ccf0f50d3c"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/meeting-norse.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/meeting-norse.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/meeting-norse.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "a2d8b1c3707210f43c0f39b65a1e689616faac282a17c1c26a99e40d7bd2357d"
+  },
+  {
+    "runtimeFile": "adventure-gui-v1.1.0/recruit-norse.png",
+    "deliveryFile": "reuse/adventure-gui-v1.1.0/recruit-norse.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/recruit-norse.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "35b86ecec3f8af815fcf4a5c68de0d394713da7dcd382f565ef6217ea1575d2d"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/banner-egyptian.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/banner-egyptian.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/banner-egyptian.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "8b7ee0b91bf1225a3fdf616770bbde997612e7c31cd82c9fec0a0320d9a7b97d"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/meeting-egyptian.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/meeting-egyptian.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/meeting-egyptian.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "80bd30796e7091cabe5654bf3dd02200f961d52733a8b634e8f7deeca1d10441"
+  },
+  {
+    "runtimeFile": "adventure-gui-v1.1.0/recruit-egyptian.png",
+    "deliveryFile": "reuse/adventure-gui-v1.1.0/recruit-egyptian.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/recruit-egyptian.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "0180e0ef642d331b112aaa913c0fdd5e707cc0521c286d6bff2978572ab0d97b"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/banner-japanese.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/banner-japanese.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/banner-japanese.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "385425b689c7181119092b970d4bf6affb737950a4fa31db7e56c3bb0b12560f"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/meeting-japanese.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/meeting-japanese.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/meeting-japanese.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "6d130824d0b552186f06118000ef70cacb17e2ce1513c5ad3a44699b1accf543"
+  },
+  {
+    "runtimeFile": "adventure-gui-v1.1.0/recruit-japanese.png",
+    "deliveryFile": "reuse/adventure-gui-v1.1.0/recruit-japanese.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/recruit-japanese.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "1bcae8dda597ceed1d1ca76d23d5e567f4b46371ddc6822c99f6c8a3fa9d2fbe"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/banner-celtic.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/banner-celtic.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/banner-celtic.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "4b74da80b0d3cec821c607ff4eb3349cea5fe926f57d2350cc0390968371ff90"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/meeting-celtic.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/meeting-celtic.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/meeting-celtic.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "b7269571461b403c69b500f2607694028d43d402a757f880d899e0a0e43ff0f0"
+  },
+  {
+    "runtimeFile": "adventure-gui-v1.1.0/recruit-celtic.png",
+    "deliveryFile": "reuse/adventure-gui-v1.1.0/recruit-celtic.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/recruit-celtic.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "b6d827124deead4d55b69834167fd8678633d5a66cd1b808e3c568c282a1a111"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/banner-mesoamerican.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/banner-mesoamerican.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/banner-mesoamerican.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "88753251f929954945e4d8eee13cb48a0152f2d0e31de5edb6d627c25edd80f1"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/meeting-mesoamerican.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/meeting-mesoamerican.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/meeting-mesoamerican.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "fec944a1ef6c789b8b1fd4dcd17118f7590b0e469828d83767a096b3fc2ac9cb"
+  },
+  {
+    "runtimeFile": "adventure-gui-v1.1.0/recruit-mesoamerican.png",
+    "deliveryFile": "reuse/adventure-gui-v1.1.0/recruit-mesoamerican.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/adventure-gui-v1.1.0/recruit-mesoamerican.png",
+    "purpose": "Existing faction identity / encounter backdrop; use for matching habitat or story faction.",
+    "sha256": "b50efe5507dae0a1ba18083f4183a8fd92b6e9541c4b1f7641da9d25d3849d5f"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/intro-scroll.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/intro-scroll.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/intro-scroll.png",
+    "purpose": "Existing interface material; live text and controls remain separate.",
+    "sha256": "f73e39b98bfceb19cfa53b90e9d684f461c0d7fbaa5cc9d400bdb8a63a191d34"
+  },
+  {
+    "runtimeFile": "encounters-v1.1.0/reward-tray.png",
+    "deliveryFile": "reuse/encounters-v1.1.0/reward-tray.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/encounters-v1.1.0/reward-tray.png",
+    "purpose": "Existing interface material; live text and controls remain separate.",
+    "sha256": "4f76bcaec693c48b2255d7aab4f48e1de1a836f1f536d1b438adb8218ec7cbe3"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/chrome-round-socket.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/chrome-round-socket.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/chrome-round-socket.png",
+    "purpose": "Existing interface material; live text and controls remain separate.",
+    "sha256": "dac669aaaa5f5f3962374570e74cbc1c018d5bb1cc14f1b6bdb584f63f944757"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/chrome-header.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/chrome-header.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/chrome-header.png",
+    "purpose": "Existing interface material; live text and controls remain separate.",
+    "sha256": "5c6926dd86d4aec53bcb95cf163496d9e08792a56e575b59b6e12aa7231ea91f"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/icon-warning.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/icon-warning.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/icon-warning.png",
+    "purpose": "Existing interface material; live text and controls remain separate.",
+    "sha256": "0286e4dde68d9c2ace3ccfd9744310199abfe3f51863cf6d90f3432895622172"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/icon-bestiary.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/icon-bestiary.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/icon-bestiary.png",
+    "purpose": "Existing interface material; live text and controls remain separate.",
+    "sha256": "f57e1f6fd83783258d58688f4ee590b33441c0489fb544c41240126ddf3739ad"
+  },
+  {
+    "runtimeFile": "frontend-kit-v1.1.0/icon-records.png",
+    "deliveryFile": "reuse/frontend-kit-v1.1.0/icon-records.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/frontend-kit-v1.1.0/icon-records.png",
+    "purpose": "Existing interface material; live text and controls remain separate.",
+    "sha256": "114bf48766279476df3ed003323310496c80a8ea6b8ff9b13288025b89695036"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.ability.flight.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.ability.flight.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.ability.flight.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "653513dbef726737a761e5865db5fd5ede57becdcb0fe869152d64d58a171083"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.ability.charge.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.ability.charge.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.ability.charge.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "139821aa5703e90e223410ca06a6819926805ec959eef19ad912c5447f280fb8"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.ability.no_melee_penalty.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.ability.no_melee_penalty.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.ability.no_melee_penalty.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "3d1ebf78ae86390f4f7e4031f73d7b3c9592f2dca50a179e89c14d52e18a6f7c"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.ability.family_ward.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.ability.family_ward.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.ability.family_ward.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "a4a825bdda596757d98c158a65305cdfa66697790f09512e9804367e7105f91a"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.ability.charge_guard.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.ability.charge_guard.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.ability.charge_guard.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "e5feeb2fa018d0af2001f9a086321bb6fba9aba2bdcfa9e4f5b6f49eee966077"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.action.ability.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.action.ability.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.action.ability.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "60bec35bfa6625f43cc5bb0dfa4fcce4db623e8431052627224538fc2d1c428b"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.action.defend.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.action.defend.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.action.defend.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "cd8c87c1b1a02253963d2e78cc5a6d05618d8f0f8668f512da411b6591775c37"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.ui.journal.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.ui.journal.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.ui.journal.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "dabbddb1da85ef886aeb20505dc8966782b57b4a7ce65690c3697291760efc14"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.marker.quest.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.marker.quest.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.marker.quest.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "90f1cd65ee9635e1537ef4044bdebc9507360e3b047095f1a669812df432cce4"
+  },
+  {
+    "runtimeFile": "ui/icons/final/icon.marker.question.png",
+    "deliveryFile": "reuse/ui/icons/final/icon.marker.question.png",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/ui/icons/final/icon.marker.question.png",
+    "purpose": "Reusable generic ability or objective badge. Label the new exact ability in live text; the badge does not confer an old gameplay ability.",
+    "sha256": "1d99242264035943f6a1b720cc3b0a533110e1c6a464c8bf7906f625e3bac0c1"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.camp.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.camp.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.camp.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "d0bf19553e248ccfd0f1239ce7a7e37680f8e8a5bcbf1aff45158e798f58bb98"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.refuge.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.refuge.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.refuge.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "e5f678d854408daa27cf1caa7e27b3710a0e8e7773ff4e3104cf601f8a29703e"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.grove.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.grove.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.grove.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "a3731b993cda021d7cf7d55939eeedb272e605a538dce0bd271f4031e0d4e558"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.beacon.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.beacon.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.beacon.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "a9fd1dc1c686e520fe7b6a08da34812dffdf3cfeaeedbfc46d2e7ed85e5cce78"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.relay.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.relay.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.relay.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "be8fc0a55156f810485cf97e5651d5d6e8299c4ac651d7324030238aee9e90f1"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.prison.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.prison.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.prison.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "1610986104c0e63a78b866bce61b5f1bffd1a30cdfed5adc1724deb222d57b02"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.quest_hut.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.quest_hut.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.quest_hut.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "8e52265e5dac577b60f21d3ead5bdbbe176c9adad3ac9ce5a72ef18a874ec99d"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.watchtower.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.watchtower.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.watchtower.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "705bc635ea3066fa390304d29c04b932787af11d9f6113b606a69e34fc04f130"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.learning_stone.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.learning_stone.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.learning_stone.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "932b8416ae779ec21841cba3c3290818bb6100d777c33dea05bafd11e86cb0ff"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.quarry.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.quarry.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.quarry.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "380c7ae435a9467bb0c0874fda70da52df13d5b1b00220cb27e06439628503ed"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.gold_mine.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.gold_mine.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.gold_mine.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "d2fc51731c3169cf841ed5221e78870aed0958b8a8aa28871122c67c4e64c42c"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.sawmill.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.sawmill.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.sawmill.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "b63e230d245c5f2632f6d8dd6142208e604972000336c3ef4b3eb3a150088f24"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.crossing_bridge.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.crossing_bridge.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.crossing_bridge.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "7f8c64f94fbfb2ca83ae37d94a20f7148c74bb1d1a98712b4e8806c33af67a42"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.crossing_pass.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.crossing_pass.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.crossing_pass.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "2104fcbadc126484367aadade6bf986900912c8797be02bbd9ffcde290ff10e5"
+  },
+  {
+    "runtimeFile": "sprites/final/sites/map.site.relic.webp",
+    "deliveryFile": "reuse/sprites/final/sites/map.site.relic.webp",
+    "originalAbsolute": "C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/final/sites/map.site.relic.webp",
+    "purpose": "Existing map landmark reused for campaign functions; no replacement painting needed.",
+    "sha256": "bc7b47ed7fe86bc7dc20aad496cc054fbc2c0eb6404cefe541f7627e0d218719"
+  }
+]

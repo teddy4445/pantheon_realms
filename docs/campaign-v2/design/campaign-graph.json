@@ -1,0 +1,341 @@
+[
+  {
+    "campaignId": "three_beacons",
+    "hero": "Alexios",
+    "nodes": [
+      {
+        "id": "three_beacons_v2_m01",
+        "reviewNumber": 1,
+        "title": "The Silent Shore — Wings over the Pass",
+        "requiresAll": []
+      },
+      {
+        "id": "three_beacons_v2_m02",
+        "reviewNumber": 2,
+        "title": "The Storm Beacon",
+        "requiresAll": [
+          "three_beacons_v2_m01"
+        ]
+      }
+    ],
+    "chapterOrder": "Local chapters 1 → 2. Global missions 01–02. Two tutorial scenarios preserve the three existing beacon chapters."
+  },
+  {
+    "campaignId": "silent_oracle",
+    "hero": "Alexios",
+    "nodes": [
+      {
+        "id": "silent_oracle_v2_m01",
+        "reviewNumber": 3,
+        "title": "The Pilgrims’ Road",
+        "requiresAll": []
+      },
+      {
+        "id": "silent_oracle_v2_m02",
+        "reviewNumber": 4,
+        "title": "The Bronze Bull and the Eyrie",
+        "requiresAll": [
+          "silent_oracle_v2_m01"
+        ]
+      },
+      {
+        "id": "silent_oracle_v2_m03",
+        "reviewNumber": 5,
+        "title": "The Hall of Echoes",
+        "requiresAll": [
+          "silent_oracle_v2_m01"
+        ]
+      },
+      {
+        "id": "silent_oracle_v2_m04",
+        "reviewNumber": 6,
+        "title": "The Return of Melas",
+        "requiresAll": [
+          "silent_oracle_v2_m02",
+          "silent_oracle_v2_m03"
+        ]
+      },
+      {
+        "id": "silent_oracle_v2_m05",
+        "reviewNumber": 7,
+        "title": "The Labyrinth of Kerata",
+        "requiresAll": [
+          "silent_oracle_v2_m02",
+          "silent_oracle_v2_m03"
+        ]
+      },
+      {
+        "id": "silent_oracle_v2_m06",
+        "reviewNumber": 8,
+        "title": "The Spring of Kalliste",
+        "requiresAll": [
+          "silent_oracle_v2_m04",
+          "silent_oracle_v2_m05"
+        ]
+      }
+    ],
+    "chapterOrder": "Local 1 → {2 and 3 in either order} → {4 and 5 in either order} → 6. Both chapters in each pair are required. Global missions 03–08."
+  },
+  {
+    "campaignId": "winter_oath",
+    "hero": "Hervor",
+    "nodes": [
+      {
+        "id": "winter_oath_v2_m01",
+        "reviewNumber": 9,
+        "title": "Barrow Light",
+        "requiresAll": []
+      },
+      {
+        "id": "winter_oath_v2_m02",
+        "reviewNumber": 10,
+        "title": "The White Pack and the Valkyrie’s Price",
+        "requiresAll": [
+          "winter_oath_v2_m01"
+        ]
+      },
+      {
+        "id": "winter_oath_v2_m03",
+        "reviewNumber": 11,
+        "title": "Ice on the Sound",
+        "requiresAll": [
+          "winter_oath_v2_m02"
+        ]
+      },
+      {
+        "id": "winter_oath_v2_m04",
+        "reviewNumber": 12,
+        "title": "The Jarl of Hvitstrand",
+        "requiresAll": [
+          "winter_oath_v2_m02"
+        ]
+      },
+      {
+        "id": "winter_oath_v2_m05",
+        "reviewNumber": 13,
+        "title": "The Giants’ Refuge",
+        "requiresAll": [
+          "winter_oath_v2_m03",
+          "winter_oath_v2_m04"
+        ]
+      },
+      {
+        "id": "winter_oath_v2_m06",
+        "reviewNumber": 14,
+        "title": "Oathbreaker’s Hall",
+        "requiresAll": [
+          "winter_oath_v2_m05"
+        ]
+      }
+    ],
+    "chapterOrder": "Local 1 → 2 → {3 and 4 in either order} → 5 → 6. Ice on the Sound and The Jarl of Hvitstrand have order-aware briefings. Global missions 09–14."
+  },
+  {
+    "campaignId": "twelfth_hour",
+    "hero": "Seshet",
+    "nodes": [
+      {
+        "id": "twelfth_hour_v2_m01",
+        "reviewNumber": 15,
+        "title": "The Ember Dawn",
+        "requiresAll": []
+      },
+      {
+        "id": "twelfth_hour_v2_m02",
+        "reviewNumber": 16,
+        "title": "The Black Boar",
+        "requiresAll": [
+          "twelfth_hour_v2_m01"
+        ]
+      },
+      {
+        "id": "twelfth_hour_v2_m03",
+        "reviewNumber": 17,
+        "title": "The Drowned Library and the Sculptor’s Price",
+        "requiresAll": [
+          "twelfth_hour_v2_m01"
+        ]
+      },
+      {
+        "id": "twelfth_hour_v2_m04",
+        "reviewNumber": 18,
+        "title": "The Red Vizier",
+        "requiresAll": [
+          "twelfth_hour_v2_m02",
+          "twelfth_hour_v2_m03"
+        ]
+      },
+      {
+        "id": "twelfth_hour_v2_m05",
+        "reviewNumber": 19,
+        "title": "The Phoenix Rookery",
+        "requiresAll": [
+          "twelfth_hour_v2_m04"
+        ]
+      },
+      {
+        "id": "twelfth_hour_v2_m06",
+        "reviewNumber": 20,
+        "title": "The Twelfth Hour",
+        "requiresAll": [
+          "twelfth_hour_v2_m05"
+        ]
+      }
+    ],
+    "chapterOrder": "Local 1 → {2 and 3 in either order} → 4 → 5 → 6. The farmland inquiry and library expedition can swap. Global missions 15–20."
+  },
+  {
+    "campaignId": "lantern_road",
+    "hero": "Akane",
+    "nodes": [
+      {
+        "id": "lantern_road_v2_m01",
+        "reviewNumber": 21,
+        "title": "The Unlit Lantern",
+        "requiresAll": []
+      },
+      {
+        "id": "lantern_road_v2_m02",
+        "reviewNumber": 22,
+        "title": "The Boar Lord and the Crow Monastery",
+        "requiresAll": [
+          "lantern_road_v2_m01"
+        ]
+      },
+      {
+        "id": "lantern_road_v2_m03",
+        "reviewNumber": 23,
+        "title": "The Spirit Sea",
+        "requiresAll": [
+          "lantern_road_v2_m02"
+        ]
+      },
+      {
+        "id": "lantern_road_v2_m04",
+        "reviewNumber": 24,
+        "title": "The Iron Daimyo",
+        "requiresAll": [
+          "lantern_road_v2_m02"
+        ]
+      },
+      {
+        "id": "lantern_road_v2_m05",
+        "reviewNumber": 25,
+        "title": "The Kirin Meadow",
+        "requiresAll": [
+          "lantern_road_v2_m03",
+          "lantern_road_v2_m04"
+        ]
+      },
+      {
+        "id": "lantern_road_v2_m06",
+        "reviewNumber": 26,
+        "title": "The Last Torii",
+        "requiresAll": [
+          "lantern_road_v2_m05"
+        ]
+      }
+    ],
+    "chapterOrder": "Local 1 → 2 → {3 and 4 in either order} → 5 → 6. Spirit Sea and Iron Daimyo have order-aware evidence dialogue. Global missions 21–26."
+  },
+  {
+    "campaignId": "silver_branch",
+    "hero": "Orla",
+    "nodes": [
+      {
+        "id": "silver_branch_v2_m01",
+        "reviewNumber": 27,
+        "title": "The Cold Hearth",
+        "requiresAll": []
+      },
+      {
+        "id": "silver_branch_v2_m02",
+        "reviewNumber": 28,
+        "title": "The Iron-Bristled Boar and the Water-Horse Bargain",
+        "requiresAll": [
+          "silver_branch_v2_m01"
+        ]
+      },
+      {
+        "id": "silver_branch_v2_m03",
+        "reviewNumber": 29,
+        "title": "The Hall Beneath the Waves",
+        "requiresAll": [
+          "silver_branch_v2_m02"
+        ]
+      },
+      {
+        "id": "silver_branch_v2_m04",
+        "reviewNumber": 30,
+        "title": "The High Seat",
+        "requiresAll": [
+          "silver_branch_v2_m02"
+        ]
+      },
+      {
+        "id": "silver_branch_v2_m05",
+        "reviewNumber": 31,
+        "title": "The Stags’ Wood",
+        "requiresAll": [
+          "silver_branch_v2_m03",
+          "silver_branch_v2_m04"
+        ]
+      },
+      {
+        "id": "silver_branch_v2_m06",
+        "reviewNumber": 32,
+        "title": "The Door of the Mound",
+        "requiresAll": [
+          "silver_branch_v2_m05"
+        ]
+      }
+    ],
+    "chapterOrder": "Local 1 → 2 → {3 and 4 in either order} → 5 → 6. The charters can inform the assembly or later test its promises. Global missions 27–32."
+  },
+  {
+    "campaignId": "new_fire",
+    "hero": "Itzel",
+    "nodes": [
+      {
+        "id": "new_fire_v2_m01",
+        "reviewNumber": 33,
+        "title": "The Cold Altar and the Black Jaguars",
+        "requiresAll": []
+      },
+      {
+        "id": "new_fire_v2_m02",
+        "reviewNumber": 34,
+        "title": "The House of Eagles and the House of Bats",
+        "requiresAll": [
+          "new_fire_v2_m01"
+        ]
+      },
+      {
+        "id": "new_fire_v2_m03",
+        "reviewNumber": 35,
+        "title": "The Lord of Itzcalli",
+        "requiresAll": [
+          "new_fire_v2_m02"
+        ]
+      },
+      {
+        "id": "new_fire_v2_m04",
+        "reviewNumber": 36,
+        "title": "The Fire Mountain",
+        "requiresAll": [
+          "new_fire_v2_m02"
+        ]
+      },
+      {
+        "id": "new_fire_v2_m05",
+        "reviewNumber": 37,
+        "title": "The Smoking Gate",
+        "requiresAll": [
+          "new_fire_v2_m03",
+          "new_fire_v2_m04"
+        ]
+      }
+    ],
+    "chapterOrder": "Local 1 → 2 → {3 and 4 in either order} → 5. The political contest and mountain rescue can swap; neither requires the other's reward. Global missions 33–37."
+  }
+]

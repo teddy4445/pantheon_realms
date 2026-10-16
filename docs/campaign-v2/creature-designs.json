@@ -1,0 +1,44 @@
+[
+  {
+    "id": "pegasus",
+    "name": "Pegasus",
+    "description": "A noble ivory-white winged horse, compact strong equine anatomy, two feathered ivory wings folded partly upward, flowing short silver mane, dark hooves and alert intelligent eyes, subtle pale-gold feather tips. No saddle, rider, armor, jewelry or faction insignia.",
+    "habitat": "a wild high meadow with a pale limestone cliff and spring",
+    "role": "flying escort"
+  },
+  {
+    "id": "root_runner",
+    "name": "Root-Runner",
+    "description": "A large agile russet-red squirrel inspired by the messenger Ratatoskr, four animal paws, tufted ears, expressive amber eyes, cream chest, magnificently curled bushy tail, a tiny natural twig caught in its fur. Clearly a squirrel, not a humanoid or fox, no clothing, satchel, writing, armor or runic jewelry.",
+    "habitat": "an ancient knotted tree-root hollow among mossy forest boulders",
+    "role": "scout and distraction"
+  },
+  {
+    "id": "serpopard",
+    "name": "Serpopard",
+    "description": "An elegant powerful ochre-spotted leopard-like quadruped with an extraordinarily long muscular sinuous feline neck, small leopard head, four feline legs, long feline tail, dark ear backs, tawny coat, subtly teal reflective eyes. The neck is continuous animal anatomy, not a separate snake. No wings, horns, armor, human parts or jewelry.",
+    "habitat": "a shaded sandstone den at the border of dry desert and a river",
+    "role": "long-reach controller"
+  },
+  {
+    "id": "baku",
+    "name": "Baku",
+    "description": "A benevolent but sturdy nightmare-eating Baku, a tapir-like fantasy quadruped with short curved elephant trunk, rounded ears, deep indigo-blue shaggy body, cream muzzle and mane, four powerful paws, a few restrained warm gold fur streaks, sleepy wise eyes. Animal-like and dignified, not cute chibi, not an armored elephant, no ornate harness, no glowing particle cloud.",
+    "habitat": "a quiet cedar grove with moss-covered stones and a small incense bowl",
+    "role": "fear-cleansing support"
+  },
+  {
+    "id": "afanc",
+    "name": "Afanc",
+    "description": "A low heavy Welsh-inspired freshwater beast combining a broad beaver-like muzzle, dark moss-brown fur on shoulders, ridged olive reptilian back, four squat webbed clawed feet, broad flattened scaly tail. Distinct beaver-crocodile animal silhouette, intelligent eyes, no horns, no spikes, no armor, no giant tusks, not simply a crocodile.",
+    "habitat": "a freshwater reed pool with a low rock burrow and gnawed driftwood",
+    "role": "slow defensive guard"
+  },
+  {
+    "id": "ahuitzotl",
+    "name": "Ahuitzotl",
+    "description": "A sleek dark teal-black amphibious otter-like quadruped with four webbed paws, alert rounded ears, pale turquoise throat, short wet-looking fur, long supple tail ending in one unmistakable small five-fingered grasping hand. The hand is at tail tip only; no human torso, no extra limbs, no feathers, no armor or gold jewelry.",
+    "habitat": "a clear blue cenote spring among pale limestone and tropical ferns",
+    "role": "ambush and limited pull"
+  }
+]

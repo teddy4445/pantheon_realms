@@ -16,6 +16,7 @@ import { RejectionError, Tx, type Rejection, type RulesContext } from './tx';
 import { commitEndTurn } from '../systems/turn';
 import {
   commitConstruction,
+  commitRecruitBatch,
   commitRecruitment,
   commitTrade,
   commitTransfer,
@@ -26,10 +27,11 @@ import { commitBuySpellbook, commitEquip, commitHireHero, commitLevelUpChoice, c
 import { commitCastAdventureSpell } from '../systems/magic';
 import { commitArtifactPurchase, commitOffering, commitTraining, refreshTownShops } from '../systems/services';
 import { commitDivineGift } from '../systems/gifts';
-import { commitCampRecruitment, commitResolveMapEvent } from '../systems/world';
+import { commitCampRecruitment, commitCampTraining, commitResolveMapEvent } from '../systems/world';
 import { commitCompleteQuestHut, commitOpenChest } from '../systems/sites';
 import { commitBattleIntervention, commitIntervention } from '../systems/interventions';
 import { evaluateStory } from '../systems/story';
+import { commitOperateSluice, evaluateTimers, withdrawPatrols } from '../systems/pressure';
 import { commitAssignCovenant, commitSelectGod } from '../systems/divine';
 import { commitClaimObjective, evaluateMissionOutcome, evaluateObjectives } from '../systems/quests';
 import {
@@ -47,6 +49,7 @@ import {
 } from '../systems/battle/actions';
 import { commitBattleConfirmDeployment, commitBattleDeploy, commitBattleMergeDefenders, commitBattleSelectDefenders } from '../systems/battle/deployment';
 import { commitBattleAimCatapult } from '../systems/battle/siege';
+import { MANUAL_BATTLE_MESSAGE, automationForbidden } from '../systems/battle/policy';
 
 export type CommandResult =
   | { readonly ok: true; readonly state: MatchState; readonly events: readonly GameEvent[] }
@@ -70,6 +73,8 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
   const isBattle = BATTLE_COMMAND_KINDS.has(command.kind);
   if (isBattle) {
     if (!state.battle) return fail('no_battle', 'No battle in progress');
+    // Campaign battles are fought by hand: automation never orders a human side (handoff 2026-10-15).
+    if (command.automated && automationForbidden(state)) return fail('manual_battle_required', MANUAL_BATTLE_MESSAGE);
   } else {
     if (state.battle) return fail('battle_in_progress', 'Resolve the battle first');
     if (command.actorPlayerId !== state.activePlayerId) return fail('not_your_turn', 'It is not your turn');
@@ -85,7 +90,13 @@ export function processCommand(ctx: RulesContext, state: MatchState, command: Ga
   try {
     dispatch(tx, command);
     updateGates(tx);
+    // Campaign v2 pressure: patrols whose home camp fell withdraw; announced deadlines advance.
+    withdrawPatrols(tx);
     evaluateObjectives(tx);
+    evaluateTimers(tx);
+    // A flag set just now by an objective reward or an expired deadline (an ice road, a
+    // tide) opens its gate within the same command, not on the next one.
+    updateGates(tx);
     evaluateMissionOutcome(tx);
     evaluateStory(tx);
     tx.finalize();
@@ -125,7 +136,11 @@ function dispatch(tx: Tx, c: GameCommand): void {
     case 'BuyArtifact':
       return commitArtifactPurchase(tx, c.townId, c.heroId, c.index, c.shop ?? 'merchant');
     case 'RecruitFromCamp':
-      return commitCampRecruitment(tx, c.heroId, c.siteId, c.quantity);
+      return commitCampRecruitment(tx, c.heroId, c.siteId, c.quantity, c.creatureId);
+    case 'TrainAtCamp':
+      return commitCampTraining(tx, c.heroId, c.siteId, c.fromCreatureId, c.quantity, c.slot);
+    case 'OperateSluice':
+      return commitOperateSluice(tx, c.heroId, c.siteId);
     case 'ResolveMapEvent':
       return commitResolveMapEvent(tx, c.heroId, c.siteId, c.optionIndex);
     case 'OpenChest':
@@ -140,6 +155,8 @@ function dispatch(tx: Tx, c: GameCommand): void {
       return commitBattleIntervention(tx, c.interventionId, c.targetId ?? null);
     case 'RecruitUnits':
       return commitRecruitment(tx, c.townId, c.creatureId, c.quantity, c.destination);
+    case 'RecruitBatch':
+      return commitRecruitBatch(tx, c.townId, c.items, c.destination);
     case 'UpgradeStack':
       return commitUpgrade(tx, c.townId, c.army, c.slot, c.quantity);
     case 'TransferStack':

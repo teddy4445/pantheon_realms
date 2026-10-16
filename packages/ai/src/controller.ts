@@ -18,6 +18,7 @@ import {
   type PlayerId,
   type RulesContext,
   type BattleSideId,
+  automationForbidden,
 } from '@pr/rules';
 import { buildObservation } from './observation';
 import { strategicCandidates } from './strategic';
@@ -35,10 +36,11 @@ export function aiCommandId(prefix: string, state: MatchState, attempt: number):
 }
 
 const attempts = new WeakMap<MatchState, number>();
-function submit(ctx: RulesContext, state: MatchState, actor: PlayerId, payload: CommandPayload, prefix: string) {
+function submit(ctx: RulesContext, state: MatchState, actor: PlayerId, payload: CommandPayload, prefix: string, automated = false) {
   const n = (attempts.get(state) ?? 0) + 1;
   attempts.set(state, n);
-  const command = { ...payload, commandId: aiCommandId(prefix, state, n), expectedRevision: state.revision, actorPlayerId: actor } as GameCommand;
+  const base = { ...payload, commandId: aiCommandId(prefix, state, n), expectedRevision: state.revision, actorPlayerId: actor };
+  const command = (automated ? { ...base, automated: true } : base) as GameCommand;
   return { command, result: processCommand(ctx, state, command) };
 }
 
@@ -65,18 +67,33 @@ export function isAiControlledBattleTurn(state: MatchState): boolean {
   return !!side && !!state.battle && state.battle.sides[side].controller === 'ai';
 }
 
-/** One tactical AI action for the active stack (used for AI sides and player auto-combat). */
-export function stepBattleAI(catalog: ContentCatalog, state: MatchState): AIStepResult {
+export interface BattleAIOptions {
+  /**
+   * Test drivers and the campaign simulator stand in for the player: their
+   * commands are the player's own orders, not automation. Game code never sets
+   * this (handoff 2026-10-15: campaign battles are fought by hand).
+   */
+  readonly playerSimulation?: boolean;
+}
+
+/**
+ * One tactical AI action for the active stack (AI sides, and player auto-combat
+ * outside campaigns). Commands are marked `automated`, so the rules refuse them
+ * for a human side of a campaign battle (`manual_battle_required`).
+ */
+export function stepBattleAI(catalog: ContentCatalog, state: MatchState, opts: BattleAIOptions = {}): AIStepResult {
   const ctx = { catalog };
   const actor = battleActor(state);
+  const automated = !opts.playerSimulation;
+  if (automated && automationForbidden(state)) return { state, events: [], command: null };
   const payload = chooseBattleAction(catalog, state);
   if (!actor || !payload) return { state, events: [], command: null };
-  const first = submit(ctx, state, actor, payload, 'ai-battle');
+  const first = submit(ctx, state, actor, payload, 'ai-battle', automated);
   if (first.result.ok) return { state: first.result.state, events: first.result.events, command: first.command };
   // Fallback: a legal Defend always exists for the active stack.
   const stackId = state.battle!.activeStackId;
   if (!stackId) throw new Error(`Tactical AI could not act: ${first.result.rejection.message}`);
-  const fb = submit(ctx, state, actor, { kind: 'BattleDefend', stackId }, 'ai-battle');
+  const fb = submit(ctx, state, actor, { kind: 'BattleDefend', stackId }, 'ai-battle', automated);
   if (fb.result.ok) return { state: fb.result.state, events: fb.result.events, command: fb.command };
   throw new Error(`Tactical AI could not act: ${first.result.rejection.message}`);
 }

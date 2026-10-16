@@ -342,20 +342,28 @@ const M01: MissionDefinition = {
 // ---------------------------------------------------------------------------
 
 /**
- * Played in order (owner decision 2026-10-01): pass → nest → covenant → god →
- * Windcrest Griffins → beacon. The ridge (mountain column q = 13) is solid except
- * the guarded pass, so the far side cannot be reached first; a god chosen or
- * Griffins raised ahead of their step count as soon as that step opens.
+ * Owner change 2026-10-14: the mission is played in Passhaven alone. Its one
+ * objective is to train two Griffins into Windcrest Griffins; the Griffin riders
+ * then carry the fire to the pass beacon, and the mission is won. Passhaven
+ * already holds the Griffin covenant, so nothing outside the town is needed.
+ * The ridge, its guards, the nesting ground, the watchtower and the mines stay
+ * on the map as optional ground with no objective (the template and its golden
+ * map are unchanged). Earlier steps (pass → nest → covenant claim → god →
+ * Windcrest Griffins in the army → beacon, owner decision 2026-10-01) were
+ * removed; the Athena/Ares choice stays open here and in Mission 3.
  */
 const M02_OBJECTIVES: ObjectiveDefinition[] = [
-  { id: 'm02_watchtower', title: 'The Old Watchtower (optional)', description: 'Visit the Old Watchtower to learn where the Griffin nesting ground lies.', category: 'optional', initialStatus: 'active', condition: { type: 'site_visited', siteId: 'm02_watchtower' }, markerSiteId: 'm02_watchtower' },
-  { id: 'm02_pass_guard', title: 'Break the pass', description: 'Defeat the {army:hoplite=10,peltast=6} holding the ridge pass.', category: 'primary', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm02_pass_guard' }, markerSiteId: 'm02_pass_guard' },
-  { id: 'm02_nest_guard', title: 'Free the nesting ground', description: 'Defeat the raiders ({army:peltast=4,cavalry=2}) occupying the Griffin nesting ground.', category: 'primary', initialStatus: 'locked', requires: ['m02_pass_guard'], condition: { type: 'site_cleared', siteId: 'm02_nest_guard' }, markerSiteId: 'm02_nest_guard' },
-  { id: 'm02_claim_covenant', title: 'Claim the Griffin covenant', description: 'Claim the freed nest’s covenant in the journal. It can then be assigned to Passhaven.', category: 'primary', initialStatus: 'locked', condition: { type: 'claim', after: ['m02_nest_guard'] }, reward: { entitlementIds: ['covenant.griffin.m02'] } },
-  { id: 'm02_pantheon', title: 'Choose a patron’s ally', description: 'Build Temple II and commit to Athena or Ares (20 Favor, irreversible).', category: 'primary', initialStatus: 'locked', requires: ['m02_claim_covenant'], condition: { type: 'player_has_minor_god' }, hint: 'Open the Pantheon screen once Temple II stands in Passhaven. A god chosen earlier counts as soon as this step opens.' },
-  { id: 'm02_windcrest', title: 'Wings for the road', description: 'Assign the Griffin covenant, build the Aerie and Windcrest Aerie, and have at least 2 Windcrest Griffins in Alexios’s army.', category: 'primary', initialStatus: 'locked', requires: ['m02_pantheon'], condition: { type: 'hero_army_contains', heroId: 'alexios', creatureId: 'windcrest_griffin', count: 2 }, live: true, hint: 'Windcrest Griffins must be recruited or trained in Passhaven with Alexios present.' },
-  { id: 'm02_restore', title: 'Light the second beacon', description: 'At the second beacon, with a god chosen and Windcrest Griffins in the army, pay 250 Gold and 1 Crystal.', category: 'primary', initialStatus: 'locked', requires: ['m02_windcrest'], condition: { type: 'site_activated', siteId: 'm02_beacon' }, markerSiteId: 'm02_beacon' },
-  { id: 'm02_sentinel_cache', title: 'Sentinel cache (optional)', description: 'Defeat the {army:centaur_sentinel=3} for 750 Gold and 5 Wood.', category: 'optional', initialStatus: 'active', condition: { type: 'site_cleared', siteId: 'm02_sentinel_cache' }, markerSiteId: 'm02_sentinel_cache' },
+  {
+    id: 'm02_train_griffins',
+    title: 'Train 2 Griffins',
+    description: 'In Passhaven, build the Griffin Aerie and then the Windcrest Aerie, recruit Griffins, and train at least 2 of them into Windcrest Griffins.',
+    category: 'primary',
+    initialStatus: 'active',
+    condition: { type: 'counter_at_least', counter: 'trained:griffin', value: 2 },
+    reward: { questXp: 2000 },
+    completesMission: true,
+    hint: 'One building a day: the Griffin Aerie first, the Windcrest Aerie the next day. Recruit Griffins, then open Train in the town. Troops in Alexios’s army can be trained only while he stands in Passhaven.',
+  },
 ];
 
 const M02_SITES: SiteDefinition[] = [
@@ -364,7 +372,7 @@ const M02_SITES: SiteDefinition[] = [
   resSite('m02_quarry', 'm02_quarry', 6, 12, 'quarry'),
   resSite('m02_crystal', 'm02_crystal', 19, 13, 'crystal_deposit'),
   { id: 'm02_cache', anchorId: 'm02_cache', coord: { q: 8, r: 11 }, name: 'Traveler’s Cache', description: 'An abandoned supply cache.', kind: { type: 'pickup', reward: { resources: { gold: 500 } } } },
-  { id: 'm02_watchtower', anchorId: 'm02_watchtower', coord: { q: 8, r: 5 }, name: 'Old Watchtower', description: 'From its top, the nesting ground can be marked on the map.', kind: { type: 'watchtower', revealSiteIds: ['m02_nest_guard'] }, objectiveIds: ['m02_watchtower'] },
+  { id: 'm02_watchtower', anchorId: 'm02_watchtower', coord: { q: 8, r: 5 }, name: 'Old Watchtower', description: 'From its top, the nesting ground can be marked on the map.', kind: { type: 'watchtower', revealSiteIds: ['m02_nest_guard'] } },
   {
     id: 'm02_sentinel_cache',
     anchorId: 'm02_sentinel_cache',
@@ -373,7 +381,6 @@ const M02_SITES: SiteDefinition[] = [
     description: 'Centaur Sentinels guard a forgotten store.',
     kind: { type: 'landmark', landmark: 'grove' },
     guard: { label: 'Centaur Sentinels', army: [{ creatureId: 'centaur_sentinel', count: 3 }], reward: { resources: { gold: 750, wood: 5 } }, battlefield: 'grove' },
-    objectiveIds: ['m02_sentinel_cache'],
   },
   {
     id: 'm02_pass_guard',
@@ -391,14 +398,13 @@ const M02_SITES: SiteDefinition[] = [
       reward: { resources: { gold: 750, favor: 5 } },
       battlefield: 'ridge_pass',
     },
-    objectiveIds: ['m02_pass_guard'],
   },
   {
     id: 'm02_nest_guard',
     anchorId: 'm02_nest_guard',
     coord: { q: 20, r: 6 },
     name: 'Griffin Nesting Ground',
-    description: 'Raiders have occupied the cliff ledges where the Griffins nest.',
+    description: 'Raiders have occupied the cliff ledges where the wild Griffins nest.',
     kind: { type: 'landmark', landmark: 'nest' },
     guard: {
       label: 'Nest raiders',
@@ -410,27 +416,6 @@ const M02_SITES: SiteDefinition[] = [
       battlefield: 'plateau',
     },
     markerHiddenUntilRevealed: true,
-    objectiveIds: ['m02_nest_guard'],
-  },
-  {
-    id: 'm02_beacon',
-    anchorId: 'm02_beacon',
-    coord: { q: 22, r: 10 },
-    name: 'Pass Beacon',
-    description: 'The second beacon, high above the pass.',
-    kind: {
-      type: 'activation',
-      label: 'beacon',
-      cost: { gold: 250, crystal: 1 },
-      requirements: [
-        { type: 'objective_completed', objectiveId: 'm02_pantheon' },
-        { type: 'objective_completed', objectiveId: 'm02_windcrest' },
-      ],
-      reward: { questXp: 2000 },
-      completesMission: true,
-      confirmText: 'Light the Pass Beacon? This completes Wings over the Pass.',
-    },
-    objectiveIds: ['m02_restore'],
   },
 ];
 
@@ -441,26 +426,29 @@ const M02: MissionDefinition = {
   order: 2,
   name: 'Wings over the Pass',
   subtitle: 'Mission 2 — Ally',
-  summary: 'The second beacon stands beyond the raiders. Free the Griffins’ nesting ground, choose Athena or Ares, and raise Windcrest Griffins to light the pass.',
+  summary: 'The Griffins have returned to the cliffs above Passhaven. Build their aerie, train two Windcrest Griffins, and their riders will carry the fire to the pass beacon.',
   mapTemplateId: 'three_beacons_m02_v1',
   soundscape: 'high_pass',
-  targetPlaytime: '15–25 minutes (target, unmeasured)',
-  newDecisions: ['Build prerequisites', 'Choose a god', 'Obtain and upgrade Griffins'],
+  targetPlaytime: '5–10 minutes (target, unmeasured)',
+  newDecisions: ['Build prerequisites', 'Upgrade a dwelling', 'Train a new creature'],
   xpCap: 6199,
   xpCapLevel: 5,
   briefing: [
-    P('Ione', 'The second beacon stands beyond the raiders. The Griffins once kept that road safe. Free their nesting ground, and they may stand with us again.'),
-    P('Alexios', 'An alliance, not a trophy. Show us what they need.'),
+    P('Ione', 'The Griffins have come back to the cliffs above Passhaven. They remember the oath this town kept with them — the covenant is already ours.'),
+    P('Ione', 'Raise an aerie, then train two of their young as Windcrest Griffins. They can carry the fire to the pass beacon faster than any column could march.'),
+    P('Alexios', 'Then we build first and march later. Show me what they need.'),
   ],
-  victory: [P('Ione', 'The lights can speak again. But the great beacon has no lens. Melas carried it to the storm plateau.')],
+  victory: [
+    P('Ione', 'Two Windcrest Griffins carried the fire over the ridge. The pass beacon burns again.'),
+    P('Ione', 'But the great beacon has no lens. Melas carried it to the storm plateau.'),
+  ],
   storyScenes: [
     {
       id: 'm02_griffin_shrine',
       trigger: { type: 'site_cleared', siteId: 'm02_nest_guard' },
       lines: [
         P('Ione', 'This is the Griffins’ shrine — older than Passhaven, older than the road. The raiders camped on it as if it were only stone.'),
-        P('Ione', 'Griffins do not serve. They keep oaths. Claim their covenant in your journal, and Passhaven may raise an aerie where they will be welcome.'),
-        P('Alexios', 'Then we will keep our side of it.'),
+        P('Alexios', 'Then the Griffins will know who cleared it.'),
       ],
     },
     {
@@ -495,7 +483,7 @@ const M02: MissionDefinition = {
       archetypeId: 'greek_polis',
       buildings: ['village_hall', 'town_hall', 'tavern', 'fort', 'barracks', 'peltast_range', 'market', 'workshop', 'temple_1', 'sanctum_1'],
       population: { hoplite: 14, peltast: 9 },
-      covenants: [],
+      covenants: ['griffin'],
     },
     hero: {
       heroId: 'alexios',
@@ -520,8 +508,9 @@ const M02: MissionDefinition = {
   objectives: M02_OBJECTIVES,
   hostileHeroes: [],
   helpTopics: [
-    { id: 'covenants', title: 'Covenants', text: 'A covenant is a one-time entitlement. Assign it permanently to a town, then build and pay for the dwelling it unlocks.' },
-    { id: 'gods', title: 'Divine commitments', text: 'Committing to a god is player-wide and irreversible. Athena and Ares exclude each other.' },
+    { id: 'covenants', title: 'Covenants', text: 'Passhaven already holds the Griffin covenant, so its Griffin Aerie can be built. Elsewhere a covenant is a one-time entitlement: assign it permanently to a town, then build and pay for the dwelling it unlocks.' },
+    { id: 'dwelling_upgrade', title: 'Upgraded dwellings', text: 'The Windcrest Aerie unlocks Windcrest Griffins. Griffins you already have can then be trained for the price difference; training uses no population.' },
+    { id: 'gods', title: 'Divine commitments', text: 'Committing to a god is player-wide and irreversible. Athena and Ares exclude each other. The choice is optional in this mission.' },
     { id: 'local_recruitment', title: 'Local recruitment', text: 'Recruits and training reach a hero only when the hero stands in the town.' },
   ],
   protectedHeroFailure: true,
@@ -816,7 +805,7 @@ export const THREE_BEACONS: CampaignDefinition = {
     'A storm has extinguished the three signal beacons protecting the coast of Asterion. Lead Alexios through three short linked missions to reconnect the coast before its settlements abandon one another.',
   pantheonId: 'greek',
   startingGodOptions: ['zeus'],
-  startingGodNote: 'Zeus is the fixed patron of this campaign. Your first minor-god choice — Athena or Ares — comes in Mission 2.',
+  startingGodNote: 'Zeus is the fixed patron of this campaign. Your first minor-god choice — Athena or Ares — opens in Mission 2, once Temple II stands; it is never required.',
   missionIds: [M01.id, M02.id, M03.id],
   heroDefinitionId: 'alexios',
   carryoverPolicy: [

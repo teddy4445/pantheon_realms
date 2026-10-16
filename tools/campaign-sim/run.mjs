@@ -2,15 +2,17 @@
 /**
  * Campaign simulation runner (development tool; never packaged in the game).
  *
- *   npm run campaign-sim                          # all 38 campaign missions at Story, Normal and Hard, 20 journeys each
+ *   npm run campaign-sim                          # all 45 campaign missions at Story, Normal and Hard, 20 journeys each
  *   npm run campaign-sim -- --runs 40 --jobs 4
  *   npm run campaign-sim -- --campaigns winter_oath,new_fire --difficulty hard --max-day 70
  *
  * Options:
- *   --campaigns a,b   campaign IDs (default: three_beacons, winter_oath, twelfth_hour, lantern_road, silver_branch, new_fire)
+ *   --campaigns a,b   campaign IDs (default: three_beacons, silent_oracle, winter_oath, twelfth_hour, lantern_road, silver_branch, new_fire)
  *   --difficulty a,b  campaign levels: story, normal, hard, written (the missions as authored) (default: story,normal,hard)
  *   --check           exit with code 1 when a level misses its target band (see TARGETS)
  *   --runs N          journeys per campaign (default 20); each journey plays every mission once
+ *   --content 2       play the content-v2 chapter graphs (campaign expansion 2026-10-15): even runs take the
+ *                     first available chapter at every choice, odd runs the last, so both orders are measured
  *   --max-day N       a mission not won by this day counts as a timeout (default 56)
  *   --jobs N          parallel worker processes (default: CPU count, max 8)
  *   --out DIR         report folder (default: balance-reports/)
@@ -31,7 +33,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const DEFAULT_CAMPAIGNS = ['three_beacons', 'winter_oath', 'twelfth_hour', 'lantern_road', 'silver_branch', 'new_fire'];
+const DEFAULT_CAMPAIGNS = ['three_beacons', 'silent_oracle', 'winter_oath', 'twelfth_hour', 'lantern_road', 'silver_branch', 'new_fire'];
 const NAMES = { winter_oath: 'The Winter Oath', twelfth_hour: 'The Twelfth Hour', lantern_road: 'The Lantern Road', silver_branch: 'The Silver Branch', new_fire: 'The New Fire', three_beacons: 'The Three Beacons' };
 
 /** Short names for the campaign levels; `written` = the missions as authored (no level). */
@@ -53,6 +55,7 @@ function parseArgs(argv) {
         });
     }
     else if (a === '--runs') o.runs = Number(next());
+    else if (a === '--content') o.content = Number(next()) === 2 ? 2 : 1;
     else if (a === '--max-day') o.maxDay = Number(next());
     else if (a === '--jobs') o.jobs = Number(next());
     else if (a === '--out') o.out = resolve(next());
@@ -68,7 +71,7 @@ function parseArgs(argv) {
 function runShard(opts, shard, shards, outDir) {
   const require = createRequire(import.meta.url);
   const vitest = join(dirname(require.resolve('vitest/package.json')), 'vitest.mjs');
-  const env = { ...process.env, CAMPAIGN_SIM_OPTS: JSON.stringify({ campaigns: opts.campaigns, difficulties: opts.difficulties, runs: opts.runs, maxDay: opts.maxDay, shard, shards, outDir }) };
+  const env = { ...process.env, CAMPAIGN_SIM_OPTS: JSON.stringify({ campaigns: opts.campaigns, difficulties: opts.difficulties, runs: opts.runs, maxDay: opts.maxDay, shard, shards, outDir, content: opts.content ?? 1 }) };
   return new Promise((ok, fail) => {
     const child = spawn(process.execPath, [vitest, 'run', '--config', 'tools/campaign-sim/vitest.config.ts', 'tools/campaign-sim/campaign.measure.ts'], { cwd: ROOT, env, stdio: ['ignore', 'pipe', 'pipe'] });
     let err = '';

@@ -11,8 +11,8 @@ import {
   climateRuleFor,
   maxMana,
   quoteNeutralReaction,
+  manualBattlesRequired,
   armyStacks,
-  campaignEpilogueLines,
   hexEquals,
   missionObjectiveDefs,
   missionSite,
@@ -37,7 +37,7 @@ import { endOfGameSplash } from '../components/moments';
 import type { AppStore, Overlay } from '../app/store';
 import { AUTO_SLOTS, CHECKPOINT_SLOT, MANUAL_SLOTS, type SlotInfo } from '../app/saves';
 import { Button, Chip, MenuButton, Modal, QuantitySelector, SectionTitle, useModalFocus } from '../components/kit';
-import { ArtifactIcon, CreaturePortrait, Emblem, HeroPortrait, MissionThumb, SceneArt, SpeakerPortrait, briefingArt, speakerBust } from '../components/art';
+import { ArtifactIcon, CreaturePortrait, Emblem, HeroPortrait, MissionThumb, SceneArt, SpeakerPortrait, speakerBust } from '../components/art';
 import { encounterKitArt, townBackground } from '../assets/manifest';
 import { RewardDialog } from '../components/rewards';
 import { AdventureStage, HeroFigure, TownThumbnail, encounterScene, townScene } from '../components/adventure';
@@ -48,11 +48,16 @@ import { ArmyStrip, CostList, CreatureStats } from '../components/game';
 import { Icon } from '../assets/icons';
 import { DialogueLines } from '../screens/Journal';
 import { relativeTime } from '../app/view';
-import { ArtIcon, EmptyArchive } from '../components/frontend';
-import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog } from './WorldDialogs';
+import { ArtIcon, EmptyArchive, artUrl } from '../components/frontend';
+import { CampDialog, ChestDialog, GameOverDialog, HandoffDialog, InterventionsDialog, MapEventDialog, QuestHutDialog, ShortcutsDialog, SluiceDialog } from './WorldDialogs';
 import { SpellBook } from '../components/spellbook';
 import { AbilityBadge } from '../components/badges';
 import { QuickBattlePanel, useQuickBattlePreview } from './QuickBattle';
+import { missionIntro } from '../app/missionLedger';
+import { IntroChapterFacts, LedgerIcon, ManualBattleNotice, introCoverArt } from '../components/missionLedger';
+import { contentVersionOf } from '@pr/session';
+import { campaignEpilogue, carryoverLines, chapterFacts, chapterTitle, chronicleModel, defaultSelection, saveRunInfo, type ChronicleNode } from '../app/chronicle';
+import { BRANCH_ICON, Chronicle, SaveRunTags } from '../components/chronicle';
 
 // ---------------------------------------------------------------------------
 
@@ -149,6 +154,8 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
     store.toast(`Loaded “${envelope.name}”`, 'success');
   };
   const sel = selected ? byId.get(selected) : undefined;
+  // Campaign content version, actual chapter and branch (derived from the snapshot for saves written before those fields).
+  const selRun = sel ? saveRunInfo(store.catalog, sel.metadata, sel.envelope?.snapshot) : null;
   // Saved Journeys (1.1.0 handoff screen 10): manual slots, then the rotating autosaves and the pre-battle checkpoint (load only).
   const groups: { id: string; title: string; slots: readonly string[] }[] =
     mode === 'save'
@@ -220,6 +227,7 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
                   const s = byId.get(id);
                   const kindLabel = id.startsWith('auto') ? `Autosave ${id.split('-')[1]}` : id === CHECKPOINT_SLOT ? 'Before battle' : `Slot ${id.split('-')[1]}`;
                   const mission = missionOf(s);
+                  const run = s ? saveRunInfo(store.catalog, s.metadata, s.envelope?.snapshot) : null;
                   return (
                     <button
                       key={id}
@@ -241,6 +249,7 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
                             {s.metadata.pantheonName} · Day {s.metadata.day} · {s.metadata.heroName} Lv {s.metadata.heroLevel}
                           </span>
                         ) : null}
+                        {run?.version ? <SaveRunTags info={run} testId={`save-${id}-run`} /> : null}
                       </span>
                       {s ? (
                         s.compatibility.status === 'ok' ? (
@@ -279,10 +288,32 @@ function SaveLoadDialog({ mode: initialMode }: { mode: 'save' | 'load' }) {
                           <dt>{sel.metadata.campaignName ? 'Campaign' : 'Scenario'}</dt>
                           <dd>{sel.metadata.campaignName ?? sel.metadata.scenarioName}</dd>
                         </div>
-                        <div>
-                          <dt>Mission</dt>
-                          <dd>{sel.metadata.missionName}</dd>
-                        </div>
+                        {selRun?.version ? (
+                          <>
+                            <div>
+                              <dt>Version</dt>
+                              <dd data-testid="save-detail-version">{selRun.versionLabel}</dd>
+                            </div>
+                            <div>
+                              <dt>{selRun.version === 2 ? 'Chapter' : 'Mission'}</dt>
+                              <dd data-testid="save-detail-progress">
+                                {selRun.version === 2 ? (selRun.progress ?? sel.metadata.missionName) : `${selRun.progress ? `${selRun.progress} — ` : ''}${sel.metadata.missionName}`}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt>Run</dt>
+                              <dd data-testid="save-detail-branch">
+                                {selRun.branchLabel ? `${selRun.branchLabel} — kept apart from the campaign's own progress` : 'Primary run'}
+                                {selRun.completed ? ' · campaign complete' : ''}
+                              </dd>
+                            </div>
+                          </>
+                        ) : (
+                          <div>
+                            <dt>Mission</dt>
+                            <dd>{sel.metadata.missionName}</dd>
+                          </div>
+                        )}
                         <div>
                           <dt>Day</dt>
                           <dd>
@@ -486,12 +517,16 @@ function BriefingDialog() {
   const mission = requireScenarioMission(catalog, state);
   const objectives = missionObjectiveDefs(catalog, state).filter((o) => state.mission.objectives[o.id]?.status !== 'locked');
   const campaign = mission.campaignId ? catalog.campaigns[mission.campaignId] : undefined;
-  const lines = mission.briefing;
+  // The briefing for the facts in hand (content v2 adds the variants that match earlier chapters).
+  const intro = missionIntro(catalog, state, mission);
+  const lines = intro.lines;
   const [index, setIndex] = useState(0);
   const line = lines[Math.min(index, Math.max(0, lines.length - 1))];
-  const art = briefingArt(mission.thumbnailAssetId);
+  const art = introCoverArt(intro, mission.thumbnailAssetId);
   const template = catalog.mapTemplates[mission.mapTemplateId];
-  const kicker = campaign ? `${campaign.name} · Mission ${mission.order}` : state.customMission ? 'Random map' : 'Skirmish';
+  // Content v2 chapters are numbered by the chapter graph ("Chapter 3"), v1 missions by their order.
+  const chapterNo = campaign?.chapters?.find((c) => c.missionId === mission.id)?.chapter;
+  const kicker = campaign ? `${campaign.name} · ${chapterNo ? `Chapter ${chapterNo}` : `Mission ${mission.order}`}` : state.customMission ? 'Random map' : 'Skirmish';
   const last = index >= lines.length - 1;
   const scroll = encounterKitArt('encounterkit.intro.scroll')?.url ?? null;
   // Until the scroll is decoded (or if it cannot load), the writing area is plain paper (GUI audit 1.1.2).
@@ -544,10 +579,13 @@ function BriefingDialog() {
                   </span>
                 </div>
               ) : null}
+              {intro.v2 && intro.manualBattles ? <ManualBattleNotice className="brief__manual" /> : null}
             </div>
-            <section className="brief__right" aria-label="Mission objectives">
+            <section className={`brief__right ${intro.v2 ? 'brief__right--v2' : ''}`} aria-label="Mission objectives" tabIndex={intro.v2 ? 0 : undefined}>
               <p className="brief__summary briefing-scene__summary">{mission.summary}</p>
-              <h2 className="brief__obj-title">Your objectives</h2>
+              {intro.v2 ? <IntroChapterFacts intro={intro} optionalCount={mission.objectives.filter((o) => o.category === 'optional').length} /> : null}
+              {intro.v2 ? null : <h2 className="brief__obj-title">Your objectives</h2>}
+              {intro.v2 ? null : (
               <ul className="brief__objectives" tabIndex={0} aria-label="Objectives">
                 {objectives.map((o) => {
                   const st = state.mission.objectives[o.id]?.status;
@@ -566,6 +604,7 @@ function BriefingDialog() {
                   );
                 })}
               </ul>
+              )}
               {mission.newDecisions.length ? (
                 <details className="brief__details">
                   <summary>New in this mission</summary>
@@ -617,6 +656,18 @@ function BriefingDialog() {
   );
 }
 
+/**
+ * The mission result (screen spec `result`). Content v2 runs: the chapter's
+ * outcome and summary, what it leaves behind (the facts it recorded, named by
+ * its evidence entries) and the bounded hero carry-over, then the chronicle
+ * with the next choice — one available chapter is a Continue, two (a pair
+ * played in either order) are a choice of both, each through the campaign
+ * state machine (`continueToNextMission(id)`); completed chapters can be
+ * replayed as practice (the primary run is kept and restored exactly). The
+ * final chapter completes the campaign with the v2 epilogue. A practice
+ * replay's result never continues the campaign: it offers to return to it.
+ * Content v1 runs keep their linear Continue.
+ */
 function DebriefDialog({ final }: { final: boolean }) {
   const store = useStore();
   const session = store.session!;
@@ -625,19 +676,51 @@ function DebriefDialog({ final }: { final: boolean }) {
   const mission = requireScenarioMission(catalog, state);
   const campaign = session.campaign;
   const record = campaign?.completions.find((c) => c.missionId === mission.id);
-  const next = session.hasNextMission();
-  const nextMission = next && campaign ? catalog.missions[catalog.campaigns[campaign.campaignId]!.missionIds[mission.order] ?? ''] : undefined;
   const campDef = campaign ? catalog.campaigns[campaign.campaignId] : undefined;
-  const epilogue = campDef ? campaignEpilogueLines(campDef, state.mission.flags) : [];
+  const v2 = !!campaign && contentVersionOf(campaign) === 2;
+  const practice = campaign?.branch === 'practice';
+  const next = !practice && session.hasNextMission();
+  // v2: the chapters the state machine offers next; v1: the next mission in order.
+  const choices = v2 && next ? session.availableChapters() : [];
+  const nextMission = !v2 && next && campaign ? catalog.missions[catalog.campaigns[campaign.campaignId]!.missionIds[mission.order] ?? ''] : undefined;
+  // The chronicle shows the primary run: the session's own, or the one kept while a practice replay is played.
+  const primary = practice ? (store.practiceReturn?.campaign ?? null) : campaign;
+  const model = v2 && campDef && primary ? chronicleModel(catalog, campDef.id, primary, { practiceMissionId: practice ? campaign!.currentMissionId : null, allowPractice: !practice }) : null;
+  const [selected, setSelected] = useState<string | null>(() => (model ? (choices[0] ?? defaultSelection(model)) : null));
+  const epilogue = final && campDef ? campaignEpilogue(campDef, campaign, state.mission.flags).lines : [];
+  const facts = v2 && record ? chapterFacts(catalog, mission, record) : [];
+  const carry = v2 && record ? carryoverLines(catalog, record) : [];
+  const continueTo = (id?: string) => store.continueCampaign(id);
+  const offerPractice = (node: ChronicleNode) =>
+    store.confirm(
+      `Replay chapter ${node.chapter} as practice?`,
+      `You play “${node.name}” again from the start it had in your campaign. Nothing you do there changes your campaign: no progress, facts or rewards carry over. When it ends you come back here with your campaign exactly as it is now.`,
+      'Start practice',
+      () => void store.startPracticeReplay(node.missionId),
+    );
+  const title = final ? 'Campaign complete' : practice ? `Practice replay — ${mission.name}` : state.outcome.status === 'victory' ? `Victory — ${mission.name}` : mission.name;
+  const unit = v2 ? 'Chapter' : 'Mission';
   return (
     <Modal
-      title={final ? 'Campaign complete' : state.outcome.status === 'victory' ? `Victory — ${mission.name}` : mission.name}
-      width={next ? '70rem' : '56rem'}
+      title={title}
+      width={next || v2 ? '70rem' : '56rem'}
       testId={final ? 'campaign-complete' : 'debrief'}
-      splash={endOfGameSplash(state, session.humanPlayerId, final ? 'Campaign complete' : state.outcome.status === 'victory' ? 'Victory' : 'Mission complete', final ? (campDef?.name ?? mission.name) : mission.name)}
+      splash={endOfGameSplash(state, session.humanPlayerId, final ? 'Campaign complete' : practice ? 'Practice complete' : state.outcome.status === 'victory' ? 'Victory' : 'Mission complete', final ? (campDef?.name ?? mission.name) : mission.name)}
       footer={
-        // All three buttons on one line (owner request 2026-10-04).
-        <div className="debrief-actions" data-testid="debrief-actions">
+        // Main Menu, the summary and Continue on one line (owner request 2026-10-04); a pair of chapters takes its own row above.
+        <div className={`debrief-actions ${choices.length > 1 ? 'debrief-actions--choice' : ''}`} data-testid="debrief-actions">
+          {!practice && choices.length > 1 ? (
+            <div className="debrief-choice" role="group" aria-labelledby="debrief-choice-label">
+              <span className="debrief-actions__label" id="debrief-choice-label">
+                Choose the next chapter
+              </span>
+              {choices.map((id) => (
+                <Button key={id} variant="primary" artUrl={artUrl(BRANCH_ICON)} icon="play" onClick={() => continueTo(id)} data-testid={`debrief-choose-${id}`}>
+                  {chapterTitle(catalog, id)}
+                </Button>
+              ))}
+            </div>
+          ) : null}
           <Button onClick={() => toMainMenu(store)}>Main Menu</Button>
           <Button
             onClick={() => {
@@ -646,22 +729,24 @@ function DebriefDialog({ final }: { final: boolean }) {
             }}
             data-testid="debrief-summary"
           >
-            {final ? 'Campaign summary' : 'Mission summary'}
+            {final ? 'Campaign summary' : practice ? 'Practice summary' : `${unit} summary`}
           </Button>
           <span className="grow" />
-          {next ? (
+          {practice ? (
             <Button
               variant="primary"
               size="large"
-              data-testid="debrief-continue"
-              onClick={() => {
-                store.closeAllOverlays();
-                session.continueToNextMission();
-                store.resetTo('adventure');
-                store.openOverlay({ kind: 'briefing' });
-              }}
+              icon="back"
+              disabled={!store.practiceReturn}
+              disabledReason="Your campaign is not held in this game: load one of its saves to go on with it"
+              onClick={() => store.returnFromPractice()}
+              data-testid="debrief-return"
             >
-              Continue to {nextMission ? `Mission ${nextMission.order}: ${nextMission.name}` : 'next mission'}
+              Return to the campaign
+            </Button>
+          ) : choices.length > 1 ? null : next ? (
+            <Button variant="primary" size="large" data-testid="debrief-continue" onClick={() => continueTo(choices[0])}>
+              Continue to {v2 && choices[0] ? chapterTitle(catalog, choices[0]) : nextMission ? `Mission ${nextMission.order}: ${nextMission.name}` : 'next mission'}
             </Button>
           ) : null}
         </div>
@@ -669,9 +754,15 @@ function DebriefDialog({ final }: { final: boolean }) {
     >
       <DialogueLines lines={mission.victory} />
       {state.outcome.status === 'victory' ? <p className="success">{state.outcome.reason}</p> : null}
+      {practice ? (
+        <p className="note debrief-note" data-testid="debrief-practice">
+          <Icon name="train" className="debrief-note__icon" /> Practice replay: nothing here changes your campaign — no progress, facts or rewards carry over.
+          {store.practiceReturn ? ' Return to the campaign to go on with it.' : ''}
+        </p>
+      ) : null}
       {record ? (
         <>
-          <SectionTitle>Mission summary</SectionTitle>
+          <SectionTitle>{unit} summary</SectionTitle>
           <table className="table">
             <tbody>
               <tr>
@@ -695,7 +786,7 @@ function DebriefDialog({ final }: { final: boolean }) {
               <tr>
                 <th>Hero</th>
                 <td>
-                  Level {record.summary.heroLevel} · {record.summary.heroXp} XP {record.summary.xpCapped ? <Chip tone="warn">XP capped for this mission</Chip> : null}
+                  Level {record.summary.heroLevel} · {record.summary.heroXp} XP {record.summary.xpCapped ? <Chip tone="warn">XP capped for this {unit.toLowerCase()}</Chip> : null}
                 </td>
               </tr>
               <tr>
@@ -704,18 +795,87 @@ function DebriefDialog({ final }: { final: boolean }) {
               </tr>
             </tbody>
           </table>
-          <SectionTitle>What carries forward</SectionTitle>
-          <ul className="bullets small">
-            {mission.debriefPolicy.map((d) => (
-              <li key={d}>{d}</li>
-            ))}
-          </ul>
+          {v2 ? (
+            <div className="debrief-left" data-testid="debrief-left-behind">
+              <div>
+                <SectionTitle>What this chapter leaves behind</SectionTitle>
+                {facts.length ? (
+                  <ul className="ledger-list" data-testid="debrief-facts">
+                    {facts.map((f) => (
+                      <li key={f.flag} className="ledger-item ledger-fact" data-testid={`debrief-fact-${f.flag}`}>
+                        {f.icon ? <LedgerIcon icon={f.icon} size="1.7rem" /> : <Icon name="journal" className="ledger-item__glyph" />}
+                        <div className="ledger-item__body">
+                          <div className="ledger-item__title">{f.title}</div>
+                          {f.text ? <div className="ledger-item__line">{f.text}</div> : null}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="dim small" data-testid="debrief-facts-none">
+                    No evidence or decision of this chapter is carried into the next ones.
+                  </p>
+                )}
+              </div>
+              <div>
+                <SectionTitle>{final ? 'Your hero at the end' : 'Carried forward'}</SectionTitle>
+                <dl className="debrief-carry" data-testid="debrief-carryover">
+                  {carry.map((c) => (
+                    <div key={c.label}>
+                      <dt>{c.label}</dt>
+                      <dd>{c.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <ul className="bullets small">
+                  {mission.debriefPolicy.map((d) => (
+                    <li key={d}>{d}</li>
+                  ))}
+                  {final ? null : <li>Your army, towns and treasury stay in this chapter; the next chapter starts from its own.</li>}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <>
+              <SectionTitle>What carries forward</SectionTitle>
+              <ul className="bullets small">
+                {mission.debriefPolicy.map((d) => (
+                  <li key={d}>{d}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </>
       ) : null}
       {final && epilogue.length ? (
         <>
           <SectionTitle>Epilogue</SectionTitle>
           <DialogueLines lines={epilogue} />
+        </>
+      ) : null}
+      {model ? (
+        <>
+          <SectionTitle>{final ? 'The chronicle' : practice ? 'Your campaign' : choices.length > 1 ? 'Next — two chapters open' : 'Next chapter'}</SectionTitle>
+          {choices.length > 1 ? (
+            <p className="debrief-note" data-testid="debrief-branch-note">
+              <ArtIcon id={BRANCH_ICON} glyph="swap" size="1.6rem" label="Branch" /> Both chapters are required; choose which to play first. The other stays open for afterwards.
+            </p>
+          ) : null}
+          <Chronicle
+            catalog={catalog}
+            model={model}
+            selectedId={selected}
+            onSelect={setSelected}
+            compact
+            testId="debrief-chronicle"
+            actions={(node) =>
+              node.replayable ? (
+                <Button size="small" icon="train" onClick={() => offerPractice(node)} data-testid={`practice-${node.missionId}`}>
+                  Replay as practice
+                </Button>
+              ) : null
+            }
+          />
         </>
       ) : null}
       {final ? (
@@ -744,6 +904,12 @@ function MissionFailedDialog() {
       footer={
         <>
           <Button onClick={() => toMainMenu(store)}>Main Menu</Button>
+          {/* A practice replay's defeat never touches the campaign: its kept run is one click away. */}
+          {store.practiceReturn && session.campaign?.branch === 'practice' ? (
+            <Button icon="back" onClick={() => store.returnFromPractice()} data-testid="failed-return">
+              Return to the campaign
+            </Button>
+          ) : null}
           <span className="grow" />
           <Button
             disabled={!hasCheckpoint}
@@ -1001,7 +1167,10 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
     store.dispatch({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true });
   };
   // Quick battle: the expected result is the actual one (same function, same state).
-  const preview = useQuickBattlePreview(heroId, dest);
+  // Campaign battles are fought on the battlefield (handoff 2026-10-15): no quick
+  // battle and no casualty preview there; the rules refuse it as well.
+  const manualOnly = manualBattlesRequired(state);
+  const preview = useQuickBattlePreview(heroId, dest, !manualOnly);
   const quick = () => {
     store.closeOverlay();
     store.quickBattle({ kind: 'MoveHero', heroId, destination: dest, confirmEncounter: true });
@@ -1047,11 +1216,13 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
               Let them go
             </Button>
           ) : null}
-          <Button size="large" icon="auto" onClick={quick} disabled={!!quickReason} disabledReason={quickReason} data-testid="encounter-quick">
-            Quick battle
-          </Button>
+          {manualOnly ? null : (
+            <Button size="large" icon="auto" onClick={quick} disabled={!!quickReason} disabledReason={quickReason} data-testid="encounter-quick">
+              Quick battle
+            </Button>
+          )}
           <Button variant="danger" size="large" icon="attack" onClick={attack} autoFocus={!reaction?.kind} data-testid="encounter-attack">
-            {reaction?.kind ? 'Fight anyway' : 'Attack'}
+            {reaction?.kind ? 'Fight anyway' : manualOnly ? 'Fight' : 'Attack'}
           </Button>
         </>
       }
@@ -1129,7 +1300,7 @@ function EncounterDialog({ heroId, dest }: { heroId: string; dest: HexCoord }) {
             <p className="faint">The defender fights with at most seven stacks (identical stacks may be combined first) and cannot retreat or surrender. Winning captures {town.name}. Values are proposed.</p>
           </div>
         ) : null}
-        <QuickBattlePanel preview={preview} />
+        {manualOnly ? null : <QuickBattlePanel preview={preview} />}
         {reward?.resources || reward?.artifactIds?.length ? (
           <div className="encounter-reward">
             <span className="encounter-reward__label">Reward on victory</span>
@@ -1208,7 +1379,7 @@ function StackInfoDialog({ creatureId, count }: { creatureId: string; count?: nu
             icon="bestiary"
             onClick={() => {
               store.closeOverlay();
-              store.goto('unit-detail', { creatureId });
+              store.goto('unit-detail', { creatureId }, { setOverlaysAside: true });
             }}
           >
             Bestiary
@@ -1310,6 +1481,8 @@ export function OverlayLayer() {
       return store.session ? <ChestDialog heroId={top.heroId} siteId={top.siteId} /> : null;
     case 'quest-hut':
       return store.session ? <QuestHutDialog heroId={top.heroId} siteId={top.siteId} /> : null;
+    case 'sluice':
+      return store.session ? <SluiceDialog key={top.siteId} heroId={top.heroId} siteId={top.siteId} /> : null;
     case 'interventions':
       return store.session ? <InterventionsDialog /> : null;
     case 'game-over':

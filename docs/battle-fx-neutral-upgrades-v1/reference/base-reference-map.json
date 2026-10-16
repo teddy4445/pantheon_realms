@@ -1,0 +1,74 @@
+[
+  {
+    "file": "reference/base/portrait-pegasus.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-pegasus.png",
+    "sha256": "195abffb356f5dae8836e5d6e56749e454cbd8f9a149a3a296a526f9ce57bd7f",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/atlas-pegasus-v2.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-pegasus-v2.png",
+    "sha256": "ac15731f17c1ae5f24019bb633fbbfa160dfad267e89c26351c8c3fd4f73809a",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/portrait-root_runner.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-root_runner.png",
+    "sha256": "039e8798d08aa2394260d1a1703235d58ef959104ad4c43b7cb420bf588e9290",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/atlas-root_runner-v2.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-root_runner-v2.png",
+    "sha256": "07236edf5dbda24fd24bae846d588132abe1bff5985e5dcc8dd1244cb2cc248f",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/portrait-serpopard.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-serpopard.png",
+    "sha256": "ea37df50c70fedd80c3e639d9580a96a690a776323795eb29198acd6b62d1c9e",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/atlas-serpopard-v3.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-serpopard-v3.png",
+    "sha256": "2610332e40cc751f97bbf64d049b04a62ebffb1ce4d256efcd68a2583e069abd",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/portrait-baku.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-baku.png",
+    "sha256": "090222c2fd10aca1d37ca8af4ab08190c3fc50047c90857b922656d64f5dc099",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/atlas-baku-v2.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-baku-v2.png",
+    "sha256": "c67a910bccea4f2987b617c0dfb72900607ee9576e6270a9e876543f68a61401",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/portrait-afanc.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-afanc.png",
+    "sha256": "cc6a6c72dc3c2cacd0c003c29de445d9158712dff0d3b4df9a2c05efaad23585",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/atlas-afanc-v2.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-afanc-v2.png",
+    "sha256": "09030a7774563180fd0179a96fa8139c0cc66ac949b1a512690b403967301125",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/portrait-ahuitzotl.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/portrait-ahuitzotl.png",
+    "sha256": "ee3b0126d871662fa0b3e07d27d4dc8342931ac33c1985fcd2ab80a36d02ddca",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  },
+  {
+    "file": "reference/base/atlas-ahuitzotl-v2.png",
+    "original": "C:/Users/lazeb/Desktop/blannder_models/campaign-expansion-kit-2026-10-15/new-assets/atlas-ahuitzotl-v2.png",
+    "sha256": "ca19e9253bede4d63668dc7378b511b9b8b69105cdc7850d4c0a79f2f3619ffc",
+    "purpose": "Existing base-form comparison only; already installed in campaign-v2."
+  }
+]

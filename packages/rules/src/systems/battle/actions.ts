@@ -32,6 +32,7 @@ import { finishActivation, advanceActivation } from './flow';
 import { resolveBattle } from './resolution';
 import { applyMoatEntry, damageStructure, intactStructures } from './siege';
 import { castingPower } from '../../resolvers/effects';
+import { commitNeutralAbility, neutralAbilityOptions, nextStatusSeq, reachLine, suppressRetaliation, wardedDamage } from './neutralAbilities';
 
 /** Actor ID used by the game when it commands neutral (ownerless) battle sides. */
 export const NEUTRAL_PLAYER_ID: PlayerId = '__neutral__';
@@ -115,6 +116,8 @@ export function legalActions(catalog: ContentCatalog, state: MatchState): Battle
     const reason = used >= ward.chargesPerBattle ? 'Ward already used by this army' : null;
     abilities.push({ abilityId: 'family_ward', name: 'Ward', targets: reason ? [] : allies.map((a) => a.id), reason });
   }
+  // The neutral creatures' active abilities (handoff 2026-10-15): once per battle per stack.
+  for (const o of neutralAbilityOptions(catalog, battle, stack)) abilities.push({ abilityId: o.abilityId, name: o.name, targets: o.targets, reason: o.reason });
   const shiftId = shapeshiftAbilityId(catalog, stack.creatureId);
   const shift = shiftId ? shapeshiftRule(catalog, stack.creatureId) : null;
   if (shiftId && shift) {
@@ -221,8 +224,11 @@ export function requireControl(tx: Tx, battle: BattleState, side: BattleSideId):
 // Execution
 // ---------------------------------------------------------------------------
 
-function strike(tx: Tx, battle: BattleState, attacker: BattleStackState, target: BattleStackState, mode: 'melee' | 'shot' | 'retaliation', chargeHexes: number): void {
-  const { damage, luck } = rollStrike(tx.catalog, battle, attacker, target, { mode, chargeHexes }, tx.rng('combat'));
+function strike(tx: Tx, battle: BattleState, attacker: BattleStackState, target: BattleStackState, mode: 'melee' | 'shot' | 'retaliation', chargeHexes: number, reach = false): void {
+  const rolled = rollStrike(tx.catalog, battle, attacker, target, { mode, chargeHexes, reach }, tx.rng('combat'));
+  const luck = rolled.luck;
+  // A direct creature blow: Sheltering Wings reduces it (and is spent).
+  const damage = wardedDamage(tx, target, rolled.damage);
   const killed = applyDamage(tx, battle, target, damage);
   tx.emit({
     kind: 'BattleAttack',
@@ -265,13 +271,19 @@ export function commitBattleMelee(tx: Tx, stackId: BattleStackId, targetId: Batt
   const option = options.find((o) => cellEquals(o.from, from));
   if (!option) reject('illegal_target', 'Cannot reach that enemy from there');
   const hexes = moveStack(tx, battle, stack, from);
-  if (footprintDistance(stackCells(tx.catalog, stack), stackCells(tx.catalog, target)) !== 1) {
-    reject('illegal_target', 'Not adjacent after moving');
-  }
-  strike(tx, battle, stack, target, 'melee', hexes);
-  if (isAlive(target) && canRetaliate(tx.catalog, target) && isAlive(stack)) {
-    target.retaliationsUsed += 1;
-    strike(tx, battle, target, stack, 'retaliation', 0);
+  const adjacentNow = footprintDistance(stackCells(tx.catalog, stack), stackCells(tx.catalog, target)) === 1;
+  // Long Reach: a strike across one clear hex (handoff 2026-10-15).
+  const reach = !adjacentNow && !!option.reach && reachLine(tx.catalog, battle, stack, stack.anchor, target);
+  if (!adjacentNow && !reach) reject('illegal_target', 'Not adjacent after moving');
+  strike(tx, battle, stack, target, 'melee', hexes, reach);
+  // The target answers only if it can reach back the same way (an adjacent-only creature cannot jump the gap).
+  const canAnswer = adjacentNow || reachLine(tx.catalog, battle, target, target.anchor, stack);
+  if (isAlive(target) && canAnswer && canRetaliate(tx.catalog, target) && isAlive(stack)) {
+    // Distract: this retaliation is suppressed (and counts as used).
+    if (!suppressRetaliation(tx, target)) {
+      target.retaliationsUsed += 1;
+      strike(tx, battle, target, stack, 'retaliation', 0, !adjacentNow);
+    }
   }
   finishActivation(tx, battle, stack, true);
 }
@@ -332,6 +344,7 @@ export function commitBattleAbility(tx: Tx, stackId: BattleStackId, abilityId: s
   const def = tx.catalog.abilities[abilityId];
   if (!def || !(tx.catalog.creatures[stack.creatureId]?.abilityIds ?? []).includes(abilityId)) reject('illegal_action', 'This creature has no such ability');
   if (def.rule.type === 'shapeshift') return commitShapeshift(tx, battle, stack, def.rule, targetId);
+  if (commitNeutralAbility(tx, battle, stack, abilityId, targetId)) return finishActivation(tx, battle, stack, true);
   if (def.rule.type !== 'family_ward') reject('illegal_action', 'That ability is not an action');
   const ward = findAbility(tx.catalog, stack.creatureId, 'family_ward');
   if (!ward) reject('illegal_action', 'This creature has no Ward');
@@ -366,17 +379,23 @@ function commitShapeshift(tx: Tx, battle: BattleState, stack: BattleStackState, 
   finishActivation(tx, battle, stack, true);
 }
 
-export function applyStatus(stack: BattleStackState, status: BattleStackState['statuses'][number]): void {
+/**
+ * Apply or refresh a status by its source. With `opts`, the status records its application
+ * order and whether the opposing side applied it (Devour Dread removes only hostile ones).
+ */
+export function applyStatus(stack: BattleStackState, status: BattleStackState['statuses'][number], opts?: { battle?: BattleState; casterSide?: BattleSideId }): void {
+  const tagged = opts?.casterSide ? { ...status, hostile: opts.casterSide !== stack.side } : status;
   const existing = stack.statuses.findIndex((s) => s.sourceId === status.sourceId);
   if (existing >= 0) {
     const old = stack.statuses[existing]!;
     stack.statuses[existing] = {
-      ...status,
+      ...tagged,
       amount: Math.max(old.amount, status.amount),
       expiresAtRound: Math.max(old.expiresAtRound, status.expiresAtRound),
+      ...(old.seq !== undefined ? { seq: old.seq } : {}),
     };
   } else {
-    stack.statuses.push(status);
+    stack.statuses.push(opts?.battle ? { ...tagged, seq: nextStatusSeq(opts.battle) } : tagged);
   }
 }
 
@@ -443,31 +462,31 @@ function resolveSpell(tx: Tx, battle: BattleState, spell: SpellDefinition, power
       return { damage: 0, healed };
     }
     case 'max_damage_roll':
-      applyStatus(target, { sourceId: source, label: spell.name, kind: 'max_damage_roll', amount: 0, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'max_damage_roll', amount: 0, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     case 'defense_bonus':
-      applyStatus(target, { sourceId: source, label: spell.name, kind: 'defense_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'defense_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     case 'attack_bonus':
-      applyStatus(target, { sourceId: source, label: spell.name, kind: 'attack_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'attack_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     case 'speed_bonus':
-      applyStatus(target, { sourceId: source, label: spell.name, kind: 'speed_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'speed_bonus', amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     case 'mass_bonus': {
       const kind = e.stat === 'attack' ? 'attack_bonus' : e.stat === 'defense' ? 'defense_bonus' : 'speed_bonus';
       const side = spell.target === 'enemy_army' ? opposing(sideId) : sideId;
-      for (const s of sideStacks(battle, side)) applyStatus(s, { sourceId: source, label: spell.name, kind, amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      for (const s of sideStacks(battle, side)) applyStatus(s, { sourceId: source, label: spell.name, kind, amount: e.amount, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     }
     case 'ranged_mitigation':
-      applyStatus(target, { sourceId: source, label: spell.name, kind: 'ranged_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'ranged_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     case 'melee_mitigation':
-      applyStatus(target, { sourceId: source, label: spell.name, kind: 'melee_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'melee_mitigation', amount: 0, numerator: e.numerator, denominator: e.denominator, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     case 'min_damage_roll':
-      applyStatus(target, { sourceId: source, label: spell.name, kind: 'min_damage_roll', amount: 0, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds });
+      applyStatus(target, { sourceId: source, label: spell.name, kind: 'min_damage_roll', amount: 0, numerator: 1, denominator: 1, expiresAtRound: battle.round + e.durationRounds }, { battle, casterSide: sideId });
       return { damage: 0, healed: 0 };
     case 'mass_heal': {
       let healed = 0;

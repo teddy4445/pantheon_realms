@@ -1,0 +1,1321 @@
+PANTHEON REALMS — CAMPAIGN STORY AND MAP DESIGN REVIEW
+
+2026-10-14
+
+
+
+Discussion draft. Original design proposals informed by the current project and published Heroes campaign material. No game code, visuals or implementation handoff have been produced.
+
+
+
+37 proposed playable missions, preserving story beats from all 45 current missions. This is a consolidation option, not an approved deletion or save migration. The existing project has a 3-mission tutorial plus six 7-mission campaigns. Proposed distribution: tutorial 2; Greek 6; Norse 6; Egyptian 6; Japanese 6; Celtic 6; Mesoamerican 5. If 45 scenarios are preferred, the seven merged cards can be split at their documented source-chapter boundaries; those split versions would still need separate pacing review.
+
+
+
+RECOMMENDATION
+
+The six realms originally belonged to separate worlds. A mysterious collision joined them. Their gods attempted an agreement and failed; direct divine war would unravel the already damaged world. Existing human champions now pursue their gods' claims through alliances, conquest and mythical armies. Keep the cause of the collision unresolved for now. Each regional campaign solves a concrete local crisis and reveals one aspect of the collision, without making a new seventh villain responsible for every problem.
+
+
+
+CURRENT PROJECT AUDIT
+
+The source contains 45 missions across seven campaigns. Mission cards retain a source chapter mapping; review numbers 01–37 are not new runtime IDs.
+
+Five faction campaigns are built through arc.ts, sharing the Restore / Hunt / Covenant / Seek / Rival / Refuge / Finale sequence derived from the Winter Oath structure. The repeated story function is as important a problem as the terrain.
+
+The shared layouts repeatedly use vertical river or mountain strips, one or two openings, and successive gates. Merely rotating them would preserve the same experience.
+
+Existing encounters expose Quick battle and an exact-result preview. The new campaign rule must apply to the actual resolution path as well as the visible button; this review does not claim that it has already been changed.
+
+This was a source and documentation review, not a completed playthrough of every current mission or a new playtest of Heroes III–V. Timing, battle counts and balance below are design targets.
+
+
+
+HEROES III: STRATEGIC GEOGRAPHY AND BOUNDED CONTINUITY
+
+Liberation allows Deal with the Devil and Neutral Affairs to be tackled in either order before the final scenario. That is a useful model for meaningful chapter order without an uncontrolled branching script. Hero continuity can reward investment, while scenario limits keep later maps from becoming trivial. Borrow route trade-offs, alternative chapter order and visible consequences; avoid fragile required-artifact carryover and mandatory cleanup of every corner.
+
+Heroes III — Liberation campaign and scenario sequence — https://heroes.thelazy.net/index.php/Liberation
+
+Heroes III — Campaign structure and hero continuity — https://heroes.thelazy.net/index.php/Campaign
+
+
+
+HEROES IV: THE CAMPAIGN PROTAGONIST MUST CHANGE
+
+The Price of Peace develops Emilia from a displaced civilian into a ruler and tests peace against coercion through Gavin Magnus and Solmyr. The useful lesson is that a campaign's central conflict should become more difficult as the hero gains power. Give each existing Pantheon Realms protagonist a distinct responsibility, recurring relationships and a final decision that follows from earlier practical choices.
+
+Heroes IV — The Price of Peace campaign synopsis — https://mightandmagic.fandom.com/wiki/The_Price_of_Peace
+
+Heroes IV — campaign overview, including Emilia and Gauldoth — https://en.wikipedia.org/wiki/Heroes_of_Might_and_Magic_IV
+
+
+
+HEROES V: OBJECTIVES CAN EVOLVE AFTER THE OPENING
+
+The official manual describes objectives added during missions. The Ranger campaign's The Defense combines a home-front threat with the need to act beyond the capital. Borrow announced shifts, purposeful enemy pressure and chapter-specific set pieces. Avoid copying relentless waves or surprise failure conditions: the player should understand an emerging crisis before it becomes irreversible.
+
+Heroes V — official manual hosted by Steam — https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/15370/manuals/H5X20047_PCS_MNL_guts.pdf?t=1692823670
+
+Celestial Heavens — Heroes V Ranger campaign, The Defense — https://www.celestialheavens.com/584
+
+
+
+WHAT THIS REVIEW DOES NOT ASSUME
+
+The Heroes campaigns are not uniformly nonlinear, and not every old quest gate or timer is desirable. An authored chapter sequence can remain coherent while each individual region offers several routes and strategies. The recommendations below are original proposals, not reproductions of Heroes plots or claims that every cited game used every proposed system.
+
+
+
+CAMPAIGN EXPERIENCE RULES
+
+
+
+CAMPAIGN COMBAT: MANUAL ONLY
+
+Every battle involving the human campaign side—field, neutral, siege, garrison or scripted—opens tactical combat. Remove Quick battle, instant resolve, exact automatic casualty previews and any full-battle autoplay/auto-finish bypass in this mode. Keep animation-speed options, ordinary enemy AI turns, retreat and surrender under normal rules. AI-versus-AI world simulation need not become a battle the player must watch. Pre-battle diplomacy, paid passage, surrender or neutral joining are explicit encounter outcomes, not a hidden combat simulation. Mandatory story fights cannot disappear through a routine flee/join roll. Skirmish rules are outside this requested change.
+
+
+
+EVERY MAP IS A PLACE WITH SEVERAL CONNECTIONS
+
+Build the road/region graph before placing decorations. Except for the opening tutorial minutes, provide at least one complete circuit, two approaches to the principal objective, and a useful shortcut that opens through play. Give each route a visible difference in distance, safety, income or ally access. Dead ends are short optional reward pockets. Roads join settlement gates, farms, bridges and landings logically; water and mountains shape regions instead of acting as repeated vertical fences.
+
+
+
+NONLINEARITY NEEDS CHOICES, NOT MORE WALKING
+
+A medium map should offer roughly three to five meaningful regions and a large map five to seven. A useful event, information point or decision should normally appear within one to two movement days. Start near a junction or within a contested region as often as at an edge. Avoid routes that split cosmetically and immediately rejoin with identical cost. Completed places can become depots, refuges or threatened supply links, giving return visits a purpose.
+
+
+
+ONE MAIN HERO CAN OPERATE THE WHOLE SCENARIO
+
+Keep the existing protagonist and portrait cast. Dialogue companions are not silently promoted to new playable heroes. Outpost ownership, garrisoning, one-time deliveries and secured routes can advance objectives without requiring simultaneous occupation by three heroes. Any optional additional commander must already exist in the roster and must not be essential to a quest.
+
+
+
+DISTINCT MISSION FORMATS
+
+Mix ordinary town-building maps with limited-force expeditions, preparation followed by defence, resource logistics, investigation, political contests, a planned withdrawal and counterattack, and rescue through changing terrain. Do not require a new town, a fixed recruitment quota, two shrine switches and a final gate in every chapter. Six regional finales may contain major battles, but their preparation and stakes should differ.
+
+
+
+FINITE, UNDERSTANDABLE OPPOSITION
+
+Opponents defend income, move supplies, reclaim useful positions or pursue an announced objective. Give forces visible origins and bounded reserves. Announce important raids two or three movement days ahead where feasible. Do not create unlimited offscreen armies or have enemies know unexplored hero positions. A failed optional defence changes a capped bonus or later encounter; it does not silently delete the campaign's only quest item.
+
+
+
+COMBAT DENSITY MATCHES MANUAL PLAY
+
+Target about 3–4 required battles in early maps, 4–6 in most middle maps and 5–8 in finales, with only a few optional encounters. These are targets to playtest, not a promise of final difficulty. Low-value mines and resource piles do not all need guards. Every required fight should teach or test something distinct: approach under fire, protect a lane, break a reserve, hold a landing, take a fortified position or defeat a mixed formation.
+
+
+
+CAMPAIGN CHOICES HAVE BOUNDED CONSEQUENCES
+
+Carry selected story flags and limited support forward: a garrison, one purchase, information, a reserve reduction or an ending scene. Do not accumulate the entire army and economy across all maps. Preserve existing hero progression deliberately, with disclosed chapter caps and starting-force rules. Neither optional chapter order nor a discarded quest item can make a later map unwinnable. Each optional-order pair requires briefings for both sequences and a bounded reward, not two contradictory histories.
+
+
+
+CLEAR FAILURE AND RECOVERY
+
+Protagonist defeat is a normal campaign loss. Losing a required defended objective during a declared defence may also be a loss, but the rule must be visible before commitment. Ordinary town loss should allow recovery unless the scenario explicitly says otherwise. A complete elimination state follows the game's disclosed rule. Record evidence, completed rescues and fulfilled agreements permanently. Provide a pre-set-piece save opportunity; never require a hidden calendar deadline.
+
+
+
+TRAVEL ACROSS DAYS
+
+Retain each hero's chosen destination and remaining route when movement runs out, through End Day and save/load. On the next day the player can Continue Route rather than mark the same destination again. Revalidate only the affected route when terrain, ownership or obstacles change; pause before a new hostile encounter and explain any reroute. Never auto-enter a campaign battle or spend a new day's movement without the player's chosen continuation behaviour.
+
+
+
+GODS, EXISTING HEROES AND VISUAL SCOPE
+
+Use the six existing protagonists and named supporting cast shown under each campaign. Gods communicate through existing portraits, dialogue, shrines and consequences; they do not appear as new directly fighting god units. New neutral species are proposals only. No new hero portraits, cinematic bosses, UI concepts or terrain art are requested at this stage. New settlement or site functions should first reuse existing buildings and landmarks.
+
+
+
+NEW MECHANICS ARE PROPOSALS, NOT PRESENT CAPABILITIES
+
+Player-controlled sluices, scheduled route changes, automatic evacuation progress, district support, mission-order dialogue, conditional surrender and supply-driven enemy behaviour may need new campaign scripting. The current objective system already supports combinations of site progress, flags, counters and other conditions, but that does not make every scenario below immediately supported. Preserve each design's intent; after approval, separately scope engineering and any truly missing visuals.
+
+
+
+NO ARTIFICIAL WAITING
+
+A timed phase must have a visible clock and meaningful actions during the wait. Prefer a player-started event after preparation. Stable fallback routes prevent stranding when ice, water or seasons change. Do not require repeatedly clicking End Day merely to catch a ferry. Where naval traversal is not available in the current mission systems, use existing landings as explicit ferry links; this proposal does not require a new ship combat system.
+
+
+
+REVIEW AND BALANCE GATES
+
+Before approval for production, test every map with the principal route, the longer alternate route, both chapter orders where allowed, minimum optional rewards and an interrupted multi-day journey. Verify one-hero feasibility, finite enemy reserves, recruit stock limits, no required-new-creature dependency, no accidental auto-resolve access, and readable objective/failure updates. Mission sizes and 35–115-minute estimates assume Normal difficulty and must be revised after playtests.
+
+
+
+SIX NEUTRAL CREATURE PROPOSALS
+
+Here 'neutral' means unaffiliated, not restricted to ordinary real animals. All six can be hired by any pantheon where habitat and scenario placement make sense. Use one or two meaningful hiring sites on most middle maps, with a few larger maps offering three; do not flood every map with all six. Weekly stocks are finite and shared for that site; ownership changes must not refill them. Unlock by a one-time agreement, resource delivery or manual encounter. Prices and stock should make them sidegrades, not a cheap replacement for faction tier progression. Existing army-slot, morale and movement rules still apply. Every required objective remains achievable using existing units. Several mission cards use existing neutrals specifically to avoid making new creature production a prerequisite for the redesign.
+
+
+
+PEGASUS — Greek
+
+The winged horse of Greek mythology; turning the named mythical creature into a recruitable species is a game adaptation.
+
+Combat: Fast flying support. A once-per-battle protective intervention for a nearby ally makes it different from a damage-focused griffin. Modest damage and vulnerability to ranged attacks.
+
+Habitat: High meadows, coastal cliffs and open uplands. Hire at a winged-horse meadow, initially after a local protection task.
+
+Initially one unit, no mandatory upgraded form.
+
+https://www.theoi.com/Ther/HipposPegasos.html
+
+
+
+ROOT-RUNNER — Norse-inspired
+
+A proposed species inspired by Ratatoskr, the squirrel messenger of the world tree. Root-Runner is an original game name, not a claimed traditional creature species.
+
+Combat: Fast fragile scout/skirmisher with a single decoy or distraction. No permanent extra adventure movement, free scouting of the entire map or bypassing quest barriers.
+
+Habitat: Old forests, mountain tree lines and great-root groves. May migrate into Celtic woodland after the collision.
+
+Initially one unit. Keep its combat role useful without adding a new movement subsystem.
+
+https://www.germanicmythology.com/PoeticEdda/GRM32.html
+
+
+
+SERPOPARD — Ancient Egyptian art
+
+Long-necked feline imagery appears on early Egyptian ceremonial palettes. Serpopard is a modern descriptive name; a specific ancient Egyptian name or meaning should not be asserted.
+
+Combat: Ground reach/control creature. A short two-hex strike creates a distinctive line threat, balanced by weak flanks and moderate durability.
+
+Habitat: Desert-river boundaries, dry ravines and quarry edges. Hire at a shaded den beside reliable water.
+
+Initially one unit. Reach and retaliation rules require later balance review.
+
+https://www.ashmolean.org/two-dog-palette
+
+
+
+BAKU — Japanese
+
+The nightmare-devouring creature represented in Japanese tradition and art.
+
+Combat: Slow support with one limited fear/nightmare cleanse or protective action per battle. Avoid unlimited healing or a universal magic dispel.
+
+Habitat: Mist forests, old shrines and quiet woodland clearings. Hire through a dream-sanctuary encounter.
+
+Initially one unit; cleansing only affects explicitly compatible statuses.
+
+https://www.metmuseum.org/art/collection/search/59035
+
+
+
+AFANC — Welsh / Celtic
+
+A lake monster in Welsh folklore, with variable descriptions. Select a coherent animal-like design later rather than claiming one definitive historical appearance.
+
+Combat: Slow defensive water-beast with a local guard/control ability. Strong at holding a lane, poor at pursuit; no creation of walkable water.
+
+Habitat: Freshwater lakes, reed basins and deep river pools. A protected pool supplies a small hire stock.
+
+Initially one unit. Amphibious flavour need not grant unrestricted adventure-map water movement.
+
+https://coflein.gov.uk/en/sites/402570
+
+
+
+AHUITZOTL — Nahua / Mesoamerican
+
+A dangerous water creature described in the Florentine Codex tradition, associated with springs and waterways. Use a tail-hand silhouette, distinct from the existing cenote crocodile.
+
+Combat: Mobile ambush/control unit with a limited one-hex pull against an eligible target. Validate destination and size; no pulling into instant-death terrain or through walls.
+
+Habitat: Cenotes, springs, jungle lakes and reed channels. Hire at a warded spring after a local water agreement.
+
+Initially one unit. Do not treat Nahua tradition as interchangeable with every Mesoamerican culture.
+
+https://florentinecodex.getty.edu/en/book/11/folio/70v?nhTexts=&spTexts=
+
+
+
+THE 37 MISSIONS — ALL STORY CHANGES ARE PROPOSALS
+
+
+
+======================================================================
+
+THE THREE BEACONS
+
+Hero: Alexios
+
+Existing cast: Thaleia, Ione, Melas, Scout Captain
+
+A practical coastal rescue becomes a lesson in who controls the new world's roads.
+
+Alexios begins by treating light as a military asset. Thaleia and Ione show him that towns need a network they can maintain themselves. Melas argues that one commander must control it. The tutorial ends with that conflict unresolved rather than with a generic victory speech.
+
+Order: Local chapters 1 → 2. Global missions 01–02. Two tutorial scenarios preserve the three existing beacon chapters.
+
+
+
+01. The Silent Shore — Wings over the Pass
+
+Small coastal bowl; 35–50 minutes; 3–4 required battles.
+
+Current source: threeBeacons.ts; chapters 1 + 2; The Silent Shore + Wings over the Pass
+
+Story and revelation: Alexios finds that the lighthouse and the mountain beacon have failed for different reasons: raiders cut the coastal supply road, while frightened griffins have abandoned the pass. Thaleia needs safe movement for ordinary people before anyone can march an army.
+
+Primary tasks: Train the town watch, restore the Outer Lighthouse, and reopen the griffin nesting ground; finish by lighting the pass beacon. Teach recruitment and one upgrade without imposing a large repeated recruitment quota.
+
+Map layout and routes: Asterion sits inside a horseshoe bay, with the lighthouse on its western horn and the aerie inland above the eastern horn. A short, guarded tidal causeway and a longer orchard road connect both sides. Opening a hillside stair completes a triangle back to town. The first objective is visible from the start; the inland objective is revealed after the lighthouse.
+
+Enemy behaviour and pressure: One clearly announced raider patrol threatens the supply road. It has a home camp and cannot respawn indefinitely. The aerie encounter teaches using cover against ranged enemies.
+
+Optional choice and consequence: Repair the causeway first for a faster army route, or provision the hillside hamlet first for a small garrison bonus in the next mission. Both objectives remain achievable.
+
+Neutral hiring: An existing centaur camp in the upland meadow offers a small optional hire after a local favour.
+
+Victory and failure: Alexios must survive. Victory requires both beacons and the opened nesting ground; no need to clear every guard. Losing the starting town is recoverable while Alexios has an army.
+
+
+
+02. The Storm Beacon
+
+Small/medium headland ring; 45–60 minutes; 3–5 battles.
+
+Current source: threeBeacons.ts; chapters 3; The Storm Beacon
+
+Story and revelation: Melas has taken the great lens because he believes the lighthouse network must answer to a single commander. Ione exposes the cost: isolated settlements can no longer signal for help. Alexios defeats his blockade, but Melas survives to matter in the Greek campaign.
+
+Primary tasks: Recover the lens from Melas, carry it to the Storm Beacon, and defend the repair crew for one tactical battle. Only one relay is needed to power the beacon; the second is an optional support objective.
+
+Map layout and routes: Highwatch stands on the inner edge of a crescent headland. Melas occupies a central plateau reached by a defended ridge road or an outer coastal switchback. The north and south relays connect across the plateau, making a complete circuit. The beacon lies above Highwatch, so the final journey returns through a changed home region rather than reaching the far-right edge.
+
+Enemy behaviour and pressure: The Scout Captain moves from Melas's camp to a signalled relay target. Taking the camp removes that reinforcement source. The final battle protects the beacon approach, not a fragile new escort unit.
+
+Optional choice and consequence: Restore both relays to strengthen the repair defence, or take the direct assault before Melas completes his field fortification. Victory and Melas's survival are fixed; the network's local or military management changes the epilogue.
+
+Neutral hiring: Existing hill slingers occupy a disused coastal quarry.
+
+Victory and failure: Alexios survives; lens installed; repair defence won. A failed optional relay does not block the campaign.
+
+
+
+======================================================================
+
+THE SILENT ORACLE
+
+Hero: Alexios
+
+Existing cast: Thaleia, Ione, Myrrine, Melas, Theron, Doros, Phaidon, Scout Captain
+
+A political investigation into who is entitled to speak for gods who cannot safely act directly.
+
+Theron sealed a real, unstable oracle spring and exploited its silence to prevent rival cities from fighting—then used forged prophecies to demand obedience. Alexios must expose the fraud without pretending the divine danger is imaginary. Melas is a rival with a possible negotiated surrender, not a repeated disposable boss.
+
+Order: Local 1 → {2 and 3 in either order} → {4 and 5 in either order} → 6. Both chapters in each pair are required. Global missions 03–08.
+
+
+
+03. The Pilgrims’ Road
+
+Medium three-town basin; 45–65 minutes; 3–4 battles.
+
+Current source: silentOracle.ts; chapters 1; The Pilgrims’ Road
+
+Story and revelation: Elaia blames its neighbours for the Oracle's silence. Alexios finds contradictory prophecies stamped with the same seal. Thaleia asks for witnesses; Ione asks for a road people can actually use.
+
+Primary tasks: Reopen travel between Elaia and two pilgrim shelters, obtain two independent testimonies from three possible sources, and expose the Hushed road captain. Evidence is recorded permanently when found.
+
+Map layout and routes: Elaia starts near the centre-south of a branching river basin. One shelter lies in a northern olive valley, another on a western hill, and the captain's customs post occupies the eastern confluence. Three crossings form a loop; repairing one adds a shortcut but does not unlock the whole map. A neutral market links the outer roads.
+
+Enemy behaviour and pressure: The captain extorts a different road every few days, visibly reducing that road's supply reward rather than deleting witnesses. Defeating his finite patrols weakens his final encounter.
+
+Optional choice and consequence: Spend supplies sheltering pilgrims for later local support, or buy the captain's ledger to expose his financiers sooner. Either route can establish the same core truth.
+
+Neutral hiring: Existing centaurs hire from the dry meadow beyond the olive groves.
+
+Victory and failure: Alexios survives; two testimonies and two safe shelter connections; captain defeated. The revelation opens the countryside and archive investigations in either order.
+
+
+
+04. The Bronze Bull and the Eyrie
+
+Medium basin around a mountain; 60–80 minutes; 4–5 battles.
+
+Current source: silentOracle.ts; chapters 2 + 3; The Bronze Bull + The Eyrie of Aetos
+
+Story and revelation: The bronze bull is devastating Thymbra's fields while the griffin keeper profits from closed mountain travel. Myrrine's warning suggests that the two crises share a patron, but their victims need different solutions.
+
+Primary tasks: Stop the bronze bull, secure grain access to Thymbra, and obtain the aerie's cooperation. The bull is a distinctive battle using existing constructs; the keeper can be defeated or paid through a substantial local contract.
+
+Map layout and routes: A mountain divides a northern nesting shelf from a southern agricultural plain. Thymbra sits west of it; a shrine and horse pasture sit east. The orchard road, quarry pass and outer meadow form two connected loops. The bull moves between two feeding grounds; its location is scouted, not fixed as a gate.
+
+Enemy behaviour and pressure: Each announced raid damages one harvest bonus, with a capped loss. The keeper's patrols guard trade, not every route. The player can confront either problem first.
+
+Optional choice and consequence: Restoring the fields grants provisions for a later siege; repairing the mountain trade route grants griffin support instead. Both regions are rescued, but scarce reconstruction funds determine the lasting benefit.
+
+Neutral hiring: A Pegasus meadow offers an optional pact after the bull is stopped. The campaign remains balanced without this proposed new creature.
+
+Victory and failure: Bull defeated and aerie cooperation established. Neither a specific purchased army composition nor a compulsory upgrade is required.
+
+
+
+05. The Hall of Echoes
+
+Medium expedition map; 60–75 minutes; 3–5 battles. No starting town; one friendly resupply landing.
+
+Current source: silentOracle.ts; chapters 4; The Hall of Echoes
+
+Story and revelation: The archive contains the Oracle's genuine warnings and the edits used to turn them into commands. Theron ordered the spring sealed after a real fracture; his later certainty was manufactured.
+
+Primary tasks: Enter with a capped expedition force, secure two of three surviving records, and extract to Halia. Two one-use resupply caches are guaranteed; the Scout Captain is optional if another extraction route is secured.
+
+Map layout and routes: Halia occupies the lagoon's southern shore; the archive sits on the central island. A northern ferry chain, western raised causeway and eastern marsh landing provide different access. The sea-chain fort controls the fastest crossing, not the only one. Opening an archive service landing creates a short return loop.
+
+Enemy behaviour and pressure: The captain prepares a publicly timed archive seizure. Missing the early window relocates one record to his fort rather than destroying the campaign's evidence. No unannounced quest-item loss.
+
+Optional choice and consequence: Preserve the archive intact through a longer extraction route for Myrrine's later research, or expose the records immediately at Halia for stronger public backing. Both retain the essential revelation.
+
+Neutral hiring: Existing clay golems can be hired at a restored workshop on the inland shore.
+
+Victory and failure: Two records delivered and Alexios alive. If this mission is played before the countryside chapter, its evidence changes the keeper's dialogue and grants one negotiation discount; no combat snowball.
+
+
+
+06. The Return of Melas
+
+Medium contested valley with a central city; 65–85 minutes; 4–6 battles.
+
+Current source: silentOracle.ts; chapters 5; The Return of Melas
+
+Story and revelation: Melas now protects Pyrgos from raiders and uses that real achievement to justify permanent military rule. Showing him the forged prophecies shakes his loyalty, but does not automatically settle the struggle for the city.
+
+Primary tasks: Break Melas's control over two of three supply districts; then take Pyrgos or compel his negotiated surrender through evidence and protected civilian supply. Any final fought siege is manual.
+
+Map layout and routes: Pyrgos occupies the middle of a broad valley. Alexios enters from a southern foothill camp. Three district roads circle the city and reconnect beyond it; a hill road bypasses the main gate at a significant travel cost. Farms, quarry and bridge tolls each support a different part of Melas's army.
+
+Enemy behaviour and pressure: Melas chooses between protecting income and threatening the player's base. His forces come from visible holdings, with a capped emergency reserve. Raiding a district changes his deployment.
+
+Optional choice and consequence: Accept a negotiated surrender and retain a limited local garrison, or defeat him and place the city under civilian council control for a later legitimacy bonus. Neither grants an extra playable hero.
+
+Neutral hiring: Pegasi inhabit a remote ridge; existing brigand deserters can be hired after their camp is disarmed.
+
+Victory and failure: Pyrgos changes allegiance and civilians retain one working supply road. Melas survives as an existing character; the outcome changes his final testimony.
+
+
+
+07. The Labyrinth of Kerata
+
+Medium crater and quarry network; 55–75 minutes; 4–5 battles.
+
+Current source: silentOracle.ts; chapters 6; The Labyrinth of Kerata
+
+Story and revelation: Doros has imprisoned minotaurs as labour and as convenient proof that Theron's enemies are monsters. Their release can undermine the regime more effectively than another destroyed town.
+
+Primary tasks: Release three captive groups in any order, secure one refuge, and defeat Doros or destroy his capacity to retake the prison by capturing its guard posts. A return visit to a liberated wing reveals witness testimony.
+
+Map layout and routes: A sunken quarry has an outer rim road, two ramps and a lower ring of galleries. The prison yards form three spokes with cross-passages; none is the final room of a long corridor. Opening winches creates new connections rather than another serial key gate. The refuge sits near the original entrance.
+
+Enemy behaviour and pressure: Doros dispatches finite recapture parties towards visible occupied yards. Released groups travel as abstracted progress along secured routes; the player need not babysit three fragile escort units simultaneously.
+
+Optional choice and consequence: Escort the first group to safety before continuing for stronger public testimony, or arm it to secure the remaining yards for a small military reward. All prisoners can still be saved.
+
+Neutral hiring: Existing ogre labourers hire from an abandoned work camp; no mandatory new creature.
+
+Victory and failure: All three groups freed and a refuge secured; Alexios survives. The choice supplies a bounded finale benefit, not a required key.
+
+
+
+08. The Spring of Kalliste
+
+Large sanctuary basin; 80–110 minutes; 5–7 battles.
+
+Current source: silentOracle.ts; chapters 7; The Spring of Kalliste
+
+Story and revelation: Theron offers a bargain: accept his single voice and he will contain the dangerous spring. Alexios must prove that the cities can protect it without surrendering their judgement. Myrrine confirms that uncontrolled divine intervention would tear the merged world.
+
+Primary tasks: Secure a spring approach, protect Myrrine's stabilisation at two sites in either order, and defeat Theron's final host. Phaidon guards a reserve depot that can be bypassed or neutralised.
+
+Map layout and routes: The spring lies at the centre of a circular mountain basin. A pilgrim town, prison road and cliff settlement occupy three surrounding sectors. Inner and outer rings connect them through three passes. The final sanctuary can be approached from several sectors; securing more sectors changes enemy reserves instead of unlocking a mandatory gate.
+
+Enemy behaviour and pressure: Theron reallocates troops between the sanctuary and exposed supply sites. Each ritual triggers one announced counterattack. Stabilisation persists once completed; the player is not forced to hold multiple points with one hero.
+
+Optional choice and consequence: After victory, preserve the Oracle as an independent adviser or place the spring under a council of cities. Prior witnesses, prisoners and Melas shape the ceremony and who trusts the settlement.
+
+Neutral hiring: One optional mixed neutral refuge offers a small choice of existing units or Pegasi, with a shared finite stock.
+
+Victory and failure: Theron defeated, both stabilisations complete, Alexios and the spring preserved. Neither ending is a simple divine-power reward.
+
+
+
+======================================================================
+
+THE WINTER OATH
+
+Hero: Hervor
+
+Existing cast: Eydis, Skeggi, Ulfhild, Hrafn the Hollow, Bone-Helm, Barrow Captain, The Grey Jarl
+
+An inherited bargain, an overdue winter, and a leader responsible for the weapon that disturbed it.
+
+Hervor's sword awakened an oath that once protected vulnerable settlements but now imprisons them. Ulfhild profits from closed harbours yet has people to feed. The Grey Jarl demands the kingdom he was promised. The question is how to honour protection without accepting perpetual ownership.
+
+Order: Local 1 → 2 → {3 and 4 in either order} → 5 → 6. Ice on the Sound and The Jarl of Hvitstrand have order-aware briefings. Global missions 09–14.
+
+
+
+09. Barrow Light
+
+Small/medium valley hub; 45–60 minutes; 3–4 battles.
+
+Current source: winterOath.ts; chapters 1; Barrow Light
+
+Story and revelation: The barrow opened when Hervor drew her sword. Eydis finds an oath promising protection through winter, with no agreed end. Skeggi needs to evacuate exposed farms before another night raid.
+
+Primary tasks: Relight the barrow watch, secure two evacuation routes, and recover the oath's first inscription. The watch is a defensive position, not merely a switch.
+
+Map layout and routes: Kaldvik sits at the junction of three valleys. The barrow overlooks the north; farms occupy west and east branches linked by a forest trail. A repaired ford shortens the circuit through town. An optional ridge reveals the next raid's origin.
+
+Enemy behaviour and pressure: Two finite night raids are announced before they depart. Guarding a route with a town-controlled outpost counts; Hervor need not stand in two places. Failure costs a capped optional provision bonus.
+
+Optional choice and consequence: Shelter families inside Kaldvik for a later defensive reserve, or help them reach the coast for supplies in the harbour chapter.
+
+Neutral hiring: Existing hill slingers hire at a logging camp.
+
+Victory and failure: Hervor survives, inscription recovered, both evacuation routes secured. A missed bonus does not fail the campaign.
+
+
+
+10. The White Pack and the Valkyrie’s Price
+
+Medium interconnected uplands; 60–80 minutes; 4–5 battles.
+
+Current source: winterOath.ts; chapters 2 + 3; The White Pack + The Valkyrie’s Price
+
+Story and revelation: The wolves are pursuing the same restless dead that imprison the valkyries. Ulfhild has bought silence with grain while lower villages starve. Hervor must break the cycle without treating every wild creature as an enemy.
+
+Primary tasks: End the pack's attacks, free the valkyrie refuge, and settle access through the troll pass by payment or battle. The pack's lead battle can be avoided through a costly food-and-territory agreement; the barrow jailer cannot.
+
+Map layout and routes: Birkaby lies below a forked mountain. Western forest, eastern scree and a high saddle form a figure eight. The troll pass is the fastest connector; a longer traversable lower route always exists. Pack tracks point towards two hunting grounds.
+
+Enemy behaviour and pressure: A finite pack changes grounds after a signalled hunt. The refuge jailer prepares one reinforcement, delayed by interrupting his grave-road supply.
+
+Optional choice and consequence: Give scarce grain to the villages for stronger harbour support, or supply the refuge for a one-time valkyrie contingent. Neither denies the other region its essential rescue.
+
+Neutral hiring: A Root-Runner grove on the lower forest loop introduces the proposed neutral scout.
+
+Victory and failure: Attacks ended, refuge freed, pass access resolved. Progress does not require owning a particular premium creature.
+
+
+
+11. Ice on the Sound
+
+Medium naval expedition; 65–85 minutes; 4–6 battles. One friendly resupply island, no full town-building phase.
+
+Current source: winterOath.ts; chapters 4; Ice on the Sound
+
+Story and revelation: Bone-Helm's ship carries the names of people bound to the old oath. Eydis discovers that destroying the ship without recovering its ledger would leave those families bound forever. If Hvitstrand has already been opened, its merchants supply an extra landing; otherwise the expedition establishes that route itself.
+
+Primary tasks: Recover the ledger, establish two safe landing points, and defeat Bone-Helm. The Norns' Well supplies interpretation, not a third compulsory key.
+
+Map layout and routes: Three principal islands surround a navigable sound, with short ferries and a longer sheltered southern route. A central ice crossing opens on a visible schedule but is never the only exit. Each landing connects to a second route. No army is trapped by ice changing beneath it.
+
+Enemy behaviour and pressure: Bone-Helm raids the nearest unprotected landing from a visible anchorage. Capturing it stops replenishment. A warning gives enough time to intercept or reinforce.
+
+Optional choice and consequence: Recover named prisoners before striking the ship for a later oath-breaking advantage, or secure the merchant harbour first for a bounded economic bonus.
+
+Neutral hiring: Root-Runners inhabit the wooded inner island; an existing neutral slinger camp covers an alternative landing.
+
+Victory and failure: Ledger secured and Bone-Helm defeated, with two functioning landings. Missed weather windows change travel cost, never force a restart.
+
+
+
+12. The Jarl of Hvitstrand
+
+Medium harbour hinterland; 65–90 minutes; 4–6 battles.
+
+Current source: winterOath.ts; chapters 5; The Jarl of Hvitstrand
+
+Story and revelation: Ulfhild keeps the sound closed because open trade would remove her leverage. She also has a harbour full of dependants. Hervor must break her monopoly without reducing the place to famine. The Bone-Helm ledger strengthens the argument if already recovered, but is not required to complete this chapter.
+
+Primary tasks: Reopen a shipping route, stock the common harbour with a declared one-time provision target, and end Ulfhild's blockade. She yields after a manual siege or a food settlement backed by the exposed toll accounts. This is a logistics scenario, not another requirement to collect district approvals.
+
+Map layout and routes: Hvitstrand occupies an inlet in the map's centre. Fishery, forest and upland road form a ring around it. The outer winter road allows a distant approach to the rear gate; the short dock road is heavily defended. Capturable warehouses create useful return stops.
+
+Enemy behaviour and pressure: Ulfhild protects her remaining income and launches one telegraphed counteroffensive. Her army cannot recover endlessly from invisible supplies.
+
+Optional choice and consequence: Return the shipping dues to independent settlements for later allies, or fund a common harbour guard for a stronger final starting garrison.
+
+Neutral hiring: Existing brigand sailors hire from a sheltered cove after their captain's local contract is fulfilled.
+
+Victory and failure: Harbour opened and one food route intact. A negotiated resolution resolves politics before combat; it is not an automatic battle button.
+
+
+
+13. The Giants’ Refuge
+
+Medium glacial bowl; 60–80 minutes; 4–5 battles.
+
+Current source: winterOath.ts; chapters 6; The Giants’ Refuge
+
+Story and revelation: Hrafn the Hollow has frozen the giants into monuments to the Grey Jarl's promise. The first thaw may destroy the homes built below them. Skeggi insists that freeing captives and protecting neighbours must be one operation.
+
+Primary tasks: Secure a refuge, free three giant groups, and defeat Hrafn at whichever of two ritual sites remains under his control.
+
+Map layout and routes: Jokulsby stands below a circular glacier. Two broad mountain passes lead around opposite sides, with a quarry road linking the upper terraces. Three captive sites occupy separate elevations. Thawing opens a shortcut and marks one vulnerable downhill road before any change occurs.
+
+Enemy behaviour and pressure: Each rescue shifts Hrafn's defenders; one finite retaliatory column targets the refuge. Flood warnings provide a safe route and never strand the hero.
+
+Optional choice and consequence: Spend supplies reinforcing the downhill settlement for a stronger ending community, or build a high refuge that provides a small giant contingent. Both protect the essential population.
+
+Neutral hiring: Existing ogres occupy a warm quarry; Root-Runners use the tree line.
+
+Victory and failure: Three groups free, refuge retained through its defence, Hrafn defeated. No simultaneous occupation puzzle.
+
+
+
+14. Oathbreaker’s Hall
+
+Large concentric highland; 85–110 minutes; 5–7 battles.
+
+Current source: winterOath.ts; chapters 7; Oathbreaker’s Hall
+
+Story and revelation: The Grey Jarl demands the kingdom promised until winter ends. Hervor can defeat his host, but victory alone does not release the oath she awakened. The ledger and rescued witnesses reveal what protection should have meant.
+
+Primary tasks: Break two of three oath-enforcement strongholds, reach the hall, and win the final battle. Resolve the sword's bond afterwards through Eydis's rite.
+
+Map layout and routes: Isafold is a defended inner plateau with three passes and an outer ring of settlements. Strongholds support different final-battle reserves. An old burial road links two sectors, creating a flanking route. The Barrow Captain patrols the ring rather than guarding one unavoidable corridor.
+
+Enemy behaviour and pressure: The Jarl attacks whichever settlement the player leaves exposed; allied garrisons from earlier chapters provide bounded help. Each stronghold has a finite army budget.
+
+Optional choice and consequence: Break the sword's inherited claim and disperse the oath, or rebind it to a limited communal duty. Earlier choices decide which witnesses support the settlement, not whether either ending is accessible.
+
+Neutral hiring: A mixed refugee camp offers a small existing neutral hire; new creatures remain optional.
+
+Victory and failure: Grey Jarl defeated and sword resolved. Hervor survives. The land begins thawing; the final scene shows people returning, not a universal conquest banner.
+
+
+
+======================================================================
+
+THE TWELFTH HOUR
+
+Hero: Seshet
+
+Existing cast: Nebet, Pawah, Paser, Ankhwen, Hekaib, Iti, Djedkhonsu
+
+Control of water, grain and the calendar during a failing dawn.
+
+Seshet begins as a reader of correct rites and learns that a hymn cannot substitute for feeding a town. Djedkhonsu freezes the last hour to prevent a feared collapse after the worlds merged; his solution is starving the living. Paser turns rationing into political power. Seshet must establish a workable dawn, not merely defeat an evil priest.
+
+Order: Local 1 → {2 and 3 in either order} → 4 → 5 → 6. The farmland inquiry and library expedition can swap. Global missions 15–20.
+
+
+
+15. The Ember Dawn
+
+Small/medium irrigated basin; 45–65 minutes; 3–4 battles.
+
+Current source: twelfthHour.ts; chapters 1; The Ember Dawn
+
+Story and revelation: A red dawn gives Abedju too little light to sustain its fields. Seshet expects a broken rite; Nebet shows her blocked canals and unequal rationing. The first obelisk confirms that the sky and the water system are failing together.
+
+Primary tasks: Restore two canal branches, deliver a grain allotment, and read the eastern obelisk. A local guarded lock introduces water control without a mission-wide timer.
+
+Map layout and routes: Abedju sits near the middle of a river bend. Fields, floodplain shrine and desert ridge connect by a dike ring with three crossings. Opening a branch changes one ford and improves a farm; another route always remains usable.
+
+Enemy behaviour and pressure: A finite raider band targets the currently richer bank. The obelisk battle uses dry channels and protected approaches rather than a featureless field.
+
+Optional choice and consequence: Prioritise the lower farms for later grain support, or restore the boat channel for cheaper movement and supplies. Both branches are eventually reopened; the first investment receives the lasting bonus.
+
+Neutral hiring: Existing clay golems hire at an abandoned irrigation workshop.
+
+Victory and failure: Two branches restored, grain delivered, obelisk read. Seshet survives. Dawn shortening is narrative pressure here, not a hidden countdown.
+
+
+
+16. The Black Boar
+
+Medium agricultural delta; 50–70 minutes; 3–5 battles.
+
+Current source: twelfthHour.ts; chapters 2; The Black Boar
+
+Story and revelation: Boars driven from the western marsh destroy Nekheb's remaining crops. Pawah finds that Paser's collectors diverted their water. The crisis is a contest over food, not another monster placed in front of a key.
+
+Primary tasks: Secure two granaries and stop the destructive herd by defeating its driven leaders or restoring a safe marsh route. Capture the collector's account book.
+
+Map layout and routes: Three fertile islands surround a central wetland. Nekheb lies on the southern distributary; collector depots occupy the northwestern causeway. Short dikes favour interception; a dry eastern rim provides a longer reliable route. The herd moves between signposted feeding sites.
+
+Enemy behaviour and pressure: Three announced crop raids have a capped economic cost. The collector attempts to remove his records to a second known depot; the book remains recoverable.
+
+Optional choice and consequence: Return confiscated grain for later civilian support, or buy seed and tools for a stronger starting economy in the capital chapter.
+
+Neutral hiring: A Serpopard den on the desert-marsh boundary offers a small optional hire after water is restored.
+
+Victory and failure: Two granaries safe, herd crisis ended, account book recovered. Optional crop losses never invalidate the main quest.
+
+
+
+17. The Drowned Library and the Sculptor’s Price
+
+Medium/large river and quarry circuit; 70–90 minutes; 4–6 battles.
+
+Current source: twelfthHour.ts; chapters 3 + 4; The Sculptor’s Price + The Drowned Library
+
+Story and revelation: The library's flood records can explain the missing hour, but the workers who could recover them serve a quarry debt. Ankhwen uses the drowned waterways to keep the old contracts beyond scrutiny.
+
+Primary tasks: Settle the sculptor's labour contract, choose a controlled water level at the sluice, and extract two library records during the resulting safe phase. Secure a raised staging area before draining the library. Ankhwen is an optional interception rather than a required boss.
+
+Map layout and routes: Edfu's quarry shelf and Per-Djehuty's flooded library face each other across a wide river. A north bridge, southern ferry and central shallow-water chain create three crossings. The quarry service road reconnects behind the player's starting settlement. Changing a sluice exposes one chamber while closing a shortcut, never the sole route.
+
+Enemy behaviour and pressure: Water phases are player-triggered at the sluice after a preview, with no forced waiting cycle. A chosen phase closes a shortcut but leaves an escape route. Ankhwen's barge follows a scouted circuit and draws reinforcements from one depot.
+
+Optional choice and consequence: Pay the workers' debt for faster cooperation, or expose the contract fraud through a harder depot battle for better later worker support.
+
+Neutral hiring: Existing clay golems and an optional Serpopard den occupy different banks with shared local recruitment limits.
+
+Victory and failure: Contract resolved, two records secured and extracted. The records reveal that Djedkhonsu is holding the last hour closed; no exact two-switch gate.
+
+
+
+18. The Red Vizier
+
+Medium capital and three districts; 70–90 minutes; 4–6 battles.
+
+Current source: twelfthHour.ts; chapters 5; The Red Vizier
+
+Story and revelation: Paser presents rationing as sacred order while rewarding loyal districts. Seshet must take Per-Wadjet without inheriting a starving city. Nebet challenges the temptation to use the same system against opponents.
+
+Primary tasks: Secure the city's food connection and two of three district commitments, then confront Paser in a manual siege or obtain his abdication with published accounts and district backing.
+
+Map layout and routes: The capital occupies a raised central island. Temple, granary and merchant districts form an outer crescent joined by two bridges and a ferry. A long desert road reaches the rear landing. Supply buildings matter after capture because Paser can try to retake them.
+
+Enemy behaviour and pressure: Paser concentrates troops where his remaining income is strongest and sends one ration convoy that can be intercepted or allowed through to feed civilians.
+
+Optional choice and consequence: Abolish the emergency grain levy for legitimacy, or keep a limited publicly accounted levy to fund the phoenix rescue. Each grants one bounded campaign benefit and a different later argument.
+
+Neutral hiring: Serpopards hire near the outer caravan well; existing hill slingers hire in the quarry district.
+
+Victory and failure: Capital allegiance changed and food route functioning. No requirement to conquer every district or kill every neutral.
+
+
+
+19. The Phoenix Rookery
+
+Medium desert oasis ring; 60–80 minutes; 4–5 battles.
+
+Current source: twelfthHour.ts; chapters 6; The Phoenix Rookery
+
+Story and revelation: Hekaib has caged the bennu to supply Djedkhonsu's arrested dawn. Freeing them too quickly would abandon settlements dependent on the same failing energy. Pawah helps Seshet separate a rescue from a reckless shutdown.
+
+Primary tasks: Build a safe chain of two existing outposts, free the rookery and return the rescued fire to Iunu. The outposts secure automated evacuation progress. Hekaib can be defeated at the prison or intercepted during the return, creating a battle placement choice.
+
+Map layout and routes: Iunu lies on the south edge of a circular oasis. Three causeways converge near the rookery, while a longer dune perimeter links all settlements. Two ruined service paths become shortcuts after supply deliveries. The prison has two assault approaches with different cover.
+
+Enemy behaviour and pressure: Hekaib relocates one reserve when a supply point is restored. The rookery's visible depletion reduces an optional reward after a generous threshold, never kills the captives offscreen.
+
+Optional choice and consequence: Use freed fire first for Iunu's homes to earn a defensive reserve, or preserve it for the final rite to weaken one enemy formation.
+
+Neutral hiring: Existing wyverns occupy a remote escarpment; they are an optional expensive sidegrade, not a compulsory counter.
+
+Victory and failure: Replacement supply secured, rookery freed, Hekaib defeated. No new phoenix species or new protagonist is required.
+
+
+
+20. The Twelfth Hour
+
+Large radial river convergence; 85–115 minutes; 5–7 battles.
+
+Current source: twelfthHour.ts; chapters 7; The Twelfth Hour
+
+Story and revelation: Djedkhonsu believes the next dawn will tear open the joined heavens. Seshet now has evidence for a safer rite and a functioning system of supply. She must restore time without returning every city to priestly control.
+
+Primary tasks: Prepare the solar barque at two of three existing sacred sites, protect its final landing, and defeat Djedkhonsu. Iti's watch can be neutralised to remove a reserve from the final battle.
+
+Map layout and routes: The Hall of the Coil occupies the centre of a five-armed river basin. Outer dikes connect all arms; three navigable approaches lead inward. Taking sites changes reinforcement and supply rather than opening serial doors. The final landing is reachable from two secured banks.
+
+Enemy behaviour and pressure: A declared final rite begins only when the player chooses to launch the prepared barque. Before launch, finite enemy sorties contest supplies. During it, two announced attacks precede the final confrontation.
+
+Optional choice and consequence: After victory, place the calendar under a distributed council of keepers or a public royal office led through the existing cast. Show practical consequences, not an abstract morality score.
+
+Neutral hiring: One optional caravan offers a choice of existing neutral units or Serpopards.
+
+Victory and failure: Barque protected, final host defeated, dawn released; Seshet survives. No surprise deadline starts during exploration.
+
+
+
+======================================================================
+
+THE LANTERN ROAD
+
+Hero: Akane
+
+Existing cast: Shiro, Genzo, Kurogane, Gonryō, Oboro, Kagerō, Yamikage
+
+A border between living and dead that can be guided, exploited or forcibly sealed.
+
+Akane first assumes every unlit lantern is damage. She discovers people who extinguished theirs to hide from conscription and spirits afraid of returning home. Kurogane turns the dead into property; Yamikage feeds on the memories lost along the road. Restoring passage requires deciding who controls it.
+
+Order: Local 1 → 2 → {3 and 4 in either order} → 5 → 6. Spirit Sea and Iron Daimyo have order-aware evidence dialogue. Global missions 21–26.
+
+
+
+21. The Unlit Lantern
+
+Small/medium forest crossroads; 45–60 minutes; 3–4 battles.
+
+Current source: lanternRoad.ts; chapters 1; The Unlit Lantern
+
+Story and revelation: Akane discovers that some villagers extinguished their lanterns deliberately to hide from Kurogane's collectors. Shiro wants the dead guided home; Genzo warns that a lit road can also guide an occupying army.
+
+Primary tasks: Find the cause of three dark lanterns, restore two safe village links, and defeat the collector at the crossing. One lantern stays dark by local choice without blocking victory.
+
+Map layout and routes: Kagaribi sits at a five-way forest junction. A shrine ridge, bamboo bridge and rice-road loop connect the outer hamlets. The collector controls the shortest crossing; a longer woodland route lets the player gather testimony first.
+
+Enemy behaviour and pressure: One visible collection patrol heads towards a declared village. Its arrival reduces an optional reward rather than removing that village's quest.
+
+Optional choice and consequence: Light the sheltered village publicly for travel income, or mark a hidden safe route for later civilian cooperation. This is a trade-off about visibility, not good versus evil.
+
+Neutral hiring: Existing hill slingers hire at a woodland work camp.
+
+Victory and failure: Three causes investigated, two safe links established and collector defeated; Akane survives.
+
+
+
+22. The Boar Lord and the Crow Monastery
+
+Medium terraced valley and high ridge; 65–85 minutes; 4–5 battles.
+
+Current source: lanternRoad.ts; chapters 2 + 3; The Boar Lord + The Crow Monastery
+
+Story and revelation: Flooded rice terraces drive the Boar Lord into villages while the monastery hoards a bell that could guide lost spirits. The tengu dispute whether the road should be reopened at all.
+
+Primary tasks: Restore safe water through the terraces, resolve the Boar Lord's threat, and earn or seize access to the monastery bell. Genzo uncovers Kurogane's contract with the Red Hall.
+
+Map layout and routes: Mizuhara lies in the low basin; Kumoyama occupies the northwestern ridge. Two stair roads and a long forest contour create a figure eight. A water gate changes the low shortcut but leaves the upper circuit open. The Red Hall sits off the main circuit as a high-value optional target.
+
+Enemy behaviour and pressure: The boar follows a scouted circuit. Monastery defenders respond to intrusion into their grounds rather than attacking arbitrary villages.
+
+Optional choice and consequence: Negotiate through restored water and offerings for tengu support, or defeat the bell's guards to expose the Red Hall contract sooner. The essential evidence is obtainable by either route.
+
+Neutral hiring: A Baku shrine in the mist forest offers nightmare cleansing as a small neutral hire.
+
+Victory and failure: Water restored, threat ended and bell access obtained. No exact creature-count gate.
+
+
+
+23. The Spirit Sea
+
+Medium islands and tidal shores; 65–85 minutes; 4–6 battles.
+
+Current source: lanternRoad.ts; chapters 4; The Spirit Sea
+
+Story and revelation: Gonryō's fleet ferries the dead in circles, stripping their memories to pay for passage. The Hall of Mirrors reveals that Yamikage feeds on these losses. Shiro recognises names that the official registers erased.
+
+Primary tasks: Recover two passenger registers and liberate a usable ferry route, then escort the freed fleet's progress to the Hall of Mirrors. Secure landings advance that progress automatically. Gonryō attacks at the weakest remaining landing, creating one deliberate defence battle instead of a compulsory flagship siege.
+
+Map layout and routes: Four islands circle a misty central channel. Short ferry hops, a northern causeway and a long outer sailing route offer alternatives. The Hall of Mirrors has two landings. Clearing fog reveals shortcuts; it does not convert the map into a single mandatory chain.
+
+Enemy behaviour and pressure: The fleet moves among three visible anchorages and can raid an unprotected landing. Capturing its depot ends replenishment. Tide changes are announced and cannot strand armies.
+
+Optional choice and consequence: Return the registers to families for later civilian aid, or publish the names at the Iron Castle to weaken Kurogane's authority. The story retains copies, avoiding a lost-key problem.
+
+Neutral hiring: Baku inhabit a quiet cedar island; existing brigand boat crews can be hired at the outer dock.
+
+Victory and failure: Two registers recovered, safe crossing opened and flagship guard defeated. No need to conquer all islands.
+
+
+
+24. The Iron Daimyo
+
+Medium castle hinterland; 70–90 minutes; 4–6 battles.
+
+Current source: lanternRoad.ts; chapters 5; The Iron Daimyo
+
+Story and revelation: Kurogane uses an army of bound dead to seize Akane's starting roadside refuge after an evacuation warning. The opening is a planned withdrawal to one of two safe camps, not an unwinnable forced battle. Akane then breaks the labour system that sustains the Iron Castle.
+
+Primary tasks: Evacuate the starting refuge along either available road, establish a safe camp, break two labour bonds and defeat Kurogane. The evacuation transfers essential troops and quest progress automatically when the player leaves; a late departure costs only an optional store.
+
+Map layout and routes: The Iron Castle stands on a central ridge. Foundry, barracks and rice store occupy a connected lower ring. A steep pilgrimage road reaches the rear at a high movement cost; a broad front road supports the fastest assault. Freed districts become safe staging points.
+
+Enemy behaviour and pressure: Kurogane chooses one district for a finite recapture offensive after the first bond breaks. A second threat is optional and tied to how many depots remain intact.
+
+Optional choice and consequence: Dismantle the foundry for a safer spirit road or retain its ordinary workshops under local control for later equipment support. Avoid framing all industry as evil.
+
+Neutral hiring: Existing clay golems can be reclaimed from an abandoned workshop; Baku remain a limited alternative.
+
+Victory and failure: Two bonds broken, settlement defended, Kurogane defeated. Akane survives; no compulsory total map clearance.
+
+
+
+25. The Kirin Meadow
+
+Medium woodland ring with a central refuge; 55–75 minutes; 3–5 battles.
+
+Current source: lanternRoad.ts; chapters 6; The Kirin Meadow
+
+Story and revelation: Oboro pens the kirin to keep the border sealed, claiming that every passage invites the Lantern Eater. Akane must open a controlled refuge while proving that her earlier victories did not simply release another danger.
+
+Primary tasks: Create a safe sanctuary and secure one of two migration corridors for the kirin. Once ready, begin the migration and win two distinct interception battles. Oboro's binding tower is an optional pre-emptive strike that weakens the second encounter.
+
+Map layout and routes: The meadow occupies the centre of a cedar forest. A ridge circuit and a riverside circuit cross at three clearings. Oboro's ritual tower overlooks one approach but cannot close both. Opening the sanctuary creates a safe short return to the starting shrine.
+
+Enemy behaviour and pressure: The binding rite's countdown starts only after the player explicitly begins the rescue. It schedules two manual encounters; failure of an optional outpost strengthens one, without an instant-loss timer.
+
+Optional choice and consequence: Preserve a narrow supervised crossing for a stronger defensive finale bonus, or reopen several local paths for broader settlement support.
+
+Neutral hiring: Baku hire at the sanctuary; an existing neutral slinger camp offers a cheaper combat alternative.
+
+Victory and failure: Migration completes and the sanctuary survives; Akane survives. Oboro withdraws if the tower is bypassed. Existing kirin art and units are reused.
+
+
+
+26. The Last Torii
+
+Large interlinked living/spirit districts; 85–110 minutes; 5–7 battles.
+
+Current source: lanternRoad.ts; chapters 7; The Last Torii
+
+Story and revelation: Yamikage cannot be starved merely by lighting every lantern: the lost names must be remembered. Akane and Shiro bring the records back to the communities that kept them, then confront the Lantern Eater.
+
+Primary tasks: Restore memory at three of four districts, secure a passage to the Last Torii and defeat Yamikage. Kagerō guards an optional reserve nexus.
+
+Map layout and routes: Two overlapping road circuits represent living settlements and spirit shrines using existing terrain and landmark art. Four fixed crossings link the circuits; each district can be reached by either a long safe route or a short dangerous one. The Last Torii is central, visible early and strongly defended.
+
+Enemy behaviour and pressure: Yamikage dims one announced district at a time. Restored memories remain recorded; losing a district changes reinforcements, not collected progress. Finite raiders prevent endless defence.
+
+Optional choice and consequence: End with permanent supervised passages or seasonal openings protected by local keepers. Shiro's role and the saved villages explain the cost of each policy.
+
+Neutral hiring: One mixed sanctuary supplies a limited final hire of Baku or existing neutrals.
+
+Victory and failure: Three memories restored and Yamikage defeated; Akane survives. No player-addressing speech or new god-avatar boss art required.
+
+
+
+======================================================================
+
+THE SILVER BRANCH
+
+Hero: Orla
+
+Existing cast: Cathal, Sadb, Fiachra, Corc, Tadhg the Grey, Ciar, Dubhghall
+
+A disputed crown and the bargains between a changing landscape and its inhabitants.
+
+Orla must restore the seasons without restoring a king's absolute power over them. Fiachra has imposed order at a genuine cost; Dubhghall preserves a remembered homeland by refusing change. The silver branch is evidence of reciprocal obligations, not merely a key assembled from collectibles.
+
+Order: Local 1 → 2 → {3 and 4 in either order} → 5 → 6. The charters can inform the assembly or later test its promises. Global missions 27–32.
+
+
+
+27. The Cold Hearth
+
+Small/medium woodland basin; 45–65 minutes; 3–4 battles.
+
+Current source: silverBranch.ts; chapters 1; The Cold Hearth
+
+Story and revelation: Beltane's fire fails at Dún Caill. Orla discovers that the old agreements between settlements and woodland have been treated as royal property. Cathal wants a ruler restored; Sadb asks whether the land ever consented to that rule.
+
+Primary tasks: Restore the communal hearth, settle two local obligations and read the first branch inscription. One obligation is a resource agreement, the other a defended rescue.
+
+Map layout and routes: Dún Caill occupies a central clearing surrounded by three forest communities. A river horseshoe and two fords create an inner and outer circuit. The cold hearth is close to home; the mystery unfolds outward instead of ending at a remote edge.
+
+Enemy behaviour and pressure: A finite raiding band targets an announced supply site. Taking its camp protects future travel.
+
+Optional choice and consequence: Use the first recovered supplies for a public feast and local support, or repair the outer road for an economic bonus. Both honour the essential obligations.
+
+Neutral hiring: Existing centaurs hire from a meadow outside the deep wood.
+
+Victory and failure: Hearth restored, two obligations fulfilled and inscription recorded; Orla survives.
+
+
+
+28. The Iron-Bristled Boar and the Water-Horse Bargain
+
+Medium lake and farmland circuit; 65–85 minutes; 4–5 battles.
+
+Current source: silverBranch.ts; chapters 2 + 3; The Iron-Bristled Boar + The Water-Horse Bargain
+
+Story and revelation: The boar attacks farms planted across an old water route. The kelpie offers passage in exchange for reopening it, while a bound banshee can explain the forgotten agreement. Neither side tells the whole truth.
+
+Primary tasks: End the boar raids, settle the water route and free the hill's bound witness. The kelpie pact is a negotiated route advantage, not a mandatory new faction creature.
+
+Map layout and routes: Loch Eala fills the centre, with Dún Bera on the eastern plain. Two shore roads, a hill bridge and a marsh causeway form a complete circuit. Restoring the water route closes one minor ford but opens a boat landing; the long shore path stays open.
+
+Enemy behaviour and pressure: The boar raids declared fields; finite collectors protect the old boundary stones. Missing a crop defence costs a bounded reward.
+
+Optional choice and consequence: Move the disputed farms and compensate their owners, or build a costly separate water channel. Both are legitimate solutions with different later support, not a trick moral choice.
+
+Neutral hiring: An Afanc pool off the main lake offers the proposed neutral tank after the water dispute is settled.
+
+Victory and failure: Raids ended, water agreement made and witness free. No obligation to exterminate the lake's creatures.
+
+
+
+29. The Hall Beneath the Waves
+
+Medium limited-force exploration; 60–80 minutes; 3–4 battles. Fixed expedition army with two guaranteed resupply opportunities.
+
+Current source: silverBranch.ts; chapters 4; The Hall Beneath the Waves
+
+Story and revelation: Corc holds the route to the drowned hall, where successive rulers recorded promises they later broke. Sadb discovers that the silver branch recognises reciprocal duties rather than royal blood.
+
+Primary tasks: Reach the hall, recover two of three charters, and establish a safe return route. Defeat Corc or purchase a specific passage by returning seized coastal stores.
+
+Map layout and routes: A coastal town, two headlands and the drowned hall form a four-node sailing circuit. A long inland road connects the headlands, while ferries provide quicker risky approaches. The hall has two landings; opening either creates a return shortcut.
+
+Enemy behaviour and pressure: Corc's finite fleet contests the richest landing. His control weakens when storehouses are taken; he does not magically appear wherever Orla travels.
+
+Optional choice and consequence: Publish the charters for later public legitimacy, or first reconcile the coastal settlements for a stronger maritime supply bonus. Copies preserve both future story paths.
+
+Neutral hiring: Afanc inhabit the freshwater lagoon; existing brigand crews hire at an outer inlet.
+
+Victory and failure: Two charters recovered and Orla returned safely. If played after the High Seat, the charters test the settlement already made; otherwise they inform the succession.
+
+
+
+30. The High Seat
+
+Medium political border basin; 65–90 minutes; 4–6 battles.
+
+Current source: silverBranch.ts; chapters 5; The High Seat
+
+Story and revelation: Fiachra has kept the roads safe while claiming powers no predecessor could justify. Orla must establish authority through the needs of the settlements, not merely occupy his throne.
+
+Primary tasks: Earn support from two of three districts through distinct local objectives, then win the assembly or defeat Fiachra's army. The assembly requires actual district outcomes, not clicking three shrines.
+
+Map layout and routes: The High Seat overlooks the junction of three valleys. A ring road connects market, pasture and forest settlements; two separate approaches reach the fort. A remote ridge offers an expensive flank. Districts continue producing supplies after their quests.
+
+Enemy behaviour and pressure: Fiachra spends a visible reserve to influence or raid one district. His actions can be intercepted; support already earned cannot vanish through an invisible roll.
+
+Optional choice and consequence: Keep Fiachra as a constrained local governor or remove him after a manual confrontation. Either way, establish written duties that later determine which district aids the finale.
+
+Neutral hiring: Existing hill slingers hire at the ridge quarry; an Afanc pool guards an optional shortcut.
+
+Victory and failure: Two districts support the settlement and the High Seat accepts it. Orla survives. No new controllable governor hero is introduced.
+
+
+
+31. The Stags’ Wood
+
+Medium changing forest with stable outer ring; 60–80 minutes; 4–5 battles.
+
+Current source: silverBranch.ts; chapters 6; The Stags’ Wood
+
+Story and revelation: Tadhg the Grey binds the stag spirits to hold the forest in one perfect remembered season. The result is beautiful and increasingly lifeless. Orla must let the wood change without abandoning the people inside it.
+
+Primary tasks: Stop Tadhg's binding host first, then guide the release of three seasonal glades while maintaining an evacuation circuit. The second half is a return through altered geography with one announced defensive encounter, rather than another boss behind captive sites.
+
+Map layout and routes: A permanent outer forest road encircles three seasonal glades. Releasing a spirit changes an inner shortcut and its resources, with a preview before commitment. Two cross-paths always remain; no random maze or memory test.
+
+Enemy behaviour and pressure: Tadhg's initial army is finite. After his defeat, one surviving binding guard attacks the most recently opened clearing. Changing a glade previews its route changes and cannot close the permanent outer road.
+
+Optional choice and consequence: Preserve the old orchard as a managed refuge for a civilian ending benefit, or allow full regrowth for stronger woodland support. Both free the spirits.
+
+Neutral hiring: Root-Runners may appear here as a cross-cultural neutral migration; the native Afanc remains at the lake edge.
+
+Victory and failure: Clearings secured, spirits free and Tadhg defeated. Existing horned stag spirit assets are reused, not counted among the six new neutrals.
+
+
+
+32. The Door of the Mound
+
+Large meadow-and-mound ring; 85–110 minutes; 5–7 battles.
+
+Current source: silverBranch.ts; chapters 7; The Door of the Mound
+
+Story and revelation: Dubhghall offers Orla the homeland as it was before the worlds collided, provided no one is permitted to change it. The branch's recovered promises give her an alternative: a living compact with obligations on both ruler and ruled.
+
+Primary tasks: Renew three of four regional obligations, reach the mound and defeat Dubhghall. Ciar's army can be weakened by cutting its tribute route.
+
+Map layout and routes: The mound stands at the centre of an open seasonal plain. Four settlement regions connect by an outer ring and two diagonals. Each obligation changes a practical service—safe roads, grain, refuge or water—rather than opening one of four locks. Two approaches to the mound remain available.
+
+Enemy behaviour and pressure: Ciar raids an announced tribute route; Dubhghall sends finite forces from remaining strongholds. Regional garrisons can hold roads while Orla advances.
+
+Optional choice and consequence: End with a limited High Seat or a compact of local keepers. Earlier political choices colour who accepts the arrangement and which place is shown recovering.
+
+Neutral hiring: A mixed woodland refuge offers a small choice of Afanc, Root-Runners or existing neutrals, all drawn from one finite budget.
+
+Victory and failure: Three obligations renewed and Dubhghall defeated; Orla survives. The branch becomes a witnessed agreement, not a superweapon.
+
+
+
+======================================================================
+
+THE NEW FIRE
+
+Hero: Itzel
+
+Existing cast: Chimal, Grandmother Xoco, Tecuani, Acatl, Mazatl, Tlacatl, Itztli
+
+Who supplies the next age, and who is permitted to own its fire?
+
+Itzel discovers that the new fire failed because cities were drawing strength from one another through the merged world's fractures. Tecuani offers central control; Itztli intends to monopolize the surviving flame. Xoco's knowledge makes a shared renewal possible, but a central hearth offers faster security at a political cost.
+
+Order: Local 1 → 2 → {3 and 4 in either order} → 5. The political contest and mountain rescue can swap; neither requires the other's reward. Global missions 33–37.
+
+
+
+33. The Cold Altar and the Black Jaguars
+
+Medium jungle-lake frontier; 60–80 minutes; 4–5 battles.
+
+Current source: newFire.ts; chapters 1 + 2; The Cold Altar + The Black Jaguars
+
+Story and revelation: Xochitla's fire has died before the appointed night. Jaguars displaced by disturbances at the old altar attack the cacao groves. Grandmother Xoco recognises a fault in the merged world's shared sources of power.
+
+Primary tasks: Restore a safe route between two settlements, end the jaguar attacks and recover the altar's ember record. This introduces the crisis through ordinary supply and travel before cosmic explanation.
+
+Map layout and routes: Xochitla and Tepeyolo face each other across a crescent lake. A short causeway, long jungle ridge and canoe crossing make a triangle. Groves lie on both shores; the altar sits on the inner peninsula with two approaches.
+
+Enemy behaviour and pressure: Jaguars move between scouted hunting grounds. One finite raider band attempts to seize an ember shipment; losing its optional cargo changes a reward, not campaign access.
+
+Optional choice and consequence: Return the first provisions to growers for later local support, or fund shared watch posts for a defensive bonus.
+
+Neutral hiring: An Ahuitzotl spring offers a dangerous optional recruitment pact after its water is protected; existing wild boars provide a cheaper option elsewhere.
+
+Victory and failure: Route secured, attacks ended and record recovered; Itzel survives. The record points to the eagle keepers and the lake's missing custodians.
+
+
+
+34. The House of Eagles and the House of Bats
+
+Medium/large highland-lake network; 75–95 minutes; 4–6 battles.
+
+Current source: newFire.ts; chapters 3 + 4; The House of Eagles + The House of Bats
+
+Story and revelation: The eagle keepers retain the calendar, while Acatl's lake network holds the testimony of the disappeared. Itzel needs both to distinguish a failed ritual from deliberate theft. Chimal argues for speed; Xoco insists on understanding the cost.
+
+Primary tasks: Earn access to the eagle calendar, free the cenote sanctuary and retrieve two witness records from Acatl's lake holdings. The sanctuary reuses existing cenote crocodile content.
+
+Map layout and routes: Ocelotepec stands on a western ridge; the House of Bats occupies a central island. Northern stairs, southern shore road and two canoe routes create overlapping circuits. The eagle terrace can be visited before or after the lake; neither is a key for the other.
+
+Enemy behaviour and pressure: Acatl relocates between visible docks with a finite escort. Taking one depot exposes a faster crossing; taking both removes his reserve but costs time.
+
+Optional choice and consequence: Publish the recovered calendar for wider cooperation, or use it first to secure a military agreement with the keepers. Each offers one limited bonus against Tecuani.
+
+Neutral hiring: Ahuitzotl hire at a restored spring; existing wyverns occupy an optional ridge.
+
+Victory and failure: Calendar obtained, sanctuary freed and two records recovered. Acatl's personal defeat is optional if the records and routes are secured.
+
+
+
+35. The Lord of Itzcalli
+
+Medium city-and-canal network; 70–90 minutes; 4–6 battles.
+
+Current source: newFire.ts; chapters 5; The Lord of Itzcalli
+
+Story and revelation: Tecuani offers to save the next age by owning its only fire. His city is genuinely organised and well supplied. Itzel must show the surrounding settlements that cooperation can survive without his monopoly.
+
+Primary tasks: Deliver a declared reconstruction contract to two independent settlements while preventing Tecuani from controlling both principal causeways. Then confront his field army or force a surrender through completed contracts and exposed hoarding. The city siege is an available alternative, not the default finish.
+
+Map layout and routes: Itzcalli occupies a central lake platform. Cacao, stone and reed districts form a triangular shore network joined by causeways and boats. A distant ridge offers a slower protected approach. The city has two feasible assault landings.
+
+Enemy behaviour and pressure: Tecuani runs a visible competing supply operation and can raid a route with a finite army. His deliveries strengthen his final force up to a displayed cap; they do not trigger sudden defeat. Capturing one depot delays his next delivery.
+
+Optional choice and consequence: Retain a central store under public oversight for immediate stability, or distribute reserves among the districts for resilience. Neither option removes essential final-mission supplies.
+
+Neutral hiring: Ahuitzotl inhabit the reed channels; existing ogres hire in an abandoned quarry.
+
+Victory and failure: Two contracts delivered and Tecuani's monopoly ended by surrender or a manual battle. Itzel survives.
+
+
+
+36. The Fire Mountain
+
+Medium volcanic ring with three radial approaches; 65–85 minutes; 4–6 battles.
+
+Current source: newFire.ts; chapters 6; The Fire Mountain
+
+Story and revelation: Mazatl chains the xiuhcoatl to extract enough fire for one dominant city. The mountain is becoming unstable. Itzel must free the creatures and secure a usable ember without turning the rescue into a race through an arbitrary corridor.
+
+Primary tasks: Prepare a safe containment site, break two of three extraction works and defeat Mazatl at the crater. Choose when to initiate the final release.
+
+Map layout and routes: A stable outer road circles the volcano. Quarry road, forest saddle and ash ravine lead inward, with two cross-links on the mid-slope. Each extraction work feeds a different defensive reserve. Lava warnings close only optional shortcuts; the outer road stays safe.
+
+Enemy behaviour and pressure: A visible eruption phase begins only after the player starts the release. It changes the final approach and schedules one counterattack; it never instantly kills the army on a map tile.
+
+Optional choice and consequence: Save the mountain's workshops for a later material reserve, or dismantle all extraction for stronger creature cooperation. Both release the captives.
+
+Neutral hiring: Existing clay golems hire at a cooled quarry; Ahuitzotl remain restricted to the lowland spring.
+
+Victory and failure: Containment prepared, two works disabled, Mazatl defeated and ember secured. Existing xiuhcoatl are reused.
+
+
+
+37. The Smoking Gate
+
+Large linked city basins; 90–115 minutes; 5–8 battles.
+
+Current source: newFire.ts; chapters 7; The Smoking Gate
+
+Story and revelation: Itztli plans to make every surviving city dependent on a single stolen flame. Xoco's records reveal how several hearths can share the renewal safely. Itzel's final struggle is over the terms of the next age, not simply possession of a treasure.
+
+Primary tasks: Prepare three of four hearths, cut Tlacatl's main supply route and defeat Itztli at the Smoking Gate. Launch the renewal only after selecting the final distribution plan.
+
+Map layout and routes: Four city basins surround a central obsidian ridge. An outer caravan circuit and two inner passes link them. The Smoking Gate has a direct fortified approach and a longer approach through a prepared hearth region. Sites provide different final support rather than sequential permission keys.
+
+Enemy behaviour and pressure: Itztli concentrates attacks on the richest prepared hearth. Finite defenders and allied garrisons allow one main hero to respond. The final ritual's schedule is visible before launch; exploration has no hidden hard deadline.
+
+Optional choice and consequence: Distribute the new fire among protected local hearths, or establish a common central hearth with enforceable access. The finale shows how prior district promises affect trust. Both avoid reopening direct divine war.
+
+Neutral hiring: A final mixed caravan offers one limited neutral purchase, including Ahuitzotl where appropriate.
+
+Victory and failure: Three hearths prepared, supply route cut, Itztli defeated and renewal completed. Itzel survives. The concluding chronicle may reference outcomes from other completed campaigns; unplayed regions remain uncertain reports, so it neither spoils their decisions nor imposes a fixed order on the six campaigns.
+
+
+
+COMPLETE 45 TO 37 SOURCE COVERAGE
+
+01 | three_beacons | existing chapters 1 + 2 | The Silent Shore + Wings over the Pass
+
+02 | three_beacons | existing chapters 3 | The Storm Beacon
+
+03 | silent_oracle | existing chapters 1 | The Pilgrims’ Road
+
+04 | silent_oracle | existing chapters 2 + 3 | The Bronze Bull + The Eyrie of Aetos
+
+05 | silent_oracle | existing chapters 4 | The Hall of Echoes
+
+06 | silent_oracle | existing chapters 5 | The Return of Melas
+
+07 | silent_oracle | existing chapters 6 | The Labyrinth of Kerata
+
+08 | silent_oracle | existing chapters 7 | The Spring of Kalliste
+
+09 | winter_oath | existing chapters 1 | Barrow Light
+
+10 | winter_oath | existing chapters 2 + 3 | The White Pack + The Valkyrie’s Price
+
+11 | winter_oath | existing chapters 4 | Ice on the Sound
+
+12 | winter_oath | existing chapters 5 | The Jarl of Hvitstrand
+
+13 | winter_oath | existing chapters 6 | The Giants’ Refuge
+
+14 | winter_oath | existing chapters 7 | Oathbreaker’s Hall
+
+15 | twelfth_hour | existing chapters 1 | The Ember Dawn
+
+16 | twelfth_hour | existing chapters 2 | The Black Boar
+
+17 | twelfth_hour | existing chapters 3 + 4 | The Sculptor’s Price + The Drowned Library
+
+18 | twelfth_hour | existing chapters 5 | The Red Vizier
+
+19 | twelfth_hour | existing chapters 6 | The Phoenix Rookery
+
+20 | twelfth_hour | existing chapters 7 | The Twelfth Hour
+
+21 | lantern_road | existing chapters 1 | The Unlit Lantern
+
+22 | lantern_road | existing chapters 2 + 3 | The Boar Lord + The Crow Monastery
+
+23 | lantern_road | existing chapters 4 | The Spirit Sea
+
+24 | lantern_road | existing chapters 5 | The Iron Daimyo
+
+25 | lantern_road | existing chapters 6 | The Kirin Meadow
+
+26 | lantern_road | existing chapters 7 | The Last Torii
+
+27 | silver_branch | existing chapters 1 | The Cold Hearth
+
+28 | silver_branch | existing chapters 2 + 3 | The Iron-Bristled Boar + The Water-Horse Bargain
+
+29 | silver_branch | existing chapters 4 | The Hall Beneath the Waves
+
+30 | silver_branch | existing chapters 5 | The High Seat
+
+31 | silver_branch | existing chapters 6 | The Stags’ Wood
+
+32 | silver_branch | existing chapters 7 | The Door of the Mound
+
+33 | new_fire | existing chapters 1 + 2 | The Cold Altar + The Black Jaguars
+
+34 | new_fire | existing chapters 3 + 4 | The House of Eagles + The House of Bats
+
+35 | new_fire | existing chapters 5 | The Lord of Itzcalli
+
+36 | new_fire | existing chapters 6 | The Fire Mountain
+
+37 | new_fire | existing chapters 7 | The Smoking Gate
+
+
+
+QUESTIONS FOR REVIEW
+
+For discussion: (1) Keep the compact 37-mission option or retain 45 separate scenarios? (2) Keep the proposed local political choices and mixed outcomes, or make victories more straightforward? (3) Which of the six neutral creature candidates should proceed to visual exploration? No implementation or new artwork starts from this document alone.
+
+
+
+SOURCES
+
+R1 — Heroes III — Liberation campaign and scenario sequence
+
+https://heroes.thelazy.net/index.php/Liberation
+
+R2 — Heroes III — Campaign structure and hero continuity
+
+https://heroes.thelazy.net/index.php/Campaign
+
+R3 — Heroes IV — The Price of Peace campaign synopsis
+
+https://mightandmagic.fandom.com/wiki/The_Price_of_Peace
+
+R4 — Heroes IV — campaign overview, including Emilia and Gauldoth
+
+https://en.wikipedia.org/wiki/Heroes_of_Might_and_Magic_IV
+
+R5 — Heroes V — official manual hosted by Steam
+
+https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/15370/manuals/H5X20047_PCS_MNL_guts.pdf?t=1692823670
+
+R6 — Celestial Heavens — Heroes V Ranger campaign, The Defense
+
+https://www.celestialheavens.com/584
+
+R7 — Theoi — Pegasus, with ancient literary sources
+
+https://www.theoi.com/Ther/HipposPegasos.html
+
+R8 — Grímnismál 32 — Ratatoskr
+
+https://www.germanicmythology.com/PoeticEdda/GRM32.html
+
+R9 — Ashmolean Museum — Two-Dog Palette
+
+https://www.ashmolean.org/two-dog-palette
+
+R10 — Metropolitan Museum of Art — Seated Baku, nightmare-devouring creature
+
+https://www.metmuseum.org/art/collection/search/59035
+
+R11 — Coflein / Royal Commission — Llyn Barfog folklore site
+
+https://coflein.gov.uk/en/sites/402570
+
+R12 — Getty Digital Florentine Codex — Book 11, folio 70v
+
+https://florentinecodex.getty.edu/en/book/11/folio/70v?nhTexts=&spTexts=
+
+
+
+LOCAL AUDIT
+
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/campaign/
+
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/dialogs/Overlays.tsx
+
+The accompanying current-mission-audit.json contains source excerpts. This is a design review, not an implementation handoff. No game code or visuals were changed.

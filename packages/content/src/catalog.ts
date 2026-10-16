@@ -10,6 +10,7 @@ import { withSpecialties } from './common/specialties';
 import { GREEK_FAMILY_SPECS, buildFamilies } from './greek/creatures';
 import { GREEK_LORE } from './greek/lore';
 import { NEUTRAL_FAMILY_SPECS, NEUTRAL_LORE } from './common/neutrals';
+import { NEUTRAL_V2_ABILITIES, NEUTRAL_V2_FAMILY_SPECS, NEUTRAL_V2_LORE } from './common/neutralsV2';
 import { GREEK_BUILDINGS, GREEK_TOWN } from './greek/town';
 import { GREEK_GODS, GREEK_HEROES, GREEK_PANTHEON } from './greek/pantheon';
 import { buildPantheonKit } from './pantheonKit';
@@ -23,6 +24,7 @@ import { NORSE_BUILDINGS, NORSE_TOWN } from './norse/town';
 import { NORSE_GODS, NORSE_HERO_CLASSES, NORSE_HEROES, NORSE_PANTHEON } from './norse/pantheon';
 import { COMING_SOON_CAMPAIGNS, ENTITLEMENTS, TEMPLATES, THREE_BEACONS, THREE_BEACONS_MISSIONS } from './campaign/threeBeacons';
 import { WINTER_OATH, WINTER_OATH_ENTITLEMENTS, WINTER_OATH_MISSIONS, WINTER_OATH_TEMPLATES } from './campaign/winterOath';
+import { buildCampaignsV2, withChapters } from './campaign/v2';
 import { ARC_CAMPAIGN_HEROES, buildArcCampaigns } from './campaign/arcCampaigns';
 import { SKIRMISH_MAPS } from './skirmish/maps';
 import { SKIRMISH_KITS, SKIRMISH_MISSIONS, SKIRMISH_SCENARIOS, SKIRMISH_TEMPLATES } from './skirmish/skirmish';
@@ -61,13 +63,20 @@ export function buildCatalog(): ContentCatalog {
   const greek = buildFamilies(GREEK_FAMILY_SPECS);
   const norse = buildNorseFamilies();
   const neutral = buildFamilies(NEUTRAL_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Neutral roster (owner request 2026-10-02); proposed values, unplaytested' });
+  // Six single-form neutrals of the campaign expansion (handoff 2026-10-15; kit starting values, unplaytested).
+  const neutralV2 = buildFamilies(NEUTRAL_V2_FAMILY_SPECS, { source: 'proposed-this-build', note: 'Campaign expansion kit 2026-10-15, neutral-content.json; candidate values, unplaytested' });
   const kits = KIT_SPECS.map(buildPantheonKit);
   const pantheons = [GREEK_PANTHEON, NORSE_PANTHEON, ...kits.map((k) => k.pantheon)];
-  const creatureList = [...greek.creatures, ...norse.creatures, ...kits.flatMap((k) => k.creatures), ...neutral.creatures];
+  const creatureList = [...greek.creatures, ...norse.creatures, ...kits.flatMap((k) => k.creatures), ...neutral.creatures, ...neutralV2.creatures];
   const creatureIndex = index(creatureList, 'creature');
-  // The four arc campaigns name troops in their objectives (names come from the creatures above).
+  // The arc campaigns name troops in their objectives (names come from the creatures above).
   const arc = buildArcCampaigns((id) => creatureIndex[id], (id) => creatureIndex[id]?.familyId ?? id);
-  const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families], 'family');
+  // The Silent Oracle (built first) is listed second, right after the tutorial campaign (owner request 2026-10-14).
+  const [silentOracle, ...otherArcCampaigns] = arc.campaigns;
+  // Campaign content v2 (handoff 2026-10-15): chapters built from the v1 missions' economy and cast.
+  const v1Missions = [...THREE_BEACONS_MISSIONS, ...WINTER_OATH_MISSIONS, ...arc.missions];
+  const v2 = buildCampaignsV2(Object.fromEntries(v1Missions.map((m) => [m.id, m])), (id) => creatureIndex[id]);
+  const familyIndex = index([...greek.families, ...norse.families, ...kits.flatMap((k) => k.families), ...neutral.families, ...neutralV2.families], 'family');
   const spellIndex = index(withLore([...SPELLS, ...EXPANDED_SPELLS, ...ARCANA_SPELLS]), 'spell');
   const godList = [...GREEK_GODS, ...NORSE_GODS, ...kits.flatMap((k) => k.gods)];
   const heroList = withSpecialties([...GREEK_HEROES, ...NORSE_HEROES, ...kits.flatMap((k) => k.heroes), ...ARC_CAMPAIGN_HEROES], { families: familyIndex, creatures: creatureIndex, spells: spellIndex });
@@ -77,8 +86,8 @@ export function buildCatalog(): ContentCatalog {
     pantheons: index(pantheons, 'pantheon'),
     families: familyIndex,
     creatures: creatureIndex,
-    abilities: index(ABILITIES, 'ability'),
-    lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE], 'lore'),
+    abilities: index([...ABILITIES, ...NEUTRAL_V2_ABILITIES], 'ability'),
+    lore: index([...GREEK_LORE, ...NORSE_LORE, ...kits.flatMap((k) => k.lore), ...NEUTRAL_LORE, ...NEUTRAL_V2_LORE], 'lore'),
     buildings: index([...GREEK_BUILDINGS, ...NORSE_BUILDINGS, ...kits.flatMap((k) => k.buildings)], 'building'),
     townArchetypes: index([GREEK_TOWN, NORSE_TOWN, ...kits.map((k) => k.town)], 'town archetype'),
     gods: index(godList, 'god'),
@@ -98,8 +107,8 @@ export function buildCatalog(): ContentCatalog {
     skirmishKits: Object.fromEntries(SKIRMISH_KITS.map((k) => [k.pantheonId, k])),
     mapEventTemplates: index(MAP_EVENT_TEMPLATES, 'map event'),
     entitlements: index([...ENTITLEMENTS, ...WINTER_OATH_ENTITLEMENTS, ...arc.entitlements], 'entitlement'),
-    campaigns: index([THREE_BEACONS, WINTER_OATH, ...arc.campaigns, ...COMING_SOON_CAMPAIGNS], 'campaign'),
-    missions: index([...THREE_BEACONS_MISSIONS, ...WINTER_OATH_MISSIONS, ...arc.missions, ...SKIRMISH_MISSIONS], 'mission'),
+    campaigns: index([THREE_BEACONS, silentOracle!, WINTER_OATH, ...otherArcCampaigns, ...COMING_SOON_CAMPAIGNS].map((c) => withChapters(c, v2)), 'campaign'),
+    missions: index([...v1Missions, ...v2.missions, ...SKIRMISH_MISSIONS], 'mission'),
     skirmishes: index(SKIRMISH_SCENARIOS, 'skirmish'),
     skirmishMaps: index(SKIRMISH_MAPS, 'skirmish map'),
     mapTemplates: index([...TEMPLATES, ...WINTER_OATH_TEMPLATES, ...arc.templates, ...SKIRMISH_TEMPLATES], 'map template'),

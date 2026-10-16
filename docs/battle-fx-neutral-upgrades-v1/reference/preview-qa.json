@@ -1,0 +1,92 @@
+{
+  "errors": [],
+  "imageErrors": [],
+  "imagesLoaded": 25,
+  "profiles": 24,
+  "acceptedLinks": 25,
+  "overflow": false,
+  "mobileOverflow": false,
+  "samples": [
+    {
+      "id": "dawncrest_pegasus",
+      "states": [
+        "idle",
+        "move",
+        "attack",
+        "defend",
+        "hit",
+        "death",
+        "victory",
+        "ability",
+        "takeoff",
+        "fly",
+        "landing"
+      ]
+    },
+    {
+      "id": "crownroot_runner",
+      "states": [
+        "idle",
+        "move",
+        "attack",
+        "defend",
+        "hit",
+        "death",
+        "victory",
+        "ability"
+      ]
+    },
+    {
+      "id": "crested_serpopard",
+      "states": [
+        "idle",
+        "move",
+        "attack",
+        "defend",
+        "hit",
+        "death",
+        "victory",
+        "ability"
+      ]
+    },
+    {
+      "id": "dreamtusk_baku",
+      "states": [
+        "idle",
+        "move",
+        "attack",
+        "defend",
+        "hit",
+        "death",
+        "victory",
+        "ability"
+      ]
+    },
+    {
+      "id": "ridgeback_afanc",
+      "states": [
+        "idle",
+        "move",
+        "attack",
+        "defend",
+        "hit",
+        "death",
+        "victory",
+        "ability"
+      ]
+    },
+    {
+      "id": "crownfin_ahuitzotl",
+      "states": [
+        "idle",
+        "move",
+        "attack",
+        "defend",
+        "hit",
+        "death",
+        "victory",
+        "ability"
+      ]
+    }
+  ]
+}

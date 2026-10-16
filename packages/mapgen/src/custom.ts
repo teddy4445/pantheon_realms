@@ -31,6 +31,7 @@ import {
   type CustomSite,
   type CustomSiteKind,
   type CustomVictory,
+  type CustomChannelTerrain,
   type GuardDefinition,
   type KeyColor,
   type RewardDefinition,
@@ -38,17 +39,19 @@ import {
   type MissionDefinition,
   type MissionRivalSetup,
   type MissionTownSetup,
+  type NeutralSiteTable,
   type ResourceCost,
   type SiteDefinition,
   type Terrain,
   type WorldMapDefinition,
 } from '@pr/rules';
 import { buildDecor, deriveStreams, type DecorItem, type MapCheck } from './generator';
-import { RANDOM_TEMPLATE_ID, SKIRMISH_PLAYER_COLORS, SKIRMISH_START_WALLET, WEALTH_PERCENT, randomMapTavernPool, travelCosts } from './skirmish';
+import { RANDOM_TEMPLATE_ID, SKIRMISH_PLAYER_COLORS, SKIRMISH_START_WALLET, WEALTH_PERCENT, randomMapTavernPool } from './skirmish';
 import { UNOWNED_GARRISON_VALUE, unownedTownGarrison, unownedTownSetup } from './unownedTowns';
+import { groundOf, habitatVerdict, neutralSiteBase, neutralSiteDefinition, type GroundAt, type HabitatVerdict } from './neutralSites';
 
 export { CUSTOM_MAP_FORMAT, CUSTOM_MAP_VERSION } from '@pr/rules';
-export type { CustomGuard, CustomMapDocument, CustomPlayer, CustomQuest, CustomReward, CustomSite, CustomSiteKind, CustomVictory } from '@pr/rules';
+export type { CustomGuard, CustomMapDocument, CustomPlayer, CustomQuest, CustomReward, CustomSite, CustomSiteKind, CustomVictory, CustomChannelTerrain, NeutralHabitat, NeutralSiteTable } from '@pr/rules';
 export const CUSTOM_GENERATOR_VERSION = 'pr-custom-map-1';
 export const CUSTOM_MAX_EMPIRES = 6;
 
@@ -67,6 +70,12 @@ export interface CustomSiteKindInfo {
   readonly summary: string;
   /** May carry a guard army (the monster always does). */
   readonly guardable: boolean;
+  /**
+   * Campaign expansion sites (2026-10-15): the editor shows them in their own palette
+   * sections ('neutral': the hiring sites of the new neutrals, one per creature;
+   * 'landmark': the sluice, the ferry landings and the supply depot).
+   */
+  readonly palette?: 'neutral' | 'landmark';
 }
 
 export const CUSTOM_SITE_KINDS: readonly CustomSiteKindInfo[] = [
@@ -91,7 +100,21 @@ export const CUSTOM_SITE_KINDS: readonly CustomSiteKindInfo[] = [
   { id: 'portal', label: 'Twin Portal', summary: 'Two portals lead to each other (place them in pairs).', guardable: false },
   { id: 'relic', label: 'Shrine of the First Flame', summary: 'The relic for a “hold the shrine” victory.', guardable: true },
   { id: 'monster', label: 'Monster', summary: 'A neutral army standing on its tile.', guardable: true },
+  // Campaign expansion (2026-10-15).
+  { id: 'neutral_dwelling', label: 'Neutral Hiring Site', summary: 'Hires one of the new neutral creatures to a hero of any pantheon: a finite stock each week, shared by every empire, never accumulating. Place it in the creature’s habitat.', guardable: false, palette: 'neutral' },
+  { id: 'sluice', label: 'Sluice', summary: 'A hero standing on it opens or closes it: its channel hexes switch ground (water when closed, marsh when open, unless set otherwise).', guardable: true, palette: 'landmark' },
+  { id: 'ferry', label: 'Ferry Landing', summary: 'Two landings carry a hero across the water to each other (place them in pairs, each on a shore).', guardable: false, palette: 'landmark' },
+  { id: 'supply_depot', label: 'Supply Depot', summary: 'A one-use cache of supplies for the first hero to arrive.', guardable: true, palette: 'landmark' },
 ];
+
+/** Ground a sluice channel may switch to (the editor's ground tools). */
+export const CUSTOM_CHANNEL_TERRAINS: readonly CustomChannelTerrain[] = ['plains', 'forest', 'rough', 'marsh', 'mountain', 'water'];
+/** A channel hex lies at most this many hexes from its sluice. */
+export const SLUICE_REACH = 8;
+/** At most this many channel hexes per sluice. */
+export const SLUICE_MAX_CHANNEL = 40;
+/** What a supply depot holds unless the author sets it. */
+export const SUPPLY_DEPOT_REWARD: CustomReward = { gold: 500, wood: 5, stone: 5 };
 
 /** Key colours a map may use (rules order). */
 export const CUSTOM_KEY_COLORS: readonly KeyColor[] = ['azure', 'crimson', 'emerald', 'amber', 'violet', 'ivory'];
@@ -170,6 +193,9 @@ export function parseCustomMap(text: string): { ok: true; doc: CustomMapDocument
     if (!rewardOk(s.reward)) return { ok: false, error: `The reward of ${s.id} is damaged.` };
     if (s.quest !== undefined && !(s.quest && ((s.quest.type === 'deliver' && amount(s.quest.gold) && amount(s.quest.wood) && amount(s.quest.stone) && amount(s.quest.crystal)) || (s.quest.type === 'defeat' && typeof s.quest.siteId === 'string')))) return { ok: false, error: `The quest of ${s.id} is damaged.` };
     if (s.radius !== undefined && !(Number.isInteger(s.radius) && s.radius >= 1 && s.radius <= 40)) return { ok: false, error: `The watchtower range of ${s.id} is damaged.` };
+    if (s.channel !== undefined && !(Array.isArray(s.channel) && s.channel.length <= SLUICE_MAX_CHANNEL && s.channel.every((c: { q: number; r: number } | null) => !!c && Number.isInteger(c.q) && Number.isInteger(c.r) && c.q >= 0 && c.r >= 0 && c.q < w && c.r < h))) return { ok: false, error: `The channel of ${s.id} is damaged.` };
+    for (const k of ['openTerrain', 'closedTerrain'] as const) if (s[k] !== undefined && !CUSTOM_CHANNEL_TERRAINS.includes(s[k]!)) return { ok: false, error: `The channel ground of ${s.id} is damaged.` };
+    if (s.startsOpen !== undefined && typeof s.startsOpen !== 'boolean') return { ok: false, error: `A site is damaged (${s.id}).` };
     for (const k of ['name', 'text', 'heroId', 'twinId', 'spellId', 'skillId', 'creatureId'] as const) {
       const v = (s as unknown as Record<string, unknown>)[k];
       if (v !== undefined && (typeof v !== 'string' || v.length > (k === 'text' ? 400 : 60))) return { ok: false, error: `A site is damaged (${s.id}).` };
@@ -210,8 +236,17 @@ export interface CustomMapIssue {
   readonly siteId?: string;
 }
 
+export interface CustomValidateOptions {
+  /**
+   * The neutral hiring-site table (content's `NEUTRAL_V2_HABITATS` and
+   * `NEUTRAL_V2_SITE_STOCK`): with it, a hiring site must hire one of its
+   * creatures and gets a warning outside the creature's habitat.
+   */
+  readonly neutralSites?: NeutralSiteTable;
+}
+
 /** Everything that keeps a map from being played (errors) or looks unintended (warnings). */
-export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocument): CustomMapIssue[] {
+export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocument, opts: CustomValidateOptions = {}): CustomMapIssue[] {
   const issues: CustomMapIssue[] = [];
   const err = (text: string, siteId?: string) => issues.push({ severity: 'error', text, ...(siteId ? { siteId } : {}) });
   const warn = (text: string, siteId?: string) => issues.push({ severity: 'warning', text, ...(siteId ? { siteId } : {}) });
@@ -224,6 +259,7 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
   });
   const seen = new Map<string, string>();
   const ids = new Set<string>();
+  let habitatGround: GroundAt | null = null;
   for (const s of doc.sites) {
     const label = s.name || CUSTOM_SITE_KINDS.find((k) => k.id === s.kind)?.label || s.kind;
     if (ids.has(s.id)) err(`Two sites share the ID ${s.id}.`, s.id);
@@ -264,31 +300,159 @@ export function validateCustomMap(catalog: ContentCatalog, doc: CustomMapDocumen
     const art = s.reward?.artifactId;
     if (art && !catalog.artifacts[art]) err(`${label}: unknown artifact ${art}.`, s.id);
     if (s.kind === 'artifact' && !art && !s.reward?.artifactRarity) err(`${label} names no artifact or rarity.`, s.id);
+    // Campaign expansion sites (2026-10-15).
+    if (s.kind === 'neutral_dwelling') {
+      // Keyed to the family's base form (an upgraded ID names the same site: it hires both forms).
+      const c = s.creatureId ? catalog.creatures[neutralSiteBase(catalog, s.creatureId)] : undefined;
+      if (!c) err(`${label} hires no creature.`, s.id);
+      else if (opts.neutralSites && !opts.neutralSites.habitats[c.id]) err(`${label}: ${c.pluralName} have no hiring site (only the new neutral creatures do; use a Creature Camp).`, s.id);
+      else if (opts.neutralSites) {
+        habitatGround ??= customHabitatGround(doc);
+        const v = customHabitatVerdict(catalog, doc, s, opts.neutralSites, habitatGround);
+        if (v && !v.fits) warn(`${label}: ${v.text}`, s.id);
+      }
+    }
+    if (s.kind === 'ferry') {
+      const twin = doc.sites.find((x) => x.id === s.twinId);
+      if (!twin || twin.kind !== 'ferry' || twin.twinId !== s.id) err(`${label} has no twin landing. Place ferry landings in pairs.`, s.id);
+      if (!axialNeighbors(c).some((n) => terrainAt(doc, n) === 'water')) warn(`${label} is not on a shore: a ferry landing stands next to water.`, s.id);
+    }
+    if (s.kind === 'sluice') {
+      const channel = s.channel ?? [];
+      if (channel.length === 0) warn(`${label} has no channel: mark the hexes it floods and drains (Site → Edit channel).`, s.id);
+      if ((s.openTerrain ?? 'marsh') === (s.closedTerrain ?? 'water')) warn(`${label} changes nothing: its channel has the same ground open and closed.`, s.id);
+      const { cols, rows } = { cols: doc.width - customRowOffset(doc.height), rows: doc.height };
+      for (const x of channel) {
+        const there = doc.sites.find((o) => o.q === x.q && o.r === x.r);
+        if (!customInRect(cols, rows, x)) err(`${label}: a channel hex (${x.q},${x.r}) lies outside the map.`, s.id);
+        else if (there) err(`${label}: ${there.id === s.id ? 'the sluice stands in its own channel' : `${there.name || CUSTOM_SITE_KINDS.find((k) => k.id === there.kind)?.label} stands in its channel`}; sites stand beside a channel, never in it.`, s.id);
+        else if (axialDistance(x, c) > SLUICE_REACH) err(`${label}: channel hexes lie within ${SLUICE_REACH} hexes of the sluice (${x.q},${x.r} is ${axialDistance(x, c)} away).`, s.id);
+        const other = doc.sites.find((o) => o.id !== s.id && o.kind === 'sluice' && (o.channel ?? []).some((y) => y.q === x.q && y.r === x.r));
+        if (other && s.id < other.id) err(`${label} and ${other.name || other.id} share the channel hex ${x.q},${x.r}.`, s.id);
+      }
+    }
   }
   if (doc.victory.type === 'hold_relic') {
     const relics = doc.sites.filter((s) => s.kind === 'relic');
     if (relics.length !== 1) err('“Hold the shrine” needs exactly one Shrine of the First Flame on the map.');
   } else if (doc.sites.some((s) => s.kind === 'relic')) warn('The Shrine of the First Flame only matters with the “hold the shrine” goal.');
-  // Reachability: every site from the first town, walking (portals count as links).
+  // Reachability: every site from the first town, walking (portals and ferry landings count
+  // as links). With sluices (2026-10-15), a site counts when it can be reached with every
+  // sluice open or with every sluice closed; the empires' towns and the shrine must be
+  // reachable in both states (checked below).
   const first = doc.sites.find((s) => s.kind === 'town' && s.owner === 0);
   if (first && issues.every((i) => i.severity !== 'error')) {
-    const map = toWorldMap(doc);
-    const reach = new Set(travelCosts(map, { q: first.q, r: first.r }).keys());
-    let grew = true;
-    while (grew) {
-      grew = false;
-      for (const s of doc.sites) {
-        if (s.kind !== 'portal' || !reach.has(hexKey({ q: s.q, r: s.r }))) continue;
-        const twin = doc.sites.find((x) => x.id === s.twinId);
-        if (twin && !reach.has(hexKey({ q: twin.q, r: twin.r }))) {
-          for (const k of travelCosts(map, { q: twin.q, r: twin.r }).keys()) reach.add(k);
-          grew = true;
-        }
-      }
-    }
+    const sluiced = doc.sites.some((s) => s.kind === 'sluice');
+    const both = sluiced ? { closed: customReach(doc, first, 'closed'), open: customReach(doc, first, 'open') } : null;
+    const reach = both ? new Set([...both.closed, ...both.open]) : customReach(doc, first, 'start');
     for (const s of doc.sites) if (!reach.has(hexKey({ q: s.q, r: s.r }))) err(`${s.name || CUSTOM_SITE_KINDS.find((k) => k.id === s.kind)?.label} cannot be reached from Empire 1’s town.`, s.id);
+    const sc = both ? sluiceCut(doc, both) : null;
+    for (const state of ['closed', 'open'] as const) for (const m of sc?.[state] ?? []) err(`With every sluice ${state}, ${m.label} cannot be reached from Empire 1’s town.`, m.siteId);
   }
   return issues;
+}
+
+/** The map's ground with every sluice channel in one state ('start': as each sluice starts). Unchanged without sluices. */
+export function customSluiceGround(doc: CustomMapDocument, state: 'start' | 'open' | 'closed'): CustomMapDocument {
+  const sluices = doc.sites.filter((s) => s.kind === 'sluice' && (s.channel ?? []).length > 0);
+  if (sluices.length === 0) return doc;
+  const t = doc.terrain.split('');
+  for (const s of sluices) {
+    const open = state === 'start' ? !!s.startsOpen : state === 'open';
+    const code = TERRAIN_CODES[open ? (s.openTerrain ?? 'marsh') : (s.closedTerrain ?? 'water')];
+    for (const c of s.channel ?? []) {
+      const i = c.r * doc.width + c.q;
+      if (c.q >= 0 && c.r >= 0 && c.q < doc.width && c.r < doc.height && t[i] !== TERRAIN_CODES.void) t[i] = code;
+    }
+  }
+  return { ...doc, terrain: t.join('') };
+}
+
+/**
+ * Cells reachable on foot from a site (portals and ferry landings carry a hero to their
+ * twin): the cells `travelCosts` reaches, found by a plain breadth-first walk (the same
+ * passable ground — plains, forest, rough, marsh — without the costs, so the editor's
+ * checks stay quick on huge maps).
+ */
+function customReach(doc: CustomMapDocument, from: { readonly q: number; readonly r: number }, state: 'start' | 'open' | 'closed'): Set<string> {
+  const ground = customSluiceGround(doc, state);
+  const walk = (c: HexCoord, reach: Set<string>) => {
+    const queue = [c];
+    reach.add(hexKey(c));
+    while (queue.length > 0) {
+      const cur = queue.pop()!;
+      for (const nb of axialNeighbors(cur)) {
+        const k = hexKey(nb);
+        if (reach.has(k) || !WALKABLE_CODES.has(nb.q < 0 || nb.r < 0 || nb.q >= ground.width || nb.r >= ground.height ? 'v' : (ground.terrain[nb.r * ground.width + nb.q] ?? 'v'))) continue;
+        reach.add(k);
+        queue.push(nb);
+      }
+    }
+  };
+  const reach = new Set<string>();
+  walk({ q: from.q, r: from.r }, reach);
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const s of doc.sites) {
+      if ((s.kind !== 'portal' && s.kind !== 'ferry') || !reach.has(hexKey({ q: s.q, r: s.r }))) continue;
+      const twin = doc.sites.find((x) => x.id === s.twinId);
+      if (twin && !reach.has(hexKey({ q: twin.q, r: twin.r }))) {
+        walk({ q: twin.q, r: twin.r }, reach);
+        grew = true;
+      }
+    }
+  }
+  return reach;
+}
+
+/** Terrain codes a hero walks on (as `travelCosts`: plains, forest, rough, marsh). */
+const WALKABLE_CODES = new Set([TERRAIN_CODES.plains, TERRAIN_CODES.forest, TERRAIN_CODES.rough, TERRAIN_CODES.marsh]);
+
+/** What the sluice check found: per state, the empires' towns and objective sites cut off from Empire 1's town. */
+export interface SluiceConnectivity {
+  readonly sluices: number;
+  /** The towns and objective sites checked (every empire's town; the shrine with the “hold the shrine” goal). */
+  readonly checked: number;
+  readonly closed: readonly { readonly siteId: string; readonly label: string }[];
+  readonly open: readonly { readonly siteId: string; readonly label: string }[];
+}
+
+/**
+ * The sluice connectivity check (2026-10-15): with every sluice closed, and with
+ * every sluice open, every empire's town and the objective site (the shrine of a
+ * “hold the shrine” map) can be reached from Empire 1's town. Null when the map has
+ * no sluice or Empire 1 has no town yet.
+ */
+export function customSluiceConnectivity(doc: CustomMapDocument): SluiceConnectivity | null {
+  const first = doc.sites.find((s) => s.kind === 'town' && s.owner === 0);
+  if (!doc.sites.some((s) => s.kind === 'sluice') || !first) return null;
+  return sluiceCut(doc, { closed: customReach(doc, first, 'closed'), open: customReach(doc, first, 'open') });
+}
+
+function sluiceCut(doc: CustomMapDocument, reach: { readonly closed: ReadonlySet<string>; readonly open: ReadonlySet<string> }): SluiceConnectivity {
+  const targets = doc.sites.filter((s) => (s.kind === 'town' && s.owner !== undefined && s.owner > 0) || (s.kind === 'relic' && doc.victory.type === 'hold_relic'));
+  const labelOf = (s: CustomSite) => (s.kind === 'town' ? `${s.name ? `${s.name} (Empire ${s.owner! + 1})` : `Empire ${s.owner! + 1}’s town`}` : s.name || 'the Shrine of the First Flame');
+  const cut = (r: ReadonlySet<string>) => targets.filter((s) => !r.has(hexKey({ q: s.q, r: s.r }))).map((s) => ({ siteId: s.id, label: labelOf(s) }));
+  return { sluices: doc.sites.filter((s) => s.kind === 'sluice').length, checked: targets.length + 1, closed: cut(reach.closed), open: cut(reach.open) };
+}
+
+/** The ground habitats are read from: the map as the game starts (each sluice channel in its start state). */
+export function customHabitatGround(doc: CustomMapDocument): GroundAt {
+  return groundOf(customSluiceGround(doc, 'start'));
+}
+
+/**
+ * Whether a neutral hiring site stands in its creature's habitat (null: not a hiring
+ * site of the table). `ground` may be passed when many cells are judged at once.
+ */
+export function customHabitatVerdict(catalog: ContentCatalog, doc: CustomMapDocument, site: Pick<CustomSite, 'kind' | 'creatureId' | 'q' | 'r'>, table: NeutralSiteTable, ground: GroundAt = customHabitatGround(doc)): HabitatVerdict | null {
+  // The family's habitat (keyed to its base form, also for an upgraded ID).
+  const id = site.creatureId ? neutralSiteBase(catalog, site.creatureId) : undefined;
+  const habitat = id ? table.habitats[id] : undefined;
+  const c = id ? catalog.creatures[id] : undefined;
+  if (!habitat || !c) return null;
+  return habitatVerdict(habitat, c.pluralName, doc.biome ?? 'temperate', ground, { q: site.q, r: site.r });
 }
 
 function toWorldMap(doc: CustomMapDocument): WorldMapDefinition {
@@ -341,15 +505,18 @@ export interface CustomCompileOptions {
    * road that only led to it).
    */
   readonly unownedTowns?: 'map' | 'own' | 'other' | 'none';
+  /** The neutral hiring-site table (weekly stock and habitat text of the hiring sites; see `CustomValidateOptions`). */
+  readonly neutralSites?: NeutralSiteTable;
 }
 
 /** The mission + logical map of a playable document (throws when `validateCustomMap` reports an error). */
 export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDocument, seats: readonly CustomSeat[], opts: CustomCompileOptions = {}): CompiledCustomMap {
-  const errors = validateCustomMap(catalog, authored).filter((i) => i.severity === 'error');
+  const errors = validateCustomMap(catalog, authored, opts.neutralSites ? { neutralSites: opts.neutralSites } : {}).filter((i) => i.severity === 'error');
   if (errors.length > 0) throw new Error(`The map cannot be played: ${errors.map((e) => e.text).join(' ')}`);
   const doc = opts.unownedTowns === 'none' ? withoutUnownedTowns(authored) : authored;
   const n = doc.players.length;
-  const map = toWorldMap(doc);
+  // Sluice channels start in their start state (unchanged without sluices).
+  const map = toWorldMap(customSluiceGround(doc, 'start'));
   const features = { expandedContent: true, weeklyEvents: true, interventions: true, heroSpecialties: true, neutralReactions: true, climateRules: true, aiTemperaments: true };
   const playerIds = doc.players.map((_, i) => (i === 0 ? 'player' : `p${i + 1}`));
   const townIds = doc.players.map((_, i) => `town_${i + 1}`);
@@ -424,7 +591,7 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
     const stacks = [{ creatureId: s.guard.creatureId, count: s.guard.count }, ...(s.guard.more ?? [])];
     const c = catalog.creatures[s.guard.creatureId]!;
     const value = stacks.reduce((sum, x) => sum + (catalog.creatures[x.creatureId]?.cost?.gold ?? 100) * x.count, 0);
-    const reward = s.reward && s.kind !== 'quest_hut' && s.kind !== 'artifact' ? rewardOf(s.reward, `${s.id}:guard`) : { resources: { gold: Math.max(100, Math.round((value * 0.25) / 50) * 50) } };
+    const reward = s.reward && s.kind !== 'quest_hut' && s.kind !== 'artifact' && s.kind !== 'supply_depot' ? rewardOf(s.reward, `${s.id}:guard`) : { resources: { gold: Math.max(100, Math.round((value * 0.25) / 50) * 50) } };
     return { label: s.guard.label ?? (s.kind === 'monster' ? c.pluralName : `${c.pluralName} on guard`), army: stacks, reward, battlefield };
   };
   // Unowned towns (2026-10-07): their pantheon by the option or the site's own setting.
@@ -613,6 +780,45 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
         sites.push({ ...base, name: named('Watchtower'), description: s.text ?? `From the top you see every site within ${radius} hexes.`, kind: { type: 'watchtower', revealSiteIds } });
         break;
       }
+      // Campaign expansion sites (2026-10-15).
+      case 'neutral_dwelling': {
+        const def = neutralSiteDefinition(catalog, opts.neutralSites, s.creatureId!);
+        sites.push({ ...base, ...def, name: named(def.name) });
+        break;
+      }
+      case 'sluice': {
+        const channel = (s.channel ?? []).map((x) => ({ q: x.q, r: x.r }));
+        const open = s.openTerrain ?? 'marsh';
+        const closed = s.closedTerrain ?? 'water';
+        const hexes = `${channel.length} channel ${channel.length === 1 ? 'hex' : 'hexes'}`;
+        const way = (t: CustomChannelTerrain) => `${t}${t === 'water' || t === 'mountain' ? ', impassable' : ', passable'}`;
+        sites.push({
+          ...base,
+          name: named('Sluice'),
+          description: `A sluice gate on a channel of ${channel.length} ${channel.length === 1 ? 'hex' : 'hexes'}. A hero standing here opens or closes it: open, the channel is ${way(open)}; closed, ${way(closed)}. It starts ${s.startsOpen ? 'open' : 'closed'}.`,
+          kind: {
+            type: 'sluice',
+            channel,
+            openTerrain: open,
+            closedTerrain: closed,
+            startsOpen: !!s.startsOpen,
+            openText: `Opening the sluice turns the ${hexes} from ${closed} to ${way(open)}.`,
+            closeText: `Closing the sluice turns the ${hexes} from ${open} to ${way(closed)}.`,
+            openFlag: `sluice_${s.id}_open`,
+          },
+          art: 'sluice',
+          ...(guard ? { guard } : {}),
+        });
+        break;
+      }
+      case 'ferry':
+        sites.push({ ...base, name: named('Ferry Landing'), description: 'A ferry landing. A hero who stops here is carried across the water to the other landing at once.', kind: { type: 'portal', exitSiteId: s.twinId!, ferry: true }, art: 'ferry' });
+        break;
+      case 'supply_depot': {
+        const reward = rewardOf(s.reward ?? SUPPLY_DEPOT_REWARD, s.id);
+        sites.push({ ...base, name: named('Supply Depot'), description: `A one-use supply depot: ${rewardText(reward)} for the first hero to arrive.`, kind: { type: 'pickup', reward }, art: 'supply_depot', ...(guard ? { guard } : {}) });
+        break;
+      }
     }
     // An authored description replaces the default one (towns keep theirs).
     const last = sites[sites.length - 1];
@@ -688,6 +894,9 @@ export function compileCustomMap(catalog: ContentCatalog, authored: CustomMapDoc
         : { id: 'custom_maps', title: 'Custom maps', text: 'This map was made in the map editor. Its towns, sites and goal are the author’s; nothing about it is generated or checked for fairness.' },
       ...(neutralTowns.length > 0
         ? [{ id: 'unowned_towns', title: 'Unowned towns', text: 'Unowned towns start without a lord or a hero; their own militia holds them. Defeat it (a siege) and the town is yours: build, recruit and hire there like in your home town — whatever its pantheon. An army of several pantheons fights with lower morale (−1 for each pantheon beyond the first, at most −2; neutral creatures never count). Proposed; values unplaytested.' }]
+        : []),
+      ...(doc.sites.some((s) => s.kind === 'neutral_dwelling' || s.kind === 'sluice' || s.kind === 'ferry' || s.kind === 'supply_depot')
+        ? [{ id: 'map_landmarks', title: 'Hiring sites, sluices and ferries', text: 'A neutral hiring site hires its creatures to a hero of any pantheon: a few each week, shared by every empire; those not hired do not carry over. A hero standing on a sluice opens or closes it, and its channel changes ground at once (water to marsh, for example). A ferry landing carries a hero across to its twin landing. A supply depot gives its supplies once. Proposed; values unplaytested.' }]
         : []),
     ],
     protectedHeroFailure: false,

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '@pr/content';
 import { GameDriver } from '@pr/testing';
-import { canonicalStateHash, findHeroPath, deepClone, objectiveDoneEarly, quoteMovement, type MatchState } from '@pr/rules';
+import { canonicalStateHash, findHeroPath, deepClone, quoteMovement, type MatchState } from '@pr/rules';
 import { recordCompletion, startCampaign, startNextMission, restartCurrentMission, startPracticeReplay } from '../src';
 
 const catalog = loadCatalog();
@@ -52,7 +52,7 @@ describe('reference route costs (implementation/06, from the town gate)', () => 
 
 describe('The Three Beacons — headless campaign journey', () => {
   it('plays M01 end-to-end, carries the hero into M02, and continues idempotently', () => {
-    const { campaign, start } = startCampaign(catalog, 'three_beacons', { runId: 'run1', startingGodId: 'zeus' });
+    const { campaign, start } = startCampaign(catalog, 'three_beacons', { runId: 'run1', startingGodId: 'zeus', contentVersion: 1 });
     const d = new GameDriver(start.match, catalog);
     expect(d.player.pantheon.patronGodId).toBe('zeus');
 
@@ -98,75 +98,63 @@ describe('The Three Beacons — headless campaign journey', () => {
     expect(a.campaign.completions).toHaveLength(1);
   });
 
-  it('plays M02 with the Griffin covenant chain and a divine choice', () => {
-    const { campaign, start } = startCampaign(catalog, 'three_beacons', { runId: 'run2', startingGodId: 'zeus' });
-    void campaign;
-    void start;
+  it('M02 is won in Passhaven alone: the Aerie chain, then 2 Griffins trained (owner change 2026-10-14)', () => {
     const d = GameDriver.mission('three_beacons_m02');
-    d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'temple_2' });
-    d.endDay();
-    d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'training_court' });
-    d.marchTo({ q: 8, r: 5 }); // Old Watchtower reveals the nest
-    expect(d.state.mission.revealedSiteIds).toContain('m02_nest_guard');
-    d.marchTo({ q: 13, r: 8 });
-    expect(d.state.world.sites.m02_pass_guard!.cleared).toBe(true);
-    d.marchTo({ q: 20, r: 6 });
-    expect(d.state.world.sites.m02_nest_guard!.cleared).toBe(true);
-    expect(d.state.mission.objectives.m02_claim_covenant!.status).toBe('available');
-    d.do({ kind: 'ClaimObjective', objectiveId: 'm02_claim_covenant' });
-    expect(d.reject({ kind: 'ClaimObjective', objectiveId: 'm02_claim_covenant' }).code).toBe('already_done');
-    d.do({ kind: 'AssignCovenant', townId: 'passhaven', entitlementId: 'covenant.griffin.m02' });
-    d.do({ kind: 'SelectGod', godId: 'athena' });
-    expect(d.reject({ kind: 'SelectGod', godId: 'ares' }).code).toBe('missing_requirement');
-    // Build the Aerie chain on separate days while returning home.
+    const mission = d.catalog.missions.three_beacons_m02!;
+    expect(mission.objectives.map((o) => o.id)).toEqual(['m02_train_griffins']);
+    expect(mission.objectives.every((o) => !o.markerSiteId)).toBe(true);
+    expect(d.town('passhaven').covenants).toEqual(['griffin']);
+    const home = { ...d.hero().position };
+    const xp = d.hero().xp;
     d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'griffin_aerie' });
-    d.marchTo({ q: 3, r: 8 });
-    if (d.town('passhaven').buildUsedDay === d.state.day) d.endDay();
+    expect(d.town('passhaven').population.griffin).toBe(7);
+    // Recruiting the base form does not count; only training does.
+    d.do({ kind: 'RecruitUnits', townId: 'passhaven', creatureId: 'griffin', quantity: 3, destination: { kind: 'garrison' } });
+    expect(d.state.mission.objectives.m02_train_griffins!.status).toBe('active');
+    d.endDay();
     d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'griffin_aerie_up' });
-    // Windcrest objective is live: recruit 2 into Alexios (must be in town).
-    d.do({ kind: 'RecruitUnits', townId: 'passhaven', creatureId: 'windcrest_griffin', quantity: 2, destination: { kind: 'hero', heroId: 'alexios' } });
-    expect(d.state.mission.objectives.m02_windcrest!.status).toBe('completed');
-    d.marchTo({ q: 22, r: 10 });
-    d.do({ kind: 'ActivateSite', heroId: 'alexios', siteId: 'm02_beacon' });
+    const garrison = { kind: 'garrison' as const, townId: 'passhaven' };
+    const slot = () => d.town('passhaven').garrison.slots.findIndex((s) => s?.creatureId === 'griffin');
+    d.do({ kind: 'UpgradeStack', townId: 'passhaven', army: garrison, slot: slot(), quantity: 1 });
+    expect(d.state.mission.objectives.m02_train_griffins!.status).toBe('active');
+    expect(d.state.outcome.status).toBe('running');
+    d.do({ kind: 'UpgradeStack', townId: 'passhaven', army: garrison, slot: slot(), quantity: 1 });
+    expect(d.state.mission.objectives.m02_train_griffins!.status).toBe('completed');
     d.resolveLevelUps();
     expect(d.state.outcome.status).toBe('victory');
-    expect(d.player.pantheon.minorGodIds).toEqual(['athena']);
+    expect(d.hero().position).toEqual(home); // Alexios never left the town.
+    expect(d.hero().xp).toBe(Math.min(xp + 2000, mission.xpCap));
+    expect(d.player.pantheon.minorGodIds).toEqual([]); // the god choice is optional
   });
 
-  it('M02 is played in order: the ridge blocks the far side until the pass falls, and steps open one after another', () => {
+  it('M02: the ridge still blocks the far side until the pass falls (optional ground, no objective)', () => {
     const d = GameDriver.mission('three_beacons_m02');
     for (const fog of Object.values(d.state.fog)) fog.explored = fog.explored.map(() => 1);
     d.hero().movementPoints = 99999;
-    const status = (id: string) => d.state.mission.objectives[id]!.status;
-    // Beyond the ridge nothing can be reached before the pass is broken.
     for (const c of [{ q: 20, r: 6 }, { q: 22, r: 10 }, { q: 19, r: 13 }]) expect(quoteMovement(d.catalog, d.state, 'alexios', c).reachable).toBe(false);
-    expect(status('m02_pass_guard')).toBe('active');
-    for (const id of ['m02_nest_guard', 'm02_claim_covenant', 'm02_pantheon', 'm02_windcrest', 'm02_restore']) expect(status(id)).toBe('locked');
     d.hero().movementPoints = 1560;
     d.marchTo({ q: 13, r: 8 });
-    expect(status('m02_pass_guard')).toBe('completed');
-    expect(status('m02_nest_guard')).toBe('active');
-    expect(status('m02_pantheon')).toBe('locked');
+    expect(d.state.world.sites.m02_pass_guard!.cleared).toBe(true);
+    expect(d.state.outcome.status).toBe('running');
     d.hero().movementPoints = 99999;
     for (const c of [{ q: 20, r: 6 }, { q: 22, r: 10 }]) expect(quoteMovement(d.catalog, d.state, 'alexios', c).reachable).toBe(true);
   });
 
-  it('M02: a god chosen ahead of its step counts the moment the step opens', () => {
+  it('M02: a save from before the change gains the new objective on its next command and can still be won', () => {
     const d = GameDriver.mission('three_beacons_m02');
-    d.player.wallet.favor = 40;
-    d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'temple_2' });
-    d.do({ kind: 'SelectGod', godId: 'ares' });
-    const def = d.catalog.missions.three_beacons_m02!.objectives.find((o) => o.id === 'm02_pantheon')!;
-    expect(d.state.mission.objectives.m02_pantheon!.status).toBe('locked');
-    expect(objectiveDoneEarly(d.catalog, d.state, def)).toBe(true);
-    d.marchTo({ q: 13, r: 8 });
-    d.marchTo({ q: 20, r: 6 });
-    const events = d.do({ kind: 'ClaimObjective', objectiveId: 'm02_claim_covenant' });
-    // Claiming opens the god step, which is already satisfied: completed in the same command.
-    expect(d.state.mission.objectives.m02_pantheon!.status).toBe('completed');
-    expect(d.state.mission.objectives.m02_windcrest!.status).toBe('active');
-    expect(events.filter((e) => e.kind === 'ObjectiveChanged' && e.objectiveId === 'm02_pantheon').map((e) => (e as { status: string }).status)).toEqual(['active', 'completed']);
-    expect(objectiveDoneEarly(d.catalog, d.state, def)).toBe(false);
+    // The older save held the earlier steps and not the new one.
+    delete d.state.mission.objectives.m02_train_griffins;
+    d.state.mission.objectives.m02_pass_guard = { status: 'active', completedOnDay: null, rewardGranted: false };
+    d.state.mission.objectives.m02_windcrest = { status: 'locked', completedOnDay: null, rewardGranted: false };
+    d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'griffin_aerie' });
+    expect(d.state.mission.objectives.m02_train_griffins!.status).toBe('active');
+    d.do({ kind: 'RecruitUnits', townId: 'passhaven', creatureId: 'griffin', quantity: 2, destination: { kind: 'hero', heroId: 'alexios' } });
+    d.endDay();
+    d.do({ kind: 'BuildStructure', townId: 'passhaven', buildingId: 'griffin_aerie_up' });
+    const slot = d.hero().army.slots.findIndex((s) => s?.creatureId === 'griffin');
+    d.do({ kind: 'UpgradeStack', townId: 'passhaven', army: { kind: 'hero', heroId: 'alexios' }, slot, quantity: 2 });
+    d.resolveLevelUps();
+    expect(d.state.outcome.status).toBe('victory');
   });
 
   it('M03: either crossing reaches both relays; both relays open the ward gate; the patrol stays in its region', () => {

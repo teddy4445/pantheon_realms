@@ -12,7 +12,9 @@
  *
  * Everything built here is PROPOSED and unplaytested (values copied from the
  * Winter Oath, which passed its headless journey; the new campaigns' own
- * journeys are in packages/campaign/test/arcCampaigns.test.ts).
+ * journeys are in packages/campaign/test/arcCampaigns.test.ts). A town with its
+ * own building names (the Greek polis) passes `buildingOf`; a might hero passes
+ * `heroDefaults` (The Silent Oracle, owner request 2026-10-14).
  */
 import { armyToken } from '@pr/rules';
 import type {
@@ -73,10 +75,21 @@ export interface ArcCampaignContext {
   readonly names: (creatureId: string) => { readonly name: string; readonly pluralName: string } | undefined;
   /** Family of a creature (population pools are keyed by family). */
   readonly familyOf: (creatureId: string) => string;
+  /**
+   * Building ID of a town location's level, for a town that does not use the kit naming
+   * (`<pantheon>_<slot>_l<n>`), e.g. the Greek polis (`barracks`, `griffin_aerie_up`, …):
+   * the archetype's slot chain, level 1 first. Default: the kit naming.
+   */
+  readonly buildingOf?: (slot: string, level: number) => string;
+  /**
+   * The campaign hero's starting profile per mission (1–7) when it differs from the arc's
+   * (a spell-casting hero's), e.g. a might hero; used when a mission starts without carry-over.
+   */
+  readonly heroDefaults?: Readonly<Partial<Record<1 | 2 | 3 | 4 | 5 | 6 | 7, MissionDefinition['player']['hero']['defaults']>>>;
 }
 
 /** Building ID of a town location level (kit naming: `<pantheon>_<slot>_l<n>`). */
-export const bld = (ctx: ArcCampaignContext, slot: string, level = 1) => `${ctx.pantheonId}_${slot}_l${level}`;
+export const bld = (ctx: ArcCampaignContext, slot: string, level = 1) => ctx.buildingOf?.(slot, level) ?? `${ctx.pantheonId}_${slot}_l${level}`;
 const dw = (ctx: ArcCampaignContext, tier: number, level = 1) => bld(ctx, `dwelling_t${tier}`, level);
 
 /** A dialogue-line maker for one speaker of a pantheon (placeholder portrait by name). */
@@ -224,13 +237,16 @@ function missionBase(ctx: ArcCampaignContext, n: number, kind: string, w: Missio
 }
 
 function player(ctx: ArcCampaignContext, w: MissionWriting, siteId: string, wallet: ResourceCost, buildings: readonly string[], population: Record<string, number>, covenants: readonly string[], heroDefaults: MissionDefinition['player']['hero']['defaults'], army: Army): MissionDefinition['player'] {
+  // The mission number from the town site's ID (`m0N_town`): a campaign may give its hero its own profile.
+  const n = Number(/^m0(\d)_/.exec(siteId)?.[1] ?? 0) as 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  const defaults = ctx.heroDefaults?.[n] ?? heroDefaults;
   return {
     playerId: 'player',
     name: w.town.name,
     pantheonId: ctx.pantheonId,
     wallet,
     town: { townId: w.town.townId, siteId, name: w.town.name, archetypeId: ctx.archetypeId, buildings, population, covenants },
-    hero: { heroId: ctx.hero.heroId, definitionId: ctx.hero.definitionId, classId: ctx.hero.classId, defaults: heroDefaults, army: stacks(army), startTownId: w.town.townId },
+    hero: { heroId: ctx.hero.heroId, definitionId: ctx.hero.definitionId, classId: ctx.hero.classId, defaults, army: stacks(army), startTownId: w.town.townId },
   };
 }
 

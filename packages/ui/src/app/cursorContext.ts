@@ -12,6 +12,7 @@ import {
   previewShot,
   quoteAdventureSpell,
   quoteMovement,
+  routeDays,
   siegeTownAt,
   siteAt,
   stackCells,
@@ -29,6 +30,11 @@ export interface CursorChoice {
   readonly id: CursorId;
   /** Melee only: the sword's angle on screen. */
   readonly angle?: number;
+  /**
+   * Adventure map, a destination beyond today's movement: the day the hero gets there, today
+   * being day 1 (shown as a small number beside the cursor; owner request 2026-10-14).
+   */
+  readonly days?: number;
 }
 
 /** Adventure map: what a left click on the hovered tile would do. */
@@ -59,13 +65,15 @@ export function adventureCursor(
   if (ownTown && heroInTown(catalog, state, selected, ownTown.id)) return { id: ownTown.ownerId === viewerId ? 'cursor.map.town' : 'cursor.map.hero' };
   const q = quoteMovement(catalog, state, selected.id, hover);
   if (!q.reachable) return { id: 'cursor.blocked' };
-  if (q.endsInEncounter) return { id: site && siegeTownAt(catalog, state, site, viewerId) ? 'cursor.map.siege' : 'cursor.map.attack' };
-  if (ownTown?.ownerId === viewerId) return { id: 'cursor.map.town' };
+  const later = q.reachesDestinationToday ? null : routeDays(catalog, state, selected.id, q);
+  const days = later && later > 1 ? { days: later } : {};
+  if (q.endsInEncounter) return { id: site && siegeTownAt(catalog, state, site, viewerId) ? 'cursor.map.siege' : 'cursor.map.attack', ...days };
+  if (ownTown?.ownerId === viewerId) return { id: 'cursor.map.town', ...days };
   // An undefended enemy or neutral town is taken by walking in.
-  if (ownTown) return { id: 'cursor.map.siege' };
-  if (site && site.def.kind.type === 'portal') return { id: 'cursor.map.portal' };
-  if (site && site.def.kind.type !== 'town') return { id: 'cursor.map.visit' };
-  return { id: q.reachesDestinationToday ? 'cursor.map.move' : 'cursor.map.move_later' };
+  if (ownTown) return { id: 'cursor.map.siege', ...days };
+  if (site && site.def.kind.type === 'portal') return { id: 'cursor.map.portal', ...days };
+  if (site && site.def.kind.type !== 'town') return { id: 'cursor.map.visit', ...days };
+  return { id: q.reachesDestinationToday ? 'cursor.map.move' : 'cursor.map.move_later', ...days };
 }
 
 export type BattleMode =
@@ -89,7 +97,7 @@ export function battleCursor(
   mode: BattleMode,
   hover: BattleCell | null,
   attackFrom: BattleCell | null,
-  ctx: { battleActive: boolean; deploying: boolean },
+  ctx: { battleActive: boolean; deploying: boolean; /** The board is drawn mirrored (the arrow turns with it). */ mirrored?: boolean },
 ): CursorChoice {
   const battle = state.battle;
   if (!battle || !ctx.battleActive) return { id: 'cursor.ui.default' };
@@ -120,7 +128,8 @@ export function battleCursor(
     if (attackFrom) {
       const from = cellScreen(attackFrom);
       const to = cellScreen(hover);
-      return { id: 'cursor.battle.melee', angle: meleeAngle(to.x - from.x, to.y - from.y) };
+      const dx = to.x - from.x;
+      return { id: 'cursor.battle.melee', angle: meleeAngle(ctx.mirrored ? -dx : dx, to.y - from.y) };
     }
     return { id: 'cursor.blocked' };
   }

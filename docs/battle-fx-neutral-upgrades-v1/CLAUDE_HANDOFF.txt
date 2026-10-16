@@ -1,0 +1,434 @@
+PANTHEON REALMS — PROJECTILES, IMPACTS & SIX NEUTRAL UPGRADES
+Generated 15 October 2026 | Source game inspected: 1.2.0
+
+1. TASK FOR CLAUDE CODE
+-----------------------
+Implement the delivered projectile/impact art and six upgraded neutral creature forms in Pantheon Realms. This is a follow-up to the campaign-v2 six neutral species and the shooter audit. Source inspected: game version 1.2.0 on 15 October 2026. Preserve all existing unrelated work.
+
+The user now explicitly requests upgraded versions of all six new neutral creatures. This supersedes the older campaign-v2 instruction that Pegasus, Root-Runner, Serpopard, Baku, Afanc and Ahuitzotl are single-form only. It does not authorize changing their faction allegiance, replacing their base forms, inventing more town tiers, or redesigning campaign stories.
+
+Deliver actual working battle effects, content registrations, recruitment and encyclopedia integration. Do not stop after copying pictures. The artwork has been generated and checked in this package; the game has NOT been modified by this delivery. Do not claim the effects are already integrated.
+
+2. TWO SEPARATE PROJECTS — COPY THE FILES
+-----------------------------------------
+ART DELIVERY:
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15
+
+GAME PROJECT:
+C:/Users/lazeb/Desktop/pantheon_realms
+
+Copy the 25 files explicitly listed in asset-manifest.json from:
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/new-assets
+into BOTH:
+C:/Users/lazeb/Desktop/pantheon_realms/assets-source/battle-fx-neutral-upgrades-v1
+C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/battle-fx-neutral-upgrades-v1
+
+Use the exact delivered filenames, including -v2 suffixes. Preserve native PNG bytes and alpha; verify SHA-256 against asset-manifest.json. The manifest includes each file's full source and destination paths. Runtime URLs are relative to the game root: battle-fx-neutral-upgrades-v1/<filename>. Do not point runtime assets to the art project's absolute paths.
+
+Copy the handoff and JSON metadata into:
+C:/Users/lazeb/Desktop/pantheon_realms/docs/battle-fx-neutral-upgrades-v1
+
+Do NOT import reference/iterations, preview screenshots, or base comparison copies as new game assets. The base art already belongs to campaign-v2. Never overwrite the game's entire sprite manifest with the merge fragment.
+
+Primary entry points:
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/index.html
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/CLAUDE_HANDOFF.txt
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/asset-manifest.json
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/projectile-profiles.json
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/animation-manifest.json
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/sprite-manifest-merge.json
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/design/neutral-upgrades.json
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/generation-log.json
+
+3. WHAT IS INCLUDED
+-------------------
+25 accepted native PNGs:
+• 12 projectile/impact sheets, with 16 source cells each: 192 FX cells.
+• 6 upgraded portraits.
+• 6 upgraded core animation sheets, each with 24 poses: 144 core poses.
+• 1 Dawncrest Pegasus flight sheet, with 12 poses.
+
+The 12 FX sheets cover 22 shooter forms in 11 creature families, plus tower arrows and catapult stones. These are 24 explicit profiles. Base/upgraded travel and impact art have separate rows. The siege sheet is an exception: its two pairs represent DIFFERENT actors.
+
+Creature atlases supply six core states: idle, move, attack, defend, hit, death. Victory intentionally reuses idle; ability intentionally reuses attack or defend. Pegasus also has takeoff, fly and landing. No other new neutral creature is a shooter. Serpopard's Long Reach and Ahuitzotl's Tail Snare remain melee/ability actions, not projectile attacks.
+
+No new sound files, 3D models, new dwelling paintings, unique ability spell sheets, or dedicated victory sheets are claimed. Existing ability icons and hiring-site art should be reused. These are painted 2D battle sprites, not interpolated rigged animations.
+
+4. PROJECTILE AND IMPACT MAPPING
+--------------------------------
+Peltast — peltast
+  File: new-assets/fx-greek-javelin.png
+  Travel: bronze-point wooden javelin, dark shaft, blue binding
+  Post-hit: a tiny metallic star flash with a few short ochre dust strokes, not an explosion
+  Rows (zero-based): travel 0, impact 1; path shallow-ballistic.
+
+Veteran Peltast — veteran_peltast
+  File: new-assets/fx-greek-javelin.png
+  Travel: reinforced javelin with broader steel point and bronze bands
+  Post-hit: a sharper small white-gold contact spark with 3 metal flecks
+  Rows (zero-based): travel 2, impact 3; path shallow-ballistic.
+
+Temple Adept — temple_adept
+  File: new-assets/fx-arcane-bolt.png
+  Travel: elongated pale-blue magical bolt with a warm gold core and short tapering ribbon
+  Post-hit: small pale-blue and gold geometric starburst with a thin collapsing ring
+  Rows (zero-based): travel 0, impact 1; path direct.
+
+Temple Seer — temple_seer
+  File: new-assets/fx-arcane-bolt.png
+  Travel: brighter white-blue bolt with two thin gold ribbons around its core
+  Post-hit: layered white-gold geometric starburst with two very fine blue rings and sparse gold flecks
+  Rows (zero-based): travel 2, impact 3; path direct.
+
+Cyclops — cyclops
+  File: new-assets/fx-cyclops-boulder.png
+  Travel: round irregular grey-brown shaped boulder with readable facets, solid physical stone
+  Post-hit: compact grey stone chips bouncing outward with a small low ochre dust puff
+  Rows (zero-based): travel 0, impact 1; path high-ballistic.
+
+Stormforged Cyclops — stormforged_cyclops
+  File: new-assets/fx-cyclops-boulder.png
+  Travel: same grey boulder with restrained bronze-gold engraved seams, no lightning
+  Post-hit: compact stone chips and low dust with a very brief warm glow along two stone fragment seams, no lightning
+  Rows (zero-based): travel 2, impact 3; path high-ballistic.
+
+Lindworm — norse_lindworm
+  File: new-assets/fx-frost-breath.png
+  Travel: small pointed icy-blue breath comet with a short white mist tail and a few ice shards
+  Post-hit: small burst of pale ice crystals followed by a soft breath puff that dissipates
+  Rows (zero-based): travel 0, impact 1; path direct.
+
+Storm Lindworm — norse_storm_lindworm
+  File: new-assets/fx-frost-breath.png
+  Travel: denser blue-white frost comet with a brighter angular ice core
+  Post-hit: sharper blue-white ice crystal burst with a thin cold ripple and small fading mist
+  Rows (zero-based): travel 2, impact 3; path direct.
+
+Jackal Guardian — egyptian_jackal_guardian
+  File: new-assets/fx-egyptian-javelin-v2.png
+  Travel: bronze-point javelin with a charcoal shaft and blue-gold bindings
+  Post-hit: tiny bronze contact spark and sandy dust flecks
+  Rows (zero-based): travel 0, impact 1; path shallow-ballistic.
+
+Anubian Warden — egyptian_anubian_warden
+  File: new-assets/fx-egyptian-javelin-v2.png
+  Travel: gold-banded javelin with a dark broad spearhead and blue binding
+  Post-hit: small warm gold point flash and 3 sand-colored contact flecks, no magic symbols
+  Rows (zero-based): travel 2, impact 3; path shallow-ballistic.
+
+Desert Colossus — egyptian_desert_colossus
+  File: new-assets/fx-granite-block-v2.png
+  Travel: angular red-granite block, heavy roughly cuboid carved masonry stone
+  Post-hit: compact angular red-stone fragments and low ochre dust
+  Rows (zero-based): travel 0, impact 1; path high-ballistic.
+
+Divine Colossus — egyptian_divine_colossus
+  File: new-assets/fx-granite-block-v2.png
+  Travel: worked red-granite block with small gold and lapis inlay bands on two faces
+  Post-hit: red-stone debris with a few tiny gold and lapis glints and a low dust puff
+  Rows (zero-based): travel 2, impact 3; path high-ballistic.
+
+Kirin — japanese_kirin
+  File: new-assets/fx-holy-fire.png
+  Travel: slim gold-white holy fire comet, soft curled luminous flame ribbon, no orange smoke
+  Post-hit: small gold-white flame bloom with delicate curled wisps
+  Rows (zero-based): travel 0, impact 1; path direct.
+
+Celestial Kirin — japanese_celestial_kirin
+  File: new-assets/fx-holy-fire.png
+  Travel: white-fire comet with pale gold core and two thin flowing white-gold wisps
+  Post-hit: white-gold petal-shaped flame wisps and a very fine halo dissolving into specks
+  Rows (zero-based): travel 2, impact 3; path direct.
+
+Banshee — celtic_banshee
+  File: new-assets/fx-spectral-wail.png
+  Travel: two translucent pale teal-silver sound crescents facing right, narrow directed wave pulse, no solid missile
+  Post-hit: small pale teal spectral ripple and curling vapor wisps
+  Rows (zero-based): travel 0, impact 1; path direct.
+
+Battle Banshee — celtic_battle_banshee
+  File: new-assets/fx-spectral-wail.png
+  Travel: three silver spectral sound crescents facing right with restrained dark crimson edge wisps
+  Post-hit: small silver spectral shreds with muted crimson edges, no blood and no skull
+  Rows (zero-based): travel 2, impact 3; path direct.
+
+Eagle Warrior Spirit — mesoamerican_eagle_warrior_spirit
+  File: new-assets/fx-atlatl-dart.png
+  Travel: long slim wooden atlatl dart with dark obsidian-like point and teal feather fletching, NOT a bow arrow, no launcher
+  Post-hit: tiny point flash, two dark chips and a little dust flick
+  Rows (zero-based): travel 0, impact 1; path shallow-ballistic.
+
+Solar Eagle Warrior — mesoamerican_solar_eagle_warrior
+  File: new-assets/fx-atlatl-dart.png
+  Travel: long slim atlatl dart with dark point, gold bands and golden feather fletching
+  Post-hit: small warm contact glint with sparse feather-like golden motes, no explosion
+  Rows (zero-based): travel 2, impact 3; path shallow-ballistic.
+
+Xiuhcoatl — mesoamerican_xiuhcoatl
+  File: new-assets/fx-serpent-fire.png
+  Travel: compact orange fireball with restrained turquoise rim and curling flame tail
+  Post-hit: tight orange flame curl with turquoise sparks and short-lived embers
+  Rows (zero-based): travel 0, impact 1; path direct.
+
+Divine Xiuhcoatl — mesoamerican_divine_xiuhcoatl
+  File: new-assets/fx-serpent-fire.png
+  Travel: bright blue-gold flame projectile, white-hot tiny center and blue corona, curled tail
+  Post-hit: compact blue-gold flame bloom and falling tiny blue-gold embers
+  Rows (zero-based): travel 2, impact 3; path direct.
+
+Hill Slinger — hill_slinger
+  File: new-assets/fx-sling-ammunition.png
+  Travel: small rounded grey sling stone, no sling or hand
+  Post-hit: tiny grey chip and dust pop
+  Rows (zero-based): travel 0, impact 1; path shallow-ballistic.
+
+Sling Master — sling_master
+  File: new-assets/fx-sling-ammunition.png
+  Travel: small elongated almond-shaped dull lead sling bullet, no weapon or hand
+  Post-hit: tiny sharp silver contact flash with two metal-colored flecks, no fire
+  Rows (zero-based): travel 2, impact 3; path shallow-ballistic.
+
+Siege Turret — siege_turret
+  File: new-assets/fx-siege.png
+  Travel: slim wooden defensive arrow with steel tip and plain pale fletching, pointing right
+  Post-hit: small sharp arrow contact flash with a few wood and metal flecks
+  Rows (zero-based): travel 0, impact 1; path shallow-ballistic.
+
+Catapult — catapult
+  File: new-assets/fx-siege.png
+  Travel: heavy round grey siege stone, physical natural rock
+  Post-hit: compact masonry chip burst and low grey-brown dust puff suitable for wall impact
+  Rows (zero-based): travel 2, impact 3; path high-ballistic.
+
+5. FX ATLAS AND TIMING CONTRACT
+-------------------------------
+Every FX sheet is 4 columns × 4 rows. Read projectile-profiles.json for EXACT native rectangles, anchors and per-unit mappings. Do not assume a 1024 atlas, square canvas, integer width/4, or identical dimensions across files. The atlatl and sling sheets have different native dimensions from the others.
+
+Standard row order, zero-based:
+0 = base travel, four painted poses.
+1 = base impact, four sequential expansion/dissipation poses.
+2 = upgraded travel, four painted poses.
+3 = upgraded impact, four sequential expansion/dissipation poses.
+Siege row 0/1 = turret arrow travel/impact; row 2/3 = catapult stone travel/impact.
+
+Travel art faces +X (right). Rotate along the trajectory tangent when shooting left or diagonally. Do not mirror a tangent-rotated projectile twice. Keep impact texture upright unless a deliberate minor seeded rotation is appropriate for dust; do not spin spectral/fire direction arbitrarily.
+
+Physical arrows, javelins, darts, stones and sling ammunition: use travel frame 0 with world motion by default. The additional poses are optional variants, not required spinning animation. This prevents shape/centre wobble. Magical bolts, breath, wails and flame can loop their four travel frames at 10 fps.
+
+Suggested paths:
+• Heavy boulders/granite/siege stones: high ballistic arc, 320–650 ms travel.
+• Javelins/darts/arrows/slings: shallow ballistic arc, 220–500 ms.
+• Arcane, frost breath, holy flame, spectral wail, serpent fire: direct path, 220–500 ms.
+Scale duration with range and battle speed, clamped to the profile's range. The standalone preview uses a slower fixed 650 ms flight for inspection; that is not the gameplay requirement.
+
+Release at the attack/shoot animation's release moment. Use a per-unit muzzle/hand/mouth socket relative to its sprite anchor and facing, not one chest origin for every creature. The profile lists the logical source point; exact pixel offsets require calibration in the live renderer. Keep two-hex units' contact and source points correct when mirrored.
+
+On arrival: remove travel sprite, start the profile's impact once at the actual contact point, trigger existing hit reaction and damage-text presentation together. Impact is 4 frames at 12 fps (10 fps for heavy stone); fade alpha during its final 100 ms to avoid a hard pop. Never loop an impact. Reduced-effects mode may show the first impact frame with a short fade.
+
+Use normal premultiplied-alpha compositing initially. Do not treat invisible RGB around transparent pixels as visible background and do not alpha-key black. Some wisps retain very low alpha at grid edges; normal alpha is intentional. Avoid additive blending for opaque physical dust and fragments. A restrained additive core could later be layered on magic only, after checking light/snow maps.
+
+The initial sizeHex/impactSizeHex values refer to the full source cell, including transparent margins. Do not also normalize every visible bbox to that size or the FX will become huge. Creature frame sourceScale and constant set scale must likewise be preserved.
+
+No new damage, splash radius, freeze/slow, burning ground, fear, poison, chain lightning or debuffs. All post-hit particles are cosmetic. Existing damage/resistance rules remain authoritative. Never emit particles per soldier in a stack. Use one capped effect per actual shot event; existing multi-shot attacks can play their actual separate shots without changing hit count.
+
+6. CURRENT RENDERER — SPECIFIC CHANGES
+--------------------------------------
+Inspected relevant files:
+C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/battle.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/presentation/src/sprites.ts
+C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/sprites/manifest.json
+C:/Users/lazeb/Desktop/pantheon_realms/assets-runtime/campaign-v2/manifest.json
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/assets/manifest.ts
+C:/Users/lazeb/Desktop/pantheon_realms/tools/assets/import_campaign_v2.py
+
+Current BattleAttack shot presentation in battle.ts uses 'arrow' and 'arrow-hit' for ordinary shooters. Replace that choice with a lookup by attacking creatureId in projectile-profiles.json. Keep a safe old fallback for unknown future units. Route SiegeTurretShot to siege_turret; route actual catapult events to catapult. Do not accidentally apply catapult effects to melee wall breakers solely because the old renderer used the same generic stone visual.
+
+Current projectile() has one arc for all kinds and draws a static sprite. Extend presentation to support profile trajectory, release point, travel animation and duration. Current effect() loads strips but sets the strip-level anchor once. It must honor each region's pixel anchor and sourceScale when changing frames, like the creature atlas player already does. Otherwise these impacts will jump or appear below the target.
+
+SpriteFrameRegion and SpriteStrip.regions already exist in sprites.ts. Reuse them; do not invent a competing atlas schema or destructively cut the PNGs. stripKey already incorporates source rectangles. StaticSpriteDefinition already accepts an optional frame rectangle. sprite-manifest-merge.json contains concrete creature/effect/static-projectile registration fragments compatible with these field shapes; it is NOT a complete replacement manifest and the animated projectile profile still needs renderer support.
+
+The current campaign-v2 importer supplies its own manifest, merged by the UI asset loader. Register this delivery as another namespaced manifest and merge creatures/effects/projectiles, or extend the established import pipeline idempotently. Check final runtime lookup, not only the base assets-runtime/sprites/manifest.json: the six current base neutrals live in the campaign-v2 overlay.
+
+Effect update formula for region i:
+  texture = native image subrectangle region.rect
+  sprite.anchor = [region.anchor[0] / rect.width, region.anchor[1] / rect.height]
+  sprite.scale = (HEX_W / pixelsPerHex) * region.sourceScale * optional effect scale
+Keep position = contact point. The reference preview draws directly using the equivalent native pixel-anchor subtraction.
+
+Keep visuals downstream of deterministic rules. No RNG draws from combat/progression streams for cosmetic particles. Use a separate deterministic visual seed if needed. Handle speed changes, skip animation, replay, cancellation, scene disposal and missing assets. Clean up sprites/tweens even when battle ends mid-flight. Do not add a second delay after projectile arrival that makes the target react late.
+
+7. SIX NEW UPGRADED CREATURE FORMS
+----------------------------------
+pegasus → dawncrest_pegasus (Dawncrest Pegasus)
+  Existing family: pegasus; pantheonId: null
+  Visual distinction: A tall backward-swept fan of pale-gold feathers continues from the forehead over the poll into the mane, with broad tiered gold-tipped wing feathers. Keep ivory horse body and exactly two wings; NO horn, no saddle, no armor. The raised swept feather crest is the unmistakable upgrade silhouette.
+  Portrait: new-assets/portrait-dawncrest_pegasus.png
+  Portrait asset ID to register: neutralupgrade.portrait.dawncrest_pegasus
+  Existing abilities retained: flight, neutral_sheltering_wings
+  Habitat: limestone high meadow at dawn
+  Candidate s(...) stats: [9, 10, 30, [4, 6], 9, 0, 2]; gold 325; training difference 75 gold.
+  Weekly shared site stock remains 5.
+
+root_runner → crownroot_runner (Crownroot Runner)
+  Existing family: root_runner; pantheonId: null
+  Visual distinction: Large branching three-pronged russet ear tufts form a visible crown, a broad cream shoulder ruff, and an enormous upright fan-like bushy tail with three distinct pointed lobes in the fur silhouette. Keep four squirrel paws and one continuous fluffy tail, amber eyes; NO actual wooden antlers, no clothes or weapons.
+  Portrait: new-assets/portrait-crownroot_runner.png
+  Portrait asset ID to register: neutralupgrade.portrait.crownroot_runner
+  Existing abilities retained: neutral_distract
+  Habitat: ancient mossy forest roots
+  Candidate s(...) stats: [7, 5, 18, [3, 4], 9, 0, 1]; gold 145; training difference 35 gold.
+  Weekly shared site stock remains 8.
+
+serpopard → crested_serpopard (Crested Serpopard)
+  Existing family: serpopard; pantheonId: null
+  Visual distinction: A broad deep-turquoise and ochre fan-shaped mane/frill projects along the BACK of the long upper neck and behind the small leopard head; clearly larger neck silhouette than base. Keep long sinuous feline neck, tawny spotted leopard body, four feline paws and one tail. No snake second head, no extra legs, no armor.
+  Portrait: new-assets/portrait-crested_serpopard.png
+  Portrait asset ID to register: neutralupgrade.portrait.crested_serpopard
+  Existing abilities retained: neutral_long_reach
+  Habitat: sandstone den at an arid river edge
+  Candidate s(...) stats: [10, 7, 30, [5, 7], 7, 0, 2]; gold 300; training difference 70 gold.
+  Weekly shared site stock remains 5.
+
+baku → dreamtusk_baku (Dreamtusk Baku)
+  Existing family: baku; pantheonId: null
+  Visual distinction: Two large upward-curled ivory tusks flank the short curved trunk, with a high swept-back cream mane crest and deep indigo body. Four sturdy beast paws; keep the Baku species and gold fur streaks. The curled tusks are visible and separated from trunk in side view. No saddle, no armor, no floating spell effects.
+  Portrait: new-assets/portrait-dreamtusk_baku.png
+  Portrait asset ID to register: neutralupgrade.portrait.dreamtusk_baku
+  Existing abilities retained: neutral_devour_dread
+  Habitat: quiet misty cedar grove
+  Candidate s(...) stats: [6, 11, 35, [3, 5], 6, 0, 2]; gold 310; training difference 70 gold.
+  Weekly shared site stock remains 5.
+
+afanc → ridgeback_afanc (Ridgeback Afanc)
+  Existing family: afanc; pantheonId: null
+  Visual distinction: A tall stepped ridge of three broad overlapping slate-green bony plates rises above the back and shoulders, with cream side whiskers and a wider flat paddle tail. Keep low heavy moss-brown beaver/reptile body, four short webbed feet. Natural bone plates, NOT metal armor; no horns, no tusks, no extra limbs.
+  Portrait: new-assets/portrait-ridgeback_afanc.png
+  Portrait asset ID to register: neutralupgrade.portrait.ridgeback_afanc
+  Existing abilities retained: neutral_reed_guard
+  Habitat: freshwater reed pool and driftwood
+  Candidate s(...) stats: [9, 12, 40, [4, 6], 4, 0, 2]; gold 300; training difference 70 gold.
+  Weekly shared site stock remains 5.
+
+ahuitzotl → crownfin_ahuitzotl (Crownfin Ahuitzotl)
+  Existing family: ahuitzotl; pantheonId: null
+  Visual distinction: A large swept turquoise fin crest rises from the head to upper shoulders; the long tail ends in a larger unmistakable WEBBED FIVE-FINGER HAND with turquoise fin membranes. Keep sleek dark teal-black otter body, pale turquoise throat, exactly four webbed feet and ONE tail-hand. No humanoid body, no extra tail, no jewelry.
+  Portrait: new-assets/portrait-crownfin_ahuitzotl.png
+  Portrait asset ID to register: neutralupgrade.portrait.crownfin_ahuitzotl
+  Existing abilities retained: neutral_tail_snare
+  Habitat: tropical freshwater cenote
+  Candidate s(...) stats: [10, 8, 30, [4, 7], 7, 0, 1]; gold 325; training difference 75 gold.
+  Weekly shared site stock remains 5.
+
+8. UPGRADE CONTENT, RECRUITMENT AND SCREENS
+-------------------------------------------
+Relevant current sources:
+C:/Users/lazeb/Desktop/pantheon_realms/packages/content/src/common/neutralsV2.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/creatures.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/definitions/world.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/world.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/rules/src/systems/battle/neutralAbilities.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/neutralRecruit.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/neutralCodex.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/ui/src/app/editorV2Sites.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/neutralSites.ts
+C:/Users/lazeb/Desktop/pantheon_realms/packages/mapgen/src/custom.ts
+
+A. Content
+Add an upgraded FormSpec under EACH EXISTING family in neutralsV2.ts, retaining base IDs, family IDs, pantheonId=null, tier, growth, body classification, footprint and base definitions. Let the established family/catalog builder set upgradedCreatureId. Do not create six unrelated new families. Keep ability IDs and rules exactly as before and zero ammunition. Pegasus alone keeps flight. New names are original game upgrade names, not claims of canonical mythology.
+
+design/neutral-upgrades.json contains candidate stats and prices, explicitly UNPLAYTESTED. Their s(...) order is attack, defense, hp, [damageMin, damageMax], speed, shots, footprint. Treat them as a starting balance proposal. No need to invent six additional ability systems or revise existing neutral ability mechanics. Training cost is upgraded cost minus base cost, currently gold-only.
+
+B. Recruitment design
+At an already-accessible matching neutral hiring site, offer its base and upgraded form. Preserve all existing pact/flag/guard/presence checks. No new building or quest unlock is required for this delivery. Both forms consume ONE shared finite per-site family stock; never duplicate base and upgraded weekly growth. The stock still resets to the site's weekly cap, not accumulation, and remains shared by visiting empires.
+
+The current quoteCampRecruitment/commitCampRecruitment in systems/world.ts select only def.kind.creatureId. Add a validated optional selected creature/form argument to the command/quote path: omitted means the old base form, preserving old commands and saves. Resolve the site's existing base ID to its family and permit only that family's base or delivered upgrade. Do not trust an arbitrary client-selected creature ID. Requote wallet, quantity, stock, presence and placement slot at commit.
+
+Also allow training an existing matching base stack while the hero is at the accessible matching site. Charge the cost difference for the selected count, consume no site stock and preserve troop count. Partial training may require a free slot or a compatible upgraded stack; never destroy overflow or merge base and upgraded units into one stack ID. Apply the same ownership/presence/pact/pending-decision checks and refresh movement where speed changes. A town training dialog must not magically unlock all neutrals through unrelated faction dwellings.
+
+Reuse the existing six hiring-site images and recruitment background. Do not add six extra map buildings. Keep site art/habitat lookup keyed to the original family/base ID, even when displaying an upgrade. Existing map editor neutral dwelling entries remain six; selecting the upgraded troop form must not require a duplicate placeable site.
+
+C. Screens
+• Neutral recruitment: two clear base/upgraded selectors, large selected portrait/animation, accurate selected stats/cost and shared stock. A separate training action appears only for eligible existing stacks. Keep controls visible without nested scrolling at supported desktop sizes.
+• Encyclopedia: show both forms for each of the six families, their correct portraits, idle previews, stats, unchanged ability rules, habitat and unlock/recruitment description. Preserve base/upgraded hover conventions where already used; keep a clickable/keyboard-accessible selector too.
+• Army cards, battle stack panel, hover tooltip, reward/recruitment preview and casualty/result screens: resolve by actual creatureId, so the new form never shows the base portrait/name by mistake.
+• Neutral site/editor preview and procedural placement: inherit habitat from family/base ID; no six new biome entries and no accidental faction lock.
+
+Current hasKitPortrait() recognizes campaignV2Art IDs only, and creatureHabitat() directly indexes base creatureId. Extend these to recognize the new portrait registry and family-level habitat. Simply adding a new portraitAssetId to content will not by itself preserve the large hiring-screen art layout.
+
+Keep old base-only saves intact. Do not silently upgrade existing armies, grants or scripted campaign encounters. Register new IDs so newly saved upgraded stacks round-trip. Do not rewrite all scripted campaign neutral reward quantities to compensate for proposed stats.
+
+9. CREATURE ANIMATION CONTRACT
+------------------------------
+animation-manifest.json defines measured native source rectangles, pixel anchors, scale and row/state mapping. Six core sheets have four columns and six rows: idle, move, attack, defend, hit, death. Dawncrest flight is four columns by three rows: takeoff, fly, landing. The corrected Ahuitzotl sheet is atlas-crownfin_ahuitzotl-v2.png; the older sheet is rejected and excluded.
+
+Core timing: idle 3 fps loop, move 7 fps loop, attack 6 fps once, defend 5 fps once, hit 7 fps once, death 6 fps once then hold last. Victory aliases idle; ability aliases defend for Pegasus/Baku/Afanc and attack for Root-Runner/Serpopard/Ahuitzotl. Do not label these aliases as additional unique animation drawings. Return to idle after normal one-shots; death alone remains on the final corpse pose. Flight is 6 fps with only fly looping.
+
+Do not split these character sheets using equal fixed-grid cuts: some limbs or crests extend across nominal cell divisions. The supplied measured per-pose rectangles avoid adjacent figures. Do not normalize each frame to a same-size bounding box; that would make the creature pulse in size. Keep a constant per-atlas sourceScale and foot pivot. Mirror the frame around its anchor for opposite-facing units.
+
+The merge fragments initially scale upgraded art to 82% of its raw native size relative to the base registration. This matches the standalone comparison. The flight atlas has sourceScale 0.65 relative to the upgraded core. These are starting values; calibrate shoulder/body dimensions against the installed base, not total height including the new crest/fin. Do not shrink away the defining upgrade silhouette. Keep the existing one-/two-hex logical footprint.
+
+The generator supplied four painted poses per state; movement is intentionally stylized. Ground contact may still need small metadata-only anchor adjustments after live battle review. Do not promise smooth skeletal interpolation from these sprites. If live inspection finds artwork needing retouch, return a concrete frame/screenshot request; do not replace finished sprites with placeholder silhouettes.
+
+10. ACCEPTANCE CHECKS BEFORE CALLING THIS IMPLEMENTED
+-----------------------------------------------------
+Asset checks already performed by this delivery:
+• 25 accepted PNGs exist with native dimensions, hashes and alpha metadata.
+• All six core sheets have 24 separate opaque character bodies; flight has 12.
+• Accepted creature bodies do not touch the native canvas boundary.
+• All 24 FX profiles have four travel and four impact cells; all cells are populated.
+• Browser preview loaded all 25 referenced animation/portrait files it exercised without JS or image errors; all six creatures/states and 24 FX profiles are selectable. Desktop and mobile preview layouts have no horizontal overflow.
+• Original generated PNG bytes are preserved. No pixel retouching or upscaling was done with code.
+
+Claude must still verify in the game:
+1. Table-driven coverage: each of the 22 known shooter IDs resolves to the intended profile, and siege events use the two separate siege profiles. No remaining generic arrow for a known magic/stone shooter.
+2. Ranged versus melee: an adjacent melee attack by a shooter must not emit a ranged missile. Ammunition, range, damage and resistances remain unchanged.
+3. Arrival timing: contact, hit reaction and existing damage display align. No impact twice, no hit at launch, no looping burst.
+4. Left/right/diagonal fire, very short/long shots, one- and two-hex targets, target killed on hit, wall/tower/gate contact, multi-shot, battle-speed changes, reduced effects, skip/replay, and disposal mid-flight.
+5. Dark ground, sand, snow and bright town backgrounds: silhouettes readable, no visible rectangular halo, no oversized explosion, no UI obstruction.
+6. Base and upgrade side by side for all six at normal battlefield zoom. New crest/ruff/tusks/plates/fin clearly visible. No clipping, scale pulsing or feet sliding during basic poses; Pegasus does not change body size between ground and flight.
+7. Recruitment base/upgraded tabs use shared stock, correct quote and portrait; partial/full training preserves counts and rejects insufficient gold/space. Foreign-pantheon heroes can still recruit. Locked sites remain locked. Weekly reset does not double stock.
+8. Old saves load base forms unchanged; new upgrade stacks save/load, replay and show correct portraits in all relevant screens. Map editor still exposes six neutral dwellings and unchanged habitat restrictions.
+9. Campaign battles remain MANUAL ONLY. This visual upgrade must not reintroduce automatic battle resolution or alter the 37-mission story/map design.
+10. Run the repository's relevant presentation/rules/UI tests, typecheck and normal build checks after implementation. Add focused tests for profile coverage, malformed/foreign recruitment form rejection, shared stock, training and backward compatibility. Then perform actual battle visual QA; metadata tests alone cannot prove sockets and feet align.
+
+Report exact changed files, checks run, remaining visual calibration and any balance concerns. This package contains proposed balance numbers, not playtest results.
+
+11. COMPLETE ACCEPTED FILE LIST
+-------------------------------
+new-assets/fx-greek-javelin.png
+new-assets/fx-arcane-bolt.png
+new-assets/fx-cyclops-boulder.png
+new-assets/fx-frost-breath.png
+new-assets/fx-egyptian-javelin-v2.png
+new-assets/fx-granite-block-v2.png
+new-assets/fx-holy-fire.png
+new-assets/fx-spectral-wail.png
+new-assets/fx-atlatl-dart.png
+new-assets/fx-serpent-fire.png
+new-assets/fx-sling-ammunition.png
+new-assets/fx-siege.png
+new-assets/portrait-dawncrest_pegasus.png
+new-assets/portrait-crownroot_runner.png
+new-assets/portrait-crested_serpopard.png
+new-assets/portrait-dreamtusk_baku.png
+new-assets/portrait-ridgeback_afanc.png
+new-assets/portrait-crownfin_ahuitzotl.png
+new-assets/atlas-dawncrest_pegasus.png
+new-assets/atlas-crownroot_runner.png
+new-assets/atlas-crested_serpopard.png
+new-assets/atlas-dreamtusk_baku.png
+new-assets/atlas-ridgeback_afanc.png
+new-assets/atlas-crownfin_ahuitzotl-v2.png
+new-assets/atlas-dawncrest_pegasus-flight.png
+
+12. PROVENANCE AND REVIEW
+-------------------------
+Built-in image generator used for all new paintings and transparent sprite/FX sheets. All prompts, source generated-image paths and iterations are recorded in:
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/generation-log.json
+
+Accepted native metadata and read-only QA:
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/asset-manifest.json
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/validation.json
+C:/Users/lazeb/Desktop/blannder_models/battle-fx-neutral-upgrades-2026-10-15/reference/preview-qa.json
+
+The two superseded physical FX sheets and first Ahuitzotl sheet remain in reference/iterations in the local art workspace, excluded from the delivery ZIP and runtime manifests. These were corrected through the image generator. No gameplay changes, sound production or implementation tests have been performed in the game by this art delivery.

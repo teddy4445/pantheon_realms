@@ -1,0 +1,188 @@
+{
+  "upgrades": [
+    {
+      "id": "dawncrest_pegasus",
+      "baseId": "pegasus",
+      "name": "Dawncrest Pegasus",
+      "features": "A tall backward-swept fan of pale-gold feathers continues from the forehead over the poll into the mane, with broad tiered gold-tipped wing feathers. Keep ivory horse body and exactly two wings; NO horn, no saddle, no armor. The raised swept feather crest is the unmistakable upgrade silhouette.",
+      "habitat": "limestone high meadow at dawn",
+      "familyId": "pegasus",
+      "pantheonId": null,
+      "portrait": "new-assets/portrait-dawncrest_pegasus.png",
+      "portraitAssetId": "neutralupgrade.portrait.dawncrest_pegasus",
+      "abilities": [
+        "flight",
+        "neutral_sheltering_wings"
+      ],
+      "candidateStats": [
+        9,
+        10,
+        30,
+        [
+          4,
+          6
+        ],
+        9,
+        0,
+        2
+      ],
+      "candidateCostGold": 325,
+      "candidateTrainingGold": 75,
+      "weeklySiteStock": 5,
+      "statsStatus": "Unplaytested starting proposal; same s(attack,defense,health,[min,max],speed,shots,size) order as current content."
+    },
+    {
+      "id": "crownroot_runner",
+      "baseId": "root_runner",
+      "name": "Crownroot Runner",
+      "features": "Large branching three-pronged russet ear tufts form a visible crown, a broad cream shoulder ruff, and an enormous upright fan-like bushy tail with three distinct pointed lobes in the fur silhouette. Keep four squirrel paws and one continuous fluffy tail, amber eyes; NO actual wooden antlers, no clothes or weapons.",
+      "habitat": "ancient mossy forest roots",
+      "familyId": "root_runner",
+      "pantheonId": null,
+      "portrait": "new-assets/portrait-crownroot_runner.png",
+      "portraitAssetId": "neutralupgrade.portrait.crownroot_runner",
+      "abilities": [
+        "neutral_distract"
+      ],
+      "candidateStats": [
+        7,
+        5,
+        18,
+        [
+          3,
+          4
+        ],
+        9,
+        0,
+        1
+      ],
+      "candidateCostGold": 145,
+      "candidateTrainingGold": 35,
+      "weeklySiteStock": 8,
+      "statsStatus": "Unplaytested starting proposal; same s(attack,defense,health,[min,max],speed,shots,size) order as current content."
+    },
+    {
+      "id": "crested_serpopard",
+      "baseId": "serpopard",
+      "name": "Crested Serpopard",
+      "features": "A broad deep-turquoise and ochre fan-shaped mane/frill projects along the BACK of the long upper neck and behind the small leopard head; clearly larger neck silhouette than base. Keep long sinuous feline neck, tawny spotted leopard body, four feline paws and one tail. No snake second head, no extra legs, no armor.",
+      "habitat": "sandstone den at an arid river edge",
+      "familyId": "serpopard",
+      "pantheonId": null,
+      "portrait": "new-assets/portrait-crested_serpopard.png",
+      "portraitAssetId": "neutralupgrade.portrait.crested_serpopard",
+      "abilities": [
+        "neutral_long_reach"
+      ],
+      "candidateStats": [
+        10,
+        7,
+        30,
+        [
+          5,
+          7
+        ],
+        7,
+        0,
+        2
+      ],
+      "candidateCostGold": 300,
+      "candidateTrainingGold": 70,
+      "weeklySiteStock": 5,
+      "statsStatus": "Unplaytested starting proposal; same s(attack,defense,health,[min,max],speed,shots,size) order as current content."
+    },
+    {
+      "id": "dreamtusk_baku",
+      "baseId": "baku",
+      "name": "Dreamtusk Baku",
+      "features": "Two large upward-curled ivory tusks flank the short curved trunk, with a high swept-back cream mane crest and deep indigo body. Four sturdy beast paws; keep the Baku species and gold fur streaks. The curled tusks are visible and separated from trunk in side view. No saddle, no armor, no floating spell effects.",
+      "habitat": "quiet misty cedar grove",
+      "familyId": "baku",
+      "pantheonId": null,
+      "portrait": "new-assets/portrait-dreamtusk_baku.png",
+      "portraitAssetId": "neutralupgrade.portrait.dreamtusk_baku",
+      "abilities": [
+        "neutral_devour_dread"
+      ],
+      "candidateStats": [
+        6,
+        11,
+        35,
+        [
+          3,
+          5
+        ],
+        6,
+        0,
+        2
+      ],
+      "candidateCostGold": 310,
+      "candidateTrainingGold": 70,
+      "weeklySiteStock": 5,
+      "statsStatus": "Unplaytested starting proposal; same s(attack,defense,health,[min,max],speed,shots,size) order as current content."
+    },
+    {
+      "id": "ridgeback_afanc",
+      "baseId": "afanc",
+      "name": "Ridgeback Afanc",
+      "features": "A tall stepped ridge of three broad overlapping slate-green bony plates rises above the back and shoulders, with cream side whiskers and a wider flat paddle tail. Keep low heavy moss-brown beaver/reptile body, four short webbed feet. Natural bone plates, NOT metal armor; no horns, no tusks, no extra limbs.",
+      "habitat": "freshwater reed pool and driftwood",
+      "familyId": "afanc",
+      "pantheonId": null,
+      "portrait": "new-assets/portrait-ridgeback_afanc.png",
+      "portraitAssetId": "neutralupgrade.portrait.ridgeback_afanc",
+      "abilities": [
+        "neutral_reed_guard"
+      ],
+      "candidateStats": [
+        9,
+        12,
+        40,
+        [
+          4,
+          6
+        ],
+        4,
+        0,
+        2
+      ],
+      "candidateCostGold": 300,
+      "candidateTrainingGold": 70,
+      "weeklySiteStock": 5,
+      "statsStatus": "Unplaytested starting proposal; same s(attack,defense,health,[min,max],speed,shots,size) order as current content."
+    },
+    {
+      "id": "crownfin_ahuitzotl",
+      "baseId": "ahuitzotl",
+      "name": "Crownfin Ahuitzotl",
+      "features": "A large swept turquoise fin crest rises from the head to upper shoulders; the long tail ends in a larger unmistakable WEBBED FIVE-FINGER HAND with turquoise fin membranes. Keep sleek dark teal-black otter body, pale turquoise throat, exactly four webbed feet and ONE tail-hand. No humanoid body, no extra tail, no jewelry.",
+      "habitat": "tropical freshwater cenote",
+      "familyId": "ahuitzotl",
+      "pantheonId": null,
+      "portrait": "new-assets/portrait-crownfin_ahuitzotl.png",
+      "portraitAssetId": "neutralupgrade.portrait.crownfin_ahuitzotl",
+      "abilities": [
+        "neutral_tail_snare"
+      ],
+      "candidateStats": [
+        10,
+        8,
+        30,
+        [
+          4,
+          7
+        ],
+        7,
+        0,
+        1
+      ],
+      "candidateCostGold": 325,
+      "candidateTrainingGold": 75,
+      "weeklySiteStock": 5,
+      "statsStatus": "Unplaytested starting proposal; same s(attack,defense,health,[min,max],speed,shots,size) order as current content."
+    }
+  ],
+  "authorization": "Latest request adds six upgraded forms and supersedes older single-form-only restriction for these six families.",
+  "recruitment": "Offer base or upgrade at the same already-unlocked matching neutral dwelling. Shared finite weekly family stock; no new dwelling art or faction requirement. Train matching existing base stacks at that site for gold difference without consuming stock. Preserve all original unlock conditions.",
+  "balanceStatus": "Proposed; requires playtesting."
+}

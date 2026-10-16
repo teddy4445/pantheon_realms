@@ -78,6 +78,8 @@ export function siteArchetype(def: SiteDefinition): SiteArchetype {
       return 'relic';
     case 'portal':
       return 'portal';
+    case 'sluice':
+      return 'sluice';
     case 'learning_stone':
     case 'spell_shrine':
     case 'skill_trainer':
@@ -99,7 +101,8 @@ export function siteKindLabel(def: SiteDefinition): string {
     case 'resource_site':
       return `${k.siteType === 'gold_mine' ? 'Gold mine' : k.siteType === 'crystal_deposit' ? 'Crystal deposit' : k.siteType === 'sawmill' ? 'Sawmill' : 'Quarry'} · +${k.dailyYield} ${k.resource}/day`;
     case 'pickup':
-      return 'Resource cache';
+      // Campaign v2: a supply depot (its picture and quest marker) and evidence to collect.
+      return def.art === 'supply_depot' || def.marker === 'supply' ? 'Supply depot' : def.marker === 'evidence' ? 'Evidence' : 'Resource cache';
     case 'watchtower':
       return 'Watchtower';
     case 'crossing':
@@ -111,13 +114,16 @@ export function siteKindLabel(def: SiteDefinition): string {
     case 'gate':
       return 'Ward gate';
     case 'creature_camp':
-      return 'Creature camp';
+      // Campaign v2: a neutral hiring site holds a finite stock each week.
+      return k.restock === 'weekly' ? 'Hiring site' : 'Creature camp';
     case 'map_event':
       return k.title;
     case 'relic':
       return 'Relic shrine';
     case 'portal':
-      return 'Two-way portal';
+      return k.ferry ? 'Ferry landing' : 'Two-way portal';
+    case 'sluice':
+      return 'Sluice';
     case 'learning_stone':
       return `Learning stone · +${k.xp.toLocaleString('en-US')} experience once per hero`;
     case 'spell_shrine':

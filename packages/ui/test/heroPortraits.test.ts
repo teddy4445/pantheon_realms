@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { buildCatalog } from '@pr/content';
 import { speakerBust } from '../src/assets/storyArt';
 import { resolveArt, resolveAsset } from '../src/assets/manifest';
+import { awaitingPortrait } from './awaitingArt';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const runtime = path.join(root, 'assets-runtime');
@@ -33,7 +34,12 @@ describe('hero character portraits', () => {
   it('every catalog hero resolves its own portrait and its own bust (portrait ID → bust ID)', () => {
     const heroes = Object.values(catalog.heroes);
     expect(heroes.length).toBeGreaterThanOrEqual(74);
-    for (const h of heroes) {
+    // Art still awaited from a brief (awaitingArt.ts; none since Brief 18 was imported on 2026-10-14): a generated square stands in, no bust.
+    for (const h of heroes.filter((x) => awaitingPortrait(x.portraitAssetId))) {
+      expect(resolveAsset(h.portraitAssetId).status, `${h.id}: delivered — empty AWAITING_BRIEF_18`).toBe('procedural');
+      expect(speakerBust({ portraitAssetId: h.portraitAssetId })).toBeNull();
+    }
+    for (const h of heroes.filter((x) => !awaitingPortrait(x.portraitAssetId))) {
       expect(resolveAsset(h.portraitAssetId).url, `${h.id} portrait`).toBeTruthy();
       const bust = speakerBust({ portraitAssetId: h.portraitAssetId });
       expect(bust, `${h.id} bust`).not.toBeNull();

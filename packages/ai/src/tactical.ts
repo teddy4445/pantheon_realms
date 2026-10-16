@@ -37,6 +37,7 @@ import {
   type MatchState,
 } from '@pr/rules';
 import { stackValue } from './evaluation';
+import { neutralAbilityChoices } from './neutralTactics';
 import { favorSpare } from './services';
 
 interface Scored {
@@ -61,7 +62,7 @@ function killValue(catalog: ContentCatalog, target: BattleStackState, dmg: numbe
   return stackValue(catalog, target.creatureId) * (kills + Math.min(1, (dmg % hp) / hp) * 0.3);
 }
 
-/** Scored main actions (shots, melee, Ward, wall battering) for the active stack in `battle`. */
+/** Scored main actions (shots, melee, Ward, neutral abilities, wall battering) for the active stack in `battle`. */
 function mainOptions(catalog: ContentCatalog, battle: BattleState, stack: BattleStackState, actions: NonNullable<ReturnType<typeof legalActions>>): Scored[] {
   const options: Scored[] = [];
   const myValue = stackValue(catalog, stack.creatureId);
@@ -106,6 +107,9 @@ function mainOptions(catalog: ContentCatalog, battle: BattleState, stack: Battle
       options.push({ score: v, key: `ability:${ab.abilityId}:${tid}`, payload: { kind: 'BattleUseAbility', stackId: stack.id, abilityId: ab.abilityId, targetId: tid } });
     }
   }
+
+  // 4b. The neutral creatures' active abilities (handoff 2026-10-15): only a legal target, only when plainly useful.
+  options.push(...neutralAbilityChoices(catalog, battle, stack, actions));
 
   // 5. Siege: a wall breaker batters the walls while no shot is worth more.
   if (actions.structureTargets.length > 0) {

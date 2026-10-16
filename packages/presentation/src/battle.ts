@@ -22,8 +22,33 @@ import { TweenPlayer, easeInOut, easeOut, linear } from './tween';
 import { BATTLEFIELD_LAYOUT, SIEGE_GROUND_SHIFT, battlefieldArt } from './environmentArt';
 import { graphicsProfile } from './graphics';
 import { SpriteFigure } from './figure';
-import { creatureSprites, spriteManifest, type EffectDefinition, type StaticSpriteDefinition } from './sprites';
-import { loadStrip, loadTexture } from './textures';
+import { creatureSprites, spriteManifest, stripFrameCount, type EffectDefinition, type ProjectileProfile, type StaticSpriteDefinition } from './sprites';
+import { loadStrip, loadTexture, stripFrames } from './textures';
+import {
+  LEGACY_RELEASE_MS,
+  REDUCED_IMPACT_MS,
+  SIEGE_PROFILE_IDS,
+  arcHeight,
+  contactPoint,
+  fitArc,
+  effectFrameTransform,
+  flightMs,
+  impactAlpha,
+  impactDurationMs,
+  impactFrame,
+  legacyFlightMs,
+  missileFor,
+  missileTransform,
+  profileForCreature,
+  releaseDelayMs,
+  releasePoint,
+  releaseSocket,
+  samplePath,
+  travelFrame,
+  travelStrip,
+  type MissileChoice,
+  type ReleaseSocket,
+} from './projectiles';
 import { colorOf, groundShadow, stillHeight, stillSprite, stillTexture } from './staticSprites';
 import { FxPainter, StatusAura, type FxTarget } from './fx';
 import { battleObstacleId } from './nature';
@@ -49,12 +74,91 @@ const SPELL_HURT_ICON: Partial<Record<FxLook['school'], string>> = {
   blight: 'icon.status.poison',
   swarm: 'icon.status.poison',
 };
-const FLOAT_ICONS = ['icon.stat.luck', 'icon.fx.shield', 'icon.action.defend', 'icon.action.wait', 'icon.stat.morale', 'icon.status.stun', 'icon.status.heal', ...new Set(Object.values(SPELL_HURT_ICON))];
+/** Icons beside the words of creature abilities and the statuses they leave (the campaign kit's reused badges). */
+const ABILITY_ICONS = ['icon.ability.family_ward', 'icon.ability.charge_guard', 'icon.action.ability'];
+const FLOAT_ICONS = ['icon.stat.luck', 'icon.fx.shield', 'icon.action.defend', 'icon.action.wait', 'icon.stat.morale', 'icon.status.stun', 'icon.status.heal', ...new Set(Object.values(SPELL_HURT_ICON)), ...ABILITY_ICONS];
 /** Stack marks: at most this many icons over a count badge, each a disc of this radius (board px). */
 const MAX_MARKS = 5;
 const MARK_R = 12;
-/** Drawn size of a projectile against its art's scale: arrows a third (owner request 2026-10-05; the art spans 1.4 hexes). */
+/** Drawn size of a projectile against its art's scale: arrows a third (owner request 2026-10-05; the art spans 1.4 hexes). Generic fallback stills only. */
 const PROJECTILE_SIZE: Readonly<Record<string, number>> = { arrow: 1 / 3 };
+/** The shoot strip runs at least this long (`strike`); a wall breaker's throw at least `THROW_MIN_MS`. */
+const SHOOT_MIN_MS = 560;
+const THROW_MIN_MS = 400;
+/** Missiles kept in the read-only shot log (`projectileDebug`). */
+const SHOT_LOG = 30;
+
+type Pt = { x: number; y: number };
+
+/**
+ * One missile as the battle view played it (read-only diagnostics, `projectileDebug()`; reachable
+ * under `?e2e` through `__prSiege().projectiles`): which profile flew or which generic still stood
+ * in, where it left and met (canvas CSS pixels), its path and flight time, and the controller-clock
+ * times of launch, arrival, the impact's first frame and the target's reaction.
+ */
+export interface ShotRecord {
+  readonly seq: number;
+  readonly event: string;
+  readonly source: 'creature' | 'turret' | 'catapult';
+  readonly creatureId: string | null;
+  readonly profile: string | null;
+  fallback: string | null;
+  readonly path: string;
+  readonly playback: string;
+  readonly from: Pt;
+  readonly to: Pt;
+  /** Board points (before the view's fit and zoom). */
+  readonly boardFrom: Pt;
+  readonly boardTo: Pt;
+  readonly facing: 1 | -1;
+  readonly socket: (ReleaseSocket & { readonly calibrated: boolean }) | null;
+  readonly mirroredBoard: boolean;
+  /** The tween clock's speed factor at launch (1 normal, 0.5 at 2×, 2 at 0.5×). */
+  readonly speed: number;
+  /** Size of one full travel cell in hexes (profile `sizeHex`), as drawn. */
+  drawnHex: number | null;
+  flightMs: number;
+  arc: number;
+  launchAngle: number;
+  arrivalAngle: number;
+  readonly launchedAt: number;
+  arrivedAt: number | null;
+  impact: string | null;
+  /** How many impacts this missile started (one, or none when the art is missing over a creature). */
+  impacts: number;
+  impactAt: number | null;
+  impactFrames: number[];
+  /** When the impact's last frame went (it never loops). */
+  impactEndAt: number | null;
+  impactScale: number | null;
+  reactAt: number | null;
+}
+
+/** The read-only missile readout: how many are in the air now and the last ones flown. */
+export interface ProjectileDebug {
+  /** The controller clock now (ms; the shot times are on it). */
+  readonly time: number;
+  readonly inFlight: number;
+  /** Pictures on the effect layer now (missiles, impacts, spell effects): none once playback is over. */
+  readonly effects: number;
+  readonly shots: readonly ShotRecord[];
+}
+
+interface EffectOptions {
+  /** Flash colour on Low or when the strip is missing (not for impacts). */
+  readonly flash?: number;
+  readonly scale?: number;
+  /** A missile's impact: played once at its own rate, upright, faded at the end; reduced effects show its first frame only. */
+  readonly impact?: boolean;
+  readonly fps?: number;
+  readonly fadeLastMs?: number;
+  /** Blend override (impacts follow their profile: normal alpha for physical dust). */
+  readonly additive?: boolean;
+  /** Called when the first frame is on screen (diagnostics), and on each frame change. */
+  readonly onFrame?: (frame: number, scale: number) => void;
+  /** Called when the strip is over (diagnostics). */
+  readonly onEnd?: () => void;
+}
 /** The drawn catapult's arm: lying back at rest, upright against the crossbar when it throws. */
 const CATAPULT_REST = Math.PI * 1.04;
 const CATAPULT_FIRE = Math.PI * 1.55;
@@ -135,6 +239,14 @@ export interface BattleView {
   readonly zone: readonly BattleCell[];
   /** Reduced motion: status overlays hold still. */
   readonly calm?: boolean;
+  /**
+   * Presentation only (owner request 2026-10-14): draw the board mirrored, so the defending side
+   * stands on the left — used when a human defends against a computer. The rules' cells, facings and
+   * hover offsets keep their west-to-east sense; only the picture and the pointer mapping turn round.
+   */
+  readonly mirrored?: boolean;
+  /** The side drawn in blue (the human's); the other side is red. Default: the attacker. */
+  readonly blueSide?: 'attacker' | 'defender';
 }
 
 /**
@@ -191,6 +303,23 @@ export interface BattleMiracleFx {
   readonly label?: string;
 }
 
+/**
+ * How a creature ability's use looks (the interface derives it from the ability's
+ * definition): its name over the user, what it did over the target, and where it lands.
+ */
+export interface BattleAbilityFx {
+  /** The ability's name (shown over the user). */
+  readonly name: string;
+  /** What it did, in a few words (shown over the target). */
+  readonly effect: string;
+  /** Aimed at the enemy (a feint or a pull: the user lunges; the words take the curse colour). */
+  readonly hostile: boolean;
+  /** Interface icon asset ID before the name. */
+  readonly icon?: string;
+  /** Where it lands (code-drawn by the effect painter); null: a flash only. */
+  readonly look?: FxLook | null;
+}
+
 export interface BattleCallbacks {
   /** `offset`: pointer position inside the cell, in hex radii (x right, y down, foreshortened like the board). */
   onCellClick(c: BattleCell, button: number, offset: { x: number; y: number }): void;
@@ -203,6 +332,8 @@ export interface BattleCallbacks {
   iconUrl?(assetId: string): string | null;
   /** Optional: how a divine intervention looks in this battle (null: not shown). */
   miracleFx?(interventionId: string, playerId: string): BattleMiracleFx | null;
+  /** Optional: how a creature ability's use looks (null: the plain ward look). */
+  abilityFx?(ev: { abilityId: string; stackId: string; targetId: string; removedStatus?: string }): BattleAbilityFx | null;
   /**
    * Optional (1.1.4, GUI audit): the board's essential pictures — its battlefield painting and the
    * standing frame of every stack on it — are drawn (or have failed and been replaced by
@@ -292,6 +423,33 @@ function multiplyRgb(a: number, b: number): number {
   return ch(16) | ch(8) | ch(0);
 }
 
+/**
+ * The order to show a batch of battle events in. The rules report a stack's destruction while
+ * applying the damage, before the strike, shot, spell or miracle that dealt it; shown in that order
+ * the stack would lie down first and its hit and death strips never play. Each
+ * `BattleStackDestroyed` is shown right after the blow that felled it instead (presentation only:
+ * the same events, the same final picture).
+ */
+export function battlePlaybackOrder(events: readonly GameEvent[]): GameEvent[] {
+  const harms = (e: GameEvent, id: string) =>
+    (e.kind === 'BattleAttack' && e.targetId === id) ||
+    (e.kind === 'SiegeTurretShot' && e.targetId === id) ||
+    (e.kind === 'SiegeMoatDamage' && e.stackId === id) ||
+    e.kind === 'BattleSpellCast' ||
+    e.kind === 'InterventionInvoked';
+  const out = [...events];
+  for (let i = 0; i < out.length; i++) {
+    const ev = out[i]!;
+    if (ev.kind !== 'BattleStackDestroyed') continue;
+    const j = out.findIndex((e, k) => k > i && harms(e, ev.stackId));
+    if (j < 0) continue;
+    out.splice(i, 1);
+    out.splice(j, 0, ev);
+    i -= 1;
+  }
+  return out;
+}
+
 export class BattleSceneController implements SceneController {
   readonly root = new Container();
   readonly tweens = new TweenPlayer();
@@ -324,6 +482,8 @@ export class BattleSceneController implements SceneController {
   private calm = false;
   /** A battle heal's total, shown by the miracle that follows it in the same batch. */
   private pendingHeal: { side: string; healed: number } | null = null;
+  /** Ward reductions announced before the blow they soften (`BattleStatusConsumed` comes before its `BattleAttack`). */
+  private pendingWard = new Map<string, number>();
   /** The last magic effects played (asset ID prefixes; read-only diagnostics). */
   private fxLog: string[] = [];
   private boardKey = '';
@@ -341,6 +501,10 @@ export class BattleSceneController implements SceneController {
   private cols = 15;
   private rows = 11;
   private siegeView: SiegeView | null = null;
+  /** The board is drawn mirrored (the defender on the left; see `BattleView.mirrored`). */
+  private mirrored = false;
+  /** The side whose markers and badges are blue. */
+  private blueSide: 'attacker' | 'defender' = 'attacker';
   /** Structure HP as currently drawn (playback advances it event by event). */
   private shownHp = new Map<string, number>();
   private structureKey = '';
@@ -359,6 +523,10 @@ export class BattleSceneController implements SceneController {
   private readonly iconTextures = new Map<string, Texture>();
   private readonly iconLoading = new Set<string>();
   private marksDirty = false;
+  /** Missiles in the air (their travel sprites), and the last ones flown (read-only diagnostics). */
+  private readonly missiles = new Set<Container>();
+  private shotLog: ShotRecord[] = [];
+  private shotSeq = 0;
 
   /** Wakes the renderer to the full frame rate (frame pacing) after a change it cannot see coming. */
   private readonly wake: () => void;
@@ -432,10 +600,22 @@ export class BattleSceneController implements SceneController {
     const k = Math.min(w / (b.x1 - b.x0), h / (b.y1 - b.y0));
     this.fitScale = Math.max(0.2, k);
     const z = this.fitScale * this.zoomK;
-    this.board.scale.set(z);
+    // A mirrored board is the same board seen from the other side: x turns round about the frame's centre.
+    const zx = this.mirrored ? -z : z;
+    this.board.scale.set(zx, z);
     const cx = (b.x0 + b.x1) / 2;
     const cy = (b.y0 + b.y1) / 2;
-    this.board.position.set(Math.round(ins.left + w / 2 - cx * z), Math.round(ins.top + h / 2 - cy * z));
+    this.board.position.set(Math.round(ins.left + w / 2 - cx * zx), Math.round(ins.top + h / 2 - cy * z));
+  }
+
+  /** Board point → canvas CSS pixels (the board's own transform, mirrored or not). */
+  private toPage(p: { x: number; y: number }): { x: number; y: number } {
+    return { x: p.x * this.board.scale.x + this.board.x, y: p.y * this.board.scale.y + this.board.y };
+  }
+
+  /** Text and icons stay readable on a mirrored board: their container is turned back. */
+  private upright(o: Container): void {
+    o.scale.x = Math.abs(o.scale.x) * (this.mirrored ? -1 : 1);
   }
 
   // ------------------------------------------------------------------ board
@@ -497,6 +677,8 @@ export class BattleSceneController implements SceneController {
     this.cols = view.cols;
     this.rows = view.rows;
     this.siegeLayout = !!view.siege && view.siege.structures.length > 0;
+    this.mirrored = !!view.mirrored;
+    this.blueSide = view.blueSide ?? 'attacker';
     this.layout();
     this.buildBackdrop(view);
     for (const c of this.siegeFloor.removeChildren()) c.destroy({ children: true });
@@ -571,6 +753,8 @@ export class BattleSceneController implements SceneController {
     });
     this.catapult?.root.destroy({ children: true });
     this.catapult = this.siegeLayout ? this.buildCatapult() : null;
+    // The tower arrow and the Catapult's stone (their travel poses and impacts) load with a siege board.
+    if (this.siegeLayout) for (const id of SIEGE_PROFILE_IDS) this.preloadMissile(spriteManifest().projectileProfiles?.[id]);
   }
 
   // ------------------------------------------------------------------ the attackers' catapult (sieges)
@@ -726,16 +910,20 @@ export class BattleSceneController implements SceneController {
     const root = new Container();
     const w = v.footprint === 2 ? 1.7 : 1;
     if (graphicsProfile().shadows) root.addChild(groundShadow(HEX_W * 0.36 * w, HEX_W * 0.13, 0.36));
-    // Side marker under the figure: blue disc (attacker) or red disc with a dark centre (defender) — shape, not only colour.
+    // Side marker under the figure: blue disc (the human's side, else the attacker) or red disc with a
+    // dark centre (the other side) — shape, not only colour.
     const base = new Graphics();
-    const sideCol = v.side === 'attacker' ? 0x3b73d9 : 0xb8453a;
+    const blue = v.side === this.blueSide;
+    const sideCol = blue ? 0x3b73d9 : 0xb8453a;
     base.ellipse(0, 0, HEX_W * 0.4 * w, HEX_W * 0.4 * S * 0.62).fill({ color: sideCol, alpha: 0.5 }).stroke({ width: 2, color: sideCol, alpha: 0.95 });
-    if (v.side === 'defender') base.ellipse(0, 0, HEX_W * 0.22 * w, HEX_W * 0.22 * S * 0.62).fill({ color: 0x14141a, alpha: 0.5 });
+    if (!blue) base.ellipse(0, 0, HEX_W * 0.22 * w, HEX_W * 0.22 * S * 0.62).fill({ color: 0x14141a, alpha: 0.5 });
     root.addChild(base);
     const aura = new StatusAura(RB, S);
     root.addChild(aura.back);
     const figure = new SpriteFigure({ set: creatureSprites(v.creatureId), hexWidth: HEX_W, accent: colorOf(v.accent) });
     figure.mirror = v.facing === -1;
+    // A shooter's missile and impact load with the stack, so its first shot never waits for them.
+    this.preloadMissile(profileForCreature(spriteManifest().projectileProfiles, v.creatureId)?.profile);
     root.addChild(figure.view);
     // A stack whose picture cannot be drawn (missing or failed to load) stands as a plain silhouette,
     // never as an empty, clickable disc (GUI audit 1.1.2).
@@ -752,6 +940,7 @@ export class BattleSceneController implements SceneController {
     badgeText.anchor.set(0.5);
     const marks = new Container();
     badge.addChild(badgeBg, badgeText, marks);
+    this.upright(badge);
     const badgeOffset = { x: v.facing * HEX_W * 0.34 * w, y: RB * S * 0.28 };
     this.badges.addChild(badge);
     const e: StackEntry = {
@@ -791,14 +980,14 @@ export class BattleSceneController implements SceneController {
 
   private setBadge(e: StackEntry, label: string, color: string): void {
     // Redrawn only when the count or its colour changes (each redraw renders the number again and re-sends it to the GPU).
-    const key = `${label}|${color}|${e.view.side}`;
+    const key = `${label}|${color}|${e.view.side}|${this.blueSide}`;
     if (key === e.badgeKey) return;
     e.badgeKey = key;
     if (e.badgeText.text !== label) e.badgeText.text = label;
     if (e.badgeText.style.fill !== color) e.badgeText.style.fill = color;
     const w = Math.max(22, e.badgeText.width + 10);
     e.badgeBg.clear();
-    e.badgeBg.roundRect(-w / 2, -10, w, 20, 5).fill({ color: e.view.side === 'attacker' ? 0x16284a : 0x4a1a16, alpha: 0.92 }).stroke({ width: 1.2, color: 0xc29a52, alpha: 0.9 });
+    e.badgeBg.roundRect(-w / 2, -10, w, 20, 5).fill({ color: e.view.side === this.blueSide ? 0x16284a : 0x4a1a16, alpha: 0.92 }).stroke({ width: 1.2, color: 0xc29a52, alpha: 0.9 });
   }
 
   /**
@@ -1143,6 +1332,7 @@ export class BattleSceneController implements SceneController {
     t.visible = hp < st.maxHp;
     t.anchor.set(0.5, 1);
     t.position.set(top.x, top.y - 4);
+    this.upright(t);
     this.floats.addChild(t);
     this.structureLabels.push(t);
     this.structureLabelInfo.push({ label: t, structure: st, damaged: hp < st.maxHp });
@@ -1186,6 +1376,7 @@ export class BattleSceneController implements SceneController {
       t.addChildAt(sp, 0);
     }
     t.position.set(at.x, at.y);
+    this.upright(t);
     this.floats.addChild(t);
     const tw = new TweenPlayer();
     tw.speed = speed;
@@ -1213,36 +1404,235 @@ export class BattleSceneController implements SceneController {
     return { x: e.root.x, y: e.root.y - Math.max(RB * 0.5, e.figure.height * 0.5) };
   }
 
-  private async projectile(from: { x: number; y: number }, to: { x: number; y: number }, kind: string): Promise<void> {
-    const def = spriteManifest().projectiles[kind] ?? null;
-    const p = stillSprite(def, HEX_W, PROJECTILE_SIZE[kind] ?? 1);
-    if (!def) {
-      const g = new Graphics().rect(-RB * 0.3, -1.5, RB * 0.6, 3).fill({ color: 0xd8c08a });
-      p.addChild(g);
-      p.visible = true;
-    }
-    this.fx.addChild(p);
-    const dist = Math.hypot(to.x - from.x, to.y - from.y);
-    const arc = Math.min(RB * 2.4, dist * 0.18);
-    await this.tweens.tween(
-      Math.max(220, (dist / RB) * 45),
-      (t) => {
-        const x = from.x + (to.x - from.x) * t;
-        const y = from.y + (to.y - from.y) * t - Math.sin(t * Math.PI) * arc;
-        p.position.set(x, y);
-        const dy = (to.y - from.y) - Math.cos(t * Math.PI) * arc * Math.PI;
-        p.rotation = Math.atan2(dy, to.x - from.x);
-      },
-      linear,
-    );
-    p.destroy();
+  // ------------------------------------------------------------------ missiles (battle FX delivery 2026-10-15)
+
+  /** Start loading a profile's travel poses and impact strip (cached; one decode per sheet). Presentation only. */
+  private preloadMissile(p: ProjectileProfile | null | undefined): void {
+    if (!p) return;
+    void loadStrip(travelStrip(p)).catch(() => null);
+    const hit = spriteManifest().effects[p.impactEffectId];
+    if (hit) void loadStrip(hit).catch(() => null);
   }
 
-  /** A one-shot effect strip at a point (a short flash in `flash` colour on Low or when the strip is missing). */
-  private async effect(id: string, at: { x: number; y: number }, opts: { flash?: number; scale?: number } = {}): Promise<void> {
+  /** The profiles of this session's sprite manifest (absent: every shot flies the generic still). */
+  private missileOf(ev: GameEvent, fallback: 'arrow' | 'stone'): MissileChoice {
+    return missileFor(ev, (id) => this.stacks.get(id)?.view.creatureId, spriteManifest().projectileProfiles) ?? { kind: 'fallback', still: fallback };
+  }
+
+  /**
+   * When and where a stack lets its missile go, for the animation `anim` it plays (with at least
+   * `minMs`): the release frame of its own shoot strip and its calibrated socket
+   * (`RELEASE_SOCKETS`), else a third of the way into whatever strip stands in, from the profile's
+   * logical source point on the figure's size.
+   */
+  private releaseOf(a: StackEntry, choice: MissileChoice, anim: 'shoot' | 'attack', minMs: number): { delay: number; socket: ReleaseSocket & { calibrated: boolean } } {
+    const f = a.figure;
+    const strip = f.resolve(anim)?.def ?? null;
+    const own = anim === 'shoot' && f.has('shoot') && !strip?.regions;
+    const frames = strip ? stripFrameCount(strip) : 6;
+    const socket = releaseSocket(a.view.creatureId, {
+      ...(choice.kind === 'profile' ? { sourcePoint: choice.profile.sourcePoint } : {}),
+      heightHex: f.height / HEX_W,
+      footprint: a.view.footprint,
+      ownShootStrip: own,
+      frames,
+    });
+    const delay = strip && f.status === 'ready' ? releaseDelayMs({ frames, fps: strip.fps }, minMs, socket.frame) : LEGACY_RELEASE_MS;
+    return { delay, socket };
+  }
+
+  /** The socket's board point now: the stack's anchor, its pose offset (the throw's recoil) and the way the figure faces. */
+  private socketPoint(a: StackEntry, socket: ReleaseSocket): Pt {
+    return releasePoint({ x: a.root.x, y: a.root.y }, socket, a.figure.mirror ? -1 : 1, HEX_W, { x: a.figure.pose.x, y: a.figure.pose.y });
+  }
+
+  /** Where a missile meets a stack: the middle of its painted body, on the side facing the shooter. */
+  private contactOf(t: StackEntry, fromX: number): Pt {
+    const tight = !!t.figure.set?.animations['idle']?.regions;
+    return contactPoint({ x: t.root.x, y: t.root.y }, { heightPx: t.figure.height, tight, footprint: t.view.footprint, fromX, hexW: HEX_W });
+  }
+
+  private logShot(event: string, source: ShotRecord['source'], creatureId: string | null, choice: MissileChoice, from: Pt, to: Pt, socket: ShotRecord['socket'], facing: 1 | -1): ShotRecord {
+    const page = (p: Pt): Pt => {
+      const q = this.toPage(p);
+      return { x: Math.round(q.x * 10) / 10, y: Math.round(q.y * 10) / 10 };
+    };
+    const round = (p: Pt): Pt => ({ x: Math.round(p.x * 10) / 10, y: Math.round(p.y * 10) / 10 });
+    const rec: ShotRecord = {
+      seq: ++this.shotSeq,
+      event,
+      source,
+      creatureId,
+      profile: choice.kind === 'profile' ? choice.profileId : null,
+      fallback: choice.kind === 'fallback' ? choice.still : null,
+      path: choice.kind === 'profile' ? choice.profile.path : 'legacy',
+      playback: choice.kind === 'profile' ? choice.profile.travelPlayback : 'static',
+      from: page(from),
+      to: page(to),
+      boardFrom: round(from),
+      boardTo: round(to),
+      facing,
+      socket,
+      mirroredBoard: this.mirrored,
+      speed: this.tweens.speed,
+      drawnHex: null,
+      flightMs: 0,
+      arc: 0,
+      launchAngle: 0,
+      arrivalAngle: 0,
+      launchedAt: this.time,
+      arrivedAt: null,
+      impact: null,
+      impacts: 0,
+      impactAt: null,
+      impactFrames: [],
+      impactEndAt: null,
+      impactScale: null,
+      reactAt: null,
+    };
+    this.shotLog = [...this.shotLog.slice(-(SHOT_LOG - 1)), rec];
+    return rec;
+  }
+
+  /**
+   * One missile from `from` to `to` (board points) on the tween clock, so battle speed, skip and
+   * instant playback apply to it: a profile's path (high arc for heavy stones, shallow for
+   * javelins, darts, arrows and sling stones, straight for magic, breath, wails and fire), flight
+   * time from the distance within its range, its art turned along the tangent (it faces +X; drawn
+   * at its full source cell = `sizeHex` hexes), the first pose moved through the world for
+   * physical missiles or the four poses looping for magic. Unknown shooters and missing art fly
+   * the old generic still. Resolves on arrival, with the travel sprite already removed.
+   */
+  private async flyMissile(choice: MissileChoice, from: Pt, to: Pt, rec: ShotRecord): Promise<void> {
+    if (this.disposed) return;
+    const dist = Math.hypot(to.x - from.x, to.y - from.y);
+    const holder = new Container();
+    this.fx.addChild(holder);
+    this.missiles.add(holder);
+    let ms: number;
+    let arc: number;
+    let onFrame: ((elapsedMs: number) => void) | null = null;
+    const fallbackStill = (still: 'arrow' | 'stone') => {
+      const def = spriteManifest().projectiles[still] ?? null;
+      holder.addChild(stillSprite(def, HEX_W, PROJECTILE_SIZE[still] ?? 1));
+      if (!def) holder.addChild(new Graphics().rect(-RB * 0.3, -1.5, RB * 0.6, 3).fill({ color: 0xd8c08a }));
+    };
+    if (choice.kind === 'profile') {
+      const p = choice.profile;
+      ms = flightMs(p.durationMsRange, dist, HEX_W);
+      arc = arcHeight(p.path, dist, HEX_W);
+      const strip = travelStrip(p);
+      const sprite = new Sprite(Texture.EMPTY);
+      holder.addChild(sprite);
+      let frames = stripFrames(strip);
+      let shown = -1;
+      let want = 0;
+      const show = (i: number) => {
+        want = i;
+        if (!frames || frames.length === 0 || sprite.destroyed) return;
+        const k = Math.min(frames.length - 1, i);
+        if (k === shown) return;
+        shown = k;
+        sprite.texture = frames[k]!;
+        const tr = effectFrameTransform(strip, k, HEX_W);
+        sprite.anchor.set(tr.anchor[0], tr.anchor[1]);
+        sprite.scale.set(tr.scale);
+        rec.drawnHex = Math.round(((tr.scale * (p.travel[k]?.rect[2] ?? 0)) / HEX_W) * 1000) / 1000;
+      };
+      if (!frames) {
+        // Still loading (it normally loaded with the stack): shown as soon as it is in; failing, the old still.
+        sprite.visible = false;
+        loadStrip(strip).then(
+          (f) => {
+            if (sprite.destroyed) return;
+            frames = f;
+            sprite.visible = true;
+            show(want);
+          },
+          () => {
+            if (holder.destroyed) return;
+            rec.fallback = 'missing-art';
+            fallbackStill(p.path === 'high-ballistic' ? 'stone' : 'arrow');
+          },
+        );
+      }
+      onFrame = (elapsed) => show(travelFrame(p.travelPlayback, elapsed, p.travelFps, frames?.length ?? p.travel.length));
+    } else {
+      ms = legacyFlightMs(dist, HEX_W);
+      arc = arcHeight('legacy', dist, HEX_W);
+      fallbackStill(choice.still);
+    }
+    // A high lob never rises under the HUD: its apex stays inside the board's frame.
+    arc = fitArc(from, to, arc, this.boardRect().y0);
+    rec.flightMs = ms;
+    rec.arc = Math.round(arc * 10) / 10;
+    const place = (t: number) => {
+      const pt = samplePath(from, to, t, arc);
+      holder.position.set(pt.x, pt.y);
+      const m = missileTransform(pt.angle, this.mirrored);
+      holder.rotation = m.rotation;
+      holder.scale.y = m.scaleYSign;
+      onFrame?.(t * ms);
+      return pt.angle;
+    };
+    rec.launchAngle = Math.round((place(0) * 180) / Math.PI);
+    await this.tweens.tween(ms, (t) => !holder.destroyed && place(t), linear);
+    rec.arrivalAngle = Math.round((samplePath(from, to, 1, arc).angle * 180) / Math.PI);
+    this.missiles.delete(holder);
+    if (!holder.destroyed) holder.destroy({ children: true });
+    rec.arrivedAt = this.time;
+  }
+
+  /**
+   * A missile's impact at its contact point, once, as it arrives: the profile's four frames at its
+   * own rate, upright, normal alpha, fading over its last milliseconds. Missing art keeps the old
+   * look: the dust flash on a wall, nothing over a creature (its hit strip shows the blow).
+   */
+  private impactFx(choice: MissileChoice, at: Pt, onStructure: boolean, rec: ShotRecord | null): Promise<void> {
+    if (this.disposed) return Promise.resolve();
+    const p = choice.kind === 'profile' ? choice.profile : null;
+    if (p && spriteManifest().effects[p.impactEffectId]) {
+      if (rec) rec.impact = p.impactEffectId;
+      return this.effect(p.impactEffectId, at, {
+        impact: true,
+        fps: p.impactFps,
+        fadeLastMs: p.impactFadeLastMs,
+        additive: p.blend === 'additive',
+        onFrame: (frame, scale) => {
+          if (!rec) return;
+          if (rec.impactFrames.length === 0) {
+            rec.impacts += 1;
+            rec.impactAt = this.time;
+            rec.impactScale = Math.round(scale * 10000) / 10000;
+          }
+          if (rec.impactFrames[rec.impactFrames.length - 1] !== frame) rec.impactFrames.push(frame);
+        },
+        onEnd: () => {
+          if (rec) rec.impactEndAt = this.time;
+        },
+      });
+    }
+    if (!onStructure) return Promise.resolve();
+    if (rec) {
+      rec.impact = 'impact';
+      rec.impacts += 1;
+      rec.impactAt = this.time;
+    }
+    return this.effect('impact', at, { flash: 0xc8b89a });
+  }
+
+  /**
+   * A one-shot effect strip at a point (a short flash in `flash` colour on Low or when the strip
+   * is missing). A frame-region strip places every frame by its own region: anchor = the region's
+   * pixel anchor over its rectangle, scale = (hex width / pixelsPerHex) × sourceScale × `scale`;
+   * a strip without regions keeps its one anchor and scale.
+   */
+  private async effect(id: string, at: Pt, opts: EffectOptions = {}): Promise<void> {
     const def: EffectDefinition | undefined = spriteManifest().effects[id];
     const scale = opts.scale ?? 1;
-    if (!def || graphicsProfile().effects === 'simple') {
+    const simple = graphicsProfile().effects === 'simple';
+    if (!def || (simple && !opts.impact)) {
+      if (opts.impact) return;
       const g = new Graphics();
       g.ellipse(0, 0, RB * 0.9 * scale, RB * 0.9 * S * scale).fill({ color: opts.flash ?? 0xffffff, alpha: 0.5 });
       g.position.set(at.x, at.y);
@@ -1255,23 +1645,47 @@ export class BattleSceneController implements SceneController {
       g.destroy();
       return;
     }
-    const frames = await loadStrip(def).catch(() => null);
-    if (!frames || this.disposed) return;
-    const s = new Sprite(frames[0] ?? Texture.EMPTY);
-    s.anchor.set(def.anchor[0], def.anchor[1]);
-    s.scale.set((HEX_W / def.pixelsPerHex) * scale);
-    if (def.additive) s.blendMode = 'add';
+    // Already cut (preloaded with the stack): the first frame shows in this very moment.
+    const frames = stripFrames(def) ?? (await loadStrip(def).catch(() => null));
+    if (!frames || frames.length === 0 || this.disposed) return;
+    const s = new Sprite(frames[0]!);
+    // An impact stays upright as painted, also on a board drawn mirrored.
+    const flip = opts.impact && this.mirrored ? -1 : 1;
+    const place = (i: number) => {
+      const tr = effectFrameTransform(def, i, HEX_W, scale);
+      s.texture = frames[i]!;
+      s.anchor.set(tr.anchor[0], tr.anchor[1]);
+      s.scale.set(tr.scale * flip, tr.scale);
+      opts.onFrame?.(i, tr.scale);
+    };
+    place(0);
+    if (opts.additive ?? def.additive) s.blendMode = 'add';
     s.position.set(at.x, at.y);
     this.fx.addChild(s);
-    await this.tweens.tween(
-      (frames.length / Math.max(1, def.fps)) * 1000,
-      (t) => {
-        const i = Math.min(frames.length - 1, Math.floor(t * frames.length));
-        s.texture = frames[i]!;
-      },
-      linear,
-    );
-    s.destroy();
+    if (opts.impact && (simple || this.calm)) {
+      // Reduced effects: the first frame only, briefly faded out.
+      await this.tweens.tween(REDUCED_IMPACT_MS, (t) => !s.destroyed && (s.alpha = 1 - t), linear);
+    } else {
+      const fps = opts.fps ?? def.fps;
+      const total = impactDurationMs(frames.length, fps);
+      let shown = 0;
+      await this.tweens.tween(
+        total,
+        (t) => {
+          if (s.destroyed) return;
+          const elapsed = t * total;
+          const i = impactFrame(elapsed, frames.length, fps);
+          if (i !== shown) {
+            shown = i;
+            place(i);
+          }
+          if (opts.fadeLastMs) s.alpha = impactAlpha(elapsed, total, opts.fadeLastMs);
+        },
+        linear,
+      );
+    }
+    opts.onEnd?.();
+    if (!s.destroyed) s.destroy();
   }
 
   private lock(e: StackEntry | undefined): void {
@@ -1333,6 +1747,10 @@ export class BattleSceneController implements SceneController {
       } else if (ev.kind === 'InterventionInvoked') {
         const m = this.miracleOf(ev.interventionId, ev.playerId);
         if (m) for (const v of this.miracleVictims(m, ev.targetStackId)) lockOnce(v);
+      } else if (ev.kind === 'BattleAbilityUsed') {
+        // The user and its target keep their old look (marks, auras) until the ability lands.
+        lockOnce(this.stacks.get(ev.stackId));
+        lockOnce(this.stacks.get(ev.targetId));
       }
     }
     if (structures) {
@@ -1352,15 +1770,21 @@ export class BattleSceneController implements SceneController {
   }
 
   /** Visualise one batch of committed events. Resolves when playback is finished. */
-  async play(events: readonly GameEvent[], speed: number): Promise<void> {
+  async play(batch: readonly GameEvent[], speed: number): Promise<void> {
     this.tweens.speed = speed;
-    const release = this.hold(events);
+    const release = this.hold(batch);
+    const events = battlePlaybackOrder(batch);
     try {
-      for (const ev of events) {
+      for (let i = 0; i < events.length; i++) {
         if (this.tweens.speed === 0) break;
+        const ev = events[i]!;
+        const next = events[i + 1];
+        // An ability that braces its user (Reed Guard) shows the brace in its own animation: no second Defend pose.
+        if (ev.kind === 'BattleStackDefended' && next?.kind === 'BattleAbilityUsed' && next.stackId === ev.stackId) continue;
         await this.playEvent(ev, this.tweens.speed);
       }
     } finally {
+      this.pendingWard.clear();
       release();
     }
   }
@@ -1458,6 +1882,8 @@ export class BattleSceneController implements SceneController {
       case 'BattleStackMoved': {
         const e = this.stacks.get(ev.stackId);
         if (!e || ev.path.length === 0) return;
+        // A forced move (Tail Snare's pull) slides the stack; it never walks or flies there.
+        if (ev.forced) return this.slide(e, ev.path[ev.path.length - 1]!);
         this.cue(ev.flying ? 'flight' : 'march');
         const v = e.view;
         const f = e.figure;
@@ -1522,23 +1948,51 @@ export class BattleSceneController implements SceneController {
           a.figure.mirror = dx < 0;
           if (!t.down) t.figure.mirror = dx > 0;
         }
+        // The damage words over the target (and a ward's share above them), shown as the blow lands.
+        const words = () => {
+          const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
+          const head = this.headOf(t);
+          void this.floatText(head, ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed, ev.luck ? 'icon.stat.luck' : undefined);
+          // A ward (Sheltering Wings) took its share of this blow: say how much, above the damage.
+          const warded = this.pendingWard.get(ev.targetId);
+          if (warded !== undefined) {
+            this.pendingWard.delete(ev.targetId);
+            void this.floatText({ x: head.x, y: head.y - RB * 0.62 }, `Ward saved ${warded}`, '#9fe8ff', speed, 'icon.ability.family_ward');
+          }
+        };
         if (ev.mode === 'shot') {
-          await Promise.all([
-            this.strike(a, t, 'shoot'),
-            this.tweens.wait(260).then(() => {
-              this.cue('shot');
-              return this.projectile(this.chestOf(a), this.chestOf(t), 'arrow').then(() => this.cue('arrow-hit', heavy));
-            }),
-          ]);
+          // One missile per shot event (never one per creature in the stack): the shooter's own
+          // profile, released at its shoot strip's release frame from its hand, staff or mouth.
+          // On arrival, together and at once: the impact at the contact point, the hit sound, the
+          // damage words and the target's hit reaction — while the shooter finishes its strip.
+          const choice = this.missileOf(ev, 'arrow');
+          const { delay, socket } = this.releaseOf(a, choice, 'shoot', SHOOT_MIN_MS);
+          const shot = (async () => {
+            await this.tweens.wait(delay);
+            if (this.disposed) return;
+            this.cue('shot');
+            const from = this.socketPoint(a, socket);
+            const to = this.contactOf(t, from.x);
+            const rec = this.logShot(ev.kind, 'creature', a.view.creatureId ?? null, choice, from, to, socket, a.figure.mirror ? -1 : 1);
+            await this.flyMissile(choice, from, to, rec);
+            if (this.disposed) return;
+            this.cue('arrow-hit', heavy);
+            void this.impactFx(choice, to, false, rec);
+            rec.reactAt = this.time;
+            words();
+            await this.sufferBlow(t, ev.targetRemaining <= 0);
+          })();
+          await Promise.all([this.strike(a, t, 'shoot'), shot]);
         } else {
+          // A melee blow (a shooter's too) flies nothing.
           this.cue('swing');
           await this.strike(a, t, 'attack', retaliation ? 0.85 : 1);
           // No burst over the target (owner request 2026-10-05): its hit strip shows the blow.
           this.cue('impact', heavy);
+          words();
+          await this.sufferBlow(t, ev.targetRemaining <= 0);
         }
-        const text = ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`;
-        void this.floatText(this.headOf(t), ev.luck ? `Lucky! ${text}` : text, ev.luck ? '#f5e4b7' : '#ff8a70', speed, ev.luck ? 'icon.stat.luck' : undefined);
-        await this.sufferBlow(t, ev.targetRemaining <= 0);
+        if (this.disposed) return;
         a.figure.mirror = a.view.facing === -1;
         if (!t.down) t.figure.mirror = t.view.facing === -1;
         return;
@@ -1550,14 +2004,19 @@ export class BattleSceneController implements SceneController {
         return;
       case 'InterventionInvoked':
         return this.playMiracle(ev, speed);
-      case 'BattleAbilityUsed': {
+      case 'BattleAbilityUsed':
+        return this.playAbility(ev, speed);
+      case 'BattleStatusConsumed': {
         const e = this.stacks.get(ev.stackId);
         if (!e) return;
-        this.cue('ward');
-        void this.floatText(this.headOf(e), 'Ward!', '#9fe8ff', speed, 'icon.fx.shield');
-        void this.effect('ward', { x: e.root.x, y: e.root.y }, { flash: 0x9fe8ff });
-        if (e.figure.has('ability')) await e.figure.playOnce('ability', this.tweens);
-        else await this.defendPose(e, 0.7);
+        // A ward's share is shown with the blow it softens (it is announced just before it).
+        if (ev.status === 'damage_ward') {
+          this.pendingWard.set(ev.stackId, ev.amount ?? 0);
+          return;
+        }
+        const distracted = ev.status === 'retaliation_suppressed';
+        this.applyAura(e);
+        await this.floatText(this.headOf(e), distracted ? 'No retaliation' : 'Pull resisted', distracted ? '#d7b0ff' : '#9fe8ff', speed * 0.7, distracted ? 'icon.status.stun' : 'icon.ability.charge_guard');
         return;
       }
       case 'BattleStackDefended': {
@@ -1599,26 +2058,49 @@ export class BattleSceneController implements SceneController {
         if (!st) return;
         const top = this.structureTop(st);
         const to = { x: top.x, y: top.y + RB * 0.4 };
+        // The Catapult throws its own siege stone; a wall breaker (Cyclops, Colossus) its OWN missile — never the Catapult's.
+        const choice = this.missileOf(ev, 'stone');
+        let rec: ShotRecord | null = null;
+        // The stone lands: its impact on the wall, the sound, the damaged picture and the words, at once.
+        const land = () => {
+          if (this.disposed) return;
+          this.cue('stone-hit');
+          void this.impactFx(choice, to, true, rec);
+          if (rec) rec.reactAt = this.time;
+          this.shownHp.set(st.id, ev.hp);
+          this.drawStructures();
+          void this.floatText({ x: to.x, y: to.y - RB * 0.6 }, ev.source === 'catapult' ? 'Catapult −1' : '−1', '#f0c27a', speed);
+        };
         if (ev.source === 'catapult') {
           this.cue('catapult');
           const cup = await this.throwCatapult();
-          await this.projectile(cup, to, 'stone');
-        } else {
-          const a = ev.attackerId ? this.stacks.get(ev.attackerId) : undefined;
-          if (a)
-            await Promise.all([
-              a.figure.playOnce(a.figure.has('shoot') ? 'shoot' : 'attack', this.tweens, { minMs: 400 }),
-              this.tweens.wait(260).then(() => {
-                this.cue('shot');
-                return this.projectile(this.chestOf(a), to, 'stone');
-              }),
-            ]);
+          if (this.disposed) return;
+          rec = this.logShot(ev.kind, 'catapult', null, choice, cup, to, null, 1);
+          await this.flyMissile(choice, cup, to, rec);
+          land();
+          return;
         }
-        this.cue('stone-hit');
-        void this.effect('impact', to, { flash: 0xc8b89a });
-        this.shownHp.set(st.id, ev.hp);
-        this.drawStructures();
-        void this.floatText({ x: to.x, y: to.y - RB * 0.6 }, ev.source === 'catapult' ? 'Catapult −1' : '−1', '#f0c27a', speed);
+        const a = ev.attackerId ? this.stacks.get(ev.attackerId) : undefined;
+        if (!a) {
+          land();
+          return;
+        }
+        const anim = a.figure.has('shoot') ? 'shoot' : 'attack';
+        const dx = to.x - a.root.x;
+        if (Math.abs(dx) > 1) a.figure.mirror = dx < 0;
+        const { delay, socket } = this.releaseOf(a, choice, anim, THROW_MIN_MS);
+        await Promise.all([
+          a.figure.playOnce(anim, this.tweens, { minMs: THROW_MIN_MS }),
+          this.tweens.wait(delay).then(async () => {
+            if (this.disposed) return;
+            this.cue('shot');
+            const from = this.socketPoint(a, socket);
+            rec = this.logShot(ev.kind, 'creature', a.view.creatureId ?? null, choice, from, to, socket, a.figure.mirror ? -1 : 1);
+            await this.flyMissile(choice, from, to, rec);
+            land();
+          }),
+        ]);
+        if (!this.disposed) a.figure.mirror = a.view.facing === -1;
         return;
       }
       case 'SiegeStructureDestroyed': {
@@ -1633,8 +2115,16 @@ export class BattleSceneController implements SceneController {
         const t = this.stacks.get(ev.targetId);
         if (!st || !t) return;
         this.cue('turret');
-        await this.projectile(this.structureTop(st), this.chestOf(t), 'arrow');
+        // The tower arrow (`siege_turret`), from the top of the tower or keep.
+        const choice = this.missileOf(ev, 'arrow');
+        const from = this.structureTop(st);
+        const to = this.contactOf(t, from.x);
+        const rec = this.logShot(ev.kind, 'turret', null, choice, from, to, null, from.x <= t.root.x ? 1 : -1);
+        await this.flyMissile(choice, from, to, rec);
+        if (this.disposed) return;
         this.cue('arrow-hit', ev.killed > 0);
+        void this.impactFx(choice, to, false, rec);
+        rec.reactAt = this.time;
         void this.floatText(this.headOf(t), ev.killed > 0 ? `−${ev.damage} · ${ev.killed} slain` : `−${ev.damage}`, '#ff8a70', speed);
         await this.sufferBlow(t, ev.targetRemaining <= 0);
         return;
@@ -1733,6 +2223,102 @@ export class BattleSceneController implements SceneController {
     this.fxLog = [...this.fxLog.slice(-19), id];
   }
 
+  private abilityFxOf(ev: Extract<GameEvent, { kind: 'BattleAbilityUsed' }>): BattleAbilityFx | null {
+    try {
+      return this.cb.abilityFx?.({ abilityId: ev.abilityId, stackId: ev.stackId, targetId: ev.targetId, ...(ev.removedStatus ? { removedStatus: ev.removedStatus } : {}) }) ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * A creature ability: the user turns to its target and plays its `ability`
+   * animation (the manifest's alias — defend or attack for the neutrals), lunging a
+   * little at an enemy; part-way through it lands on the target (the look, the
+   * words of what it did) and the target's new marks appear. The rules applied it
+   * before playback; a forced move that follows is its own event (`slide`).
+   */
+  private async playAbility(ev: Extract<GameEvent, { kind: 'BattleAbilityUsed' }>, speed: number): Promise<void> {
+    const u = this.stacks.get(ev.stackId);
+    if (!u) return;
+    const t = this.stacks.get(ev.targetId) ?? u;
+    this.logFx(`ability.${ev.abilityId}`);
+    const fx = this.abilityFxOf(ev);
+    const f = u.figure;
+    if (!fx) {
+      // The plain ward look.
+      this.cue('ward');
+      void this.floatText(this.headOf(u), 'Ward!', '#9fe8ff', speed, 'icon.fx.shield');
+      void this.effect('ward', { x: u.root.x, y: u.root.y }, { flash: 0x9fe8ff });
+      if (f.has('ability')) await f.playOnce('ability', this.tweens);
+      else await this.defendPose(u, 0.7);
+      return;
+    }
+    const other = t !== u;
+    const dx = t.root.x - u.root.x;
+    if (other && Math.abs(dx) > 1) f.mirror = dx < 0;
+    this.cue(fx.hostile ? 'swing' : 'ward');
+    void this.floatText(this.headOf(u), fx.name, fx.hostile ? '#e9c8ff' : '#f5e4b7', speed, fx.icon);
+    const pose = (async () => {
+      // A friendly ability on a creature without any ability, cast or attack strip: a brace.
+      if (!fx.hostile && !f.has('ability') && !f.has('cast') && !f.has('attack')) return this.defendPose(u, 0.7);
+      await f.playOnce('ability', this.tweens, { minMs: 600 });
+    })();
+    const dir = Math.sign(dx) || u.view.facing;
+    const lunge = fx.hostile && other ? 0.12 * HEX_W : 0;
+    const step = lunge
+      ? (async () => {
+          await this.tweens.tween(200, (k) => (f.pose.x = dir * lunge * k));
+          await this.tweens.wait(160);
+          await this.tweens.tween(220, (k) => (f.pose.x = dir * lunge * (1 - k)));
+          f.pose.x = 0;
+        })()
+      : Promise.resolve();
+    const land = (async () => {
+      await this.tweens.wait(300);
+      if (fx.look) {
+        void this.painter.impact(fx.look, this.targetOf(t));
+        if (!fx.hostile) this.cue('bless', undefined, fx.look.sound);
+      } else if (fx.hostile) void this.painter.flash(this.chestOf(t), 0xb48cff, 0.8);
+      else void this.effect('ward', { x: t.root.x, y: t.root.y }, { flash: 0x9fe8ff });
+      const head = this.headOf(t);
+      void this.floatText(other ? head : { x: head.x, y: head.y - RB * 0.62 }, fx.effect, fx.hostile ? '#d7b0ff' : '#9fe8ff', speed);
+      // Its marks (and aura) show once it lands.
+      this.applyAura(t);
+    })();
+    await Promise.all([pose, step, land]);
+    f.mirror = u.view.facing === -1;
+    this.applyAura(u);
+  }
+
+  /**
+   * A forced move (Tail Snare's pull): the stack slides to its new cell in its
+   * standing pose, leaning toward the pull — presentation only; the rules already
+   * moved it. Instant playback skips straight to the cell (the same final picture).
+   */
+  private async slide(e: StackEntry, to: BattleCell): Promise<void> {
+    const v = e.view;
+    const start = e.shownAnchor;
+    const from = { x: e.root.x, y: e.root.y };
+    const dest = this.groupPosition(to, v.footprint, v.facing);
+    const f = e.figure;
+    const lean = (Math.sign(dest.x - from.x) || 0) * (f.mirror ? -1 : 1) * 0.12;
+    this.logFx(`pull.${v.id}`);
+    this.cue('march');
+    await this.tweens.tween(
+      380,
+      (k) => {
+        e.root.position.set(from.x + (dest.x - from.x) * k, from.y + (dest.y - from.y) * k);
+        e.root.zIndex = e.root.y;
+        f.pose.rotation = lean * Math.sin(Math.min(1, k * 1.4) * Math.PI);
+      },
+      easeOut,
+    );
+    f.pose.rotation = 0;
+    e.shownAnchor = to;
+    if (e.view.anchor.col === start.col && e.view.anchor.row === start.row) e.view = { ...e.view, anchor: to };
+  }
+
   /** A battle spell: the sigil at the commander's corner, its flight, where it lands on each stack it touches, then the numbers. */
   private async playSpell(ev: Extract<GameEvent, { kind: 'BattleSpellCast' }>, speed: number): Promise<void> {
     const t = this.stacks.get(ev.targetId);
@@ -1746,7 +2332,7 @@ export class BattleSceneController implements SceneController {
     const from = this.casterPoint(ev.side);
     this.cue('cast');
     await this.painter.cast(look, from, `${id}.cast`);
-    const screen = this.painter.screenFx(look.screen, look.school, dir, `${id}.screen`);
+    const screen = this.painter.screenFx(look.screen, look.school, this.screenDir(dir), `${id}.screen`);
     if (look.travel !== 'none' && look.travel !== 'sky' && look.scope !== 'army') await this.painter.travel(look, from, this.chestOf(t), `${id}.travel`, dir === -1);
     this.cue(ev.healed > 0 ? 'heal' : ev.damage > 0 ? 'spell' : 'bless', undefined, look.sound);
     const per = victims.length > 1 && ev.damage > 0 && ev.damage % victims.length === 0 ? ev.damage / victims.length : null;
@@ -1791,7 +2377,7 @@ export class BattleSceneController implements SceneController {
     const victims = this.miracleVictims(m, ev.targetStackId);
     const dir = m.side === 'attacker' ? 1 : -1;
     const healed = heal && heal.side === m.side ? heal.healed : 0;
-    const screen = this.painter.screenFx(look.screen, look.school, dir, `${id}.screen`);
+    const screen = this.painter.screenFx(look.screen, look.school, this.screenDir(dir), `${id}.screen`);
     await this.tweens.wait(look.screen === 'none' ? 0 : 280);
     this.cue(healed > 0 ? 'heal' : m.damage ? 'spell' : 'bless', undefined, look.sound);
     const react = async (v: StackEntry, i: number) => {
@@ -1847,10 +2433,10 @@ export class BattleSceneController implements SceneController {
 
   // ------------------------------------------------------------------ input
 
+  /** Canvas pointer → board point (the inverse of `toPage`; a mirrored board turns x round). */
   private local(e: { clientX: number; clientY: number }): { x: number; y: number } {
     const r = this.canvas.getBoundingClientRect();
-    const z = this.board.scale.x;
-    return { x: (e.clientX - r.left - this.board.x) / z, y: (e.clientY - r.top - this.board.y) / z };
+    return { x: (e.clientX - r.left - this.board.x) / this.board.scale.x, y: (e.clientY - r.top - this.board.y) / this.board.scale.y };
   }
 
   private cellAt(p: { x: number; y: number }): { cell: BattleCell; offset: { x: number; y: number } } | null {
@@ -1921,23 +2507,32 @@ export class BattleSceneController implements SceneController {
    * as painted strips, the stacks' depths — and whether the board's essential pictures are in.
    */
   siegeDebug(): unknown {
-    const z = this.board.scale.x;
-    const page = (p: { x: number; y: number }) => ({ x: Math.round((p.x * z + this.board.x) * 10) / 10, y: Math.round((p.y * z + this.board.y) * 10) / 10 });
+    const page = (p: { x: number; y: number }) => {
+      const q = this.toPage(p);
+      return { x: Math.round(q.x * 10) / 10, y: Math.round(q.y * 10) / 10 };
+    };
     const g = this.siegeDrawn.gate;
     const stacks: Record<string, { depth: number; x: number; y: number; col: number; row: number }> = {};
     for (const [id, e] of this.stacks) stacks[id] = { depth: e.root.zIndex, x: e.root.x, y: e.root.y, col: e.shownAnchor.col, row: e.shownAnchor.row };
-    return { ready: this.boardIsReady, gate: g ? { ...g, passagePage: page(g.passage) } : null, wallRows: [...this.siegeDrawn.wallRows].sort((a, b) => a - b), stacks };
+    // `projectiles`: the missile readout (projectileDebug), reachable under ?e2e through __prSiege.
+    return { ready: this.boardIsReady, mirrored: this.mirrored, gate: g ? { ...g, passagePage: page(g.passage) } : null, wallRows: [...this.siegeDrawn.wallRows].sort((a, b) => a - b), stacks, projectiles: this.projectileDebug() };
   }
 
-  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string }> {
-    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string }> = {};
-    const z = this.board.scale.x;
+  /** Read-only: missiles in the air and the last ones flown (profile, release and contact points, timing, impacts). */
+  projectileDebug(): ProjectileDebug {
+    return { time: this.time, inFlight: this.missiles.size, effects: this.fx.destroyed ? 0 : this.fx.children.length, shots: this.shotLog.map((r) => ({ ...r, impactFrames: [...r.impactFrames] })) };
+  }
+
+  stackDebug(): Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; scale: number; lift: number }> {
+    const out: Record<string, { anchor: BattleCell; x: number; y: number; mirrored: boolean; drawn: string | null; status: string | null; sprite: string; down: boolean; visible: boolean; overlays: string[]; marks: string[]; deaths: number; hits: number; label: string; scale: number; lift: number }> = {};
     for (const [id, e] of this.stacks) {
+      const at = this.toPage(e.root.position);
       out[id] = {
         anchor: e.shownAnchor,
-        x: Math.round((e.root.x * z + this.board.x) * 10) / 10,
-        y: Math.round((e.root.y * z + this.board.y) * 10) / 10,
-        mirrored: e.figure.pose.scale.x < 0,
+        x: Math.round(at.x * 10) / 10,
+        y: Math.round(at.y * 10) / 10,
+        // As seen on screen (facing left), also on a mirrored board.
+        mirrored: e.figure.pose.scale.x < 0 !== this.mirrored,
         drawn: e.figure.current?.drawn ?? null,
         status: e.figure.set?.status ?? null,
         sprite: e.figure.status,
@@ -1948,6 +2543,9 @@ export class BattleSceneController implements SceneController {
         label: e.badgeText.text,
         deaths: e.deathPlays,
         hits: e.hitPlays,
+        // The drawn frame's scale on the board (set × frame-region sourceScale) and how far the pose is lifted (flight).
+        scale: Math.round(Math.abs(e.figure.sprite.scale.x) * 10000) / 10000,
+        lift: Math.round(-e.figure.pose.y * 10) / 10 || 0,
       };
     }
     return out;
@@ -1955,9 +2553,17 @@ export class BattleSceneController implements SceneController {
 
   /** Screen position (CSS pixels within the canvas) of a battle cell centre — read-only. */
   projectCell(c: BattleCell): { x: number; y: number } | null {
-    const w = this.cellXY(c);
-    const z = this.board.scale.x;
-    return { x: w.x * z + this.board.x, y: w.y * z + this.board.y };
+    return this.toPage(this.cellXY(c));
+  }
+
+  /** A board direction (1 = west to east) as seen on screen (a mirrored board turns it round). */
+  private screenDir(dir: 1 | -1): 1 | -1 {
+    return this.mirrored ? (-dir as 1 | -1) : dir;
+  }
+
+  /** Whether the board is drawn mirrored (read-only, for tests). */
+  get boardMirrored(): boolean {
+    return this.mirrored;
   }
 
   // ------------------------------------------------------------------ frame
@@ -2034,6 +2640,9 @@ export class BattleSceneController implements SceneController {
     for (const [type, fn] of this.listeners) this.canvas.removeEventListener(type, fn);
     for (const e of this.stacks.values()) e.figure.destroy();
     this.stacks.clear();
+    // Missiles still in the air when the battle closes go with the effect layer (their tweens were finished above).
+    for (const m of this.missiles) if (!m.destroyed) m.destroy({ children: true });
+    this.missiles.clear();
     this.root.destroy({ children: true });
   }
 }

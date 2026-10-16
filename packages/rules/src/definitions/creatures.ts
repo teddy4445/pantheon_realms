@@ -3,7 +3,12 @@
  *
  * A CreatureFamilyDefinition is exactly one base form plus exactly one upgraded
  * form sharing tier, growth and footprint (DEC-21). Abilities are composed by ID;
- * there are no creature subclasses.
+ * there are no creature subclasses. The schema still allows a single-form neutral
+ * family (no upgraded form, never a fabricated clone), but no content uses it now:
+ * the six campaign-expansion neutrals (Pegasus, Root-Runner, Serpopard, Baku,
+ * Afanc, Ahuitzotl) were single-form until the owner asked for their upgrades
+ * (battle FX & neutral upgrades delivery 2026-10-15) and are base + one upgrade.
+ * Pantheon roster families always have both forms.
  *
  * Immutable content. Runtime quantities live in CreatureStackState / BattleStackState.
  */
@@ -117,12 +122,23 @@ export interface CreatureFamilyDefinition {
   readonly classification: FamilyClassification;
   readonly tier: CreatureTier;
   readonly baseCreatureId: CreatureId;
-  readonly upgradedCreatureId: CreatureId;
+  /** Absent for a single-form neutral family (no upgrade exists). */
+  readonly upgradedCreatureId?: CreatureId;
   /** Shared weekly growth for the family pool (base and upgraded share it). */
   readonly baseGrowth: number;
   readonly dwellingBuildingId?: BuildingId;
   readonly upgradedDwellingBuildingId?: BuildingId;
   readonly implementationStatus: ImplementationStatus;
+}
+
+/** The family's forms in order: the base, then the upgrade when it has one. */
+export function familyForms(fam: Pick<CreatureFamilyDefinition, 'baseCreatureId' | 'upgradedCreatureId'>): CreatureId[] {
+  return fam.upgradedCreatureId ? [fam.baseCreatureId, fam.upgradedCreatureId] : [fam.baseCreatureId];
+}
+
+/** True when the family has no upgraded form (allowed for neutral families only; none in the current content). */
+export function isSingleForm(fam: Pick<CreatureFamilyDefinition, 'upgradedCreatureId'>): boolean {
+  return !fam.upgradedCreatureId;
 }
 
 /** Discriminated ability rules processed by the battle resolvers. */
@@ -146,7 +162,51 @@ export type AbilityRule =
    * not a creature form: DEC-21 still allows exactly base + one upgrade).
    * Spends the activation unless the side has `free_shapeshift`.
    */
-  | { readonly type: 'shapeshift'; readonly aspect: string; readonly attack: number; readonly defense: number; readonly speed: number };
+  | { readonly type: 'shapeshift'; readonly aspect: string; readonly attack: number; readonly defense: number; readonly speed: number }
+  // --- Neutral creature abilities (campaign expansion handoff 2026-10-15; proposed, unplaytested) ---
+  /**
+   * Sheltering Wings (active, `usesPerBattle` per stack, spends the activation): one adjacent
+   * allied living stack other than the user takes `reductionPercent` % less from its next direct
+   * melee or ranged creature-damage event (the reduction rounded down) before the start of the
+   * user's next activation. Spells, structures and the environment are unaffected; copies do not stack.
+   */
+  | { readonly type: 'sheltering_wings'; readonly reductionPercent: number; readonly usesPerBattle: number }
+  /**
+   * Distract (active): one visible hostile living stack within `range` hexes (clear line) has its
+   * next otherwise-legal retaliation suppressed until the start of the user's next activation;
+   * the suppressed retaliation counts as one used. No damage, move or stun; copies do not stack.
+   */
+  | { readonly type: 'distract'; readonly range: number; readonly usesPerBattle: number }
+  /**
+   * Long Reach (passive attack option): besides adjacent melee, a melee strike at exactly
+   * `distance` hexes along a straight line whose middle cell is clear of stacks, obstacles and
+   * intact structures, for `damagePercent` % damage. Not a shot (no ammunition). The target
+   * retaliates only if it can reach back the same way.
+   */
+  | { readonly type: 'long_reach'; readonly distance: 2; readonly damagePercent: number }
+  /**
+   * Devour Dread (active): one allied living stack within `range` hexes (clear line), the user
+   * included, loses exactly one temporary hostile status — a negative Attack, Defense or Speed
+   * bonus, or a hostile curse (minimum damage) — the earliest applied first. Unavailable (no
+   * charge spent) when no stack in reach has one.
+   */
+  | { readonly type: 'devour_dread'; readonly range: number; readonly usesPerBattle: number }
+  /**
+   * Reed Guard (active): the user defends, and one adjacent allied living stack other than the
+   * user gains +`defenseBonus` Defense and is immune to one forced pull, both until the start of
+   * the user's next activation. Copies do not stack.
+   */
+  | { readonly type: 'reed_guard'; readonly defenseBonus: number; readonly usesPerBattle: number }
+  /**
+   * Tail Snare (active): a visible hostile living one-hex stack at exactly `distance` hexes along a
+   * clear straight line is pulled one hex toward the user when that cell is empty, on the board
+   * and not a hazard. No damage, attack or retaliation; a pull-immune target cannot be chosen.
+   */
+  | { readonly type: 'tail_snare'; readonly distance: 2; readonly usesPerBattle: number };
+
+/** Active abilities of the neutral creatures that spend a per-stack use (handoff 2026-10-15). */
+export const STACK_USE_ABILITY_TYPES = ['sheltering_wings', 'distract', 'devour_dread', 'reed_guard', 'tail_snare'] as const;
+export type StackUseAbilityType = (typeof STACK_USE_ABILITY_TYPES)[number];
 
 export interface AbilityDefinition {
   readonly id: AbilityId;

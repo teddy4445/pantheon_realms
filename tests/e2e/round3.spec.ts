@@ -75,6 +75,8 @@ test('bestiary: the Neutral section closes the bestiary with the creatures of no
 });
 
 for (const [campaignId, first, heroDef, patron] of [
+  // The second Greek campaign (owner request 2026-10-14), on the same arc.
+  ['silent_oracle', 'The Pilgrims’ Road', 'alexios', 'zeus'],
   ['twelfth_hour', 'The Ember Dawn', 'egyptian_seshet', 'egyptian_ra'],
   ['lantern_road', 'The Unlit Lantern', 'japanese_akane', 'japanese_amaterasu'],
   ['silver_branch', 'The Cold Hearth', 'celtic_orla', 'celtic_dagda'],

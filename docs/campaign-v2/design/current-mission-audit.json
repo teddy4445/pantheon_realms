@@ -1,0 +1,2005 @@
+[
+  {
+    "file": "threeBeacons",
+    "missions": [
+      {
+        "slot": "M01",
+        "name": "The Silent Shore",
+        "summary": "The storm has passed, but the Outer Lighthouse is dark. Open the tidal bridge, raise and train a trusted guard, and relight the first beacon.",
+        "dialogue": []
+      },
+      {
+        "slot": "M02",
+        "name": "Wings over the Pass",
+        "summary": "The Griffins have returned to the cliffs above Passhaven. Build their aerie, train two Windcrest Griffins, and their riders will carry the fire to the pass beacon.",
+        "dialogue": []
+      },
+      {
+        "slot": "M03",
+        "name": "The Storm Beacon",
+        "summary": "Melas holds the great beacon’s lens on the storm plateau. Choose a crossing, activate both relays to unseal the ward gate, defeat Melas and light the last beacon.",
+        "dialogue": []
+      }
+    ]
+  },
+  {
+    "file": "silentOracle",
+    "missions": [
+      {
+        "slot": "m1",
+        "name": "The Pilgrims’ Road",
+        "summary": "Pilgrims come down from Kalliste with empty hands: the Oracle has not spoken since the spring festival, and grey-hooded men have put out the waystone on the pilgrims’ road. Raise and train a road guard in Elaia, open the ford and rekindle the waystone.",
+        "dialogue": [
+          [
+            "THALEIA",
+            "Three months without a word from Kalliste. The pilgrims come home frightened, and every city on the coast is guessing what the silence means."
+          ],
+          [
+            "ALEXIOS",
+            "Guessing is how cities start to fear each other. Where does the road go dark?"
+          ],
+          [
+            "IONE",
+            "At the waystone above the river. Men in grey hoods put out its flame and turn the pilgrims back. They call themselves the Hushed."
+          ],
+          [
+            "IONE",
+            "The waystone burns again. But a pilgrim came down tonight with a prophecy — not from the Oracle. From a man who calls himself her Voice."
+          ],
+          [
+            "IONE",
+            "Those boars were penned on the ford. Someone wanted the road closed, not robbed."
+          ],
+          [
+            "ALEXIOS",
+            "Then someone is afraid of what the pilgrims might hear."
+          ],
+          [
+            "THERON",
+            "Turn back, strategos. The Oracle has nothing more to say to soldiers."
+          ],
+          [
+            "ALEXIOS",
+            "Then she can tell me so herself."
+          ],
+          [
+            "THALEIA",
+            "Their leader carried a temple seal — the hierophant’s own, from Kalliste."
+          ],
+          [
+            "ALEXIOS",
+            "The Oracle’s own priests closing the Oracle’s road. I want to know why."
+          ],
+          [
+            "THALEIA",
+            "Elaia buried four of its sons today, Alexios. Be as careful with these as you were on the coast."
+          ],
+          [
+            "ALEXIOS",
+            "I will."
+          ]
+        ]
+      },
+      {
+        "slot": "m2",
+        "name": "The Bronze Bull",
+        "summary": "A bull of living bronze and its herd of clay men trample the barley of Thymbra and keep the pilgrims from the shrine of the twin springs. Raise peltasts of your own, cross the river, hunt the Bronze Bull and relight the shrine.",
+        "dialogue": [
+          [
+            "THALEIA",
+            "Thymbra’s barley is flattened from the river to the hills. The farmers say a bull did it — a bull that rings like a bell when it runs."
+          ],
+          [
+            "IONE",
+            "A bronze bull, then, made by someone’s hands and sent. The shrine of the twin springs is beyond the fields, and it is dark."
+          ],
+          [
+            "ALEXIOS",
+            "Javelins, then. Bronze does not like to be hit from a distance."
+          ],
+          [
+            "THALEIA",
+            "Two lights on the pilgrims’ road. Now word comes from the high country: the griffins of Aetos have left their eyrie, and nobody knows who called them."
+          ],
+          [
+            "ALEXIOS",
+            "There — the fields are trampled in a ring around the shrine. It is not grazing. It is standing guard."
+          ],
+          [
+            "IONE",
+            "Then the shrine still matters to whoever made it."
+          ],
+          [
+            "THERON",
+            "My bull does not tire, strategos, and it does not fear spears. Go home."
+          ],
+          [
+            "THALEIA",
+            "The bull is down, and the clay men are falling apart in the furrows."
+          ],
+          [
+            "ALEXIOS",
+            "Leave the bronze for Thymbra’s smiths. They can make ploughs of it."
+          ]
+        ]
+      },
+      {
+        "slot": "m3",
+        "name": "The Eyrie of Aetos",
+        "summary": "The griffins of Aetos have left their eyrie: their covenant was bought by the Hushed. Break the Hushed on the mountain road, free the horse pastures, win the griffin covenant back — by the keeper’s price or by force — and take a god’s favour for the road ahead.",
+        "dialogue": [
+          [
+            "IONE",
+            "Griffins keep an oath, not a master. The keeper of Aetos writes to me that the eyrie’s oath was sold — sold, Alexios — for temple silver."
+          ],
+          [
+            "ALEXIOS",
+            "Then we buy it back, or we earn it. Which would the griffins respect?"
+          ],
+          [
+            "THALEIA",
+            "And the horse-breeders of the high pastures have not come down to market. Clay men stand at their gates."
+          ],
+          [
+            "IONE",
+            "The griffins answer us again, and a god walks with us. From the eyrie I saw the islands — and a hall of echoes where the Oracle’s words were kept."
+          ],
+          [
+            "THALEIA",
+            "The breeders are out of their houses for the first time in a month. They say the best horses are yours, if you can feed them."
+          ],
+          [
+            "ALEXIOS",
+            "Tell them Aetos will."
+          ],
+          [
+            "IONE",
+            "The covenant tablet was wedged in the nest — sealed with wax and a mouth painted shut."
+          ],
+          [
+            "ALEXIOS",
+            "The hierophant’s mark again. Whoever he is, he wants the whole coast quiet."
+          ],
+          [
+            "IONE",
+            "A god walks with us. Whatever Kalliste has become, we will not climb to it alone."
+          ]
+        ]
+      },
+      {
+        "slot": "m4",
+        "name": "The Hall of Echoes",
+        "summary": "On an island off Halia stands the Hall of Echoes, where every word the Oracle ever spoke is kept. Raise temple adepts, take the landing, light both fire-bowls to lower the sea chain and hear what the Oracle last said.",
+        "dialogue": [
+          [
+            "IONE",
+            "The Hall of Echoes keeps every word the Oracle has spoken. If she said anything before she fell silent, it is there."
+          ],
+          [
+            "THALEIA",
+            "A bronze chain closes the strait to the island. It is lowered only when both fire-bowls burn, one on each headland."
+          ],
+          [
+            "ALEXIOS",
+            "And Melas’s old Scout Captain sails between them now, for whoever pays best. We met him on the plateau. He is careful, and he is good."
+          ],
+          [
+            "IONE",
+            "Her last words, Alexios: “Hold the spring. The Voice is not mine.” Theron sealed her spring and speaks in her name — and Melas has sworn to his false Voice."
+          ],
+          [
+            "THALEIA",
+            "Their sails carry no city’s sign at all — only a mouth painted shut."
+          ],
+          [
+            "ALEXIOS",
+            "Then the Scout Captain is close. Keep the army together."
+          ],
+          [
+            "IONE",
+            "Listen — the chain is going down, link by link. The strait is open."
+          ],
+          [
+            "THERON",
+            "The echoes are mine now, strategos, like every other word on this coast."
+          ]
+        ]
+      },
+      {
+        "slot": "m5",
+        "name": "The Return of Melas",
+        "summary": "Melas, beaten on the storm plateau, holds the walled city of Pyrgos and has made the coast’s cities swear to the hierophant’s false Voice on an oath stele. Cross the river, take a second god, besiege his city and break the stele.",
+        "dialogue": [
+          [
+            "THALEIA",
+            "Melas has a city now — Pyrgos, on the far side of the river — and a stele in its square where four cities have sworn to obey the Voice of Kalliste."
+          ],
+          [
+            "IONE",
+            "An oath sworn on a lie still binds the ones who swore it. Break the stele, and the oath breaks with it."
+          ],
+          [
+            "MELAS",
+            "You took my lens, strategos. Now I have a god’s own voice behind me. Come and take that."
+          ],
+          [
+            "ALEXIOS",
+            "The stele is broken and the cities that swore on it are free. Melas has nothing left but Theron’s promises."
+          ],
+          [
+            "THALEIA",
+            "We are over. His riders will be in Pyrgos by nightfall."
+          ],
+          [
+            "ALEXIOS",
+            "Good. I want him to know who is coming."
+          ],
+          [
+            "MELAS",
+            "One light, one voice, one coast. I was right on the plateau, and I am right now."
+          ],
+          [
+            "ALEXIOS",
+            "You were wrong then too, Melas."
+          ],
+          [
+            "ALEXIOS",
+            "Pyrgos is ours. Now the stele."
+          ]
+        ]
+      },
+      {
+        "slot": "m6",
+        "name": "The Labyrinth of Kerata",
+        "summary": "The minotaurs of Kerata, who guard the lower road to Kalliste, are penned in their own labyrinth by the Hushed. Break their jailers, accept the minotaurs’ covenant, raise minotaurs of your own and defeat the polemarch Doros at the labyrinth gate.",
+        "dialogue": [
+          [
+            "IONE",
+            "The minotaurs of Kerata have guarded the lower road to Kalliste since before there was a temple. The Hushed have penned them in their own labyrinth."
+          ],
+          [
+            "ALEXIOS",
+            "Free them, and the road to the mountain opens. Who holds the gate?"
+          ],
+          [
+            "THALEIA",
+            "Doros. A polemarch who lost his command for selling his soldiers’ grain. Now he sells his spear to Theron."
+          ],
+          [
+            "IONE",
+            "The minotaurs walk their road again. From the labyrinth’s top I could see Kalliste — the sacred way, the two altars, and the spring under the temple, sealed."
+          ],
+          [
+            "IONE",
+            "The pens are open. The minotaurs will not follow us for being freed — they follow a covenant, or nothing."
+          ],
+          [
+            "ALEXIOS",
+            "Then we offer them one."
+          ],
+          [
+            "DOROS",
+            "The Hierophant pays better than any city ever paid me, strategos. Turn back while you still have an army to pay."
+          ],
+          [
+            "ALEXIOS",
+            "Mine are not for sale, Doros."
+          ],
+          [
+            "THALEIA",
+            "Doros is beaten and his mercenaries are scattering. The lower road is ours."
+          ],
+          [
+            "IONE",
+            "And above it, Kalliste."
+          ]
+        ]
+      },
+      {
+        "slot": "m7",
+        "name": "The Spring of Kalliste",
+        "summary": "Theron the Hierophant holds the temple of Kalliste and the sealed spring beneath it. Cross the hills, kindle the altars of dawn and dusk, open the sacred way, defeat Theron and decide whether the Oracle speaks again.",
+        "dialogue": [
+          [
+            "IONE",
+            "The sacred way climbs between two altars, dawn and dusk. Kindle both and the great gate of the temple opens."
+          ],
+          [
+            "THALEIA",
+            "Phaidon, the warden of the way, walks between the altars with the temple guard. And Theron waits in the inner hall, over the spring."
+          ],
+          [
+            "THERON",
+            "Come up, strategos. The Oracle has been silent a long time. Let her hear what a soldier sounds like when he loses."
+          ],
+          [
+            "ALEXIOS",
+            "The spring runs again. Whatever she says next, she will say it herself."
+          ],
+          [
+            "IONE",
+            "The great gate is open. My mother climbed this way every spring, and I never did."
+          ],
+          [
+            "ALEXIOS",
+            "Then climb it now."
+          ],
+          [
+            "THERON",
+            "The cities did not want the truth, strategos. They wanted to be told. I told them."
+          ],
+          [
+            "ALEXIOS",
+            "Then let them hear the truth for once."
+          ],
+          [
+            "MYRRINE",
+            "So the Voice is quiet at last. Come down to the spring, strategos. There is one more thing to decide, and it is not mine to decide alone."
+          ],
+          [
+            "THALEIA",
+            "The pilgrims are on the road again, Alexios — all the way from Elaia to the mountain. I counted them going up, and I will count them coming down."
+          ],
+          [
+            "IONE",
+            "A bronze bull, a sold oath, a hall of echoes, a city of oaths and a labyrinth. The griffins will be telling it for a generation."
+          ],
+          [
+            "MYRRINE",
+            "The spring runs and I speak again — only what I hear, and nothing I am paid to say."
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "winterOath",
+    "missions": [
+      {
+        "slot": "M01",
+        "name": "Barrow Light",
+        "summary": "Spring is two months late and Kaldvik’s barrow has cracked open. Raise and bind a watch from the barrow, clear the frozen ford and cut the headland rune again.",
+        "dialogue": [
+          [
+            "EYDIS",
+            "Spring is two months late. The fjord is still ice to the skerries, and last night the hold’s own barrow cracked open. The dead in it are standing up."
+          ],
+          [
+            "HERVOR",
+            "Then the rune on the headland has failed. The dead answer whoever holds a rune-oath — raise a watch from the barrow, and I will cut the rune again."
+          ],
+          [
+            "SKEGGI",
+            "Mind the ford on the way. Something has been crossing it at night, and it does not leave a man’s tracks."
+          ],
+          [
+            "EYDIS",
+            "The rune holds. For tonight the dead in our hill sleep. The others — the ones walking south from the mountains — do not."
+          ],
+          [
+            "SKEGGI",
+            "Those wolves were not hunting. They were herding — keeping the hold away from the stone."
+          ],
+          [
+            "HERVOR",
+            "Then someone wants the stone left alone. Good. That tells me where to go."
+          ],
+          [
+            "JARL",
+            "Little seeress. What you buried under that stone is mine. My dead will carry it home."
+          ],
+          [
+            "HERVOR",
+            "Your dead can try. Mine are standing in front of them."
+          ],
+          [
+            "HERVOR",
+            "Nine winters ago I took this sword from a mound in the north and hid it here, under the rune, so it would sleep. It is awake."
+          ],
+          [
+            "JARL",
+            "You carry what is mine. Every step you take with it, my winter follows."
+          ],
+          [
+            "SKEGGI",
+            "Cut the rune again, Hervor. Quickly — and keep the blade close."
+          ],
+          [
+            "EYDIS",
+            "I count the living and I count the dead, Hervor. Tonight the second list grew. Bring more of them home."
+          ]
+        ]
+      },
+      {
+        "slot": "M02",
+        "name": "The White Pack",
+        "summary": "A pack of white wolves cuts the south road to Birkaby, and it runs where the Grey Jarl tells it. Raise wolves of your own, cross the Varg-river, hunt the pack down and cut the wood’s rune.",
+        "dialogue": [
+          [
+            "EYDIS",
+            "Birkaby’s grain is the only grain between here and the mountains, and no sledge has come up the south road in a month. The drivers say white wolves."
+          ],
+          [
+            "SKEGGI",
+            "Wolves do not cut roads. Wolves eat what they catch and move on. These wait for the next sledge."
+          ],
+          [
+            "HERVOR",
+            "Then they are someone’s wolves. We will raise our own, find their trail, and teach them whose road it is."
+          ],
+          [
+            "SKEGGI",
+            "Two runes cut. Now listen, Hervor — the third stone stands high in the fells, where the Valkyries used to nest. Nobody has seen a Valkyrie there since the first frost."
+          ],
+          [
+            "HERVOR",
+            "There — past the river. The snow is trodden flat in a ring around the old stone, the way a pack walks a fold."
+          ],
+          [
+            "SKEGGI",
+            "They are guarding it. Which means the stone still matters."
+          ],
+          [
+            "JARL",
+            "Run, my wolves. Run her ragged. Winter is long and she is only one woman."
+          ],
+          [
+            "HERVOR",
+            "The pack is broken. The ones that lived are running north — home, wherever that is for them."
+          ],
+          [
+            "EYDIS",
+            "Then the sledges can run south. I will send word to Birkaby’s granary tonight."
+          ],
+          [
+            "EYDIS",
+            "The wolves took more than grain from us this time, Hervor. Count them with me when you are home."
+          ]
+        ]
+      },
+      {
+        "slot": "M03",
+        "name": "The Valkyrie’s Price",
+        "summary": "Frost trolls hold the Valkyries’ aerie in the high fells. Break the ice-pass, free the aerie, win the trolls’ oath by gold or by force, choose Thor or Tyr and carry Battle Valkyries to the third rune.",
+        "dialogue": [
+          [
+            "SKEGGI",
+            "The Valkyries choose the slain for the hall of the gods. If they will not land on their own cliff, then the dead of this winter are being chosen by someone else."
+          ],
+          [
+            "HERVOR",
+            "By the Grey Jarl. Every one of his draugar was a warrior once."
+          ],
+          [
+            "SKEGGI",
+            "Then give the Valkyries their cliff back and ask them to choose for us. And talk to the trolls before you kill them. Trolls keep oaths longer than men do."
+          ],
+          [
+            "SKEGGI",
+            "Three runes. The winter has stopped spreading — but it has not gone. Something holds it here. Not something: someone. We need his name."
+          ],
+          [
+            "HERVOR",
+            "Then stay free with us."
+          ],
+          [
+            "SKEGGI",
+            "Thor, then. He likes a fight in the open and a loud one. The trolls will respect that — they have felt his hammer before."
+          ],
+          [
+            "SKEGGI",
+            "Tyr. The god who put his hand in the wolf’s mouth to keep an oath. Fitting, for a woman chasing one."
+          ],
+          [
+            "EYDIS",
+            "A sledge from Kaldvik with a list of names, Hervor. I will not read it to you. I will leave it by your door."
+          ]
+        ]
+      },
+      {
+        "slot": "M04",
+        "name": "Ice on the Sound",
+        "summary": "Only the Norns know the Grey Jarl’s oath. Raise Lindworms, take the ice-landing, light both way-cairns through the fog and read the water of the Norns’ Well — while a draugr crew walks the ice.",
+        "dialogue": [
+          [
+            "SKEGGI",
+            "Every oath ever sworn is a thread at the Norns’ well. If we want the Jarl’s, we go where the threads are."
+          ],
+          [
+            "HERVOR",
+            "The well is at the end of the sound. The sound is ice, the ice has a fog on it, and the fog has a ship in it full of his dead."
+          ],
+          [
+            "EYDIS",
+            "Then take the Lindworms. They see through fog. And come back before the ice does something unkind."
+          ],
+          [
+            "HERVOR",
+            "His name was Hrolf. He was a king, a thousand winters ago, and he swore to hold the winter under his mound in exchange for a kingdom when it ended."
+          ],
+          [
+            "SKEGGI",
+            "And the winter never ended, so the kingdom never came. He has been keeping a bargain nobody else remembers."
+          ],
+          [
+            "HERVOR",
+            "Someone remembers. The water showed me a jarl in a white hall who swore to help him. Ulfhild of Hvitstrand."
+          ],
+          [
+            "SKEGGI",
+            "There — the island. And steam on the water. The well is still warm."
+          ],
+          [
+            "HERVOR",
+            "Of course it is. The Norns do not care whose winter it is."
+          ],
+          [
+            "SKEGGI",
+            "One eye, two ravens and a grey cloak. You know who that was, Hervor. Do not tell me you do not."
+          ],
+          [
+            "EYDIS",
+            "The ice took some of them through the cracks before the enemy did. I am writing them down anyway."
+          ]
+        ]
+      },
+      {
+        "slot": "M05",
+        "name": "The Jarl of Hvitstrand",
+        "summary": "Jarl Ulfhild swore to keep the Grey Jarl’s winter for a frozen sea that keeps her rivals’ ships in harbour. Cross the Hvita, win a second god, take Hvitstrand from a living rival and break her oath.",
+        "dialogue": [
+          [
+            "HERVOR",
+            "It is not your north, Ulfhild. And people are starving behind those frozen harbours."
+          ],
+          [
+            "HERVOR",
+            "The oath-stone is cut. Ulfhild’s word holds nothing for the Grey Jarl now."
+          ],
+          [
+            "SKEGGI",
+            "Then he has only his own dead left — and the giants he froze into the glacier to guard his road."
+          ],
+          [
+            "EYDIS",
+            "The ford is open — both ways. Ulfhild’s riders will know it by nightfall. I am putting every spear we have on the walls."
+          ],
+          [
+            "SKEGGI",
+            "Freyja. Half the slain go to her hall, they say. She will want the living to fill holds again by spring."
+          ],
+          [
+            "SKEGGI",
+            "Heimdall, who hears the grass grow. Ulfhild will not move a sledge without our knowing."
+          ],
+          [
+            "SKEGGI",
+            "Hel. A hard choice, and an honest one. She knows the dead better than the Grey Jarl ever will."
+          ],
+          [
+            "HERVOR",
+            "I tried. The winter would not let me."
+          ],
+          [
+            "HERVOR",
+            "Hvitstrand is ours. Hang her horn in the hall — no, give it to me. A Valkyrie’s horn should not hang on a wall."
+          ],
+          [
+            "EYDIS",
+            "Her people are asking what happens to them now."
+          ],
+          [
+            "HERVOR",
+            "The same as ours: they eat, and the ships go out in spring."
+          ],
+          [
+            "EYDIS",
+            "This is the first time we have fought the living, Hervor. Their dead will not stand up again, and neither will ours."
+          ]
+        ]
+      },
+      {
+        "slot": "M06",
+        "name": "The Giants’ Refuge",
+        "summary": "The Grey Jarl froze the giants of Hrimgard into the glacier to guard his road. Climb the glacier wall, break the ice-wardens, win the Jotnar’s oath and defeat Hrafn the Hollow at the Glacier Gate.",
+        "dialogue": [
+          [
+            "SKEGGI",
+            "Long before the Jarl, the giants of Hrimgard kept the winter on the glacier where it belonged. He froze them in their own hall and set his dead to watch the ice."
+          ],
+          [
+            "HERVOR",
+            "So the winter’s old keepers are its prisoners now. Then we free them, and ask what they think of the Jarl."
+          ],
+          [
+            "EYDIS",
+            "Ask politely. A giant’s handshake has broken better arms than yours."
+          ],
+          [
+            "HERVOR",
+            "Then the road is open. One hall left."
+          ],
+          [
+            "HERVOR",
+            "The one who woke his sword. I am trying to put it back to sleep."
+          ],
+          [
+            "SKEGGI",
+            "Whatever you chose there, the giants will hear of it. Giants hear everything that happens on the ice."
+          ],
+          [
+            "HERVOR",
+            "A war that never ends is only a winter with weapons, Hrafn."
+          ],
+          [
+            "HERVOR",
+            "The mail he wore came from the hall of the chosen. Sword, shield, horn — and now the mail. The Valkyries are dressing me for something."
+          ],
+          [
+            "EYDIS",
+            "The glacier keeps our dead better than any barrow. I will come back for their names when it is over."
+          ]
+        ]
+      },
+      {
+        "slot": "M07",
+        "name": "Oathbreaker’s Hall",
+        "summary": "The Grey Jarl waits in his hall on the oath-mound. Climb the plateau, cut both stones to open the barrow-gate, defeat the Jarl, decide the sword’s fate and seal the oath.",
+        "dialogue": [
+          [
+            "JARL",
+            "A thousand winters I have kept my word, seeress. A thousand. Do you know what the world was like when I swore it? Do you know what it will be like when I stop?"
+          ],
+          [
+            "HERVOR",
+            "Warmer, Hrolf."
+          ],
+          [
+            "JARL",
+            "Do not use that name. Nobody has used it since my kingdom died. Come to my hall, then, and we will see whose oath is stronger."
+          ],
+          [
+            "EYDIS",
+            "Hervor. The fjord is cracking. All the way to the skerries, I can hear it from the hall."
+          ],
+          [
+            "SKEGGI",
+            "The barrow-gate is open. I have sung about this door for forty years, and I never thought I would see it."
+          ],
+          [
+            "HERVOR",
+            "Then keep your eyes open, skald. You will have to sing the rest."
+          ],
+          [
+            "JARL",
+            "You brought my sword home. That was kind. Now kneel, and carry my winter after me."
+          ],
+          [
+            "HERVOR",
+            "I brought your sword to end it. Draugar — stand with me one more time."
+          ],
+          [
+            "JARL",
+            "A kingdom… they promised me a kingdom when the winter ended. And the winter never ended."
+          ],
+          [
+            "HERVOR",
+            "It ends now. I am sorry it was not the kingdom you wanted."
+          ],
+          [
+            "HERVOR",
+            "Back in its bed. The oath holds — and I hold it now. Someone has to keep the dead asleep."
+          ],
+          [
+            "SKEGGI",
+            "A völva keeping a king’s oath. That will make a song."
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "twelfthHour",
+    "missions": [
+      {
+        "slot": "m1",
+        "name": "The Ember Dawn",
+        "summary": "For nine mornings the sun has risen red and low and gone down again within the hour. Raise a temple guard in Abedju, clear the canal lock and sing the morning hymn at the Obelisk of the East.",
+        "dialogue": [
+          [
+            "NEBET",
+            "Nine mornings, priestess. The sun climbs a hand’s breadth over the eastern hills, red as a coal, and sinks again. The fields are cold. The children have stopped asking why."
+          ],
+          [
+            "SESHET",
+            "The morning hymn is sung at the Obelisk of the East. If the hymn is not being sung, someone has stopped the singers. Raise a guard from the temple, captain — the scarab-keepers will answer."
+          ],
+          [
+            "PAWAH",
+            "Mind the canal lock on the way. Men with hidden faces have taken it. They do not rob the barges. They turn them back."
+          ],
+          [
+            "SESHET",
+            "The hymn is sung. The sun stood a little higher today — not enough. Somewhere in the night, the barque that carries it has run aground."
+          ],
+          [
+            "PAWAH",
+            "Those boars were penned there. Somebody fed them at the lock and left the gate open behind them."
+          ],
+          [
+            "SESHET",
+            "Then somebody wanted the barges kept away from the obelisk. That tells us where to go."
+          ],
+          [
+            "DJED",
+            "Little reader. The hymn you came to sing is an old habit. Night has better songs."
+          ],
+          [
+            "SESHET",
+            "Then let it sing them to someone who is listening."
+          ],
+          [
+            "NEBET",
+            "Their leader carried this — a temple khopesh, the sacred kind. It was stolen from the treasury at Iunu."
+          ],
+          [
+            "SESHET",
+            "Keep it close. Whoever gives temple blades to hirelings has been inside the temples."
+          ],
+          [
+            "NEBET",
+            "We buried six on the canal bank today, priestess. The scarab-keepers will rise for us — but not forever."
+          ],
+          [
+            "SESHET",
+            "I know. We will spend them like silver, not like sand."
+          ]
+        ]
+      },
+      {
+        "slot": "m2",
+        "name": "The Black Boar",
+        "summary": "A herd of black boars, fed and driven by the Hollow Lector’s men, roots up the west-bank fields of Nekheb. Raise jackals of your own, cross the river, hunt the herd down and reopen the Shrine of the Western Gate.",
+        "dialogue": [
+          [
+            "PAWAH",
+            "The west bank of Nekheb is the land of the dead — tombs, shrines, the gate the sun goes through at evening. Now a black boar runs there with its herd, and the shrine of the gate is dark."
+          ],
+          [
+            "SESHET",
+            "The black boar is an old sign. It is the shape the enemy of the sun likes best. Somebody is making signs for us to read."
+          ],
+          [
+            "NEBET",
+            "Then we read them with jackals. Build the kennels, priestess. Jackals hunt pigs better than priests do."
+          ],
+          [
+            "PAWAH",
+            "The western gate is lit again. But listen — the sun did not come back through it tonight. It has gone further in than any gate we can light from this side."
+          ],
+          [
+            "SESHET",
+            "There, below the cliffs — the fields are rooted up in a ring around the shrine. They are not eating. They are guarding."
+          ],
+          [
+            "NEBET",
+            "Then the shrine still matters to someone. Good."
+          ],
+          [
+            "DJED",
+            "Run, black one. Run her into the sand. The night is long and she is only one reader."
+          ],
+          [
+            "NEBET",
+            "The herd is broken. The survivors ran for the cliffs."
+          ],
+          [
+            "SESHET",
+            "Let them. A sign that has been read is only a pig."
+          ]
+        ]
+      },
+      {
+        "slot": "m3",
+        "name": "The Sculptor’s Price",
+        "summary": "In the quarries above Edfu the tomb-servants have stopped working. Break the hired guard on the cliff road, free the sphinxes’ terrace, win the ushabti covenant — by the sculptor’s price or by force — and take a god for the long night ahead.",
+        "dialogue": [
+          [
+            "PAWAH",
+            "The sun’s road goes under the cliffs at Edfu. The old sculptor there still makes ushabti — the little servants who work for the dead. He says they have stopped answering."
+          ],
+          [
+            "SESHET",
+            "Ushabti answer the one who holds the covenant. If they have stopped, someone else holds it now."
+          ],
+          [
+            "NEBET",
+            "And the sphinxes on the terrace have gone quiet too. Things are quiet all along the road, priestess. I do not like it."
+          ],
+          [
+            "SESHET",
+            "The covenant holds, a god walks with us and the cliff stone is sung. The road goes down from here — into the hours where the sun is."
+          ],
+          [
+            "NEBET",
+            "The sphinxes are waking. They watched the golems the whole time — they could not move while the clay stood among them."
+          ],
+          [
+            "SESHET",
+            "Then they will remember who moved the clay."
+          ],
+          [
+            "PAWAH",
+            "The seal on the door — it is the Lector’s own. Djedkhonsu, the old High Lector. He taught me my letters."
+          ],
+          [
+            "SESHET",
+            "He taught me mine too. Whatever he teaches now, I will not learn it."
+          ],
+          [
+            "SESHET",
+            "A god walks with us now. Whatever waits in the hours below, we do not meet it alone."
+          ]
+        ]
+      },
+      {
+        "slot": "m4",
+        "name": "The Drowned Library",
+        "summary": "The House of Records at Per-Djehuty lies beyond the flooded marsh, behind a veil of grey mist. Raise river beasts, take the landing, light both pylon-fires to burn away the mist and read what the records say about the sun.",
+        "dialogue": [
+          [
+            "SESHET",
+            "Every barque the sun has ever ridden is written down at Per-Djehuty — its crew, its road, its enemies. If anyone knows where the barque ran aground, the records do."
+          ],
+          [
+            "PAWAH",
+            "The marsh has flooded over the road and a mist has come up that does not lift. The boatmen say a drowned captain walks the islands with a drowned crew."
+          ],
+          [
+            "NEBET",
+            "Then we go by the pylons. Light their fires and the mist burns away — the old priests built them for that."
+          ],
+          [
+            "SESHET",
+            "The records are clear: the barque is held at the eleventh hour, in a hall the Lector has built inside the night. And he has a king — a vizier who crowned himself in the dusk."
+          ],
+          [
+            "NEBET",
+            "They did not bleed, priestess. They poured out water."
+          ],
+          [
+            "SESHET",
+            "Then their captain is close. Keep the escort together."
+          ],
+          [
+            "PAWAH",
+            "Look — the mist is burning off like morning fog. The old priests knew what they were doing."
+          ],
+          [
+            "SESHET",
+            "They always did. That is why he wants their hymns forgotten."
+          ],
+          [
+            "DJED",
+            "You read well, little lector. Read this: no one comes back from the eleventh hour."
+          ]
+        ]
+      },
+      {
+        "slot": "m5",
+        "name": "The Red Vizier",
+        "summary": "Paser, a vizier who crowned himself in the dusk, holds Per-Wadjet and the stela of the throne. Cross the river, take a second god, besiege his town and break the stela that names him king.",
+        "dialogue": [
+          [
+            "NEBET",
+            "Paser was the vizier of the north. When the sun stopped, he told the people he had stopped it — that the dusk was his, and the dark lector his priest. Half the north believed him."
+          ],
+          [
+            "SESHET",
+            "The throne-stela in Per-Wadjet names him king. As long as it stands, every hymn we sing is sung to his sun."
+          ],
+          [
+            "PASER",
+            "Turn back, priestess. A kingdom of dusk is still a kingdom. I will rule it well."
+          ],
+          [
+            "SESHET",
+            "The stela is broken and the north is free of his crown. Paser has nothing left but the Lector’s promises. Neither do we — except that we know where the barque is."
+          ],
+          [
+            "NEBET",
+            "We are over. Paser will know by tonight."
+          ],
+          [
+            "SESHET",
+            "Let him. A king who has to be told he is king is already afraid."
+          ],
+          [
+            "PASER",
+            "You fight for a sun that has left you. I fight for the people who are still here."
+          ],
+          [
+            "SESHET",
+            "Then you should have asked them."
+          ],
+          [
+            "SESHET",
+            "Per-Wadjet is ours. Break the stela, and the north sings our hymn again."
+          ]
+        ]
+      },
+      {
+        "slot": "m6",
+        "name": "The Phoenix Rookery",
+        "summary": "The bennu birds, whose rising is the sun’s own, are caged in their rookery under the cliffs of Iunu. Break the jailers, accept the bennu covenant, raise firebirds of your own and defeat Hekaib at the rookery gate.",
+        "dialogue": [
+          [
+            "PAWAH",
+            "Every dawn the bennu bird rises from the fire at Iunu, and the sun follows it. Every dawn — until the Lector caged the birds."
+          ],
+          [
+            "SESHET",
+            "Free them, and the sun has wings again. Then we can follow it down."
+          ],
+          [
+            "NEBET",
+            "His sword holds the rookery gate. Hekaib. I trained with him, priestess. He does not lose."
+          ],
+          [
+            "SESHET",
+            "The bennu fly. Tonight the sun went down in a blaze, and I saw the road it takes — down, through the hours, to the hall where the barque is held."
+          ],
+          [
+            "SESHET",
+            "The cages are open. They will not come out until they choose to — the bennu answer covenants, not keys."
+          ],
+          [
+            "PAWAH",
+            "Then ask them, priestess. Politely."
+          ],
+          [
+            "NEBET",
+            "Hekaib! We stood on the same wall at Abu. Stand aside."
+          ],
+          [
+            "DJED",
+            "He stands where I put him, captain. As you will, soon."
+          ],
+          [
+            "NEBET",
+            "He fought well. He always did. I will bury him at Abu, when this is over."
+          ]
+        ]
+      },
+      {
+        "slot": "m7",
+        "name": "The Twelfth Hour",
+        "summary": "The barque of the sun is held in the Hall of the Coil, at the bottom of the night. Cross into the hours, open the gate with both horizon-stones, defeat Djedkhonsu and decide what becomes of the coiled dark.",
+        "dialogue": [
+          [
+            "SESHET",
+            "The twelfth hour. Every night the sun passes it, and every night the old priests sang it through. Djedkhonsu has built a hall across the road — and in it, something coiled, holding the barque."
+          ],
+          [
+            "PAWAH",
+            "Two horizon-stones open the last gate, one on each side of the road. Iti the warden walks between them."
+          ],
+          [
+            "DJED",
+            "Come down, then, reader. I have saved you a place in the dark."
+          ],
+          [
+            "SESHET",
+            "The barque moves. I felt it — like a held breath let go."
+          ],
+          [
+            "PAWAH",
+            "Both horizons. I have ferried the dead for fifty years, priestess, and I never thought to see both at once."
+          ],
+          [
+            "DJED",
+            "I gave them a dusk that never ends. No scales, no judgement, no morning to fear. They should thank me."
+          ],
+          [
+            "SESHET",
+            "They wanted a morning. You never asked."
+          ],
+          [
+            "SESHET",
+            "He is gone. But the coil still holds the barque. One last thing to decide."
+          ],
+          [
+            "NEBET",
+            "The sun came up white this morning. Not red — white, the way it should. The fields are steaming."
+          ],
+          [
+            "PAWAH",
+            "Twelve hours, a black boar, a red vizier, a library under water and a flock of firebirds. The children will want the story every night."
+          ],
+          [
+            "SESHET",
+            "The coil sleeps under the hall, and I hold the binding. Every year I will go down and sing it again."
+          ],
+          [
+            "NEBET",
+            "Then every year I will go with you, priestess."
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "lanternRoad",
+    "missions": [
+      {
+        "slot": "m1",
+        "name": "The Unlit Lantern",
+        "summary": "On the night of the festival of the dead, not one lantern in Kagaribi would light. Raise a fox retinue, clear the bamboo bridge and relight the great stone lantern on the pass.",
+        "dialogue": [
+          [
+            "SHIRO",
+            "Every lantern, priestess. The paper ones, the stone ones, the ones in the river. The dead came down the mountain to find their way home and found nothing but dark."
+          ],
+          [
+            "AKANE",
+            "Then they are still out there, wandering. The great lantern on the pass lights all the others. If it is dark, someone put it out."
+          ],
+          [
+            "GENZO",
+            "Men with straw hats and long blades have been seen on the pass road. And the boars have taken the bamboo bridge. I would not go alone."
+          ],
+          [
+            "AKANE",
+            "The great lantern burns, and one by one the little ones are catching. But only here. Beyond the mountains the road is still dark."
+          ],
+          [
+            "GENZO",
+            "Those boars were tied to the bridge posts. Someone wanted the road closed."
+          ],
+          [
+            "AKANE",
+            "Then someone is afraid of what the lantern shows."
+          ],
+          [
+            "YAMIKAGE",
+            "Little diviner. Light is a meal, and I am very hungry. Leave the lantern to me."
+          ],
+          [
+            "AKANE",
+            "Go hungry, then."
+          ],
+          [
+            "SHIRO",
+            "Their leader wore this — a dragon helm from the Kumoyama shrine treasury."
+          ],
+          [
+            "AKANE",
+            "Stolen from a shrine and worn by a bandit. Whoever pays these men has been inside our shrines."
+          ],
+          [
+            "SHIRO",
+            "We lost foxes today, priestess. Foxes remember."
+          ],
+          [
+            "AKANE",
+            "So do I. We will be more careful."
+          ]
+        ]
+      },
+      {
+        "slot": "m2",
+        "name": "The Boar Lord",
+        "summary": "A giant boar and its herd run the rice terraces of Mizuhara and keep the spirits from the river lantern. Raise kappa of your own, cross the river, hunt the Boar Lord and relight the lantern of the mountain road.",
+        "dialogue": [
+          [
+            "GENZO",
+            "Mizuhara’s terraces are ruined. A boar as big as an ox runs there with a herd at its back, and it does not eat the rice. It tramples it."
+          ],
+          [
+            "AKANE",
+            "A beast that wastes food is a beast someone has sent. The river lantern is beyond the terraces — and it is dark."
+          ],
+          [
+            "SHIRO",
+            "Kappa, priestess. Kappa know the river, and boars do not swim."
+          ],
+          [
+            "GENZO",
+            "Two lanterns lit. Now the old monks say the Crow Monastery on the high pass has stopped ringing its bell. That is where the road climbs next."
+          ],
+          [
+            "AKANE",
+            "There — the terraces are trampled in a ring around the river lantern. They are not feeding. They are guarding it."
+          ],
+          [
+            "SHIRO",
+            "Then it still matters to somebody."
+          ],
+          [
+            "YAMIKAGE",
+            "Trample her, great one. Trample her into the mud with the rice."
+          ],
+          [
+            "GENZO",
+            "The Boar Lord is down. The herd is scattering into the cedars."
+          ],
+          [
+            "AKANE",
+            "Let them go. Without their lord they are only pigs."
+          ]
+        ]
+      },
+      {
+        "slot": "m3",
+        "name": "The Crow Monastery",
+        "summary": "The bell of the Crow Monastery on Kumoyama has stopped. Break the ronin on the mountain road, free the oni of the red hall from their clay jailers, win the tengu covenant — by the abbot’s price or by force — and take a kami for the road ahead.",
+        "dialogue": [
+          [
+            "GENZO",
+            "The tengu of Kumoyama keep the bell that wakes the mountain road. The bell has been silent for a month."
+          ],
+          [
+            "AKANE",
+            "Tengu ring for whoever holds their covenant. If the bell is silent, someone else holds it."
+          ],
+          [
+            "SHIRO",
+            "And the red oni in the old hall have stopped coming down to drink. Oni always come down to drink."
+          ],
+          [
+            "AKANE",
+            "The bell rings, a kami walks with us and the mountain road is lit. From here the road goes down to the sea."
+          ],
+          [
+            "SHIRO",
+            "The oni are awake and very thirsty. They say they will remember who broke the clay."
+          ],
+          [
+            "AKANE",
+            "Good. I want them to remember."
+          ],
+          [
+            "GENZO",
+            "The paper on the wall — the covenant. It is signed with a lantern, burned through the middle."
+          ],
+          [
+            "AKANE",
+            "A lantern with its light eaten out. I know that mark now."
+          ],
+          [
+            "AKANE",
+            "A kami walks with us. Whatever eats the light, it will not find us alone in the dark."
+          ]
+        ]
+      },
+      {
+        "slot": "m4",
+        "name": "The Spirit Sea",
+        "summary": "The Hall of Mirrors stands on an island in the Spirit Sea, behind a fog that eats boats. Raise spider-women of your own, take the landing, ring both shrine bells to clear the fog and look into the mirrors for the Lantern-Eater’s home.",
+        "dialogue": [
+          [
+            "AKANE",
+            "The Hall of Mirrors shows what has been hidden. If anything knows where the Lantern-Eater sleeps, the mirrors do."
+          ],
+          [
+            "GENZO",
+            "The fog came in when the lanterns went out, and a fleet sails in it — ships with no lights. Their captain walks the islands."
+          ],
+          [
+            "SHIRO",
+            "Two shrine bells, one on each island. Ring them both and the fog has to listen."
+          ],
+          [
+            "AKANE",
+            "The mirrors showed me: a palace at the end of the road, where the last torii stands. And a lord of iron between here and there, who fences the wandering dead into his army."
+          ],
+          [
+            "GENZO",
+            "No lamps on any of their boats. They sail by smell."
+          ],
+          [
+            "AKANE",
+            "Then their captain is close. Keep the retinue together."
+          ],
+          [
+            "SHIRO",
+            "Listen — the fog is leaving like a guest who was told the party is over."
+          ],
+          [
+            "YAMIKAGE",
+            "Look into my mirrors, diviner. You will see the dark — and the dark will see you."
+          ]
+        ]
+      },
+      {
+        "slot": "m5",
+        "name": "The Iron Daimyo",
+        "summary": "Lord Kurogane fences the wandering dead into his army and holds the Iron Castle and the Lantern of Oaths. Cross the river, take a second kami, besiege his castle and break the lantern that binds the dead to him.",
+        "dialogue": [
+          [
+            "SHIRO",
+            "Kurogane rounds up the wandering dead like stray horses and puts them in his army. He says they are loyal. They are only lost."
+          ],
+          [
+            "AKANE",
+            "The Lantern of Oaths in his castle binds them to him. While it burns, every spirit he catches is his."
+          ],
+          [
+            "KUROGANE",
+            "Turn back, diviner. The dead need a lord as much as the living do. I am a good one."
+          ],
+          [
+            "AKANE",
+            "The Lantern of Oaths is out and the dead he bound are walking home. Kurogane has nothing left but the Lantern-Eater’s promises."
+          ],
+          [
+            "GENZO",
+            "We are over. His scouts will be riding back already."
+          ],
+          [
+            "AKANE",
+            "Let them ride. I want him to know who is coming."
+          ],
+          [
+            "KUROGANE",
+            "Every spirit you send home is a soldier I lose. Is that fair?"
+          ],
+          [
+            "AKANE",
+            "They were never yours to lose."
+          ],
+          [
+            "AKANE",
+            "The Iron Castle is ours. Now the lantern."
+          ]
+        ]
+      },
+      {
+        "slot": "m6",
+        "name": "The Kirin Meadow",
+        "summary": "The kirin, whose coming marks a just age, are penned in their high meadow by the Lantern-Eater’s jailers. Break the jailers, accept the kirin covenant, raise kirin of your own and defeat General Oboro at the meadow gate.",
+        "dialogue": [
+          [
+            "GENZO",
+            "The kirin only walk where a just ruler reigns. For a year no one has seen one. The herders say they are penned in the high meadow, like cattle."
+          ],
+          [
+            "AKANE",
+            "Free them, and the land remembers what justice looks like. Then the last road opens."
+          ],
+          [
+            "SHIRO",
+            "The meadow gate is held by Oboro, the general of the hazy moon. Nobody has seen his face. Nobody has seen him lose."
+          ],
+          [
+            "AKANE",
+            "The kirin walk again. Tonight I saw the last part of the road from the meadow — the sun stone, the moon stone and the last torii between them."
+          ],
+          [
+            "AKANE",
+            "The pens are open. The kirin will not follow us for being freed — they follow a covenant, or nothing."
+          ],
+          [
+            "GENZO",
+            "Then offer them one, priestess. They are listening."
+          ],
+          [
+            "YAMIKAGE",
+            "Oboro, my general, has never shown his face. Shall I tell you why? There is no face. Only my hunger, wearing armour."
+          ],
+          [
+            "SHIRO",
+            "The armour is empty. There really was no one inside."
+          ],
+          [
+            "AKANE",
+            "Then there is one less thing to bury."
+          ]
+        ]
+      },
+      {
+        "slot": "m7",
+        "name": "The Last Torii",
+        "summary": "The Lantern-Eater’s palace stands across the last stretch of the spirits’ road, behind the last torii. Cross the hills, light the sun stone and the moon stone, defeat Yamikage and decide what becomes of the road between the worlds.",
+        "dialogue": [
+          [
+            "AKANE",
+            "The last torii. Every spirit that ever went home went through it. Yamikage has built his palace across the road beyond it, and eats every light that comes near."
+          ],
+          [
+            "GENZO",
+            "The sun stone and the moon stone open the torii, one on each side of the valley. A warden walks between them — Kagerō."
+          ],
+          [
+            "YAMIKAGE",
+            "Come and be eaten, little light. You have been delicious so far."
+          ],
+          [
+            "AKANE",
+            "The road is open. I can see them — thousands of little lights, walking home."
+          ],
+          [
+            "GENZO",
+            "The torii is open. My grandfather carved lanterns for sixty years and never saw it with his own eyes."
+          ],
+          [
+            "YAMIKAGE",
+            "Every light ends, diviner. I only end them sooner."
+          ],
+          [
+            "AKANE",
+            "And every dark ends at morning. I am here to make it sooner."
+          ],
+          [
+            "AKANE",
+            "He is gone. The road is still here. Now — how should it be lit?"
+          ],
+          [
+            "SHIRO",
+            "Every lantern in Kagaribi lit by itself last night. The children ran from one to the next, counting."
+          ],
+          [
+            "GENZO",
+            "A boar lord, a bell, a sea of fog, an iron castle and a herd of kirin. I will need a bigger lantern to paint it all on."
+          ],
+          [
+            "AKANE",
+            "One night a year, as it always was. The dead come home, and then they go back. It is enough."
+          ],
+          [
+            "SHIRO",
+            "It was always enough, priestess. We only forgot."
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "silverBranch",
+    "missions": [
+      {
+        "slot": "m1",
+        "name": "The Cold Hearth",
+        "summary": "Beltane came and no fire would catch. Raise a war-band of pooka in Dún Caill, clear the ford of the alders and light the Beltane fire on the old stone.",
+        "dialogue": [
+          [
+            "SADB",
+            "Beltane, and the cattle still in the byres. We built the fire twice and it would not take. The kindling was dry as bone."
+          ],
+          [
+            "ORLA",
+            "Then the fire is not refusing the kindling. Something is refusing the summer. The Beltane stone on the ridge is where the year turns — I need to see it."
+          ],
+          [
+            "CATHAL",
+            "Reavers have been seen on the ridge. And the boars have taken the alder ford. Bring the pooka — they are quicker than men."
+          ],
+          [
+            "ORLA",
+            "The fire caught. The cattle went out between the flames this morning. But only here — over the hills the dark half holds."
+          ],
+          [
+            "CATHAL",
+            "Someone threw grain into that ford every night. You do not keep boars by accident."
+          ],
+          [
+            "ORLA",
+            "Then someone wanted the ridge kept quiet. The stone, then."
+          ],
+          [
+            "DUBHGHALL",
+            "Little druid. The summer is over. I have seen to it. Go home and sleep until spring — there will not be one."
+          ],
+          [
+            "ORLA",
+            "I have never been good at sleeping."
+          ],
+          [
+            "SADB",
+            "Their chief wore this — a mistletoe crown from the grove at Dún Bera."
+          ],
+          [
+            "ORLA",
+            "A grove-crown on a reaver. Whoever pays them has walked in the groves."
+          ],
+          [
+            "SADB",
+            "We buried some of ours under the alders today, Orla."
+          ],
+          [
+            "ORLA",
+            "I know. We will not leave more there than we have to."
+          ]
+        ]
+      },
+      {
+        "slot": "m2",
+        "name": "The Iron-Bristled Boar",
+        "summary": "A boar with bristles like iron nails leads a herd through the fields of Dún Bera and keeps the folk from the ogham stone at the ford. Raise hounds of your own, cross the river, hunt the boar and cut the summer ogham again.",
+        "dialogue": [
+          [
+            "CATHAL",
+            "Dún Bera’s fields are ploughed up — not by ploughs. A boar the size of a bull, bristles like nails, and a herd behind it."
+          ],
+          [
+            "ORLA",
+            "The ogham stone at the ford still holds the summer’s name. Someone wants it unreadable."
+          ],
+          [
+            "SADB",
+            "Hounds, then. Build the den, Orla. The cú sith have hunted bigger pigs than this one."
+          ],
+          [
+            "SADB",
+            "Two fires lit. The bards say the next is at the loch of the water-horses, and the water-horses have stopped coming to the shore."
+          ],
+          [
+            "ORLA",
+            "There — the fields are ploughed in a ring around the ogham stone. They are guarding it."
+          ],
+          [
+            "CATHAL",
+            "Then it still matters to them. Good."
+          ],
+          [
+            "DUBHGHALL",
+            "Gore her, iron-back. Plough her under with the summer."
+          ],
+          [
+            "SADB",
+            "The boar is down. The herd is running for the woods."
+          ],
+          [
+            "ORLA",
+            "Let them run. A boar without a master is only a boar."
+          ]
+        ]
+      },
+      {
+        "slot": "m3",
+        "name": "The Water-Horse Bargain",
+        "summary": "The kelpies of Loch Eala have stopped coming to shore. Break the reavers on the hill road, free the banshees’ hill from the cairn-men, win the kelpie covenant — by the keeper’s bargain or by force — and take a god for the dark road ahead.",
+        "dialogue": [
+          [
+            "CATHAL",
+            "The water-horses of Loch Eala carry anyone who keeps the old covenant with them. Nobody has seen one since Samhain."
+          ],
+          [
+            "ORLA",
+            "A covenant can be broken, bought or stolen. If they have stopped coming, someone holds it who should not."
+          ],
+          [
+            "SADB",
+            "And the banshees on Keening Hill have gone silent. A silent banshee is worse than a wailing one."
+          ],
+          [
+            "ORLA",
+            "The covenant holds, a god rides with us and the hill fire is lit. The road goes west from here — to the sea."
+          ],
+          [
+            "SADB",
+            "The banshees are keening again. I never thought I would be glad of that sound."
+          ],
+          [
+            "ORLA",
+            "They are keening for the year. Let them."
+          ],
+          [
+            "CATHAL",
+            "The ring the keeper’s son got — it is here, on the shore. Grey iron, cold as a grave."
+          ],
+          [
+            "ORLA",
+            "The Withered King pays in grave-iron. I will remember."
+          ],
+          [
+            "ORLA",
+            "A god rides with us now. Whatever holds the dark half of the year, it will not meet us alone."
+          ]
+        ]
+      },
+      {
+        "slot": "m4",
+        "name": "The Hall Beneath the Waves",
+        "summary": "The hall of the sea-folk lies beyond the islands, behind a mist that came with the raiders. Raise selkies of your own, take the landing, light both headland fires to burn away the mist and ask the sea-folk where the Withered King keeps the broken branch.",
+        "dialogue": [
+          [
+            "ORLA",
+            "The sea-folk see everything that goes into the sea. If the silver branch was thrown into the water, they know where it went."
+          ],
+          [
+            "CATHAL",
+            "A mist came in with the grey raiders and it has not lifted since. Their captain, Corc, walks the islands."
+          ],
+          [
+            "SADB",
+            "The old headland fires burn through any mist. Light both and the sea has to clear."
+          ],
+          [
+            "ORLA",
+            "The sea-folk saw it: the branch, broken, carried into a mound in the east by the Withered King himself. And a usurper on the high seat at the ford keeps the road to it."
+          ],
+          [
+            "CATHAL",
+            "Grey raiders, grey sails, grey mist. Even their blood looks grey."
+          ],
+          [
+            "ORLA",
+            "Then Corc is close. Keep the war-band together."
+          ],
+          [
+            "SADB",
+            "The mist is lifting off the water like breath off a cow."
+          ],
+          [
+            "DUBHGHALL",
+            "Ask the sea, druid. The sea keeps what it is given — and so do I."
+          ]
+        ]
+      },
+      {
+        "slot": "m5",
+        "name": "The High Seat",
+        "summary": "Fiachra took the high seat at the ford in the long winter and holds it with the Withered King’s help. Cross the river, take a second god, besiege his fort and overturn the inauguration stone that names him king.",
+        "dialogue": [
+          [
+            "SADB",
+            "Fiachra was a cattle-lord on the eastern ford. When the summer failed he sat on the high seat and said the winter was his to keep."
+          ],
+          [
+            "ORLA",
+            "His inauguration stone names him king. While it stands, the land answers to him — and he answers to the Withered King."
+          ],
+          [
+            "FIACHRA",
+            "Go back to your groves, druid. A winter king is still a king, and I keep my people fed."
+          ],
+          [
+            "ORLA",
+            "The stone is overturned and the land is free of his kingship. The road east to the mound is open."
+          ],
+          [
+            "CATHAL",
+            "We are over. His cattle-scouts will be running home."
+          ],
+          [
+            "ORLA",
+            "Let them run. I want him to hear it from his own people."
+          ],
+          [
+            "FIACHRA",
+            "My people eat this winter. Will they eat in your summer?"
+          ],
+          [
+            "ORLA",
+            "They ate in every summer before you."
+          ],
+          [
+            "ORLA",
+            "Dún Fiachra is ours. And look — the stone of the kings was in his treasury. Now the inauguration stone."
+          ]
+        ]
+      },
+      {
+        "slot": "m6",
+        "name": "The Stags’ Wood",
+        "summary": "The great horned stags of the deep wood are bound in iron by the Withered King’s jailers. Break the jailers, accept the stags’ covenant, raise stag spirits of your own and defeat Tadhg the Grey at the wood’s gate.",
+        "dialogue": [
+          [
+            "CATHAL",
+            "The horned stags lead the year from the dark half to the bright. No one has heard them bell since Samhain."
+          ],
+          [
+            "ORLA",
+            "The Withered King has bound them in grave-iron in their own wood. Free them, and the year can turn."
+          ],
+          [
+            "SADB",
+            "His champion holds the wood’s gate. Tadhg the Grey. He was a hero once."
+          ],
+          [
+            "ORLA",
+            "The stags are belling. Tonight, from the edge of the wood, I saw the mound in the east — and the summer stone and the winter stone on either side of the road to it."
+          ],
+          [
+            "ORLA",
+            "The iron is off. They will not follow us for that — stags follow covenants, not favours."
+          ],
+          [
+            "CATHAL",
+            "Then make them one, Orla. They are waiting."
+          ],
+          [
+            "DUBHGHALL",
+            "Tadhg was the greatest of the fian once. Now he is mine. So is everything that grows old enough."
+          ],
+          [
+            "SADB",
+            "Tadhg is down. He thanked me, Orla, at the end."
+          ],
+          [
+            "ORLA",
+            "Then he is free too."
+          ]
+        ]
+      },
+      {
+        "slot": "m7",
+        "name": "The Door of the Mound",
+        "summary": "The Withered King holds the broken silver branch in his hall inside the great mound. Cross the barrow-hills, use the summer stone and the winter stone to open the door, defeat Dubhghall and decide what becomes of the silver branch.",
+        "dialogue": [
+          [
+            "ORLA",
+            "The great mound. Every door to the Otherworld opened from here once — at Samhain and at Beltane. The Withered King has made it his hall, and he keeps the broken branch inside."
+          ],
+          [
+            "CATHAL",
+            "The summer stone and the winter stone open the door, one on each side of the barrow-road. Ciar the warden walks between them."
+          ],
+          [
+            "DUBHGHALL",
+            "Come in, druid. The dark half is long, and I have room for you in it."
+          ],
+          [
+            "ORLA",
+            "The year has turned. I felt it — like a door swinging open in a warm wind."
+          ],
+          [
+            "SADB",
+            "The door is open. I can smell apple blossom from inside — in this cold."
+          ],
+          [
+            "DUBHGHALL",
+            "Every summer ends, druid. I only made sure of it."
+          ],
+          [
+            "ORLA",
+            "And every winter ends. I am here to make sure of that."
+          ],
+          [
+            "ORLA",
+            "He is gone. The branch is here, in two halves. One last thing to decide."
+          ],
+          [
+            "SADB",
+            "The cattle went out to the summer grazing this morning. Late — but they went."
+          ],
+          [
+            "CATHAL",
+            "A boar with iron bristles, a loch of water-horses, a hall under the sea, a usurper and a wood full of stags. The bards will be at it for a hundred years."
+          ],
+          [
+            "ORLA",
+            "The mounds are open. Last night three of the old folk came to the fort gate and asked for milk. We gave it to them."
+          ],
+          [
+            "SADB",
+            "We always did, before. It is good to have them back."
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "newFire",
+    "missions": [
+      {
+        "slot": "m1",
+        "name": "The Cold Altar",
+        "summary": "On the night the years are bound, the new fire was never lit — someone put out the old one first. Raise a war-band of feathered serpents in Xochitla, clear the canoe ford and kindle the fire on the hill altar.",
+        "dialogue": [
+          [
+            "XOCO",
+            "Fifty-two years, and the night came to bind them. We broke the old pots, put out every hearth and waited for the fire from the hill. It never came."
+          ],
+          [
+            "ITZEL",
+            "Then the fire-drill never turned. Someone stopped the priests before the new fire could be drilled. The hill altar is where it starts."
+          ],
+          [
+            "CHIMAL",
+            "Men in black paint hold the hill. And the canoe ford is full of peccaries gone mad with hunger. I will carry the shield, day-keeper."
+          ],
+          [
+            "ITZEL",
+            "The new fire burns on the hill, and the runners are carrying it to the hearths. But only here. The sun was paler again this morning."
+          ],
+          [
+            "CHIMAL",
+            "Someone penned those pigs in the ford and starved them. Cruel, and on purpose."
+          ],
+          [
+            "ITZEL",
+            "Then someone wanted the hill kept clear. The altar, then."
+          ],
+          [
+            "ITZTLI",
+            "Little day-keeper. The count is finished. No new fire, no new years. Let the sun go out like a tired hearth."
+          ],
+          [
+            "ITZEL",
+            "I have not finished counting."
+          ],
+          [
+            "XOCO",
+            "Their leader wore this — the quetzal crown from the temple of Xochitla. It was stolen at the binding."
+          ],
+          [
+            "ITZEL",
+            "A temple crown on a cultist. Whoever pays them has walked in our temples."
+          ],
+          [
+            "XOCO",
+            "We counted our dead today, Itzel. The count is longer than I like."
+          ],
+          [
+            "ITZEL",
+            "Then I will count more carefully."
+          ]
+        ]
+      },
+      {
+        "slot": "m2",
+        "name": "The Black Jaguars",
+        "summary": "A pack of black jaguar spirits, loosed by the Night-Knife, hunts the cacao groves of Tepeyolo and guards the altar of the morning star. Raise jaguars of your own, cross the river, hunt the pack down and relight the altar.",
+        "dialogue": [
+          [
+            "CHIMAL",
+            "Tepeyolo’s cacao pickers will not go into the groves. Black jaguars — not the spotted kind — and they do not eat what they kill."
+          ],
+          [
+            "ITZEL",
+            "The altar of the morning star is beyond the groves. If the morning star has no fire, the sun has no herald."
+          ],
+          [
+            "XOCO",
+            "Jaguars of our own, then. Build them a house, child. Jaguars respect their own kind."
+          ],
+          [
+            "XOCO",
+            "Two altars lit. The old eagle knights say the next fire belongs to the House of Eagles in the mountains — and that the eagles have stopped flying."
+          ],
+          [
+            "ITZEL",
+            "There — the groves are trampled in a ring around the altar. They are guarding it."
+          ],
+          [
+            "CHIMAL",
+            "Then it still matters to someone. Good."
+          ],
+          [
+            "ITZTLI",
+            "Hunt her, my black ones. Night belongs to jaguars."
+          ],
+          [
+            "CHIMAL",
+            "The pack is broken. The last of them ran for the hills."
+          ],
+          [
+            "ITZEL",
+            "Let them. Without the Night-Knife’s voice they are only cats."
+          ]
+        ]
+      },
+      {
+        "slot": "m3",
+        "name": "The House of Eagles",
+        "summary": "The eagle warriors of Ocelotepec have stopped flying. Break the cultists on the mountain road, free the crocodiles’ cenote from the stone jailers, win the eagle covenant — by the elders’ price or by force — and take a god for the dark road ahead.",
+        "dialogue": [
+          [
+            "CHIMAL",
+            "The eagle warriors fly for whoever keeps the covenant of the House of Eagles. For a month they have only perched."
+          ],
+          [
+            "ITZEL",
+            "A covenant can be kept, sold or stolen. If they do not fly for us, someone else holds it."
+          ],
+          [
+            "XOCO",
+            "And the crocodiles of the sacred cenote have sunk to the bottom. A cenote without its guardians is only a hole."
+          ],
+          [
+            "ITZEL",
+            "The covenant holds, a god walks with us and the mountain fire burns. From here the road goes down to the great lake."
+          ],
+          [
+            "XOCO",
+            "The crocodiles are rising. They will remember the hands that broke the stone."
+          ],
+          [
+            "ITZEL",
+            "Good. I want them to."
+          ],
+          [
+            "CHIMAL",
+            "The knife the young captain got — it is here, on the wall. Obsidian, and it hums."
+          ],
+          [
+            "ITZEL",
+            "The Night-Knife pays in his own glass. I will remember the sound."
+          ],
+          [
+            "ITZEL",
+            "A god walks with us. Whatever wants the sun to end, it will not meet us alone."
+          ]
+        ]
+      },
+      {
+        "slot": "m4",
+        "name": "The House of Bats",
+        "summary": "The House of Bats stands on an island in the great lake, behind a smoke that came with the raiders’ canoes. Raise camazotz of your own, take the landing, light both lake altars to clear the smoke and ask the bats where the Night-Knife keeps the stolen fire.",
+        "dialogue": [
+          [
+            "ITZEL",
+            "The bats see everything that moves at night. If the Night-Knife carried the old fire away, the bats watched him go."
+          ],
+          [
+            "CHIMAL",
+            "A smoke has lain on the lake since the canoe raiders came. Their captain, Acatl, walks the islands."
+          ],
+          [
+            "XOCO",
+            "The two lake altars burn through any smoke — the old priests built them so. Light both and the lake must clear."
+          ],
+          [
+            "ITZEL",
+            "The bats saw him: the Night-Knife, carrying the old fire into the smoking mountain in the east. And a city lord at Itzcalli holds the road for him."
+          ],
+          [
+            "CHIMAL",
+            "Their paddles were obsidian. Every one of them."
+          ],
+          [
+            "ITZEL",
+            "Then Acatl is close. Keep the war-band together."
+          ],
+          [
+            "XOCO",
+            "The smoke is lifting off the water like mist at sunrise. The old priests knew their work."
+          ],
+          [
+            "ITZTLI",
+            "Ask the bats, day-keeper. They will tell you the night is longer than the day. It always was."
+          ]
+        ]
+      },
+      {
+        "slot": "m5",
+        "name": "The Lord of Itzcalli",
+        "summary": "Tecuani, lord of Itzcalli, swore to the Night-Knife for the throne of the next age, and holds the road east. Cross the river, take a second god, besiege his city and break the stela of his oath.",
+        "dialogue": [
+          [
+            "XOCO",
+            "Tecuani was a good lord once. When the fire went out, the Night-Knife promised him the throne of the next age, and he believed it."
+          ],
+          [
+            "ITZEL",
+            "The oath-stela in his city binds him to the Night-Knife — and binds the road east to both of them. It has to fall."
+          ],
+          [
+            "TECUANI",
+            "Go back to your counting, day-keeper. Every age ends. I only want to be standing when the next one begins."
+          ],
+          [
+            "ITZEL",
+            "The stela is broken and the road east is open. Tecuani has nothing left but the Night-Knife’s promise — and so do we, except that we know where the fire is."
+          ],
+          [
+            "CHIMAL",
+            "We are over. His runners will be in Itzcalli by tonight."
+          ],
+          [
+            "ITZEL",
+            "Let them run. He should hear it from his own people."
+          ],
+          [
+            "TECUANI",
+            "Every age ends in fire or flood. Why not end this one with a bargain?"
+          ],
+          [
+            "ITZEL",
+            "Because it is not yours to end."
+          ],
+          [
+            "ITZEL",
+            "Itzcalli is ours. Now the stela."
+          ]
+        ]
+      },
+      {
+        "slot": "m6",
+        "name": "The Fire Mountain",
+        "summary": "The fire serpents, whose coils carry flame across the sky, are chained in the crater of the fire mountain. Break the jailers, accept the serpents’ covenant, raise fire serpents of your own and defeat Mazatl at the crater gate.",
+        "dialogue": [
+          [
+            "CHIMAL",
+            "The turquoise fire serpents carry the flame across the sky. Since the binding night they have not been seen."
+          ],
+          [
+            "ITZEL",
+            "The Night-Knife has chained them in the crater of the fire mountain. Free them, and the sky can carry fire again."
+          ],
+          [
+            "XOCO",
+            "His champion holds the crater gate. Mazatl. He was a temple guard of Xochitla, child. I knew his mother."
+          ],
+          [
+            "ITZEL",
+            "The serpents fly. Tonight, from the crater rim, I saw the smoking mountain in the east — and the morning-star stone and the evening-star stone on either side of its gate."
+          ],
+          [
+            "ITZEL",
+            "The chains are broken. They will not follow us for that — serpents follow covenants."
+          ],
+          [
+            "CHIMAL",
+            "Then make one, day-keeper. They are circling, waiting."
+          ],
+          [
+            "ITZTLI",
+            "Mazatl guarded your temple once, day-keeper. Now he guards mine. Everything comes to me in the end."
+          ],
+          [
+            "XOCO",
+            "Mazatl is down. I will tell his mother he fought well, at the end, and that he was sorry."
+          ]
+        ]
+      },
+      {
+        "slot": "m7",
+        "name": "The Smoking Gate",
+        "summary": "The Night-Knife keeps the old fire in his obsidian palace inside the smoking mountain. Cross the ash-hills, light the morning-star stone and the evening-star stone to open the gate, defeat Itztli and decide what fire the next years are bound with.",
+        "dialogue": [
+          [
+            "ITZEL",
+            "The smoking mountain. The old fire of the last binding is inside, in the Night-Knife’s palace. Without it, no new fire can be bound to the years."
+          ],
+          [
+            "CHIMAL",
+            "The morning-star stone and the evening-star stone open the gate, one on each side of the ash-road. Tlacatl the warden walks between them."
+          ],
+          [
+            "ITZTLI",
+            "Come in, day-keeper. Count your last day with me."
+          ],
+          [
+            "ITZEL",
+            "The fire is ours. The count goes on."
+          ],
+          [
+            "XOCO",
+            "The gate is open. I have counted fifty-two years twice, child, and never stood this close to the beginning."
+          ],
+          [
+            "ITZTLI",
+            "Every age ends, day-keeper. I only chose the day."
+          ],
+          [
+            "ITZEL",
+            "The days are not yours to choose. They are only yours to count."
+          ],
+          [
+            "ITZEL",
+            "He is gone. The old fire is still burning. One last thing to decide."
+          ],
+          [
+            "XOCO",
+            "Every hearth in Xochitla was lit from the hill this morning. The children ran the coals from house to house."
+          ],
+          [
+            "CHIMAL",
+            "A pack of black jaguars, a house of eagles, a lake of bats, a lord of glass and a mountain of fire serpents. I carried the shield the whole way."
+          ],
+          [
+            "ITZEL",
+            "The old fire burns again. The same sun, the same count — fifty-two more years before anyone has to worry."
+          ],
+          [
+            "XOCO",
+            "And I will be here to break the pots, child, if I live that long."
+          ]
+        ]
+      }
+    ]
+  }
+]

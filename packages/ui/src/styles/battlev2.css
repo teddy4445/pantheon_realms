@@ -1,0 +1,116 @@
+/* Campaign expansion (2026-10-15): battlev2 screens. */
+
+/* ------------------------------------------------------------------
+   Creature abilities in the battle bar (neutral creatures, Ward, Shapeshift):
+   the painted badge over the name, the uses left in the tile's corner,
+   and a lock (not colour alone) when one cannot be used now. An unavailable
+   ability stays focusable (aria-disabled) so its rule and reason can be read.
+   ------------------------------------------------------------------ */
+.battle-actions > .btn.bv2-ability {
+  position: relative;
+}
+.battle-actions > .btn.bv2-ability > .btn__art {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+.battle-actions > .btn.bv2-ability[aria-disabled='true'] > .btn__art {
+  opacity: 0.45;
+}
+.btn.bv2-ability[aria-disabled='true'] > .bv2-lock {
+  display: inline-block;
+}
+.bv2-uses {
+  position: absolute;
+  top: 0.16rem;
+  left: 0.22rem;
+  padding: 0 0.24rem;
+  font-family: var(--font-ui, inherit);
+  font-size: 0.56rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold-200);
+  background: rgba(5, 9, 15, 0.84);
+  border: 1px solid rgba(194, 154, 82, 0.75);
+  border-radius: 3px;
+  pointer-events: none;
+}
+.bv2-ability.is-used .bv2-uses {
+  color: #cfc8b4;
+  border-color: #5a5d62;
+}
+.bv2-uses--inline {
+  position: static;
+  margin-left: auto;
+  font-size: 0.72rem;
+}
+
+/* ------------------------------------------------------------------
+   The ability being aimed: its exact rule, uses and legal targets, above the
+   battle bar on the side away from its targets (an ally-only ability on the
+   enemy's side, above the Log button; an enemy-only one on the player's side),
+   so the highlighted stacks stay in view; the hover inspection keeps the top
+   left. Scrolls inside itself when a large interface scale makes it taller.
+   ------------------------------------------------------------------ */
+.bv2-ability-card {
+  position: absolute;
+  left: 1rem;
+  bottom: calc(var(--bottombar-h) + 1.4rem);
+  width: min(23rem, calc(100vw - 2rem));
+  max-height: calc(100vh - var(--bottombar-h) - 12rem);
+  overflow-y: auto;
+  padding: 0.55rem 0.8rem 0.5rem;
+  z-index: 4;
+}
+.bv2-ability-card--right {
+  left: auto;
+  right: 1rem;
+  bottom: calc(var(--bottombar-h) + 4.4rem);
+  max-height: calc(100vh - var(--bottombar-h) - 15rem);
+}
+.bv2-ability-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(194, 154, 82, 0.35);
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--gold-200);
+}
+.bv2-ability-card__badge {
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  object-fit: contain;
+}
+.bv2-ability-card__rule {
+  margin: 0 0 0.3rem;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: var(--text-strong);
+}
+.bv2-ability-card__restriction {
+  margin: 0 0 0.3rem;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+.bv2-ability-card__uses {
+  margin: 0 0 0.45rem;
+  color: var(--gold-200);
+}
+.bv2-ability-card__targets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+.bv2-ability-card__targets > .bv2-target {
+  gap: 0.35rem;
+}
+.bv2-ability-card__hint {
+  margin: 0;
+}

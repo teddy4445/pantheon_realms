@@ -1,0 +1,17 @@
+{
+  "newAssetCount": 9,
+  "allNewAssetsHaveAlpha": true,
+  "creatureForms": 84,
+  "pantheons": 6,
+  "nativeCreatureFrameHeightRange": [
+    207,
+    348
+  ],
+  "visibleCreatureHeightRange": [
+    120,
+    247
+  ],
+  "fileCount": 314,
+  "gameSourceModified": false,
+  "review": "Desktop gallery and creature previews visually inspected; no broken browser images or script errors; all six faction tabs contain 14 forms; mobile gallery has no horizontal overflow"
+}

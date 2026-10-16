@@ -17,7 +17,7 @@
  * shoot → attack → idle) and the view adds a little motion of its own; the
  * rules never wait for, read or depend on any animation.
  */
-import type { CreatureDefinition, ContentCatalog } from '@pr/rules';
+import type { CreatureDefinition, ContentCatalog, SiteDefinition } from '@pr/rules';
 import type { MapDirection } from './hexmath';
 
 /** Battle and bestiary animation names (directive §9). */
@@ -27,20 +27,50 @@ export type CreatureAnimation = (typeof CREATURE_ANIMATIONS)[number];
 /** Every ordinary creature needs these. */
 export const BASE_ANIMATIONS: readonly CreatureAnimation[] = ['idle', 'move', 'attack', 'defend', 'hit', 'death', 'victory'];
 
-/** Map location kinds as drawn on the adventure map (`SiteDefinition` kinds; sprite IDs `map.site.<kind>[.<variant>]`). */
+/**
+ * Map location kinds as drawn on the adventure map (`SiteDefinition` kinds; sprite IDs `map.site.<kind>[.<variant>]`).
+ * A kind in `STATE_SITE_ARCHETYPES` is painted only per state (`map.site.sluice.open` / `.closed`).
+ */
 export const SITE_ARCHETYPES = [
   'town', 'sawmill', 'quarry', 'gold_mine', 'crystal_deposit', 'pickup', 'watchtower', 'crossing_bridge', 'crossing_pass',
   'nest', 'refuge', 'quarry_cache', 'grove', 'beacon', 'relay', 'gate', 'camp', 'event_site', 'relic', 'portal',
   'learning_stone', 'spell_shrine', 'skill_trainer', 'quest_hut', 'key_tent', 'key_gate', 'windmill', 'treasure_chest', 'prison',
+  'sluice',
 ] as const;
 export type SiteArchetype = (typeof SITE_ARCHETYPES)[number];
+
+/** Location kinds whose pictures are one per state (campaign v2: the sluice, `open` or `closed`). */
+export const STATE_SITE_ARCHETYPES: Readonly<Partial<Record<SiteArchetype, readonly string[]>>> = { sluice: ['closed', 'open'] };
 
 /** Map-avatar animation names (directive §16 D: 8 directions, idle and walk). */
 export const HERO_MAP_ANIMATIONS = ['idle', 'walk'] as const;
 
 export type SpriteStatus = 'final' | 'placeholder';
 
-/** One horizontal strip of equally sized frames. */
+/**
+ * One measured frame inside a multi-row atlas (campaign expansion kit,
+ * 2026-10-15: `animation-manifest.json`). The frame is drawn from its source
+ * rectangle at a constant scale (`sourceScale` × the set's scale), with its
+ * pixel anchor on the ground point — never resized to its own bounding box, so
+ * the creature does not grow or shrink between poses; a left-facing unit is
+ * mirrored around that same anchor.
+ */
+export interface SpriteFrameRegion {
+  /** Source rectangle [x, y, width, height] in native atlas pixels. */
+  readonly rect: readonly [number, number, number, number];
+  /** Ground point inside the rectangle, in pixels from its top-left corner. */
+  readonly anchor: readonly [number, number];
+  /** Scale of this source relative to the set's core atlas (e.g. a smaller flight atlas). */
+  readonly sourceScale: number;
+  /** [row, column] of the pose in the delivered atlas (provenance; the clipped Pegasus pose [0,2] is never listed). */
+  readonly sourceCell?: readonly [number, number];
+}
+
+/**
+ * One horizontal strip of equally sized frames, or (with `regions`) a list of
+ * measured frames inside one atlas. Strips without `regions` behave exactly as
+ * before (backward compatible).
+ */
 export interface SpriteStrip {
   /** Runtime path relative to the application root (e.g. `sprites/creatures/hoplite/idle.webp`). */
   readonly file: string;
@@ -58,6 +88,29 @@ export interface SpriteStrip {
   readonly tint?: 'accent';
   /** Delivered final art (set by `npm run sprites:import`); absent = the set's status. */
   readonly status?: SpriteStatus;
+  /**
+   * Frame-region variant: when present, frame i is `regions[i]` (`frames` equals
+   * its length; `frameWidth`/`frameHeight` are the largest rectangle, `anchor`
+   * is unused). One-shot strips (`loop` false) play once; death holds its last pose.
+   */
+  readonly regions?: readonly SpriteFrameRegion[];
+  /** Documentation: this animation reuses another one's poses (e.g. victory = idle). */
+  readonly aliasOf?: string;
+}
+
+/** Cache key of a strip's frames: its file, plus its rectangles for a frame-region strip (several animations share one atlas). */
+export function stripKey(strip: SpriteStrip): string {
+  return strip.regions ? `${strip.file}#${strip.regions.map((r) => r.rect.join(',')).join(';')}` : strip.file;
+}
+
+/** Frames of a strip: its regions, else its uniform frame count. */
+export function stripFrameCount(strip: SpriteStrip): number {
+  return strip.regions ? strip.regions.length : Math.max(1, strip.frames);
+}
+
+/** Every region lies inside a `width` × `height` image (registration check). */
+export function regionsInside(strip: SpriteStrip, width: number, height: number): boolean {
+  return (strip.regions ?? []).every((r) => r.rect[0] >= 0 && r.rect[1] >= 0 && r.rect[2] > 0 && r.rect[3] > 0 && r.rect[0] + r.rect[2] <= width && r.rect[1] + r.rect[3] <= height);
 }
 
 export interface SpriteAnimationDefinition extends SpriteStrip {
@@ -116,6 +169,42 @@ export interface EffectDefinition extends SpriteStrip {
   readonly additive?: boolean;
 }
 
+/**
+ * How a shooter's missile flies and lands (battle FX delivery 2026-10-15,
+ * `assets-runtime/battle-fx-neutral-upgrades-v1/manifest.json`): keyed by the
+ * attacking creature ID (22 shooter forms) plus `siege_turret` and `catapult`.
+ * Presentation only: never a rule, a damage value or a random draw.
+ */
+export interface ProjectileProfile {
+  readonly unitId: string;
+  readonly displayName: string;
+  /** `base` / `upgraded` form, or the siege actor (`tower-arrow`, `catapult-stone`). */
+  readonly variant: string;
+  /** The FX sheet (relative runtime path). */
+  readonly file: string;
+  /** Travel poses (native rectangles and pixel anchors); the art faces +X. */
+  readonly travel: readonly SpriteFrameRegion[];
+  readonly travelFps: number;
+  /** `static`: the first pose moved through the world (physical missiles); `loop`: the four poses at `travelFps` (magic). */
+  readonly travelPlayback: 'static' | 'loop';
+  /** The impact strip in `effects` (frame regions), played once at the contact point. */
+  readonly impactEffectId: string;
+  /** The first travel pose as a still in `projectiles`. */
+  readonly projectileId: string;
+  readonly impactFps: number;
+  /** Fade the impact's alpha over its last milliseconds (no hard pop). */
+  readonly impactFadeLastMs: number;
+  readonly path: 'direct' | 'shallow-ballistic' | 'high-ballistic';
+  /** Flight time clamped to this range, scaled by distance and battle speed. */
+  readonly durationMsRange: readonly [number, number];
+  /** Logical release point on the shooter (`mouth`, `throwing-hand-or-weapon`); pixel sockets are calibrated in the renderer. */
+  readonly sourcePoint: string;
+  /** Size of one full source cell (transparent margin included) in hexes. */
+  readonly sizeHex: number;
+  readonly impactSizeHex: number;
+  readonly blend: string;
+}
+
 export interface HeroSpriteDefinition extends SpriteSetDefinition {
   /** Large still for the hero screen (same design as the map avatar). */
   readonly figure?: { readonly file: string; readonly width: number; readonly height: number; readonly status: SpriteStatus };
@@ -132,6 +221,8 @@ export interface SpriteManifest {
   readonly siege: Readonly<Record<string, StaticSpriteDefinition>>;
   readonly projectiles: Readonly<Record<string, StaticSpriteDefinition>>;
   readonly effects: Readonly<Record<string, EffectDefinition>>;
+  /** Shooter missile and impact profiles by attacking creature ID (battle FX delivery 2026-10-15); absent = the generic arrow. */
+  readonly projectileProfiles?: Readonly<Record<string, ProjectileProfile>>;
   /** Painted road sheets (GPT-6 Brief 16), keyed `<road type>.<a|b|c>`; written by `npm run roads:import`. */
   readonly roads?: Readonly<Record<string, RoadSheetDefinition>>;
   /** Painted ground transitions (GPT-6 Brief 17): traced edge masks and the shore foam atlas; written by `npm run ground:import`. */
@@ -218,6 +309,46 @@ export function heroSprites(pantheonId: string | null | undefined): HeroSpriteDe
 /** A map site: `map.site.<kind>.<variant>` first, then `map.site.<kind>`. */
 export function siteSprite(kind: string, variant?: string | null): StaticSpriteDefinition | null {
   return (variant ? manifest.sites[`map.site.${kind}.${variant}`] : undefined) ?? manifest.sites[`map.site.${kind}`] ?? null;
+}
+
+/**
+ * The pictures a site asks for, best first, from its definition and state only
+ * (campaign content v2, presentation): a sluice's state picture
+ * (`map.site.<art>.<open|closed>`, then `map.site.sluice.<state>`), the site's own
+ * `art` (`map.site.<art>`), a ferry landing's picture (`map.site.ferry`) and a
+ * creature camp's hiring-site picture (`map.site.neutral_dwelling.<creatureId>`,
+ * which exists only for creatures that have one). Never keyed by a site ID; the
+ * view draws the first one the manifest has, else the kind's picture
+ * (`pickSiteSprite`).
+ */
+export function siteSpriteCandidates(def: Pick<SiteDefinition, 'kind' | 'art'>, state?: { readonly open?: boolean } | null): string[] {
+  const out: string[] = [];
+  const k = def.kind;
+  if (k.type === 'sluice') {
+    const s = state?.open ? 'open' : 'closed';
+    if (def.art) out.push(`map.site.${def.art}.${s}`);
+    out.push(`map.site.sluice.${s}`);
+  }
+  if (def.art) out.push(`map.site.${def.art}`);
+  if (k.type === 'portal' && k.ferry) out.push('map.site.ferry');
+  if (k.type === 'creature_camp') out.push(`map.site.neutral_dwelling.${k.creatureId}`);
+  return [...new Set(out)];
+}
+
+/**
+ * The picture drawn for a site: the first of `preferred` the manifest has, else
+ * `map.site.<kind>.<variant>`, else `map.site.<kind>` (the ID too, so a view
+ * redraws a site only when its picture changes — e.g. a sluice opened).
+ */
+export function pickSiteSprite(preferred: readonly string[] | null | undefined, kind: string, variant?: string | null): { id: string | null; def: StaticSpriteDefinition | null } {
+  for (const id of preferred ?? []) {
+    const def = manifest.sites[id];
+    if (def) return { id, def };
+  }
+  const own = variant ? `map.site.${kind}.${variant}` : null;
+  if (own && manifest.sites[own]) return { id: own, def: manifest.sites[own]! };
+  const base = `map.site.${kind}`;
+  return manifest.sites[base] ? { id: base, def: manifest.sites[base]! } : { id: null, def: null };
 }
 
 /** Fallback chain per animation (directive §12: a missing optional animation degrades gracefully). */

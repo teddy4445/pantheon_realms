@@ -21,7 +21,10 @@ import frontendKitManifest from '../../../../assets-runtime/frontend-kit-v1.1.0/
 import encounterKitManifest from '../../../../assets-runtime/encounters-v1.1.0/manifest.json';
 import adventureKitManifest from '../../../../assets-runtime/adventure-gui-v1.1.0/manifest.json';
 import heroPortraitPack from '../../../../assets-runtime/hero-portraits-complete/manifest.json';
-import { registerEnvironmentArt, registerSpriteManifest, type EnvironmentArt, type SpriteManifest } from '@pr/presentation/core';
+import routeKitManifest from '../../../../assets-runtime/recruitment-route-v1/manifest.json';
+import campaignV2Manifest from '../../../../assets-runtime/campaign-v2/manifest.json';
+import battleFxUpgradesManifest from '../../../../assets-runtime/battle-fx-neutral-upgrades-v1/manifest.json';
+import { registerEnvironmentArt, registerRouteArt, registerSpriteManifest, type EnvironmentArt, type RouteMarkerId, type SpriteManifest } from '@pr/presentation/core';
 
 export type AssetStatus = 'final' | 'placeholder' | 'procedural';
 
@@ -236,6 +239,116 @@ export function adventureKitIds(): string[] {
   return Object.keys(ADVENTURE_KIT);
 }
 
+/**
+ * The recruitment and route kit of 2026-10-14 (`assets-runtime/recruitment-route-v1`,
+ * `npm run recruitroute:import`): nine text-free pictures under `recruitroute.*` —
+ * the Recruit all, Train troops and Continue journey icons, and the painted
+ * route markers (today's gold and later days' bronze chevrons, which point UP in
+ * their pictures, the hourglass, the blank day parchment, the destination seal
+ * and the selection ring). `visibleBounds` is the painted part of each picture as
+ * fractions [left, top, right, bottom], for sizing by what shows rather than by
+ * the transparent margin. Relative URLs only.
+ */
+export interface RouteKitArt {
+  readonly id: string;
+  readonly url: string;
+  readonly width: number;
+  readonly height: number;
+  readonly visibleBounds: readonly [number, number, number, number];
+}
+interface RouteKitFile {
+  readonly assets: Record<string, { file: string; width: number; height: number; visibleBounds: number[] }>;
+  readonly creatures: Record<string, { file: string; frames: number; frameWidth: number; frameHeight: number; fps: number; anchor: number[]; visibleUnion: number[] }>;
+}
+const ROUTE_KIT = routeKitManifest as unknown as RouteKitFile;
+const safeFile = (f: string | undefined): f is string => !!f && !/^[a-z]:|^\/|^\\|\.\./i.test(f);
+
+export function routeKitArt(id: string): RouteKitArt | null {
+  const a = ROUTE_KIT.assets?.[id];
+  if (!a || !safeFile(a.file)) return null;
+  const b = a.visibleBounds;
+  return { id, url: `./${a.file}`, width: a.width, height: a.height, visibleBounds: b?.length === 4 ? [b[0]!, b[1]!, b[2]!, b[3]!] : [0, 0, 1, 1] };
+}
+
+export function routeKitIds(): string[] {
+  return Object.keys(ROUTE_KIT.assets ?? {});
+}
+
+/** The map's painted route markers (`@pr/presentation/core` routeArt). */
+const ROUTE_MARKERS: Record<RouteMarkerId, string> = {
+  chevronToday: 'recruitroute.route-chevron-current',
+  chevronLater: 'recruitroute.route-chevron-later',
+  hourglass: 'recruitroute.route-hourglass',
+  dayBadge: 'recruitroute.route-day-badge',
+  destination: 'recruitroute.route-destination',
+  selectionRing: 'recruitroute.route-selection-ring',
+};
+registerRouteArt((id) => routeKitArt(ROUTE_MARKERS[id]));
+
+/**
+ * The campaign expansion kit of 2026-10-15 (`assets-runtime/campaign-v2`,
+ * `npm run campaignv2:import`): 31 native pictures under `campaignv2.*` — six
+ * neutral creature portraits, seven animation atlases (registered below as
+ * frame-region sprite sets), ten map sites (six neutral hiring sites, the sluice
+ * closed/open, the ferry landing, the supply depot), six campaign icons and two
+ * text-free backgrounds. Icons and sites resolve to their trimmed display copies
+ * (the native files ship beside them). Relative paths only.
+ */
+export interface CampaignV2Art {
+  readonly id: string;
+  readonly url: string;
+  readonly width: number;
+  readonly height: number;
+  readonly kind: string;
+  /** The delivered native picture (portraits, atlases and backgrounds are used as delivered). */
+  readonly nativeUrl: string;
+}
+interface CampaignV2File {
+  readonly assets: Record<string, { file: string; kind: string; width: number; height: number; display?: { file: string; width: number; height: number } }>;
+  readonly creatures: Record<string, unknown>;
+  readonly sites: Record<string, unknown>;
+}
+const CAMPAIGN_V2 = campaignV2Manifest as unknown as CampaignV2File;
+
+export function campaignV2Art(id: string): CampaignV2Art | null {
+  const a = CAMPAIGN_V2.assets?.[id];
+  if (!a || !safeFile(a.file)) return null;
+  const d = a.display && safeFile(a.display.file) ? a.display : null;
+  return { id, url: `./${(d ?? a).file}`, width: (d ?? a).width, height: (d ?? a).height, kind: a.kind, nativeUrl: `./${a.file}` };
+}
+
+export function campaignV2Ids(): string[] {
+  return Object.keys(CAMPAIGN_V2.assets ?? {});
+}
+
+/**
+ * The battle FX & neutral-upgrade delivery of 2026-10-15
+ * (`assets-runtime/battle-fx-neutral-upgrades-v1`, `npm run battlefx:import`):
+ * the six upgraded neutral portraits (`neutralupgrade.portrait.<creatureId>`),
+ * their frame-region sprite sets, 24 projectile stills and impacts, and the
+ * shooter projectile profiles — merged into the sprite manifest below, never
+ * replacing it. Relative paths only.
+ */
+interface BattleFxFile {
+  readonly assets: Record<string, { file: string; kind: string; width: number; height: number; creatureId: string; baseId: string }>;
+  readonly creatures: Record<string, unknown>;
+  readonly effects: Record<string, unknown>;
+  readonly projectiles: Record<string, unknown>;
+  readonly projectileProfiles: Record<string, unknown>;
+}
+const BATTLE_FX = battleFxUpgradesManifest as unknown as BattleFxFile;
+
+/** An upgraded neutral's delivered portrait (native 1254 × 1254), or null. */
+export function neutralUpgradeArt(id: string): { id: string; url: string; width: number; height: number; creatureId: string; baseId: string } | null {
+  const a = BATTLE_FX.assets?.[id];
+  if (!a || !safeFile(a.file)) return null;
+  return { id, url: `./${a.file}`, width: a.width, height: a.height, creatureId: a.creatureId, baseId: a.baseId };
+}
+
+export function neutralUpgradeIds(): string[] {
+  return Object.keys(BATTLE_FX.assets ?? {});
+}
+
 const cache = new Map<string, AssetRecord>();
 
 export function resolveAsset(id: string): AssetRecord {
@@ -257,6 +370,24 @@ export function resolveAsset(id: string): AssetRecord {
   const adv = id.startsWith('adventurekit.') ? adventureKitArt(id) : null;
   if (adv) {
     rec = { id, status: 'final', url: adv.url, provenance: '1.1.0 adventure screens (adventure-gui-v1.1.0)' };
+    cache.set(id, rec);
+    return rec;
+  }
+  const v2 = id.startsWith('campaignv2.') ? campaignV2Art(id) : null;
+  if (v2) {
+    rec = { id, status: 'final', url: v2.url, provenance: 'Campaign expansion kit 2026-10-15 (campaign-v2)' };
+    cache.set(id, rec);
+    return rec;
+  }
+  const up = id.startsWith('neutralupgrade.') ? neutralUpgradeArt(id) : null;
+  if (up) {
+    rec = { id, status: 'final', url: up.url, provenance: 'Battle FX & neutral upgrades 2026-10-15 (battle-fx-neutral-upgrades-v1)' };
+    cache.set(id, rec);
+    return rec;
+  }
+  const route = id.startsWith('recruitroute.') ? routeKitArt(id) : null;
+  if (route) {
+    rec = { id, status: 'final', url: route.url, provenance: 'Recruitment & route kit 2026-10-14 (recruitment-route-v1)' };
     cache.set(id, rec);
     return rec;
   }
@@ -353,9 +484,28 @@ export function townBackground(backgroundAssetId: string, civicHallLevel: number
 // final). Every file is served from the app's own runtime folder.
 // ---------------------------------------------------------------------------
 
+/** Campaign-v2 sprite entries with relative files only (frame-region creature sets, map sites). */
+function safeEntries<T>(rec: Record<string, unknown> | undefined): Record<string, T> {
+  const out: Record<string, T> = {};
+  for (const [k, v] of Object.entries(rec ?? {})) {
+    const files = JSON.stringify(v).match(/"file":"([^"]*)"/g) ?? [];
+    if (files.every((f) => safeFile(f.slice(8, -1)))) out[k] = v as T;
+  }
+  return out;
+}
+
 registerSpriteManifest(
   {
     ...(spriteManifestFile as unknown as SpriteManifest),
+    creatures: {
+      ...(spriteManifestFile as unknown as SpriteManifest).creatures,
+      ...safeEntries<SpriteManifest['creatures'][string]>(CAMPAIGN_V2.creatures),
+      ...safeEntries<SpriteManifest['creatures'][string]>(BATTLE_FX.creatures),
+    },
+    projectiles: { ...(spriteManifestFile as unknown as SpriteManifest).projectiles, ...safeEntries<SpriteManifest['projectiles'][string]>(BATTLE_FX.projectiles) },
+    effects: { ...(spriteManifestFile as unknown as SpriteManifest).effects, ...safeEntries<SpriteManifest['effects'][string]>(BATTLE_FX.effects) },
+    projectileProfiles: safeEntries<NonNullable<SpriteManifest['projectileProfiles']>[string]>(BATTLE_FX.projectileProfiles),
+    sites: { ...(spriteManifestFile as unknown as SpriteManifest).sites, ...safeEntries<SpriteManifest['sites'][string]>(CAMPAIGN_V2.sites) },
     siege: { ...(spriteManifestFile as unknown as SpriteManifest).siege, ...SIEGE_V2.siege, ...GATE_V3.siege },
   },
   (file) => `./${file}`,
@@ -370,6 +520,38 @@ export interface IdleStrip {
   readonly fps: number;
   /** Feet point as fractions of a frame. */
   readonly anchor: readonly [number, number];
+}
+
+/**
+ * The recruitment stage's strip: the creature's delivered native idle strip
+ * (source resolution, original timing and anchor; recruitment-route-v1), with the
+ * union of its visible pixels over every frame — the stage fits that, not the
+ * whole frame. Map and battle keep their own strips (`creatureIdleStrip`).
+ * Falls back to the runtime strip, fitted by its whole frame, when no copy exists.
+ */
+export interface StageStrip extends IdleStrip {
+  /** Union of the visible pixels over all frames, in frame pixels [x0, y0, x1, y1]. */
+  readonly visible: readonly [number, number, number, number];
+  readonly native: boolean;
+}
+
+export function creatureStageStrip(creatureId: string): StageStrip | null {
+  const c = ROUTE_KIT.creatures?.[creatureId];
+  if (c && safeFile(c.file) && c.frames > 0 && c.frameWidth > 0 && c.frameHeight > 0 && c.visibleUnion?.length === 4) {
+    const v = c.visibleUnion;
+    return {
+      url: `./${c.file}`,
+      frames: c.frames,
+      frameWidth: c.frameWidth,
+      frameHeight: c.frameHeight,
+      fps: c.fps || 4,
+      anchor: c.anchor?.length === 2 ? [c.anchor[0]!, c.anchor[1]!] : [0.5, 0.9],
+      visible: [v[0]!, v[1]!, v[2]!, v[3]!],
+      native: true,
+    };
+  }
+  const s = creatureIdleStrip(creatureId);
+  return s ? { ...s, visible: [0, 0, s.frameWidth, s.frameHeight], native: false } : null;
 }
 
 export function creatureIdleStrip(creatureId: string): IdleStrip | null {

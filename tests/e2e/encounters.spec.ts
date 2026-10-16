@@ -146,9 +146,12 @@ test('briefing scroll: every visible objective, real speakers, and Begin closes 
   const s0 = await waitFor(page, (s) => s.overlays.includes('briefing'), 'briefing', 30_000, true);
   const brief = page.getByTestId('briefing');
   await expect(brief.locator('.brief__paper')).toHaveAttribute('src', /encounters-v1\.1\.0\/intro-scroll\.png$/);
-  const visible = Object.values(s0.state.mission.objectives as Record<string, { status: string }>).filter((o) => o.status !== 'locked').length;
-  await expect(brief.locator('.brief__objective')).toHaveCount(visible);
-  await expect(brief.locator('.brief__kicker')).toContainText('Mission 1');
+  // A new run plays the content-v2 chapters (2026-10-15): the introduction lists the open
+  // required tasks (not every objective), the kicker names the chapter, battles are by hand.
+  expect(s0.campaign.contentVersion).toBe(2);
+  await expect(brief.getByTestId('briefing-tasks').locator('.brief__task').first()).toBeVisible();
+  await expect(brief.locator('.brief__kicker')).toContainText('Chapter 1');
+  await expect(brief.getByTestId('manual-battle-notice')).toBeVisible();
   await expect(brief.getByTestId('briefing-facts')).toBeVisible();
   await settle(page);
   await page.screenshot({ path: 'test-results/encounter-briefing.png' });

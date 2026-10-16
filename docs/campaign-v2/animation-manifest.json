@@ -1,0 +1,3234 @@
+{
+  "schema": "pantheon-frame-regions-proposal-1",
+  "notDropInCurrentSpriteManifest": true,
+  "pixelEditing": false,
+  "sets": {
+    "pegasus": {
+      "proposedCreatureId": "pegasus",
+      "facing": "right",
+      "defaultStageScale": 1,
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-pegasus-v2.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                53,
+                56,
+                161,
+                177
+              ],
+              "anchor": [
+                80.5,
+                173
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                308,
+                56,
+                163,
+                176
+              ],
+              "anchor": [
+                81.5,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                567,
+                52,
+                162,
+                181
+              ],
+              "anchor": [
+                81.0,
+                177
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                817,
+                55,
+                161,
+                178
+              ],
+              "anchor": [
+                80.5,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-pegasus-v2.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                41,
+                296,
+                187,
+                177
+              ],
+              "anchor": [
+                92.5,
+                173
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                297,
+                296,
+                187,
+                179
+              ],
+              "anchor": [
+                92.5,
+                175
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                548,
+                294,
+                195,
+                180
+              ],
+              "anchor": [
+                100.0,
+                176
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                808,
+                296,
+                182,
+                178
+              ],
+              "anchor": [
+                89.5,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-pegasus-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                39,
+                558,
+                203,
+                178
+              ],
+              "anchor": [
+                94.5,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                280,
+                522,
+                212,
+                212
+              ],
+              "anchor": [
+                109.5,
+                208
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                546,
+                540,
+                221,
+                192
+              ],
+              "anchor": [
+                102.0,
+                188
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                811,
+                555,
+                179,
+                183
+              ],
+              "anchor": [
+                86.5,
+                179
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-pegasus-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                36,
+                804,
+                199,
+                176
+              ],
+              "anchor": [
+                97.5,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                296,
+                802,
+                202,
+                180
+              ],
+              "anchor": [
+                93.5,
+                176
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                543,
+                811,
+                211,
+                171
+              ],
+              "anchor": [
+                105.0,
+                167
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                804,
+                782,
+                181,
+                200
+              ],
+              "anchor": [
+                93.5,
+                196
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-pegasus-v2.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                42,
+                1037,
+                189,
+                192
+              ],
+              "anchor": [
+                91.5,
+                188
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                292,
+                1043,
+                193,
+                187
+              ],
+              "anchor": [
+                97.5,
+                183
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                542,
+                1056,
+                201,
+                174
+              ],
+              "anchor": [
+                106.0,
+                170
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                807,
+                1038,
+                183,
+                190
+              ],
+              "anchor": [
+                90.5,
+                186
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-pegasus-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                31,
+                1304,
+                211,
+                164
+              ],
+              "anchor": [
+                102.5,
+                160
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                277,
+                1309,
+                221,
+                153
+              ],
+              "anchor": [
+                112.5,
+                149
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                523,
+                1338,
+                229,
+                116
+              ],
+              "anchor": [
+                125.0,
+                112
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                779,
+                1340,
+                231,
+                105
+              ],
+              "anchor": [
+                118.5,
+                101
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Intentional reuse of idle; no separate victory poses are supplied."
+        },
+        "ability": {
+          "alias": "defend"
+        },
+        "takeoff": {
+          "file": "new-assets/atlas-pegasus-flight.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                41,
+                148,
+                292,
+                202
+              ],
+              "anchor": [
+                146.0,
+                198
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                0,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                418,
+                45,
+                272,
+                306
+              ],
+              "anchor": [
+                136.0,
+                302
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                0,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                1101,
+                79,
+                315,
+                265
+              ],
+              "anchor": [
+                157.5,
+                261
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                0,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "stageLift": 0
+        },
+        "fly": {
+          "file": "new-assets/atlas-pegasus-flight.png",
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                27,
+                371,
+                301,
+                308
+              ],
+              "anchor": [
+                160.0,
+                304
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                1,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                399,
+                427,
+                312,
+                243
+              ],
+              "anchor": [
+                155.0,
+                239
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                1,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                753,
+                492,
+                304,
+                194
+              ],
+              "anchor": [
+                144.5,
+                190
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                1,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                1122,
+                410,
+                296,
+                260
+              ],
+              "anchor": [
+                136.5,
+                256
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                1,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "stageLift": 18
+        },
+        "landing": {
+          "file": "new-assets/atlas-pegasus-flight.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                22,
+                712,
+                307,
+                324
+              ],
+              "anchor": [
+                165.0,
+                320
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                2,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                389,
+                745,
+                322,
+                292
+              ],
+              "anchor": [
+                165.0,
+                288
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                2,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                771,
+                813,
+                303,
+                230
+              ],
+              "anchor": [
+                126.5,
+                226
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                2,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                1131,
+                791,
+                271,
+                254
+              ],
+              "anchor": [
+                127.5,
+                250
+              ],
+              "sourceScale": 0.62,
+              "sourceCell": [
+                2,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "stageLift": 0
+        }
+      },
+      "nativeAtlasSize": [
+        1024,
+        1536
+      ],
+      "note": "Four authored poses per core state. Explicit rectangles and anchors are required; this is not the current horizontal-strip schema."
+    },
+    "root_runner": {
+      "proposedCreatureId": "root_runner",
+      "facing": "right",
+      "defaultStageScale": 1,
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-root_runner-v2.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                65,
+                90,
+                151,
+                146
+              ],
+              "anchor": [
+                75.5,
+                142
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                322,
+                90,
+                151,
+                146
+              ],
+              "anchor": [
+                75.5,
+                142
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                572,
+                89,
+                153,
+                147
+              ],
+              "anchor": [
+                76.5,
+                143
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                819,
+                89,
+                161,
+                147
+              ],
+              "anchor": [
+                80.5,
+                143
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-root_runner-v2.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                46,
+                327,
+                177,
+                164
+              ],
+              "anchor": [
+                94.5,
+                160
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                308,
+                327,
+                180,
+                163
+              ],
+              "anchor": [
+                89.5,
+                159
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                563,
+                327,
+                181,
+                159
+              ],
+              "anchor": [
+                85.5,
+                155
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                806,
+                329,
+                179,
+                165
+              ],
+              "anchor": [
+                93.5,
+                161
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-root_runner-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                55,
+                581,
+                176,
+                161
+              ],
+              "anchor": [
+                85.5,
+                157
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                292,
+                573,
+                228,
+                147
+              ],
+              "anchor": [
+                105.5,
+                143
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                561,
+                574,
+                200,
+                167
+              ],
+              "anchor": [
+                87.5,
+                163
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                807,
+                576,
+                179,
+                171
+              ],
+              "anchor": [
+                92.5,
+                167
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-root_runner-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                57,
+                833,
+                178,
+                163
+              ],
+              "anchor": [
+                83.5,
+                159
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                322,
+                832,
+                184,
+                164
+              ],
+              "anchor": [
+                75.5,
+                160
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                573,
+                836,
+                170,
+                165
+              ],
+              "anchor": [
+                75.5,
+                161
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                810,
+                830,
+                171,
+                171
+              ],
+              "anchor": [
+                89.5,
+                167
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-root_runner-v2.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                62,
+                1090,
+                177,
+                164
+              ],
+              "anchor": [
+                78.5,
+                160
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                311,
+                1090,
+                179,
+                161
+              ],
+              "anchor": [
+                86.5,
+                157
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                563,
+                1093,
+                177,
+                164
+              ],
+              "anchor": [
+                85.5,
+                160
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                805,
+                1094,
+                182,
+                162
+              ],
+              "anchor": [
+                94.5,
+                158
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-root_runner-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                51,
+                1336,
+                177,
+                157
+              ],
+              "anchor": [
+                89.5,
+                153
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                300,
+                1346,
+                182,
+                142
+              ],
+              "anchor": [
+                97.5,
+                138
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                544,
+                1372,
+                197,
+                115
+              ],
+              "anchor": [
+                104.5,
+                111
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                796,
+                1391,
+                189,
+                97
+              ],
+              "anchor": [
+                103.5,
+                93
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Intentional reuse of idle; no separate victory poses are supplied."
+        },
+        "ability": {
+          "alias": "attack"
+        }
+      },
+      "nativeAtlasSize": [
+        1024,
+        1536
+      ],
+      "note": "Four authored poses per core state. Explicit rectangles and anchors are required; this is not the current horizontal-strip schema."
+    },
+    "serpopard": {
+      "proposedCreatureId": "serpopard",
+      "facing": "right",
+      "defaultStageScale": 1,
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-serpopard-v3.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                43,
+                56,
+                180,
+                178
+              ],
+              "anchor": [
+                90.0,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                295,
+                56,
+                181,
+                178
+              ],
+              "anchor": [
+                90.5,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                549,
+                56,
+                177,
+                178
+              ],
+              "anchor": [
+                88.5,
+                174
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                802,
+                57,
+                177,
+                177
+              ],
+              "anchor": [
+                88.5,
+                173
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-serpopard-v3.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                38,
+                310,
+                196,
+                177
+              ],
+              "anchor": [
+                95.0,
+                173
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                284,
+                308,
+                209,
+                175
+              ],
+              "anchor": [
+                101.5,
+                171
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                529,
+                311,
+                216,
+                174
+              ],
+              "anchor": [
+                108.5,
+                170
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                780,
+                311,
+                213,
+                176
+              ],
+              "anchor": [
+                110.5,
+                172
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-serpopard-v3.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                41,
+                555,
+                190,
+                189
+              ],
+              "anchor": [
+                92.0,
+                185
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                283,
+                574,
+                269,
+                166
+              ],
+              "anchor": [
+                102.5,
+                162
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                552,
+                581,
+                197,
+                162
+              ],
+              "anchor": [
+                85.5,
+                158
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                798,
+                554,
+                186,
+                187
+              ],
+              "anchor": [
+                92.5,
+                183
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-serpopard-v3.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                33,
+                820,
+                211,
+                171
+              ],
+              "anchor": [
+                100.0,
+                167
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                284,
+                860,
+                229,
+                125
+              ],
+              "anchor": [
+                101.5,
+                121
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                539,
+                819,
+                208,
+                168
+              ],
+              "anchor": [
+                98.5,
+                164
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                784,
+                820,
+                204,
+                173
+              ],
+              "anchor": [
+                106.5,
+                169
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-serpopard-v3.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                31,
+                1078,
+                196,
+                175
+              ],
+              "anchor": [
+                102.0,
+                171
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                276,
+                1118,
+                215,
+                133
+              ],
+              "anchor": [
+                109.5,
+                129
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                534,
+                1128,
+                214,
+                127
+              ],
+              "anchor": [
+                103.5,
+                123
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                786,
+                1070,
+                210,
+                185
+              ],
+              "anchor": [
+                104.5,
+                181
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-serpopard-v3.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                27,
+                1331,
+                211,
+                137
+              ],
+              "anchor": [
+                106.0,
+                133
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                270,
+                1338,
+                214,
+                133
+              ],
+              "anchor": [
+                115.5,
+                129
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                517,
+                1380,
+                233,
+                86
+              ],
+              "anchor": [
+                120.5,
+                82
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                771,
+                1393,
+                233,
+                75
+              ],
+              "anchor": [
+                119.5,
+                71
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Intentional reuse of idle; no separate victory poses are supplied."
+        },
+        "ability": {
+          "alias": "attack"
+        }
+      },
+      "nativeAtlasSize": [
+        1024,
+        1536
+      ],
+      "note": "Four authored poses per core state. Explicit rectangles and anchors are required; this is not the current horizontal-strip schema."
+    },
+    "baku": {
+      "proposedCreatureId": "baku",
+      "facing": "right",
+      "defaultStageScale": 1,
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-baku-v2.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                55,
+                102,
+                152,
+                133
+              ],
+              "anchor": [
+                76.0,
+                129
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                307,
+                102,
+                157,
+                133
+              ],
+              "anchor": [
+                78.5,
+                129
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                558,
+                104,
+                152,
+                131
+              ],
+              "anchor": [
+                76.0,
+                127
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                821,
+                103,
+                153,
+                132
+              ],
+              "anchor": [
+                76.5,
+                128
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-baku-v2.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                45,
+                332,
+                172,
+                139
+              ],
+              "anchor": [
+                86.0,
+                135
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                297,
+                334,
+                173,
+                134
+              ],
+              "anchor": [
+                88.5,
+                130
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                549,
+                333,
+                171,
+                138
+              ],
+              "anchor": [
+                85.0,
+                134
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                813,
+                333,
+                173,
+                139
+              ],
+              "anchor": [
+                84.5,
+                135
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-baku-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                42,
+                584,
+                173,
+                133
+              ],
+              "anchor": [
+                89.0,
+                129
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                278,
+                586,
+                192,
+                132
+              ],
+              "anchor": [
+                107.5,
+                128
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                533,
+                588,
+                237,
+                132
+              ],
+              "anchor": [
+                101.0,
+                128
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                816,
+                582,
+                168,
+                137
+              ],
+              "anchor": [
+                81.5,
+                133
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-baku-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                47,
+                830,
+                170,
+                145
+              ],
+              "anchor": [
+                84.0,
+                141
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                295,
+                842,
+                183,
+                134
+              ],
+              "anchor": [
+                90.5,
+                130
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                549,
+                825,
+                178,
+                151
+              ],
+              "anchor": [
+                85.0,
+                147
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                807,
+                826,
+                174,
+                149
+              ],
+              "anchor": [
+                90.5,
+                145
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-baku-v2.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                44,
+                1065,
+                182,
+                159
+              ],
+              "anchor": [
+                87.0,
+                155
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                287,
+                1090,
+                196,
+                138
+              ],
+              "anchor": [
+                98.5,
+                134
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                553,
+                1092,
+                193,
+                139
+              ],
+              "anchor": [
+                81.0,
+                135
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                809,
+                1071,
+                180,
+                159
+              ],
+              "anchor": [
+                88.5,
+                155
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-baku-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                43,
+                1330,
+                178,
+                140
+              ],
+              "anchor": [
+                88.0,
+                136
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                289,
+                1350,
+                186,
+                120
+              ],
+              "anchor": [
+                96.5,
+                116
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                545,
+                1365,
+                198,
+                102
+              ],
+              "anchor": [
+                89.0,
+                98
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                801,
+                1369,
+                191,
+                98
+              ],
+              "anchor": [
+                96.5,
+                94
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Intentional reuse of idle; no separate victory poses are supplied."
+        },
+        "ability": {
+          "alias": "defend"
+        }
+      },
+      "nativeAtlasSize": [
+        1024,
+        1536
+      ],
+      "note": "Four authored poses per core state. Explicit rectangles and anchors are required; this is not the current horizontal-strip schema."
+    },
+    "afanc": {
+      "proposedCreatureId": "afanc",
+      "facing": "right",
+      "defaultStageScale": 1,
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-afanc-v2.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                36,
+                108,
+                190,
+                122
+              ],
+              "anchor": [
+                95.0,
+                118
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                284,
+                109,
+                197,
+                122
+              ],
+              "anchor": [
+                98.5,
+                118
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                539,
+                107,
+                198,
+                124
+              ],
+              "anchor": [
+                99.0,
+                120
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                785,
+                107,
+                201,
+                123
+              ],
+              "anchor": [
+                100.5,
+                119
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-afanc-v2.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                30,
+                341,
+                210,
+                120
+              ],
+              "anchor": [
+                101.0,
+                116
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                283,
+                341,
+                213,
+                122
+              ],
+              "anchor": [
+                99.5,
+                118
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                530,
+                340,
+                219,
+                121
+              ],
+              "anchor": [
+                108.0,
+                117
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                783,
+                341,
+                214,
+                123
+              ],
+              "anchor": [
+                102.5,
+                119
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-afanc-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                31,
+                578,
+                217,
+                119
+              ],
+              "anchor": [
+                100.0,
+                115
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                287,
+                571,
+                212,
+                126
+              ],
+              "anchor": [
+                95.5,
+                122
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                525,
+                574,
+                226,
+                125
+              ],
+              "anchor": [
+                113.0,
+                121
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                777,
+                573,
+                219,
+                128
+              ],
+              "anchor": [
+                108.5,
+                124
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-afanc-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                30,
+                807,
+                216,
+                129
+              ],
+              "anchor": [
+                101.0,
+                125
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                283,
+                822,
+                225,
+                117
+              ],
+              "anchor": [
+                99.5,
+                113
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                530,
+                815,
+                220,
+                124
+              ],
+              "anchor": [
+                108.0,
+                120
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                783,
+                813,
+                214,
+                128
+              ],
+              "anchor": [
+                102.5,
+                124
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-afanc-v2.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                40,
+                1033,
+                208,
+                161
+              ],
+              "anchor": [
+                91.0,
+                157
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                284,
+                1061,
+                219,
+                128
+              ],
+              "anchor": [
+                98.5,
+                124
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                523,
+                1063,
+                231,
+                127
+              ],
+              "anchor": [
+                115.0,
+                123
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                784,
+                1070,
+                212,
+                124
+              ],
+              "anchor": [
+                101.5,
+                120
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-afanc-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                31,
+                1316,
+                223,
+                124
+              ],
+              "anchor": [
+                100.0,
+                120
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                284,
+                1328,
+                215,
+                105
+              ],
+              "anchor": [
+                98.5,
+                101
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                523,
+                1329,
+                230,
+                101
+              ],
+              "anchor": [
+                115.0,
+                97
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                781,
+                1333,
+                223,
+                93
+              ],
+              "anchor": [
+                104.5,
+                89
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Intentional reuse of idle; no separate victory poses are supplied."
+        },
+        "ability": {
+          "alias": "defend"
+        }
+      },
+      "nativeAtlasSize": [
+        1024,
+        1536
+      ],
+      "note": "Four authored poses per core state. Explicit rectangles and anchors are required; this is not the current horizontal-strip schema."
+    },
+    "ahuitzotl": {
+      "proposedCreatureId": "ahuitzotl",
+      "facing": "right",
+      "defaultStageScale": 1,
+      "animations": {
+        "idle": {
+          "file": "new-assets/atlas-ahuitzotl-v2.png",
+          "fps": 3,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                36,
+                138,
+                170,
+                155
+              ],
+              "anchor": [
+                85.0,
+                151
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                299,
+                145,
+                163,
+                149
+              ],
+              "anchor": [
+                81.5,
+                145
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                550,
+                144,
+                166,
+                149
+              ],
+              "anchor": [
+                83.0,
+                145
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                805,
+                144,
+                163,
+                149
+              ],
+              "anchor": [
+                81.5,
+                145
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                0,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "move": {
+          "file": "new-assets/atlas-ahuitzotl-v2.png",
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            {
+              "rect": [
+                36,
+                367,
+                181,
+                156
+              ],
+              "anchor": [
+                85.0,
+                152
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                295,
+                367,
+                187,
+                153
+              ],
+              "anchor": [
+                85.5,
+                149
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                542,
+                369,
+                197,
+                150
+              ],
+              "anchor": [
+                91.0,
+                146
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                799,
+                365,
+                186,
+                158
+              ],
+              "anchor": [
+                87.5,
+                154
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                1,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "attack": {
+          "file": "new-assets/atlas-ahuitzotl-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                36,
+                592,
+                190,
+                167
+              ],
+              "anchor": [
+                85.0,
+                163
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                285,
+                589,
+                221,
+                170
+              ],
+              "anchor": [
+                95.5,
+                166
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                548,
+                587,
+                190,
+                173
+              ],
+              "anchor": [
+                85.0,
+                169
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                792,
+                597,
+                194,
+                166
+              ],
+              "anchor": [
+                94.5,
+                162
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                2,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "defend": {
+          "file": "new-assets/atlas-ahuitzotl-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                37,
+                844,
+                190,
+                167
+              ],
+              "anchor": [
+                84.0,
+                163
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                295,
+                875,
+                202,
+                142
+              ],
+              "anchor": [
+                85.5,
+                138
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                549,
+                849,
+                196,
+                161
+              ],
+              "anchor": [
+                84.0,
+                157
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                792,
+                853,
+                199,
+                161
+              ],
+              "anchor": [
+                94.5,
+                157
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                3,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "hit": {
+          "file": "new-assets/atlas-ahuitzotl-v2.png",
+          "fps": 7,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                40,
+                1081,
+                183,
+                179
+              ],
+              "anchor": [
+                81.0,
+                175
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                293,
+                1106,
+                194,
+                156
+              ],
+              "anchor": [
+                87.5,
+                152
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                539,
+                1116,
+                205,
+                148
+              ],
+              "anchor": [
+                94.0,
+                144
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                802,
+                1101,
+                178,
+                169
+              ],
+              "anchor": [
+                84.5,
+                165
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                4,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": false
+        },
+        "death": {
+          "file": "new-assets/atlas-ahuitzotl-v2.png",
+          "fps": 6,
+          "loop": false,
+          "frames": [
+            {
+              "rect": [
+                36,
+                1346,
+                192,
+                142
+              ],
+              "anchor": [
+                85.0,
+                138
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                0
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                286,
+                1354,
+                198,
+                132
+              ],
+              "anchor": [
+                94.5,
+                128
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                1
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                532,
+                1358,
+                208,
+                122
+              ],
+              "anchor": [
+                101.0,
+                118
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                2
+              ],
+              "clippedAtCanvas": false
+            },
+            {
+              "rect": [
+                780,
+                1368,
+                212,
+                114
+              ],
+              "anchor": [
+                106.5,
+                110
+              ],
+              "sourceScale": 1,
+              "sourceCell": [
+                5,
+                3
+              ],
+              "clippedAtCanvas": false
+            }
+          ],
+          "holdLastFrame": true
+        },
+        "victory": {
+          "alias": "idle",
+          "note": "Intentional reuse of idle; no separate victory poses are supplied."
+        },
+        "ability": {
+          "alias": "attack"
+        }
+      },
+      "nativeAtlasSize": [
+        1024,
+        1536
+      ],
+      "note": "Four authored poses per core state. Explicit rectangles and anchors are required; this is not the current horizontal-strip schema."
+    }
+  },
+  "excludedFrames": [
+    {
+      "state": "takeoff",
+      "sourceCell": [
+        0,
+        2
+      ],
+      "reason": "Visual inspection: upper wing is cut at the native canvas edge; omit from playback. Alpha-threshold detection alone did not detect this."
+    }
+  ],
+  "rendering": "Draw native source rectangles at constant sourceScale; subtract each pixel anchor. Never resize each frame to its bounding box. Mirror at runtime for left-facing units. Preserve alpha."
+}
